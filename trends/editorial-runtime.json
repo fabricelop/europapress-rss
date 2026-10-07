@@ -1,66 +1,78 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T21:15:00+02:00",
-  "last_completed_at": "2026-10-07T21:16:45+02:00",
-  "updated_at": "2026-10-07T21:16:45+02:00",
+  "last_started_at": "2026-10-07T21:45:00+02:00",
+  "last_completed_at": "2026-10-07T21:54:30+02:00",
+  "updated_at": "2026-10-07T21:54:30+02:00",
   "status": "success",
   "processed_ids": [
-    "d00966faa802"
+    "f19ca5a83016",
+    "7ea2bf3ac132",
+    "c6001a65c2ab"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "c6001a65c2ab"
+  ],
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261007T211500-chat",
+    "run_id": "tr-20261007T214500-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-07T21:15:00+02:00",
-    "updated_at": "2026-10-07T21:16:45+02:00",
-    "finished_at": "2026-10-07T21:16:45+02:00",
+    "started_at": "2026-10-07T21:45:00+02:00",
+    "updated_at": "2026-10-07T21:54:30+02:00",
+    "finished_at": "2026-10-07T21:54:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 3,
+    "total": 3,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 3,
+      "trends_explained": 2,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 2,
       "grouped_into_existing_card": 0,
-      "grouped_members_total": 0,
-      "trends_problematic": 0,
+      "grouped_members_total": 1,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 19,
+      "pending_cards_reviewed": 1,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "pending_cards_with_ai_ready": 6,
-      "pending_cards_needing_ai_repair": 13,
+      "pending_cards_with_ai_ready": 1,
+      "pending_cards_needing_ai_repair": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
       "remates_reused": 0,
-      "remates_omitted": 4,
+      "remates_omitted": 1,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · cola editorial 0 · 19 Pendientes revisadas; reparación visual solicitada",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada completada · Mari Carmen y Urbagestión agrupadas y explicadas; George Floyd queda problemático sin detonante único verificable; cola editorial 0.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-07T21:52:20+02:00",
+        "phase": "investigating",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "reason": "No se verificó un detonante actual único tras búsquedas distintas; la asociación con el caso de Hondarribia no basta para atribuir la tendencia."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -70,104 +82,170 @@
     },
     "remate_selections": [
       {
-        "trend_id": "77173ace11f1",
-        "revision": 0,
+        "trend_id": "f19ca5a83016",
+        "revision": 1,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "sensitive_event_atentado"
-      },
-      {
-        "trend_id": "84289b1cc692",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_judicial_context"
-      },
-      {
-        "trend_id": "36a6f15af1f8",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "0ecf2a36f589",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_judicial_threat_context"
+        "no_remate_reason": "sensitive_event_death"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-07T21:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial directa · cola 0 · revisando Pendientes y reexplicaciones"
+        "at": "2026-10-07T21:48:20+02:00",
+        "phase": "drafting",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Comprobando límite de X · 201 caracteres Unicode"
       },
       {
-        "at": "2026-10-07T21:15:10+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes y reexplicaciones · estado autoritativo"
-      },
-      {
-        "at": "2026-10-07T21:15:35+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 19 tarjetas · reparación visual solicitada"
-      },
-      {
-        "at": "2026-10-07T21:16:00+02:00",
+        "at": "2026-10-07T21:48:25+02:00",
         "phase": "remate_selection",
-        "trend_id": "84289b1cc692",
-        "title": "Air Europa",
-        "message": "Pendiente · Air Europa · evaluando remate con ratings"
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Sin remate · suceso sensible con fallecimiento"
       },
       {
-        "at": "2026-10-07T21:16:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "4 remates vacíos revisados · se mantienen sin remate por sensibilidad o contexto político/judicial"
+        "at": "2026-10-07T21:48:30+02:00",
+        "phase": "persisting",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-07T21:16:35+02:00",
+        "at": "2026-10-07T21:49:00+02:00",
+        "phase": "persisting",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-07T21:49:20+02:00",
+        "phase": "verifying",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-07T21:49:35+02:00",
+        "phase": "verifying",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-07T21:49:45+02:00",
+        "phase": "persisting",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-07T21:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": "f19ca5a83016",
+        "title": "Mari Carmen",
+        "message": "Conflicto concurrente resuelto · main ya retiró ambas revisiones sin pérdida"
+      },
+      {
+        "at": "2026-10-07T21:50:30+02:00",
+        "phase": "verifying",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Releyendo estado autoritativo de George Floyd"
+      },
+      {
+        "at": "2026-10-07T21:50:40+02:00",
+        "phase": "investigating",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Buscando detonante actual de George Floyd"
+      },
+      {
+        "at": "2026-10-07T21:51:10+02:00",
+        "phase": "investigating",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Contrastando fuente 1/2 · contexto actual en España"
+      },
+      {
+        "at": "2026-10-07T21:51:35+02:00",
+        "phase": "investigating",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Contrastando fuente 2/2 · caso de Hondarribia e investigación"
+      },
+      {
+        "at": "2026-10-07T21:52:00+02:00",
+        "phase": "investigating",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "No se verifica un detonante actual único tras búsquedas distintas"
+      },
+      {
+        "at": "2026-10-07T21:52:20+02:00",
+        "phase": "persisting",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Guardando estado problemático con motivo verificable"
+      },
+      {
+        "at": "2026-10-07T21:52:35+02:00",
+        "phase": "persisting",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Retirando revisión problemática de la cola"
+      },
+      {
+        "at": "2026-10-07T21:52:50+02:00",
+        "phase": "verifying",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-07T21:53:00+02:00",
+        "phase": "verifying",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Verificando George Floyd r0 y cola activa"
+      },
+      {
+        "at": "2026-10-07T21:53:10+02:00",
+        "phase": "verifying",
+        "trend_id": "c6001a65c2ab",
+        "title": "George Floyd",
+        "message": "Tendencia problemática cerrada y verificada"
+      },
+      {
+        "at": "2026-10-07T21:54:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0 · requests activas 0 · reexplicaciones 0"
+        "message": "Revisando Pendientes · 1 tarjeta vigente · IA ya lista"
       },
       {
-        "at": "2026-10-07T21:16:45+02:00",
+        "at": "2026-10-07T21:54:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola editorial 0 · 19 Pendientes revisadas; reparación visual solicitada"
+        "message": "Pasada completada · cola editorial 0 · 2 explicadas y 1 problemática"
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": []
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered_async",
+    "status": "observed_ready",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T204500-chat",
-    "last_triggered_at": "2026-10-07T20:45:00+02:00",
-    "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-07T20:48:38+02:00",
-    "ai_ready": 0,
+    "last_trigger_run_id": "tr-20261007T214500-chat",
+    "last_triggered_at": "2026-10-07T21:45:00+02:00",
+    "pending_cards_reviewed": 1,
+    "observed_at": "2026-10-07T21:54:10+02:00",
+    "ai_ready": 1,
     "ai_repair_needed": 0
   }
 }
