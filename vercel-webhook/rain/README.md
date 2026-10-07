@@ -1,6 +1,13 @@
-# RainETA v0.17.24
+# RainETA v0.17.25
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Radar AEMET con autoridad operativa v0.17.25
+- El radar oficial AEMET deja de ser solo diagnóstico: participa en lluvia actual, ETA de corto plazo, horizonte fiable y ventanas secas.
+- Una señal ordinaria de lluvia actual requiere acuerdo de al menos dos entre RainViewer, OPERA y AEMET; una señal muy intensa de una sola fuente puede confirmar lluvia por sí misma.
+- El nowcast AEMET entra en la mezcla 0–180 min, junto con RainViewer/OPERA, sin convertir tres radares correlacionados en tres familias de modelos independientes.
+- AEMET se refresca junto a las demás fuentes radar y puede corregir tanto llegadas como pausas/reanudaciones.
+- Fuera del horizonte espacial defendible el mapa sigue sin inventar ecos futuros; la ETA pasa a HARMONIE-AROME y consenso multimodelo.
 
 ## Motor por horizonte
 - **0–4 h:** la banda corta mantiene su detalle 0–180 min, mientras el mapa radar puede avanzar visualmente hasta 4 h. El radar solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
