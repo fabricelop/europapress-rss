@@ -28147,9 +28147,9 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
@@ -28165,13 +28165,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://img2.rtve.es/a/17256452/?imgProgApi=imgBackground&w=800",
-        "source": "RTVE/RNE · 7/10/2026",
-        "source_url": "https://www.rtve.es/play/audios/las-mananas-de-rne/correos-voto-correo-absolutamente-seguro/17256452/",
-        "alt": "Imagen de archivo relacionada con Correos",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/fb7d494952cf-r1-ai2-791381193015.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "d98f75919555bcf0fe39a100a4fd47032d323662176832a951ee05c1ed7096db",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2578543,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "fb7d494952cf",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-fb7d494952cf-r1-a2-1791381193015"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/fb7d494952cf-r1-ai2-791381193015.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/fb7d494952cf-r1-ai2-791381193015.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 2,
+        "sha256": "d98f75919555bcf0fe39a100a4fd47032d323662176832a951ee05c1ed7096db",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2578543,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "fb7d494952cf",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-fb7d494952cf-r1-a2-1791381193015"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/fb7d494952cf-r1-ai2-791381193015.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 2,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-07T13:58:07.792Z"
     },
     {
       "id": "9e7f4fbc3572",
@@ -34819,6 +34858,6 @@
       "ai_image_last_attempt_at": "2026-10-07T13:33:35.545Z"
     }
   ],
-  "updated_at": "2026-10-07T13:53:10.508808Z",
+  "updated_at": "2026-10-07T13:58:07.792Z",
   "count": 627
 }
