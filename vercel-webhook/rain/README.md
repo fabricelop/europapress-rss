@@ -1,4 +1,4 @@
-# RainETA v0.17.5
+# RainETA v0.17.6
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,12 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Quórum mínimo de modelos v0.17.6
+- Una señal ordinaria respaldada por **una sola familia meteorológica** ya no crea por sí sola un episodio de lluvia con ETA: se degrada a riesgo posible.
+- Con una sola familia, RainETA solo conserva el estado de lluvia prevista cuando la señal es excepcionalmente fuerte (precipitación esperada ≥0,35 mm/h o probabilidad ≥90 % con ≥0,15 mm/h).
+- Con dos o más familias independientes el clasificador conserva sus umbrales normales; la confianza sigue limitada por la diversidad disponible.
+- Esta protección actúa especialmente durante caídas parciales de proveedores: evita convertir la coincidencia interna de una única familia en falso consenso.
 
 ## Confianza por familias independientes v0.17.5
 - El consenso deja de poder mostrar confianza alta cuando sobreviven muy pocas **familias meteorológicas independientes**, aunque las fuentes restantes coincidan entre sí.
