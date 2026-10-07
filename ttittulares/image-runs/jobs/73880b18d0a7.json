@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-73880b18d0a7-r1-a1-1791412687018",
+  "requested_at": "2026-10-07T22:38:07.017630Z",
+  "updated_at": "2026-10-07T22:38:07.017630Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "73880b18d0a7",
+  "event_id": "73880b18d0a7",
+  "target_name": "Tres años del ataque de Hamas el 7 de octubre: Israel recuerda a las víctimas mientras Gaza sigue en ruinas",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Tres años del ataque de Hamas el 7 de octubre: Israel recuerda a las víctimas mientras Gaza sigue en ruinas",
+    "revision": 1,
+    "factual_summary": "Israel conmemoró el tercer aniversario del ataque de Hamás del 7 de octubre de 2023 con actos de recuerdo a las víctimas. Reuters confirma que los ataques mataron a unas 1.200 personas y que Gaza continúa devastada, con casi toda su población desplazada; Cadena SER describe una Franja aún destruida y con graves necesidades humanitarias.",
+    "tweet_text": "Israel conmemora tres años del ataque de Hamás del 7-O, mientras Gaza sigue devastada y casi toda su población continúa desplazada tras la guerra.\n\n🌶️ Tres años después, el calendario sigue sin poder cerrar la fecha.",
+    "remate": "🌶️ Tres años después, el calendario sigue sin poder cerrar la fecha.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nIsrael conmemora tres años del ataque de Hamás del 7-O, mientras Gaza sigue devastada y casi toda su población continúa desplazada tras la guerra.\n\n🌶️ Tres años después, el calendario sigue sin poder cerrar la fecha.\n\nREMATE EXACTO:\n🌶️ Tres años después, el calendario sigue sin poder cerrar la fecha.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nIsrael conmemoró el tercer aniversario del ataque de Hamás del 7 de octubre de 2023 con actos de recuerdo a las víctimas. Reuters confirma que los ataques mataron a unas 1.200 personas y que Gaza continúa devastada, con casi toda su población desplazada; Cadena SER describe una Franja aún destruida y con graves necesidades humanitarias.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.antena3.com/noticias/mundo/tres-anos-israel-recuerda-victimas-mientras-gaza-sigue-ruinas_202610076ac6269369377819d168e044.html",
+    "citations": [
+      {
+        "source": "Reuters",
+        "url": "https://www.reuters.com/world/middle-east/israelis-mark-three-years-since-hamas-attack-that-set-off-gaza-assault-2026-10-07/"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/07/gaza-tres-anos-despues-ni-hamas-ha-desaparecido-ni-netanyahu-ha-dejado-de-recibir-apoyo-de-paises-occidentales-cadena-ser/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
