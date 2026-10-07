@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "enabled": false,
   "mode": "observe_only",
   "lookback_hours": 48,
@@ -11,11 +11,28 @@
     "when_same_story": "second_account_quotes_first",
     "first_publication_wins": true,
     "allow_manual_independent_publish": true,
-    "generate_second_ai_image_by_default": false
+    "generate_second_ai_image_by_default": false,
+    "manual_quote_flow": {
+      "enabled": true,
+      "capture_x_post_url": false,
+      "prepare_second_account_text": true,
+      "prepare_source_account_search": true
+    }
   },
   "integration": {
     "telegram_buttons_enabled": false,
     "modify_existing_publish_callbacks": false,
-    "modify_existing_queues": false
+    "modify_existing_queues": false,
+    "telegram_search_button_planned": true
+  },
+  "accounts": {
+    "ttittulares": {
+      "handle": "ttittulares",
+      "label": "@ttittulares"
+    },
+    "ttendencias": {
+      "handle": "ttendenciasesp",
+      "label": "@ttendenciasesp"
+    }
   }
 }
