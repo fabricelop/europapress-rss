@@ -1,4 +1,4 @@
-# RainETA v0.17.10
+# RainETA v0.17.11
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -100,6 +100,14 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## Reintento adaptativo de modelos v0.17.11
+- La caché fresca deja de durar siempre 20 min: RainETA adapta el siguiente reintento a la **diversidad meteorológica realmente disponible**.
+- Con **5 o más familias independientes** mantiene 20 min; con **3–4 familias** reintenta a los 10 min; con **0–2 familias** reintenta a los 5 min.
+- Así, una caída parcial de proveedores no queda congelada durante 20 min si los modelos se recuperan antes, mientras que en condiciones normales no aumenta el tráfico.
+- El contador de familias se calcula solo sobre modelos/ensembles sanos y no cuenta dos veces variantes de una misma familia.
+- El panel Fuentes muestra ahora el intervalo de refresco elegido para el consenso.
+- No añade tareas servidor ni consumo de CPU Vercel: solo modifica cuándo el cliente vuelve a solicitar la previsión.
 
 ## Curvatura radar limitada por tendencia v0.17.10
 - RainETA guarda localmente una serie corta del **rumbo y velocidad** derivados de los barridos radar recientes para detectar si la advección está girando de forma persistente.
