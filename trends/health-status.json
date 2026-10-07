@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-07T13:13:21.122760+00:00",
+  "checked_at": "2026-10-07T15:20:59.497821+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -41,8 +41,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 5,
+      "captured_age_minutes": 0.7,
       "noise_count": 0
     },
     "listener": {
@@ -52,10 +52,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 1.4,
-      "run_id": 37626598680,
+      "age_minutes": 1.7,
+      "run_id": 37642904304,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,28 +75,46 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 3,
+      "overdue_count": 2,
+      "oldest_age_minutes": 31.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "77173ace11f1",
+          "name": "israel",
+          "status": "preparing",
+          "age_minutes": 31.4
+        },
+        {
+          "id": "84289b1cc692",
+          "name": "Air Europa",
+          "status": "preparing",
+          "age_minutes": 31.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "77173ace11f1",
+        "84289b1cc692",
+        "4d1156d20f42"
+      ],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 48 estado(s) inválido(s)"
+    "cola con 48 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 48 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 48 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.4 min | config TTendencias incompatible con el modo activo"
 }
