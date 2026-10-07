@@ -579,20 +579,50 @@ async function requestImageUpload(req,res){
     return res.status(422).json({ok:false,error:"Raster rechazado: geometría anómala",width,height,aspect:Number(aspect.toFixed(3))});
   }
   const sha256=crypto.createHash("sha256").update(buf).digest("hex"),now=new Date().toISOString();
-  const persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
-  const persistWrite=await writeControlJson(path,persisting,existing.sha,"TTiTTulares raster recibido "+command_id);
+  let persisting={...job,status:"PERSISTING",phase:"image_persist",updated_at:now,upload_received_at:now,upload_sha256:sha256,upload_bytes:buf.length,message:"Raster recibido; guardando Gag IA en main."};
+  let persistWrite=null,persistBase=existing;
+  for(let n=0;n<6;n++){
+    try{
+      persistWrite=await writeControlJson(path,persisting,persistBase.sha,"TTiTTulares raster recibido "+command_id);
+      break
+    }catch(e){
+      if(n===5||!/409|422/.test(String(e)))throw e;
+      persistBase=await readControlJsonAuthoritative(path);
+      if(String(persistBase.doc?.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
+      if(["DONE","CANCELLED","SUPERSEDED"].includes(String(persistBase.doc?.status||"").toUpperCase())){
+        return res.status(200).json({ok:true,idempotent:true,status:persistBase.doc.status,target_id,command_id})
+      }
+      persisting={...persistBase.doc,...persisting,updated_at:new Date().toISOString()};
+      await new Promise(r=>setTimeout(r,160*(n+1)));
+    }
+  }
+  if(!persistWrite)throw new Error("No se pudo fijar estado PERSISTING");
   const persisted=await persistAiImageDirect({target_id,revision:Number(job.revision||0),command_id,buf,mime:m[1],sha256,width,height,bytes:buf.length});
-  // Igual que TTendencias: persistAiImageDirect ya confirma que el PNG y prepared.json
-  // están escritos en main. Cerrar aquí evita una segunda lectura que puede llegar
-  // atrasada y convertir una imagen válida en un falso ERROR.
-  const doneAt=new Date().toISOString();
-  const done={...persisting,status:"DONE",phase:"done",updated_at:doneAt,finished_at:doneAt,message:"Gag IA materializado y visible en Listas."};
-  const persistSha=persistWrite?.content?.sha||persistWrite?.content?.git_url?.split("/").pop()||null;
-  if(persistSha){
-    await writeControlJson(path,done,persistSha,"TTiTTulares imagen IA completada "+command_id);
-  }else{
-    const fresh=await readControlJsonAuthoritative(path);
-    await writeControlJson(path,done,fresh.sha,"TTiTTulares imagen IA completada "+command_id);
+  // La imagen ya está en main; cerrar el job con relectura autoritativa para que
+  // un ACK/workflow concurrente no convierta una persistencia válida en falso 409.
+  let doneAt=new Date().toISOString();
+  let done={...persisting,status:"DONE",phase:"done",updated_at:doneAt,finished_at:doneAt,message:"Gag IA materializado y visible en Listas."};
+  let doneBaseSha=persistWrite?.content?.sha||persistWrite?.content?.git_url?.split("/").pop()||null;
+  for(let n=0;n<6;n++){
+    try{
+      if(!doneBaseSha){
+        const fresh=await readControlJsonAuthoritative(path);
+        if(String(fresh.doc?.command_id||"")!==command_id)return res.status(200).json({ok:true,status:"DONE",target_id,command_id,image_path:persisted.imagePath,attempt:persisted.attempt,sha256,width,height,bytes:buf.length,control_deferred:true});
+        if(String(fresh.doc?.status||"").toUpperCase()==="DONE")break;
+        done={...fresh.doc,...done,updated_at:new Date().toISOString(),finished_at:new Date().toISOString()};
+        doneBaseSha=fresh.sha;
+      }
+      await writeControlJson(path,done,doneBaseSha,"TTiTTulares imagen IA completada "+command_id);
+      break
+    }catch(e){
+      if(n===5||!/409|422/.test(String(e)))throw e;
+      const fresh=await readControlJsonAuthoritative(path);
+      if(String(fresh.doc?.command_id||"")!==command_id)return res.status(200).json({ok:true,status:"DONE",target_id,command_id,image_path:persisted.imagePath,attempt:persisted.attempt,sha256,width,height,bytes:buf.length,control_deferred:true});
+      if(String(fresh.doc?.status||"").toUpperCase()==="DONE")break;
+      done={...fresh.doc,...done,updated_at:new Date().toISOString(),finished_at:new Date().toISOString()};
+      doneBaseSha=fresh.sha;
+      await new Promise(r=>setTimeout(r,160*(n+1)));
+    }
   }
   return res.status(200).json({ok:true,status:"DONE",target_id,command_id,image_path:persisted.imagePath,attempt:persisted.attempt,sha256,width,height,bytes:buf.length})
 }
