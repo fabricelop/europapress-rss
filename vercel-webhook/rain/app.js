@@ -39,7 +39,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.16';
+const APP_VERSION='0.17.17';
 const FORECAST_CACHE_SCHEMA='consensus-v13';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16'];
 
@@ -2629,20 +2629,20 @@ function projectedRadarOpacity(minutes,canMove,reliable){
   const requested=Math.max(0,Math.min(RADAR_VISUAL_HORIZON_MINUTES,Number(minutes)||0));
   if(!canMove){
     const progress=requested/RADAR_VISUAL_HORIZON_MINUTES;
-    return Math.max(.04,.18*(1-.78*progress));
+    return Math.max(.16,.34-.18*progress);
   }
   const confidence=Math.max(0,Math.min(1,Number(state.nowcast?.confidence)||0));
   const evolution=Math.max(0,Math.min(1,Number(state.nowcast?.evolution?.score)||0));
   const quality=.55*confidence+.45*evolution;
   const safeReliable=Math.max(1,Number(reliable)||1);
-  const startOpacity=.68*(.78+.22*quality);
+  const startOpacity=.70*(.86+.14*quality);
   if(requested<=safeReliable){
     const progress=Math.max(0,Math.min(1,requested/safeReliable));
-    return Math.max(.28,startOpacity*(1-.28*progress));
+    return Math.max(.46,startOpacity*(1-.18*progress));
   }
-  const horizonOpacity=startOpacity*.72;
+  const horizonOpacity=Math.max(.48,startOpacity*.82);
   const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
-  return Math.max(.05,horizonOpacity*Math.exp(-2.2*beyond));
+  return Math.max(.30,horizonOpacity-(horizonOpacity-.30)*beyond);
 }
 function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1),motion=state.nowcast?.motion;
