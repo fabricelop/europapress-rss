@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v49"
+$WorkerId = "ttittulares-dedicated-v50"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -792,7 +792,11 @@ function Seen-ImageCommand($State,[string]$CommandId) {
 }
 function Mark-ImageCommand($State,[string]$CommandId,[bool]$Active) {
   $State.image_commands = @((@($State.image_commands) + $CommandId) | Select-Object -Unique | Select-Object -Last 120)
-  if ($Active) { $State.active_image_commands = @((@($State.active_image_commands) + $CommandId) | Select-Object -Unique) }
+  if ($Active) {
+    $State.active_image_commands = @((@($State.active_image_commands) + $CommandId) | Select-Object -Unique)
+  } else {
+    $State.active_image_commands = @(@($State.active_image_commands) | Where-Object { [string]$_ -ne [string]$CommandId } | Select-Object -Unique)
+  }
 }
 function Refresh-ActiveImages($State,$Index) {
   $active=@();$jobs=@()
@@ -808,6 +812,29 @@ function Refresh-ActiveImages($State,$Index) {
       $at=[DateTimeOffset]::Parse($atText)
       if(([DateTimeOffset]::UtcNow-$at).TotalMinutes -gt $ImageStaleMinutes){Write-Log "IMAGE STALE command=$cmd";continue}
     } catch {}
+
+    # v50: el estado local "active" solo ocupa slot si existe un bridge TTiTTulares
+    # realmente vivo para ESE command_id. Un RUNNING remoto sin lock/PID local no
+    # demuestra trabajo activo y no debe bloquear indefinidamente la cola.
+    $liveBridge=$false
+    $bridgePid=0
+    try {
+      if(Test-Path -LiteralPath $ImageBridgeLockPath){
+        $lock=Get-Content -LiteralPath $ImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if([string]$lock.command_id -eq [string]$cmd){
+          $bridgePid=[int]$lock.pid
+          $p=if($bridgePid -gt 0){Get-Process -Id $bridgePid -ErrorAction SilentlyContinue}else{$null}
+          if($p){
+            $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$bridgePid) -ErrorAction SilentlyContinue
+            $liveBridge=($proc -and [string]$proc.CommandLine -like "*TTiTTularesImageBridge.js*")
+          }
+        }
+      }
+    } catch {}
+    if(-not $liveBridge){
+      Write-Log "IMAGE ACTIVE ORPHAN CLEARED command=$cmd target=$($job.target_id) bridge_pid=$bridgePid remote_status=$($statusDoc.status)"
+      continue
+    }
     $active += [string]$cmd
   }
   $State.active_image_commands=@($active|Select-Object -Unique)
