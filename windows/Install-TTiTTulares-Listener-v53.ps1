@@ -69,7 +69,7 @@ if(-not $lt.Contains('BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"')){thro
 if(-not $lt.Contains('IMAGE GLOBAL SLOT WAIT project=ttendencias')){throw "Listener v53 no respeta slot global"}
 if(-not $lt.Contains('IMAGE ACTIVE ORPHAN GRACE')){throw "Listener v53 no contiene gracia anti-cascada"}
 if(-not $bt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"')){throw "Bridge descargado no es familia v28"}
-if(-not $bt.Contains('BRIDGE_FEATURES="v28-reject-nonconversation-image-targets"')){throw "Bridge descargado no es el v53 single-insert"}
+if(-not $bt.Contains('BRIDGE_FEATURES="v53-ttendencias-fresh-navigation"')){throw "Bridge descargado no es v53 fresh-navigation"}
 if(-not $bt.Contains('await cdp.call("Input.insertText",{text:message});')){throw "Bridge descargado no usa fresh-navigation bridge"}
 if(-not $bt.Contains('ttittulares-image-bridge-v28-dead-submit-retry')){throw "Worker del bridge no es v53 single-insert"}
 if($bt.Contains('v29-visible-composer-trusted-click-dom-fallback')){throw "Bridge descargado contiene v29 no deseado"}
@@ -147,7 +147,7 @@ foreach($x in $ls){
 Start-Sleep -Seconds 12
 
 Write-Host ""
-Write-Host "TTITTULARES v53 / BRIDGE v53 FRESH-NAVIGATION INSTALADOS" -ForegroundColor Green
+Write-Host "TTITTULARES v53 / BRIDGE FRESH-NAVIGATION INSTALADOS" -ForegroundColor Green
 Write-Host ("PID listener esperado: "+$lp.Id)
 Write-Host ("PID watchdog v8: "+$wp.Id)
 if($up){Write-Host ("PID auto-updater: "+$up.Id)}
