@@ -174,6 +174,19 @@ async function readRawJsonWithSha(path,branch){
 async function readControlJson(path){
   return readRawJsonWithSha(path,TRIGGER_BRANCH)
 }
+// El ciclo de imagen no puede validar secretos contra RAW/CDN: puede devolver
+// durante unos segundos el job anterior y provocar falsos 401. Usamos Contents
+// API solo en lecturas de control de imagen (bajo volumen), igual que TTendencias.
+async function readControlJsonAuthoritative(path){
+  const filePath=String(path||"").split("/").map(encodeURIComponent).join("/");
+  const ref=encodeURIComponent(TRIGGER_BRANCH);
+  const r=await gh("https://api.github.com/repos/"+REPO+"/contents/"+filePath+"?ref="+ref,{cache:"no-store",headers:{"cache-control":"no-cache"}});
+  if(r.status===404)return {sha:null,doc:null};
+  if(!r.ok)throw new Error("GitHub control authoritative GET "+path+": "+r.status+" "+await r.text());
+  const j=await r.json();
+  const raw=Buffer.from(String(j.content||"").replace(/\s/g,""),"base64").toString("utf8");
+  return {sha:String(j.sha||"")||null,doc:JSON.parse(raw||"{}")}
+}
 async function writeControlJson(path,doc,sha,message){
   const body={message,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64"),branch:TRIGGER_BRANCH};
   if(sha)body.sha=sha;
@@ -435,7 +448,7 @@ async function requestImagePcAck(req,res){
   const worker_id=String(req.body?.worker_id||"ttittulares-image-bridge-v1").trim().slice(0,120)||"ttittulares-image-bridge-v1";
   if(!command_id||!["picked_up","progress","launched","cancelled","failed","done"].includes(stage))return res.status(400).json({ok:false,error:"Ack imagen no válido"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
-  const existing=await readControlJson(path),job=existing.doc||{};
+  const existing=await readControlJsonAuthoritative(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
   if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase())){
     return res.status(200).json({ok:true,idempotent:true,target_id,command_id,status:job.status,phase:job.phase||null});
@@ -506,7 +519,7 @@ async function requestImagePcAck(req,res){
       }
       if(attempt===4)throw e;
       await new Promise(r=>setTimeout(r,120*(attempt+1)));
-      writeBase=await readControlJson(path);
+      writeBase=await readControlJsonAuthoritative(path);
       if(String(writeBase.doc?.command_id||"")!==command_id){
         return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
       }
@@ -524,7 +537,7 @@ async function requestImageUpload(req,res){
   if(!captureFromImage)return res.status(422).json({ok:false,error:"Raster rechazado: el bridge no acredita captura del elemento de imagen",capture_method:captureMethod||null});
   if(data.length>4*1024*1024)return res.status(413).json({ok:false,error:"Raster codificado demasiado grande"});
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
-  const existing=await readControlJson(path),job=existing.doc||{};
+  const existing=await readControlJsonAuthoritative(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
   if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
   if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
@@ -557,7 +570,7 @@ async function requestImageUpload(req,res){
   if(persistSha){
     await writeControlJson(path,done,persistSha,"TTiTTulares imagen IA completada "+command_id);
   }else{
-    const fresh=await readControlJson(path);
+    const fresh=await readControlJsonAuthoritative(path);
     await writeControlJson(path,done,fresh.sha,"TTiTTulares imagen IA completada "+command_id);
   }
   return res.status(200).json({ok:true,status:"DONE",target_id,command_id,image_path:persisted.imagePath,attempt:persisted.attempt,sha256,width,height,bytes:buf.length})
@@ -583,7 +596,7 @@ async function requestImageRun(req,res){
     image_style_name:stylePick.name,
     image_style_index:stylePick.index
   };
-  const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json",existing=await readControlJson(jobPath),previous=existing.doc||{};
+  const jobPath=IMAGE_RUN_DIR+"/"+target_id+".json",existing=await readControlJsonAuthoritative(jobPath),previous=existing.doc||{};
   const status=String(previous.status||"").toUpperCase(),phase=String(previous.phase||"").toLowerCase();
   const at=stamp(previous.updated_at||previous.finished_at||previous.requested_at),age=at?Date.now()-at:Infinity;
   const active=status==="REQUESTED"?age<30000:status==="RUNNING"&&["pc_pickup","pc_launch"].includes(phase)?age<IMAGE_HANDOFF_ACTIVE_MS:["RUNNING","GENERATING","PERSISTING"].includes(status)&&age<IMAGE_GENERATION_ACTIVE_MS;
@@ -606,7 +619,7 @@ async function requestImageRun(req,res){
   };
   const saved=await writeControlJson(jobPath,doc,existing.sha,"Solicitar Gag IA TTiTTulares "+target_id+" "+command_id);
   for(let n=0;n<3;n++){
-    const idx=await readControlJson(IMAGE_RUN_INDEX_PATH),base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
+    const idx=await readControlJsonAuthoritative(IMAGE_RUN_INDEX_PATH),base=idx.doc&&Array.isArray(idx.doc.jobs)?idx.doc:{version:1,jobs:[]};
     const jobs=base.jobs.filter(x=>String(x.command_id||"")!==command_id&&String(x.target_id||"")!==target_id);
     jobs.push({command_id,target_id,event_id:target_id,target_name,revision,requested_at,status_path:jobPath,executor:"pc_chat_ttittulares_dedicated"});
     try{await writeControlJson(IMAGE_RUN_INDEX_PATH,{version:1,updated_at:requested_at,jobs:jobs.slice(-60)},idx.sha,"Actualizar cola Gag IA TTiTTulares");break}
