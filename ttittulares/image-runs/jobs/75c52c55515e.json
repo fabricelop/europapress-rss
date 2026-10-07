@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-75c52c55515e-r1-a1-1791363170957",
+  "requested_at": "2026-10-07T08:52:50.956293Z",
+  "updated_at": "2026-10-07T08:52:50.956293Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "75c52c55515e",
+  "event_id": "75c52c55515e",
+  "target_name": "Cristiano Ronaldo aclara que no se retira de la selección",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Cristiano Ronaldo aclara que no se retira de la selección",
+    "revision": 1,
+    "factual_summary": "Cristiano Ronaldo afirma en un comunicado que no se retira de la selección portuguesa y sostiene que Jorge Jesus no contó toda la verdad sobre su salida.",
+    "tweet_text": "Cristiano Ronaldo afirma en un comunicado que no se retira de la selección portuguesa y sostiene que Jorge Jesus no contó toda la verdad sobre su salida.\n\n🌶️ La despedida llegó al vestuario y Cristiano la devolvió sin firmar.",
+    "remate": "🌶️ La despedida llegó al vestuario y Cristiano la devolvió sin firmar.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCristiano Ronaldo afirma en un comunicado que no se retira de la selección portuguesa y sostiene que Jorge Jesus no contó toda la verdad sobre su salida.\n\n🌶️ La despedida llegó al vestuario y Cristiano la devolvió sin firmar.\n\nREMATE EXACTO:\n🌶️ La despedida llegó al vestuario y Cristiano la devolvió sin firmar.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCristiano Ronaldo afirma en un comunicado que no se retira de la selección portuguesa y sostiene que Jorge Jesus no contó toda la verdad sobre su salida.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lasexta.com/noticias/deportes/futbol/cristiano-senala-jorge-jesus-aclara-que-retira-seleccion-esta-pura-verdad_202610066ac54464f7f8f566d14ea53c.html",
+    "citations": [
+      {
+        "source": "Antena 3 Noticias",
+        "url": "https://www.antena3.com/noticias/deportes/futbol/cristiano-ronaldo-rompe-silencio-acusa-jorge-jesus-mentir-creanme-pura-verdad_202610066ac54463375d34226275502b.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/deportes/futbol/cristiano-escribio-una-carta-para-que-leyera-jorge-jesus-fue-un-error-hacer-calentar-alguien-talla-pele-maradona_7045790_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
