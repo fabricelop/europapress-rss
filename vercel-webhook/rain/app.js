@@ -54,8 +54,8 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.33';
-const FORECAST_CACHE_SCHEMA='consensus-v22';
+const APP_VERSION='0.17.34';
+const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
 const $=id=>document.getElementById(id);
