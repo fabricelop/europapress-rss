@@ -362,6 +362,42 @@ async function findChat(job){
   throw Error("No se encontró ninguna conversación ChatGPT válida con compositor")
 }
 
+async function waitForListenerCommandChat(job,timeoutMs=70000){
+  const deadline=Date.now()+Math.max(10000,Number(timeoutMs)||70000);
+  let lastDiag="";
+  while(Date.now()<deadline){
+    let list=[];
+    try{list=await targets()}catch{await sleep(400);continue}
+    const hint=await readTargetHint();
+    const ordered=[];
+    if(hint){
+      const ht=list.find(x=>String(x&&x.id||"")===String(hint.id||"")&&x.type==="page"&&x.webSocketDebuggerUrl);
+      if(ht)ordered.push(ht)
+    }
+    for(const t of list){
+      if(t.type!=="page"||!t.webSocketDebuggerUrl||!String(t.url||"").includes("chatgpt.com"))continue;
+      if(ordered.some(x=>String(x.id)===String(t.id)))continue;
+      ordered.push(t)
+    }
+    for(const t of ordered){
+      const c=new CDP(t.webSocketDebuggerUrl);
+      try{
+        await c.open();
+        const st=await inspectChat(c,job);
+        lastDiag=JSON.stringify({id:t.id,url:st&&st.url,title:st&&st.title,bodyMarker:!!(st&&st.bodyMarker),composerMarker:!!(st&&st.composerMarker),turns:Number(st&&st.turns||0)});
+        if(st&&(st.bodyMarker||st.composerMarker)){
+          c.acceptInitialRaster=true;
+          console.log("BRIDGE LISTENER CHAT ATTACHED target="+String(t.id)+" url="+String(st.url||t.url||"")+" bodyMarker="+Boolean(st.bodyMarker)+" composerMarker="+Boolean(st.composerMarker)+" turns="+Number(st.turns||0));
+          return c
+        }
+      }catch(e){lastDiag=String(e&&e.message||e)}
+      try{c.close()}catch{}
+    }
+    await sleep(450)
+  }
+  throw Error("No se encontro el chat del listener con command_id tras "+timeoutMs+" ms; "+String(lastDiag).slice(0,500))
+}
+
 async function reacquireCommandChat(job){
   const fixed=await reconnectFixedConversation(job);
   if(fixed&&fixed.cdp){console.log("BRIDGE REACQUIRE FIXED TAB "+String(fixed.state&&fixed.state.url||""));return fixed}
@@ -613,35 +649,18 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    cdp=await openFreshDedicatedConversation();
-    console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
-    let image=null;
-    for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
-      if(generationAttempt>1){
-        try{cdp&&cdp.close()}catch{}
-        await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
-        cdp=await openFreshDedicatedConversation();
-        console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
-      }
-      cdp=await injectPromptIntoChat(cdp,job);
-      cdp=await ensureSubmitted(cdp,job);
-      cdp.acceptInitialRaster=true;
-      console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
-      if(generationAttempt===1){
-        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v28-dead-submit-retry"});
-        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
-      }
-      await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
-      try{
-        image=await capture(cdp,job);
-        break
-      }catch(e){
-        if(generationAttempt>=2)throw e;
-        console.log("BRIDGE GENERATION RETRY :: "+String(e&&e.message||e));
-      }
+    cdp=await waitForListenerCommandChat(job,70000);
+    console.log("BRIDGE LISTENER CHAT READY mode="+BRIDGE_MODE);
+    cdp=await ensureSubmitted(cdp,job);
+    cdp.acceptInitialRaster=true;
+    await progress("prompt_sent","Prompt GAG IA verificado en el chat abierto por el listener.");
+    {
+      const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v28-listener-chat"});
+      if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
     }
-    if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
+    await progress("capture_wait","Esperando raster ImageGen en el chat abierto por el listener.");
+    let image=await capture(cdp,job);
+    if(!image)throw Error("ImageGen no produjo raster en el chat del listener");
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
