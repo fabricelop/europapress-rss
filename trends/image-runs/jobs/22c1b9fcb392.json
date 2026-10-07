@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tr-img-auto-22c1b9fcb392-r0-a1-1791379737404",
   "requested_at": "2026-10-07T13:28:57.396405Z",
-  "updated_at": "2026-10-07T13:32:24.532Z",
+  "updated_at": "2026-10-07T13:32:25.825Z",
   "status": "RUNNING",
-  "phase": "prompt_sent",
+  "phase": "pc_launch",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -52,8 +52,9 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.",
+  "message": "PC ha abierto el chat de imagen; esperando inicio de generación.",
   "pc_upload_secret_hash": "b0701231cfae113d1899fd6982822099a793aa6e80801d377faa66ac4a709b19",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T13:32:14.314Z"
+  "pc_worker_id": "ttendencias-dedicated-v16",
+  "pc_picked_up_at": "2026-10-07T13:32:14.314Z",
+  "pc_launched_at": "2026-10-07T13:32:25.825Z"
 }
