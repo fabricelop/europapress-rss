@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -46,7 +46,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
-const LIGHTNING_WMS_URL='https://maps.dwd.de/geoserver/dwd/wms';
+const LIGHTNING_PROXY_URL='/api/rain-lightning';
 const LIGHTNING_WMS_LAYERS=[
   {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
   {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
@@ -54,7 +54,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.37';
+const APP_VERSION='0.17.38';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -3066,13 +3066,12 @@ function centerRadarMap(){
   state.map.easeTo({center:[state.loc.lon,state.loc.lat],duration:450});
 }
 function lightningWmsTile(layer){
-  return LIGHTNING_WMS_URL+
-    '?service=WMS&version=1.1.1&request=GetMap&layers='+encodeURIComponent(layer)+
-    '&styles=&format=image%2Fpng&transparent=true&srs=EPSG%3A3857&bbox={bbox-epsg-3857}&width=256&height=256';
+  return LIGHTNING_PROXY_URL+'?action=tile&layer='+encodeURIComponent(layer)+
+    '&bbox={bbox-epsg-3857}&width=256&height=256';
 }
 function lightningLayerIds(){return LIGHTNING_WMS_LAYERS.map(spec=>spec.id)}
 function lightningCapabilitiesUrl(){
-  return LIGHTNING_WMS_URL+'?service=WMS&version=1.3.0&request=GetCapabilities';
+  return LIGHTNING_PROXY_URL+'?action=capabilities';
 }
 async function verifyLightningSource(force=false){
   if(state.lightningVerified&&!force)return true;
@@ -3080,11 +3079,12 @@ async function verifyLightningSource(force=false){
   state.lightningVerificationError=null;
   state.lightningVerificationPromise=(async()=>{
     try{
-      const response=await timeoutFetch(lightningCapabilitiesUrl(),35_000,{mode:'cors',cache:'no-store',headers:{Accept:'application/xml,text/xml,*/*'}});
-      if(!response.ok)throw new Error('HTTP '+response.status);
-      const text=await response.text();
+      const response=await timeoutFetch(lightningCapabilitiesUrl(),20_000,{cache:'no-store',headers:{Accept:'application/json'}});
+      const data=await response.json().catch(()=>null);
+      if(!response.ok||!data?.ok)throw new Error(data?.error||('HTTP '+response.status));
       const required=LIGHTNING_WMS_LAYERS.map(spec=>spec.layer);
-      const missing=required.filter(layer=>!wmsCapabilitiesHasLayer(text,layer));
+      const available=new Set(Array.isArray(data.layers)?data.layers:[]);
+      const missing=required.filter(layer=>!available.has(layer));
       if(missing.length)throw new Error('capas ausentes: '+missing.join(', '));
       state.lightningVerified=true;
       state.lightningVerificationError=null;
@@ -3540,21 +3540,21 @@ async function showProjectedRadar(minutes){
     const drawn=await drawLocalRadarProjection(r,latest,minutes,guidance,token);
     if(!drawn||token!==state.radarProjectionToken)return;
     const canvas=ensureRadarProjectionCanvas(),coordinates=radarImageCoordinates(state.loc.lat,state.loc.lon,RADAR_ZOOM);
+    const ctx=canvas.getContext('2d',{alpha:true});
+    const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let alphaPixels=0;
+    for(let i=3;i<pixels.length;i+=4)if(pixels[i]>0)alphaPixels++;
+    const alphaFraction=alphaPixels/Math.max(1,canvas.width*canvas.height);
+    if(alphaFraction>.75)throw new Error('projected canvas implausibly opaque');
+    const imageUrl=canvas.toDataURL('image/png');
     const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-    let source=state.map.getSource('raineta-radar-projection');
-    if(!source||!String(state.radarProjectionImageKey||'').startsWith('canvas@')){
-      removeRadarLayer('raineta-radar-projection');
-      state.map.addSource('raineta-radar-projection',{type:'canvas',canvas:canvas.id,coordinates,animate:true});
-      state.map.addLayer({
-        id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
-        paint:{'raster-opacity':.66,'raster-fade-duration':0}
-      },before);
-      state.radarProjectionImageKey='canvas@'+RADAR_ZOOM;
-      source=state.map.getSource('raineta-radar-projection');
-    }else if(typeof source.setCoordinates==='function'){
-      source.setCoordinates(coordinates);
-    }
-    if(typeof state.map.triggerRepaint==='function')state.map.triggerRepaint();
+    removeRadarLayer('raineta-radar-projection');
+    state.map.addSource('raineta-radar-projection',{type:'image',url:imageUrl,coordinates});
+    state.map.addLayer({
+      id:'raineta-radar-projection',type:'raster',source:'raineta-radar-projection',
+      paint:{'raster-opacity':.66,'raster-fade-duration':0}
+    },before);
+    state.radarProjectionImageKey='image@'+Math.round(minutes)+'@'+String(state.nowcast?.projectionField?.radarTime||'field');
     const opacity=projectedRadarOpacity(minutes,true,horizon);
     if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
     $('radarTime').textContent=fmtTime(projectedAt);

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -234,4 +235,29 @@ test('DWD workspace capabilities accept local or namespace-qualified layer names
   assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>Accumulated_Flash_Geometry</Name></Layer>','dwd:Accumulated_Flash_Geometry'),true);
   assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>dwd:NCEW_EU</Name></Layer>','dwd:NCEW_EU'),true);
   assert.equal(wmsCapabilitiesHasLayer('<Layer><Name>Other</Name></Layer>','dwd:NCEW_EU'),false);
+});
+
+
+test('future radar MapLibre path uses generated image source, never CanvasSource',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/type:'image',url:imageUrl,coordinates/);
+  assert.doesNotMatch(app,/raineta-radar-projection'\s*,\s*\{type:'canvas'/);
+  assert.match(app,/canvas\.toDataURL\('image\/png'\)/);
+});
+
+test('RainETA lightning proxy only accepts known DWD layers and sane WebMercator bbox',()=>{
+  assert.equal(normalizeLightningLayer('Accumulated_Flash_Geometry'),'dwd:Accumulated_Flash_Geometry');
+  assert.equal(normalizeLightningLayer('dwd:NCEW_EU'),'dwd:NCEW_EU');
+  assert.throws(()=>normalizeLightningLayer('dwd:AnythingElse'),/layer_not_allowed/);
+  assert.deepEqual(parseLightningBbox('-1000,-2000,3000,4000'),[-1000,-2000,3000,4000]);
+  assert.throws(()=>parseLightningBbox('0,0,0,1'),/invalid_bbox/);
+  const url=buildDwdLightningGetMapUrl({layer:'dwd:NCEW_EU',bbox:'-1000,-2000,3000,4000'});
+  assert.match(url,/maps\.dwd\.de\/geoserver\/dwd\/wms/);
+  assert.match(url,/layers=dwd%3ANCEW_EU/);
+});
+
+test('RainETA lightning browser path is same-origin proxy only',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/const LIGHTNING_PROXY_URL='\/api\/rain-lightning'/);
+  assert.doesNotMatch(app,/const LIGHTNING_WMS_URL='https:\/\/maps\.dwd\.de/);
 });
