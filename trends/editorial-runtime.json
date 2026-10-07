@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T14:16:00+02:00",
-  "last_completed_at": "2026-10-07T14:23:20+02:00",
-  "updated_at": "2026-10-07T14:23:20+02:00",
+  "last_started_at": "2026-10-07T14:45:00+02:00",
+  "last_completed_at": "2026-10-07T12:49:03.291Z",
+  "updated_at": "2026-10-07T12:49:03.291Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,13 +12,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T121500-chat",
+    "run_id": "tr-20261007T124500-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-07T14:16:00+02:00",
-    "updated_at": "2026-10-07T14:23:20+02:00",
-    "finished_at": "2026-10-07T14:23:20+02:00",
+    "started_at": "2026-10-07T14:45:00+02:00",
+    "updated_at": "2026-10-07T12:49:03.291Z",
+    "finished_at": "2026-10-07T12:49:03.291Z",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -33,15 +33,15 @@
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "pending_cards_reviewed": 0,
-      "pending_repair_triggered": 1,
-      "visual_repair_triggered": 1,
+      "pending_repair_triggered": 0,
+      "visual_repair_triggered": 0,
       "visual_repairs_ready": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
@@ -53,9 +53,14 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada editorial cerrada 0/0. Tras releer main no queda ningún preparing/update ni rewrite_pending; tampoco hay Pendientes recientes que reparar. Sin ImageGen directo ni despliegues Vercel.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada editorial 0/0: no hay trabajo textual activo en main. Incidencia: el conector rechazó el trigger de reparación de Pendientes.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "pending_repair_trigger_write_failed",
+        "message": "El conector rechazó la escritura de trends/pending-repair-trigger.json; no se pudo despertar el saneamiento visual en esta pasada."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -66,32 +71,25 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-07T14:16:00+02:00",
+        "at": "2026-10-07T14:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · releyendo cola autoritativa, requests y reexplicaciones pendientes."
+        "message": "Iniciando pasada editorial · releyendo cola autoritativa, requests, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-07T14:22:38+02:00",
+        "at": "2026-10-07T12:49:03.291Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado vivo verificado · 0 preparing/update, 0 rewrite_pending y 0 Pendientes recientes."
+        "message": "Relectura final de main · cola 0 y sin coincidencias preparing/update ni rewrite_pending."
       },
       {
-        "at": "2026-10-07T14:23:09+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main · cola 0, requests activas 0 y reexplicaciones pendientes 0."
-      },
-      {
-        "at": "2026-10-07T14:23:20+02:00",
+        "at": "2026-10-07T12:49:03.291Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada 0/0 · estado autoritativo final verificado; sin ImageGen directo."
+        "message": "Pasada editorial cerrada 0/0 con incidencia técnica en el disparo de reparación visual."
       }
     ],
     "queue_complete": true,
@@ -99,13 +97,13 @@
   },
   "visual_repair": {
     "requested": true,
-    "persisted_trigger": true,
-    "status": "no_pending",
+    "persisted_trigger": false,
+    "status": "trigger_write_failed",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261007T121500-chat",
-    "last_triggered_at": "2026-10-07T14:16:00+02:00",
+    "last_trigger_run_id": "tr-20261007T124500-chat",
+    "last_triggered_at": null,
     "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-07T14:23:09+02:00",
+    "observed_at": "2026-10-07T12:49:03.291Z",
     "observed_pending": []
   },
   "error": null
