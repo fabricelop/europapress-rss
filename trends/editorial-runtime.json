@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-07T14:45:00+02:00",
-  "last_completed_at": "2026-10-07T12:49:03.291Z",
-  "updated_at": "2026-10-07T12:49:03.291Z",
+  "last_started_at": "2026-10-07T15:15:00+02:00",
+  "last_completed_at": "2026-10-07T13:27:47.028Z",
+  "updated_at": "2026-10-07T13:27:47.028Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,55 +12,50 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261007T124500-chat",
+    "run_id": "tr-20261007T131500-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-07T14:45:00+02:00",
-    "updated_at": "2026-10-07T12:49:03.291Z",
-    "finished_at": "2026-10-07T12:49:03.291Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-07T15:15:00+02:00",
+    "updated_at": "2026-10-07T13:27:47.028Z",
+    "finished_at": "2026-10-07T13:27:47.028Z",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "fallback_images_ready": 0,
       "pending_cards_reviewed": 0,
-      "pending_repair_triggered": 0,
-      "visual_repair_triggered": 0,
-      "visual_repairs_ready": 0,
+      "pending_repair_triggered": 1,
+      "visual_repair_triggered": 1,
+      "visual_repairs_ready": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
-      "new_queue_entries_during_run": 0
+      "new_queue_entries_during_run": 3
     },
-    "message": "Pasada editorial 0/0: no hay trabajo textual activo en main. Incidencia: el conector rechazó el trigger de reparación de Pendientes.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "pending_repair_trigger_write_failed",
-        "message": "El conector rechazó la escritura de trends/pending-repair-trigger.json; no se pudo despertar el saneamiento visual en esta pasada."
-      }
-    ],
+    "message": "Pasada completada: 3/3 tendencias explicadas y verificadas; cola editorial vacía.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -68,28 +63,286 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "74a31fe68bb7",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c2",
+            "total": 7.9,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c3",
+            "total": 8.6,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c5",
+            "total": 7.7,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "d00ef2d5dc62",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.1,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c2",
+            "total": 8.7,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c3",
+            "total": 7.9,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c4",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c5",
+            "total": 7.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "22c1b9fcb392",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c2",
+            "total": 8.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c3",
+            "total": 8.5,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 2,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c4",
+            "total": 7.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c5",
+            "total": 7.9,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.5,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-07T14:45:00+02:00",
+        "at": "2026-10-07T15:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial · releyendo cola autoritativa, requests, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-07T12:49:03.291Z",
+        "at": "2026-10-07T15:16:56+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual solicitada en main mediante pending-repair-trigger."
+      },
+      {
+        "at": "2026-10-07T15:18:15+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main · cola 0 y sin coincidencias preparing/update ni rewrite_pending."
+        "message": "Saneamiento visual terminado correctamente · 0 tarjetas candidatas y 0 jobs IA nuevos."
       },
       {
-        "at": "2026-10-07T12:49:03.291Z",
+        "at": "2026-10-07T15:18:50+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Aparecen 3 entradas nuevas en cola durante la pasada: IRPF, Pedro Rodríguez y Planeta."
+      },
+      {
+        "at": "2026-10-07T15:19:00+02:00",
+        "phase": "investigating",
+        "trend_id": "74a31fe68bb7",
+        "title": "IRPF",
+        "message": "Contrastando el detonante actual con el BOE y cobertura económica del decreto de vivienda."
+      },
+      {
+        "at": "2026-10-07T15:22:26+02:00",
+        "phase": "persisting",
+        "trend_id": "74a31fe68bb7",
+        "title": "IRPF",
+        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-07T15:22:40+02:00",
+        "phase": "verifying",
+        "trend_id": "74a31fe68bb7",
+        "title": "IRPF",
+        "message": "IRPF cerrada y verificada."
+      },
+      {
+        "at": "2026-10-07T15:23:00+02:00",
+        "phase": "investigating",
+        "trend_id": "d00ef2d5dc62",
+        "title": "Pedro Rodríguez",
+        "message": "Contrastando el anuncio de retirada con fuentes deportivas actuales."
+      },
+      {
+        "at": "2026-10-07T15:24:13+02:00",
+        "phase": "persisting",
+        "trend_id": "d00ef2d5dc62",
+        "title": "Pedro Rodríguez",
+        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-07T15:24:30+02:00",
+        "phase": "verifying",
+        "trend_id": "d00ef2d5dc62",
+        "title": "Pedro Rodríguez",
+        "message": "Pedro Rodríguez cerrada y verificada."
+      },
+      {
+        "at": "2026-10-07T15:25:00+02:00",
+        "phase": "investigating",
+        "trend_id": "22c1b9fcb392",
+        "title": "Planeta",
+        "message": "Contrastando el anuncio editorial de Íntimo y su fecha de publicación."
+      },
+      {
+        "at": "2026-10-07T15:25:43+02:00",
+        "phase": "persisting",
+        "trend_id": "22c1b9fcb392",
+        "title": "Planeta",
+        "message": "Guardando ficha Explicada, sincronizando request y retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-07T15:26:10+02:00",
+        "phase": "verifying",
+        "trend_id": "22c1b9fcb392",
+        "title": "Planeta",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-07T13:27:47.028Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada 0/0 con incidencia técnica en el disparo de reparación visual."
+        "message": "Pasada completada: 3/3 tendencias explicadas y verificadas; cola editorial vacía."
       }
     ],
     "queue_complete": true,
@@ -105,6 +358,5 @@
     "pending_cards_reviewed": 0,
     "observed_at": "2026-10-07T12:49:03.291Z",
     "observed_pending": []
-  },
-  "error": null
+  }
 }
