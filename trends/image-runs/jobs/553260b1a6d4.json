@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-553260b1a6d4-r0-a1-1791410036651",
+  "requested_at": "2026-10-07T21:53:56.651455Z",
+  "updated_at": "2026-10-07T21:53:56.651455Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "553260b1a6d4",
+  "trend_id": "553260b1a6d4",
+  "target_name": "Carroñero",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Carroñero",
+    "revision": 0,
+    "explanation": "TT#14 Carroñero es tendencia porque Jordi Évole llamó «medios buitre» y «medios carroñeros» a parte de la prensa tras la muerte de Maricarmen, criticando su cobertura.\n🌶️ La prensa salió en la foto con pico incluido.",
+    "closer_text": "🌶️ La prensa salió en la foto con pico incluido.",
+    "trend_names": [
+      "Carroñero"
+    ],
+    "group_title": "Carroñero",
+    "rank_at_explanation": 14,
+    "explained_at": "2026-10-07T23:50:45+02:00",
+    "verification_sources": [
+      {
+        "source": "elDiario.es/Vertele · reacción de Jordi Évole tras la muerte de Maricarmen",
+        "url": "https://www.eldiario.es/vertele/noticias/jordi-evole-carga-medios-carroneros-muerte-maricarmen-ver-vecino-entrevistan-hoy_1_13570746.html"
+      },
+      {
+        "source": "Vibras en Corte · reacciones públicas tras la muerte de Maricarmen",
+        "url": "https://vibrasencorte.es/ultima-hora/famosos-reaccionan-muerte-maricarmen-evole-jorge-javier/"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
