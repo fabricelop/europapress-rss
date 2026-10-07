@@ -107,6 +107,7 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Los miembros de un ensemble y las variantes determinista/ensemble de una misma familia no cuentan como fuentes independientes adicionales.
 - El panel de diagnóstico muestra cuántas familias independientes están realmente activas y cuántos modelos/ensembles respondieron, para distinguir diversidad meteorológica de simple volumen de proveedores.
 - La probabilidad y precipitación previstas no se alteran por este límite: se corrige únicamente cuánta confianza comunica RainETA sobre la hora prevista.
+- La caché de previsión queda ligada a la versión de RainETA: tras actualizar el motor, la app descarta cálculos de una versión anterior en vez de reutilizarlos hasta 20 min con una interfaz ya actualizada.
 
 ## Frescura y desacuerdo de radares v0.17.4
 - El radar europeo OPERA deja de contar como fuente sana si el composite supera **30 min**; para confirmar lluvia superficial se mantiene un límite más estricto de **20 min**.
