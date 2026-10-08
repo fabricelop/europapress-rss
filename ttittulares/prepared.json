@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T05:37:34.018509Z",
+  "updated_at": "2026-10-08T05:39:27.150Z",
   "items": [
     {
       "event_id": "b8e7efbc9ff0",
@@ -988,8 +988,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -1005,12 +1005,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T05:36:16.046389Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261007204343_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/madrid/noticia-mas-madrid-pide-honrar-memoria-maricarmen-minuto-silencio-antes-pleno-cibeles-jueves-20261007204343.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Más Madrid pide honrar la memoria de Maricarmen con un minuto de silencio antes del Pleno de Cibeles de este jueves"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c624a34c9785-r1-ai1-791437857728.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "92e5265a276a8610e96fbc01b7fb300cb798215dc661077e6e54f8857e9f2bda",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 673318,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c624a34c9785",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c624a34c9785-r1-a1-1791437857728"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c624a34c9785-r1-ai1-791437857728.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261007204343_1200.jpg",
@@ -1019,7 +1033,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Más Madrid pide honrar la memoria de Maricarmen con un minuto de silencio antes del Pleno de Cibeles de este jueves"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c624a34c9785-r1-ai1-791437857728.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "92e5265a276a8610e96fbc01b7fb300cb798215dc661077e6e54f8857e9f2bda",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 673318,
+        "context_guard": {
+          "version": 3,
+          "event_id": "c624a34c9785",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c624a34c9785-r1-a1-1791437857728"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c624a34c9785-r1-ai1-791437857728.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T05:39:27.150Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T05:39:27.150Z"
     }
   ],
   "count": 12
