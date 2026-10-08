@@ -128,7 +128,7 @@ async function verifyAndAnswerTelegramCallback(event,env){
   const token=await cloudflareTelegramBotToken(env);
   const response=await fetch("https://api.telegram.org/bot"+token+"/answerCallbackQuery",{
     method:"POST",headers:{"content-type":"application/json"},
-    body:JSON.stringify({callback_query_id:event.callback_query_id,text:"Recibido. Actualizando noticia…"})
+    body:JSON.stringify({callback_query_id:event.callback_query_id,text:event.type==="instagram_action"?"Recibido. Publicando en Instagram…":"Recibido. Actualizando noticia…"})
   });
   const ack=await response.json().catch(()=>({}));
   if(!response.ok||!ack.ok)return {ok:false,status:response.status};
@@ -225,6 +225,9 @@ async function inlineTtiTelegramDecision(env,update,event){
 
 
 async function publishTtiInstagramSelected(env,update,event){
+  const allowedChat=String(env.INSTAGRAM_ALLOWED_CHAT_ID||"");
+  const callbackChat=String(update?.callback_query?.message?.chat?.id||"");
+  if(!allowedChat||allowedChat!==callbackChat)return json({ok:false,error:"Unauthorized Instagram chat"},403);
   if(!env.INSTAGRAM_PUBLISHER_URL||!env.INSTAGRAM_INTERNAL_SECRET||
      String(env.INSTAGRAM_INTERNAL_SECRET).length<32){
     return json({ok:false,error:"Instagram pilot disabled or not configured"},503);
