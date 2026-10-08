@@ -4,6 +4,8 @@ const routes=[
  ["telegram-control-webhook-get","https://tt-control.fabricelop.workers.dev/api/telegram-webhook"],
  ["telegram-control-callback-get","https://tt-control.fabricelop.workers.dev/api/ttittulares-telegram-callback"],
  ["tti-worker-pipeline","https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-telegram-pipeline-version"],
+ ["tti-instagram-route","https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-instagram-route-version"],
+ ["tti-telegram-credential-check","https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-telegram-credential-ready"],
  ["tti-worker-health","https://ttittulares-no-vercel-test.fabricelop.workers.dev/health"],
  ["ttendencias-worker-health","https://ttendencias-no-vercel-test.fabricelop.workers.dev/health"],
  ["instagram-publisher-health","https://tt-actualidad-instagram-pilot.fabricelop.workers.dev/health"]
