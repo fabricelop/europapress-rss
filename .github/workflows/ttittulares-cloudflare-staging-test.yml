@@ -33,7 +33,7 @@ jobs:
           block=source.split('          python3 - <<\'PY\'\n',1)[1].split('\n          PY',1)[0]
           code='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())
           compile(code,'telegram-decision-processor.py','exec')
-          assert 'answerCallbackQuery' in code
+          assert 'verified_by_telegram' in code and 'answerCallbackQuery' not in code
           assert 'ttittulares-callback-inbox.json' in code
           print('TELEGRAM_DECISION_PROCESSOR_PYTHON_SYNTAX_OK')
           PY
