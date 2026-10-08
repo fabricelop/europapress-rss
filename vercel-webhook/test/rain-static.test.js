@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
-import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath} from '../lib/rain-radar-synthetic.js';
+import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -357,4 +357,45 @@ test('future synthetic tile source never points MapLibre directly at RainViewer'
   const fn=app.slice(start,end);
   assert.match(fn,/syntheticRadarTileTemplate\(latest\)/);
   assert.doesNotMatch(fn,/tilecache\.rainviewer\.com/);
+});
+
+
+test('synthetic tiled future keeps same engine beyond +3',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/if\(Number\(minutes\)>0\)\{\s*showSyntheticRadarFuture\(minutes,r,latest\);\s*return;/);
+  assert.match(app,/syntheticRadarTileTemplate\(minutes,state\.frames\)/);
+});
+
+test('moving synthetic echo survives +10 with local flow',()=>{
+  const w=96,h=96;
+  const field=(ox,oy)=>{
+    const mask=new Uint8Array(w*h),rateGrid=new Float32Array(w*h);
+    for(let y=oy;y<oy+18;y++)for(let x=ox;x<ox+22;x++){const i=y*w+x;mask[i]=1;rateGrid[i]=6}
+    return{mask,rateGrid,width:w,height:h,wetPixels:18*22};
+  };
+  const fields=[field(20,36),field(23,35),field(26,34),field(29,33)];
+  const out=buildSyntheticFutureField(fields,[1000,1600,2200,2800],10,{persistenceMinutes:5});
+  assert.equal(out.status,'flow');
+  assert.ok(out.field.mask.reduce((s,v)=>s+(v?1:0),0)>100);
+  assert.ok(out.flowVectors>=5);
+  assert.ok(out.horizon>=10);
+});
+
+test('uncertain synthetic future never invents rigid motion',()=>{
+  const w=32,h=32,mask=new Uint8Array(w*h),rateGrid=new Float32Array(w*h);
+  mask[10*w+10]=1;rateGrid[10*w+10]=2;
+  const field={mask,rateGrid,width:w,height:h,wetPixels:1};
+  assert.equal(buildSyntheticFutureField([field,field,field],[0,600,1200],4,{persistenceMinutes:5}).status,'short_persistence');
+  assert.equal(buildSyntheticFutureField([field,field,field],[0,600,1200],8,{persistenceMinutes:5}).status,'uncertain');
+});
+
+test('lightning verifies in background and first tap does not force revalidation',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/verifyLightningSource\(false\);/);
+  const start=app.indexOf('async function toggleLightning');
+  const end=app.indexOf('function removeRadarLayer',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/await verifyLightningSource\(false\)/);
+  assert.doesNotMatch(fn,/lightningLoaded\.clear\(\)/);
+  assert.doesNotMatch(fn,/verifyLightningSource\(true\)/);
 });

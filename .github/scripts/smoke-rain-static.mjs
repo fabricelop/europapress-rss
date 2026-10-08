@@ -1,6 +1,6 @@
 import {wmsCapabilitiesHasLayer} from '../../vercel-webhook/rain/radar-core.js';
 import {inflateSync} from 'node:zlib';
-import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba} from '../../vercel-webhook/lib/rain-radar-synthetic.js';
+import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,decodeRadarTileField,buildSyntheticFutureField} from '../../vercel-webhook/lib/rain-radar-synthetic.js';
 const loc={lat:'40.4168',lon:'-3.7038'};
 const det=['ecmwf_ifs','ecmwf_aifs025','icon_seamless','gfs_seamless','meteofrance_seamless','gem_seamless','ukmo_global_deterministic_10km'];
 const ens=['ecmwf_ifs_europe_ensemble','ecmwf_aifs025_ensemble','dwd_icon_eu_eps','ncep_gefs025','ukmo_global_ensemble_20km','gem_global_ensemble','bom_access_global_ensemble','google_weathernext2_ensemble'];
@@ -96,6 +96,29 @@ async function checkRainViewerSyntheticDecode(radar){
   console.log('RADAR_SYNTHETIC_DECODE_OK','rawAlpha',totalRaw,'rawWet',totalWet,'smoothAlpha',totalSmoothRaw,'smoothWet',totalSmoothWet);
 }
 await checkRainViewerSyntheticDecode(radar);
+
+async function checkRainViewerSyntheticFuture(radar){
+  const frames=(radar.radar?.past||[]).slice(-4);
+  if(frames.length<3)throw Error('RainViewer future history missing');
+  const candidates=[[15,10],[16,10],[17,10],[15,11],[16,11],[17,11],[15,12],[16,12],[17,12]];
+  let best=null;
+  for(const [x,y] of candidates){
+    const decoded=[];
+    for(const frame of frames){
+      const png=await fetchPng(buildRainViewerSourceTileUrl({frame:frame.path,z:5,x,y,size:256}));
+      decoded.push({...decodeRadarTileField(png.rgba,png.width,png.height,4),time:frame.time});
+    }
+    const sourceWet=decoded.at(-1).wetPixels;
+    if(!best||sourceWet>best.sourceWet)best={x,y,decoded,sourceWet};
+  }
+  const times=best.decoded.map(row=>row.time);
+  const future4=buildSyntheticFutureField(best.decoded,times,4,{persistenceMinutes:5});
+  const future10=buildSyntheticFutureField(best.decoded,times,10,{persistenceMinutes:5});
+  const wet4=future4.field.mask.reduce((s,v)=>s+(v?1:0),0),wet10=future10.field.mask.reduce((s,v)=>s+(v?1:0),0);
+  if(best.sourceWet>100&&wet4===0)throw Error('Synthetic +4 lost a wet live tile');
+  console.log('RADAR_SYNTHETIC_FUTURE','tile',best.x,best.y,'sourceWet',best.sourceWet,'+4',future4.status,wet4,'+10',future10.status,wet10,'quality',Number(future10.localQuality||0).toFixed(3),'horizon',future10.horizon);
+}
+await checkRainViewerSyntheticFuture(radar);
 
 const geo=await check('https://geocoding-api.open-meteo.com/v1/search?name=Madrid&count=2&language=es&format=json');if(!geo.results?.length)throw Error('geocode vacío');console.log('GEO_OK',geo.results[0].name);
 
