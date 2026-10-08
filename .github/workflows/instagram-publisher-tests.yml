@@ -12,6 +12,7 @@ on:
       - '.github/workflows/instagram-shakira-readonly-audit.yml'
       - 'no-vercel/ttittulares-worker/src/index.js'
       - 'trends/telegram_bot.py'
+      - '.github/workflows/ttendencias-listener.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,6 +32,7 @@ jobs:
             /no-vercel/ttittulares-worker/src/index.js
             /.github/workflows/send-ttittulares-ready-telegram.yml
             /.github/workflows/refresh-ttittulares-telegram-keyboard.yml
+            /.github/workflows/ttendencias-listener.yml
             /.github/workflows/send-ttendencias-explained-telegram.yml
             /.github/workflows/instagram-shakira-readonly-audit.yml
       - uses: actions/setup-node@v4
@@ -63,6 +65,22 @@ jobs:
           end=source.index("\nPY",start)
           ast.parse(textwrap.dedent(source[start:end]), filename="TTiTTulares inline Telegram sender")
           print("TTITTULARES_INSTAGRAM_SENDER_SYNTAX_OK")
+          PY
+
+      - name: Validar relevo seguro del listener TTendencias
+        run: |
+          python3 - <<'PY'
+          import pathlib, yaml
+          p=pathlib.Path(".github/workflows/ttendencias-listener.yml")
+          d=yaml.safe_load(p.read_text(encoding="utf8"))
+          c=d["concurrency"]
+          assert c["group"]=="ttendencias-telegram-continuo"
+          assert c["cancel-in-progress"] is True
+          steps=d["jobs"]["listener"]["steps"]
+          follow=next(x for x in steps if x["name"]=="Encadenar siguiente listener")
+          assert "cancelled()" in follow["if"] and "!" in follow["if"]
+          assert any("trends/telegram_bot.py package-listen" in x.get("run","") for x in steps)
+          print("TTENDENCIAS_LISTENER_ROLLOVER_SAFE")
           PY
 
       - name: Live deployed pilot smoke test (read-only and unauthenticated)
