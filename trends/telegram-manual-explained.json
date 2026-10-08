@@ -38660,15 +38660,31 @@
       "news_disposition": "ignored",
       "news_note": "Reexplicación de TTendencias sobre la conversación televisiva actual; no se envía a TTiTTulares.",
       "with_image": true,
-      "disable_ai_image": true,
-      "image_strategy": "fallback_only",
-      "ai_image_status": "disabled",
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
-      "image_pending": true
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.formulatv.com/images/articulos/138000/138446_iRi63q5721ULcHs4tma0EzFNW8kBJgPY9-hog.jpg",
+        "source": "FormulaTV · 08/10/2026",
+        "source_url": "https://www.formulatv.com/noticias/intermedio-horizonte-reaccionan-muerte-maricarmen-138446/",
+        "alt": "Imagen de archivo relacionada con #Horizonte",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.formulatv.com/images/articulos/138000/138446_iRi63q5721ULcHs4tma0EzFNW8kBJgPY9-hog.jpg",
+        "source": "FormulaTV · 08/10/2026",
+        "source_url": "https://www.formulatv.com/noticias/intermedio-horizonte-reaccionan-muerte-maricarmen-138446/",
+        "alt": "Imagen de archivo relacionada con #Horizonte",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-08T22:48:45+02:00",
+  "updated_at": "2026-10-08T20:50:24.149302Z",
   "count": 664
 }
