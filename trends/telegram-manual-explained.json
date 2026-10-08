@@ -38661,9 +38661,9 @@
       "news_note": "Reexplicación de TTendencias sobre la conversación televisiva actual; no se envía a TTiTTulares.",
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -38676,13 +38676,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.formulatv.com/images/articulos/138000/138446_iRi63q5721ULcHs4tma0EzFNW8kBJgPY9-hog.jpg",
-        "source": "FormulaTV · 08/10/2026",
-        "source_url": "https://www.formulatv.com/noticias/intermedio-horizonte-reaccionan-muerte-maricarmen-138446/",
-        "alt": "Imagen de archivo relacionada con #Horizonte",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/rec-horizonte-r3-ai1-791492626627.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ccce44d1d90b8252c2f0413e439c9d16885a716f4f18fd2777e986e680d64f64",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2193469,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "rec-horizonte",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-rec-horizonte-r3-a1-1791492626627"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/rec-horizonte-r3-ai1-791492626627.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/rec-horizonte-r3-ai1-791492626627.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "ccce44d1d90b8252c2f0413e439c9d16885a716f4f18fd2777e986e680d64f64",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2193469,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "rec-horizonte",
+          "revision": 3,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-rec-horizonte-r3-a1-1791492626627"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/rec-horizonte-r3-ai1-791492626627.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T20:52:15.006Z"
     },
     {
       "id": "df6b7ca9fcb3",
@@ -38738,6 +38777,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-08T22:50:45+02:00",
+  "updated_at": "2026-10-08T20:52:15.006Z",
   "count": 665
 }
