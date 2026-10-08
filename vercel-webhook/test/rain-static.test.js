@@ -307,10 +307,13 @@ test('future radar samples the current map view instead of state.loc',()=>{
   assert.match(app,/radarImageCoordinates\(field\.centerLat,field\.centerLon,field\.displayZoom\)/);
 });
 
-test('future radar recalculates after map pan or zoom',()=>{
+test('synthetic XYZ future follows pan and zoom without rebuilding the source',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/state\.map\.on\('moveend'/);
-  assert.match(app,/Number\(state\.radarOffset\)>0\)showProjectedRadar\(state\.radarOffset\)/);
+  assert.match(app,/Synthetic XYZ radar follows pan\/zoom without rebuilding the source/);
+  const start=app.indexOf("state.map.on('moveend'");
+  const end=app.indexOf('});',start);
+  assert.doesNotMatch(app.slice(start,end+3),/showProjectedRadar\(/);
 });
 
 test('viewport projection bitmap cache is keyed by center and zoom',()=>{
@@ -340,22 +343,19 @@ test('synthetic radar decoder keeps only measurable radar pixels transparent els
   assert.deepEqual(Array.from(out.rgba.filter((_,i)=>i%4===3)),[0,150,255,0]);
 });
 
-test('AHORA +1/+2/+3 uses georeferenced synthetic tile source before local image projection',()=>{
+test('AHORA +1 and later use the same georeferenced synthetic XYZ tile source',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/const SYNTHETIC_RADAR_TILE_URL='\/api\/rain-radar-tile'/);
-  assert.match(app,/type:'raster',\s*tiles:\[syntheticRadarTileTemplate\(latest\)\]/);
-  assert.match(app,/Number\(minutes\)<=RADAR_CONTINUITY_MINUTES/);
-  const shortRoute=app.indexOf('showSyntheticRadarPersistence(minutes,r,latest)');
-  const viewport=app.indexOf('const view=await radarViewportNowcast(r)');
-  assert.ok(shortRoute>=0&&viewport>shortRoute);
+  assert.match(app,/type:'raster',\s*tiles:\[syntheticRadarTileTemplate\(minutes,state\.frames\)\]/);
+  assert.match(app,/if\(Number\(minutes\)>0\)\{\s*showSyntheticRadarFuture\(minutes,r,latest\);\s*return;/);
 });
 
 test('future synthetic tile source never points MapLibre directly at RainViewer',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  const start=app.indexOf('function showSyntheticRadarPersistence');
+  const start=app.indexOf('function showSyntheticRadarFuture');
   const end=app.indexOf('async function showProjectedRadar',start);
   const fn=app.slice(start,end);
-  assert.match(fn,/syntheticRadarTileTemplate\(latest\)/);
+  assert.match(fn,/syntheticRadarTileTemplate\(minutes,state\.frames\)/);
   assert.doesNotMatch(fn,/tilecache\.rainviewer\.com/);
 });
 
