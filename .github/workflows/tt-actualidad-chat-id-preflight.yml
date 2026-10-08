@@ -1,0 +1,44 @@
+name: Verificar chat compartido Instagram TT Actualidad (solo lectura)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tt-actualidad-chat-id-preflight.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            trends/telegram-bot-state.json
+      - name: Comparar chats sin revelar identificadores
+        env:
+          TTI_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          expected=str(os.environ.get("TTI_CHAT_ID") or "").strip()
+          registered=str(json.loads(Path("trends/telegram-bot-state.json").read_text(encoding="utf-8")).get("chat_id") or "").strip()
+          valid=lambda x: bool(re.fullmatch(r"-?[0-9]{3,20}", x))
+          if not valid(expected):
+              print("TT_CHAT_COMPARISON=TTI_SECRET_MISSING_OR_INVALID")
+              raise SystemExit(1)
+          if not valid(registered):
+              print("TT_CHAT_COMPARISON=TRENDS_CHAT_MISSING_OR_INVALID")
+              raise SystemExit(1)
+          if expected!=registered:
+              print("TT_CHAT_COMPARISON=DIFFERENT_CHATS")
+              raise SystemExit(1)
+          print("TT_CHAT_COMPARISON=SAME_AUTHORIZED_PRIVATE_CHAT")
+          print("TT_CHAT_SECRET_CAN_USE_TRENDS_STATE=TRUE")
+          PY
