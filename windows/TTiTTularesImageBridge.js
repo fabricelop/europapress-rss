@@ -1,7 +1,8 @@
 // TTiTTularesImageBridge.js
 const BASE_CDP="http://127.0.0.1:9223";
-const RUN_URL="https://europapress-rss.vercel.app/api/ttittulares-run";
-const JOB_URL="https://europapress-rss.vercel.app/api/ttittulares-run-status?view=image-job&strong=1&id=";
+const SERVICE_BASE=String(process.env.TTITTULARES_SERVICE_BASE||"https://ttittulares-no-vercel-test.fabricelop.workers.dev").replace(new RegExp("/+$"),"");
+const RUN_URL=SERVICE_BASE+"/api/ttittulares-run";
+const JOB_URL=SERVICE_BASE+"/api/ttittulares-run-status?view=image-job&strong=1&id=";
 const commandId=String(process.argv[2]||"").trim();
 const targetId=String(process.argv[3]||"").trim();
 const secret=String(process.env.TT_IMAGE_UPLOAD_SECRET||"");
