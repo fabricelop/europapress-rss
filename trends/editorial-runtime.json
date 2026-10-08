@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T04:15:00.000Z",
-  "last_completed_at": "2026-10-08T04:17:00.000Z",
-  "updated_at": "2026-10-08T04:17:00.000Z",
+  "last_started_at": "2026-10-08T04:45:00.000Z",
+  "last_completed_at": "2026-10-08T04:47:30.000Z",
+  "updated_at": "2026-10-08T04:47:30.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T041500000Z-chat",
+    "run_id": "tr-20261008T044500000Z-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T04:15:00.000Z",
-    "updated_at": "2026-10-08T04:17:00.000Z",
-    "finished_at": "2026-10-08T04:17:00.000Z",
+    "started_at": "2026-10-08T04:45:00.000Z",
+    "updated_at": "2026-10-08T04:47:30.000Z",
+    "finished_at": "2026-10-08T04:47:30.000Z",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -94,56 +94,63 @@
     ],
     "activity": [
       {
-        "at": "2026-10-08T04:15:00.000Z",
+        "at": "2026-10-08T04:45:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-08T04:16:00.000Z",
+        "at": "2026-10-08T04:46:10.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Comprobando cola, reexplicaciones y estado autoritativo"
       },
       {
-        "at": "2026-10-08T04:16:05.000Z",
+        "at": "2026-10-08T04:46:30.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 8 tarjetas"
       },
       {
-        "at": "2026-10-08T04:16:10.000Z",
+        "at": "2026-10-08T04:46:40.000Z",
         "phase": "remate_selection",
         "trend_id": null,
         "title": null,
         "message": "3 tarjetas sensibles sin remate · omisión deliberada"
       },
       {
-        "at": "2026-10-08T04:16:15.000Z",
+        "at": "2026-10-08T04:46:50.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "8 Pendientes con IA ready · ya entregadas por Telegram"
+        "message": "8 Pendientes con IA ready · reparación visual solicitada"
       },
       {
-        "at": "2026-10-08T04:16:45.000Z",
+        "at": "2026-10-08T04:47:00.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0 · sin preparing/update ni rewrite_pending"
+        "message": "Releyendo main antes del cierre"
       },
       {
-        "at": "2026-10-08T04:16:50.000Z",
+        "at": "2026-10-08T04:47:10.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando Top 10 · sin problematic activos"
+        "message": "Cola 0 · sin preparing/update ni rewrite_pending"
       },
       {
-        "at": "2026-10-08T04:17:00.000Z",
+        "at": "2026-10-08T04:47:20.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Top 10 verificado · sin problematic activos"
+      },
+      {
+        "at": "2026-10-08T04:47:30.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -157,14 +164,14 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "requested",
+    "status": "success",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T041500000Z-chat",
-    "last_triggered_at": "2026-10-08T04:15:00.000Z",
+    "last_trigger_run_id": "tr-20261008T044500000Z-chat",
+    "last_triggered_at": "2026-10-08T04:45:00.000Z",
     "pending_cards_reviewed": 8,
-    "observed_at": "2026-10-08T04:17:00.000Z",
-    "workflow_run_id": null,
-    "workflow_run_number": null,
-    "workflow_conclusion": null
+    "observed_at": "2026-10-08T04:47:30.000Z",
+    "workflow_run_id": 37729117515,
+    "workflow_run_number": 617,
+    "workflow_conclusion": "success"
   }
 }
