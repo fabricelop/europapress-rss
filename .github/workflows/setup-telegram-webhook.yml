@@ -25,8 +25,8 @@ jobs:
           import json, os, urllib.request, datetime
           token=os.environ["TELEGRAM_BOT_TOKEN"]
           base=f"https://api.telegram.org/bot{token}"
-          webhook="https://europapress-rss.vercel.app/api/telegram-webhook"
-          data=json.dumps({
+          webhook="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+          # Legacy manual workflow: must NEVER restore the retired Vercel webhook.\n          data=json.dumps({
             "url": webhook,
             "allowed_updates": ["callback_query","message"],
             "drop_pending_updates": False
