@@ -76,6 +76,40 @@ jobs:
               echo
             done
           done
+      - name: Diagnosticar webhook real del bot TTiTTulares sin modificarlo
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, datetime
+          token=os.environ.get("TELEGRAM_BOT_TOKEN","")
+          if not token:
+              print("TTITTULARES_WEBHOOK_AUDIT: sin secret TELEGRAM_BOT_TOKEN")
+          else:
+              try:
+                  url="https://api.telegram.org/bot"+token+"/getWebhookInfo"
+                  with urllib.request.urlopen(url,timeout=20) as response:
+                      doc=json.load(response)
+                  meta=doc.get("result") or {}
+                  print("TTITTULARES_WEBHOOK_AUDIT "+json.dumps({
+                      "ok":doc.get("ok"),
+                      "url":meta.get("url"),
+                      "pending_update_count":meta.get("pending_update_count"),
+                      "last_error_date":meta.get("last_error_date"),
+                      "last_error_message":str(meta.get("last_error_message") or "")[:180],
+                      "expected_cloudflare":"https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+                  },ensure_ascii=False))
+              except Exception as error:
+                  print("TTITTULARES_WEBHOOK_AUDIT_ERROR "+str(error).replace(token,"<hidden>"))
+          try:
+              with urllib.request.urlopen(
+                  "https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version",timeout=20
+              ) as response:
+                  info=json.load(response)
+                  print("TTITTULARES_WEBHOOK_HANDLER "+json.dumps(info,ensure_ascii=False)[:500])
+          except Exception as error:
+              print("TTITTULARES_WEBHOOK_HANDLER_ERROR "+str(error))
+          PY
       - name: Empaquetar Worker ligero para deploy independiente
         uses: actions/upload-artifact@v4
         with:
