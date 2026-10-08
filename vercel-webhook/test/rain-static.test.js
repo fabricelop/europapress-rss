@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
+import {selectSpatialForecastTimeIndex,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -398,4 +399,42 @@ test('lightning verifies in background and first tap does not force revalidation
   assert.match(fn,/await verifyLightningSource\(false\)/);
   assert.doesNotMatch(fn,/lightningLoaded\.clear\(\)/);
   assert.doesNotMatch(fn,/verifyLightningSource\(true\)/);
+});
+
+
+test('hybrid future fades radar into model instead of extrapolating forever',()=>{
+  assert.deepEqual(hybridFutureBlend(3),{radarOpacity:.76,modelOpacity:0,mode:'radar'});
+  const m20=hybridFutureBlend(20);
+  assert.equal(m20.mode,'hybrid');
+  assert.ok(m20.radarOpacity>m20.modelOpacity);
+  const m45=hybridFutureBlend(45);
+  assert.ok(m45.modelOpacity>m45.radarOpacity);
+  const m60=hybridFutureBlend(60);
+  assert.equal(m60.mode,'model');
+  assert.equal(m60.radarOpacity,0);
+  assert.equal(futureVisualLabel(90),'PREVISIÓN MODELO');
+});
+
+test('spatial model step uses the first precipitation interval ending after target time',()=>{
+  const times=['2026-10-08T06:00Z','2026-10-08T07:00Z','2026-10-08T08:00Z'];
+  assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T06:10Z')),1);
+  assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T07:00Z')),1);
+  assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T09:00Z')),2);
+});
+
+test('future map uses Open-Meteo spatial precipitation beneath radar nowcast',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/@openmeteo\/weather-map-layer@0\.2\.2/);
+  assert.match(app,/data_spatial\/dwd_icon_seamless\/latest\.json/);
+  assert.match(app,/variable=precipitation/);
+  assert.match(app,/ensureFutureModelLayer\(minutes,projectedAt\)/);
+  assert.match(app,/moveLayer\(sourceId,'raineta-radar-projection'\)/);
+});
+
+test('lightning behavior remains on the verified preload path',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/verifyLightningSource\(false\);\s*warmFutureModelMap\(\);/);
+  assert.match(app,/const LIGHTNING_WMS_LAYERS=\[/);
+  assert.match(app,/dwd:Accumulated_Flash_Geometry/);
+  assert.match(app,/dwd:NCEW_EU/);
 });

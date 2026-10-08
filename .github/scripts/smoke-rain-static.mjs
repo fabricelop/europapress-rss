@@ -120,6 +120,17 @@ async function checkRainViewerSyntheticFuture(radar){
 }
 await checkRainViewerSyntheticFuture(radar);
 
+async function checkOpenMeteoSpatial(){
+  const meta=await check('https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json');
+  if(!Array.isArray(meta.valid_times)||meta.valid_times.length<24)throw Error('Open-Meteo spatial valid_times missing');
+  if(Array.isArray(meta.variables)&&!meta.variables.includes('precipitation'))throw Error('Open-Meteo spatial precipitation missing');
+  const mod=await fetch('https://unpkg.com/@openmeteo/weather-map-layer@0.2.2/dist/index.mjs');
+  const text=await mod.text();
+  if(!mod.ok||!text.includes('omProtocol'))throw Error('Open-Meteo weather-map-layer unavailable');
+  console.log('OPENMETEO_SPATIAL_OK',meta.reference_time||'no-reference',meta.valid_times.length,'precipitation');
+}
+await checkOpenMeteoSpatial();
+
 const geo=await check('https://geocoding-api.open-meteo.com/v1/search?name=Madrid&count=2&language=es&format=json');if(!geo.results?.length)throw Error('geocode vacío');console.log('GEO_OK',geo.results[0].name);
 
 async function checkBinarySource(label,url){

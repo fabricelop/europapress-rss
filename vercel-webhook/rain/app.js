@@ -1,5 +1,6 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
+import {selectSpatialForecastTimeIndex,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -50,6 +51,8 @@ const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const LIGHTNING_PROXY_URL='/api/rain-lightning';
 const SYNTHETIC_RADAR_TILE_URL='/api/rain-radar-tile';
+const OPENMETEO_MAP_MODULE='https://unpkg.com/@openmeteo/weather-map-layer@0.2.2/dist/index.mjs';
+const OPENMETEO_SPATIAL_META='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json';
 const LIGHTNING_WMS_LAYERS=[
   {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
   {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
@@ -57,7 +60,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.42';
+const APP_VERSION='0.17.43';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -71,7 +74,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,omProtocolReady:false,omProtocolPromise:null,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3136,6 +3139,7 @@ function initMap(){
     showRadarOffset(state.radarOffset);
     updateLightningVisibility();
     verifyLightningSource(false);
+    warmFutureModelMap();
   });
   state.map.on('moveend',()=>{
     // Synthetic XYZ radar follows pan/zoom without rebuilding the source.
@@ -3317,6 +3321,7 @@ function removeRadarLayer(id){
 function clearRadarVisual(){
   removeRadarLayer('raineta-radar');
   removeRadarLayer('raineta-radar-projection');
+  removeFutureModelLayer();
 }
 function radarProjectionZoom(){
   const mapZoom=Number(state.map?.getZoom?.());
@@ -3619,6 +3624,86 @@ function projectedRadarOpacity(minutes,canMove,reliable){
   const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
   return Math.max(.30,horizonOpacity-(horizonOpacity-.30)*beyond);
 }
+function removeFutureModelLayer(){
+  removeRadarLayer('raineta-model-forecast');
+  state.futureModelKey=null;
+}
+async function ensureOpenMeteoMapProtocol(){
+  if(state.omProtocolReady)return true;
+  if(state.omProtocolPromise)return state.omProtocolPromise;
+  state.omProtocolPromise=(async()=>{
+    const module=await import(OPENMETEO_MAP_MODULE);
+    if(typeof module?.omProtocol!=='function')throw new Error('Open-Meteo map protocol unavailable');
+    maplibregl.addProtocol('om',module.omProtocol);
+    state.omProtocolReady=true;
+    return true;
+  })().finally(()=>{state.omProtocolPromise=null});
+  return state.omProtocolPromise;
+}
+async function fetchSpatialModelMeta(){
+  const fresh=state.omMeta&&Date.now()-Number(state.omMetaFetchedAt||0)<10*60_000;
+  if(fresh)return state.omMeta;
+  if(state.omMetaPromise)return state.omMetaPromise;
+  state.omMetaPromise=(async()=>{
+    const response=await timeoutFetch(OPENMETEO_SPATIAL_META,9000,{cache:'no-store',headers:{Accept:'application/json'}});
+    const data=await response.json().catch(()=>null);
+    if(!response.ok||!Array.isArray(data?.valid_times)||data.valid_times.length<2)throw new Error('ICON spatial metadata unavailable');
+    if(Array.isArray(data.variables)&&!data.variables.includes('precipitation'))throw new Error('ICON spatial precipitation unavailable');
+    state.omMeta=data;
+    state.omMetaFetchedAt=Date.now();
+    return data;
+  })().finally(()=>{state.omMetaPromise=null});
+  return state.omMetaPromise;
+}
+function warmFutureModelMap(){
+  Promise.allSettled([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
+}
+async function ensureFutureModelLayer(minutes,projectedAt){
+  const blend=hybridFutureBlend(minutes);
+  if(blend.modelOpacity<=.01){
+    removeFutureModelLayer();
+    return false;
+  }
+  await Promise.all([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
+  if(!state.map||!state.mapLoaded||Math.abs(Number(state.radarOffset)-Number(minutes))>.5)return false;
+  const index=selectSpatialForecastTimeIndex(state.omMeta?.valid_times,projectedAt);
+  if(index<0)return false;
+  const validTime=state.omMeta.valid_times[index],key=String(index)+'@'+validTime;
+  const sourceId='raineta-model-forecast';
+  if(state.futureModelKey!==key||!state.map.getSource(sourceId)){
+    removeFutureModelLayer();
+    const url='om://'+OPENMETEO_SPATIAL_META+
+      '?time_step=valid_times_'+index+'&variable=precipitation&dark=true';
+    state.map.addSource(sourceId,{
+      type:'raster',
+      url,
+      maxzoom:12,
+      attribution:'Open-Meteo · DWD ICON / ICON-EU'
+    });
+    const before=state.map.getLayer('raineta-radar-projection')
+      ?'raineta-radar-projection'
+      :(state.map.getLayer('raineta-location')?'raineta-location':undefined);
+    state.map.addLayer({
+      id:sourceId,type:'raster',source:sourceId,
+      paint:{'raster-opacity':blend.modelOpacity,'raster-fade-duration':180}
+    },before);
+    state.futureModelKey=key;
+  }else if(state.map.getLayer(sourceId)){
+    state.map.setPaintProperty(sourceId,'raster-opacity',blend.modelOpacity);
+    if(state.map.getLayer('raineta-radar-projection'))state.map.moveLayer(sourceId,'raineta-radar-projection');
+  }
+  const mode=futureVisualLabel(minutes);
+  if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+  if(Number(minutes)>=15){
+    $('radarPosition').textContent=mode==='PREVISIÓN MODELO'
+      ?'Precipitación prevista ICON-EU · '+fmtTime(projectedAt)
+      :'Nowcast radar + precipitación ICON-EU · '+fmtTime(projectedAt);
+    $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
+      ?'A este horizonte RainETA deja de presentar una extrapolación radar como si fuera observación: muestra precipitación prevista por modelo. La ETA local sigue contrastándose con HARMONIE-AROME 2,5 km y el consenso.'
+      :'Transición progresiva: el radar pesa más al principio y el modelo ICON-EU gana peso conforme disminuye la fiabilidad de extrapolar ecos.';
+  }
+  return true;
+}
 function syntheticRadarTileTemplate(minutes,frames){
   const selected=(frames||[]).slice(-4),parts=['minutes='+encodeURIComponent(String(Math.max(0,Number(minutes)||0)))];
   selected.forEach((frame,index)=>{
@@ -3643,7 +3728,7 @@ function showSyntheticRadarFuture(minutes,r,latest){
   state.map.addLayer({
     id:sourceId,type:'raster',source:sourceId,
     paint:{
-      'raster-opacity':Math.max(.64,.76-.03*Math.max(0,Number(minutes)||0)),
+      'raster-opacity':hybridFutureBlend(minutes).radarOpacity,
       'raster-fade-duration':0,
       'raster-saturation':0,
       'raster-contrast':0
@@ -3657,7 +3742,8 @@ function showSyntheticRadarFuture(minutes,r,latest){
   $('radarPosition').textContent=(short?'Continuidad radar reconstruida':'Proyección local por teselas')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   $('radarMotion').textContent=short
     ? 'RainETA reconstruye las teselas observadas sin moverlas durante los primeros '+RADAR_CONTINUITY_MINUTES+' min.'
-    : 'Cada tesela usa varios frames decodificados y flujo óptico local. Si el movimiento no es fiable, solo se conserva continuidad hasta +'+RADAR_SHORT_PERSISTENCE_MINUTES+' min y después esa zona queda transparente.';
+    : 'Nowcast radar de corto plazo; a medida que avanza el horizonte RainETA introduce precipitación prevista por ICON-EU en lugar de prolongar artificialmente los ecos.';
+  ensureFutureModelLayer(minutes,projectedAt).catch(()=>{});
   let finished=false;
   const detach=()=>{
     if(finished)return;

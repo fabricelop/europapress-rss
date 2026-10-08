@@ -1,8 +1,14 @@
-# RainETA v0.17.42
+# RainETA v0.17.43
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.42
+## Proyección radar sintética y rayos DWD v0.17.43
+- Nuevo enfoque de **transición radar → modelo** inspirado en la separación correcta entre nowcasting de minutos y predicción numérica: el radar observado domina al principio y pierde peso gradualmente; ICON-EU gana peso con el horizonte.
+- La capa de modelo se sirve con el protocolo cartográfico oficial de Open-Meteo sobre `dwd_icon_seamless`: en Europa usa ICON-EU (~7 km) y fuera cae al ICON global.
+- +1…+5 siguen siendo radar/continuidad. Entre ~+10 y +45 se mezclan nowcast y modelo. Desde ~+60 la visualización futura es modelo, no un radar extrapolado presentado como si fuera fiable.
+- La ETA y el texto local **siguen usando AEMET HARMONIE-AROME 2,5 km**, además del resto del consenso; ICON-EU se usa aquí como capa espacial de previsión para que el mapa futuro siga siendo útil.
+- ⚡ RAYOS no cambia en esta versión.
+
 - Todo el futuro >0 usa ahora el mismo motor XYZ sintético; se elimina el salto de arquitectura que existía exactamente en +4.
 - +1/+2/+3 mantienen continuidad pura. Desde +4, cada tesela usa hasta cuatro frames reales para estimar flujo óptico local y desplazar solo los ecos de esa tesela.
 - Si una tesela no tiene flujo local suficiente, RainETA solo permite continuidad corta hasta +5, cada vez más tenue; después queda transparente en lugar de inventar un vector rígido.
