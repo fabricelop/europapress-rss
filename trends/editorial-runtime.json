@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T04:45:00+02:00",
-  "last_completed_at": "2026-10-08T04:48:00+02:00",
-  "updated_at": "2026-10-08T04:48:00+02:00",
+  "last_started_at": "2026-10-08T05:15:00+02:00",
+  "last_completed_at": "2026-10-08T05:16:40+02:00",
+  "updated_at": "2026-10-08T05:16:40+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T044500-chat",
+    "run_id": "tr-20261008T051500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T04:45:00+02:00",
-    "updated_at": "2026-10-08T04:48:00+02:00",
-    "finished_at": "2026-10-08T04:48:00+02:00",
+    "started_at": "2026-10-08T05:15:00+02:00",
+    "updated_at": "2026-10-08T05:16:40+02:00",
+    "finished_at": "2026-10-08T05:16:40+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -53,7 +53,7 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada sin trabajo editorial nuevo · cola 0 · saneamiento visual completado correctamente.",
+    "message": "Pasada completada sin trabajo editorial nuevo · cola 0 · 8 Pendientes revisadas y reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -66,46 +66,60 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-08T04:45:00+02:00",
+        "at": "2026-10-08T05:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-08T04:45:20+02:00",
+        "at": "2026-10-08T05:15:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Comprobando preparing/update, rewrite_pending y problematic activos"
+        "message": "Comprobando cola, reexplicaciones y estado autoritativo"
       },
       {
-        "at": "2026-10-08T04:45:40+02:00",
+        "at": "2026-10-08T05:15:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual solicitado · comprobando workflow y releyendo main"
+        "message": "Revisando Pendientes · 8 tarjetas"
       },
       {
-        "at": "2026-10-08T04:47:35+02:00",
+        "at": "2026-10-08T05:15:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": null,
+        "title": null,
+        "message": "3 tarjetas sensibles sin remate · omisión deliberada"
+      },
+      {
+        "at": "2026-10-08T05:15:55+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual completado · 8 tarjetas examinadas · 7 con archivo listo · 0 jobs IA nuevos"
+        "message": "Reparación visual solicitada para Pendientes vigentes"
       },
       {
-        "at": "2026-10-08T04:47:40+02:00",
+        "at": "2026-10-08T05:16:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando cola y estados activos tras saneamiento visual"
+        "message": "Releyendo main · cola 0 · sin preparing/update ni rewrite_pending"
       },
       {
-        "at": "2026-10-08T04:48:00+02:00",
+        "at": "2026-10-08T05:16:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificando Top 10 · sin problematic activos"
+      },
+      {
+        "at": "2026-10-08T05:16:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola autoritativa 0 · sin trabajo editorial nuevo"
+        "message": "Pasada completada · cola autoritativa 0 · 8 Pendientes revisadas"
       }
     ],
     "queue_complete": true,
@@ -115,18 +129,14 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T044500-chat",
-    "last_triggered_at": "2026-10-08T04:45:05+02:00",
+    "last_trigger_run_id": "tr-20261008T051500-chat",
+    "last_triggered_at": "2026-10-08T05:15:05+02:00",
     "pending_cards_reviewed": 8,
-    "observed_at": "2026-10-08T04:47:35+02:00",
-    "ai_ready": null,
-    "ai_repair_needed": 0,
-    "archive_ready": 7,
-    "archive_missing": 1,
-    "workflow_run_id": 37719519137,
-    "workflow_run_number": 608,
-    "workflow_conclusion": "success"
+    "observed_at": "2026-10-08T05:16:20+02:00",
+    "workflow_run_id": null,
+    "workflow_run_number": null,
+    "workflow_conclusion": null
   }
 }
