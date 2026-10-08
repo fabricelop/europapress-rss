@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-2121129c779a-r1-a1-1791484585112",
+  "requested_at": "2026-10-08T18:36:25.112835Z",
+  "updated_at": "2026-10-08T18:36:25.112835Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "2121129c779a",
+  "event_id": "2121129c779a",
+  "target_name": "Sigue en directo la marcha organizada por el Sindicato de Inquilinas de Madrid en homenaje a Maricarmen",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Sigue en directo la marcha organizada por el Sindicato de Inquilinas de Madrid en homenaje a Maricarmen",
+    "revision": 1,
+    "factual_summary": "Cientos de personas marcharon desde la Puerta del Sol hasta la antigua vivienda de Maricarmen Abascal, fallecida el miércoles tras permanecer hospitalizada desde su desahucio. La movilización fue convocada por el Sindicato de Inquilinas de Madrid como homenaje y recorrió el trayecto hasta la casa en la que había vivido durante décadas.",
+    "tweet_text": "Cientos de personas marchan desde Sol hasta la antigua casa de Maricarmen Abascal, desahuciada el 23-S y fallecida ayer, en un homenaje convocado por el Sindicato de Inquilinas de Madrid.\n\n🌶️ El homenaje terminó frente a la casa a la que no pudo volver.",
+    "remate": "🌶️ El homenaje terminó frente a la casa a la que no pudo volver.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCientos de personas marchan desde Sol hasta la antigua casa de Maricarmen Abascal, desahuciada el 23-S y fallecida ayer, en un homenaje convocado por el Sindicato de Inquilinas de Madrid.\n\n🌶️ El homenaje terminó frente a la casa a la que no pudo volver.\n\nREMATE EXACTO:\n🌶️ El homenaje terminó frente a la casa a la que no pudo volver.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCientos de personas marcharon desde la Puerta del Sol hasta la antigua vivienda de Maricarmen Abascal, fallecida el miércoles tras permanecer hospitalizada desde su desahucio. La movilización fue convocada por el Sindicato de Inquilinas de Madrid como homenaje y recorrió el trayecto hasta la casa en la que había vivido durante décadas.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/espana/madrid/sigue-directo-marcha-organizada-sindicato-inquilinas-madrid-20261008200217-nt.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/nacional/noticia-cientos-personas-marchan-madrid-homenaje-maricarmen-20261008202129.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/08/una-marcha-homenajea-a-maricarmen-desde-la-puerta-del-sol-hasta-la-antigua-vivienda-de-la-mujer-cadena-ser/"
+      },
+      {
+        "source": "Público",
+        "url": "https://www.publico.es/sociedad/marcha-maricarmen-sol-sainz-baranda-hora-empieza-manifestacion.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
