@@ -1,5 +1,5 @@
 // Backend isolated from Telegram: never accept unverified Telegram updates here.
-const IMG=/^https:\/\/raw\.githubusercontent\.com\/fabricelop\/europapress-rss\/main\/(?:trends|ttittulares)\/generated-images\/[A-Za-z0-9._-]+\.jpe?g$/;
+const IMG=/^https:\/\/raw\.githubusercontent\.com\/fabricelop\/europapress-rss\/main\/(?:trends|ttittulares)\/(?:generated-images|instagram-images)\/[A-Za-z0-9._-]+\.jpe?g$/;
 const answer=(v,s=200)=>new Response(JSON.stringify(v),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 function constantTimeEqual(a,b){const x=new TextEncoder().encode(a),y=new TextEncoder().encode(b);if(x.length!==y.length)return false;let diff=0;for(let i=0;i<x.length;i++)diff|=x[i]^y[i];return diff===0;}
 function authorize(req,env){const secret=String(env.INSTAGRAM_INTERNAL_SECRET||"");return secret.length>=32&&constantTimeEqual(req.headers.get("authorization")||"","Bearer "+secret);}
