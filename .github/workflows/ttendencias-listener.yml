@@ -27,7 +27,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          # Evitar clonar años de imágenes/artefactos en cada nuevo listener.
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/*.py
+            /trends/*.json
+            /trends/*.md
+            /trends/*.txt
+            /shared/
 
       - name: Instalar dependencias de actualización
         run: python3 -m pip install -q requests beautifulsoup4
