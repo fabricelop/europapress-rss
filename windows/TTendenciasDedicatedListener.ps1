@@ -15,7 +15,9 @@ $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
 $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $LauncherLogPath = Join-Path $BaseDir "tendencias.log"
 
-$StatusBase = "https://europapress-rss.vercel.app"
+$StatusBase = [Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE", "User")
+if (-not $StatusBase) { $StatusBase = "https://europapress-rss.vercel.app" }
+$StatusBase = $StatusBase.TrimEnd("/")
 $ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
