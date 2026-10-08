@@ -141,7 +141,7 @@ function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,
     $api=if($Project -eq "ttittulares"){
       "https://europapress-rss.vercel.app/api/ttittulares-run-status"
     }else{
-      "https://europapress-rss.vercel.app/api/ttendencias-run-status"
+      $(if([Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User")){[Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User").TrimEnd("/") + "/api/ttendencias-run-status"}else{"https://europapress-rss.vercel.app/api/ttendencias-run-status"})
     }
     $snap=Read-RawJson ($api+"?view=listener-snapshot&strong=1")
     $idx=if($snap -and $snap.image_index){$snap.image_index}else{$null}
