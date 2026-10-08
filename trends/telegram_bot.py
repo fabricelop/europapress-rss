@@ -1112,10 +1112,8 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data.startswith("tx:i:"):
-        handle_instagram_package_callback(cb)
-    elif data.startswith("tx:"):
-        handle_package_callback(cb)
+    if data.startswith("tx:"):
+        route_package_callback(cb)
     elif data.startswith("toggle:"):
         toggle_trend(cb)
     elif data == "batch:text":
@@ -1173,6 +1171,14 @@ def handle(update):
 
 
 
+def route_package_callback(callback):
+    """Use the same approved Telegram package routing in web and legacy mode."""
+    data = str(callback.get("data") or "")
+    if data.startswith("tx:i:"):
+        return handle_instagram_package_callback(callback)
+    return handle_package_callback(callback)
+
+
 def poll_packages(seconds=3300):
     started = time.time()
     package_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
@@ -1202,7 +1208,7 @@ def poll_packages(seconds=3300):
 
                 cb = upd.get("callback_query")
                 if cb and str(cb.get("data") or "").startswith("tx:"):
-                    handle_package_callback(cb)
+                    route_package_callback(cb)
                     dirty = False
                     last_persist = time.time()
 
