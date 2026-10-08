@@ -1,8 +1,16 @@
-# RainETA v0.17.49
+# RainETA v0.17.50
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.49
+## Continuidad espacial v0.17.50
+- El futuro radar visible ya **no calcula movimiento por tesela XYZ**. RainETA decodifica los últimos frames sobre una única zona georreferenciada que cubre la vista y estima un campo de movimiento compartido.
+- La advección es continua sobre el campo completo mediante muestreo espacial; después se renderiza una sola imagen georreferenciada. Así la lluvia puede cruzar antiguos límites de tiles sin costuras horizontales/verticales ni cambios de dirección por frontera.
+- Se conserva el doble búfer y el crossfade: el frame anterior permanece visible hasta que la nueva imagen continua está cargada.
+- **AHORA** es una referencia fija e independiente. `fiable hasta` usa el mismo horizonte del campo espacial mostrado y se oculta cuando no existe un futuro radar suficientemente fiable, en vez de superponerse a AHORA.
+- Cuando termina el horizonte fiable, entra el frame espacial nativo de ICON-EU; no se deforma el modelo ni se mantiene una doble precipitación fuerte.
+- ⚡ RAYOS no cambia funcionalmente.
+
+## Proyección radar sintética y rayos DWD v0.17.50
 - Se retira por completo la deformación experimental de ICON por teselas/parches. Había introducido cuadrículas y geometrías artificiales visibles.
 - Después del nowcast, RainETA muestra **frames espaciales nativos de ICON-EU** mediante el protocolo oficial `om://` de Open-Meteo. No hay morphing, warping ni doble campo.
 - Para un minuto intermedio se selecciona el frame nativo temporalmente más próximo y se muestra su hora real en el estado del radar.
