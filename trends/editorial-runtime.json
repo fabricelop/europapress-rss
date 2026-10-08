@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T06:45:00.000Z",
-  "last_completed_at": "2026-10-08T06:48:30.000Z",
-  "updated_at": "2026-10-08T06:48:30.000Z",
+  "last_started_at": "2026-10-08T07:15:00.000Z",
+  "last_completed_at": "2026-10-08T07:18:00.000Z",
+  "updated_at": "2026-10-08T07:18:00.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T064500000Z-chat",
+    "run_id": "tr-20261008T071500000Z-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T06:45:00.000Z",
-    "updated_at": "2026-10-08T06:48:30.000Z",
-    "finished_at": "2026-10-08T06:48:30.000Z",
+    "started_at": "2026-10-08T07:15:00.000Z",
+    "updated_at": "2026-10-08T07:18:00.000Z",
+    "finished_at": "2026-10-08T07:18:00.000Z",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -66,35 +66,42 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-08T06:45:00.000Z",
+        "at": "2026-10-08T07:15:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-08T06:45:30.000Z",
+        "at": "2026-10-08T07:15:40.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes y estado del reparador visual"
+      },
+      {
+        "at": "2026-10-08T07:17:30.566Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 0 tarjetas"
       },
       {
-        "at": "2026-10-08T06:45:45.000Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola y solicitudes antes del cierre"
-      },
-      {
-        "at": "2026-10-08T06:47:44.000Z",
+        "at": "2026-10-08T07:17:31.435Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento de Pendientes completado · 0 reparaciones encoladas"
       },
       {
-        "at": "2026-10-08T06:48:30.000Z",
+        "at": "2026-10-08T07:17:50.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y verificando cola autoritativa final"
+      },
+      {
+        "at": "2026-10-08T07:18:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -105,11 +112,11 @@
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "pending_repair_workflow": {
-      "run_id": 37739495075,
+      "run_id": 37742429349,
       "status": "completed",
       "conclusion": "success",
-      "run_number": 625,
-      "head_sha": "88684f5bf4080ca261cc1c2216a511a125021c9d"
+      "run_number": 627,
+      "head_sha": "8149fde7b423dce3d87f3a4dd1567deb38e28948"
     }
   },
   "visual_repair": {
@@ -117,12 +124,12 @@
     "persisted_trigger": true,
     "status": "completed",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T064500000Z-chat",
-    "last_triggered_at": "2026-10-08T06:45:00.000Z",
+    "last_trigger_run_id": "tr-20261008T071500000Z-chat",
+    "last_triggered_at": "2026-10-08T07:15:00.000Z",
     "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-08T06:48:30.000Z",
-    "workflow_run_id": 37739495075,
-    "workflow_run_number": 625,
+    "observed_at": "2026-10-08T07:18:00.000Z",
+    "workflow_run_id": 37742429349,
+    "workflow_run_number": 627,
     "workflow_conclusion": "success",
     "queued_repairs": 0
   }
