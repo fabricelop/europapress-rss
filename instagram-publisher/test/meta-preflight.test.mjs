@@ -27,3 +27,17 @@ test("Configured Page and linked Instagram verify with GET only, never publish",
    assert.equal(calls,2);
  }finally{globalThis.fetch=prev}
 });
+
+test("Wrong account identity is rejected without any post",async()=>{
+ const prev=globalThis.fetch;
+ globalThis.fetch=async(url)=>new URL(url).pathname.endsWith("/me")?
+   Response.json({id:"999999999"}):
+   Response.json({id:"1424696600717440",instagram_business_account:{id:"17841414511690117",username:"ttactualidad"}});
+ const key="test-authorization-value-more-than-32-chars";
+ const env={INSTAGRAM_INTERNAL_SECRET:key,INSTAGRAM_PAGE_ACCESS_TOKEN:"test-only",INSTAGRAM_USER_ID:"17841414511690117",IG_DB:{prepare(){return{first:async()=>({name:"instagram_posts"})}}}};
+ try{
+  const r=await worker.fetch(new Request("https://example.test/meta-preflight",{headers:{authorization:"Bearer "+key}}),env);
+  assert.equal(r.status,422);
+  assert.equal((await r.json()).page_token_matches_expected_page,false);
+ }finally{globalThis.fetch=prev;}
+});
