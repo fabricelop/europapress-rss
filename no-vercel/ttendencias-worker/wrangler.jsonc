@@ -3,10 +3,16 @@
   "name": "ttendencias-no-vercel-test",
   "main": "src/index.js",
   "compatibility_date": "2026-10-08",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "workers_dev": true,
   "assets": {
-    "directory": "../ttendencias",
-    "binding": "ASSETS"
+    "directory": "./generated/assets",
+    "binding": "ASSETS",
+    "run_worker_first": true
   },
-  "observability": { "enabled": false }
+  "observability": {
+    "enabled": false
+  }
 }
