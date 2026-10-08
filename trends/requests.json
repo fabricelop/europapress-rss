@@ -2734,7 +2734,7 @@
       "id": "d48c6c588f9a",
       "name": "Mara",
       "rank": 7,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-08T03:01:42+02:00",
       "revision": 3,
       "reexplain": true,
@@ -2757,48 +2757,95 @@
         "sandra"
       ],
       "auto_queued": true,
-      "ready_at": "2026-09-24T02:58:35+02:00",
-      "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "explanation": "TT#8 Mara es tendencia porque eligió a Juanpi para su primera cita en La isla de las tentaciones, admitió que al verlo volvieron sentimientos del pasado y comparó su intimidad con él y con Miguel.\n🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
-      "closer_text": "🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
-      "rank_at_explanation": 8,
-      "group_id": "grp-mara-juanpi-cita-20261006",
-      "explanation_group_id": "grp-mara-juanpi-cita-20261006",
-      "group_title": "Mara y Juanpi · primera cita del 5 de octubre",
+      "editorial_engine": "chat-direct",
+      "explanation": "TT#2 #LaIslaDeLasTentaciones10 es tendencia por la décima entrega de La isla de las tentaciones: tercera hoguera de las chicas, visionado en directo para Paola y primeras noches con tentaciones favoritas.\n🌶️ La fidelidad volvió a pasar lista desde la hoguera.",
+      "closer_text": "🌶️ La fidelidad volvió a pasar lista desde la hoguera.",
+      "rank_at_explanation": 7,
+      "group_id": "grp-9423be5a47e7",
+      "explanation_group_id": "grp-9423be5a47e7",
+      "group_title": "#LaIslaDeLasTentaciones10",
       "trend_names": [
-        "Mara"
+        "#LaIslaDeLasTentaciones10",
+        "Náyades",
+        "Paola",
+        "Mara",
+        "Sandra"
       ],
       "trend_context": [
         {
+          "name": "#LaIslaDeLasTentaciones10",
+          "rank": 1
+        },
+        {
+          "name": "Náyades",
+          "rank": 4
+        },
+        {
+          "name": "Paola",
+          "rank": 6
+        },
+        {
           "name": "Mara",
-          "rank": 8
+          "rank": 7
+        },
+        {
+          "name": "Sandra",
+          "rank": 10
         }
       ],
       "news_disposition": "ignored",
-      "news_note": "Contenido televisivo; sin salida a TTiTTulares.",
-      "source": "editorial_chat_direct",
+      "news_note": "Mara forma parte de la misma entrega del 7 de octubre ya explicada en #LaIslaDeLasTentaciones10: tercera hoguera de las chicas y primeras imágenes de Miguel para Mara.",
+      "source": "editorial_chat_direct_group_link",
       "verification_sources": [
         {
-          "source": "Mediaset Infinity · 5/10/2026",
-          "url": "https://www.mediasetinfinity.es/programas-tv/la-isla-de-las-tentaciones/temporada-11/top-videos/juanpi-mara-complicidad-primera-cita-despiertan-sentimientos-40_020328929/player/"
+          "source": "Mediaset España · programa 10 · 7/10/2026",
+          "url": "https://www.mediaset.es/comunicacion/television/telecinco/20261006/isla-tentaciones-programa-diez_18_020365142.html"
         },
         {
-          "source": "FormulaTV · 4/10/2026",
-          "url": "https://www.formulatv.com/noticias/nacho-borbon-conocera-sancion-isla-tentaciones-11-138404/"
+          "source": "FormulaTV · programa 10 y tercera hoguera · 6/10/2026",
+          "url": "https://www.formulatv.com/noticias/paola-vera-directo-hace-sergio-isla-tentaciones-138430/"
         }
       ],
       "image_strategy": "ai_plus_fallback",
-      "image_status": "pending",
-      "image_pending": true,
-      "image_failure_reason": "La explicación se publica sin bloquearse por imagen; la foto web puede incorporarse posteriormente.",
-      "group_leader_id": "d48c6c588f9a",
+      "image_status": "none",
+      "image_pending": false,
+      "image_failure_reason": "La explicación ya existente se reutiliza; la imagen no bloquea la tarjeta.",
+      "group_leader_id": "9423be5a47e7",
       "category": "TV",
       "disable_ai_image": false,
-      "ai_image_status": "pending",
-      "fallback_image_status": "pending",
       "selected_tweet_image": null,
-      "closer_missing": false
+      "explained_at": "2026-10-08T00:48:05+02:00",
+      "grouped_member_revisions": [
+        {
+          "id": "9423be5a47e7",
+          "name": "#LaIslaDeLasTentaciones10",
+          "revision": 0
+        },
+        {
+          "id": "8191aa70b3fb",
+          "name": "Náyades",
+          "revision": 1
+        },
+        {
+          "id": "1e03ad2efe6a",
+          "name": "Paola",
+          "revision": 1
+        },
+        {
+          "id": "d48c6c588f9a",
+          "name": "Mara",
+          "revision": 3
+        },
+        {
+          "id": "1f02e917fd21",
+          "name": "Sandra",
+          "revision": 1
+        }
+      ],
+      "prior_individual_explanation": "TT#8 Mara es tendencia porque eligió a Juanpi para su primera cita en La isla de las tentaciones, admitió que al verlo volvieron sentimientos del pasado y comparó su intimidad con él y con Miguel.\n🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
+      "prior_individual_closer_text": "🌶️ Juanpi reapareció y la isla activó el modo déjà vu.",
+      "last_attempt_at": "2026-10-08T03:18:35+02:00",
+      "grouped_at": "2026-10-08T03:18:35+02:00"
     },
     {
       "id": "ff7da32ed7b2",
@@ -36879,6 +36926,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-08T03:01:42+02:00",
+  "updated_at": "2026-10-08T03:18:35+02:00",
   "count": 690
 }
