@@ -24,7 +24,7 @@ export function selectSpatialForecastTimeBlend(validTimes=[],targetMs=Date.now()
   return{fromIndex:row.index,toIndex:row.index,fraction:0,fromTime:row.time,toTime:row.time};
 }
 export function hybridFutureBlend(minutes=0,handoffMinutes=20){
-  const m=Math.max(0,Number(minutes)||0),handoff=Math.max(1,Number(handoffMinutes)||20);
+  const m=Math.max(0,Number(minutes)||0),rawHandoff=Number(handoffMinutes),handoff=Number.isFinite(rawHandoff)?Math.max(0,rawHandoff):20;
   if(m<=handoff)return{radarOpacity:.76,modelOpacity:0,mode:'radar',handoffMinutes:handoff};
   return{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:handoff};
 }
