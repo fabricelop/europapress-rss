@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-b271bd23055d-r1-a1-1791451015372",
+  "requested_at": "2026-10-08T09:16:55.372358Z",
+  "updated_at": "2026-10-08T09:16:55.372358Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "b271bd23055d",
+  "event_id": "b271bd23055d",
+  "target_name": "David Sánchez recurre su condena y denuncia una \"investigación prospectiva\" contra él",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "David Sánchez recurre su condena y denuncia una \"investigación prospectiva\" contra él",
+    "revision": 1,
+    "factual_summary": "La defensa de David Sánchez ha recurrido ante el Tribunal Superior de Justicia de Extremadura la condena a nueve años de inhabilitación por prevaricación administrativa. Solicita la absolución y sostiene que hubo una investigación prospectiva y vulneraciones de derechos, ligadas según su recurso a su parentesco con el presidente del Gobierno.",
+    "tweet_text": "David Sánchez recurre su condena a 9 años de inhabilitación por prevaricación. Pide la absolución y sostiene que sufrió una investigación prospectiva por ser hermano de Pedro Sánchez.\n\n🌶️ La apelación suma un nuevo acusado retórico: el parentesco.",
+    "remate": "🌶️ La apelación suma un nuevo acusado retórico: el parentesco.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nDavid Sánchez recurre su condena a 9 años de inhabilitación por prevaricación. Pide la absolución y sostiene que sufrió una investigación prospectiva por ser hermano de Pedro Sánchez.\n\n🌶️ La apelación suma un nuevo acusado retórico: el parentesco.\n\nREMATE EXACTO:\n🌶️ La apelación suma un nuevo acusado retórico: el parentesco.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa defensa de David Sánchez ha recurrido ante el Tribunal Superior de Justicia de Extremadura la condena a nueve años de inhabilitación por prevaricación administrativa. Solicita la absolución y sostiene que hubo una investigación prospectiva y vulneraciones de derechos, ligadas según su recurso a su parentesco con el presidente del Gobierno.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/nacional/david-sanchez-recurre-su-condena-denuncia-una-investigacion-prospectiva-contra_7046411_0.html",
+    "citations": [
+      {
+        "source": "EFE",
+        "url": "https://efe.com/espana/2026-10-08/david-sanchez-recurso-condena/"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/08/la-defensa-de-david-sanchez-recurre-su-condena-que-atribuye-sin-duda-a-que-es-hermano-del-presidente-del-gobierno-cadena-ser/"
+      },
+      {
+        "source": "Canal Extremadura",
+        "url": "https://www.canalextremadura.es/noticias/extremadura/la-defensa-de-david-sanchez-pide-su-absolucion"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
