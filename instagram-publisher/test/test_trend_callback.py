@@ -13,7 +13,7 @@ class Response:
         self.obj=obj
     def __enter__(self):return self
     def __exit__(self,*args):return None
-    def read(self):return json.dumps(self.obj).encode("utf-8")
+    def read(self, size=-1):return json.dumps(self.obj).encode("utf-8")[:size if size>=0 else None]
 
 
 class TrendCallbackTests(unittest.TestCase):
