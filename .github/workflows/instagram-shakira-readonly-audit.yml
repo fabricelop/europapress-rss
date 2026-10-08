@@ -25,6 +25,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.github/workflows/instagram-shakira-readonly-audit.yml
+            /instagram-publisher/audit-shakira.json
 
       - name: Consultar D1 y preflight Meta sin publicaciones
         env:
@@ -130,7 +131,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add instagram-publisher/audit-shakira.json
+          git add --sparse instagram-publisher/audit-shakira.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Registrar auditoría de solo lectura Instagram Shakira"
           for n in 1 2 3 4 5; do
