@@ -25033,7 +25033,7 @@
       "percentage": 31.2,
       "first_seen": "2026-10-07T10:02:40.415179Z",
       "last_seen": "2026-10-08T09:13:07.391559Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -25101,7 +25101,10 @@
         }
       ],
       "drafted_source_count": 5,
-      "verified_source_count": 5
+      "verified_source_count": 5,
+      "reconciled_from_event_id": "eb75d6de13db",
+      "reconciliation_reason": "La publicación eb75d6de13db ya cubre el mismo hecho esencial: el fallecimiento de Xosé Manuel Beiras a los 90 años y su trayectoria como referente histórico del nacionalismo gallego. El nuevo titular añade caracterización biográfica, pero no una actualización material independiente.",
+      "reconciled_at": "2026-10-08T09:15:56.759333Z"
     },
     {
       "id": "fef6e9c7d72c",
@@ -25447,5 +25450,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-08T09:15:12.685746Z"
+  "updated_at": "2026-10-08T09:15:56.759333Z"
 }
