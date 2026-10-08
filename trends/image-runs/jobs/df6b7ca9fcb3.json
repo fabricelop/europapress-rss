@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-df6b7ca9fcb3-r0-a1-1791492751229",
+  "requested_at": "2026-10-08T20:52:31.221774Z",
+  "updated_at": "2026-10-08T20:52:31.221774Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "df6b7ca9fcb3",
+  "trend_id": "df6b7ca9fcb3",
+  "target_name": "#SVGala5",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "#SVGala5",
+    "revision": 0,
+    "explanation": "TT#8 #SVGala5 es tendencia porque Supervivientes All Stars 3 emite hoy su quinta gala: Arkano, Chiqui, Ivana Icardi y María Jesús Ruiz se juegan la expulsión y el programa decide si Albert Barranco puede continuar.\n🌶️ En Honduras hoy se vota con salvavidas.",
+    "closer_text": "🌶️ En Honduras hoy se vota con salvavidas.",
+    "trend_names": [
+      "#SVGala5"
+    ],
+    "group_title": "Supervivientes All Stars 3 · quinta gala",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-08T22:50:45+02:00",
+    "verification_sources": [
+      {
+        "source": "FormulaTV · 07/10/2026",
+        "url": "https://www.formulatv.com/noticias/supervivientes-all-stars-3-giro-secreto-expulsion-138442/"
+      },
+      {
+        "source": "OKDiario · 08/10/2026",
+        "url": "https://okdiario.com/happyfm/encuesta-quien-quieres-que-sea-expulsado-hoy-supervivientes-all-stars-20514350"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
