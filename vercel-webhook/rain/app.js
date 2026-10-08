@@ -1,5 +1,5 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,classifyRainHour,bestDryWindow} from './core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear} from './radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,evaluateOverlaySourceState} from './radar-core.js';
 
 const DET_MODELS=[
   {id:'ecmwf_ifs',label:'ECMWF IFS 9 km',family:'ECMWF',weight:1.32,metaDomains:['ecmwf_ifs025']},
@@ -25,6 +25,12 @@ const FORECAST_TTL=20*60_000;
 const FORECAST_PROPAGATION_TTL=5*60_000;
 const FORECAST_FALLBACK_MAX_AGE=90*60_000;
 const RADAR_REFRESH_MS=5*60_000;
+const LIGHTNING_PROXY_URL='/api/rain-lightning';
+const LIGHTNING_WMS_LAYERS=[
+  {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
+  {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
+];
+const LIGHTNING_CONTEXT_MINUTES=5;
 const CANONICAL_RADAR_THRESHOLD=.22;
 const RADAR_FRAMES=6;
 const RADAR_ZOOM=7;
@@ -39,7 +45,7 @@ const MODEL_META_GRACE_SECONDS=20*60;
 const MODEL_META_PROPAGATION_SECONDS=10*60;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.17';
+const APP_VERSION='0.17.18';
 const FORECAST_CACHE_SCHEMA='consensus-v13';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=['0.17.13','0.17.14','0.17.15','0.17.16'];
 
@@ -53,7 +59,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -2506,6 +2512,16 @@ function initMap(){
   });
   state.map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');
   state.map.addControl(new maplibregl.AttributionControl({compact:true,customAttribution:'© OpenFreeMap · © OpenStreetMap contributors'}));
+  // Attribution is available via the info icon, never expanded on initial display or hover.
+  const attribution=state.map.getContainer().querySelector('.maplibregl-ctrl-attrib');
+  if(attribution){
+    attribution.classList.remove('raineta-attr-expanded');
+    const toggle=attribution.querySelector('button');
+    if(toggle)toggle.addEventListener('click',()=>{
+      attribution.classList.toggle('raineta-attr-expanded');
+      toggle.setAttribute('aria-expanded',String(attribution.classList.contains('raineta-attr-expanded')));
+    });
+  }
   state.map.on('load',()=>{
     state.mapLoaded=true;
     state.map.addSource('raineta-location',{type:'geojson',data:locationGeoJSON()});
@@ -2520,7 +2536,22 @@ function initMap(){
         'circle-stroke-width':2
       }
     });
+    state.map.on('sourcedata',event=>{
+      const id=String(event.sourceId||'');
+      if(!id.startsWith('raineta-lightning-')||!event.isSourceLoaded)return;
+      state.lightningLoaded.add(id);
+      state.lightningErrors.delete(id);
+      updateLightningVisibility();
+    });
+    state.map.on('error',event=>{
+      const id=String(event.sourceId||event.source?.id||'');
+      if(!id.startsWith('raineta-lightning-'))return;
+      state.lightningErrors.add(id);
+      updateLightningVisibility();
+    });
     showRadarOffset(state.radarOffset);
+    updateLightningVisibility();
+    verifyLightningSource(false);
   });
   state.map.on('zoomend',()=>{
     if(state.mapLoaded&&Number(state.radarOffset)>0)showProjectedRadar(state.radarOffset);
@@ -2535,6 +2566,164 @@ function updateMapLocation(){
 function centerRadarMap(){
   if(!state.map||!state.mapLoaded)return;
   state.map.easeTo({center:[state.loc.lon,state.loc.lat],duration:450});
+}
+function lightningWmsTile(layer){
+  return LIGHTNING_PROXY_URL+'?action=tile&layer='+encodeURIComponent(layer)+
+    '&bbox={bbox-epsg-3857}&width=256&height=256';
+}
+function lightningLayerIds(){return LIGHTNING_WMS_LAYERS.map(spec=>spec.id)}
+function lightningCapabilitiesUrl(){
+  return LIGHTNING_PROXY_URL+'?action=capabilities';
+}
+async function verifyLightningSource(force=false){
+  const fresh=state.lightningVerified&&Date.now()-Number(state.lightningVerifiedAt||0)<10*60_000;
+  if(fresh&&!force)return true;
+  if(state.lightningVerificationPromise&&!force)return state.lightningVerificationPromise;
+  state.lightningVerificationError=null;
+  state.lightningVerificationPromise=(async()=>{
+    try{
+      const response=await timeoutFetch(lightningCapabilitiesUrl(),20_000,{cache:'no-store',headers:{Accept:'application/json'}});
+      const data=await response.json().catch(()=>null);
+      if(!response.ok||!data?.ok)throw new Error(data?.error||('HTTP '+response.status));
+      const required=LIGHTNING_WMS_LAYERS.map(spec=>spec.layer);
+      const available=new Set(Array.isArray(data.layers)?data.layers:[]);
+      const missing=required.filter(layer=>!available.has(layer));
+      if(missing.length)throw new Error('capas ausentes: '+missing.join(', '));
+      state.lightningVerified=true;
+      state.lightningVerifiedAt=Date.now();
+      state.lightningVerificationError=null;
+      return true;
+    }catch(error){
+      state.lightningVerified=false;
+      state.lightningVerifiedAt=0;
+      state.lightningVerificationError=String(error?.message||error||'error DWD');
+      return false;
+    }finally{
+      state.lightningVerificationPromise=null;
+      updateLightningVisibility();
+    }
+  })();
+  updateLightningVisibility();
+  return state.lightningVerificationPromise;
+}
+function ensureLightningLayer(){
+  if(!state.map||!state.mapLoaded||!state.lightningVerified)return false;
+  const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
+  for(const spec of LIGHTNING_WMS_LAYERS){
+    const sourceId=spec.id+'-source';
+    if(!state.map.getSource(sourceId)){
+      state.map.addSource(sourceId,{
+        type:'raster',
+        tiles:[lightningWmsTile(spec.layer)],
+        tileSize:256,
+        attribution:'DWD · EUMETSAT MTG Lightning Imager / NowCastELEC'
+      });
+    }
+    if(!state.map.getLayer(spec.id)){
+      state.map.addLayer({
+        id:spec.id,
+        type:'raster',
+        source:sourceId,
+        paint:{
+          'raster-opacity':spec.opacity,
+          'raster-fade-duration':0,
+          'raster-saturation':.30,
+          'raster-contrast':.30
+        }
+      },before);
+    }
+  }
+  return true;
+}
+function lightningContextVisible(){
+  const offset=Number(state.radarOffset)||0;
+  return offset<=0&&offset>=-LIGHTNING_CONTEXT_MINUTES;
+}
+function applyRadarLightningContrast(){
+  if(!state.map||!state.mapLoaded)return;
+  const gray=Boolean(state.lightningEnabled&&lightningContextVisible());
+  for(const id of ['raineta-radar','raineta-radar-projection','raineta-radar-projection-a','raineta-radar-projection-b']){
+    if(!state.map.getLayer(id))continue;
+    state.map.setPaintProperty(id,'raster-saturation',gray?-1:0);
+    state.map.setPaintProperty(id,'raster-contrast',gray?.08:0);
+  }
+}
+function updateLightningVisibility(){
+  const button=$('radarLightning'),status=$('lightningStatus'),context=lightningContextVisible();
+  const errors=state.lightningErrors.size+(state.lightningVerificationError?1:0);
+  const sourceState=evaluateOverlaySourceState({
+    enabled:state.lightningEnabled,
+    context,
+    verified:state.lightningVerified,
+    loaded:state.lightningLoaded.size,
+    errors
+  });
+  if(button){
+    button.classList.toggle('active',sourceState==='active');
+    button.classList.toggle('contextOff',sourceState==='hidden');
+    button.textContent=sourceState==='active'?'⚡ RAYOS ON'
+      : sourceState==='error'?'⚡ RAYOS ERROR'
+        : (sourceState==='unverified'||sourceState==='loading')?'⚡ RAYOS…':'⚡ RAYOS';
+    button.title=sourceState==='active'
+      ? 'Fuente DWD verificada: MTG LI 5 min + NowCastELEC'
+      : sourceState==='hidden'
+        ? 'Los rayos solo se muestran cerca de AHORA'
+        : sourceState==='error'
+          ? 'La fuente DWD no está operativa'
+          : 'Mostrar actividad eléctrica observada/nowcast DWD';
+  }
+  if(!state.map||!state.mapLoaded){
+    if(status)status.textContent=sourceState==='disabled'?'Rayos desactivados':'Rayos: preparando mapa…';
+    return;
+  }
+  applyRadarLightningContrast();
+  const shouldShow=Boolean(sourceState==='active'||sourceState==='loading');
+  if(shouldShow&&state.lightningVerified){
+    try{
+      ensureLightningLayer();
+      for(const id of lightningLayerIds()){
+        if(state.map.getLayer(id)){
+          state.map.setLayoutProperty(id,'visibility','visible');
+          if(state.map.getLayer('raineta-location'))state.map.moveLayer(id,'raineta-location');
+        }
+      }
+    }catch(error){
+      state.lightningErrors.add('setup');
+    }
+  }else{
+    for(const id of lightningLayerIds()){
+      if(state.map.getLayer(id))state.map.setLayoutProperty(id,'visibility','none');
+    }
+  }
+  if(status){
+    status.classList.toggle('active',sourceState==='active');
+    status.classList.toggle('muted',sourceState!=='active');
+    status.textContent=sourceState==='disabled'
+      ? 'Rayos desactivados'
+      : sourceState==='hidden'
+        ? 'Rayos DWD verificados · ocultos fuera de AHORA'
+        : sourceState==='unverified'
+          ? 'Rayos: verificando GetCapabilities de DWD…'
+          : sourceState==='error'
+            ? 'Rayos: fuente DWD no disponible'+(state.lightningVerificationError?' · '+state.lightningVerificationError:'')
+            : sourceState==='active'
+              ? 'Fuente DWD cargada · MTG LI 5 min + NowCastELEC'
+              : 'Capas DWD verificadas · cargando mapa…';
+  }
+}
+async function toggleLightning(){
+  if(state.lightningEnabled){
+    state.lightningEnabled=false;
+    try{localStorage.setItem('raineta.lightning',JSON.stringify(false))}catch{}
+    updateLightningVisibility();
+    return;
+  }
+  state.lightningEnabled=true;
+  state.lightningErrors.clear();
+  state.lightningVerificationError=null;
+  try{localStorage.setItem('raineta.lightning',JSON.stringify(true))}catch{}
+  updateLightningVisibility();
+  await verifyLightningSource(false);
 }
 function removeRadarLayer(id){
   if(!state.map||!state.mapLoaded)return;
@@ -2619,7 +2808,7 @@ function showObservedRadar(offsetMinutes){
     tileSize:256,maxzoom:7,attribution:'Weather data by RainViewer'
   });
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-  state.map.addLayer({id:'raineta-radar',type:'raster',source:'raineta-radar',paint:{'raster-opacity':.76,'raster-fade-duration':0}},before);
+  state.map.addLayer({id:'raineta-radar',type:'raster',source:'raineta-radar',paint:{'raster-opacity':.76,'raster-fade-duration':0,'raster-saturation':state.lightningEnabled&&lightningContextVisible()?-1:0,'raster-contrast':state.lightningEnabled&&lightningContextVisible()?.08:0}},before);
   const latest=state.frames.at(-1),delta=Math.round((f.time-latest.time)/60);
   $('radarTime').textContent=fmtTime(f.time*1000);
   $('radarPosition').textContent=delta<0?'Observado '+Math.abs(delta)+' min antes · '+fmtTime(f.time*1000):'Último radar observado · '+fmtTime(f.time*1000);
@@ -2670,6 +2859,7 @@ function showProjectedRadar(minutes){
   const opacity=projectedRadarOpacity(minutes,canMove,reliable);
   if(state.map.getLayer('raineta-radar-projection'))state.map.setPaintProperty('raineta-radar-projection','raster-opacity',opacity);
   const projectedAt=latest.time*1000+minutes*60_000;
+  applyRadarLightningContrast();
   $('radarTime').textContent=fmtTime(projectedAt);
   if(canMove){
     $('radarPosition').textContent=(within?'Radar útil':'Proyección orientativa')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
@@ -2692,6 +2882,7 @@ function showRadarOffset(offset=state.radarOffset){
   if($('frame'))$('frame').value=state.radarOffset;
   if(state.radarOffset<=0)showObservedRadar(state.radarOffset);
   else showProjectedRadar(state.radarOffset);
+  updateLightningVisibility();
 }
 function radarArrivalSource(ev){
   if(ev?.kind==='radarFusion')return'radar + radar europeo';
@@ -2815,7 +3006,14 @@ function renderRadar(){
     const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
     $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>evolución '+label+' · proyección visual continua hasta 4 h · después del límite manda el consenso</span>';
   }
+  if($('radarNowMarker')){
+    const min=-availablePast,max=RADAR_VISUAL_HORIZON_MINUTES,left=(0-min)/(max-min)*100;
+    $('radarNowMarker').style.left=Math.max(0,Math.min(100,left))+'%';
+    $('radarNowMarker').style.display='';
+    $('radarNowMarker').title='AHORA · '+fmtTime(latest.time*1000);
+  }
   if($('radarReliableMarker')){
+    $('radarReliableMarker').style.display=reliable>=5?'':'none';
     const min=-availablePast,max=RADAR_VISUAL_HORIZON_MINUTES,left=(reliable-min)/(max-min)*100;
     $('radarReliableMarker').style.left=Math.max(0,Math.min(100,left))+'%';
     $('radarReliableMarker').title='Horizonte radar fiable ~'+fmtTime(latest.time*1000+reliable*60_000);
@@ -3144,6 +3342,7 @@ $('radarNow').onclick=function(){
 };
 $('radarArrival').onclick=playRadarUntilRain;
 $('radarCenter').onclick=centerRadarMap;
+$('radarLightning').onclick=toggleLightning;
 function observedOffsets(){
   const latest=state.frames.at(-1);if(!latest)return[];
   return state.frames.map(f=>Math.round((Number(f.time)-Number(latest.time))/60)).filter(v=>v<=0).sort((a,b)=>a-b);
