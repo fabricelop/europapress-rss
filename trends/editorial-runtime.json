@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T03:15:00+02:00",
-  "last_completed_at": "2026-10-08T03:22:15+02:00",
-  "updated_at": "2026-10-08T03:22:15+02:00",
+  "last_started_at": "2026-10-08T03:45:00+02:00",
+  "last_completed_at": "2026-10-08T03:48:10+02:00",
+  "updated_at": "2026-10-08T03:48:10+02:00",
   "status": "success",
-  "processed_ids": [
-    "d48c6c588f9a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -17,25 +15,24 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T031500-chat",
+    "run_id": "tr-20261008T034500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T03:15:00+02:00",
-    "updated_at": "2026-10-08T03:22:15+02:00",
-    "finished_at": "2026-10-08T03:22:15+02:00",
+    "started_at": "2026-10-08T03:45:00+02:00",
+    "updated_at": "2026-10-08T03:48:10+02:00",
+    "finished_at": "2026-10-08T03:48:10+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
-      "grouped_members_total": 1,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -52,15 +49,15 @@
       "archive_images_missing": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_reused": 1,
+      "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · Mara r3 enlazada al grupo #LaIslaDeLasTentaciones10 · cola autoritativa 0.",
+    "message": "Pasada completada sin trabajo editorial nuevo · cola 0 · 8 Pendientes revisados, todos con IA válida; #LaMesa mantiene solo el fallback de archivo pendiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -70,155 +67,56 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "revision": 3,
-        "mode": "group_reuse",
-        "closer_text": "🌶️ La fidelidad volvió a pasar lista desde la hoguera."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-08T03:15:05+02:00",
+        "at": "2026-10-08T03:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Preparando pasada · 1 revisión activa · solicitando saneamiento visual de Pendientes"
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-08T03:17:00+02:00",
+        "at": "2026-10-08T03:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Releyendo estado autoritativo de Mara"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y calculando Pendientes vigentes"
       },
       {
-        "at": "2026-10-08T03:17:10+02:00",
-        "phase": "investigating",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Buscando detonante actual y comprobando pertenencia al episodio 10"
-      },
-      {
-        "at": "2026-10-08T03:17:40+02:00",
-        "phase": "investigating",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Contrastando fuente 1/2 · Mediaset confirma la tercera hoguera y las primeras imágenes de Miguel para Mara"
-      },
-      {
-        "at": "2026-10-08T03:17:50+02:00",
-        "phase": "investigating",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Contrastando fuente 2/2 · FormulaTV confirma a Mara en la misma tercera hoguera del programa 10"
-      },
-      {
-        "at": "2026-10-08T03:18:00+02:00",
-        "phase": "investigating",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Hecho esencial verificado · misma emisión ya explicada por #LaIslaDeLasTentaciones10"
-      },
-      {
-        "at": "2026-10-08T03:18:10+02:00",
-        "phase": "drafting",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Sin nueva redacción · se reutiliza la explicación factual ya verificada del grupo"
-      },
-      {
-        "at": "2026-10-08T03:18:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Remate reutilizado del grupo · no se genera uno nuevo"
-      },
-      {
-        "at": "2026-10-08T03:18:20+02:00",
-        "phase": "persisting",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Guardando enlace de Mara r3 en la ficha Explicada del grupo"
-      },
-      {
-        "at": "2026-10-08T03:18:30+02:00",
-        "phase": "persisting",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Guardando ficha Explicada · Mara r3 añadida al grupo del programa 10"
-      },
-      {
-        "at": "2026-10-08T03:18:35+02:00",
-        "phase": "persisting",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Actualizando requests · revisión 3 enlazada al grupo"
-      },
-      {
-        "at": "2026-10-08T03:18:40+02:00",
-        "phase": "persisting",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-08T03:18:50+02:00",
-        "phase": "verifying",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-08T03:21:40+02:00",
-        "phase": "verifying",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-08T03:21:45+02:00",
-        "phase": "verifying",
-        "trend_id": "d48c6c588f9a",
-        "title": "Mara",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T03:21:50+02:00",
+        "at": "2026-10-08T03:47:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 8 tarjetas vigentes de menos de 24 h"
       },
       {
-        "at": "2026-10-08T03:21:55+02:00",
+        "at": "2026-10-08T03:47:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Pendientes revisados · 8 con IA válida · 0 reparaciones IA pendientes"
+        "message": "Pendientes revisados · 8 con IA válida · 1 fallback de archivo pendiente"
       },
       {
-        "at": "2026-10-08T03:22:00+02:00",
+        "at": "2026-10-08T03:47:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · cola 0, sin preparing/update, rewrite_pending ni problematic"
       },
       {
-        "at": "2026-10-08T03:22:05+02:00",
+        "at": "2026-10-08T03:48:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Persistiendo runtime durable de la pasada"
+        "message": "Persistiendo runtime durable · cola 0 · 8 Pendientes revisados"
       },
       {
-        "at": "2026-10-08T03:22:15+02:00",
+        "at": "2026-10-08T03:48:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · Mara r3 enlazada al grupo #LaIslaDeLasTentaciones10 · cola autoritativa 0."
+        "message": "Pasada completada sin trabajo editorial nuevo · cola autoritativa 0"
       }
     ],
     "queue_complete": true,
@@ -228,12 +126,12 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "success",
+    "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T031500-chat",
-    "last_triggered_at": "2026-10-08T03:15:05+02:00",
+    "last_trigger_run_id": "tr-20261008T034500-chat",
+    "last_triggered_at": "2026-10-08T03:45:05+02:00",
     "pending_cards_reviewed": 8,
-    "observed_at": "2026-10-08T03:21:55+02:00",
+    "observed_at": "2026-10-08T03:47:30+02:00",
     "ai_ready": 8,
     "ai_repair_needed": 0,
     "archive_ready": 7,
