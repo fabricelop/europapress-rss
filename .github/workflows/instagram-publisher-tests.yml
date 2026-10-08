@@ -77,7 +77,7 @@ jobs:
           assert c["group"]=="ttendencias-telegram-continuo"
           assert c["cancel-in-progress"] is True
           steps=d["jobs"]["listener"]["steps"]
-          follow=next(x for x in steps if x["name"]=="Encadenar siguiente listener")
+          follow=next(x for x in steps if x.get("name")=="Encadenar siguiente listener")
           assert "cancelled()" in follow["if"] and "!" in follow["if"]
           assert any("trends/telegram_bot.py package-listen" in x.get("run","") for x in steps)
           print("TTENDENCIAS_LISTENER_ROLLOVER_SAFE")
