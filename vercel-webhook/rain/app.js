@@ -61,8 +61,9 @@ const LIGHTNING_WMS_LAYERS=[
 ];
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
-const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.45';
+const RADAR_FRAME_SETTLE_MS=90;
+const RADAR_FRAME_READY_TIMEOUT_MS=6500;
+const APP_VERSION='0.17.46';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -76,7 +77,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,radarFutureActiveId:null,radarSwapAnimation:null,omProtocolReady:false,omProtocolPromise:null,omModule:null,omMotionProtocolReady:false,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,futureModelActiveId:null,futureModelSwapAnimation:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,radarFutureActiveId:null,radarSwapAnimation:null,radarDisplayedOffset:null,radarDisplaySequence:0,omProtocolReady:false,omProtocolPromise:null,omModule:null,omMotionProtocolReady:false,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,futureModelActiveId:null,futureModelSwapAnimation:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3320,6 +3321,24 @@ function removeRadarLayer(id){
   if(state.map.getLayer(id))state.map.removeLayer(id);
   if(state.map.getSource(id))state.map.removeSource(id);
 }
+function markRadarDisplayed(offset,token=state.radarProjectionToken){
+  if(token!==state.radarProjectionToken)return false;
+  const value=Number(offset);
+  if(!Number.isFinite(value))return false;
+  state.radarDisplayedOffset=value;
+  state.radarDisplaySequence=(Number(state.radarDisplaySequence)||0)+1;
+  return true;
+}
+function sleepMs(ms){return new Promise(resolve=>setTimeout(resolve,Math.max(0,Number(ms)||0)))}
+async function waitForRadarDisplayed(offset,timeoutMs=RADAR_FRAME_READY_TIMEOUT_MS){
+  const target=Number(offset),started=Date.now();
+  if(!Number.isFinite(target))return false;
+  while(Date.now()-started<timeoutMs){
+    if(Math.abs(Number(state.radarDisplayedOffset)-target)<.01)return true;
+    await sleepMs(45);
+  }
+  return Math.abs(Number(state.radarDisplayedOffset)-target)<.01;
+}
 function futureRadarLayerIds(){return['raineta-radar-projection-a','raineta-radar-projection-b']}
 function cancelRadarSwapAnimation(){
   if(state.radarSwapAnimation&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(state.radarSwapAnimation);
@@ -3357,7 +3376,7 @@ function waitForRasterSources(sourceIds,token,timeoutMs=4200){
     state.map?.on('sourcedata',onData);
   });
 }
-function animateRadarSwap(incomingId,targetOpacity,token,duration=170){
+function animateRadarSwap(incomingId,targetOpacity,token,duration=170,displayOffset=state.radarOffset){
   if(!state.map?.getLayer(incomingId)||token!==state.radarProjectionToken)return;
   cancelRadarSwapAnimation();
   const outgoing=radarForegroundLayers(incomingId);
@@ -3379,13 +3398,14 @@ function animateRadarSwap(incomingId,targetOpacity,token,duration=170){
       state.radarFutureActiveId=null;
     }
     applyRadarLightningContrast();
+    markRadarDisplayed(displayOffset,token);
   };
   state.radarSwapAnimation=requestAnimationFrame(step);
 }
-function fadeOutRadarDisplay(token,duration=170){
+function fadeOutRadarDisplay(token,duration=170,displayOffset=state.radarOffset){
   cancelRadarSwapAnimation();
   const outgoing=radarForegroundLayers(),starts=new Map(outgoing.map(id=>[id,rasterOpacity(id)]));
-  if(!outgoing.length)return;
+  if(!outgoing.length){markRadarDisplayed(displayOffset,token);return}
   const start=performance.now();
   const step=now=>{
     if(token!==state.radarProjectionToken){state.radarSwapAnimation=null;return}
@@ -3395,6 +3415,7 @@ function fadeOutRadarDisplay(token,duration=170){
     state.radarSwapAnimation=null;
     for(const id of outgoing)removeRadarLayer(id);
     state.radarFutureActiveId=null;
+    markRadarDisplayed(displayOffset,token);
   };
   state.radarSwapAnimation=requestAnimationFrame(step);
 }
@@ -3672,6 +3693,7 @@ function nearestObservedFrame(offsetMinutes){
 }
 function showObservedRadar(offsetMinutes){
   const r=state.data?.radar,f=nearestObservedFrame(offsetMinutes);if(!r||!f||!state.mapLoaded)return;
+  const token=++state.radarProjectionToken;
   clearRadarVisual();
   state.radarProjectionImageKey=null;
   state.map.addSource('raineta-radar',{
@@ -3687,6 +3709,22 @@ function showObservedRadar(offsetMinutes){
   $('radarPosition').textContent=delta<0?'Observado '+Math.abs(delta)+' min antes · '+fmtTime(f.time*1000):'Último radar observado · '+fmtTime(f.time*1000);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent='OBSERVADO · frame '+(frameIndex+1)+'/'+state.frames.length+' · '+fmtTime(f.time*1000);
   $('radarMotion').textContent='Imagen observada real de RainViewer. A la derecha de AHORA la proyección es orientativa y pierde peso conforme avanza el horizonte.';
+  let done=false;
+  const finish=()=>{
+    if(done)return;done=true;
+    try{state.map.off('sourcedata',onData)}catch{}
+    if(token===state.radarProjectionToken)markRadarDisplayed(offsetMinutes,token);
+  };
+  const onData=event=>{
+    if(token!==state.radarProjectionToken){finish();return}
+    if(event?.sourceId!=='raineta-radar')return;
+    if(event?.isSourceLoaded||state.map.isSourceLoaded?.('raineta-radar'))finish();
+  };
+  state.map.on('sourcedata',onData);
+  setTimeout(()=>{
+    if(token!==state.radarProjectionToken){finish();return}
+    if(state.map.getSource('raineta-radar')&&state.map.isSourceLoaded?.('raineta-radar'))finish();
+  },1800);
 }
 function projectedRadarOpacity(minutes,canMove,reliable){
   const requested=Math.max(0,Math.min(RADAR_VISUAL_HORIZON_MINUTES,Number(minutes)||0));
@@ -3808,7 +3846,7 @@ async function fetchSpatialModelMeta(){
 function warmFutureModelMap(){
   Promise.allSettled([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
 }
-function animateModelSwap(incomingId,targetOpacity,token,duration=170){
+function animateModelSwap(incomingId,targetOpacity,token,duration=170,displayOffset=state.radarOffset){
   cancelModelSwap();
   const outgoing=state.futureModelActiveId&&state.map?.getLayer(state.futureModelActiveId)?state.futureModelActiveId:null;
   const oldOpacity=outgoing?rasterOpacity(outgoing,targetOpacity):0;
@@ -3823,6 +3861,7 @@ function animateModelSwap(incomingId,targetOpacity,token,duration=170){
     if(outgoing&&outgoing!==incomingId)removeRadarLayer(outgoing);
     state.futureModelActiveId=incomingId;
     state.map.setPaintProperty(incomingId,'raster-opacity',targetOpacity);
+    markRadarDisplayed(displayOffset,token);
   };
   state.futureModelSwapAnimation=requestAnimationFrame(step);
 }
@@ -3840,6 +3879,7 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   const key=timeBlend.fromIndex+':'+timeBlend.toIndex+':'+fraction.toFixed(3);
   if(state.futureModelKey===key&&state.futureModelActiveId&&state.map.getLayer(state.futureModelActiveId)){
     state.map.setPaintProperty(state.futureModelActiveId,'raster-opacity',blend.modelOpacity);
+    markRadarDisplayed(minutes,token);
     return{ok:true,layerIds:[state.futureModelActiveId],timeBlend};
   }
   const ids=modelFutureIds(),active=state.futureModelActiveId&&state.map.getLayer(state.futureModelActiveId)?state.futureModelActiveId:null;
@@ -3850,7 +3890,7 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   state.map.addLayer({id:incoming,type:'raster',source:incoming,paint:{'raster-opacity':0,'raster-fade-duration':0}},modelBeforeRadarLayerId());
   const ready=await waitForRasterSources([incoming],token,5200);
   if(token!==state.radarProjectionToken||!ready||!state.map.getLayer(incoming))return{ok:false,layerIds:[]};
-  animateModelSwap(incoming,blend.modelOpacity,token,170);
+  animateModelSwap(incoming,blend.modelOpacity,token,170,minutes);
   state.futureModelKey=key;
   const mode=futureVisualLabel(minutes);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
@@ -3891,7 +3931,7 @@ function showSyntheticRadarFuture(minutes,r,latest){
     modelPromise.then(async info=>{
       if(token!==state.radarProjectionToken||!info?.ok)return;
       const ready=await waitForRasterSources(info.layerIds,token,4500);
-      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,170);
+      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,170,minutes);
     });
     return true;
   }
@@ -3920,7 +3960,7 @@ function showSyntheticRadarFuture(minutes,r,latest){
   };
   const commit=()=>{
     if(token!==state.radarProjectionToken||!state.map.getLayer(sourceId)){detach();return}
-    animateRadarSwap(sourceId,blend.radarOpacity,token,170);
+    animateRadarSwap(sourceId,blend.radarOpacity,token,170,minutes);
     detach();
   };
   const onSourceData=event=>{
@@ -4052,7 +4092,7 @@ function radarArrivalTarget(){
   };
 }
 function stopRadarPlayback(){
-  if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
+  if(state.playTimer){clearTimeout(state.playTimer);state.playTimer=null}
   state.playMode=null;
   if($('play'))$('play').textContent='▶';
   if($('radarArrival')){
@@ -4115,20 +4155,29 @@ function playRadarUntilRain(){
   slider.value=String(current);showRadarOffset(current);
   state.playMode='arrival';
   button.disabled=false;button.classList.add('running');button.textContent='❚❚ HASTA LLUVIA';
-  const tickMs=100;
-  state.playTimer=setInterval(()=>{
+  const tick=async()=>{
+    if(state.playMode!=='arrival')return;
     const currentOffset=Number(slider.value)||0;
     const next=Math.min(target.target,currentOffset+1);
     slider.value=String(next);showRadarOffset(next);
+    const painted=await waitForRadarDisplayed(next);
+    if(state.playMode!=='arrival')return;
+    if(!painted){
+      stopRadarPlayback();
+      $('radarMotion').textContent='La animación se ha detenido porque el siguiente frame no terminó de cargarse. El mapa mantiene el último frame válido en vez de avanzar en falso.';
+      return;
+    }
     if(next>=target.target){
-      if(state.playTimer){clearInterval(state.playTimer);state.playTimer=null}
-      state.playMode=null;
+      state.playTimer=null;state.playMode=null;
       button.classList.remove('running');
       updateRadarArrivalButton();
       markRadarArrival(target);
       try{navigator.vibrate?.([20,40,20])}catch{}
+      return;
     }
-  },tickMs);
+    state.playTimer=setTimeout(tick,RADAR_FRAME_SETTLE_MS);
+  };
+  state.playTimer=setTimeout(tick,RADAR_FRAME_SETTLE_MS);
 }
 function renderRadar(){
   initMap();if(!state.map)return;
@@ -4531,22 +4580,23 @@ $('play').onclick=function(){
   if(!state.frames.length)return;
   const slider=$('frame');if(Number(slider.value)>=Number(slider.max))slider.value=slider.min;
   this.textContent='❚❚';state.playMode='loop';
-  const tick=()=>{
+  const tick=async()=>{
     if(state.playMode!=='loop')return;
     const current=Number(slider.value)||0;
-    let next,delay;
-    if(current<0){
-      next=nextObservedOffset(current);
-      delay=RADAR_PAST_FRAME_MS;
-    }else{
-      next=current+1;
-      delay=RADAR_FUTURE_TICK_MS;
-    }
-    if(next>Number(slider.max)){next=Number(slider.min);delay=RADAR_PAST_FRAME_MS}
+    let next=current<0?nextObservedOffset(current):current+1;
+    if(next>Number(slider.max))next=Number(slider.min);
     slider.value=String(next);showRadarOffset(next);
+    const painted=await waitForRadarDisplayed(next);
+    if(state.playMode!=='loop')return;
+    if(!painted){
+      stopRadarPlayback();
+      $('radarMotion').textContent='Animación detenida: el siguiente frame no terminó de pintarse. Se conserva el último frame válido para no simular movimiento sin datos.';
+      return;
+    }
+    const delay=next<0?RADAR_PAST_FRAME_MS:RADAR_FRAME_SETTLE_MS;
     state.playTimer=setTimeout(tick,delay);
   };
-  state.playTimer=setTimeout(tick,Number(slider.value)<0?RADAR_PAST_FRAME_MS:RADAR_FUTURE_TICK_MS);
+  state.playTimer=setTimeout(tick,Number(slider.value)<0?RADAR_PAST_FRAME_MS:RADAR_FRAME_SETTLE_MS);
 };
 if('serviceWorker'in navigator){
   navigator.serviceWorker.register('/rain/sw.js',{updateViaCache:'none'}).then(reg=>{

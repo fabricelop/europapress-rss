@@ -526,3 +526,33 @@ test('future model uses internal motion-compensated protocol instead of opacity-
   assert.match(app,/ctx\.drawImage\(toImage,plan\.toDx,plan\.toDy,w,h\)/);
   assert.match(app,/raineta-model:\/\/forecast\//);
 });
+
+
+test('future playback waits for a painted frame instead of racing at 100 ms',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.doesNotMatch(app,/RADAR_FUTURE_TICK_MS=100/);
+  assert.match(app,/async function waitForRadarDisplayed\(offset,timeoutMs=RADAR_FRAME_READY_TIMEOUT_MS\)/);
+  assert.match(app,/const painted=await waitForRadarDisplayed\(next\)/);
+  assert.match(app,/state\.radarDisplayedOffset=value/);
+  assert.match(app,/markRadarDisplayed\(displayOffset,token\)/);
+});
+
+test('arrival playback is also frame-ready driven',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('function playRadarUntilRain');
+  const end=app.indexOf('function renderRadar',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/const tick=async\(\)=>/);
+  assert.match(fn,/await waitForRadarDisplayed\(next\)/);
+  assert.doesNotMatch(fn,/setInterval\(/);
+  assert.doesNotMatch(fn,/tickMs=100/);
+});
+
+test('returning to observed radar invalidates pending future renders',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('function showObservedRadar');
+  const end=app.indexOf('function projectedRadarOpacity',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/const token=\+\+state\.radarProjectionToken/);
+  assert.match(fn,/markRadarDisplayed\(offsetMinutes,token\)/);
+});
