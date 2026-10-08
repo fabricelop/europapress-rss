@@ -1,0 +1,72 @@
+name: Instagram nocturno Shakira y Real Madrid - solo autorizados
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "instagram-publisher/scripts/overnight_two_posts.py"
+      - ".github/workflows/instagram-overnight-two-posts.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/instagram-overnight-two-posts.yml"
+  schedule:
+    - cron: "*/20 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: instagram-overnight-20261009
+  cancel-in-progress: false
+
+jobs:
+  publisher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /instagram-publisher/scripts/overnight_two_posts.py
+            /instagram-publisher/overnight-status.json
+
+      - name: Comprobar dos objetivos exactos y estados de seguridad
+        run: python3 instagram-publisher/scripts/overnight_two_posts.py --selftest
+
+      - name: Un ciclo real autorizado de Instagram (solo dos posts)
+        if: github.event_name != 'pull_request'
+        id: publish
+        env:
+          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 instagram-publisher/scripts/overnight_two_posts.py
+
+      - name: Guardar informe seguro y enlaces de publicaciones
+        if: github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --sparse instagram-publisher/overnight-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Instagram nocturno: estado Shakira y Real Madrid"
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || { git rebase --abort || true; sleep "$((n*2))"; continue; }
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$((n*2))"
+          done
+          echo "No se pudo guardar el informe Instagram" >&2
+          exit 1
+
+      - name: Desactivar el cron al completar o vencer esta noche
+        if: github.event_name != 'pull_request' && steps.publish.outputs.should_disable == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow disable instagram-overnight-two-posts.yml --repo "$GITHUB_REPOSITORY" || true
