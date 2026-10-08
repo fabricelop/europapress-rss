@@ -172,14 +172,14 @@ async function inlineTtiTelegramDecision(env,update,event){
   const deliveriesResponse=await fetch(gh+"telegram/ttittulares-deliveries.json?ref=main",{headers,cache:"no-store"});
   if(!deliveriesResponse.ok)throw new Error("Delivery verification failed HTTP "+deliveriesResponse.status);
   const deliveriesFile=await deliveriesResponse.json();
-  const deliveriesDoc=JSON.parse(Buffer.from(String(deliveriesFile.content||"").replace(/\\s/g,""),"base64").toString("utf8"));
+  const deliveriesDoc=JSON.parse(Buffer.from(String(deliveriesFile.content||"").replace(/\s/g,""),"base64").toString("utf8"));
   const messageIds=linkedTtiTelegramMessages(deliveriesDoc.items,eventId,event.message_id);
   let persisted=false;
   for(let attempt=0;attempt<5;attempt++){
     const response=await fetch(gh+"ttittulares/decisions.json?ref=main",{headers,cache:"no-store"});
     if(!response.ok)throw new Error("Immediate decision read HTTP "+response.status);
     const file=await response.json();
-    const doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\\s/g,""),"base64").toString("utf8"));
+    const doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\s/g,""),"base64").toString("utf8"));
     if(!Array.isArray(doc.items))throw new Error("Decisions schema invalid");
     let row=doc.items.find(item=>String(item.event_id||"")===eventId);
     if(row&&["dismissed","published"].includes(row.status)&&row.status!==status)
@@ -191,7 +191,7 @@ async function inlineTtiTelegramDecision(env,update,event){
     const payload={
       message:"TTiTTulares: "+status+" inmediato desde Telegram "+eventId,
       branch:"main",sha:file.sha,
-      content:Buffer.from(JSON.stringify(doc,null,2)+"\\n","utf8").toString("base64")
+      content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64")
     };
     const write=await fetch(gh+"ttittulares/decisions.json",{method:"PUT",headers,body:JSON.stringify(payload)});
     if(write.ok){persisted=true;break;}
