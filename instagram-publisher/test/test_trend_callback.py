@@ -82,6 +82,33 @@ class TrendCallbackTests(unittest.TestCase):
         self.assertIn("route_package_callback(cb)",source)
         self.assertNotIn("handle_package_callback(cb)",source)
 
+    def test_expired_telegram_ack_does_not_contact_publisher(self):
+        def load(path, fallback):
+            if path.endswith("telegram-bot-state.json"):return {"chat_id":42}
+            raise AssertionError(path)
+        def telegram(method, payload=None):
+            if method=="answerCallbackQuery":
+                raise RuntimeError("callback query has expired")
+            return True
+        with (patch.object(bot,"load_remote_json",side_effect=load),
+              patch.object(bot,"call",side_effect=telegram) as calls,
+              patch.object(bot.urllib.request,"urlopen") as urlopen,
+              patch.dict(os.environ,{
+                  "INSTAGRAM_PUBLISHER_URL":"https://publisher.example",
+                  "INSTAGRAM_INTERNAL_SECRET":"a"*40
+              })):
+            result=bot.handle_instagram_package_callback(self.cb)
+        self.assertEqual(result,"expired_callback")
+        urlopen.assert_not_called()
+        self.assertEqual([c.args[0] for c in calls.call_args_list],["answerCallbackQuery","sendMessage"])
+
+    def test_web_listener_persists_instagram_callback_result(self):
+        import inspect
+        source=inspect.getsource(bot.poll_packages)
+        self.assertIn("TT_INSTAGRAM_CALLBACK_RESULT",source)
+        self.assertIn("Registrar resultado del boton Instagram TTendencias",source)
+        self.assertIn("TT_INSTAGRAM_CALLBACK_EXCEPTION",source)
+
     def test_unlinked_message_not_publishable(self):
         self.cb["message"]["message_id"]=9999
         def load(path, fallback):
