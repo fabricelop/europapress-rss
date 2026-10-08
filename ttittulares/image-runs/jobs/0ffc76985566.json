@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-0ffc76985566-r1-a1-1791451222912",
+  "requested_at": "2026-10-08T09:20:22.911901Z",
+  "updated_at": "2026-10-08T09:20:22.911901Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "0ffc76985566",
+  "event_id": "0ffc76985566",
+  "target_name": "Anticorrupción informa al juez de que existen indicios contra el PSOE por el caso Leire pero aún es prematuro pedir su imputación",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Anticorrupción informa al juez de que existen indicios contra el PSOE por el caso Leire pero aún es prematuro pedir su imputación",
+    "revision": 1,
+    "factual_summary": "La Fiscalía Anticorrupción aprecia indicios que podrían implicar al PSOE como persona jurídica en el caso Leire Díez, pero considera prematuro solicitar ahora su imputación. El ministerio público plantea esperar a nuevas diligencias, entre ellas la declaración del exsecretario de Organización Santos Cerdán.",
+    "tweet_text": "Anticorrupción ve indicios que podrían implicar al PSOE en el caso Leire, pero considera prematuro pedir su imputación y espera nuevas diligencias, incluida la declaración de Santos Cerdán.\n\n🌶️ La imputación queda, de momento, en sala de espera.",
+    "remate": "🌶️ La imputación queda, de momento, en sala de espera.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nAnticorrupción ve indicios que podrían implicar al PSOE en el caso Leire, pero considera prematuro pedir su imputación y espera nuevas diligencias, incluida la declaración de Santos Cerdán.\n\n🌶️ La imputación queda, de momento, en sala de espera.\n\nREMATE EXACTO:\n🌶️ La imputación queda, de momento, en sala de espera.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Fiscalía Anticorrupción aprecia indicios que podrían implicar al PSOE como persona jurídica en el caso Leire Díez, pero considera prematuro solicitar ahora su imputación. El ministerio público plantea esperar a nuevas diligencias, entre ellas la declaración del exsecretario de Organización Santos Cerdán.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/espana/anticorrupcion-informa-juez-existen-indicios-psoe-leire-20261008110744-nt.html",
+    "citations": [
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/08/anticorrupcion-ve-indicios-contra-el-psoe-en-el-caso-leire-pero-considera-prematuro-pedir-su-imputacion-cadena-ser/"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/2026-10-08/la-fiscalia-anticorrupcion-ve-indicios-contra-el-psoe-en-el-caso-leire-diez-pero-pospone-la-decision-sobre-su-imputacion.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
