@@ -1,3 +1,12 @@
+export function evaluateOverlaySourceState({enabled=false,context=true,verified=false,loaded=0,errors=0}={}){
+  if(!enabled)return'disabled';
+  if(!context)return'hidden';
+  if(!verified)return errors>0?'error':'unverified';
+  if(errors>0&&loaded<=0)return'error';
+  if(loaded>0)return'active';
+  return'loading';
+}
+
 export function clamp01(v){return Math.max(0,Math.min(1,Number.isFinite(v)?v:0))}
 export function maskDensity(mask){if(!mask?.length)return 0;let n=0;for(const v of mask)n+=v?1:0;return n/mask.length}
 function overlap(prev,cur,w,h,dx,dy,pwet,cwet){
