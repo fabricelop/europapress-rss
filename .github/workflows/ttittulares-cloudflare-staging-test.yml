@@ -63,6 +63,19 @@ jobs:
              throw Error("Missing original TTiTTulares state fields");
           console.log("TTITTULARES_PUBLIC_SMOKE_OK prepared="+(d.prepared.items||[]).length+" processing="+d.status.processing_count);
           NODE
+      - name: Diagnóstico público Cloudflare 1042 (sin secretos ni despliegue)
+        run: |
+          for name in ttittulares-no-vercel-test ttendencias-no-vercel-test; do
+            for path in /health /; do
+              host="https://$name.fabricelop.workers.dev$path"
+              echo "TEST_URL=$host"
+              curl -sS -L --max-time 20 -D /tmp/tti-headers \
+                -o /tmp/tti-body -w 'HTTP=%{http_code} REMOTE=%{remote_ip} TOTAL=%{time_total}\\n' "$host" || true
+              grep -i -E '^(HTTP/|cf-ray:|server:|content-type:)' /tmp/tti-headers || true
+              head -c 180 /tmp/tti-body || true
+              echo
+            done
+          done
       - name: Empaquetar Worker ligero para deploy independiente
         uses: actions/upload-artifact@v4
         with:
