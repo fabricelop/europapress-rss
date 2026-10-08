@@ -4,6 +4,12 @@ on:
     paths:
       - 'instagram-publisher/**'
       - '.github/workflows/instagram-publisher-tests.yml'
+      - 'shared/instagram_pilot.py'
+      - 'trends/send_explained_telegram.py'
+      - '.github/workflows/send-ttittulares-ready-telegram.yml'
+      - '.github/workflows/send-ttendencias-explained-telegram.yml'
+      - 'no-vercel/ttittulares-worker/src/index.js'
+      - 'trends/telegram_bot.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,3 +24,12 @@ jobs:
       - name: Run unit tests
         working-directory: instagram-publisher
         run: npm test
+      - name: Run Instagram keyboard and JPEG tests
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 -m unittest discover -s instagram-publisher/test -p 'test_*.py' -v
+      - name: Check Python syntax for both Telegram projects
+        run: |
+          python3 -m py_compile shared/instagram_pilot.py trends/send_explained_telegram.py trends/telegram_bot.py
+      - name: Check TTiTTulares Cloudflare webhook syntax
+        run: node --check no-vercel/ttittulares-worker/src/index.js
