@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T08:48:11.701Z",
+  "updated_at": "2026-10-08T08:48:17.140Z",
   "items": [
     {
       "event_id": "eb75d6de13db",
@@ -328,8 +328,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -345,13 +345,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T08:39:22.007039Z",
       "image": {
-        "url": "https://img.rtve.es/imagenes/muerte-maricarmen-ultima-hora-directo-hoy-video-cronica/01791401688060.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/noticias/20261008/muerte-maricarmen-ultima-hora-directo-hoy-video-cronica/17257990.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Entra en vigor el primer decreto de vivienda"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f8839508e223-r1-ai1-791448884573.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f38129864bc61aa144a8ab137150569451395844feb13c7a582f78524ab2ecd1",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 689762,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f8839508e223",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f8839508e223-r1-a1-1791448884573"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f8839508e223-r1-ai1-791448884573.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f8839508e223-r1-ai1-791448884573.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "f38129864bc61aa144a8ab137150569451395844feb13c7a582f78524ab2ecd1",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 689762,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f8839508e223",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f8839508e223-r1-a1-1791448884573"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f8839508e223-r1-ai1-791448884573.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T08:48:17.140Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T08:48:17.140Z"
     }
   ],
   "count": 12
