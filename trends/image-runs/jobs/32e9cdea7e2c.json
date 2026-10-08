@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-32e9cdea7e2c-r0-a1-1791467851920",
+  "requested_at": "2026-10-08T13:57:31.919429Z",
+  "updated_at": "2026-10-08T13:57:31.919429Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "32e9cdea7e2c",
+  "trend_id": "32e9cdea7e2c",
+  "target_name": "Beiras",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Beiras",
+    "revision": 0,
+    "explanation": "TT#3 Beiras es tendencia por la muerte de Xosé Manuel Beiras a los 90 años, referente histórico del nacionalismo gallego y figura clave del BNG y Anova.",
+    "closer_text": "",
+    "trend_names": [
+      "Beiras"
+    ],
+    "group_title": "Beiras",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-08T15:55:00.000+02:00",
+    "verification_sources": [
+      "https://www.europapress.es/galicia/noticia-fallece-xose-manuel-beiras-referente-historico-nacionalismo-gallego-20261008090217.html",
+      "https://efe.com/espana/2026-10-08/muere-xose-manuel-beiras/"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Póster gráfico editorial sofisticado, formas contundentes, geometría limpia, textura de impresión y jerarquía visual muy clara; no aspecto infantil.",
+    "image_style_name": "poster_grafico",
+    "image_style_index": 2
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
