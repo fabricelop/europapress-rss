@@ -42,6 +42,30 @@ class InstagramPilotTests(unittest.TestCase):
             result=attach_button(keyboard,"tx:i:abc123:2",{"image_url":"ai.jpg"})
         self.assertEqual(result["inline_keyboard"][0][0]["callback_data"],"tx:i:abc123:2")
 
+    def test_delivery_workflows_keep_explicit_manual_pilot_default(self):
+        root=pathlib.Path(__file__).resolve().parents[2]
+        for relative in (
+            ".github/workflows/send-ttittulares-ready-telegram.yml",
+            ".github/workflows/send-ttendencias-explained-telegram.yml",
+            ".github/workflows/refresh-ttittulares-telegram-keyboard.yml",
+        ):
+            text=(root/relative).read_text(encoding="utf8")
+            self.assertIn("INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED || '1' }}",text)
+            self.assertNotIn("/media_publish",text)
+        ready=(root/".github/workflows/send-ttittulares-ready-telegram.yml").read_text(encoding="utf8")
+        self.assertIn("if current:",ready)
+        self.assertIn("edit_keyboard(int(current.get",ready)
+        self.assertIn('patches["instagram"]=instagram_post',ready)
+
+    def test_shakira_audit_makes_no_instagram_publish_request(self):
+        root=pathlib.Path(__file__).resolve().parents[2]
+        workflow=(root/".github/workflows/instagram-shakira-readonly-audit.yml").read_text(encoding="utf8")
+        self.assertIn("SELECT state,media_id,permalink",workflow)
+        self.assertIn("ttendencias:3ff255e46d90",workflow)
+        self.assertIn("/meta-preflight",workflow)
+        self.assertNotIn("/publish",workflow)
+        self.assertNotIn("/media_publish",workflow)
+
     def test_png_converted_to_real_jpeg(self):
         with tempfile.TemporaryDirectory() as root:
             data=materialize(root,"ttittulares","abc123",2,png_rgba())

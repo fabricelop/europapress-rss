@@ -9,6 +9,7 @@ on:
       - '.github/workflows/send-ttittulares-ready-telegram.yml'
       - '.github/workflows/refresh-ttittulares-telegram-keyboard.yml'
       - '.github/workflows/send-ttendencias-explained-telegram.yml'
+      - '.github/workflows/instagram-shakira-readonly-audit.yml'
       - 'no-vercel/ttittulares-worker/src/index.js'
       - 'trends/telegram_bot.py'
   workflow_dispatch:
@@ -30,6 +31,8 @@ jobs:
             /no-vercel/ttittulares-worker/src/index.js
             /.github/workflows/send-ttittulares-ready-telegram.yml
             /.github/workflows/refresh-ttittulares-telegram-keyboard.yml
+            /.github/workflows/send-ttendencias-explained-telegram.yml
+            /.github/workflows/instagram-shakira-readonly-audit.yml
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

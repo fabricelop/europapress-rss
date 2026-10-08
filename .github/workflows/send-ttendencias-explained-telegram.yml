@@ -60,7 +60,7 @@ jobs:
       - name: Enviar o reparar paquetes visuales
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED }}
+          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED || '1' }}
         run: |
           set -euo pipefail
           python3 trends/send_explained_telegram.py send --patch /tmp/ttendencias-delivery-patch.json

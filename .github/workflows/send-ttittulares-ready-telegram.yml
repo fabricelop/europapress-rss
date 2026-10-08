@@ -53,7 +53,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED }}
+          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED || '1' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -304,6 +304,7 @@ jobs:
 
           changed=False
           touched=0
+          print("TTITTULARES_INSTAGRAM_GATE="+("enabled" if ig_enabled() else "disabled"))
 
           for item in prepared.get("items",[]):
               eid=str(item.get("event_id") or "").strip()
