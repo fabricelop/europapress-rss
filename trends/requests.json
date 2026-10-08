@@ -37589,7 +37589,7 @@
       "id": "23c6a2de8c96",
       "name": "Charlie Kirk",
       "revision": 1,
-      "status": "update",
+      "status": "problematic",
       "requested_at": "2026-10-08T18:38:16.725Z",
       "rank": 31,
       "with_image": true,
@@ -37604,11 +37604,27 @@
         "Charlie Kirk"
       ],
       "auto_queued": false,
-      "problematic_attempts": 1,
+      "problematic_attempts": 2,
       "editorial_engine": "chatgpt-automation-outbox",
       "inactive_at": "2026-10-08T20:01:15+02:00",
       "inactive_reason": "left-top10-radar",
-      "reexplain": true
+      "reexplain": true,
+      "last_attempt_at": "2026-10-08T20:52:00+02:00",
+      "problematic_at": "2026-10-08T20:52:00+02:00",
+      "problem_reason": "«Charlie Kirk» aparece de forma consistente como tendencia anticipada en España, pero tras varias búsquedas actuales no se ha podido verificar con fuentes fiables e independientes un detonante único. Solo se localiza una pieza partidista que vincula el término a un fotomontaje sobre Vito Quiles, sin corroboración suficiente para afirmarlo como motivo de la tendencia.",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "La Bandera",
+          "url": "https://labandera.es/senalan-a-vito-quiles-con-una-amenaza-de-muerte-al-estilo-del-asesinato-de-charlie-kirk-no-nos-queda-otra/"
+        }
+      ],
+      "disable_ai_image": true,
+      "image_strategy": "none",
+      "ai_image_status": "disabled",
+      "image_status": "none",
+      "image_pending": false,
+      "fallback_image_status": "none"
     },
     {
       "id": "58a586236216",
@@ -37828,6 +37844,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-08T20:49:00+02:00",
+  "updated_at": "2026-10-08T20:52:00+02:00",
   "count": 705
 }
