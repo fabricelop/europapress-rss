@@ -1,12 +1,18 @@
 {
-  "name":"ttendencias-no-vercel-test",
-  "version":"0.1.0",
-  "private":true,
-  "type":"module",
-  "scripts":{
-    "test":"node --test",
-    "deploy":"wrangler deploy",
-    "dev":"wrangler dev"
+  "name": "ttendencias-no-vercel-test",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "stage": "node scripts/stage.mjs",
+    "pretest": "npm run stage",
+    "test": "node --test test/*.test.mjs",
+    "predev": "npm run stage",
+    "dev": "wrangler dev",
+    "predeploy": "npm run stage",
+    "deploy": "wrangler deploy"
   },
-  "devDependencies":{"wrangler":"^4.34.0"}
+  "devDependencies": {
+    "wrangler": "^4.34.0"
+  }
 }
