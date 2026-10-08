@@ -27,7 +27,7 @@ BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 TTI_DELIVERIES=ROOT/"telegram/ttittulares-deliveries.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 WORKER="https://tt-control.fabricelop.workers.dev"
-APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://europapress-rss-fabricelopezillac-9660.vercel.app").rstrip("/")
+APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://ttendencias-no-vercel-test.fabricelop.workers.dev").rstrip("/")
 BUTTONS_VERSION=5
 TERMINAL={"published","dismissed"}
 
