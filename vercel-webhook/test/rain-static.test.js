@@ -1,3 +1,6 @@
+import {readFileSync} from 'node:fs';
+import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
+import {evaluateOverlaySourceState} from '../rain/radar-core.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
@@ -143,4 +146,58 @@ test('several local flows stabilize the motion field',()=>{
   assert.ok(combined);
   assert.equal(combined.historySamples,2);
   assert.ok(combined.confidence>0);
+});
+
+test('safe production release keeps stable radar path and adds fixed AHORA independently',()=>{
+ const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+ const html=readFileSync(new URL('../rain/index.html',import.meta.url),'utf8');
+ assert.match(app,/const APP_VERSION='0\\.17\\.18'/);
+ assert.match(app,/function showProjectedRadar\\(minutes\\)/);
+ assert.doesNotMatch(app,/function syntheticRadarTileTemplate/);
+ assert.match(html,/id="radarNowMarker"/);
+ assert.match(html,/<em>AHORA<\\/em>/);
+ assert.match(app,/\\$\\('radarNowMarker'\\)\\.style\\.left/);
+ assert.match(html,/id="radarReliableMarker"/);
+ assert.match(app,/style\\.display=reliable>=5\\?'':'none'/);
+});
+
+test('DWD lightning source is independently verified and errors are visible',()=>{
+ assert.equal(evaluateOverlaySourceState({enabled:false}),'disabled');
+ assert.equal(evaluateOverlaySourceState({enabled:true,context:false,verified:true,loaded:2}),'hidden');
+ assert.equal(evaluateOverlaySourceState({enabled:true,verified:false}),'unverified');
+ assert.equal(evaluateOverlaySourceState({enabled:true,verified:false,errors:1}),'error');
+ assert.equal(evaluateOverlaySourceState({enabled:true,verified:true,loaded:0}),'loading');
+ assert.equal(evaluateOverlaySourceState({enabled:true,verified:true,loaded:1}),'active');
+ const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+ assert.match(app,/function verifyLightningSource\\(/);
+ assert.match(app,/function ensureLightningLayer\\(/);
+ assert.match(app,/function applyRadarLightningContrast\\(/);
+ assert.match(app,/gray\\?-1:0/);
+ assert.match(app,/function lightningContextVisible\\(/);
+ assert.match(app,/\\$\\('radarLightning'\\)\\.onclick=toggleLightning/);
+});
+
+test('DWD lightning proxy accepts only official layers and validates coordinates',()=>{
+ assert.equal(normalizeLightningLayer('Accumulated_Flash_Geometry'),'dwd:Accumulated_Flash_Geometry');
+ assert.equal(normalizeLightningLayer('dwd:NCEW_EU'),'dwd:NCEW_EU');
+ assert.throws(()=>normalizeLightningLayer('other'),'layer_not_allowed');
+ assert.throws(()=>parseLightningBbox('0,0,0,1'),'invalid_bbox');
+ assert.throws(()=>parseLightningBbox('0,0,30000000,1'),'invalid_bbox');
+ const url=new URL(buildDwdLightningGetMapUrl({layer:'dwd:NCEW_EU',bbox:'-100,0,100,100',width:256,height:256}));
+ assert.equal(url.hostname,'maps.dwd.de');
+ assert.equal(url.searchParams.get('transparent'),'true');
+ assert.equal(url.searchParams.get('layers'),'dwd:NCEW_EU');
+ const endpoint=readFileSync(new URL('../api/rain-lightning.js',import.meta.url),'utf8');
+ assert.match(endpoint,/if\\(req\\.method!=='GET'\\)/);
+ assert.match(endpoint,/buildDwdLightningGetMapUrl/);
+ assert.match(endpoint,/Cache-Control/);
+});
+
+test('attribution is compact by default and accessible on demand',()=>{
+ const html=readFileSync(new URL('../rain/index.html',import.meta.url),'utf8');
+ const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+ assert.match(html,/#map \\.maplibregl-ctrl-attrib\\.maplibregl-compact:not\\(\\.raineta-attr-expanded\\)/);
+ assert.match(app,/raineta-attr-expanded/);
+ assert.match(app,/toggle\\.setAttribute\\('aria-expanded'/);
+ assert.match(app,/new maplibregl\\.AttributionControl\\(\\{compact:true/);
 });
