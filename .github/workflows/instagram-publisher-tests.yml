@@ -18,6 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /instagram-publisher/
+            /shared/instagram_pilot.py
+            /trends/telegram_bot.py
+            /trends/send_explained_telegram.py
+            /no-vercel/ttittulares-worker/src/index.js
+            /.github/workflows/send-ttittulares-ready-telegram.yml
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
