@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
-import {precipitationMaskFromRgba,estimateModelTileMotion,modelMotionBlendPlan} from '../rain/model-motion-core.js';
+import {precipitationMaskFromRgba,estimateModelTileMotion,modelMotionSingleFramePlan} from '../rain/model-motion-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -403,19 +403,11 @@ test('lightning verifies in background and first tap does not force revalidation
 });
 
 
-test('hybrid future hands off quickly enough to avoid double precipitation',()=>{
-  assert.deepEqual(hybridFutureBlend(3),{radarOpacity:.76,modelOpacity:0,mode:'radar'});
-  assert.equal(hybridFutureBlend(12).modelOpacity,0);
-  const m20=hybridFutureBlend(20);
-  assert.equal(m20.mode,'hybrid');
-  assert.ok(m20.radarOpacity>m20.modelOpacity);
-  const m24=hybridFutureBlend(24);
-  assert.ok(m24.modelOpacity>m24.radarOpacity);
-  const m28=hybridFutureBlend(28);
-  assert.equal(m28.mode,'model');
-  assert.equal(m28.radarOpacity,0);
-  assert.equal(hybridFutureBlend(45).radarOpacity,0);
-  assert.equal(futureVisualLabel(90),'PREVISIÓN MODELO');
+test('future visual keeps only one persistent source around the handoff',()=>{
+  assert.deepEqual(hybridFutureBlend(15,15),{radarOpacity:.76,modelOpacity:0,mode:'radar',handoffMinutes:15});
+  assert.deepEqual(hybridFutureBlend(16,15),{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:15});
+  assert.equal(hybridFutureBlend(24,30).mode,'radar');
+  assert.equal(hybridFutureBlend(31,30).mode,'model');
 });
 
 test('spatial model time interpolates continuously between forecast steps',()=>{
@@ -476,7 +468,7 @@ test('model-only future waits for model tiles before fading radar away',()=>{
 });
 
 
-test('model motion interpolation detects and compensates a translating rain blob',()=>{
+test('model interpolation moves one rain field instead of blending two',()=>{
   const w=64,h=64;
   const rgba=(x0,y0)=>{
     const out=new Uint8ClampedArray(w*h*4);
@@ -485,24 +477,22 @@ test('model motion interpolation detects and compensates a translating rain blob
     }
     return out;
   };
-  const a=rgba(12,24),b=rgba(18,21);
-  const motion=estimateModelTileMotion(a,b,w,h,{target:64,maxShift:10,minConfidence:.1});
+  const motion=estimateModelTileMotion(rgba(12,24),rgba(18,21),w,h,{target:64,maxShift:10,minConfidence:.1});
   assert.equal(motion.ok,true);
-  assert.ok(Math.abs(motion.dx-6)<=1);
-  assert.ok(Math.abs(motion.dy+3)<=1);
-  const plan=modelMotionBlendPlan(.5,motion);
-  assert.equal(plan.motionApplied,true);
-  assert.ok(Math.abs(plan.fromDx-3)<=.6);
-  assert.ok(Math.abs(plan.toDx+3)<=.6);
+  const first=modelMotionSingleFramePlan(.25,motion);
+  assert.equal(first.source,'from');
+  assert.ok(Math.abs(first.dx-1.5)<=.6);
+  const second=modelMotionSingleFramePlan(.75,motion);
+  assert.equal(second.source,'to');
+  assert.ok(Math.abs(second.dx+1.5)<=.6);
 });
 
-test('model motion interpolation falls back safely when no rain field can be tracked',()=>{
+test('model motion fallback selects one nearest model frame without blur',()=>{
   const rgba=new Uint8ClampedArray(32*32*4);
   const motion=estimateModelTileMotion(rgba,rgba,32,32);
   assert.equal(motion.ok,false);
-  assert.deepEqual(modelMotionBlendPlan(.25,motion),{
-    fraction:.25,fromOpacity:.75,toOpacity:.25,fromDx:0,fromDy:0,toDx:0,toDy:0,motionApplied:false
-  });
+  assert.deepEqual(modelMotionSingleFramePlan(.25,motion),{fraction:.25,source:'from',dx:0,dy:0,motionApplied:false});
+  assert.deepEqual(modelMotionSingleFramePlan(.75,motion),{fraction:.75,source:'to',dx:0,dy:0,motionApplied:false});
 });
 
 test('radar nowcast can move from +1 when local flow is reliable',()=>{
@@ -521,9 +511,9 @@ test('future model uses internal motion-compensated protocol instead of opacity-
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/maplibregl\.addProtocol\('raineta-model',rainetaModelMotionProtocol\)/);
   assert.match(app,/estimateModelTileMotion\(a\.rgba,b\.rgba,w,h/);
-  assert.match(app,/modelMotionBlendPlan\(fraction,motion\)/);
-  assert.match(app,/ctx\.drawImage\(fromImage,plan\.fromDx,plan\.fromDy,w,h\)/);
-  assert.match(app,/ctx\.drawImage\(toImage,plan\.toDx,plan\.toDy,w,h\)/);
+  assert.match(app,/modelMotionSingleFramePlan\(fraction,motion\)/);
+  assert.match(app,/if\(plan\.source==='to'\)ctx\.drawImage\(toImage,plan\.dx,plan\.dy,w,h\)/);
+  assert.match(app,/else ctx\.drawImage\(fromImage,plan\.dx,plan\.dy,w,h\)/);
   assert.match(app,/raineta-model:\/\/forecast\//);
 });
 
@@ -555,4 +545,27 @@ test('returning to observed radar invalidates pending future renders',()=>{
   const fn=app.slice(start,end);
   assert.match(fn,/const token=\+\+state\.radarProjectionToken/);
   assert.match(fn,/markRadarDisplayed\(offsetMinutes,token\)/);
+});
+
+
+test('radar to model handoff is dynamic and not a persistent mixed mode',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/function visualModelHandoffMinutes\(\)/);
+  assert.match(app,/Math\.max\(15,Math\.min\(30,reliable\|\|15\)\)/);
+  assert.match(app,/if\(blend\.mode==='model'\)/);
+  const start=app.indexOf('function showSyntheticRadarFuture');
+  const end=app.indexOf('async function showProjectedRadar',start);
+  const fn=app.slice(start,end);
+  assert.doesNotMatch(fn,/RADAR \+ MODELO/);
+  assert.doesNotMatch(fn,/const modelPromise=/);
+});
+
+test('ICON interpolation renders only one field at any requested minute',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('async function renderMotionInterpolatedModelTile');
+  const end=app.indexOf('async function rainetaModelMotionProtocol',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/if\(plan\.source==='to'\)/);
+  assert.doesNotMatch(fn,/globalAlpha=plan\.fromOpacity/);
+  assert.doesNotMatch(fn,/globalAlpha=plan\.toOpacity/);
 });

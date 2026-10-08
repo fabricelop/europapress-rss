@@ -1,7 +1,7 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
-import {estimateModelTileMotion,modelMotionBlendPlan} from './model-motion-core.js';
+import {estimateModelTileMotion,modelMotionSingleFramePlan} from './model-motion-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -63,7 +63,7 @@ const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FRAME_SETTLE_MS=90;
 const RADAR_FRAME_READY_TIMEOUT_MS=6500;
-const APP_VERSION='0.17.46';
+const APP_VERSION='0.17.47';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -3398,6 +3398,7 @@ function animateRadarSwap(incomingId,targetOpacity,token,duration=170,displayOff
       state.radarFutureActiveId=null;
     }
     applyRadarLightningContrast();
+    if(Number(displayOffset)<=visualModelHandoffMinutes())removeFutureModelLayer();
     markRadarDisplayed(displayOffset,token);
   };
   state.radarSwapAnimation=requestAnimationFrame(step);
@@ -3779,14 +3780,12 @@ async function renderMotionInterpolatedModelTile(fromIndex,toIndex,fraction,z,x,
   const w=Number(fromImage.width)||Number(toImage.width)||512,h=Number(fromImage.height)||Number(toImage.height)||512;
   const [a,b]=await Promise.all([imageBitmapRgba(fromImage),imageBitmapRgba(toImage)]);
   const motion=estimateModelTileMotion(a.rgba,b.rgba,w,h,{target:64,maxShift:10,minConfidence:.16});
-  const plan=modelMotionBlendPlan(fraction,motion);
+  const plan=modelMotionSingleFramePlan(fraction,motion);
   const canvas=modelTileCanvas(w,h),ctx=canvas.getContext('2d');
   ctx.clearRect(0,0,w,h);
-  ctx.globalAlpha=plan.fromOpacity;
-  ctx.drawImage(fromImage,plan.fromDx,plan.fromDy,w,h);
-  ctx.globalAlpha=plan.toOpacity;
-  ctx.drawImage(toImage,plan.toDx,plan.toDy,w,h);
   ctx.globalAlpha=1;
+  if(plan.source==='to')ctx.drawImage(toImage,plan.dx,plan.dy,w,h);
+  else ctx.drawImage(fromImage,plan.dx,plan.dy,w,h);
   try{fromImage.close?.();toImage.close?.()}catch{}
   if(typeof createImageBitmap==='function')return{data:await createImageBitmap(canvas)};
   return{data:canvas.transferToImageBitmap()};
@@ -3865,8 +3864,12 @@ function animateModelSwap(incomingId,targetOpacity,token,duration=170,displayOff
   };
   state.futureModelSwapAnimation=requestAnimationFrame(step);
 }
+function visualModelHandoffMinutes(){
+  const reliable=Math.max(0,Number(nowcastReliableHorizon())||0);
+  return Math.round(Math.max(15,Math.min(30,reliable||15)));
+}
 async function ensureFutureModelLayer(minutes,projectedAt){
-  const blend=hybridFutureBlend(minutes),token=state.radarProjectionToken;
+  const handoff=visualModelHandoffMinutes(),blend=hybridFutureBlend(minutes,handoff),token=state.radarProjectionToken;
   if(blend.modelOpacity<=.01){
     if(state.futureModelActiveId&&state.map?.getLayer(state.futureModelActiveId))state.map.setPaintProperty(state.futureModelActiveId,'raster-opacity',0);
     return{ok:false,layerIds:[]};
@@ -3892,16 +3895,10 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   if(token!==state.radarProjectionToken||!ready||!state.map.getLayer(incoming))return{ok:false,layerIds:[]};
   animateModelSwap(incoming,blend.modelOpacity,token,170,minutes);
   state.futureModelKey=key;
-  const mode=futureVisualLabel(minutes);
+  const mode=futureVisualLabel(minutes,handoff);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  if(Number(minutes)>=15){
-    $('radarPosition').textContent=mode==='PREVISIÓN MODELO'
-      ?'Precipitación prevista ICON-EU · '+fmtTime(projectedAt)
-      :'Nowcast radar + precipitación ICON-EU · '+fmtTime(projectedAt);
-    $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
-      ?'ICON-EU interpolado con movimiento entre '+fmtTime(timeBlend.fromTime)+' y '+fmtTime(timeBlend.toTime)+': RainETA estima el desplazamiento de la precipitación entre ambos campos y genera el estado intermedio.'
-      :'Transición radar → modelo: el radar conserva el movimiento de corto plazo y el modelo entra ya con interpolación espacial de movimiento, no solo por opacidad.';
-  }
+  $('radarPosition').textContent='Precipitación prevista ICON-EU · '+fmtTime(projectedAt);
+  $('radarMotion').textContent='Fuente modelo única desde +'+handoff+' min. RainETA desplaza una sola estructura de precipitación hacia el instante solicitado; si el movimiento entre pasos no es fiable, usa el frame de modelo más próximo sin mezclar dos campos.';
   return{ok:true,layerIds:[incoming],timeBlend};
 }
 function syntheticRadarTileTemplate(minutes,frames){
@@ -3914,25 +3911,25 @@ function syntheticRadarTileTemplate(minutes,frames){
 }
 function showSyntheticRadarFuture(minutes,r,latest){
   if(!state.map||!state.mapLoaded||!latest?.path)return false;
-  const token=++state.radarProjectionToken,blend=hybridFutureBlend(minutes);
+  const token=++state.radarProjectionToken,handoff=visualModelHandoffMinutes(),blend=hybridFutureBlend(minutes,handoff);
   const projectedAt=latest.time*1000+Number(minutes)*60_000;
   state.radarProjectionImageKey='synthetic-tiles@'+latest.time+'@'+Math.round(Number(minutes)||0);
   $('radarTime').textContent=fmtTime(projectedAt);
-  const mode=futureVisualLabel(minutes);
+  const mode=futureVisualLabel(minutes,handoff);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   $('radarPosition').textContent=mode==='PREVISIÓN MODELO'
     ?'Precipitación prevista · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
-    :mode==='RADAR + MODELO'
-      ?'Transición radar → modelo · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
-      :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+    :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+  $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
+    ?'Previsión de modelo como única capa.'
+    :'Nowcast radar como única capa hasta +'+handoff+' min; después RainETA cambia de fuente sin mantener dos campos meteorológicos superpuestos.';
 
-  const modelPromise=ensureFutureModelLayer(minutes,projectedAt).catch(()=>({ok:false,layerIds:[]}));
-  if(blend.radarOpacity<=.01){
-    modelPromise.then(async info=>{
+  if(blend.mode==='model'){
+    ensureFutureModelLayer(minutes,projectedAt).then(async info=>{
       if(token!==state.radarProjectionToken||!info?.ok)return;
       const ready=await waitForRasterSources(info.layerIds,token,4500);
-      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,170,minutes);
-    });
+      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,190,minutes);
+    }).catch(()=>{});
     return true;
   }
 

@@ -27,14 +27,14 @@ export function estimateModelTileMotion(prevRgba,nextRgba,width,height,{target=6
   if(!Number.isFinite(mag)||mag>limit)return{ok:false,dx:0,dy:0,confidence:Number(motion.confidence)||0};
   return{ok:true,dx,dy,confidence:Number(motion.confidence),score:Number(motion.score)||0};
 }
-export function modelMotionBlendPlan(fraction,motion){
-  const f=clamp01(fraction),ok=Boolean(motion?.ok);
+export function modelMotionSingleFramePlan(fraction,motion){
+  const f=clamp01(fraction),ok=Boolean(motion?.ok),useTo=f>=.5;
   const dx=ok?Number(motion.dx)||0:0,dy=ok?Number(motion.dy)||0:0;
   return{
     fraction:f,
-    fromOpacity:1-f,toOpacity:f,
-    fromDx:ok?dx*f:0,fromDy:ok?dy*f:0,
-    toDx:ok?-dx*(1-f):0,toDy:ok?-dy*(1-f):0,
+    source:useTo?'to':'from',
+    dx:ok?(useTo?-dx*(1-f):dx*f):0,
+    dy:ok?(useTo?-dy*(1-f):dy*f):0,
     motionApplied:ok
   };
 }

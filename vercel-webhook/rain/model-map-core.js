@@ -23,22 +23,11 @@ export function selectSpatialForecastTimeBlend(validTimes=[],targetMs=Date.now()
   const row=rows.at(-1);
   return{fromIndex:row.index,toIndex:row.index,fraction:0,fromTime:row.time,toTime:row.time};
 }
-export function hybridFutureBlend(minutes=0){
-  const m=Math.max(0,Number(minutes)||0);
-  if(m<=12)return{radarOpacity:.76,modelOpacity:0,mode:'radar'};
-  if(m<=20){
-    const t=clamp01((m-12)/8);
-    return{radarOpacity:.76-.18*t,modelOpacity:.18*t,mode:t<.3?'radar':'hybrid'};
-  }
-  if(m<=28){
-    const t=clamp01((m-20)/8);
-    return{radarOpacity:.58*(1-t),modelOpacity:.18+.60*t,mode:t>=.98?'model':'hybrid'};
-  }
-  return{radarOpacity:0,modelOpacity:.78,mode:'model'};
+export function hybridFutureBlend(minutes=0,handoffMinutes=20){
+  const m=Math.max(0,Number(minutes)||0),handoff=Math.max(1,Number(handoffMinutes)||20);
+  if(m<=handoff)return{radarOpacity:.76,modelOpacity:0,mode:'radar',handoffMinutes:handoff};
+  return{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:handoff};
 }
-export function futureVisualLabel(minutes=0){
-  const blend=hybridFutureBlend(minutes);
-  if(blend.mode==='radar')return'NOWCAST RADAR';
-  if(blend.mode==='hybrid')return'RADAR + MODELO';
-  return'PREVISIÓN MODELO';
+export function futureVisualLabel(minutes=0,handoffMinutes=20){
+  return hybridFutureBlend(minutes,handoffMinutes).mode==='radar'?'NOWCAST RADAR':'PREVISIÓN MODELO';
 }
