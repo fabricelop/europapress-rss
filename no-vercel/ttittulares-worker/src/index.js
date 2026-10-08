@@ -100,6 +100,53 @@ function parseTtiCallback(update){
     callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
 }
+// Only the private Cloudflare secret can decrypt the bot credential.
+// The source repository contains RSA-OAEP ciphertext, never bot plaintext.
+let cachedBotCredential=null;
+let credentialExpires=0;
+async function cloudflareTelegramBotToken(env){
+  const now=Date.now();
+  if(cachedBotCredential&&credentialExpires>now)return cachedBotCredential;
+  if(!env.TTITTULARES_CALLBACK_DECRYPT_KEY)throw new Error("Telegram callback private key missing");
+  const endpoint="https://api.github.com/repos/fabricelop/europapress-rss/contents/ttittulares/secure/telegram-bot-token.enc.json?ref=main";
+  const r=await fetch(endpoint,{headers:{"accept":"application/vnd.github+json",
+    "authorization":"Bearer "+env.GITHUB_TOKEN,"user-agent":"ttittulares-callback-credentials-v2"},cache:"no-store"});
+  if(!r.ok)throw new Error("Encrypted bot credential unavailable "+r.status);
+  const item=await r.json();
+  const doc=JSON.parse(Buffer.from(String(item.content||"").replace(/\s/g,""),"base64").toString("utf8"));
+  if(doc.algorithm!=="RSA-OAEP-SHA256"||typeof doc.ciphertext!=="string"||doc.ciphertext.length<300)throw new Error("Invalid encrypted bot credential");
+  const privateBytes=Buffer.from(String(env.TTITTULARES_CALLBACK_DECRYPT_KEY),"base64");
+  const key=await crypto.subtle.importKey("pkcs8",privateBytes,{name:"RSA-OAEP",hash:"SHA-256"},false,["decrypt"]);
+  const tokenBytes=await crypto.subtle.decrypt({name:"RSA-OAEP"},key,Buffer.from(doc.ciphertext,"base64"));
+  const token=new TextDecoder().decode(tokenBytes);
+  if(!/^\d{6,15}:[A-Za-z0-9_-]{25,}$/.test(token))throw new Error("Decrypted Telegram bot credential invalid");
+  cachedBotCredential=token;
+  credentialExpires=Date.now()+10*60*1000;
+  return token;
+}
+async function verifyAndAnswerTelegramCallback(event,env){
+  const token=await cloudflareTelegramBotToken(env);
+  const response=await fetch("https://api.telegram.org/bot"+token+"/answerCallbackQuery",{
+    method:"POST",headers:{"content-type":"application/json"},
+    body:JSON.stringify({callback_query_id:event.callback_query_id,text:"Recibido. Actualizando noticia…"})
+  });
+  const ack=await response.json().catch(()=>({}));
+  if(!response.ok||!ack.ok)return {ok:false,status:response.status};
+  return {ok:true};
+}
+
+async function telegramCryptoReady(env){
+  try{
+    const token=await cloudflareTelegramBotToken(env);
+    const r=await fetch("https://api.telegram.org/bot"+token+"/getMe");
+    const result=await r.json().catch(()=>({}));
+    return json({ok:!!result.ok,telegram_callback_credential_ready:!!result.ok},result.ok?200:503);
+  }catch(err){
+    console.log("TTiTTulares bot credential preflight failed",String(err?.message||err));
+    return json({ok:false,telegram_callback_credential_ready:false},503);
+  }
+}
+
 async function enqueueTtiTelegramCallback(request,env){
   if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
   const raw=await request.text();
@@ -109,6 +156,17 @@ async function enqueueTtiTelegramCallback(request,env){
   const event=parseTtiCallback(update);
   if(!event)return json({ok:true,ignored:true});
   if(!env.GITHUB_TOKEN)return json({ok:false,error:"Callback routing unavailable"},503);
+  // Verify authenticity and ACK in the live webhook (<10 sec), never in
+  // GitHub Actions: Telegram callback_query IDs expire before GH jobs start.
+  try{
+    const ack=await verifyAndAnswerTelegramCallback(event,env);
+    if(!ack.ok)return json({ok:false,error:"Telegram callback expired or invalid",status:ack.status},422);
+    event.verified_by_telegram=true;
+    event.verified_at=new Date().toISOString();
+  }catch(err){
+    console.log("TTiTTulares immediate Telegram ACK failed",String(err?.message||err));
+    return json({ok:false,error:"Telegram confirmation unavailable"},503);
+  }
   const api="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+TT_CALLBACK_INBOX;
   const h={"accept":"application/vnd.github+json","authorization":"Bearer "+env.GITHUB_TOKEN,
     "x-github-api-version":"2022-11-28","user-agent":"ttittulares-telegram-callback-v1",
@@ -139,6 +197,7 @@ export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
+    if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-callback")return enqueueTtiTelegramCallback(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);
