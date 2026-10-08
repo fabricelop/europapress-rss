@@ -79,41 +79,10 @@ async function handlerRequest(request, env, url,handler) {
     return json({ok:false,error:"No se pudo completar la operación"},503);
   }
 }
-// TEMPORARY staging-only write probe. Must be removed before a production merge.
-async function stagingWriteProbe(request,env){
-  if(request.method!=="POST")return json({ok:false,error:"Método no permitido"},405);
-  const token=String(env.TTITTULARES_CONTROL_TOKEN||"");
-  const supplied=String(request.headers.get("authorization")||"");
-  if(!token||supplied!=="Bearer "+token)return json({ok:false,error:"No autorizado"},401);
-  if(!env.GITHUB_TOKEN)return json({ok:false,error:"GitHub no configurado"},503);
-  const repo="fabricelop/europapress-rss";
-  const branch="control/ttittulares-cloudflare-probe";
-  const path="ttittulares/cloudflare-staging-probe.json";
-  const url="https://api.github.com/repos/"+repo+"/contents/"+path;
-  const headers={
-    "accept":"application/vnd.github+json",
-    "authorization":"Bearer "+env.GITHUB_TOKEN,
-    "x-github-api-version":"2022-11-28",
-    "user-agent":"ttittulares-cloudflare-staging-probe",
-    "content-type":"application/json"
-  };
-  const previous=await fetch(url+"?ref="+encodeURIComponent(branch),{headers,cache:"no-store"});
-  if(!previous.ok&&previous.status!==404)return json({ok:false,phase:"read",github_status:previous.status},503);
-  const old=previous.ok?await previous.json():{};
-  const content=JSON.stringify({ok:true,project:"TTiTTulares",source:"cloudflare_staging",checked_at:new Date().toISOString()},null,2)+"\n";
-  const update={branch,message:"TTiTTulares: verificar escritura Cloudflare staging",content:Buffer.from(content).toString("base64")};
-  if(old.sha)update.sha=old.sha;
-  const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify(update)});
-  if(!saved.ok)return json({ok:false,phase:"write",github_status:saved.status},503);
-  const answer=await saved.json();
-  return json({ok:true,phase:"persisted",branch,path,commit_sha:answer.commit?.sha||null});
-}
-
 export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
-    if(path==="/api/ttittulares-staging-write-test")return stagingWriteProbe(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);
     }
