@@ -90,7 +90,7 @@ jobs:
           p=pathlib.Path(".github/workflows/refresh-ttittulares-telegram-keyboard.yml")
           workflow=yaml.safe_load(p.read_text(encoding="utf8"))
           body=next(x["run"] for x in workflow["jobs"]["refresh"]["steps"] if "python3 - <<'PY'" in x.get("run",""))
-          code=body.split("python3 - <<'PY'\\n",1)[1].split("\\nPY",1)[0]
+          code=body.split("python3 - <<\'PY\'",1)[1].rsplit("PY",1)[0]
           ast.parse(code,"keyboard-refresh.py")
           assert "INSTAGRAM_PILOT_ENABLED" in code and '"callback_data":"tt:i:"+eid' in code
           print("TTITTULARES_INSTAGRAM_KEYBOARD_REFRESH_SYNTAX_OK")
