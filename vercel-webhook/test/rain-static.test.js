@@ -430,15 +430,15 @@ test('spatial model time interpolates continuously between forecast steps',()=>{
   assert.equal(exact.fraction,1);
 });
 
-test('future map interpolates two Open-Meteo spatial precipitation steps beneath radar',()=>{
+test('future map uses motion-compensated Open-Meteo precipitation beneath radar',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/@openmeteo\/weather-map-layer@0\.2\.2/);
   assert.match(app,/OPENMETEO_SPATIAL_META='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon\/latest\.json'/);
   assert.match(app,/OPENMETEO_SPATIAL_LAYER='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon_seamless\/latest\.json'/);
   assert.match(app,/selectSpatialForecastTimeBlend\(state\.omMeta\?\.valid_times,projectedAt\)/);
-  assert.match(app,/blend\.modelOpacity\*\(1-f\)/);
-  assert.match(app,/blend\.modelOpacity\*f/);
-  assert.match(app,/nextIndex>timeBlend\.toIndex/);
+  assert.match(app,/raineta-model:\/\/forecast\//);
+  assert.match(app,/renderMotionInterpolatedModelTile\(/);
+  assert.match(app,/animateModelSwap\(/);
 });
 
 test('lightning behavior remains on the verified preload path',()=>{
