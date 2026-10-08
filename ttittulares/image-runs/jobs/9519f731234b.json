@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-9519f731234b-r1-a1-1791451122971",
+  "requested_at": "2026-10-08T09:18:42.971479Z",
+  "updated_at": "2026-10-08T09:18:42.971479Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "9519f731234b",
+  "event_id": "9519f731234b",
+  "target_name": "La jueza imputa al presidente, la vicepresidenta y la secretaria del consejo de la cooperativa de las VPP de Alicante",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La jueza imputa al presidente, la vicepresidenta y la secretaria del consejo de la cooperativa de las VPP de Alicante",
+    "revision": 1,
+    "factual_summary": "La jueza que investiga la adjudicación de VPP en el residencial Les Naus de Alicante ha citado como investigados al presidente, la vicepresidenta y la secretaria del consejo rector de la cooperativa promotora. Con estas tres incorporaciones, la causa suma 18 personas investigadas y las nuevas declaraciones están fijadas para el 21 de octubre.",
+    "tweet_text": "La jueza de Les Naus cita como investigados al presidente, la vicepresidenta y la secretaria de la cooperativa promotora. La causa suma 18 investigados; declararán el 21 de octubre.\n\n🌶️ El residencial sigue creciendo, pero en número de investigados.",
+    "remate": "🌶️ El residencial sigue creciendo, pero en número de investigados.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
+    "image_style_name": "novela_grafica",
+    "image_style_index": 9,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa jueza de Les Naus cita como investigados al presidente, la vicepresidenta y la secretaria de la cooperativa promotora. La causa suma 18 investigados; declararán el 21 de octubre.\n\n🌶️ El residencial sigue creciendo, pero en número de investigados.\n\nREMATE EXACTO:\n🌶️ El residencial sigue creciendo, pero en número de investigados.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa jueza que investiga la adjudicación de VPP en el residencial Les Naus de Alicante ha citado como investigados al presidente, la vicepresidenta y la secretaria del consejo rector de la cooperativa promotora. Con estas tres incorporaciones, la causa suma 18 personas investigadas y las nuevas declaraciones están fijadas para el 21 de octubre.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/comunitat-valenciana/noticia-jueza-imputa-presidente-vicepresidenta-secretaria-consejo-cooperativa-vpp-alicante-20261008103633.html",
+    "citations": [
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/comunitat-valenciana/2026/10/08/la-jueza-imputa-al-presidente-la-vicepresidenta-y-la-secretaria-del-consejo-de-la-cooperativa-de-las-vpp-de-alicante-radio-alicante/"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/comunitat-valenciana/noticia-jueza-imputa-presidente-vicepresidenta-secretaria-consejo-cooperativa-vpp-alicante-20261008103633.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
