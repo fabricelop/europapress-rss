@@ -131,7 +131,6 @@ export function buildSyntheticFutureField(fields=[],times=[],minutes=0,{persiste
   const valid=fields.filter(f=>f?.mask?.length&&f?.rateGrid?.length);
   if(!valid.length)return emptyFuture(256,256,'no_fields');
   const latest=valid.at(-1),w=latest.width,h=latest.height,m=Math.max(0,Number(minutes)||0);
-  if(m<=3)return{status:'persistence',field:latest,horizon:3,localQuality:0,flowVectors:0};
   const usable=valid.slice(-4),timeValues=times.slice(-usable.length).map(Number);
   if(usable.length<3){
     if(m<=persistenceMinutes)return{status:'short_persistence',field:latest,horizon:persistenceMinutes,localQuality:0,flowVectors:0};
@@ -160,6 +159,7 @@ export function buildSyntheticFutureField(fields=[],times=[],minutes=0,{persiste
   if(Number(evolution.score)<.18)horizon=0;
   const flowUsable=Boolean(flow?.vectors?.length>=5&&localQuality>=.20&&horizon>=m);
   if(!flowUsable){
+    if(m<=3)return{status:'persistence',field:latest,horizon:3,localQuality,flowVectors:flow?.vectors?.length||0,evolution:Number(evolution.score)||0};
     if(m<=persistenceMinutes)return{status:'short_persistence',field:latest,horizon:persistenceMinutes,localQuality,flowVectors:flow?.vectors?.length||0,evolution:Number(evolution.score)||0};
     return emptyFuture(w,h,'uncertain',{localQuality,flowVectors:flow?.vectors?.length||0,evolution:Number(evolution.score)||0,horizon});
   }

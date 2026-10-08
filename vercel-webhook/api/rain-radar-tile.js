@@ -42,7 +42,7 @@ export default async function handler(req,res){
     const z=Number(q(req,'z')),x=Number(q(req,'x')),y=Number(q(req,'y')),minutes=Math.max(0,Math.min(90,Number(q(req,'minutes'))||0));
     const inputs=frameInputs(req);
     if(!inputs.length)throw new Error('missing_frames');
-    const needed=minutes<=3?[inputs.at(-1)]:inputs;
+    const needed=minutes<=0?[inputs.at(-1)]:inputs;
     const fields=await Promise.all(needed.map(input=>decodeSourceTile(input,z,x,y)));
     let result;
     if(minutes<=0){

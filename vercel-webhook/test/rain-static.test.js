@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
+import {precipitationMaskFromRgba,estimateModelTileMotion,modelMotionBlendPlan} from '../rain/model-motion-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -472,4 +473,56 @@ test('model-only future waits for model tiles before fading radar away',()=>{
   assert.match(app,/if\(blend\.radarOpacity<=\.01\)/);
   assert.match(app,/waitForRasterSources\(info\.layerIds,token,4500\)/);
   assert.match(app,/fadeOutRadarDisplay\(token,170\)/);
+});
+
+
+test('model motion interpolation detects and compensates a translating rain blob',()=>{
+  const w=64,h=64;
+  const rgba=(x0,y0)=>{
+    const out=new Uint8ClampedArray(w*h*4);
+    for(let y=y0;y<y0+14;y++)for(let x=x0;x<x0+18;x++){
+      const i=(y*w+x)*4;out[i]=20;out[i+1]=150;out[i+2]=30;out[i+3]=190;
+    }
+    return out;
+  };
+  const a=rgba(12,24),b=rgba(18,21);
+  const motion=estimateModelTileMotion(a,b,w,h,{target:64,maxShift:10,minConfidence:.1});
+  assert.equal(motion.ok,true);
+  assert.ok(Math.abs(motion.dx-6)<=1);
+  assert.ok(Math.abs(motion.dy+3)<=1);
+  const plan=modelMotionBlendPlan(.5,motion);
+  assert.equal(plan.motionApplied,true);
+  assert.ok(Math.abs(plan.fromDx-3)<=.6);
+  assert.ok(Math.abs(plan.toDx+3)<=.6);
+});
+
+test('model motion interpolation falls back safely when no rain field can be tracked',()=>{
+  const rgba=new Uint8ClampedArray(32*32*4);
+  const motion=estimateModelTileMotion(rgba,rgba,32,32);
+  assert.equal(motion.ok,false);
+  assert.deepEqual(modelMotionBlendPlan(.25,motion),{
+    fraction:.25,fromOpacity:.75,toOpacity:.25,fromDx:0,fromDy:0,toDx:0,toDy:0,motionApplied:false
+  });
+});
+
+test('radar nowcast can move from +1 when local flow is reliable',()=>{
+  const w=96,h=96;
+  const field=(x0,y0)=>{
+    const mask=new Uint8Array(w*h),rateGrid=new Float32Array(w*h);
+    for(let y=y0;y<y0+18;y++)for(let x=x0;x<x0+22;x++){const i=y*w+x;mask[i]=1;rateGrid[i]=6}
+    return{mask,rateGrid,width:w,height:h,wetPixels:396};
+  };
+  const out=buildSyntheticFutureField([field(20,36),field(23,35),field(26,34),field(29,33)],[1000,1600,2200,2800],1,{persistenceMinutes:5});
+  assert.equal(out.status,'flow');
+  assert.ok(out.field.mask.reduce((sum,v)=>sum+(v?1:0),0)>100);
+});
+
+test('future model uses internal motion-compensated protocol instead of opacity-only hourly layers',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/maplibregl\.addProtocol\('raineta-model',rainetaModelMotionProtocol\)/);
+  assert.match(app,/estimateModelTileMotion\(a\.rgba,b\.rgba,w,h/);
+  assert.match(app,/modelMotionBlendPlan\(fraction,motion\)/);
+  assert.match(app,/ctx\.drawImage\(fromImage,plan\.fromDx,plan\.fromDy,w,h\)/);
+  assert.match(app,/ctx\.drawImage\(toImage,plan\.toDx,plan\.toDy,w,h\)/);
+  assert.match(app,/raineta-model:\/\/forecast\//);
 });

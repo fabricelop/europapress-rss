@@ -1,8 +1,14 @@
-# RainETA v0.17.44
+# RainETA v0.17.45
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.44
+## Proyección radar sintética y rayos DWD v0.17.45
+- +1/+2/+3 ya no fuerzan persistencia: si existe flujo local fiable, la advección empieza desde +1. La persistencia queda solo como fallback.
+- El futuro ICON-EU sustituye el simple crossfade horario por **interpolación compensada por movimiento** por tesela: se renderizan los campos anterior/siguiente, se estima su traslación de precipitación y ambos se desplazan hacia el instante intermedio antes de mezclarlos.
+- El protocolo interno `raineta-model://` envuelve el protocolo oficial `om://` de Open-Meteo y devuelve una única tesela intermedia ya animada espacialmente.
+- Las capas de modelo también usan doble búfer/crossfade, de modo que cambiar minuto no vacía el mapa mientras se genera la tesela intermedia.
+- Si el desplazamiento entre dos campos de modelo no es suficientemente fiable, la tesela vuelve al crossfade temporal normal; nunca se fuerza un vector dudoso. ⚡ RAYOS sigue sin cambios funcionales.
+
 - La barra del radar añade una marca vertical fija **AHORA** además de `fiable hasta`.
 - El radar futuro usa **doble búfer**: el frame anterior permanece visible hasta que MapLibre confirma el nuevo, y el relevo usa un crossfade de ~170 ms. Si la nueva fuente tarda, no se vacía el mapa.
 - El solape radar/modelo se acorta: radar puro hasta ~+12, transición fuerte entre +12 y +28 y **modelo solo desde +28**, evitando la doble precipitación visible alrededor de +30/+45.
