@@ -459,7 +459,7 @@ test('model-only future waits for model tiles before fading radar away',()=>{
 test('future model uses native Open-Meteo ICON frames without custom warping',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/maplibregl\.addProtocol\('om',module\.omProtocol\)/);
-  assert.match(app,/const url='om:\/\/'+OPENMETEO_SPATIAL_LAYER+'\?time_step=valid_times_'+frame\.index/);
+  assert.match(app,/const url='om:\/\/'\+OPENMETEO_SPATIAL_LAYER\+'\?time_step=valid_times_'\+frame\.index/);
   assert.doesNotMatch(app,/raineta-model:\/\//);
   assert.doesNotMatch(app,/estimateModelTileLocalFlow/);
   assert.doesNotMatch(app,/modelLocalPatchDisplacement/);
