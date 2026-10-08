@@ -97,7 +97,7 @@ function parseTtiCallback(update){
      !/^-?[0-9]{3,20}$/.test(chat)||
      !/^[a-zA-Z0-9_-]{6,128}$/.test(qid))return null;
   return {update_id:uid,type:"emergency_action",text:(match[1]==="p"?"ttp":"ttd")+"|"+match[2],
-    callback_query_id:qid,chat_id:chat,message_id:mid,
+    callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
 }
 async function enqueueTtiTelegramCallback(request,env){
