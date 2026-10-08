@@ -2,8 +2,8 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-08T21:15:00+02:00",
-  "last_completed_at": "2026-10-08T21:17:05+02:00",
-  "updated_at": "2026-10-08T21:17:05+02:00",
+  "last_completed_at": "2026-10-08T21:17:45+02:00",
+  "updated_at": "2026-10-08T21:17:45+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -22,8 +22,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-08T21:15:00+02:00",
-    "updated_at": "2026-10-08T21:17:05+02:00",
-    "finished_at": "2026-10-08T21:17:05+02:00",
+    "updated_at": "2026-10-08T21:17:45+02:00",
+    "finished_at": "2026-10-08T21:17:45+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -54,7 +54,7 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 0/0; cola activa 0; saneamiento visual lanzado y continúa asíncronamente",
+    "message": "Pasada completada · 0/0; cola activa 0; saneamiento visual completado; 0 jobs IA nuevos",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -86,6 +86,13 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completada · 0/0; cola activa 0; saneamiento visual lanzado y continúa asíncronamente"
+      },
+      {
+        "at": "2026-10-08T21:17:45+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual completado · 0 jobs IA nuevos"
       }
     ],
     "queue_complete": true,
@@ -97,13 +104,14 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "in_progress",
+    "status": "completed",
     "direct_imagegen": false,
     "last_trigger_run_id": "tr-20261008T211500-chat",
     "last_triggered_at": "2026-10-08T21:15:00+02:00",
-    "observed_at": "2026-10-08T21:17:05+02:00",
+    "observed_at": "2026-10-08T21:17:45+02:00",
     "workflow_run_id": 37830639696,
-    "workflow_conclusion": null,
-    "telegram_delivered": 0
+    "workflow_conclusion": "success",
+    "telegram_delivered": 0,
+    "queued_repairs": 0
   }
 }
