@@ -5,7 +5,7 @@ import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} f
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
-import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
+import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,flowVectorAt,buildRadarProjectionRgba,projectRadarFieldContinuous,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
@@ -344,29 +344,41 @@ test('synthetic radar decoder keeps only measurable radar pixels transparent els
   assert.deepEqual(Array.from(out.rgba.filter((_,i)=>i%4===3)),[0,150,255,0]);
 });
 
-test('AHORA +1 and later use the same georeferenced synthetic XYZ tile source',()=>{
-  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/const SYNTHETIC_RADAR_TILE_URL='\/api\/rain-radar-tile'/);
-  assert.match(app,/type:'raster',\s*tiles:\[syntheticRadarTileTemplate\(minutes,state\.frames\)\]/);
-  assert.match(app,/if\(Number\(minutes\)>0\)\{\s*showSyntheticRadarFuture\(minutes,r,latest\);\s*return;/);
-});
 
-test('future synthetic tile source never points MapLibre directly at RainViewer',()=>{
+test('future radar uses one shared georeferenced viewport field instead of per-tile XYZ advection',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  const start=app.indexOf('function showSyntheticRadarFuture');
-  const end=app.indexOf('async function showProjectedRadar',start);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
   const fn=app.slice(start,end);
-  assert.match(fn,/syntheticRadarTileTemplate\(minutes,state\.frames\)/);
-  assert.doesNotMatch(fn,/tilecache\.rainviewer\.com/);
+  assert.match(fn,/radarViewportNowcast\(r\)/);
+  assert.match(fn,/type:'image',url:imageUrl,coordinates/);
+  assert.match(fn,/projectedRadarOpacity\(minutes,true,horizon\)/);
+  assert.doesNotMatch(app,/syntheticRadarTileTemplate/);
+  assert.doesNotMatch(app,/SYNTHETIC_RADAR_TILE_URL/);
 });
 
-
-test('synthetic tiled future keeps same engine beyond +3',()=>{
+test('continuous future radar keeps a single motion field across the whole visible mosaic',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/if\(Number\(minutes\)>0\)\{\s*showSyntheticRadarFuture\(minutes,r,latest\);\s*return;/);
-  assert.match(app,/syntheticRadarTileTemplate\(minutes,state\.frames\)/);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/const view=await radarViewportNowcast\(r\)/);
+  assert.match(fn,/drawLocalRadarProjection\(r,latest,minutes,guidance,token,mode,field\)/);
+  assert.match(fn,/coordinates=radarImageCoordinates\(field\.centerLat,field\.centerLon,field\.displayZoom\)/);
+  assert.doesNotMatch(fn,/\{z\}/);
+  assert.doesNotMatch(fn,/\{x\}/);
+  assert.doesNotMatch(fn,/\{y\}/);
 });
 
+test('continuous future radar switches to native model when the shared field is no longer reliable',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/if\(Number\(minutes\)>0&&\(mode==='none'\|\|Number\(minutes\)>horizon\)\)/);
+  assert.match(fn,/ensureFutureModelLayer\(minutes,projectedAt\)/);
+  assert.match(fn,/fadeOutRadarDisplay\(token,190,minutes\)/);
+});
 test('moving synthetic echo survives +10 with local flow',()=>{
   const w=96,h=96;
   const field=(ox,oy)=>{
@@ -388,6 +400,44 @@ test('uncertain synthetic future never invents rigid motion',()=>{
   const field={mask,rateGrid,width:w,height:h,wetPixels:1};
   assert.equal(buildSyntheticFutureField([field,field,field],[0,600,1200],4,{persistenceMinutes:5}).status,'short_persistence');
   assert.equal(buildSyntheticFutureField([field,field,field],[0,600,1200],8,{persistenceMinutes:5}).status,'uncertain');
+});
+
+
+test('shared continuous advection crosses horizontal and vertical tile boundaries without artificial cuts',()=>{
+  const w=128,h=128,boundary=64;
+  const mask=new Uint8Array(w*h),rateGrid=new Float32Array(w*h);
+  for(let y=44;y<=84;y++)for(let x=44;x<=84;x++){
+    const i=y*w+x;mask[i]=1;rateGrid[i]=6;
+  }
+  const vectors=[];
+  for(const y of [24,64,104])for(const x of [24,64,104]){
+    vectors.push({x,y,dx:4+(x-64)/160,dy:3+(y-64)/200,confidence:.92});
+  }
+  const flow={vectors,confidence:.92,coverage:1};
+  const out=projectRadarFieldContinuous({mask,rateGrid,width:w,height:h},flow,10,{sourceStepMinutes:10});
+  let verticalWet=0,horizontalWet=0;
+  for(let y=48;y<=90;y++)verticalWet+=out.mask[y*w+boundary]?1:0;
+  for(let x=48;x<=90;x++)horizontalWet+=out.mask[boundary*w+x]?1:0;
+  assert.ok(verticalWet>20,'vertical logical tile boundary must stay wet through the crossing echo');
+  assert.ok(horizontalWet>20,'horizontal logical tile boundary must stay wet through the crossing echo');
+  for(let y=52;y<=84;y++){
+    assert.ok(out.mask[y*w+boundary-1]||out.mask[y*w+boundary]||out.mask[y*w+boundary+1],'no vertical seam gap');
+  }
+  for(let x=52;x<=84;x++){
+    assert.ok(out.mask[(boundary-1)*w+x]||out.mask[boundary*w+x]||out.mask[(boundary+1)*w+x],'no horizontal seam gap');
+  }
+});
+
+test('shared flow interpolation stays continuous across a former tile edge even when source vectors differ',()=>{
+  const flow={vectors:[
+    {x:40,y:40,dx:2,dy:1,confidence:.9},
+    {x:88,y:40,dx:7,dy:3,confidence:.9},
+    {x:40,y:88,dx:3,dy:2,confidence:.9},
+    {x:88,y:88,dx:8,dy:4,confidence:.9}
+  ],confidence:.9,coverage:1};
+  const left=flowVectorAt(flow,63,64),right=flowVectorAt(flow,65,64);
+  assert.ok(Math.abs(left.dx-right.dx)<1);
+  assert.ok(Math.abs(left.dy-right.dy)<1);
 });
 
 test('lightning verifies in background and first tap does not force revalidation',()=>{
@@ -430,14 +480,19 @@ test('lightning behavior remains on the verified preload path',()=>{
 });
 
 
-test('radar slider shows fixed AHORA marker alongside reliable marker',()=>{
+
+test('radar slider keeps fixed AHORA and hides reliability when no future horizon exists',()=>{
   const html=readFileSync(new URL('../rain/index.html',import.meta.url),'utf8');
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(html,/id="radarNowMarker"/);
   assert.match(html,/<em>AHORA<\/em>/);
-  assert.match(app,/\$\('radarNowMarker'\)\.style\.left/);
+  assert.match(html,/\.radarNowMarker\{z-index:3/);
+  assert.match(app,/function updateRadarReferenceMarkers\(/);
+  assert.match(app,/hasReliableFuture=reliable>=10/);
+  assert.match(app,/\$\('radarNowMarker'\)\.style\.display=''/);
+  assert.match(app,/\$\('radarReliableMarker'\)\.style\.display='none'/);
+  assert.match(app,/sin horizonte fiable/);
 });
-
 test('future radar swaps with double buffer and waits for the incoming source',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/raineta-radar-projection-a/);
@@ -512,20 +567,21 @@ test('returning to observed radar invalidates pending future renders',()=>{
 });
 
 
-test('radar to model handoff is dynamic and not a persistent mixed mode',()=>{
+
+test('radar to model handoff follows the same displayed spatial reliability horizon',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/function displayedRadarReliableHorizon\(\)/);
+  assert.match(app,/if\(guidance\)return guidance\.ok\?Math\.max\(0,Math\.round\(Number\(guidance\.horizon\)\|\|0\)\):0/);
   assert.match(app,/function visualModelHandoffMinutes\(\)/);
-  assert.match(app,/Math\.max\(30,Math\.min\(45,useful\|\|30\)\)/);
-  assert.match(app,/if\(blend\.mode==='model'\)/);
-  const start=app.indexOf('function showSyntheticRadarFuture');
-  const end=app.indexOf('async function showProjectedRadar',start);
+  assert.match(app,/Math\.min\(60,displayedRadarReliableHorizon\(\)\)/);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
   const fn=app.slice(start,end);
   assert.doesNotMatch(fn,/RADAR \+ MODELO/);
-  assert.doesNotMatch(fn,/const modelPromise=/);
 });
 
-test('visual radar handoff gives useful nowcast room before native model takes over',()=>{
-  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/const viewport=Math\.max\(0,Number\(state\.radarViewNowcast\?\.guidance\?\.horizon\)\|\|0\)/);
-  assert.match(app,/Math\.max\(30,Math\.min\(45,useful\|\|30\)\)/);
+test('visual radar handoff has no forced minimum when the continuous field is unreliable',()=>{
+  assert.deepEqual(hybridFutureBlend(1,0),{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:0});
+  assert.deepEqual(hybridFutureBlend(20,30),{radarOpacity:.76,modelOpacity:0,mode:'radar',handoffMinutes:30});
+  assert.deepEqual(hybridFutureBlend(31,30),{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:30});
 });
