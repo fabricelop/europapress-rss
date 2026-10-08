@@ -180,9 +180,9 @@ test('DWD lightning source is independently verified and errors are visible',()=
 test('DWD lightning proxy accepts only official layers and validates coordinates',()=>{
  assert.equal(normalizeLightningLayer('Accumulated_Flash_Geometry'),'dwd:Accumulated_Flash_Geometry');
  assert.equal(normalizeLightningLayer('dwd:NCEW_EU'),'dwd:NCEW_EU');
- assert.throws(()=>normalizeLightningLayer('other'),'layer_not_allowed');
- assert.throws(()=>parseLightningBbox('0,0,0,1'),'invalid_bbox');
- assert.throws(()=>parseLightningBbox('0,0,30000000,1'),'invalid_bbox');
+ assert.throws(()=>normalizeLightningLayer('other'),/layer_not_allowed/);
+ assert.throws(()=>parseLightningBbox('0,0,0,1'),/invalid_bbox/);
+ assert.throws(()=>parseLightningBbox('0,0,30000000,1'),/invalid_bbox/);
  const url=new URL(buildDwdLightningGetMapUrl({layer:'dwd:NCEW_EU',bbox:'-100,0,100,100',width:256,height:256}));
  assert.equal(url.hostname,'maps.dwd.de');
  assert.equal(url.searchParams.get('transparent'),'true');
