@@ -1,4 +1,5 @@
 import test from "node:test";
+import {readFileSync} from "node:fs";
 import assert from "node:assert/strict";
 import worker,{parseTtiCallback} from "../src/index.js";
 
@@ -48,4 +49,15 @@ test("new Instagram callback preflight is read-only and leaves X routing untouch
   const existing=await worker.fetch(new Request("https://worker.example/api/ttittulares-telegram-pipeline-version"),{});
   assert.equal(existing.status,200);
   assert.equal((await existing.json()).version,"immediate-decision-delete-v2");
+});
+
+test("Instagram callback errors notify Telegram; X handlers stay separate",()=>{
+  const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
+  assert.match(source,/async function instagramTelegramNotice\(/);
+  assert.match(source,/No se ha podido confirmar la publicaci[oó]n/);
+  assert.match(source,/await instagramTelegramNotice\(env,update/);
+  assert.match(source,/if\(event\.type==="instagram_action"\)/);
+  assert.match(source,/if\(!edited\.ok\|\|!editResult\.ok\)/);
+  assert.match(source,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "/);
+  assert.match(source,/match\[1\]==="i"\?"instagram_action":"emergency_action"/);
 });
