@@ -33,8 +33,8 @@ export function modelMotionBlendPlan(fraction,motion){
   return{
     fraction:f,
     fromOpacity:1-f,toOpacity:f,
-    fromDx:dx*f,fromDy:dy*f,
-    toDx:-dx*(1-f),toDy:-dy*(1-f),
+    fromDx:ok?dx*f:0,fromDy:ok?dy*f:0,
+    toDx:ok?-dx*(1-f):0,toDy:ok?-dy*(1-f):0,
     motionApplied:ok
   };
 }
