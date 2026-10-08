@@ -1,0 +1,46 @@
+name: TTit remote dependency and webhook read-only audit
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttittulares-platform-remote-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Check availability and configured secret names only
+        shell: bash
+        run: |
+          for key in TELEGRAM_BOT_TOKEN TELEGRAM_WEBHOOK_SECRET CF_API_TOKEN CF_ACCOUNT_ID; do
+            if [[ -n "${!key:-}" ]]; then echo "$key=present"; else echo "$key=absent"; fi
+          done
+      - name: Check public route and response body (no credentials)
+        shell: bash
+        run: |
+          set -u
+          for host in tt-control ttittulares-no-vercel-test; do
+            for path in /health /api/ttittulares-webhook-version; do
+              url="https://$host.fabricelop.workers.dev$path"
+              echo "CHECK $url"
+              status=$(curl --silent --show-error --location --max-time 20 --output /tmp/ttit-body --dump-header /tmp/ttit-headers --write-out '%{http_code}' "$url") || status="transport-error"
+              echo "STATUS $status"
+              grep -Ei '^(HTTP/|content-type:|cf-ray:|server:|cf-cache-status:)' /tmp/ttit-headers | head -12 || true
+              head -c 400 /tmp/ttit-body | tr '\n' ' ' || true
+              echo
+            done
+          done
+      - name: Actual Telegram webhook registration
+        shell: bash
+        run: |
+          if [[ -z "${TELEGRAM_BOT_TOKEN:-}" ]]; then echo 'BOT=missing'; exit 0; fi
+          curl -fsS --max-time 20 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" |
+            python3 -c 'import json,sys;d=json.load(sys.stdin).get("result",{}); print(json.dumps({k:d.get(k) for k in ["url","pending_update_count","last_error_message","last_error_date"]},ensure_ascii=False))'
