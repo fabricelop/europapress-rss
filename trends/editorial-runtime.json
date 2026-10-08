@@ -1,11 +1,14 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T07:15:00.000Z",
-  "last_completed_at": "2026-10-08T07:18:00.000Z",
-  "updated_at": "2026-10-08T07:18:00.000Z",
+  "last_started_at": "2026-10-08T07:45:00.000Z",
+  "last_completed_at": "2026-10-08T07:58:00.000Z",
+  "updated_at": "2026-10-08T07:58:00.000Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "2b8d73461f46",
+    "d1d26edc5620"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,22 +18,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T071500000Z-chat",
+    "run_id": "tr-20261008T074500000Z-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T07:15:00.000Z",
-    "updated_at": "2026-10-08T07:18:00.000Z",
-    "finished_at": "2026-10-08T07:18:00.000Z",
+    "started_at": "2026-10-08T07:45:00.000Z",
+    "updated_at": "2026-10-08T07:58:00.000Z",
+    "finished_at": "2026-10-08T07:58:00.000Z",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
       "explanation_groups": 0,
-      "new_cards": 0,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -42,18 +45,18 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "visual_repairs_queued": 0,
-      "telegram_delivery_completed": 0,
+      "visual_repairs_queued": 2,
+      "telegram_delivery_completed": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
       "remates_reused": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada sin trabajo editorial nuevo. Cola final 0; saneamiento de Pendientes correcto y sin reparaciones nuevas.",
+    "message": "Pasada completada · 2/2 explicadas, verificadas y cola autoritativa final 0",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,45 +66,149 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "2b8d73461f46",
+        "revision": 0,
+        "selected": "🌶️ La mañana ha fichado a la huelga antes del segundo café."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-08T07:15:00.000Z",
+        "at": "2026-10-08T07:45:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial y saneamiento de Pendientes"
+        "message": "Preparando pasada editorial · 2 entradas activas"
       },
       {
-        "at": "2026-10-08T07:15:40.000Z",
+        "at": "2026-10-08T07:45:20.000Z",
+        "phase": "verifying",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Releyendo estado autoritativo de #LaHora8O"
+      },
+      {
+        "at": "2026-10-08T07:45:35.000Z",
+        "phase": "investigating",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Buscando detonante actual de #LaHora8O"
+      },
+      {
+        "at": "2026-10-08T07:46:30.000Z",
+        "phase": "investigating",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Hecho esencial verificado · RTVE y CCOO contrastados"
+      },
+      {
+        "at": "2026-10-08T07:47:00.000Z",
+        "phase": "drafting",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-08T07:47:20.000Z",
+        "phase": "drafting",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Comprobando límite de X · 228 caracteres"
+      },
+      {
+        "at": "2026-10-08T07:47:30.000Z",
+        "phase": "remate_selection",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-08T07:47:45.000Z",
+        "phase": "persisting",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-08T07:48:15.000Z",
+        "phase": "persisting",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-08T07:48:30.000Z",
+        "phase": "persisting",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-08T07:48:50.000Z",
+        "phase": "verifying",
+        "trend_id": "2b8d73461f46",
+        "title": "#LaHora8O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-08T07:49:00.000Z",
+        "phase": "verifying",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Releyendo estado autoritativo de Xosé Manuel Beiras"
+      },
+      {
+        "at": "2026-10-08T07:49:20.000Z",
+        "phase": "investigating",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Contrastando fuentes · Europa Press y EFE"
+      },
+      {
+        "at": "2026-10-08T07:49:40.000Z",
+        "phase": "investigating",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Hecho esencial verificado · fallecimiento a los 90 años"
+      },
+      {
+        "at": "2026-10-08T07:50:00.000Z",
+        "phase": "drafting",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-08T07:50:10.000Z",
+        "phase": "drafting",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Sin remate · explicación factual suficiente"
+      },
+      {
+        "at": "2026-10-08T07:50:45.000Z",
+        "phase": "persisting",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Ficha, requests y cola persistidos"
+      },
+      {
+        "at": "2026-10-08T07:51:10.000Z",
+        "phase": "verifying",
+        "trend_id": "d1d26edc5620",
+        "title": "Xosé Manuel Beiras",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-08T07:56:30.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes y estado del reparador visual"
+        "message": "Revisando Pendientes · 3 tarjetas; todas con imagen disponible"
       },
       {
-        "at": "2026-10-08T07:17:30.566Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 0 tarjetas"
-      },
-      {
-        "at": "2026-10-08T07:17:31.435Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento de Pendientes completado · 0 reparaciones encoladas"
-      },
-      {
-        "at": "2026-10-08T07:17:50.000Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main y verificando cola autoritativa final"
-      },
-      {
-        "at": "2026-10-08T07:18:00.000Z",
+        "at": "2026-10-08T07:58:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -111,26 +218,41 @@
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
-    "pending_repair_workflow": {
-      "run_id": 37742429349,
-      "status": "completed",
-      "conclusion": "success",
-      "run_number": 627,
-      "head_sha": "8149fde7b423dce3d87f3a4dd1567deb38e28948"
+    "visual_repair_state": {
+      "pending_cards_reviewed": 3,
+      "first_item": {
+        "id": "2b8d73461f46",
+        "status": "DONE"
+      },
+      "second_item": {
+        "id": "d1d26edc5620",
+        "status": "REQUESTED"
+      }
     }
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "active",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T071500000Z-chat",
-    "last_triggered_at": "2026-10-08T07:15:00.000Z",
-    "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-08T07:18:00.000Z",
-    "workflow_run_id": 37742429349,
-    "workflow_run_number": 627,
-    "workflow_conclusion": "success",
-    "queued_repairs": 0
+    "last_trigger_run_id": "tr-20261008T074500000Z-chat",
+    "last_triggered_at": "2026-10-08T07:45:00.000Z",
+    "pending_cards_reviewed": 3,
+    "observed_at": "2026-10-08T07:58:00.000Z",
+    "queued_repairs": 2,
+    "jobs": [
+      {
+        "id": "2b8d73461f46",
+        "revision": 0,
+        "status": "DONE",
+        "updated_at": "2026-10-08T07:55:46.923Z"
+      },
+      {
+        "id": "d1d26edc5620",
+        "revision": 0,
+        "status": "REQUESTED",
+        "updated_at": "2026-10-08T07:55:38.172539Z"
+      }
+    ]
   }
 }
