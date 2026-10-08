@@ -21,7 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/instagram-shakira-readonly-audit.yml
 
       - name: Consultar D1 y preflight Meta sin publicaciones
         env:
@@ -116,6 +119,7 @@ jobs:
               report["d1"]={"status":"missing_cloudflare_credentials"}
 
           p=pathlib.Path("instagram-publisher/audit-shakira.json")
+          p.parent.mkdir(parents=True,exist_ok=True)
           p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
           print("INSTAGRAM_AUDIT_D1_STATUS="+report["d1"]["status"])
           print("INSTAGRAM_AUDIT_PUBLISHER_STATUS="+report["publisher"]["status"])
