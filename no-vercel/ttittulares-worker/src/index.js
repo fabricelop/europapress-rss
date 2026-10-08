@@ -6,7 +6,8 @@ import runHandler from "../generated/lib/ttittulares-run-handler.js";
 import statusHandler from "../generated/lib/ttittulares-run-status-handler.js";
 
 const MAX_BODY_BYTES = 5*1024*1024;
-// TT Control forwards only tt:p and tt:d callbacks through its internal service binding.
+// TT Control contains a generic tt: callback forwarder; do not modify gateway.
+// Actual tt:i forwarding must still be verified after this Worker is deployed.
 const ROUTES = {
   "/api/ttittulares-control": controlHandler,
   "/api/ttittulares-run": runHandler,
