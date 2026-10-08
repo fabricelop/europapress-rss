@@ -11,9 +11,9 @@ function inputCheck(b){
 }
 async function meta(env,endpoint,params={},verb="POST"){
   if(!env.INSTAGRAM_PAGE_ACCESS_TOKEN)throw Error("MISSING_TOKEN");
-  const data=new URLSearchParams({...params,access_token:env.INSTAGRAM_PAGE_ACCESS_TOKEN});
+  const data=new URLSearchParams(params);
   const url="https://graph.facebook.com/v26.0/"+endpoint+(verb==="GET"?"?"+data:"");
-  const result=await fetch(url,{method:verb,headers:{"content-type":"application/x-www-form-urlencoded"},...(verb==="POST"?{body:data}:{})});
+  const result=await fetch(url,{method:verb,headers:{"content-type":"application/x-www-form-urlencoded","authorization":"Bearer "+env.INSTAGRAM_PAGE_ACCESS_TOKEN},...(verb==="POST"?{body:data}:{})});
   const json=await result.json().catch(()=>({}));
   if(!result.ok||json.error)throw Error("META_REQUEST_FAILED");
   return json;
