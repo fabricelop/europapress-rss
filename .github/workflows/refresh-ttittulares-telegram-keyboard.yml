@@ -27,6 +27,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED }}
         run: |
           python3 - <<'PY'
           import json, os, pathlib, re, unicodedata, urllib.parse, urllib.request
@@ -38,6 +39,18 @@ jobs:
           chat=os.environ["TELEGRAM_CHAT_ID"].strip()
           endpoint=f"https://api.telegram.org/bot{token}/editMessageReplyMarkup"
           changed=False
+          # Use only an existing trusted Telegram delivery to reconstruct the
+          # Instagram button. Off by default until Meta and callbacks are ready.
+          approved_messages=set()
+          if os.environ.get("INSTAGRAM_PILOT_ENABLED","").strip()=="1":
+              try:
+                  deliveries=json.loads(pathlib.Path("telegram/ttittulares-deliveries.json").read_text(encoding="utf-8"))
+                  for delivery in deliveries.get("items",[]):
+                      if (str(delivery.get("status") or "").lower()=="sent"
+                          and (delivery.get("instagram") or {}).get("image_url","").endswith(".jpg")):
+                          approved_messages.add((str(delivery.get("event_id") or ""),int(delivery.get("telegram_message_id") or 0)))
+              except Exception as error:
+                  print("INSTAGRAM_REFRESH_SKIP_UNVERIFIED_DELIVERIES",str(type(error).__name__))
 
           def x_search_keywords(row):
               raw=str(row.get("title") or row.get("tweet") or "").replace("\n"," ")
@@ -86,6 +99,11 @@ jobs:
                       ]
                   ]
               }
+              if (eid,mid) in approved_messages:
+                  keyboard["inline_keyboard"].insert(-1,[{
+                      "text":"📸 Publicar en Instagram",
+                      "callback_data":"tt:i:"+eid
+                  }])
               payload=json.dumps({
                   "chat_id":chat,
                   "message_id":mid,

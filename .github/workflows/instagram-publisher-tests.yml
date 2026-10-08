@@ -1,0 +1,97 @@
+name: Instagram Publisher Checks
+on:
+  pull_request:
+    paths:
+      - 'instagram-publisher/**'
+      - '.github/workflows/instagram-publisher-tests.yml'
+      - 'shared/instagram_pilot.py'
+      - 'trends/send_explained_telegram.py'
+      - '.github/workflows/send-ttittulares-ready-telegram.yml'
+      - '.github/workflows/refresh-ttittulares-telegram-keyboard.yml'
+      - '.github/workflows/send-ttendencias-explained-telegram.yml'
+      - 'no-vercel/ttittulares-worker/src/index.js'
+      - 'trends/telegram_bot.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /instagram-publisher/
+            /shared/instagram_pilot.py
+            /trends/telegram_bot.py
+            /trends/send_explained_telegram.py
+            /no-vercel/ttittulares-worker/src/index.js
+            /.github/workflows/send-ttittulares-ready-telegram.yml
+            /.github/workflows/refresh-ttittulares-telegram-keyboard.yml
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run unit tests
+        working-directory: instagram-publisher
+        run: npm test
+      - name: Run Instagram keyboard and JPEG tests
+        run: |
+          python3 -m pip install --quiet Pillow PyYAML
+          python3 -m unittest discover -s instagram-publisher/test -p 'test_*.py' -v
+      - name: Check Python syntax for both Telegram projects
+        run: |
+          python3 -m py_compile shared/instagram_pilot.py trends/send_explained_telegram.py trends/telegram_bot.py
+      - name: Check TTiTTulares Cloudflare webhook syntax
+        run: node --check no-vercel/ttittulares-worker/src/index.js
+
+      - name: Validate TTiTTulares embedded sender Python
+        run: |
+          python3 - <<'PY'
+          import ast
+          import pathlib
+          import textwrap
+          import yaml
+          workflow=yaml.safe_load(pathlib.Path(".github/workflows/send-ttittulares-ready-telegram.yml").read_text())
+          steps=workflow["jobs"]["deliver"]["steps"]
+          source=next(x["run"] for x in steps if x.get("name")=="Enviar o reparar paquete READY")
+          start=source.index("python3 - <<'PY'\n")+len("python3 - <<'PY'\n")
+          end=source.index("\nPY",start)
+          ast.parse(textwrap.dedent(source[start:end]), filename="TTiTTulares inline Telegram sender")
+          print("TTITTULARES_INSTAGRAM_SENDER_SYNTAX_OK")
+          PY
+
+      - name: Live deployed pilot smoke test (read-only and unauthenticated)
+        run: |
+          node --input-type=module <<'JS'
+          const base="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev";
+          const health=await fetch(base+"/health",{signal:AbortSignal.timeout(15000)});
+          if(health.status!==200)throw Error("Pilot health returned HTTP "+health.status);
+          const h=await health.json();
+          if(h.service!=="tt-actualidad-instagram"||typeof h.active!=="boolean")throw Error("Publisher health contract invalid");
+          const denied=await fetch(base+"/publish",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify({source:"ttittulares",event_id:"smoketest01"})
+          });
+          if(denied.status!==401)throw Error("Missing security guard: HTTP "+denied.status);
+          console.log("INSTAGRAM_PILOT_LIVE_HEALTH_OK / ANONYMOUS_PUBLISH_DENIED");
+          JS
+
+      - name: Public route routing diagnostics (read only)
+        working-directory: instagram-publisher
+        run: node test/probe-routes.mjs
+
+      - name: Validate refreshed TTiTTulares keyboard still supports Instagram
+        run: |
+          python3 - <<'PY'
+          import ast,pathlib,yaml
+          p=pathlib.Path(".github/workflows/refresh-ttittulares-telegram-keyboard.yml")
+          workflow=yaml.safe_load(p.read_text(encoding="utf8"))
+          body=next(x["run"] for x in workflow["jobs"]["refresh"]["steps"] if "python3 - <<'PY'" in x.get("run",""))
+          code=body.split("python3 - <<\'PY\'",1)[1].rsplit("PY",1)[0]
+          ast.parse(code,"keyboard-refresh.py")
+          assert "INSTAGRAM_PILOT_ENABLED" in code and '"callback_data":"tt:i:"+eid' in code
+          print("TTITTULARES_INSTAGRAM_KEYBOARD_REFRESH_SYNTAX_OK")
+          PY

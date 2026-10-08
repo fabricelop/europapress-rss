@@ -991,6 +991,103 @@ def close_block(callback):
     persist_git("Cerrar mensaje editorial TTendencias")
 
 
+
+def handle_instagram_package_callback(callback):
+    """Handle explicit Instagram selection; never update X or delete Telegram."""
+    data=str(callback.get("data") or "")
+    parts=data.split(":")
+    if len(parts)!=4 or parts[:2]!=["tx","i"]:
+        return False
+    trend_id=parts[2]
+    try:
+        rev=int(parts[3])
+    except (ValueError,TypeError):
+        return True
+    state=load_remote_json("trends/telegram-bot-state.json",load(STATE,{}))
+    allowed_chat=int(state.get("chat_id") or 0)
+    message=callback.get("message") or {}
+    chat_id=int((message.get("chat") or {}).get("id") or 0)
+    message_id=int(message.get("message_id") or 0)
+    if not allowed_chat or allowed_chat!=chat_id or message_id<=0:
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Chat no autorizado.","show_alert":True})
+        return True
+
+    # ACK before doing slow Meta calls to avoid an expired Telegram callback.
+    call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Recibido. Publicando en Instagram…"})
+    endpoint=str(os.environ.get("INSTAGRAM_PUBLISHER_URL") or "").rstrip("/")
+    secret=str(os.environ.get("INSTAGRAM_INTERNAL_SECRET") or "")
+    if (not endpoint.startswith("https://") or len(secret)<32):
+        call("sendMessage",{"chat_id":chat_id,"text":"Instagram aún no está activado; el mensaje se conserva.","reply_to_message_id":message_id})
+        return True
+    doc=load_remote_json("trends/telegram-image-deliveries.json",load(IMAGE_DELIVERIES,{"items":[]}))
+    matched=next((row for row in reversed(doc.get("items",[]))
+        if str(row.get("event_id") or "")==trend_id
+        and int(row.get("revision") or 0)==rev
+        and int(row.get("telegram_message_id") or 0)==message_id
+        and str(row.get("status") or "").lower()=="sent"
+        and isinstance(row.get("instagram"),dict)
+        and row["instagram"].get("image_url")
+        and row["instagram"].get("caption")),None)
+    if not matched:
+        call("sendMessage",{"chat_id":chat_id,"text":"El paquete ya no está disponible para Instagram.","reply_to_message_id":message_id})
+        return True
+
+    body={
+        "source":"ttendencias","event_id":trend_id,"revision":rev,
+        "telegram_message_id":message_id,
+        "image_url":str(matched["instagram"]["image_url"]),
+        "caption":str(matched["instagram"]["caption"]),
+    }
+    result={}
+    for attempt in range(5):
+        try:
+            request=urllib.request.Request(
+                endpoint+"/publish",data=json.dumps(body,ensure_ascii=False).encode("utf-8"),
+                headers={"content-type":"application/json","authorization":"Bearer "+secret},
+                method="POST")
+            try:
+                with urllib.request.urlopen(request,timeout=20) as response:
+                    result=json.loads(response.read().decode("utf-8"))
+            except urllib.error.HTTPError as exc:
+                result=json.loads(exc.read().decode("utf-8"))
+            if str(result.get("state") or "")!="processing":
+                break
+            time.sleep(2+attempt)
+        except Exception:
+            result={"state":"error"}
+            break
+
+    if result.get("state")=="published":
+        permalink=str(result.get("permalink") or "")
+        if permalink.startswith("https://www.instagram.com/"):
+            original=(message.get("reply_markup") or {}).get("inline_keyboard") or []
+            keyboard=[[({"text":"📸 Publicado en Instagram","url":permalink}
+                       if button.get("callback_data")==data else button) for button in row]
+                       for row in original]
+            if keyboard:
+                try:
+                    call("editMessageReplyMarkup",{
+                        "chat_id":chat_id,"message_id":message_id,
+                        "reply_markup":{"inline_keyboard":keyboard}})
+                except Exception:
+                    pass
+            else:
+                call("sendMessage",{"chat_id":chat_id,"text":"Publicado en Instagram: "+permalink})
+        else:
+            call("sendMessage",{"chat_id":chat_id,"text":"Instagram confirma la publicación; enlace pendiente."})
+        return True
+
+    reason=str(result.get("state") or "")
+    if reason=="uncertain":
+        txt="Publicación no confirmada. Revisa Instagram antes de volver a pulsar."
+    elif reason=="processing":
+        txt="Instagram sigue procesando la imagen. Vuelve a pulsar el botón en unos segundos."
+    else:
+        txt="No se ha confirmado la publicación en Instagram. El mensaje sigue disponible."
+    call("sendMessage",{"chat_id":chat_id,"text":"📸 "+txt,"reply_to_message_id":message_id})
+    return True
+
+
 def handle(update):
     state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     message = update.get("message")
@@ -1015,7 +1112,9 @@ def handle(update):
     if not cb:
         return
     data = cb.get("data", "")
-    if data.startswith("tx:"):
+    if data.startswith("tx:i:"):
+        handle_instagram_package_callback(cb)
+    elif data.startswith("tx:"):
         handle_package_callback(cb)
     elif data.startswith("toggle:"):
         toggle_trend(cb)

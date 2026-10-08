@@ -16,6 +16,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
 
+from shared.instagram_pilot import enabled as ig_enabled, payload as ig_payload, attach_button as ig_button
 from shared.cross_account_story import (
     build_ttendencias_quote_copy,
     find_published_news_match,
@@ -245,7 +246,7 @@ def reexplain_url(tid,rev):
     })
 
 
-def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallback=False,archive_only=False):
+def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallback=False,archive_only=False,instagram_post=None):
     rows=[]
     if timeout_fallback or archive_only:
         if archive_url:
@@ -273,7 +274,7 @@ def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallba
         {"text":"🗑️ Desestimar","callback_data":f"tx:d:{tid}:{rev}"},
         {"text":"✅ Publicado","callback_data":f"tx:p:{tid}:{rev}"}
     ])
-    return {"inline_keyboard":rows}
+    return ig_button({"inline_keyboard":rows},f"tx:i:{tid}:{rev}",instagram_post)
 
 
 
@@ -529,7 +530,18 @@ def run_send(patch_path):
             except Exception as e:
                 print("TTENDENCIAS_ARCHIVE_WARNING",tid,str(e),flush=True)
 
-        kb=keyboard(tid,rev,text,ai_url,archive_copy_url,trend_search_term(row))
+        instagram_post=None
+        cached_image_raw=None
+        if ig_enabled():
+            try:
+                cached_image_raw=fetch_image(ai_url)
+                if hashlib.sha256(cached_image_raw).hexdigest().lower()!=ai_sha:
+                    raise ValueError("AI SHA256 mismatch")
+                instagram_post=ig_payload(ROOT,"trends",tid,rev,text,cached_image_raw)
+            except Exception as e:
+                print("TTENDENCIAS_INSTAGRAM_PREPARE_WARNING",tid,str(e),flush=True)
+                cached_image_raw=None
+        kb=keyboard(tid,rev,text,ai_url,archive_copy_url,trend_search_term(row),instagram_post=instagram_post)
 
         if timeout_archive:
             try:
@@ -548,6 +560,8 @@ def run_send(patch_path):
                 "buttons_version":BUTTONS_VERSION,
                 "buttons_updated_at":nowz(),
             }
+            if instagram_post:
+                updates["instagram"]=instagram_post
             if archive_mid:
                 updates.update({
                     "archive_telegram_message_id":archive_mid,
@@ -566,7 +580,7 @@ def run_send(patch_path):
             touched+=1
             continue
 
-        raw=fetch_image(ai_url)
+        raw=cached_image_raw or fetch_image(ai_url)
         got=hashlib.sha256(raw).hexdigest()
         if got.lower()!=ai_sha:
             raise RuntimeError(f"{tid}: SHA256 IA no coincide")
@@ -601,6 +615,7 @@ def run_send(patch_path):
             "name":str(row.get("name") or ""),
             "image_sha256":got,
             "image_url":ai_url,
+            "instagram":instagram_post,
             "telegram_message_id":mid,
             "delivered_at":nowz(),
             "status":"sent",

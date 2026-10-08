@@ -6,7 +6,8 @@ import runHandler from "../generated/lib/ttittulares-run-handler.js";
 import statusHandler from "../generated/lib/ttittulares-run-status-handler.js";
 
 const MAX_BODY_BYTES = 5*1024*1024;
-// TT Control forwards only tt:p and tt:d callbacks through its internal service binding.
+// TT Control contains a generic tt: callback forwarder; do not modify gateway.
+// Actual tt:i forwarding must still be verified after this Worker is deployed.
 const ROUTES = {
   "/api/ttittulares-control": controlHandler,
   "/api/ttittulares-run": runHandler,
@@ -87,7 +88,7 @@ const TT_CALLBACK_INBOX="telegram/ttittulares-callback-inbox.json";
 function parseTtiCallback(update){
   const cq=update?.callback_query;
   const data=String(cq?.data||"");
-  const match=data.match(/^tt:([pd]):([a-zA-Z0-9_-]{5,64})$/);
+  const match=data.match(/^tt:([pdi]):([a-zA-Z0-9_-]{5,64})$/);
   const uid=Number(update?.update_id);
   const mid=Number(cq?.message?.message_id);
   const chat=String(cq?.message?.chat?.id||"");
@@ -96,7 +97,7 @@ function parseTtiCallback(update){
      !Number.isSafeInteger(mid)||mid<=0||
      !/^-?[0-9]{3,20}$/.test(chat)||
      !/^[a-zA-Z0-9_-]{6,128}$/.test(qid))return null;
-  return {update_id:uid,type:"emergency_action",text:(match[1]==="p"?"ttp":"ttd")+"|"+match[2],
+  return {update_id:uid,type:match[1]==="i"?"instagram_action":"emergency_action",text:(match[1]==="p"?"ttp":match[1]==="d"?"ttd":"tti_ig")+"|"+match[2],
     callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
 }
@@ -128,7 +129,7 @@ async function verifyAndAnswerTelegramCallback(event,env){
   const token=await cloudflareTelegramBotToken(env);
   const response=await fetch("https://api.telegram.org/bot"+token+"/answerCallbackQuery",{
     method:"POST",headers:{"content-type":"application/json"},
-    body:JSON.stringify({callback_query_id:event.callback_query_id,text:"Recibido. Actualizando noticia…"})
+    body:JSON.stringify({callback_query_id:event.callback_query_id,text:event.type==="instagram_action"?"Recibido. Publicando en Instagram…":"Recibido. Actualizando noticia…"})
   });
   const ack=await response.json().catch(()=>({}));
   if(!response.ok||!ack.ok)return {ok:false,status:response.status};
@@ -223,6 +224,74 @@ async function inlineTtiTelegramDecision(env,update,event){
   return {applied:true,deleted:outcomes.every(x=>x.deleted),message_count:messageIds.length};
 }
 
+
+async function publishTtiInstagramSelected(env,update,event){
+  const allowedChat=String(env.INSTAGRAM_ALLOWED_CHAT_ID||"");
+  const callbackChat=String(update?.callback_query?.message?.chat?.id||"");
+  if(!allowedChat||allowedChat!==callbackChat)return json({ok:false,error:"Unauthorized Instagram chat"},403);
+  if(!env.INSTAGRAM_PUBLISHER_URL||!env.INSTAGRAM_INTERNAL_SECRET||
+     String(env.INSTAGRAM_INTERNAL_SECRET).length<32){
+    return json({ok:false,error:"Instagram pilot disabled or not configured"},503);
+  }
+  const endpoint=String(env.INSTAGRAM_PUBLISHER_URL).replace(/\/+$/,"")+"/publish";
+  if(!/^https:\/\/[a-zA-Z0-9.-]+\/publish$/.test(endpoint))return json({ok:false,error:"Invalid Instagram endpoint"},503);
+  const gh="https://api.github.com/repos/fabricelop/europapress-rss/contents/telegram/ttittulares-deliveries.json?ref=main";
+  const response=await fetch(gh,{headers:{
+    accept:"application/vnd.github+json",
+    authorization:"Bearer "+env.GITHUB_TOKEN,
+    "user-agent":"ttittulares-instagram-pilot"
+  },cache:"no-store"});
+  if(!response.ok)throw new Error("Could not verify Telegram delivery");
+  const file=await response.json();
+  const doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\s/g,""),"base64").toString("utf8"));
+  const eventId=event.text.split("|")[1];
+  const messageId=Number(event.message_id);
+  const delivery=[...(doc.items||[])].reverse().find(x=>
+    String(x.event_id||"")===eventId && Number(x.telegram_message_id)===messageId
+    && String(x.status||"").toLowerCase()==="sent"
+    && x.instagram?.image_url && x.instagram?.caption);
+  if(!delivery)return json({ok:false,error:"No eligible Instagram package for this message"},409);
+  const original=delivery.instagram;
+  const payload={
+    source:"ttittulares",event_id:eventId,revision:Number(delivery.revision)||1,
+    telegram_message_id:messageId,
+    image_url:String(original.image_url),caption:String(original.caption)
+  };
+  let result={};
+  for(let attempt=0;attempt<5;attempt++){
+    const r=await fetch(endpoint,{method:"POST",
+      headers:{"content-type":"application/json","authorization":"Bearer "+env.INSTAGRAM_INTERNAL_SECRET},
+      body:JSON.stringify(payload)});
+    result=await r.json().catch(()=>({}));
+    if(r.ok&&result.state==="published")break;
+    if(r.status!==202||result.state!=="processing")break;
+    await new Promise(resolve=>setTimeout(resolve,Math.min(5000,2000+attempt*750)));
+  }
+  const token=await cloudflareTelegramBotToken(env);
+  const chat=update?.callback_query?.message?.chat?.id;
+  const tg="https://api.telegram.org/bot"+token+"/";
+  if(result.state==="published"&&result.permalink?.startsWith("https://www.instagram.com/")){
+    const old=update?.callback_query?.message?.reply_markup?.inline_keyboard||[];
+    const revised=old.map(row=>row.map(button=>
+      button?.callback_data==="tt:i:"+eventId?
+      {text:"📸 Publicado en Instagram",url:result.permalink}:button));
+    await fetch(tg+"editMessageReplyMarkup",{method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({chat_id:chat,message_id:messageId,reply_markup:{inline_keyboard:revised}})});
+    return json({ok:true,state:"published",permalink:result.permalink});
+  }
+  // Never delete Telegram or update X on Meta error/ambiguous publication.
+  const note=result.state==="published"?
+    "Publicado en Instagram. Enlace pendiente de confirmar.":
+    result.state==="processing"?
+    "Instagram sigue procesando la imagen. Vuelve a pulsar el botón en unos segundos.":
+    result.state==="uncertain"?
+    "No se puede confirmar la publicación. Comprueba Instagram antes de reintentar.":
+    "No se ha confirmado la publicación en Instagram; el mensaje de Telegram sigue disponible.";
+  await fetch(tg+"sendMessage",{method:"POST",headers:{"content-type":"application/json"},
+    body:JSON.stringify({chat_id:chat,text:"📸 "+note,reply_to_message_id:messageId})});
+  return json({ok:result.state==="published",state:result.state||"error"});
+}
+
 async function enqueueTtiTelegramCallback(request,env){
   if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
   const raw=await request.text();
@@ -242,6 +311,16 @@ async function enqueueTtiTelegramCallback(request,env){
   }catch(err){
     console.log("TTiTTulares immediate Telegram ACK failed",String(err?.message||err));
     return json({ok:false,error:"Telegram confirmation unavailable"},503);
+  }
+  if(event.type==="instagram_action"){
+    // Instagram never changes the independent X Published / Dismissed state.
+    // The callback is confirmed against Telegram before reading the trusted
+    // delivery snapshot. Nothing submitted in callback_data is trusted as media.
+    try {return await publishTtiInstagramSelected(env,update,event);}
+    catch(error) {
+      console.log("TTITTULARES_INSTAGRAM_CALLBACK_FAILED",String(error?.message||error));
+      return json({ok:false,error:"Instagram publication was not confirmed; retry safely"},503);
+    }
   }
   const api="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+TT_CALLBACK_INBOX;
   const h={"accept":"application/vnd.github+json","authorization":"Bearer "+env.GITHUB_TOKEN,
