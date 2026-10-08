@@ -37,3 +37,15 @@ test("unverified Telegram Instagram callbacks cannot reach Meta publisher",async
     assert.equal(requests,0);
   }finally{globalThis.fetch=originalFetch;}
 });
+
+test("new Instagram callback preflight is read-only and leaves X routing untouched",async()=>{
+  const marker=await worker.fetch(new Request("https://worker.example/api/ttittulares-instagram-route-version"),{});
+  assert.equal(marker.status,200);
+  const data=await marker.json();
+  assert.equal(data.version,"instagram-callback-preflight-v1");
+  assert.equal(data.telegram_callback,"tt:i");
+  assert.equal(data.status,"disabled_until_credentials");
+  const existing=await worker.fetch(new Request("https://worker.example/api/ttittulares-telegram-pipeline-version"),{});
+  assert.equal(existing.status,200);
+  assert.equal((await existing.json()).version,"immediate-decision-delete-v2");
+});

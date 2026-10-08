@@ -363,6 +363,7 @@ export default {
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2"});
+    if(path==="/api/ttittulares-instagram-route-version"&&request.method==="GET")return json({ok:true,version:"instagram-callback-preflight-v1",telegram_callback:"tt:i",status:"disabled_until_credentials"});
     if(path==="/api/ttittulares-telegram-callback")return enqueueTtiTelegramCallback(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);
