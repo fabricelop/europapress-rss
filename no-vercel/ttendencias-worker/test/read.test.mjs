@@ -1,86 +1,91 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import worker, {stateSnapshot} from "../src/index.js";
+import fs from "node:fs";
+import path from "node:path";
+import {fileURLToPath} from "node:url";
+import worker,{handlerRequest} from "../src/index.js";
+import imageMeta from "../src/compat/sharp.js";
 
-const expectedPaths={
-  recent:"trends/recent.json",
-  requests:"trends/requests.json",
-  explained:"trends/telegram-manual-explained.json",
-  health:"trends/health-status.json",
-  prepared:"trends/prepared.json",
-  editorial_config:"trends/editorial-config.json",
-  editorial_queue:"trends/editorial-queue.json"
-};
-function fixtures() {
-  return {
-    recent:{captured_at:"2026-10-08T11:00:00Z",items:[{rank:1,name:"Ejemplo"}],upcoming:[]},
-    requests:{requests:[]},
-    explained:{items:[]},
-    health:{ok:true},prepared:{items:[]},
-    editorial_config:{editorial:{}},
-    editorial_queue:{items:[]}
-  };
-}
-function fakeFetch(data,options={}){
-  const calls=[];
-  const stub=async (url,init)=>{
-    calls.push({url:String(url),init});
-    const key=Object.keys(expectedPaths).find(k=>String(url).endsWith("/"+expectedPaths[k]));
-    assert.ok(key,"Solo se leen rutas GitHub de la lista blanca");
-    if(options.fail===key)return new Response("upstream blocked",{status:503});
-    return new Response(JSON.stringify(data[key]),{status:200,headers:{"content-type":"application/json"}});
-  };
-  return {stub,calls};
-}
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 
-test("reads all seven state docs and refuses an artificial empty-queue fallback",async()=>{
-  const {stub,calls}=fakeFetch(fixtures());
-  const value=await stateSnapshot(stub);
-  assert.equal(value.ok,true);
-  assert.equal(value.recent.items[0].name,"Ejemplo");
-  assert.equal(value.requests.requests.length,0);
-  assert.equal(calls.length,7);
-  assert.ok(calls.every(c=>c.url.startsWith("https://raw.githubusercontent.com/fabricelop/europapress-rss/main/")));
-  assert.ok(calls.every(c=>c.init.cf.cacheTtl===60));
+test("complete TTendencias PWA and all 3 original handlers were staged",()=>{
+  for(const p of [
+    "generated/assets/ttendencias/index.html",
+    "generated/assets/ttendencias/explicadas/index.html",
+    "generated/assets/ttendencias/preparados/index.html",
+    "generated/assets/ttendencias/sw.js",
+    "generated/lib/ttendencias-control-handler.js",
+    "generated/lib/ttendencias-run-handler.js",
+    "generated/lib/ttendencias-run-status-handler.js"
+  ]) assert.ok(fs.statSync(path.join(root,p)).isFile(),p);
+  const html=fs.readFileSync(path.join(root,"generated/assets/ttendencias/explicadas/index.html"),"utf8");
+  assert.match(html,/canvas\.toBlob/);
+  assert.doesNotMatch(html,/format=png/);
 });
 
-test("fails closed when a required upstream document cannot be fetched",async()=>{
-  const {stub}=fakeFetch(fixtures(),{fail:"requests"});
-  await assert.rejects(()=>stateSnapshot(stub),/GitHub HTTP 503/);
-});
-
-test("fails closed when upstream state format changes",async()=>{
-  const data=fixtures();data.requests={items:[]};
-  const {stub}=fakeFetch(data);
-  await assert.rejects(()=>stateSnapshot(stub),/faltan arrays/);
-});
-
-test("health endpoint works without Vercel, PC or GitHub",async()=>{
-  const response=await worker.fetch(new Request("https://example.workers.dev/health"),{});
-  assert.equal(response.status,200);
-  const body=await response.json();
-  assert.equal(body.ok,true);
-  assert.equal(body.phase,"read-only-test");
-});
-
-test("mutations are disabled even if a token is provided",async()=>{
-  const r=await worker.fetch(new Request("https://example.workers.dev/api/ttendencias-control",{
-    method:"POST",headers:{authorization:"Bearer abc","content-type":"application/json"},body:"{}"
-  }),{});
-  assert.equal(r.status,501);
-  assert.equal((await r.json()).ok,false);
-});
-
-test("does not report unimplemented execution endpoints as successful",async()=>{
-  const r=await worker.fetch(new Request("https://example.workers.dev/api/ttendencias-run-status"),{});
-  assert.equal(r.status,501);
-  assert.equal((await r.json()).ok,false);
-});
-
-test("static fallback comes from local Worker assets rather than Vercel",async()=>{
-  let called=0;
-  const assets={fetch:async()=>{called++;return new Response("<html>fallback</html>",{status:200,headers:{"content-type":"text/html"}})}};
-  const r=await worker.fetch(new Request("https://example.workers.dev/"),{ASSETS:assets});
+test("Cloudflare health stays available if PC and Vercel are unavailable",async()=>{
+  const r=await worker.fetch(new Request("https://tt.example/health"),{});
   assert.equal(r.status,200);
-  assert.equal(called,1);
+  assert.equal((await r.json()).ok,true);
+});
+
+test("TTendencias original controls require authentication",async()=>{
+  const r=await worker.fetch(new Request("https://tt.example/api/ttendencias-control",{
+    method:"POST",
+    headers:{"content-type":"application/json","authorization":"Bearer invalid-token"},
+    body:JSON.stringify({action:"queue",names:["Ejemplo"]})
+  }),{});
+  assert.equal(r.status,401);
+});
+
+test("TTendencias run cannot be invoked by an unauthorized browser",async()=>{
+  const r=await worker.fetch(new Request("https://tt.example/api/ttendencias-run",{
+    method:"POST",headers:{"content-type":"application/json"},body:'{"task":"editorial"}'
+  }),{});
+  assert.equal(r.status,401);
+});
+
+test("malformed input and oversize body fail without invoking legacy controllers",async()=>{
+  const bad=await worker.fetch(new Request("https://tt.example/api/ttendencias-run",{
+    method:"POST",body:"broken"
+  }),{});
+  assert.equal(bad.status,400);
+  const huge=await worker.fetch(new Request("https://tt.example/api/ttendencias-control",{
+    method:"POST",headers:{"content-length":"6000000"},body:"{}"
+  }),{});
+  assert.equal(huge.status,413);
+});
+
+test("Node response adapter preserves original endpoint shape and status",async()=>{
+  const url=new URL("https://tt.example/api/ttendencias-run-status?view=image-job&id=abc");
+  const response=await handlerRequest(
+    new Request(url),
+    {},
+    url,
+    (req,res)=>res.setHeader("cache-control","no-store").status(409).json({ok:false,view:req.query.view,id:req.query.id})
+  );
+  assert.equal(response.status,409);
+  assert.deepEqual(await response.json(),{ok:false,view:"image-job",id:"abc"});
+});
+
+test("Worker serves original static asset tree, not a read-only replacement",async()=>{
+  let opened=null;
+  const response=await worker.fetch(new Request("https://tt.example/ttendencias/explicadas/"),{
+    ASSETS:{fetch:async req=>{opened=req.url;return new Response("<html/>",{status:200})}}
+  });
+  assert.equal(response.status,200);
+  assert.ok(opened.endsWith("/ttendencias/explicadas/"));
+});
+
+test("PNG and JPEG dimensions checked without unsupported sharp native module",async()=>{
+  const png=Buffer.alloc(30);Buffer.from([137,80,78,71,13,10,26,10]).copy(png,0);
+  png.write("IHDR",12,"ascii");png.writeUInt32BE(1536,16);png.writeUInt32BE(1024,20);
+  assert.equal((await imageMeta(png).metadata()).width,1536);
+  assert.equal((await imageMeta(png).png().toBuffer()).length,30);
+  // JPEG SOF0 marker with 1200 x 800 dimensions.
+  const jpg=Buffer.from([0xff,0xd8,0xff,0xc0,0x00,0x11,0x08,0x03,0x20,0x04,0xb0,0x03,0x01,0x11,0,0xff,0xd9]);
+  const m=await imageMeta(jpg).metadata();
+  assert.equal(m.width,1200);
+  assert.equal(m.height,800);
+  await assert.rejects(()=>imageMeta(jpg).png().toBuffer(),/navegador/);
 });
