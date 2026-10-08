@@ -135,6 +135,18 @@ async function verifyAndAnswerTelegramCallback(event,env){
   return {ok:true};
 }
 
+async function telegramCryptoReady(env){
+  try{
+    const token=await cloudflareTelegramBotToken(env);
+    const r=await fetch("https://api.telegram.org/bot"+token+"/getMe");
+    const result=await r.json().catch(()=>({}));
+    return json({ok:!!result.ok,telegram_callback_credential_ready:!!result.ok},result.ok?200:503);
+  }catch(err){
+    console.log("TTiTTulares bot credential preflight failed",String(err?.message||err));
+    return json({ok:false,telegram_callback_credential_ready:false},503);
+  }
+}
+
 async function enqueueTtiTelegramCallback(request,env){
   if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
   const raw=await request.text();
@@ -185,6 +197,7 @@ export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
+    if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-callback")return enqueueTtiTelegramCallback(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);
