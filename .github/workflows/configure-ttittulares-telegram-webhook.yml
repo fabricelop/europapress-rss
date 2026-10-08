@@ -1,4 +1,4 @@
-name: Configurar webhook Telegram TTiTTulares
+name: Configurar webhook Telegram TTiTTulares en Cloudflare
 
 on:
   push:
@@ -10,55 +10,82 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ttittulares-telegram-webhook-registration
+  cancel-in-progress: false
+
 jobs:
   configure:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: Configurar webhook en Worker
+      - name: Comprobar Cloudflare TTiTTulares receptor (no alterar si no responde)
+        run: |
+          set -euo pipefail
+          receiver="https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version"
+          curl -fsS --retry 3 --retry-delay 2 --max-time 25 "$receiver" -o /tmp/webhook-handler.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/webhook-handler.json'))
+          if not str(d.get("version","")).startswith("2026-10-04-telegram"):
+              raise SystemExit("ABORT: Cloudflare receiver version not validated")
+          print("Cloudflare handler preflight OK version="+d["version"])
+          PY
+
+      - name: Restaurar Telegram webhook a Cloudflare; comprobar destino
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
         run: |
           set -euo pipefail
-          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ]; then
-            echo "Falta TELEGRAM_BOT_TOKEN" >&2
-            exit 2
+          if [[ -z "${TELEGRAM_BOT_TOKEN:-}" ]]; then echo 'Missing Telegram bot credential' >&2; exit 2; fi
+          target="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+          args=(--data-urlencode "url=$target" --data-urlencode 'allowed_updates=["callback_query","message"]' --data-urlencode 'drop_pending_updates=false')
+          if [[ -n "${TELEGRAM_WEBHOOK_SECRET:-}" ]]; then
+            args+=(--data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}")
+          else
+            echo "::warning::TELEGRAM_WEBHOOK_SECRET missing in GitHub Actions. Cloudflare receiver currently accepts requests without webhook secret. Strengthen this after migration."
           fi
-          if [ -z "${TELEGRAM_WEBHOOK_SECRET:-}" ]; then
-            echo "Falta TELEGRAM_WEBHOOK_SECRET" >&2
-            exit 3
-          fi
-          RESP=$(curl --fail --silent --show-error             -X POST             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook"             --data-urlencode "url=https://tt-control.fabricelop.workers.dev/api/telegram-webhook"             --data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}"             --data-urlencode 'allowed_updates=["callback_query","message"]')
-          echo "$RESP"
-          curl --fail --silent --show-error             "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo"             -o /tmp/webhook.json
+          curl -fsS --max-time 30 -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+            "${args[@]}" -o /tmp/webhook-set.json
           python3 - <<'PY'
-          import json, pathlib, datetime
+          import json
+          r=json.load(open('/tmp/webhook-set.json'))
+          if not r.get("ok"):raise SystemExit("Telegram rejected setWebhook")
+          print("Telegram setWebhook accepted")
+          PY
+          curl -fsS --max-time 30 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/webhook.json
+          python3 - <<'PY'
+          import json,datetime,pathlib
           w=json.load(open('/tmp/webhook.json',encoding='utf-8'))
           r=w.get('result') or {}
-          out={
-            "checked_at":datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00","Z"),
-            "webhook":{
-              "url":r.get("url"),
-              "pending_update_count":r.get("pending_update_count"),
-              "last_error_date":r.get("last_error_date"),
-              "last_error_message":r.get("last_error_message"),
-              "max_connections":r.get("max_connections"),
-              "ip_address":r.get("ip_address")
-            }
-          }
-          pathlib.Path("telegram/webhook-config-result.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          print(json.dumps(out,ensure_ascii=False))
+          expected='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          if not w.get('ok') or r.get('url') != expected:
+              raise SystemExit("Webhook verification failed; Telegram did not register Cloudflare")
+          out={'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat().replace('+00:00','Z'),'webhook':{k:r.get(k) for k in ['url','pending_update_count','last_error_date','last_error_message','max_connections','ip_address']}}
+          pathlib.Path('telegram/webhook-config-result.json').write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print("TTITTULARES_WEBHOOK_RESTORED "+json.dumps(out,ensure_ascii=False))
           PY
 
-      - name: Guardar resultado
+      - name: Guardar resultado en GitHub sin perder cambios concurrentes
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/webhook-config-result.json
-          git commit -m "Registrar configuración webhook Telegram"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          cp telegram/webhook-config-result.json /tmp/webhook-config-result.json
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/webhook-config-result.json telegram/webhook-config-result.json
+            git add telegram/webhook-config-result.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Registrar restauración webhook TTiTTulares en Cloudflare"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt*3))
+          done
+          exit 1
