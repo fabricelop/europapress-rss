@@ -465,14 +465,14 @@ test('future radar swaps with double buffer and waits for the incoming source',(
   assert.match(app,/function animateRadarSwap\(/);
   assert.match(app,/requestAnimationFrame\(step\)/);
   assert.match(app,/event\?\.isSourceLoaded\|\|state\.map\.isSourceLoaded\?\.\(sourceId\)/);
-  assert.match(app,/animateRadarSwap\(sourceId,blend\.radarOpacity,token,170\)/);
+  assert.match(app,/animateRadarSwap\\(sourceId,blend\\.radarOpacity,token,170,minutes\\)/);
 });
 
 test('model-only future waits for model tiles before fading radar away',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/if\(blend\.radarOpacity<=\.01\)/);
   assert.match(app,/waitForRasterSources\(info\.layerIds,token,4500\)/);
-  assert.match(app,/fadeOutRadarDisplay\(token,170\)/);
+  assert.match(app,/fadeOutRadarDisplay\\(token,170,minutes\\)/);
 });
 
 
