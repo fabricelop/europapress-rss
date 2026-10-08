@@ -121,7 +121,7 @@ async function checkRainViewerSyntheticFuture(radar){
 await checkRainViewerSyntheticFuture(radar);
 
 async function checkOpenMeteoSpatial(){
-  const meta=await check('https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json');
+  const meta=await check('https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon/latest.json');
   if(!Array.isArray(meta.valid_times)||meta.valid_times.length<24)throw Error('Open-Meteo spatial valid_times missing');
   if(Array.isArray(meta.variables)&&!meta.variables.includes('precipitation'))throw Error('Open-Meteo spatial precipitation missing');
   const mod=await fetch('https://unpkg.com/@openmeteo/weather-map-layer@0.2.2/dist/index.mjs');
