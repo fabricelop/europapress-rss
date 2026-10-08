@@ -76,3 +76,7 @@ jobs:
           if(denied.status!==401)throw Error("Missing security guard: HTTP "+denied.status);
           console.log("INSTAGRAM_PILOT_LIVE_HEALTH_OK / ANONYMOUS_PUBLISH_DENIED");
           JS
+
+      - name: Public route routing diagnostics (read only)
+        working-directory: instagram-publisher
+        run: node test/probe-routes.mjs
