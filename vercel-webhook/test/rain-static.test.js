@@ -514,8 +514,9 @@ test('future model uses internal motion-compensated protocol instead of opacity-
   assert.match(app,/estimateModelTileLocalFlow\(a\.rgba,b\.rgba,w,h/);
   assert.match(app,/modelMotionSingleFramePlan\(fraction,motion\)/);
   assert.match(app,/modelLocalPatchDisplacement\(localMotion,cx,cy,fraction,plan\.source/);
-  assert.match(app,/if\(plan\.source==='to'\)ctx\.drawImage\(toImage,plan\.dx,plan\.dy,w,h\)/);
-  assert.match(app,/else ctx\.drawImage\(fromImage,plan\.dx,plan\.dy,w,h\)/);
+  assert.match(app,/const source=plan\.source==='to'\?toImage:fromImage/);
+  assert.match(app,/estimateModelTileLocalFlow\(a\.rgba,b\.rgba,w,h/);
+  assert.match(app,/ctx\.drawImage\(source,sx,sy,sw,sh,sx\+shift\.dx,sy\+shift\.dy,sw,sh\)/);
   assert.match(app,/raineta-model:\/\/forecast\//);
 });
 
@@ -567,7 +568,8 @@ test('ICON interpolation renders only one field at any requested minute',()=>{
   const start=app.indexOf('async function renderMotionInterpolatedModelTile');
   const end=app.indexOf('async function rainetaModelMotionProtocol',start);
   const fn=app.slice(start,end);
-  assert.match(fn,/if\(plan\.source==='to'\)/);
+  assert.match(fn,/const source=plan\.source==='to'\?toImage:fromImage/);
+  assert.match(fn,/if\(localMotion\.ok\)/);
   assert.doesNotMatch(fn,/globalAlpha=plan\.fromOpacity/);
   assert.doesNotMatch(fn,/globalAlpha=plan\.toOpacity/);
 });
