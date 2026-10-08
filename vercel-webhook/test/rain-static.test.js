@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
-import {precipitationMaskFromRgba,estimateModelTileMotion,modelMotionSingleFramePlan} from '../rain/model-motion-core.js';
+import {precipitationMaskFromRgba,estimateModelTileMotion,estimateModelTileLocalFlow,modelMotionSingleFramePlan,modelLocalPatchDisplacement} from '../rain/model-motion-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -511,7 +511,9 @@ test('future model uses internal motion-compensated protocol instead of opacity-
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/maplibregl\.addProtocol\('raineta-model',rainetaModelMotionProtocol\)/);
   assert.match(app,/estimateModelTileMotion\(a\.rgba,b\.rgba,w,h/);
+  assert.match(app,/estimateModelTileLocalFlow\(a\.rgba,b\.rgba,w,h/);
   assert.match(app,/modelMotionSingleFramePlan\(fraction,motion\)/);
+  assert.match(app,/modelLocalPatchDisplacement\(localMotion,cx,cy,fraction,plan\.source/);
   assert.match(app,/if\(plan\.source==='to'\)ctx\.drawImage\(toImage,plan\.dx,plan\.dy,w,h\)/);
   assert.match(app,/else ctx\.drawImage\(fromImage,plan\.dx,plan\.dy,w,h\)/);
   assert.match(app,/raineta-model:\/\/forecast\//);
@@ -551,7 +553,7 @@ test('returning to observed radar invalidates pending future renders',()=>{
 test('radar to model handoff is dynamic and not a persistent mixed mode',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/function visualModelHandoffMinutes\(\)/);
-  assert.match(app,/Math\.max\(15,Math\.min\(30,reliable\|\|15\)\)/);
+  assert.match(app,/Math\.max\(30,Math\.min\(45,useful\|\|30\)\)/);
   assert.match(app,/if\(blend\.mode==='model'\)/);
   const start=app.indexOf('function showSyntheticRadarFuture');
   const end=app.indexOf('async function showProjectedRadar',start);
@@ -568,4 +570,41 @@ test('ICON interpolation renders only one field at any requested minute',()=>{
   assert.match(fn,/if\(plan\.source==='to'\)/);
   assert.doesNotMatch(fn,/globalAlpha=plan\.fromOpacity/);
   assert.doesNotMatch(fn,/globalAlpha=plan\.toOpacity/);
+});
+
+
+test('model local patch displacement can move different parts of one model field',()=>{
+  const local={
+    ok:true,
+    imageWidth:100,imageHeight:100,maskWidth:20,maskHeight:20,scaleX:5,scaleY:5,
+    flow:{vectors:[
+      {x:5,y:5,dx:2,dy:0,confidence:.9},
+      {x:10,y:5,dx:2,dy:0,confidence:.9},
+      {x:15,y:5,dx:2,dy:0,confidence:.9},
+      {x:5,y:15,dx:-1,dy:1,confidence:.9},
+      {x:10,y:15,dx:-1,dy:1,confidence:.9},
+      {x:15,y:15,dx:-1,dy:1,confidence:.9}
+    ]}
+  };
+  const north=modelLocalPatchDisplacement(local,50,20,.5,'from',{dx:0,dy:0});
+  const south=modelLocalPatchDisplacement(local,50,80,.5,'from',{dx:0,dy:0});
+  assert.ok(north.dx>1);
+  assert.ok(south.dx<0);
+  assert.notEqual(Math.round(north.dx),Math.round(south.dx));
+});
+
+test('model renderer warps one source image by local patches instead of a static whole-tile shift',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const start=app.indexOf('async function renderMotionInterpolatedModelTile');
+  const end=app.indexOf('async function rainetaModelMotionProtocol',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/const patch=48,pad=2/);
+  assert.match(fn,/for\(let py=0;py<h;py\+=patch\)for\(let px=0;px<w;px\+=patch\)/);
+  assert.match(fn,/ctx\.drawImage\(source,sx,sy,sw,sh,sx\+shift\.dx,sy\+shift\.dy,sw,sh\)/);
+});
+
+test('visual radar handoff gives useful nowcast room before hourly model takes over',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/const viewport=Math\.max\(0,Number\(state\.radarViewNowcast\?\.guidance\?\.horizon\)\|\|0\)/);
+  assert.match(app,/Math\.max\(30,Math\.min\(45,useful\|\|30\)\)/);
 });

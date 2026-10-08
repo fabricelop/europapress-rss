@@ -1,7 +1,7 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
-import {estimateModelTileMotion,modelMotionSingleFramePlan} from './model-motion-core.js';
+import {estimateModelTileMotion,estimateModelTileLocalFlow,modelMotionSingleFramePlan,modelLocalPatchDisplacement} from './model-motion-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -63,7 +63,7 @@ const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FRAME_SETTLE_MS=90;
 const RADAR_FRAME_READY_TIMEOUT_MS=6500;
-const APP_VERSION='0.17.47';
+const APP_VERSION='0.17.48';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -3780,12 +3780,25 @@ async function renderMotionInterpolatedModelTile(fromIndex,toIndex,fraction,z,x,
   const w=Number(fromImage.width)||Number(toImage.width)||512,h=Number(fromImage.height)||Number(toImage.height)||512;
   const [a,b]=await Promise.all([imageBitmapRgba(fromImage),imageBitmapRgba(toImage)]);
   const motion=estimateModelTileMotion(a.rgba,b.rgba,w,h,{target:64,maxShift:10,minConfidence:.16});
+  const localMotion=estimateModelTileLocalFlow(a.rgba,b.rgba,w,h,{target:72,maxShift:8,grid:6,patchRadius:8,minConfidence:.18,minCoverage:.22});
   const plan=modelMotionSingleFramePlan(fraction,motion);
+  const source=plan.source==='to'?toImage:fromImage;
   const canvas=modelTileCanvas(w,h),ctx=canvas.getContext('2d');
   ctx.clearRect(0,0,w,h);
   ctx.globalAlpha=1;
-  if(plan.source==='to')ctx.drawImage(toImage,plan.dx,plan.dy,w,h);
-  else ctx.drawImage(fromImage,plan.dx,plan.dy,w,h);
+  if(localMotion.ok){
+    const patch=48,pad=2;
+    for(let py=0;py<h;py+=patch)for(let px=0;px<w;px+=patch){
+      const sx=Math.max(0,px-pad),sy=Math.max(0,py-pad);
+      const ex=Math.min(w,px+patch+pad),ey=Math.min(h,py+patch+pad);
+      const sw=ex-sx,sh=ey-sy;
+      const cx=Math.min(w-1,px+Math.min(patch,w-px)/2),cy=Math.min(h-1,py+Math.min(patch,h-py)/2);
+      const shift=modelLocalPatchDisplacement(localMotion,cx,cy,fraction,plan.source,{dx:plan.dx,dy:plan.dy});
+      ctx.drawImage(source,sx,sy,sw,sh,sx+shift.dx,sy+shift.dy,sw,sh);
+    }
+  }else{
+    ctx.drawImage(source,plan.dx,plan.dy,w,h);
+  }
   try{fromImage.close?.();toImage.close?.()}catch{}
   if(typeof createImageBitmap==='function')return{data:await createImageBitmap(canvas)};
   return{data:canvas.transferToImageBitmap()};
@@ -3866,7 +3879,9 @@ function animateModelSwap(incomingId,targetOpacity,token,duration=170,displayOff
 }
 function visualModelHandoffMinutes(){
   const reliable=Math.max(0,Number(nowcastReliableHorizon())||0);
-  return Math.round(Math.max(15,Math.min(30,reliable||15)));
+  const viewport=Math.max(0,Number(state.radarViewNowcast?.guidance?.horizon)||0);
+  const useful=Math.max(reliable,viewport);
+  return Math.round(Math.max(30,Math.min(45,useful||30)));
 }
 async function ensureFutureModelLayer(minutes,projectedAt){
   const handoff=visualModelHandoffMinutes(),blend=hybridFutureBlend(minutes,handoff),token=state.radarProjectionToken;
@@ -3922,7 +3937,7 @@ function showSyntheticRadarFuture(minutes,r,latest){
     :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
     ?'Previsión de modelo como única capa.'
-    :'Nowcast radar como única capa hasta +'+handoff+' min; después RainETA cambia de fuente sin mantener dos campos meteorológicos superpuestos.';
+    :'Nowcast radar como única capa hasta +'+handoff+' min cuando el flujo lo permite; el límite «fiable hasta» sigue siendo la referencia de confianza y no se extiende artificialmente.';
 
   if(blend.mode==='model'){
     ensureFutureModelLayer(minutes,projectedAt).then(async info=>{
