@@ -59,3 +59,20 @@ jobs:
           ast.parse(textwrap.dedent(source[start:end]), filename="TTiTTulares inline Telegram sender")
           print("TTITTULARES_INSTAGRAM_SENDER_SYNTAX_OK")
           PY
+
+      - name: Live deployed pilot smoke test (read-only and unauthenticated)
+        run: |
+          node --input-type=module <<'JS'
+          const base="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev";
+          const health=await fetch(base+"/health",{signal:AbortSignal.timeout(15000)});
+          if(health.status!==200)throw Error("Pilot health returned HTTP "+health.status);
+          const h=await health.json();
+          if(h.service!=="tt-actualidad-instagram"||h.active!==false)throw Error("Pilot is not explicitly inactive");
+          const denied=await fetch(base+"/publish",{
+            method:"POST",
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify({source:"ttittulares",event_id:"smoketest01"})
+          });
+          if(denied.status!==401)throw Error("Missing security guard: HTTP "+denied.status);
+          console.log("INSTAGRAM_PILOT_LIVE_HEALTH_OK / ANONYMOUS_PUBLISH_DENIED");
+          JS
