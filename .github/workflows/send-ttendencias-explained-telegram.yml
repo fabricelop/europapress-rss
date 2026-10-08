@@ -40,6 +40,8 @@ jobs:
             /trends/archive-images/
             /telegram/ttittulares-deliveries.json
             /shared/cross_account_story.py
+            /shared/instagram_pilot.py
+            /trends/instagram-images/
 
       - name: Sincronizar main
         run: |
@@ -58,11 +60,15 @@ jobs:
       - name: Enviar o reparar paquetes visuales
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED }}
         run: |
           set -euo pipefail
           python3 trends/send_explained_telegram.py send --patch /tmp/ttendencias-delivery-patch.json
           if [ -d trends/archive-images ]; then
             tar -czf /tmp/ttendencias-archive-images.tgz trends/archive-images
+          fi
+          if [ -d trends/instagram-images ]; then
+            tar -czf /tmp/ttendencias-instagram-images.tgz trends/instagram-images
           fi
 
       - name: Persistir entrega sobre main fresco
@@ -79,10 +85,14 @@ jobs:
             if [ -f /tmp/ttendencias-archive-images.tgz ]; then
               tar -xzf /tmp/ttendencias-archive-images.tgz
             fi
+            if [ -f /tmp/ttendencias-instagram-images.tgz ]; then
+              tar -xzf /tmp/ttendencias-instagram-images.tgz
+            fi
             python3 trends/send_explained_telegram.py apply-patch --patch /tmp/ttendencias-delivery-patch.json
 
             git add trends/telegram-image-deliveries.json
             if [ -d trends/archive-images ]; then git add trends/archive-images; fi
+            if [ -d trends/instagram-images ]; then git add trends/instagram-images; fi
 
             if git diff --cached --quiet; then
               echo "Sin cambios de entrega."
