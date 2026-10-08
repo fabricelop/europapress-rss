@@ -2,9 +2,9 @@
   "version": 1,
   "command_id": "tt-img-auto-e33b2e5dcf1b-r1-a1-1791455920748",
   "requested_at": "2026-10-08T10:38:40.748162Z",
-  "updated_at": "2026-10-08T10:43:00.570Z",
-  "status": "RUNNING",
-  "phase": "image_retry",
+  "updated_at": "2026-10-08T10:43:01.796Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
   "mode": "automatic_ready_repair",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
@@ -48,8 +48,9 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
   },
-  "message": "Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.",
+  "message": "fetch failed",
   "pc_upload_secret_hash": "7c16aee8830367eca9954f95a9c2837b43c3932ff7219e1be576d51898981a80",
   "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-08T10:41:02.836Z"
+  "pc_picked_up_at": "2026-10-08T10:41:02.836Z",
+  "finished_at": "2026-10-08T10:43:01.796Z"
 }
