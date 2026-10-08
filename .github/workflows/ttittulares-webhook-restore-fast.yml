@@ -1,45 +1,74 @@
-name: TTiTTulares webhook emergency Cloudflare restore (no checkout)
+name: TTiTTulares Cloudflare webhook watchdog (no checkout)
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/ttittulares-webhook-restore-fast.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '12 * * * *'
 permissions:
   contents: read
+concurrency:
+  group: ttittulares-webhook-watchdog
+  cancel-in-progress: false
 jobs:
-  fix:
+  verify-and-recover:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 5
     env:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     steps:
-      - name: Verify Cloudflare receiving worker, then set bot webhook
+      - name: Verify TTit Worker and Telegram; repair webhook only if wrong
         shell: bash
         run: |
           set -euo pipefail
-          [[ -n "${TELEGRAM_BOT_TOKEN:-}" ]] || { echo "Bot token unavailable"; exit 2; }
-          version="$(curl -fsS --max-time 25 https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version)"
-          printf '%s\n' "$version" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert "telegram" in d["version"]'
-          target="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
-          echo "Restore Telegram webhook to Cloudflare"
-          curl -fsS --retry 2 --max-time 30 -X POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
-            --data-urlencode "url=$target" \
-            --data-urlencode 'allowed_updates=["callback_query","message"]' \
-            --data-urlencode 'drop_pending_updates=false' \
-            -o /tmp/set.json
+          [[ -n "${TELEGRAM_BOT_TOKEN:-}" ]] || { echo 'Bot credential unavailable'; exit 2; }
+          curl -fsS --retry 2 --max-time 20 \
+            https://ttittulares-no-vercel-test.fabricelop.workers.dev/health \
+            -o /tmp/ttit.json
           python3 - <<'PY'
           import json
-          d=json.load(open('/tmp/set.json'))
-          if d.get('ok') is not True:raise SystemExit('setWebhook rejected')
-          print('SET_WEBHOOK_OK')
+          d=json.load(open('/tmp/ttit.json'))
+          assert d.get('ok') and d.get('service')=='ttittulares-cloudflare'
+          print('TTiTTulares Cloudflare health: OK')
           PY
-          curl -fsS --max-time 30 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/get.json
-          python3 - <<'PY'
+          target='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          curl -fsS --max-time 25 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/telegram-before.json
+          current=$(python3 - <<'PY'
           import json
-          d=json.load(open('/tmp/get.json'))['result']
-          expect='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
-          print(json.dumps({k:d.get(k) for k in ('url','pending_update_count','last_error_message')},ensure_ascii=False))
-          assert d.get('url')==expect,'Cloudflare webhook not registered'
-          print('RESTORED_TO_CLOUDFLARE_CONFIRMED')
+          print(json.load(open('/tmp/telegram-before.json')).get('result',{}).get('url',''))
+          PY
+          )
+          if [[ "$current" != "$target" ]]; then
+            echo "::warning::TTiTTulares Telegram webhook drift detected: $current"
+            curl -fsS --retry 2 --max-time 25 \
+              https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version \
+              -o /tmp/receiver.json
+            python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/receiver.json'))
+          assert str(d.get('version','')).startswith('2026-10-04-telegram')
+          print('Cloudflare Telegram receiver: OK')
+          PY
+            curl -fsS --max-time 30 -X POST \
+              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+              --data-urlencode "url=$target" \
+              --data-urlencode 'allowed_updates=["callback_query","message"]' \
+              --data-urlencode 'drop_pending_updates=false' \
+              -o /tmp/set.json
+            python3 - <<'PY'
+          import json
+          assert json.load(open('/tmp/set.json')).get('ok') is True
+          print('TTITTULARES_WEBHOOK_AUTO_REPAIRED')
+          PY
+          fi
+          curl -fsS --max-time 30 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/telegram-after.json
+          python3 - <<'PY'
+          import json,os
+          d=json.load(open('/tmp/telegram-after.json')).get('result',{})
+          expected='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          print('TTITTULARES_WEBHOOK_STATUS '+json.dumps({k:d.get(k) for k in ('url','pending_update_count','last_error_date','last_error_message')},ensure_ascii=False))
+          assert d.get('url')==expected,'Webhook points away from Cloudflare'
+          print('TTITTULARES_WEBHOOK_HEALTHY')
           PY
