@@ -14,6 +14,9 @@ $RunTimeoutMinutes = 35
 $MaxParallelImageChats = 4
 $ImageStaleMinutes = 45
 $StatusBase = "https://europapress-rss.vercel.app"
+$TendenciasBase = [Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE", "User")
+if (-not $TendenciasBase) { $TendenciasBase = $StatusBase }
+$TendenciasBase = $TendenciasBase.TrimEnd("/")
 $RepoRaw = "https://raw.githubusercontent.com/fabricelop/europapress-rss"
 
 $Targets = [ordered]@{
@@ -28,8 +31,8 @@ $Targets = [ordered]@{
   }
   ttendencias = @{
     TriggerUrl = "$RepoRaw/control/ttendencias-run-trigger/trends/run-now-trigger.json"
-    RunStatusUrl = "$StatusBase/api/ttendencias-run-status"
-    RunUrl = "$StatusBase/api/ttendencias-run"
+    RunStatusUrl = "$TendenciasBase/api/ttendencias-run-status"
+    RunUrl = "$TendenciasBase/api/ttendencias-run"
     LauncherArg = "tendencias"
     ProjectLabel = "TTendencias"
     ControlBranch = "control/ttendencias-run-trigger"
