@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-d2b80d514248-r0-a1-1791492897303",
+  "requested_at": "2026-10-08T20:54:57.286622Z",
+  "updated_at": "2026-10-08T20:54:57.286622Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "d2b80d514248",
+  "trend_id": "d2b80d514248",
+  "target_name": "Tomás Gómez",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Tomás Gómez",
+    "revision": 0,
+    "explanation": "TT#9 Tomás Gómez es tendencia por sus declaraciones en Horizonte: el exlíder del PSOE madrileño señaló a Óscar Puente y Félix Bolaños como aspirantes a suceder a Pedro Sánchez y dijo que ya hay movimientos internos por la sucesión.",
+    "closer_text": "",
+    "trend_names": [
+      "Tomás Gómez"
+    ],
+    "group_title": "Tomás Gómez · comentarios sobre la sucesión en el PSOE",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-08T22:52:35+02:00",
+    "verification_sources": [
+      {
+        "source": "Mediaset Infinity · 06/10/2026",
+        "url": "https://www.mediasetinfinity.es/noticias/tomas-gomez-desvela-ministros-estarian-moviendo-ficha-por-sucesion-sanchez-intereses-pierda-elecciones_t42fQJwvU6aVmoDka3H9DBZ"
+      },
+      {
+        "source": "Cuatro · 05/10/2026",
+        "url": "https://www.cuatro.com/noticias/espana/20261005/horizonte-tomas-gomez-senala-sucesores-pedro-sanchez_18_020359027.html"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
+}
