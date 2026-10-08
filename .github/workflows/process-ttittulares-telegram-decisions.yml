@@ -86,7 +86,8 @@ jobs:
                   mid=int(row.get("message_id") or 0)
                   linked=any(str(x.get("event_id") or "")==eid
                              and mid in [int(x.get("telegram_message_id") or 0),
-                                         int(x.get("archive_telegram_message_id") or 0)]
+                                         int(x.get("archive_telegram_message_id") or 0),
+                                         int(x.get("cross_quote_message_id") or 0)]
                              for x in authoritative_deliveries)
                   # ACK is now confirmed synchronously in Cloudflare, before
                   # queuing this update. Never attempt expired Telegram ACKs here.
@@ -149,7 +150,7 @@ jobs:
                       continue
                   if str(x.get("status") or "").lower() in {"sent",status}:
                       x["status"]=status; x[field]=now; x["decision_source"]="telegram_emergency_callback"
-                      for k in ("telegram_message_id","archive_telegram_message_id"):
+                      for k in ("telegram_message_id","archive_telegram_message_id","cross_quote_message_id"):
                           mid=int(x.get(k) or 0)
                           if mid and mid not in mids:
                               mids.append(mid)
