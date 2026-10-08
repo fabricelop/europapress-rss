@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T21:12:11.606Z",
+  "updated_at": "2026-10-08T21:13:28.790Z",
   "items": [
     {
       "event_id": "f82d2c0a0528",
@@ -437,8 +437,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -454,12 +454,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T21:07:25.158826Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261008220539_1200.jpg",
-        "source": "Europa Press",
-        "source_url": "https://www.europapress.es/castilla-lamancha/noticia-hombre-mujer-hallados-muertos-valverde-jucar-eran-pareja-ella-no-estaba-sistema-viogen-20261008220539.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Hallados muertos un hombre y una mujer en una casa en Valverde de Júcar (Cuenca)"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d1eb0de39f76-r1-ai1-791493744680.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9235d585f4d2aea795204aea1098d400afabdd09227cfe38d6fb1ede81c338c0",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 742907,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d1eb0de39f76",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d1eb0de39f76-r1-a1-1791493744680"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d1eb0de39f76-r1-ai1-791493744680.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261008220539_1200.jpg",
@@ -468,7 +482,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Hallados muertos un hombre y una mujer en una casa en Valverde de Júcar (Cuenca)"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/d1eb0de39f76-r1-ai1-791493744680.jpg",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "9235d585f4d2aea795204aea1098d400afabdd09227cfe38d6fb1ede81c338c0",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 742907,
+        "context_guard": {
+          "version": 3,
+          "event_id": "d1eb0de39f76",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-d1eb0de39f76-r1-a1-1791493744680"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/d1eb0de39f76-r1-ai1-791493744680.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T21:13:28.790Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T21:13:28.790Z"
     }
   ],
   "count": 12
