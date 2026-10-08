@@ -1,71 +1,60 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T16:45:00+02:00",
-  "last_completed_at": "2026-10-08T16:56:30+02:00",
-  "updated_at": "2026-10-08T16:56:30+02:00",
+  "last_started_at": "2026-10-08T17:15:00+02:00",
+  "last_completed_at": "2026-10-08T17:22:00+02:00",
+  "updated_at": "2026-10-08T17:22:00+02:00",
   "status": "success",
   "processed_ids": [
-    "88575cfe0dd7",
-    "f8b727626ba7",
-    "23c6a2de8c96",
-    "58a586236216",
-    "5ced28d519a2",
-    "ad87900fa731"
-  ],
-  "remaining_ids": [
-    "ad87900fa731",
     "5ced28d519a2"
   ],
+  "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "ad87900fa731",
-    "5ced28d519a2"
-  ],
+  "remaining_problematic_ids": [],
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T164500-chat",
+    "run_id": "tr-20261008T171500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T16:45:00+02:00",
-    "updated_at": "2026-10-08T16:56:30+02:00",
-    "finished_at": "2026-10-08T16:56:30+02:00",
+    "started_at": "2026-10-08T17:15:00+02:00",
+    "updated_at": "2026-10-08T17:22:00+02:00",
+    "finished_at": "2026-10-08T17:22:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 6,
-    "total": 6,
+    "current": 1,
+    "total": 1,
     "summary": {
-      "trends_processed": 6,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 3,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
-      "queue_remaining": 2,
+      "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "visual_repair_triggered": 3,
+      "visual_repair_triggered": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
+      "explanations_verified_under_280": 1,
       "remates_selected": 1,
       "remates_reused": 0,
-      "remates_omitted": 2,
+      "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 3 explicadas; 3 problemáticas; 0 activas",
+    "message": "Pasada completada · 1 explicada; cola activa 0",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -77,179 +66,171 @@
     },
     "remate_selections": [
       {
-        "id": "88575cfe0dd7",
+        "trend_id": "5ced28d519a2",
         "revision": 0,
-        "selected": "🌶️ Carson convirtió la estantería de géneros en una mesa de mezclas."
-      },
-      {
-        "id": "f8b727626ba7",
-        "revision": 0,
-        "selected": null,
-        "no_remate_reason": "political_legal"
-      },
-      {
-        "id": "58a586236216",
-        "revision": 0,
-        "selected": null,
-        "no_remate_reason": "sensitive_health"
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "c2",
+            "total": 8.8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "c3",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.8,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-08T16:54:00+02:00",
+        "at": "2026-10-08T17:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Preparando pasada · 1 problematic vigente para reintento"
+      },
+      {
+        "at": "2026-10-08T17:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "88575cfe0dd7",
-        "title": "Nobel de Literatura",
-        "message": "Tendencia cerrada y verificada"
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Releyendo estado autoritativo de #TEM8O"
       },
       {
-        "at": "2026-10-08T16:54:05+02:00",
-        "phase": "verifying",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Releyendo estado autoritativo de David Sánchez"
-      },
-      {
-        "at": "2026-10-08T16:54:30+02:00",
+        "at": "2026-10-08T17:16:30+02:00",
         "phase": "investigating",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Contrastando RTVE y El País"
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Buscando detonante actual con consultas distintas"
       },
       {
-        "at": "2026-10-08T16:54:45+02:00",
+        "at": "2026-10-08T17:17:20+02:00",
         "phase": "investigating",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Hecho esencial verificado · recurso contra la condena y petición de absolución"
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Contrastando parrilla de Cuatro y ficha oficial de Todo es mentira"
       },
       {
-        "at": "2026-10-08T16:55:00+02:00",
+        "at": "2026-10-08T17:18:00+02:00",
+        "phase": "investigating",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Hecho esencial verificado · #TEM8O corresponde a la emisión de hoy de Todo es mentira"
+      },
+      {
+        "at": "2026-10-08T17:19:00+02:00",
         "phase": "drafting",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Comprobando límite de X · 210 caracteres"
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-08T16:55:15+02:00",
+        "at": "2026-10-08T17:19:15+02:00",
+        "phase": "drafting",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Comprobando límite de X · 229 caracteres"
+      },
+      {
+        "at": "2026-10-08T17:19:30+02:00",
         "phase": "remate_selection",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Sin remate · contenido político/judicial"
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-08T16:55:20+02:00",
+        "at": "2026-10-08T17:19:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-08T17:19:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-08T17:20:00+02:00",
         "phase": "persisting",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-08T16:55:30+02:00",
-        "phase": "verifying",
-        "trend_id": "f8b727626ba7",
-        "title": "David Sánchez",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T16:55:32+02:00",
-        "phase": "verifying",
-        "trend_id": "23c6a2de8c96",
-        "title": "Charlie Kirk",
-        "message": "Releyendo estado autoritativo de Charlie Kirk"
-      },
-      {
-        "at": "2026-10-08T16:55:35+02:00",
-        "phase": "investigating",
-        "trend_id": "23c6a2de8c96",
-        "title": "Charlie Kirk",
-        "message": "Dos búsquedas distintas sin detonante actual verificable en España"
-      },
-      {
-        "at": "2026-10-08T16:55:38+02:00",
-        "phase": "persisting",
-        "trend_id": "23c6a2de8c96",
-        "title": "Charlie Kirk",
-        "message": "Marcando revisión como problemática"
-      },
-      {
-        "at": "2026-10-08T16:55:40+02:00",
-        "phase": "verifying",
-        "trend_id": "58a586236216",
-        "title": "Día Mundial de la Salud Mental",
-        "message": "Releyendo estado autoritativo de Día Mundial de la Salud Mental"
-      },
-      {
-        "at": "2026-10-08T16:55:45+02:00",
-        "phase": "investigating",
-        "trend_id": "58a586236216",
-        "title": "Día Mundial de la Salud Mental",
-        "message": "Hecho esencial verificado · campañas previas al 10 de octubre"
-      },
-      {
-        "at": "2026-10-08T16:55:50+02:00",
-        "phase": "drafting",
-        "trend_id": "58a586236216",
-        "title": "Día Mundial de la Salud Mental",
-        "message": "Comprobando límite de X · 215 caracteres"
-      },
-      {
-        "at": "2026-10-08T16:55:52+02:00",
-        "phase": "remate_selection",
-        "trend_id": "58a586236216",
-        "title": "Día Mundial de la Salud Mental",
-        "message": "Sin remate · tema sensible de salud mental"
-      },
-      {
-        "at": "2026-10-08T16:56:06+02:00",
-        "phase": "verifying",
-        "trend_id": "58a586236216",
-        "title": "Día Mundial de la Salud Mental",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T16:56:10+02:00",
-        "phase": "investigating",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Dos búsquedas distintas sin significado ni detonante verificable"
-      },
-      {
-        "at": "2026-10-08T16:56:15+02:00",
+        "at": "2026-10-08T17:20:20+02:00",
         "phase": "persisting",
         "trend_id": "5ced28d519a2",
         "title": "#TEM8O",
-        "message": "Estado problemático persistido y verificado"
+        "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-08T16:56:20+02:00",
-        "phase": "investigating",
-        "trend_id": "ad87900fa731",
-        "title": "Corre",
-        "message": "Nuevo intento sin detonante factual inequívoco"
+        "at": "2026-10-08T17:20:40+02:00",
+        "phase": "persisting",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-08T16:56:30+02:00",
+        "at": "2026-10-08T17:21:00+02:00",
+        "phase": "verifying",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Releyendo main y verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-08T17:21:30+02:00",
+        "phase": "verifying",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-08T17:22:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 3 explicadas; 3 problemáticas; 0 activas"
+        "message": "Pasada completada · 1 explicada; cola activa 0"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": [
-      "ad87900fa731",
-      "5ced28d519a2"
-    ]
+    "remaining_problematic_ids": []
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "active",
+    "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T164500-chat",
-    "last_triggered_at": "2026-10-08T16:45:00+02:00",
+    "last_trigger_run_id": "tr-20261008T171500-chat",
+    "last_triggered_at": "2026-10-08T17:15:00+02:00",
     "pending_cards_reviewed": 3,
     "observed_at": "2026-10-08T14:46:00+02:00",
     "queued_repairs": 0,
