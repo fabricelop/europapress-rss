@@ -38769,9 +38769,9 @@
       "news_note": "Etiqueta de la gala televisiva en emisión; se mantiene en TTendencias.",
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
@@ -38784,13 +38784,52 @@
         "generated": false
       },
       "image": {
-        "url": "https://www.formulatv.com/images/articulos/138000/138442_WWeo9EsFNU560xHmtzB7aYcPJ21kvq4iL-hog.jpg",
-        "source": "FormulaTV · 07/10/2026",
-        "source_url": "https://www.formulatv.com/noticias/supervivientes-all-stars-3-giro-secreto-expulsion-138442/",
-        "alt": "Imagen de archivo relacionada con #SVGala5",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df6b7ca9fcb3-r0-ai1-791492751229.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b80b1ce3e9e3dd2cbef9e978d6c23c4e9cdde9cc831f5bc3ebc4912c602824d6",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 601217,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "df6b7ca9fcb3",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-df6b7ca9fcb3-r0-a1-1791492751229"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df6b7ca9fcb3-r0-ai1-791492751229.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/df6b7ca9fcb3-r0-ai1-791492751229.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "b80b1ce3e9e3dd2cbef9e978d6c23c4e9cdde9cc831f5bc3ebc4912c602824d6",
+        "width": 1448,
+        "height": 1086,
+        "bytes": 601217,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "df6b7ca9fcb3",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-df6b7ca9fcb3-r0-a1-1791492751229"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/df6b7ca9fcb3-r0-ai1-791492751229.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T20:54:32.754Z"
     },
     {
       "id": "d2b80d514248",
@@ -38846,6 +38885,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-08T22:52:35+02:00",
+  "updated_at": "2026-10-08T20:54:32.754Z",
   "count": 666
 }
