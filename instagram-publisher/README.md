@@ -1,6 +1,6 @@
 # TT Actualidad / Instagram: staging-only publisher
 
-This directory is a **non-deployed backend preparation**, not a working Telegram integration. Its purpose is to minimize changes to production while the existing X workflow remains untouched.
+The isolated publisher Worker has been deployed at `https://tt-actualidad-instagram-pilot.fabricelop.workers.dev`. Telegram routing, new Meta authorization and explicit pilot activation are still pending; it is not yet a functioning end-to-end Instagram integration. Its purpose is to minimize changes to production while the existing X workflow remains untouched.
 
 ## Contract
 - Account: @ttactualidad (Instagram user ID 17841414511690117), linked through Facebook page TT Actualidad.
@@ -10,7 +10,7 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 - A unique key (source:event_id) prevents an item from being published twice across image revisions.
 
 ## Backend currently available
-- GET /health reports service identity, with active:false (not a claim of configured publication).
+- GET /health reports service identity and the actual active flag; it becomes true only when the explicit activation switch and the required secrets/bindings are present.
 - POST /publish accepts source, event_id, revision, telegram_message_id, image_url and caption, *only* from a trusted server with Authorization: Bearer [INSTAGRAM_INTERNAL_SECRET].
 - The URL is restricted to the existing generated-images JPEG directories; captions must be <= 2200 characters.
 - D1 state machine reserves a unique item, creates a media container, checks its FINISHED status and calls media_publish. On an uncertain outcome it blocks further publication until reconciliation, rather than risking duplicates.
@@ -57,4 +57,4 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 5. Prepare a durable snapshot of source event, revision, Telegram message ID, caption and actual AI JPEG when sending Telegram; items may disappear from editorial "prepared" after they are marked Published on X.
 6. Add automated tests against mocked Meta API, idempotency and Telegram callbacks. Test on preview and deploy only after validation.
 
-**No user steps are needed at this stage.** This component is intentionally fail-closed until the callback integration and Cloudflare secrets have been completed.
+**Activation must remain disabled until one selected post has been validated end-to-end.** The Worker refuses publication when `INSTAGRAM_PUBLISH_ENABLED` is not exactly `1`. Production Telegram routing stays unchanged until the downstream integration is verified.
