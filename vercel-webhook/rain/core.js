@@ -77,7 +77,28 @@ export function aggregateEnsembleModel(hourly = {}, wetThreshold = WET_THRESHOLD
       members: values.length,
     };
   });
-  return { memberCount: memberKeys.length, rows };
+  const onsetTimes=[];
+  for(const key of memberKeys){
+    const values=hourly[key]||[];
+    let onset=null;
+    for(let i=0;i<time.length;i++){
+      const value=Number(values[i]),next=Number(values[i+1]);
+      if(!Number.isFinite(value))continue;
+      const credible=value>=wetThreshold&&(value>=.25||(Number.isFinite(next)&&next>=Math.max(.04,wetThreshold*.5)));
+      if(credible){onset=Date.parse(time[i]);break}
+    }
+    if(Number.isFinite(onset))onsetTimes.push(onset);
+  }
+  const onset=onsetTimes.length?{
+    wetMembers:onsetTimes.length,
+    fraction:onsetTimes.length/memberKeys.length,
+    median:new Date(median(onsetTimes)).toISOString(),
+    p10:new Date(percentile(onsetTimes,.10)).toISOString(),
+    p20:new Date(percentile(onsetTimes,.20)).toISOString(),
+    p80:new Date(percentile(onsetTimes,.80)).toISOString(),
+    p90:new Date(percentile(onsetTimes,.90)).toISOString()
+  }:null;
+  return { memberCount: memberKeys.length, rows, onset };
 }
 
 export function buildConsensus({ deterministic = [], ensembles = [], nowMs = Date.now() }) {

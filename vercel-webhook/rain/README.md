@@ -1,6 +1,158 @@
-# RainETA v0.17.17
+# RainETA v0.17.50
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
+
+## Continuidad espacial v0.17.50
+- El futuro radar visible ya **no calcula movimiento por tesela XYZ**. RainETA decodifica los últimos frames sobre una única zona georreferenciada que cubre la vista y estima un campo de movimiento compartido.
+- La advección es continua sobre el campo completo mediante muestreo espacial; después se renderiza una sola imagen georreferenciada. Así la lluvia puede cruzar antiguos límites de tiles sin costuras horizontales/verticales ni cambios de dirección por frontera.
+- Se conserva el doble búfer y el crossfade: el frame anterior permanece visible hasta que la nueva imagen continua está cargada.
+- **AHORA** es una referencia fija e independiente. `fiable hasta` usa el mismo horizonte del campo espacial mostrado y se oculta cuando no existe un futuro radar suficientemente fiable, en vez de superponerse a AHORA.
+- Cuando termina el horizonte fiable, entra el frame espacial nativo de ICON-EU; no se deforma el modelo ni se mantiene una doble precipitación fuerte.
+- ⚡ RAYOS no cambia funcionalmente.
+
+## Proyección radar sintética y rayos DWD v0.17.50
+- Se retira por completo la deformación experimental de ICON por teselas/parches. Había introducido cuadrículas y geometrías artificiales visibles.
+- Después del nowcast, RainETA muestra **frames espaciales nativos de ICON-EU** mediante el protocolo oficial `om://` de Open-Meteo. No hay morphing, warping ni doble campo.
+- Para un minuto intermedio se selecciona el frame nativo temporalmente más próximo y se muestra su hora real en el estado del radar.
+- El reproductor y los botones ◀/▶, una vez en zona de modelo, avanzan entre **tiempos nativos reales del modelo** en lugar de mover el reloj minuto a minuto sobre la misma imagen.
+- El nowcast radar sigue minuto a minuto hasta el relevo dinámico; la línea `fiable hasta` continúa siendo la referencia de confianza.
+- ⚡ RAYOS permanece sin cambios funcionales.
+
+- El relevo visual radar→modelo se retrasa: base +30 min y hasta +45 min cuando el nowcast disponible lo permite. El marcador `fiable hasta` sigue siendo independiente y no se falsifica.
+- ICON deja de mover cada tesela con una única traslación global. Ahora calcula **flujo óptico local por parches** entre los campos horarios y desplaza bloques de precipitación de forma distinta según la zona.
+- El render usa una sola imagen de modelo (anterior o siguiente, según el minuto) y la deforma por bloques de 48 px siguiendo ese flujo local; no se reintroduce la doble capa ni el difuminado.
+- Si el flujo local de un parche no es fiable, ese parche usa el desplazamiento global como fallback; si tampoco hay movimiento global fiable, queda estático en vez de inventar dirección.
+- La reproducción sigue esperando a cada frame pintado. ⚡ RAYOS permanece sin cambios funcionales.
+
+- El futuro usa **una sola fuente visual cada vez**: radar/nowcast hasta un relevo dinámico y modelo después. Se elimina la franja persistente `RADAR + MODELO` que mostraba dos lluvias distintas a la vez.
+- El relevo es dinámico: mínimo +15 min; si el nowcast conserva fiabilidad, puede retrasarse hasta +30 min. El único solape restante es el crossfade técnico de ~190 ms al cambiar de fuente.
+- La interpolación ICON deja de dibujar simultáneamente el campo anterior y el siguiente. Se usa **un único campo desplazado** hacia la posición temporal intermedia; a mitad del intervalo se pasa al siguiente campo ya desplazado hacia atrás.
+- Si no se puede estimar un desplazamiento fiable entre pasos ICON, RainETA muestra el frame de modelo temporalmente más próximo. No mezcla ambos, evitando el efecto difuso.
+- El reproductor sigue siendo frame-ready driven. ⚡ RAYOS no cambia funcionalmente.
+
+- La reproducción futura deja de usar un reloj fijo de 100 ms. Ahora es **dirigida por frame pintado**: no avanza al minuto siguiente hasta que MapLibre confirma que el actual está cargado y el crossfade ha terminado.
+- Se registra `radarDisplayedOffset` únicamente al finalizar un swap radar/modelo o al cargar un frame observado. El reproductor espera ese valor antes de continuar.
+- Si un frame tarda más de 6,5 s, la animación se detiene conservando el último frame válido; nunca sigue moviendo el reloj con una imagen congelada.
+- `HASTA LLUVIA` usa la misma lógica de espera, eliminando el antiguo `setInterval(100 ms)`.
+- Al volver a AHORA/observado se incrementa el token de render, cancelando cualquier futuro/modelo asíncrono pendiente. ⚡ RAYOS no cambia.
+
+- +1/+2/+3 ya no fuerzan persistencia: si existe flujo local fiable, la advección empieza desde +1. La persistencia queda solo como fallback.
+- El futuro ICON-EU sustituye el simple crossfade horario por **interpolación compensada por movimiento** por tesela: se renderizan los campos anterior/siguiente, se estima su traslación de precipitación y ambos se desplazan hacia el instante intermedio antes de mezclarlos.
+- El protocolo interno `raineta-model://` envuelve el protocolo oficial `om://` de Open-Meteo y devuelve una única tesela intermedia ya animada espacialmente.
+- Las capas de modelo también usan doble búfer/crossfade, de modo que cambiar minuto no vacía el mapa mientras se genera la tesela intermedia.
+- Si el desplazamiento entre dos campos de modelo no es suficientemente fiable, la tesela vuelve al crossfade temporal normal; nunca se fuerza un vector dudoso. ⚡ RAYOS sigue sin cambios funcionales.
+
+- La barra del radar añade una marca vertical fija **AHORA** además de `fiable hasta`.
+- El radar futuro usa **doble búfer**: el frame anterior permanece visible hasta que MapLibre confirma el nuevo, y el relevo usa un crossfade de ~170 ms. Si la nueva fuente tarda, no se vacía el mapa.
+- El solape radar/modelo se acorta: radar puro hasta ~+12, transición fuerte entre +12 y +28 y **modelo solo desde +28**, evitando la doble precipitación visible alrededor de +30/+45.
+- ICON-EU se interpola temporalmente entre los dos pasos espaciales que rodean la hora solicitada. Al mover el slider minuto a minuto, la precipitación prevista evoluciona en vez de quedar congelada hasta el siguiente paso horario.
+- Se precarga el siguiente paso ICON a opacidad 0 para suavizar el cruce entre intervalos. ⚡ RAYOS no cambia funcionalmente.
+
+- Nuevo enfoque de **transición radar → modelo** inspirado en la separación correcta entre nowcasting de minutos y predicción numérica: el radar observado domina al principio y pierde peso gradualmente; ICON-EU gana peso con el horizonte.
+- La capa de modelo se sirve con el protocolo cartográfico oficial de Open-Meteo sobre `dwd_icon_seamless`: en Europa usa ICON-EU (~7 km) y fuera cae al ICON global.
+- +1…+5 siguen siendo radar/continuidad. Entre ~+10 y +45 se mezclan nowcast y modelo. Desde ~+60 la visualización futura es modelo, no un radar extrapolado presentado como si fuera fiable.
+- La ETA y el texto local **siguen usando AEMET HARMONIE-AROME 2,5 km**, además del resto del consenso; ICON-EU se usa aquí como capa espacial de previsión para que el mapa futuro siga siendo útil.
+- ⚡ RAYOS no cambia en esta versión.
+
+- Todo el futuro >0 usa ahora el mismo motor XYZ sintético; se elimina el salto de arquitectura que existía exactamente en +4.
+- +1/+2/+3 mantienen continuidad pura. Desde +4, cada tesela usa hasta cuatro frames reales para estimar flujo óptico local y desplazar solo los ecos de esa tesela.
+- Si una tesela no tiene flujo local suficiente, RainETA solo permite continuidad corta hasta +5, cada vez más tenue; después queda transparente en lugar de inventar un vector rígido.
+- La verificación de DWD para rayos se precarga en segundo plano al abrir el mapa, se considera fresca 10 minutos y el botón ya no fuerza un GetCapabilities nuevo en cada activación.
+
+- AHORA → +1/+2/+3 deja de depender de una única imagen local. RainETA usa ahora teselas sintéticas globales: cada tesela observada se descarga en el backend, se decodifica a reflectividad/máscara, se descartan los píxeles secos y se vuelve a generar un PNG transparente propio.
+- MapLibre recibe únicamente /api/rain-radar-tile, nunca una tesela RainViewer directa como capa futura. Esto conserva exactamente la georreferenciación XYZ de AHORA y elimina la posibilidad de que la imagen sintética quede fuera del viewport.
+- El radar observado permanece solo mientras carga la nueva fuente sintética; se retira en cuanto MapLibre confirma que la fuente futura está cargada, evitando el salto visual a vacío.
+- El endpoint expone action=stats de diagnóstico en preview para comprobar cuántos píxeles con eco entran y cuántos sobreviven a la decodificación.
+
+- El futuro visual ya no queda anclado a `state.loc`: RainETA decodifica los últimos frames RainViewer centrados en **el centro y zoom actuales del mapa**, reconstruye `mask/rateGrid` y renderiza desde ese campo.
+- El zoom de muestreo se adapta al tamaño real del viewport para que una única imagen sintética cubra la zona visible incluso al alejar el mapa.
+- +1/+2/+3 usan persistencia del campo **de la vista actual** cuando todavía no hay flujo fiable; a partir de ahí solo se muestra futuro si el flujo óptico local de esa misma vista supera los umbrales.
+- Al mover o hacer zoom mientras se está en futuro, la proyección se recalcula para la nueva vista.
+
+- La transición **AHORA → +1/+2/+3 min** conserva siempre el último campo radar internamente decodificado aunque el vector de movimiento todavía sea incierto. Es persistencia de muy corto plazo, no reutilización del PNG observado ni desplazamiento rígido.
+- `projectionField` se conserva también cuando el estado del movimiento es `motion_uncertain`; antes se perdía precisamente en esos casos y el futuro podía quedar vacío.
+- El frame observado se mantiene hasta que el PNG futuro generado por RainETA está listo, evitando un flash vacío durante el cambio.
+- Con **⚡ RAYOS** habilitado y visible, la precipitación se desatura a escala de grises para separar visualmente lluvia y actividad eléctrica.
+
+- El mapa futuro ya no usa `CanvasSource` de MapLibre. RainETA dibuja su canvas transparente desde `mask/rateGrid`, valida la cobertura alfa y lo entrega a MapLibre como `ImageSource` mediante un PNG generado localmente por RainETA. No interviene ningún PNG de RainViewer en el futuro.
+- Los rayos ya no consultan DWD directamente desde el navegador. `/api/rain-lightning` actúa como proxy RainETA de GetCapabilities/GetMap, valida capa, bbox, Content-Type y firma PNG y evita CORS/CSP del WMS externo.
+
+- La proyección futura deja de usar por completo el PNG de RainViewer como textura. Se reconstruye desde la matriz interna de precipitación (mask + rateGrid) que RainETA ya decodifica para el nowcast; los píxeles no húmedos nacen transparentes y no pueden formar un rectángulo de fondo.
+- La paleta futura se regenera desde la intensidad mm/h estimada y luego se deforma con el flujo óptico local. El observado sigue usando RainViewer original; solo el futuro se sintetiza.
+- La capa eléctrica usa dos fuentes DWD simultáneas: `dwd:Accumulated_Flash_Geometry` (geometría acumulada 5 min del MTG Lightning Imager) y `dwd:NCEW_EU` (NowCastELEC, polígonos alrededor de rayos detectados y pronosticados).
+- La UI verifica primero el GetCapabilities real de DWD y solo muestra `RAYOS ON` cuando la fuente está verificada y MapLibre ha cargado la capa; si DWD falla, muestra un error explícito.
+- El CSP de `/rain/*` permite explícitamente `https://maps.dwd.de` en `connect-src` e `img-src`; sin esta excepción el navegador bloqueaba tanto GetCapabilities como las teselas WMS y la capa podía quedar vacía aunque DWD tuviera datos.
+- El GetCapabilities del WMS acotado al workspace `dwd` puede publicar los nombres de capa sin el prefijo `dwd:`; RainETA valida tanto la forma local como la cualificada antes de habilitar la capa.\n- CI comprueba que `Accumulated_Flash_Area`, `Accumulated_Flash_Geometry`, `NCEW_EU` y `Blitzdichte` existen y que las capas usadas devuelven PNG WMS válidos.\n- La proyección futura se valida en tests sobre RGBA sintético: fondo seco con alpha 0, solo precipitación pinta píxeles y un campo disperso no puede convertirse en rectángulo opaco.
+
+
+## Transparencia radar y rayos operativos v0.17.33
+- La proyección local ya no reutiliza el bitmap completo del radar: antes de mover celdas, RainETA elimina todos los píxeles que no correspondan a reflectividad de precipitación reconocida. Esto evita el rectángulo negro opaco visto al pasar de AHORA a +1 min.
+- Si más del 75% del bitmap resultara clasificado como precipitación, la proyección se rechaza por seguridad en lugar de pintar un fondo defectuoso.
+- La capa de rayos usa el WMS público de DWD para el producto MTG Lightning Imager Accumulated Flash Area de EUMETSAT, en acumulaciones de 5 min.
+- El estado de rayos queda explícito en pantalla: desactivado, activo cerca de AHORA u oculto fuera de contexto. Si la capa está activa y no aparecen trazas, la interfaz indica que no hay actividad visible en esa zona.
+
+
+## Estabilización espacial del flujo local v0.17.32
+- Al combinar varios barridos, los vectores locales se agrupan por su coordenada real de rejilla. Si una zona desaparece por baja confianza en un barrido, ya no se empareja accidentalmente con la siguiente zona de la lista.
+- Cada vector conserva persistencia y número de muestras; los vectores vistos en varios barridos ganan estabilidad y los aislados pierden peso.
+- Se añade una prueba de regresión específica para impedir que reaparezca este cruce de celdas.
+
+
+## Rayos EUMETSAT v0.17.31
+- El mapa incorpora un botón opcional `⚡ RAYOS` basado en Meteosat Third Generation Lightning Imager (EUMETSAT), capa de actividad eléctrica acumulada en 5 min.
+- La capa solo se muestra cerca de AHORA (últimos 5 min). Al navegar a radar histórico más antiguo o a proyección futura se oculta automáticamente para no mezclar tiempos distintos.
+- EUMETSAT es la fuente observada principal para actividad eléctrica. La red terrestre de AEMET queda preparada como contraste adicional cuando exista una API key de AEMET en el backend.
+- Blitzortung no se usa como fuente cruda porque sus datos no constituyen una API pública general para redistribución en aplicaciones de terceros.
+
+
+## Nowcast espacial por células v0.17.30
+- El radar futuro deja de trasladar toda la imagen con un único vector global.
+- RainETA conserva el campo de flujo óptico local ya calculado sobre los últimos barridos y proyecta una malla 16×16: cada zona/célula se desplaza según los vectores locales interpolados.
+- El flujo local se estabiliza progresivamente con viento atmosférico a 850/700 hPa cuando radar y viento son coherentes, siguiendo el mismo principio general usado por nowcasts modernos como Ventusky.
+- El horizonte espacial es dinámico y nunca supera 60 min: depende de cobertura/calidad del flujo local, acuerdo radar-viento y señal convectiva (CAPE, probabilidad de tormenta/actividad eléctrica).
+- Si no hay flujo local defendible, RainETA corta el campo futuro; no vuelve al antiguo desplazamiento rígido global.
+- La intensidad/forma no se hace crecer artificialmente. Más allá del horizonte espacial manda HARMONIE y el consenso de modelos para ETA/probabilidad.
+
+
+## UI estable simplificada v0.17.29
+- «Tiempo estable» queda como único titular principal del estado estable; la etiqueta superior pasa a «Previsión actual».
+- El chip de estado actual usa «Ahora: sin precipitación» para evitar repetir el mismo texto en varias zonas.
+- La línea técnica deja de repetir la conclusión meteorológica y muestra solo Radar / OPERA / Modelos.
+- Las posibles llegadas OPERA solo se enseñan en esa línea si caen dentro del horizonte fiable del propio nowcast; señales más lejanas se ocultan como información no accionable.
+
+
+## ETA radar exige precipitación medible v0.17.28
+- RainViewer, OPERA y AEMET ya no pueden generar una «próxima lluvia» solo por movimiento/ocupación del eco: el episodio debe contener precipitación medible alrededor de la llegada.
+- Un candidato radar ordinario requiere al menos dos pasos consecutivos con tasa >= 0,05 mm/h y fracción húmeda >= 0,10, o una señal fuerte con pico >= 0,30 mm/h.
+- Las señales marginales (<0,12 mm/h de pico) se descartan si los modelos tampoco apoyan precipitación y la confianza radar no es alta.
+- La capa de decisión vuelve a validar los eventos fusionados antes de convertirlos en ETA. Un evento sin evidencia cuantificable se elimina y deja paso al estado estable/modelos.
+- Esto evita situaciones incoherentes como «empieza a las 20:00» mientras la propia banda muestra 0,0 mm/h y el gráfico de 24 h permanece vacío.
+
+
+## Estado estable separado del horizonte radar v0.17.27
+- El final del horizonte fiable del radar deja de convertirse en un falso «hasta HH:MM». Ese límite queda únicamente como dato técnico de nowcast.
+- Si no existe una ETA real de lluvia, el estado principal pasa a «Tiempo estable» y usa una ventana meteorológica de 3/6/12/24 h derivada del consenso de modelos.
+- La ventana estable exige cobertura temporal suficiente, ausencia de episodios clasificados como lluvia y riesgo máximo compatible con cada horizonte; no se extiende a 24 h si las señales son demasiado inciertas.
+- El contador corto deja de contar hacia el fin del radar cuando no hay cambio meteorológico previsto. En estado estable muestra directamente el horizonte validado (por ejemplo, 24 h).
+- El titular, la banda de 0–180 min y el gráfico de 24 h comparten ahora la misma conclusión meteorológica para evitar contradicciones visuales.
+- La redacción principal evita «Seco»: usa «Tiempo estable», «Sin lluvia prevista…» y mantiene «radar útil ~N min» como información secundaria.
+
+
+## Frescura real y aprendizaje AEMET v0.17.26
+- HARMONIE-AROME deja de marcarse fresco por el mero hecho de responder: RainETA valida la hora real de generación (sourceGeneratedAt) de la pasada oficial.
+- Una pasada HARMONIE que supere su cadencia de 6 h más 3 h de gracia queda fuera del consenso hasta que AEMET publique una salida nueva.
+- El radar AEMET entra en la autoevaluación local 15/30/60/90/120 min junto a RainViewer, OPERA y modelos.
+- La verdad automática para evaluar fuentes usa mayoría entre los radares disponibles; la observación manual del usuario sigue teniendo prioridad.
+- El acierto local de AEMET puede limitar la confianza de sus ETA cuando exista muestra suficiente, evitando mantener pesos fijos si una fuente rinde peor en una ubicación concreta.
+
+
+## Radar AEMET con autoridad operativa v0.17.25
+- El radar oficial AEMET deja de ser solo diagnóstico: participa en lluvia actual, ETA de corto plazo, horizonte fiable y ventanas secas.
+- Una señal ordinaria de lluvia actual requiere acuerdo de al menos dos entre RainViewer, OPERA y AEMET; una señal muy intensa de una sola fuente puede confirmar lluvia por sí misma.
+- El nowcast AEMET entra en la mezcla 0–180 min, junto con RainViewer/OPERA, sin convertir tres radares correlacionados en tres familias de modelos independientes.
+- AEMET se refresca junto a las demás fuentes radar y puede corregir tanto llegadas como pausas/reanudaciones.
+- Fuera del horizonte espacial defendible el mapa sigue sin inventar ecos futuros; la ETA pasa a HARMONIE-AROME y consenso multimodelo.
+- El smoke de CI verifica además la disponibilidad viva de las descargas oficiales AEMET de radar y HARMONIE antes de aceptar la rama.
 
 ## Motor por horizonte
 - **0–4 h:** la banda corta mantiene su detalle 0–180 min, mientras el mapa radar puede avanzar visualmente hasta 4 h. El radar solo tiene autoridad dentro de su horizonte fiable dinámico; después el peso cae a cero y mandan modelos/consenso.
@@ -100,6 +252,37 @@ Familias independientes potenciales: ECMWF, DWD, NOAA, Météo-France, CMC, UKMO
 - Cada tramo muestra intervalo horario, probabilidad media e intervalo de intensidad.
 - El detalle hora a hora sigue disponible, pero plegado para que la lectura principal sea más rápida.
 - Entre episodios se muestran **ventanas secas probables** con duración e intervalo horario.
+
+## AEMET HARMONIE-AROME oficial v0.17.22
+- RainETA incorpora como familia independiente el modelo oficial AEMET HARMONIE-AROME para Península y Baleares.
+- El backend descarga la última pasada pública de AEMET, un paquete tar.gz, y procesa únicamente los 48 GeoTIFF horarios de precipitación 61_1HH.
+- Cada GeoTIFF está en EPSG:4326 a 0,025° (~2,5 km). RainETA muestrea el punto seleccionado y una vecindad de 5×5 celdas (~12,5 km) para conservar información espacial útil sin confundirla con probabilidad.
+- La precipitación oficial se publica en clases RGBA; el backend traduce las clases visibles a un valor representativo. La clase transparente 0–0,5 mm se trata conservadoramente como inferior al umbral de onset, porque el producto no permite distinguir cero de llovizna sub-0,5 mm.
+- HARMONIE-AROME entra en el consenso con familia AEMET y peso determinista alto. Sigue contrastado con ECMWF, ICON, UKMO y ensembles; no sustituye el consenso a ciegas.
+- La descarga de ~28 MB se cachea en memoria y la respuesta de punto lleva caché CDN. No se expone ningún secreto y este producto público no necesita API key.
+- La caché meteorológica cambia a consensus-v14 para forzar un recálculo real al incorporar la nueva fuente.
+
+## Horizonte espacial honesto v0.17.21
+- La proyección cartográfica del radar se corta al superar el horizonte que el nowcast puede defender. A partir de ese punto RainETA deja el mapa sin ecos futuros en vez de congelar o desplazar artificialmente la última imagen.
+- Si el movimiento radar no supera los controles de confianza/estabilidad, no se dibuja ninguna trayectoria futura.
+- La ETA y la probabilidad siguen funcionando con el consenso de modelos; el corte afecta únicamente al campo espacial de radar.
+- Este comportamiento es transitorio hasta sustituir la extrapolación larga por un campo futuro híbrido radar + NWP de alta resolución.
+
+## Navegación frame a frame e histórico ampliado v0.17.20
+- El radar incorpora botones ◀ / ▶ para inspeccionar manualmente cada paso. En el tramo observado saltan únicamente entre barridos reales; en el futuro avanzan o retroceden minuto a minuto.
+- Cualquier pulsación manual detiene la reproducción automática para que el usuario pueda comparar dos frames consecutivos sin interferencias.
+- La interfaz identifica explícitamente OBSERVADO o PROYECCIÓN, el número de frame observado y la hora exacta.
+- El histórico observado admite hasta 240 min. Como la API pública de RainViewer solo entrega unas 2 h en cada consulta, RainETA conserva localmente los barridos ya vistos y los fusiona en una ventana móvil de hasta 4 h, sin fabricar imágenes ausentes.
+- El archivo local se limita a 4 h y se recorta automáticamente. La integración posterior de radar oficial podrá rellenar directamente ese horizonte cuando la fuente lo permita.
+
+## Continuidad y control físico del radar v0.17.19
+- Se descarta la deformación afín experimental de v0.17.18: el radar futuro no crece, encoge ni se cizalla por una regla visual inventada.
+- El primer fotograma futuro conserva exactamente la huella geográfica del último radar observado. RainViewer entrega las imágenes de 512 px como una representación de alta resolución de una tesela lógica de 256 px; RainETA usa ahora esa huella lógica para evitar el salto de escala AHORA → +1 min.
+- Las coordenadas de la imagen futura se calculan en Web Mercator, igual que las teselas observadas, evitando aproximaciones de latitud/longitud que podían introducir desplazamientos.
+- Una traslación radar superior a 180 km/h se rechaza como físicamente no fiable en vez de convertirse en trayectoria futura.
+- La proyección visual exige además confianza y estabilidad mínimas. El flujo local solo corrige el global cuando ambos tienen rumbo y velocidad razonablemente coherentes; nunca puede dominarlo.
+- Fuera del horizonte fiable la distancia adicional queda amortiguada y termina estabilizándose; no se inventa crecimiento de la mancha.
+- Esta base prepara la incorporación de fuentes espaciales de mayor calidad (AEMET/OPERA/modelos de alta resolución) sin mezclar todavía campos incompatibles.
 
 ## Radar futuro más visible v0.17.17
 - La pérdida de opacidad fuera del horizonte fiable se reduce de forma importante: la proyección sigue claramente visible aunque ya sea orientativa.

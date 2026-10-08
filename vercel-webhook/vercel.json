@@ -12,6 +12,12 @@
     },
     "api/ttittulares-control.js": {
       "maxDuration": 300
+    },
+    "api/rain-lightning.js": {
+      "maxDuration": 45
+    },
+    "api/rain-radar-tile.js": {
+      "maxDuration": 20
     }
   },
   "rewrites": [
@@ -38,6 +44,14 @@
     {
       "source": "/api/rain-opera",
       "destination": "/api/ttittulares-control?__handler=push&mode=rain-opera"
+    },
+    {
+      "source": "/api/rain-harmonie",
+      "destination": "/api/ttittulares-control?__handler=push&mode=rain-harmonie"
+    },
+    {
+      "source": "/api/rain-aemet-radar",
+      "destination": "/api/ttittulares-control?__handler=push&mode=rain-aemet-radar"
     },
     {
       "source": "/rain/",
@@ -302,7 +316,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; connect-src 'self' https://api.open-meteo.com https://ensemble-api.open-meteo.com https://geocoding-api.open-meteo.com https://api.rainviewer.com https://tilecache.rainviewer.com https://*.rainviewer.com https://tiles.openfreemap.org; img-src 'self' data: blob: https://tiles.openfreemap.org https://tilecache.rainviewer.com https://*.rainviewer.com; manifest-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+          "value": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; connect-src 'self' https://api.open-meteo.com https://ensemble-api.open-meteo.com https://geocoding-api.open-meteo.com https://openmeteo.s3.amazonaws.com https://unpkg.com https://api.rainviewer.com https://tilecache.rainviewer.com https://*.rainviewer.com https://tiles.openfreemap.org https://maps.dwd.de; img-src 'self' data: blob: https://tiles.openfreemap.org https://tilecache.rainviewer.com https://*.rainviewer.com https://maps.dwd.de; manifest-src 'self'; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
         }
       ]
     },

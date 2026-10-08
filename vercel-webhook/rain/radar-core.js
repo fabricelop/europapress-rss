@@ -1,3 +1,53 @@
+export function wmsCapabilitiesHasLayer(xml,layerName){
+  const text=String(xml||''),full=String(layerName||'').trim(),local=full.includes(':')?full.split(':').pop():full;
+  if(!local)return false;
+  return text.includes('<Name>'+full+'</Name>')||text.includes('<Name>'+local+'</Name>');
+}
+export function buildRadarProjectionRgba(mask,rateGrid,width,height,colorForRate){
+  const w=Math.max(1,Math.floor(Number(width)||0)),h=Math.max(1,Math.floor(Number(height)||0)),size=w*h;
+  if(!mask?.length||!rateGrid?.length||mask.length!==size||rateGrid.length!==size)throw new Error('invalid projection field');
+  const rgba=new Uint8ClampedArray(size*4);
+  let wetPixels=0,alphaPixels=0;
+  const color=typeof colorForRate==='function'?colorForRate:(()=>[0,163,224,220]);
+  for(let i=0,p=0;i<size;i++,p+=4){
+    if(!mask[i])continue;
+    const rate=Number(rateGrid[i]);
+    if(!(rate>0))continue;
+    const c=color(rate)||[0,0,0,0],alpha=Math.max(0,Math.min(255,Number(c[3])||0));
+    if(alpha<=0)continue;
+    rgba[p]=Math.max(0,Math.min(255,Number(c[0])||0));
+    rgba[p+1]=Math.max(0,Math.min(255,Number(c[1])||0));
+    rgba[p+2]=Math.max(0,Math.min(255,Number(c[2])||0));
+    rgba[p+3]=alpha;
+    wetPixels++;alphaPixels++;
+  }
+  return{rgba,wetPixels,alphaPixels,opaqueFraction:alphaPixels/size,width:w,height:h};
+}
+export function radarViewportProjectionZoom(mapZoom,width=512,height=512,{minZoom=3,maxZoom=7,tileDisplaySize=512}={}){
+  const z=Number(mapZoom);
+  if(!Number.isFinite(z))return Math.max(minZoom,Math.min(maxZoom,maxZoom-1));
+  const w=Math.max(tileDisplaySize,Number(width)||tileDisplaySize);
+  const h=Math.max(tileDisplaySize,Number(height)||tileDisplaySize);
+  const viewportFactor=Math.max(w,h)/tileDisplaySize;
+  const extraCoverage=Math.max(0,Math.ceil(Math.log2(viewportFactor)));
+  return Math.max(minZoom,Math.min(maxZoom,Math.floor(z)-extraCoverage));
+}
+export function radarProjectionRenderMode({minutes=0,fieldAvailable=false,guidanceOk=false,horizon=0,continuityMinutes=3}={}){
+  const m=Math.max(0,Number(minutes)||0),limit=Math.max(0,Number(continuityMinutes)||0),h=Math.max(0,Number(horizon)||0);
+  if(!fieldAvailable||m<=0)return'none';
+  if(guidanceOk&&m<=h)return'flow';
+  if(m<=limit)return'persistence';
+  return'none';
+}
+export function evaluateOverlaySourceState({enabled=false,context=true,verified=false,loaded=0,errors=0}={}){
+  if(!enabled)return'disabled';
+  if(!context)return'hidden';
+  if(!verified)return errors>0?'error':'unverified';
+  if(errors>0&&loaded<=0)return'error';
+  if(loaded>0)return'active';
+  return'loading';
+}
+
 export function clamp01(v){return Math.max(0,Math.min(1,Number.isFinite(v)?v:0))}
 export function maskDensity(mask){if(!mask?.length)return 0;let n=0;for(const v of mask)n+=v?1:0;return n/mask.length}
 function overlap(prev,cur,w,h,dx,dy,pwet,cwet){
@@ -70,21 +120,30 @@ export function estimateLocalFlow(prev,cur,w,h,{maxShift=7,grid=5,patchRadius=8}
 export function combineLocalFlows(flows=[]){
   const valid=flows.filter(f=>f?.vectors?.length);
   if(!valid.length)return null;
-  const maxLen=Math.max(...valid.map(f=>f.vectors.length)),vectors=[];
-  for(let i=0;i<maxLen;i++){
-    const samples=valid.map(f=>f.vectors[i]).filter(Boolean);
+  const keyFor=v=>Number(v?.x).toFixed(4)+','+Number(v?.y).toFixed(4);
+  const maps=valid.map(flow=>new Map(flow.vectors.map(v=>[keyFor(v),v])));
+  const keys=[...new Set(valid.flatMap(flow=>flow.vectors.map(keyFor)))];
+  const vectors=[];
+  for(const key of keys){
+    const samples=maps.map(map=>map.get(key)).filter(Boolean);
     if(!samples.length)continue;
     const dx=wmedian(samples.map(v=>({value:v.dx,weight:Math.max(.05,v.confidence||0)})));
     const dy=wmedian(samples.map(v=>({value:v.dy,weight:Math.max(.05,v.confidence||0)})));
     const spread=median(samples.map(v=>Math.hypot(v.dx-dx,v.dy-dy)))||0;
     const consistency=clamp01(1-spread/3);
-    const mean=samples.reduce((s,v)=>s+(v.confidence||0),0)/samples.length;
+    const mean=samples.reduce((sum,v)=>sum+(v.confidence||0),0)/samples.length;
+    const persistence=samples.length/valid.length;
     const ref=samples.at(-1);
-    vectors.push({x:ref.x,y:ref.y,dx,dy,confidence:clamp01(.68*mean+.32*consistency),consistency});
+    vectors.push({
+      x:ref.x,y:ref.y,dx,dy,
+      confidence:clamp01((.64*mean+.26*consistency+.10*persistence)*(.82+.18*persistence)),
+      consistency,persistence,samples:samples.length
+    });
   }
   if(!vectors.length)return null;
-  const confidence=vectors.reduce((s,v)=>s+v.confidence,0)/vectors.length;
-  const coverage=valid.reduce((s,f)=>s+(Number(f.coverage)||0),0)/valid.length;
+  vectors.sort((a,b)=>a.y-b.y||a.x-b.x);
+  const confidence=vectors.reduce((sum,v)=>sum+v.confidence,0)/vectors.length;
+  const coverage=valid.reduce((sum,f)=>sum+(Number(f.coverage)||0),0)/valid.length;
   return{vectors,confidence:clamp01(confidence),coverage,historySamples:valid.length};
 }
 export function flowVectorAt(flow,x,y,fallback={dx:0,dy:0,confidence:0}){
@@ -98,6 +157,34 @@ export function flowVectorAt(flow,x,y,fallback={dx:0,dy:0,confidence:0}){
   }
   if(sw<=0)return fallback;
   return{dx:dx/sw,dy:dy/sw,confidence:clamp01(conf/sw)};
+}
+function bilinearRadarRate(grid,w,h,x,y){
+  if(!grid?.length||x<0||y<0||x>w-1||y>h-1)return 0;
+  const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(w-1,x0+1),y1=Math.min(h-1,y0+1);
+  const fx=x-x0,fy=y-y0;
+  const a=Number(grid[y0*w+x0])||0,b=Number(grid[y0*w+x1])||0,c=Number(grid[y1*w+x0])||0,d=Number(grid[y1*w+x1])||0;
+  return a*(1-fx)*(1-fy)+b*fx*(1-fy)+c*(1-fx)*fy+d*fx*fy;
+}
+export function projectRadarFieldContinuous(field,flow,minutes=0,{sourceStepMinutes=10,minRate=.01}={}){
+  const w=Number(field?.width),h=Number(field?.height);
+  if(!Number.isInteger(w)||!Number.isInteger(h)||w<=0||h<=0||field?.mask?.length!==w*h||field?.rateGrid?.length!==w*h)throw new Error('invalid radar field');
+  const outMask=new Uint8Array(w*h),outRate=new Float32Array(w*h);
+  const scale=Math.max(0,Number(minutes)||0)/Math.max(1,Number(sourceStepMinutes)||10);
+  if(scale<=0){
+    outMask.set(field.mask);outRate.set(field.rateGrid);
+    return{mask:outMask,rateGrid:outRate,width:w,height:h};
+  }
+  if(!flow?.vectors?.length)return{mask:outMask,rateGrid:outRate,width:w,height:h};
+  const threshold=Math.max(0,Number(minRate)||0);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const vec=flowVectorAt(flow,x,y,{dx:NaN,dy:NaN,confidence:0});
+    if(!Number.isFinite(Number(vec?.dx))||!Number.isFinite(Number(vec?.dy))||Number(vec?.confidence)<.08)continue;
+    const sx=x-Number(vec.dx)*scale,sy=y-Number(vec.dy)*scale;
+    const rate=bilinearRadarRate(field.rateGrid,w,h,sx,sy);
+    if(!(rate>threshold))continue;
+    const i=y*w+x;outMask[i]=1;outRate[i]=rate;
+  }
+  return{mask:outMask,rateGrid:outRate,width:w,height:h};
 }
 export function evolutionReliability(prev,cur,w,h,motion){
   if(!prev||!cur||!motion)return{score:0,overlap:0,densityStable:0};
