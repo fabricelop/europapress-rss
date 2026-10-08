@@ -42,7 +42,7 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 - Automated unit tests and staging CI; **no actual Meta posting has been exercised**.
 
 **Deployment blockers (must verify in live infrastructure):**
-1. The existing `tt-control` Telegram gateway currently forwards only `tt:p` and `tt:d` to the TTiTTulares Worker. It must also forward `tt:i` to the same callback route, while retaining verified Telegram origin and existing X behavior. Its running code is not managed by this PR.
+1. The deployed `tt-control` gateway was inspected read-only: it has `/api/telegram-webhook` and `/api/ttittulares-telegram-callback`, a `service.fetch` forwarder, and a generic `tt:` prefix near that forwarder. No explicit `p/d`-only filter was detected. Do **not** redeploy the gateway: first deploy the updated downstream TTiTTulares Worker, then verify a real `tt:i` callback with Meta still disabled and existing X actions untouched.
 2. Confirm that TTendencias runs the `trends/telegram_bot.py` package listener with the new code and supply `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET` as private runtime variables.
 3. Set separate secret `INSTAGRAM_ALLOWED_CHAT_ID` on the TTiTTulares Worker, and `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET`. Never expose the real Telegram bot tokens or page token.
 4. Install the isolated Instagram Worker, its D1 binding, and a newly authorized long-lived Meta Page token, without touching the existing Cloudflare Workers. Check token expiry/refresh.
