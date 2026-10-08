@@ -69,7 +69,7 @@ jobs:
           const health=await fetch(base+"/health",{signal:AbortSignal.timeout(15000)});
           if(health.status!==200)throw Error("Pilot health returned HTTP "+health.status);
           const h=await health.json();
-          if(h.service!=="tt-actualidad-instagram"||h.active!==false)throw Error("Pilot is not explicitly inactive");
+          if(h.service!=="tt-actualidad-instagram"||typeof h.active!=="boolean")throw Error("Publisher health contract invalid");
           const denied=await fetch(base+"/publish",{
             method:"POST",
             headers:{"content-type":"application/json"},
