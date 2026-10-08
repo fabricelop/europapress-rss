@@ -24566,7 +24566,7 @@
       "percentage": 81.2,
       "first_seen": "2026-10-08T08:43:44.334965Z",
       "last_seen": "2026-10-08T08:43:44.334965Z",
-      "status": "PROCESSING",
+      "status": "SKIPPED_DUPLICATE",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -24714,7 +24714,10 @@
         }
       ],
       "drafted_source_count": 13,
-      "verified_source_count": 13
+      "verified_source_count": 13,
+      "reconciled_from_event_id": "fc4b32e02b01",
+      "reconciliation_reason": "La publicación fc4b32e02b01 ya recoge el mismo hecho esencial: Ada Colau condiciona su disponibilidad a liderar Frente Amplio a integrar a Podemos y ampliar la coalición. Las nuevas formulaciones sobre papel o visibilidad no acreditan una decisión nueva ni un cambio sustantivo en el acuerdo.",
+      "reconciled_at": "2026-10-08T09:11:06.834418Z"
     },
     {
       "id": "1cb65925a3e1",
@@ -24960,5 +24963,5 @@
       "verified_source_count": 5
     }
   ],
-  "updated_at": "2026-10-08T09:10:54.898856Z"
+  "updated_at": "2026-10-08T09:11:06.834418Z"
 }
