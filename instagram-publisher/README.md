@@ -26,6 +26,12 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 - Alternatively, paste the two SQL statements from the migration into the Cloudflare **D1 Console** for this database; they are safe to run more than once.
 - An empty database is not ready for publication, and should not be considered live.
 
+## Cloudflare TT Control runtime investigation (8 October 2026)
+- Worker `tt-control` serves `/api/ttittulares-webhook-version` (HTTP 200, `2026-10-08-telegram-callback-preflight-v1`). The TTiTTulares and TTendencias Cloudflare Workers both pass read-only health checks.
+- Authenticated read-only Cloudflare API GETs for `tt-control/content/v2` and `tt-control` both returned HTTP 200 with `multipart/form-data`, approximately 480 KB.
+- Earlier diagnostics searched the entire multipart response as text and found no `telegram`, `callback`, or JS imports. **These negative searches are not evidence that the active Worker lacks the routes.** Inspect the MIME parts and original Worker entrypoint before modifying routing.
+- Production `tt-control` has not been redeployed or altered. Live pilot publisher remains inactive until configured with safe Meta credentials and proven Telegram routing.
+
 ## Integration work staged in PR #112 (no deployment)
 - `shared/instagram_pilot.py`: opt-in JPEG creation, factual text plus AI disclosure, guarded "📸 Publicar en Instagram" Telegram button.
 - `.github/workflows/send-ttittulares-ready-telegram.yml`: prepares and commits JPEG + immutable Instagram snapshot on the Telegram delivery row (disabled unless `INSTAGRAM_PILOT_ENABLED=1`).
