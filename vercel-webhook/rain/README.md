@@ -1,8 +1,15 @@
-# RainETA v0.17.48
+# RainETA v0.17.49
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.48
+## Proyección radar sintética y rayos DWD v0.17.49
+- Se retira por completo la deformación experimental de ICON por teselas/parches. Había introducido cuadrículas y geometrías artificiales visibles.
+- Después del nowcast, RainETA muestra **frames espaciales nativos de ICON-EU** mediante el protocolo oficial `om://` de Open-Meteo. No hay morphing, warping ni doble campo.
+- Para un minuto intermedio se selecciona el frame nativo temporalmente más próximo y se muestra su hora real en el estado del radar.
+- El reproductor y los botones ◀/▶, una vez en zona de modelo, avanzan entre **tiempos nativos reales del modelo** en lugar de mover el reloj minuto a minuto sobre la misma imagen.
+- El nowcast radar sigue minuto a minuto hasta el relevo dinámico; la línea `fiable hasta` continúa siendo la referencia de confianza.
+- ⚡ RAYOS permanece sin cambios funcionales.
+
 - El relevo visual radar→modelo se retrasa: base +30 min y hasta +45 min cuando el nowcast disponible lo permite. El marcador `fiable hasta` sigue siendo independiente y no se falsifica.
 - ICON deja de mover cada tesela con una única traslación global. Ahora calcula **flujo óptico local por parches** entre los campos horarios y desplaza bloques de precipitación de forma distinta según la zona.
 - El render usa una sola imagen de modelo (anterior o siguiente, según el minuto) y la deforma por bloques de 48 px siguiendo ese flujo local; no se reintroduce la doble capa ni el difuminado.

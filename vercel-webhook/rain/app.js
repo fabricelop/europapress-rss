@@ -1,7 +1,6 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
-import {estimateModelTileMotion,estimateModelTileLocalFlow,modelMotionSingleFramePlan,modelLocalPatchDisplacement} from './model-motion-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -63,7 +62,7 @@ const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FRAME_SETTLE_MS=90;
 const RADAR_FRAME_READY_TIMEOUT_MS=6500;
-const APP_VERSION='0.17.48';
+const APP_VERSION='0.17.49';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -77,7 +76,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,radarFutureActiveId:null,radarSwapAnimation:null,radarDisplayedOffset:null,radarDisplaySequence:0,omProtocolReady:false,omProtocolPromise:null,omModule:null,omMotionProtocolReady:false,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,futureModelActiveId:null,futureModelSwapAnimation:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,radarFutureActiveId:null,radarSwapAnimation:null,radarDisplayedOffset:null,radarDisplaySequence:0,omProtocolReady:false,omProtocolPromise:null,omModule:null,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,futureModelActiveId:null,futureModelSwapAnimation:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3758,71 +3757,8 @@ function removeFutureModelLayer(){
   state.futureModelActiveId=null;
   state.futureModelKey=null;
 }
-function modelTileCanvas(width,height){
-  if(typeof OffscreenCanvas==='function')return new OffscreenCanvas(width,height);
-  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;return canvas;
-}
-async function imageBitmapRgba(image){
-  const w=Number(image?.width)||512,h=Number(image?.height)||512,canvas=modelTileCanvas(w,h),ctx=canvas.getContext('2d',{willReadFrequently:true});
-  ctx.clearRect(0,0,w,h);ctx.drawImage(image,0,0,w,h);
-  return{rgba:ctx.getImageData(0,0,w,h).data,width:w,height:h};
-}
-async function renderMotionInterpolatedModelTile(fromIndex,toIndex,fraction,z,x,y,abortController){
-  const module=state.omModule;
-  if(!module?.omProtocol)throw new Error('Open-Meteo protocol unavailable');
-  const tileUrl=index=>'om://'+OPENMETEO_SPATIAL_LAYER+
-    '?time_step=valid_times_'+index+'&variable=precipitation&dark=true/'+z+'/'+x+'/'+y;
-  const request=index=>module.omProtocol({url:tileUrl(index),type:'image'},abortController);
-  if(Number(fromIndex)===Number(toIndex))return request(fromIndex);
-  const [fromResponse,toResponse]=await Promise.all([request(fromIndex),request(toIndex)]);
-  const fromImage=fromResponse?.data,toImage=toResponse?.data;
-  if(!fromImage||!toImage)return fromResponse||toResponse;
-  const w=Number(fromImage.width)||Number(toImage.width)||512,h=Number(fromImage.height)||Number(toImage.height)||512;
-  const [a,b]=await Promise.all([imageBitmapRgba(fromImage),imageBitmapRgba(toImage)]);
-  const motion=estimateModelTileMotion(a.rgba,b.rgba,w,h,{target:64,maxShift:10,minConfidence:.16});
-  const localMotion=estimateModelTileLocalFlow(a.rgba,b.rgba,w,h,{target:72,maxShift:8,grid:6,patchRadius:8,minConfidence:.18,minCoverage:.22});
-  const plan=modelMotionSingleFramePlan(fraction,motion);
-  const source=plan.source==='to'?toImage:fromImage;
-  const canvas=modelTileCanvas(w,h),ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,w,h);
-  ctx.globalAlpha=1;
-  if(localMotion.ok){
-    const patch=48,pad=2;
-    for(let py=0;py<h;py+=patch)for(let px=0;px<w;px+=patch){
-      const sx=Math.max(0,px-pad),sy=Math.max(0,py-pad);
-      const ex=Math.min(w,px+patch+pad),ey=Math.min(h,py+patch+pad);
-      const sw=ex-sx,sh=ey-sy;
-      const cx=Math.min(w-1,px+Math.min(patch,w-px)/2),cy=Math.min(h-1,py+Math.min(patch,h-py)/2);
-      const shift=modelLocalPatchDisplacement(localMotion,cx,cy,fraction,plan.source,{dx:plan.dx,dy:plan.dy});
-      ctx.drawImage(source,sx,sy,sw,sh,sx+shift.dx,sy+shift.dy,sw,sh);
-    }
-  }else{
-    ctx.drawImage(source,plan.dx,plan.dy,w,h);
-  }
-  try{fromImage.close?.();toImage.close?.()}catch{}
-  if(typeof createImageBitmap==='function')return{data:await createImageBitmap(canvas)};
-  return{data:canvas.transferToImageBitmap()};
-}
-async function rainetaModelMotionProtocol(params,abortController){
-  const prefix='raineta-model://forecast/';
-  if(!String(params?.url||'').startsWith(prefix))throw new Error('invalid RainETA model URL');
-  const tail=String(params.url).slice(prefix.length),parts=tail.split('/');
-  const fromIndex=Number(parts[0]),toIndex=Number(parts[1]),fraction=Math.max(0,Math.min(1,Number(parts[2])||0));
-  if(params.type==='json'){
-    return{data:{
-      tilejson:'3.0.0',
-      tiles:[prefix+fromIndex+'/'+toIndex+'/'+fraction.toFixed(4)+'/{z}/{x}/{y}'],
-      attribution:'Open-Meteo · DWD ICON / ICON-EU',
-      minzoom:0,maxzoom:12,bounds:[-180,-85,180,85]
-    }};
-  }
-  if(params.type!=='image')throw new Error('unsupported RainETA model request');
-  const z=Number(parts[3]),x=Number(parts[4]),y=Number(parts[5]);
-  if(!Number.isInteger(z)||!Number.isInteger(x)||!Number.isInteger(y))throw new Error('invalid RainETA model tile');
-  return renderMotionInterpolatedModelTile(fromIndex,toIndex,fraction,z,x,y,abortController);
-}
 async function ensureOpenMeteoMapProtocol(){
-  if(state.omProtocolReady&&state.omMotionProtocolReady)return true;
+  if(state.omProtocolReady)return true;
   if(state.omProtocolPromise)return state.omProtocolPromise;
   state.omProtocolPromise=(async()=>{
     const module=state.omModule||await import(OPENMETEO_MAP_MODULE);
@@ -3831,10 +3767,6 @@ async function ensureOpenMeteoMapProtocol(){
     if(!state.omProtocolReady){
       maplibregl.addProtocol('om',module.omProtocol);
       state.omProtocolReady=true;
-    }
-    if(!state.omMotionProtocolReady){
-      maplibregl.addProtocol('raineta-model',rainetaModelMotionProtocol);
-      state.omMotionProtocolReady=true;
     }
     return true;
   })().finally(()=>{state.omProtocolPromise=null});
@@ -3854,6 +3786,49 @@ async function fetchSpatialModelMeta(){
     return data;
   })().finally(()=>{state.omMetaPromise=null});
   return state.omMetaPromise;
+}
+function nativeModelFrame(projectedAt){
+  const blend=selectSpatialForecastTimeBlend(state.omMeta?.valid_times,projectedAt);
+  if(blend.fromIndex<0||blend.toIndex<0)return null;
+  const useTo=Number(blend.fraction)>=.5;
+  const index=useTo?blend.toIndex:blend.fromIndex;
+  const time=useTo?blend.toTime:blend.fromTime;
+  return{index,time,requestedAt:Number(projectedAt),fraction:Number(blend.fraction)||0};
+}
+function modelFrameOffset(timeMs){
+  const latest=state.frames.at(-1);
+  if(!latest||!Number.isFinite(Number(timeMs)))return null;
+  return Math.round((Number(timeMs)-Number(latest.time)*1000)/60_000);
+}
+function nextNativeModelOffset(current){
+  const latest=state.frames.at(-1),max=Number($('frame')?.max)||RADAR_VISUAL_HORIZON_MINUTES;
+  if(!latest)return Math.min(max,Number(current)+1);
+  const handoff=visualModelHandoffMinutes(),cur=Number(current)||0;
+  if(cur<handoff)return Math.min(handoff,cur+1);
+  const base=Number(latest.time)*1000,target=base+cur*60_000;
+  const rows=(state.omMeta?.valid_times||[])
+    .map(value=>Date.parse(value))
+    .filter(time=>Number.isFinite(time)&&time>target+30_000)
+    .sort((a,b)=>a-b);
+  for(const time of rows){
+    const offset=Math.round((time-base)/60_000);
+    if(offset>cur&&offset<=max)return offset;
+  }
+  return Math.min(max,cur+60);
+}
+function previousNativeModelOffset(current){
+  const latest=state.frames.at(-1),cur=Number(current)||0,handoff=visualModelHandoffMinutes();
+  if(!latest||cur<=handoff)return Math.max(0,cur-1);
+  const base=Number(latest.time)*1000,target=base+cur*60_000;
+  const rows=(state.omMeta?.valid_times||[])
+    .map(value=>Date.parse(value))
+    .filter(time=>Number.isFinite(time)&&time<target-30_000)
+    .sort((a,b)=>b-a);
+  for(const time of rows){
+    const offset=Math.round((time-base)/60_000);
+    if(offset>=handoff&&offset<cur)return offset;
+  }
+  return handoff;
 }
 function warmFutureModelMap(){
   Promise.allSettled([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
@@ -3891,30 +3866,33 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   }
   await Promise.all([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
   if(!state.map||!state.mapLoaded||token!==state.radarProjectionToken||Math.abs(Number(state.radarOffset)-Number(minutes))>.5)return{ok:false,layerIds:[]};
-  const timeBlend=selectSpatialForecastTimeBlend(state.omMeta?.valid_times,projectedAt);
-  if(timeBlend.fromIndex<0||timeBlend.toIndex<0)return{ok:false,layerIds:[]};
-  const fraction=Math.max(0,Math.min(1,Number(timeBlend.fraction)||0));
-  const key=timeBlend.fromIndex+':'+timeBlend.toIndex+':'+fraction.toFixed(3);
+  const frame=nativeModelFrame(projectedAt);
+  if(!frame)return{ok:false,layerIds:[]};
+  const key='native:'+frame.index;
   if(state.futureModelKey===key&&state.futureModelActiveId&&state.map.getLayer(state.futureModelActiveId)){
     state.map.setPaintProperty(state.futureModelActiveId,'raster-opacity',blend.modelOpacity);
+    const nativeOffset=modelFrameOffset(frame.time);
+    $('radarTime').textContent=fmtTime(frame.time);
+    if($('radarFrameStatus'))$('radarFrameStatus').textContent='PREVISIÓN MODELO · frame '+fmtTime(frame.time)+(nativeOffset!==null?' · +'+nativeOffset+' min':'');
     markRadarDisplayed(minutes,token);
-    return{ok:true,layerIds:[state.futureModelActiveId],timeBlend};
+    return{ok:true,layerIds:[state.futureModelActiveId],frame};
   }
   const ids=modelFutureIds(),active=state.futureModelActiveId&&state.map.getLayer(state.futureModelActiveId)?state.futureModelActiveId:null;
   const incoming=active===ids[0]?ids[1]:ids[0];
   removeRadarLayer(incoming);
-  const url='raineta-model://forecast/'+timeBlend.fromIndex+'/'+timeBlend.toIndex+'/'+fraction.toFixed(4);
+  const url='om://'+OPENMETEO_SPATIAL_LAYER+'?time_step=valid_times_'+frame.index+'&variable=precipitation&dark=true';
   state.map.addSource(incoming,{type:'raster',url,maxzoom:12,attribution:'Open-Meteo · DWD ICON / ICON-EU'});
   state.map.addLayer({id:incoming,type:'raster',source:incoming,paint:{'raster-opacity':0,'raster-fade-duration':0}},modelBeforeRadarLayerId());
   const ready=await waitForRasterSources([incoming],token,5200);
   if(token!==state.radarProjectionToken||!ready||!state.map.getLayer(incoming))return{ok:false,layerIds:[]};
   animateModelSwap(incoming,blend.modelOpacity,token,170,minutes);
   state.futureModelKey=key;
-  const mode=futureVisualLabel(minutes,handoff);
-  if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  $('radarPosition').textContent='Precipitación prevista ICON-EU · '+fmtTime(projectedAt);
-  $('radarMotion').textContent='Fuente modelo única desde +'+handoff+' min. RainETA desplaza una sola estructura de precipitación hacia el instante solicitado; si el movimiento entre pasos no es fiable, usa el frame de modelo más próximo sin mezclar dos campos.';
-  return{ok:true,layerIds:[incoming],timeBlend};
+  const nativeOffset=modelFrameOffset(frame.time);
+  $('radarTime').textContent=fmtTime(frame.time);
+  if($('radarFrameStatus'))$('radarFrameStatus').textContent='PREVISIÓN MODELO · frame '+fmtTime(frame.time)+(nativeOffset!==null?' · +'+nativeOffset+' min':'');
+  $('radarPosition').textContent='ICON-EU · frame nativo '+fmtTime(frame.time);
+  $('radarMotion').textContent='Previsión de modelo sin deformación ni movimiento inventado. En esta zona RainETA cambia únicamente cuando existe un nuevo frame espacial real de ICON-EU.';
+  return{ok:true,layerIds:[incoming],frame};
 }
 function syntheticRadarTileTemplate(minutes,frames){
   const selected=(frames||[]).slice(-4),parts=['minutes='+encodeURIComponent(String(Math.max(0,Number(minutes)||0)))];
@@ -3936,7 +3914,7 @@ function showSyntheticRadarFuture(minutes,r,latest){
     ?'Precipitación prevista · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
     :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
-    ?'Previsión de modelo como única capa.'
+    ?'Cargando el frame espacial real de ICON-EU más próximo al instante seleccionado.'
     :'Nowcast radar como única capa hasta +'+handoff+' min cuando el flujo lo permite; el límite «fiable hasta» sigue siendo la referencia de confianza y no se extiende artificialmente.';
 
   if(blend.mode==='model'){
@@ -4573,7 +4551,8 @@ function stepRadarBackward(){
   const slider=$('frame');if(!slider)return;
   const current=Number(slider.value)||0;
   let next;
-  if(current>0)next=Math.max(0,current-1);
+  if(current>visualModelHandoffMinutes())next=previousNativeModelOffset(current);
+  else if(current>0)next=Math.max(0,current-1);
   else next=previousObservedOffset(current);
   slider.value=String(next);showRadarOffset(next);updateRadarStepButtons();
 }
@@ -4583,6 +4562,7 @@ function stepRadarForward(){
   const current=Number(slider.value)||0;
   let next;
   if(current<0)next=nextObservedOffset(current);
+  else if(current>=visualModelHandoffMinutes())next=nextNativeModelOffset(current);
   else next=Math.min(Number(slider.max)||RADAR_VISUAL_HORIZON_MINUTES,current+1);
   slider.value=String(next);showRadarOffset(next);updateRadarStepButtons();
 }
@@ -4595,8 +4575,12 @@ $('play').onclick=function(){
   const tick=async()=>{
     if(state.playMode!=='loop')return;
     const current=Number(slider.value)||0;
-    let next=current<0?nextObservedOffset(current):current+1;
-    if(next>Number(slider.max))next=Number(slider.min);
+    let next=current<0
+      ?nextObservedOffset(current)
+      :current>=visualModelHandoffMinutes()
+        ?nextNativeModelOffset(current)
+        :current+1;
+    if(next>Number(slider.max)||next===current)next=Number(slider.min);
     slider.value=String(next);showRadarOffset(next);
     const painted=await waitForRadarDisplayed(next);
     if(state.playMode!=='loop')return;

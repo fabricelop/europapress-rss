@@ -4,7 +4,6 @@ import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
 import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
-import {precipitationMaskFromRgba,estimateModelTileMotion,estimateModelTileLocalFlow,modelMotionSingleFramePlan,modelLocalPatchDisplacement} from '../rain/model-motion-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -422,17 +421,6 @@ test('spatial model time interpolates continuously between forecast steps',()=>{
   assert.equal(exact.fraction,1);
 });
 
-test('future map uses motion-compensated Open-Meteo precipitation beneath radar',()=>{
-  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/@openmeteo\/weather-map-layer@0\.2\.2/);
-  assert.match(app,/OPENMETEO_SPATIAL_META='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon\/latest\.json'/);
-  assert.match(app,/OPENMETEO_SPATIAL_LAYER='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon_seamless\/latest\.json'/);
-  assert.match(app,/selectSpatialForecastTimeBlend\(state\.omMeta\?\.valid_times,projectedAt\)/);
-  assert.match(app,/raineta-model:\/\/forecast\//);
-  assert.match(app,/renderMotionInterpolatedModelTile\(/);
-  assert.match(app,/animateModelSwap\(/);
-});
-
 test('lightning behavior remains on the verified preload path',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/verifyLightningSource\(false\);\s*warmFutureModelMap\(\);/);
@@ -468,58 +456,31 @@ test('model-only future waits for model tiles before fading radar away',()=>{
 });
 
 
-test('model interpolation moves one rain field instead of blending two',()=>{
-  const w=64,h=64;
-  const rgba=(x0,y0)=>{
-    const out=new Uint8ClampedArray(w*h*4);
-    for(let y=y0;y<y0+14;y++)for(let x=x0;x<x0+18;x++){
-      const i=(y*w+x)*4;out[i]=20;out[i+1]=150;out[i+2]=30;out[i+3]=190;
-    }
-    return out;
-  };
-  const motion=estimateModelTileMotion(rgba(12,24),rgba(18,21),w,h,{target:64,maxShift:10,minConfidence:.1});
-  assert.equal(motion.ok,true);
-  const first=modelMotionSingleFramePlan(.25,motion);
-  assert.equal(first.source,'from');
-  assert.ok(Math.abs(first.dx-1.5)<=.6);
-  const second=modelMotionSingleFramePlan(.75,motion);
-  assert.equal(second.source,'to');
-  assert.ok(Math.abs(second.dx+1.5)<=.6);
-});
-
-test('model motion fallback selects one nearest model frame without blur',()=>{
-  const rgba=new Uint8ClampedArray(32*32*4);
-  const motion=estimateModelTileMotion(rgba,rgba,32,32);
-  assert.equal(motion.ok,false);
-  assert.deepEqual(modelMotionSingleFramePlan(.25,motion),{fraction:.25,source:'from',dx:0,dy:0,motionApplied:false});
-  assert.deepEqual(modelMotionSingleFramePlan(.75,motion),{fraction:.75,source:'to',dx:0,dy:0,motionApplied:false});
-});
-
-test('radar nowcast can move from +1 when local flow is reliable',()=>{
-  const w=96,h=96;
-  const field=(x0,y0)=>{
-    const mask=new Uint8Array(w*h),rateGrid=new Float32Array(w*h);
-    for(let y=y0;y<y0+18;y++)for(let x=x0;x<x0+22;x++){const i=y*w+x;mask[i]=1;rateGrid[i]=6}
-    return{mask,rateGrid,width:w,height:h,wetPixels:396};
-  };
-  const out=buildSyntheticFutureField([field(20,36),field(23,35),field(26,34),field(29,33)],[1000,1600,2200,2800],1,{persistenceMinutes:5});
-  assert.equal(out.status,'flow');
-  assert.ok(out.field.mask.reduce((sum,v)=>sum+(v?1:0),0)>100);
-});
-
-test('future model uses internal motion-compensated protocol instead of opacity-only hourly layers',()=>{
+test('future model uses native Open-Meteo ICON frames without custom warping',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/maplibregl\.addProtocol\('raineta-model',rainetaModelMotionProtocol\)/);
-  assert.match(app,/estimateModelTileMotion\(a\.rgba,b\.rgba,w,h/);
-  assert.match(app,/estimateModelTileLocalFlow\(a\.rgba,b\.rgba,w,h/);
-  assert.match(app,/modelMotionSingleFramePlan\(fraction,motion\)/);
-  assert.match(app,/modelLocalPatchDisplacement\(localMotion,cx,cy,fraction,plan\.source/);
-  assert.match(app,/const source=plan\.source==='to'\?toImage:fromImage/);
-  assert.match(app,/estimateModelTileLocalFlow\(a\.rgba,b\.rgba,w,h/);
-  assert.match(app,/ctx\.drawImage\(source,sx,sy,sw,sh,sx\+shift\.dx,sy\+shift\.dy,sw,sh\)/);
-  assert.match(app,/raineta-model:\/\/forecast\//);
+  assert.match(app,/maplibregl\.addProtocol\('om',module\.omProtocol\)/);
+  assert.match(app,/const url='om:\/\/'+OPENMETEO_SPATIAL_LAYER+'\?time_step=valid_times_'+frame\.index/);
+  assert.doesNotMatch(app,/raineta-model:\/\//);
+  assert.doesNotMatch(app,/estimateModelTileLocalFlow/);
+  assert.doesNotMatch(app,/modelLocalPatchDisplacement/);
+  assert.doesNotMatch(app,/const patch=48/);
 });
 
+test('model display reports the actual native frame time',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/function nativeModelFrame\(projectedAt\)/);
+  assert.match(app,/PREVISIÓN MODELO · frame /);
+  assert.match(app,/ICON-EU · frame nativo /);
+  assert.match(app,/sin deformación ni movimiento inventado/);
+});
+
+test('model playback advances between native valid times instead of fake minute frames',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/function nextNativeModelOffset\(current\)/);
+  assert.match(app,/function previousNativeModelOffset\(current\)/);
+  assert.match(app,/current>=visualModelHandoffMinutes\(\)\s*\?nextNativeModelOffset\(current\)/);
+  assert.match(app,/current>visualModelHandoffMinutes\(\)\)next=previousNativeModelOffset\(current\)/);
+});
 
 test('future playback waits for a painted frame instead of racing at 100 ms',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
@@ -563,49 +524,7 @@ test('radar to model handoff is dynamic and not a persistent mixed mode',()=>{
   assert.doesNotMatch(fn,/const modelPromise=/);
 });
 
-test('ICON interpolation renders only one field at any requested minute',()=>{
-  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  const start=app.indexOf('async function renderMotionInterpolatedModelTile');
-  const end=app.indexOf('async function rainetaModelMotionProtocol',start);
-  const fn=app.slice(start,end);
-  assert.match(fn,/const source=plan\.source==='to'\?toImage:fromImage/);
-  assert.match(fn,/if\(localMotion\.ok\)/);
-  assert.doesNotMatch(fn,/globalAlpha=plan\.fromOpacity/);
-  assert.doesNotMatch(fn,/globalAlpha=plan\.toOpacity/);
-});
-
-
-test('model local patch displacement can move different parts of one model field',()=>{
-  const local={
-    ok:true,
-    imageWidth:100,imageHeight:100,maskWidth:20,maskHeight:20,scaleX:5,scaleY:5,
-    flow:{vectors:[
-      {x:5,y:5,dx:2,dy:0,confidence:.9},
-      {x:10,y:5,dx:2,dy:0,confidence:.9},
-      {x:15,y:5,dx:2,dy:0,confidence:.9},
-      {x:5,y:15,dx:-1,dy:1,confidence:.9},
-      {x:10,y:15,dx:-1,dy:1,confidence:.9},
-      {x:15,y:15,dx:-1,dy:1,confidence:.9}
-    ]}
-  };
-  const north=modelLocalPatchDisplacement(local,50,20,.5,'from',{dx:0,dy:0});
-  const south=modelLocalPatchDisplacement(local,50,80,.5,'from',{dx:0,dy:0});
-  assert.ok(north.dx>1);
-  assert.ok(south.dx<0);
-  assert.notEqual(Math.round(north.dx),Math.round(south.dx));
-});
-
-test('model renderer warps one source image by local patches instead of a static whole-tile shift',()=>{
-  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  const start=app.indexOf('async function renderMotionInterpolatedModelTile');
-  const end=app.indexOf('async function rainetaModelMotionProtocol',start);
-  const fn=app.slice(start,end);
-  assert.match(fn,/const patch=48,pad=2/);
-  assert.match(fn,/for\(let py=0;py<h;py\+=patch\)for\(let px=0;px<w;px\+=patch\)/);
-  assert.match(fn,/ctx\.drawImage\(source,sx,sy,sw,sh,sx\+shift\.dx,sy\+shift\.dy,sw,sh\)/);
-});
-
-test('visual radar handoff gives useful nowcast room before hourly model takes over',()=>{
+test('visual radar handoff gives useful nowcast room before native model takes over',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/const viewport=Math\.max\(0,Number\(state\.radarViewNowcast\?\.guidance\?\.horizon\)\|\|0\)/);
   assert.match(app,/Math\.max\(30,Math\.min\(45,useful\|\|30\)\)/);
