@@ -1,6 +1,12 @@
 name: TTiTTulares Cloudflare staging - pruebas de compatibilidad
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'no-vercel/ttittulares-worker/src/**'
+      - 'no-vercel/ttittulares-worker/test/**'
+      - '.github/workflows/ttittulares-cloudflare-staging-test.yml'
   pull_request:
     paths:
       - 'no-vercel/ttittulares-worker/**'
