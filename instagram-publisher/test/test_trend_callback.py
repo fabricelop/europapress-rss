@@ -13,7 +13,7 @@ class Response:
         self.obj=obj
     def __enter__(self):return self
     def __exit__(self,*args):return None
-    def read(self):return json.dumps(self.obj).encode("utf-8")
+    def read(self, size=-1):return json.dumps(self.obj).encode("utf-8")[:size if size>=0 else None]
 
 
 class TrendCallbackTests(unittest.TestCase):
@@ -129,6 +129,20 @@ class TrendCallbackTests(unittest.TestCase):
         import inspect
         self.assertIn("merge_instagram_last_action(remote_state, local_state)",
                       inspect.getsource(bot.persist_package_state))
+
+    def test_non_json_publisher_error_is_diagnostic(self):
+        import io
+        import urllib.error
+        error=urllib.error.HTTPError("https://example.com",502,"bad gateway",{},io.BytesIO(b"<html>error</html>"))
+        result=bot.decode_instagram_publisher_response(error,502)
+        self.assertEqual(result,{"state":"transport_error","error":"NON_JSON_RESPONSE","_http_status":502})
+
+    def test_json_publisher_error_keeps_meta_code(self):
+        import io
+        error=io.BytesIO(b'{"ok":false,"error":"CONTAINER_CREATION_FAILED"}')
+        result=bot.decode_instagram_publisher_response(error,502)
+        self.assertEqual(result["error"],"CONTAINER_CREATION_FAILED")
+        self.assertEqual(result["_http_status"],502)
 
     def test_unlinked_message_not_publishable(self):
         self.cb["message"]["message_id"]=9999

@@ -1010,6 +1010,20 @@ def close_block(callback):
 
 
 
+def decode_instagram_publisher_response(response, http_status=200):
+    """Decode only a small JSON response. Cloudflare may return HTML on 5xx."""
+    try:
+        payload = json.loads(response.read(32768).decode("utf-8"))
+    except (ValueError, UnicodeError):
+        return {"state": "transport_error", "error": "NON_JSON_RESPONSE",
+                "_http_status": int(http_status)}
+    if not isinstance(payload, dict):
+        return {"state": "transport_error", "error": "INVALID_JSON_RESPONSE",
+                "_http_status": int(http_status)}
+    payload["_http_status"] = int(http_status)
+    return payload
+
+
 def handle_instagram_package_callback(callback):
     """Handle explicit Instagram selection; never update X or delete Telegram."""
     data=str(callback.get("data") or "")
@@ -1071,22 +1085,32 @@ def handle_instagram_package_callback(callback):
     }
     result={}
     for attempt in range(5):
+        request=urllib.request.Request(
+            endpoint+"/publish",data=json.dumps(body,ensure_ascii=False).encode("utf-8"),
+            headers={"content-type":"application/json","authorization":"Bearer "+secret},
+            method="POST")
         try:
-            request=urllib.request.Request(
-                endpoint+"/publish",data=json.dumps(body,ensure_ascii=False).encode("utf-8"),
-                headers={"content-type":"application/json","authorization":"Bearer "+secret},
-                method="POST")
-            try:
-                with urllib.request.urlopen(request,timeout=20) as response:
-                    result=json.loads(response.read().decode("utf-8"))
-            except urllib.error.HTTPError as exc:
-                result=json.loads(exc.read().decode("utf-8"))
-            if str(result.get("state") or "")!="processing":
-                break
-            time.sleep(2+attempt)
-        except Exception:
-            result={"state":"error"}
+            # Creating media may require a remote download by Meta; a 20-second
+            # limit previously hid the true outcome behind "publisher_error".
+            with urllib.request.urlopen(request,timeout=55) as response:
+                result=decode_instagram_publisher_response(response,getattr(response,"status",200))
+        except urllib.error.HTTPError as exc:
+            result=decode_instagram_publisher_response(exc,exc.code)
+        except (urllib.error.URLError,TimeoutError,OSError) as exc:
+            # A timeout can happen after Meta has accepted the request. Never
+            # auto-retry the publishing POST when its fate is unknown.
+            kind="TIMEOUT" if isinstance(exc,TimeoutError) or "timed out" in str(exc).lower() else "NETWORK_FAILURE"
+            result={"state":"transport_error","error":kind,"_http_status":0}
+        if str(result.get("state") or "")!="processing":
             break
+        time.sleep(2+attempt)
+    code=str(result.get("error") or result.get("state") or "UNKNOWN")
+    http_status=int(result.get("_http_status") or 0)
+    print("TT_INSTAGRAM_PUBLISH_DIAGNOSTIC="+json.dumps({
+        "event_id":trend_id,"error":code[:64],
+        "state":str(result.get("state") or "")[:32],
+        "http_status":http_status
+    },ensure_ascii=False),flush=True)
 
     if result.get("state")=="published":
         permalink=str(result.get("permalink") or "")
@@ -1110,13 +1134,17 @@ def handle_instagram_package_callback(callback):
 
     reason=str(result.get("state") or "")
     if reason=="uncertain":
-        txt="Publicación no confirmada. Revisa Instagram antes de volver a pulsar."
+        txt="Publicación no confirmada. Comprueba Instagram antes de otro intento."
     elif reason=="processing":
-        txt="Instagram sigue procesando la imagen. Vuelve a pulsar el botón en unos segundos."
+        txt="Instagram sigue procesando la imagen. El botón permanece disponible."
+    elif reason=="transport_error":
+        txt="No se recibió una respuesta válida del publicador. No reintentes hasta comprobar su estado."
     else:
-        txt="No se ha confirmado la publicación en Instagram. El mensaje sigue disponible."
+        txt="Instagram no confirmó la publicación. El botón sigue disponible."
+    # Error/status only; do not expose request contents, access tokens or secrets.
+    txt+="\\nDiagnóstico: "+code[:64]+" (HTTP "+str(http_status or "sin respuesta")+")."
     call("sendMessage",{"chat_id":chat_id,"text":"📸 "+txt,"reply_to_message_id":message_id})
-    return "publisher_"+(str(result.get("state") or result.get("error") or "error").lower()[:48])
+    return ("publisher_"+code.lower()[:42]+"_http"+str(http_status))[:64]
 
 
 def handle(update):
