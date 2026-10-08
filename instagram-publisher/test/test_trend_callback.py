@@ -109,6 +109,27 @@ class TrendCallbackTests(unittest.TestCase):
         self.assertIn("Registrar resultado del boton Instagram TTendencias",source)
         self.assertIn("TT_INSTAGRAM_CALLBACK_EXCEPTION",source)
 
+    def test_instagram_action_survives_remote_state_merge(self):
+        remote={"last_update_id":100}
+        local={"instagram_last_action":{
+            "event_id":"3ff255e46d90","outcome":"published",
+            "updated_at":"2026-10-09T00:55:00+02:00"}}
+        bot.merge_instagram_last_action(remote,local)
+        self.assertEqual(remote["instagram_last_action"],local["instagram_last_action"])
+        older={"instagram_last_action":{
+            "event_id":"3ff255e46d90","outcome":"not_eligible",
+            "updated_at":"2026-10-09T00:53:00+02:00"}}
+        bot.merge_instagram_last_action(remote,older)
+        self.assertEqual(remote["instagram_last_action"]["outcome"],"published")
+        newer={"instagram_last_action":{
+            "event_id":"1dc952e6340e","outcome":"publisher_error",
+            "updated_at":"2026-10-09T00:56:00+02:00"}}
+        bot.merge_instagram_last_action(remote,newer)
+        self.assertEqual(remote["instagram_last_action"]["outcome"],"publisher_error")
+        import inspect
+        self.assertIn("merge_instagram_last_action(remote_state, local_state)",
+                      inspect.getsource(bot.persist_package_state))
+
     def test_unlinked_message_not_publishable(self):
         self.cb["message"]["message_id"]=9999
         def load(path, fallback):
