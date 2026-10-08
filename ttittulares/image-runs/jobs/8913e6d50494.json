@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-8913e6d50494-r1-a1-1791476433170",
+  "requested_at": "2026-10-08T16:20:33.168810Z",
+  "updated_at": "2026-10-08T16:20:33.168810Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "8913e6d50494",
+  "event_id": "8913e6d50494",
+  "target_name": "El Museo Goya, de Fundación Ibercaja, reabre al público con una gran muestra inaugural, más instalaciones y experiencias inmersivas",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El Museo Goya, de Fundación Ibercaja, reabre al público con una gran muestra inaugural, más instalaciones y experiencias inmersivas",
+    "revision": 1,
+    "factual_summary": "El Museo Goya de Fundación Ibercaja reabrió en Zaragoza tras una ampliación y renovación que eleva su superficie de 3.700 a 4.661 metros cuadrados. Incorpora experiencias inmersivas, realidad virtual y recursos interactivos, además de la muestra inaugural «Solo Goya. El arte de ver».",
+    "tweet_text": "El Museo Goya de Zaragoza reabre tras su ampliación: pasa de 3.700 a 4.661 m² e incorpora experiencias inmersivas, realidad virtual y la muestra «Solo Goya. El arte de ver».\n\n🌶️ Goya vuelve con más metros y hasta modo inmersivo.",
+    "remate": "🌶️ Goya vuelve con más metros y hasta modo inmersivo.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+    "image_style_name": "retro_60s",
+    "image_style_index": 5,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl Museo Goya de Zaragoza reabre tras su ampliación: pasa de 3.700 a 4.661 m² e incorpora experiencias inmersivas, realidad virtual y la muestra «Solo Goya. El arte de ver».\n\n🌶️ Goya vuelve con más metros y hasta modo inmersivo.\n\nREMATE EXACTO:\n🌶️ Goya vuelve con más metros y hasta modo inmersivo.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Museo Goya de Fundación Ibercaja reabrió en Zaragoza tras una ampliación y renovación que eleva su superficie de 3.700 a 4.661 metros cuadrados. Incorpora experiencias inmersivas, realidad virtual y recursos interactivos, además de la muestra inaugural «Solo Goya. El arte de ver».\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/artes/museo-goya-fundacion-ibercaja-reabre-publico-con-una-gran-muestra-inaugural-mas-instalaciones-experiencias-inmersivas_7046468_0.html",
+    "citations": [
+      {
+        "source": "Fundación Ibercaja",
+        "url": "https://www.fundacionibercaja.es/sala-prensa/el-museo-goya-inicia-una-nueva-etapa-con-su-ampliacion/"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/aragon/noticia-museo-goya-reabre-publico-instalaciones-ampliadas-renovadas-adaptadas-siglo-xxi-experiencias-inmersivas-20261008090000.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/artes/museo-goya-fundacion-ibercaja-reabre-publico-con-una-gran-muestra-inaugural-mas-instalaciones-experiencias-inmersivas_7046468_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
