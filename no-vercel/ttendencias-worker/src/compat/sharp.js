@@ -1,8 +1,9 @@
 // Worker-compatible metadata reader. Does not transcode user imagery.
 function size(bytes) {
   const b=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes||[]);
-  if(b.length<24)throw Error("Raster truncado");
+  if(b.length<12)throw Error("Raster truncado");
   if(b.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))){
+    if(b.length<24)throw Error("PNG truncado");
     if(b.toString("ascii",12,16)!=="IHDR")throw Error("PNG sin IHDR");
     return {width:b.readUInt32BE(16),height:b.readUInt32BE(20),format:"png"};
   }
