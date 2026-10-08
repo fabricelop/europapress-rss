@@ -100,7 +100,7 @@ async function stagingWriteProbe(request,env){
   const previous=await fetch(url+"?ref="+encodeURIComponent(branch),{headers,cache:"no-store"});
   if(!previous.ok&&previous.status!==404)return json({ok:false,phase:"read",github_status:previous.status},503);
   const old=previous.ok?await previous.json():{};
-  const content=JSON.stringify({ok:true,project:"TTiTTulares",source:"cloudflare_staging",checked_at:new Date().toISOString()},null,2)+"\\n";
+  const content=JSON.stringify({ok:true,project:"TTiTTulares",source:"cloudflare_staging",checked_at:new Date().toISOString()},null,2)+"\n";
   const update={branch,message:"TTiTTulares: verificar escritura Cloudflare staging",content:Buffer.from(content).toString("base64")};
   if(old.sha)update.sha=old.sha;
   const saved=await fetch(url,{method:"PUT",headers,body:JSON.stringify(update)});
