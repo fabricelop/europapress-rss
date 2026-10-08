@@ -19,6 +19,38 @@ async function meta(env,endpoint,params={},verb="POST"){
   if(!result.ok||json.error)throw Error("META_REQUEST_FAILED");
   return json;
 }
+// Read-only account and schema preflight. Never posts to Meta, mutates D1, or returns a token.
+// A Page token MUST identify the expected Facebook Page; a user token is not accepted.
+async function metaPreflight(env){
+  const pageId="1424696600717440",igId=String(env.INSTAGRAM_USER_ID||"");
+  if(!env.IG_DB||!env.INSTAGRAM_PAGE_ACCESS_TOKEN||igId!=="17841414511690117"){
+    return answer({ok:false,error:"MISSING_REQUIRED_BINDINGS",active:isActive(env)},503);
+  }
+  let schemaReady=false;
+  try{
+    const table=await env.IG_DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='instagram_posts'").first();
+    schemaReady=table?.name==="instagram_posts";
+  }catch(_err){}
+  let me,page;
+  try{
+    me=await meta(env,"me",{fields:"id,name"},"GET");
+    page=await meta(env,pageId,{fields:"id,name,instagram_business_account{id,username}"},"GET");
+  }catch(_err){
+    return answer({ok:false,error:"META_TOKEN_INVALID_OR_INSUFFICIENT_PERMISSIONS",schema_ready:schemaReady,active:isActive(env)},502);
+  }
+  const pageMatches=String(me?.id||"")===pageId&&String(page?.id||"")===pageId;
+  const linked=page?.instagram_business_account||{};
+  const instagramMatches=String(linked.id||"")===igId;
+  const instagramUsernameMatches=String(linked.username||"").toLowerCase()==="ttactualidad";
+  const ok=pageMatches&&instagramMatches&&instagramUsernameMatches&&schemaReady;
+  return answer({
+    ok,read_only:true,active:isActive(env),
+    page_token_matches_expected_page:pageMatches,
+    instagram_account_linked:instagramMatches,
+    instagram_username_matches:instagramUsernameMatches,
+    schema_ready:schemaReady
+  },ok?200:422);
+}
 async function state(db,key){return db.prepare("SELECT * FROM instagram_posts WHERE id=?").bind(key).first();}
 async function change(db,key,old,now,fields={}){
   const keys=Object.keys(fields);
@@ -91,6 +123,10 @@ async function publish(env,item){
 export default {async fetch(req,env){
   const pathname=new URL(req.url).pathname;
   if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:isActive(env)});
+  if(pathname==="/meta-preflight"&&req.method==="GET"){
+    if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
+    return metaPreflight(env);
+  }
   if(pathname!=="/publish"||req.method!=="POST")return answer({ok:false,error:"NOT_FOUND"},404);
   if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
   if(!isActive(env))return answer({ok:false,error:"PILOT_DISABLED"},503);
