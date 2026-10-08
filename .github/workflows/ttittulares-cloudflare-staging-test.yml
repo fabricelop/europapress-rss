@@ -1,0 +1,75 @@
+name: TTiTTulares Cloudflare staging - pruebas de compatibilidad
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'no-vercel/ttittulares-worker/**'
+      - '.github/workflows/ttittulares-cloudflare-staging-test.yml'
+permissions:
+  contents: read
+jobs:
+  worker-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: no-vercel/ttittulares-worker
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+      - name: Tests autenticación, PWA y raster sin Vercel
+        run: npm test
+      - name: Compilar Worker sin desplegar
+        run: npx wrangler deploy --dry-run --outdir .wrangler-bundle-check
+      - name: Smoke local real contra GitHub público
+        run: |
+          set -euo pipefail
+          npx wrangler dev --local --ip 127.0.0.1 --port 8787 >/tmp/ttittulares-worker-staging.log 2>&1 &
+          wpid=$!
+          trap 'kill "$wpid" 2>/dev/null || true' EXIT
+          ready=0
+          for n in $(seq 1 45); do
+            if curl -fsS --max-time 2 http://127.0.0.1:8787/health -o /tmp/tti-health.json; then ready=1; break; fi
+            sleep 1
+          done
+          if [ "$ready" != 1 ]; then tail -n 100 /tmp/ttittulares-worker-staging.log; exit 1; fi
+          node -e 'const d=require("/tmp/tti-health.json");if(!d.ok||d.service!=="ttittulares-cloudflare")process.exit(1)'
+          curl -fsS --max-time 15 http://127.0.0.1:8787/ttittulares/ -o /tmp/tti-original.html
+          grep -q 'TTiTTulares' /tmp/tti-original.html
+          status="$(curl -sS --max-time 20 -o /tmp/tti-unauthorized.json -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' \
+            --data '{"action":"dismiss","event_id":"TEST-DO-NOT-PERSIST"}' \
+            http://127.0.0.1:8787/api/ttittulares-control)"
+          test "$status" = 401
+          public="$(curl -sS --max-time 60 -o /tmp/tti-state.json -w '%{http_code}' \
+            http://127.0.0.1:8787/api/ttittulares-control)"
+          echo "TTITTULARES_CONTROL_PUBLIC_STATUS=$public"
+          if [ "$public" != 200 ]; then
+            head -c 1800 /tmp/tti-state.json || true
+            echo
+            tail -n 90 /tmp/ttittulares-worker-staging.log
+            exit 1
+          fi
+          node - <<'NODE'
+          const fs=require('node:fs');
+          const d=JSON.parse(fs.readFileSync('/tmp/tti-state.json'));
+          if(!d.ok || !d.prepared || !d.status || !d.config)
+             throw Error("Missing original TTiTTulares state fields");
+          console.log("TTITTULARES_PUBLIC_SMOKE_OK prepared="+(d.prepared.items||[]).length+" processing="+d.status.processing_count);
+          NODE
+      - name: Empaquetar Worker ligero para deploy independiente
+        uses: actions/upload-artifact@v4
+        with:
+          name: ttittulares-cloudflare-light
+          path: |
+            no-vercel/ttittulares-worker/src/
+            no-vercel/ttittulares-worker/generated/
+            no-vercel/ttittulares-worker/wrangler.jsonc
+          retention-days: 7
+          if-no-files-found: error
