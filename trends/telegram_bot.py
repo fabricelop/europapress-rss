@@ -1010,15 +1010,28 @@ def handle_instagram_package_callback(callback):
     message_id=int(message.get("message_id") or 0)
     if not allowed_chat or allowed_chat!=chat_id or message_id<=0:
         call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Chat no autorizado.","show_alert":True})
-        return True
+        return "unauthorized_chat"
 
     # ACK before doing slow Meta calls to avoid an expired Telegram callback.
-    call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Recibido. Publicando en Instagram…"})
+    try:
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Recibido. Verificando Instagram…"})
+    except Exception as exc:
+        # A long-running GitHub listener can receive expired callback IDs.
+        # Never launch a Meta write for an expired callback: notify in Telegram
+        # so the user can select the item again deliberately.
+        print("TT_INSTAGRAM_CALLBACK_EXPIRED_OR_FAILED",type(exc).__name__,flush=True)
+        try:
+            call("sendMessage",{"chat_id":chat_id,
+                "text":"La solicitud de Instagram ha caducado antes de procesarse. No se ha lanzado una nueva publicación; vuelve a pulsar el botón si quieres intentarlo.",
+                "reply_to_message_id":message_id})
+        except Exception as notify_exc:
+            print("TT_INSTAGRAM_CALLBACK_NOTIFY_FAILED",type(notify_exc).__name__,flush=True)
+        return "expired_callback"
     endpoint=str(os.environ.get("INSTAGRAM_PUBLISHER_URL") or "").rstrip("/")
     secret=str(os.environ.get("INSTAGRAM_INTERNAL_SECRET") or "")
     if (not endpoint.startswith("https://") or len(secret)<32):
         call("sendMessage",{"chat_id":chat_id,"text":"Instagram aún no está activado; el mensaje se conserva.","reply_to_message_id":message_id})
-        return True
+        return "not_configured"
     doc=load_remote_json("trends/telegram-image-deliveries.json",load(IMAGE_DELIVERIES,{"items":[]}))
     matched=next((row for row in reversed(doc.get("items",[]))
         if str(row.get("event_id") or "")==trend_id
@@ -1030,7 +1043,7 @@ def handle_instagram_package_callback(callback):
         and row["instagram"].get("caption")),None)
     if not matched:
         call("sendMessage",{"chat_id":chat_id,"text":"El paquete ya no está disponible para Instagram.","reply_to_message_id":message_id})
-        return True
+        return "not_eligible"
 
     body={
         "source":"ttendencias","event_id":trend_id,"revision":rev,
@@ -1075,7 +1088,7 @@ def handle_instagram_package_callback(callback):
                 call("sendMessage",{"chat_id":chat_id,"text":"Publicado en Instagram: "+permalink})
         else:
             call("sendMessage",{"chat_id":chat_id,"text":"Instagram confirma la publicación; enlace pendiente."})
-        return True
+        return "published"
 
     reason=str(result.get("state") or "")
     if reason=="uncertain":
@@ -1085,7 +1098,7 @@ def handle_instagram_package_callback(callback):
     else:
         txt="No se ha confirmado la publicación en Instagram. El mensaje sigue disponible."
     call("sendMessage",{"chat_id":chat_id,"text":"📸 "+txt,"reply_to_message_id":message_id})
-    return True
+    return "publisher_"+(str(result.get("state") or result.get("error") or "error").lower()[:48])
 
 
 def handle(update):
@@ -1208,7 +1221,36 @@ def poll_packages(seconds=3300):
 
                 cb = upd.get("callback_query")
                 if cb and str(cb.get("data") or "").startswith("tx:"):
-                    route_package_callback(cb)
+                    callback_data = str(cb.get("data") or "")
+                    if callback_data.startswith("tx:i:"):
+                        # Durable result, even if the Instagram handler raises:
+                        # no silent disappearance of the selected Telegram action.
+                        outcome = "not_processed"
+                        try:
+                            outcome = str(route_package_callback(cb) or "no_result")
+                        except Exception as exc:
+                            outcome = "handler_error"
+                            print("TT_INSTAGRAM_CALLBACK_EXCEPTION",type(exc).__name__,flush=True)
+                            message = cb.get("message") or {}
+                            chat_id = (message.get("chat") or {}).get("id")
+                            message_id = message.get("message_id")
+                            if chat_id and message_id:
+                                try:
+                                    call("sendMessage",{"chat_id":chat_id,
+                                        "text":"No se ha podido confirmar la solicitud de Instagram. Comprueba @ttactualidad antes de volver a pulsar.",
+                                        "reply_to_message_id":message_id})
+                                except Exception as notify_exc:
+                                    print("TT_INSTAGRAM_CALLBACK_NOTIFY_FAILED",type(notify_exc).__name__,flush=True)
+                        package_state["instagram_last_action"] = {
+                            "event_id":callback_data.split(":")[2] if len(callback_data.split(":"))==4 else "",
+                            "outcome":outcome[:64],
+                            "updated_at":datetime.now(MADRID).isoformat(timespec="seconds"),
+                        }
+                        save(PACKAGE_STATE,package_state)
+                        print("TT_INSTAGRAM_CALLBACK_RESULT="+outcome,flush=True)
+                        persist_package_state("Registrar resultado del boton Instagram TTendencias")
+                    else:
+                        route_package_callback(cb)
                     dirty = False
                     last_persist = time.time()
 
