@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T04:39:20.779936Z",
+  "updated_at": "2026-10-08T04:41:00.222Z",
   "items": [
     {
       "event_id": "b8e7efbc9ff0",
@@ -853,8 +853,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -870,12 +870,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T04:38:02.245792Z",
       "image": {
-        "url": "https://imagenes.elpais.com/resizer/v2/AQRRXATJ65KZXDKZELAHIBEARM.jpg?auth=8c204bcb7d0c4313ff7bda46204ed9280f4242842fc54e10b37fd92c893fda32&width=1200",
-        "source": "EL PAÍS",
-        "source_url": "https://elpais.com/espana/2026-10-08/ayuso-arrastra-a-feijoo-al-laberinto-del-voto-por-correo.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Feijóo respalda la teoría de Ayuso del pucherazo con el voto por correo, apuntando a directivos"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f528c6ce0946-r1-ai1-791434364591.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "2493fd86f9813931b579888bb5641c7791a609222803ad89d2109089bf870055",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2456186,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f528c6ce0946",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f528c6ce0946-r1-a1-1791434364591"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f528c6ce0946-r1-ai1-791434364591.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://imagenes.elpais.com/resizer/v2/AQRRXATJ65KZXDKZELAHIBEARM.jpg?auth=8c204bcb7d0c4313ff7bda46204ed9280f4242842fc54e10b37fd92c893fda32&width=1200",
@@ -884,7 +898,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Feijóo respalda la teoría de Ayuso del pucherazo con el voto por correo, apuntando a directivos"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/f528c6ce0946-r1-ai1-791434364591.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "2493fd86f9813931b579888bb5641c7791a609222803ad89d2109089bf870055",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2456186,
+        "context_guard": {
+          "version": 3,
+          "event_id": "f528c6ce0946",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-f528c6ce0946-r1-a1-1791434364591"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/f528c6ce0946-r1-ai1-791434364591.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T04:41:00.222Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T04:41:00.222Z"
     }
   ],
   "count": 12
