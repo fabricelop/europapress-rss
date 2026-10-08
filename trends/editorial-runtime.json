@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T05:15:00.000Z",
-  "last_completed_at": "2026-10-08T05:21:40.000Z",
-  "updated_at": "2026-10-08T05:21:40.000Z",
+  "last_started_at": "2026-10-08T05:45:00.000Z",
+  "last_completed_at": "2026-10-08T05:49:00.000Z",
+  "updated_at": "2026-10-08T05:49:00.000Z",
   "status": "success",
-  "processed_ids": [
-    "ff7da32ed7b2"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -17,23 +15,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T051500000Z-chat",
+    "run_id": "tr-20261008T054500000Z-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T05:15:00.000Z",
-    "updated_at": "2026-10-08T05:21:40.000Z",
-    "finished_at": "2026-10-08T05:21:40.000Z",
+    "started_at": "2026-10-08T05:45:00.000Z",
+    "updated_at": "2026-10-08T05:49:00.000Z",
+    "finished_at": "2026-10-08T05:49:00.000Z",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -42,20 +40,20 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
+      "visual_repairs_queued": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · #FelizJueves r2 explicada y verificada; cola autoritativa final 0. Reparación visual lanzada de forma independiente.",
+    "message": "Pasada completada sin trabajo editorial nuevo. Cola final 0; saneamiento de Pendientes correcto y sin nuevos jobs IA.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -65,224 +63,67 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "ff7da32ed7b2",
-        "revision": 2,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.3,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.6,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c4",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-08T05:15:00.000Z",
+        "at": "2026-10-08T05:45:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-08T05:15:20.000Z",
+        "at": "2026-10-08T05:47:10.000Z",
         "phase": "verifying",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Releyendo estado autoritativo de #FelizJueves"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes y reparación visual activa"
       },
       {
-        "at": "2026-10-08T05:16:00.000Z",
-        "phase": "investigating",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-08T05:16:10.000Z",
-        "phase": "investigating",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Contrastando fuente 1/2 · patrón recurrente de saludos de jueves"
-      },
-      {
-        "at": "2026-10-08T05:16:20.000Z",
-        "phase": "investigating",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Contrastando fuente 2/2 · uso social ligado a buenos días y buenos deseos"
-      },
-      {
-        "at": "2026-10-08T05:16:25.000Z",
-        "phase": "investigating",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Hecho esencial verificado · etiqueta matinal recurrente, sin acontecimiento informativo concreto"
-      },
-      {
-        "at": "2026-10-08T05:16:30.000Z",
-        "phase": "drafting",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-08T05:16:35.000Z",
-        "phase": "drafting",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Comprobando límite de X · 208 caracteres"
-      },
-      {
-        "at": "2026-10-08T05:16:40.000Z",
-        "phase": "remate_selection",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-08T05:16:45.000Z",
-        "phase": "remate_selection",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-08T05:16:50.000Z",
-        "phase": "remate_selection",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-08T05:17:00.000Z",
-        "phase": "persisting",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-08T05:17:20.000Z",
-        "phase": "persisting",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-08T05:20:51.000Z",
-        "phase": "persisting",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-08T05:21:00.000Z",
+        "at": "2026-10-08T05:48:13.000Z",
         "phase": "verifying",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento de Pendientes completado · 0 jobs IA nuevos"
       },
       {
-        "at": "2026-10-08T05:21:05.000Z",
+        "at": "2026-10-08T05:48:40.000Z",
         "phase": "verifying",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Verificando id+revision y texto persistido"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y comprobando revisiones activas"
       },
       {
-        "at": "2026-10-08T05:21:10.000Z",
-        "phase": "verifying",
-        "trend_id": "ff7da32ed7b2",
-        "title": "#FelizJueves",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T05:21:40.000Z",
+        "at": "2026-10-08T05:49:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · #FelizJueves r2 explicada y cola autoritativa 0"
+        "message": "Pasada completada · cola autoritativa final 0"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "pending_repair_workflow": {
-      "run_id": 37731578197,
+      "run_id": 37734111252,
       "status": "completed",
       "conclusion": "success",
-      "run_number": 619
-    },
-    "visual_repair_workflow": {
-      "run_id": 37731917500,
-      "status": "in_progress",
-      "conclusion": null,
-      "run_number": 620,
-      "head_sha": "73d1561b381b4ac869e164660b02118dd5470d85"
+      "run_number": 623,
+      "head_sha": "01cb1445ea56a4e1e258ea7b03cf3059e53b6e73"
     }
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "in_progress",
+    "status": "completed",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T051500000Z-chat",
-    "last_triggered_at": "2026-10-08T05:20:55.000Z",
+    "last_trigger_run_id": "tr-20261008T054500000Z-chat",
+    "last_triggered_at": "2026-10-08T05:45:00.000Z",
     "pending_cards_reviewed": 0,
-    "observed_at": "2026-10-08T05:21:40.000Z",
-    "workflow_run_id": 37731917500,
-    "workflow_run_number": 620,
-    "workflow_conclusion": null
+    "observed_at": "2026-10-08T05:49:00.000Z",
+    "workflow_run_id": 37734111252,
+    "workflow_run_number": 623,
+    "workflow_conclusion": "success",
+    "queued_repairs": 0
   }
 }
