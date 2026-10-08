@@ -125,6 +125,23 @@ def persist_git(message="Actualizar estado inmediato TTendencias", include_trend
     return False
 
 
+def merge_instagram_last_action(remote_state, local_state):
+    """Preserve the latest Instagram button outcome across GitHub state merges."""
+    remote = remote_state.get("instagram_last_action")
+    incoming = local_state.get("instagram_last_action")
+    if not isinstance(incoming, dict) or not incoming.get("event_id"):
+        return
+    def timestamp(row):
+        try:
+            return datetime.fromisoformat(
+                str(row.get("updated_at") or "").replace("Z", "+00:00")
+            ).timestamp()
+        except (ValueError, TypeError, OverflowError):
+            return 0
+    if not isinstance(remote, dict) or timestamp(incoming) >= timestamp(remote):
+        remote_state["instagram_last_action"] = dict(incoming)
+
+
 def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
     """Fusiona solo decisiones de paquetes y offset del listener sobre main fresco."""
     stamp = str(time.time_ns())
@@ -212,6 +229,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
             int(local_state.get("last_update_id") or 0),
         )
         remote_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+        merge_instagram_last_action(remote_state, local_state)
         save(PACKAGE_STATE, remote_state)
 
         remote_copy = load(COPY_STATE, {"version": 1, "items": []})
