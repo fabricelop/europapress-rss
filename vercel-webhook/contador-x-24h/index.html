@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Contador X 24 h · Prueba local</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color-scheme:dark;background:#0c1019;color:#f4f7ff}
+*{box-sizing:border-box}body{margin:0 auto;max-width:900px;padding:26px 18px 70px}
+h1{font-size:clamp(24px,4vw,38px);line-height:1.15;margin:0 0 8px}p{line-height:1.55}
+.muted{color:#aebad0}.eyebrow{color:#80bbff;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:700}
+section{background:#161d2b;border:1px solid #344058;border-radius:16px;padding:20px;margin-top:18px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.row>label{flex:1 1 260px}
+label{display:block;font-weight:650;font-size:14px}input,select,textarea{font:inherit;border:1px solid #65718b;border-radius:9px;background:#090e18;color:#fff;padding:10px 12px;margin-top:7px;width:100%}
+textarea{min-height:122px;resize:vertical}
+input[type=file]{max-width:100%;font-size:13px}
+button{background:#8ac7ff;color:#071424;border:0;border-radius:9px;padding:12px 17px;font-size:14px;font-weight:750;cursor:pointer}
+button.secondary{background:transparent;color:#d5eaff;border:1px solid #60718a}button:disabled{opacity:.5;cursor:not-allowed}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-top:14px}
+.kpi{border:1px solid #44526c;border-radius:12px;padding:16px;background:#111827}
+.kpi b{font-size:32px;display:block;margin:7px 0;font-variant-numeric:tabular-nums}.kpi small{color:#aebad0}
+.notice{padding:13px 15px;border-left:4px solid #ffbf6c;background:#2c251d;border-radius:4px;line-height:1.5}
+.ok{border-left-color:#7cdcaa;background:#152820}
+a{color:#98ceff}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #35445b}
+table th{color:#b6c2d5}code{overflow-wrap:anywhere}.small{font-size:13px}
+@media(max-width:570px){section{padding:14px}th:nth-child(2),td:nth-child(2){display:none}}
+</style>
+</head>
+<body>
+<div class="eyebrow">Prueba sin coste · Solo lectura · Sin conectar con X</div>
+<h1>Contador de publicaciones en X</h1>
+<p class="muted">TTiTTulares y TTendencias · Ventana móvil de 24 horas. Este archivo funciona en tu ordenador: no envía datos a ningún servidor, no abre sesiones de X ni ejecuta scripts en su web.</p>
+<section>
+<div class="row">
+<label>Cuenta
+<select id="account"><option value="ttittulares">TTiTTulares · @ttittulares</option><option value="ttendenciasesp">TTendencias · @ttendenciasesp</option></select>
+</label>
+<label>Límite a comparar (orientativo)
+<input type="number" min="1" max="2000" id="limit" value="51">
+</label>
+</div>
+<div class="kpis">
+<div class="kpi"><small>Publicaciones identificadas (24 h)</small><b id="count">—</b><small id="countnote">Sin datos de X importados</small></div>
+<div class="kpi"><small>Saldo estimado frente al límite</small><b id="remaining">—</b><small>No equivale al saldo oficial de X</small></div>
+<div class="kpi"><small>Próxima salida de la ventana</small><b id="next" style="font-size:24px">—</b><small id="release">Sin publicaciones identificadas</small></div>
+</div>
+<p id="coverage" class="notice" role="status">Todavía no has importado datos de X. El resultado «0» no significaría que la cuenta no haya publicado.</p>
+</section>
+<section>
+<h2>1. Importa publicaciones que ya hayas consultado en X</h2>
+<p>En Chrome puedes abrir la búsqueda de tus publicaciones, desplazarte manualmente por el historial y usar <strong>Guardar página como… (HTML)</strong>. Carga aquí ese archivo guardado. La web de X carga contenido de forma dinámica: un HTML guardado puede contener solo una parte del historial, y el contador te avisará de esa limitación.</p>
+<div class="row">
+<label>Archivo local (HTML, TXT, JSON o archivo de tu exportación de X)
+<input type="file" id="file" accept=".html,.htm,.txt,.json,.js,application/json,text/html,text/plain" multiple>
+</label>
+</div>
+<label style="margin-top:14px">O pega enlaces de publicaciones que hayas copiado desde X (uno por línea), o HTML/JSON exportado por ti
+<textarea id="paste" placeholder="https://x.com/ttittulares/status/1234567890123456789"></textarea>
+</label>
+<div class="row" style="margin-top:12px">
+<button id="import">Analizar texto pegado</button>
+<button id="clear" class="secondary">Vaciar datos de esta cuenta</button>
+</div>
+<p class="muted small">No basta con pegar la URL de una búsqueda: necesitamos los enlaces o los datos de las publicaciones individuales. Se eliminan duplicados y los enlaces de otras cuentas no cuentan.</p>
+</section>
+<section>
+<h2>2. Contrasta la cobertura</h2>
+<p id="summary" class="muted">Importa datos para ver el detalle.</p>
+<div class="row">
+<a id="search" href="https://x.com/search?q=from%3Attittulares&f=live" target="_blank" rel="noopener noreferrer">Abrir búsqueda en X</a>
+<button class="secondary" id="export">Exportar solo IDs y fechas (JSON)</button>
+</div>
+<div style="overflow:auto;margin-top:12px">
+<table>
+<thead><tr><th>Publicación</th><th>Fecha en X (calculada por ID)</th><th>Se libera de las 24 h</th></tr></thead>
+<tbody id="rows"><tr><td colspan="3" class="muted">Todavía no hay registros.</td></tr></tbody>
+</table></div>
+</section>
+<p class="muted small">Aviso: el contador calcula fechas desde los identificadores públicos de las publicaciones de X (Snowflake). No identifica por sí solo borrados, reposts ni el criterio interno del límite de X. Para un resultado exacto necesitamos un historial completo; un HTML parcial no lo proporciona. Los datos se mantienen solo en memoria mientras la página esté abierta.</p>
+<script>
+(function(){
+"use strict";
+var TWITTER_EPOCH=1288834974657n, DAY=86400000;
+var handles=["ttittulares","ttendenciasesp"];
+var saved={ttittulares:new Map(),ttendenciasesp:new Map()};
+var sources={ttittulares:[],ttendenciasesp:[]};
+var $=function(id){return document.getElementById(id);};
+function account(){return $("account").value;}
+function date(ms){return new Date(ms).toLocaleString("es-ES",{dateStyle:"short",timeStyle:"medium"});}
+function time(ms){return new Date(ms).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit",second:"2-digit"});}
+function snowflake(id){
+  if(!/^\d{16,20}$/.test(id))return NaN;
+  try {var ms=Number((BigInt(id)>>22n)+TWITTER_EPOCH);return ms>1288834974657&&ms<Date.now()+DAY?ms:NaN;}catch(e){return NaN;}
+}
+function links(text,handle){
+  // Files are processed offline; matching only public post links belonging to the selected account.
+  var normalized=text.replace(/\\u002[fF]/g,"/").replace(/\\\//g,"/").replace(/&amp;/gi,"&").replace(/&#(?:x2f|47);/gi,"/").replace(/%2f/gi,"/").replace(/&quot;/gi,'"').replace(/&#34;/gi,'"');
+  var regex=/(?:https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/|(?:href|url)\s*=\s*["']?\/|["']\/)([A-Za-z0-9_]{1,15})\/status\/(\d{16,20})\b/gi;
+  var result=new Map(),m;
+  while((m=regex.exec(normalized))!==null){
+    if(m[1].toLowerCase()!==handle)continue;
+    var ms=snowflake(m[2]);if(!Number.isFinite(ms))continue;
+    result.set(m[2],{id:m[2],created_at:ms});
+  }
+  return result;
+}
+function archive(text,handle){
+  // Accept X's official tweets.js / JSON archive only when the user supplies it and selects its account.
+  var payload=text.replace(/^\s*window\.YTD\.tweets\.part\d+\s*=\s*/,"").replace(/;\s*$/,"");
+  var data;
+  try{data=JSON.parse(payload);}catch(e){return new Map();}
+  if(!Array.isArray(data))return new Map();
+  var found=new Map();
+  data.forEach(function(row){
+    var t=row.tweet||row;
+    if(!t||typeof t!=="object")return;
+    var declared=(t.user&&t.user.screen_name)||t.screen_name||t.username;
+    if(declared&&String(declared).replace(/^@/,"").toLowerCase()!==handle)return;
+    var id=String(t.id_str||t.id||"");
+    var ms=snowflake(id);
+    if(Number.isFinite(ms))found.set(id,{id:id,created_at:ms});
+  });
+  return found;
+}
+function merge(text,label){
+  var handle=account(), found=links(text,handle);
+  archive(text,handle).forEach(function(v,k){found.set(k,v);});
+  found.forEach(function(v,k){saved[handle].set(k,v);});
+  sources[handle].push({label:label,found:found.size});
+  return found.size;
+}
+function render(){
+  var h=account(),now=Date.now(),cut=now-DAY;
+  $("limit").value=$("limit").dataset[h]||"51";
+  var all=Array.from(saved[h].values()).sort(function(a,b){return b.created_at-a.created_at;});
+  var active=all.filter(function(t){return t.created_at>=cut&&t.created_at<=now;});
+  var oldest=all.length?all[all.length-1].created_at:null;
+  var limit=Number($("limit").value)||51;
+  $("count").textContent=sources[h].length?String(active.length):"—";
+  $("remaining").textContent=sources[h].length?String(Math.max(0,limit-active.length)):"—";
+  $("countnote").textContent=sources[h].length?all.length+" enlaces únicos identificados en los datos cargados":"Sin datos de X importados";
+  $("next").textContent=active.length?time(active[active.length-1].created_at+DAY):"—";
+  $("release").textContent=active.length?date(active[active.length-1].created_at+DAY):"No hay salidas calculables";
+  var completeOldest=oldest!==null&&oldest<cut;
+  var message;
+  if(!sources[h].length)message="Sin datos importados. No se puede calcular cuántas publicaciones existen realmente.";
+  else if(!all.length)message="No se han encontrado enlaces de publicaciones de @"+h+" en el contenido. NO es un contador de 0 tuits.";
+  else if(!completeOldest)message="Cobertura INCOMPLETA: la publicación más antigua encontrada es "+date(oldest)+", dentro de las últimas 24 horas. Puede haber otras publicaciones no incluidas.";
+  else message="Cobertura temporal aparente: se ha encontrado una publicación anterior a 24 horas ("+date(oldest)+"). La web puede omitir resultados, por lo que sigue siendo necesario contrastar el total con X.";
+  $("coverage").textContent=message;
+  $("coverage").className="notice"+(completeOldest?" ok":"");
+  $("summary").textContent="Importaciones: "+sources[h].length+" · Publicaciones únicas detectadas: "+all.length+" · Dentro de 24 h: "+active.length+". "+(completeOldest?"Hay publicaciones anteriores al corte, pero no se certifica exhaustividad.":"Falta confirmar el tramo anterior al corte.");
+  var q="from:"+h+" since:"+new Date(cut).toISOString().slice(0,10)+" until:"+new Date(now+DAY).toISOString().slice(0,10);
+  $("search").href="https://x.com/search?q="+encodeURIComponent(q)+"&f=live";
+  $("rows").replaceChildren();
+  if(!active.length){var tr=document.createElement("tr");var td=document.createElement("td");td.colSpan=3;td.textContent="No hay publicaciones identificadas en la ventana con estos datos.";tr.append(td);$("rows").append(tr);}
+  active.forEach(function(v){
+    var tr=document.createElement("tr"),a=document.createElement("a");
+    a.href="https://x.com/"+h+"/status/"+v.id;a.target="_blank";a.rel="noopener noreferrer";a.textContent=v.id;
+    var td=document.createElement("td");td.append(a);tr.append(td);
+    [date(v.created_at),date(v.created_at+DAY)].forEach(function(t){var c=document.createElement("td");c.textContent=t;tr.append(c);});
+    $("rows").append(tr);
+  });
+}
+function report(msg){$("summary").textContent=msg;}
+$("account").addEventListener("change",render);
+$("limit").addEventListener("change",function(){
+  var n=Math.round(Number(this.value));if(!Number.isFinite(n)||n<1||n>2000){this.value="51";n=51;}
+  this.dataset[account()]=String(n);render();
+});
+$("import").addEventListener("click",function(){
+  var content=$("paste").value;if(!content.trim()){report("No se ha pegado ningún texto.");return;}
+  var n=merge(content,"texto pegado");render();if(!n)report("No se identificaron publicaciones de @"+account()+" en el texto pegado.");
+});
+$("file").addEventListener("change",async function(){
+  var files=Array.from(this.files||[]);
+  for(var i=0;i<files.length;i++){
+    if(files[i].size>25000000){report("Se ha omitido "+files[i].name+": más de 25 MB.");continue;}
+    try{merge(await files[i].text(),files[i].name);}catch(e){report("No se pudo leer "+files[i].name);}
+  }
+  this.value="";render();
+});
+$("clear").addEventListener("click",function(){saved[account()].clear();sources[account()]=[];$("paste").value="";render();});
+$("export").addEventListener("click",function(){
+  var h=account();
+  var data=Array.from(saved[h].values()).sort(function(a,b){return b.created_at-a.created_at;}).map(function(v){return {id:v.id,created_at:new Date(v.created_at).toISOString(),url:"https://x.com/"+h+"/status/"+v.id};});
+  var blob=new Blob([JSON.stringify({account:h,exported_at:new Date().toISOString(),items:data},null,2)],{type:"application/json"});
+  var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="x-24h-"+h+"-local.json";a.click();setTimeout(function(){URL.revokeObjectURL(url);},250);
+});
+setInterval(render,60000);render();
+})();
+</script>
+</body></html>
