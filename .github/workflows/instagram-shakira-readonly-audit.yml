@@ -1,0 +1,137 @@
+name: Auditar Instagram Shakira sin publicar
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/instagram-shakira-readonly-audit.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-shakira-readonly-audit
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Consultar D1 y preflight Meta sin publicaciones
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import datetime,json,os,pathlib,urllib.error,urllib.request
+
+          report={
+              "version":1,
+              "checked_at":datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "source":"ttendencias","event_id":"3ff255e46d90",
+              "revision":1,"telegram_message_id":391,
+              "read_only":True,
+              "d1":{"status":"not_checked"},
+              "publisher":{"status":"not_checked"},
+              "meta_preflight":{"status":"not_checked"}
+          }
+          def request_json(url,method="GET",body=None,headers=None):
+              data=json.dumps(body).encode() if body is not None else None
+              req=urllib.request.Request(url,data=data,method=method,headers={
+                  "User-Agent":"tt-actualidad-instagram-audit",
+                  **({"Content-Type":"application/json"} if body is not None else {}),
+                  **(headers or {})
+              })
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      return int(response.status),json.loads(response.read().decode())
+              except urllib.error.HTTPError as e:
+                  return int(e.code),None
+              except (TimeoutError,OSError,ValueError):
+                  return 0,None
+
+          base="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev"
+          code,health=request_json(base+"/health")
+          if code==200 and isinstance(health,dict):
+              report["publisher"]={
+                  "status":"ok",
+                  "active":bool(health.get("active")),
+                  "service_matches":health.get("service")=="tt-actualidad-instagram"
+              }
+          else:
+              report["publisher"]={"status":"unavailable","http_status":code}
+
+          internal=os.environ.get("INSTAGRAM_INTERNAL_SECRET","").strip()
+          if len(internal)>=32:
+              code,meta=request_json(base+"/meta-preflight",headers={"Authorization":"Bearer "+internal})
+              if isinstance(meta,dict):
+                  report["meta_preflight"]={
+                      "status":"ok" if code==200 and meta.get("ok") else "failed",
+                      "http_status":code,
+                      "read_only":bool(meta.get("read_only")),
+                      "page_matches":bool(meta.get("page_token_matches_expected_page")),
+                      "instagram_linked":bool(meta.get("instagram_account_linked")),
+                      "instagram_username_matches":bool(meta.get("instagram_username_matches")),
+                      "schema_ready":bool(meta.get("schema_ready"))
+                  }
+              else:
+                  report["meta_preflight"]={"status":"unavailable","http_status":code}
+          else:
+              report["meta_preflight"]={"status":"missing_github_secret"}
+
+          token=os.environ.get("CF_API_TOKEN","").strip()
+          account=os.environ.get("CF_ACCOUNT_ID","").strip()
+          if token and account:
+              db="4eacd44c-212c-4a49-a907-fbbf561b969f"
+              url=f"https://api.cloudflare.com/client/v4/accounts/{account}/d1/database/{db}/query"
+              sql="SELECT state,media_id,permalink,created_at,updated_at FROM instagram_posts WHERE id = ? LIMIT 1"
+              code,doc=request_json(url,method="POST",body={
+                  "sql":sql,"params":["ttendencias:3ff255e46d90"]
+              },headers={"Authorization":"Bearer "+token})
+              if code==200 and isinstance(doc,dict) and doc.get("success"):
+                  rows=doc.get("result") or []
+                  matches=(rows[0].get("results") or []) if rows else []
+                  if matches:
+                      row=matches[0]
+                      report["d1"]={
+                          "status":"found",
+                          "state":str(row.get("state") or ""),
+                          "media_id":str(row.get("media_id") or ""),
+                          "permalink":str(row.get("permalink") or ""),
+                          "created_at":str(row.get("created_at") or ""),
+                          "updated_at":str(row.get("updated_at") or "")
+                      }
+                  else:
+                      report["d1"]={"status":"not_recorded"}
+              else:
+                  report["d1"]={"status":"unavailable","http_status":code}
+          else:
+              report["d1"]={"status":"missing_cloudflare_credentials"}
+
+          p=pathlib.Path("instagram-publisher/audit-shakira.json")
+          p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          print("INSTAGRAM_AUDIT_D1_STATUS="+report["d1"]["status"])
+          print("INSTAGRAM_AUDIT_PUBLISHER_STATUS="+report["publisher"]["status"])
+          print("INSTAGRAM_AUDIT_META_PREFLIGHT_STATUS="+report["meta_preflight"]["status"])
+          PY
+
+      - name: Persistir diagnóstico sin secretos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add instagram-publisher/audit-shakira.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Registrar auditoría de solo lectura Instagram Shakira"
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || { git rebase --abort || true; sleep $((n*2)); continue; }
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((n*2))
+          done
+          exit 1
