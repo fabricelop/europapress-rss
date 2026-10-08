@@ -1,0 +1,46 @@
+name: TTendencias final sin Vercel - rutas de Telegram y radar
+on:
+  pull_request:
+    paths:
+      - 'trends/send_explained_telegram.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttendencias-final-no-vercel-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit-ttendencias:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q requests Pillow
+      - name: Probar app link Telegram, acciones y ausencia de Vercel
+        run: |
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          import os
+          os.environ.pop("TTENDENCIAS_APP_URL",None)
+          spec=importlib.util.spec_from_file_location("tt_delivery","trends/send_explained_telegram.py")
+          app=importlib.util.module_from_spec(spec);spec.loader.exec_module(app)
+          assert app.APP_URL=="https://ttendencias-no-vercel-test.fabricelop.workers.dev",app.APP_URL
+          kb=app.keyboard("abcdef123456",1,"TT#1 Prueba es tendencia por comprobar",search_term="Prueba")
+          flat=[b for row in kb["inline_keyboard"] for b in row]
+          links=[x.get("url","") for x in flat]
+          assert any(x.startswith(app.APP_URL+"/ttendencias/explicadas/?") for x in links)
+          assert any(x.get("callback_data")=="tx:p:abcdef123456:1" for x in flat)
+          assert any(x.get("callback_data")=="tx:d:abcdef123456:1" for x in flat)
+          assert not any("vercel.app" in x for x in links)
+          for f in ["trends/send_explained_telegram.py",".github/workflows/ttendencias-refresh.yml",
+                    "windows/TTendenciasDedicatedListener.ps1","windows/TTendenciasImageBridge.js",
+                    "windows/TTendenciasMobileChatTriggerListener.ps1"]:
+              s=Path(f).read_text(encoding="utf-8")
+              assert "vercel.app" not in s,f
+          print("PASS: TTendencias no runtime Vercel links; Telegram callbacks and reexplain valid")
+          PY
+      - name: Probar contrato de entrega existente
+        run: python3 trends/send_explained_telegram.py selftest
