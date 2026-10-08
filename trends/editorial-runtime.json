@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T17:15:00+02:00",
-  "last_completed_at": "2026-10-08T17:22:00+02:00",
-  "updated_at": "2026-10-08T17:22:00+02:00",
+  "last_started_at": "2026-10-08T17:45:00+02:00",
+  "last_completed_at": "2026-10-08T17:50:30+02:00",
+  "updated_at": "2026-10-08T17:50:30+02:00",
   "status": "success",
   "processed_ids": [
     "5ced28d519a2"
@@ -17,13 +17,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T171500-chat",
+    "run_id": "tr-20261008T174500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T17:15:00+02:00",
-    "updated_at": "2026-10-08T17:22:00+02:00",
-    "finished_at": "2026-10-08T17:22:00+02:00",
+    "started_at": "2026-10-08T17:45:00+02:00",
+    "updated_at": "2026-10-08T17:50:30+02:00",
+    "finished_at": "2026-10-08T17:50:30+02:00",
     "trend_id": null,
     "title": null,
     "current": 1,
@@ -47,9 +47,9 @@
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "remates_selected": 0,
       "remates_reused": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
@@ -66,154 +66,123 @@
     },
     "remate_selections": [
       {
-        "trend_id": "5ced28d519a2",
+        "trend_id": "95bf73f9295e",
         "revision": 0,
-        "candidate_count": 3,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c2",
-            "total": 8.8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c3",
-            "total": 8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.8,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-08T17:15:00+02:00",
+        "at": "2026-10-08T17:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Preparando pasada · 1 problematic vigente para reintento"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Preparando pasada · 1 tendencia activa"
       },
       {
-        "at": "2026-10-08T17:16:00+02:00",
+        "at": "2026-10-08T17:45:00+02:00",
         "phase": "verifying",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Releyendo estado autoritativo de #TEM8O"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Releyendo estado autoritativo de Alsina"
       },
       {
-        "at": "2026-10-08T17:16:30+02:00",
+        "at": "2026-10-08T17:46:00+02:00",
         "phase": "investigating",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Buscando detonante actual con consultas distintas"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-08T17:17:20+02:00",
+        "at": "2026-10-08T17:46:30+02:00",
         "phase": "investigating",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Contrastando parrilla de Cuatro y ficha oficial de Todo es mentira"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Contrastando fuente 1/2 · emisión especial de Más de uno desde Colón"
       },
       {
-        "at": "2026-10-08T17:18:00+02:00",
+        "at": "2026-10-08T17:47:00+02:00",
         "phase": "investigating",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Hecho esencial verificado · #TEM8O corresponde a la emisión de hoy de Todo es mentira"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Contrastando fuente 2/2 sobre el detonante de Alsina"
       },
       {
-        "at": "2026-10-08T17:19:00+02:00",
+        "at": "2026-10-08T17:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Hecho esencial verificado · monólogo de hoy sobre Maricarmen"
+      },
+      {
+        "at": "2026-10-08T17:48:20+02:00",
         "phase": "drafting",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-08T17:19:15+02:00",
+        "at": "2026-10-08T17:48:35+02:00",
         "phase": "drafting",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Comprobando límite de X · 229 caracteres"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Comprobando límite de X · 230 caracteres"
       },
       {
-        "at": "2026-10-08T17:19:30+02:00",
+        "at": "2026-10-08T17:48:45+02:00",
         "phase": "remate_selection",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Generando candidatos de remate"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Sin remate · asunto sensible por fallecimiento"
       },
       {
-        "at": "2026-10-08T17:19:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-08T17:19:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-08T17:20:00+02:00",
+        "at": "2026-10-08T17:49:00+02:00",
         "phase": "persisting",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-08T17:20:20+02:00",
+        "at": "2026-10-08T17:49:20+02:00",
         "phase": "persisting",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-08T17:20:40+02:00",
+        "at": "2026-10-08T17:49:40+02:00",
         "phase": "persisting",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
         "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-08T17:21:00+02:00",
+        "at": "2026-10-08T17:50:00+02:00",
         "phase": "verifying",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
-        "message": "Releyendo main y verificando id+revision y texto persistido"
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-08T17:21:30+02:00",
+        "at": "2026-10-08T17:50:10+02:00",
         "phase": "verifying",
-        "trend_id": "5ced28d519a2",
-        "title": "#TEM8O",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-08T17:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": "95bf73f9295e",
+        "title": "Alsina",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-08T17:22:00+02:00",
+        "at": "2026-10-08T17:50:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -249,6 +218,5 @@
       }
     ],
     "workflow_run_id": 37765733401
-  },
-  "error": null
+  }
 }
