@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {normalizeLightningLayer,parseLightningBbox,buildDwdLightningGetMapUrl} from '../lib/rain-lightning.js';
 import {buildRainViewerSourceTileUrl,reconstructRadarTileRgba,validateRainViewerFramePath,buildSyntheticFutureField} from '../lib/rain-radar-synthetic.js';
-import {selectSpatialForecastTimeIndex,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
+import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from '../rain/model-map-core.js';
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,buildRadarProjectionRgba,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
@@ -402,34 +402,42 @@ test('lightning verifies in background and first tap does not force revalidation
 });
 
 
-test('hybrid future fades radar into model instead of extrapolating forever',()=>{
+test('hybrid future hands off quickly enough to avoid double precipitation',()=>{
   assert.deepEqual(hybridFutureBlend(3),{radarOpacity:.76,modelOpacity:0,mode:'radar'});
+  assert.equal(hybridFutureBlend(12).modelOpacity,0);
   const m20=hybridFutureBlend(20);
   assert.equal(m20.mode,'hybrid');
   assert.ok(m20.radarOpacity>m20.modelOpacity);
-  const m45=hybridFutureBlend(45);
-  assert.ok(m45.modelOpacity>m45.radarOpacity);
-  const m60=hybridFutureBlend(60);
-  assert.equal(m60.mode,'model');
-  assert.equal(m60.radarOpacity,0);
+  const m24=hybridFutureBlend(24);
+  assert.ok(m24.modelOpacity>m24.radarOpacity);
+  const m28=hybridFutureBlend(28);
+  assert.equal(m28.mode,'model');
+  assert.equal(m28.radarOpacity,0);
+  assert.equal(hybridFutureBlend(45).radarOpacity,0);
   assert.equal(futureVisualLabel(90),'PREVISIÓN MODELO');
 });
 
-test('spatial model step uses the first precipitation interval ending after target time',()=>{
+test('spatial model time interpolates continuously between forecast steps',()=>{
   const times=['2026-10-08T06:00Z','2026-10-08T07:00Z','2026-10-08T08:00Z'];
   assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T06:10Z')),1);
-  assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T07:00Z')),1);
-  assert.equal(selectSpatialForecastTimeIndex(times,Date.parse('2026-10-08T09:00Z')),2);
+  const blend=selectSpatialForecastTimeBlend(times,Date.parse('2026-10-08T06:30Z'));
+  assert.equal(blend.fromIndex,0);
+  assert.equal(blend.toIndex,1);
+  assert.equal(blend.fraction,.5);
+  const exact=selectSpatialForecastTimeBlend(times,Date.parse('2026-10-08T07:00Z'));
+  assert.equal(exact.toIndex,1);
+  assert.equal(exact.fraction,1);
 });
 
-test('future map uses Open-Meteo spatial precipitation beneath radar nowcast',()=>{
+test('future map interpolates two Open-Meteo spatial precipitation steps beneath radar',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/@openmeteo\/weather-map-layer@0\.2\.2/);
   assert.match(app,/OPENMETEO_SPATIAL_META='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon\/latest\.json'/);
   assert.match(app,/OPENMETEO_SPATIAL_LAYER='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon_seamless\/latest\.json'/);
-  assert.match(app,/variable=precipitation/);
-  assert.match(app,/ensureFutureModelLayer\(minutes,projectedAt\)/);
-  assert.match(app,/moveLayer\(sourceId,'raineta-radar-projection'\)/);
+  assert.match(app,/selectSpatialForecastTimeBlend\(state\.omMeta\?\.valid_times,projectedAt\)/);
+  assert.match(app,/blend\.modelOpacity\*\(1-f\)/);
+  assert.match(app,/blend\.modelOpacity\*f/);
+  assert.match(app,/nextIndex>timeBlend\.toIndex/);
 });
 
 test('lightning behavior remains on the verified preload path',()=>{
@@ -438,4 +446,30 @@ test('lightning behavior remains on the verified preload path',()=>{
   assert.match(app,/const LIGHTNING_WMS_LAYERS=\[/);
   assert.match(app,/dwd:Accumulated_Flash_Geometry/);
   assert.match(app,/dwd:NCEW_EU/);
+});
+
+
+test('radar slider shows fixed AHORA marker alongside reliable marker',()=>{
+  const html=readFileSync(new URL('../rain/index.html',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(html,/id="radarNowMarker"/);
+  assert.match(html,/<em>AHORA<\/em>/);
+  assert.match(app,/\$\('radarNowMarker'\)\.style\.left/);
+});
+
+test('future radar swaps with double buffer and waits for the incoming source',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/raineta-radar-projection-a/);
+  assert.match(app,/raineta-radar-projection-b/);
+  assert.match(app,/function animateRadarSwap\(/);
+  assert.match(app,/requestAnimationFrame\(step\)/);
+  assert.match(app,/event\?\.isSourceLoaded\|\|state\.map\.isSourceLoaded\?\.\(sourceId\)/);
+  assert.match(app,/animateRadarSwap\(sourceId,blend\.radarOpacity,token,170\)/);
+});
+
+test('model-only future waits for model tiles before fading radar away',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/if\(blend\.radarOpacity<=\.01\)/);
+  assert.match(app,/waitForRasterSources\(info\.layerIds,token,4500\)/);
+  assert.match(app,/fadeOutRadarDisplay\(token,170\)/);
 });

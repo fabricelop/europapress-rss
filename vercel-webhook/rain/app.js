@@ -1,6 +1,6 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
-import {selectSpatialForecastTimeIndex,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
+import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -61,7 +61,7 @@ const LIGHTNING_WMS_LAYERS=[
 const LIGHTNING_CONTEXT_MINUTES=5;
 const RADAR_PAST_FRAME_MS=600;
 const RADAR_FUTURE_TICK_MS=100;
-const APP_VERSION='0.17.43';
+const APP_VERSION='0.17.44';
 const FORECAST_CACHE_SCHEMA='consensus-v23';
 const FORECAST_CACHE_COMPATIBLE_VERSIONS=[];
 
@@ -75,7 +75,7 @@ const state={
   currentLocation:readLocal('raineta.currentLocation',null),
   savedLocations:readLocal('raineta.locations',[]),
   feedback:readLocal('raineta.feedback',[]),
-  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,omProtocolReady:false,omProtocolPromise:null,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
+  data:null,nowcast:null,map:null,mapLoaded:false,marker:null,radarLayer:null,frames:[],frameIndex:0,playTimer:null,playMode:null,loading:false,radarLoading:false,lastRadarRefresh:0,lastCompletedAt:null,view:'detail',locationsLoading:false,version:APP_VERSION,renameTarget:null,selectedHourIndex:null,radarOffset:0,radarProjectionBitmap:null,radarProjectionBitmapKey:null,radarProjectionBitmapPromise:null,radarProjectionToken:0,radarProjectionCanvas:null,radarViewNowcast:null,radarViewNowcastKey:null,radarViewNowcastPromise:null,radarFutureActiveId:null,radarSwapAnimation:null,omProtocolReady:false,omProtocolPromise:null,omMeta:null,omMetaPromise:null,omMetaFetchedAt:0,futureModelKey:null,futureModelSteps:[],lightningEnabled:Boolean(readLocal('raineta.lightning',false)),lightningVerified:false,lightningVerifiedAt:0,lightningVerificationError:null,lightningVerificationPromise:null,lightningLoaded:new Set(),lightningErrors:new Set(),timelineHours:[24,48,72].includes(Number(readLocal('raineta.timelineHours',24)))?Number(readLocal('raineta.timelineHours',24)):24
 };
 
 function iso(v){
@@ -3231,7 +3231,7 @@ function lightningContextVisible(){
 function applyRadarLightningContrast(){
   if(!state.map||!state.mapLoaded)return;
   const gray=Boolean(state.lightningEnabled&&lightningContextVisible());
-  for(const id of ['raineta-radar','raineta-radar-projection']){
+  for(const id of ['raineta-radar','raineta-radar-projection','raineta-radar-projection-a','raineta-radar-projection-b']){
     if(!state.map.getLayer(id))continue;
     state.map.setPaintProperty(id,'raster-saturation',gray?-1:0);
     state.map.setPaintProperty(id,'raster-contrast',gray?.08:0);
@@ -3319,9 +3319,90 @@ function removeRadarLayer(id){
   if(state.map.getLayer(id))state.map.removeLayer(id);
   if(state.map.getSource(id))state.map.removeSource(id);
 }
+function futureRadarLayerIds(){return['raineta-radar-projection-a','raineta-radar-projection-b']}
+function cancelRadarSwapAnimation(){
+  if(state.radarSwapAnimation&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(state.radarSwapAnimation);
+  state.radarSwapAnimation=null;
+}
+function rasterOpacity(id,fallback=.76){
+  if(!state.map?.getLayer(id))return 0;
+  const value=Number(state.map.getPaintProperty(id,'raster-opacity'));
+  return Number.isFinite(value)?value:fallback;
+}
+function radarForegroundLayers(exclude=null){
+  return ['raineta-radar',state.radarFutureActiveId,'raineta-radar-projection',...futureRadarLayerIds()]
+    .filter((id,index,all)=>id&&id!==exclude&&all.indexOf(id)===index&&state.map?.getLayer(id));
+}
+function modelBeforeRadarLayerId(){
+  return radarForegroundLayers()[0]||(state.map?.getLayer('raineta-location')?'raineta-location':undefined);
+}
+function waitForRasterSources(sourceIds,token,timeoutMs=4200){
+  const ids=[...new Set((sourceIds||[]).filter(Boolean))];
+  if(!ids.length)return Promise.resolve(false);
+  return new Promise(resolve=>{
+    let done=false;
+    const ready=()=>ids.every(id=>state.map?.getSource(id)&&state.map.isSourceLoaded?.(id));
+    const finish=value=>{
+      if(done)return;done=true;
+      try{state.map?.off('sourcedata',onData)}catch{}
+      clearTimeout(timer);resolve(value);
+    };
+    const onData=()=>{
+      if(token!==state.radarProjectionToken)return finish(false);
+      if(ready())finish(true);
+    };
+    const timer=setTimeout(()=>finish(ready()),timeoutMs);
+    if(ready())return finish(true);
+    state.map?.on('sourcedata',onData);
+  });
+}
+function animateRadarSwap(incomingId,targetOpacity,token,duration=170){
+  if(!state.map?.getLayer(incomingId)||token!==state.radarProjectionToken)return;
+  cancelRadarSwapAnimation();
+  const outgoing=radarForegroundLayers(incomingId);
+  const starts=new Map(outgoing.map(id=>[id,rasterOpacity(id)]));
+  const start=performance.now();
+  const step=now=>{
+    if(token!==state.radarProjectionToken||!state.map?.getLayer(incomingId)){state.radarSwapAnimation=null;return}
+    const t=Math.max(0,Math.min(1,(now-start)/duration));
+    state.map.setPaintProperty(incomingId,'raster-opacity',targetOpacity*t);
+    for(const id of outgoing)if(state.map.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',(starts.get(id)||0)*(1-t));
+    if(t<1){state.radarSwapAnimation=requestAnimationFrame(step);return}
+    state.radarSwapAnimation=null;
+    for(const id of outgoing)removeRadarLayer(id);
+    if(targetOpacity>.01){
+      state.radarFutureActiveId=incomingId;
+      state.map.setPaintProperty(incomingId,'raster-opacity',targetOpacity);
+    }else{
+      removeRadarLayer(incomingId);
+      state.radarFutureActiveId=null;
+    }
+    applyRadarLightningContrast();
+  };
+  state.radarSwapAnimation=requestAnimationFrame(step);
+}
+function fadeOutRadarDisplay(token,duration=170){
+  cancelRadarSwapAnimation();
+  const outgoing=radarForegroundLayers(),starts=new Map(outgoing.map(id=>[id,rasterOpacity(id)]));
+  if(!outgoing.length)return;
+  const start=performance.now();
+  const step=now=>{
+    if(token!==state.radarProjectionToken){state.radarSwapAnimation=null;return}
+    const t=Math.max(0,Math.min(1,(now-start)/duration));
+    for(const id of outgoing)if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',(starts.get(id)||0)*(1-t));
+    if(t<1){state.radarSwapAnimation=requestAnimationFrame(step);return}
+    state.radarSwapAnimation=null;
+    for(const id of outgoing)removeRadarLayer(id);
+    state.radarFutureActiveId=null;
+  };
+  state.radarSwapAnimation=requestAnimationFrame(step);
+}
 function clearRadarVisual(){
+  cancelRadarSwapAnimation();
   removeRadarLayer('raineta-radar');
   removeRadarLayer('raineta-radar-projection');
+  for(const id of futureRadarLayerIds())removeRadarLayer(id);
+  state.radarFutureActiveId=null;
   removeFutureModelLayer();
 }
 function radarProjectionZoom(){
@@ -3625,9 +3706,18 @@ function projectedRadarOpacity(minutes,canMove,reliable){
   const beyond=Math.max(0,Math.min(1,(requested-safeReliable)/Math.max(1,RADAR_VISUAL_HORIZON_MINUTES-safeReliable)));
   return Math.max(.30,horizonOpacity-(horizonOpacity-.30)*beyond);
 }
+function modelStepLayerId(index){return'raineta-model-step-'+String(index)}
 function removeFutureModelLayer(){
   removeRadarLayer('raineta-model-forecast');
+  for(const index of state.futureModelSteps||[])removeRadarLayer(modelStepLayerId(index));
+  state.futureModelSteps=[];
   state.futureModelKey=null;
+}
+function setFutureModelOpacity(value=0){
+  for(const index of state.futureModelSteps||[]){
+    const id=modelStepLayerId(index);
+    if(state.map?.getLayer(id))state.map.setPaintProperty(id,'raster-opacity',Math.max(0,Number(value)||0));
+  }
 }
 async function ensureOpenMeteoMapProtocol(){
   if(state.omProtocolReady)return true;
@@ -3659,40 +3749,53 @@ async function fetchSpatialModelMeta(){
 function warmFutureModelMap(){
   Promise.allSettled([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
 }
+function ensureModelStepLayer(index){
+  if(!Number.isInteger(Number(index))||Number(index)<0)return null;
+  const id=modelStepLayerId(index);
+  if(!state.map.getSource(id)){
+    const url='om://'+OPENMETEO_SPATIAL_LAYER+
+      '?time_step=valid_times_'+index+'&variable=precipitation&dark=true';
+    state.map.addSource(id,{
+      type:'raster',url,maxzoom:12,
+      attribution:'Open-Meteo · DWD ICON / ICON-EU'
+    });
+  }
+  if(!state.map.getLayer(id)){
+    state.map.addLayer({
+      id,type:'raster',source:id,
+      paint:{'raster-opacity':0,'raster-fade-duration':120}
+    },modelBeforeRadarLayerId());
+  }
+  if(!state.futureModelSteps.includes(Number(index)))state.futureModelSteps.push(Number(index));
+  return id;
+}
 async function ensureFutureModelLayer(minutes,projectedAt){
   const blend=hybridFutureBlend(minutes);
   if(blend.modelOpacity<=.01){
-    removeFutureModelLayer();
-    return false;
+    setFutureModelOpacity(0);
+    return{ok:false,layerIds:[]};
   }
   await Promise.all([ensureOpenMeteoMapProtocol(),fetchSpatialModelMeta()]);
-  if(!state.map||!state.mapLoaded||Math.abs(Number(state.radarOffset)-Number(minutes))>.5)return false;
-  const index=selectSpatialForecastTimeIndex(state.omMeta?.valid_times,projectedAt);
-  if(index<0)return false;
-  const validTime=state.omMeta.valid_times[index],key=String(index)+'@'+validTime;
-  const sourceId='raineta-model-forecast';
-  if(state.futureModelKey!==key||!state.map.getSource(sourceId)){
-    removeFutureModelLayer();
-    const url='om://'+OPENMETEO_SPATIAL_LAYER+
-      '?time_step=valid_times_'+index+'&variable=precipitation&dark=true';
-    state.map.addSource(sourceId,{
-      type:'raster',
-      url,
-      maxzoom:12,
-      attribution:'Open-Meteo · DWD ICON / ICON-EU'
-    });
-    const before=state.map.getLayer('raineta-radar-projection')
-      ?'raineta-radar-projection'
-      :(state.map.getLayer('raineta-location')?'raineta-location':undefined);
-    state.map.addLayer({
-      id:sourceId,type:'raster',source:sourceId,
-      paint:{'raster-opacity':blend.modelOpacity,'raster-fade-duration':180}
-    },before);
-    state.futureModelKey=key;
-  }else if(state.map.getLayer(sourceId)){
-    state.map.setPaintProperty(sourceId,'raster-opacity',blend.modelOpacity);
-    if(state.map.getLayer('raineta-radar-projection'))state.map.moveLayer(sourceId,'raineta-radar-projection');
+  if(!state.map||!state.mapLoaded||Math.abs(Number(state.radarOffset)-Number(minutes))>.5)return{ok:false,layerIds:[]};
+  const timeBlend=selectSpatialForecastTimeBlend(state.omMeta?.valid_times,projectedAt);
+  if(timeBlend.fromIndex<0||timeBlend.toIndex<0)return{ok:false,layerIds:[]};
+  const fromId=ensureModelStepLayer(timeBlend.fromIndex);
+  const toId=ensureModelStepLayer(timeBlend.toIndex);
+  const nextIndex=Math.min((state.omMeta?.valid_times?.length||1)-1,timeBlend.toIndex+1);
+  if(nextIndex>timeBlend.toIndex)ensureModelStepLayer(nextIndex);
+  setFutureModelOpacity(0);
+  const f=Math.max(0,Math.min(1,Number(timeBlend.fraction)||0));
+  if(fromId===toId){
+    if(state.map.getLayer(fromId))state.map.setPaintProperty(fromId,'raster-opacity',blend.modelOpacity);
+  }else{
+    if(state.map.getLayer(fromId))state.map.setPaintProperty(fromId,'raster-opacity',blend.modelOpacity*(1-f));
+    if(state.map.getLayer(toId))state.map.setPaintProperty(toId,'raster-opacity',blend.modelOpacity*f);
   }
+  const before=modelBeforeRadarLayerId();
+  for(const id of [fromId,toId]){
+    if(id&&before&&state.map.getLayer(id)&&state.map.getLayer(before))state.map.moveLayer(id,before);
+  }
+  state.futureModelKey=timeBlend.fromIndex+':'+timeBlend.toIndex;
   const mode=futureVisualLabel(minutes);
   if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
   if(Number(minutes)>=15){
@@ -3700,10 +3803,10 @@ async function ensureFutureModelLayer(minutes,projectedAt){
       ?'Precipitación prevista ICON-EU · '+fmtTime(projectedAt)
       :'Nowcast radar + precipitación ICON-EU · '+fmtTime(projectedAt);
     $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
-      ?'A este horizonte RainETA deja de presentar una extrapolación radar como si fuera observación: muestra precipitación prevista por modelo. La ETA local sigue contrastándose con HARMONIE-AROME 2,5 km y el consenso.'
-      :'Transición progresiva: el radar pesa más al principio y el modelo ICON-EU gana peso conforme disminuye la fiabilidad de extrapolar ecos.';
+      ?'Previsión ICON-EU interpolada entre '+fmtTime(timeBlend.fromTime)+' y '+fmtTime(timeBlend.toTime)+' para que el campo evolucione de forma continua. La ETA local sigue contrastándose con HARMONIE-AROME 2,5 km y el consenso.'
+      :'Transición breve y progresiva: el radar se apaga antes de +30 min y el modelo toma el relevo sin mantener dos campos fuertes superpuestos.';
   }
-  return true;
+  return{ok:true,layerIds:[...new Set([fromId,toId].filter(Boolean))],timeBlend};
 }
 function syntheticRadarTileTemplate(minutes,frames){
   const selected=(frames||[]).slice(-4),parts=['minutes='+encodeURIComponent(String(Math.max(0,Number(minutes)||0)))];
@@ -3715,58 +3818,65 @@ function syntheticRadarTileTemplate(minutes,frames){
 }
 function showSyntheticRadarFuture(minutes,r,latest){
   if(!state.map||!state.mapLoaded||!latest?.path)return false;
-  const token=++state.radarProjectionToken,sourceId='raineta-radar-projection';
+  const token=++state.radarProjectionToken,blend=hybridFutureBlend(minutes);
+  const projectedAt=latest.time*1000+Number(minutes)*60_000;
+  state.radarProjectionImageKey='synthetic-tiles@'+latest.time+'@'+Math.round(Number(minutes)||0);
+  $('radarTime').textContent=fmtTime(projectedAt);
+  const mode=futureVisualLabel(minutes);
+  if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+  $('radarPosition').textContent=mode==='PREVISIÓN MODELO'
+    ?'Precipitación prevista · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
+    :mode==='RADAR + MODELO'
+      ?'Transición radar → modelo · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
+      :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
+
+  const modelPromise=ensureFutureModelLayer(minutes,projectedAt).catch(()=>({ok:false,layerIds:[]}));
+  if(blend.radarOpacity<=.01){
+    modelPromise.then(async info=>{
+      if(token!==state.radarProjectionToken||!info?.ok)return;
+      const ready=await waitForRasterSources(info.layerIds,token,4500);
+      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,170);
+    });
+    return true;
+  }
+
+  const ids=futureRadarLayerIds();
+  const active=state.radarFutureActiveId&&state.map.getLayer(state.radarFutureActiveId)?state.radarFutureActiveId:null;
+  const sourceId=active===ids[0]?ids[1]:ids[0];
   removeRadarLayer(sourceId);
   state.map.addSource(sourceId,{
     type:'raster',
     tiles:[syntheticRadarTileTemplate(minutes,state.frames)],
-    tileSize:256,
-    minzoom:0,
-    maxzoom:7,
+    tileSize:256,minzoom:0,maxzoom:7,
     attribution:'Weather data by RainViewer · synthetic RainETA reconstruction'
   });
   const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
   state.map.addLayer({
     id:sourceId,type:'raster',source:sourceId,
-    paint:{
-      'raster-opacity':hybridFutureBlend(minutes).radarOpacity,
-      'raster-fade-duration':0,
-      'raster-saturation':0,
-      'raster-contrast':0
-    }
+    paint:{'raster-opacity':0,'raster-fade-duration':0,'raster-saturation':0,'raster-contrast':0}
   },before);
-  state.radarProjectionImageKey='synthetic-tiles@'+latest.time+'@'+Math.round(Number(minutes)||0);
-  const projectedAt=latest.time*1000+Number(minutes)*60_000;
-  $('radarTime').textContent=fmtTime(projectedAt);
-  const short=Number(minutes)<=RADAR_CONTINUITY_MINUTES;
-  if($('radarFrameStatus'))$('radarFrameStatus').textContent=(short?'CONTINUIDAD SINTÉTICA':'NOWCAST LOCAL TESSELADO')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  $('radarPosition').textContent=(short?'Continuidad radar reconstruida':'Proyección local por teselas')+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  $('radarMotion').textContent=short
-    ? 'RainETA reconstruye las teselas observadas sin moverlas durante los primeros '+RADAR_CONTINUITY_MINUTES+' min.'
-    : 'Nowcast radar de corto plazo; a medida que avanza el horizonte RainETA introduce precipitación prevista por ICON-EU en lugar de prolongar artificialmente los ecos.';
-  ensureFutureModelLayer(minutes,projectedAt).catch(()=>{});
+  applyRadarLightningContrast();
+
   let finished=false;
   const detach=()=>{
-    if(finished)return;
-    finished=true;
+    if(finished)return;finished=true;
     try{state.map.off('sourcedata',onSourceData)}catch{}
+  };
+  const commit=()=>{
+    if(token!==state.radarProjectionToken||!state.map.getLayer(sourceId)){detach();return}
+    animateRadarSwap(sourceId,blend.radarOpacity,token,170);
+    detach();
   };
   const onSourceData=event=>{
     if(token!==state.radarProjectionToken){detach();return}
     if(event?.sourceId!==sourceId)return;
-    if(event?.isSourceLoaded||state.map.isSourceLoaded?.(sourceId)){
-      removeRadarLayer('raineta-radar');
-      detach();
-    }
+    if(event?.isSourceLoaded||state.map.isSourceLoaded?.(sourceId))commit();
   };
   state.map.on('sourcedata',onSourceData);
   setTimeout(()=>{
     if(token!==state.radarProjectionToken){detach();return}
-    if(state.map.getSource(sourceId)&&state.map.isSourceLoaded?.(sourceId)){
-      removeRadarLayer('raineta-radar');
-      detach();
-    }
-  },1800);
+    if(state.map.getSource(sourceId)&&state.map.isSourceLoaded?.(sourceId))commit();
+  },2200);
   return true;
 }
 async function showProjectedRadar(minutes){
@@ -3982,6 +4092,11 @@ function renderRadar(){
     const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
     const history=availablePast>=240?'histórico observado 4 h':'histórico observado '+availablePast+' min · acumulando hasta 4 h';
     $('radarHandoff').innerHTML='<b>Radar útil ~'+reliable+' min</b><span>'+history+' · evolución '+label+' · después del límite manda el consenso</span>';
+  }
+  if($('radarNowMarker')){
+    const min=-availablePast,max=RADAR_VISUAL_HORIZON_MINUTES,left=(0-min)/(max-min)*100;
+    $('radarNowMarker').style.left=Math.max(0,Math.min(100,left))+'%';
+    $('radarNowMarker').title='AHORA · '+fmtTime(latest.time*1000);
   }
   if($('radarReliableMarker')){
     const min=-availablePast,max=RADAR_VISUAL_HORIZON_MINUTES,left=(reliable-min)/(max-min)*100;

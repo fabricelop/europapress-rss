@@ -1,8 +1,14 @@
-# RainETA v0.17.43
+# RainETA v0.17.44
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
-## Proyección radar sintética y rayos DWD v0.17.43
+## Proyección radar sintética y rayos DWD v0.17.44
+- La barra del radar añade una marca vertical fija **AHORA** además de `fiable hasta`.
+- El radar futuro usa **doble búfer**: el frame anterior permanece visible hasta que MapLibre confirma el nuevo, y el relevo usa un crossfade de ~170 ms. Si la nueva fuente tarda, no se vacía el mapa.
+- El solape radar/modelo se acorta: radar puro hasta ~+12, transición fuerte entre +12 y +28 y **modelo solo desde +28**, evitando la doble precipitación visible alrededor de +30/+45.
+- ICON-EU se interpola temporalmente entre los dos pasos espaciales que rodean la hora solicitada. Al mover el slider minuto a minuto, la precipitación prevista evoluciona en vez de quedar congelada hasta el siguiente paso horario.
+- Se precarga el siguiente paso ICON a opacidad 0 para suavizar el cruce entre intervalos. ⚡ RAYOS no cambia funcionalmente.
+
 - Nuevo enfoque de **transición radar → modelo** inspirado en la separación correcta entre nowcasting de minutos y predicción numérica: el radar observado domina al principio y pierde peso gradualmente; ICON-EU gana peso con el horizonte.
 - La capa de modelo se sirve con el protocolo cartográfico oficial de Open-Meteo sobre `dwd_icon_seamless`: en Europa usa ICON-EU (~7 km) y fuera cae al ICON global.
 - +1…+5 siguen siendo radar/continuidad. Entre ~+10 y +45 se mezclan nowcast y modelo. Desde ~+60 la visualización futura es modelo, no un radar extrapolado presentado como si fuera fiable.
