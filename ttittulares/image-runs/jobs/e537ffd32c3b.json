@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-e537ffd32c3b-r1-a1-1791475743908",
+  "requested_at": "2026-10-08T16:09:03.900280Z",
+  "updated_at": "2026-10-08T16:09:03.900280Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "e537ffd32c3b",
+  "event_id": "e537ffd32c3b",
+  "target_name": "Una investigadora del accidente de Adamuz denuncia modificaciones en informes técnicos cuando llegan a sus superiores",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Una investigadora del accidente de Adamuz denuncia modificaciones en informes técnicos cuando llegan a sus superiores",
+    "revision": 1,
+    "factual_summary": "Isabel López López, investigadora adscrita a la CIAF en el accidente de Adamuz, denunció en el Congreso que en muchas ocasiones los informes técnicos se modifican al llegar a instancias superiores y reclamó independencia y transparencia. Gonzalo Guillén, presidente de la nueva autoridad investigadora, rechazó que exista falta de independencia.",
+    "tweet_text": "Isabel López, investigadora de la CIAF sobre Adamuz, denunció en el Congreso que informes técnicos se modifican al llegar a instancias superiores; el nuevo organismo investigador lo niega.\n\n🌶️ La independencia no debería venir con control de cambios.",
+    "remate": "🌶️ La independencia no debería venir con control de cambios.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nIsabel López, investigadora de la CIAF sobre Adamuz, denunció en el Congreso que informes técnicos se modifican al llegar a instancias superiores; el nuevo organismo investigador lo niega.\n\n🌶️ La independencia no debería venir con control de cambios.\n\nREMATE EXACTO:\n🌶️ La independencia no debería venir con control de cambios.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nIsabel López López, investigadora adscrita a la CIAF en el accidente de Adamuz, denunció en el Congreso que en muchas ocasiones los informes técnicos se modifican al llegar a instancias superiores y reclamó independencia y transparencia. Gonzalo Guillén, presidente de la nueva autoridad investigadora, rechazó que exista falta de independencia.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/economia/transportes-00343/noticia-investigadora-accidente-adamuz-denuncia-modificaciones-informes-tecnicos-cuando-llegan-superiores-20261008144136.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/economia/transportes-00343/noticia-investigadora-accidente-adamuz-denuncia-modificaciones-informes-tecnicos-cuando-llegan-superiores-20261008144136.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/andalucia/2026/10/08/isabel-lopez-investigadora-de-adamuz-en-muchas-ocasiones-los-informes-que-elaboramos-los-tecnicos-llegan-a-las-instancias-superiores-y-se-modifican-radio-cordoba/"
+      },
+      {
+        "source": "El Español",
+        "url": "https://www.elespanol.com/invertia/observatorios/movilidad/20261008/investigadora-accidente-adamuz-denuncia-cambios-informes-tecnicos-llegan-superiores/1003744413736_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
