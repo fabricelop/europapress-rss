@@ -425,7 +425,8 @@ test('spatial model step uses the first precipitation interval ending after targ
 test('future map uses Open-Meteo spatial precipitation beneath radar nowcast',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/@openmeteo\/weather-map-layer@0\.2\.2/);
-  assert.match(app,/data_spatial\/dwd_icon_seamless\/latest\.json/);
+  assert.match(app,/OPENMETEO_SPATIAL_META='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon\/latest\.json'/);
+  assert.match(app,/OPENMETEO_SPATIAL_LAYER='https:\/\/openmeteo\.s3\.amazonaws\.com\/data_spatial\/dwd_icon_seamless\/latest\.json'/);
   assert.match(app,/variable=precipitation/);
   assert.match(app,/ensureFutureModelLayer\(minutes,projectedAt\)/);
   assert.match(app,/moveLayer\(sourceId,'raineta-radar-projection'\)/);
