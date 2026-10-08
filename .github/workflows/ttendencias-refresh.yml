@@ -91,11 +91,8 @@ jobs:
           # Las nuevas tendencias se explican en la ejecución horaria de TTendencias.
           # Ya no se crea un trigger separado de ChatGPT Work por cada entrada nueva.
 
-      - name: Avisar nuevos Trending Topics
-        if: always()
-        continue-on-error: true
-        run: |
-          curl -fsS --max-time 20 "https://europapress-rss.vercel.app/api/ttendencias-top10-push" || true
+      # El panel Cloudflare consulta directamente el estado versionado en GitHub.
+      # Sin notificaciones push heredadas ni peticiones a Vercel.
 
       - name: Comprobar salud TTendencias
         if: always()
