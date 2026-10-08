@@ -2,6 +2,7 @@
 const IMG=/^https:\/\/raw\.githubusercontent\.com\/fabricelop\/europapress-rss\/main\/(?:trends|ttittulares)\/(?:generated-images|instagram-images)\/[A-Za-z0-9._-]+\.jpe?g$/;
 const answer=(v,s=200)=>new Response(JSON.stringify(v),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 function constantTimeEqual(a,b){const x=new TextEncoder().encode(a),y=new TextEncoder().encode(b);if(x.length!==y.length)return false;let diff=0;for(let i=0;i<x.length;i++)diff|=x[i]^y[i];return diff===0;}
+function isActive(env){return env.INSTAGRAM_PUBLISH_ENABLED==="1"&&Boolean(env.INSTAGRAM_INTERNAL_SECRET&&env.INSTAGRAM_PAGE_ACCESS_TOKEN&&env.IG_DB);}
 function authorize(req,env){const secret=String(env.INSTAGRAM_INTERNAL_SECRET||"");return secret.length>=32&&constantTimeEqual(req.headers.get("authorization")||"","Bearer "+secret);}
 function inputCheck(b){
   const source=String(b?.source||""),id=String(b?.event_id||""),revision=Number(b?.revision??0);
@@ -33,7 +34,20 @@ async function publish(env,item){
   let row=await state(db,item.key);
   if(!row)return answer({ok:false,error:"STORAGE_FAILURE"},503);
   if(row.image_url!==item.image||row.caption!==item.caption||Number(row.telegram_message_id)!==item.mid)return answer({ok:false,error:"SELECTION_CHANGED"},409);
-  if(row.state==="published")return answer({ok:true,state:"published",duplicate:true,media_id:row.media_id,permalink:row.permalink});
+  if(row.state==="published"){
+    // Meta occasionally delays permalink availability. Querying the already
+    // published media ID is read-only and can never publish a second post.
+    if(!row.permalink&&/^\d+$/.test(String(row.media_id||""))){
+      try{
+        const url=(await meta(env,String(row.media_id),{fields:"permalink"},"GET")).permalink||null;
+        if(url){
+          await db.prepare("UPDATE instagram_posts SET permalink=? WHERE id=? AND state='published'").bind(url,item.key).run();
+          row={...row,permalink:url};
+        }
+      }catch(_error){}
+    }
+    return answer({ok:true,state:"published",duplicate:true,media_id:row.media_id,permalink:row.permalink});
+  }
   if(["publishing","uncertain","creating"].includes(row.state))return answer({ok:false,error:"NEEDS_RECONCILIATION",state:row.state},409);
   if(row.state==="failed_before_publish"){
     if(!await change(db,item.key,"failed_before_publish","reserved"))return answer({ok:false,error:"BUSY"},409);
@@ -76,9 +90,10 @@ async function publish(env,item){
 }
 export default {async fetch(req,env){
   const pathname=new URL(req.url).pathname;
-  if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:false});
+  if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:isActive(env)});
   if(pathname!=="/publish"||req.method!=="POST")return answer({ok:false,error:"NOT_FOUND"},404);
   if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
+  if(!isActive(env))return answer({ok:false,error:"PILOT_DISABLED"},503);
   let item;
   try{item=inputCheck(await req.json());}catch(_err){return answer({ok:false,error:"INVALID_REQUEST"},400);}
   try{return await publish(env,item);}catch(_err){return answer({ok:false,error:"INTERNAL_ERROR"},503);}
