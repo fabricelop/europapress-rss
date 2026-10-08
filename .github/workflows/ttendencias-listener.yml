@@ -58,6 +58,8 @@ jobs:
         if: steps.control_mode.outputs.mode != 'web'
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          INSTAGRAM_PUBLISHER_URL: https://tt-actualidad-instagram-pilot.fabricelop.workers.dev
+          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
           TTENDENCIAS_LISTEN_SECONDS: "1500"
           # Fallback de frescura: el cron de GitHub puede retrasarse. Mientras
           # siga activo el modo Telegram, el listener garantiza otra captura
@@ -69,6 +71,8 @@ jobs:
         if: steps.control_mode.outputs.mode == 'web'
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          INSTAGRAM_PUBLISHER_URL: https://tt-actualidad-instagram-pilot.fabricelop.workers.dev
+          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
           TTENDENCIAS_LISTEN_SECONDS: "1500"
         run: python3 trends/telegram_bot.py package-listen
 
