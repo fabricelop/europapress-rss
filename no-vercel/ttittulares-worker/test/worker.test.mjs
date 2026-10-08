@@ -3,8 +3,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
-import worker,{handlerRequest,parseTtiCallback} from "../src/index.js";
+import worker,{handlerRequest,parseTtiCallback,linkedTtiTelegramMessages} from "../src/index.js";
 import sharp from "../src/compat/sharp.js";
+import {generateKeyPairSync,publicEncrypt,constants} from "node:crypto";
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 
@@ -126,4 +127,73 @@ test("only real callback-shaped updates enter the queue; no token never accepts 
  }),{});
  assert.equal(missing.status,200);
  assert.equal((await missing.json()).ignored,true);
+});
+
+test("Telegram closure only touches message IDs from the verified event",()=>{
+  const deliveries=[
+    {event_id:"A12345",telegram_message_id:3075,archive_telegram_message_id:3074,cross_quote_message_id:3073},
+    {event_id:"A12345",telegram_message_id:3079,archive_telegram_message_id:3078},
+    {event_id:"B98765",telegram_message_id:3081,archive_telegram_message_id:3080}
+  ];
+  assert.deepEqual(linkedTtiTelegramMessages(deliveries,"A12345",3079),[3075,3074,3073,3079,3078]);
+  assert.throws(()=>linkedTtiTelegramMessages(deliveries,"A12345",3081),/Unlinked/);
+});
+
+test("Telegram callback persists the decision and removes all related messages without waiting for Actions",async()=>{
+  const botToken="123456789:"+("AbCd0123456789efGHijKLmnOPqrSTuvWxYz");
+  const {publicKey,privateKey}=generateKeyPairSync("rsa",{modulusLength:2048});
+  const ciphertext=publicEncrypt({key:publicKey,padding:constants.RSA_PKCS1_OAEP_PADDING,oaepHash:"sha256"},Buffer.from(botToken)).toString("base64");
+  const key=privateKey.export({type:"pkcs8",format:"der"}).toString("base64");
+  const eId="a1b2c3d4e5f6";
+  const inbox={version:1,requests:[]};
+  const deliveries={items:[
+    {event_id:eId,status:"sent",telegram_message_id:3075,archive_telegram_message_id:3074},
+    {event_id:eId,status:"sent",telegram_message_id:3079,archive_telegram_message_id:3078},
+    {event_id:"not-this-one",status:"sent",telegram_message_id:3081}
+  ]};
+  let decisions={project:"TTiTTulares",items:[]};
+  let savedInbox=null;
+  const deleted=[];
+  const encoded=doc=>Buffer.from(JSON.stringify(doc)).toString("base64");
+  const originalFetch=globalThis.fetch;
+  globalThis.fetch=async (url,opts={})=>{
+    const u=String(url),method=String(opts.method||"GET");
+    if(u.includes("/telegram-bot-token.enc.json"))
+      return Response.json({content:encoded({algorithm:"RSA-OAEP-SHA256",ciphertext})});
+    if(u.includes("/telegram/ttittulares-callback-inbox.json")){
+      if(method==="PUT"){savedInbox=JSON.parse(Buffer.from(JSON.parse(opts.body).content,"base64").toString("utf8"));return Response.json({ok:true});}
+      return Response.json({sha:"test-inbox-sha",content:encoded(inbox)});
+    }
+    if(u.includes("/telegram/ttittulares-deliveries.json"))
+      return Response.json({content:encoded(deliveries)});
+    if(u.includes("/ttittulares/decisions.json")){
+      if(method==="PUT"){
+        decisions=JSON.parse(Buffer.from(JSON.parse(opts.body).content,"base64").toString("utf8"));
+        return Response.json({ok:true});
+      }
+      return Response.json({sha:"test-decisions-sha",content:encoded(decisions)});
+    }
+    if(u.includes("/answerCallbackQuery"))return Response.json({ok:true,result:true});
+    if(u.includes("/deleteMessage")){
+      deleted.push(JSON.parse(opts.body).message_id);
+      return Response.json({ok:true,result:true});
+    }
+    throw Error("Unexpected mocked fetch "+u);
+  };
+  try{
+    const update={update_id:218639001,callback_query:{
+      id:"7650439579279999999",data:"tt:d:"+eId,
+      message:{message_id:3075,chat:{id:-1002345678910}}
+    }};
+    const response=await worker.fetch(new Request("https://tt.example/api/ttittulares-telegram-callback",{
+      method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(update)
+    }),{GITHUB_TOKEN:"test-github-token",TTITTULARES_CALLBACK_DECRYPT_KEY:key});
+    const result=await response.json();
+    assert.equal(response.status,200);
+    assert.equal(result.immediate.applied,true);
+    assert.equal(result.immediate.deleted,true);
+    assert.equal(decisions.items[0].status,"dismissed");
+    assert.equal(savedInbox.requests[0].verified_by_telegram,true);
+    assert.deepEqual(deleted.sort((a,b)=>a-b),[3074,3075,3078,3079]);
+  }finally{globalThis.fetch=originalFetch;}
 });
