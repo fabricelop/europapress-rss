@@ -26,10 +26,26 @@ jobs:
         run: npm test
       - name: Run Instagram keyboard and JPEG tests
         run: |
-          python3 -m pip install --quiet Pillow
+          python3 -m pip install --quiet Pillow PyYAML
           python3 -m unittest discover -s instagram-publisher/test -p 'test_*.py' -v
       - name: Check Python syntax for both Telegram projects
         run: |
           python3 -m py_compile shared/instagram_pilot.py trends/send_explained_telegram.py trends/telegram_bot.py
       - name: Check TTiTTulares Cloudflare webhook syntax
         run: node --check no-vercel/ttittulares-worker/src/index.js
+
+      - name: Validate TTiTTulares embedded sender Python
+        run: |
+          python3 - <<'PY'
+          import ast
+          import pathlib
+          import textwrap
+          import yaml
+          workflow=yaml.safe_load(pathlib.Path(".github/workflows/send-ttittulares-ready-telegram.yml").read_text())
+          steps=workflow["jobs"]["deliver"]["steps"]
+          source=next(x["run"] for x in steps if x.get("name")=="Enviar o reparar paquete READY")
+          start=source.index("python3 - <<'PY'\n")+len("python3 - <<'PY'\n")
+          end=source.index("\nPY",start)
+          ast.parse(textwrap.dedent(source[start:end]), filename="TTiTTulares inline Telegram sender")
+          print("TTITTULARES_INSTAGRAM_SENDER_SYNTAX_OK")
+          PY
