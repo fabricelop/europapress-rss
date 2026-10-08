@@ -50,7 +50,6 @@ const MODEL_META_PROPAGATION_SECONDS=10*60;
 const HARMONIE_EXPECTED_UPDATE_MINUTES=360;
 const HARMONIE_STALE_GRACE_MINUTES=180;
 const LIGHTNING_PROXY_URL='/api/rain-lightning';
-const SYNTHETIC_RADAR_TILE_URL='/api/rain-radar-tile';
 const OPENMETEO_MAP_MODULE='https://unpkg.com/@openmeteo/weather-map-layer@0.2.2/dist/index.mjs';
 const OPENMETEO_SPATIAL_META='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon/latest.json';
 const OPENMETEO_SPATIAL_LAYER='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json';
@@ -994,7 +993,7 @@ function displayedRadarReliableHorizon(){
 }
 function updateRadarReferenceMarkers(latest=state.frames.at(-1),availablePast=Math.max(5,Math.abs(Number($('frame')?.min)||0))){
   if(!latest)return;
-  const reliable=displayedRadarReliableHorizon(),hasReliableFuture=reliable>=5;
+  const reliable=displayedRadarReliableHorizon(),hasReliableFuture=reliable>=10;
   const min=-Math.max(5,Number(availablePast)||5),max=RADAR_VISUAL_HORIZON_MINUTES;
   if($('radarNowMarker')){
     const left=(0-min)/(max-min)*100;
@@ -3920,77 +3919,6 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   $('radarMotion').textContent='Previsión de modelo sin deformación ni movimiento inventado. En esta zona RainETA cambia únicamente cuando existe un nuevo frame espacial real de ICON-EU.';
   return{ok:true,layerIds:[incoming],frame};
 }
-function syntheticRadarTileTemplate(minutes,frames){
-  const selected=(frames||[]).slice(-4),parts=['minutes='+encodeURIComponent(String(Math.max(0,Number(minutes)||0)))];
-  selected.forEach((frame,index)=>{
-    parts.push('f'+index+'='+encodeURIComponent(String(frame?.path||'')));
-    parts.push('t'+index+'='+encodeURIComponent(String(frame?.time||'')));
-  });
-  return SYNTHETIC_RADAR_TILE_URL+'?'+parts.join('&')+'&z={z}&x={x}&y={y}';
-}
-function showSyntheticRadarFuture(minutes,r,latest){
-  if(!state.map||!state.mapLoaded||!latest?.path)return false;
-  const token=++state.radarProjectionToken,handoff=visualModelHandoffMinutes(),blend=hybridFutureBlend(minutes,handoff);
-  const projectedAt=latest.time*1000+Number(minutes)*60_000;
-  state.radarProjectionImageKey='synthetic-tiles@'+latest.time+'@'+Math.round(Number(minutes)||0);
-  $('radarTime').textContent=fmtTime(projectedAt);
-  const mode=futureVisualLabel(minutes,handoff);
-  if($('radarFrameStatus'))$('radarFrameStatus').textContent=mode+' · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  $('radarPosition').textContent=mode==='PREVISIÓN MODELO'
-    ?'Precipitación prevista · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt)
-    :'Nowcast radar · +'+Math.round(minutes)+' min · '+fmtTime(projectedAt);
-  $('radarMotion').textContent=mode==='PREVISIÓN MODELO'
-    ?'Cargando el frame espacial real de ICON-EU más próximo al instante seleccionado.'
-    :'Nowcast radar como única capa hasta +'+handoff+' min cuando el flujo lo permite; el límite «fiable hasta» sigue siendo la referencia de confianza y no se extiende artificialmente.';
-
-  if(blend.mode==='model'){
-    ensureFutureModelLayer(minutes,projectedAt).then(async info=>{
-      if(token!==state.radarProjectionToken||!info?.ok)return;
-      const ready=await waitForRasterSources(info.layerIds,token,4500);
-      if(token===state.radarProjectionToken&&ready)fadeOutRadarDisplay(token,190,minutes);
-    }).catch(()=>{});
-    return true;
-  }
-
-  const ids=futureRadarLayerIds();
-  const active=state.radarFutureActiveId&&state.map.getLayer(state.radarFutureActiveId)?state.radarFutureActiveId:null;
-  const sourceId=active===ids[0]?ids[1]:ids[0];
-  removeRadarLayer(sourceId);
-  state.map.addSource(sourceId,{
-    type:'raster',
-    tiles:[syntheticRadarTileTemplate(minutes,state.frames)],
-    tileSize:256,minzoom:0,maxzoom:7,
-    attribution:'Weather data by RainViewer · synthetic RainETA reconstruction'
-  });
-  const before=state.map.getLayer('raineta-location')?'raineta-location':undefined;
-  state.map.addLayer({
-    id:sourceId,type:'raster',source:sourceId,
-    paint:{'raster-opacity':0,'raster-fade-duration':0,'raster-saturation':0,'raster-contrast':0}
-  },before);
-  applyRadarLightningContrast();
-
-  let finished=false;
-  const detach=()=>{
-    if(finished)return;finished=true;
-    try{state.map.off('sourcedata',onSourceData)}catch{}
-  };
-  const commit=()=>{
-    if(token!==state.radarProjectionToken||!state.map.getLayer(sourceId)){detach();return}
-    animateRadarSwap(sourceId,blend.radarOpacity,token,170,minutes);
-    detach();
-  };
-  const onSourceData=event=>{
-    if(token!==state.radarProjectionToken){detach();return}
-    if(event?.sourceId!==sourceId)return;
-    if(event?.isSourceLoaded||state.map.isSourceLoaded?.(sourceId))commit();
-  };
-  state.map.on('sourcedata',onSourceData);
-  setTimeout(()=>{
-    if(token!==state.radarProjectionToken){detach();return}
-    if(state.map.getSource(sourceId)&&state.map.isSourceLoaded?.(sourceId))commit();
-  },2200);
-  return true;
-}
 async function showProjectedRadar(minutes){
   const r=state.data?.radar,latest=state.frames.at(-1);
   if(!r||!latest||!state.mapLoaded)return;
@@ -4231,7 +4159,20 @@ function renderRadar(){
       ?'<b>Radar útil ~'+reliable+' min</b><span>'+history+' · evolución '+label+' · después del límite manda el modelo</span>'
       :'<b>Sin horizonte radar fiable</b><span>'+history+' · AHORA sigue siendo observado · después manda el modelo</span>';
   }
-  if(state.mapLoaded)showRadarOffset(state.radarOffset);
+  if(state.mapLoaded){
+    showRadarOffset(state.radarOffset);
+    radarViewportNowcast(r).then(()=>{
+      if(state.frames.at(-1)?.time!==latest.time)return;
+      const markerState=updateRadarReferenceMarkers(latest,availablePast);
+      if($('radarHandoff')){
+        const label=evolution>=.72?'estable':evolution>=.48?'cambiante':'muy cambiante';
+        const history=availablePast>=240?'histórico observado 4 h':'histórico observado '+availablePast+' min · acumulando hasta 4 h';
+        $('radarHandoff').innerHTML=markerState.hasReliableFuture
+          ?'<b>Radar útil ~'+markerState.reliable+' min</b><span>'+history+' · evolución '+label+' · después del límite manda el modelo</span>'
+          :'<b>Sin horizonte radar fiable</b><span>'+history+' · AHORA sigue siendo observado · después manda el modelo</span>';
+      }
+    }).catch(()=>{});
+  }
   updateRadarArrivalButton();
 }
 
