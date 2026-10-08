@@ -52,7 +52,8 @@ const HARMONIE_STALE_GRACE_MINUTES=180;
 const LIGHTNING_PROXY_URL='/api/rain-lightning';
 const SYNTHETIC_RADAR_TILE_URL='/api/rain-radar-tile';
 const OPENMETEO_MAP_MODULE='https://unpkg.com/@openmeteo/weather-map-layer@0.2.2/dist/index.mjs';
-const OPENMETEO_SPATIAL_META='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json';
+const OPENMETEO_SPATIAL_META='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon/latest.json';
+const OPENMETEO_SPATIAL_LAYER='https://openmeteo.s3.amazonaws.com/data_spatial/dwd_icon_seamless/latest.json';
 const LIGHTNING_WMS_LAYERS=[
   {id:'raineta-lightning-flash',layer:'dwd:Accumulated_Flash_Geometry',opacity:.95,label:'MTG LI 5 min'},
   {id:'raineta-lightning-ncew',layer:'dwd:NCEW_EU',opacity:.82,label:'NowCastELEC'}
@@ -3672,7 +3673,7 @@ async function ensureFutureModelLayer(minutes,projectedAt){
   const sourceId='raineta-model-forecast';
   if(state.futureModelKey!==key||!state.map.getSource(sourceId)){
     removeFutureModelLayer();
-    const url='om://'+OPENMETEO_SPATIAL_META+
+    const url='om://'+OPENMETEO_SPATIAL_LAYER+
       '?time_step=valid_times_'+index+'&variable=precipitation&dark=true';
     state.map.addSource(sourceId,{
       type:'raster',
