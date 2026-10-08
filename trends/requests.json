@@ -37,7 +37,7 @@
       "id": "rec-horizonte",
       "name": "#Horizonte",
       "rank": 1,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-08T22:22:06+02:00",
       "revision": 3,
       "reexplain": true,
@@ -59,31 +59,31 @@
         "Tomás Gómez",
         "#LaIslaDeLasTentaciones10"
       ],
-      "explanation": "TT#1 #Horizonte es tendencia durante la emisión de hoy en Cuatro, que incluye una entrevista a Isabel Díaz Ayuso centrada en la acampada de la Puerta del Sol y la crisis de la vivienda.",
+      "explanation": "TT#1 #Horizonte es tendencia porque el programa de Iker Jiménez vuelve al centro de la conversación tras la muerte de Maricarmen y las críticas por cómo abordó su desahucio; anoche abrió con condolencias y defendió su cobertura.",
       "rank_at_explanation": 1,
-      "group_id": "grp-horizonte-programa-20260928-r1",
-      "explanation_group_id": "grp-horizonte-programa-20260928-r1",
-      "group_title": "Emisión de Horizonte y polémica sobre Maricarmen",
+      "group_id": "grp-horizonte-maricarmen-20261008-r3",
+      "explanation_group_id": "grp-horizonte-maricarmen-20261008-r3",
+      "group_title": "Horizonte · muerte de Maricarmen y reacción del programa",
       "trend_names": [
         "#Horizonte"
       ],
       "trend_context": [
         {
           "name": "#Horizonte",
-          "rank": 2
+          "rank": 1
         }
       ],
       "news_disposition": "ignored",
-      "news_note": "Reexplicación factual por la emisión del 1 de octubre; sustituye el contexto previo y no duplica una entrada en TTiTTulares.",
+      "news_note": "Reexplicación de TTendencias sobre la conversación televisiva actual; no se envía a TTiTTulares.",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "verTele / elDiario.es · 1/10/2026",
-          "url": "https://www.eldiario.es/vertele/noticias/ayuso-elige-horizonte-hablar-iker-jimenez-carmen-porter-acampada-sol-vivienda_1_13551373.html"
+          "source": "FormulaTV · 08/10/2026",
+          "url": "https://www.formulatv.com/noticias/intermedio-horizonte-reaccionan-muerte-maricarmen-138446/"
         },
         {
-          "source": "Guía TV · 1/10/2026",
-          "url": "https://www.laguiatv.es/programacion-hoy/cuatro"
+          "source": "verTele / elDiario.es · 08/10/2026",
+          "url": "https://www.eldiario.es/vertele/noticias/horizonte-pide-ahora-cuidadosos-dice-maricarmen-dias-ataques-cuatro-mediaset_1_13570701.html"
         }
       ],
       "duplicate_of": "575e452e26cb",
@@ -91,7 +91,7 @@
       "disable_ai_image": true,
       "image_strategy": "fallback_only",
       "ai_image_status": "disabled",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "fallback_image": {
         "url": "https://static.eldiario.es/clip/4df9c3a4-46b7-4571-9266-f592e72bc86d_16-9-discover-aspect-ratio_default_0.jpg",
         "source": "verTele / elDiario.es · archivo Mediaset",
@@ -100,7 +100,7 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_choice": "fallback",
+      "image_choice": null,
       "image": {
         "url": "https://static.eldiario.es/clip/4df9c3a4-46b7-4571-9266-f592e72bc86d_16-9-discover-aspect-ratio_default_0.jpg",
         "source": "verTele / elDiario.es · archivo Mediaset",
@@ -109,8 +109,10 @@
         "rights_status": "unverified",
         "generated": false
       },
-      "image_status": "ready",
-      "image_pending": false
+      "image_status": "none",
+      "image_pending": true,
+      "category": "TV",
+      "explained_at": "2026-10-08T22:48:45+02:00"
     },
     {
       "id": "97538689783f",
@@ -37883,6 +37885,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-08T22:22:06+02:00",
-  "count": 705
+  "updated_at": "2026-10-08T22:48:45+02:00",
+  "count": 707
 }
