@@ -147,6 +147,82 @@ async function telegramCryptoReady(env){
   }
 }
 
+
+// Close a verified TTiTTulares callback synchronously, independently of Actions.
+// Always persist the inbox first; the existing workflow remains the recovery path.
+function linkedTtiTelegramMessages(rows,eventId,clickedMessageId){
+  const linked=(Array.isArray(rows)?rows:[]).filter(row=>String(row?.event_id||"")===eventId);
+  const fields=["telegram_message_id","archive_telegram_message_id","cross_quote_message_id"];
+  const ids=[...new Set(linked.flatMap(row=>fields.map(key=>Number(row?.[key]||0))).filter(n=>Number.isSafeInteger(n)&&n>0))];
+  if(!ids.includes(Number(clickedMessageId)))throw new Error("Unlinked TTiTTulares Telegram message");
+  return ids;
+}
+async function inlineTtiTelegramDecision(env,update,event){
+  const [rawAction,eventId]=event.text.split("|");
+  const status=rawAction==="ttp"?"published":"dismissed";
+  const now=new Date().toISOString();
+  const gh="https://api.github.com/repos/fabricelop/europapress-rss/contents/";
+  const headers={
+    "accept":"application/vnd.github+json",
+    "authorization":"Bearer "+env.GITHUB_TOKEN,
+    "content-type":"application/json",
+    "user-agent":"ttittulares-realtime-telegram-decision-v2",
+    "x-github-api-version":"2022-11-28"
+  };
+  const deliveriesResponse=await fetch(gh+"telegram/ttittulares-deliveries.json?ref=main",{headers,cache:"no-store"});
+  if(!deliveriesResponse.ok)throw new Error("Delivery verification failed HTTP "+deliveriesResponse.status);
+  const deliveriesFile=await deliveriesResponse.json();
+  const deliveriesDoc=JSON.parse(Buffer.from(String(deliveriesFile.content||"").replace(/\\s/g,""),"base64").toString("utf8"));
+  const messageIds=linkedTtiTelegramMessages(deliveriesDoc.items,eventId,event.message_id);
+  let persisted=false;
+  for(let attempt=0;attempt<5;attempt++){
+    const response=await fetch(gh+"ttittulares/decisions.json?ref=main",{headers,cache:"no-store"});
+    if(!response.ok)throw new Error("Immediate decision read HTTP "+response.status);
+    const file=await response.json();
+    const doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\\s/g,""),"base64").toString("utf8"));
+    if(!Array.isArray(doc.items))throw new Error("Decisions schema invalid");
+    let row=doc.items.find(item=>String(item.event_id||"")===eventId);
+    if(row&&["dismissed","published"].includes(row.status)&&row.status!==status)
+      throw new Error("Conflicting terminal Telegram decision");
+    if(row?.status===status){persisted=true;break;}
+    if(!row){row={event_id:eventId};doc.items.push(row);}
+    Object.assign(row,{status,updated_at:now,decision_source:"telegram_emergency_callback",telegram_message_id:event.message_id});
+    doc.updated_at=now;
+    const payload={
+      message:"TTiTTulares: "+status+" inmediato desde Telegram "+eventId,
+      branch:"main",sha:file.sha,
+      content:Buffer.from(JSON.stringify(doc,null,2)+"\\n","utf8").toString("base64")
+    };
+    const write=await fetch(gh+"ttittulares/decisions.json",{method:"PUT",headers,body:JSON.stringify(payload)});
+    if(write.ok){persisted=true;break;}
+    if(![409,422].includes(write.status))throw new Error("Immediate decision write HTTP "+write.status);
+  }
+  if(!persisted)throw new Error("Decision persisted only in callback inbox; retry queued");
+  // Terminal decision is now visible to delivery workflows, preventing re-delivery.
+  // Delete all deliveries of this event, including both archive and IA companions.
+  const chat=update?.callback_query?.message?.chat?.id;
+  const token=await cloudflareTelegramBotToken(env);
+  const outcomes=await Promise.all(messageIds.map(async messageId=>{
+    try{
+      const response=await fetch("https://api.telegram.org/bot"+token+"/deleteMessage",{
+        method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({chat_id:chat,message_id:messageId})
+      });
+      const result=await response.json().catch(()=>({}));
+      const description=String(result.description||"");
+      const ok=Boolean(result.ok)||description.toLowerCase().includes("message to delete not found");
+      if(!ok)console.log("TTITTULARES_INLINE_DELETE_PENDING",messageId,"HTTP",response.status);
+      return {message_id:messageId,deleted:ok};
+    }catch(error){
+      console.log("TTITTULARES_INLINE_DELETE_RETRY",messageId,String(error?.name||"NetworkError"));
+      return {message_id:messageId,deleted:false};
+    }
+  }));
+  // The already-persisted callback inbox triggers the durable GitHub Actions
+  // processor, which updates all downstream states and retries failed deletes.
+  return {applied:true,deleted:outcomes.every(x=>x.deleted),message_count:messageIds.length};
+}
+
 async function enqueueTtiTelegramCallback(request,env){
   if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
   const raw=await request.text();
@@ -187,7 +263,16 @@ async function enqueueTtiTelegramCallback(request,env){
       branch:"main",content:Buffer.from(JSON.stringify(updated,null,2)+"\n","utf8").toString("base64")};
     if(existing?.sha)payload.sha=existing.sha;
     const w=await fetch(api,{method:"PUT",headers:h,body:JSON.stringify(payload)});
-    if(w.ok)return json({ok:true,queued:true,update_id:event.update_id});
+    if(w.ok){
+      try{
+        const inline=await inlineTtiTelegramDecision(env,update,event);
+        return json({ok:true,queued:true,update_id:event.update_id,immediate:inline});
+      }catch(error){
+        // Never lose an ACKed callback: inbox already persisted for Actions.
+        console.log("TTITTULARES_INLINE_FALLBACK_TO_DURABLE_QUEUE",event.update_id,String(error?.message||error));
+        return json({ok:true,queued:true,update_id:event.update_id,immediate:{applied:false,queued_for_retry:true}});
+      }
+    }
     if(![409,422].includes(w.status))return json({ok:false,phase:"write",status:w.status},503);
   }
   return json({ok:false,error:"Concurrent callback queue write"},503);
@@ -198,6 +283,7 @@ export default {
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
+    if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2"});
     if(path==="/api/ttittulares-telegram-callback")return enqueueTtiTelegramCallback(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
       return handlerRequest(request,env,url,ROUTES[path]);
@@ -207,4 +293,4 @@ export default {
     return json({ok:false,error:"No encontrado"},404);
   }
 };
-export {handlerRequest,responseAdapter,parseTtiCallback};
+export {handlerRequest,responseAdapter,parseTtiCallback,linkedTtiTelegramMessages};
