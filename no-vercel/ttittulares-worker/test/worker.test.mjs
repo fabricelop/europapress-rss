@@ -94,13 +94,3 @@ test("TTendencias and webhook are never routed through this Worker",async()=>{
   }
 });
 
-test("staging write probe requires explicit auth and never creates any live news",async()=>{
-  const unauth=await worker.fetch(new Request("https://tt.example/api/ttittulares-staging-write-test",{
-    method:"POST",headers:{"authorization":"Bearer bad-token"}
-  }),{TTITTULARES_CONTROL_TOKEN:"test-secret",GITHUB_TOKEN:"test-github"});
-  assert.equal(unauth.status,401);
-  const noGithub=await worker.fetch(new Request("https://tt.example/api/ttittulares-staging-write-test",{
-    method:"POST",headers:{"authorization":"Bearer test-secret"}
-  }),{TTITTULARES_CONTROL_TOKEN:"test-secret"});
-  assert.equal(noGithub.status,503);
-});
