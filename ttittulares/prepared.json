@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T10:45:18.461051Z",
+  "updated_at": "2026-10-08T10:46:15.790Z",
   "items": [
     {
       "event_id": "e33b2e5dcf1b",
@@ -509,8 +509,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -526,12 +526,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T10:43:51.074662Z",
       "image": {
-        "url": "https://e01-phantom-elmundo.uecdn.es/6571c1cdbde37fec6abc7ee54ef2d1fe/crop/0x929/2115x2339/resize/1200/f/webp/assets/multimedia/imagenes/2026/10/08/17914387195903.jpg",
-        "source": "www.elmundo.es",
-        "source_url": "https://www.elmundo.es/ciencia/2026/10/08/6ac72ce4fdddff787d8b45ac.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Muere Margaret Hamilton, pionera del programa Apolo y en la llegada del hombre a la Luna, a los 90 aos"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/14fc45e2ce86-r1-ai1-791456242889.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "35e05173879b3cd3b30aa3c325f4439d32ff6da2345914e0a9161891ca3f432b",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2492507,
+        "context_guard": {
+          "version": 3,
+          "event_id": "14fc45e2ce86",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-14fc45e2ce86-r1-a1-1791456242889"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/14fc45e2ce86-r1-ai1-791456242889.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://e01-phantom-elmundo.uecdn.es/6571c1cdbde37fec6abc7ee54ef2d1fe/crop/0x929/2115x2339/resize/1200/f/webp/assets/multimedia/imagenes/2026/10/08/17914387195903.jpg",
@@ -540,7 +554,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Muere Margaret Hamilton, pionera del programa Apolo y en la llegada del hombre a la Luna, a los 90 aos"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/14fc45e2ce86-r1-ai1-791456242889.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "35e05173879b3cd3b30aa3c325f4439d32ff6da2345914e0a9161891ca3f432b",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2492507,
+        "context_guard": {
+          "version": 3,
+          "event_id": "14fc45e2ce86",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-14fc45e2ce86-r1-a1-1791456242889"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/14fc45e2ce86-r1-ai1-791456242889.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T10:46:15.790Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T10:46:15.790Z"
     }
   ],
   "count": 12
