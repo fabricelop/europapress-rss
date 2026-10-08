@@ -26,6 +26,22 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 - Alternatively, paste the two SQL statements from the migration into the Cloudflare **D1 Console** for this database; they are safe to run more than once.
 - An empty database is not ready for publication, and should not be considered live.
 
+## Integration work staged in PR #112 (no deployment)
+- `shared/instagram_pilot.py`: opt-in JPEG creation, factual text plus AI disclosure, guarded "📸 Publicar en Instagram" Telegram button.
+- `.github/workflows/send-ttittulares-ready-telegram.yml`: prepares and commits JPEG + immutable Instagram snapshot on the Telegram delivery row (disabled unless `INSTAGRAM_PILOT_ENABLED=1`).
+- `trends/send_explained_telegram.py` and its delivery workflow: same controlled path for TTendencias, without changing X buttons.
+- `no-vercel/ttittulares-worker/src/index.js`: new verified `tt:i:event_id` handler, checks the delivered Telegram message and configured allowed chat, reads its trusted GitHub snapshot, invokes the publisher; never touches X decisions.
+- `trends/telegram_bot.py`: new `tx:i:trend_id:revision` handler, checking the registered Telegram chat and delivered message, independent from `tx:p/tx:d`.
+- Automated unit tests and staging CI; **no actual Meta posting has been exercised**.
+
+**Deployment blockers (must verify in live infrastructure):**
+1. The existing `tt-control` Telegram gateway currently forwards only `tt:p` and `tt:d` to the TTiTTulares Worker. It must also forward `tt:i` to the same callback route, while retaining verified Telegram origin and existing X behavior. Its running code is not managed by this PR.
+2. Confirm that TTendencias runs the `trends/telegram_bot.py` package listener with the new code and supply `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET` as private runtime variables.
+3. Set separate secret `INSTAGRAM_ALLOWED_CHAT_ID` on the TTiTTulares Worker, and `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET`. Never expose the real Telegram bot tokens or page token.
+4. Install the isolated Instagram Worker, its D1 binding, and a newly authorized long-lived Meta Page token, without touching the existing Cloudflare Workers. Check token expiry/refresh.
+5. Confirm end-to-end with one selected post and verify Telegram retains X actions, the archive and IA images, receives Meta permalink, and does not duplicate on repeated click. Only then set the repo variable `INSTAGRAM_PILOT_ENABLED=1`.
+6. For a container still processing after background polls, the pilot currently asks the user to retry; a reliable scheduled retry and Telegram status notification should be added before promising entirely hands-off completion in every case.
+
 ## Still necessary before any production activation
 1. Obtain a fresh **suitable long-lived** Facebook Page token (the old app authorization was revoked after its token was shown in a screenshot). Confirm correct scope and rotation. Never paste credentials in chat, source or logs.
 2. Configure a **separate** Cloudflare Worker and separate D1 database binding IG_DB, with secret INSTAGRAM_PAGE_ACCESS_TOKEN and secret INSTAGRAM_INTERNAL_SECRET (random, 32+ chars); INSTAGRAM_USER_ID is non-secret configuration. Do not install into the existing TT Control D1 database.
