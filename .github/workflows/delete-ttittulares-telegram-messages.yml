@@ -7,13 +7,15 @@ on:
       - "telegram/delete-message-queue.json"
       - ".github/workflows/delete-ttittulares-telegram-messages.yml"
   workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
 
 permissions:
   contents: write
 
 concurrency:
   group: ttittulares-telegram-delete
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   delete:
@@ -31,36 +33,87 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 - <<'PY'
-          import json, os, pathlib, urllib.request, urllib.error
-          from datetime import datetime, timezone
+          import json, os, pathlib, urllib.request, urllib.error, re
+          from datetime import datetime, timezone, timedelta
           p=pathlib.Path("telegram/delete-message-queue.json")
           d=json.loads(p.read_text(encoding="utf-8"))
           token=os.environ["TELEGRAM_BOT_TOKEN"].strip()
           chat=os.environ["TELEGRAM_CHAT_ID"].strip()
+          now=datetime.now(timezone.utc)
           changed=False
+          def stamp(dt):
+              return dt.isoformat().replace("+00:00","Z")
+          def done(row,already=False):
+              global changed
+              row["status"]="deleted"
+              row["deleted_at"]=stamp(now)
+              row.pop("next_retry_at",None)
+              row.pop("error",None)
+              changed=True
+              print("TELEGRAM_DELETE_ALREADY_GONE" if already else "TELEGRAM_DELETE_OK",row["message_id"])
+          def failure(row,code,description,retry_after=0):
+              global changed
+              count=int(row.get("attempts") or 0)+1
+              row["attempts"]=count
+              row["error"]="HTTP "+str(code)+": "+str(description)[:180]
+              row["last_attempt_at"]=stamp(now)
+              recoverable=code in (0,408,409,425,429) or 500<=code<600
+              if recoverable and count<8:
+                  delay=max(int(retry_after or 0),min(3600,60*(2**min(count,6))))
+                  row["status"]="pending"
+                  row["next_retry_at"]=stamp(now+timedelta(seconds=delay))
+                  print("TELEGRAM_DELETE_RETRY",row["message_id"],"HTTP",code,"attempt",count,"delay_s",delay)
+              else:
+                  row["status"]="failed"
+                  row.pop("next_retry_at",None)
+                  print("TELEGRAM_DELETE_FAILED",row["message_id"],"HTTP",code,"attempt",count)
+              changed=True
           for row in d.get("items",[]):
-              if row.get("status")!="pending": continue
-              payload=json.dumps({"chat_id":chat,"message_id":row["message_id"]}).encode()
+              status=str(row.get("status") or "")
+              if status not in ("pending","error"):
+                  continue
+              if status=="error" and not re.search(r"HTTP (?:429|5[0-9][0-9])|timeout|timed out|temporar|connection",str(row.get("error") or ""),re.I):
+                  continue
+              due=str(row.get("next_retry_at") or "")
+              if due:
+                  try:
+                      if datetime.fromisoformat(due.replace("Z","+00:00"))>now:
+                          continue
+                  except ValueError:
+                      pass
+              mid=int(row.get("message_id") or 0)
+              if mid<=0:
+                  row["status"]="failed";row["error"]="Invalid message_id";changed=True
+                  continue
+              payload=json.dumps({"chat_id":chat,"message_id":mid}).encode()
               req=urllib.request.Request(f"https://api.telegram.org/bot{token}/deleteMessage",data=payload,headers={"content-type":"application/json"})
               try:
-                  with urllib.request.urlopen(req,timeout=30) as r:
-                      out=json.loads(r.read().decode())
-                  if out.get("ok"):
-                      row["status"]="deleted";row["deleted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z");changed=True
-                      print("TELEGRAM_DELETE_OK",row["message_id"])
+                  with urllib.request.urlopen(req,timeout=25) as resp:
+                      result=json.loads(resp.read().decode())
+                  if result.get("ok"):
+                      done(row)
                   else:
-                      row["status"]="error";row["error"]=str(out);changed=True
+                      description=str(result.get("description") or "")
+                      if "message to delete not found" in description.lower():
+                          done(row,True)
+                      else:
+                          params=result.get("parameters") or {}
+                          failure(row,int(result.get("error_code") or 500),description,params.get("retry_after") or 0)
               except urllib.error.HTTPError as e:
                   body=e.read().decode("utf-8","replace")
-                  if "message to delete not found" in body.lower():
-                      row["status"]="deleted";row["deleted_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z");changed=True
-                      print("TELEGRAM_DELETE_ALREADY_GONE",row["message_id"])
+                  try:
+                      obj=json.loads(body)
+                  except Exception:
+                      obj={}
+                  desc=str(obj.get("description") or body[:180])
+                  if "message to delete not found" in desc.lower():
+                      done(row,True)
                   else:
-                      row["status"]="error";row["error"]=f"HTTP {e.code}: {body[:300]}";changed=True
+                      failure(row,e.code,desc,(obj.get("parameters") or {}).get("retry_after") or 0)
               except Exception as e:
-                  row["status"]="error";row["error"]=str(e);changed=True
+                  failure(row,0,type(e).__name__)
           if changed:
-              d["updated_at"]=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+              d["updated_at"]=stamp(now)
               p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
           PY
       - name: Guardar resultado
