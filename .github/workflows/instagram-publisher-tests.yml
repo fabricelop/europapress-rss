@@ -7,6 +7,7 @@ on:
       - 'shared/instagram_pilot.py'
       - 'trends/send_explained_telegram.py'
       - '.github/workflows/send-ttittulares-ready-telegram.yml'
+      - '.github/workflows/refresh-ttittulares-telegram-keyboard.yml'
       - '.github/workflows/send-ttendencias-explained-telegram.yml'
       - 'no-vercel/ttittulares-worker/src/index.js'
       - 'trends/telegram_bot.py'
@@ -28,6 +29,7 @@ jobs:
             /trends/send_explained_telegram.py
             /no-vercel/ttittulares-worker/src/index.js
             /.github/workflows/send-ttittulares-ready-telegram.yml
+            /.github/workflows/refresh-ttittulares-telegram-keyboard.yml
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -80,3 +82,16 @@ jobs:
       - name: Public route routing diagnostics (read only)
         working-directory: instagram-publisher
         run: node test/probe-routes.mjs
+
+      - name: Validate refreshed TTiTTulares keyboard still supports Instagram
+        run: |
+          python3 - <<'PY'
+          import ast,pathlib,yaml
+          p=pathlib.Path(".github/workflows/refresh-ttittulares-telegram-keyboard.yml")
+          workflow=yaml.safe_load(p.read_text(encoding="utf8"))
+          body=next(x["run"] for x in workflow["jobs"]["refresh"]["steps"] if "python3 - <<'PY'" in x.get("run",""))
+          code=body.split("python3 - <<'PY'\\n",1)[1].split("\\nPY",1)[0]
+          ast.parse(code,"keyboard-refresh.py")
+          assert "INSTAGRAM_PILOT_ENABLED" in code and '"callback_data":"tt:i:"+eid' in code
+          print("TTITTULARES_INSTAGRAM_KEYBOARD_REFRESH_SYNTAX_OK")
+          PY
