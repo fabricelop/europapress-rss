@@ -77,6 +77,13 @@ jobs:
           assert c["group"]=="ttendencias-telegram-continuo"
           assert c["cancel-in-progress"] is True
           steps=d["jobs"]["listener"]["steps"]
+          checkout=next(x for x in steps if x.get("uses","").startswith("actions/checkout"))
+          config=checkout["with"]
+          assert config["fetch-depth"] == 1
+          assert config["filter"] == "blob:none"
+          sparse=config["sparse-checkout"]
+          assert "/trends/*.py" in sparse and "/trends/*.json" in sparse
+          assert "/shared/" in sparse
           follow=next(x for x in steps if x.get("name")=="Encadenar siguiente listener")
           assert "cancelled()" in follow["if"] and "!" in follow["if"]
           assert any("trends/telegram_bot.py package-listen" in x.get("run","") for x in steps)
