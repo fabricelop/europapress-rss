@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-08T23:15:00+02:00",
-  "last_completed_at": "2026-10-08T23:20:00+02:00",
-  "updated_at": "2026-10-08T23:20:00+02:00",
+  "last_started_at": "2026-10-08T23:45:00+02:00",
+  "last_completed_at": "2026-10-08T23:48:30+02:00",
+  "updated_at": "2026-10-08T23:48:30+02:00",
   "status": "success",
   "processed_ids": [
     "3ff255e46d90"
@@ -17,22 +17,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T231500-chat",
+    "run_id": "tr-20261008T234500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T23:15:00+02:00",
-    "updated_at": "2026-10-08T23:20:00+02:00",
-    "finished_at": "2026-10-08T23:20:00+02:00",
+    "started_at": "2026-10-08T23:45:00+02:00",
+    "updated_at": "2026-10-08T23:48:30+02:00",
+    "finished_at": "2026-10-08T23:48:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -46,215 +46,54 @@
       "visual_repair_triggered": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
-      "new_queue_entries_during_run": 0,
-      "pending_cards_reviewed": 3,
-      "pending_cards_ai_ready": 1,
-      "pending_cards_ai_missing": 2
+      "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 1/1; #LaRevuelta explicada y verificada; cola activa 0; reparación visual solicitada",
+    "message": "Pasada completada · 0/0; cola activa 0; reparación visual solicitada y lanzada",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
-    },
-    "remate_selections": [
-      {
-        "trend_id": "3ff255e46d90",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.9,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-08T23:15:00+02:00",
+        "at": "2026-10-08T23:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada · 1 tendencia activa"
+        "message": "Preparando pasada · 0 tendencias activas"
       },
       {
-        "at": "2026-10-08T23:15:20+02:00",
+        "at": "2026-10-08T23:45:35+02:00",
         "phase": "verifying",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Releyendo estado autoritativo de #LaRevuelta"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola activa 0; reparación visual solicitada"
       },
       {
-        "at": "2026-10-08T23:15:35+02:00",
-        "phase": "investigating",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-08T23:15:50+02:00",
-        "phase": "investigating",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Contrastando fuente 1/2 · RTVE"
-      },
-      {
-        "at": "2026-10-08T23:16:05+02:00",
-        "phase": "investigating",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Contrastando fuente 2/2 · verTele / elDiario.es"
-      },
-      {
-        "at": "2026-10-08T23:16:15+02:00",
-        "phase": "investigating",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-08T23:16:25+02:00",
-        "phase": "drafting",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-08T23:16:35+02:00",
-        "phase": "drafting",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Comprobando límite de X · 268 caracteres"
-      },
-      {
-        "at": "2026-10-08T23:16:45+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-08T23:16:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-08T23:17:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-08T23:17:10+02:00",
-        "phase": "persisting",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-08T23:17:30+02:00",
-        "phase": "persisting",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-08T23:17:50+02:00",
-        "phase": "persisting",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-08T23:18:20+02:00",
+        "at": "2026-10-08T23:47:15+02:00",
         "phase": "verifying",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual iniciada en GitHub Actions"
       },
       {
-        "at": "2026-10-08T23:18:40+02:00",
+        "at": "2026-10-08T23:48:10+02:00",
         "phase": "verifying",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Verificando id+revision y texto persistido"
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main · cola activa 0"
       },
       {
-        "at": "2026-10-08T23:19:00+02:00",
-        "phase": "verifying",
-        "trend_id": "3ff255e46d90",
-        "title": "#LaRevuelta",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T23:20:00+02:00",
+        "at": "2026-10-08T23:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 1/1; #LaRevuelta explicada y verificada; cola activa 0; reparación visual solicitada"
+        "message": "Pasada completada · 0/0; cola activa 0; reparación visual solicitada y lanzada"
       }
     ],
     "queue_complete": true,
