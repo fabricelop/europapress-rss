@@ -31,7 +31,7 @@ test("authenticated but unconfigured publisher fails closed",async()=>{
   const req=new Request("https://example.com/publish",{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+secret},body:JSON.stringify(item)});
   const r=await worker.fetch(req,{INSTAGRAM_INTERNAL_SECRET:secret});
   assert.equal(r.status,503);
-  assert.equal((await r.json()).error,"NOT_CONFIGURED");
+  assert.equal((await r.json()).error,"PILOT_DISABLED");
 });
 
 
@@ -84,7 +84,7 @@ test("one selected message results in at most one public post",async()=>{
     if(route.endsWith("/9876543210"))return Response.json({permalink:"https://www.instagram.com/p/TEST/"});
     throw Error("Unexpected URL "+url);
   };
-  const env={INSTAGRAM_INTERNAL_SECRET:secret,INSTAGRAM_PAGE_ACCESS_TOKEN:"page-token",INSTAGRAM_USER_ID:"17841414511690117",IG_DB:db};
+  const env={INSTAGRAM_INTERNAL_SECRET:secret,INSTAGRAM_PAGE_ACCESS_TOKEN:"page-token",INSTAGRAM_USER_ID:"17841414511690117",INSTAGRAM_PUBLISH_ENABLED:"1",IG_DB:db};
   try {
     const first=await (await worker.fetch(makePost(),env)).json();
     assert.equal(first.state,"published");
@@ -105,7 +105,7 @@ test("ambiguous media_publish response blocks double posting",async()=>{
     if(route.endsWith("/media_publish")){publishes++;throw Error("connection lost");}
     throw Error("Unexpected URL "+url);
   };
-  const env={INSTAGRAM_INTERNAL_SECRET:secret,INSTAGRAM_PAGE_ACCESS_TOKEN:"page-token",INSTAGRAM_USER_ID:"17841414511690117",IG_DB:db};
+  const env={INSTAGRAM_INTERNAL_SECRET:secret,INSTAGRAM_PAGE_ACCESS_TOKEN:"page-token",INSTAGRAM_USER_ID:"17841414511690117",INSTAGRAM_PUBLISH_ENABLED:"1",IG_DB:db};
   try{
     const first=await worker.fetch(makePost(),env);
     assert.equal(first.status,503);
