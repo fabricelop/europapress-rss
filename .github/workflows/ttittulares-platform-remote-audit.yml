@@ -38,6 +38,17 @@ jobs:
               echo
             done
           done
+      - name: No-op Telegram receiver probe (no callback, no state changes)
+        shell: bash
+        run: |
+          result=$(curl -sS --max-time 20 \
+            --output /tmp/ttit-post-body --dump-header /tmp/ttit-post-header \
+            --write-out '%{http_code}' \
+            -X POST -H 'Content-Type: application/json' \
+            --data '{}' 'https://tt-control.fabricelop.workers.dev/api/telegram-webhook') || result=transport-error
+          echo "TTCONTROL_WEBHOOK_EMPTY_POST_HTTP=$result"
+          head -c 450 /tmp/ttit-post-body | tr '\n' ' ' || true
+          echo
       - name: Actual Telegram webhook registration
         shell: bash
         run: |
