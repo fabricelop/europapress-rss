@@ -277,16 +277,20 @@ test('radar uses local flow when guidance is reliable and never needs persistenc
   assert.equal(radarProjectionRenderMode({minutes:31,fieldAvailable:true,guidanceOk:true,horizon:30,continuityMinutes:3}),'none');
 });
 
-test('uncertain nowcast retains projectionField and future swap is nonblank-first',()=>{
+
+test('continuous nowcast retains projectionField and never removes the old radar before the replacement is ready',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/const base=\{[^\n]*projectionField\};/);
-  assert.match(app,/mode==='persistence'/);
-  const add=app.indexOf("state.map.addLayer({\n      id:'raineta-radar-projection'");
-  const remove=app.indexOf("removeRadarLayer('raineta-radar');",add);
-  assert.ok(add>=0&&remove>add);
-  assert.match(app,/projected canvas unexpectedly empty/);
+  assert.match(app,/projectRadarFieldContinuous\(field,guidance\?\.flow,minutes/);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
+  const fn=app.slice(start,end);
+  const add=fn.indexOf("state.map.addSource(incoming,{type:'image',url:imageUrl,coordinates})");
+  const wait=fn.indexOf("await waitForRasterSources([incoming],token,2200)",add);
+  const swap=fn.indexOf("animateRadarSwap(incoming,opacity,token,170,minutes)",wait);
+  assert.ok(add>=0&&wait>add&&swap>wait);
+  assert.doesNotMatch(fn.slice(add,swap),/clearRadarVisual\(\)/);
 });
-
 test('lightning mode desaturates radar precipitation to grayscale',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/setPaintProperty\(id,'raster-saturation',gray\?-1:0\)/);
@@ -493,24 +497,30 @@ test('radar slider keeps fixed AHORA and hides reliability when no future horizo
   assert.match(app,/\$\('radarReliableMarker'\)\.style\.display='none'/);
   assert.match(app,/sin horizonte fiable/);
 });
-test('future radar swaps with double buffer and waits for the incoming source',()=>{
+
+test('future radar swaps with double buffer and waits for the continuous incoming image',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/raineta-radar-projection-a/);
   assert.match(app,/raineta-radar-projection-b/);
   assert.match(app,/function animateRadarSwap\(/);
   assert.match(app,/requestAnimationFrame\(step\)/);
-  assert.match(app,/event\?\.isSourceLoaded\|\|state\.map\.isSourceLoaded\?\.\(sourceId\)/);
-  assert.match(app,/animateRadarSwap\(sourceId,blend\.radarOpacity,token,170,minutes\)/);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/await waitForRasterSources\(\[incoming\],token,2200\)/);
+  assert.match(fn,/animateRadarSwap\(incoming,opacity,token,170,minutes\)/);
 });
 
-test('model-only future waits for model tiles before fading radar away',()=>{
+test('model-only future waits for native model tiles before fading radar away',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
-  assert.match(app,/if\(blend\.mode==='model'\)/);
-  assert.match(app,/waitForRasterSources\(info\.layerIds,token,4500\)/);
-  assert.match(app,/fadeOutRadarDisplay\(token,190,minutes\)/);
+  const start=app.indexOf('async function showProjectedRadar');
+  const end=app.indexOf('function showRadarOffset',start);
+  const fn=app.slice(start,end);
+  assert.match(fn,/Number\(minutes\)>0&&\(mode==='none'\|\|Number\(minutes\)>horizon\)/);
+  assert.match(fn,/const info=await ensureFutureModelLayer\(minutes,projectedAt\)/);
+  assert.match(fn,/await waitForRasterSources\(info\.layerIds,token,4500\)/);
+  assert.match(fn,/fadeOutRadarDisplay\(token,190,minutes\)/);
 });
-
-
 test('future model uses native Open-Meteo ICON frames without custom warping',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/maplibregl\.addProtocol\('om',module\.omProtocol\)/);
