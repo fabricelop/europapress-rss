@@ -1,0 +1,45 @@
+name: TTiTTulares webhook emergency Cloudflare restore (no checkout)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttittulares-webhook-restore-fast.yml'
+permissions:
+  contents: read
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - name: Verify Cloudflare receiving worker, then set bot webhook
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ -n "${TELEGRAM_BOT_TOKEN:-}" ]] || { echo "Bot token unavailable"; exit 2; }
+          version="$(curl -fsS --max-time 25 https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version)"
+          printf '%s\n' "$version" | python3 -c 'import json,sys;d=json.load(sys.stdin);assert "telegram" in d["version"]'
+          target="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
+          echo "Restore Telegram webhook to Cloudflare"
+          curl -fsS --retry 2 --max-time 30 -X POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
+            --data-urlencode "url=$target" \
+            --data-urlencode 'allowed_updates=["callback_query","message"]' \
+            --data-urlencode 'drop_pending_updates=false' \
+            -o /tmp/set.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/set.json'))
+          if d.get('ok') is not True:raise SystemExit('setWebhook rejected')
+          print('SET_WEBHOOK_OK')
+          PY
+          curl -fsS --max-time 30 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/get.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/get.json'))['result']
+          expect='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          print(json.dumps({k:d.get(k) for k in ('url','pending_update_count','last_error_message')},ensure_ascii=False))
+          assert d.get('url')==expect,'Cloudflare webhook not registered'
+          print('RESTORED_TO_CLOUDFLARE_CONFIRMED')
+          PY
