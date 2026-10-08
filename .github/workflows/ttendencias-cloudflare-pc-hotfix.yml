@@ -1,0 +1,59 @@
+name: TTendencias Cloudflare PC hotfix validation
+on:
+  pull_request:
+    paths:
+      - 'windows/TTendenciasDedicatedListener.ps1'
+      - 'windows/TTendenciasImageBridge.js'
+      - 'windows/TTendenciasMobileChatTriggerListener.ps1'
+      - 'windows/MobileChatTriggerListener.ps1'
+      - 'windows/TT-LocalWatchdog.ps1'
+      - '.github/workflows/ttendencias-cloudflare-pc-hotfix.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-route-compat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PowerShell syntax of all changed scripts
+        shell: pwsh
+        run: |
+          $names = @(
+            "windows/TTendenciasDedicatedListener.ps1",
+            "windows/TTendenciasMobileChatTriggerListener.ps1",
+            "windows/MobileChatTriggerListener.ps1",
+            "windows/TT-LocalWatchdog.ps1"
+          )
+          foreach($name in $names) {
+            $tokens = $null
+            $errors = $null
+            [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $name),[ref]$tokens,[ref]$errors) | Out-Null
+            if ($errors.Count) { throw "$name invalid: $($errors[0].Message)" }
+            Write-Host "OK: $name"
+          }
+      - name: Validate image bridge JavaScript
+        run: node --check windows/TTendenciasImageBridge.js
+      - name: Ensure TTendencias uses Cloudflare and TTiTTulares route is unchanged
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          base='https://ttendencias-no-vercel-test.fabricelop.workers.dev'
+          files=[
+              'windows/TTendenciasDedicatedListener.ps1',
+              'windows/TTendenciasImageBridge.js',
+              'windows/TTendenciasMobileChatTriggerListener.ps1',
+              'windows/MobileChatTriggerListener.ps1',
+              'windows/TT-LocalWatchdog.ps1',
+          ]
+          for name in files:
+              data=Path(name).read_text(encoding='utf-8')
+              assert base in data,name+' missing Cloudflare route'
+              assert 'TTENDENCIAS_SERVICE_BASE' in data,name+' missing override'
+              print('CLOUDFLARE',name)
+          mixed=Path('windows/MobileChatTriggerListener.ps1').read_text(encoding='utf-8')
+          assert 'RunUrl = "$StatusBase/api/ttittulares-run"' in mixed
+          assert 'RunStatusUrl = "$StatusBase/api/ttittulares-run-status"' in mixed
+          print('TTITTULARES routing left untouched')
+          PY
