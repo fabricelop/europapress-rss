@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-08T09:19:32.262Z",
+  "updated_at": "2026-10-08T09:21:14.201Z",
   "items": [
     {
       "event_id": "b271bd23055d",
@@ -189,8 +189,8 @@
       "fallback_image_status": "ready",
       "image_mode": "fallback_only",
       "image_strategy": "fallback_only",
-      "ai_image_status": "disabled",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "disable_ai_image": true,
       "image_status": "ready",
@@ -207,13 +207,53 @@
       },
       "fallback_image_search_attempted_at": "2026-10-08T09:16:50.564737Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261008110611_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/comunitat-valenciana/noticia-policia-nacional-muere-accidente-ser-arrollado-coche-patrulla-alicante-20261008110611.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Un policía nacional muere en un accidente tras ser arrollado por su coche patrulla en Alicante"
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/fef6e9c7d72c-r1-ai1-791451015372.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "879967a1951cd07fd8504f586f70eea0c7c1887c8c220c2aafe79797344c3bd5",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2269145,
+        "context_guard": {
+          "version": 3,
+          "event_id": "fef6e9c7d72c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-fef6e9c7d72c-r1-a1-1791451015372"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/fef6e9c7d72c-r1-ai1-791451015372.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/fef6e9c7d72c-r1-ai1-791451015372.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "879967a1951cd07fd8504f586f70eea0c7c1887c8c220c2aafe79797344c3bd5",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2269145,
+        "context_guard": {
+          "version": 3,
+          "event_id": "fef6e9c7d72c",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-fef6e9c7d72c-r1-a1-1791451015372"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/fef6e9c7d72c-r1-ai1-791451015372.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-08T09:21:14.201Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T09:21:14.201Z"
     },
     {
       "event_id": "9519f731234b",
