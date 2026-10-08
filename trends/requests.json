@@ -2851,7 +2851,7 @@
       "id": "ff7da32ed7b2",
       "name": "#FelizJueves",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-08T07:11:47+02:00",
       "revision": 2,
       "reexplain": true,
@@ -2877,25 +2877,24 @@
       "ready_at": "2026-09-24T09:28:06+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "rank_at_explanation": 3,
-      "explanation": "TT#3 #FelizJueves es tendencia por los saludos y buenos deseos que los usuarios comparten cada jueves en X; es una etiqueta recurrente, no una noticia concreta.\n🌶️ El jueves se ha puesto la etiqueta antes que el café.",
-      "closer_text": "🌶️ El jueves se ha puesto la etiqueta antes que el café.",
+      "rank_at_explanation": 4,
+      "explanation": "TT#4 #FelizJueves es tendencia por los mensajes matinales de usuarios que comparten saludos, frases y buenos deseos para arrancar el jueves.\n🌶️ El jueves ha fichado a medio X como departamento de buenos días.",
+      "closer_text": "🌶️ El jueves ha fichado a medio X como departamento de buenos días.",
       "news_disposition": "ignored",
-      "news_note": "Etiqueta recurrente de saludos y buenos deseos del jueves; no corresponde a un acontecimiento periodístico concreto y no abre puente a TTiTTulares.",
+      "news_note": "Conversación social recurrente; no hay acontecimiento informativo concreto.",
       "source": "editorial_chat_direct",
       "verification_sources": [
-        {
-          "source": "X · búsqueda #FelizJueves",
-          "url": "https://x.com/search?q=%23FelizJueves&src=typed_query&f=live"
-        }
+        "trends/recent.json · 2026-10-08T07:11:33+02:00 · #felizjueves rank 4",
+        "Urlebird · #felizjueves asociado recurrentemente a #buenosdias y saludos",
+        "GetDayTrends España · #felizjueves como hashtag recurrente de larga duración"
       ],
-      "image_strategy": "existing_web_image",
+      "image_strategy": "ai_plus_fallback",
       "image_status": "none",
       "image_pending": false,
       "image_failure_reason": "Etiqueta recurrente sin una fotografía editorial específica; la explicación no se bloquea por imagen.",
-      "explanation_group_id": null,
-      "group_id": null,
-      "group_title": null,
+      "explanation_group_id": "grp-ff7da32ed7b2",
+      "group_id": "grp-ff7da32ed7b2",
+      "group_title": "#FelizJueves",
       "group_leader_id": "ff7da32ed7b2",
       "trend_names": [
         "#FelizJueves"
@@ -2905,7 +2904,21 @@
           "name": "#FelizJueves",
           "rank": 3
         }
-      ]
+      ],
+      "explained_at": "2026-10-08T05:17:00.000Z",
+      "last_attempt_at": "2026-10-08T05:17:00.000Z",
+      "category": "Viral/Redes",
+      "grouped_member_revisions": [
+        {
+          "id": "ff7da32ed7b2",
+          "name": "#FelizJueves",
+          "revision": 2
+        }
+      ],
+      "disable_ai_image": false,
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null
     },
     {
       "id": "3d72197255c6",
@@ -36925,6 +36938,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-08T07:11:47+02:00",
+  "updated_at": "2026-10-08T05:17:00.000Z",
   "count": 690
 }
