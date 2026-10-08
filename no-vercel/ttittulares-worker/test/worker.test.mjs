@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
-import worker,{handlerRequest} from "../src/index.js";
+import worker,{handlerRequest,parseTtiCallback} from "../src/index.js";
 import sharp from "../src/compat/sharp.js";
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
@@ -94,3 +94,36 @@ test("TTendencias and webhook are never routed through this Worker",async()=>{
   }
 });
 
+
+test("parse legitimate Telegram buttons without persisting private chat identifiers",()=>{
+ const original={update_id:218637913,callback_query:{
+   id:"19298918471234567",data:"tt:p:47e946414bab",
+   message:{message_id:3031,chat:{id:-1002345678910}}
+ }};
+ const row=parseTtiCallback(original);
+ assert.equal(row.text,"ttp|47e946414bab");
+ assert.equal(row.message_id,3031);
+ assert.equal(row.source,"ttittulares_cloudflare_callback_v1");
+ assert.equal(Object.hasOwn(row,"chat_id"),false);
+ original.callback_query.data="tt:d:47e946414bab";
+ assert.equal(parseTtiCallback(original).text,"ttd|47e946414bab");
+ original.callback_query.data="tt:x:47e946414bab";
+ assert.equal(parseTtiCallback(original),null);
+ original.callback_query.data="tt:p:../../not-allowed";
+ assert.equal(parseTtiCallback(original),null);
+});
+test("only real callback-shaped updates enter the queue; no token never accepts them",async()=>{
+ const payload={update_id:218637913,callback_query:{
+  id:"19298918471234567",data:"tt:p:47e946414bab",
+  message:{message_id:3031,chat:{id:-1002345678910}}
+ }};
+ const r=await worker.fetch(new Request("https://tt.example/api/ttittulares-telegram-callback",{
+  method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)
+ }),{});
+ assert.equal(r.status,503);
+ const missing=await worker.fetch(new Request("https://tt.example/api/ttittulares-telegram-callback",{
+  method:"POST",body:JSON.stringify({update_id:123})
+ }),{});
+ assert.equal(missing.status,200);
+ assert.equal((await missing.json()).ignored,true);
+});
