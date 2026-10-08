@@ -1,27 +1,25 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
-  "last_started_at": "2026-10-08T16:54:05+02:00",
-  "last_completed_at": "2026-10-08T16:00:01+02:00",
-  "updated_at": "2026-10-08T16:54:05+02:00",
-  "status": "waiting",
+  "engine": "chat-direct",
+  "last_started_at": "2026-10-08T16:45:00+02:00",
+  "last_completed_at": "2026-10-08T16:56:30+02:00",
+  "updated_at": "2026-10-08T16:56:30+02:00",
+  "status": "success",
   "processed_ids": [
+    "88575cfe0dd7",
+    "f8b727626ba7",
     "23c6a2de8c96",
+    "58a586236216",
     "5ced28d519a2",
     "ad87900fa731"
   ],
   "remaining_ids": [
-    "f8b727626ba7",
-    "58a586236216",
     "ad87900fa731",
     "5ced28d519a2"
   ],
   "api_failover_enabled": false,
-  "queue_complete": false,
-  "remaining_active_ids": [
-    "f8b727626ba7",
-    "58a586236216"
-  ],
+  "queue_complete": true,
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "ad87900fa731",
     "5ced28d519a2"
@@ -30,44 +28,44 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261008T154500-chat",
+    "run_id": "tr-20261008T164500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-08T15:45:00.000+02:00",
-    "updated_at": "2026-10-08T16:00:01+02:00",
-    "finished_at": "2026-10-08T16:00:01+02:00",
+    "started_at": "2026-10-08T16:45:00+02:00",
+    "updated_at": "2026-10-08T16:56:30+02:00",
+    "finished_at": "2026-10-08T16:56:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 5,
-    "total": 5,
+    "current": 6,
+    "total": 6,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 4,
-      "explanation_groups": 4,
+      "trends_processed": 6,
+      "trends_explained": 3,
+      "explanation_groups": 3,
       "new_cards": 3,
-      "revisions_updated": 1,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 3,
       "trends_dismissed": 0,
       "incidents": 0,
-      "queue_remaining": 1,
+      "queue_remaining": 2,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "visual_repair_triggered": 1,
+      "visual_repair_triggered": 3,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 1,
       "remates_reused": 0,
       "remates_omitted": 2,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 4 explicadas; 1 problemática; 0 activas",
+    "message": "Pasada completada · 3 explicadas; 3 problemáticas; 0 activas",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,162 +77,170 @@
     },
     "remate_selections": [
       {
-        "id": "15e6f35f9ce5",
-        "revision": 1,
-        "selected": "🌶️ HONOR ha convertido el grosor en una quiniela de bolsillo."
+        "id": "88575cfe0dd7",
+        "revision": 0,
+        "selected": "🌶️ Carson convirtió la estantería de géneros en una mesa de mezclas."
       },
       {
-        "id": "157353a5cbb7",
+        "id": "f8b727626ba7",
         "revision": 0,
-        "selected": "🌶️ Jorge Jesus le encontró el botón de reinicio a João."
+        "selected": null,
+        "no_remate_reason": "political_legal"
+      },
+      {
+        "id": "58a586236216",
+        "revision": 0,
+        "selected": null,
+        "no_remate_reason": "sensitive_health"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-08T15:50:10+02:00",
-        "phase": "drafting",
-        "trend_id": "15e6f35f9ce5",
-        "title": "#HONORMagicV6",
-        "message": "Redactando explicación factual"
+        "at": "2026-10-08T16:54:00+02:00",
+        "phase": "verifying",
+        "trend_id": "88575cfe0dd7",
+        "title": "Nobel de Literatura",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-08T15:50:25+02:00",
+        "at": "2026-10-08T16:54:05+02:00",
+        "phase": "verifying",
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Releyendo estado autoritativo de David Sánchez"
+      },
+      {
+        "at": "2026-10-08T16:54:30+02:00",
+        "phase": "investigating",
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Contrastando RTVE y El País"
+      },
+      {
+        "at": "2026-10-08T16:54:45+02:00",
+        "phase": "investigating",
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Hecho esencial verificado · recurso contra la condena y petición de absolución"
+      },
+      {
+        "at": "2026-10-08T16:55:00+02:00",
+        "phase": "drafting",
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Comprobando límite de X · 210 caracteres"
+      },
+      {
+        "at": "2026-10-08T16:55:15+02:00",
         "phase": "remate_selection",
-        "trend_id": "15e6f35f9ce5",
-        "title": "#HONORMagicV6",
-        "message": "Remate seleccionado"
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Sin remate · contenido político/judicial"
       },
       {
-        "at": "2026-10-08T15:50:45+02:00",
-        "phase": "investigating",
-        "trend_id": "32e9cdea7e2c",
-        "title": "Beiras",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-08T15:51:10+02:00",
-        "phase": "drafting",
-        "trend_id": "32e9cdea7e2c",
-        "title": "Beiras",
-        "message": "Sin remate · explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-08T15:51:35+02:00",
-        "phase": "investigating",
-        "trend_id": "157353a5cbb7",
-        "title": "João Félix",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-08T15:52:05+02:00",
-        "phase": "drafting",
-        "trend_id": "157353a5cbb7",
-        "title": "João Félix",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-08T15:52:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "157353a5cbb7",
-        "title": "João Félix",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-08T15:52:45+02:00",
-        "phase": "investigating",
-        "trend_id": "a07425cd8e19",
-        "title": "Bergerot",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-08T15:53:10+02:00",
-        "phase": "drafting",
-        "trend_id": "a07425cd8e19",
-        "title": "Bergerot",
-        "message": "Sin remate · explicación factual suficiente"
-      },
-      {
-        "at": "2026-10-08T15:53:35+02:00",
-        "phase": "investigating",
-        "trend_id": "ad87900fa731",
-        "title": "Corre",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-08T15:54:25+02:00",
-        "phase": "investigating",
-        "trend_id": "ad87900fa731",
-        "title": "Corre",
-        "message": "No se verifica un detonante factual inequívoco"
-      },
-      {
-        "at": "2026-10-08T15:55:00+02:00",
+        "at": "2026-10-08T16:55:20+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando 4 fichas Explicadas"
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-08T15:56:32+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Actualizando requests y retirando 4 revisiones de la cola"
+        "at": "2026-10-08T16:55:30+02:00",
+        "phase": "verifying",
+        "trend_id": "f8b727626ba7",
+        "title": "David Sánchez",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-08T15:58:56+02:00",
+        "at": "2026-10-08T16:55:32+02:00",
+        "phase": "verifying",
+        "trend_id": "23c6a2de8c96",
+        "title": "Charlie Kirk",
+        "message": "Releyendo estado autoritativo de Charlie Kirk"
+      },
+      {
+        "at": "2026-10-08T16:55:35+02:00",
+        "phase": "investigating",
+        "trend_id": "23c6a2de8c96",
+        "title": "Charlie Kirk",
+        "message": "Dos búsquedas distintas sin detonante actual verificable en España"
+      },
+      {
+        "at": "2026-10-08T16:55:38+02:00",
         "phase": "persisting",
-        "trend_id": "ad87900fa731",
-        "title": "Corre",
+        "trend_id": "23c6a2de8c96",
+        "title": "Charlie Kirk",
         "message": "Marcando revisión como problemática"
       },
       {
-        "at": "2026-10-08T15:59:20+02:00",
+        "at": "2026-10-08T16:55:40+02:00",
         "phase": "verifying",
-        "trend_id": "15e6f35f9ce5",
-        "title": "#HONORMagicV6",
-        "message": "Verificando id+revision y texto persistido"
+        "trend_id": "58a586236216",
+        "title": "Día Mundial de la Salud Mental",
+        "message": "Releyendo estado autoritativo de Día Mundial de la Salud Mental"
       },
       {
-        "at": "2026-10-08T15:59:25+02:00",
+        "at": "2026-10-08T16:55:45+02:00",
+        "phase": "investigating",
+        "trend_id": "58a586236216",
+        "title": "Día Mundial de la Salud Mental",
+        "message": "Hecho esencial verificado · campañas previas al 10 de octubre"
+      },
+      {
+        "at": "2026-10-08T16:55:50+02:00",
+        "phase": "drafting",
+        "trend_id": "58a586236216",
+        "title": "Día Mundial de la Salud Mental",
+        "message": "Comprobando límite de X · 215 caracteres"
+      },
+      {
+        "at": "2026-10-08T16:55:52+02:00",
+        "phase": "remate_selection",
+        "trend_id": "58a586236216",
+        "title": "Día Mundial de la Salud Mental",
+        "message": "Sin remate · tema sensible de salud mental"
+      },
+      {
+        "at": "2026-10-08T16:56:06+02:00",
         "phase": "verifying",
-        "trend_id": "32e9cdea7e2c",
-        "title": "Beiras",
+        "trend_id": "58a586236216",
+        "title": "Día Mundial de la Salud Mental",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-08T15:59:30+02:00",
-        "phase": "verifying",
-        "trend_id": "157353a5cbb7",
-        "title": "João Félix",
-        "message": "Tendencia cerrada y verificada"
+        "at": "2026-10-08T16:56:10+02:00",
+        "phase": "investigating",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
+        "message": "Dos búsquedas distintas sin significado ni detonante verificable"
       },
       {
-        "at": "2026-10-08T15:59:35+02:00",
-        "phase": "verifying",
-        "trend_id": "a07425cd8e19",
-        "title": "Bergerot",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-08T15:59:40+02:00",
-        "phase": "verifying",
-        "trend_id": "ad87900fa731",
-        "title": "Corre",
+        "at": "2026-10-08T16:56:15+02:00",
+        "phase": "persisting",
+        "trend_id": "5ced28d519a2",
+        "title": "#TEM8O",
         "message": "Estado problemático persistido y verificado"
       },
       {
-        "at": "2026-10-08T16:00:01+02:00",
+        "at": "2026-10-08T16:56:20+02:00",
+        "phase": "investigating",
+        "trend_id": "ad87900fa731",
+        "title": "Corre",
+        "message": "Nuevo intento sin detonante factual inequívoco"
+      },
+      {
+        "at": "2026-10-08T16:56:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 4 explicadas; 1 problemática; 0 activas"
+        "message": "Pasada completada · 3 explicadas; 3 problemáticas; 0 activas"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
-      "ad87900fa731"
+      "ad87900fa731",
+      "5ced28d519a2"
     ]
   },
   "visual_repair": {
@@ -242,8 +248,8 @@
     "persisted_trigger": true,
     "status": "active",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261008T144500-chat",
-    "last_triggered_at": "2026-10-08T14:45:20+02:00",
+    "last_trigger_run_id": "tr-20261008T164500-chat",
+    "last_triggered_at": "2026-10-08T16:45:00+02:00",
     "pending_cards_reviewed": 3,
     "observed_at": "2026-10-08T14:46:00+02:00",
     "queued_repairs": 0,
