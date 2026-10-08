@@ -139,7 +139,7 @@ function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,
   if($Project -eq "ttittulares"){ return }
   try{
     $api=if($Project -eq "ttittulares"){
-      "https://europapress-rss.vercel.app/api/ttittulares-run-status"
+      "https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-run-status"
     }else{
       $(if([Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User")){[Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User").TrimEnd("/") + "/api/ttendencias-run-status"}else{"https://ttendencias-no-vercel-test.fabricelop.workers.dev/api/ttendencias-run-status"})
     }

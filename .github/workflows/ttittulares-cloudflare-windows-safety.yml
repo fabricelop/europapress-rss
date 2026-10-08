@@ -1,0 +1,44 @@
+name: TTiTTulares Cloudflare - Windows cutover safety (no deploy)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'windows/TTiTTularesDedicatedListener.ps1'
+      - 'windows/TTiTTularesImageBridge.js'
+      - 'windows/MobileChatTriggerListener.ps1'
+      - 'windows/TT-LocalWatchdog.ps1'
+      - '.github/workflows/ttittulares-cloudflare-windows-safety.yml'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse PowerShell without executing any Windows automation
+        shell: pwsh
+        run: |
+          foreach ($path in @('windows/TTiTTularesDedicatedListener.ps1','windows/MobileChatTriggerListener.ps1','windows/TT-LocalWatchdog.ps1')) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path), [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count) { throw "PowerShell parsing failed: $path => $errors" }
+          }
+      - name: Check Image bridge JS
+        shell: pwsh
+        run: node --check windows/TTiTTularesImageBridge.js
+      - name: Verify Cloudflare TTit target, and preserve TTendencias isolation
+        shell: pwsh
+        run: |
+          $files = @('windows/TTiTTularesDedicatedListener.ps1','windows/TTiTTularesImageBridge.js','windows/MobileChatTriggerListener.ps1','windows/TT-LocalWatchdog.ps1')
+          foreach ($p in $files) {
+            $s = Get-Content $p -Raw
+            if ($s -notmatch 'ttittulares-no-vercel-test\.fabricelop\.workers\.dev') { throw "Cloudflare URL missing in $p" }
+            if ($s -match 'europapress-rss\.vercel\.app') { throw "Vercel residue in $p" }
+          }
+          $shared = Get-Content windows/MobileChatTriggerListener.ps1 -Raw
+          if ($shared -notmatch 'ttendencias-no-vercel-test\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }
+          $t = Get-Content windows/TTendenciasImageBridge.js -Raw
+          if ($t -notmatch 'ttendencias-no-vercel-test\.fabricelop\.workers\.dev') { throw "TTendencias image routing altered" }
+          Write-Host "PASS: TTiTTulares route migrated only on isolated branch; TTendencias unchanged"
