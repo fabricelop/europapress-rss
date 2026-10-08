@@ -37313,11 +37313,11 @@
         "Bergerot"
       ],
       "auto_queued": true,
-      "problematic_at": "2026-10-08T15:58:56+02:00",
+      "problematic_at": "2026-10-08T16:54:05+02:00",
       "last_attempt_at": "2026-10-08T15:58:56+02:00",
-      "problem_reason": "La tendencia «Corre» está corroborada como activa y fresca en varias fuentes sociales, pero no se ha podido identificar y contrastar un detonante factual inequívoco sin especular.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chat-direct"
+      "problem_reason": "Nuevo intento sin detonante inequívoco: las búsquedas actuales devuelven acontecimientos distintos que contienen «corre», pero ninguna fuente fiable permite atribuir con seguridad la tendencia «Corre» a uno de ellos.",
+      "problematic_attempts": 2,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "157353a5cbb7",
@@ -37509,7 +37509,7 @@
       "id": "23c6a2de8c96",
       "name": "Charlie Kirk",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-08T14:08:14.552Z",
       "rank": 31,
       "with_image": true,
@@ -37523,7 +37523,11 @@
       "requested_together": [
         "Charlie Kirk"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "problematic_at": "2026-10-08T16:54:05+02:00",
+      "problem_reason": "Tras varias búsquedas actuales y contrastes no se identifica un detonante verificable en España para «Charlie Kirk» el 8 de octubre de 2026; las referencias encontradas son hechos anteriores o próximos sin evidencia suficiente de que expliquen la tendencia actual.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "58a586236216",
@@ -37549,7 +37553,7 @@
       "id": "5ced28d519a2",
       "name": "#TEM8O",
       "rank": 4,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-08T16:32:12+02:00",
       "revision": 0,
       "reexplain": false,
@@ -37562,9 +37566,13 @@
       "captured_with": [
         "#TEM8O"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "problematic_at": "2026-10-08T16:54:05+02:00",
+      "problem_reason": "Tras búsquedas distintas no se encuentra una referencia fiable que identifique qué significa «#TEM8O» ni un acontecimiento actual verificable que explique el hashtag en España; no se publica una explicación especulativa.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     }
   ],
-  "updated_at": "2026-10-08T16:49:35+02:00",
+  "updated_at": "2026-10-08T16:54:05+02:00",
   "count": 703
 }
