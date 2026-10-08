@@ -37382,9 +37382,9 @@
       "news_note": "Fallecimiento verificado; se explica únicamente en TTendencias conforme al aislamiento de salida vigente.",
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "not_requested",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_status": "ready",
       "image_pending": false,
       "group_id": "grp-d1d26edc5620",
@@ -37417,15 +37417,54 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261008090336_1200.jpg",
-        "source": "Europa Press · fallecimiento de Xosé Manuel Beiras · 8/10/2026",
-        "source_url": "https://www.notimerica.com/politica/noticia-fallece-xose-manuel-beiras-referente-historico-nacionalismo-gallego-20261008090336.html",
-        "alt": "Imagen de archivo relacionada con Xosé Manuel Beiras",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d1d26edc5620-r0-ai1-791446138173.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "edf6b6f94826fb6ebbcbc14d0981e603feffe5db408c3f92611cf04c9264425d",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2381568,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d1d26edc5620",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-d1d26edc5620-r0-a1-1791446138173"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d1d26edc5620-r0-ai1-791446138173.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/d1d26edc5620-r0-ai1-791446138173.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "edf6b6f94826fb6ebbcbc14d0981e603feffe5db408c3f92611cf04c9264425d",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2381568,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "d1d26edc5620",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-d1d26edc5620-r0-a1-1791446138173"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/d1d26edc5620-r0-ai1-791446138173.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-08T08:31:25.043Z"
     }
   ],
-  "updated_at": "2026-10-08T09:57:09+02:00",
+  "updated_at": "2026-10-08T08:31:25.043Z",
   "count": 649
 }
