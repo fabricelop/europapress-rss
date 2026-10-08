@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1423">
+<title>TTendencias · Continuidad sin Vercel</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color-scheme:dark;background:#0a1220;color:#edf4ff}
+*{box-sizing:border-box}body{max-width:950px;margin:0 auto;padding:24px 15px 85px}h1{font-size:clamp(28px,5vw,38px);margin:9px 0 5px}h2{font-size:19px;margin:0 0 15px}p{line-height:1.5;margin:5px 0 13px}.muted,.hint{color:#adbed6}.hint{font-size:13px}
+header{display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}.eyebrow{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.12em;color:#94c5ff}
+.pill{font-size:12px;background:#24374f;border:1px solid #59789d;padding:6px 11px;border-radius:20px;color:#d1e8ff}
+.panel{border:1px solid #32435b;background:#151f2e;border-radius:17px;padding:21px;margin-top:20px}
+.status{border-left:3px solid #f2c36d;padding:12px;background:#2c291e;border-radius:5px;font-size:14px;line-height:1.55}
+.status.ok{border-color:#6fcfaa;background:#173327}
+.status.error{border-color:#fa8282;background:#351d27}
+.flex{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+button,.link{appearance:none;border:1px solid #607b9a;border-radius:10px;background:#233954;color:#e9f6ff;padding:10px 14px;font:inherit;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.item{display:flex;gap:13px;align-items:flex-start;border:1px solid #354b69;background:#101a2a;border-radius:12px;padding:14px}
+.num{border-radius:10px;background:#233e5f;color:#a8d2ff;display:grid;place-items:center;flex:0 0 37px;height:37px;font-weight:800}
+.item-body{min-width:0;flex:1}.item-name{font-weight:760;overflow-wrap:anywhere;font-size:15px}
+.item .meta{color:#afc2d8;font-size:12px;margin-top:6px}
+a{color:#98c8ff}a:focus-visible,button:focus-visible{outline:3px solid #66adff;outline-offset:3px}
+.row-link{white-space:nowrap;font-size:12px;font-weight:700;text-decoration:none}
+.notice{padding:13px 15px;border:1px solid #496586;border-radius:12px;color:#bad7f6;background:#10243a}
+footer{margin-top:26px;color:#9cb1ca;font-size:12px;line-height:1.65}
+</style>
+</head>
+<body>
+<header>
+<div><div class="eyebrow">Ruta de emergencia · Sin Vercel</div><h1>TTendencias</h1><p class="muted">Radar de España y próximas tendencias, leídos directamente de GitHub.</p></div>
+<span class="pill">Solo lectura</span>
+</header>
+<div class="notice">Este panel de contingencia <strong>no publica, no elabora y no envía órdenes</strong>. Permite consultar el radar desde el móvil aun cuando Vercel esté suspendido. La migración editorial completa se realizará por separado.</div>
+<section class="panel">
+<div class="flex"><h2 style="margin:0">Estado del radar</h2><button id="refresh" type="button">Actualizar ahora</button></div>
+<p class="hint" id="updated">Consultando GitHub…</p>
+<div role="status" aria-live="polite" class="status" id="state">Cargando…</div>
+<div class="hint" style="margin-top:12px" id="sources"></div>
+</section>
+<section class="panel">
+<h2>Top 10</h2><div class="grid" id="top"><p class="muted">Cargando…</p></div>
+</section>
+<section class="panel">
+<h2>Próximas tendencias</h2><div class="grid" id="upcoming"><p class="muted">Cargando…</p></div>
+</section>
+<section class="panel">
+<h2>Diagnóstico guardado en GitHub</h2><p class="hint">Este diagnóstico procede de GitHub Actions; puede ser anterior al estado actual.</p><div id="health" class="status">Cargando…</div>
+</section>
+<footer>Datos: <a href="https://github.com/fabricelop/europapress-rss/tree/main/trends" target="_blank" rel="noopener noreferrer">repositorio oficial</a>. El estado se conserva en este dispositivo para mostrar la última captura si GitHub falla. <strong>«Sin datos» no significa «sin tendencias»</strong>. Este panel no utiliza sesiones de X, credenciales, Vercel ni una API de pago.</footer>
+<script>
+"use strict";
+const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/";
+const CACHE_PREFIX="no-vercel-trends-fallback-v1:";
+const $=id=>document.getElementById(id);
+function fmt(iso){const d=new Date(iso||0);return Number.isFinite(d.getTime())?d.toLocaleString("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"short"}):"Sin fecha";}
+function age(iso){const n=Date.parse(iso||"");return Number.isFinite(n)?Math.max(0,Math.round((Date.now()-n)/60000)):null;}
+function setStatus(message,cls=""){$("state").textContent=message;$("state").className="status "+cls;}
+function cacheRead(key){try{return JSON.parse(localStorage.getItem(CACHE_PREFIX+key)||"null");}catch{return null;}}
+function cacheWrite(key,data){try{localStorage.setItem(CACHE_PREFIX+key,JSON.stringify(data));}catch{}}
+function node(tag,className,text){const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=String(text);return el;}
+function xSearch(term){return "https://x.com/search?q="+encodeURIComponent(String(term||""))+"&f=live";}
+function draw(target,items,isTop){
+  target.replaceChildren();
+  const rows=Array.isArray(items)?items:[];
+  if(!rows.length){target.append(node("p","muted","No se han identificado entradas en los datos recibidos."));return;}
+  rows.slice(0,isTop?10:20).forEach((it,i)=>{
+    const name=typeof it==="string"?it:String(it?.name||"");
+    if(!name)return;
+    const card=node("article","item");
+    card.append(node("div","num",isTop?(it.rank||i+1):"↗"));
+    const body=node("div","item-body");body.append(node("div","item-name",name));
+    let info=isTop?("Posición "+String(it.rank||i+1)):("Fuentes: "+String(it.social_source_count??it.news_source_count??"sin dato"));
+    if(isTop&&it.movement)info+=" · "+String(it.movement);
+    if(!isTop&&it.best_observed_rank)info+=" · mejor puesto "+it.best_observed_rank;
+    body.append(node("div","meta",info));
+    card.append(body);
+    const a=node("a","row-link","Buscar en X ↗");a.href=xSearch(name);a.target="_blank";a.rel="noopener noreferrer";a.setAttribute("aria-label","Buscar "+name+" en X");card.append(a);
+    target.append(card);
+  });
+}
+function showRadar(data,fromCache){
+  const stamp=data?.captured_at||data?.updated_at||"";
+  const minutes=age(stamp);
+  $("updated").textContent="Radar: "+fmt(stamp)+(fromCache?" · COPIA LOCAL":" · GitHub");
+  $("sources").textContent="Fuentes activas: "+String(data?.non_stale_source_count??"desconocido")+" · Fiabilidad: "+String(data?.reliability??"sin dato");
+  if(minutes===null)setStatus("Falta la fecha de captura. No se puede verificar la vigencia del radar.","error");
+  else if(minutes>60)setStatus("Radar desactualizado: último registro hace "+minutes+" minutos. Los valores siguientes pueden no reflejar las tendencias actuales.","error");
+  else setStatus("Radar recibido. Antigüedad: "+minutes+" minutos."+(fromCache?" Se muestra la última copia local.":""),"ok");
+  const top=(Array.isArray(data?.items)&&data.items.length)?data.items:(data?.top10||[]);
+  draw($("top"),top,true);draw($("upcoming"),data?.upcoming,false);
+}
+function showHealth(data,fromCache){
+  if(!data||typeof data!=="object"){$("health").textContent="Sin diagnóstico disponible.";return;}
+  const problems=Array.isArray(data.blocking)?data.blocking:[];
+  $("health").textContent=(data.ok?"Sin incidencias bloqueantes en este diagnóstico.":problems.length?problems.join(" · "):"Diagnóstico marcado como no saludable.")+" · Revisado: "+fmt(data.checked_at)+(fromCache?" (copia local)":"");
+  $("health").className="status "+(data.ok?"ok":"error");
+}
+async function getJson(file){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  try{
+    const resp=await fetch(BASE+file+"?t="+Date.now(),{cache:"no-store",signal:controller.signal});
+    if(!resp.ok)throw Error("GitHub HTTP "+resp.status);
+    return await resp.json();
+  }finally{clearTimeout(timer);}
+}
+async function load(){
+  const b=$("refresh");b.disabled=true;
+  try{
+    const [r,h]=await Promise.allSettled([getJson("recent.json"),getJson("health-status.json")]);
+    if(r.status==="fulfilled"&&r.value&&typeof r.value==="object"){cacheWrite("recent",r.value);showRadar(r.value,false);}
+    else{const old=cacheRead("recent");if(old)showRadar(old,true);else{setStatus("No se ha podido leer el radar. Comprueba tu conexión y vuelve a intentar.","error");draw($("top"),[],true);draw($("upcoming"),[],false);}}
+    if(h.status==="fulfilled"&&h.value&&typeof h.value==="object"){cacheWrite("health",h.value);showHealth(h.value,false);}
+    else{showHealth(cacheRead("health"),true);}
+  }finally{b.disabled=false;}
+}
+$("refresh").addEventListener("click",load);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load();});
+setInterval(()=>{if(!document.hidden)load();},300000);
+const lastRadar=cacheRead("recent");if(lastRadar)showRadar(lastRadar,true);
+const lastHealth=cacheRead("health");if(lastHealth)showHealth(lastHealth,true);
+load();
+</script>
+</body>
+</html>
