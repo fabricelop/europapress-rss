@@ -31,6 +31,7 @@ This directory is a **non-deployed backend preparation**, not a working Telegram
 - Authenticated read-only Cloudflare API GETs for `tt-control/content/v2` and `tt-control` both returned HTTP 200 with `multipart/form-data`, approximately 480 KB.
 - Earlier diagnostics searched the entire multipart response as text and found no `telegram`, `callback`, or JS imports. **These negative searches are not evidence that the active Worker lacks the routes.** Inspect the MIME parts and original Worker entrypoint before modifying routing.
 - Production `tt-control` has not been redeployed or altered. Live pilot publisher remains inactive until configured with safe Meta credentials and proven Telegram routing.
+- Latest local authenticated MIME-part inspection found a SINGLE textual JavaScript script of ~137 KB, including literal `/api/telegram-webhook` and `/api/ttittulares-telegram-callback`; `tt:p` and `tt:d` were not both found as raw literals. This establishes a Telegram callback forwarder exists. It does NOT yet establish whether `tt:i` is accepted: classify the callback dispatch safely before patching or deploying the gateway. The raw Worker may be bundled/minified; code should not be pasted in chat.
 
 ## Integration work staged in PR #112 (no deployment)
 - `shared/instagram_pilot.py`: opt-in JPEG creation, factual text plus AI disclosure, guarded "📸 Publicar en Instagram" Telegram button.
