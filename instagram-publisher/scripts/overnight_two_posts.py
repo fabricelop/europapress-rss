@@ -80,10 +80,17 @@ def request(url, *, body=None, token=None, timeout=75):
 
 
 def get_json(url):
-    code, value = request(url, timeout=30)
-    if code != 200 or not isinstance(value, dict):
-        raise RuntimeError("PACKAGE_FETCH_FAILURE_" + str(code))
-    return value
+    # Telegram delivery manifests can exceed 32 KiB; read them separately
+    # from the tightly bounded publisher response decoder.
+    req = urllib.request.Request(url, headers={"user-agent": "ttactualidad-night-audit"})
+    with urllib.request.urlopen(req, timeout=40) as resp:
+        if int(resp.status) != 200:
+            raise RuntimeError("PACKAGE_FETCH_FAILURE")
+        data = resp.read(8 * 1024 * 1024)
+        doc = json.loads(data.decode("utf-8"))
+    if not isinstance(doc, dict):
+        raise RuntimeError("PACKAGE_FORMAT_INVALID")
+    return doc
 
 
 def payload_for(target):
