@@ -103,12 +103,12 @@ function instagramCaption(raw) {
   // Meta-publication boundary: also fixes already-delivered Telegram snapshots
   // without rewriting the source caption stored for idempotency in D1.
   let value=String(raw||"").trim()
-    .replace(/^@?ttactualidad\\s*[:—–-]?\\s*/i,"")
-    .replace(/(?:^|\\s)#(?:TTActualidad|Actualidad)\\b/gi," ")
+    .replace(/^@?ttactualidad\s*[:—–-]?\s*/i,"")
+    .replace(/(?:^|\s)#(?:TTActualidad|Actualidad)\b/gi," ")
     .trim();
-  const present=new Set((value.match(/(?<!\\w)#[\\p{L}\\d_]+/gu)||[]).map(x=>x.toLowerCase()));
-  const factual=value.split(/\\n\\s*\\n/,1)[0];
-  const normalized=factual.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+  const present=new Set((value.match(/(?<!\w)#[\p{L}\d_]+/gu)||[]).map(x=>x.toLowerCase()));
+  const factual=value.split(/\n\s*\n/,1)[0];
+  const normalized=factual.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const tags=[];
   for(const [pattern,tag] of INSTAGRAM_TOPIC_TAGS) {
     if(tags.length+present.size>=5)break;
@@ -120,10 +120,10 @@ function instagramCaption(raw) {
   // For newly emerging names not yet in the rules, tag only proper names
   // occurring literally in the approved factual sentence.
   if(tags.length+present.size<2) {
-    const named=factual.match(/\\b[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+(?:de|del|la|las|los|y)\\s+)?[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,})?/gu)||[];
+    const named=factual.match(/\b[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\s+(?:de|del|la|las|los|y)\s+)?[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,})?/gu)||[];
     for(const item of named) {
       if(tags.length+present.size>=3)break;
-      const words=item.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").split(/\\s+/).filter(Boolean);
+      const words=item.normalize("NFD").replace(/[\u0300-\u036f]/g,"").split(/\s+/).filter(Boolean);
       const tag="#"+words.map(w=>w[0].toUpperCase()+w.slice(1)).join("");
       if(tag.length<=35&&!present.has(tag.toLowerCase())) {
         tags.push(tag);present.add(tag.toLowerCase());
@@ -131,7 +131,7 @@ function instagramCaption(raw) {
     }
   }
   for(let i=tags.length;i>0;i--) {
-    const result=value+"\\n\\n"+tags.slice(0,i).join(" ");
+    const result=value+"\n\n"+tags.slice(0,i).join(" ");
     if(result.length<=2200)return result;
   }
   return value;
