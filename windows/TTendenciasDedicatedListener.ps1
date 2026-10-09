@@ -284,7 +284,20 @@ function Load-State {
 }
 
 function Save-State($State) {
-  $State | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $StatePath -Encoding UTF8
+  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE SAVE BLOCKED: invalid object" }
+  Ensure-StateFields $State
+  $json = ConvertTo-Json -InputObject $State -Depth 8 -ErrorAction Stop
+  $tmp = $StatePath + ".tmp." + [guid]::NewGuid().ToString("N")
+  try {
+    Set-Content -LiteralPath $tmp -Value $json -Encoding UTF8 -ErrorAction Stop
+    if (Test-Path -LiteralPath $StatePath) {
+      [System.IO.File]::Replace($tmp, $StatePath, ($StatePath + ".previous"))
+    } else {
+      [System.IO.File]::Move($tmp, $StatePath)
+    }
+  } finally {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+  }
 }
 
 function Ensure-StateFields($State) {
