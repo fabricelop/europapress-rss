@@ -27,12 +27,8 @@ jobs:
           base=f"https://api.telegram.org/bot{token}"
           webhook="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
           # Legacy manual workflow must target Cloudflare, never Vercel.
-          data=json.dumps({
-            "url": webhook,
-            "allowed_updates": ["callback_query","message"],
-            "drop_pending_updates": False
-          }).encode()
-          req=urllib.request.Request(base+"/setWebhook",data=data,headers={"Content-Type":"application/json"})
+          # Pedir al Worker la restauración: conserva el secret_token cifrado.
+          req=urllib.request.Request('https://tt-control.fabricelop.workers.dev/api/telegram-webhook-self-heal-20261004')
           with urllib.request.urlopen(req,timeout=30) as r:
               out=json.loads(r.read().decode())
           with urllib.request.urlopen(base+"/getWebhookInfo",timeout=30) as r:
