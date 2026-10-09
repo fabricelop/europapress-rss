@@ -32,13 +32,17 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v17"
+$WorkerId = "ttendencias-dedicated-v18"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 86400
 $MaxParallelImageChats = 1
+$MaxImageJobProbesPerCycle = 3
+$DirectImageRefreshSeconds = 60
+$script:DirectImageIndexCache = $null
+$script:DirectImageIndexAt = [DateTimeOffset]::MinValue
 $ImageStaleMinutes = 45
 $SnapshotStrongSeconds = 30
 $SnapshotCacheSeconds = 12
@@ -250,23 +254,66 @@ function Read-AckDirect {
   return $null
 }
 
-function Read-ImageIndex {
-  $r=Read-ListenerSnapshot
-  if($r -and $r.image_index){return $r.image_index}
-  return [pscustomobject]@{ jobs = @() }
-}
-
-function Read-ImageJob([string]$TargetId) {
-  if (-not $TargetId) { return $null }
-  try {
-    return Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
-      "Cache-Control" = "no-cache"
-      "User-Agent" = "TTendencias-Dedicated-Listener"
+function Read-ImageIndexDirect([switch]$Force) {
+  $now=[DateTimeOffset]::UtcNow
+  if(-not $Force -and $script:DirectImageIndexCache -and (($now-$script:DirectImageIndexAt).TotalSeconds -lt $DirectImageRefreshSeconds)){return $script:DirectImageIndexCache}
+  try{
+    $url=Get-ControlRawUrl "trends/image-runs/index.json" -ForceHead:$Force
+    $doc=Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
+      "User-Agent"="TTendencias-Dedicated-Listener-ImageIndex-RAW"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-  } catch {
-    Write-Log "IMAGE JOB ERROR target=$TargetId :: $($_.Exception.Message)"
-    return $null
+    if($doc -and $doc.jobs){
+      $script:DirectImageIndexCache=$doc
+      $script:DirectImageIndexAt=$now
+      return $doc
+    }
+  }catch{Write-Log "DIRECT IMAGE INDEX RAW ERROR :: $($_.Exception.Message)"}
+  return $script:DirectImageIndexCache
+}
+function Read-ImageIndex {
+  $snapshot=$null
+  $r=Read-ListenerSnapshot
+  if($r -and $r.image_index){$snapshot=$r.image_index}
+  $direct=Read-ImageIndexDirect
+  if($direct -and $direct.jobs){
+    if(-not $snapshot -or -not $snapshot.jobs){return $direct}
+    try{
+      if([DateTimeOffset]::Parse([string]$direct.updated_at) -ge [DateTimeOffset]::Parse([string]$snapshot.updated_at)){return $direct}
+    }catch{
+      if(@($direct.jobs).Count -ge @($snapshot.jobs).Count){return $direct}
+    }
   }
+  if($snapshot){return $snapshot}
+  if($direct){return $direct}
+  return [pscustomobject]@{jobs=@()}
+}
+function Read-ImageJobDirect([string]$TargetId,[switch]$ForceHead){
+  if(-not $TargetId){return $null}
+  try{
+    $url=Get-ControlRawUrl ("trends/image-runs/jobs/"+[uri]::EscapeDataString($TargetId)+".json") -ForceHead:$ForceHead
+    return Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
+      "User-Agent"="TTendencias-Dedicated-Listener-ImageJob-RAW"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
+    } -TimeoutSec 12
+  }catch{Write-Log "DIRECT IMAGE JOB RAW ERROR target=$TargetId :: $($_.Exception.Message)"}
+  return $null
+}
+function Read-ImageJob([string]$TargetId,[string]$ExpectedCommandId = ""){
+  if(-not $TargetId){return $null}
+  $apiDoc=$null
+  try{
+    $apiDoc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
+      "Cache-Control"="no-cache, no-store"
+      "User-Agent"="TTendencias-Dedicated-Listener-v18"
+    } -TimeoutSec 12
+  }catch{Write-Log "IMAGE JOB API WARNING target=$TargetId :: $($_.Exception.Message)"}
+  if($apiDoc -and (-not $ExpectedCommandId -or [string]$apiDoc.command_id -eq $ExpectedCommandId)){return $apiDoc}
+  $direct=Read-ImageJobDirect $TargetId -ForceHead:([bool]$ExpectedCommandId)
+  if($direct){return $direct}
+  return $apiDoc
 }
 
 function Load-State {
@@ -285,6 +332,7 @@ function Load-State {
     conflict_first_at = ""
     image_commands = @()
     active_image_commands = @()
+    image_scan_cursor = 0
   }
 }
 
@@ -313,6 +361,9 @@ function Ensure-StateFields($State) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
       Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value "" -Force
     }
+  }
+  if (-not ($State.PSObject.Properties.Name -contains "image_scan_cursor")) {
+    Add-Member -InputObject $State -MemberType NoteProperty -Name image_scan_cursor -Value 0 -Force
   }
   foreach ($n in @("image_commands","active_image_commands")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
@@ -1048,10 +1099,19 @@ while ($true) {
     # El puente de imagen usa CDP y no depende de mensajes personalizados del runner.
     # Aunque Ejecutar.js no admita TT_CHAT_MESSAGE_B64, la cola IA debe continuar.
     if ($slots -gt 0) {
-      $jobs = @()
-      if ($idx -and $idx.jobs) { $jobs = @($idx.jobs) }
-
-      foreach ($job in $jobs) {
+      $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
+      # Evitar consultar trabajos historicos y agotar el limite REST de GitHub.
+      $jobs=@($jobs | Where-Object {
+        try { ([DateTimeOffset]::UtcNow-[DateTimeOffset]::Parse([string]$_.requested_at)).TotalHours -le 12 } catch { $true }
+      })
+      $jobCount=$jobs.Count
+      $scanStart=if($jobCount -gt 0){([Math]::Max(0,[int]$state.image_scan_cursor)%$jobCount)}else{0}
+      # Cada 15 s, como maximo 3 consultas de detalle; cursor rotatorio persistente.
+      for($scan=0;$scan -lt [Math]::Min($jobCount,$MaxImageJobProbesPerCycle);$scan++){
+        if($slots -le 0){break}
+        $position=($scanStart+$scan)%$jobCount
+        $job=$jobs[$position]
+        $state.image_scan_cursor=($position+1)%$jobCount
         if ($slots -le 0) { break }
 
         $commandId = [string]$job.command_id
@@ -1070,7 +1130,7 @@ while ($true) {
           continue
         }
 
-        $statusDoc = Read-ImageJob $targetId
+        $statusDoc = Read-ImageJob $targetId $commandId
         if (-not $statusDoc -or [string]$statusDoc.command_id -ne $commandId) {
           Mark-ImageCommand $state $commandId $false
           Save-State $state

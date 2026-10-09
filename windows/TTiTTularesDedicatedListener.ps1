@@ -36,11 +36,12 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v55"
+$WorkerId = "ttittulares-dedicated-v56"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
 $MaxParallelImageChats = 1
+$MaxImageJobProbesPerCycle = 3
 $ImageStaleMinutes = 45
 $SnapshotStrongSeconds = 30
 $SnapshotCacheSeconds = 12
@@ -275,6 +276,7 @@ function Read-ImageIndex {
     try{
       $sj=@($snapshot.jobs);$dj=@($direct.jobs)
       if($dj.Count -gt $sj.Count){return $direct}
+      if([DateTimeOffset]::Parse([string]$direct.updated_at) -gt [DateTimeOffset]::Parse([string]$snapshot.updated_at)){return $direct}
       $sLast=$sj|Select-Object -Last 1
       $dLast=$dj|Select-Object -Last 1
       if($dLast -and (-not $sLast -or [string]$dLast.command_id -ne [string]$sLast.command_id)){
@@ -291,10 +293,10 @@ function Read-ImageIndex {
   return [pscustomobject]@{ jobs = @() }
 }
 
-function Read-ImageJobDirect([string]$TargetId) {
+function Read-ImageJobDirect([string]$TargetId,[switch]$ForceHead) {
   if(-not $TargetId){return $null}
   try{
-    $url=Get-ControlRawUrl ("ttittulares/image-runs/jobs/"+[uri]::EscapeDataString($TargetId)+".json")
+    $url=Get-ControlRawUrl ("ttittulares/image-runs/jobs/"+[uri]::EscapeDataString($TargetId)+".json") -ForceHead:$ForceHead
     return Invoke-RestMethod -Uri (CacheBust $url) -Headers @{
       "User-Agent"="TTiTTulares-Dedicated-Listener-DirectImageJob-Raw"
       "Cache-Control"="no-cache, no-store"
@@ -306,28 +308,23 @@ function Read-ImageJobDirect([string]$TargetId) {
   return $null
 }
 
-function Read-ImageJob([string]$TargetId) {
-  if (-not $TargetId) { return $null }
-
-  # v48: Vercel strong=1 es la lectura primaria de cada job, igual que en
-  # TTendencias. El índice puede avanzar varias veces durante 90 s; si primero
-  # fijamos un SHA de GitHub anterior, el mismo target devuelve un command_id
-  # viejo y el listener descarta el REQUESTED actual. RAW GitHub queda solo
-  # como fallback si el endpoint fuerte no responde.
-  try {
-    $doc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
-      "Cache-Control" = "no-cache, no-store"
-      "Pragma" = "no-cache"
-      "User-Agent" = "TTiTTulares-Dedicated-Listener-v48"
+function Read-ImageJob([string]$TargetId,[string]$ExpectedCommandId = "") {
+  if(-not $TargetId){return $null}
+  $apiDoc=$null
+  try{
+    $apiDoc=Invoke-RestMethod -Uri (CacheBust ($ImageJobUrlBase + [uri]::EscapeDataString($TargetId))) -Headers @{
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
+      "User-Agent"="TTiTTulares-Dedicated-Listener-v56"
     } -TimeoutSec 12
-    if($doc){return $doc}
-  } catch {
+  }catch{
     Write-Log "IMAGE JOB API WARNING target=$TargetId :: $($_.Exception.Message)"
   }
-
-  $direct=Read-ImageJobDirect $TargetId
+  if($apiDoc -and (-not $ExpectedCommandId -or [string]$apiDoc.command_id -eq $ExpectedCommandId)){return $apiDoc}
+  # Cuando Cloudflare sirve un command_id anterior, contrastar con HEAD RAW.
+  $direct=Read-ImageJobDirect $TargetId -ForceHead:([bool]$ExpectedCommandId)
   if($direct){return $direct}
-  return $null
+  return $apiDoc
 }
 
 function Load-State {
@@ -346,6 +343,7 @@ function Load-State {
     conflict_first_at = ""
     image_commands = @()
     active_image_commands = @()
+    image_scan_cursor = 0
     last_chrome_recovery_command_id = ""
     last_chrome_recovery_at = ""
   }
@@ -380,6 +378,9 @@ function Ensure-StateFields($State) {
   }
   if (-not ($State.PSObject.Properties.Name -contains "active_image_commands")) {
     Add-Member -InputObject $State -NotePropertyName active_image_commands -NotePropertyValue @() -Force
+  }
+  if (-not ($State.PSObject.Properties.Name -contains "image_scan_cursor")) {
+    Add-Member -InputObject $State -NotePropertyName image_scan_cursor -NotePropertyValue 0 -Force
   }
 }
 
@@ -1281,7 +1282,18 @@ while ($true) {
     if($otherBridgeBusy){Write-Log "IMAGE GLOBAL SLOT WAIT project=ttendencias"}
     if($slots -gt 0){
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
-      foreach($job in $jobs){
+      # Evitar consultar trabajos historicos y agotar el limite REST de GitHub.
+      $jobs=@($jobs | Where-Object {
+        try { ([DateTimeOffset]::UtcNow-[DateTimeOffset]::Parse([string]$_.requested_at)).TotalHours -le 12 } catch { $true }
+      })
+      $jobCount=$jobs.Count
+      $scanStart=if($jobCount -gt 0){([Math]::Max(0,[int]$state.image_scan_cursor)%$jobCount)}else{0}
+      # Cada 15 s, como maximo 3 consultas de detalle; cursor rotatorio persistente.
+      for($scan=0;$scan -lt [Math]::Min($jobCount,$MaxImageJobProbesPerCycle);$scan++){
+        if($slots -le 0){break}
+        $position=($scanStart+$scan)%$jobCount
+        $job=$jobs[$position]
+        $state.image_scan_cursor=($position+1)%$jobCount
         if($slots -le 0){break}
         $commandId=[string]$job.command_id
         $targetId=[string]$job.target_id
@@ -1289,7 +1301,7 @@ while ($true) {
         $recent=$true
         try{$requested=[DateTimeOffset]::Parse([string]$job.requested_at);if(([DateTimeOffset]::UtcNow-$requested).TotalHours -gt 12){$recent=$false}}catch{}
         if(-not $recent){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
-        $statusDoc=Read-ImageJob $targetId
+        $statusDoc=Read-ImageJob $targetId $commandId
         if(-not $statusDoc -or [string]$statusDoc.command_id -ne $commandId){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
         if(Is-TerminalImageStatus ([string]$statusDoc.status)){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
         # Un REQUESTED es autoritativamente pendiente aunque un intento anterior
