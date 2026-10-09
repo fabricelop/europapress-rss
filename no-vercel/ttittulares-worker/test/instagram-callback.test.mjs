@@ -70,14 +70,18 @@ test("Instagram preflight requires bearer secret and never publishes",async()=>{
  assert.equal(denied.status,401);
  const secret="test-secret-with-at-least-thirty-two-characters";
  const prev=globalThis.fetch;
- globalThis.fetch=async()=>Response.json({ok:true,active:true});
+ globalThis.fetch=async()=>{throw Error("Network fetch is forbidden; service binding only")};
  try{
   const result=await worker.fetch(new Request(url+"?chat_id=-100222333444",{headers:{authorization:"Bearer "+secret}}),{
    INSTAGRAM_INTERNAL_SECRET:secret,
    INSTAGRAM_ALLOWED_CHAT_ID:"-100222333444",
    INSTAGRAM_PUBLISHER_URL:"https://tt-actualidad-instagram-pilot.fabricelop.workers.dev",
    GITHUB_TOKEN:"test",
-   TTITTULARES_CALLBACK_DECRYPT_KEY:"test"
+   TTITTULARES_CALLBACK_DECRYPT_KEY:"test",
+   INSTAGRAM_PUBLISHER:{fetch:async request=>{
+     assert.equal(new URL(request.url).pathname,"/meta-preflight");
+     return Response.json({ok:true,active:true});
+   }}
   });
   assert.equal(result.status,200);
   const d=await result.json();
@@ -85,4 +89,14 @@ test("Instagram preflight requires bearer secret and never publishes",async()=>{
   assert.equal(d.publisher_authenticated,true);
   assert.equal(d.ok,true);
  }finally{globalThis.fetch=prev}
+});
+
+test("Instagram publisher calls are routed by same-account Cloudflare service binding",()=>{
+ const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
+ const config=JSON.parse(readFileSync(new URL("../wrangler.jsonc",import.meta.url),"utf8"));
+ assert.deepEqual(config.services,[{binding:"INSTAGRAM_PUBLISHER",service:"tt-actualidad-instagram-pilot"}]);
+ assert.match(source,/env\.INSTAGRAM_PUBLISHER\.fetch\(new Request\(endpoint,options\)\)/);
+ assert.match(source,/await callInstagramPublisher\(env,endpoint,\{method:"POST"/);
+ assert.match(source,/await callInstagramPublisher\(env,publisher\+"\/meta-preflight"/);
+ assert.doesNotMatch(source,/await fetch\(endpoint,\{method:"POST"/);
 });
