@@ -1,0 +1,43 @@
+name: TTiTTulares - importar noticias enviadas por Telegram
+on:
+  push:
+    branches: [main]
+    paths:
+      - telegram/ttittulares-user-proposals.json
+      - ttittulares/import_telegram_proposals.py
+      - .github/workflows/import-ttittulares-telegram-proposals.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttittulares-telegram-proposals-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verificar importador
+        run: python3 ttittulares/import_telegram_proposals.py --selftest
+      - name: Importar sin perder modificaciones editoriales concurrentes
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 ttittulares/import_telegram_proposals.py
+            git add telegram/ttittulares-user-proposals.json telegram/editorial-processing.json
+            if git diff --cached --quiet; then
+              echo 'No hay propuestas nuevas'; exit 0
+            fi
+            git commit -m "Investigar propuesta TTiTTulares recibida en Telegram"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt * 2))
+          done
+          echo 'No se pudo importar propuesta Telegram: conflictos GitHub' >&2
+          exit 1
