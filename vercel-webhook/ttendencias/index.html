@@ -40,6 +40,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div><div class="runactivity" id="runActivity"></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
+  <details id="opsPanel" style="margin:0 0 10px;padding:9px;border:1px solid #354255;border-radius:12px"><summary id="opsSummary">Estado operativo</summary><div id="opsDetail"></div></details>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
     <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales al alza que todavía no están en el TOP 30</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
@@ -344,6 +345,13 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
 }
 function render(){
  if(!model)return;
+ const alerts=model.operational?.incidents||[];
+ const errors=alerts.filter(x=>x.severity==="error").length;
+ $("opsSummary").textContent=errors+" fallos · "+(alerts.length-errors)+" avisos operativos";
+ const detail=$("opsDetail");detail.replaceChildren();
+ for(const x of alerts){const row=document.createElement("p");row.textContent=(x.severity==="error"?"ERROR: ":"AVISO: ")+x.title+" — "+x.detail;detail.appendChild(row)}
+ if(!alerts.length)detail.textContent="Sin anomalías detectadas";
+
  renderScheduleTiming();
  updateMainImageControl();
  const rel={high:"alta",medium:"media",fallback:"baja",none:"sin datos"}[model.reliability]||model.reliability||"—";
@@ -708,6 +716,7 @@ async function load(silent=false,passive=false){
   if(!r.ok||!d?.ok){const err=new Error(d?.error||"Estado TTendencias no disponible");err.githubRate=d.github_rate_limit||null;throw err}
   if(passive&&(uiInteractionActive()||interactionAtStart!==uiInteractionVersion)){queuePassiveRefresh(450);return}
   model=buildModel(d.recent||{},d.requests||{},d.explained||{},d.health||{},d.prepared||{items:[]},d.editorial_config||{},d.editorial_queue||{items:[]});
+   model.operational=d.operational||{};
   localStorage.setItem("ttendencias-last-model",JSON.stringify(model));render();
  }catch(e){if(e.githubRate)updateGithubRate(e.githubRate);if(model){const q=$("quality");if(q&&e.githubRate?.limited){q.textContent="GitHub limitado";q.className="badge warn"}if(!silent)showToast("Mostrando la última copia válida")}else if(!silent)showToast("Datos temporalmente no disponibles")}
 }
