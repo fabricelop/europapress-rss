@@ -29,14 +29,14 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
 <header class="top">
   <div class="topLine"><div class="brand">TTendencias</div><div class="spacer"></div><button class="iconbtn" id="refreshBtn" title="Recargar datos">↻</button><button class="iconbtn" id="settingsBtn" title="Acceso">⚙</button></div>
   <nav class="nav3">
-    <a class="navTab active" id="top10Btn" href="/ttendencias/">TOP 10</a>
+    <a class="navTab active" id="top10Btn" href="/ttendencias/">TOP 30</a>
     <a class="navTab pending" id="preparedBtn" href="/ttendencias/explicadas/" title="Ver pendientes de publicar">Pendientes</a>
     <a class="navTab" id="historyBtn" href="/ttendencias/historico/" title="Ver histórico">Histórico</a>
   </nav>
 </header>
 <main>
   <section class="summary">
-    <div><h1>Top 10 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
+    <div><h1>Top 30 España</h1><div class="meta scheduleTiming"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><button class="workingCount idle" id="workingCount" type="button">En elaboración: 0</button></div></div>
     <div class="badge" id="quality">—</div>
   </section>
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div><div class="runactivity" id="runActivity"></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
@@ -223,11 +223,11 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
  const explainedSet=new Set(Object.keys(explainedByName));
  const anticipatedByName={};for(const x of (recent.anticipated_entries||[]))anticipatedByName[nrm(x.name)]=x;
  const latestFor=name=>[...requests].reverse().find(x=>nrm(x.name)===nrm(name));
- const items=(recent.items||[]).slice(0,10).map(item=>{
-   const req=latestFor(item.name),s=String(req?.status||"");
+ const items=(recent.items||[]).slice(0,30).map(item=>{
+   const req=latestFor(item.name),s=String(req?.status||""),manualOnly=Number(item.rank)>10;
    const explainedEntry=explainedByName[nrm(item.name)]||null;
    const ls=local[nrm(item.name)],localValid=!req&&!!ls;
-   let status="pending",label="Pendiente",detail="Pendiente de explicación automática",ready=false;
+   let status=manualOnly?"radar":"pending",label=manualOnly?"Disponible":"Pendiente",detail=manualOnly?"Solo se prepara manualmente":"Pendiente de explicación automática",ready=false;
    // El servidor manda siempre que exista una solicitud. El estado local es
    // solo optimista mientras aún no existe confirmación remota.
    if(s==="dismissed"){status="pending";label="Pendiente";detail="Sin explicación activa"}
@@ -242,7 +242,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
      detail=age>=30?"Procesando · retraso de "+age+" min":"Procesando · "+age+" min";
    }
    const anticipated=anticipatedByName[nrm(item.name)];if(anticipated&&Number.isFinite(Number(anticipated.lead_minutes))){detail+=(detail?" · ":"")+"Radar: "+Number(anticipated.lead_minutes)+" min antes"}
-   return {rank:Number(item.rank),name:String(item.name),entered_top10_at:item.entered_top10_at||null,movement:String(item.movement||""),previous_rank:Number.isFinite(Number(item.previous_rank))?Number(item.previous_rank):null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_closer_text:String(explainedEntry?.closer_text||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
+   return {rank:Number(item.rank),manual_only:manualOnly,request_status:s,name:String(item.name),entered_top10_at:item.entered_top10_at||null,movement:String(item.movement||""),previous_rank:Number.isFinite(Number(item.previous_rank))?Number(item.previous_rank):null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_closer_text:String(explainedEntry?.closer_text||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
  });
  const requestByName={};for(const req of requests)requestByName[nrm(req.name)]=req;
  const preparedItems=(prepared.items||[]).filter(p=>{
@@ -374,6 +374,9 @@ function render(){
    }else{detail.textContent=item.detail||"";detail.style.display=item.detail?"block":"none"}
    const slot=card.querySelector(".slot");
    const x=document.createElement("a");x.className="action xsearch";x.textContent="Buscar en X";x.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&src=typed_query&f=live";x.target="_blank";x.rel="noopener noreferrer";x.setAttribute("aria-label","Buscar "+item.name+" en X");slot.appendChild(x);
+   if(item.manual_only && !["preparing","update","explained","ready"].includes(item.request_status)){
+     const p=document.createElement("button");p.className="action prepare";p.type="button";p.textContent="Preparar novedad";p.disabled=busy.has(item.name);p.onclick=()=>prepareUpcoming(item);slot.appendChild(p);
+   }
    if(item.status==="problematic"){
      const p=document.createElement("button");p.className="action prepare";p.type="button";p.textContent="Pista";p.disabled=busy.has(item.name);p.onclick=()=>openProblemRetry(item);slot.appendChild(p);
    }
