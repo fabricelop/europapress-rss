@@ -258,6 +258,19 @@ async function deleteReadyFromListas(eventId){
   return {ok:true,event_id:id,status:"deleted",sync_pending:sync.some(x=>x.status==="rejected")};
 }
 
+// Solo las noticias pendientes pueden descartarse: las de Listas usan "Borrar".
+async function dismissOpenStory(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const [{doc:decisions},{doc:prepared}]=await Promise.all([readJson(DECISIONS),readJson(PREPARED)]);
+  const previous=[...(decisions.items||[])].reverse().find(x=>idOf(x.event_id)===id);
+  const previousStatus=String(previous?.status||"").toLowerCase();
+  if(previousStatus==="dismissed")return {ok:true,event_id:id,status:"dismissed",duplicate:true};
+  if(["published","deleted"].includes(previousStatus)||(prepared.items||[]).some(x=>idOf(x.event_id)===id)){
+    const error=new Error("La noticia ya está cerrada o en Listas; utiliza Borrar si procede.");
+    error.statusCode=409;throw error;
+  }
+  return closePrepared(id,"dismissed");
+}
 async function closePrepared(eventId,status){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
@@ -781,7 +794,7 @@ export default async function handler(req,res){
         }));
       const processingItems=[...queueProcessing,...syntheticRewrites];
       const processingOutcomes=(queue.doc?.items||[])
-        .filter(x=>processingOutcomeVisible(x,decisionMap.get(String(x.event_id||"")),publishedIds))
+        .filter(x=>!closedIds.has(String(x.event_id||""))&&processingOutcomeVisible(x,decisionMap.get(String(x.event_id||"")),publishedIds))
         .map(x=>{
           const ev=eventMap.get(String(x.event_id||""))||{};
           return {
@@ -913,7 +926,7 @@ export default async function handler(req,res){
     if(action==="rate-remate")return res.status(200).json(await rateTitularRemate(body.rating_key,body.rating));
     if(action==="delete")return res.status(200).json(await deleteReadyFromListas(body.event_id));
     if(action==="published")return res.status(410).json({ok:false,error:"Publicar en X retirado"});
-    if(action==="dismiss")return res.status(410).json({ok:false,error:"Desestimar retirado; usa Borrar"});
+    if(action==="dismiss")return res.status(200).json(await dismissOpenStory(body.event_id));
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction,body.reinvestigate===true));
     if(action==="regenerate-image")return res.status(410).json({ok:false,error:"Generación IA retirada"});
     if(action==="use-fallback-image")return res.status(200).json(await useFallbackImage(body.event_id));
