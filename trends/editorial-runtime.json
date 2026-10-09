@@ -1,17 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T11:56:00+02:00",
-  "last_completed_at": "2026-10-09T12:13:30+02:00",
-  "updated_at": "2026-10-09T12:13:30+02:00",
+  "last_started_at": "2026-10-09T12:18:30+02:00",
+  "last_completed_at": "2026-10-09T12:19:25+02:00",
+  "updated_at": "2026-10-09T12:19:25+02:00",
   "status": "success",
-  "processed_ids": [
-    "a5ffd41f5384",
-    "285a6550e6b8",
-    "a02249e0af5b",
-    "571bfe869955",
-    "660533085d21"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -21,284 +15,82 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791538120641-2fc123",
+    "run_id": "tr-1791538120641-2fc123-rerun-1218",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T11:56:00+02:00",
-    "updated_at": "2026-10-09T12:13:30+02:00",
-    "finished_at": "2026-10-09T12:13:30+02:00",
+    "started_at": "2026-10-09T12:18:30+02:00",
+    "updated_at": "2026-10-09T12:19:25+02:00",
+    "finished_at": "2026-10-09T12:19:25+02:00",
     "trend_id": null,
     "title": null,
-    "current": 5,
-    "total": 5,
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
-      "explanation_groups": 5,
-      "new_cards": 4,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 3,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 1,
-      "remates_omitted": 4,
-      "concurrent_completed": 2
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0,
+      "pending_visual_repair_observed": 5
     },
-    "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; incidencias concurrentes reconciliadas.",
-    "incident_count": 3,
-    "incidents": [
-      {
-        "at": "2026-10-09T12:05:30+02:00",
-        "phase": "verifying",
-        "trend_id": "a02249e0af5b",
-        "title": "#LaHora9O",
-        "reason": "Dos escrituras concurrentes dejaron textos distintos; se reconciliaron request y ficha con la ficha explained autoritativa."
-      },
-      {
-        "at": "2026-10-09T12:08:30+02:00",
-        "phase": "persisting",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "reason": "Conflicto SHA concurrente durante la persistencia; otra transacción cerró la misma revisión y se reconcilió contra main."
-      },
-      {
-        "at": "2026-10-09T12:12:10+02:00",
-        "phase": "persisting",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "reason": "Conflicto SHA al retirar la cola; la revisión ya había sido retirada concurrentemente y quedó verificada en main."
-      }
-    ],
+    "message": "Pasada editorial completada · 0/0; cola final 0; sin preparing/update ni rewrite_pending; reparación visual solicitada para 5 Pendientes recientes.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "total_ratings": 154
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 154
     },
-    "remate_selections": [
-      {
-        "trend_id": "a02249e0af5b",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "concurrent_authoritative_card_without_closer"
-      },
-      {
-        "trend_id": "571bfe869955",
-        "revision": 5,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "political_content"
-      },
-      {
-        "trend_id": "660533085d21",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.6,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.9,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-09T12:11:50+02:00",
-        "phase": "persisting",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Retirando revisión de la cola"
+        "at": "2026-10-09T12:18:30+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Reconciliando cola autoritativa y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-09T12:12:00+02:00",
-        "phase": "verifying",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-09T12:12:05+02:00",
-        "phase": "verifying",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-09T12:12:10+02:00",
-        "phase": "verifying",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Tendencia cerrada y verificada · transacción concurrente reconciliada"
-      },
-      {
-        "at": "2026-10-09T12:08:02.253+02:00",
+        "at": "2026-10-09T12:18:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0 y sin rewrite_pending"
+        "message": "Revisando Pendientes · 5 tarjetas recientes con IA pending; reparación visual ya solicitada"
       },
       {
-        "at": "2026-10-09T12:08:02.253+02:00",
+        "at": "2026-10-09T12:19:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · comprobando cola, requests y rewrite_pending"
+      },
+      {
+        "at": "2026-10-09T12:19:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main · cola 0; ninguna request preparing/update; sin rewrite_pending"
+      },
+      {
+        "at": "2026-10-09T12:19:25+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; una incidencia de concurrencia fue reconciliada."
-      },
-      {
-        "at": "2026-10-09T12:09:00+02:00",
-        "phase": "investigating",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Contrastando fuente 1/2 · rueda de prensa previa al Madrid-Villarreal"
-      },
-      {
-        "at": "2026-10-09T12:12:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola editorial 0"
-      },
-      {
-        "at": "2026-10-09T12:12:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificando rewrite_pending · ninguno"
-      },
-      {
-        "at": "2026-10-09T12:13:00+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada editorial completada · 5/5; cola 0; sin reexplicaciones pendientes"
-      },
-      {
-        "at": "2026-10-09T12:09:20+02:00",
-        "phase": "investigating",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Contrastando fuente 2/2 · declaraciones sobre Mbappé y la bicicleta en Suiza"
-      },
-      {
-        "at": "2026-10-09T12:09:30+02:00",
-        "phase": "investigating",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-09T12:09:40+02:00",
-        "phase": "drafting",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-09T12:09:45+02:00",
-        "phase": "drafting",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Comprobando límite de X · 239 caracteres"
-      },
-      {
-        "at": "2026-10-09T12:09:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-09T12:09:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-09T12:10:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-09T12:10:05+02:00",
-        "phase": "persisting",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-09T12:13:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main · cola 0; 5 revisiones exactas; sin rewrite_pending"
-      },
-      {
-        "at": "2026-10-09T12:13:30+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; incidencias concurrentes reconciliadas."
+        "message": "Pasada editorial completada · 0/0; reparación visual solicitada para 5 Pendientes recientes"
       }
     ],
     "queue_complete": true,
@@ -310,9 +102,10 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-1791538120641-2fc123",
-    "last_triggered_at": "2026-10-09T11:56:00+02:00",
-    "observed_at": "2026-10-09T12:13:00+02:00"
+    "last_trigger_run_id": "tr-1791538120641-2fc123-rerun-1218",
+    "last_triggered_at": "2026-10-09T12:18:30+02:00",
+    "observed_at": "2026-10-09T12:19:20+02:00",
+    "pending_items_observed": 5
   },
   "version": 1,
   "canonical": true
