@@ -207,7 +207,7 @@ def trend_cards(now):
         body=label+"\n\n"+trend_text[:room]+tag_line
         top_row=top.get(name.casefold()) or {}
         yield {"id":tid,"rev":rev,"text":body,
-               "image":image_url(finished or req),"search":name,
+               "image":image_url(finished or {}) or image_url(req),"search":name,
                "final":is_final,"start":start,"title":name,
                "entered_top_at":top_row.get("entered_top10_at"),
                "novelty_verified":req.get("material_novelty_verified") is True,
@@ -326,6 +326,12 @@ def process(project,now,token,chat):
                        if str(r.get("status") or "").lower()=="sent"
                        and int(r.get("telegram_message_id") or 0)>0
                        and not r.get("final")),None)
+        if existing is None and project=="ttittulares":
+            # Always update the existing news card, never post a second card
+            # just because editorial revisions changed.
+            existing=next((r for r in reversed(linked)
+                           if str(r.get("status") or "").lower()=="sent"
+                           and int(r.get("telegram_message_id") or 0)>0),None)
         if existing is None:
             existing=next((r for r in reversed(same_revision)
                            if str(r.get("status") or "").lower()=="sent"
