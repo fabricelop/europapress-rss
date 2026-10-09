@@ -2,8 +2,8 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-09T14:44:00+02:00",
-  "last_completed_at": "2026-10-09T14:52:08+02:00",
-  "updated_at": "2026-10-09T14:52:08+02:00",
+  "last_completed_at": "2026-10-09T14:52:25+02:00",
+  "updated_at": "2026-10-09T14:52:25+02:00",
   "status": "success",
   "processed_ids": [
     "ddda27993e11",
@@ -23,8 +23,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-09T14:44:00+02:00",
-    "updated_at": "2026-10-09T14:52:08+02:00",
-    "finished_at": "2026-10-09T14:52:08+02:00",
+    "updated_at": "2026-10-09T14:52:25+02:00",
+    "finished_at": "2026-10-09T14:52:25+02:00",
     "trend_id": null,
     "title": null,
     "current": 2,
@@ -33,7 +33,7 @@
     "summary": {
       "trends_processed": 2,
       "trends_explained": 2,
-      "explanation_groups": 2,
+      "explanation_groups": 0,
       "new_cards": 2,
       "revisions_updated": 2,
       "grouped_into_existing_card": 0,
@@ -53,7 +53,7 @@
       "remates_selected": 1,
       "remates_omitted": 1
     },
-    "message": "Pasada editorial completada · 2/2 explicadas y verificadas; cola final 0; sin reexplicaciones pendientes; sin ImageGen directo.",
+    "message": "Pasada editorial completada · 2/2; cola final 0; sin preparing/update ni reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -135,34 +135,6 @@
       }
     ],
     "activity": [
-      {
-        "at": "2026-10-09T14:50:36+02:00",
-        "phase": "investigating",
-        "trend_id": "1f4cd9b7c079",
-        "title": "#Mañaneros9O",
-        "message": "Hecho esencial verificado · emisión de hoy y crítica de Cintora a Horizonte"
-      },
-      {
-        "at": "2026-10-09T14:50:44+02:00",
-        "phase": "drafting",
-        "trend_id": "1f4cd9b7c079",
-        "title": "#Mañaneros9O",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-09T14:50:52+02:00",
-        "phase": "drafting",
-        "trend_id": "1f4cd9b7c079",
-        "title": "#Mañaneros9O",
-        "message": "Comprobando límite de X · 180 caracteres"
-      },
-      {
-        "at": "2026-10-09T14:51:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "1f4cd9b7c079",
-        "title": "#Mañaneros9O",
-        "message": "Sin remate · asunto sensible relacionado con un fallecimiento"
-      },
       {
         "at": "2026-10-09T14:51:08+02:00",
         "phase": "persisting",
@@ -274,6 +246,34 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada editorial completada · 2/2 explicadas y verificadas; cola final 0; sin reexplicaciones pendientes; sin ImageGen directo."
+      },
+      {
+        "at": "2026-10-09T14:52:05+02:00",
+        "phase": "verifying",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-09T14:52:12+02:00",
+        "phase": "verifying",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-09T14:52:18+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola editorial 0 y sin reelaboraciones pendientes"
+      },
+      {
+        "at": "2026-10-09T14:52:25+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada editorial completada · 2/2; cola final 0; sin preparing/update ni reexplicaciones pendientes."
       }
     ],
     "queue_complete": true,
