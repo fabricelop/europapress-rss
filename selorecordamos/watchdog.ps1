@@ -67,8 +67,26 @@ function Ensure-HourlyTask([string]$name, [int]$maxIdleMinutes = 80, [int]$maxRu
     }
 }
 
+
+function Check-Editorial-Backlog {
+    $monitor = Join-Path $PSScriptRoot 'editorial-health-watch.js'
+    if (-not (Test-Path $monitor)) {
+        Add-Log 'AVISO: no existe editorial-health-watch.js; comprobar sincronizacion Git'
+        return
+    }
+    try {
+        $env:SR_TELEGRAM_BOT_TOKEN = [Environment]::GetEnvironmentVariable('SR_TELEGRAM_BOT_TOKEN', 'User')
+        $env:SR_TELEGRAM_CHAT_ID = [Environment]::GetEnvironmentVariable('SR_TELEGRAM_CHAT_ID', 'User')
+        & node $monitor 2>&1 | ForEach-Object { Add-Log "EDITORIAL: $_" }
+        if ($LASTEXITCODE -ne 0) { Add-Log "AVISO: editorial-health-watch.js termino con codigo $LASTEXITCODE" }
+    } catch {
+        Add-Log "ERROR comprobando cola editorial: $($_.Exception.Message)"
+    }
+}
+
 Add-Log 'Inicio watchdog'
 Ensure-Listener
+Check-Editorial-Backlog
 Ensure-HourlyTask 'SeLoRecordamos-Search' 80 30
 
 # Search y Published comparten el mismo repositorio Git local. Nunca arrancamos
