@@ -717,9 +717,10 @@ export default async function handler(req,res){
       // La lectura de la app debe ser barata y seguir funcionando aunque el
       // token REST esté temporalmente agotado. RAW público es suficiente para
       // pintar el estado; las acciones de escritura siguen usando REST + SHA.
-      const [prepared,status,config,queue,events,decisions,manualArchive,remateRatings,tremending]=await Promise.all([
+      const [prepared,status,config,queue,events,decisions,manualArchive,remateRatings,tremending,telegramDeliveries,telegramDeletions]=await Promise.all([
         readPublicJson(PREPARED),readPublicJson("ttittulares/status.json"),readPublicJson("ttittulares/config.json"),
-        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING)
+        readPublicJson(PROCESSING),readPublicJson(EVENTS),readPublicJson(DECISIONS),readPublicJson(MANUAL_ARCHIVE),readPublicJson(REMATE_RATINGS),readPublicJson(TREMENDING),
+        readPublicJson("telegram/ttittulares-deliveries.json"),readPublicJson("telegram/delete-message-queue.json")
       ]);
       const eventMap=new Map((events.doc?.events||[]).map(e=>[String(e.id||e.event_id||""),e]));
       const decisionMap=new Map((decisions.doc?.items||[]).map(x=>[String(x.event_id||""),x]));
@@ -854,6 +855,32 @@ export default async function handler(req,res){
         .map(x=>({
           id:tremendingEntryId(x.id),title:String(x.title||"Entrada sin título"),url:String(x.url||""),description:String(x.description||""),published_at:x.published_at||null,first_seen_at:x.first_seen_at||null,last_seen_at:x.last_seen_at||null,tweets:Array.isArray(x.tweets)?x.tweets:[],article_status:x.article_status||"pending"
         })).filter(x=>x.id).sort((a,b)=>String(b.published_at||b.first_seen_at||"").localeCompare(String(a.published_at||a.first_seen_at||"")));
+      // Observabilidad operativa: incidentes vivos, no estadísticas históricas.
+      const nowMs=Date.now(),incidents=[];
+      const incident=(severity,title,detail,at)=>incidents.push({severity,title,detail,at:at||null});
+      const mins=v=>{const t=Date.parse(v||"");return Number.isFinite(t)?Math.max(0,Math.round((nowMs-t)/60000)):null};
+      const radarAge=mins(liveStatus.radar_at||liveStatus.updated_at);
+      if(radarAge===null||radarAge>50)incident("error","Radar sin actualización reciente","Última captura hace "+(radarAge??"?")+" min; se esperan pasadas cada 30 min.",liveStatus.radar_at);
+      const down=Number(liveStatus.configured_sources||0)-Number(liveStatus.healthy_source_count||0);
+      if(down>0)incident("warning","Fuentes con problemas",down+" fuentes no operativas de "+liveStatus.configured_sources,liveStatus.updated_at);
+      const aged=processingItems.filter(x=>(mins(x.selected_at)||0)>=75);
+      if(aged.length)incident("error","Noticias atascadas en elaboración",aged.length+" llevan más de 75 min: "+aged.slice(0,3).map(x=>x.title||x.event_id).join(" · "),aged[0].selected_at);
+      if(problematicItems.length)incident("warning","Noticias sin resolver",problematicItems.length+" en Problemáticas; revisar razones y reintentos.",problematicItems[0].problematic_at);
+      const deletionRows=(telegramDeletions.doc?.items||[]);
+      const pendingDeletions=deletionRows.filter(x=>["pending","error"].includes(String(x.status||""))),failedDeletions=deletionRows.filter(x=>x.status==="failed");
+      if(failedDeletions.length)incident("error","Borrados de Telegram fallidos",failedDeletions.length+" eliminaciones no confirmadas. "+String(failedDeletions.at(-1)?.error||"").slice(0,100),telegramDeletions.doc?.updated_at);
+      const lateDeletions=pendingDeletions.filter(x=>(mins(x.requested_at||x.updated_at||telegramDeletions.doc?.updated_at)||0)>20);
+      if(lateDeletions.length)incident("warning","Borrados de Telegram pendientes",lateDeletions.length+" solicitudes sin confirmación desde hace más de 20 min.",telegramDeletions.doc?.updated_at);
+      const deliveredRows=telegramDeliveries.doc?.items||[];
+      const deliveredIds=new Set(deliveredRows.filter(x=>["sent","deleted","published","dismissed"].includes(String(x.status||"").toLowerCase())).map(x=>String(x.event_id||"")));
+      const undelivered=visiblePrepared.filter(x=>{const age=mins(x.prepared_at||x.selected_at);return age!==null&&age>=20&&age<720&&!deliveredIds.has(String(x.event_id||""))});
+      if(undelivered.length)incident("error","Noticias listas sin entrega Telegram",undelivered.length+" llevan más de 20 min sin un mensaje registrado; revisar el emisor.",undelivered[0].prepared_at);
+      const telegramFailures=deliveredRows.filter(x=>["failed","error"].includes(String(x.status||"").toLowerCase()));
+      if(telegramFailures.length)incident("error","Fallos de entrega Telegram",telegramFailures.length+" registros de entrega fallida.",telegramDeliveries.doc?.updated_at);
+      const operational={checked_at:new Date().toISOString(),radar_at:liveStatus.radar_at||null,radar_age_minutes:radarAge,
+        processing_count:processingItems.length,problematic_count:problematicItems.length,
+        telegram_sent_count:deliveredRows.filter(x=>x.status==="sent").length,
+        telegram_delete_pending:pendingDeletions.length,telegram_delete_failed:failedDeletions.length,incidents};
       const isWidget=String(req.query?.view||"")==="widget";
       // La app principal debe reflejar inmediatamente Publicado/Desestimado de
       // Telegram. No permitimos que Vercel/CDN conserve una Lista cerrada.
@@ -877,7 +904,7 @@ export default async function handler(req,res){
           }
         })
       }
-      return res.status(200).json({ok:true,service:"ttittulares-control",github_rate_limit,prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,config:config.doc,tremending:{updated_at:tremending.doc?.updated_at||null,items:tremendingItems}})
+      return res.status(200).json({ok:true,service:"ttittulares-control",github_rate_limit,prepared:annotateTitularRemates({...(prepared.doc||{}),items:visiblePrepared},remateRatings.doc),status:liveStatus,operational,config:config.doc,tremending:{updated_at:tremending.doc?.updated_at||null,items:tremendingItems}})
     }
     if(req.method!=="POST")return res.status(405).json({ok:false,error:"Método no permitido"});
     if(!authorized(req))return res.status(401).json({ok:false,error:"No autorizado"});
