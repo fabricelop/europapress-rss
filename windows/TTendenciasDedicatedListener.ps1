@@ -169,7 +169,8 @@ function Get-ControlHeadSha([switch]$Force) {
       if($sha -match '^[0-9a-fA-F]{40}$'){
         $script:ControlHeadSha=$sha.ToLowerInvariant()
         $script:ControlHeadAt=$now
-        $script:ControlHeadApiRetryAt=[DateTimeOffset]::MinValue
+        # Incluso si REST funciona, reservar la cuota anonima para otros procesos.
+        # Durante este intervalo RAW por rama sigue disponible.
         return $script:ControlHeadSha
       }
     }catch{
