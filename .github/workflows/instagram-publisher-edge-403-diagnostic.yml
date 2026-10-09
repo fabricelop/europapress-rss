@@ -51,3 +51,50 @@ jobs:
               except ValueError: pass
             print("EDGE_PROBE",json.dumps(result,ensure_ascii=False))
           PY
+      - name: Aislar WAF sobre la imagen y el texto real sin poder publicar
+        env:
+          INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          root="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev/publish"
+          manifest="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+          cases=[
+            ("shakira","trends/telegram-image-deliveries.json","3ff255e46d90",391),
+            ("real_madrid","telegram/ttittulares-deliveries.json","1dc952e6340e",3105),
+          ]
+          secret=os.environ.get("INTERNAL_SECRET","")
+          if len(secret)<32: raise SystemExit("GITHUB_SECRET_NOT_AVAILABLE")
+          for label,path,event,mid in cases:
+            with urllib.request.urlopen(manifest+path,timeout=25) as r:
+              doc=json.loads(r.read(12*1024*1024).decode())
+            matches=[x for x in doc.get("items",[]) if x.get("event_id")==event and x.get("telegram_message_id")==mid]
+            if len(matches)!=1: raise SystemExit("IDENTITY_MISMATCH "+label)
+            x=matches[0]
+            payload={
+             "source":"ttendencias" if label=="shakira" else "ttittulares",
+             "event_id":event,"revision":1,
+             # This invalid message ID GUARANTEES worker rejects before Meta/D1.
+             "telegram_message_id":0,
+             "image_url":x["instagram"]["image_url"],
+             "caption":x["instagram"]["caption"],
+            }
+            for ua in ("Python-urllib/3.12","TTActualidad-Diagnostic/1.0"):
+              req=urllib.request.Request(root,method="POST",
+                data=json.dumps(payload,ensure_ascii=False).encode(),
+                headers={"authorization":"Bearer "+secret,"content-type":"application/json","user-agent":ua})
+              try:
+                with urllib.request.urlopen(req,timeout=22) as response:
+                  status=response.status;headers=response.headers;body=response.read(8192)
+              except urllib.error.HTTPError as exc:
+                status=exc.code;headers=exc.headers;body=exc.read(8192)
+              out={"case":label,"ua":ua,"status":status,
+                   "content_type":headers.get("content-type","")[:55],
+                   "mitigated":headers.get("cf-mitigated",""),
+                   "cf_ray_present":bool(headers.get("cf-ray","")),
+                   "html_challenge":b"Just a moment" in body or b"cf-chl" in body}
+              if "json" in out["content_type"]:
+                try:out["error"]=str(json.loads(body).get("error",""))[:40]
+                except Exception:pass
+              print("PAYLOAD_PROBE",json.dumps(out))
+          PY
