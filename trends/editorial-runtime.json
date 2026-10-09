@@ -2,8 +2,8 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-09T12:35:00+02:00",
-  "last_completed_at": "2026-10-09T12:37:45+02:00",
-  "updated_at": "2026-10-09T12:37:45+02:00",
+  "last_completed_at": "2026-10-09T12:37:10+02:00",
+  "updated_at": "2026-10-09T12:37:10+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -20,8 +20,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-09T12:35:00+02:00",
-    "updated_at": "2026-10-09T12:37:45+02:00",
-    "finished_at": "2026-10-09T12:37:45+02:00",
+    "updated_at": "2026-10-09T12:37:10+02:00",
+    "finished_at": "2026-10-09T12:37:10+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -60,7 +60,35 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "a5ffd41f5384",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "neutralidad editorial en asunto político/institucional; explicación factual suficiente"
+      },
+      {
+        "trend_id": "285a6550e6b8",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "neutralidad editorial en asunto político/judicial; explicación factual suficiente"
+      },
+      {
+        "trend_id": "571bfe869955",
+        "revision": 5,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "neutralidad editorial en asunto político/judicial; explicación factual suficiente"
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-09T12:35:00+02:00",
@@ -77,21 +105,28 @@
         "message": "Releyendo main · verificando cola autoritativa, requests, reexplicaciones y trigger de reparación antes de cerrar."
       },
       {
+        "at": "2026-10-09T12:36:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 5 tarjetas recientes; 3 sin remate se mantienen sin chascarrillo por neutralidad editorial; 5 con IA pendiente."
+      },
+      {
+        "at": "2026-10-09T12:36:45+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual automática solicitada en main para Pendientes; sin ImageGen directo."
+      },
+      {
+        "at": "2026-10-09T12:37:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Guardando telemetría durable de la pasada 0/0 antes de la verificación final."
+      },
+      {
         "at": "2026-10-09T12:37:10+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Pendientes revisados · 5 tarjetas recientes; 3 sin remate por contenido político; 5 con capa visual pending y reparación solicitada."
-      },
-      {
-        "at": "2026-10-09T12:37:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Main verificado · cola 0; 0 preparing/update; 0 rewrite_pending; trigger de reparación persistido."
-      },
-      {
-        "at": "2026-10-09T12:37:45+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
