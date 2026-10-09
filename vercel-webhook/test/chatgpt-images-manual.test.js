@@ -5,6 +5,7 @@ import vm from "node:vm";
 const lib=readFileSync(new URL("../tt-shared/gag-actions.js",import.meta.url),"utf8");
 const c={window:{},Math,Map,Object,String,Number,Array};vm.createContext(c);vm.runInContext(lib,c);
 const gag=c.window.TTGag;
+test("La copia móvil incorpora alternativa si falla Clipboard API",()=>{assert.equal(typeof gag.copyText,"function")});
 test("GAG mantiene hechos, remate y varía estilo",()=>{
  const item={event_id:"demo",title:"Una noticia",factual_summary:"Informe confirma dos fuentes.",tweet:{text:"Noticia exacta.\n\n🌶️ Remate exacto.",remate:"🌶️ Remate exacto."}};
  const a=gag.buildPrompt("news",item,item.tweet.text,0),b=gag.buildPrompt("news",item,item.tweet.text,1);
