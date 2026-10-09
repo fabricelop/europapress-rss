@@ -98,7 +98,8 @@ class CaptionTests(unittest.TestCase):
     def test_maximum_five_tags_total_including_inlined(self):
         result = caption("#LaRevuelta #Actualidad #Musica #Television Shakira llega a la entrevista.")
         self.assertLessEqual(result.count("#"), 5)
-        self.assertNotIn("#Shakira", result)
+        self.assertIn("#Shakira", result)
+        self.assertNotIn("#Actualidad", result)
 
 
 if __name__ == "__main__":
