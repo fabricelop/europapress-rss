@@ -27,6 +27,7 @@ $ControlBranch = "control/ttittulares-run-trigger-v2"
 $ControlRepoUrl = "https://github.com/fabricelop/europapress-rss.git"
 $script:ControlHeadSha = ""
 $script:ControlHeadAt = [DateTimeOffset]::MinValue
+$script:ControlHeadApiRetryAt = [DateTimeOffset]::MinValue
 $DirectImageRefreshSeconds = 60
 $script:DirectImageIndexCache = $null
 $script:DirectImageIndexAt = [DateTimeOffset]::MinValue
@@ -81,28 +82,12 @@ function CacheBust([string]$Url) {
 
 function Get-ControlHeadSha([switch]$Force) {
   $now=[DateTimeOffset]::UtcNow
-  # Una sola resolución de rama cada 90 s como máximo. El resto de lecturas
-  # usan raw.githubusercontent con SHA inmutable y no consumen REST.
-  if($script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt 90)){
+  # Los listeners ya comparten una cuota REST anonima de solo 60/h.
+  # Resolver primero con git ls-remote evita consumirla mientras git funcione.
+  $maxAge=if($Force){15}else{90}
+  if($script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt $maxAge)){
     return $script:ControlHeadSha
   }
-  try{
-    $refUrl="https://api.github.com/repos/fabricelop/europapress-rss/git/ref/heads/control/ttittulares-run-trigger-v2"
-    $r=Invoke-RestMethod -Uri (CacheBust $refUrl) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTiTTulares-Control-Head-Anonymous-v46"
-      "Cache-Control"="no-cache"
-    } -TimeoutSec 12
-    $sha=[string]$r.object.sha
-    if($sha -match '^[0-9a-fA-F]{40}$'){
-      $script:ControlHeadSha=$sha.ToLowerInvariant()
-      $script:ControlHeadAt=$now
-      return $script:ControlHeadSha
-    }
-  }catch{
-    Write-Log "CONTROL HEAD ANON API WARNING :: $($_.Exception.Message)"
-  }
-  # Fallback si la cuota anónima del IP también estuviera temporalmente agotada.
   try{
     $git=Get-Command git.exe -ErrorAction SilentlyContinue
     if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
@@ -112,7 +97,8 @@ function Get-ControlHeadSha([switch]$Force) {
         $env:GIT_TERMINAL_PROMPT="0"
         $line=& $git.Source ls-remote $ControlRepoUrl ("refs/heads/"+$ControlBranch) 2>$null | Select-Object -First 1
       }finally{
-        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
+        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}
+        else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
       }
       if([string]$line -match '^([0-9a-fA-F]{40})\s'){
         $script:ControlHeadSha=$Matches[1].ToLowerInvariant()
@@ -123,6 +109,30 @@ function Get-ControlHeadSha([switch]$Force) {
   }catch{
     Write-Log "CONTROL HEAD GIT WARNING :: $($_.Exception.Message)"
   }
+  # REST anonima: solo como ultima alternativa y a lo sumo una vez cada 15 min
+  # ante errores. No convertir un 403 en cientos de reintentos por hora.
+  if($now -ge $script:ControlHeadApiRetryAt){
+    $script:ControlHeadApiRetryAt=$now.AddMinutes(15)
+    try{
+      $refUrl="https://api.github.com/repos/fabricelop/europapress-rss/git/ref/heads/"+$ControlBranch
+      $r=Invoke-RestMethod -Uri (CacheBust $refUrl) -Headers @{
+        "Accept"="application/vnd.github+json"
+        "User-Agent"="TT-Control-Head-Fallback"
+        "Cache-Control"="no-cache"
+      } -TimeoutSec 12
+      $sha=[string]$r.object.sha
+      if($sha -match '^[0-9a-fA-F]{40}$'){
+        $script:ControlHeadSha=$sha.ToLowerInvariant()
+        $script:ControlHeadAt=$now
+        $script:ControlHeadApiRetryAt=[DateTimeOffset]::MinValue
+        return $script:ControlHeadSha
+      }
+    }catch{
+      Write-Log "CONTROL HEAD ANON API WARNING :: $($_.Exception.Message)"
+    }
+  }
+  # Nunca fijar para siempre un SHA viejo si todas las fuentes fallan:
+  # la ruta RAW de rama con cache-busting es el fallback.
   return ""
 }
 
