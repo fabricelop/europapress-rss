@@ -1,0 +1,70 @@
+name: TTendencias recuperar foto real Sitges 2026 en archivo editorial (una vez)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-sitges-archive-20261009.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-sitges-archive-20261009
+  cancel-in-progress: false
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/telegram_readonly_delivery.py
+            /trends/requests.json
+            /trends/telegram-manual-explained.json
+      - name: Validar fotografía y guardar referencia en los dos estados editoriales
+        run: |
+          set -euo pipefail
+          python3 -m pip install -q requests pillow
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from shared.telegram_readonly_delivery import fast_archive_from_article,archival_image
+          article="https://sitgesfilmfestival.com/es/noticies/durante-once-dias-cine-genero-nuestro-hogar"
+          photo=fast_archive_from_article(article)
+          sample=archival_image(photo) if photo else None
+          if not sample:raise SystemExit("No se pudo validar una fotografía real de Sitges")
+          print("SITGES_ARCHIVE_VERIFIED",len(sample[0]),photo[:180])
+          for filename,collection in (("trends/requests.json","requests"),("trends/telegram-manual-explained.json","items")):
+              path=Path(filename)
+              doc=json.loads(path.read_text(encoding="utf8"))
+              match=0
+              for row in doc.get(collection,[]):
+                  if str(row.get("id"))!="3f6585476451":continue
+                  match+=1
+                  row["fallback_image"]={"url":photo,"source":"Sitges Film Festival · 09/10/2026",
+                    "source_url":article,"generated":False,"rights_status":"publisher_archive"}
+                  sources=row.setdefault("verification_sources",[])
+                  source={"source":"Sitges Film Festival · 09/10/2026","url":article}
+                  if not any((x.get("url") if isinstance(x,dict) else x)==article for x in sources):
+                      sources.insert(0,source)
+              if match:
+                  path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+                  print("SITGES_ARCHIVE_LINKED",filename,"rows",match)
+          PY
+            if git diff --quiet -- trends/requests.json trends/telegram-manual-explained.json; then
+              echo "No changes needed";exit 0
+            fi
+            git add trends/requests.json trends/telegram-manual-explained.json
+            git commit -m "TTendencias Sitges: fotografía real del festival, sin IA"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          echo "No se pudo persistir el archivo Sitges" >&2
+          exit 1
