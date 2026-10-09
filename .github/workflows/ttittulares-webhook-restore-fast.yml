@@ -51,16 +51,15 @@ jobs:
           assert str(d.get('version','')).startswith('2026-10-04-telegram')
           print('Cloudflare Telegram receiver: OK')
           PY
-            curl -fsS --max-time 30 -X POST \
-              "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
-              --data-urlencode "url=$target" \
-              --data-urlencode 'allowed_updates=["callback_query","message"]' \
-              --data-urlencode 'drop_pending_updates=false' \
+            # El Worker conserva secret_token cifrado: nunca registrar un webhook inseguro.
+            curl -fsS --retry 2 --max-time 30 \
+              'https://tt-control.fabricelop.workers.dev/api/telegram-webhook-self-heal-20261004' \
               -o /tmp/set.json
             python3 - <<'PY'
           import json
-          assert json.load(open('/tmp/set.json')).get('ok') is True
-          print('TTITTULARES_WEBHOOK_AUTO_REPAIRED')
+          d=json.load(open('/tmp/set.json'))
+          assert d.get('ok') is True
+          print('TTITTULARES_WEBHOOK_AUTO_REPAIRED_WITH_SECRET')
           PY
           fi
           curl -fsS --max-time 30 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" -o /tmp/telegram-after.json
