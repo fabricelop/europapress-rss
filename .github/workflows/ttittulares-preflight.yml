@@ -209,7 +209,10 @@ jobs:
               drafted=int(item.get("drafted_source_count") or 0)
               # El umbral de 4 rige la selección automática del radar, no la
               # verificación editorial de una noticia ya preparada.
-              cited={str(c.get("source") or "").strip() for c in item.get("citations",[]) if isinstance(c,dict)}
+              # Publicaciones actuales aportan fuentes verificadas en source_evidence;
+          # las históricas las conservan en citations. Exigir dos medios distintos.
+          evidence=[*(item.get("citations") or []),*(item.get("source_evidence") or [])]
+          cited={str(c.get("source") or c.get("outlet") or "").strip() for c in evidence if isinstance(c,dict)}
               assert drafted >= 2 and len(cited-{''}) >= 2, f"{eid}: faltan dos fuentes editoriales independientes ({drafted})"
               tweet=item.get("tweet")
               # Datos históricos pueden conservar variants; toda escritura nueva
