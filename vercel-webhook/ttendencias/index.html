@@ -42,7 +42,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div><div class="runactivity" id="runActivity"></div></div><button class="primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
   <section class="list" id="list"><div class="empty">Cargando tendencias…</div></section>
   <section class="radarBlock" id="radarBlock">
-    <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales todavía fuera del Top 10</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
+    <div class="radarHead"><div><h2>Próximas tendencias</h2><div class="meta">Señales al alza que todavía no están en el TOP 30</div></div><div class="radarHint">Cruce social + TTiTTulares</div></div>
     <section class="list" id="upcomingList"><div class="empty">Calculando señales…</div></section>
   </section>
 </main>
@@ -252,7 +252,8 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
      return req&&["explained","dismissed"].includes(String(req.status||""));
    });
  });
- const upcoming=(recent.upcoming||[]).map(x=>{
+ const ranked30=new Set((recent.items||[]).slice(0,30).map(x=>nrm(x.name)));
+ const upcoming=(recent.upcoming||[]).filter(x=>!ranked30.has(nrm(x.name))&&["new","up"].includes(String(x.movement||""))).map(x=>{
    const req=latestFor(x.name),s=String(req?.status||""),previous=explainedByName[nrm(x.name)];
    const already=s==="explained"||explainedSet.has(nrm(x.name)),dismissed=s==="dismissed";
    // Para decidir si una señal cerrada puede reaparecer por novedad material,
@@ -406,7 +407,7 @@ function render(){
    p.onclick=()=>needsHint?openProblemRetry(item):prepareUpcoming(item);slot.appendChild(p);
    upcomingList.appendChild(card);
  }
- if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay señales anticipadas con suficiente respaldo ahora mismo.</div>';
+ if(!(model.upcoming||[]).length)upcomingList.innerHTML='<div class="empty">No hay tendencias al alza fuera del TOP 30 en este momento.</div>';
 }
 
 function openExplained(item){
