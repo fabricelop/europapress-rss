@@ -1,0 +1,26 @@
+name: TTiTTulares - tests de propuestas Telegram
+on:
+  pull_request:
+    paths:
+      - telegram/ttittulares-user-proposals.json
+      - ttittulares/import_telegram_proposals.py
+      - ttittulares/editorial-run-prompt.md
+      - .github/workflows/import-ttittulares-telegram-proposals.yml
+      - .github/workflows/ttittulares-telegram-suggestions-ci.yml
+  push:
+    paths:
+      - ttittulares/import_telegram_proposals.py
+      - .github/workflows/ttittulares-telegram-suggestions-ci.yml
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaxis del importador
+        run: python3 -m py_compile ttittulares/import_telegram_proposals.py
+      - name: Idempotencia y cero fuentes
+        run: python3 ttittulares/import_telegram_proposals.py --selftest
+      - name: Cola inicial válida
+        run: python3 -c "import json; d=json.load(open('telegram/ttittulares-user-proposals.json')); assert d['version']==1 and isinstance(d['items'],list)"
