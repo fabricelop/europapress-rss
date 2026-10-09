@@ -357,7 +357,7 @@ function ConvertTo-ListenerState($Candidate) {
     $Candidate=[pscustomobject]$Candidate
   }
   if($null -eq $Candidate -or $Candidate -is [string] -or $Candidate -is [array] -or $Candidate -is [ValueType]){return $null}
-  if(-not $Candidate.PSObject -or -not $Candidate.PSObject.Properties){return $null}
+  if($null -eq $Candidate.PSObject){return $null}
   # Never require the PSCustomObject accelerator here: it has been rejecting
   # the user's actual persisted state on Windows PowerShell 5.1 at boot.
   return $Candidate
