@@ -202,7 +202,7 @@ jobs:
             $tok=$null; $errs=$null
             $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tok,[ref]$errs)
             if($errs.Count){throw "Parse failed $file"}
-            foreach($name in @("Write-Log","Load-State","Save-State","Ensure-StateFields")){
+            foreach($name in @("Write-Log","New-ListenerState","ConvertTo-ListenerState","Load-State","Save-State","Ensure-StateFields")){
               $fn=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $name},$true)|Select-Object -First 1
               Invoke-Expression $fn.Extent.Text
             }
@@ -224,6 +224,28 @@ jobs:
             $sparse=Load-State
             Ensure-StateFields $sparse
             if(-not ($sparse.PSObject.Properties.Name -contains "last_command_id")){throw "Sparse state failed in $file"}
+            # Production failure: persisted state was not a PSCustomObject on
+            # Windows PowerShell 5.1. Preserve original data, normalize, boot.
+            $original=[pscustomobject]@{last_command_id="legacy-cmd";image_commands=@("seen-1");active_image_commands=@("active-1")}
+            $json=$original|ConvertTo-Json -Compress -Depth 8
+            Set-Content -LiteralPath $StatePath -Value ($json|ConvertTo-Json -Compress) -Encoding UTF8
+            $wrapped=Load-State
+            Ensure-StateFields $wrapped
+            if($wrapped.last_command_id -ne "legacy-cmd"){throw "Double-encoded JSON recovery failed in $file"}
+            Save-State $wrapped
+            Set-Content -LiteralPath $StatePath -Value ("["+$json+"]") -Encoding UTF8
+            $arrState=Load-State
+            Ensure-StateFields $arrState
+            if($arrState.last_command_id -ne "legacy-cmd"){throw "Single-element JSON array recovery failed in $file"}
+            Set-Content -LiteralPath $StatePath -Value '"unexpected-string"' -Encoding UTF8
+            $default=Load-State
+            Ensure-StateFields $default
+            if($null -eq $default -or -not ($default.PSObject.Properties.Name -contains "image_commands")){throw "String state recovery failed in $file"}
+            Save-State $default
+            Set-Content -LiteralPath $StatePath -Value "[1,2,3]" -Encoding UTF8
+            $badArray=Load-State
+            Ensure-StateFields $badArray
+            Save-State $badArray
             Write-Host "OK $file"
           }
 
