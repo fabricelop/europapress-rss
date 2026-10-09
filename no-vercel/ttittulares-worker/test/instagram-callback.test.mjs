@@ -54,6 +54,8 @@ test("new Instagram callback preflight is read-only and leaves X routing untouch
 test("Instagram callback errors notify Telegram; X handlers stay separate",()=>{
   const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
   assert.match(source,/async function instagramTelegramNotice\(/);
+  assert.match(source,/TTActualidad-TTiTTulares\/1\.0/);
+  assert.match(source,/result\.meta_error_code/);
   assert.match(source,/No se ha podido confirmar la publicaci[oó]n/);
   assert.match(source,/await instagramTelegramNotice\(env,update/);
   assert.match(source,/if\(event\.type==="instagram_action"\)/);
