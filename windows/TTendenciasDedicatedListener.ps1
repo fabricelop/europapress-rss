@@ -1021,7 +1021,9 @@ while ($true) {
     $slots = if($localBridgeBusy -or $otherBridgeBusy){0}else{[Math]::Max(0, $MaxParallelImageChats - @($state.active_image_commands).Count)}
     if($otherBridgeBusy){Write-Log "IMAGE GLOBAL SLOT WAIT project=ttittulares"}
 
-    if ($slots -gt 0 -and $CustomMessageSupport) {
+    # El puente de imagen usa CDP y no depende de mensajes personalizados del runner.
+    # Aunque Ejecutar.js no admita TT_CHAT_MESSAGE_B64, la cola IA debe continuar.
+    if ($slots -gt 0) {
       $jobs = @()
       if ($idx -and $idx.jobs) { $jobs = @($idx.jobs) }
 
