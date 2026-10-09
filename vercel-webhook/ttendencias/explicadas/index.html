@@ -56,7 +56,7 @@ async function updateUnreadBadge(){
 function nrm(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-ES").replace(/\s+/g," ").trim()}
 function pendingExplainedEligible(x){
  if(!x||x.status==="grouped"||!String(x.explanation||"").trim())return false;
- if(["published","dismissed","deleted"].includes(String(x.telegram_package_status||"").toLowerCase()))return false;
+ if(["published","dismissed","deleted","delete_pending","delete_failed"].includes(String(x.telegram_package_status||"").toLowerCase()))return false;
  if(x.copied||x.rewrite_pending)return false;
  const at=Date.parse(x.explained_at||"");
  return Number.isFinite(at)&&Date.now()-at<24*60*60*1000;
@@ -469,6 +469,22 @@ function renderCard(x,pending){
  const actions=card.querySelector(".actions");
  const reexplain=document.createElement("button");reexplain.className="btn";reexplain.type="button";reexplain.disabled=Boolean(x.rewrite_pending);reexplain.textContent=x.rewrite_pending?"Reevaluando…":"📝 Reexplicar";reexplain.onclick=()=>openReexplain(x);actions.appendChild(reexplain);
  const search=document.createElement("a");search.className="btn";search.target="_blank";search.rel="noopener noreferrer";const searchNames=(Array.isArray(x.trend_names)&&x.trend_names.length?x.trend_names:[name]).join(" ");search.href="https://x.com/search?q="+encodeURIComponent(searchNames)+"&src=typed_query&f=live";search.textContent="🔎 Buscar en X";actions.appendChild(search);
+ const del=document.createElement("button");del.className="btn";del.type="button";del.textContent="Borrar";
+ del.onclick=async()=>{
+   if(!confirm("¿Borrar esta tendencia de la aplicación y de Telegram?"))return;
+   const token=localStorage.getItem("ttendencias-control-token")||"";
+   if(!token){alert("Guarda primero el token de control desde Ajustes.");return}
+   del.disabled=true;del.textContent="Borrando…";
+   try{
+     const r=await fetch(API,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token},
+       body:JSON.stringify({action:"delete-trend",id:x.id,name:x.name})});
+     const d=await r.json();
+     if(!r.ok||!d.ok)throw Error(d.error||"No se pudo borrar");
+     allItems=allItems.filter(row=>String(row.id||"")!==String(x.id||""));
+     openPendingKey=null;render();
+     if(d.telegram_delete_pending)alert("Tendencia retirada. Borrado de Telegram solicitado; se confirmará automáticamente.");
+   }catch(e){del.disabled=false;del.textContent="Borrar";alert(e.message||"Error al borrar la tendencia")}
+ };actions.appendChild(del);
  if(pending){const done=document.createElement("button");done.className="btn";done.type="button";done.textContent="✓ Ya explicado";done.onclick=()=>markExplainedDone(x,done);actions.appendChild(done)}
  return card
 }
