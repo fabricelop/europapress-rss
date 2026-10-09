@@ -33,9 +33,9 @@ jobs:
               relevant=[x for x in items if any(t in str(x.get('name') or '').lower() for t in terms)]
               relevant=sorted(relevant,key=lambda x:str(x.get('requested_at') or x.get('explained_at') or ''))[-12:]
               for x in relevant:
-                  wanted=['id','name','status','revision','requested_at','explained_at','rank','archive_image','fallback_image','image','image_url','news_url','source_url','url','sources','news_sources','source_articles','references','related_articles','trend_context','trend_names','explanation','closer_text']
+                  wanted=['id','name','status','revision','requested_at','explained_at','rank','archive_image','fallback_image','image','image_url','news_url','source_url','url','sources','news_sources','source_articles','references','related_articles','trend_context','trend_names','verification_sources','news_note','news_disposition','source','explanation','closer_text']
                   out={k:str(x[k])[:240] for k in wanted if k in x and x[k]}
-                  print('DETAIL',name,json.dumps(out,ensure_ascii=False)[:1450])
+                  print('DETAIL',name,json.dumps(out,ensure_ascii=False)[:2500])
               from collections import Counter
               print('COUNTS',name,'archive',sum(bool(x.get('archive_image')) for x in items),
                  'fallback',sum(bool(x.get('fallback_image')) for x in items),'image',sum(bool(x.get('image')) for x in items),
