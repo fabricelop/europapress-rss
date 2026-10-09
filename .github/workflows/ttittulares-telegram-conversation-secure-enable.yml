@@ -1,0 +1,95 @@
+name: TTiTTulares: activar recepción Telegram autenticada (una vez)
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/ttittulares-telegram-conversation-secure-enable.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ttittulares-telegram-webhook-registration
+  cancel-in-progress: false
+jobs:
+  secure-enable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar destinatario, credenciales y Worker antes de tocar Telegram
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}" && test -n "${CLOUDFLARE_ACCOUNT_ID:-}" && test -n "${TELEGRAM_BOT_TOKEN:-}"
+          curl -fsS --max-time 30             'https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version'             -o /tmp/tt-chat-readiness.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/tt-chat-readiness.json'))
+          keys=['d1_available','telegram_bot_available','telegram_chat_available','service_binding_available']
+          print('TT_TELEGRAM_CHAT_READINESS '+json.dumps({k:bool(d.get(k)) for k in keys}))
+          for k in keys:
+              assert d.get(k) is True,'Missing prerequisite: '+k
+          PY
+          npx --yes wrangler@4.149.0 secret list --name tt-control > /tmp/tt-control-secret-names.json
+          python3 - <<'PY'
+          import json
+          secrets=json.load(open('/tmp/tt-control-secret-names.json'))
+          names={s.get('name') for s in secrets}
+          assert 'TT_CONTROL_PASSWORD' in names,'Wrong Cloudflare worker/account: tt-control not found'
+          print('TT_CONTROL_WORKER_ACCESS_CONFIRMED')
+          PY
+      - name: Configurar Telegram y guardar secreto únicamente en Cloudflare
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          openssl rand -hex 32 > /tmp/tt-webhook-secret.txt
+          python3 - <<'PY'
+          import json,os,urllib.request
+          secret=open('/tmp/tt-webhook-secret.txt',encoding='ascii').read().strip()
+          payload=json.dumps({
+             'url':'https://tt-control.fabricelop.workers.dev/api/telegram-webhook',
+             'secret_token':secret,
+             'allowed_updates':['callback_query','message'],
+             'drop_pending_updates':False
+          }).encode('utf8')
+          req=urllib.request.Request('https://api.telegram.org/bot'+os.environ['TELEGRAM_BOT_TOKEN']+'/setWebhook',
+             data=payload,headers={'Content-Type':'application/json'})
+          with urllib.request.urlopen(req,timeout=30) as res:
+              d=json.load(res)
+          assert d.get('ok') is True,'Telegram did not accept authenticated webhook'
+          print('TT_TELEGRAM_WEBHOOK_AUTHENTICATION_CONFIGURED')
+          PY
+          npx --yes wrangler@4.149.0 secret put TELEGRAM_WEBHOOK_SECRET --name tt-control < /tmp/tt-webhook-secret.txt
+          rm -f /tmp/tt-webhook-secret.txt
+      - name: Comprobar receptor, secreto y webhook (sin mensajes de prueba)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            curl -fsS --max-time 20 'https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version' -o /tmp/tt-chat-check.json || true
+            if python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/tt-chat-check.json'))
+          assert d.get('webhook_secret_available') is True
+          assert d.get('telegram_bot_available') is True
+          assert d.get('telegram_chat_available') is True
+          print('TT_TELEGRAM_CONVERSATION_AUTH_READY')
+          PY
+            then break; fi
+            sleep 3
+          done
+          python3 - <<'PY'
+          import json,os,urllib.request
+          url='https://api.telegram.org/bot'+os.environ['TELEGRAM_BOT_TOKEN']+'/getWebhookInfo'
+          with urllib.request.urlopen(url,timeout=20) as r: d=json.load(r).get('result') or {}
+          assert d.get('url')=='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          print('TT_TELEGRAM_WEBHOOK_OK '+json.dumps({k:d.get(k) for k in ('pending_update_count','last_error_message')},ensure_ascii=False))
+          PY
