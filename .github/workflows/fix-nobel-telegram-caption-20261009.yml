@@ -23,7 +23,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           python3 - <<'PY'
-          import json,os,pathlib,urllib.request
+          import json,os,pathlib,urllib.request,urllib.error
           from urllib.parse import quote
           entries=json.loads(pathlib.Path("telegram/ttittulares-deliveries.json").read_text(encoding="utf8")).get("items",[])
           event_id="95be3b714328"
@@ -49,8 +49,17 @@ jobs:
                    ("caption" if row.get("is_photo") else "text"):caption,"reply_markup":keyboard}
           request=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,
              data=json.dumps(payload,ensure_ascii=False).encode("utf8"),headers={"content-type":"application/json"})
-          with urllib.request.urlopen(request,timeout=30) as response:
-              ans=json.load(response)
+          try:
+              with urllib.request.urlopen(request,timeout=30) as response:
+                  ans=json.load(response)
+          except urllib.error.HTTPError as err:
+              try: data=json.loads(err.read().decode("utf8"))
+              except Exception:data={}
+              reason=str(data.get("description") or "sin explicación")[:170]
+              if "message is not modified" in reason.lower():
+                  print("NOBEL_CAPTION_ALREADY_UPDATED")
+                  raise SystemExit(0)
+              raise RuntimeError("Telegram HTTP "+str(err.code)+": "+reason) from None
           if not ans.get("ok"):
               raise RuntimeError("Telegram rechazó la actualización")
           print("NOBEL_CAPTION_EDITED",row["telegram_message_id"],"NO_MEDIA_NAMES",True)
