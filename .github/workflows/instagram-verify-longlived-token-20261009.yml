@@ -1,0 +1,58 @@
+name: Instagram - verificar token Meta de larga duración (solo lectura)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/instagram-verify-longlived-token-20261009.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Validar Worker, Meta, Instagram y D1 sin publicar
+        env:
+          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          base="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev"
+          secret=os.environ.get("INSTAGRAM_INTERNAL_SECRET","")
+          if len(secret)<32:
+              raise SystemExit("TOKEN_CHECK_MISSING_GITHUB_SECRET")
+          for name,path,auth in (("health","/health",False),("meta_preflight","/meta-preflight",True)):
+              headers={"user-agent":"TTActualidad-TokenVerification/1.0"}
+              if auth: headers["authorization"]="Bearer "+secret
+              req=urllib.request.Request(base+path,headers=headers,method="GET")
+              try:
+                  with urllib.request.urlopen(req,timeout=25) as response:
+                      code=response.status
+                      data=json.loads(response.read(16000))
+              except urllib.error.HTTPError as error:
+                  code=error.code
+                  try:data=json.loads(error.read(16000))
+                  except ValueError:data={}
+              except Exception as error:
+                  print("TOKEN_CHECK_NETWORK_FAILURE",name,type(error).__name__,flush=True)
+                  raise SystemExit(1)
+              fields={k:data.get(k) for k in (
+                "ok","active","read_only","service","page_token_matches_expected_page",
+                "instagram_account_linked","instagram_username_matches","schema_ready",
+                "error","meta_check","meta_http_status","meta_error_code","meta_error_subcode"
+              ) if k in data}
+              print("TOKEN_CHECK",name,"http",code,json.dumps(fields,ensure_ascii=False),flush=True)
+              if code!=200: raise SystemExit("TOKEN_CHECK_FAILED_"+name)
+              if name=="health" and (data.get("active") is not True or data.get("service")!="tt-actualidad-instagram"):
+                  raise SystemExit("TOKEN_CHECK_HEALTH_INVALID")
+              if name=="meta_preflight":
+                  if not all(data.get(k) is True for k in (
+                    "ok","read_only","active","page_token_matches_expected_page",
+                    "instagram_account_linked","instagram_username_matches","schema_ready")):
+                      raise SystemExit("TOKEN_CHECK_PREFLIGHT_INVALID")
+          print("TOKEN_META_LARGA_DURACION_VERIFICADO_EN_PRODUCCION",flush=True)
+          PY
