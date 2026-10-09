@@ -135,7 +135,7 @@ function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
     if (!leaderDelivery && deliveryRevision < itemRevision) return row;
     const merged = { ...row };
     const status = String(delivery?.status || "").toLowerCase();
-    if (["published", "dismissed", "deleted"].includes(status)) {
+    if (["published", "dismissed", "deleted", "delete_pending", "delete_failed"].includes(status)) {
       merged.telegram_package_status = status;
       if (delivery.published_at) merged.published_at = delivery.published_at;
       if (delivery.dismissed_at) merged.dismissed_at = delivery.dismissed_at;
@@ -169,7 +169,7 @@ function buildPendingExplainedView(explainedDoc) {
   const cutoff=Date.now()-24*60*60*1000;
   const rows=(explainedDoc?.items||[])
     .filter(x=>x?.status!=="grouped"&&String(x?.explanation||"").trim())
-    .filter(x=>!["published","dismissed","deleted"].includes(String(x?.telegram_package_status||"").toLowerCase()))
+    .filter(x=>!["published","dismissed","deleted","delete_pending","delete_failed"].includes(String(x?.telegram_package_status||"").toLowerCase()))
     .filter(x=>!x?.copied&&!x?.rewrite_pending)
     .filter(x=>{const at=Date.parse(x?.explained_at||"");return Number.isFinite(at)&&at>=cutoff})
     .sort((a,b)=>String(b?.explained_at||"").localeCompare(String(a?.explained_at||"")));
@@ -958,6 +958,50 @@ async function useFallbackImage(names) {
   return { ok: true, selected: unique, image_choice: "fallback" };
 }
 
+// Borrar en la app significa borrar también TODOS los mensajes vinculados de Telegram.
+// El ledger bloquea inmediatamente el reenvío; GitHub Actions confirma el deleteMessage.
+async function deleteTrendFromApp(trendId,trendName){
+  const id=String(trendId||"").trim(),name=String(trendName||"").trim();
+  if(!id&&!name)throw new Error("Falta identificar la tendencia.");
+  const now=new Date().toISOString(),key=norm(name);
+  const matches=row=>id?String(row?.event_id||row?.id||"")===id:!!key&&norm(row?.name)===key;
+  let messages=0;
+  await mutateJson(TELEGRAM_IMAGE_DELIVERIES,"TTendencias: solicitar borrado en Telegram desde app",doc=>{
+    doc.items||=[];
+    for(const row of doc.items){
+      if(!matches(row))continue;
+      if(["deleted","published","dismissed"].includes(String(row.status||"").toLowerCase()))continue;
+      const mid=Number(row.telegram_message_id||0);
+      if(Number.isSafeInteger(mid)&&mid>0){
+        row.status="delete_pending";
+        row.delete_requested_at=now;
+        row.delete_attempts=0;
+        delete row.delete_error;
+        messages++;
+      }else{
+        row.status="deleted";
+        row.deleted_at=now;
+      }
+      row.decision_source="web_delete";
+    }
+    doc.updated_at=now;return doc;
+  });
+  await mutateJson(REQUESTS,"TTendencias: cerrar tendencia borrada",doc=>{
+    for(const row of doc.requests||[])if((id&&String(row.id||"")===id)||(!id&&norm(row.name)===key)){
+      row.status="deleted";row.deleted_at=now;row.updated_at=now;
+    }
+    doc.updated_at=now;return doc;
+  });
+  await mutateJson(EXPLAINED,"TTendencias: ocultar explicación borrada",doc=>{
+    for(const row of doc.items||[])if((id&&String(row.id||"")===id)||(!id&&norm(row.name)===key)){
+      row.telegram_package_status="deleted";
+      row.deleted_at=now;
+    }
+    doc.updated_at=now;return doc;
+  });
+  return {ok:true,deleted:true,id,name,telegram_delete_pending:messages>0,telegram_messages:messages};
+}
+
 async function discardNames(names) {
   const unique = [...new Set((names || []).map(String).map(x => x.trim()).filter(Boolean))].slice(0, 10);
   if (!unique.length) throw new Error("No hay tendencias seleccionadas.");
@@ -1377,6 +1421,7 @@ export default async function handler(req, res) {
       }
       return res.status(200).json(await rateRemate(body.rating_key, body.rating));
     }
+    if (action === "delete-trend") return res.status(200).json(await deleteTrendFromApp(body.id,body.name));
     if (action === "discard") return res.status(200).json(await discardNames(body.names));
     if (action === "retry") return res.status(200).json(await retryNames(body.names));
     if (action === "rework") return res.status(200).json(await reworkNames(body.names, body.instruction, { with_image: body.with_image !== false }));
