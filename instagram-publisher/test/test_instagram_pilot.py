@@ -84,12 +84,13 @@ class InstagramPilotTests(unittest.TestCase):
             with Image.open(pathlib.Path(root)/data["image_local_path"]) as image:
                 self.assertGreaterEqual(image.width/image.height,0.8-0.002)
 
-    def test_caption_is_source_text_plus_disclosure(self):
+    def test_caption_preserves_approved_text_without_redundant_footer(self):
         output=caption("Exacto.\n🌶️ Chiste.")
         self.assertTrue(output.startswith("Exacto.\n🌶️ Chiste."))
-        self.assertIn("generada con IA",output)
+        self.assertNotIn("generada con IA",output)
+        self.assertIn("#Actualidad",output)
         with self.assertRaises(ValueError):
-            caption("x"*2200)
+            caption("x"*2201)
 
     def test_bad_image_and_identity_blocked(self):
         with tempfile.TemporaryDirectory() as root:
