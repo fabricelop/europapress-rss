@@ -42,21 +42,41 @@ async function gh(url,options={}){
 }
 let commentsCache={at:0,items:[]};
 async function comments(){
-  // RUNTRACE es detalle complementario. No consultar GitHub REST en cada polling:
-  // una sola lectura reciente como máximo cada 30 s por instancia caliente.
+  // Con cientos de RUNTRACE, GitHub devuelve primero los comentarios más antiguos.
+  // Leer la última página y la anterior del intervalo, no solo per_page=100.
   const now=Date.now();
   if(now-commentsCache.at<30000)return commentsCache.items;
   const since=new Date(now-12*60*60*1000).toISOString();
+  const base="https://api.github.com/repos/"+REPO+"/issues/"+PR+"/comments?per_page=100&since="+encodeURIComponent(since);
   try{
-    const r=await gh(`https://api.github.com/repos/${REPO}/issues/${PR}/comments?per_page=100&since=${encodeURIComponent(since)}`);
-    if(!r.ok)return commentsCache.items;
-    const items=(await r.json()).filter(x=>String(x.body||"").startsWith(TRACE_PREFIX));
+    const first=await gh(base);
+    if(!first.ok)throw new Error("RUNTRACE HTTP "+first.status);
+    const link=String(first.headers?.get("link")||"");
+    const last=link.match(/<([^>]+)>;\s*rel="last"/i);
+    let lastPage=1;
+    if(last){
+      const u=new URL(last[1]);
+      if(u.hostname==="api.github.com"&&u.pathname==="/repos/"+REPO+"/issues/"+PR+"/comments")
+        lastPage=Math.max(1,Math.min(100000,Number(u.searchParams.get("page")||1)||1));
+    }
+    let pages=[await first.json()];
+    if(lastPage>1){
+      const nums=lastPage===2?[2]:[lastPage-1,lastPage];
+      const replies=await Promise.all(nums.map(n=>gh(base+"&page="+n)));
+      if(replies.some(x=>!x.ok))throw new Error("RUNTRACE: últimas páginas inaccesibles");
+      pages=await Promise.all(replies.map(x=>x.json()));
+    }
+    const byId=new Map();
+    for(const item of pages.flat())if(String(item?.body||"").startsWith(TRACE_PREFIX))byId.set(item.id,item);
+    const items=[...byId.values()].sort((x,y)=>Date.parse(x.created_at||0)-Date.parse(y.created_at||0)||Number(x.id||0)-Number(y.id||0));
     commentsCache={at:now,items};
-    return items
-  }catch(_){
-    return commentsCache.items
+    return items;
+  }catch(error){
+    if(commentsCache.items.length&&now-commentsCache.at<120000)return commentsCache.items;
+    throw error;
   }
 }
+
 async function triggerReady(){return true}
 function controlRawUrl(path){
   // En RAW se usa la rama directamente; "refs/heads/..." no es una ruta
@@ -354,7 +374,7 @@ export default async function handler(req,res){
         .sort((a,b)=>terminalOrder(a)-terminalOrder(b))
         .at(-1)||null;
       const last_run=terminalBefore?normalizeTrace(terminalBefore,errors):null;
-      return res.status(200).json({ok:true,enabled,active:true,...active,last_run,can_run:enabled&&authorized(req)})
+      return res.status(200).json({ok:true,checked_at:new Date().toISOString(),enabled,active:true,...active,last_run,can_run:enabled&&authorized(req)})
     }
 
     const terminalCandidates=[];
@@ -380,7 +400,7 @@ export default async function handler(req,res){
       return stamp(a.finished_at||a.updated_at)-stamp(b.finished_at||b.updated_at)
     });
     const last_run=terminalCandidates.at(-1)||null;
-    return res.status(200).json({ok:true,enabled,active:false,status:"IDLE",last_run,debug:{server_now:new Date().toISOString(),trace_count:traces.length,latest_run_id:latest?.run_id||null,latest_status:latest?.status||null,last_run_id:last_run?.run_id||null,last_run_finished_at:last_run?.finished_at||null},can_run:enabled&&authorized(req)})
+    return res.status(200).json({ok:true,checked_at:new Date().toISOString(),enabled,active:false,status:"IDLE",last_run,debug:{server_now:new Date().toISOString(),trace_count:traces.length,latest_run_id:latest?.run_id||null,latest_status:latest?.status||null,last_run_id:last_run?.run_id||null,last_run_finished_at:last_run?.finished_at||null},can_run:enabled&&authorized(req)})
   }catch(e){
     console.error(e);
     const raw=String(e?.message||e);
