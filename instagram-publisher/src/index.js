@@ -10,13 +10,30 @@ function inputCheck(b){
   if(!["ttittulares","ttendencias"].includes(source)||!/^[a-zA-Z0-9_-]{5,64}$/.test(id)||!Number.isSafeInteger(revision)||revision<0||!Number.isSafeInteger(mid)||mid<1||!IMG.test(image)||!caption||caption.length>2200)throw Error("INVALID_INPUT");
   return {key:source+":"+id,source,id,revision,mid,image,caption};
 }
+class MetaRequestError extends Error {
+  constructor(response,body){
+    super("META_REQUEST_FAILED");
+    const e=body&&typeof body.error==="object"?body.error:{};
+    this.httpStatus=Number(response.status)||0;
+    this.metaCode=Number.isSafeInteger(Number(e.code))?Number(e.code):null;
+    this.metaSubcode=Number.isSafeInteger(Number(e.error_subcode))?Number(e.error_subcode):null;
+    this.metaTransient=e.is_transient===true;
+    this.metaType=typeof e.type==="string"&&/^[A-Za-z]{1,60}$/.test(e.type)?e.type:null;
+  }
+}
+function safeMetaDiagnostic(err){
+  if(!(err instanceof MetaRequestError))return {};
+  return {meta_http_status:err.httpStatus,meta_error_code:err.metaCode,
+    meta_error_subcode:err.metaSubcode,meta_error_type:err.metaType,
+    meta_is_transient:err.metaTransient};
+}
 async function meta(env,endpoint,params={},verb="POST"){
   if(!env.INSTAGRAM_PAGE_ACCESS_TOKEN)throw Error("MISSING_TOKEN");
   const data=new URLSearchParams(params);
   const url="https://graph.facebook.com/v26.0/"+endpoint+(verb==="GET"?"?"+data:"");
   const result=await fetch(url,{method:verb,headers:{"content-type":"application/x-www-form-urlencoded","authorization":"Bearer "+env.INSTAGRAM_PAGE_ACCESS_TOKEN},...(verb==="POST"?{body:data}:{})});
   const json=await result.json().catch(()=>({}));
-  if(!result.ok||json.error)throw Error("META_REQUEST_FAILED");
+  if(!result.ok||json.error)throw new MetaRequestError(result,json);
   return json;
 }
 // Read-only account and schema preflight. Never posts to Meta, mutates D1, or returns a token.
@@ -92,9 +109,12 @@ async function publish(env,item){
       if(!/^\d+$/.test(String(creation.id||"")))throw Error("BAD_CONTAINER");
       await change(db,item.key,"creating","container_created",{container_id:String(creation.id)});
       row=await state(db,item.key);
-    }catch(_err){
+    }catch(err){
       await change(db,item.key,"creating","failed_before_publish");
-      return answer({ok:false,error:"CONTAINER_CREATION_FAILED"},502);
+      // Codes only, never Meta raw messages/tokens. The authenticated caller
+      // needs this distinction: missing permission vs inaccessible image.
+      return answer({ok:false,error:"CONTAINER_CREATION_FAILED",
+        ...safeMetaDiagnostic(err)},502);
     }
   }
   if(row.state!=="container_created")return answer({ok:false,error:"NEEDS_RECONCILIATION"},409);
