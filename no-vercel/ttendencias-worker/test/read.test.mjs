@@ -11,6 +11,8 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 test("complete TTendencias PWA and all 3 original handlers were staged",()=>{
   for(const p of [
     "generated/assets/ttendencias/index.html",
+    "generated/assets/tt-shared/gag-actions.js",
+    "generated/assets/tt-shared/gag-actions.css",
     "generated/assets/ttendencias/explicadas/index.html",
     "generated/assets/ttendencias/preparados/index.html",
     "generated/assets/ttendencias/sw.js",
@@ -18,6 +20,8 @@ test("complete TTendencias PWA and all 3 original handlers were staged",()=>{
     "generated/lib/ttendencias-run-handler.js",
     "generated/lib/ttendencias-run-status-handler.js"
   ]) assert.ok(fs.statSync(path.join(root,p)).isFile(),p);
+  const shared=fs.readFileSync(path.join(root,"generated/assets/tt-shared/gag-actions.js"),"utf8");
+  assert.match(shared,/Copiar prompt GAG/);
   for(const page of ["explicadas","historico"]){
     const html=fs.readFileSync(path.join(root,"generated/assets/ttendencias",page,"index.html"),"utf8");
     assert.match(html,/canvas\.toBlob/,page);
