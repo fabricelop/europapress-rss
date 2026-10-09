@@ -89,14 +89,18 @@ function parseTtiCallback(update){
   const cq=update?.callback_query;
   const data=String(cq?.data||"");
   const match=data.match(/^tt:([pdi]):([a-zA-Z0-9_-]{5,64})$/);
+  const instagramDelete=data.match(/^tt:igdel:([1-9][0-9]{0,14})$/);
   const uid=Number(update?.update_id);
   const mid=Number(cq?.message?.message_id);
   const chat=String(cq?.message?.chat?.id||"");
   const qid=String(cq?.id||"");
-  if(!match||!Number.isSafeInteger(uid)||uid<=0||
+  if((!match&&!instagramDelete)||!Number.isSafeInteger(uid)||uid<=0||
      !Number.isSafeInteger(mid)||mid<=0||
      !/^-?[0-9]{3,20}$/.test(chat)||
      !/^[a-zA-Z0-9_-]{6,128}$/.test(qid))return null;
+  if(instagramDelete)return {update_id:uid,type:"instagram_delete",
+    original_message_id:Number(instagramDelete[1]),callback_query_id:qid,message_id:mid,
+    source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
   return {update_id:uid,type:match[1]==="i"?"instagram_action":"emergency_action",text:(match[1]==="p"?"ttp":match[1]==="d"?"ttd":"tti_ig")+"|"+match[2],
     callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
@@ -129,7 +133,8 @@ async function verifyAndAnswerTelegramCallback(event,env){
   const token=await cloudflareTelegramBotToken(env);
   const response=await fetch("https://api.telegram.org/bot"+token+"/answerCallbackQuery",{
     method:"POST",headers:{"content-type":"application/json"},
-    body:JSON.stringify({callback_query_id:event.callback_query_id,text:event.type==="instagram_action"?"Recibido. Publicando en Instagram…":"Recibido. Actualizando noticia…"})
+    body:JSON.stringify({callback_query_id:event.callback_query_id,text:event.type==="instagram_delete"?"Borrando los mensajes de Telegram…":
+      event.type==="instagram_action"?"Recibido. Publicando en Instagram…":"Recibido. Actualizando noticia…"})
   });
   const ack=await response.json().catch(()=>({}));
   if(!response.ok||!ack.ok)return {ok:false,status:response.status};
@@ -225,17 +230,52 @@ async function inlineTtiTelegramDecision(env,update,event){
 }
 
 
-async function instagramTelegramNotice(env,update,text){
+async function instagramTelegramNotice(env,update,text,replyMarkup=null){
   const chat=update?.callback_query?.message?.chat?.id;
   const messageId=Number(update?.callback_query?.message?.message_id);
   if(!chat||!messageId)throw new Error("INSTAGRAM_NOTICE_MISSING_CHAT");
   const token=await cloudflareTelegramBotToken(env);
   const response=await fetch("https://api.telegram.org/bot"+token+"/sendMessage",{
     method:"POST",headers:{"content-type":"application/json"},
-    body:JSON.stringify({chat_id:chat,text:"📸 "+text,reply_to_message_id:messageId})
+    body:JSON.stringify({chat_id:chat,text:"📸 "+text,reply_to_message_id:messageId,
+      ...(replyMarkup?{reply_markup:replyMarkup}:{})})
   });
   const body=await response.json().catch(()=>({}));
   if(!response.ok||!body.ok)throw new Error("INSTAGRAM_NOTICE_FAILED");
+}
+
+// This button only cleans Telegram. It never changes Instagram or X state.
+async function deleteInstagramTelegramPair(env,update,event){
+  const message=update?.callback_query?.message||{};
+  const chat=String(message?.chat?.id||"");
+  const confirmationId=Number(message?.message_id||0);
+  const originalId=Number(event.original_message_id||0);
+  const replyId=Number(message?.reply_to_message?.message_id||0);
+  const notice=String(message?.text||"");
+  if(!chat||chat!==String(env.INSTAGRAM_ALLOWED_CHAT_ID||"")||
+     !Number.isSafeInteger(originalId)||originalId<=0||
+     !Number.isSafeInteger(confirmationId)||confirmationId<=0||
+     originalId===confirmationId||
+     (replyId>0&&replyId!==originalId)||
+     !/^📸 Publicado en Instagram: https:\/\/www\.instagram\.com\//.test(notice)){
+    return json({ok:false,error:"Instagram confirmation does not match the original message"},403);
+  }
+  const token=await cloudflareTelegramBotToken(env);
+  const remove=async messageId=>{
+    const response=await fetch("https://api.telegram.org/bot"+token+"/deleteMessage",{
+      method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({chat_id:chat,message_id:messageId})
+    });
+    const result=await response.json().catch(()=>({}));
+    const description=String(result.description||"").toLowerCase();
+    return !!result.ok||description.includes("message to delete not found");
+  };
+  // Keep the confirmation/button available if Telegram refuses to delete
+  // the original (e.g. Telegram's maximum message age).
+  const originalDeleted=await remove(originalId);
+  const confirmationDeleted=originalDeleted?await remove(confirmationId):false;
+  return json({ok:originalDeleted&&confirmationDeleted,original_deleted:originalDeleted,
+    confirmation_deleted:confirmationDeleted});
 }
 
 async function callInstagramPublisher(env,endpoint,options){
@@ -318,7 +358,8 @@ async function publishTtiInstagramSelected(env,update,event){
     // changed keyboard alone is easy to miss on a mobile Telegram feed.
     // Never turn a Telegram notification error into another Meta POST.
     try{
-      await instagramTelegramNotice(env,update,"Publicado en Instagram: "+result.permalink);
+      await instagramTelegramNotice(env,update,"Publicado en Instagram: "+result.permalink,
+        {inline_keyboard:[[{text:"🗑️ Borrar",callback_data:"tt:igdel:"+messageId}]]});
     }catch(error){
       console.log("TTITTULARES_INSTAGRAM_SUCCESS_NOTICE_FAILED",String(error?.name||"Error"));
     }
@@ -359,6 +400,13 @@ async function enqueueTtiTelegramCallback(request,env){
   }catch(err){
     console.log("TTiTTulares immediate Telegram ACK failed",String(err?.message||err));
     return json({ok:false,error:"Telegram confirmation unavailable"},503);
+  }
+  if(event.type==="instagram_delete"){
+    try{return await deleteInstagramTelegramPair(env,update,event);}
+    catch(error){
+      console.log("TTITTULARES_INSTAGRAM_DELETE_FAILED",String(error?.message||error));
+      return json({ok:false,error:"Telegram messages could not be deleted"},503);
+    }
   }
   if(event.type==="instagram_action"){
     // Instagram never changes the independent X Published / Dismissed state.
