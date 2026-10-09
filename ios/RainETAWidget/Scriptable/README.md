@@ -1,13 +1,22 @@
-# RainETA — instalar ahora en iPhone (sin Mac)
+# RainETA — widget iPhone SIN Vercel y SIN Mac
 
-La vía rápida es la app gratuita [Scriptable](https://apps.apple.com/app/scriptable/id1405459188), que aloja widgets reales de iOS. Este script usa ubicación actual o coordenadas elegidas, muestra **empieza en / termina en** y una cuenta atrás dinámica.
+La app gratuita [Scriptable](https://apps.apple.com/app/scriptable/id1405459188) permite mostrar un widget iOS real desde JavaScript. Este widget consulta Open-Meteo **directamente desde el iPhone**; no usa el dominio Vercel, despliegues, ni la API personalizada de RainETA.
 
-1. Instala Scriptable desde el App Store y crea un script nuevo llamado **RainETA Lluvia**.
-2. Copia el contenido completo de `RainETA-Lluvia.js` y ejecútalo una vez **dentro de Scriptable** para autorizar ubicación y comprobar la vista previa.
-3. En el iPhone mantén pulsada la pantalla de inicio → **Editar > Añadir widget > Scriptable** → formato pequeño.
-4. Mantén pulsado el widget añadido → **Editar widget** → selecciona el script **RainETA Lluvia**.
-5. Deja vacío el campo **Parameter** para la ubicación actual, o escribe `40.4168,-3.7038|Madrid` para una ubicación fija (latitud,longitud|etiqueta). La última ubicación autorizada se conserva localmente como fallback.
+## Instalación
+1. Instalar Scriptable y crear script `RainETA Lluvia`.
+2. Copiar completo `RainETA-Lluvia.js` al script. Si ya estaba instalado, **reemplazar el código antiguo** para activar búsqueda por nombre de ciudad y eliminar Vercel.
+3. Ejecutar una vez en Scriptable para permitir localización (si se usará GPS).
+4. Mantener pulsada la pantalla de inicio → Añadir widget → Scriptable pequeño → Editar widget → seleccionar script `RainETA Lluvia`.
 
-**Sin producción nueva:** mientras `/api/rain-widget` no esté desplegado, el script consulta directamente Open-Meteo como segunda vía. Después de validar una preview, puedes añadir su origen HTTPS en `RAINETA_PREVIEW`; al publicar la API RainETA el mismo script aprovechará radar AEMET y modelo. No es necesario pagar por una API meteorológica.
+## Cambiar ubicación en el propio widget
+Mantener pulsado widget → **Editar widget** → campo **Parameter**.
 
-**Limitaciones:** las predicciones de Open-Meteo a 15 minutos en Iberia pueden ser interpolaciones de información horaria; por eso mostramos ±30 min, no exactitud de minuto. El reloj visual puede contar continuamente pero Apple controla las consultas de datos nuevos del widget. Si iOS retrasa la actualización más allá de la hora prevista, la cifra puede empezar a contar hacia arriba hasta el próximo refresco. Consulta el radar / los avisos oficiales ante lluvia intensa.
+- Vacío: ubicación GPS actual; Scriptable solicitará permiso.
+- `Madrid`: la ciudad de Madrid.
+- `Sevilla, España`: desambigua ciudades con el país o provincia.
+- `40.4168,-3.7038|Madrid`: coordenadas explícitas y etiqueta a mostrar.
+
+Al aceptar el cambio, iOS debe ejecutar otra vez el script según su política. La ciudad elegida aparece en el widget. Se cachean coordenadas de las ciudades consultadas para reducir llamadas al geocodificador de Open-Meteo.
+
+## Limitaciones
+Open-Meteo permite consulta de campos a 15 minutos que en buena parte de Iberia son **interpolaciones de modelos horarios**, así que el resultado muestra margen ±30 min. No equivale a radar de movimiento RainETA, que requiere procesamiento adicional todavía no incorporado en esta versión directa. El reloj visible puede avanzar en iOS aunque las actualizaciones de datos dependen de WidgetKit. Esto no sustituye avisos oficiales de AEMET.
