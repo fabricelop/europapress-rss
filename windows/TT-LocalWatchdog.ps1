@@ -1,14 +1,8 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v9-singleton-no-ttittulares-queue-restart
+# watchdog-restart-refresh-v10-process-lock-no-queue-restart
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
-$script:WatchdogMutex=$null
-try{
-  $created=$false
-  $script:WatchdogMutex=New-Object System.Threading.Mutex($true,"Global\\TT_LocalWatchdog_v9_singleton",[ref]$created)
-  if(-not $created){ exit 0 }
-}catch{}
 $BaseDir="C:\TTiTTulares"
 $LogPath=Join-Path $BaseDir "tt-local-watchdog.log"
 $StartupDir=[Environment]::GetFolderPath("Startup")
@@ -32,6 +26,19 @@ function Log([string]$Text){
     Add-Content -LiteralPath $LogPath -Value ((Get-Date -Format "yyyy-MM-dd HH:mm:ss")+" "+$Text) -Encoding UTF8
   }catch{}
 }
+function Enter-ProcessInstance([string]$LockPath) {
+  # El SO libera el handle al salir o terminar el proceso; el fichero no es un PID.
+  # No borrar este fichero: su presencia no implica que exista un propietario.
+  try {
+    $script:InstanceHandle = [System.IO.File]::Open(
+      $LockPath, [System.IO.FileMode]::OpenOrCreate,
+      [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+    return $true
+  } catch [System.IO.IOException] {
+    return $false
+  }
+}
+
 function PsProcs([string]$Pattern){
   @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue|Where-Object{
     ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and [string]$_.CommandLine -like $Pattern
@@ -54,7 +61,7 @@ function EnsureSingle([string]$Pattern,[string]$Script,[string]$Tag){
   $rows=@(PsProcs $Pattern)
   if($rows.Count -eq 0){[void](StartHiddenPs $Script $Tag);return}
   if($rows.Count -gt 1){
-    $keep=$rows|Sort-Object CreationDate -Descending|Select-Object -First 1
+    $keep=$rows|Sort-Object CreationDate,ProcessId|Select-Object -First 1
     foreach($p in $rows){if($p.ProcessId -ne $keep.ProcessId){try{Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}}
     Log "DEDUP $Tag keep=$($keep.ProcessId) removed=$($rows.Count-1)"
   }
@@ -85,85 +92,6 @@ function EnsureChrome{
     }else{Log "CHROME TASK MISSING"}
   }catch{Log "CHROME AUTO ERROR :: $($_.Exception.Message)"}
 }
-$script:LastQueueRestart=@{ttittulares=[DateTimeOffset]::MinValue;ttendencias=[DateTimeOffset]::MinValue}
-
-function Read-RawJson([string]$Url){
-  try{
-    $u=$Url+$(if($Url.Contains("?")){"&"}else{"?"})+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-    return Invoke-RestMethod -Uri $u -Headers @{"Cache-Control"="no-cache";"User-Agent"="TT-LocalWatchdog-QueueHealth"} -TimeoutSec 12
-  }catch{return $null}
-}
-
-function RefreshListenerFromMain([string]$Project,[string]$Script){
-  try{
-    $name=Split-Path -Leaf $Script
-    if($name -notin @("TTiTTularesDedicatedListener.ps1","TTendenciasDedicatedListener.ps1")){return $true}
-    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/"+$name+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-    $tmp=$Script+".watchdog-refresh.ps1"
-    Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -Headers @{"Cache-Control"="no-cache";"User-Agent"="TT-Watchdog-Listener-Refresh-v2"} -TimeoutSec 20
-    $tokens=$null;$errors=$null
-    [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tokens,[ref]$errors)|Out-Null
-    if($errors.Count -gt 0){throw "PowerShell remoto invalido: "+$errors[0].Message}
-    $txt=Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
-    if($Project -eq "ttittulares" -and $txt -notmatch 'ttittulares-dedicated-v44'){
-      throw "Listener TTiTTulares remoto aun no es v44"
-    }
-    $changed=$true
-    if(Test-Path -LiteralPath $Script){
-      try{$changed=((Get-FileHash $tmp -Algorithm SHA256).Hash -ne (Get-FileHash $Script -Algorithm SHA256).Hash)}catch{}
-    }
-    Move-Item -LiteralPath $tmp -Destination $Script -Force
-    Log ("LISTENER REFRESH "+$Project+" changed="+[int]$changed+" file="+$name)
-    return $true
-  }catch{
-    try{Remove-Item -LiteralPath ($Script+".watchdog-refresh.ps1") -Force -ErrorAction SilentlyContinue}catch{}
-    Log ("LISTENER REFRESH WARNING "+$Project+" :: "+$_.Exception.Message)
-    return $false
-  }
-}
-
-function RestartListenerForQueue([string]$Project,[string]$Pattern,[string]$Script,[string]$Tag,[string]$Reason){
-  $now=[DateTimeOffset]::UtcNow
-  try{
-    if(($now-$script:LastQueueRestart[$Project]).TotalMinutes -lt 5){return}
-  }catch{}
-  Log "QUEUE HEALTH RESTART $Project :: $Reason"
-  [void](RefreshListenerFromMain $Project $Script)
-  @(PsProcs $Pattern)|ForEach-Object{try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
-  Start-Sleep -Milliseconds 700
-  [void](StartHiddenPs $Script $Tag)
-  $script:LastQueueRestart[$Project]=$now
-}
-
-function CheckImageQueueHealth([string]$Project,[string]$Branch,[string]$Prefix,[string]$Pattern,[string]$Script,[string]$Tag){
-  if($Project -eq "ttittulares"){ return }
-  try{
-    $api=if($Project -eq "ttittulares"){
-      "https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-run-status"
-    }else{
-      $(if([Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User")){[Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE","User").TrimEnd("/") + "/api/ttendencias-run-status"}else{"https://ttendencias-no-vercel-test.fabricelop.workers.dev/api/ttendencias-run-status"})
-    }
-    $snap=Read-RawJson ($api+"?view=listener-snapshot&strong=1")
-    $idx=if($snap -and $snap.image_index){$snap.image_index}else{$null}
-    if(-not $idx -or -not $idx.jobs){return}
-    $jobRef=@($idx.jobs)|Select-Object -Last 1
-    if(-not $jobRef){return}
-    $targetId=[string]$jobRef.target_id
-    if(-not $targetId){return}
-    $job=Read-RawJson ($api+"?view=image-job&strong=1&id="+[uri]::EscapeDataString($targetId))
-    if(-not $job){return}
-    $st=([string]$job.status).ToUpperInvariant()
-    if($st -ne "REQUESTED"){return}
-    if($job.pc_picked_up_at){return}
-    $at=[DateTimeOffset]::Parse([string]$job.requested_at)
-    $age=([DateTimeOffset]::UtcNow-$at).TotalSeconds
-    if($age -lt 120){return}
-    RestartListenerForQueue $Project $Pattern $Script $Tag ("job="+[string]$job.command_id+" age_s="+[int]$age)
-  }catch{
-    Log "QUEUE HEALTH ERROR $Project :: $($_.Exception.Message)"
-  }
-}
-
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -186,6 +114,9 @@ function EnsureScheduledTasks{
   }catch{}
 }
 
+New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
+if (-not (Enter-ProcessInstance (Join-Path $BaseDir "tt-watchdog.instance.lock"))) { exit 0 }
+
 $tt=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
 $tr=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
 $up=Join-Path $BaseDir "TT-AutoUpdater.ps1"
@@ -203,14 +134,11 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
-    # TTiTTulares v50: no reiniciar un listener vivo solo porque el último job
-    # siga REQUESTED. Con una cola larga eso reiniciaba el listener cada ~5 min
-    # aunque estuviera procesando un job anterior. EnsureSingle sigue garantizando
-    # una única instancia y la vuelve a levantar si realmente cae.
-    CheckImageQueueHealth "ttendencias" "control/ttendencias-run-trigger" "trends" "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
+    # La cola REQUESTED puede esperar un job anterior o el slot del otro proyecto.
+    # Solo relanzar procesos ausentes; AutoUpdater es el unico actualizador.
     Start-Sleep -Seconds $IntervalSeconds
   }
 }finally{
   try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
-  try{if($script:WatchdogMutex){$script:WatchdogMutex.ReleaseMutex();$script:WatchdogMutex.Dispose()}}catch{}
+  try{if($script:InstanceHandle){$script:InstanceHandle.Dispose()}}catch{}
 }

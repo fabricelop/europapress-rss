@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v16"
+$WorkerId = "ttendencias-dedicated-v17"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
@@ -45,9 +45,20 @@ $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
-# v16: no usar mutex de kernel. El reparador y TT-LocalWatchdog
-# deduplican por CommandLine/PID; un mutex retenido podía impedir arrancar
-# antes incluso de escribir el primer log.
+# Una sola instancia posee el estado local antes de arrancar la supervision.
+
+function Enter-ProcessInstance([string]$LockPath) {
+  # El SO libera el handle al salir o terminar el proceso; el fichero no es un PID.
+  # No borrar este fichero: su presencia no implica que exista un propietario.
+  try {
+    $script:InstanceHandle = [System.IO.File]::Open(
+      $LockPath, [System.IO.FileMode]::OpenOrCreate,
+      [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+    return $true
+  } catch [System.IO.IOException] {
+    return $false
+  }
+}
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -56,25 +67,13 @@ function Write-Log([string]$Text) {
 
 function Ensure-LocalWatchdog {
   try {
-    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/TT-LocalWatchdog.ps1?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-    $tmp=$WatchdogPath+".new"
-    Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -TimeoutSec 20
-    $tokens=$null;$errors=$null
-    [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tokens,[ref]$errors)|Out-Null
-    if($errors.Count -gt 0){throw "Watchdog PowerShell invalido"}
-    $changed=$true
-    if(Test-Path -LiteralPath $WatchdogPath){
-      try{$changed=((Get-FileHash $tmp -Algorithm SHA256).Hash -ne (Get-FileHash $WatchdogPath -Algorithm SHA256).Hash)}catch{}
+    if(-not (Test-Path -LiteralPath $WatchdogPath)){
+      Write-Log "WATCHDOG LOCAL MISSING; auto-updater/installer must restore it"
+      return
     }
-    Move-Item -LiteralPath $tmp -Destination $WatchdogPath -Force
     $live=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue|Where-Object{
       ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and $_.CommandLine -like "*TT-LocalWatchdog.ps1*"
     })
-    if($changed -and $live.Count -gt 0){
-      $live|ForEach-Object{try{Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}
-      Start-Sleep -Milliseconds 300
-      $live=@()
-    }
     if($live.Count -eq 0){
       $p=Start-Process powershell.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$WatchdogPath) -WindowStyle Hidden -PassThru
       Write-Log "WATCHDOG STARTED pid=$($p.Id)"
@@ -892,17 +891,22 @@ Respeta OBLIGATORIAMENTE image_style e image_style_name de context_snapshot. Pri
 "@
 }
 
-Ensure-LocalWatchdog
-
-if (-not (Test-Path -LiteralPath $BaseDir)) {
-  New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
+if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
+if (-not (Enter-ProcessInstance (Join-Path $BaseDir "ttendencias-listener.instance.lock"))) {
+  Write-Log "DUPLICATE INSTANCE EXIT worker=$WorkerId pid=$PID"
+  exit 0
 }
-
+Ensure-LocalWatchdog
 Write-Log "LISTENER START worker=$WorkerId pid=$PID"
-$state = Load-State
-Ensure-StateFields $state
-Save-State $state
-
+try {
+  $state = Load-State
+  Ensure-StateFields $state
+  Save-State $state
+  Write-Log "STATE READY worker=$WorkerId pid=$PID"
+} catch {
+  Write-Log "STARTUP STATE ERROR worker=$WorkerId pid=$PID :: $($_.Exception.Message) :: $($_.ScriptStackTrace)"
+  throw
+}
 $CustomMessageSupport = Test-CustomChatMessageSupport
 
 $probe = Read-Trigger

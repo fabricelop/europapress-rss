@@ -167,8 +167,8 @@ jobs:
           }
           Write-Host "OK: stale editorial trigger cannot skip the independent image queue"
 
-      - name: Test listener invalid JSON recovery
-        shell: pwsh
+      - name: Test listener invalid JSON recovery on Windows PowerShell 5.1
+        shell: powershell
         run: |
           $ErrorActionPreference="Stop"
           foreach($file in @("TTiTTularesDedicatedListener.ps1","TTendenciasDedicatedListener.ps1")){
@@ -200,3 +200,11 @@ jobs:
             if(-not ($sparse.PSObject.Properties.Name -contains "last_command_id")){throw "Sparse state failed in $file"}
             Write-Host "OK $file"
           }
+
+      - name: Test process ownership on Windows PowerShell 5.1
+        shell: powershell
+        run: windows/tests/Test-TT-ProcessLifetime.ps1
+
+      - name: Test process ownership on PowerShell 7
+        shell: pwsh
+        run: windows/tests/Test-TT-ProcessLifetime.ps1
