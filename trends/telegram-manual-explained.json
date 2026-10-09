@@ -39500,8 +39500,8 @@
       ],
       "duplicate_of": null,
       "rewrite_pending": false,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
+      "ai_image_status": "ready",
+      "ai_image_attempt": 3,
       "image_status": "ready",
       "image_pending": false,
       "news_disposition": "ignored",
@@ -39517,14 +39517,52 @@
       },
       "fallback_image_status": "ready",
       "image": {
-        "url": "https://www.eldebate.com/files/article_social/uploads/2026/10/08/6ac7f9560141b.png",
-        "source": "El Debate · 09/10/2026",
-        "source_url": "https://www.eldebate.com/espana/20261009/correos-logro-votara-correo-generales-2023-carne-movil-qr-juanma-serrano-leire-diez-frente_467727.html",
-        "alt": "Imagen de archivo relacionada con Juanma Serrano",
-        "rights_status": "unverified",
-        "generated": false
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a5ffd41f5384-r0-ai3-791548296208.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "8cc38a99f1f6cf6d199cede4a63df8062e657f9605ffb2a94095fcfdf3c81394",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 693295,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a5ffd41f5384",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a5ffd41f5384-r0-a3-1791548296208"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a5ffd41f5384-r0-ai3-791548296208.jpg",
+        "handoff": "pc-bridge-direct-materialized"
       },
-      "image_choice": "fallback"
+      "image_choice": "ai",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/a5ffd41f5384-r0-ai3-791548296208.jpg",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 3,
+        "sha256": "8cc38a99f1f6cf6d199cede4a63df8062e657f9605ffb2a94095fcfdf3c81394",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 693295,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "a5ffd41f5384",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-a5ffd41f5384-r0-a3-1791548296208"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/a5ffd41f5384-r0-ai3-791548296208.jpg",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T12:50:44.179Z"
     },
     {
       "id": "285a6550e6b8",
@@ -39996,6 +40034,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-09T12:50:21.314756Z",
+  "updated_at": "2026-10-09T12:50:44.179Z",
   "count": 676
 }
