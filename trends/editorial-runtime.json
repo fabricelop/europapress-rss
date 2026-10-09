@@ -2,8 +2,8 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-09T11:56:00+02:00",
-  "last_completed_at": "2026-10-09T12:14:00+02:00",
-  "updated_at": "2026-10-09T12:14:00+02:00",
+  "last_completed_at": "2026-10-09T12:13:30+02:00",
+  "updated_at": "2026-10-09T12:13:30+02:00",
   "status": "success",
   "processed_ids": [
     "a5ffd41f5384",
@@ -24,13 +24,13 @@
     "run_id": "tr-1791538120641-2fc123",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
-    "phase": "persisting",
+    "phase": "closing",
     "started_at": "2026-10-09T11:56:00+02:00",
-    "updated_at": "2026-10-09T12:14:00+02:00",
-    "finished_at": "2026-10-09T12:14:00+02:00",
-    "trend_id": "660533085d21",
-    "title": "Mourinho",
-    "current": 4,
+    "updated_at": "2026-10-09T12:13:30+02:00",
+    "finished_at": "2026-10-09T12:13:30+02:00",
+    "trend_id": null,
+    "title": null,
+    "current": 5,
     "total": 5,
     "summary": {
       "trends_processed": 5,
@@ -49,17 +49,9 @@
       "explanations_verified_under_280": 5,
       "remates_selected": 1,
       "remates_omitted": 4,
-      "concurrent_completed": 2,
-      "pending_cards_reviewed": 5,
-      "pending_repair_triggered": 1,
-      "visual_repair_triggered": 1,
-      "telegram_delivery_completed": 0,
-      "vercel_deploys": 0,
-      "remates_reused": 0,
-      "jit_skipped": 2,
-      "new_queue_entries_during_run": 0
+      "concurrent_completed": 2
     },
-    "message": "Pasada editorial completada · 5/5; cola 0; sin reexplicaciones pendientes; incidencias de concurrencia reconciliadas",
+    "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; incidencias concurrentes reconciliadas.",
     "incident_count": 3,
     "incidents": [
       {
@@ -87,8 +79,7 @@
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "total_ratings": 154,
-      "updated_at": "2026-10-06T21:21:47.927Z"
+      "total_ratings": 154
     },
     "remate_selections": [
       {
@@ -169,6 +160,13 @@
       }
     ],
     "activity": [
+      {
+        "at": "2026-10-09T12:11:50+02:00",
+        "phase": "persisting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Retirando revisión de la cola"
+      },
       {
         "at": "2026-10-09T12:12:00+02:00",
         "phase": "verifying",
@@ -289,25 +287,18 @@
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-09T12:13:40+02:00",
+        "at": "2026-10-09T12:13:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación consolidada · 5 revisiones coherentes en requests y Explicadas"
+        "message": "Relectura final de main · cola 0; 5 revisiones exactas; sin rewrite_pending"
       },
       {
-        "at": "2026-10-09T12:13:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0 y rewrite_pending 0"
-      },
-      {
-        "at": "2026-10-09T12:14:00+02:00",
+        "at": "2026-10-09T12:13:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 5/5; cola 0; sin reexplicaciones pendientes; incidencias de concurrencia reconciliadas"
+        "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; incidencias concurrentes reconciliadas."
       }
     ],
     "queue_complete": true,
