@@ -68,6 +68,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
+ <details id="opsPanel" style="margin-bottom:10px;padding:10px;border:1px solid #354255;border-radius:12px"><summary id="opsSummary">Estado operativo</summary><div id="opsDetail"></div></details>
  <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
   <button class="stat active" data-view="ready"><b id="readyCount">0</b>Listas</button>
@@ -846,6 +847,12 @@ function renderSourcesSheet(){
  table.appendChild(tbody);box.appendChild(table);box.scrollTop=previousScroll;
 }
 function render(){
+ const alerts=model.operational?.incidents||[];
+ const errors=alerts.filter(x=>x.severity==="error").length;
+ $("opsSummary").textContent=errors+" fallos · "+(alerts.length-errors)+" avisos operativos";
+ const detail=$("opsDetail");detail.replaceChildren();
+ for(const x of alerts){const row=document.createElement("p");row.textContent=(x.severity==="error"?"ERROR: ":"AVISO: ")+x.title+" — "+x.detail;detail.appendChild(row)}
+ if(!alerts.length)detail.textContent="Sin anomalías detectadas";
  const s=model.status||{},healthy=Number(s.healthy_source_count),total=Number(s.configured_sources);
  $("readyCount").textContent=(model.prepared||[]).length;$("processingCount").textContent=Number(s.processing_count||0);$("reviewCount").textContent=Number(s.problematic_count||0)+Number(s.processing_outcomes_count||0);$("oneSourceCount").textContent=Number(s.one_source_count||0);$("twoSourceCount").textContent=Number(s.two_source_count||0);$("growingCount").textContent=Number(s.three_source_count||0);$("tremendingCount").textContent=(model.tremending?.items||[]).filter(x=>!tremendingDeleted.has(String(x.id||""))).length;
  renderTiming();
@@ -1317,7 +1324,7 @@ async function load(silent=false,passive=false){
    const locallyClosed=id=>pendingClosed.has(String(id||""))||hasClosedTombstone(id);
    const status={...(d.status||{}),processing_items:processingRaw.filter(x=>!locallyClosed(x.event_id)),processing_outcomes:processingOutcomesRaw.filter(x=>!locallyClosed(x.event_id)),problematic_items:problematicRaw.filter(x=>!locallyClosed(x.event_id)),trend_candidates:[],trend_candidates_count:0,three_source_items:growingRaw.filter(x=>!locallyClosed(x.event_id))};
   status.processing_count=status.processing_items.length;status.processing_outcomes_count=status.processing_outcomes.length;status.problematic_count=status.problematic_items.length;status.three_source_count=status.three_source_items.length;
-  model={prepared:preparedRaw.filter(x=>!locallyClosed(x.event_id)),status,config:d.config||{},tremending:d.tremending||{items:[]}};
+  model={prepared:preparedRaw.filter(x=>!locallyClosed(x.event_id)),status,operational:d.operational||{},config:d.config||{},tremending:d.tremending||{items:[]}};
   hasGoodState=true;
   if(LINKED_EVENT_ID&&model.prepared.some(x=>String(x.event_id)===LINKED_EVENT_ID)){view="ready";openCards.add(LINKED_EVENT_ID);persistUiState()}
   // Pintar primero: una caché local llena nunca debe dejar la app en "Cargando" con contadores a 0.
