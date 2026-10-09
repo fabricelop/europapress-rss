@@ -40539,7 +40539,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -40604,14 +40603,30 @@
       "duplicate_of": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://images.ctfassets.net/4cd45et68cgf/15ZNURRHyd5BXu9nmasliw/81c9e0fda576eb555c66b8813b6d126c/ECDS_081026_manuelfernandezvaldes_MFV2910.jpeg",
+        "source": "Netflix · 9/10/2026",
+        "source_url": "https://about.netflix.com/es_es/news/netflix-announces-a-fictional-miniseries-inspired-by-the-daniel-sancho-case",
+        "alt": "Imagen de archivo relacionada con Martiño Rivas",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://images.ctfassets.net/4cd45et68cgf/15ZNURRHyd5BXu9nmasliw/81c9e0fda576eb555c66b8813b6d126c/ECDS_081026_manuelfernandezvaldes_MFV2910.jpeg",
+        "source": "Netflix · 9/10/2026",
+        "source_url": "https://about.netflix.com/es_es/news/netflix-announces-a-fictional-miniseries-inspired-by-the-daniel-sancho-case",
+        "alt": "Imagen de archivo relacionada con Martiño Rivas",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-09T17:27:30+02:00",
+  "updated_at": "2026-10-09T15:29:47.975886Z",
   "count": 681
 }
