@@ -139,7 +139,7 @@ test("Telegram closure only touches message IDs from the verified event",()=>{
   assert.throws(()=>linkedTtiTelegramMessages(deliveries,"A12345",3081),/Unlinked/);
 });
 
-test("Telegram callback persists the decision and removes all related messages without waiting for Actions",async()=>{
+test("retired Telegram publication/dismissal callbacks never change state",async()=>{
   const botToken="123456789:"+("AbCd0123456789efGHijKLmnOPqrSTuvWxYz");
   const {publicKey,privateKey}=generateKeyPairSync("rsa",{modulusLength:2048});
   const ciphertext=publicEncrypt({key:publicKey,padding:constants.RSA_PKCS1_OAEP_PADDING,oaepHash:"sha256"},Buffer.from(botToken)).toString("base64");
@@ -189,11 +189,22 @@ test("Telegram callback persists the decision and removes all related messages w
       method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(update)
     }),{GITHUB_TOKEN:"test-github-token",TTITTULARES_CALLBACK_DECRYPT_KEY:key});
     const result=await response.json();
-    assert.equal(response.status,200);
-    assert.equal(result.immediate.applied,true);
-    assert.equal(result.immediate.deleted,true);
-    assert.equal(decisions.items[0].status,"dismissed");
-    assert.equal(savedInbox.requests[0].verified_by_telegram,true);
-    assert.deepEqual(deleted.sort((a,b)=>a-b),[3074,3075,3078,3079]);
+    assert.equal(response.status,410);
+    assert.match(result.error,/retired/);
+    assert.deepEqual(decisions.items,[]);
+    assert.equal(savedInbox,null);
+    assert.deepEqual(deleted,[]);
   }finally{globalThis.fetch=originalFetch;}
+});
+
+
+test("relay de propuesta Telegram no acepta peticiones sin bot verificado",async()=>{
+  const response=await worker.fetch(new Request(
+    "https://tt.example/api/ttittulares-telegram-user-proposal",{
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({update_id:111,text:"Investigar esta noticia"})
+    }
+  ),{});
+  assert.notEqual(response.status,200);
 });
