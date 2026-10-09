@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-09T08:56:29.379714+00:00",
+  "checked_at": "2026-10-09T11:03:14.087767+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -54,8 +54,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.3,
-      "run_id": 37907624639,
+      "age_minutes": 1.4,
+      "run_id": 37921208188,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -75,52 +75,28 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 3,
-      "oldest_age_minutes": 94.8,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "a02249e0af5b",
-          "name": "#LaHora9O",
-          "status": "preparing",
-          "age_minutes": 94.8
-        },
-        {
-          "id": "a5ffd41f5384",
-          "name": "Juanma Serrano",
-          "status": "preparing",
-          "age_minutes": 76.0
-        },
-        {
-          "id": "285a6550e6b8",
-          "name": "Leire Díez",
-          "status": "preparing",
-          "age_minutes": 76.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "a02249e0af5b",
-        "a5ffd41f5384",
-        "285a6550e6b8"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
     "config TTendencias incompatible con el modo activo",
-    "cola con 50 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 94.8 min"
+    "cola con 50 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 50 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 94.8 min | config TTendencias incompatible con el modo activo"
+  "last_alert_signature": "cola con 50 estado(s) inválido(s) | config TTendencias incompatible con el modo activo"
 }
