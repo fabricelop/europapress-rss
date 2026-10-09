@@ -36,7 +36,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
-$WorkerId = "ttittulares-dedicated-v54"
+$WorkerId = "ttittulares-dedicated-v55"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
@@ -47,9 +47,20 @@ $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
 $script:LastStrongSnapshotAt = [DateTimeOffset]::MinValue
-# v44: no usar mutex de kernel aquí. El reparador y TT-LocalWatchdog
-# garantizan una única instancia por CommandLine/PID. Un mutex retenido por una
-# instancia oculta impedía arrancar sin dejar stderr ni log.
+# Una sola instancia posee el estado local antes de arrancar la supervision.
+
+function Enter-ProcessInstance([string]$LockPath) {
+  # El SO libera el handle al salir o terminar el proceso; el fichero no es un PID.
+  # No borrar este fichero: su presencia no implica que exista un propietario.
+  try {
+    $script:InstanceHandle = [System.IO.File]::Open(
+      $LockPath, [System.IO.FileMode]::OpenOrCreate,
+      [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::None)
+    return $true
+  } catch [System.IO.IOException] {
+    return $false
+  }
+}
 
 function Write-Log([string]$Text) {
   $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') $Text"
@@ -1114,14 +1125,22 @@ function Launch-TTiTTulares([string]$CommandId) {
   return $false
 }
 
-Ensure-LocalWatchdog
-
 if (-not (Test-Path -LiteralPath $BaseDir)) { New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null }
-
+if (-not (Enter-ProcessInstance (Join-Path $BaseDir "ttittulares-listener.instance.lock"))) {
+  Write-Log "DUPLICATE INSTANCE EXIT worker=$WorkerId pid=$PID"
+  exit 0
+}
+Ensure-LocalWatchdog
 Write-Log "LISTENER START worker=$WorkerId pid=$PID"
-$state = Load-State
-Ensure-StateFields $state
-Save-State $state
+try {
+  $state = Load-State
+  Ensure-StateFields $state
+  Save-State $state
+  Write-Log "STATE READY worker=$WorkerId pid=$PID"
+} catch {
+  Write-Log "STARTUP STATE ERROR worker=$WorkerId pid=$PID :: $($_.Exception.Message) :: $($_.ScriptStackTrace)"
+  throw
+}
 $CustomMessageSupport = Test-CustomChatMessageSupport
 if(-not $CustomMessageSupport){
   Write-Log "CUSTOM MESSAGE SUPPORT unavailable; ignored for image queue because fixed-tab bridge is self-sufficient"
