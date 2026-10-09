@@ -141,7 +141,17 @@ function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
       if (delivery.dismissed_at) merged.dismissed_at = delivery.dismissed_at;
     }
     const imageUrl = String(delivery?.image_url || "").trim();
-    if (/^https:\/\//i.test(imageUrl)) {
+    if (/^https:\/\//i.test(imageUrl) && Number(delivery?.buttons_version || 0) >= 7) {
+      // Current Telegram pipeline uses authentic archive photos, never ImageGen.
+      // Do not misclassify a real newspaper photograph as AI-generated.
+      merged.archive_image = {
+        url: imageUrl,
+        source: "Fotografía de archivo",
+        source_url: String(delivery?.source_url || ""),
+        generated: false,
+      };
+      if (!merged.fallback_image?.url) merged.fallback_image = merged.archive_image;
+    } else if (/^https:\/\//i.test(imageUrl)) {
       merged.ai_image = {
         ...(merged.ai_image || {}),
         url: imageUrl,
