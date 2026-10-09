@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v10-process-lock-no-queue-restart
+# watchdog-restart-refresh-v11-resurrect-dead-listeners-with-startup-diagnostics
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -50,16 +50,27 @@ function StartHiddenPs([string]$Script,[string]$Tag){
     $out=Join-Path $BaseDir ($Tag+".watchdog.out.log")
     $err=Join-Path $BaseDir ($Tag+".watchdog.err.log")
     $p=Start-Process powershell.exe -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-WindowStyle","Hidden","-File",$Script) -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err -PassThru
-    Start-Sleep -Milliseconds 800
+    # Nueve decimas fueron insuficientes: los scripts llegaban a RESTART OK
+    # y morian durante STATE READY, sin que el actualizador lo detectara.
+    Start-Sleep -Seconds 4
     $p.Refresh()
-    if($p.HasExited){Log "START FAILED $Tag exit=$($p.ExitCode)";return $null}
+    if($p.HasExited){
+      $detail=""
+      try{if(Test-Path -LiteralPath $err){$detail=(Get-Content -LiteralPath $err -Tail 10 -ErrorAction Stop) -join " | "}}catch{}
+      Log "START FAILED $Tag exit=$($p.ExitCode) stderr=$detail"
+      return $null
+    }
     Log "STARTED $Tag pid=$($p.Id)"
     return $p
   }catch{Log "START ERROR $Tag :: $($_.Exception.Message)";return $null}
 }
 function EnsureSingle([string]$Pattern,[string]$Script,[string]$Tag){
   $rows=@(PsProcs $Pattern)
-  if($rows.Count -eq 0){[void](StartHiddenPs $Script $Tag);return}
+  if($rows.Count -eq 0){
+    Log "PROCESS MISSING $Tag; restarting"
+    [void](StartHiddenPs $Script $Tag)
+    return
+  }
   if($rows.Count -gt 1){
     $keep=$rows|Sort-Object CreationDate,ProcessId|Select-Object -First 1
     foreach($p in $rows){if($p.ProcessId -ne $keep.ProcessId){try{Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue}catch{}}}
@@ -128,14 +139,22 @@ EnsureStartup "TT Auto Updater.cmd" $up
 
 Log "WATCHDOG START pid=$PID interval=$IntervalSeconds"
 try{
+  $loops=0
   while($true){
-    EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
-    EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
-    EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
-    EnsureScheduledTasks
-    EnsureChrome
-    # La cola REQUESTED puede esperar un job anterior o el slot del otro proyecto.
-    # Solo relanzar procesos ausentes; AutoUpdater es el unico actualizador.
+    try{
+      $loops++
+      EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
+      EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
+      EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
+      EnsureScheduledTasks
+      EnsureChrome
+      if(($loops % 10) -eq 0){
+        Log ("WATCHDOG HEARTBEAT tt="+@(PsProcs "*TTiTTularesDedicatedListener.ps1*").Count+
+          " tr="+@(PsProcs "*TTendenciasDedicatedListener.ps1*").Count+
+          " updater="+@(PsProcs "*TT-AutoUpdater.ps1*").Count)
+      }
+    }catch{Log "WATCHDOG LOOP ERROR :: $($_.Exception.Message)"}
+    # No relanzar por cola REQUESTED; únicamente por procesos ausentes.
     Start-Sleep -Seconds $IntervalSeconds
   }
 }finally{
