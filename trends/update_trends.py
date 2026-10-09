@@ -679,6 +679,32 @@ def main():
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
 
+    # Mostrar un Top 30, pero conservar top10 como única entrada a la
+    # cola editorial automática. Los puestos 11-30 son opt-in.
+    top30 = list(top10)
+    seen_top30 = {term_key(x) for x in top30}
+    def extend_ranked(names):
+        for name in names:
+            if len(top30) >= 30:
+                break
+            key = term_key(name)
+            if key and key not in seen_top30:
+                top30.append(name)
+                seen_top30.add(key)
+    # Mantener la fuente elegida como referencia para las posiciones,
+    # sin presentar las señales de otras fuentes como posiciones verificadas.
+    primary_ranked = (source_data.get(chosen_name) or {}).get("trends") or []
+    extend_ranked(primary_ranked[:30])
+    if len(top30) < 30:
+        for name, data in sorted(source_data.items(),
+                                 key=lambda pair: pair[0] != chosen_name):
+            if data.get("ok") and data.get("freshness") != "stale":
+                extend_ranked((data.get("trends") or [])[:50])
+            if len(top30) >= 30:
+                break
+    # Si el radar no alcanza 30 entradas fiables, mostrar las observadas;
+    # nunca fabricar nombres ni puestos para rellenar.
+
     unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
     previous_keys = {term_key(x) for x in previous}
     previous_rank_by_key = {term_key(name): i + 1 for i, name in enumerate(previous)}
@@ -743,6 +769,7 @@ def main():
         "fresh_sources": fresh,
         "reliability": reliability,
         "top10": top10,
+        "top30": top30,
         "items": [
             {
                 "rank": i + 1,
@@ -752,7 +779,7 @@ def main():
                 "previous_rank": top10_movement(name, i + 1)[1],
                 "rank_delta": top10_movement(name, i + 1)[2],
             }
-            for i, name in enumerate(top10)
+            for i, name in enumerate(top30)
         ],
         "unchanged_from_previous": unchanged,
         "new_entries": new_entries,
@@ -765,7 +792,7 @@ def main():
     print(
         f"TTendencias: {chosen_name} via {method}; valid={len(valid)}/{len(SOURCES)}, "
         f"non_stale={len(non_stale)}, fresh={len(fresh)}, reliability={reliability}; "
-        f"Top 10: {', '.join(top10)}; upcoming={len(upcoming)}"
+        f"Top 30: {', '.join(top30)}; top10 editoriales={len(top10)}; upcoming={len(upcoming)}"
     )
 
 if __name__ == "__main__":
