@@ -5,8 +5,8 @@ import vm from "node:vm";
 
 const html=fs.readFileSync(new URL("../ttittulares/index.html",import.meta.url),"utf8");
 const script=html.match(/<script>([\s\S]*?)<\/script>/)?.[1]||"";
-const control=fs.readFileSync(new URL("../api/ttittulares-control.js",import.meta.url),"utf8");
-const runStatus=fs.readFileSync(new URL("../api/ttittulares-run-status.js",import.meta.url),"utf8");
+const control=fs.readFileSync(new URL("../lib/ttittulares-control-handler.js",import.meta.url),"utf8");
+const runStatus=fs.readFileSync(new URL("../lib/ttittulares-run-status-handler.js",import.meta.url),"utf8");
 new vm.Script(script);
 
 test("Listas conserva acciones esenciales",()=>{
