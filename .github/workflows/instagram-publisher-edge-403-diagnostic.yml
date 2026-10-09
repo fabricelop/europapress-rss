@@ -1,0 +1,53 @@
+name: Diagnostico seguro Instagram 403 Cloudflare
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/instagram-publisher-edge-403-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnosis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verificar JSON del worker y filtros 403 sin publicar
+        env:
+          INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.error,urllib.request
+          root="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev"
+          cases=[
+           ("health","GET","/health",None,None),
+           ("unauthenticated_invalid","POST","/publish",{},None),
+           ("authenticated_invalid","POST","/publish",{"source":"invalid","event_id":"TEST_NOT_PUBLISHABLE"},os.environ.get("INTERNAL_SECRET","")),
+           ("invalid_path","GET","/not-a-route",None,None),
+          ]
+          for name,method,path,payload,secret in cases:
+            headers={"user-agent":"TTActualidad-Diagnostic/1.0"}
+            if payload is not None: headers["content-type"]="application/json"
+            if secret and len(secret)>=32: headers["authorization"]="Bearer "+secret
+            request=urllib.request.Request(root+path,method=method,headers=headers,data=json.dumps(payload).encode() if payload is not None else None)
+            try:
+              with urllib.request.urlopen(request,timeout=22) as r: code=r.status; body=r.read(8192); hdr=r.headers
+            except urllib.error.HTTPError as err: code=err.code; body=err.read(8192); hdr=err.headers
+            except Exception as err:
+              print("EDGE_PROBE",name,"network_error="+type(err).__name__);continue
+            content_type=hdr.get("content-type","")
+            marker="JSON" if content_type.startswith("application/json") else "HTML_OR_OTHER"
+            title="cloudflare-challenge" if b"Just a moment" in body or b"cf-chl" in body else ("cloudflare-403" if b"Forbidden" in body else "other")
+            result={"case":name,"http":code,"response":marker,"edge_hint":title,"cf_mitigated":hdr.get("cf-mitigated",""),"server":hdr.get("server",""),"ray_present":bool(hdr.get("cf-ray",""))}
+            if marker=="JSON":
+              try:
+                d=json.loads(body.decode("utf8"))
+                result["publisher_error"]=str(d.get("error",""))[:70]
+                result["publisher_service"]=str(d.get("service",""))[:45]
+                result["active"]=bool(d.get("active"))
+              except ValueError: pass
+            print("EDGE_PROBE",json.dumps(result,ensure_ascii=False))
+          PY
