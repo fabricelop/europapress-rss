@@ -6,6 +6,10 @@ const PARAM = String(args.widgetParameter || "").trim();
 const LOCATION_KEY = "RainETAWidget:lastLocation";
 const REFRESH_MINUTES = 10;
 const FALLBACK_CITY = null; // No inventar que Madrid es la ubicación del usuario
+const CACHE_KEY = 'RainETAWidget:lastForecast:v3';
+const FAMILY = String(config.widgetFamily||'medium');
+const SMALL = FAMILY==='small'||FAMILY.startsWith('accessory');
+const LARGE = FAMILY==='large'||FAMILY==='extraLarge';
 
 function parsePosition(param) {
   const found=param.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)(?:\s*\|\s*(.+))?$/);
@@ -63,6 +67,72 @@ async function geocodeCity(name){
   Keychain.set(key,JSON.stringify({...result,cachedAt:Date.now()}));
   return result;
 }
+
+function hourlyRainRows(data, nowMs) {
+  const h=(data||{}).hourly||{};
+  const times=Array.isArray(h.time)?h.time:[];
+  const probs=h.precipitation_probability||[];
+  const rains=h.rain||[], showers=h.showers||[], totals=h.precipitation||[];
+  const rows=[];
+  for(let i=0;i<times.length;i++){
+    // Hourly precipitation is the accumulated rain in the preceding hour.
+    const end=Number(times[i])*1000;
+    if(!Number.isFinite(end)||end<=nowMs)continue;
+    const r=rains[i]==null?NaN:Number(rains[i]);
+    const s=showers[i]==null?NaN:Number(showers[i]);
+    const t=totals[i]==null?NaN:Number(totals[i]);
+    const amount=Number.isFinite(r)&&Number.isFinite(s)?r+s:t;
+    const p=probs[i]==null?NaN:Number(probs[i]);
+    rows.push({
+      start:end-3600000,end,
+      probability:Number.isFinite(p)?Math.max(0,Math.min(100,Math.round(p))):null,
+      mm:Number.isFinite(amount)?Math.max(0,Math.round(amount*10)/10):null
+    });
+    if(rows.length>=12)break;
+  }
+  return rows;
+}
+function hhmm(ms){
+  const date=new Date(ms);
+  return String(date.getHours()).padStart(2,'0')+':'+String(date.getMinutes()).padStart(2,'0');
+}
+function rainColor(mm){
+  if(mm==null)return '#637e91';
+  if(mm<0.1)return '#3b5262';
+  if(mm<0.5)return '#62caee';
+  if(mm<2.5)return '#328dff';
+  if(mm<7.5)return '#8b6aff';
+  return '#ff796c';
+}
+function drawRainBars(rows,large){
+  const W=720,H=large?252:210;
+  const ctx=new DrawContext();
+  ctx.size=new Size(W,H);
+  ctx.opaque=false;
+  const baseline=large?166:135,barMax=large?118:85;
+  const cell=W/12;
+  function write(str,x,y,w,size,color,bold){
+    ctx.setTextAlignedCenter();
+    ctx.setFont(bold?Font.boldSystemFont(size):Font.systemFont(size));
+    ctx.setTextColor(new Color(color));
+    ctx.drawTextInRect(str,new Rect(x,y,w,29));
+  }
+  ctx.setFillColor(new Color('#38536a'));
+  ctx.fillRect(new Rect(0,baseline,W,2));
+  for(let i=0;i<12;i++){
+    const row=rows[i],x=i*cell+3,w=cell-6;
+    if(!row)continue;
+    write(row.probability==null?'—':String(row.probability)+'%',x,4,w,20,'#e3f2fc',true);
+    const mm=row.mm;
+    const barHeight=mm==null?2:mm<0.1?3:Math.min(barMax,Math.max(9,12+29*Math.sqrt(mm)));
+    ctx.setFillColor(new Color(rainColor(mm)));
+    ctx.fillRect(new Rect(x+9,baseline-barHeight,w-18,barHeight));
+    write(mm==null?'—':mm.toFixed(1).replace('.',','),x,baseline+8,w,20,'#d0e3f0',true);
+    write(String(new Date(row.start).getHours()).padStart(2,'0'),x,baseline+38,w,20,'#9ec2d7',false);
+  }
+  return ctx.getImage();
+}
+
 function forecastFallback(d,now){
   const t=d.minutely_15?.time||[],p=d.minutely_15?.precipitation||[];
   const current=d.current||{};
@@ -80,11 +150,11 @@ function forecastFallback(d,now){
   return{ok:rows.length>0,phase:wet?'raining':'dry',action,
     targetAt:target?new Date(target).toISOString():null,
     precisionMinutes:30,confidence:'baja',summary:wet?'Llueve; fin incierto':'Sin lluvia próxima confirmada',
-    caveat:'Modelo interpolado; sin radar',sources:['Open-Meteo'],generatedAt:new Date(now).toISOString()};
+    caveat:'Modelo interpolado; sin radar',sources:['Open-Meteo'],generatedAt:new Date(now).toISOString(),hours:hourlyRainRows(d,now),updatedAt:now,fromCache:false};
 }
 async function rainForecast(pos){
   const q='latitude='+encodeURIComponent(pos.lat)+'&longitude='+encodeURIComponent(pos.lon)+
-    '&current=precipitation,rain,showers&minutely_15=precipitation&forecast_minutely_15=20&timeformat=unixtime&timezone=GMT';
+    '&current=precipitation,rain,showers&minutely_15=precipitation&forecast_minutely_15=20&hourly=precipitation_probability,rain,showers,precipitation&forecast_hours=16&timeformat=unixtime&timezone=GMT';
   const forecast=await getJson('https://api.open-meteo.com/v1/forecast?'+q);
   return forecastFallback(forecast,Date.now());
 }
