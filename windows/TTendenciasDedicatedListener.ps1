@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v18"
+$WorkerId = "ttendencias-dedicated-v19"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
@@ -1197,36 +1197,17 @@ while ($true) {
           Save-State $state
           continue
         }
-        $marker = "TTENDENCIAS_IMAGE_JOB_V4 $commandId"
-        $targetSnapshot=Get-ChatTargetSnapshot
-        $hintSafe=($commandId -replace '[^A-Za-z0-9._-]','_')
-        $targetHintPath=Join-Path $BaseDir ("tt-image-target-" + $hintSafe + ".json")
-        Remove-Item -LiteralPath $targetHintPath -Force -ErrorAction SilentlyContinue
-
-        # Arrancar el bridge ANTES del envío: así toma una línea base real de
-        # tabs/rasteres y puede detectar el cambio aunque ChatGPT reutilice el
-        # mismo target y la imagen aparezca muy rápido.
-        if (-not (Start-ImageBridge $commandId $targetId $uploadSecret $targetSnapshot $targetHintPath)) {
-          $reason = "No se pudo iniciar el puente local de raster antes del lanzamiento."
+        # Única autoridad de envío: el bridge de pestaña fija genera el prompt,
+        # lo confirma con prompt_sent/launched y captura el raster. NO ejecutar
+        # Ejecutar.js en paralelo, pues pisa la conversación y pierde la imagen.
+        if (-not (Start-ImageBridge $commandId $targetId $uploadSecret "[]" "")) {
+          $reason = "No se pudo iniciar el bridge de pestaña fija."
           Send-ImageAck $targetId $commandId "failed" $reason "" $uploadSecret | Out-Null
           Mark-ImageCommand $state $commandId $false
           Save-State $state
           continue
         }
-        Start-Sleep -Milliseconds 900
-
-        $sent = Launch-ProjectChat "image command=$commandId target=$targetId" $message $marker
-        $handoffId=Publish-ImageTargetHint $targetSnapshot $targetHintPath $commandId
-        if($handoffId){ Send-ImageAck $targetId $commandId "target_handoff" "Target exacto de ChatGPT entregado al bridge." "" $uploadSecret $handoffId | Out-Null }
-        Send-ImageAck $targetId $commandId "launched" | Out-Null
-
-        if (-not $sent) {
-          # El bridge ya estaba observando antes del envío y es la autoridad real:
-          # si el mensaje sí llegó, detectará el nuevo raster; si no, cerrará ERROR.
-          $reason = "Ejecutar.js no confirmó el envío en $($LaunchConfirmSeconds) s.; bridge pre-lanzamiento verificando."
-          Write-Log "IMAGE CHAT UNCONFIRMED; PRELAUNCH BRIDGE VERIFY target=$targetId command=$commandId :: $reason"
-        }
-
+        Write-Log "IMAGE FIXED TAB BRIDGE STARTED target=$targetId command=$commandId"
         Mark-ImageCommand $state $commandId $true
         Save-State $state
         $slots--
