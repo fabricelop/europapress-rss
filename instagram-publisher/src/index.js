@@ -304,7 +304,7 @@ async function publish(env,item){
 }
 export default {async fetch(req,env){
   const pathname=new URL(req.url).pathname;
-  if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:isActive(env)});
+  if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:isActive(env),caption_hashtags:"specific-topics-v2"});
   if(pathname==="/publication-status"&&req.method==="GET"){
     if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
     try{return await readPublicationStatus(req,env)}
