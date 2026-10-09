@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T12:30:00+02:00",
-  "last_completed_at": "2026-10-09T12:31:30+02:00",
-  "updated_at": "2026-10-09T12:31:30+02:00",
+  "last_started_at": "2026-10-09T12:32:00+02:00",
+  "last_completed_at": "2026-10-09T12:34:20+02:00",
+  "updated_at": "2026-10-09T12:34:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,12 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791538120641-2fc123",
+    "run_id": "tr-1791538120641-2fc123-rerun-1232",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T12:30:00+02:00",
-    "updated_at": "2026-10-09T12:31:30+02:00",
+    "started_at": "2026-10-09T12:32:00+02:00",
+    "updated_at": "2026-10-09T12:34:20+02:00",
+    "finished_at": "2026-10-09T12:34:20+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -46,10 +47,10 @@
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
-      "remates_selected": 1,
+      "remates_selected": 0,
       "remates_omitted": 3
     },
-    "message": "Pasada editorial completada · 0/0; cola final 0; sin preparing/update ni rewrite_pending; 5 Pendientes recientes revisados; sin ImageGen.",
+    "message": "Pasada editorial completada · 0/0; cola final 0; sin preparing/update ni rewrite_pending; 5 Pendientes recientes revisados y reparación visual solicitada; sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -62,35 +63,41 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-09T12:31:30+02:00",
+        "at": "2026-10-09T12:32:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada · cola editorial 0; verificando estado autoritativo y saneamiento de Pendientes."
+        "message": "Pasada iniciada · revalidando main, reexplicaciones y Pendientes antes de decidir si la cola está vacía."
       },
       {
-        "at": "2026-10-09T12:31:35+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual automática de Pendientes solicitada en main."
-      },
-      {
-        "at": "2026-10-09T12:31:45+02:00",
+        "at": "2026-10-09T12:33:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando cola, requests y rewrite_pending antes de cerrar."
+        "message": "Revisando Pendientes · 5 tarjetas recientes; 0 preparing/update y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-09T12:31:30+02:00",
-        "phase": "closing",
+        "at": "2026-10-09T12:33:45+02:00",
+        "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 0/0; main verificado; sin ImageGen."
+        "message": "Reparación visual automática de 5 Pendientes solicitada en main; sin ImageGen."
+      },
+      {
+        "at": "2026-10-09T12:34:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · verificando cola, requests, rewrite_pending y trigger de reparación antes de cerrar."
+      },
+      {
+        "at": "2026-10-09T12:34:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Main verificado · cola 0; 0 preparing/update; 0 rewrite_pending; trigger de reparación persistido."
       }
     ],
-    "finished_at": "2026-10-09T12:31:30+02:00",
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": []
@@ -100,11 +107,11 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-1791538120641-2fc123-rerun-1228",
-    "last_triggered_at": "2026-10-09T12:28:10+02:00",
-    "workflow_run_id": 37917148629,
-    "workflow_head_sha": "e483c38a9355afafd7739654099bb016b9586cea",
-    "observed_at": "2026-10-09T12:22:00+02:00"
+    "last_trigger_run_id": "tr-1791538120641-2fc123-rerun-1232",
+    "last_triggered_at": "2026-10-09T12:33:40+02:00",
+    "workflow_run_id": null,
+    "workflow_head_sha": null,
+    "observed_at": null
   },
   "version": 1,
   "canonical": true,
