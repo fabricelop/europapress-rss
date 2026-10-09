@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-571bfe869955-r4-a1-1791364781890",
-  "requested_at": "2026-10-07T09:19:41.880786Z",
-  "updated_at": "2026-10-07T09:21:47.987Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-571bfe869955-r5-a2-1791540337064",
+  "requested_at": "2026-10-09T10:05:37.063879Z",
+  "updated_at": "2026-10-09T10:05:37.063879Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
@@ -13,31 +13,32 @@
   "target_id": "571bfe869955",
   "trend_id": "571bfe869955",
   "target_name": "PSOE",
-  "revision": 4,
-  "attempt": 1,
+  "revision": 5,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "PSOE",
-    "revision": 4,
-    "explanation": "TT#2 PSOE es tendencia porque acelera su preparación para las generales del 29-N tras el adelanto electoral: ya tiene comité de campaña y sus federaciones están configurando candidaturas.",
+    "revision": 5,
+    "explanation": "TT#3 PSOE es tendencia porque el juez Pedraz ha rechazado por ahora investigarlo como persona jurídica en el caso Leire Díez, aunque Anticorrupción aprecia indicios y pide completar diligencias antes de decidir.",
     "closer_text": "",
     "trend_names": [
       "PSOE"
     ],
-    "group_title": "PSOE acelera la preparación electoral para el 29-N",
-    "rank_at_explanation": 2,
-    "explained_at": "2026-10-07T11:18:20+02:00",
+    "group_title": "Pedraz rechaza por ahora investigar al PSOE en el caso Leire",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-09T12:08:00+02:00",
     "verification_sources": [
       {
-        "source": "RTVE · 7/10/2026",
-        "url": "https://www.rtve.es/noticias/20261007/elecciones-generales-actualidad-politica-directo/17256199.shtml"
+        "source": "Europa Press · 9/10/2026",
+        "url": "https://www.europapress.es/nacional/noticia-juez-descarta-imputar-ahora-psoe-caso-leire-diez-esperara-practicar-mas-diligencias-20261009105737.html"
       },
       {
-        "source": "Europa Press · 5/10/2026",
-        "url": "https://www.europapress.es/nacional/noticia-ejecutiva-psoe-aprueba-comite-electoral-dirigira-campana-torro-montero-narbona-frente-20261005200543.html"
+        "source": "RTVE · 9/10/2026",
+        "url": "https://www.rtve.es/noticias/20261009/juez-del-caso-leire-comparte-criterio-fiscalia-anticorrupcion-considera-prematuro-imputar-psoe/17260044.shtml"
       }
     ],
     "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
@@ -51,13 +52,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "c0640256750f9bad169c962293516ea80ee2dd36cab1ad1048a10c1557139e70",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T09:20:26.553Z",
-  "pc_launched_at": "2026-10-07T09:20:41.149Z",
-  "upload_received_at": "2026-10-07T09:21:42.281Z",
-  "upload_sha256": "86476837b48b589a4dead72a00bc26f72bd8c16ca4d6a10aa9c44d954ae73c38",
-  "upload_bytes": 2113432,
-  "finished_at": "2026-10-07T09:21:47.987Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
