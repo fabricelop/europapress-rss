@@ -221,7 +221,25 @@ async function deleteReadyFromListas(eventId){
     Object.assign(row,{status:"deleted",updated_at:now,deleted_at:now,decision_source:"user_delete"});
     doc.updated_at=now;return doc;
   });
+  // Eliminar también el mensaje de Telegram mediante la cola segura del bot.
+  const sentIds=[];
+  try{
+    const {doc}=await readJson("telegram/ttittulares-deliveries.json");
+    for(const row of doc.items||[]){
+      if(idOf(row.event_id)!==id)continue;
+      for(const key of ["telegram_message_id","archive_telegram_message_id","cross_quote_message_id"]){
+        const mid=Number(row[key]||0);if(Number.isSafeInteger(mid)&&mid>0)sentIds.push(mid);
+      }
+    }
+  }catch(error){console.log("TTITTULARES_DELETE_DELIVERY_LOOKUP_DEFERRED",String(error.message||error))}
   const sync=await Promise.allSettled([
+    mutateJson("telegram/delete-message-queue.json","Solicitar borrado Telegram desde Listas",doc=>{
+      doc.items||=[];
+      const present=new Set(doc.items.map(x=>Number(x.message_id||0)));
+      for(const mid of new Set(sentIds))if(!present.has(mid))
+        doc.items.push({message_id:mid,event_id:id,status:"pending",reason:"removed_from_listas"});
+      doc.updated_at=now;return doc;
+    }),
     mutateJson(PREPARED,"Borrar noticia preparada",doc=>{
       doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);
       doc.updated_at=now;return doc;
