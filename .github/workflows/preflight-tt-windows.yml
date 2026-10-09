@@ -68,6 +68,10 @@ jobs:
               throw "${project}: duplicate ChatGPT prompt launcher still active in image section"
             }
             $bridge=Get-Content ("windows/"+$project+"ImageBridge.js") -Raw -Encoding UTF8
+            if(-not $bridge.Contains("raw.githubusercontent.com/fabricelop/europapress-rss/") -or
+               -not $bridge.Contains("BRIDGE JOB RAW RECOVERED")){
+              throw "${project}: missing GitHub RAW fallback for image job"
+            }
             if(-not $bridge.Contains('cdp=await openFreshDedicatedConversation()') -or -not $bridge.Contains('cdp=await ensureSubmitted(cdp,job)')){
               throw "${project}: bridge no longer owns ChatGPT prompt"
             }
