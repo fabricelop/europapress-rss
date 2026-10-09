@@ -66,7 +66,53 @@ class TrendCallbackTests(unittest.TestCase):
         self.assertEqual(len(notices),1)
         self.assertEqual(notices[0]["reply_to_message_id"],1234)
         self.assertIn("Publicado en Instagram: https://www.instagram.com/p/testpost/",notices[0]["text"])
+        self.assertEqual(notices[0]["reply_markup"]["inline_keyboard"][0][0],
+                         {"text":"🗑️ Borrar","callback_data":"tx:igdel:1234"})
         self.assertFalse(any(x.args[0]=="deleteMessage" for x in call.call_args_list))
+
+    def test_instagram_confirmation_deletes_original_and_notice(self):
+        callback={
+            "id":"del123","data":"tx:igdel:1234",
+            "message":{"chat":{"id":42},"message_id":5000,
+                "text":"📸 Publicado en Instagram: https://www.instagram.com/p/testpost/",
+                "reply_to_message":{"message_id":1234}}
+        }
+        with (patch.object(bot,"load",return_value={"chat_id":42}),
+              patch.object(bot,"call",return_value=True) as calls):
+            self.assertEqual(bot.route_package_callback(callback),"deleted")
+        deleted=[c.args[1]["message_id"] for c in calls.call_args_list
+                 if c.args[0]=="deleteMessage"]
+        self.assertEqual(deleted,[1234,5000])
+        self.assertFalse(any(c.args[0]=="sendMessage" for c in calls.call_args_list))
+
+    def test_instagram_delete_refuses_unrelated_confirmation(self):
+        callback={
+            "id":"del123","data":"tx:igdel:1234",
+            "message":{"chat":{"id":42},"message_id":5000,
+                "text":"📸 Publicado en Instagram: https://www.instagram.com/p/testpost/",
+                "reply_to_message":{"message_id":9999}}
+        }
+        with (patch.object(bot,"load",return_value={"chat_id":42}),
+              patch.object(bot,"call",return_value=True) as calls):
+            self.assertEqual(bot.route_package_callback(callback),"invalid_confirmation")
+        self.assertFalse(any(c.args[0]=="deleteMessage" for c in calls.call_args_list))
+
+    def test_instagram_delete_keeps_button_when_original_cannot_be_deleted(self):
+        callback={
+            "id":"del123","data":"tx:igdel:1234",
+            "message":{"chat":{"id":42},"message_id":5000,
+                "text":"📸 Publicado en Instagram: https://www.instagram.com/p/testpost/",
+                "reply_to_message":{"message_id":1234}}
+        }
+        def telegram(method,payload):
+            if method=="deleteMessage":
+                raise RuntimeError("message can't be deleted")
+            return True
+        with (patch.object(bot,"load",return_value={"chat_id":42}),
+              patch.object(bot,"call",side_effect=telegram) as calls):
+            self.assertEqual(bot.route_package_callback(callback),"original_delete_failed")
+        self.assertEqual(len([c for c in calls.call_args_list
+                              if c.args[0]=="deleteMessage"]),1)
 
     def test_same_package_router_in_web_and_legacy_modes(self):
         with (patch.object(bot,"handle_instagram_package_callback",return_value=True) as ig,
