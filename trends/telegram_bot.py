@@ -179,7 +179,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         }
         for incoming in local_del.get("items", []):
             status = str(incoming.get("status") or "").lower()
-            if status not in {"published", "dismissed"}:
+            if status not in {"published", "dismissed", "deleted"}:
                 continue
             key = str(incoming.get("delivery_key") or "")
             if not key:
@@ -191,7 +191,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
                 by_key[key] = cur
             else:
                 for k in (
-                    "status", "published_at", "dismissed_at", "decision_source",
+                    "status", "published_at", "dismissed_at", "deleted_at", "decision_source",
                     "telegram_message_id", "archive_telegram_message_id",
                 ):
                     if k in incoming:
@@ -205,7 +205,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         local_manual = load(snapshots.get("trends/telegram-manual-explained.json", Path("/nonexistent")), {"items": []})
         local_actions = {}
         for x in local_manual.get("items", []):
-            if str(x.get("telegram_package_status") or "").lower() in {"published", "dismissed"}:
+            if str(x.get("telegram_package_status") or "").lower() in {"published", "dismissed", "deleted"}:
                 local_actions[(str(x.get("id") or ""), int(x.get("revision") or 0))] = x
         for row in remote_manual.get("items", []):
             src = local_actions.get((str(row.get("id") or ""), int(row.get("revision") or 0)))
@@ -213,7 +213,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
                 continue
             for k in (
                 "telegram_package_status", "telegram_package_updated_at",
-                "telegram_published_at", "telegram_dismissed_at",
+                "telegram_published_at", "telegram_dismissed_at", "telegram_deleted_at",
                 "telegram_decision_source",
             ):
                 if k in src:
@@ -1300,14 +1300,67 @@ def handle_instagram_confirmation_delete(callback):
     return "deleted"
 
 
+def handle_readonly_delete(callback):
+    """Borrar sin marcar publicado/desestimado y bloquear reentrega."""
+    data=str(callback.get("data") or "")
+    parts=data.split(":")
+    if len(parts)!=4 or parts[:2]!=["tx","b"]:
+        return False
+    tid=parts[2]
+    try:rev=int(parts[3])
+    except (ValueError,TypeError):return False
+    message=callback.get("message") or {}
+    mid=int(message.get("message_id") or 0)
+    chat=int((message.get("chat") or {}).get("id") or 0)
+    state=load_remote_json("trends/telegram-bot-state.json",load(STATE,{}))
+    if not chat or chat!=int(state.get("chat_id") or 0):
+        return "unauthorized"
+    ledger=load_remote_json("trends/telegram-image-deliveries.json",load(IMAGE_DELIVERIES,{"items":[]}))
+    linked=[x for x in ledger.get("items",[])
+            if str(x.get("event_id") or "")==tid
+            and int(x.get("revision") or 0)==rev
+            and str(x.get("status") or "").lower()=="sent"]
+    if not linked or not any(int(x.get("telegram_message_id") or 0)==mid for x in linked):
+        try:call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Mensaje no disponible."})
+        except Exception:pass
+        return "not_found"
+    now=datetime.now(MADRID).isoformat(timespec="seconds")
+    mids=set()
+    for row in linked:
+        row.update({"status":"deleted","deleted_at":now,"decision_source":"telegram_delete"})
+        for field in ("telegram_message_id","archive_telegram_message_id"):
+            value=int(row.get(field) or 0)
+            if value:mids.add(value)
+    manual=load_remote_json("trends/telegram-manual-explained.json",load(MANUAL,{"items":[]}))
+    for row in manual.get("items",[]):
+        if str(row.get("id") or "")==tid and int(row.get("revision") or 0)==rev:
+            row.update({"telegram_package_status":"deleted","telegram_deleted_at":now})
+    save(IMAGE_DELIVERIES,ledger)
+    save(MANUAL,manual)
+    if not persist_package_state("Borrar tarjeta informativa TTendencias"):
+        try:call("answerCallbackQuery",{"callback_query_id":callback["id"],
+                                        "text":"No se pudo guardar el borrado.","show_alert":True})
+        except Exception:pass
+        return "persistence_failed"
+    for value in mids:
+        try:call("deleteMessage",{"chat_id":chat,"message_id":value})
+        except Exception as exc:
+            print("TTENDENCIAS_DELETE_RETRY",value,type(exc).__name__,flush=True)
+    try:call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Borrada de Telegram y Listas."})
+    except Exception:pass
+    return "deleted"
+
+
 def route_package_callback(callback):
     """Use the same approved Telegram package routing in web and legacy mode."""
     data = str(callback.get("data") or "")
     if data.startswith("tx:i:"):
-        return handle_instagram_package_callback(callback)
+        return "instagram_retired"
+    if data.startswith("tx:b:"):
+        return handle_readonly_delete(callback)
     if data.startswith("tx:igdel:"):
         return handle_instagram_confirmation_delete(callback)
-    return handle_package_callback(callback)
+    return "legacy_publication_retired" if data.startswith(("tx:p:","tx:d:")) else handle_package_callback(callback)
 
 
 def poll_packages(seconds=3300):
