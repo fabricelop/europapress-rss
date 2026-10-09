@@ -272,7 +272,7 @@ function Read-ImageJob([string]$TargetId) {
 
 function Load-State {
   if (Test-Path -LiteralPath $StatePath) {
-    try { return (Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json) } catch {}
+    try { $loaded = Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop; if ($loaded -is [pscustomobject]) { return $loaded } } catch {}
   }
   return [pscustomobject]@{
     last_command_id = ""
