@@ -464,7 +464,7 @@ export default {
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
-    if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2"});
+    if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2",instagram_cleanup:"paired-delete-v1"});
     if(path==="/api/ttittulares-instagram-preflight"&&request.method==="GET"){
       // Authenticated, read-only verification. Never creates a media container.
       const secret=String(env.INSTAGRAM_INTERNAL_SECRET||"");
