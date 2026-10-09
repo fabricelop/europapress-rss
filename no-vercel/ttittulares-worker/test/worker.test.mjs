@@ -12,6 +12,8 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"..");
 test("original TTiTTulares PWA and handlers staged (no replacement UI)",()=>{
   for(const file of [
     "generated/assets/ttittulares/index.html",
+    "generated/assets/tt-shared/gag-actions.js",
+    "generated/assets/tt-shared/gag-actions.css",
     "generated/assets/ttittulares/sw.js",
     "generated/assets/ttittulares/manifest.webmanifest",
     "generated/lib/ttittulares-control-handler.js",
@@ -23,6 +25,11 @@ test("original TTiTTulares PWA and handlers staged (no replacement UI)",()=>{
   assert.match(html,/ttittulares-control-token/);
   assert.match(html,/canvas\.toBlob/);
   assert.match(html,/api\/ttittulares-run/);
+  assert.match(html,/tt-shared\/gag-actions\.js/);
+  const source=fs.readFileSync(path.join(root,"generated/assets/tt-shared/gag-actions.js"),"utf8");
+  assert.match(source,/Copiar prompt GAG/);
+  assert.match(source,/Chat Images/);
+  assert.match(source,/Copiar en X/);
 });
 
 test("Cloudflare health independent from Vercel and PC",async()=>{
