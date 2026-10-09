@@ -345,7 +345,7 @@ def process(project,now,token,chat):
             if any(str(r.get("status") or "").lower()=="sent" for r in linked):
                 skipped+=1;continue
         # Never resurrect a deleted item; respect historical terminal decisions.
-        if any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
+        if existing is None and any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
             skipped+=1;continue
         # An empty ledger on deployment must NEVER backfill days of history.
         # Existing provisional messages are still editable regardless of age.
