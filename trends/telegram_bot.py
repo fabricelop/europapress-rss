@@ -1087,7 +1087,8 @@ def handle_instagram_package_callback(callback):
     for attempt in range(5):
         request=urllib.request.Request(
             endpoint+"/publish",data=json.dumps(body,ensure_ascii=False).encode("utf-8"),
-            headers={"content-type":"application/json","authorization":"Bearer "+secret},
+            headers={"content-type":"application/json","authorization":"Bearer "+secret,
+                     "user-agent":"TTActualidad-Telegram/1.0"},
             method="POST")
         try:
             # Creating media may require a remote download by Meta; a 20-second
