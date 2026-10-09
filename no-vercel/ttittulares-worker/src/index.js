@@ -466,10 +466,64 @@ async function enqueueTtiTelegramCallback(request,env){
   return json({ok:false,error:"Concurrent callback queue write"},503);
 }
 
+// Writes are isolated to the existing TTiTTulares Worker: TT Control has no PAT.
+async function acceptTelegramUserProposal(request,env){
+  if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
+  if(!env.GITHUB_TOKEN)return json({ok:false,error:"Editorial storage unavailable"},503);
+  // This is a public route but protected by the bot credential shared only by
+  // the two Cloudflare Workers. No update without that authentication can write.
+  let token;
+  try{token=await cloudflareTelegramBotToken(env)}
+  catch{return json({ok:false,error:"Bot verification unavailable"},503)}
+  const auth=String(request.headers.get("authorization")||"");
+  const expected="Bearer "+token;
+  let equal=auth.length===expected.length;
+  for(let i=0;i<Math.max(auth.length,expected.length);i++)
+    equal=(auth.charCodeAt(i)===expected.charCodeAt(i))&&equal;
+  if(!equal)return json({ok:false,error:"Unauthorized"},401);
+  let body;
+  try{body=await request.json()}catch{return json({ok:false,error:"Invalid JSON"},400)}
+  const uid=Number(body?.update_id);
+  const text=String(body?.text||"").trim();
+  if(!Number.isSafeInteger(uid)||uid<=0||text.length<5||text.length>3000)
+    return json({ok:false,error:"Invalid editorial suggestion"},400);
+  const path="telegram/ttittulares-user-proposals.json";
+  const url="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+path;
+  const headers={
+    "authorization":"Bearer "+env.GITHUB_TOKEN,
+    "accept":"application/vnd.github+json",
+    "content-type":"application/json",
+    "x-github-api-version":"2022-11-28",
+    "user-agent":"ttittulares-telegram-user-proposal"
+  };
+  const eventId="telegram-"+uid;
+  for(let attempt=0;attempt<5;attempt++){
+    const get=await fetch(url+"?ref=main",{headers,cache:"no-store"});
+    if(!get.ok)return json({ok:false,error:"Cannot read proposals: HTTP "+get.status},503);
+    const file=await get.json();
+    let doc;
+    try{doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\s/g,""),"base64").toString("utf8"))}
+    catch{return json({ok:false,error:"Invalid proposals ledger"},503)}
+    doc.items=Array.isArray(doc.items)?doc.items:[];
+    if(doc.items.some(r=>r.event_id===eventId))return json({ok:true,duplicate:true});
+    doc.items.push({event_id:eventId,content:text,status:"PENDING_RESEARCH",
+      origin:"telegram_manual",submitted_at:new Date().toISOString()});
+    doc.updated_at=new Date().toISOString();
+    const payload={message:"Recibir propuesta de noticia desde Telegram",branch:"main",
+      sha:file.sha,content:Buffer.from(JSON.stringify(doc,null,2)+"\n","utf8").toString("base64")};
+    const put=await fetch(url,{method:"PUT",headers,body:JSON.stringify(payload)});
+    if(put.ok)return json({ok:true,stored:true,event_id:eventId});
+    if(![409,422].includes(put.status))
+      return json({ok:false,error:"Cannot save proposal: HTTP "+put.status},503);
+  }
+  return json({ok:false,error:"Concurrent editorial queue writes"},503);
+}
+
 export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
+    if(path==="/api/ttittulares-telegram-user-proposal")return acceptTelegramUserProposal(request,env);
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2",instagram_cleanup:"paired-delete-v1"});
     if(path==="/api/ttittulares-instagram-preflight"&&request.method==="GET"){
