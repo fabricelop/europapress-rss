@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T13:45:00+02:00",
-  "last_completed_at": "2026-10-09T13:49:00+02:00",
-  "updated_at": "2026-10-09T13:49:00+02:00",
+  "last_started_at": "2026-10-09T14:16:52+02:00",
+  "last_completed_at": "2026-10-09T14:19:52+02:00",
+  "updated_at": "2026-10-09T14:19:52+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T134500-chat",
+    "run_id": "tr-20261009T141652-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T13:45:00+02:00",
-    "updated_at": "2026-10-09T13:49:00+02:00",
-    "finished_at": "2026-10-09T13:49:00+02:00",
+    "started_at": "2026-10-09T14:16:52+02:00",
+    "updated_at": "2026-10-09T14:19:52+02:00",
+    "finished_at": "2026-10-09T14:19:52+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -41,17 +41,16 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 1,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "archive_images_ready": 1,
+      "ai_repair_jobs_queued": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada editorial completada · 0/0; cola final 0; reparación visual verificada: 1 tarjeta examinada, archivo listo y 0 jobs IA nuevos.",
+    "message": "Pasada editorial completada · 0/0; cola final 0; saneamiento visual verificado y 1 job IA nuevo encolado para Juanma Serrano.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -64,39 +63,39 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-09T13:45:00+02:00",
+        "at": "2026-10-09T14:16:52+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada · cola editorial 0; revalidando main, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-09T13:47:00+02:00",
+        "at": "2026-10-09T14:17:07+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Trigger de reparación visual persistido en main para los Pendientes vigentes; sin ImageGen directo."
       },
       {
-        "at": "2026-10-09T13:48:00+02:00",
+        "at": "2026-10-09T14:17:26+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Reparador visual en ejecución · revisando imagen de archivo y necesidad de Gag IA."
       },
       {
-        "at": "2026-10-09T13:48:56+02:00",
+        "at": "2026-10-09T14:19:52+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparador visual completado · 1 tarjeta examinada, archivo listo, 0 jobs IA nuevos."
+        "trend_id": "a5ffd41f5384",
+        "title": "Juanma Serrano",
+        "message": "Reparador visual completado · imagen de archivo al día y 1 job IA nuevo encolado para Juanma Serrano."
       },
       {
-        "at": "2026-10-09T13:49:00+02:00",
+        "at": "2026-10-09T14:19:52+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 0/0; cola final 0; saneamiento visual verificado."
+        "message": "Pasada editorial completada · 0/0; cola final 0; saneamiento visual verificado y 1 job IA nuevo encolado para Juanma Serrano."
       }
     ],
     "queue_complete": true,
@@ -108,11 +107,14 @@
     "persisted_trigger": true,
     "status": "completed",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T134500-chat",
-    "last_triggered_at": "2026-10-09T13:45:00+02:00",
-    "workflow_run_id": 37925885602,
-    "workflow_head_sha": "bc3bf9e69252b731687e557280fcd9c96574fa4a",
-    "observed_at": "2026-10-09T13:48:56+02:00"
+    "last_trigger_run_id": "tr-20261009T141652-chat",
+    "last_triggered_at": "2026-10-09T14:16:52+02:00",
+    "workflow_run_id": 37929007847,
+    "workflow_head_sha": "b3dfd2044c9b70be52ac49b6401d2f08a795d136",
+    "observed_at": "2026-10-09T14:19:52+02:00",
+    "ai_repair_jobs_queued": 1,
+    "queued_target_id": "a5ffd41f5384",
+    "queued_target_name": "Juanma Serrano"
   },
   "version": 1,
   "canonical": true,
