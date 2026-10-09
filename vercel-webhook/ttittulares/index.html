@@ -79,7 +79,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
   <button class="stat" data-view="growing"><b id="growingCount">0</b>Creciendo</button>
   <button class="stat" data-view="tremending"><b id="tremendingCount">0</b>Tremending</button>
  </div>
- <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div><div class="runactivity" id="runActivity"></div><div class="runerror" id="runErrorDetail" hidden></div></div><button class="btn primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
+ <section class="runbar" id="runBar"><div class="runmain"><div class="runline"><strong id="runHeadline">Ejecución</strong><button class="incidentBtn" id="runIncident" type="button" hidden>⚠</button></div><span id="runState">Comprobando…</span><span id="runCheckedAt"></span><div class="runprogress" id="runProgress" hidden><i id="runProgressFill"></i></div><div class="runactivity" id="runActivity"></div><div class="runerror" id="runErrorDetail" hidden></div></div><button class="btn primary" id="runNow" type="button" hidden style="display:none!important" aria-hidden="true" tabindex="-1">▶ Entradas</button></section>
  <section class="list" id="list"><div class="empty">Cargando…</div></section>
 </main>
 
@@ -123,6 +123,7 @@ const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
 const RUN_API="/api/ttittulares-run";
 const RUN_STATUS_API="/api/ttittulares-run-status";
+const HISTORICAL_RUN_MS=45*60*1000;
 const IMAGE_RUN_STATUS=RUN_STATUS_API+"?view=image-job&id=";
 const $=id=>document.getElementById(id);
 const PENDING_KEY="ttittulares-pending-closed",OPEN_KEY="ttittulares-open-cards",TREMENDING_OPEN_KEY="ttittulares-open-tremending",TREMENDING_DELETED_KEY="ttittulares-deleted-tremending",IMAGE_SELECTED_KEY="ttittulares-image-selected-v1",CLOSED_TOMBSTONE_KEY="ttittulares-closed-tombstones-v1";
@@ -361,6 +362,8 @@ function showRunIncidents(s){
  $("incidentDetails").textContent=buildDiagnostic(s);
  $("incidentSheet").classList.add("show")
 }
+function lastRunAgeMs(r){const t=Date.parse(r?.finished_at||r?.updated_at||r?.started_at||r?.requested_at||"");return Number.isFinite(t)?Math.max(0,Date.now()-t):Infinity}
+function isHistoricRun(r){return lastRunAgeMs(r)>=HISTORICAL_RUN_MS}
 function runStateRank(s){
  const st=String(s?.status||"").toUpperCase(),p=String(s?.phase||"").toLowerCase();
  if(st==="ERROR"||["DONE","DONE_WITH_INCIDENTS"].includes(st))return 100;
@@ -388,7 +391,8 @@ function shouldRenderRunState(next,prev){
 function runVisual(s){
  if(!shouldRenderRunState(s,lastRunTelemetry))return;
  lastRunTelemetry=s;
- const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill"),errorBox=$("runErrorDetail"),lastEditorial=$("lastEditorial");
+ const bar=$("runBar"),head=$("runHeadline"),el=$("runState"),btn=$("runNow"),warn=$("runIncident"),prog=$("runProgress"),fill=$("runProgressFill"),errorBox=$("runErrorDetail"),lastEditorial=$("lastEditorial"),checked=$("runCheckedAt");
+ if(checked)checked.textContent="Estado consultado "+runTime(s?.checked_at||new Date().toISOString());
   const active=Boolean(s?.active)||["REQUESTED","RUNNING"].includes(String(s?.status||""));
   const previous=s?.last_run||null;
   if(lastEditorial){
@@ -407,7 +411,7 @@ function runVisual(s){
     }
   }
  bar.classList.toggle("active",active);btn.hidden=active;btn.disabled=!s?.enabled;
- el.className="";warn.hidden=true;warn.classList.remove("severe");errorBox.hidden=true;errorBox.textContent="";prog.hidden=!active;renderRunActivity(active?s:(s?.last_run||s));
+ el.className="";warn.hidden=true;warn.classList.remove("severe");errorBox.hidden=true;errorBox.textContent="";prog.hidden=!active;renderRunActivity(active?s:(s?.last_run&&!isHistoricRun(s.last_run)?s.last_run:null));
  if(active){
    const count=runIncidentCount(s);head.textContent=runPhaseLabel(s);
    const elapsed=s.started_at?runDuration((Date.now()-new Date(s.started_at).getTime())/1000):"";
@@ -426,12 +430,18 @@ function runVisual(s){
  prog.hidden=true;fill.style.width="0%";
  const r=s?.last_run||null;
  if(r){
-    const count=runIncidentCount(r),isError=r.status==="ERROR";
-    head.textContent=isError?("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Error"):("Última ejecución editorial · "+runTime(r.finished_at||r.updated_at)+" · Terminada");
-    el.textContent=isError?[cleanRunReason(r.message),runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · "):([runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
-    el.className=isError?"error":"done";
-    if(isError){errorBox.hidden=false;errorBox.textContent=runErrorLine(r)}
-   if(count||isError){warn.hidden=false;warn.textContent=isError?"Ver error":("⚠ "+count);warn.classList.toggle("severe",isError);warn.onclick=()=>showRunIncidents(s)}
+    const count=runIncidentCount(r),isError=String(r.status||"").toUpperCase()==="ERROR",historic=isHistoricRun(r);
+    const at=runTime(r.finished_at||r.updated_at),elapsed=runDuration(lastRunAgeMs(r)/1000);
+    head.textContent=historic?"Sin elaboración activa · último registro "+at:("Última ejecución editorial · "+at+" · "+(isError?"Error":"Terminada"));
+    if(historic){
+      el.textContent=(isError?"Última ejecución registrada con error":"Última ejecución registrada correctamente")+" hace "+elapsed+". El detalle se conserva en el diagnóstico.";
+      el.className="done";
+    }else{
+      el.textContent=isError?[cleanRunReason(r.message),runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · "):([runSummaryText(r),runSource(r.source||r.source_label)].filter(Boolean).join(" · ")||"Lista para ejecutar");
+      el.className=isError?"error":"done";
+      if(isError){errorBox.hidden=false;errorBox.textContent=runErrorLine(r)}
+    }
+    if(count||isError){warn.hidden=false;warn.textContent=historic?"Ver diagnóstico anterior":(isError?"Ver error":"⚠ "+count);warn.classList.toggle("severe",isError&&!historic);warn.onclick=()=>showRunIncidents(s)}
  }else{
    head.textContent="Ejecución";el.textContent=s?.enabled===false?"Disparo móvil no disponible":"Lista para ejecutar";
  }
@@ -455,7 +465,11 @@ async function loadRunStatus(){
    localStorage.setItem(RUN_CACHE_KEY,JSON.stringify(d));runVisual(d);scheduleRunPoll(Boolean(d.active)||["REQUESTED","RUNNING"].includes(d.status))
  }catch(e){
    const cached=loadLocalJson(RUN_CACHE_KEY);if(cached)runVisual(cached);
-   $("runHeadline").textContent=cached?$("runHeadline").textContent:"Ejecución";$("runState").textContent=friendlyRunError(e.message,e.retry_at);$("runState").className="running";$("runNow").hidden=false;scheduleRunPoll(false)
+   $("runBar").classList.remove("active");$("runHeadline").textContent="Estado editorial sin confirmar";
+   $("runState").textContent=friendlyRunError(e.message,e.retry_at)+(cached?.checked_at?" · última comprobación "+runTime(cached.checked_at):"");
+   $("runState").className="late";$("runProgress").hidden=true;
+   $("runActivity").innerHTML="";$("runErrorDetail").hidden=true;$("runIncident").hidden=true;
+   $("runNow").hidden=false;scheduleRunPoll(false)
  }
 }
 async function requestRun(){
