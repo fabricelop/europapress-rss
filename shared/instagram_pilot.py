@@ -22,6 +22,23 @@ def enabled():
 # No inference about events, people or places absent from the supplied text.
 # Order favors specific subjects before broad categories.
 TAG_RULES = (
+    # Ground hashtags in explicit names and facts of the approved caption.
+    # Important for both editorial projects; never infer an unseen topic.
+    (r"\btrump\b", "#DonaldTrump"),
+    (r"\beeuu\b|\bestados unidos\b|\bestadounidens\w*", "#EstadosUnidos"),
+    (r"\biran\b|\birani\w*", "#Iran"),
+    (r"\belecciones?\b|\blegislativas\b|\bcampana electoral\b", "#Elecciones"),
+    (r"\bcombustibles?\b|\bgasolina\b|\bcarburantes?\b", "#Combustibles"),
+    (r"\bpremio nobel de la paz\b|\bnobel de la paz\b", "#PremioNobelDeLaPaz"),
+    (r"\bnavi pillay\b", "#NaviPillay"),
+    (r"\bsudafrica\b|\bsudafrican\w*", "#Sudafrica"),
+    (r"\bderecho internacional\b", "#DerechoInternacional"),
+    (r"\bpromover la paz\b|\bpaloma de la paz\b|\bpaz\b", "#Paz"),
+    (r"\brenoir\b", "#Renoir"),
+    (r"\bfrancia\b|\bfrances\w*", "#Francia"),
+    (r"\barte\b|\bcuadros?\b|\bpinturas?\b|\bmuseos?\b", "#Arte"),
+    (r"\bcuadros?\b|\bpinturas?\b", "#Pintura"),
+    (r"\bmuseos?\b", "#Museos"),
     (r"\bshakira\b", "#Shakira"),
     (r"\bla revuelta\b", "#LaRevuelta"),
     (r"\bbroncano\b", "#DavidBroncano"),
@@ -69,7 +86,7 @@ def _fold(value):
 
 
 def caption(text):
-    """Use editorial text intact apart from account prefix; add up to 4 topical tags.
+    """Use editorial text intact apart from account prefix; add up to 5 topical tags.
 
     The existing Telegram/X caption is not changed. This only affects new
     Instagram snapshots; already-delivered Instagram rows stay immutable.
@@ -77,14 +94,16 @@ def caption(text):
     value = TAG_PREFIX_RE.sub("", str(text or "").strip())
     value = OLD_FOOTER_RE.sub("", value).strip()
     # Do not place the author handle inside the description: IG displays it.
-    value = re.sub(r"\s*#TTActualidad\s*$", "", value, flags=re.IGNORECASE).strip()
+    # The platform shows @ttactualidad as author. Drop historical generic tags
+    # from new Instagram captions; prefer specific evidence-based topics.
+    value = re.sub(r"(?<!\w)#(?:TTActualidad|Actualidad)\b", "", value, flags=re.IGNORECASE).strip()
     if not value:
         raise ValueError("Missing approved text")
 
     present = {t.casefold() for t in INLINE_TAG_RE.findall(value)}
     topics = _fold(value)
     tags = []
-    slots = max(0, 4 - len(present))
+    slots = max(0, 5 - len(present))
     for pattern, tag in TAG_RULES:
         if not slots:
             break
@@ -94,8 +113,7 @@ def caption(text):
             tags.append(tag)
             present.add(tag.casefold())
             slots -= 1
-    if not tags and not present:
-        tags = ["#Actualidad"]  # Last-resort description, never tag an unrelated person.
+    # Unknown topics remain untagged. Never manufacture generic #Actualidad.
     result = value + ("\n\n" + " ".join(tags) if tags else "")
     if len(result) > 2200:
         # Tags are optional; never truncate the approved factual text or the gag.

@@ -33,7 +33,7 @@ class CaptionTests(unittest.TestCase):
         self.assertIn("#Euroliga", result)
         self.assertIn("#Baloncesto", result)
         self.assertFalse(result.lower().startswith("ttactualidad"))
-        self.assertLessEqual(result.count("#"), 4)
+        self.assertLessEqual(result.count("#"), 5)
 
     def test_no_brand_prefix_or_redundant_ai_footer(self):
         result = caption("ttactualidad: Noticia sobre vivienda y desahucios.\n\n"
@@ -43,10 +43,45 @@ class CaptionTests(unittest.TestCase):
         self.assertNotIn("#TTActualidad", result)
         self.assertIn("#Vivienda", result)
 
+
+    def test_trump_has_five_topical_tags(self):
+        source = ("Trump dice que EEUU no atacará Irán antes de las legislativas del 3 de noviembre "
+                  "y mantiene el bloqueo. El anuncio llega con el precio de los combustibles "
+                  "en el centro del debate.\n\n🌶️ El calendario electoral acaba de entrar en la sala de guerra.")
+        output=caption(source)
+        self.assertTrue(output.startswith(source))
+        self.assertEqual(output.split("\n\n")[-1], "#DonaldTrump #EstadosUnidos #Iran #Elecciones #Combustibles")
+        self.assertNotIn("#Actualidad", output)
+
+    def test_renoir_has_arts_hashtags(self):
+        source=("Francia recupera los dos Renoir robados en septiembre del museo de Cagnes-sur-Mer "
+                "y detiene a seis personas. Las obras, del Museo de Orsay, estaban cedidas.\n\n"
+                "🌶️ El golpe impresionista acabó enmarcado por la policía.")
+        output=caption(source)
+        self.assertEqual(output.split("\n\n")[-1], "#Renoir #Francia #Arte #Museos")
+        self.assertNotIn("#Actualidad", output)
+
+    def test_nobel_paz_has_evidence_based_tags(self):
+        source=("TT#15 Premio Nobel de la Paz 2026 es tendencia porque la jurista sudafricana "
+                "Navi Pillay ha ganado el galardón por promover la paz y el derecho internacional.\n"
+                "🌶️ Oslo ha puesto toga a la paloma de la paz.")
+        output=caption(source)
+        self.assertEqual(output.split("\n\n")[-1],
+                         "#PremioNobelDeLaPaz #NaviPillay #Sudafrica #DerechoInternacional #Paz")
+        self.assertNotIn("#Actualidad", output)
+
+    def test_removes_account_handle_and_stale_generic_tag(self):
+        output=caption("ttactualidad: La cultura del arte crece en Francia.\n\n#Actualidad")
+        self.assertFalse(output.lower().startswith("ttactualidad"))
+        self.assertNotIn("#Actualidad", output)
+        self.assertIn("#Arte", output)
+        self.assertIn("#Francia", output)
+
     def test_unrelated_people_are_not_tagged(self):
         result = caption("Una noticia sin nombres propios ni categorías fáciles.")
-        self.assertEqual(result, "Una noticia sin nombres propios ni categorías fáciles.\n\n#Actualidad")
+        self.assertEqual(result, "Una noticia sin nombres propios ni categorías fáciles.")
         self.assertNotIn("#Shakira", result)
+        self.assertNotIn("#Actualidad", result)
 
     def test_approved_text_remains_verbatim_and_only_hashtags_are_appended(self):
         source = "Una sentencia judicial condena a tres hombres.\n🌶️ El modo avión llegó por orden del juez."
@@ -60,10 +95,11 @@ class CaptionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             caption("A" * 2201)
 
-    def test_maximum_four_tags_total_including_inlined(self):
+    def test_maximum_five_tags_total_including_inlined(self):
         result = caption("#LaRevuelta #Actualidad #Musica #Television Shakira llega a la entrevista.")
-        self.assertLessEqual(result.count("#"), 4)
-        self.assertNotIn("#Shakira", result)
+        self.assertLessEqual(result.count("#"), 5)
+        self.assertIn("#Shakira", result)
+        self.assertNotIn("#Actualidad", result)
 
 
 if __name__ == "__main__":
