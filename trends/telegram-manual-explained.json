@@ -40441,7 +40441,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -40506,14 +40505,30 @@
       "duplicate_of": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://static.invenglobal.com/upload/thumb/2026/10/09/c/n1791518528488097.jpg",
+        "source": "Inven Global · 9/10/2026",
+        "source_url": "https://www.invenglobal.com/webtest/articles/26986/2026-lol-worlds-know-my-name-mv-captures-faker-history",
+        "alt": "Imagen de archivo relacionada con Faker",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://static.invenglobal.com/upload/thumb/2026/10/09/c/n1791518528488097.jpg",
+        "source": "Inven Global · 9/10/2026",
+        "source_url": "https://www.invenglobal.com/webtest/articles/26986/2026-lol-worlds-know-my-name-mv-captures-faker-history",
+        "alt": "Imagen de archivo relacionada con Faker",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-09T17:25:02+02:00",
+  "updated_at": "2026-10-09T15:26:25.514629Z",
   "count": 680
 }
