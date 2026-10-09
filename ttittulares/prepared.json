@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-09T14:17:47.736Z",
+  "updated_at": "2026-10-09T14:21:26.012Z",
   "items": [
     {
       "event_id": "7dd90b5501fb",
@@ -179,21 +179,61 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009142726_690.jpg",
-        "source": "Europa Press",
-        "source_url": "https://www.europapress.es/nacional/noticia-psoe-estudia-presentarse-senado-lista-conjunta-otras-formaciones-izquierda-evitar-mayoria-pp-20261009142726.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Pedro Sánchez saluda al senador socialista Alfonso Gil en el Senado, imagen de archivo"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/29713db663cc-r1-ai1-791555557457.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "6bb84751151b1c544d7bfb73b306cfcf1b911fb979e8f3e65284050828c433ff",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2592469,
+        "context_guard": {
+          "version": 3,
+          "event_id": "29713db663cc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-29713db663cc-r1-a1-1791555557457"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/29713db663cc-r1-ai1-791555557457.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
-      "image_delivery": "app"
+      "image_delivery": "app",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/29713db663cc-r1-ai1-791555557457.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "6bb84751151b1c544d7bfb73b306cfcf1b911fb979e8f3e65284050828c433ff",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2592469,
+        "context_guard": {
+          "version": 3,
+          "event_id": "29713db663cc",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-29713db663cc-r1-a1-1791555557457"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/29713db663cc-r1-ai1-791555557457.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-09T14:21:26.012Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T14:21:26.012Z"
     }
   ],
   "count": 12
