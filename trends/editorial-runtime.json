@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T18:15:00+02:00",
-  "last_completed_at": "2026-10-09T18:16:34+02:00",
-  "updated_at": "2026-10-09T18:16:34+02:00",
+  "last_started_at": "2026-10-09T18:45:00+02:00",
+  "last_completed_at": "2026-10-09T18:51:30+02:00",
+  "updated_at": "2026-10-09T18:51:30+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "ab4ad324cc3b"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,23 +17,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T181500-chat",
+    "run_id": "tr-20261009T184500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T18:15:00+02:00",
-    "updated_at": "2026-10-09T18:16:34+02:00",
-    "finished_at": "2026-10-09T18:16:34+02:00",
-    "trend_id": null,
-    "title": null,
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-09T18:45:00+02:00",
+    "updated_at": "2026-10-09T18:51:30+02:00",
+    "finished_at": "2026-10-09T18:51:30+02:00",
+    "trend_id": "ab4ad324cc3b",
+    "title": "Chicote",
+    "current": 1,
+    "total": 1,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -46,36 +48,194 @@
       "visual_repair_triggered": 1,
       "archive_images_ready": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Saneamiento visual de Pendientes disparado y en curso independiente.",
+    "message": "Pasada editorial completada · Chicote r0 explicada y verificada; cola final 0. Reparación visual lanzada de forma independiente.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
-    "remate_selections": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 50
+    },
+    "remate_selections": [
+      {
+        "trend_id": "ab4ad324cc3b",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.2,
+            "length_fit": 0.9,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c2",
+            "total": 7.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 0.9,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 6.7,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 0.9,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 6.5,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 0.9,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "c5",
+            "total": 6.1,
+            "ratings_affinity": 1.6,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 0.9,
+            "repetition_penalty": -0.3
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 7.8,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-09T18:15:00+02:00",
+        "at": "2026-10-09T18:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada · cola editorial 0; revalidando main y Pendientes."
+        "message": "Pasada iniciada · 1 tendencia activa; revalidando main y Pendientes."
       },
       {
-        "at": "2026-10-09T18:16:29+02:00",
+        "at": "2026-10-09T18:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento de Pendientes activado; reparador visual iniciado por GitHub Actions."
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Releyendo estado autoritativo de Chicote"
       },
       {
-        "at": "2026-10-09T18:16:34+02:00",
+        "at": "2026-10-09T18:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Detonante localizado; contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-09T18:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Fuentes contrastadas; hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-09T18:49:00+02:00",
+        "phase": "drafting",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-09T18:49:15+02:00",
+        "phase": "drafting",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-09T18:49:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-09T18:49:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-09T18:50:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-09T18:50:15+02:00",
+        "phase": "persisting",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-09T18:50:35+02:00",
+        "phase": "persisting",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-09T18:50:50+02:00",
+        "phase": "persisting",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-09T18:51:00+02:00",
+        "phase": "verifying",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-09T18:51:10+02:00",
+        "phase": "verifying",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-09T18:51:20+02:00",
+        "phase": "verifying",
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-09T18:51:30+02:00",
         "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completada · sin tendencias nuevas; cola final 0. Reparación de Pendientes en curso de forma independiente."
+        "trend_id": "ab4ad324cc3b",
+        "title": "Chicote",
+        "message": "Pasada editorial completada · Chicote r0 explicada y verificada; cola final 0. Reparación visual lanzada de forma independiente."
       }
     ],
     "queue_complete": true,
@@ -87,11 +247,11 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T181500-chat",
-    "last_triggered_at": "2026-10-09T18:16:29+02:00",
-    "workflow_run_id": 37957917908,
-    "workflow_head_sha": "0f631ad9d88b836bfe9737af0ef437c7bd59a231",
-    "observed_at": "2026-10-09T18:16:34+02:00",
+    "last_trigger_run_id": "tr-20261009T184500-chat",
+    "last_triggered_at": "2026-10-09T18:50:43+02:00",
+    "workflow_run_id": 37962027316,
+    "workflow_head_sha": "83690b2c3f47a2039e28e9f03677098847219df9",
+    "observed_at": "2026-10-09T18:51:30+02:00",
     "ai_repair_jobs_queued": 0,
     "queued_target_id": null,
     "queued_target_name": null
