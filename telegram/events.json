@@ -14756,7 +14756,7 @@
       "percentage": 62.5,
       "first_seen": "2026-10-08T16:52:28.720563Z",
       "last_seen": "2026-10-09T15:43:03.530580Z",
-      "status": "WAITING",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -14779,7 +14779,9 @@
         "elDiario.es"
       ],
       "outlet_count": 10,
-      "sport_source_count": 1
+      "sport_source_count": 1,
+      "deleted_at": "2026-10-09T15:49:32.626512Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "1fa57e5220a6",
@@ -19999,7 +20001,7 @@
       "percentage": 25.0,
       "first_seen": "2026-10-09T15:23:14.741261Z",
       "last_seen": "2026-10-09T15:23:14.741261Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -20013,7 +20015,9 @@
       ],
       "outlet_count": 4,
       "sport_source_count": 0,
-      "eligible_at": "2026-10-09T15:23:14.741261Z"
+      "eligible_at": "2026-10-09T15:23:14.741261Z",
+      "deleted_at": "2026-10-09T15:49:32.626512Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "21c4df47a550",
@@ -47330,5 +47334,6 @@
   "active_event_cap": 450,
   "protected_event_count": 300,
   "single_source_event_cap": 450,
-  "pruned_at": "2026-10-09T15:43:36.000993Z"
+  "pruned_at": "2026-10-09T15:43:36.000993Z",
+  "updated_at": "2026-10-09T15:49:32.626512Z"
 }
