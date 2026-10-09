@@ -152,7 +152,8 @@ def caption(text):
         raise ValueError("Missing approved text")
 
     present = {t.casefold() for t in INLINE_TAG_RE.findall(value)}
-    topics = _fold(value)
+    factual = re.split(r"\n\s*(?:\n|🌶️)", value, maxsplit=1)[0]
+    topics = _fold(factual)
     tags = []
     slots = max(0, 5 - len(present))
     for pattern, tag in TAG_RULES:
