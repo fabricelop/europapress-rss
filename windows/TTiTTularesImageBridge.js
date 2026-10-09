@@ -282,11 +282,30 @@ async function reconnectFixedConversation(job){
   }catch{try{c.close()}catch{};return null}
 }
 async function fetchJob(){
-  const r=await fetch(JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now(),{cache:"no-store"});
-  if(!r.ok)throw Error("Job "+r.status);
-  const d=await r.json();
-  if(!d||!d.ok||String(d.command_id||"")!==commandId)throw Error("Job de imagen no disponible o sustituido");
-  return d
+  // El ACK ya puede estar aceptado mientras el Worker sirve aún un objeto
+  // anterior. Nunca dar por perdido un job sin contrastar la rama GitHub.
+  const rawUrl="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/"+encodeURIComponent(targetId)+".json";
+  let lastError="sin respuesta";
+  for(let attempt=1;attempt<=4;attempt++){
+    const sources=[
+      ["worker",JOB_URL+encodeURIComponent(targetId)+"&t="+Date.now()],
+      ["github-raw",rawUrl+"?t="+Date.now()+"-"+attempt]
+    ];
+    for(const [label,url] of sources){
+      try{
+        const response=await fetch(url,{cache:"no-store",headers:{"cache-control":"no-cache","pragma":"no-cache"},signal:AbortSignal.timeout(12000)});
+        if(!response.ok){lastError=label+" HTTP "+response.status;continue}
+        const doc=await response.json();
+        if(doc&&String(doc.command_id||"")===commandId&&doc.context_snapshot){
+          if(label==="github-raw")console.log("BRIDGE JOB RAW RECOVERED target="+targetId+" command="+commandId);
+          return {ok:true,...doc}
+        }
+        lastError=label+" command_id desactualizado o sin contexto";
+      }catch(e){lastError=label+" "+String(e&&e.message||e)}
+    }
+    if(attempt<4)await sleep(1200*attempt)
+  }
+  throw Error("Job de imagen no disponible tras Worker+GitHub RAW: "+lastError)
 }
 function buildMessage(job){
   const name=String(job&&job.target_name||targetId);
@@ -655,12 +674,12 @@ async function post(body){
 }
 async function progress(phase,detail){
   try{
-    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
+    const r=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"progress",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery",phase:String(phase||"pc_progress"),detail:String(detail||"").slice(0,220)});
     if(!r.ok)console.log("BRIDGE PROGRESS ACK WARNING "+String(phase)+" "+r.status+" "+String(r.data&&r.data.error||""))
   }catch(e){console.log("BRIDGE PROGRESS WARNING "+String(phase)+" :: "+String(e&&e.message||e))}
 }
 async function fail(reason){
-  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
+  try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
 async function uploadImage(image){
   let result;
@@ -696,7 +715,7 @@ async function uploadImage(image){
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
         await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry"});
+        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
@@ -723,7 +742,7 @@ async function uploadImage(image){
     const deadline=Date.now()+6*60*1000;
     while(Date.now()<deadline){
       await sleep(5000);
-      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v28-dead-submit-retry",upload_secret:secret});
+      const done=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"done",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery",upload_secret:secret});
       if(done.ok){console.log("BRIDGE DONE");return}
       if(done.status!==409||!done.data||done.data.error!=="image_not_persisted_yet")throw Error("Finalize "+done.status+": "+(done.data&&done.data.error||"sin detalle"))
     }
