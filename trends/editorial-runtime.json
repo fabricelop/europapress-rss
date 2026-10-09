@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T03:15:00+02:00",
-  "last_completed_at": "2026-10-09T03:17:00+02:00",
-  "updated_at": "2026-10-09T03:17:00+02:00",
+  "last_started_at": "2026-10-09T03:45:00+02:00",
+  "last_completed_at": "2026-10-09T03:50:05+02:00",
+  "updated_at": "2026-10-09T03:50:05+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "7375308f71a9"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,23 +17,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T031500-chat",
+    "run_id": "tr-20261009T034500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T03:15:00+02:00",
-    "updated_at": "2026-10-09T03:17:00+02:00",
-    "finished_at": "2026-10-09T03:17:00+02:00",
-    "trend_id": null,
-    "title": null,
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-09T03:45:00+02:00",
+    "updated_at": "2026-10-09T03:50:05+02:00",
+    "finished_at": "2026-10-09T03:50:05+02:00",
+    "trend_id": "7375308f71a9",
+    "title": "Chiqui",
+    "current": 1,
+    "total": 1,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
       "new_cards": 0,
-      "revisions_updated": 0,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -44,61 +46,174 @@
       "visual_repair_triggered": 1,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_reused": 0,
       "remates_omitted": 0,
       "jit_skipped": 0,
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 0/0; radar 03:11 sin trabajo editorial pendiente; reparación visual lanzada",
+    "message": "Pasada completada · 1/1; cola 0; Chiqui r2 actualizada; tramo visual en curso",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
-    "remate_selections": [],
+    "ratings_snapshot": {
+      "source": "trends/remate-ratings.json",
+      "items": 154
+    },
+    "remate_selections": [
+      {
+        "trend_id": "7375308f71a9",
+        "selected": "🌶️ Cambió una nominación por otra sin pasar por recepción."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-09T03:15:00+02:00",
+        "at": "2026-10-09T03:45:00+02:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada directa · cola inicial 0"
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Preparando pasada directa · cola inicial 1 · Chiqui revisión 2"
       },
       {
-        "at": "2026-10-09T03:16:50+02:00",
+        "at": "2026-10-09T03:45:20+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main tras disparar reparación visual"
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Releyendo estado autoritativo de Chiqui"
       },
       {
-        "at": "2026-10-09T03:16:55+02:00",
+        "at": "2026-10-09T03:45:35+02:00",
+        "phase": "investigating",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-09T03:46:00+02:00",
+        "phase": "investigating",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Contrastando fuente 1/2 · verTele"
+      },
+      {
+        "at": "2026-10-09T03:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Contrastando fuente 2/2 · El Televisero"
+      },
+      {
+        "at": "2026-10-09T03:46:35+02:00",
+        "phase": "investigating",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Hecho esencial verificado · salvada por 29,8% y nuevamente nominada"
+      },
+      {
+        "at": "2026-10-09T03:46:45+02:00",
+        "phase": "drafting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-09T03:46:55+02:00",
+        "phase": "drafting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Comprobando límite de 280 · 240 caracteres"
+      },
+      {
+        "at": "2026-10-09T03:47:05+02:00",
+        "phase": "remate_selection",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-09T03:47:15+02:00",
+        "phase": "remate_selection",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-09T03:47:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Remate seleccionado · nominación por nominación"
+      },
+      {
+        "at": "2026-10-09T03:47:35+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparador visual recogido por GitHub Actions · run 37869001371 in_progress"
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Releyendo main antes de persistir"
       },
       {
-        "at": "2026-10-09T03:16:58+02:00",
+        "at": "2026-10-09T03:47:50+02:00",
+        "phase": "persisting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-09T03:48:20+02:00",
+        "phase": "persisting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-09T03:48:50+02:00",
+        "phase": "persisting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-09T03:49:20+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main · cola activa 0"
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-09T03:17:00+02:00",
+        "at": "2026-10-09T03:49:35+02:00",
+        "phase": "persisting",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Solicitando tramo visual automático · Gag IA pendiente"
+      },
+      {
+        "at": "2026-10-09T03:49:50+02:00",
+        "phase": "verifying",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-09T03:50:00+02:00",
+        "phase": "verifying",
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Tendencia cerrada y verificada · Gag IA pendiente automático"
+      },
+      {
+        "at": "2026-10-09T03:50:05+02:00",
         "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada completada · 0/0; radar 03:11 sin trabajo editorial pendiente; reparación visual lanzada"
+        "trend_id": "7375308f71a9",
+        "title": "Chiqui",
+        "message": "Pasada completada · 1/1; cola 0; Chiqui r2 actualizada; tramo visual en curso"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-09T03:11:40+02:00",
+      "captured_at": "2026-10-09T03:41:37+02:00",
       "top10": [
         "#SVGala5",
         "Mari Carmen",
@@ -109,15 +224,14 @@
         "#ElPerroAndaluzTVE",
         "Olga",
         "Beiras",
-        "Ivana"
+        "Yola"
       ],
       "new_entries": []
     },
     "pending_repair_workflow": {
-      "run_id": 37869001371,
-      "status": "in_progress",
+      "status": "observed",
       "conclusion": null,
-      "head_sha": "c88f0df495f588ee50b794f974d53c0c780cefb8"
+      "head_sha": "2a2203aba373111c8c55196f21248fe0f5aaa190"
     }
   },
   "visual_repair": {
@@ -125,13 +239,16 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T031500-chat",
-    "last_triggered_at": "2026-10-09T03:16:44+02:00",
-    "observed_at": "2026-10-09T03:16:50+02:00",
-    "workflow_run_id": 37869001371,
+    "last_trigger_run_id": "tr-20261009T034500-chat",
+    "last_triggered_at": "2026-10-09T03:45:00+02:00",
+    "observed_at": "2026-10-09T03:49:50+02:00",
+    "workflow_run_id": null,
     "workflow_conclusion": null,
     "telegram_delivered": 0,
-    "observed_repair_commit": "c88f0df495f588ee50b794f974d53c0c780cefb8"
+    "observed_repair_commit": "2a2203aba373111c8c55196f21248fe0f5aaa190",
+    "target_id": "7375308f71a9",
+    "revision": 2,
+    "ai_image_status": "pending"
   },
   "error": null
 }
