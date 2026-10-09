@@ -301,6 +301,7 @@ function Save-State($State) {
 }
 
 function Ensure-StateFields($State) {
+  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE INVALID: expected object" }
   # El estado local puede proceder de versiones previas; declarar propiedades
   # antes de cualquier acceso estricto para no inutilizar la cola de imagenes.
   foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","editorial_retry_command_id","editorial_retry_after")) {
