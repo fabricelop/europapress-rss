@@ -87,11 +87,16 @@ jobs:
               copy_state=json.loads((MAIN/"trends/explained-copy-state.json").read_text(encoding="utf-8"))
           except Exception:
               copy_state={"items":[]}
-          archived=set()
+          archived_ids=set()
+          archived_names_legacy=set()
           for x in copy_state.get("items",[]):
               rev=int(x.get("revision") or 0)
-              for name in x.get("trend_names") or []:
-                  archived.add((str(name or "").strip().casefold(),rev))
+              item_id=str(x.get("item_id") or x.get("id") or "").strip()
+              if item_id:
+                  archived_ids.add((item_id,rev))
+              else:
+                  for name in x.get("trend_names") or []:
+                      archived_names_legacy.add((str(name or "").strip().casefold(),rev))
           index_path=CTRL/"trends/image-runs/index.json"
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
@@ -167,7 +172,10 @@ jobs:
           for row in explained.get("items",[]):
               if str(row.get("status") or "").lower()!="explained":
                   continue
-              if (str(row.get("name") or "").strip().casefold(),int(row.get("revision") or 0)) in archived:
+              row_id=str(row.get("id") or "").strip()
+              row_rev=int(row.get("revision") or 0)
+              if ((row_id and (row_id,row_rev) in archived_ids) or
+                  (not row_id and (str(row.get("name") or "").strip().casefold(),row_rev) in archived_names_legacy)):
                   continue
               if not str(row.get("explanation") or "").strip():
                   continue
