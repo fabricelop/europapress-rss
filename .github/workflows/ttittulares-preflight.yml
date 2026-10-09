@@ -91,6 +91,26 @@ jobs:
           python3 ttittulares/apply_ai_image_outbox.py --selftest
           python3 ttittulares/tremending/update_tremending.py --selftest
 
+      - name: Validar JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
+          if not scripts:
+              raise SystemExit("No se encontró script inline")
+          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
+          PY
+          node --check /tmp/ttittulares-inline.js
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
+          node --check vercel-webhook/lib/ttittulares-control-handler.js
+          node --check ttittulares/tremending/capture_tweet.mjs
+          node --check vercel-webhook/ttittulares/sw.js
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
+
       - name: Validar JSON y reglas
         run: |
           python3 - <<'PY'
@@ -216,26 +236,6 @@ jobs:
               assert 0 <= int(healthy) <= int(total)
           print("PREFLIGHT_JSON_OK")
           PY
-
-      - name: Validar JavaScript
-        run: |
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
-          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
-          if not scripts:
-              raise SystemExit("No se encontró script inline")
-          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
-          PY
-          node --check /tmp/ttittulares-inline.js
-          node --check vercel-webhook/api/ttittulares-control.js
-          node --check vercel-webhook/lib/ttittulares-run-handler.js
-          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
-          node --check vercel-webhook/lib/ttittulares-control-handler.js
-          node --check ttittulares/tremending/capture_tweet.mjs
-          node --check vercel-webhook/ttittulares/sw.js
-          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"
