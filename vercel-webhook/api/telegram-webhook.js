@@ -378,6 +378,32 @@ async function safeTelegram(method, payload) {
   catch (e) { console.error(e); return null; }
 }
 
+// Local Telegram-only cleanup; never touches Meta posts or X decisions.
+async function deleteInstagramNoticePair(cq, msg, allowedChat, prefix) {
+  const originalId=Number(String(cq.data||"").slice(prefix.length));
+  const noticeId=Number(msg.message_id||0);
+  const replyId=Number(msg.reply_to_message?.message_id||0);
+  const valid=String(cq.data||"")===prefix+String(originalId)&&
+    Number.isSafeInteger(originalId)&&originalId>0&&
+    Number.isSafeInteger(noticeId)&&noticeId>0&&
+    originalId!==noticeId&&(!replyId||replyId===originalId)&&
+    String(msg.text||"").startsWith("📸 Publicado en Instagram: https://www.instagram.com/");
+  if(!valid){
+    await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"Confirmación no válida.",show_alert:true});
+    return {ok:false,error:"Invalid Instagram confirmation"};
+  }
+  const original=await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:originalId});
+  if(original===null){
+    await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"No se pudo borrar el mensaje original.",show_alert:true});
+    return {ok:false,original_deleted:false};
+  }
+  const confirmation=await safeTelegram("deleteMessage",{chat_id:allowedChat,message_id:noticeId});
+  await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,
+    text:confirmation===null?"No se pudo borrar la confirmación.":"Mensajes borrados.",
+    ...(confirmation===null?{show_alert:true}:{})});
+  return {ok:confirmation!==null,original_deleted:true,confirmation_deleted:confirmation!==null};
+}
+
 function requestObj(update, type, text, dedupe_text = false) {
   return { update_id: update.update_id, created_at: new Date().toISOString(), type, text, dedupe_text };
 }
@@ -444,6 +470,10 @@ export default async function handler(req, res) {
         const action = parts[1] || "";
         const id = parts[2] || "";
         const revision = Number(parts[3] || 0);
+        if(action==="igdel"){
+          const result=await deleteInstagramNoticePair(cq,msg,allowedChat,"tx:igdel:");
+          return res.status(200).json(result);
+        }
         if (action==="r" && id) {
           try{
             await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"🔄 Reenviada a Listas. Nuevo intento de IA."});
@@ -561,6 +591,10 @@ export default async function handler(req, res) {
         const parts = data.split(":");
         const action = parts[1] || "";
         const id = parts.slice(2).join(":");
+        if(action==="igdel"){
+          const result=await deleteInstagramNoticePair(cq,msg,allowedChat,"tt:igdel:");
+          return res.status(200).json(result);
+        }
         if(action==="r" && id){
           try{
             await safeTelegram("answerCallbackQuery",{callback_query_id:cq.id,text:"🔄 Reenviada a Listas. Nuevo intento de IA."});
