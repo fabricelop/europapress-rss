@@ -1305,6 +1305,40 @@ async function stateSnapshot(fresh = false) {
   explainedView.pending_items=pendingExplained.items;
   explainedView.pending_count=pendingExplained.count;
 
+  // Panel de control: anomalías vigentes, con edades y referencias concretas.
+  const nowMs=Date.now(),incidents=[];
+  const mins=v=>{const t=Date.parse(v||"");return Number.isFinite(t)?Math.max(0,Math.round((nowMs-t)/60000)):null};
+  const alert=(severity,title,detail,at)=>incidents.push({severity,title,detail,at:at||null});
+  const radarAge=mins(recent.doc?.captured_at);
+  if(radarAge===null||radarAge>50)alert("error","Radar TTendencias retrasado","Última captura hace "+(radarAge??"?")+" min; se esperan pasadas cada 30 min.",recent.doc?.captured_at);
+  const sourceProblems=Object.values(recent.doc?.sources||{}).filter(x=>x?.ok===false).length;
+  if(sourceProblems)alert("warning","Fuentes del radar con fallos",sourceProblems+" fuentes no disponibles.",recent.doc?.captured_at);
+  const pending=(requests.doc?.requests||[]).filter(x=>["preparing","update"].includes(String(x.status||"").toLowerCase()));
+  const overdue=pending.filter(x=>(mins(x.requested_at)||0)>=75);
+  if(overdue.length)alert("error","Tendencias atascadas en elaboración",overdue.length+" llevan más de 75 min: "+overdue.slice(0,3).map(x=>x.name).join(" · "),overdue[0].requested_at);
+  const problematics=(requests.doc?.requests||[]).filter(x=>String(x.status||"")==="problematic");
+  if(problematics.length)alert("warning","Tendencias sin explicación fiable",problematics.length+" entradas problemáticas.",problematics.at(-1)?.requested_at);
+  const ledgers=telegramImageDeliveries.doc?.items||[];
+  const deletionPending=ledgers.filter(x=>x.status==="delete_pending");
+  const deletionFailed=ledgers.filter(x=>x.status==="delete_failed");
+  if(deletionFailed.length)alert("error","Borrado de Telegram fallido",deletionFailed.length+" mensajes sin poder eliminar. "+String(deletionFailed.at(-1)?.delete_error||"").slice(0,110),deletionFailed.at(-1)?.delete_last_attempt_at);
+  const oldDeletions=deletionPending.filter(x=>(mins(x.delete_requested_at)||0)>20);
+  if(oldDeletions.length)alert("warning","Borrados Telegram pendientes",oldDeletions.length+" solicitados hace más de 20 min.",oldDeletions.at(-1)?.delete_requested_at);
+  const failed=ledgers.filter(x=>["failed","error"].includes(String(x.status||"").toLowerCase()));
+  if(failed.length)alert("error","Telegram: entrega fallida",failed.length+" registros fallidos.",telegramImageDeliveries.doc?.updated_at);
+  const linked=new Set(ledgers.filter(x=>["sent","deleted","published","dismissed","delete_pending"].includes(String(x.status||"").toLowerCase())).map(x=>String(x.event_id||"")));
+  const missing=(requests.doc?.requests||[]).filter(x=>["ready","explained"].includes(String(x.status||"").toLowerCase())&&!linked.has(String(x.id||""))&&(()=>{const age=mins(x.explained_at||x.requested_at);return age!==null&&age>20&&age<720})());
+  if(missing.length)alert("error","Tendencias explicadas sin mensaje Telegram",missing.length+" llevan más de 20 min sin entrega registrada.",missing.at(-1)?.explained_at);
+  const healthAge=mins(health.doc?.checked_at);
+  // Ignorar fallos históricos del antiguo circuito de imágenes/IA, ya retirado.
+  const blockers=(health.doc?.blocking||[]).filter(x=>!/(imagen|imagegen|gag ia|visual|modo activo)/i.test(String(x)));
+  if(health.doc?.ok===false&&healthAge!==null&&healthAge<90&&blockers.length)
+    alert("warning","Monitor de salud detecta anomalías",blockers.slice(0,2).join(" · ").slice(0,220),health.doc?.checked_at);
+  if(refresh_recovery.stale)alert("warning","Radar esperando autorreparación","Última captura: "+refresh_recovery.age_minutes+" min. "+(refresh_recovery.triggered?"Se ha solicitado recuperación.":refresh_recovery.suppressed?"Bloqueada por la cuota GitHub.":"Se supervisa el refresco."),recent.doc?.captured_at);
+  const operational={checked_at:new Date().toISOString(),radar_at:recent.doc?.captured_at||null,radar_age_minutes:radarAge,
+    processing_count:pending.length,problematic_count:problematics.length,telegram_sent_count:ledgers.filter(x=>x.status==="sent").length,
+    telegram_delete_pending:deletionPending.length,telegram_delete_failed:deletionFailed.length,incidents};
+
   return {
     ok: true,
     service: "ttendencias-control",
@@ -1321,6 +1355,7 @@ async function stateSnapshot(fresh = false) {
     editorial_queue: editorialQueue.doc,
     github_rate_limit,
     refresh_recovery,
+    operational,
   };
 }
 
