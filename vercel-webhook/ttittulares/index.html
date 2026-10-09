@@ -1102,7 +1102,25 @@ function renderReady(list,preservedImages=new Map()){
     card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
     vh.appendChild(box)
   }
-  async function close(action,question){if(!confirm(question))return;const id=String(item.event_id||""),old=[...model.prepared];const sel=selectedImageKeys();sel.delete(imageSelectionKey(item));saveSelectedImageKeys(sel);pendingClosed.add(id);openCards.delete(id);persistUiState();model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();try{await api(action,{event_id:item.event_id});markClosedTombstone(id);toast(action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");await load(true)}catch(e){clearClosedTombstone(id);pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message)}}
+  async function close(action,question){
+    if(!confirm(question))return;
+    const id=String(item.event_id||""),old=[...model.prepared];
+    const sel=selectedImageKeys();sel.delete(imageSelectionKey(item));saveSelectedImageKeys(sel);
+    pendingClosed.add(id);openCards.delete(id);persistUiState();
+    model.prepared=model.prepared.filter(x=>String(x.event_id||"")!==id);render();
+    let ack;
+    try{
+      ack=await api(action,{event_id:item.event_id});
+    }catch(e){
+      // Solo el rechazo de la escritura autoritativa puede deshacer el cierre local.
+      clearClosedTombstone(id);pendingClosed.delete(id);persistUiState();model.prepared=old;render();toast(e.message);
+      return;
+    }
+    markClosedTombstone(id);
+    toast(ack?.sync_pending?"Cierre guardado; sincronización parcial":action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");
+    // Un fallo de lectura/refresh no debe convertir una decisión ya grabada en error.
+    try{await load(true)}catch(e){toast("Cierre guardado; no se pudo actualizar la vista")}
+  }
   const generateAi=card.querySelector(".generateAi");generateAi.hidden=true;
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
   card.querySelector(".quickDismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");

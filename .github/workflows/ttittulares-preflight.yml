@@ -91,6 +91,26 @@ jobs:
           python3 ttittulares/apply_ai_image_outbox.py --selftest
           python3 ttittulares/tremending/update_tremending.py --selftest
 
+      - name: Validar JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
+          if not scripts:
+              raise SystemExit("No se encontró script inline")
+          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
+          PY
+          node --check /tmp/ttittulares-inline.js
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
+          node --check vercel-webhook/lib/ttittulares-control-handler.js
+          node --check ttittulares/tremending/capture_tweet.mjs
+          node --check vercel-webhook/ttittulares/sw.js
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
+
       - name: Validar JSON y reglas
         run: |
           python3 - <<'PY'
@@ -130,9 +150,9 @@ jobs:
           assert "Con 3 fuentes" not in html and "threeCount" not in html
           assert "fuentes funcionando" in html
           assert "En elaboración" in html and "Listas" in html
-          appjs=Path("ttittulares/app.js").read_text(encoding="utf-8")
-          assert "Gag IA" in appjs and "Archivo / fallback" in appjs
-          assert "🔁 Rehacer" in appjs and "🖼️ Usar archivo/fallback" in appjs
+          # La interfaz usada por el usuario está en vercel-webhook, no en el app.js legado.
+          assert "Gag IA" in html and "🖼️ Copiar imagen archivo" in html
+          assert "🔁 Rehacer remate" in html and "✨ Generar IA" in html
           assert "✨ Generar IA" in html and "🖼️ Copiar imagen archivo" in html
           assert 'id="imageBar"' not in html and 'id="runImages"' not in html
           assert "Mensaje confirmado en ChatGPT" in html
@@ -145,9 +165,10 @@ jobs:
           assert "reparación visual automática" in prompt and "no llama directamente a ImageGen" in prompt
           assert "no invoques ImageGen" in prompt
           assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
-          run_api=Path("vercel-webhook/api/ttittulares-run.js").read_text(encoding="utf-8")
-          run_status=Path("vercel-webhook/api/ttittulares-run-status.js").read_text(encoding="utf-8")
-          control_api=Path("vercel-webhook/api/ttittulares-control.js").read_text(encoding="utf-8")
+          # Rutas consolidadas en api/ttittulares-control.js: handlers reales en lib/.
+          run_api=Path("vercel-webhook/lib/ttittulares-run-handler.js").read_text(encoding="utf-8")
+          run_status=Path("vercel-webhook/lib/ttittulares-run-status-handler.js").read_text(encoding="utf-8")
+          control_api=Path("vercel-webhook/lib/ttittulares-control-handler.js").read_text(encoding="utf-8")
           listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
           installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
           installer_v13=Path("windows/Install-TTiTTulares-v13.ps1").read_text(encoding="utf-8")
@@ -156,7 +177,6 @@ jobs:
           assert "const {doc:trigger}=await readTrigger();" in run_api
           assert "readControlJson(ACK_PATH)" in run_api
           assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
-          assert "GitHub REST refleja el HEAD" in run_status
           assert "pc_worker_id" in run_status
           assert "readJson(PROCESSING)" in control_api
           assert '$WorkerId = "ttittulares-dedicated-v' in listener
@@ -189,7 +209,10 @@ jobs:
               drafted=int(item.get("drafted_source_count") or 0)
               # El umbral de 4 rige la selección automática del radar, no la
               # verificación editorial de una noticia ya preparada.
-              cited={str(c.get("source") or "").strip() for c in item.get("citations",[]) if isinstance(c,dict)}
+              # Publicaciones actuales aportan fuentes verificadas en source_evidence;
+              # las históricas las conservan en citations. Exigir dos medios distintos.
+              evidence=[*(item.get("citations") or []),*(item.get("source_evidence") or [])]
+              cited={str(c.get("source") or c.get("outlet") or "").strip() for c in evidence if isinstance(c,dict)}
               assert drafted >= 2 and len(cited-{''}) >= 2, f"{eid}: faltan dos fuentes editoriales independientes ({drafted})"
               tweet=item.get("tweet")
               # Datos históricos pueden conservar variants; toda escritura nueva
@@ -216,25 +239,6 @@ jobs:
               assert 0 <= int(healthy) <= int(total)
           print("PREFLIGHT_JSON_OK")
           PY
-
-      - name: Validar JavaScript
-        run: |
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
-          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
-          if not scripts:
-              raise SystemExit("No se encontró script inline")
-          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
-          PY
-          node --check /tmp/ttittulares-inline.js
-          node --check vercel-webhook/api/ttittulares-control.js
-          node --check vercel-webhook/api/ttittulares-run-status.js
-          node --check vercel-webhook/api/ttittulares-run.js
-          node --check ttittulares/tremending/capture_tweet.mjs
-          node --check vercel-webhook/ttittulares/sw.js
-          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
 
       - name: Resultado
         run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"

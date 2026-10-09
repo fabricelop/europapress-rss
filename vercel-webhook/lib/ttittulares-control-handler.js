@@ -235,7 +235,7 @@ async function closePrepared(eventId,status){
     else doc.items.push({event_id:id,status,updated_at:now,...source,...(cancelPendingImage?{image_cancelled_by_publication:true,image_cancelled_at:now,image_cancel_reason:"published_before_image_complete"}:{})});
     doc.updated_at=now;return doc
   });
-  await Promise.all([
+  const syncResults=await Promise.allSettled([
     mutateJson(PREPARED,"Retirar noticia cerrada de TTiTTulares web",doc=>{
       doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);doc.updated_at=now;return doc
     }),
@@ -273,7 +273,14 @@ async function closePrepared(eventId,status){
       doc.updated_at=now;return doc
     })
   ]);
-  return {ok:true,event_id:id,status}
+  // DECISIONS ya es la fuente autoritativa del cierre. Un error posterior al
+  // guardarla no puede reportarse como si el botón no hubiera funcionado.
+  const failedSync=syncResults.filter(result=>result.status==="rejected");
+  if(failedSync.length){
+    console.error("TTITTULARES_CLOSE_PARTIAL_SYNC",id,status,
+      failedSync.map(result=>String(result.reason?.message||result.reason)));
+  }
+  return {ok:true,event_id:id,status,sync_pending:failedSync.length>0,sync_errors:failedSync.length}
 }
 async function markUserValidated(eventId){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
