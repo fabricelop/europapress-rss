@@ -146,7 +146,14 @@ async function imageEligibility(targetId){
   const row=rows[0]||null;
   if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return {eligible:false,reason:"not_pending_explained",row};
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
-  const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
+  const rowId=String(row.id||"").trim();
+  const archived=(copyState.items||[]).some(x=>{
+    if(Number(x.revision||0)!==rev)return false;
+    const archivedId=String(x.item_id||x.id||"").trim();
+    if(rowId&&archivedId)return archivedId===rowId;
+    if(archivedId)return false;
+    return Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase())
+  });
   // La sensibilidad editorial no bloquea ImageGen. Tremending conserva su
   // flujo específico de captura real del tuit y no entra en este endpoint.
   const blocked=Boolean(row.tremending_origin);
