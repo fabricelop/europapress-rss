@@ -321,7 +321,13 @@ function Read-ImageJob([string]$TargetId) {
 
 function Load-State {
   if (Test-Path -LiteralPath $StatePath) {
-    try { return (Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json) } catch {}
+    try { $loaded = Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop; if ($loaded -is [pscustomobject]) { return $loaded } } catch {}
+  }
+  if (Test-Path -LiteralPath ($StatePath + ".previous")) {
+    try {
+      $backup = Get-Content -LiteralPath ($StatePath + ".previous") -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+      if ($backup -is [pscustomobject]) { Write-Log "STATE RECOVERED from previous valid snapshot"; return $backup }
+    } catch {}
   }
   return [pscustomobject]@{
     last_command_id = ""
@@ -335,20 +341,34 @@ function Load-State {
 }
 
 function Save-State($State) {
-  $State | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $StatePath -Encoding UTF8
+  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE SAVE BLOCKED: invalid object" }
+  Ensure-StateFields $State
+  $json = ConvertTo-Json -InputObject $State -Depth 6 -ErrorAction Stop
+  $tmp = $StatePath + ".tmp." + [guid]::NewGuid().ToString("N")
+  try {
+    Set-Content -LiteralPath $tmp -Value $json -Encoding UTF8 -ErrorAction Stop
+    if (Test-Path -LiteralPath $StatePath) {
+      [System.IO.File]::Replace($tmp, $StatePath, ($StatePath + ".previous"))
+    } else {
+      [System.IO.File]::Move($tmp, $StatePath)
+    }
+  } finally {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
+  }
 }
 
 function Ensure-StateFields($State) {
+  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE INVALID: expected object" }
   foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
-      $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
+      Add-Member -InputObject $State -NotePropertyName $n -NotePropertyValue "" -Force
     }
   }
   if (-not ($State.PSObject.Properties.Name -contains "image_commands")) {
-    $State | Add-Member -NotePropertyName image_commands -NotePropertyValue @() -Force
+    Add-Member -InputObject $State -NotePropertyName image_commands -NotePropertyValue @() -Force
   }
   if (-not ($State.PSObject.Properties.Name -contains "active_image_commands")) {
-    $State | Add-Member -NotePropertyName active_image_commands -NotePropertyValue @() -Force
+    Add-Member -InputObject $State -NotePropertyName active_image_commands -NotePropertyValue @() -Force
   }
 }
 
