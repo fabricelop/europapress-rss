@@ -10,7 +10,7 @@ on:
       - "trends/pending-repair-trigger.json"
       - ".github/workflows/repair-ttendencias-explicadas.yml"
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
@@ -66,6 +66,7 @@ jobs:
           git reset --hard origin/main
 
       - name: Encolar Gag IA ausente o inválido
+        if: ${{ false }}
         shell: bash
         run: |
           set -euo pipefail
