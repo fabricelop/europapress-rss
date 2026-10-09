@@ -68,8 +68,8 @@ def public_news_detail(item):
     # Explanations produced under the old editorial contract sometimes
     # describe the research process instead of explaining the actual event.
     report_about_sources=bool(re.search(
-        r"\\b(?:Reuters|Associated Press|Europa Press|Cadena SER|"
-        r"fuentes?|ambos? medios?|periodicos?|periódicos?|agencias de noticias)\\b",
+        r"\b(?:Reuters|Associated Press|Europa Press|Cadena SER|"
+        r"fuentes?|ambos? medios?|periodicos?|periódicos?|agencias de noticias)\b",
         explanation,re.IGNORECASE
     ))
     return (factual or tweet or explanation) if report_about_sources else (explanation or factual or tweet)
