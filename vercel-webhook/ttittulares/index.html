@@ -10,6 +10,7 @@
 <link rel="manifest" href="/ttittulares/manifest.webmanifest">
 <link rel="icon" href="/ttittulares/icon.svg" type="image/svg+xml">
 <title>TTiTTulares</title>
+<link rel="stylesheet" href="/tt-shared/gag-actions.css?v=20261009">
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 60%)}button,a{font:inherit;touch-action:manipulation}
@@ -56,7 +57,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 .tweetPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tweetEmbed{min-width:0;display:flex;align-items:stretch;border:1px solid #354257;border-radius:10px;overflow:hidden;background:#101721}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:inset 0 0 0 1px #d95f8d}.tweetEmbed.previewing{background:#1c2a3c;border-color:#7c9abd}.tweetAuthor{display:flex;flex:1;min-width:0;align-items:center;padding:8px 9px;color:#eef2f8;font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tweetEmbed .previewTweet{flex-shrink:0;border:0;border-left:1px solid #354257;background:#1c2b3b;color:#d3e3fb;font-size:11px;font-weight:800;padding:7px 11px;cursor:pointer}.tweetEmbed .previewTweet[aria-expanded=true]{background:#324b67;color:#fff}.tweetPreview{grid-column:1/-1;margin-top:0;border:1px solid #40516b;border-radius:12px;padding:8px;background:#0e141d}.tweetPreviewHead{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px;color:#c9d9ed;font-size:12px;font-weight:800}.tweetPreviewHead a{color:#c6dfff;font-size:11px;text-decoration:none}.tweetPreview iframe{display:block;width:100%;height:min(340px,48vh);border:0;border-radius:8px;background:#fff}.tweetPreviewHint{font-size:11px;color:#9aabc2;margin-top:6px}.tremendingImage{width:min(100%,250px);max-height:155px;object-fit:contain;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}
 @media(max-width:560px){.tweetPicker{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.tweetEmbed{flex-direction:column}.tweetAuthor{font-size:11px;padding:7px 6px;min-height:34px}.tweetEmbed .previewTweet{border-left:0;border-top:1px solid #354257;padding:5px 7px;min-height:28px}.tweetPreview iframe{height:min(300px,43vh)}.tremendingHeadActions{flex-direction:column;align-items:end}.tremendingImage{width:min(100%,225px);max-height:145px}}
 /* Telegram informativo: sin publicación ni Gag IA. */
-.gagSelect,.generateAi,.copyTweet,.copyAi,.copyArchive,.openX,.published,.aiChoice,.imageMeta,.imageCompact,.remateRating,.imageTitle,#imageControl,#imageControlBar,#imageHeadline,#imageState,#imageBar,#runImages,.imagePanel,.imageControl,.gagControls{display:none!important}
+.gagSelect,.generateAi,.copyAi,.copyArchive,.published,.aiChoice,.imageMeta,.imageCompact,.remateRating,.imageTitle,#imageControl,#imageControlBar,#imageHeadline,#imageState,#imageBar,#runImages,.imagePanel,.imageControl,.gagControls{display:none!important}
 </style>
 </head>
 <body>
@@ -68,6 +69,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
  <button class="iconbtn" id="settings" title="Ajustes">⚙</button>
 </header>
 <main>
+ <div class="libraryAccess"><a href="https://chatgpt.com/images" target="_blank" rel="noopener noreferrer">Mis imágenes IA ↗</a></div>
  <details id="opsPanel" style="margin-bottom:10px;padding:10px;border:1px solid #354255;border-radius:12px"><summary id="opsSummary">Estado operativo</summary><div id="opsDetail"></div></details>
  <section class="summary"><div><h1 id="viewTitle">Noticias listas</h1><div class="meta timing"><div id="lastRadar">Último radar —</div><div id="nextRadar">Próximo radar —</div><div id="githubRate" class="late" hidden></div><div class="sourceCounters"><span title="Noticias activas detectadas en dos fuentes"><b id="twoSourceCount">0</b> 2 fuentes</span><span title="Noticias activas detectadas en una sola fuente"><b id="oneSourceCount">0</b> 1 fuente</span></div></div></div><div class="health" id="health" role="button" tabindex="0" aria-label="Ver estado de las fuentes">—</div></section>
  <div class="stats">
@@ -115,6 +117,7 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 </div></div>
 <div class="toast" id="toast"></div>
 
+<script src="/tt-shared/gag-actions.js?v=20261009"></script>
 <script>
 const RAW="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/";
 const API="/api/ttittulares-control";
@@ -1000,7 +1003,7 @@ function renderReady(list,preservedImages=new Map()){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><label class="gagSelect"><input class="gagCheck" type="checkbox"><span>Gag IA</span></label><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Borrar</button></div><div class="imageCompact aiStatusBadge"></div><img class="imageCompactPreview" hidden></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi" hidden>✨ Generar IA</button><button class="btn rework" hidden>🔁 Rehacer remate</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
+  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><label class="gagSelect"><input class="gagCheck" type="checkbox"><span>Gag IA</span></label><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Borrar</button></div><div class="imageCompact aiStatusBadge"></div><img class="imageCompactPreview" hidden></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi" hidden>✨ Generar IA</button><button class="btn rework" hidden>🔁 Rehacer remate</button><button class="btn copyTweet">📋 Copiar en X</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Red. "+drafted+" · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
@@ -1105,7 +1108,8 @@ function renderReady(list,preservedImages=new Map()){
   if(v){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
-    const openX=card.querySelector(".openX");openX.href=v.url||intent(text);openX.hidden=false;
+    TTGag.mount(card.querySelector(".actions"),{kind:"news",item,xText:text,includeX:false,feedback:toast});
+    const openX=card.querySelector(".openX");openX.href=intent(text);openX.hidden=false;
     box.innerHTML='<div class="vhead"><span class="vname">Texto de la noticia</span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div>';
     box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
     card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
