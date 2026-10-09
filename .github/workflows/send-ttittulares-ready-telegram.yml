@@ -39,7 +39,7 @@ jobs:
             /trends/telegram-bot-state.json
       - name: Dependencias HTTP y comprobaciones
         run: |
-          python3 -m pip install -q requests
+          python3 -m pip install -q requests pillow
           python3 -m py_compile shared/telegram_readonly_delivery.py
           python3 shared/telegram_readonly_delivery.py selftest
       - name: Enviar o actualizar mensaje Telegram
@@ -48,6 +48,11 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
+          # La comprobación inicial puede haber hecho checkout antes de otro envío.
+          # Releer main inmediatamente antes de hablar con Telegram evita duplicados
+          # entre ejecuciones consecutivas y protege las decisiones de borrado.
+          git fetch origin main
+          git reset --hard origin/main
           python3 shared/telegram_readonly_delivery.py ttittulares
           cp telegram/ttittulares-deliveries.json /tmp/telegram-readonly-ledger.json
       - name: Guardar ledger sin perder borrados
