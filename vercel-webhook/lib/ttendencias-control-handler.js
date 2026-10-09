@@ -720,13 +720,22 @@ async function queueUpcomingNames(names) {
   if (!unique.length) throw new Error("No hay señales seleccionadas.");
   const [{ doc: recent }, { doc: explained }] = await Promise.all([readJson(RECENT), readJson(EXPLAINED)]);
   const upcoming = new Map((recent.upcoming || []).map(x => [norm(x.name), x]));
+  // TOP 30: places 11-30 are displayed but only manually selectable.
+  for (const row of (recent.items || []).slice(10,30)) {
+    const key=norm(row.name);
+    if(key&&!upcoming.has(key)){
+      upcoming.set(key,{name:row.name,best_observed_rank:Number(row.rank||0),
+        first_detected_at:row.entered_top10_at||recent.captured_at||null,
+        manual_top30:true,social_source_count:1,news_source_count:0});
+    }
+  }
   const explainedMap = new Map();
   for (const row of (explained.items || [])) for (const name of explanationNames(row)) explainedMap.set(norm(name), row);
   for (const name of unique) {
     const signal = upcoming.get(norm(name));
     if (!signal) throw new Error(`"${name}" ya no está en Próximas tendencias.`);
     const previous = explainedMap.get(norm(name));
-    if (previous && !hasMaterialRadarNovelty(signal, previous.explained_at)) {
+    if (previous && !signal.manual_top30 && !hasMaterialRadarNovelty(signal, previous.explained_at)) {
       throw new Error(`"${name}" ya fue explicada y no hay una novedad material verificada.`);
     }
   }
@@ -754,9 +763,9 @@ async function queueUpcomingNames(names) {
         req.requested_at = now;
       }
       req.rank = Number(signal.best_observed_rank || 0);
-      req.with_image = true;
+      req.with_image = false;
       req.alternatives_target = 0;
-      req.anticipated = true;
+      req.anticipated = !signal.manual_top30;
       req.anticipated_at = signal.first_detected_at || now;
       req.anticipated_best_rank = Number(signal.best_observed_rank || 0);
       req.anticipated_social_source_count = Number(signal.social_source_count || 0);
