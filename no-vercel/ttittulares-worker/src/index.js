@@ -238,6 +238,15 @@ async function instagramTelegramNotice(env,update,text){
   if(!response.ok||!body.ok)throw new Error("INSTAGRAM_NOTICE_FAILED");
 }
 
+async function callInstagramPublisher(env,endpoint,options){
+  // Cloudflare Worker -> workers.dev subrequests may not resolve the adjacent
+  // Worker (observed 404). The same-account service binding is authoritative.
+  if(!env.INSTAGRAM_PUBLISHER||typeof env.INSTAGRAM_PUBLISHER.fetch!=="function"){
+    throw new Error("INSTAGRAM_SERVICE_BINDING_MISSING");
+  }
+  return env.INSTAGRAM_PUBLISHER.fetch(new Request(endpoint,options));
+}
+
 async function publishTtiInstagramSelected(env,update,event){
   const allowedChat=String(env.INSTAGRAM_ALLOWED_CHAT_ID||"");
   const callbackChat=String(update?.callback_query?.message?.chat?.id||"");
@@ -279,7 +288,7 @@ async function publishTtiInstagramSelected(env,update,event){
   };
   let result={};
   for(let attempt=0;attempt<5;attempt++){
-    const r=await fetch(endpoint,{method:"POST",
+    const r=await callInstagramPublisher(env,endpoint,{method:"POST",
       headers:{"content-type":"application/json","authorization":"Bearer "+env.INSTAGRAM_INTERNAL_SECRET,
         "user-agent":"TTActualidad-TTiTTulares/1.0"},
       body:JSON.stringify(payload)});
@@ -415,7 +424,7 @@ export default {
       let publisherStatus=0,publisherOk=false;
       if(endpointOk){
         try{
-          const p=await fetch(publisher+"/meta-preflight",{
+          const p=await callInstagramPublisher(env,publisher+"/meta-preflight",{
             method:"GET",headers:{"authorization":"Bearer "+secret},
             signal:AbortSignal.timeout(12000)
           });
@@ -427,7 +436,8 @@ export default {
       const chatMatches=chat?chat===allowedChat:null;
       return json({ok:configured&&endpointOk&&publisherOk&&chatMatches!==false,
         publisher_authenticated:publisherOk,publisher_http:publisherStatus,
-        publisher_url_valid:endpointOk,allowed_chat_configured:!!allowedChat,
+        publisher_url_valid:endpointOk,publisher_service_bound:!!env.INSTAGRAM_PUBLISHER,
+        allowed_chat_configured:!!allowedChat,
         chat_matches:chatMatches,github_configured:!!env.GITHUB_TOKEN,
         telegram_bot_configured:!!env.TTITTULARES_CALLBACK_DECRYPT_KEY});
     }
