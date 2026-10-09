@@ -280,9 +280,11 @@ async function publishTtiInstagramSelected(env,update,event){
   let result={};
   for(let attempt=0;attempt<5;attempt++){
     const r=await fetch(endpoint,{method:"POST",
-      headers:{"content-type":"application/json","authorization":"Bearer "+env.INSTAGRAM_INTERNAL_SECRET},
+      headers:{"content-type":"application/json","authorization":"Bearer "+env.INSTAGRAM_INTERNAL_SECRET,
+        "user-agent":"TTActualidad-TTiTTulares/1.0"},
       body:JSON.stringify(payload)});
-    result=await r.json().catch(()=>({}));
+    result=await r.json().catch(()=>({error:"NON_JSON_RESPONSE"}));
+    result.http_status=r.status;
     if(r.ok&&result.state==="published")break;
     if(r.status!==202||result.state!=="processing")break;
     await new Promise(resolve=>setTimeout(resolve,Math.min(5000,2000+attempt*750)));
@@ -313,7 +315,11 @@ async function publishTtiInstagramSelected(env,update,event){
     result.state==="uncertain"?
     "No se puede confirmar la publicación. Comprueba Instagram antes de reintentar.":
     "No se ha confirmado la publicación en Instagram; el mensaje de Telegram sigue disponible.";
-  await instagramTelegramNotice(env,update,note);
+  const metaCode=Number.isSafeInteger(result.meta_error_code)?result.meta_error_code:null;
+  const metaSubcode=Number.isSafeInteger(result.meta_error_subcode)?result.meta_error_subcode:null;
+  const diagnostic=(result.error?"\\nDiagnóstico: "+String(result.error).slice(0,64):"")+
+    (metaCode!==null?"\\nMeta: "+metaCode+(metaSubcode!==null?"/"+metaSubcode:""):"");
+  await instagramTelegramNotice(env,update,note+diagnostic);
   return json({ok:result.state==="published",state:result.state||"error"});
 }
 
