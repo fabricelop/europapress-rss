@@ -1,612 +1,92 @@
-name: Entregar TTiTTulares READY a Telegram
-
+name: TTiTTulares Telegram informativo (sin IA ni publicación)
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
   push:
     branches: [main]
     paths:
       - "ttittulares/prepared.json"
-      - "shared/cross_account_story.py"
+      - "telegram/editorial-processing.json"
+      - "ttittulares/decisions.json"
+      - "shared/telegram_readonly_delivery.py"
       - ".github/workflows/send-ttittulares-ready-telegram.yml"
-  schedule:
-    - cron: "*/30 * * * *"
-
 permissions:
   contents: write
-
 concurrency:
-  # v2 separa el flujo ligero de posibles runs antiguos atascados con checkout completo.
-  group: ttittulares-ready-telegram-v2
+  group: ttittulares-telegram-readonly
   cancel-in-progress: false
-
 jobs:
   deliver:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /shared/telegram_readonly_delivery.py
+            /telegram/editorial-processing.json
+            /telegram/ttittulares-deliveries.json
             /ttittulares/prepared.json
             /ttittulares/decisions.json
-            /ttittulares/archive-images/
-            /telegram/ttittulares-deliveries.json
-            /trends/explained-copy-state.json
-            /shared/cross_account_story.py
-            /shared/instagram_pilot.py
-            /ttittulares/instagram-images/
-
-      - name: Sincronizar estado autoritativo
+            /trends/requests.json
+            /trends/recent.json
+            /trends/explained.json
+            /trends/telegram-manual-explained.json
+            /trends/telegram-image-deliveries.json
+            /trends/telegram-bot-state.json
+      - name: Dependencias HTTP y comprobaciones
         run: |
-          git fetch origin main
-          git reset --hard origin/main
-
-      - name: Instalar cliente HTTP
-        run: python3 -m pip install --quiet requests Pillow
-
-      - name: Validar cita cruzada
-        run: python3 shared/cross_account_story.py selftest
-
-      - name: Enviar o reparar paquete READY
+          python3 -m pip install -q requests
+          python3 -m py_compile shared/telegram_readonly_delivery.py
+          python3 shared/telegram_readonly_delivery.py selftest
+      - name: Enviar o actualizar mensaje Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED || '1' }}
-        shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import hashlib, json, os, pathlib, urllib.parse
-          from datetime import datetime, timezone, timedelta
-          import requests
-          from shared.instagram_pilot import enabled as ig_enabled, payload as ig_payload, attach_button as ig_button
-          from shared.cross_account_story import (
-              build_ttittulares_quote_copy,
-              find_published_trend_match,
-              x_account_search_url,
-          )
-
-          ROOT=pathlib.Path(".")
-          prepared=json.loads((ROOT/"ttittulares/prepared.json").read_text(encoding="utf-8"))
-          decisions=json.loads((ROOT/"ttittulares/decisions.json").read_text(encoding="utf-8"))
-          trend_copy_state_path=ROOT/"trends/explained-copy-state.json"
-          trend_copy_state=json.loads(trend_copy_state_path.read_text(encoding="utf-8")) if trend_copy_state_path.exists() else {"items":[]}
-          deliveries_path=ROOT/"telegram/ttittulares-deliveries.json"
-          deliveries=json.loads(deliveries_path.read_text(encoding="utf-8")) if deliveries_path.exists() else {"version":3,"items":[]}
-          deliveries["version"]=max(3,int(deliveries.get("version") or 1))
-
-          latest={}
-          for row in decisions.get("items",[]):
-              eid=str(row.get("event_id") or "")
-              if eid:
-                  latest[eid]=str(row.get("status") or "").lower()
-
-          token=os.environ.get("TELEGRAM_BOT_TOKEN","").strip()
-          chat=os.environ.get("TELEGRAM_CHAT_ID","").strip()
-          if not token or not chat:
-              raise SystemExit("Faltan TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID")
-          api=f"https://api.telegram.org/bot{token}"
-
-          def nowz():
-              return datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
-
-          def fetch_bytes(url):
-              if not url:
-                  return None
-              marker="/main/"
-              if url.startswith("https://raw.githubusercontent.com/") and marker in url:
-                  rel=urllib.parse.unquote(url.split(marker,1)[1])
-                  local=(ROOT/rel).resolve()
-                  try:
-                      local.relative_to(ROOT.resolve())
-                  except ValueError:
-                      local=None
-                  if local and local.is_file():
-                      return local.read_bytes()
-              rr=requests.get(url,timeout=35,headers={"User-Agent":"TTiTTulares-Telegram/3"},allow_redirects=True)
-              rr.raise_for_status()
-              ct=str(rr.headers.get("content-type") or "")
-              if ct and not ct.lower().startswith("image/"):
-                  raise RuntimeError(f"No es imagen: {ct}")
-              return rr.content
-
-          def ext_mime(raw):
-              if raw.startswith(b"\x89PNG"):
-                  return ".png","image/png"
-              if raw.startswith(b"RIFF") and raw[8:12]==b"WEBP":
-                  return ".webp","image/webp"
-              return ".jpg","image/jpeg"
-
-          def materialize_archive(eid,rev,raw):
-              sha=hashlib.sha256(raw).hexdigest()
-              ext,_=ext_mime(raw)
-              rel=pathlib.Path("ttittulares/archive-images")/f"{eid}-r{rev}-{sha[:12]}{ext}"
-              rel.parent.mkdir(parents=True,exist_ok=True)
-              if not rel.exists():
-                  rel.write_bytes(raw)
-              url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+str(rel).replace("\\","/")
-              return sha,str(rel),url
-
-          def send_photo(raw,caption,reply_markup=None):
-              ext,mime=ext_mime(raw)
-              data={"chat_id":chat,"caption":caption}
-              if reply_markup is not None:
-                  data["reply_markup"]=json.dumps(reply_markup,ensure_ascii=False,separators=(",",":"))
-              resp=requests.post(api+"/sendPhoto",data=data,files={"photo":("ttittulares"+ext,raw,mime)},timeout=45)
-              out=resp.json()
-              if not resp.ok or not out.get("ok"):
-                  raise RuntimeError("Telegram sendPhoto: "+json.dumps(out,ensure_ascii=False)[:800])
-              return out.get("result") or {}
-
-          def send_text(text,reply_markup=None):
-              data={"chat_id":chat,"text":text,"disable_web_page_preview":True}
-              if reply_markup is not None:
-                  data["reply_markup"]=reply_markup
-              resp=requests.post(api+"/sendMessage",json=data,timeout=35)
-              out=resp.json()
-              if not resp.ok or not out.get("ok"):
-                  raise RuntimeError("Telegram sendMessage: "+json.dumps(out,ensure_ascii=False)[:800])
-              return out.get("result") or {}
-
-          def edit_photo_media(message_id,raw,caption,reply_markup=None):
-              ext,mime=ext_mime(raw)
-              media={"type":"photo","media":"attach://photo","caption":caption}
-              data={
-                  "chat_id":chat,
-                  "message_id":int(message_id),
-                  "media":json.dumps(media,ensure_ascii=False,separators=(",",":"))
-              }
-              if reply_markup is not None:
-                  data["reply_markup"]=json.dumps(reply_markup,ensure_ascii=False,separators=(",",":"))
-              resp=requests.post(api+"/editMessageMedia",data=data,files={"photo":("ttittulares"+ext,raw,mime)},timeout=45)
-              out=resp.json()
-              if not resp.ok or not out.get("ok"):
-                  raise RuntimeError("Telegram editMessageMedia: "+json.dumps(out,ensure_ascii=False)[:800])
-              return out.get("result") or {}
-
-          def delete_message(message_id):
-              if not message_id:
-                  return
-              resp=requests.post(api+"/deleteMessage",json={"chat_id":chat,"message_id":int(message_id)},timeout=30)
-              out=resp.json()
-              if not resp.ok or not out.get("ok"):
-                  desc=str(out.get("description") or "")
-                  if "message to delete not found" not in desc.lower():
-                      raise RuntimeError("Telegram deleteMessage: "+json.dumps(out,ensure_ascii=False)[:700])
-
-          def edit_keyboard(message_id,keyboard):
-              resp=requests.post(api+"/editMessageReplyMarkup",json={
-                  "chat_id":chat,
-                  "message_id":int(message_id),
-                  "reply_markup":keyboard
-              },timeout=30)
-              out=resp.json()
-              if not resp.ok or not out.get("ok"):
-                  desc=str(out.get("description") or "")
-                  if "message is not modified" not in desc.lower():
-                      raise RuntimeError("Telegram editMessageReplyMarkup: "+json.dumps(out,ensure_ascii=False)[:700])
-
-          def ai_valid(item):
-              ai=item.get("ai_image") or {}
-              return (
-                  str(item.get("ai_image_status") or "").lower()=="ready"
-                  and str(ai.get("provider") or "")=="chat-imagegen"
-                  and str(ai.get("origin") or "")=="executing_chat"
-                  and int(ai.get("width") or 0)>=1024
-                  and int(ai.get("height") or 0)>=576
-                  and bool(str(ai.get("url") or "").strip())
-                  and bool(str(ai.get("sha256") or "").strip())
-              )
-
-          def archive_obj(item):
-              a=item.get("archive_image") or item.get("fallback_image") or {}
-              return a if isinstance(a,dict) and str(a.get("url") or "").strip() else {}
-
-          def x_search_keywords(item):
-              raw=str((item.get("quote_search") or {}).get("query") or item.get("title") or "")
-              raw=raw.replace("\n"," ")
-              words=[w for w in __import__("re").findall(r"[^\W_]+",raw,flags=__import__("re").UNICODE)]
-              stop=set("el la los las un una unos unas de del al en a ante por para con sin sobre entre que quien quienes como cual cuales su sus y e o u es son ha han fue ser se le les lo este esta estos estas ese esa esos esas tras desde hasta durante muy mas más hoy ayer mañana ultima última ultimas últimas hora directo noticia noticias actualidad cuenta explica explican anuncia anunciaron nueva nuevo nuevas nuevos ahora segundo primera primero centenar personas persona hombres mujeres supera supero superó desvela reactiva aprueba confirma detiene investiga consigue gana pierde critica pide asegura publica celebran ocurrido denuncian".split())
-              good=[]
-              seen=set()
-              for word in words:
-                  key=__import__("unicodedata").normalize("NFD",word).encode("ascii","ignore").decode().lower()
-                  if len(key)<3 or key in stop or key.isdigit() or key in seen:
-                      continue
-                  seen.add(key);good.append(word)
-                  if len(good)==3:
-                      break
-              if len(good)<2:
-                  fallback=[w for w in words if len(w)>=3 and not w.isdigit()]
-                  for word in fallback:
-                      key=word.lower()
-                      if key not in {x.lower() for x in good}:
-                          good.append(word)
-                      if len(good)>=2:
-                          break
-              return " ".join(good[:3]) or "noticias"
-
-          def keyboard_for(eid,tweet,image_url,item,archive_copy_url="",timeout_fallback=False,archive_only=False,instagram_post=None):
-              x_search="https://x.com/search?"+urllib.parse.urlencode({"q":x_search_keywords(item),"src":"typed_query","f":"live"})
-              rows=[]
-              if timeout_fallback or archive_only:
-                  if archive_copy_url:
-                      rows.append([{"text":"🗂️ Copiar imagen archivo","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":archive_copy_url})}])
-              else:
-                  rows.append([{"text":"🖼️ Copiar imagen IA","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":image_url})}])
-                  if archive_copy_url:
-                      rows.append([{"text":"🗂️ Copiar imagen archivo","url":"https://tt-control.fabricelop.workers.dev/copy-image?"+urllib.parse.urlencode({"src":archive_copy_url})}])
-              rows.append([
-                  {"text":"📋 Copiar tuit","copy_text":{"text":tweet}},
-                  {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":tweet})}
-              ])
-              rows.append([{"text":"🔎 Buscar en X","url":x_search}])
-              if timeout_fallback:
-                  rows.append([{"text":"🔄 Reenviar a Listas","callback_data":"tt:r:"+eid}])
-              rows.append([
-                  {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
-                  {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
-              ])
-              return ig_button({"inline_keyboard":rows},"tt:i:"+eid,instagram_post)
-
-          def cross_quote_keyboard(eid,text,search_url,timeout_fallback=False):
-              if len(text)<=256:
-                  copy_button={"text":"📋 Copiar tuit","copy_text":{"text":text}}
-              else:
-                  copy_button={"text":"📋 Copiar tuit","url":"https://tt-control.fabricelop.workers.dev/copy-text?"+urllib.parse.urlencode({"text":text})}
-              return {"inline_keyboard":[
-                  [
-                      copy_button,
-                      {"text":"✍️ Abrir en X","url":"https://tt-control.fabricelop.workers.dev/x-compose?"+urllib.parse.urlencode({"text":text})}
-                  ],
-                  [{"text":"🔎 Buscar en @ttendenciasesp","url":search_url}],
-                  *([[{"text":"🔄 Reenviar a Listas","callback_data":"tt:r:"+eid}]] if timeout_fallback else []),
-                  [
-                      {"text":"🗑 Desestimar","callback_data":"tt:d:"+eid},
-                      {"text":"✅ Publicado","callback_data":"tt:p:"+eid}
-                  ]
-              ]}
-
-          def cross_quote_for_item(item,tweet):
-              news_text=" ".join(
-                  str(x or "").strip()
-                  for x in (item.get("title"),item.get("factual_summary"),tweet)
-                  if str(x or "").strip()
-              )
-              match=find_published_trend_match(
-                  news_text,
-                  trend_copy_state,
-                  hours=48,
-                  threshold=0.55,
-              )
-              if not match:
-                  return None
-              quote_text=build_ttittulares_quote_copy(tweet,match.get("subject") or "")
-              if not quote_text:
-                  print(f"TTITTULARES_CROSS_QUOTE_SKIP_LONG event={item.get('event_id')}")
-                  return None
-              search_url=x_account_search_url(
-                  "ttendenciasesp",
-                  match.get("text") or "",
-                  news_text,
-                  match.get("subject") or "",
-              )
-              return {
-                  "text":quote_text,
-                  "search_url":search_url,
-                  "score":float(match.get("score") or 0),
-                  "source_trend_id":str(match.get("id") or ""),
-                  "source_published_at":str(match.get("published_at") or ""),
-                  "subject":str(match.get("subject") or ""),
-              }
-
-          changed=False
-          touched=0
-          print("TTITTULARES_INSTAGRAM_GATE="+("enabled" if ig_enabled() else "disabled"))
-
-          for item in prepared.get("items",[]):
-              eid=str(item.get("event_id") or "").strip()
-              rev=int(item.get("revision") or 1)
-              if not eid or latest.get(eid) in {"published","dismissed"}:
-                  continue
-
-              tweet_obj=item.get("tweet") or {}
-              tweet=str(tweet_obj.get("text") or "")
-              remate=str(tweet_obj.get("remate") or "")
-              if not tweet or not remate:
-                  continue
-              if len(tweet)>256:
-                  print(f"TTITTULARES_TELEGRAM_SKIP_LONG event={eid} chars={len(tweet)}")
-                  continue
-
-              try:
-                  prepared_at=datetime.fromisoformat(str(item.get("prepared_at") or "").replace("Z","+00:00")).astimezone(timezone.utc)
-              except Exception:
-                  prepared_at=None
-              retry_at=None
-              try:
-                  if item.get("ai_image_regenerate_requested_at"):
-                      retry_at=datetime.fromisoformat(str(item.get("ai_image_regenerate_requested_at")).replace("Z","+00:00")).astimezone(timezone.utc)
-              except Exception:
-                  retry_at=None
-              wait_candidates=[x for x in (prepared_at,retry_at) if x is not None]
-              wait_from=max(wait_candidates) if wait_candidates else None
-              retry_version=int(item.get("ai_image_regenerate_request_version") or 0)
-
-              if not ai_valid(item):
-                  if not wait_from or datetime.now(timezone.utc)-wait_from<timedelta(minutes=90):
-                      continue
-                  delivery_key=f"{eid}:r{rev}:timeout:v{retry_version}"
-                  timeout_current=next((row for row in reversed(deliveries.get("items",[])) if str(row.get("delivery_key") or "")==delivery_key),None)
-                  if timeout_current and str(timeout_current.get("status") or "").lower() in {"sent","published","dismissed","retry_requested","superseded"}:
-                      continue
-
-                  archive=archive_obj(item)
-                  archive_url=str(archive.get("url") or "").strip()
-                  archive_copy_url=""
-                  archive_sha=""
-                  archive_raw=None
-                  if archive_url:
-                      try:
-                          archive_raw=fetch_bytes(archive_url)
-                          if archive_raw:
-                              archive_sha,_,archive_copy_url=materialize_archive(eid,rev,archive_raw)
-                              changed=True
-                      except Exception as e:
-                          print(f"TTITTULARES_TIMEOUT_ARCHIVE_WARNING event={eid} error={e}")
-                          archive_raw=None
-                  keyboard=keyboard_for(eid,tweet,"",item,archive_copy_url,timeout_fallback=True)
-                  cross=cross_quote_for_item(item,tweet)
-                  cross_mid=0
-                  if cross:
-                      ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"],timeout_fallback=True)
-                      cmsg=send_text(
-                          "🔁 CITA CRUZADA · citar @ttendenciasesp\n\n"
-                          +cross["text"]+f"\n\n{len(cross['text'])}/280",
-                          ckb
-                      )
-                      cross_mid=int(cmsg.get("message_id") or 0)
-                      print(f"TTITTULARES_CROSS_QUOTE_SENT event={eid} message_id={cross_mid} score={cross['score']}")
-                  note="\n\n⏳ Más de 90 min sin imagen IA."
-                  try:
-                      if archive_raw:
-                          msg=send_photo(archive_raw,tweet+note,keyboard)
-                      else:
-                          msg=send_text(tweet+note,keyboard)
-                  except Exception:
-                      if cross_mid:
-                          delete_message(cross_mid)
-                      raise
-                  message_id=int(msg.get("message_id") or 0)
-                  row={
-                      "delivery_key":delivery_key,
-                      "event_id":eid,
-                      "revision":rev,
-                      "title":str(item.get("title") or ""),
-                      "tweet_text":tweet,
-                      "telegram_message_id":message_id,
-                      "delivered_at":nowz(),
-                      "status":"sent",
-                      "buttons_version":5,
-                      "timeout_fallback":True,
-                      "timeout_retry_version":retry_version,
-                      "timeout_wait_from":wait_from.isoformat().replace("+00:00","Z")
-                  }
-                  if cross_mid:
-                      row.update({
-                          "cross_quote_message_id":cross_mid,
-                          "cross_quote_source":"@ttendenciasesp",
-                          "cross_quote_text":cross["text"],
-                          "cross_quote_search_url":cross["search_url"],
-                          "cross_quote_score":cross["score"],
-                          "cross_quote_source_trend_id":cross["source_trend_id"],
-                          "cross_quote_source_published_at":cross["source_published_at"]
-                      })
-                  if archive_url:
-                      row.update({
-                          "archive_image_url":archive_url,
-                          "archive_materialized_url":archive_copy_url,
-                          "archive_sha256":archive_sha
-                      })
-                  deliveries.setdefault("items",[]).append(row)
-                  changed=True
-                  touched+=1
-                  print(f"TTITTULARES_TELEGRAM_TIMEOUT_SENT event={eid} message_id={message_id} archive={bool(archive_raw)}")
-                  continue
-
-              ai=item.get("ai_image") or {}
-              image_url=str(ai.get("url") or "").strip()
-              image_sha=str(ai.get("sha256") or "").strip().lower()
-              delivery_key=f"{eid}:r{rev}:{image_sha}"
-              current=None
-              event_delivery=None
-              for row in reversed(deliveries.get("items",[])):
-                  if event_delivery is None and str(row.get("event_id") or "")==eid and int(row.get("revision") or 0)==rev and str(row.get("status") or "").lower()=="sent":
-                      event_delivery=row
-                  if str(row.get("delivery_key") or "")==delivery_key and str(row.get("status") or "").lower()=="sent":
-                      current=row
-                      break
-
-              timeout_archive=None
-              if event_delivery and event_delivery.get("timeout_fallback"):
-                  timeout_archive=event_delivery
-
-              archive=archive_obj(item)
-              archive_url=str(archive.get("url") or "").strip()
-              archive_source=current or {}
-              if timeout_archive:
-                  archive_mid=int(timeout_archive.get("telegram_message_id") or 0)
-                  archive_sha=str(timeout_archive.get("archive_sha256") or "")
-                  archive_copy_url=str(timeout_archive.get("archive_materialized_url") or "")
-              else:
-                  archive_mid=int(archive_source.get("archive_telegram_message_id") or 0)
-                  archive_sha=str(archive_source.get("archive_sha256") or "")
-                  archive_copy_url=str(archive_source.get("archive_materialized_url") or "")
-
-              if archive_url and not archive_copy_url:
-                  try:
-                      araw=fetch_bytes(archive_url)
-                      if araw:
-                          archive_sha,_,archive_copy_url=materialize_archive(eid,rev,araw)
-                          changed=True
-                  except Exception as e:
-                      print(f"TTITTULARES_ARCHIVE_MATERIALIZE_WARNING event={eid} error={e}")
-
-              if archive_url and not archive_mid:
-                  try:
-                      araw=fetch_bytes(archive_url)
-                      if araw:
-                          if not archive_copy_url:
-                              archive_sha,_,archive_copy_url=materialize_archive(eid,rev,araw)
-                          amsg=send_photo(araw,"🗂️ Imagen de archivo · "+str(item.get("title") or "TTiTTulares"))
-                          archive_mid=int(amsg.get("message_id") or 0)
-                          changed=True
-                          print(f"TTITTULARES_ARCHIVE_SENT event={eid} message_id={archive_mid}")
-                  except Exception as e:
-                      print(f"TTITTULARES_ARCHIVE_WARNING event={eid} error={e}")
-
-              instagram_post=None
-              cached_image_raw=None
-              if ig_enabled():
-                  try:
-                      cached_image_raw=fetch_bytes(image_url)
-                      if not cached_image_raw or hashlib.sha256(cached_image_raw).hexdigest().lower()!=image_sha:
-                          raise ValueError("La imagen IA no coincide con SHA256")
-                      instagram_post=ig_payload(ROOT,"ttittulares",eid,rev,tweet,cached_image_raw)
-                      changed=True
-                  except Exception as e:
-                      print(f"TTITTULARES_INSTAGRAM_PREPARE_WARNING event={eid} error={e}")
-                      cached_image_raw=None
-              keyboard=keyboard_for(eid,tweet,image_url,item,archive_copy_url,instagram_post=instagram_post)
-
-              if timeout_archive:
-                  try:
-                      archive_keyboard=keyboard_for(eid,tweet,"",item,archive_copy_url,archive_only=True)
-                      edit_keyboard(int(timeout_archive.get("telegram_message_id") or 0),archive_keyboard)
-                      timeout_archive["buttons_version"]=5
-                      timeout_archive["buttons_updated_at"]=nowz()
-                      timeout_archive["ai_companion_pending"]=False
-                      changed=True
-                  except Exception as e:
-                      print(f"TTITTULARES_TIMEOUT_ARCHIVE_KEYBOARD_WARNING event={eid} error={e}")
-
-              if current:
-                  try:
-                      edit_keyboard(int(current.get("telegram_message_id") or 0),keyboard)
-                  except Exception as e:
-                      print(f"TTITTULARES_KEYBOARD_WARNING event={eid} error={e}")
-                  patches={"buttons_version":5,"buttons_updated_at":nowz()}
-                  if instagram_post:
-                      patches["instagram"]=instagram_post
-                  if archive_mid:
-                      patches.update({
-                          "archive_telegram_message_id":archive_mid,
-                          "archive_image_url":archive_url,
-                          "archive_materialized_url":archive_copy_url,
-                          "archive_sha256":archive_sha,
-                          "archive_delivered_at":current.get("archive_delivered_at") or nowz()
-                      })
-                  for k,v in patches.items():
-                      if current.get(k)!=v:
-                          current[k]=v; changed=True
-                  touched+=1
-                  continue
-
-              raw=cached_image_raw or fetch_bytes(image_url)
-              if not raw:
-                  raise SystemExit(f"{eid}: imagen IA vacía")
-              got=hashlib.sha256(raw).hexdigest()
-              if got.lower()!=image_sha:
-                  raise SystemExit(f"{eid}: SHA256 IA no coincide")
-              cross=None
-              cross_mid=0
-              if not int((timeout_archive or {}).get("cross_quote_message_id") or 0):
-                  cross=cross_quote_for_item(item,tweet)
-              if cross:
-                  ckb=cross_quote_keyboard(eid,cross["text"],cross["search_url"])
-                  cmsg=send_text(
-                      "🔁 CITA CRUZADA · citar @ttendenciasesp\n\n"
-                      +cross["text"]+f"\n\n{len(cross['text'])}/280",
-                      ckb
-                  )
-                  cross_mid=int(cmsg.get("message_id") or 0)
-                  print(f"TTITTULARES_CROSS_QUOTE_SENT event={eid} message_id={cross_mid} score={cross['score']}")
-
-              caption=tweet+f"\n\n{len(tweet)}/256"
-
-              try:
-                  msg=send_photo(raw,caption,keyboard)
-              except Exception:
-                  if cross_mid:
-                      delete_message(cross_mid)
-                  raise
-              message_id=int(msg.get("message_id") or 0)
-              row={
-                  "delivery_key":delivery_key,
-                  "event_id":eid,
-                  "revision":rev,
-                  "title":str(item.get("title") or ""),
-                  "tweet_text":tweet,
-                  "image_sha256":got,
-                  "image_url":image_url,
-                  "instagram":instagram_post,
-                  "telegram_message_id":message_id,
-                  "delivered_at":nowz(),
-                  "status":"sent",
-                  "buttons_version":5
-              }
-              if cross_mid:
-                  row.update({
-                      "cross_quote_message_id":cross_mid,
-                      "cross_quote_source":"@ttendenciasesp",
-                      "cross_quote_text":cross["text"],
-                      "cross_quote_search_url":cross["search_url"],
-                      "cross_quote_score":cross["score"],
-                      "cross_quote_source_trend_id":cross["source_trend_id"],
-                      "cross_quote_source_published_at":cross["source_published_at"]
-                  })
-              if archive_mid:
-                  row.update({
-                      "archive_telegram_message_id":archive_mid,
-                      "archive_image_url":archive_url,
-                      "archive_materialized_url":archive_copy_url,
-                      "archive_sha256":archive_sha,
-                      "archive_delivered_at":(timeout_archive or {}).get("delivered_at") or nowz()
-                  })
-              deliveries.setdefault("items",[]).append(row)
-              changed=True
-              touched+=1
-              print(f"TTITTULARES_TELEGRAM_SENT event={eid} message_id={message_id} archive_message_id={archive_mid or 0} chars={len(tweet)}")
-
-          deliveries["items"]=deliveries.get("items",[])[-500:]
-          deliveries["count"]=len(deliveries["items"])
-          if changed:
-              deliveries["updated_at"]=nowz()
-              deliveries_path.write_text(json.dumps(deliveries,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-          print("TTITTULARES_TELEGRAM_CHANGED="+str(int(changed)))
-          print("TTITTULARES_TELEGRAM_TOUCHED="+str(touched))
-          PY
-
-      - name: Guardar entrega y archivo materializado
-        shell: bash
+          python3 shared/telegram_readonly_delivery.py ttittulares
+          cp telegram/ttittulares-deliveries.json /tmp/telegram-readonly-ledger.json
+      - name: Guardar ledger sin perder borrados
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add telegram/ttittulares-deliveries.json
-          if [ -d ttittulares/archive-images ]; then git add ttittulares/archive-images; fi
-          if [ -d ttittulares/instagram-images ]; then git add ttittulares/instagram-images; fi
-          if git diff --cached --quiet; then
-            echo "Sin cambios de entrega."
-            exit 0
-          fi
-          git commit -m "Registrar paquete Telegram TTiTTulares"
-          for n in 1 2 3 4 5; do
-            git pull --rebase origin main || { git rebase --abort || true; sleep $((n*2)); continue; }
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("telegram/ttittulares-deliveries.json")
+          live=json.loads(path.read_text(encoding="utf8"))
+          incoming=json.loads(Path("/tmp/telegram-readonly-ledger.json").read_text(encoding="utf8"))
+          rows=live.setdefault("items",[])
+          by_id={(str(x.get("event_id") or ""),int(x.get("revision") or 0),
+                  int(x.get("telegram_message_id") or 0)):x for x in rows}
+          terminal={"deleted","removed","dismissed","published"}
+          for row in incoming.get("items",[]):
+              key=(str(row.get("event_id") or ""),int(row.get("revision") or 0),
+                  int(row.get("telegram_message_id") or 0))
+              old=by_id.get(key)
+              if old is None:
+                  rows.append(row)
+                  by_id[key]=row
+              elif str(old.get("status") or "").lower() not in terminal:
+                  # Never overwrite a terminal delete from concurrent callback.
+                  if str(row.get("updated_at") or row.get("delivered_at") or "")>=str(old.get("updated_at") or old.get("delivered_at") or ""):
+                      old.update(row)
+          live["updated_at"]=incoming.get("updated_at") or live.get("updated_at")
+          path.write_text(json.dumps(live,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          PY
+            git add telegram/ttittulares-deliveries.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Registrar entrega Telegram informativa ttittulares"
             if git push origin HEAD:main; then exit 0; fi
-            sleep $((n*2))
+            sleep $((attempt*2))
           done
-          echo "No se pudo persistir el paquete Telegram" >&2
+          echo "No se pudo guardar ledger Telegram" >&2
           exit 1
