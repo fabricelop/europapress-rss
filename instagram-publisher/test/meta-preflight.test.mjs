@@ -41,3 +41,30 @@ test("Wrong account identity is rejected without any post",async()=>{
   assert.equal((await r.json()).page_token_matches_expected_page,false);
  }finally{globalThis.fetch=prev;}
 });
+
+test("Meta auth preflight reveals safe code and failed step without leaking token",async()=>{
+ const old=globalThis.fetch;
+ const secret="test-only-secret-must-not-appear-in-report";
+ globalThis.fetch=async()=>Response.json({
+   error:{code:190,error_subcode:463,type:"OAuthException",
+          message:"token is SECRET_DO_NOT_SHOW"}
+ },{status:400});
+ const env={INSTAGRAM_INTERNAL_SECRET:secret,
+   INSTAGRAM_PAGE_ACCESS_TOKEN:"test-page-token",
+   INSTAGRAM_USER_ID:"17841414511690117",
+   IG_DB:{prepare(){return{first:async()=>({name:"instagram_posts"})}}}};
+ try{
+   const r=await worker.fetch(new Request("https://example.test/meta-preflight",{
+     headers:{authorization:"Bearer "+secret}
+   }),env);
+   assert.equal(r.status,502);
+   const doc=await r.json();
+   assert.equal(doc.meta_check,"page_token_identity");
+   assert.equal(doc.meta_http_status,400);
+   assert.equal(doc.meta_error_code,190);
+   assert.equal(doc.meta_error_subcode,463);
+   assert.equal(doc.meta_error_type,"OAuthException");
+   assert.equal(JSON.stringify(doc).includes("SECRET_DO_NOT_SHOW"),false);
+   assert.equal(JSON.stringify(doc).includes("test-page-token"),false);
+ }finally{globalThis.fetch=old;}
+});
