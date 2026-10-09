@@ -1134,7 +1134,10 @@ def handle_instagram_package_callback(callback):
             try:
                 call("sendMessage",{"chat_id":chat_id,
                     "text":"📸 Publicado en Instagram: "+permalink,
-                    "reply_to_message_id":message_id})
+                    "reply_to_message_id":message_id,
+                    "reply_markup":{"inline_keyboard":[[
+                        {"text":"🗑️ Borrar","callback_data":f"tx:igdel:{message_id}"}
+                    ]]}})
             except Exception as exc:
                 print("TT_INSTAGRAM_SUCCESS_NOTICE_FAILED",type(exc).__name__,flush=True)
         else:
@@ -1251,11 +1254,59 @@ def handle(update):
 
 
 
+def handle_instagram_confirmation_delete(callback):
+    """Delete the Instagram success notice and its original Telegram package only."""
+    message=callback.get("message") or {}
+    chat_id=int((message.get("chat") or {}).get("id") or 0)
+    confirmation_id=int(message.get("message_id") or 0)
+    data=str(callback.get("data") or "")
+    original_str=data.removeprefix("tx:igdel:")
+    original_id=int(original_str) if original_str.isdecimal() else 0
+    reply_id=int((message.get("reply_to_message") or {}).get("message_id") or 0)
+    notice=str(message.get("text") or "")
+    state=load(STATE,{})
+    allowed_chat=int(state.get("chat_id") or 0)
+    if not allowed_chat:
+        state=load_remote_json("trends/telegram-bot-state.json",{})
+        allowed_chat=int(state.get("chat_id") or 0)
+    if (not allowed_chat or allowed_chat!=chat_id or not original_id
+            or original_id==confirmation_id or confirmation_id<=0
+            or (reply_id and reply_id!=original_id)
+            or not notice.startswith("📸 Publicado en Instagram: https://www.instagram.com/")):
+        call("answerCallbackQuery",{
+            "callback_query_id":callback["id"],"text":"Confirmación no válida.",
+            "show_alert":True})
+        return "invalid_confirmation"
+
+    # Delete the original first, leaving the notice/button if that fails.
+    try:
+        call("deleteMessage",{"chat_id":chat_id,"message_id":original_id})
+    except Exception as exc:
+        if "message to delete not found" not in str(exc).lower():
+            call("answerCallbackQuery",{
+                "callback_query_id":callback["id"],"text":"No se pudo borrar el original.",
+                "show_alert":True})
+            return "original_delete_failed"
+    try:
+        call("deleteMessage",{"chat_id":chat_id,"message_id":confirmation_id})
+    except Exception as exc:
+        if "message to delete not found" not in str(exc).lower():
+            print("TT_INSTAGRAM_CONFIRMATION_DELETE_FAILED",type(exc).__name__,flush=True)
+            return "confirmation_delete_failed"
+    try:
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],"text":"Mensajes borrados."})
+    except Exception:
+        pass
+    return "deleted"
+
+
 def route_package_callback(callback):
     """Use the same approved Telegram package routing in web and legacy mode."""
     data = str(callback.get("data") or "")
     if data.startswith("tx:i:"):
         return handle_instagram_package_callback(callback)
+    if data.startswith("tx:igdel:"):
+        return handle_instagram_confirmation_delete(callback)
     return handle_package_callback(callback)
 
 
