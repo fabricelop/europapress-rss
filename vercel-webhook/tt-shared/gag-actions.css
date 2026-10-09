@@ -1,0 +1,9 @@
+.ttGagButton{display:inline-flex;align-items:center;justify-content:center;min-height:39px;text-align:center;cursor:pointer;white-space:normal!important}
+.ttGagButton:focus-visible,.libraryAccess a:focus-visible{outline:2px solid #9fc7ff;outline-offset:2px}
+.libraryAccess{display:flex;justify-content:flex-end;margin:7px 0 12px}
+.libraryAccess a{display:inline-flex;align-items:center;min-height:35px;padding:7px 11px;border:1px solid #40516a;background:#18212f;color:#dce7f7;border-radius:10px;text-decoration:none;font-size:12px;font-weight:800}
+.actions{flex-wrap:wrap}
+.actions .ttGagButton{flex:1 1 135px;min-width:0}
+#explainedActions{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+#explainedActions .ttGagButton{flex:1 1 42%;background:#18212f;color:#dce7f7;border:1px solid #40516a;border-radius:10px;padding:9px 8px;text-decoration:none;font-weight:750;font-size:12px}
+@media(max-width:460px){.ttGagButton{font-size:12px!important;padding:8px 6px!important}}

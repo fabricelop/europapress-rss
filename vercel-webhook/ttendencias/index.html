@@ -11,6 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%233277e3%22/%3E%3Ctext x=%2232%22 y=%2241%22 text-anchor=%22middle%22 font-family=%22Arial,sans-serif%22 font-size=%2229%22 font-weight=%22900%22 letter-spacing=%22-3%22 fill=%22white%22%3ETT%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 <link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%233277e3%22/%3E%3Ctext x=%2232%22 y=%2241%22 text-anchor=%22middle%22 font-family=%22Arial,sans-serif%22 font-size=%2229%22 font-weight=%22900%22 letter-spacing=%22-3%22 fill=%22white%22%3ETT%3C/text%3E%3C/svg%3E" type="image/svg+xml">
 <title>TTendencias Control</title>
+<link rel="stylesheet" href="/tt-shared/gag-actions.css?v=20261009">
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0d1119,#090b10 55%)}button{font:inherit;touch-action:manipulation}a{touch-action:manipulation}
@@ -33,6 +34,7 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
     <a class="navTab pending" id="preparedBtn" href="/ttendencias/explicadas/" title="Ver explicaciones">Explicadas</a>
     <a class="navTab" id="historyBtn" href="/ttendencias/historico/" title="Ver histórico">Histórico</a>
   </nav>
+  <div class="libraryAccess"><a href="https://chatgpt.com/images" target="_blank" rel="noopener noreferrer">Mis imágenes IA ↗</a></div>
 </header>
 <main>
   <section class="summary">
@@ -62,11 +64,12 @@ main{max-width:820px;margin:auto;padding:15px 12px 36px}.summary{display:grid;gr
   <textarea id="problemRetryText" placeholder="Ej.: Creo que es tendencia porque…"></textarea>
   <div class="row"><button class="secondary" id="cancelProblemRetry">Cancelar</button><button class="primary" id="sendProblemRetry">Preparar</button></div>
 </div></div>
-<div class="sheet" id="explainedSheet"><div class="panel"><h2 id="explainedTitle">Tendencia explicada</h2><p id="explainedText"></p><div class="row"><button class="primary" id="explainedClose">Cerrar</button></div></div></div>
+<div class="sheet" id="explainedSheet"><div class="panel"><h2 id="explainedTitle">Tendencia explicada</h2><p id="explainedText"></p><div id="explainedActions"></div><div class="row"><button class="primary" id="explainedClose">Cerrar</button></div></div></div>
 <div class="sheet" id="workingSheet"><div class="panel"><h2>En elaboración</h2><p>Estas tendencias están ahora mismo en la cola editorial o siendo reevaluadas.</p><div class="workingItems" id="workingItems"></div><div class="row"><button class="primary" id="workingClose" type="button">Cerrar</button></div></div></div>
 <div class="sheet" id="incidentSheet"><div class="panel"><h2>Diagnóstico de ejecución</h2><p id="incidentSummary">Información técnica de la ejecución.</p><pre class="diag" id="incidentDetails"></pre><div class="row"><button class="secondary" id="incidentClose">Cerrar</button><button class="primary" id="incidentCopy">Copiar diagnóstico</button></div></div></div>
 <div class="toast" id="toast"></div>
 
+<script src="/tt-shared/gag-actions.js?v=20261009"></script>
 <script>
 const API="/api/ttendencias-control";
 const RUN_API="/api/ttendencias-run";
@@ -243,7 +246,7 @@ function buildModel(recent,requestDoc,explained,health,prepared,editorialConfig,
      detail=age>=30?"Procesando · retraso de "+age+" min":"Procesando · "+age+" min";
    }
    const anticipated=anticipatedByName[nrm(item.name)];if(anticipated&&Number.isFinite(Number(anticipated.lead_minutes))){detail+=(detail?" · ":"")+"Radar: "+Number(anticipated.lead_minutes)+" min antes"}
-   return {rank:Number(item.rank),manual_only:manualOnly,request_status:s,name:String(item.name),entered_top10_at:item.entered_top10_at||null,movement:String(item.movement||""),previous_rank:Number.isFinite(Number(item.previous_rank))?Number(item.previous_rank):null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_closer_text:String(explainedEntry?.closer_text||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
+   return {rank:Number(item.rank),manual_only:manualOnly,request_status:s,name:String(item.name),entered_top10_at:item.entered_top10_at||null,movement:String(item.movement||""),previous_rank:Number.isFinite(Number(item.previous_rank))?Number(item.previous_rank):null,status,label,detail,ready,requested_at:req?.requested_at||null,internal_status:s,explanation:String(explainedEntry?.explanation||"").trim(),explained_closer_text:String(explainedEntry?.closer_text||"").trim(),explained_title:String(explainedEntry?.news_title||"").trim(),explained_context:String(explainedEntry?.factual_summary||explainedEntry?.context_summary||explainedEntry?.news_title||"").trim(),explained_category:String(explainedEntry?.category||explainedEntry?.editorial_category||"").trim(),explanation_group_title:String(explainedEntry?.group_title||"").trim(),explanation_trend_names:explanationNames(explainedEntry||{})};
  });
  const requestByName={};for(const req of requests)requestByName[nrm(req.name)]=req;
  const preparedItems=(prepared.items||[]).filter(p=>{
@@ -425,6 +428,7 @@ function openExplained(item){
  $("explainedTitle").textContent=alreadyPrefixed?"Tendencia explicada":(item.explanation_group_title||(grouped?item.explanation_trend_names.join(" · "):item.name)||"Tendencia explicada");
  const candidate=closer&&!closer.startsWith("🌶️")&&original.endsWith(closer)?original.slice(0,-closer.length)+"🌶️ "+closer:original;
  $("explainedText").textContent=(candidate!==original&&[...candidate].length<280?candidate:original)||"No hay explicación factual guardada para esta tendencia.";
+ TTGag.mount($("explainedActions"),{kind:"trend",item:{name:item.explanation_group_title||item.name,explanation:original,closer_text:closer,factual_summary:item.explained_context,category:item.explained_category,trend_names:item.explanation_trend_names},xText:$("explainedText").textContent,feedback:showToast});
  $("explainedSheet").classList.add("show")
 }
 
