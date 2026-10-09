@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T07:45:00+02:00",
-  "last_completed_at": "2026-10-09T07:52:05+02:00",
-  "updated_at": "2026-10-09T07:52:05+02:00",
+  "last_started_at": "2026-10-09T08:15:00+02:00",
+  "last_completed_at": "2026-10-09T08:20:00+02:00",
+  "updated_at": "2026-10-09T08:20:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T074500-chat",
+    "run_id": "tr-20261009T081500-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T07:45:00+02:00",
-    "updated_at": "2026-10-09T07:52:05+02:00",
-    "finished_at": "2026-10-09T07:52:05+02:00",
+    "started_at": "2026-10-09T08:15:00+02:00",
+    "updated_at": "2026-10-09T08:20:00+02:00",
+    "finished_at": "2026-10-09T08:20:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -35,7 +35,7 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -53,17 +53,9 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada editorial completada · 0/0; cola 0; 1 incidencia visual pendiente de despliegue Cloudflare",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-09T07:49:00+02:00",
-        "phase": "verifying",
-        "trend_id": "4aeef5ae1e7b",
-        "title": "Pedro Sánchez",
-        "reason": "El reparador encoló la revisión vigente, pero el backend activo la canceló como archived por una coincidencia antigua de nombre+revision. La lógica fuente quedó corregida en main para usar item_id+revision con fallback legado solo sin ID; el Worker Cloudflare activo requiere desplegar esa versión antes de que el reintento visual pueda prosperar."
-      }
-    ],
+    "message": "Pasada editorial completada · 0/0; cola 0; Pendientes saneados",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -74,59 +66,52 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-09T07:45:00+02:00",
+        "at": "2026-10-09T08:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-09T07:46:00+02:00",
+        "at": "2026-10-09T08:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual disparado · workflow 37890174240"
+        "message": "Revisando Pendientes · 1 tarjeta"
       },
       {
-        "at": "2026-10-09T07:47:00+02:00",
+        "at": "2026-10-09T08:18:35+02:00",
+        "phase": "verifying",
+        "trend_id": "3ff255e46d90",
+        "title": "#LaRevuelta",
+        "message": "Pendiente 1/1 · IA válida; reparación visual en curso"
+      },
+      {
+        "at": "2026-10-09T08:19:00+02:00",
+        "phase": "verifying",
+        "trend_id": "3ff255e46d90",
+        "title": "#LaRevuelta",
+        "message": "Pendiente 1/1 · paquete ya completo y enviado a Telegram"
+      },
+      {
+        "at": "2026-10-09T08:19:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes recientes y saneamiento visual"
+        "message": "Releyendo main y comprobando revisiones activas"
       },
       {
-        "at": "2026-10-09T07:49:00+02:00",
-        "phase": "verifying",
-        "trend_id": "4aeef5ae1e7b",
-        "title": "Pedro Sánchez",
-        "message": "Detectada falsa marca archived por nombre+revisión en backend"
-      },
-      {
-        "at": "2026-10-09T07:51:00+02:00",
-        "phase": "persisting",
-        "trend_id": "4aeef5ae1e7b",
-        "title": "Pedro Sánchez",
-        "message": "Corregida elegibilidad visual por identidad exacta en main"
-      },
-      {
-        "at": "2026-10-09T07:52:05+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola editorial 0; reparación visual terminó success pero el job Pedro Sánchez fue cancelado por Worker aún sin la corrección"
-      },
-      {
-        "at": "2026-10-09T07:52:05+02:00",
+        "at": "2026-10-09T08:20:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 0/0; cola 0; 1 incidencia visual pendiente de despliegue Cloudflare"
+        "message": "Pasada editorial completada · 0/0; cola 0; Pendientes saneados"
       }
     ],
     "pending_repair_workflow": {
       "status": "completed",
-      "workflow_run_id": 37890174240,
-      "head_sha": "d86640bdd33f5713c712221a0631ff028a466e44",
+      "workflow_run_id": 37892844572,
+      "head_sha": "97e9059f6784e730c2cec700270f6fe5937eafd1",
       "conclusion": "success"
     },
     "queue_complete": true,
@@ -136,19 +121,20 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed_with_incident",
+    "status": "triggered_no_action_needed",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T074500-chat",
-    "last_triggered_at": "2026-10-09T07:45:00+02:00",
-    "observed_at": "2026-10-09T07:52:05+02:00",
-    "workflow_run_id": 37890174240,
+    "last_trigger_run_id": "tr-20261009T081500-chat",
+    "last_triggered_at": "2026-10-09T08:15:00+02:00",
+    "observed_at": "2026-10-09T08:20:00+02:00",
+    "workflow_run_id": 37892844572,
+    "workflow_status": "completed",
     "workflow_conclusion": "success",
-    "telegram_delivered": 0,
-    "target_id": "4aeef5ae1e7b",
+    "pending_cards_reviewed": 1,
+    "target_id": "3ff255e46d90",
     "revision": 1,
-    "ai_image_status": "CANCELLED",
-    "command_id": "tr-img-auto-4aeef5ae1e7b-r1-a2-1791524861673",
-    "incident": "active_worker_archive_identity_stale"
+    "ai_image_status": "ready",
+    "telegram_delivery_status": "sent",
+    "telegram_message_id": 391
   },
   "version": 1,
   "canonical": true
