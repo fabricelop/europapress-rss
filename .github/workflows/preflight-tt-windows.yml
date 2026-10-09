@@ -93,3 +93,36 @@ jobs:
             throw "TTendencias sigue haciendo polling directo sin autenticar"
           }
           Write-Host "OK: ambos listeners tienen fallback Git/RAW y limitan REST"
+
+      - name: Test TTendencias editorial retry state on Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/TTendenciasDedicatedListener.ps1" -Raw
+          $tokens=$null; $errs=$null
+          $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tokens,[ref]$errs)
+          if($errs.Count){ throw "TTendencias syntax error" }
+          $needed=@("Save-State","Ensure-StateFields","Test-EditorialRetryBackoff","Set-EditorialRetryBackoff")
+          foreach($n in $needed){
+            $fn=$ast.FindAll({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $n},$true)|Select-Object -First 1
+            if(-not $fn){throw "Missing function $n"}
+            Invoke-Expression $fn.Extent.Text
+          }
+          $StatePath=Join-Path $env:RUNNER_TEMP "ttendencias-state-test.json"
+          $LogPath=Join-Path $env:RUNNER_TEMP "ttendencias-listener-test.log"
+          $EditorialRetryBackoffMinutes=10
+          $state=[pscustomobject]@{last_command_id=""}
+          Ensure-StateFields $state
+          foreach($p in @("image_commands","active_image_commands","editorial_retry_after","editorial_retry_command_id")){
+            if(-not ($state.PSObject.Properties.Name -contains $p)){throw "Missing migrated state field $p"}
+          }
+          if(Test-EditorialRetryBackoff $state "test-id"){throw "Unexpected initial backoff"}
+          Set-EditorialRetryBackoff $state "test-id"
+          if(-not (Test-EditorialRetryBackoff $state "test-id")){throw "Backoff not active"}
+          if(Test-EditorialRetryBackoff $state "next-command"){throw "New command must not be blocked"}
+          $state2=Get-Content $StatePath -Raw | ConvertFrom-Json
+          if(-not (Test-EditorialRetryBackoff $state2 "test-id")){throw "Backoff did not survive reload"}
+          $state2.active_image_commands=@("img-test")
+          Ensure-StateFields $state2
+          if(@($state2.active_image_commands).Count -ne 1){throw "Images active state lost"}
+          Write-Host "OK: migrated image state and durable per-command retry cooldown"
