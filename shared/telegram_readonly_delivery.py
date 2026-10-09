@@ -142,13 +142,13 @@ def verified_article_urls(*rows):
 
 def trend_body(label,detail,is_final):
     if not is_final:
-        return label+"\\n\\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+        return label+"\n\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
     # The editorial explanation already starts with "TT#14 #Sitges2026...".
     # Do not prepend a second identical title.
     detail=trim(detail,950)
-    if re.match(r"^TT#\\d+\\b",detail,re.IGNORECASE):
+    if re.match(r"^TT#\d+\b",detail,re.IGNORECASE):
         return detail
-    return (label+"\\n\\n"+detail)[:1000]
+    return (label+"\n\n"+detail)[:1000]
 
 def trend_cards(now):
     requests_doc=load("trends/requests.json",{"requests":[]})
