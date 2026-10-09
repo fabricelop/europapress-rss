@@ -410,7 +410,7 @@ export default {
       const allowedChat=String(env.INSTAGRAM_ALLOWED_CHAT_ID||"");
       const configured=Boolean(allowedChat)&&Boolean(env.GITHUB_TOKEN)&&
         Boolean(env.TTITTULARES_CALLBACK_DECRYPT_KEY);
-      const publisher=String(env.INSTAGRAM_PUBLISHER_URL||"").replace(/\\/+$/,"");
+      const publisher=String(env.INSTAGRAM_PUBLISHER_URL||"").replace(new RegExp("/+$"),"");
       const endpointOk=publisher==="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev";
       let publisherStatus=0,publisherOk=false;
       if(endpointOk){
