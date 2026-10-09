@@ -20,6 +20,8 @@ concurrency:
 
 jobs:
   repair:
+    # Desactivado: TTiTTulares ya no genera ni repara imágenes.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
