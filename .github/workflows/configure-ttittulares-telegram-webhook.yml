@@ -43,16 +43,11 @@ jobs:
         run: |
           set -euo pipefail
           if [[ -z "${TELEGRAM_BOT_TOKEN:-}" ]]; then echo 'Missing Telegram bot credential' >&2; exit 2; fi
-          target="https://tt-control.fabricelop.workers.dev/api/telegram-webhook"
-          args=(--data-urlencode "url=$target" --data-urlencode 'allowed_updates=["callback_query","message"]' --data-urlencode 'drop_pending_updates=false')
-          if [[ -n "${TELEGRAM_WEBHOOK_SECRET:-}" ]]; then
-            args+=(--data-urlencode "secret_token=${TELEGRAM_WEBHOOK_SECRET}")
-          else
-            echo "::warning::TELEGRAM_WEBHOOK_SECRET missing in GitHub Actions. Cloudflare receiver currently accepts requests without webhook secret. Strengthen this after migration."
-          fi
-          curl -fsS --max-time 30 -X POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
-            "${args[@]}" -o /tmp/webhook-set.json
+          # No reemplazar nunca la configuración autenticada con una sin secreto.
+          # La restauración la hace el Worker, que descifra la credencial privada.
+          curl -fsS --max-time 30 \
+            'https://tt-control.fabricelop.workers.dev/api/telegram-webhook-self-heal-20261004' \
+            -o /tmp/webhook-set.json
           python3 - <<'PY'
           import json
           r=json.load(open('/tmp/webhook-set.json'))
