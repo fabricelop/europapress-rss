@@ -1,11 +1,14 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T14:16:52+02:00",
-  "last_completed_at": "2026-10-09T14:19:52+02:00",
-  "updated_at": "2026-10-09T14:19:52+02:00",
+  "last_started_at": "2026-10-09T14:44:00+02:00",
+  "last_completed_at": "2026-10-09T14:52:08+02:00",
+  "updated_at": "2026-10-09T14:52:08+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "ddda27993e11",
+    "1f4cd9b7c079"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,24 +18,24 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T141652-chat",
+    "run_id": "tr-1791538120641-2fc123",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T14:16:52+02:00",
-    "updated_at": "2026-10-09T14:19:52+02:00",
-    "finished_at": "2026-10-09T14:19:52+02:00",
+    "started_at": "2026-10-09T14:44:00+02:00",
+    "updated_at": "2026-10-09T14:52:08+02:00",
+    "finished_at": "2026-10-09T14:52:08+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
+      "revisions_updated": 2,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -43,14 +46,14 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "ai_repair_jobs_queued": 1,
+      "ai_repair_jobs_queued": 0,
       "telegram_delivery_completed": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
+      "remates_omitted": 1
     },
-    "message": "Pasada editorial completada · 0/0; cola final 0; saneamiento visual verificado y 1 job IA nuevo encolado para Juanma Serrano.",
+    "message": "Pasada editorial completada · 2/2 explicadas y verificadas; cola final 0; sin reexplicaciones pendientes; sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -60,42 +63,217 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "ddda27993e11",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.2,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 2,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 6.4,
+            "ratings_affinity": 1.5,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 6.8,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "1f4cd9b7c079",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_event"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-09T14:16:52+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada iniciada · cola editorial 0; revalidando main, reexplicaciones y Pendientes."
+        "at": "2026-10-09T14:50:36+02:00",
+        "phase": "investigating",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Hecho esencial verificado · emisión de hoy y crítica de Cintora a Horizonte"
       },
       {
-        "at": "2026-10-09T14:17:07+02:00",
+        "at": "2026-10-09T14:50:44+02:00",
+        "phase": "drafting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-09T14:50:52+02:00",
+        "phase": "drafting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Comprobando límite de X · 180 caracteres"
+      },
+      {
+        "at": "2026-10-09T14:51:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Sin remate · asunto sensible relacionado con un fallecimiento"
+      },
+      {
+        "at": "2026-10-09T14:51:08+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Trigger de reparación visual persistido en main para los Pendientes vigentes; sin ImageGen directo."
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-09T14:17:26+02:00",
+        "at": "2026-10-09T14:50:25+02:00",
+        "phase": "investigating",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-09T14:50:35+02:00",
+        "phase": "investigating",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-09T14:50:45+02:00",
+        "phase": "investigating",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-09T14:50:55+02:00",
+        "phase": "drafting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-09T14:51:05+02:00",
+        "phase": "drafting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Comprobando límite de X · 232 caracteres"
+      },
+      {
+        "at": "2026-10-09T14:51:12+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-09T14:51:18+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-09T14:51:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-09T14:51:20+02:00",
+        "phase": "persisting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-09T14:51:28+02:00",
+        "phase": "persisting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-09T14:51:36+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparador visual en ejecución · revisando imagen de archivo y necesidad de Gag IA."
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-09T14:19:52+02:00",
+        "at": "2026-10-09T14:51:35+02:00",
+        "phase": "persisting",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-09T14:51:50+02:00",
         "phase": "verifying",
-        "trend_id": "a5ffd41f5384",
-        "title": "Juanma Serrano",
-        "message": "Reparador visual completado · imagen de archivo al día y 1 job IA nuevo encolado para Juanma Serrano."
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-09T14:19:52+02:00",
+        "at": "2026-10-09T14:51:58+02:00",
+        "phase": "verifying",
+        "trend_id": "1f4cd9b7c079",
+        "title": "#Mañaneros9O",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-09T14:52:08+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial completada · 0/0; cola final 0; saneamiento visual verificado y 1 job IA nuevo encolado para Juanma Serrano."
+        "message": "Pasada editorial completada · 2/2 explicadas y verificadas; cola final 0; sin reexplicaciones pendientes; sin ImageGen directo."
       }
     ],
     "queue_complete": true,
@@ -105,16 +283,16 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "triggered",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T141652-chat",
-    "last_triggered_at": "2026-10-09T14:16:52+02:00",
-    "workflow_run_id": 37929007847,
-    "workflow_head_sha": "b3dfd2044c9b70be52ac49b6401d2f08a795d136",
-    "observed_at": "2026-10-09T14:19:52+02:00",
-    "ai_repair_jobs_queued": 1,
-    "queued_target_id": "a5ffd41f5384",
-    "queued_target_name": "Juanma Serrano"
+    "last_trigger_run_id": "tr-1791538120641-2fc123",
+    "last_triggered_at": "2026-10-09T14:44:00+02:00",
+    "workflow_run_id": null,
+    "workflow_head_sha": null,
+    "observed_at": "2026-10-09T14:52:08+02:00",
+    "ai_repair_jobs_queued": 0,
+    "queued_target_id": null,
+    "queued_target_name": null
   },
   "version": 1,
   "canonical": true,
