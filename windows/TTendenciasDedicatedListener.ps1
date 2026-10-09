@@ -412,6 +412,64 @@ function Ensure-StateFields($State) {
   }
 }
 
+function Test-EditorialRetryBackoff($State,[string]$CommandId) {
+  if ([string]$State.editorial_retry_command_id -ne $CommandId) { return $false }
+  try {
+    $until=[DateTimeOffset]::Parse([string]$State.editorial_retry_after)
+    return ([DateTimeOffset]::UtcNow -lt $until)
+  } catch { return $false }
+}
+
+function Set-EditorialRetryBackoff($State,[string]$CommandId) {
+  $State.editorial_retry_command_id=$CommandId
+  $State.editorial_retry_after=[DateTimeOffset]::UtcNow.AddMinutes($EditorialRetryBackoffMinutes).ToString("o")
+  Save-State $State
+  Write-Log "EDITORIAL RETRY DEFERRED command=$CommandId until=$($State.editorial_retry_after)"
+}
+
+function Send-Ack([string]$CommandId,[string]$Stage) {
+  $script:LastAckConflict = $null
+  try {
+    $payload = @{
+      task = "pc_ack"
+      command_id = $CommandId
+      stage = $Stage
+      worker_id = $WorkerId
+    } | ConvertTo-Json -Compress
+    Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
+    Write-Log "ACK $Stage command=$CommandId worker=$WorkerId"
+    return "OK"
+  } catch {
+    $code = 0
+    try { $code = [int]$_.Exception.Response.StatusCode } catch {}
+    if ($code -eq 409) {
+      $body = ""
+      $reason = ""
+      try {
+        $resp = $_.Exception.Response
+        if ($resp) {
+          $stream = $resp.GetResponseStream()
+          if ($stream) {
+            $reader = New-Object System.IO.StreamReader($stream)
+            try { $body = $reader.ReadToEnd() } finally { $reader.Dispose(); $stream.Dispose() }
+          }
+        }
+      } catch {}
+      try {
+        if ($body) {
+          $parsed = $body | ConvertFrom-Json
+          $reason = [string]$parsed.error
+        }
+      } catch {}
+      $script:LastAckConflict = [pscustomobject]@{ reason=$reason; body=$body }
+      Write-Log "ACK CONFLICT $Stage command=$CommandId reason=$reason"
+      return "CONFLICT"
+    }
+    Write-Log "ACK ERROR $Stage command=$CommandId :: $($_.Exception.Message)"
+    return "ERROR"
+  }
+}
+
 function Send-ImageAck([string]$TargetId,[string]$CommandId,[string]$Stage,[string]$Reason = "",[string]$UploadSecretHash = "",[string]$UploadSecret = "",[string]$DiagnosticTargetId = "") {
   try {
     $body = @{
