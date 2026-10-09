@@ -1,0 +1,51 @@
+name: TTendencias diagnostico archivos y duplicados (una pasada)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttendencias-archive-diagnostic-20261009.yml"
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/requests.json
+            /trends/telegram-manual-explained.json
+            /trends/explained.json
+            /trends/recent.json
+            /trends/telegram-image-deliveries.json
+      - name: Ver señales y metadatos de archivo disponibles (sin secretos)
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for name,key in [('requests','requests'),('telegram-manual-explained','items'),('explained','items')]:
+              data=json.loads(Path('trends/'+name+'.json').read_text())
+              items=data.get(key,[])
+              print('DATASET',name,'COUNT',len(items))
+              terms=['sitges','galatasaray','nobel','getafe','madrid','shakira']
+              relevant=[x for x in items if any(t in str(x.get('name') or '').lower() for t in terms)]
+              relevant=sorted(relevant,key=lambda x:str(x.get('requested_at') or x.get('explained_at') or ''))[-12:]
+              for x in relevant:
+                  wanted=['id','name','status','revision','requested_at','explained_at','rank','archive_image','fallback_image','image','image_url','news_url','source_url','url','sources','news_sources','source_articles','references','related_articles','trend_context','trend_names','explanation','closer_text']
+                  out={k:str(x[k])[:240] for k in wanted if k in x and x[k]}
+                  print('DETAIL',name,json.dumps(out,ensure_ascii=False)[:1450])
+              from collections import Counter
+              print('COUNTS',name,'archive',sum(bool(x.get('archive_image')) for x in items),
+                 'fallback',sum(bool(x.get('fallback_image')) for x in items),'image',sum(bool(x.get('image')) for x in items),
+                 'url',sum(bool(x.get('url')) for x in items))
+              print('COMMON_KEYS',Counter(k for x in items[-100:] for k in x).most_common(24))
+          d=json.loads(Path('trends/telegram-image-deliveries.json').read_text())
+          from collections import defaultdict
+          group=defaultdict(list)
+          for x in d.get('items',[]):
+              if x.get('status')=='sent' and (x.get('delivery_key') or '').endswith(':readonly'):
+                  group[x['event_id']].append(x)
+          print('DUP_SENT',[(k,[(r['telegram_message_id'],r.get('delivered_at')) for r in arr]) for k,arr in group.items() if len(arr)>1][-18:])
+          PY
