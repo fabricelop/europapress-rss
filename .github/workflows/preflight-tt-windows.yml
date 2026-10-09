@@ -190,8 +190,13 @@ jobs:
             Save-State $state
             $reloaded=Load-State
             if(@($reloaded.active_image_commands).Count -ne 1){throw "State lost image job in $file"}
+            Save-State $reloaded
             Set-Content $StatePath "{invalid"
             $restored=Load-State
-            if($null -eq $restored){throw "Could not recover invalid state in $file"}
+            if(@($restored.active_image_commands).Count -ne 1){throw "Backup lost active image job in $file"}
+            Set-Content $StatePath "{}"
+            $sparse=Load-State
+            Ensure-StateFields $sparse
+            if(-not ($sparse.PSObject.Properties.Name -contains "last_command_id")){throw "Sparse state failed in $file"}
             Write-Host "OK $file"
           }
