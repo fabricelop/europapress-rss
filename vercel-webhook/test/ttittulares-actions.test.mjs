@@ -10,7 +10,7 @@ const runStatus=fs.readFileSync(new URL("../lib/ttittulares-run-status-handler.j
 new vm.Script(script);
 
 test("Listas conserva acciones esenciales",()=>{
-  assert.match(html,/📋 Copiar tuit/);
+  assert.match(html,/📋 Copiar en X/);
   assert.match(html,/✓ Ya publicado/);
   assert.match(html,/Desestimar/);
   assert.match(script,/close\("published","¿Confirmas que ya has publicado esta noticia\?"\)/);

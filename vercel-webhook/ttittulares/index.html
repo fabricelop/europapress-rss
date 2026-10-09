@@ -1126,7 +1126,7 @@ function renderReady(list,preservedImages=new Map()){
     const openX=card.querySelector(".openX");openX.href=intent(text);openX.hidden=false;
     box.innerHTML='<div class="vhead"><span class="vname">Texto de la noticia</span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div>';
     box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
-    card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
+    card.querySelector(".copyTweet").onclick=async()=>{try{if(await TTGag.copyText(text))toast("Texto para X copiado")}catch(e){toast(e.message||"No se pudo copiar el texto")}};
     vh.appendChild(box)
   }
   async function close(action,question){
