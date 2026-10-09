@@ -98,3 +98,22 @@ jobs:
                 except Exception:pass
               print("PAYLOAD_PROBE",json.dumps(out))
           PY
+      - name: Verificar JPEG ante identificadores de descarga de Meta
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,json
+          images=[
+            ("shakira","trends/instagram-images/ig-3ff255e46d90-r1-3efa0c8a287a.jpg"),
+            ("real_madrid","ttittulares/instagram-images/ig-1dc952e6340e-r1-2d9b8fae4f17.jpg")
+          ]
+          for label,path in images:
+            uri="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"+path
+            for agent in ("facebookexternalhit/1.1","Meta-ExternalAgent/1.1","TTActualidad-Diagnostic/1.0"):
+              req=urllib.request.Request(uri,headers={"User-Agent":agent})
+              try:
+                with urllib.request.urlopen(req,timeout=16) as r:
+                  status=r.status; mime=r.headers.get("content-type",""); starts_jpeg=r.read(2)==bytes([255,216])
+              except urllib.error.HTTPError as e:
+                status=e.code;mime=e.headers.get("content-type","");starts_jpeg=False
+              print("META_IMAGE_FETCH_PROBE",json.dumps({"image":label,"agent":agent,"http":status,"mime":mime,"jpeg_magic":starts_jpeg}))
+          PY
