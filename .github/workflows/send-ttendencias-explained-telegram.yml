@@ -1,112 +1,92 @@
-name: Entregar TTendencias Explicadas a Telegram
-
+name: TTendencias Telegram informativo (sin IA ni publicación)
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
   push:
     branches: [main]
     paths:
-      # El raster se guarda antes que el JSON editorial. Disparar aquí por
-      # generated-images crea una ejecución prematura que valid_ai() no puede
-      # entregar y que compite con la ejecución útil del JSON ya actualizado.
+      - "trends/requests.json"
       - "trends/telegram-manual-explained.json"
-      - "trends/send_explained_telegram.py"
-      - "shared/cross_account_story.py"
+      - "trends/explained.json"
+      - "shared/telegram_readonly_delivery.py"
       - ".github/workflows/send-ttendencias-explained-telegram.yml"
-  schedule:
-    - cron: "*/30 * * * *"
-
 permissions:
   contents: write
-
 concurrency:
-  group: ttendencias-explained-telegram-send
+  group: ttendencias-telegram-readonly
   cancel-in-progress: false
-
 jobs:
   deliver:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /shared/telegram_readonly_delivery.py
+            /telegram/editorial-processing.json
+            /telegram/ttittulares-deliveries.json
+            /ttittulares/prepared.json
+            /ttittulares/decisions.json
+            /trends/requests.json
+            /trends/recent.json
+            /trends/explained.json
             /trends/telegram-manual-explained.json
             /trends/telegram-image-deliveries.json
             /trends/telegram-bot-state.json
-            /trends/explained-copy-state.json
-            /trends/send_explained_telegram.py
-            /trends/archive-images/
-            /telegram/ttittulares-deliveries.json
-            /shared/cross_account_story.py
-            /shared/instagram_pilot.py
-            /trends/instagram-images/
-
-      - name: Sincronizar main
+      - name: Dependencias HTTP y comprobaciones
         run: |
-          git fetch origin main
-          git reset --hard origin/main
-
-      - name: Preparar dependencias
-        run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests
-
-      - name: Validar cita cruzada
-        run: python3 shared/cross_account_story.py selftest
-
-      - name: Validar paquete Telegram
-        run: python3 trends/send_explained_telegram.py selftest
-
-      - name: Enviar o reparar paquetes visuales
+          python3 -m pip install -q requests
+          python3 -m py_compile shared/telegram_readonly_delivery.py
+          python3 shared/telegram_readonly_delivery.py selftest
+      - name: Enviar o actualizar mensaje Telegram
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          INSTAGRAM_PILOT_ENABLED: ${{ vars.INSTAGRAM_PILOT_ENABLED || '1' }}
+          
         run: |
           set -euo pipefail
-          python3 trends/send_explained_telegram.py send --patch /tmp/ttendencias-delivery-patch.json
-          if [ -d trends/archive-images ]; then
-            tar -czf /tmp/ttendencias-archive-images.tgz trends/archive-images
-          fi
-          if [ -d trends/instagram-images ]; then
-            tar -czf /tmp/ttendencias-instagram-images.tgz trends/instagram-images
-          fi
-
-      - name: Persistir entrega sobre main fresco
-        shell: bash
+          python3 shared/telegram_readonly_delivery.py ttendencias
+          cp trends/telegram-image-deliveries.json /tmp/telegram-readonly-ledger.json
+      - name: Guardar ledger sin perder borrados
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          for n in 1 2 3 4 5; do
+          for attempt in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
-
-            if [ -f /tmp/ttendencias-archive-images.tgz ]; then
-              tar -xzf /tmp/ttendencias-archive-images.tgz
-            fi
-            if [ -f /tmp/ttendencias-instagram-images.tgz ]; then
-              tar -xzf /tmp/ttendencias-instagram-images.tgz
-            fi
-            python3 trends/send_explained_telegram.py apply-patch --patch /tmp/ttendencias-delivery-patch.json
-
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("trends/telegram-image-deliveries.json")
+          live=json.loads(path.read_text(encoding="utf8"))
+          incoming=json.loads(Path("/tmp/telegram-readonly-ledger.json").read_text(encoding="utf8"))
+          rows=live.setdefault("items",[])
+          by_id={(str(x.get("event_id") or ""),int(x.get("revision") or 0),
+                  int(x.get("telegram_message_id") or 0)):x for x in rows}
+          terminal={"deleted","removed","dismissed","published"}
+          for row in incoming.get("items",[]):
+              key=(str(row.get("event_id") or ""),int(row.get("revision") or 0),
+                  int(row.get("telegram_message_id") or 0))
+              old=by_id.get(key)
+              if old is None:
+                  rows.append(row)
+                  by_id[key]=row
+              elif str(old.get("status") or "").lower() not in terminal:
+                  # Never overwrite a terminal delete from concurrent callback.
+                  if str(row.get("updated_at") or row.get("delivered_at") or "")>=str(old.get("updated_at") or old.get("delivered_at") or ""):
+                      old.update(row)
+          live["updated_at"]=incoming.get("updated_at") or live.get("updated_at")
+          path.write_text(json.dumps(live,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          PY
             git add trends/telegram-image-deliveries.json
-            if [ -d trends/archive-images ]; then git add trends/archive-images; fi
-            if [ -d trends/instagram-images ]; then git add trends/instagram-images; fi
-
-            if git diff --cached --quiet; then
-              echo "Sin cambios de entrega."
-              exit 0
-            fi
-
-            git commit -m "Registrar paquete visual TTendencias en Telegram"
-            if git push origin HEAD:main; then
-              echo "TTENDENCIAS_TELEGRAM_PERSISTED"
-              exit 0
-            fi
-            echo "Main avanzó; rehaciendo fusión ($n/5)."
-            sleep $((n*2))
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Registrar entrega Telegram informativa ttendencias"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt*2))
           done
-
-          echo "No se pudo persistir la entrega TTendencias" >&2
+          echo "No se pudo guardar ledger Telegram" >&2
           exit 1
