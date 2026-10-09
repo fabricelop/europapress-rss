@@ -41,6 +41,23 @@ jobs:
       - name: Run unit tests
         working-directory: instagram-publisher
         run: npm test
+      - name: Parse Meta token setup scripts safely (without running them)
+        shell: pwsh
+        run: |
+          foreach ($path in @(
+            "instagram-publisher/scripts/renew-meta-page-token.ps1",
+            "instagram-publisher/scripts/upgrade-meta-page-token-long-lived.ps1"
+          )) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | ForEach-Object { Write-Error $_.Message }
+              exit 1
+            }
+            Write-Host ("POWERSHELL_TOKEN_SCRIPT_SYNTAX_OK " + $path)
+          }
+
       - name: Run Instagram keyboard and JPEG tests
         run: |
           python3 -m pip install --quiet Pillow PyYAML
