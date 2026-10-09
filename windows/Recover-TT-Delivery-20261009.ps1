@@ -9,7 +9,7 @@ New-Item -ItemType Directory -Path $Root -Force | Out-Null
 function Say([string]$Text) { Write-Host ("[TT RECOVERY] " + $Text) }
 function Download-Current([string]$Name, [string]$Kind) {
   $dest = Join-Path $Root $Name
-  $tmp = $dest + ".recovery-new"
+  $tmp = $dest + ".recovery-new." + $Kind
   $url = $BaseUrl + $Name + "?ts=" + [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
   Invoke-WebRequest -Uri $url -OutFile $tmp -UseBasicParsing -TimeoutSec 30 -Headers @{"Cache-Control"="no-cache";"User-Agent"="TT-Delivery-Recovery-20261009"}
   if ((Get-Item $tmp).Length -lt 1000) { throw "Descarga incompleta: $Name" }
