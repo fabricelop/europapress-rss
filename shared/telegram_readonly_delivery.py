@@ -60,6 +60,62 @@ def image_url(row):
 def trim(value,maxlen=900):
     return str(value or "").strip()[:maxlen]
 
+_TAG_STOP={"el","la","los","las","un","una","unos","unas","de","del","al","y","e","o","u",
+           "en","con","por","para","que","se","su","sus","a","ante","tras","sobre","entre",
+           "como","cómo","más","menos","este","esta","estos","estas","será","seran","serán",
+           "dice","afirma","confirma","pide","anuncia","logra","logran","nuevo","nueva",
+           "actualidad","ttactualidad"}
+
+_TAG_RULES=[
+    (r"\bue\b|unión europea","UniónEuropea"),
+    (r"\bchina\b","China"),
+    (r"tierras raras","TierrasRaras"),
+    (r"coches? híbridos?|vehículos? híbridos?","CochesHíbridos"),
+    (r"\bgaza\b","Gaza"),
+    (r"\bisrael\b","Israel"),
+    (r"\bnaza\b","NAZA"),
+    (r"\bmigrantes?\b|migración","Migrantes"),
+    (r"\bceuta\b","Ceuta"),
+    (r"\bbarça\b|fc barcelona|\bbarcelona\b","FCBarcelona"),
+    (r"\bgetafe\b","Getafe"),
+    (r"\braphinha\b","Raphinha"),
+    (r"\bpsoe\b","PSOE"),
+    (r"\bpp\b|partido popular","PP"),
+    (r"\bvox\b","Vox"),
+    (r"\bsenado\b","Senado"),
+]
+
+def _hashtag(value):
+    bits=re.findall(r"[0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+",str(value or ""))
+    return ("#"+"".join(bits)) if bits else ""
+
+def relevant_hashtags(text,seed=""):
+    """Return 3-4 specific tags; never add generic #Actualidad."""
+    corpus=(str(seed or "")+" "+str(text or "")).strip()
+    low=corpus.casefold()
+    tags=[]
+    def add(value):
+        tag=_hashtag(value)
+        if not tag or tag.casefold() in {"#actualidad","#ttactualidad"}:return
+        if tag.casefold() not in {x.casefold() for x in tags}:tags.append(tag)
+    for pattern,label in _TAG_RULES:
+        if re.search(pattern,low,re.IGNORECASE):add(label)
+        if len(tags)>=4:return tags[:4]
+    # Prefer named entities/acronyms from the title/name.
+    named=str(seed or corpus)
+    pat=r"\b(?:[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+|[A-ZÁÉÍÓÚÜÑ]{2,}|[IVXLCDM]{2,})(?:\s+(?:(?:de|del|la|las|los|y)\s+)*(?:[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]+|[A-ZÁÉÍÓÚÜÑ]{2,}|[IVXLCDM]{2,}))*"
+    for match in re.findall(pat,named):
+        words=re.findall(r"[0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+",match)
+        while words and words[0].casefold() in _TAG_STOP:words.pop(0)
+        if words:add("".join(words))
+        if len(tags)>=4:return tags[:4]
+    # Fallback: salient non-generic words from the title/explanation.
+    for word in re.findall(r"[0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+",corpus):
+        if len(word)<5 or word.casefold() in _TAG_STOP or word.isdigit():continue
+        add(word)
+        if len(tags)>=4:break
+    return tags[:4]
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -86,18 +142,22 @@ def news_cards(now):
         factual=trim(item.get("factual_summary") or (item.get("tweet") or {}).get("text"),850)
         explanation=trim(item.get("explanation"),850)
         remate=trim((item.get("tweet") or {}).get("remate"),200)
+        tag_line="\n\n"+" ".join(relevant_hashtags(title+" "+factual,title))
+        if tag_line=="\n\n":tag_line=""
         if is_final:
             # One good explanation, not a short teaser followed by a second text.
             detail=explanation or factual
             if not detail:detail=trim((item.get("tweet") or {}).get("text"),850)
             if remate and remate in detail:remate=""
-            # Telegram photo captions must stay <=1024 chars including the closer.
+            # Telegram photo captions must stay <=1024 chars including closer + hashtags.
             head=title+"\n\n"
             tail="\n\n"+remate if remate else ""
-            room=max(0,1000-len(head)-len(tail))
-            body=head+detail[:room]+tail
+            room=max(0,1000-len(head)-len(tail)-len(tag_line))
+            body=head+detail[:room]+tail+tag_line
         else:
-            body=title+"\n\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+            pending="⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+            room=max(0,1000-len(title)-2-len(tag_line))
+            body=title+"\n\n"+pending[:room]+tag_line
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"image":image_url(item),
@@ -140,7 +200,11 @@ def trend_cards(now):
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
         closer=trim((finished or {}).get("closer_text"),160)
         if closer and closer not in detail:detail+="\n"+closer
-        body=(label+"\n\n"+(detail if is_final else "⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."))[:1000]
+        trend_text=detail if is_final else "⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+        tag_line="\n\n"+" ".join(relevant_hashtags(name+" "+detail,name))
+        if tag_line=="\n\n":tag_line=""
+        room=max(0,1000-len(label)-2-len(tag_line))
+        body=label+"\n\n"+trend_text[:room]+tag_line
         top_row=top.get(name.casefold()) or {}
         yield {"id":tid,"rev":rev,"text":body,
                "image":image_url(finished or req),"search":name,
