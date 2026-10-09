@@ -13,7 +13,7 @@ import re
 from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from urllib.parse import quote, urlparse
+from urllib.parse import quote, urlparse, urlencode
 import requests
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -21,6 +21,10 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
+BUTTONS_VERSION=8
+IMAGE_APP="https://chatgpt.com/images"
+TTI_ORIGIN="https://ttittulares-no-vercel-test.fabricelop.workers.dev"
+TTEND_ORIGIN="https://ttendencias-no-vercel-test.fabricelop.workers.dev"
 TERMINAL={"deleted","published","dismissed","removed"}
 
 def load(path,default):
@@ -117,7 +121,8 @@ def news_cards(now):
             body=title+"\n\n"+pending[:room]
         # Search is read-only; it never opens a composer.
         search=title
-        yield {"id":eid,"rev":revision,"text":body,"image":image_url(item),
+        yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else "",
+               "image":image_url(item),
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":str(item.get("url") or job.get("url") or "")}
 
@@ -199,7 +204,7 @@ def trend_cards(now):
         body=trend_body(label,detail,is_final)
         sources=verified_article_urls(finished or {},req)
         top_row=top.get(name.casefold()) or {}
-        yield {"id":tid,"rev":rev,"text":body,
+        yield {"id":tid,"rev":rev,"text":body,"x_text":detail if is_final else "",
                "image":image_url(finished or {}) or image_url(req),
                "archive_articles":sources,"search":name,
                "final":is_final,"start":start,"title":name,
@@ -209,10 +214,36 @@ def trend_cards(now):
 
 def keys(card,project):
     callback=("tt:b:"+card["id"]) if project=="ttittulares" else ("tx:b:"+card["id"]+":"+str(card["rev"]))
-    return {"inline_keyboard":[
-        [{"text":"🔎 Buscar en X","url":"https://x.com/search?q="+quote(card["search"])+"&f=live"}],
-        [{"text":"🗑️ Borrar","callback_data":callback}],
-    ]}
+    search="https://x.com/search?q="+quote(str(card["search"]))+"&f=live"
+    rows=[]
+    x_text=str(card.get("x_text") or "").strip()
+    if card.get("final") and x_text:
+        origin=TTI_ORIGIN if project=="ttittulares" else TTEND_ORIGIN
+        args={"app":project,"id":str(card["id"]),"rev":str(card["rev"])}
+        if project=="ttendencias":args["name"]=str(card.get("title") or "")[:100]
+        bridge=origin+"/tt-shared/gag-copy.html?"+urlencode(args)
+        rows.append([
+            {"text":"📋 Copiar prompt GAG","url":bridge},
+            {"text":"🎨 Chat Images","url":IMAGE_APP}
+        ])
+        # Telegram's copy_text is limited to 256 characters. Never truncate
+        # editorial text: longer explanations open the full-text copy page.
+        if len(x_text)<=256:
+            copy_x={"text":"📋 Copiar en X","copy_text":{"text":x_text}}
+        else:
+            copy_x={"text":"📋 Copiar en X","url":bridge+"&mode=x"}
+        rows.append([
+            copy_x,
+            {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
+        ])
+        rows.append([
+            {"text":"🖼️ Mis imágenes IA","url":IMAGE_APP},
+            {"text":"🔎 Buscar en X","url":search}
+        ])
+    else:
+        rows.append([{"text":"🔎 Buscar en X","url":search}])
+    rows.append([{"text":"🗑️ Borrar","callback_data":callback}])
+    return {"inline_keyboard":rows}
 
 def send(token,method,payload,photo=None):
     base="https://api.telegram.org/bot"+token+"/"+method
@@ -363,8 +394,18 @@ def process(project,now,token,chat):
         new_hash=hashlib.sha256((card["text"]+"|"+card["image"]).encode("utf-8")).hexdigest()
         kb=keys(card,project)
         image_data=None
-        if existing and existing.get("content_sha256")==new_hash and int(existing.get("buttons_version") or 0)==7:
-            skipped+=1;continue
+        if existing and existing.get("content_sha256")==new_hash:
+            if int(existing.get("buttons_version") or 0)==BUTTONS_VERSION:
+                skipped+=1;continue
+            # Keyboard-only change: no new photo, no duplicated news card.
+            result=send(token,"editMessageReplyMarkup",{
+                "chat_id":chat,"message_id":int(existing["telegram_message_id"]),
+                "reply_markup":kb})
+            if not result:continue
+            existing.update({"buttons_version":BUTTONS_VERSION,"updated_at":now.isoformat()})
+            ledger["updated_at"]=now.isoformat()
+            updated+=1
+            continue
         # Try for an archive picture only on the first delivery (or where the
         # existing card is a photo): no separate photo post and no long wait.
         if not existing or existing.get("is_photo"):
@@ -400,7 +441,7 @@ def process(project,now,token,chat):
                     "text":body,"reply_markup":kb})
             if not result:continue
             existing.update({"content_sha256":new_hash,"final":card["final"],
-                             "buttons_version":7,"updated_at":now.isoformat(),
+                             "buttons_version":BUTTONS_VERSION,"updated_at":now.isoformat(),
                              "revision":rev,"is_photo":old_photo})
             updated+=1
         else:
@@ -416,7 +457,7 @@ def process(project,now,token,chat):
                 "event_id":eid,"revision":rev,"title":card["title"],"name":card["title"],
                 "telegram_message_id":int(result["message_id"]),"status":"sent",
                 "is_photo":bool(image_data),"image_url":photo_url if image_data else "",
-                "content_sha256":new_hash,"final":card["final"],"buttons_version":7,
+                "content_sha256":new_hash,"final":card["final"],"buttons_version":BUTTONS_VERSION,
                 "started_at":str(card["start"]),"delivered_at":now.isoformat()})
             delivered+=1
         ledger["updated_at"]=now.isoformat()
@@ -429,10 +470,20 @@ def selftest():
     assert not age_ready("2026-10-09T15:01:00Z",now)
     assert age_ready("2026-10-09T15:00:00Z",now)
     assert not fresh("2026-09-29T12:00:00Z",now)
-    card={"id":"abc123","rev":1,"search":"Pedro Sánchez"}
-    assert [b[0]["text"] for b in keys(card,"ttittulares")["inline_keyboard"]]==[
-        "🔎 Buscar en X","🗑️ Borrar"]
-    assert keys(card,"ttendencias")["inline_keyboard"][1][0]["callback_data"]=="tx:b:abc123:1"
+    card={"id":"abc123","rev":1,"search":"Pedro Sánchez","title":"Pedro Sánchez",
+          "final":True,"x_text":"Hecho verificado.\n\n🌶️ Remate exacto."}
+    kb=keys(card,"ttittulares")["inline_keyboard"]
+    assert [b["text"] for b in kb[0]]==["📋 Copiar prompt GAG","🎨 Chat Images"]
+    assert kb[1][0]["copy_text"]["text"]==card["x_text"]
+    assert "intent/tweet?text=" in kb[1][1]["url"]
+    assert kb[-1][0]["callback_data"]=="tt:b:abc123"
+    assert keys(card,"ttendencias")["inline_keyboard"][-1][0]["callback_data"]=="tx:b:abc123:1"
+    long_card={**card,"x_text":"A"*270}
+    long_x=keys(long_card,"ttendencias")["inline_keyboard"][1][0]
+    assert "copy_text" not in long_x and "mode=x" in long_x["url"]
+    assert len(keys(long_card,"ttendencias")["inline_keyboard"][1][1]["url"])<2048
+    pending=keys({**card,"final":False},"ttittulares")["inline_keyboard"]
+    assert [b[0]["text"] for b in pending]==["🔎 Buscar en X","🗑️ Borrar"]
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
     assert trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
