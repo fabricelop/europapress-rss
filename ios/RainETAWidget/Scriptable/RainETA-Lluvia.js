@@ -1,9 +1,7 @@
 // RainETA — widget de lluvia para Scriptable (iPhone).
-// Parámetro opcional del widget: "40.4168,-3.7038|Madrid". Vacío = ubicación actual.
-// El endpoint RainETA tiene preferencia. Hasta su despliegue, Open-Meteo aporta una
-// predicción alternativa (interpolada a 15 min en Iberia; NO precisión de minuto).
-const RAINETA_BASE = "https://europapress-rss.vercel.app";
-const RAINETA_PREVIEW = ""; // Opcional: sustituir por la URL HTTPS de preview validada
+// Parámetro del widget: "Madrid", "Sevilla, España" o "40.4168,-3.7038|Madrid".
+// Vacío = GPS actual. Consulta Open-Meteo directamente; no usa Vercel.
+// En Iberia, los pasos de 15 min pueden estar interpolados de modelos horarios.
 const PARAM = String(args.widgetParameter || "").trim();
 const LOCATION_KEY = "RainETAWidget:lastLocation";
 const REFRESH_MINUTES = 10;
@@ -19,8 +17,8 @@ function parsePosition(param) {
 async function position(){
   if(PARAM){
     const p=parsePosition(PARAM);
-    if(!p)throw Error('Parámetro: lat,lon|Ciudad');
-    return p;
+    if(p)return p;
+    return await geocodeCity(PARAM);
   }
   try {
     Location.setAccuracyToKilometer();
@@ -40,6 +38,30 @@ async function position(){
 async function getJson(url){
   const request=new Request(url);request.timeoutInterval=12;
   return await request.loadJSON();
+}
+async function geocodeCity(name){
+  const query=name.trim().slice(0,80);
+  if(query.length<2)throw Error('Escribe una ciudad, por ejemplo Madrid');
+  const key='RainETAWidget:city:'+query.toLocaleLowerCase('es');
+  try{
+    if(Keychain.contains(key)){
+      const saved=JSON.parse(Keychain.get(key));
+      if(Date.now()-saved.cachedAt<7*24*3600000 && Number.isFinite(saved.lat) && Number.isFinite(saved.lon))
+        return {lat:saved.lat,lon:saved.lon,name:saved.name};
+    }
+  }catch(_){}
+  const url='https://geocoding-api.open-meteo.com/v1/search?'+
+    'name='+encodeURIComponent(query)+'&count=5&language=es&format=json';
+  const data=await getJson(url);
+  const candidates=Array.isArray(data.results)?data.results:[];
+  if(!candidates.length)throw Error('No se encuentra "'+query+'". Prueba "Ciudad, País"');
+  const city=candidates[0];
+  const label=[city.name,city.admin1&&city.admin1!==city.name?city.admin1:null]
+    .filter(Boolean).join(', ').slice(0,36);
+  const result={lat:Number(city.latitude),lon:Number(city.longitude),name:label};
+  if(!Number.isFinite(result.lat)||!Number.isFinite(result.lon))throw Error('Ubicación sin coordenadas');
+  Keychain.set(key,JSON.stringify({...result,cachedAt:Date.now()}));
+  return result;
 }
 function forecastFallback(d,now){
   const t=d.minutely_15?.time||[],p=d.minutely_15?.precipitation||[];
@@ -61,12 +83,6 @@ function forecastFallback(d,now){
     caveat:'Modelo interpolado; sin radar',sources:['Open-Meteo'],generatedAt:new Date(now).toISOString()};
 }
 async function rainForecast(pos){
-  const coords='lat='+encodeURIComponent(pos.lat.toFixed(3))+'&lon='+encodeURIComponent(pos.lon.toFixed(3));
-  const origin=(RAINETA_PREVIEW||RAINETA_BASE).replace(/\/$/,'');
-  try {
-    const d=await getJson(origin+'/api/rain-widget?'+coords);
-    if(d.ok)return d;
-  }catch(_) { /* Fall back only while RainETA endpoint is not published/unavailable */ }
   const q='latitude='+encodeURIComponent(pos.lat)+'&longitude='+encodeURIComponent(pos.lon)+
     '&current=precipitation,rain,showers&minutely_15=precipitation&forecast_minutely_15=20&timeformat=unixtime&timezone=GMT';
   const forecast=await getJson('https://api.open-meteo.com/v1/forecast?'+q);
@@ -75,7 +91,6 @@ async function rainForecast(pos){
 const widget=new ListWidget();
 widget.backgroundColor=new Color('#0a2032');
 widget.setPadding(14,14,13,14);
-widget.url=(RAINETA_PREVIEW||RAINETA_BASE).replace(/\/$/,'')+'/rain/widget/';
 function label(text,size,color,bold=false){
   const t=widget.addText(text);
   t.font=bold?Font.boldSystemFont(size):Font.systemFont(size);
@@ -108,7 +123,7 @@ try{
     widget.refreshAfterDate=new Date(Date.now()+REFRESH_MINUTES*60000);
   }
   widget.addSpacer();
-  label((d.sources||[]).join(' + ')+' · previsión orientativa',9,'#83a3b8');
+  label('Open-Meteo · previsión orientativa',9,'#83a3b8');
 }catch(e){
   widget.addSpacer(12);
   label('Sin datos meteorológicos',15,'#ffffff',true);
