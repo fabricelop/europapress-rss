@@ -40342,7 +40342,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -40406,14 +40405,30 @@
       "duplicate_of": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "image_choice": "none",
-      "rewrite_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "rewrite_pending": false,
+      "fallback_image": {
+        "url": "https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000001/content/dam/fom-website/2018-redesign-assets/Racehub%20header%20images%2016x9/Singapore.webp",
+        "source": "Formula 1 · Singapore GP 2026",
+        "source_url": "https://www.formula1.com/en/racing/2026/singapore",
+        "alt": "Imagen de archivo relacionada con #SingaporeGP",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://media.formula1.com/image/upload/c_lfill,w_3392/q_auto/v1740000001/content/dam/fom-website/2018-redesign-assets/Racehub%20header%20images%2016x9/Singapore.webp",
+        "source": "Formula 1 · Singapore GP 2026",
+        "source_url": "https://www.formula1.com/en/racing/2026/singapore",
+        "alt": "Imagen de archivo relacionada con #SingaporeGP",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-09T17:21:30+02:00",
+  "updated_at": "2026-10-09T15:23:42.660461Z",
   "count": 679
 }
