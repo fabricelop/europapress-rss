@@ -1151,9 +1151,9 @@ while ($true) {
           $state.conflict_command_id = ""
           $state.conflict_first_at = ""
           Save-State $state
-          Start-Sleep -Seconds $PollSeconds
-          continue
-        }
+          # La orden editorial caducada NO debe omitir la cola IA:
+          # el flujo sigue al bloque independiente de trabajos de imagenes.
+        } else {
 
         $ack = Send-Ack $commandId "picked_up"
         $localFallback = $false
@@ -1220,6 +1220,7 @@ while ($true) {
             }
           }
         }
+        } # cierre de la rama editorial fresca; nunca omitir imágenes por trigger caducado
       }
     }
   } catch {
