@@ -35,6 +35,7 @@ $script:LastAckConflict = $null
 $WorkerId = "ttendencias-dedicated-v16"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
+$EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 86400
 $MaxParallelImageChats = 1
@@ -287,17 +288,34 @@ function Save-State($State) {
 }
 
 function Ensure-StateFields($State) {
-  foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at")) {
+  # El estado local puede proceder de versiones previas; declarar propiedades
+  # antes de cualquier acceso estricto para no inutilizar la cola de imagenes.
+  foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","editorial_retry_command_id","editorial_retry_after")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
-      $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
+      Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value "" -Force
     }
   }
-  if (-not ($State.PSObject.Properties.Name -contains "image_commands")) {
-    $State | Add-Member -NotePropertyName image_commands -NotePropertyValue @() -Force
+  foreach ($n in @("image_commands","active_image_commands")) {
+    if (-not ($State.PSObject.Properties.Name -contains $n)) {
+      Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value ([object[]]@()) -Force
+    }
+    if ($null -eq $State.$n) { $State.$n = @() }
   }
-  if (-not ($State.PSObject.Properties.Name -contains "active_image_commands")) {
-    $State | Add-Member -NotePropertyName active_image_commands -NotePropertyValue @() -Force
-  }
+}
+
+function Test-EditorialRetryBackoff($State,[string]$CommandId) {
+  if ([string]$State.editorial_retry_command_id -ne $CommandId) { return $false }
+  try {
+    $until=[DateTimeOffset]::Parse([string]$State.editorial_retry_after)
+    return ([DateTimeOffset]::UtcNow -lt $until)
+  } catch { return $false }
+}
+
+function Set-EditorialRetryBackoff($State,[string]$CommandId) {
+  $State.editorial_retry_command_id=$CommandId
+  $State.editorial_retry_after=[DateTimeOffset]::UtcNow.AddMinutes($EditorialRetryBackoffMinutes).ToString("o")
+  Save-State $State
+  Write-Log "EDITORIAL RETRY DEFERRED command=$CommandId until=$($State.editorial_retry_after)"
 }
 
 function Send-Ack([string]$CommandId,[string]$Stage) {
@@ -893,6 +911,7 @@ while ($true) {
       $project = [string]$doc.project
 
       if ($commandId -ne [string]$state.last_command_id -and
+          -not (Test-EditorialRetryBackoff $state $commandId) -and
           $executor -eq "pc_chat_ttendencias_dedicated" -and
           $project -eq "ttendencias" -and
           ($task -eq "editorial" -or -not $task)) {
@@ -952,11 +971,15 @@ while ($true) {
                 $state.last_command_id = $commandId
                 $state.conflict_command_id = ""
                 $state.conflict_first_at = ""
+                $state.editorial_retry_command_id = ""
+                $state.editorial_retry_after = ""
                 Save-State $state
               } else {
-                Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK; command remains retryable"
+                Set-EditorialRetryBackoff $state $commandId
+                Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK; retry deferred"
               }
             } catch {
+              Set-EditorialRetryBackoff $state $commandId
               Write-Log "LAUNCH ERROR command=$commandId :: $($_.Exception.Message)"
             }
           } elseif ($ack -eq "CONFLICT") {
@@ -988,6 +1011,7 @@ while ($true) {
 
   # 2) Imágenes independientes
   try {
+    Ensure-StateFields $state
     $idx = Read-ImageIndex
     Refresh-ActiveImages $state $idx
     Save-State $state
