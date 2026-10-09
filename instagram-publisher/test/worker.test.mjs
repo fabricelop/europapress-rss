@@ -116,3 +116,27 @@ test("ambiguous media_publish response blocks double posting",async()=>{
     assert.equal(db.snapshot().state,"uncertain");
   }finally{globalThis.fetch=originalFetch;}
 });
+
+test("Meta container failure preserves only non-secret numerical diagnostics",async()=>{
+  const db=fakeDb(),before=globalThis.fetch;
+  globalThis.fetch=async()=>Response.json({
+    error:{message:"secret containing access token should stay private",
+      code:10,error_subcode:200,type:"OAuthException",is_transient:false}
+  },{status:403});
+  const env={INSTAGRAM_INTERNAL_SECRET:secret,INSTAGRAM_PAGE_ACCESS_TOKEN:"page-token",
+    INSTAGRAM_USER_ID:"17841414511690117",INSTAGRAM_PUBLISH_ENABLED:"1",IG_DB:db};
+  try{
+    const response=await worker.fetch(makePost(),env);
+    assert.equal(response.status,502);
+    const doc=await response.json();
+    assert.equal(doc.error,"CONTAINER_CREATION_FAILED");
+    assert.equal(doc.meta_http_status,403);
+    assert.equal(doc.meta_error_code,10);
+    assert.equal(doc.meta_error_subcode,200);
+    assert.equal(doc.meta_error_type,"OAuthException");
+    assert.equal(doc.meta_is_transient,false);
+    assert.equal(JSON.stringify(doc).includes("secret containing"),false);
+    assert.equal(JSON.stringify(doc).includes("page-token"),false);
+    assert.equal(db.snapshot().state,"failed_before_publish");
+  }finally{globalThis.fetch=before;}
+});
