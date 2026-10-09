@@ -107,7 +107,7 @@ function instagramCaption(raw) {
     .replace(/(?:^|\s)#(?:TTActualidad|Actualidad)\b/gi," ")
     .trim();
   const present=new Set((value.match(/(?<!\w)#[\p{L}\d_]+/gu)||[]).map(x=>x.toLowerCase()));
-  const factual=value.split(/\n\s*\n/,1)[0];
+  const factual=value.split(/\n\s*(?:\n|🌶️)/,1)[0];
   const normalized=factual.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const tags=[];
   for(const [pattern,tag] of INSTAGRAM_TOPIC_TAGS) {
