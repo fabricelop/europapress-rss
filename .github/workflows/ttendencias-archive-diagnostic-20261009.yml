@@ -20,6 +20,29 @@ jobs:
             /trends/explained.json
             /trends/recent.json
             /trends/telegram-image-deliveries.json
+            /shared/telegram_readonly_delivery.py
+      - name: Probar explicación única y foto real desde Sitges
+        run: |
+          python3 -m pip install -q requests pillow
+          python3 shared/telegram_readonly_delivery.py selftest
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from shared.telegram_readonly_delivery import verified_article_urls,fast_archive_from_article,archival_image,trend_body
+          doc=json.loads(Path("trends/requests.json").read_text(encoding="utf8"))
+          row=next(r for r in doc["requests"] if r.get("id")=="3f6585476451")
+          text=trend_body("TT#14 #Sitges2026",row["explanation"],True)
+          print("SITGES_HEAD_REPEAT",text.count("TT#14 #Sitges2026"))
+          print("SITGES_EXPLANATION",text[:120].replace("\\n"," / "))
+          urls=verified_article_urls(row)
+          print("SITGES_SOURCE_ARTICLES",len(urls))
+          for article in urls:
+              image_url=fast_archive_from_article(article)
+              data=archival_image(image_url) if image_url else None
+              print("SITGES_ARCHIVE_TEST",article[:100],"IMAGE_FOUND",bool(image_url),"TELEGRAM_PHOTO_OK",bool(data),
+                  "BYTES",len(data[0]) if data else 0)
+              if data:break
+          PY
       - name: Ver señales y metadatos de archivo disponibles (sin secretos)
         run: |
           python3 - <<'PY'
