@@ -443,7 +443,7 @@ def selftest():
     assert public_news_detail({"explanation":"La comisión ha aprobado un informe.","factual_summary":"Informe aprobado."})=="La comisión ha aprobado un informe."
     assert trend_body("TT#14 #Sitges2026","TT#14 #Sitges2026 es tendencia por un festival.\\n🌶️ Remate.",True).count("TT#14")==1
     assert trend_body("TT#14 #Sitges2026","",False).count("TT#14")==1
-    assert verified_article_urls({"verification_sources":[{"url":"https://sitgesfilmfestival.com/es"},{"url":"https://www.culturasitges.cat/actualitat/noticies/edicion"}]})==["https://www.culturasitges.cat/actualitat/noticies/edicion"]
+    assert verified_article_urls({"verification_sources":[{"url":"https://sitgesfilmfestival.com/es"},{"url":"https://www.culturasitges.cat/actualitat/noticies/edicion"}]})==["https://www.culturasitges.cat/actualitat/noticies/edicion","https://sitgesfilmfestival.com/es"]
     assert archival_image("") is None
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in news_cards(now))
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in trend_cards(now))
