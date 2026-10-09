@@ -102,7 +102,7 @@ jobs:
           $tokens=$null; $errs=$null
           $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tokens,[ref]$errs)
           if($errs.Count){ throw "TTendencias syntax error" }
-          $needed=@("Save-State","Ensure-StateFields","Test-EditorialRetryBackoff","Set-EditorialRetryBackoff")
+          $needed=@("Write-Log","Save-State","Ensure-StateFields","Test-EditorialRetryBackoff","Set-EditorialRetryBackoff")
           foreach($n in $needed){
             $fn=$ast.FindAll({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $n},$true)|Select-Object -First 1
             if(-not $fn){throw "Missing function $n"}
