@@ -8,6 +8,8 @@ import argparse
 import hashlib
 import json
 import os
+import re
+from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import quote
@@ -15,7 +17,9 @@ import requests
 
 ROOT=Path(__file__).resolve().parents[1]
 TIMEOUT_MINUTES=60
-MAX_AGE=timedelta(hours=24)
+MAX_AGE=timedelta(days=7)
+PHOTO_TIMEOUT=(2.5,3.0)
+PHOTO_MAX_BYTES=7_000_000
 TERMINAL={"deleted","published","dismissed","removed"}
 
 def load(path,default):
@@ -83,17 +87,22 @@ def news_cards(now):
         explanation=trim(item.get("explanation"),850)
         remate=trim((item.get("tweet") or {}).get("remate"),200)
         if is_final:
-            paragraphs=[title]
-            if factual and factual.casefold()!=title.casefold():paragraphs.append(factual)
-            elif explanation:paragraphs.append(explanation)
-            if remate and remate not in factual:paragraphs.append(remate)
-            body="\n\n".join(paragraphs)[:1000]
+            # One good explanation, not a short teaser followed by a second text.
+            detail=explanation or factual
+            if not detail:detail=trim((item.get("tweet") or {}).get("text"),850)
+            if remate and remate in detail:remate=""
+            # Telegram photo captions must stay <=1024 chars including the closer.
+            head=title+"\n\n"
+            tail="\n\n"+remate if remate else ""
+            room=max(0,1000-len(head)-len(tail))
+            body=head+detail[:room]+tail
         else:
             body=title+"\n\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"image":image_url(item),
-               "search":search,"final":is_final,"start":start,"title":title}
+               "search":search,"final":is_final,"start":start,"title":title,
+               "source_url":str(item.get("url") or job.get("url") or "")}
 
 def trend_cards(now):
     requests_doc=load("trends/requests.json",{"requests":[]})
@@ -125,16 +134,20 @@ def trend_cards(now):
         if not fresh(start,now):continue
         rev=int(req.get("revision") or 0)
         finished=explained.get((tid,rev))
-        is_final=bool(finished and str(finished.get("explanation") or "").strip())
+        is_final=bool((finished and str(finished.get("explanation") or "").strip()) or (status=="explained" and str(req.get("explanation") or "").strip()))
         if not is_final and not age_ready(start,now):continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
         closer=trim((finished or {}).get("closer_text"),160)
         if closer and closer not in detail:detail+="\n"+closer
         body=(label+"\n\n"+(detail if is_final else "⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."))[:1000]
+        top_row=top.get(name.casefold()) or {}
         yield {"id":tid,"rev":rev,"text":body,
                "image":image_url(finished or req),"search":name,
-               "final":is_final,"start":start,"title":name}
+               "final":is_final,"start":start,"title":name,
+               "entered_top_at":top_row.get("entered_top10_at"),
+               "novelty_verified":req.get("material_novelty_verified") is True,
+               "is_in_top":bool(top_row and 1<=int(top_row.get("rank") or 0)<=10)}
 
 def keys(card,project):
     callback=("tt:b:"+card["id"]) if project=="ttittulares" else ("tx:b:"+card["id"]+":"+str(card["rev"]))
@@ -147,7 +160,8 @@ def send(token,method,payload,photo=None):
     base="https://api.telegram.org/bot"+token+"/"+method
     try:
         if photo is not None:
-            files={"photo":("archivo.jpg",photo,"image/jpeg")}
+            raw,mime,name=photo
+            files={"photo":(name,raw,mime)}
             form={k:(json.dumps(v,ensure_ascii=False) if isinstance(v,(dict,list)) else str(v)) for k,v in payload.items()}
             response=requests.post(base,data=form,files=files,timeout=40)
         else:
@@ -162,19 +176,71 @@ def send(token,method,payload,photo=None):
         print("TELEGRAM_DELIVERY_RETRY",method,type(exc).__name__,flush=True)
         return None
 
-def archival_image(url):
-    if not url:return None
+class _PageImage(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.url=""
+    def handle_starttag(self,tag,attrs):
+        if tag.lower()!="meta":return
+        meta={k.lower():v for k,v in attrs if k and v}
+        if meta.get("property","").lower() in {"og:image","og:image:url"} or meta.get("name","").lower()=="twitter:image":
+            self.url=self.url or meta.get("content","")
+
+def fast_archive_from_article(page):
+    # Best-effort, no source research or slow retries.
+    if not str(page).startswith("https://"):return ""
     try:
-        response=requests.get(url,timeout=18,headers={"User-Agent":"TTreadOnlyTelegram/1.0"})
+        response=requests.get(page,timeout=(1.5,2.5),headers={"User-Agent":"Mozilla/5.0 TelegramNews/1"},
+                              allow_redirects=True,stream=True)
         response.raise_for_status()
-        if not str(response.headers.get("content-type") or "").lower().startswith("image/"):return None
-        raw=response.content
-        if len(raw)>9_000_000 or len(raw)<1000:return None
-        # Sender should avoid sending non-JPEG bytes as JPEG.
-        if raw[:3]==b"\\xff\\xd8\\xff":return raw
+        if "text/html" not in response.headers.get("content-type","").lower():return ""
+        fragment=b""
+        for block in response.iter_content(4096):
+            fragment+=block
+            if len(fragment)>=80_000:break
+        parser=_PageImage()
+        parser.feed(fragment.decode("utf-8",errors="ignore"))
+        if parser.url:
+            from urllib.parse import urljoin
+            candidate=urljoin(response.url,parser.url)
+            return candidate if candidate.startswith("https://") else ""
+    except (requests.RequestException,ValueError):
+        pass
+    return ""
+
+def archival_image(url):
+    if not url or not str(url).startswith("https://"):return None
+    try:
+        response=requests.get(url,timeout=PHOTO_TIMEOUT,
+            headers={"User-Agent":"Mozilla/5.0 TelegramNews/1"},
+            stream=True,allow_redirects=True)
+        response.raise_for_status()
+        typ=response.headers.get("content-type","").lower()
+        if not typ.startswith("image/"):return None
+        raw=bytearray()
+        for block in response.iter_content(64*1024):
+            raw.extend(block)
+            if len(raw)>PHOTO_MAX_BYTES:return None
+        # Telegram sendPhoto can accept JPG/PNG, not SVG/WEBP.
+        raw=bytes(raw)
+        if raw[:3]==bytes((0xff,0xd8,0xff)):
+            return raw,"image/jpeg","archivo.jpg"
+        if raw[:8]==bytes((137,80,78,71,13,10,26,10)):
+            return raw,"image/png","archivo.png"
     except requests.RequestException:
         pass
     return None
+
+def trend_repeat_allowed(card,history,now):
+    # Never resend the same trend for a rank movement or a routine reexplain.
+    if card.get("novelty_verified"):return True
+    top_at=date(card.get("entered_top_at"))
+    if not card.get("is_in_top") or not top_at or now-top_at<timedelta(hours=48):
+        return False
+    dates=[date(x.get("delivered_at")) for x in history
+           if str(x.get("status") or "").lower()=="sent"]
+    latest=max((dt for dt in dates if dt is not None),default=None)
+    return bool(latest and now-latest>=timedelta(hours=48))
 
 def process(project,now,token,chat):
     path=("telegram/ttittulares-deliveries.json" if project=="ttittulares"
@@ -185,25 +251,52 @@ def process(project,now,token,chat):
     delivered=updated=skipped=0
     for card in cards:
         eid=card["id"];rev=card["rev"]
-        linked=[r for r in entries if str(r.get("event_id") or "")==eid
-                and int(r.get("revision") or 0)==rev]
-        # Never resurrect a deleted item; respect historical terminal decisions.
-        if any(str(r.get("status") or "").lower() in TERMINAL for r in linked):
+        linked=[r for r in entries if str(r.get("event_id") or "")==eid]
+        same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
+        # A Telegram deletion is permanent for this editorial cycle.
+        if any(str(r.get("status") or "").lower()=="deleted" for r in linked):
             skipped+=1;continue
+        # If a provisional message exists, keep editing that same Telegram message,
+        # even when ChatGPT saved the explanation under a newer revision.
         existing=next((r for r in reversed(linked)
                        if str(r.get("status") or "").lower()=="sent"
-                       and int(r.get("telegram_message_id") or 0)>0),None)
+                       and int(r.get("telegram_message_id") or 0)>0
+                       and not r.get("final")),None)
+        if existing is None:
+            existing=next((r for r in reversed(same_revision)
+                           if str(r.get("status") or "").lower()=="sent"
+                           and int(r.get("telegram_message_id") or 0)>0),None)
+        if project=="ttendencias" and not existing:
+            previous=[r for r in linked if str(r.get("status") or "").lower()=="sent"]
+            if previous and not trend_repeat_allowed(card,previous,now):
+                skipped+=1;continue
+        if project=="ttittulares" and not existing:
+            # Headlines are one-time deliveries per event; no duplicates across revisions.
+            if any(str(r.get("status") or "").lower()=="sent" for r in linked):
+                skipped+=1;continue
+        # Never resurrect a deleted item; respect historical terminal decisions.
+        if any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
+            skipped+=1;continue
         new_hash=hashlib.sha256((card["text"]+"|"+card["image"]).encode("utf-8")).hexdigest()
         kb=keys(card,project)
         image_data=None
         if existing and existing.get("content_sha256")==new_hash and int(existing.get("buttons_version") or 0)==7:
             skipped+=1;continue
-        if card["image"]:image_data=archival_image(card["image"])
+        # Try for an archive picture only on the first delivery (or where the
+        # existing card is a photo): no separate photo post and no long wait.
+        if not existing or existing.get("is_photo"):
+            photo_url=card["image"]
+            if not photo_url and project=="ttittulares" and not existing:
+                photo_url=fast_archive_from_article(card.get("source_url",""))
+            image_data=archival_image(photo_url) if photo_url else None
+        else:
+            photo_url=""
         body=card["text"]
         if existing:
             mid=int(existing["telegram_message_id"])
             old_photo=bool(existing.get("is_photo") or existing.get("image_sha256"))
             if old_photo and image_data:
+                # Replace media in the SAME message, not a new photo-plus-text pair.
                 result=send(token,"editMessageMedia",{"chat_id":chat,"message_id":mid,
                     "media":{"type":"photo","media":"attach://photo","caption":body},
                     "reply_markup":kb},image_data)
@@ -216,7 +309,7 @@ def process(project,now,token,chat):
             if not result:continue
             existing.update({"content_sha256":new_hash,"final":card["final"],
                              "buttons_version":7,"updated_at":now.isoformat(),
-                             "is_photo":old_photo})
+                             "revision":rev,"is_photo":old_photo})
             updated+=1
         else:
             # In case old non-photo deliveries exist, do not duplicate them.
@@ -230,7 +323,7 @@ def process(project,now,token,chat):
             entries.append({"delivery_key":f"{eid}:r{rev}:readonly",
                 "event_id":eid,"revision":rev,"title":card["title"],"name":card["title"],
                 "telegram_message_id":int(result["message_id"]),"status":"sent",
-                "is_photo":bool(image_data),"image_url":card["image"] if image_data else "",
+                "is_photo":bool(image_data),"image_url":photo_url if image_data else "",
                 "content_sha256":new_hash,"final":card["final"],"buttons_version":7,
                 "started_at":str(card["start"]),"delivered_at":now.isoformat()})
             delivered+=1
@@ -248,6 +341,13 @@ def selftest():
     assert [b[0]["text"] for b in keys(card,"ttittulares")["inline_keyboard"]]==[
         "🔎 Buscar en X","🗑️ Borrar"]
     assert keys(card,"ttendencias")["inline_keyboard"][1][0]["callback_data"]=="tx:b:abc123:1"
+    assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
+        [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
+    assert trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
+        [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
+    assert not trend_repeat_allowed({"is_in_top":False,"entered_top_at":"2026-10-07T00:00:00Z"},
+        [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
+    assert archival_image("") is None
     print("TELEGRAM_READONLY_SELFTEST_OK")
 
 if __name__=="__main__":
