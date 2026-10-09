@@ -41770,7 +41770,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -41835,12 +41834,29 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
-      "image_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://images.estadiodeportivo.com/imagenes/7526dc13-293b-4dca-88a9-0a61c8a5935c_1280x720.jpeg",
+        "source": "Estadio Deportivo · 9/10/2026",
+        "source_url": "https://www.estadiodeportivo.com/futbol/espanyol/manolo-molesto-tras-encajar-empate-ultimo-minuto-acaba-corner-jugada-partido-20261009-548272.html",
+        "alt": "Imagen de archivo relacionada con Manolo",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://images.estadiodeportivo.com/imagenes/7526dc13-293b-4dca-88a9-0a61c8a5935c_1280x720.jpeg",
+        "source": "Estadio Deportivo · 9/10/2026",
+        "source_url": "https://www.estadiodeportivo.com/futbol/espanyol/manolo-molesto-tras-encajar-empate-ultimo-minuto-acaba-corner-jugada-partido-20261009-548272.html",
+        "alt": "Imagen de archivo relacionada con Manolo",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-10T00:53:00+02:00",
+  "updated_at": "2026-10-09T22:54:53.668667Z",
   "count": 698
 }
