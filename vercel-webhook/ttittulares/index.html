@@ -55,6 +55,8 @@ main{max-width:850px;margin:auto;padding:15px 12px 42px}.summary{display:grid;gr
 /* The list is a compact selector: render only one iframe on explicit preview. */
 .tweetPicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.tweetEmbed{min-width:0;display:flex;align-items:stretch;border:1px solid #354257;border-radius:10px;overflow:hidden;background:#101721}.tweetEmbed.selected{border-color:#d95f8d;box-shadow:inset 0 0 0 1px #d95f8d}.tweetEmbed.previewing{background:#1c2a3c;border-color:#7c9abd}.tweetAuthor{display:flex;flex:1;min-width:0;align-items:center;padding:8px 9px;color:#eef2f8;font-size:12px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tweetEmbed .previewTweet{flex-shrink:0;border:0;border-left:1px solid #354257;background:#1c2b3b;color:#d3e3fb;font-size:11px;font-weight:800;padding:7px 11px;cursor:pointer}.tweetEmbed .previewTweet[aria-expanded=true]{background:#324b67;color:#fff}.tweetPreview{grid-column:1/-1;margin-top:0;border:1px solid #40516b;border-radius:12px;padding:8px;background:#0e141d}.tweetPreviewHead{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:8px;color:#c9d9ed;font-size:12px;font-weight:800}.tweetPreviewHead a{color:#c6dfff;font-size:11px;text-decoration:none}.tweetPreview iframe{display:block;width:100%;height:min(340px,48vh);border:0;border-radius:8px;background:#fff}.tweetPreviewHint{font-size:11px;color:#9aabc2;margin-top:6px}.tremendingImage{width:min(100%,250px);max-height:155px;object-fit:contain;display:block;border-radius:10px;border:1px solid #354255;margin-top:9px}
 @media(max-width:560px){.tweetPicker{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.tweetEmbed{flex-direction:column}.tweetAuthor{font-size:11px;padding:7px 6px;min-height:34px}.tweetEmbed .previewTweet{border-left:0;border-top:1px solid #354257;padding:5px 7px;min-height:28px}.tweetPreview iframe{height:min(300px,43vh)}.tremendingHeadActions{flex-direction:column;align-items:end}.tremendingImage{width:min(100%,225px);max-height:145px}}
+/* Telegram informativo: sin publicación ni Gag IA. */
+.gagSelect,.generateAi,.copyTweet,.copyAi,.copyArchive,.openX,.published,.aiChoice,.imageMeta,.imageCompact,.remateRating,.imageTitle,#imageControl,#imageControlBar,#imageHeadline,#imageState,#imageBar,#runImages,.imagePanel,.imageControl,.gagControls{display:none!important}
 </style>
 </head>
 <body>
@@ -986,23 +988,23 @@ function renderReady(list,preservedImages=new Map()){
    const bc=Number(events[b.event_id]?.source_count||b.current_source_count||b.drafted_source_count||0);
    return bc-ac||String(b.prepared_at||"").localeCompare(String(a.prepared_at||""))
  });
- if(!prepared.length){list.innerHTML='<div class="empty">No hay noticias pendientes de publicar.</div>';return}
+ if(!prepared.length){list.innerHTML='<div class="empty">No hay noticias listas.</div>';return}
  for(const item of prepared){
   const current=Number(events[item.event_id]?.source_count||item.current_source_count||item.drafted_source_count||0);
   const drafted=Number(item.drafted_source_count||item.source_count||0);
   const card=document.createElement("article");card.className="card";card.dataset.eventId=String(item.event_id||"");
-  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><label class="gagSelect"><input class="gagCheck" type="checkbox"><span>Gag IA</span></label><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Desestimar</button></div><div class="imageCompact aiStatusBadge"></div><img class="imageCompactPreview" hidden></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi" hidden>✨ Generar IA</button><button class="btn rework" hidden>🔁 Rehacer remate</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
+  card.innerHTML='<div class="head readyHead"><div class="title"></div><div class="readyMetaRow"><div class="sources"></div><div class="count"></div><label class="gagSelect"><input class="gagCheck" type="checkbox"><span>Gag IA</span></label><button class="btn expand" type="button">Abrir</button><button class="btn danger quickDismiss" type="button">Borrar</button></div><div class="imageCompact aiStatusBadge"></div><img class="imageCompactPreview" hidden></div><div class="details"><div class="variants"></div><div class="imagebox"><div class="imageTitle">Imágenes</div><div class="imageMeta aiStatusBadge"></div><div class="imageChoices" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:9px"><div class="aiChoice" hidden><div>IA</div><img class="aiPreview" style="width:100%;height:190px;object-fit:contain"></div><div class="archiveChoice" hidden><div>Archivo</div><img class="archivePreview" style="width:100%;height:190px;object-fit:contain"></div></div></div><div class="actions"><button class="btn generateAi" hidden>✨ Generar IA</button><button class="btn rework" hidden>🔁 Rehacer remate</button><button class="btn copyTweet">📋 Copiar tuit</button><button class="btn copyAi" hidden>✨ Copiar imagen IA</button><button class="btn copyArchive" hidden>🖼️ Copiar imagen archivo</button><a class="btn openX" target="_blank" rel="noopener" hidden>↗ Abrir en X</a><a class="btn searchX" target="_blank" rel="noopener">🔎 Buscar en X</a><button class="btn published">✓ Ya publicado</button></div></div>';
   card.querySelector(".title").textContent=item.title||"Noticia sin título";
   card.querySelector(".sources").textContent="Red. "+drafted+" · "+fmt(item.prepared_at);
   card.querySelector(".count").textContent=current+" fuentes";
   const ai=isChatImageGen(item.ai_image)?item.ai_image:isChatImageGen(item.image)?item.image:{};
   const fallback=item.fallback_image||(item.image&&!item.image.generated?item.image:{} )||{};
-  const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
-   const compactThumb=card.querySelector(".imageCompactPreview"),compactUrl=aiUrl||fallbackUrl;
+  const aiUrl="",fallbackUrl=String(fallback.url||item.archive_image?.url||"");
+   const compactThumb=card.querySelector(".imageCompactPreview"),compactUrl=fallbackUrl;
    if(compactThumb&&compactUrl){
      compactThumb.dataset.hasImage="1";
      compactThumb.dataset.url=compactUrl;
-     compactThumb.alt=(aiUrl?"Imagen IA: ":"Imagen de archivo: ")+(item.title||"");
+     compactThumb.alt="Fotografía de archivo: "+(item.title||"");
      const compactProxy=API+"?view=image-proxy&url="+encodeURIComponent(compactUrl);
      compactThumb.src=compactProxy;
      compactThumb.hidden=false;
@@ -1097,7 +1099,7 @@ function renderReady(list,preservedImages=new Map()){
     const box=document.createElement("div");box.className="variant";
     const text=String(v.text||"");
     const openX=card.querySelector(".openX");openX.href=v.url||intent(text);openX.hidden=false;
-    box.innerHTML='<div class="vhead"><span class="vname">Tuit</span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div>';
+    box.innerHTML='<div class="vhead"><span class="vname">Texto de la noticia</span><span class="chars"></span></div><div class="tweet"></div><div class="remateRating" hidden></div>';
     box.querySelector(".chars").textContent=[...text].length+" caracteres";box.querySelector(".tweet").textContent=text;mountRemateRating(box.querySelector(".remateRating"),v);
     card.querySelector(".copyTweet").onclick=()=>navigator.clipboard.writeText(text).then(()=>toast("Tuit completo copiado")).catch(e=>toast(e.message));
     vh.appendChild(box)
@@ -1117,13 +1119,13 @@ function renderReady(list,preservedImages=new Map()){
       return;
     }
     markClosedTombstone(id);
-    toast(ack?.sync_pending?"Cierre guardado; sincronización parcial":action==="published"?(imageInFlight?"Publicada; imagen pendiente cancelada":"Marcada como publicada"):"Noticia desestimada");
+    toast(ack?.sync_pending?"Borrado guardado; sincronización pendiente":"Noticia borrada de Listas");
     // Un fallo de lectura/refresh no debe convertir una decisión ya grabada en error.
     try{await load(true)}catch(e){toast("Cierre guardado; no se pudo actualizar la vista")}
   }
   const generateAi=card.querySelector(".generateAi");generateAi.hidden=true;
   card.querySelector(".published").onclick=()=>close("published","¿Confirmas que ya has publicado esta noticia?");
-  card.querySelector(".quickDismiss").onclick=()=>close("dismiss","¿Desestimar esta noticia?");
+  card.querySelector(".quickDismiss").onclick=()=>close("delete","¿Borrar esta noticia de Listas?");
   card.querySelector(".rework").onclick=async()=>{
     const button=card.querySelector(".rework"),id=String(item.event_id||""),old=[...model.prepared];
     button.disabled=true;button.textContent="Enviando…";toast("Enviando a reelaboración…");
