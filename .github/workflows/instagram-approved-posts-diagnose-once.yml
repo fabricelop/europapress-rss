@@ -1,0 +1,70 @@
+name: Diagnostico real Meta y publicar solo dos items aprobados
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/instagram-approved-posts-diagnose-once.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Comprobar conexión de Meta y publicar exclusivamente Shakira y Real Madrid
+        env:
+          INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          base="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev"
+          raw="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
+          secret=os.environ.get("INTERNAL_SECRET","")
+          if len(secret)<32: raise SystemExit("MISSING_GITHUB_INTERNAL_SECRET")
+          def call(url,body=None):
+            headers={"user-agent":"TTActualidad-Approved-TwoPosts/1.0"}
+            if url.startswith(base): headers["authorization"]="Bearer "+secret
+            if body is not None: headers["content-type"]="application/json"
+            req=urllib.request.Request(url,method="POST" if body is not None else "GET",headers=headers,
+              data=json.dumps(body,ensure_ascii=False).encode("utf8") if body is not None else None)
+            try:
+              with urllib.request.urlopen(req,timeout=70) as r: code=r.status;data=r.read(10*1024*1024)
+            except urllib.error.HTTPError as e:code=e.code;data=e.read(65536)
+            try:return code,json.loads(data.decode("utf8"))
+            except (ValueError,UnicodeError):return code,{"error":"NON_JSON_RESPONSE"}
+          code,preflight=call(base+"/meta-preflight")
+          print("META_PREFLIGHT",json.dumps({"http":code,"ok":preflight.get("ok"),
+            "error":preflight.get("error"),"active":preflight.get("active"),
+            "instagram_linked":preflight.get("instagram_account_linked"),
+            "username_matches":preflight.get("instagram_username_matches"),
+            "schema_ready":preflight.get("schema_ready")}))
+          if code!=200 or not preflight.get("ok") or not preflight.get("active"):
+            raise SystemExit("PUBLISH_ABORTED_READ_ONLY_PREFLIGHT_FAILED")
+          targets=[
+            ("shakira","ttendencias","trends/telegram-image-deliveries.json","3ff255e46d90",1,391,
+             "trends/instagram-images/ig-3ff255e46d90-r1-3efa0c8a287a.jpg"),
+            ("real_madrid","ttittulares","telegram/ttittulares-deliveries.json","1dc952e6340e",1,3105,
+             "ttittulares/instagram-images/ig-1dc952e6340e-r1-2d9b8fae4f17.jpg")
+          ]
+          for label,source,path,event_id,rev,message_id,image_file in targets:
+            rc,manifest=call(raw+path)
+            if rc!=200 or not isinstance(manifest,dict): raise SystemExit("MANIFEST_UNAVAILABLE "+label)
+            matches=[item for item in manifest.get("items",[]) if str(item.get("event_id") or "")==event_id
+              and int(item.get("revision") or 0)==rev and int(item.get("telegram_message_id") or 0)==message_id
+              and item.get("status")=="sent"]
+            if len(matches)!=1:raise SystemExit("IDENTITY_INVALID "+label)
+            image=matches[0].get("instagram") or {}
+            if image.get("image_url")!=raw+image_file or not image.get("caption"):raise SystemExit("IMAGE_OR_CAPTION_CHANGED "+label)
+            body={"source":source,"event_id":event_id,"revision":rev,"telegram_message_id":message_id,
+              "image_url":image["image_url"],"caption":image["caption"]}
+            rc,response=call(base+"/publish",body)
+            public={name:response.get(name) for name in ("state","error","media_id","permalink",
+              "meta_http_status","meta_error_code","meta_error_subcode","meta_error_type","meta_is_transient") if name in response}
+            print("APPROVED_POST_RESULT",label,"http",rc,json.dumps(public,ensure_ascii=False),flush=True)
+            if rc!=200 or response.get("state")!="published":
+              print("POST_NOT_CONFIRMED",label,"No reattempt without D1 reconciliation",flush=True)
+          PY
