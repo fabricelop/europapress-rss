@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-fc5e044b39ba-r1-a1-1791518843621",
+  "requested_at": "2026-10-09T04:07:23.621075Z",
+  "updated_at": "2026-10-09T04:07:23.621075Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "fc5e044b39ba",
+  "event_id": "fc5e044b39ba",
+  "target_name": "Ana Orantes o Maricarmen: hay historias personales que despiertan la conciencia de un país",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Ana Orantes o Maricarmen: hay historias personales que despiertan la conciencia de un país",
+    "revision": 1,
+    "factual_summary": "elDiario.es analiza cómo determinadas historias personales pueden convertirse en catalizadores de debates sociales. Compara, sin equiparar sus circunstancias, el impacto público de Maricarmen Abascal —fallecida a los 87 años quince días después de su desahucio y convertida en símbolo de la crisis de vivienda— con el de Ana Orantes, asesinada en 1997 tras denunciar públicamente años de maltrato. Reuters, Telecinco y 20minutos corroboran que el caso de Maricarmen desencadenó protestas de alcance nacional y tuvo un fuerte impacto político.",
+    "tweet_text": "elDiario.es analiza cómo Maricarmen y Ana Orantes se convirtieron, en épocas y causas distintas, en símbolos que aceleraron debates sobre vivienda y violencia machista.\n\n🌶️ A veces el país tarda un nombre propio en mirar de frente un problema viejo.",
+    "remate": "🌶️ A veces el país tarda un nombre propio en mirar de frente un problema viejo.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nelDiario.es analiza cómo Maricarmen y Ana Orantes se convirtieron, en épocas y causas distintas, en símbolos que aceleraron debates sobre vivienda y violencia machista.\n\n🌶️ A veces el país tarda un nombre propio en mirar de frente un problema viejo.\n\nREMATE EXACTO:\n🌶️ A veces el país tarda un nombre propio en mirar de frente un problema viejo.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nelDiario.es analiza cómo determinadas historias personales pueden convertirse en catalizadores de debates sociales. Compara, sin equiparar sus circunstancias, el impacto público de Maricarmen Abascal —fallecida a los 87 años quince días después de su desahucio y convertida en símbolo de la crisis de vivienda— con el de Ana Orantes, asesinada en 1997 tras denunciar públicamente años de maltrato. Reuters, Telecinco y 20minutos corroboran que el caso de Maricarmen desencadenó protestas de alcance nacional y tuvo un fuerte impacto político.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.eldiario.es/sociedad/ana-orantes-maricarmen-hay-historias-personales-despiertan-conciencia-pais_129_13572045.html",
+    "citations": [
+      {
+        "source": "elDiario.es",
+        "url": "https://www.eldiario.es/sociedad/ana-orantes-maricarmen-hay-historias-personales-despiertan-conciencia-pais_129_13572045.html"
+      },
+      {
+        "source": "Reuters",
+        "url": "https://www.reuters.com/world/europe/spanish-politicians-trade-blame-after-death-octogenarian-heart-housing-protests-2026-10-08/"
+      },
+      {
+        "source": "Telecinco Noticias",
+        "url": "https://www.telecinco.es/noticias/espana/20261008/desahucio-muerte-marcarmen-15-dias-cambio-politico_18_020389854.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/nacional/muere-maricarmen-mujer-87-anos-que-fue-desahuciada-madrid-simbolo-crisis-vivienda_7046271_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
