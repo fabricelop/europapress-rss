@@ -2,10 +2,16 @@
   "project": "TTendencias",
   "engine": "chat-direct",
   "last_started_at": "2026-10-09T11:56:00+02:00",
-  "last_completed_at": "2026-10-09T12:08:02.253+02:00",
-  "updated_at": "2026-10-09T12:08:02.253+02:00",
+  "last_completed_at": "2026-10-09T12:13:00+02:00",
+  "updated_at": "2026-10-09T12:13:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "a5ffd41f5384",
+    "285a6550e6b8",
+    "a02249e0af5b",
+    "571bfe869955",
+    "660533085d21"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -20,8 +26,8 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-09T11:56:00+02:00",
-    "updated_at": "2026-10-09T12:08:02.253+02:00",
-    "finished_at": "2026-10-09T12:08:02.253+02:00",
+    "updated_at": "2026-10-09T12:13:00+02:00",
+    "finished_at": "2026-10-09T12:13:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 5,
@@ -35,7 +41,7 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 3,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -43,11 +49,10 @@
       "explanations_verified_under_280": 5,
       "remates_selected": 1,
       "remates_omitted": 4,
-      "pending_repair_triggered": 1,
       "concurrent_completed": 2
     },
-    "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; una incidencia de concurrencia fue reconciliada.",
-    "incident_count": 1,
+    "message": "Pasada editorial completada · 5/5; cola 0; sin reexplicaciones pendientes",
+    "incident_count": 3,
     "incidents": [
       {
         "at": "2026-10-09T12:05:30+02:00",
@@ -55,6 +60,20 @@
         "trend_id": "a02249e0af5b",
         "title": "#LaHora9O",
         "reason": "Dos escrituras concurrentes dejaron textos distintos; se reconciliaron request y ficha con la ficha explained autoritativa."
+      },
+      {
+        "at": "2026-10-09T12:08:30+02:00",
+        "phase": "persisting",
+        "trend_id": "571bfe869955",
+        "title": "PSOE",
+        "reason": "Conflicto SHA concurrente durante la persistencia; otra transacción cerró la misma revisión y se reconcilió contra main."
+      },
+      {
+        "at": "2026-10-09T12:12:10+02:00",
+        "phase": "persisting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "reason": "Conflicto SHA al retirar la cola; la revisión ya había sido retirada concurrentemente y quedó verificada en main."
       }
     ],
     "ratings_snapshot": {
@@ -81,34 +100,6 @@
       }
     ],
     "activity": [
-      {
-        "at": "2026-10-09T12:08:20+02:00",
-        "phase": "verifying",
-        "trend_id": "571bfe869955",
-        "title": "PSOE",
-        "message": "Reexplicación cerrada y verificada · cierre concurrente coherente"
-      },
-      {
-        "at": "2026-10-09T12:08:25+02:00",
-        "phase": "verifying",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Releyendo estado autoritativo de Mourinho"
-      },
-      {
-        "at": "2026-10-09T10:06:00.799Z",
-        "phase": "verifying",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Releyendo estado autoritativo de Mourinho"
-      },
-      {
-        "at": "2026-10-09T10:06:03.138Z",
-        "phase": "investigating",
-        "trend_id": "660533085d21",
-        "title": "Mourinho",
-        "message": "Buscando detonante actual"
-      },
       {
         "at": "2026-10-09T10:06:06.153Z",
         "phase": "investigating",
@@ -220,19 +211,44 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada editorial completada · 5/5 explicadas y verificadas; cola final 0; sin rewrite_pending; una incidencia de concurrencia fue reconciliada."
+      },
+      {
+        "at": "2026-10-09T12:09:00+02:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Contrastando fuente 1/2 · rueda de prensa previa al Madrid-Villarreal"
+      },
+      {
+        "at": "2026-10-09T12:12:40+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola editorial 0"
+      },
+      {
+        "at": "2026-10-09T12:12:50+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificando rewrite_pending · ninguno"
+      },
+      {
+        "at": "2026-10-09T12:13:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada editorial completada · 5/5; cola 0; sin reexplicaciones pendientes"
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": []
+    ]
   },
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered_no_action_needed",
+    "status": "triggered",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T084600-chat",
-    "last_triggered_at": "2026-10-09T08:46:00+02:00",
+    "last_trigger_run_id": "tr-1791538120641-2fc123",
+    "last_triggered_at": "2026-10-09T12:00:00+02:00",
     "observed_at": "2026-10-09T08:49:00+02:00",
     "workflow_run_id": 37895362234,
     "workflow_status": "completed",
@@ -245,5 +261,6 @@
     "telegram_delivery_completed": 0
   },
   "version": 1,
-  "canonical": true
+  "canonical": true,
+  "error": null
 }
