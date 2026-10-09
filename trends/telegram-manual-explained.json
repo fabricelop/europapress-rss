@@ -39441,7 +39441,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -39503,10 +39502,29 @@
       "rewrite_pending": false,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "news_disposition": "ignored",
-      "news_note": "Explicación circunscrita a TTendencias; sin salida hacia TTiTTulares."
+      "news_note": "Explicación circunscrita a TTendencias; sin salida hacia TTiTTulares.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.eldebate.com/files/article_social/uploads/2026/10/08/6ac7f9560141b.png",
+        "source": "El Debate · 09/10/2026",
+        "source_url": "https://www.eldebate.com/espana/20261009/correos-logro-votara-correo-generales-2023-carne-movil-qr-juanma-serrano-leire-diez-frente_467727.html",
+        "alt": "Imagen de archivo relacionada con Juanma Serrano",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.eldebate.com/files/article_social/uploads/2026/10/08/6ac7f9560141b.png",
+        "source": "El Debate · 09/10/2026",
+        "source_url": "https://www.eldebate.com/espana/20261009/correos-logro-votara-correo-generales-2023-carne-movil-qr-juanma-serrano-leire-diez-frente_467727.html",
+        "alt": "Imagen de archivo relacionada con Juanma Serrano",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "285a6550e6b8",
@@ -39519,7 +39537,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -39581,12 +39598,31 @@
       "rewrite_pending": false,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "news_disposition": "ignored",
-      "news_note": "Explicación circunscrita a TTendencias; sin salida hacia TTiTTulares."
+      "news_note": "Explicación circunscrita a TTendencias; sin salida hacia TTiTTulares.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/juez-del-caso-leire-comparte-criterio-fiscalia-anticorrupcion-considera-prematuro-imputar-psoe/01787743571888.jpg",
+        "source": "RTVE · 09/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261009/juez-del-caso-leire-comparte-criterio-fiscalia-anticorrupcion-considera-prematuro-imputar-psoe/17260044.shtml",
+        "alt": "Imagen de archivo relacionada con Leire Díez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.rtve.es/imagenes/juez-del-caso-leire-comparte-criterio-fiscalia-anticorrupcion-considera-prematuro-imputar-psoe/01787743571888.jpg",
+        "source": "RTVE · 09/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261009/juez-del-caso-leire-comparte-criterio-fiscalia-anticorrupcion-considera-prematuro-imputar-psoe/17260044.shtml",
+        "alt": "Imagen de archivo relacionada con Leire Díez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-09T12:02:00+02:00",
+  "updated_at": "2026-10-09T10:01:57.643193Z",
   "count": 672
 }
