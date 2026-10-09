@@ -1,4 +1,142 @@
 // Backend isolated from Telegram: never accept unverified Telegram updates here.
+
+const INSTAGRAM_TOPIC_TAGS=[
+  [/\btrump\b/i, "#DonaldTrump"],
+  [/\beeuu\b|\bestados unidos\b|\bestadounidens\w*/i, "#EstadosUnidos"],
+  [/\biran\b|\birani\w*/i, "#Iran"],
+  [/\belecciones?\b|\blegislativas\b|\bcampana electoral\b/i, "#Elecciones"],
+  [/\bcombustibles?\b|\bgasolina\b|\bcarburantes?\b/i, "#Combustibles"],
+  [/\bpremio nobel de la paz\b|\bnobel de la paz\b/i, "#PremioNobelDeLaPaz"],
+  [/\bnavi pillay\b/i, "#NaviPillay"],
+  [/\bsudafrica\b|\bsudafrican\w*/i, "#Sudafrica"],
+  [/\bderecho internacional\b/i, "#DerechoInternacional"],
+  [/\bpromover la paz\b|\bpaloma de la paz\b|\bpaz\b/i, "#Paz"],
+  [/\brenoir\b/i, "#Renoir"],
+  [/\bfrancia\b|\bfrances\w*/i, "#Francia"],
+  [/\barte\b|\bcuadros?\b|\bpinturas?\b|\bmuseos?\b/i, "#Arte"],
+  [/\bcuadros?\b|\bpinturas?\b/i, "#Pintura"],
+  [/\bmuseos?\b/i, "#Museos"],
+  [/\bshakira\b/i, "#Shakira"],
+  [/\bla revuelta\b/i, "#LaRevuelta"],
+  [/\bbroncano\b/i, "#DavidBroncano"],
+  [/\breal madrid\b/i, "#RealMadrid"],
+  [/\bbar[cç]a\b|\bfc barcelona\b/i, "#FCBarcelona"],
+  [/\beuroliga\b/i, "#Euroliga"],
+  [/\bpartizan\b/i, "#Partizan"],
+  [/\batletico de madrid\b/i, "#AtleticoDeMadrid"],
+  [/\blamine yamal\b/i, "#LamineYamal"],
+  [/\balcaraz\b/i, "#CarlosAlcaraz"],
+  [/\bsinner\b/i, "#JannikSinner"],
+  [/\bverstappen\b/i, "#MaxVerstappen"],
+  [/\balonso\b/i, "#FernandoAlonso"],
+  [/\bformula 1\b|\bf1\b/i, "#Formula1"],
+  [/\btenis\b/i, "#Tenis"],
+  [/\bbaloncesto\b|\bcanasta\b|\bpartizan\b|\beuroliga\b/i, "#Baloncesto"],
+  [/\bfutbol\b|\bgol\b|\bliga de campeones\b/i, "#Futbol"],
+  [/\bcine\b|\bpelicula\b|\boscar\b/i, "#Cine"],
+  [/\bconcierto\b|\bcantante\b|\bmusica\b/i, "#Musica"],
+  [/\bserie\b|\bprograma de television\b|\btelevision\b/i, "#Television"],
+  [/\bgobierno\b|\bcongreso\b|\belecciones?\b|\bministro\b|\bpolitica\b/i, "#Politica"],
+  [/\bsanchez\b/i, "#PedroSanchez"],
+  [/\bfeijoo\b/i, "#AlbertoNunezFeijoo"],
+  [/\brufian\b/i, "#GabrielRufian"],
+  [/\bdesahucio\b|\balquiler\b|\bvivienda\b/i, "#Vivienda"],
+  [/\btribunal\b|\bsentencia\b|\bfiscalia\b/i, "#Justicia"],
+  [/\binteligencia artificial\b|\btecnologia\b/i, "#Tecnologia"],
+  [/\bclima\b|\btemperaturas?\b|\bmeteorologia\b/i, "#Meteorologia"],
+  [/\blluvia\b|\btormenta\b/i, "#Lluvia"],
+  [/\binmigracion\b|\bmigracion\b|\bice\b/i, "#Migracion"],
+  [/\beconomia\b|\binflacion\b|\bprecios\b/i, "#Economia"],
+  [/\brally\b|\brali\b/i, "#Rally"],
+  [/\bmallorca\b/i, "#Mallorca"],
+  [/\baccidente\b|\bsiniestro\b/i, "#Accidente"],
+  [/\bterremoto\b|\bsismo\b/i, "#Terremoto"],
+  [/\bpamplona\b/i, "#Pamplona"],
+  [/\bnavarra\b/i, "#Navarra"],
+  [/\bbarcelona\b/i, "#Barcelona"],
+  [/\bmadrid\b/i, "#Madrid"],
+  [/\bmalaga\b/i, "#Malaga"],
+  [/\btoledo\b/i, "#Toledo"],
+  [/\baragon\b|\bsijena\b/i, "#Aragon"],
+  [/\bsijena\b/i, "#Sijena"],
+  [/\btrenes?\b|\bferrocarril\b/i, "#Trenes"],
+  [/\btransportes?\b|\btrafico\b/i, "#Transporte"],
+  [/\bagricultor\w*|\btractor\w*|\bcampo\b/i, "#Agricultura"],
+  [/\btractorada\b/i, "#Tractorada"],
+  [/\bsalud mental\b/i, "#SaludMental"],
+  [/\bhospital\b|\bmedic\w*|\bsanitari\w*/i, "#Sanidad"],
+  [/\bcnmc\b/i, "#CNMC"],
+  [/\bcentros? de datos\b/i, "#CentrosDeDatos"],
+  [/\benergi\w*|\brenovable\w*/i, "#Energia"],
+  [/\brenovable\w*/i, "#Renovables"],
+  [/\bbanco de espana\b/i, "#BancoDeEspana"],
+  [/\bpib\b|\bcrecimiento economico\b/i, "#PIB"],
+  [/\binflacion\b/i, "#Inflacion"],
+  [/\bibi\b|\bimpuest\w*/i, "#Impuestos"],
+  [/\bpisos? turistico\w*|\bturismo\b/i, "#Turismo"],
+  [/\bpedro sanchez\b/i, "#PedroSanchez"],
+  [/\bpp\b|\bpartido popular\b/i, "#PartidoPopular"],
+  [/\bpsoe\b/i, "#PSOE"],
+  [/\bfiscalia\b/i, "#Fiscalia"],
+  [/\btribunal supremo\b/i, "#TribunalSupremo"],
+  [/\bindult\w*/i, "#Indulto"],
+  [/\bnacionalizad\w*|\bnacionalidad\b/i, "#Nacionalidad"],
+  [/\bguardia civil\b/i, "#GuardiaCivil"],
+  [/\bmaltrato animal\b|\babandono animal\b/i, "#ProteccionAnimal"],
+  [/\bperros?\b/i, "#Perros"],
+  [/\brefn\b/i, "#NicolasWindingRefn"],
+  [/\bsitges\b/i, "#Sitges"],
+  [/\bpeliculas?\b|\bcine\b/i, "#Cine"],
+  [/\bdeporte\w*/i, "#Deportes"],
+  [/\bmoto\w*|\bcoche\w*|\bautomov\w*/i, "#Motor"],
+  [/\bpresupuesto\w*|\bdeuda\b|\bfinanzas?\b/i, "#Finanzas"],
+  [/\bunion europea\b|\bbruselas\b/i, "#UnionEuropea"],
+  [/\bukrania\b/i, "#Ucrania"],
+  [/\brusia\b/i, "#Rusia"],
+  [/\bgaza\b/i, "#Gaza"],
+  [/\bseguridad\b|\bpolicia\b/i, "#Seguridad"],
+  [/\bcultura\b|\bpatrimonio\b/i, "#Cultura"],
+  [/\beducacion\b|\buniversidad\b/i, "#Educacion"],
+  [/\bempresa\w*|\bnegocio\w*/i, "#Empresas"],
+];
+function instagramCaption(raw) {
+  // Meta-publication boundary: also fixes already-delivered Telegram snapshots
+  // without rewriting the source caption stored for idempotency in D1.
+  let value=String(raw||"").trim()
+    .replace(/^@?ttactualidad\\s*[:—–-]?\\s*/i,"")
+    .replace(/(?:^|\\s)#(?:TTActualidad|Actualidad)\\b/gi," ")
+    .trim();
+  const present=new Set((value.match(/(?<!\\w)#[\\p{L}\\d_]+/gu)||[]).map(x=>x.toLowerCase()));
+  const factual=value.split(/\\n\\s*\\n/,1)[0];
+  const normalized=factual.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+  const tags=[];
+  for(const [pattern,tag] of INSTAGRAM_TOPIC_TAGS) {
+    if(tags.length+present.size>=5)break;
+    if(pattern.test(normalized)&&!present.has(tag.toLowerCase())) {
+      tags.push(tag);
+      present.add(tag.toLowerCase());
+    }
+  }
+  // For newly emerging names not yet in the rules, tag only proper names
+  // occurring literally in the approved factual sentence.
+  if(tags.length+present.size<2) {
+    const named=factual.match(/\\b[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+(?:de|del|la|las|los|y)\\s+)?[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,})?/gu)||[];
+    for(const item of named) {
+      if(tags.length+present.size>=3)break;
+      const words=item.normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").split(/\\s+/).filter(Boolean);
+      const tag="#"+words.map(w=>w[0].toUpperCase()+w.slice(1)).join("");
+      if(tag.length<=35&&!present.has(tag.toLowerCase())) {
+        tags.push(tag);present.add(tag.toLowerCase());
+      }
+    }
+  }
+  for(let i=tags.length;i>0;i--) {
+    const result=value+"\\n\\n"+tags.slice(0,i).join(" ");
+    if(result.length<=2200)return result;
+  }
+  return value;
+}
+
 const IMG=/^https:\/\/raw\.githubusercontent\.com\/fabricelop\/europapress-rss\/main\/(?:trends|ttittulares)\/(?:generated-images|instagram-images)\/[A-Za-z0-9._-]+\.jpe?g$/;
 const answer=(v,s=200)=>new Response(JSON.stringify(v),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 function constantTimeEqual(a,b){const x=new TextEncoder().encode(a),y=new TextEncoder().encode(b);if(x.length!==y.length)return false;let diff=0;for(let i=0;i<x.length;i++)diff|=x[i]^y[i];return diff===0;}
@@ -129,7 +267,7 @@ async function publish(env,item){
   if(row.state==="reserved"){
     if(!await change(db,item.key,"reserved","creating"))return answer({ok:false,error:"BUSY"},409);
     try{
-      const creation=await meta(env,ig+"/media",{image_url:item.image,caption:item.caption});
+      const creation=await meta(env,ig+"/media",{image_url:item.image,caption:instagramCaption(item.caption)});
       if(!/^\d+$/.test(String(creation.id||"")))throw Error("BAD_CONTAINER");
       await change(db,item.key,"creating","container_created",{container_id:String(creation.id)});
       row=await state(db,item.key);
