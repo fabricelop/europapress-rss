@@ -1,0 +1,106 @@
+name: TTendencias - corregir entrega histórica accidental (solo 09/10)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/cleanup-ttendencias-backfill-20261009.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-telegram-readonly
+  cancel-in-progress: false
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/telegram-image-deliveries.json
+            /trends/telegram-bot-state.json
+      - name: Retirar exclusivamente tarjetas antiguas del lote accidental
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,time,urllib.request,urllib.error
+          from datetime import datetime,timezone
+          from pathlib import Path
+          ledger=json.loads(Path("trends/telegram-image-deliveries.json").read_text(encoding="utf8"))
+          chat=str(json.loads(Path("trends/telegram-bot-state.json").read_text(encoding="utf8")).get("chat_id") or "")
+          token=os.environ.get("TTENDENCIAS_BOT_TOKEN","")
+          assert token and chat,"Telegram not configured"
+          cutoff=datetime.fromisoformat("2026-10-09T02:46:00+00:00")
+          selected=[]
+          for row in ledger.get("items",[]):
+              if not str(row.get("delivery_key") or "").endswith(":readonly"):continue
+              if not str(row.get("delivered_at") or "").startswith("2026-10-09T14:46:"):continue
+              try:started=datetime.fromisoformat(str(row.get("started_at") or "").replace("Z","+00:00"))
+              except Exception:continue
+              if started.astimezone(timezone.utc)>=cutoff:continue
+              if str(row.get("status") or "").lower()!="sent":continue
+              selected.append(row)
+          assert len(selected)<=171,"Unexpected additional backlog entries: aborting"
+          mids=[]
+          for row in selected:
+              mid=int(row.get("telegram_message_id") or 0)
+              if mid<=0:continue
+              data=json.dumps({"chat_id":chat,"message_id":mid}).encode()
+              request=urllib.request.Request("https://api.telegram.org/bot"+token+"/deleteMessage",
+                 data=data,headers={"content-type":"application/json"},method="POST")
+              ok=False
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(request,timeout=15) as response:
+                          result=json.load(response)
+                      ok=bool(result.get("ok"))
+                  except urllib.error.HTTPError as error:
+                      result=json.loads(error.read().decode("utf8","replace") or "{}")
+                      description=str(result.get("description") or "").lower()
+                      ok=("message to delete not found" in description)
+                      if not ok and error.code==429:
+                          time.sleep(min(8,int((result.get("parameters") or {}).get("retry_after") or 3)))
+                  except Exception:
+                      pass
+                  if ok:break
+                  time.sleep(0.35)
+              if ok:mids.append(mid)
+              time.sleep(0.10)
+          Path("/tmp/tt-accidental-deleted-mids.json").write_text(json.dumps(mids))
+          print("TTENDENCIAS_BACKFILL_CLEANUP_TARGETS",len(selected))
+          print("TTENDENCIAS_BACKFILL_CLEANUP_SUCCESS",len(mids))
+          if len(selected)!=len(mids):
+              print("Remaining failures can be retried manually through workflow_dispatch")
+          PY
+      - name: Persistir exclusiones permanentes
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("trends/telegram-image-deliveries.json")
+          doc=json.loads(p.read_text(encoding="utf8"))
+          ids=set(json.loads(Path("/tmp/tt-accidental-deleted-mids.json").read_text()))
+          for row in doc.get("items",[]):
+              if int(row.get("telegram_message_id") or 0) in ids and str(row.get("delivery_key") or "").endswith(":readonly"):
+                  row["status"]="deleted"
+                  row["decision_source"]="accidental_historical_backfill_cleanup"
+                  row["deleted_at"]="2026-10-09T14:49:00Z"
+          p.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          PY
+            git add trends/telegram-image-deliveries.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Excluir notificaciones históricas accidentales de TTendencias"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((attempt*2))
+          done
+          exit 1
