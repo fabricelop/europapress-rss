@@ -9,6 +9,7 @@ on:
       - "windows/TT-AutoUpdater.ps1"
       - "windows/TT-LocalWatchdog.ps1"
       - "windows/Install-TT-RestartSafe.ps1"
+      - "windows/Recover-TT-Delivery-20261009.ps1"
       - "windows/TTiTTularesImageBridge.js"
       - "windows/TTendenciasImageBridge.js"
       - ".github/workflows/preflight-tt-windows.yml"
@@ -37,6 +38,7 @@ jobs:
             "windows/TTiTTularesDedicatedListener.ps1",
             "windows/TTendenciasDedicatedListener.ps1",
             "windows/TT-AutoUpdater.ps1",
+            "windows/Recover-TT-Delivery-20261009.ps1",
             "windows/TT-LocalWatchdog.ps1",
             "windows/Install-TT-RestartSafe.ps1"
           )
@@ -57,6 +59,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "TTiTTularesImageBridge.js inválido" }
           node --check windows/TTendenciasImageBridge.js
           if ($LASTEXITCODE -ne 0) { throw "TTendenciasImageBridge.js inválido" }
+
+      - name: Comprobar JavaScript CDP incrustado en recuperación
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/Recover-TT-Delivery-20261009.ps1" -Raw
+          $match = [regex]::Match($src, "(?s)@'\r?\n(?<code>.*?)\r?\n'@ \| Set-Content")
+          if (-not $match.Success) { throw "No se localizó el bloque Node CDP" }
+          $code = $match.Groups["code"].Value
+          $code | node --check -
+          if ($LASTEXITCODE -ne 0) { throw "JavaScript CDP de recuperación no compila" }
+          Write-Host "OK: JS CDP y sintaxis de recuperación"
 
       - name: Smoke Git control branches and RAW triggers (read-only)
         shell: pwsh
