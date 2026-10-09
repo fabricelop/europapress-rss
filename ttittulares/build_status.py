@@ -20,7 +20,7 @@ events_doc = load(TG / "events.json", {"events":[]})
 processing = load(TG / "editorial-processing.json", {"items":[]})
 prepared = load(TT / "prepared.json", {"items":[]})
 decisions = load(TT / "decisions.json", {"items":[]})
-terminal_ids = {str(x.get("event_id") or "") for x in decisions.get("items", []) if str(x.get("status") or "").lower() in {"published","dismissed"}}
+terminal_ids = {str(x.get("event_id") or "") for x in decisions.get("items", []) if str(x.get("status") or "").lower() in {"published","dismissed","deleted"}}
 visible_prepared = [x for x in prepared.get("items", []) if str(x.get("event_id") or "") not in terminal_ids]
 event_map = {}
 for event in events_doc.get("events", []):
