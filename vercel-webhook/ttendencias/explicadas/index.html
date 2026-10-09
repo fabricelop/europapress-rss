@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101522">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>TTendencias · Pendientes</title>
+<title>TTendencias · Explicadas</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b0e14;color:#eef2f8}
 *{box-sizing:border-box}html,body{width:100%;max-width:100%;overflow-x:hidden}body{margin:0;background:#0b0e14;min-height:100vh}button,a{font:inherit;touch-action:manipulation}
@@ -18,8 +18,8 @@ main{width:100%;max-width:560px;margin:0 auto;padding:14px 10px 40px;overflow-x:
 <header class="top"><nav class="nav3"><a class="navbtn" href="/ttendencias/">TOP 10</a><a class="navbtn pending active" href="/ttendencias/explicadas/">Pendientes <span class="navBadge" id="navPendingBadge"></span></a><a class="navbtn" href="/ttendencias/historico/">Histórico</a></nav></header>
 <main>
 <input class="filter" id="filter" type="search" inputmode="search" autocomplete="off" placeholder="Buscar en pendientes…">
-<div class="section">Pendientes de publicar <span class="sectionCount" id="pendingCount">0</span></div>
-<section class="list" id="pendingList"><div class="empty">Cargando pendientes…</div></section>
+<div class="section">Explicadas <span class="sectionCount" id="pendingCount">0</span></div>
+<section class="list" id="pendingList"><div class="empty">Cargando tendencias explicadas…</div></section>
 </main>
 <dialog class="reexplainDialog" id="reexplainDialog"><h2>Reexplicar tendencia</h2><p id="reexplainName"></p><p>Escribe por qué crees que es tendencia o qué parte de la explicación actual no encaja. Se volverá a investigar y verificar usando tu texto como contexto.</p><textarea id="reexplainText" placeholder="Ej.: Creo que es tendencia por…"></textarea><div class="dialogActions"><button class="btn" id="cancelReexplain" type="button">Cancelar</button><button class="btn" id="sendReexplain" type="button">Reevaluar</button></div></dialog>
 <script>
@@ -450,49 +450,24 @@ function renderCard(x,pending){
  card.querySelector(".when").textContent=fmt(x.explained_at);
  const parts=splitExplainedText(x);card.querySelector(".explanation").textContent=parts.fact;
  const closer=card.querySelector(".closer");if(parts.closer){closer.hidden=false;closer.textContent=parts.closer}
+ // Una sola fotografía de archivo. Las imágenes IA y sus estados están retirados.
  const picture=card.querySelector(".imagebox");
- const rawAi=x.ai_image||{},ai=isChatImageGen(rawAi)?rawAi:{},fallback=x.fallback_image||{};
- const aiUrl=String(ai.url||""),fallbackUrl=String(fallback.url||"");
- const aiRaw=String(x.ai_image_status||"").toLowerCase(),aiRegenerating=Boolean(x.ai_image_regenerate_requested),aiRegenerationError=String(x.ai_image_regeneration_error||"");
- let aiClass="aiNone",aiText="— IA no solicitada";
- if(aiRegenerating){aiClass="aiRework";aiText="↻ Nueva IA marcada · pulsa Imágenes"}
- else if(aiUrl){aiClass="aiReady";aiText="✓ IA lista"}
- else if(aiRegenerationError){aiClass="aiFailed";aiText="— IA no solicitada · intento anterior falló"}
- // Estados pending/started/tool_called heredados ya no implican solicitud manual.
- // Solo un job vivo en imageRuns puede mostrar "solicitada/generándose".
- else{aiClass="aiNone";aiText="— IA no solicitada"}
- const liveRun=liveImageRunState(x);
- if(liveRun&&(imageRunActive(imageRuns.get(String(x.id||"")))||["ERROR","CANCELLED"].includes(String(imageRuns.get(String(x.id||""))?.status||"").toUpperCase()))){aiClass=liveRun.aiCls;aiText=liveRun.text}
- const aiStatus=card.querySelector(".aiStatusBadge");aiStatus.classList.add(aiClass);aiStatus.textContent=aiText+(fallbackUrl?" · archivo disponible":" · sin archivo");
- let imageChoice=String(x.image_choice||"");if(imageChoice==="ai"&&!aiUrl)imageChoice=fallbackUrl?"fallback":"none";
- if(/^https:\/\//i.test(aiUrl)||/^https:\/\//i.test(fallbackUrl)||x.ai_image_status||x.fallback_image_status){
-   picture.hidden=false;picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
-   const grid=document.createElement("div");grid.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
-   appendImagePreview(grid,ai,"Gag IA",imageChoice==="ai",x.id);appendImagePreview(grid,fallback,"Archivo / fallback",imageChoice==="fallback",x.id);
-   if(!grid.children.length){const state=document.createElement("div");state.style.cssText="font-size:11px;color:#94a3b8;padding:8px;border:1px solid #29384a;border-radius:10px;width:100%";state.textContent=x.ai_image_regenerate_requested?"Nueva IA solicitada · se intentará una imagen en la próxima pasada.":"Imagen IA/fallback todavía no disponible.";grid.appendChild(state)}
-   picture.appendChild(grid);
+ const archive=x.archive_image||x.fallback_image||{};
+ const archiveUrl=String(archive.url||"");
+ card.querySelector(".aiStatusBadge").hidden=true;
+ if(/^https:\/\//i.test(archiveUrl) && !archive.generated){
+   picture.hidden=false;
+   picture.style.cssText="margin:9px 0 5px;max-width:100%;overflow:hidden";
+   const img=document.createElement("img");
+   img.src=archiveUrl;img.alt="Fotografía de archivo: "+name;
+   img.loading="lazy";
+   img.style.cssText="display:block;width:100%;max-height:230px;object-fit:contain;border-radius:10px";
+   picture.appendChild(img);
  }
  const rating=card.querySelector(".rating");if(parts.closer)renderRemateRating(rating,x);else rating.hidden=true;
  const meta=card.querySelector(".meta");if(route){const routeEl=document.createElement("span");routeEl.className="route";routeEl.textContent=route;meta.appendChild(routeEl)}
  const actions=card.querySelector(".actions");
- if(!x.tremending_origin){
-   const generate=document.createElement("button");generate.className="btn";generate.type="button";
-   const currentAi=isChatImageGen(x.ai_image)?x.ai_image:{},hasAi=Boolean(String(currentAi.url||""));
-   generate.textContent="✨ Generar IA";generate.hidden=true;
-   generate.disabled=imageRunActive(imageRuns.get(String(x.id||"")));
-   generate.onclick=async()=>{
-     generate.disabled=true;
-     try{await requestImageRun(x,{markRegenerate:hasAi||["failed","none","error"].includes(String(x.ai_image_status||"").toLowerCase())})}
-     catch(error){alert(error?.message||"No se pudo solicitar la imagen IA.")}
-     finally{generate.disabled=imageRunActive(imageRuns.get(String(x.id||"")))}
-   };
-   actions.appendChild(generate)
- }
  const reexplain=document.createElement("button");reexplain.className="btn";reexplain.type="button";reexplain.disabled=Boolean(x.rewrite_pending);reexplain.textContent=x.rewrite_pending?"Reevaluando…":"📝 Reexplicar";reexplain.onclick=()=>openReexplain(x);actions.appendChild(reexplain);
- const copy=document.createElement("button");copy.className="btn";copy.type="button";copy.textContent="📋 Copiar tuit";copy.onclick=()=>copyItem(x,copy);actions.appendChild(copy);
- if(/^https:\/\//i.test(aiUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="✨ Copiar imagen IA";b.onclick=()=>copyImageUrl(aiUrl,b);actions.appendChild(b)}
- if(/^https:\/\//i.test(fallbackUrl)){const b=document.createElement("button");b.className="btn";b.type="button";b.textContent="🖼️ Copiar imagen archivo";b.onclick=()=>copyImageUrl(fallbackUrl,b);actions.appendChild(b)}
- const open=document.createElement("a");open.className="btn";open.target="_blank";open.rel="noopener noreferrer";open.href=openTweetUrl(x);open.textContent="↗ Abrir en X";actions.appendChild(open);
  const search=document.createElement("a");search.className="btn";search.target="_blank";search.rel="noopener noreferrer";const searchNames=(Array.isArray(x.trend_names)&&x.trend_names.length?x.trend_names:[name]).join(" ");search.href="https://x.com/search?q="+encodeURIComponent(searchNames)+"&src=typed_query&f=live";search.textContent="🔎 Buscar en X";actions.appendChild(search);
  if(pending){const done=document.createElement("button");done.className="btn";done.type="button";done.textContent="✓ Ya explicado";done.onclick=()=>markExplainedDone(x,done);actions.appendChild(done)}
  return card
@@ -582,7 +557,7 @@ function render(){
  $("pendingCount").textContent=String(pendingAll.length);updateUnreadBadge();updateImageControl();
  if(openPendingKey&&!pending.some(x=>pendingKey(x)===openPendingKey))openPendingKey=null;
  pendingList.innerHTML="";
- if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No tienes tendencias pendientes de publicar.")+'</div>';
+ if(!pending.length)pendingList.innerHTML='<div class="empty">'+(q?"No hay pendientes que coincidan.":"No hay tendencias pendientes de explicación.")+'</div>';
  else for(const x of pending)pendingList.appendChild(pendingKey(x)===openPendingKey?renderExpandedPending(x):renderCollapsedPending(x));
 }
 function collapseVisibleExplained(rows){
