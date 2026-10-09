@@ -138,7 +138,17 @@ def verified_article_urls(*rows):
             url=item.get("source_url") if isinstance(item,dict) else ""
             if isinstance(url,str) and url.startswith("https://") and url not in urls:
                 urls.append(url)
-    return urls[:2]
+    # Use an official event homepage as a last resort when article metadata
+    # is incomplete; it may carry the event's genuine photograph/poster.
+    for row in rows:
+        if not isinstance(row,dict):continue
+        for entry in row.get("verification_sources") or []:
+            url=(entry.get("url") or "") if isinstance(entry,dict) else entry
+            if isinstance(url,str) and url.startswith("https://") and url not in urls:
+                parsed=urlparse(url)
+                if len([part for part in parsed.path.split("/") if part])>=1:
+                    urls.append(url)
+    return urls[:3]
 
 def trend_body(label,detail,is_final):
     if not is_final:
@@ -314,11 +324,9 @@ def process(project,now,token,chat):
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
-        deleted=any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked)
-        surviving=any(str(r.get("status") or "").lower()=="sent" for r in linked)
-        # A duplicate card's deletion should not hide the surviving one.
-        # A genuine full deletion (no active card) remains terminal.
-        if deleted and not surviving:
+        # Deleting any of the duplicate Telegram cards closes the whole trend.
+        # Never try to edit or resurrect another copy after a user deletion.
+        if any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked):
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
@@ -345,7 +353,7 @@ def process(project,now,token,chat):
             if any(str(r.get("status") or "").lower()=="sent" for r in linked):
                 skipped+=1;continue
         # Never resurrect a deleted item; respect historical terminal decisions.
-        if existing is None and any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
+        if any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
             skipped+=1;continue
         # An empty ledger on deployment must NEVER backfill days of history.
         # Existing provisional messages are still editable regardless of age.
