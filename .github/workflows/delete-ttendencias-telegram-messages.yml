@@ -1,0 +1,113 @@
+name: TTendencias borrar mensajes de Telegram solicitados desde app
+on:
+  push:
+    branches: [main]
+    paths:
+      - "trends/telegram-image-deliveries.json"
+      - ".github/workflows/delete-ttendencias-telegram-messages.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-telegram-readonly
+  cancel-in-progress: false
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/telegram-image-deliveries.json
+            /trends/telegram-bot-state.json
+      - name: Borrar mensajes y registrar éxitos y fallos
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os,pathlib,urllib.request,urllib.error
+          from datetime import datetime,timezone,timedelta
+          ledger=pathlib.Path("trends/telegram-image-deliveries.json")
+          doc=json.loads(ledger.read_text(encoding="utf8"))
+          token=os.environ.get("TTENDENCIAS_BOT_TOKEN","").strip()
+          state=json.loads(pathlib.Path("trends/telegram-bot-state.json").read_text(encoding="utf8"))
+          chat=os.environ.get("TTENDENCIAS_CHAT_ID","").strip() or str(state.get("chat_id") or "")
+          pending=[x for x in doc.get("items",[]) if x.get("status")=="delete_pending"]
+          if not pending:
+              print("TTENDENCIAS_DELETE_PENDING=0")
+              raise SystemExit(0)
+          if not token or not chat:
+              raise SystemExit("Missing Telegram bot credentials for pending deletions")
+          now=datetime.now(timezone.utc)
+          stamp=lambda d:d.isoformat().replace("+00:00","Z")
+          changed=ok=failed=0
+          for row in pending:
+              due=row.get("delete_next_retry_at")
+              if due:
+                  try:
+                      if datetime.fromisoformat(due.replace("Z","+00:00"))>now:continue
+                  except ValueError:pass
+              mid=int(row.get("telegram_message_id") or 0)
+              if mid<=0:
+                  row.update(status="delete_failed",delete_error="message_id no válido",delete_last_attempt_at=stamp(now))
+                  changed+=1;failed+=1;continue
+              payload=json.dumps({"chat_id":chat,"message_id":mid}).encode("utf8")
+              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/deleteMessage",data=payload,headers={"content-type":"application/json"})
+              try:
+                  with urllib.request.urlopen(req,timeout=22) as resp:
+                      ans=json.loads(resp.read().decode("utf8"))
+                  code=200 if ans.get("ok") else int(ans.get("error_code") or 500)
+                  reason=str(ans.get("description") or "")
+                  retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
+              except urllib.error.HTTPError as err:
+                  code=err.code
+                  try: ans=json.loads(err.read().decode("utf8"))
+                  except Exception:ans={}
+                  reason=str(ans.get("description") or "Error HTTP")
+                  retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
+              except Exception as err:
+                  code=0;reason=type(err).__name__;retry=0
+              if code==200 or "message to delete not found" in reason.lower():
+                  row.update(status="deleted",deleted_at=stamp(now),delete_last_attempt_at=stamp(now))
+                  row.pop("delete_error",None);row.pop("delete_next_retry_at",None)
+                  changed+=1;ok+=1
+                  print("TTENDENCIAS_DELETE_OK",mid)
+              else:
+                  attempts=int(row.get("delete_attempts") or 0)+1
+                  recoverable=code in {0,408,425,429} or 500<=code<600
+                  next_status="delete_pending" if recoverable and attempts<6 else "delete_failed"
+                  row.update(status=next_status,delete_attempts=attempts,delete_error="HTTP "+str(code)+": "+reason[:160],delete_last_attempt_at=stamp(now))
+                  if next_status=="delete_pending":
+                      wait=max(retry,min(3600,60*2**min(attempts,5)))
+                      row["delete_next_retry_at"]=stamp(now+timedelta(seconds=wait))
+                  else:
+                      row.pop("delete_next_retry_at",None);failed+=1
+                  changed+=1
+                  print("TTENDENCIAS_DELETE_"+("RETRY" if next_status=="delete_pending" else "FAILED"),mid,code)
+          if changed:
+              doc["updated_at"]=stamp(now)
+              ledger.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          print("TTENDENCIAS_DELETE_SUMMARY", "done",ok,"failed",failed)
+          PY
+      - name: Persistir resultados manteniendo reintentos
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- trends/telegram-image-deliveries.json; then exit 0; fi
+          git add trends/telegram-image-deliveries.json
+          git commit -m "Confirmar borrados de TTendencias en Telegram"
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; exit 1; }
+            sleep "$attempt"
+          done
+          exit 1
