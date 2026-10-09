@@ -1110,7 +1110,9 @@ def handle_instagram_package_callback(callback):
     print("TT_INSTAGRAM_PUBLISH_DIAGNOSTIC="+json.dumps({
         "event_id":trend_id,"error":code[:64],
         "state":str(result.get("state") or "")[:32],
-        "http_status":http_status
+        "http_status":http_status,
+        "meta_error_code":result.get("meta_error_code"),
+        "meta_error_subcode":result.get("meta_error_subcode")
     },ensure_ascii=False),flush=True)
 
     if result.get("state")=="published":
@@ -1144,6 +1146,13 @@ def handle_instagram_package_callback(callback):
         txt="Instagram no confirmó la publicación. El botón sigue disponible."
     # Error/status only; do not expose request contents, access tokens or secrets.
     txt+="\\nDiagnóstico: "+code[:64]+" (HTTP "+str(http_status or "sin respuesta")+")."
+    meta_code=result.get("meta_error_code")
+    meta_subcode=result.get("meta_error_subcode")
+    if isinstance(meta_code,int):
+        txt+="\\nMeta: código "+str(meta_code)
+        if isinstance(meta_subcode,int):
+            txt+=", subcódigo "+str(meta_subcode)
+        txt+="."
     call("sendMessage",{"chat_id":chat_id,"text":"📸 "+txt,"reply_to_message_id":message_id})
     return ("publisher_"+code.lower()[:42]+"_http"+str(http_status))[:64]
 
