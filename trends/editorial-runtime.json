@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T19:15:00+02:00",
-  "last_completed_at": "2026-10-09T19:23:40+02:00",
-  "updated_at": "2026-10-09T19:23:40+02:00",
+  "last_started_at": "2026-10-09T20:15:00+02:00",
+  "last_completed_at": "2026-10-09T20:19:20+02:00",
+  "updated_at": "2026-10-09T20:19:20+02:00",
   "status": "success",
   "processed_ids": [
-    "4b5c7e7d5b37"
+    "2001ce1304ef"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -17,15 +17,14 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T191500-chat",
+    "run_id": "tr-20261009T201500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T19:15:00+02:00",
-    "updated_at": "2026-10-09T19:23:40+02:00",
-    "finished_at": "2026-10-09T19:23:40+02:00",
-    "trend_id": "4b5c7e7d5b37",
-    "title": "Jordi Wild",
+    "started_at": "2026-10-09T20:15:00+02:00",
+    "updated_at": "2026-10-09T20:19:20+02:00",
+    "trend_id": "2001ce1304ef",
+    "title": "Biedma",
     "current": 1,
     "total": 1,
     "partial": false,
@@ -33,8 +32,8 @@
       "trends_processed": 1,
       "trends_explained": 1,
       "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 0,
+      "new_cards": 0,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -43,16 +42,16 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 9,
+      "pending_cards_reviewed": 3,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "archive_images_ready": 4,
+      "archive_images_ready": 1,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 1,
       "remates_selected": 0,
       "remates_omitted": 1
     },
-    "message": "Pasada editorial completada · Jordi Wild r0 explicada y verificada; cola final 0. Reparación visual ejecutada de forma independiente.",
+    "message": "Pasada editorial completada · Biedma r1 explicada y verificada; cola final 0. Reparación visual solicitada de forma independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -64,139 +63,140 @@
     },
     "remate_selections": [
       {
-        "trend_id": "4b5c7e7d5b37",
-        "revision": 0,
+        "trend_id": "2001ce1304ef",
+        "revision": 1,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "political_content"
+        "no_remate_reason": "sensitive_event"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-09T19:15:00+02:00",
+        "at": "2026-10-09T20:15:00+02:00",
         "phase": "preparing",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Pasada iniciada · 1 tendencia activa; revalidando main y Pendientes."
       },
       {
-        "at": "2026-10-09T19:15:10+02:00",
+        "at": "2026-10-09T20:15:20+02:00",
         "phase": "verifying",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Releyendo estado autoritativo de Jordi Wild"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Releyendo estado autoritativo de Biedma"
       },
       {
-        "at": "2026-10-09T19:15:20+02:00",
+        "at": "2026-10-09T20:15:40+02:00",
         "phase": "investigating",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-09T19:15:45+02:00",
+        "at": "2026-10-09T20:16:00+02:00",
         "phase": "investigating",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Contrastando fuente 1/2 · invitación electoral de The Wild Project"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Contrastando fuente 1/2 · declaración de Biedma en la Audiencia Nacional"
       },
       {
-        "at": "2026-10-09T19:16:05+02:00",
+        "at": "2026-10-09T20:16:20+02:00",
         "phase": "investigating",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Contrastando fuente 2/2 · Feijóo y Abascal aceptan públicamente"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Contrastando fuente 2/2 · seguimientos y episodios relatados por la magistrada"
       },
       {
-        "at": "2026-10-09T19:16:15+02:00",
+        "at": "2026-10-09T20:16:35+02:00",
         "phase": "investigating",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Hecho esencial verificado"
       },
       {
-        "at": "2026-10-09T19:16:30+02:00",
+        "at": "2026-10-09T20:16:50+02:00",
         "phase": "drafting",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-09T19:16:40+02:00",
+        "at": "2026-10-09T20:17:05+02:00",
         "phase": "drafting",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Comprobando límite de X · 245 caracteres"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Comprobando límite de X · 242 caracteres"
       },
       {
-        "at": "2026-10-09T19:16:45+02:00",
+        "at": "2026-10-09T20:17:10+02:00",
         "phase": "remate_selection",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Sin remate · contenido político"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Sin remate · contenido sensible; explicación factual suficiente"
       },
       {
-        "at": "2026-10-09T19:19:55+02:00",
+        "at": "2026-10-09T20:17:15+02:00",
         "phase": "persisting",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-09T19:20:15+02:00",
+        "at": "2026-10-09T20:17:35+02:00",
         "phase": "persisting",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-09T19:21:15+02:00",
+        "at": "2026-10-09T20:18:00+02:00",
         "phase": "persisting",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-09T19:21:35+02:00",
+        "at": "2026-10-09T20:18:15+02:00",
         "phase": "verifying",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-09T19:22:20+02:00",
+        "at": "2026-10-09T20:18:30+02:00",
         "phase": "verifying",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-09T19:22:25+02:00",
+        "at": "2026-10-09T20:18:40+02:00",
         "phase": "verifying",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-09T19:23:10+02:00",
+        "at": "2026-10-09T20:19:00+02:00",
         "phase": "verifying",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Saneamiento visual ejecutado · 9 tarjetas examinadas"
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Saneamiento visual solicitado · 3 tarjetas pendientes revisadas"
       },
       {
-        "at": "2026-10-09T19:23:40+02:00",
+        "at": "2026-10-09T20:19:20+02:00",
         "phase": "closing",
-        "trend_id": "4b5c7e7d5b37",
-        "title": "Jordi Wild",
-        "message": "Pasada editorial completada · Jordi Wild r0 explicada y verificada; cola final 0. Reparación visual ejecutada de forma independiente."
+        "trend_id": "2001ce1304ef",
+        "title": "Biedma",
+        "message": "Pasada editorial completada · Biedma r1 explicada y verificada; cola final 0. Reparación visual solicitada de forma independiente."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": []
+    "remaining_problematic_ids": [],
+    "finished_at": "2026-10-09T20:19:20+02:00"
   },
   "visual_repair": {
     "requested": true,
@@ -213,6 +213,5 @@
     "queued_target_name": null
   },
   "version": 1,
-  "canonical": true,
-  "error": null
+  "canonical": true
 }
