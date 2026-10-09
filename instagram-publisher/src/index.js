@@ -77,6 +77,22 @@ async function metaPreflight(env){
   },ok?200:422);
 }
 async function state(db,key){return db.prepare("SELECT * FROM instagram_posts WHERE id=?").bind(key).first();}
+async function readPublicationStatus(req,env){
+  const url=new URL(req.url);
+  const source=String(url.searchParams.get("source")||"");
+  const eventId=String(url.searchParams.get("event_id")||"");
+  if(!["ttittulares","ttendencias"].includes(source)||!/^[A-Za-z0-9_-]{5,64}$/.test(eventId)){
+    return answer({ok:false,error:"INVALID_IDENTITY"},400);
+  }
+  if(!env.IG_DB)return answer({ok:false,error:"D1_NOT_CONFIGURED"},503);
+  const row=await state(env.IG_DB,source+":"+eventId);
+  if(!row)return answer({ok:true,source,event_id:eventId,state:"not_recorded",found:false});
+  // Strictly read-only: never create, retry or reconcile publication here.
+  return answer({ok:true,source,event_id:eventId,found:true,
+    state:row.state,media_id:row.media_id||null,permalink:row.permalink||null,
+    container_id:row.container_id||null,updated_at:row.updated_at||null});
+}
+
 async function change(db,key,old,now,fields={}){
   const keys=Object.keys(fields);
   const sql="UPDATE instagram_posts SET state=?,updated_at=CURRENT_TIMESTAMP"+keys.map(k=>","+k+"=?").join("")+" WHERE id=? AND state=?";
@@ -151,6 +167,11 @@ async function publish(env,item){
 export default {async fetch(req,env){
   const pathname=new URL(req.url).pathname;
   if(pathname==="/health"&&req.method==="GET")return answer({ok:true,service:"tt-actualidad-instagram",active:isActive(env)});
+  if(pathname==="/publication-status"&&req.method==="GET"){
+    if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
+    try{return await readPublicationStatus(req,env)}
+    catch(_error){return answer({ok:false,error:"STATUS_QUERY_FAILED"},503)}
+  }
   if(pathname==="/meta-preflight"&&req.method==="GET"){
     if(!authorize(req,env))return answer({ok:false,error:"UNAUTHORIZED"},401);
     return metaPreflight(env);
