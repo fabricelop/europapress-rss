@@ -70,7 +70,7 @@ jobs:
           foreach ($c in $controls) {
             $line = git ls-remote $repo ("refs/heads/" + $c.Branch)
             if ($LASTEXITCODE -ne 0 -or -not $line) { throw "$($c.Name): no se pudo resolver la rama por git" }
-            $sha = ($line | Select-Object -First 1) -split "\\s+" | Select-Object -First 1
+            $sha = ($line | Select-Object -First 1) -split "\s+" | Select-Object -First 1
             if ($sha -notmatch "^[0-9a-fA-F]{40}$") { throw "$($c.Name): SHA incorrecto" }
             $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/$sha/$($c.File)"
             $data = Invoke-RestMethod -Uri $url -TimeoutSec 20
