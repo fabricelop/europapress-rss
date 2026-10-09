@@ -88,7 +88,7 @@ class InstagramPilotTests(unittest.TestCase):
         output=caption("Exacto.\n🌶️ Chiste.")
         self.assertTrue(output.startswith("Exacto.\n🌶️ Chiste."))
         self.assertNotIn("generada con IA",output)
-        self.assertIn("#Actualidad",output)
+        self.assertNotIn("#Actualidad",output)
         with self.assertRaises(ValueError):
             caption("x"*2201)
 
