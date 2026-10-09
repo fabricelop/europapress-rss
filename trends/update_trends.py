@@ -520,15 +520,14 @@ def best_news_signal(term, status_doc, full_events):
             best = row
     return best
 
-def lower_rank_stats(source_data, top10):
-    top_keys = {term_key(x) for x in top10}
+def lower_rank_stats(source_data, top30):
+    # El radar de anticipación excluye TODOS los puestos del Top 30 visible.
+    top_keys = {term_key(x) for x in top30}
     stats = {}
     for source, data in source_data.items():
         if not data.get("ok") or data.get("freshness") in {"stale", "invalid", "error"}:
             continue
         for rank, term in enumerate((data.get("trends") or [])[:50], 1):
-            if rank <= 10:
-                continue
             key = term_key(term)
             if not key or key in top_keys:
                 continue
@@ -545,8 +544,8 @@ def lower_rank_stats(source_data, top10):
             row["best_observed_rank"] = min(row["best_observed_rank"], rank)
     return stats
 
-def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, now):
-    stats = lower_rank_stats(source_data, top10)
+def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, now):
+    stats = lower_rank_stats(source_data, top30)
     previous = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
     rows = []
     for key, row in stats.items():
@@ -574,6 +573,11 @@ def build_upcoming(source_data, top10, previous_doc, status_doc, full_events, no
             movement = "down"
         else:
             movement = "flat"
+
+        # Excluir señales estables o descendentes: solo nuevas con respaldo
+        # multifuente o con mejora observable de rango/cobertura.
+        if movement not in {"new", "up"}:
+            continue
 
         # La puntuación solo ordena internamente las señales. La interfaz muestra
         # los datos observados (fuentes, posición y cobertura), no una probabilidad.
@@ -753,7 +757,7 @@ def main():
     ttittulares_status = load_json(TTITTULARES_STATUS, {})
     ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
-    upcoming = build_upcoming(source_data, top10, previous_doc, ttittulares_status, ttittulares_events, now)
+    upcoming = build_upcoming(source_data, top30, previous_doc, ttittulares_status, ttittulares_events, now)
     upcoming = filter_dismissed_upcoming(upcoming, requests_doc)
     anticipated = anticipated_entries(top10, previous_doc, now)
 
@@ -785,7 +789,7 @@ def main():
         "new_entries": new_entries,
         "upcoming": upcoming,
         "anticipated_entries": anticipated,
-        "upcoming_method": "social-ranks-11-50 + temporal momentum + TTiTTulares coverage",
+        "upcoming_method": "outside-top30 + confirmed-social-support + rising-or-new",
         "sources": source_data,
     }
     RECENT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
