@@ -126,3 +126,29 @@ jobs:
           Ensure-StateFields $state2
           if(@($state2.active_image_commands).Count -ne 1){throw "Images active state lost"}
           Write-Host "OK: migrated image state and durable per-command retry cooldown"
+
+      - name: Guard TTiTTulares stale editorial trigger does not starve Gag IA
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/TTiTTularesDedicatedListener.ps1" -Raw
+          $t=$null; $errs=$null
+          [Management.Automation.Language.Parser]::ParseInput($src,[ref]$t,[ref]$errs)|Out-Null
+          if($errs.Count){ throw "TTiTTulares listener syntax failed" }
+          $from=$src.IndexOf('if (-not $isFresh) {')
+          $to=$src.IndexOf('  # 2) Jobs de Gag IA automáticos/manuales posteriores a READY')
+          if($from -lt 0 -or $to -lt $from){throw "Cannot locate editorial/image boundaries"}
+          $editorial=$src.Substring($from,$to-$from)
+          if($editorial -match '(?s)if \(-not \$isFresh\) \{.*?Start-Sleep -Seconds \$PollSeconds\s+continue'){
+            throw "Stale editorial trigger still skips entire image polling loop"
+          }
+          if($editorial -notmatch '(?s)if \(-not \$isFresh\) \{.*?Save-State \$state\s+[^}]*\} else \{'){
+            throw "Stale editorial path no longer guards only the editorial ACK"
+          }
+          if($editorial -notmatch 'Send-Ack \$commandId "picked_up"'){
+            throw "Fresh editorial path lost picked_up ACK"
+          }
+          if($src -notmatch '(?s)# 2\) Jobs de Gag IA.*?\$idx=Read-ImageIndex'){
+            throw "Independent image queue lost"
+          }
+          Write-Host "OK: stale editorial trigger cannot skip the independent image queue"
