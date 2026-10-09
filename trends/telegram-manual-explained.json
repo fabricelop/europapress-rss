@@ -40027,15 +40027,61 @@
         }
       ],
       "duplicate_of": null,
-      "ai_image_status": "pending",
-      "image_status": "none",
+      "ai_image_status": "ready",
+      "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
-      "ai_image_attempt": 0,
+      "ai_image_attempt": 1,
       "fallback_image_strategy": "existing_web_image",
       "fallback_image_status": "none",
-      "image_choice": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "image_choice": "ai",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ddda27993e11-r0-ai1-791550223516.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "98b673178f34b4660323f5a0b07ed52afa68bbc89f503d3a79c396401d7f35af",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2263120,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ddda27993e11",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ddda27993e11-r0-a1-1791550223516"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ddda27993e11-r0-ai1-791550223516.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T12:55:13.733Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ddda27993e11-r0-ai1-791550223516.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "98b673178f34b4660323f5a0b07ed52afa68bbc89f503d3a79c396401d7f35af",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2263120,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ddda27993e11",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ddda27993e11-r0-a1-1791550223516"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ddda27993e11-r0-ai1-791550223516.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "1f4cd9b7c079",
@@ -40137,6 +40183,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-09T12:52:22.895255Z",
+  "updated_at": "2026-10-09T12:55:13.733Z",
   "count": 677
 }
