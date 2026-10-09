@@ -39127,7 +39127,7 @@
       "id": "e2d73333643e",
       "name": "Bonaire",
       "revision": 0,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-09T15:37:00.256Z",
       "rank": 30,
       "with_image": false,
@@ -39142,7 +39142,11 @@
       "requested_together": [
         "Bonaire"
       ],
-      "auto_queued": false
+      "auto_queued": false,
+      "problematic_at": "2026-10-09T17:53:05+02:00",
+      "problem_reason": "Dos búsquedas actuales distintas no permiten identificar con fiabilidad un detonante único para «Bonaire» en España: aparecen el centro comercial de Aldaia (horarios/eventos) y la isla caribeña (regata), sin una señal reciente inequívoca que explique la tendencia.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "627e5444b2e1",
@@ -39166,6 +39170,6 @@
       "auto_queued": false
     }
   ],
-  "updated_at": "2026-10-09T17:47:40+02:00",
+  "updated_at": "2026-10-09T17:53:05+02:00",
   "count": 724
 }
