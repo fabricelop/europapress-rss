@@ -321,4 +321,4 @@ export default {async fetch(req,env){
   try{item=inputCheck(await req.json());}catch(_err){return answer({ok:false,error:"INVALID_REQUEST"},400);}
   try{return await publish(env,item);}catch(_err){return answer({ok:false,error:"INTERNAL_ERROR"},503);}
 }};
-export {authorize,inputCheck};
+export {authorize,inputCheck,instagramCaption};
