@@ -352,6 +352,7 @@ function Save-State($State) {
 }
 
 function Ensure-StateFields($State) {
+  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE INVALID: expected object" }
   foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
       $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
