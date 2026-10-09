@@ -62,6 +62,10 @@ class TrendCallbackTests(unittest.TestCase):
         self.assertEqual(rows[0][0]["url"],"https://www.instagram.com/p/testpost/")
         self.assertEqual(rows[1][0]["callback_data"],"tx:p:abc123:1")
         self.assertEqual(rows[1][1]["callback_data"],"tx:d:abc123:1")
+        notices=[x.args[1] for x in call.call_args_list if x.args[0]=="sendMessage"]
+        self.assertEqual(len(notices),1)
+        self.assertEqual(notices[0]["reply_to_message_id"],1234)
+        self.assertIn("Publicado en Instagram: https://www.instagram.com/p/testpost/",notices[0]["text"])
         self.assertFalse(any(x.args[0]=="deleteMessage" for x in call.call_args_list))
 
     def test_same_package_router_in_web_and_legacy_modes(self):
