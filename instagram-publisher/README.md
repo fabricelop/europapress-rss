@@ -1,60 +1,78 @@
-# TT Actualidad / Instagram: staging-only publisher
+# TT Actualidad — publicación controlada en Instagram
 
-The isolated publisher Worker has been deployed at `https://tt-actualidad-instagram-pilot.fabricelop.workers.dev`. Telegram routing, new Meta authorization and explicit pilot activation are still pending; it is not yet a functioning end-to-end Instagram integration. Its purpose is to minimize changes to production while the existing X workflow remains untouched.
+## Estado validado, 9 de octubre de 2026
 
-## Contract
-- Account: @ttactualidad (Instagram user ID 17841414511690117), linked through Facebook page TT Actualidad.
-- Manual selection per item from the existing Telegram messages for TTiTTulares and TTendencias. No automatic posting on READY, and no expiry date for the pilot.
-- Instagram status must be independent of X "Publicado" and "Desestimar"; never delete a Telegram message as a side effect of publishing to Instagram.
-- Use a validated AI image as a public HTTPS JPEG URL and the text shown in Telegram, with a truthful AI illustration disclosure. PNG images must first be converted to JPEG and hosted; no re-generation needed.
-- A unique key (source:event_id) prevents an item from being published twice across image revisions.
+- Cuenta: **@ttactualidad**, vinculada a la página TT Actualidad (ID `1424696600717440`), Instagram User ID `17841414511690117`.
+- Publicador independiente: `tt-actualidad-instagram-pilot`, con base Cloudflare D1 `tt-actualidad-instagram`.
+- Control editorial manual por botones Telegram en TTendencias y TTiTTulares; **no se publica automáticamente** cuando un contenido pasa a READY.
+- Las acciones de Instagram son independientes de «Publicado»/«Desestimar» de X y no borran mensajes.
+- Validación real: Shakira `https://www.instagram.com/p/DeQ-5r7DNct/`, Real Madrid `https://www.instagram.com/p/DeQ-7ApjLnD/`; ambos confirmados por Meta sin duplicados.
+- La imagen es el JPEG preparado junto al paquete; no se regenera al publicar.
+- D1 deduplica por `source:event_id`. Las publicaciones en estado `uncertain` NO deben repetirse automáticamente.
 
-## Backend currently available
-- GET /health reports service identity and the actual active flag; it becomes true only when the explicit activation switch and the required secrets/bindings are present.
-- POST /publish accepts source, event_id, revision, telegram_message_id, image_url and caption, *only* from a trusted server with Authorization: Bearer [INSTAGRAM_INTERNAL_SECRET].
-- The URL is restricted to the existing generated-images JPEG directories; captions must be <= 2200 characters.
-- D1 state machine reserves a unique item, creates a media container, checks its FINISHED status and calls media_publish. On an uncertain outcome it blocks further publication until reconciliation, rather than risking duplicates.
-- There is no token or password in this repository.
+## Texto y etiquetas de Instagram
 
+`shared/instagram_pilot.py` prepara el snapshot de Instagram al enviar cada nuevo paquete Telegram.
+Conserva el texto factual y el remate exactamente como se aprobaron, omite la repetición de
+`@ttactualidad` y la coletilla fija «Ilustración satírica generada con IA», y añade etiquetas
+temáticas que aparecen efectivamente en el contenido, hasta cuatro en total (incluidas las
+etiquetas ya existentes). Ejemplos: `#Shakira`, `#LaRevuelta`, `#RealMadrid`, `#Euroliga`.
+No inventa personas o noticias para ganar visibilidad. Los paquetes anteriores y publicaciones
+ya hechas no se modifican. Instagram enseña por su cuenta el nombre de usuario como autor.
 
-## Dedicated D1 database (created, not yet initialized)
-- Database name: `tt-actualidad-instagram`
-- Database ID: `4eacd44c-212c-4a49-a907-fbbf561b969f`
-- Worker binding: `IG_DB` (configured in `wrangler.jsonc`).
-- Schema (idempotent): `migrations/0001_instagram_posts.sql`.
-- To initialize later after Cloudflare authorization, from the `instagram-publisher` directory: `npx wrangler d1 execute tt-actualidad-instagram --remote --file=migrations/0001_instagram_posts.sql`.
-- Alternatively, paste the two SQL statements from the migration into the Cloudflare **D1 Console** for this database; they are safe to run more than once.
-- An empty database is not ready for publication, and should not be considered live.
+**Transparencia:** quitar la frase fija del pie no elimina las políticas de Meta sobre
+contenidos sintéticos. Usar sus etiquetas de «Información de IA» cuando correspondan
+y evitar presentar ilustraciones fotorealistas como fotografías documentales reales.
 
-## Cloudflare TT Control runtime investigation (8 October 2026)
-- Worker `tt-control` serves `/api/ttittulares-webhook-version` (HTTP 200, `2026-10-08-telegram-callback-preflight-v1`). The TTiTTulares and TTendencias Cloudflare Workers both pass read-only health checks.
-- Authenticated read-only Cloudflare API GETs for `tt-control/content/v2` and `tt-control` both returned HTTP 200 with `multipart/form-data`, approximately 480 KB.
-- Earlier diagnostics searched the entire multipart response as text and found no `telegram`, `callback`, or JS imports. **These negative searches are not evidence that the active Worker lacks the routes.** Inspect the MIME parts and original Worker entrypoint before modifying routing.
-- Production `tt-control` has not been redeployed or altered. Live pilot publisher remains inactive until configured with safe Meta credentials and proven Telegram routing.
-- Latest local authenticated MIME-part inspection found a SINGLE textual JavaScript script of ~137 KB, including literal `/api/telegram-webhook` and `/api/ttittulares-telegram-callback`; `tt:p` and `tt:d` were not both found as raw literals. This establishes a Telegram callback forwarder exists. It does NOT yet establish whether `tt:i` is accepted: classify the callback dispatch safely before patching or deploying the gateway. The raw Worker may be bundled/minified; code should not be pasted in chat.
+## Token de Meta de larga duración
 
-## Integration work staged in PR #112 (no deployment)
-- `shared/instagram_pilot.py`: opt-in JPEG creation, factual text plus AI disclosure, guarded "📸 Publicar en Instagram" Telegram button.
-- `.github/workflows/send-ttittulares-ready-telegram.yml`: prepares and commits JPEG + immutable Instagram snapshot on the Telegram delivery row (disabled unless `INSTAGRAM_PILOT_ENABLED=1`).
-- `trends/send_explained_telegram.py` and its delivery workflow: same controlled path for TTendencias, without changing X buttons.
-- `no-vercel/ttittulares-worker/src/index.js`: new verified `tt:i:event_id` handler, checks the delivered Telegram message and configured allowed chat, reads its trusted GitHub snapshot, invokes the publisher; never touches X decisions.
-- `trends/telegram_bot.py`: new `tx:i:trend_id:revision` handler, checking the registered Telegram chat and delivered message, independent from `tx:p/tx:d`.
-- Automated unit tests and staging CI; **no actual Meta posting has been exercised**.
+El token de página derivado directamente de un token de usuario de Graph API Explorer
+puede caducar pronto. Para mayor estabilidad: `USER token breve` →
+intercambio `fb_exchange_token` usando **App ID y App Secret** →
+`USER token ~60 días` → nuevo **Page Access Token** de larga duración
+(puede figurar sin caducidad programada; sigue siendo revocable).
 
-**Deployment blockers (must verify in live infrastructure):**
-1. The deployed `tt-control` gateway was inspected read-only: it has `/api/telegram-webhook` and `/api/ttittulares-telegram-callback`, a `service.fetch` forwarder, and a generic `tt:` prefix near that forwarder. No explicit `p/d`-only filter was detected. Do **not** redeploy the gateway: first deploy the updated downstream TTiTTulares Worker, then verify a real `tt:i` callback with Meta still disabled and existing X actions untouched.
-2. Confirm that TTendencias runs the `trends/telegram_bot.py` package listener with the new code and supply `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET` as private runtime variables.
-3. Set separate secret `INSTAGRAM_ALLOWED_CHAT_ID` on the TTiTTulares Worker, and `INSTAGRAM_PUBLISHER_URL` and `INSTAGRAM_INTERNAL_SECRET`. Never expose the real Telegram bot tokens or page token.
-4. Install the isolated Instagram Worker, its D1 binding, and a newly authorized long-lived Meta Page token, without touching the existing Cloudflare Workers. Check token expiry/refresh.
-5. Confirm end-to-end with one selected post and verify Telegram retains X actions, the archive and IA images, receives Meta permalink, and does not duplicate on repeated click. Only then set the repo variable `INSTAGRAM_PILOT_ENABLED=1`.
-6. For a container still processing after background polls, the pilot currently asks the user to retry; a reliable scheduled retry and Telegram status notification should be added before promising entirely hands-off completion in every case.
+En el PC Windows autenticado con Wrangler:
 
-## Still necessary before any production activation
-1. Obtain a fresh **suitable long-lived** Facebook Page token (the old app authorization was revoked after its token was shown in a screenshot). Confirm correct scope and rotation. Never paste credentials in chat, source or logs.
-2. Configure a **separate** Cloudflare Worker and separate D1 database binding IG_DB, with secret INSTAGRAM_PAGE_ACCESS_TOKEN and secret INSTAGRAM_INTERNAL_SECRET (random, 32+ chars); INSTAGRAM_USER_ID is non-secret configuration. Do not install into the existing TT Control D1 database.
-3. Wire the verified existing Telegram callback routes for each bot. On button click: verify the allowed chat and the original delivery identity before building a trusted request. Do not take image or text from public request parameters.
-4. Add exactly one independent "Publicar en Instagram" button to both existing Telegram keyboards and their refresh/retry paths. Send results back by editing the button to a link "Publicado en Instagram" or a recoverable error without touching X status, text or images.
-5. Prepare a durable snapshot of source event, revision, Telegram message ID, caption and actual AI JPEG when sending Telegram; items may disappear from editorial "prepared" after they are marked Published on X.
-6. Add automated tests against mocked Meta API, idempotency and Telegram callbacks. Test on preview and deploy only after validation.
+1. Abrir `https://developers.facebook.com/apps/`, entrar en la app
+   **TT Actualidad Publicador** → *Configuración de la aplicación* → *Básica*.
+   Copiar **App ID** y preparar el **App Secret**, sin pegarlos en ChatGPT.
+2. Obtener un **USER Access Token** vigente desde `https://developers.facebook.com/tools/explorer/`
+   con `pages_show_list`, `pages_read_engagement`, `instagram_basic`
+   e `instagram_content_publish`, usando esa misma app.
+3. En PowerShell:
 
-**Activation must remain disabled until one selected post has been validated end-to-end.** The Worker refuses publication when `INSTAGRAM_PUBLISH_ENABLED` is not exactly `1`. Production Telegram routing stays unchanged until the downstream integration is verified.
+   ```powershell
+   Set-Location "$env:USERPROFILE\europapress-rss"
+   git pull --ff-only origin main
+   if ($LASTEXITCODE -ne 0) { throw "No se pudo actualizar el repositorio." }
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+   & ".\instagram-publisher\scripts\upgrade-meta-page-token-long-lived.ps1"
+   ```
+
+4. Introducir App ID, App Secret (oculto) y token de usuario (oculto).
+   El script comprueba el token extendido, la página y cuenta correctas,
+   consulta opcionalmente la fecha de caducidad con `debug_token`,
+   y guarda **únicamente** el Page Access Token en
+   `INSTAGRAM_PAGE_ACCESS_TOKEN` de Cloudflare.
+5. Esperar `TOKEN_META_LARGA_DURACION_OK` y verificar `GET /meta-preflight`
+   a través del workflow autenticado (sin volver a publicar ni tocar X).
+   No hace falta redeploy del código del Worker después de cambiar este secreto.
+
+Nunca publicar App Secret, USER token o Page token en chats, logs, GitHub ni archivos.
+El script de emergencia `renew-meta-page-token.ps1` sigue disponible, pero
+**no convierte** el token de usuario en uno de larga duración.
+
+## Contrato y seguridad
+
+- `GET /health` no requiere autenticación y muestra `active` (sin secretos).
+- `GET /meta-preflight` requiere `INSTAGRAM_INTERNAL_SECRET` y valida de forma read-only
+  la página, el Instagram asociado, el token y el esquema D1.
+- `POST /publish` requiere el mismo secreto, comprueba origen `ttendencias` o
+  `ttittulares`, identidad del envío, JPEG alojado en el repositorio y caption de ≤2200 caracteres.
+- El servicio reserva en D1, crea el contenedor, espera su finalización y lo publica.
+  Si la fase de publicación es ambigua, permanece bloqueada para evitar dobles publicaciones.
+- No almacenar credenciales Meta en GitHub ni modificar MoneyWiz/X.
+
+Las pruebas de integración de texto, botones, URL JPEG y publicación idempotente están
+en `instagram-publisher/test/`.
