@@ -119,6 +119,20 @@ function StartListener([string]$Name){
   Log ("RESTART OK "+$Name+" pid="+$p.Id)
 }
 
+function Ensure-Alive([string]$Name,[string]$Pattern) {
+  try{
+    $found=@(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object {
+      ($_.Name -ieq "powershell.exe" -or $_.Name -ieq "pwsh.exe") -and
+      [string]$_.CommandLine -like $Pattern
+    })
+    if($found.Count -gt 0){return}
+    Log ("PROCESS MISSING "+$Name+"; starting independent of file updates")
+    StartListener $Name
+  }catch{
+    Log ("ENSURE PROCESS ERROR "+$Name+" :: "+$_.Exception.Message)
+  }
+}
+
 function CheckOnce {
   try{
     $restart=@()
@@ -150,14 +164,21 @@ function CheckOnce {
       Start-Sleep -Milliseconds 500
       StartListener ([string]$m.Local)
     }
+    # El actualizador no debe declarar salud porque los bytes coincidan:
+    # la version anterior podia registrar RESTART OK con los procesos muertos.
+    # Watchdog supervisa a ambos listeners. Si falta, reponerlo incluso si no
+    # hubo descargas. Después reparar los listeners que no estén activos.
+    Ensure-Alive "TT-LocalWatchdog.ps1" "*TT-LocalWatchdog.ps1*"
+    Ensure-Alive "TTiTTularesDedicatedListener.ps1" "*TTiTTularesDedicatedListener.ps1*"
+    Ensure-Alive "TTendenciasDedicatedListener.ps1" "*TTendenciasDedicatedListener.ps1*"
     $ref=if($mainSha){$mainSha}else{"main"}
-    Log ("CHECK OK raw-v6 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count)
+    Log ("CHECK OK raw-v7 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count)
   }catch{
     Log ("CHECK ERROR :: "+$_.Exception.Message)
   }
 }
 
-Log ("START raw-v6 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
+Log ("START raw-v7 interval="+$IntervalSeconds+" once="+$Once+" pid="+$PID)
 do{
   CheckOnce
   if($Once){break}
