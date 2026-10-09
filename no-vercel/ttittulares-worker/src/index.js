@@ -400,6 +400,37 @@ export default {
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2"});
+    if(path==="/api/ttittulares-instagram-preflight"&&request.method==="GET"){
+      // Authenticated, read-only verification. Never creates a media container.
+      const secret=String(env.INSTAGRAM_INTERNAL_SECRET||"");
+      if(secret.length<32||request.headers.get("authorization")!=="Bearer "+secret){
+        return json({ok:false,error:"UNAUTHORIZED"},401);
+      }
+      const chat=String(url.searchParams.get("chat_id")||"");
+      const allowedChat=String(env.INSTAGRAM_ALLOWED_CHAT_ID||"");
+      const configured=Boolean(allowedChat)&&Boolean(env.GITHUB_TOKEN)&&
+        Boolean(env.TTITTULARES_CALLBACK_DECRYPT_KEY);
+      const publisher=String(env.INSTAGRAM_PUBLISHER_URL||"").replace(/\\/+$/,"");
+      const endpointOk=publisher==="https://tt-actualidad-instagram-pilot.fabricelop.workers.dev";
+      let publisherStatus=0,publisherOk=false;
+      if(endpointOk){
+        try{
+          const p=await fetch(publisher+"/meta-preflight",{
+            method:"GET",headers:{"authorization":"Bearer "+secret},
+            signal:AbortSignal.timeout(12000)
+          });
+          publisherStatus=p.status;
+          const d=await p.json().catch(()=>({}));
+          publisherOk=p.ok&&d.ok===true&&d.active===true;
+        }catch(_error){}
+      }
+      const chatMatches=chat?chat===allowedChat:null;
+      return json({ok:configured&&endpointOk&&publisherOk&&chatMatches!==false,
+        publisher_authenticated:publisherOk,publisher_http:publisherStatus,
+        publisher_url_valid:endpointOk,allowed_chat_configured:!!allowedChat,
+        chat_matches:chatMatches,github_configured:!!env.GITHUB_TOKEN,
+        telegram_bot_configured:!!env.TTITTULARES_CALLBACK_DECRYPT_KEY});
+    }
     if(path==="/api/ttittulares-instagram-route-version"&&request.method==="GET")return json({ok:true,version:"instagram-callback-preflight-v1",telegram_callback:"tt:i",status:"disabled_until_credentials"});
     if(path==="/api/ttittulares-telegram-callback")return enqueueTtiTelegramCallback(request,env);
     if(Object.prototype.hasOwnProperty.call(ROUTES,path)){
