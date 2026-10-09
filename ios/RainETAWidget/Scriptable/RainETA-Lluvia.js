@@ -158,49 +158,104 @@ async function rainForecast(pos){
   const forecast=await getJson('https://api.open-meteo.com/v1/forecast?'+q);
   return forecastFallback(forecast,Date.now());
 }
+
+async function freshOrCache(pos){
+  try{
+    const value=await rainForecast(pos);
+    if(!value.ok)throw Error('Previsión incompleta');
+    try{Keychain.set(CACHE_KEY,JSON.stringify({lat:pos.lat,lon:pos.lon,value}))}catch(_){}
+    return value;
+  }catch(error){
+    try{
+      if(Keychain.contains(CACHE_KEY)){
+        const saved=JSON.parse(Keychain.get(CACHE_KEY));
+        const age=Date.now()-Number(saved.value?.updatedAt||0);
+        if(Math.abs(saved.lat-pos.lat)<0.02&&Math.abs(saved.lon-pos.lon)<0.02&&age>=0&&age<60*60000)
+          return {...saved.value,fromCache:true};
+      }
+    }catch(_){}
+    throw error;
+  }
+}
 const widget=new ListWidget();
 widget.backgroundColor=new Color('#0a2032');
-widget.setPadding(14,14,13,14);
-function label(text,size,color,bold=false){
-  const t=widget.addText(text);
+widget.setPadding(SMALL?13:8,SMALL?12:8,SMALL?12:8,SMALL?12:8);
+widget.spacing=0;
+function label(str,size,color,bold=false){
+  const t=widget.addText(str);
   t.font=bold?Font.boldSystemFont(size):Font.systemFont(size);
-  t.textColor=new Color(color);t.lineLimit=2;return t;
+  t.textColor=new Color(color);t.lineLimit=2;
+  return t;
 }
-label('RainETA  ·  CUENTA ATRÁS',11,'#85cbee',true);
-widget.addSpacer(7);
 try{
-  const loc=await position();
-  const d=await rainForecast(loc);
-  label(loc.name,11,'#b9d3e1');
-  widget.addSpacer(9);
-  const when=d.targetAt?new Date(d.targetAt):null;
-  const upcoming=when&&Number.isFinite(when.getTime())&&when.getTime()>Date.now()&&d.action!=='none';
-  if(upcoming){
-    label(d.action==='starts'?'EMPIEZA A LLOVER EN':'DEJA DE LLOVER EN',10,'#e3f3fd',true);
-    const countdown=widget.addDate(when);
-    countdown.applyTimerStyle();
-    countdown.font=Font.boldSystemFont(33);
-    countdown.textColor=new Color('#ffffff');
-    countdown.lineLimit=1;countdown.minimumScaleFactor=.5;
-    widget.addSpacer(5);
-    label('±'+(d.precisionMinutes||30)+' min · '+(d.confidence==='media'?'Confianza media':'Confianza baja'),10,'#b5d1e0');
-    const refreshMs=Math.max(60000,Math.min(REFRESH_MINUTES*60000,when.getTime()-Date.now()+1000));
-    widget.refreshAfterDate=new Date(Date.now()+refreshMs);
+  const place=await position();
+  const d=await freshOrCache(place);
+  const now=Date.now(),ageMin=Math.max(0,Math.floor((now-d.updatedAt)/60000));
+  label('RainETA  ·  '+place.name,SMALL?11:12,'#89d2f6',true);
+  widget.addSpacer(SMALL?8:2);
+  const target=d.targetAt?new Date(d.targetAt):null;
+  const upcoming=target&&Number.isFinite(target.getTime())&&target.getTime()>now&&d.action!=='none';
+  const stale=d.fromCache&&ageMin>30;
+  if(stale){
+    label('Datos guardados antiguos',SMALL?12:16,'#ffd09b',true);
+    if(SMALL)label('Sin ETA fiable',11,'#c9e0ed');
+  }else if(upcoming){
+    if(SMALL){
+      label(d.action==='starts'?'EMPIEZA EN':'TERMINA EN',10,'#c6e5f5',true);
+      const timer=widget.addDate(target);
+      timer.applyTimerStyle();
+      timer.font=Font.boldSystemFont(31);
+      timer.textColor=new Color('#ffffff');
+      timer.lineLimit=1;timer.minimumScaleFactor=.5;
+      label('±'+(d.precisionMinutes||30)+' min · estimación',9,'#a2c6db');
+    }else{
+      const stack=widget.addStack();
+      stack.layoutHorizontally();stack.centerAlignContent();
+      const prefix=stack.addText(d.action==='starts'?'Empieza en ':'Termina en ');
+      prefix.font=Font.systemFont(13);prefix.textColor=new Color('#dceffa');
+      const timer=stack.addDate(target);timer.applyTimerStyle();
+      timer.font=Font.boldSystemFont(LARGE?29:23);
+      timer.textColor=new Color('#ffffff');
+      timer.lineLimit=1;timer.minimumScaleFactor=.6;
+    }
+    if(LARGE)label('Hora estimada '+hhmm(target.getTime())+' · margen ±'+(d.precisionMinutes||30)+' min',10,'#a9cedf');
   }else{
-    label(d.phase==='raining'?'LLUEVE AHORA':'SIN LLUVIA INMINENTE',16,'#ffffff',true);
-    widget.addSpacer(6);
-    label(d.summary||'Sin evento confirmado',11,'#b5d1e0');
-    widget.refreshAfterDate=new Date(Date.now()+REFRESH_MINUTES*60000);
+    label(d.phase==='raining'?'Llueve; fin incierto':'Sin lluvia inminente',SMALL?16:18,'#ffffff',true);
+    if(SMALL)label(d.summary,10,'#b3ccda');
+  }
+  if(!SMALL){
+    widget.addSpacer(LARGE?12:3);
+    label('PRÓXIMAS 12 H · % PROB. / LLUVIA MM/H',LARGE?11:9,'#b6d6ec',true);
+    widget.addSpacer(2);
+    const hours=Array.isArray(d.hours)?d.hours:[];
+    if(hours.length){
+      const chart=widget.addImage(drawRainBars(hours,LARGE));
+      const width=LARGE?312:300;
+      chart.imageSize=new Size(width,width*(LARGE?252:210)/720);
+      chart.centerAlignImage();chart.applyFittingContentMode();
+      if(LARGE){
+        widget.addSpacer(9);
+        label('CADA BARRA: hora inferior · % superior · lluvia mm/h intermedia',10,'#b2ccdc');
+        label('Celeste: débil  Azul: moderada  Violeta: fuerte  Coral: intensa',10,'#b2ccdc');
+      }
+    }else{
+      label('Probabilidad horaria no disponible',11,'#ffd09b');
+    }
   }
   widget.addSpacer();
-  label('Open-Meteo · previsión orientativa',9,'#83a3b8');
-}catch(e){
-  widget.addSpacer(12);
-  label('Sin datos meteorológicos',15,'#ffffff',true);
-  widget.addSpacer(7);
-  label(String(e.message||e).slice(0,120),10,'#bfd6e3');
-  widget.refreshAfterDate=new Date(Date.now()+REFRESH_MINUTES*60000);
+  const updateText=(d.fromCache?'Guardado ':'Actualizado ')+hhmm(d.updatedAt);
+  label(updateText+' · '+(SMALL?'12 h: widget mediano':'Open-Meteo (modelo)'),9,'#8eafc4');
+  widget.refreshAfterDate=new Date(now+(d.fromCache?5:REFRESH_MINUTES)*60000);
+}catch(error){
+  widget.addSpacer(9);
+  label('No se pudo actualizar',15,'#ffffff',true);
+  widget.addSpacer(5);
+  label(String(error.message||error).slice(0,116),10,'#c6dce8');
+  widget.refreshAfterDate=new Date(Date.now()+5*60000);
 }
 Script.setWidget(widget);
-if(!config.runsInWidget)await widget.presentSmall();
+if(!config.runsInWidget){
+  if(LARGE)await widget.presentLarge();
+  else await widget.presentMedium();
+}
 Script.complete();
