@@ -71,12 +71,12 @@ def main():
     if not isinstance(ideas.get("items"),list) or not isinstance(q.get("items"),list):
         raise SystemExit("Invalid proposals or editorial-processing schema")
     now=datetime.now(timezone.utc).isoformat().replace("+00:00","Z")
+    had_pending=any(row.get("status")=="PENDING_RESEARCH" for row in ideas["items"])
     count=import_rows(ideas,q,now)
-    if count or any(row.get("status")=="INVALID" for row in ideas["items"]):
+    if had_pending:
         PROPOSALS.write_text(json.dumps(ideas,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
-        PROCESSING.write_text(json.dumps(q,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
-    elif any(row.get("status")=="QUEUED_FOR_INVESTIGATION" and row.get("queued_at")==now for row in ideas["items"]):
-        PROPOSALS.write_text(json.dumps(ideas,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+        if count:
+            PROCESSING.write_text(json.dumps(q,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
     print("TTI_TELEGRAM_PROPOSALS_IMPORTED",count)
 
 if __name__=="__main__":
