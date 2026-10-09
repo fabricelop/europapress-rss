@@ -1,0 +1,35 @@
+name: RainETA
+options:
+  bundleIdPrefix: es.raineta
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    SWIFT_VERSION: "5.9"
+targets:
+  RainETA:
+    type: application
+    platform: iOS
+    sources:
+      - RainETAApp
+    info:
+      path: RainETAApp/Info.plist
+      properties:
+        CFBundleDisplayName: RainETA
+        NSLocationWhenInUseUsageDescription: RainETA usa la ubicación para estimar cuándo empezará o terminará la lluvia.
+        UILaunchScreen: {}
+    dependencies:
+      - target: RainETAWidgetExtension
+        embed: true
+  RainETAWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - RainETAWidget
+    info:
+      path: RainETAWidget/Info.plist
+      properties:
+        CFBundleDisplayName: RainETA Widget
+        NSWidgetWantsLocation: true
+        RainETAAPIBaseURL: https://example.invalid
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
