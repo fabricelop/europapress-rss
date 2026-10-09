@@ -11786,10 +11786,10 @@
         "https://eltelevisero.huffingtonpost.es/2026/10/noche-negra-en-supervivientes-all-stars-tras-la-expulsion-de-una-de-las-grandes-protagonistas-y-un-abandono-forzoso/"
       ],
       "news_disposition": "ignored",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "none",
-      "image_status": "none",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "rank_at_explanation": 5,
       "category": "TV",
       "group_id": "grp-7375308f71a9",
@@ -11808,11 +11808,58 @@
       ],
       "image_strategy": "ai_plus_fallback",
       "fallback_image_strategy": "existing_web_image",
-      "image_choice": "none",
+      "image_choice": "ai",
       "rewrite_with_image": true,
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "disable_ai_image": false,
-      "updated_at": "2026-10-09T03:49:35+02:00"
+      "updated_at": "2026-10-09T03:49:35+02:00",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7375308f71a9-r2-ai6-791510572199.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 6,
+        "sha256": "69417c4d98998ac0a4b03590e439de3d9bdf96d658d8e2e2551396f92906eb29",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2410220,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7375308f71a9",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-7375308f71a9-r2-a6-1791510572199"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7375308f71a9-r2-ai6-791510572199.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 6,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T01:51:55.982Z",
+      "image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/7375308f71a9-r2-ai6-791510572199.png",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 6,
+        "sha256": "69417c4d98998ac0a4b03590e439de3d9bdf96d658d8e2e2551396f92906eb29",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2410220,
+        "context_guard": {
+          "version": 3,
+          "trend_id": "7375308f71a9",
+          "revision": 2,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-7375308f71a9-r2-a6-1791510572199"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/7375308f71a9-r2-ai6-791510572199.png",
+        "handoff": "pc-bridge-direct-materialized"
+      }
     },
     {
       "id": "28010971de9f",
@@ -39373,6 +39420,6 @@
       "telegram_decision_source": "telegram_package"
     }
   ],
-  "updated_at": "2026-10-09T03:49:35+02:00",
+  "updated_at": "2026-10-09T01:51:55.982Z",
   "count": 670
 }
