@@ -15,7 +15,7 @@
  const copies=new Map();
  function value(v){return String(v==null?"":v).trim()}
  function numberHash(v){let n=2166136261;for(const c of value(v)){n^=c.codePointAt(0);n=Math.imul(n,16777619)}return n>>>0}
- function readableCloser(t,c){if(value(c))return value(c);const m=value(t).match(/(?:^|\n)\s*(🌶️[^\n]+)/u);return m?m[1].trim():""}
+ function readableCloser(t,c){const m=value(t).match(/(?:^|\n)\s*(🌶️[^\n]+)/u);return m?m[1].trim():value(c)}
  function buildPrompt(kind,item,xText,variation=0){
   const news=kind==="news";
   const title=value(news?item.title:(item.group_title||item.name||item.display_name||item.term_normalized));
@@ -59,5 +59,5 @@
   link("Chat Images",IMAGES_URL);
   if(options.includeX!==false){button("Copiar en X",async()=>{if(await copy(content))notify("Texto para X copiado")});link("Abrir en X","https://twitter.com/intent/tweet?text="+encodeURIComponent(content))}
  }
- root.TTGag=Object.freeze({mount,buildPrompt,IMAGES_URL,STYLES});
+ root.TTGag=Object.freeze({mount,buildPrompt,copyText:copy,IMAGES_URL,STYLES});
 })(window);
