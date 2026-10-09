@@ -79,7 +79,7 @@ jobs:
                   continue
               action,eid=text.split("|",1)
               eid=eid.strip()
-              if action not in {"ttp","ttd"} or not eid:
+              if action not in {"ttp","ttd","ttb"} or not eid:
                   continue
               if row.get("source")=="ttittulares_cloudflare_callback_v1":
                   qid=str(row.get("callback_query_id") or "")
@@ -121,9 +121,9 @@ jobs:
           existing_delete={int(x.get("message_id") or 0) for x in deleteq["items"]}
 
           for row,action,eid in actions:
-              status="published" if action=="ttp" else "dismissed"
-              terminal="PUBLISHED" if status=="published" else "DISMISSED"
-              field="published_at" if status=="published" else "dismissed_at"
+              status="deleted" if action=="ttb" else "published" if action=="ttp" else "dismissed"
+              terminal="DELETED" if status=="deleted" else "PUBLISHED" if status=="published" else "DISMISSED"
+              field="deleted_at" if status=="deleted" else "published_at" if status=="published" else "dismissed_at"
 
               drow=next((x for x in decisions["items"] if str(x.get("event_id") or "")==eid),None)
               if drow is None:
