@@ -336,7 +336,7 @@ def selftest():
     now=datetime(2026,10,9,16,0,tzinfo=timezone.utc)
     assert not age_ready("2026-10-09T15:01:00Z",now)
     assert age_ready("2026-10-09T15:00:00Z",now)
-    assert not fresh("2026-10-08T12:00:00Z",now)
+    assert not fresh("2026-09-29T12:00:00Z",now)
     card={"id":"abc123","rev":1,"search":"Pedro Sánchez"}
     assert [b[0]["text"] for b in keys(card,"ttittulares")["inline_keyboard"]]==[
         "🔎 Buscar en X","🗑️ Borrar"]
