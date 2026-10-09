@@ -140,3 +140,15 @@ test("Meta container failure preserves only non-secret numerical diagnostics",as
     assert.equal(db.snapshot().state,"failed_before_publish");
   }finally{globalThis.fetch=before;}
 });
+
+test("publication-status is authenticated and read only", async()=>{
+ const u="https://example.com/publication-status?source=ttittulares&event_id=2dd09208e418";
+ const unauth=await worker.fetch(new Request(u),{});
+ assert.equal(unauth.status,401);
+ const db={prepare(){return {bind(key){assert.equal(key,"ttittulares:2dd09208e418");return {first:async()=>null};}}}};
+ const auth=await worker.fetch(new Request(u,{headers:{authorization:"Bearer "+secret}}),{INSTAGRAM_INTERNAL_SECRET:secret,IG_DB:db});
+ assert.equal(auth.status,200);
+ const result=await auth.json();
+ assert.equal(result.state,"not_recorded");
+ assert.equal(result.found,false);
+});
