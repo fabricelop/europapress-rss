@@ -4,11 +4,11 @@
 // This indicates echoes aloft; it does NOT prove rain reaches the ground.
 const RADAR_OBS_CACHE="RainETAWidget:radar-observed:v1:";
 function radarObsLabel(obs){
-  if(obs.status==="echo")return"RADAR AHORA · Eco de precipitación · "+obs.time;
-  if(obs.status==="clear")return"RADAR AHORA · Sin eco detectado · "+obs.time;
-  if(obs.status==="stale")return"RADAR: última imagen demasiado antigua";
-  if(obs.status==="outside")return"RADAR: sin cobertura confirmada";
-  return"RADAR: sin datos fiables";
+  if(obs.status==="echo")return"RainViewer · Ecos de precipitación · "+obs.time;
+  if(obs.status==="clear")return"RainViewer · Sin eco detectado · "+obs.time;
+  if(obs.status==="stale")return"RainViewer · Imagen antigua, sin confirmar";
+  if(obs.status==="outside")return"RainViewer · Fuera de cobertura";
+  return"RainViewer · Sin observación fiable";
 }
 async function radarPngSample(data){
   // Decode a real radar PNG in isolated WebKit canvas to inspect image pixels.
