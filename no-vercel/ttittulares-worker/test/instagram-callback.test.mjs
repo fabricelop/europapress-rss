@@ -51,6 +51,28 @@ test("new Instagram callback preflight is read-only and leaves X routing untouch
   assert.equal((await existing.json()).version,"immediate-decision-delete-v2");
 });
 
+test("Instagram cleanup callback carries only the original Telegram message ID",()=>{
+  const cb=update("i");
+  cb.callback_query.data="tt:igdel:3091";
+  cb.callback_query.message.message_id=4100;
+  const parsed=parseTtiCallback(cb);
+  assert.equal(parsed.type,"instagram_delete");
+  assert.equal(parsed.original_message_id,3091);
+  assert.equal(parsed.message_id,4100);
+  cb.callback_query.data="tt:igdel:not-a-number";
+  assert.equal(parseTtiCallback(cb),null);
+});
+
+test("Instagram cleanup verifies linked reply and retains confirmation on failure",()=>{
+  const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
+  assert.match(source,/async function deleteInstagramTelegramPair\(/);
+  assert.match(source,/replyId>0&&replyId!==originalId/);
+  assert.match(source,/const confirmationDeleted=originalDeleted\?await remove\(confirmationId\):false/);
+  assert.match(source,/originalId===confirmationId/);
+  assert.match(source,/callback_data:"tt:igdel:"\+messageId/);
+  assert.match(source,/event.type==="instagram_delete"/);
+});
+
 test("Instagram callback errors notify Telegram; X handlers stay separate",()=>{
   const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
   assert.match(source,/async function instagramTelegramNotice\(/);
@@ -106,7 +128,7 @@ test("A published Instagram image always triggers Telegram reply, not only a but
  const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
  const published=source.slice(source.indexOf('if(result.state==="published"&&result.permalink?'));
  const success=published.slice(0,published.indexOf("// Never delete Telegram"));
- assert.match(success,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "\+result.permalink\)/);
+ assert.match(success,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "\+result.permalink,/);
  assert.match(success,/return json\(\{ok:true,state:"published",permalink:result.permalink\}\)/);
  assert.match(success,/TTITTULARES_INSTAGRAM_SUCCESS_NOTICE_FAILED/);
 });
