@@ -24,7 +24,7 @@ test("alta manual solo noticia e instrucciones",()=>{
 });
 
 test("TTendencias queda desacoplado de TTiTTulares",()=>{
-  assert.match(html,/No comprobadas/);
+  assert.match(html,/data-view="review"/);
   assert.ok(!html.includes(">Tendencias</button>"));
   assert.ok(!html.includes("promote-trend"));
   assert.ok(!control.includes("TREND_CANDIDATES"));
