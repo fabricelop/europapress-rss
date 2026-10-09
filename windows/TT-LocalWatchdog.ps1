@@ -74,7 +74,7 @@ function EnsureChrome{
   $ok=$false
   try{
     $r=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 3
-    $ok=Boolean($r.webSocketDebuggerUrl)
+    $ok=[bool]$r.webSocketDebuggerUrl
   }catch{}
   if($ok){return}
   try{
