@@ -458,9 +458,15 @@ export default async function handler(req,res){
       rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.explained_at||"").localeCompare(String(a.explained_at||"")));
       const row=rows[0]||null;
       if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return res.status(200).json({ok:true,eligible:false,reason:"not_pending_explained"});
-      const name=String(row.name||"").trim();
-      const rev=Number(row.revision||0);
-      const archived=(copyState.items||[]).some(x=>Number(x.revision||0)===rev&&Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase()));
+      const name=String(row.name||"").trim(),rev=Number(row.revision||0);
+  const rowId=String(row.id||"").trim();
+  const archived=(copyState.items||[]).some(x=>{
+    if(Number(x.revision||0)!==rev)return false;
+    const archivedId=String(x.item_id||x.id||"").trim();
+    if(rowId&&archivedId)return archivedId===rowId;
+    if(archivedId)return false;
+    return Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase())
+  });
       const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
       const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
       const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
