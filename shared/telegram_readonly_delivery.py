@@ -7,12 +7,13 @@ A final explanation edits the original Telegram card if it has not been deleted.
 import argparse
 import hashlib
 import json
+import io
 import os
 import re
 from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 import requests
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -120,6 +121,35 @@ def news_cards(now):
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":str(item.get("url") or job.get("url") or "")}
 
+def verified_article_urls(*rows):
+    """Prefer a checked news article, not a homepage or a generated image."""
+    urls=[]
+    for row in rows:
+        if not isinstance(row,dict):continue
+        for field in ("verification_sources","source_articles","news_sources","references"):
+            for entry in row.get(field) or []:
+                url=(entry.get("url") or entry.get("source_url") or "") if isinstance(entry,dict) else entry
+                if isinstance(url,str) and url.startswith("https://") and url not in urls:
+                    parsed=urlparse(url)
+                    if len([part for part in parsed.path.split("/") if part])>=2:
+                        urls.append(url)
+        for field in ("fallback_image","archive_image"):
+            item=row.get(field)
+            url=item.get("source_url") if isinstance(item,dict) else ""
+            if isinstance(url,str) and url.startswith("https://") and url not in urls:
+                urls.append(url)
+    return urls[:2]
+
+def trend_body(label,detail,is_final):
+    if not is_final:
+        return label+"\\n\\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+    # The editorial explanation already starts with "TT#14 #Sitges2026...".
+    # Do not prepend a second identical title.
+    detail=trim(detail,950)
+    if re.match(r"^TT#\\d+\\b",detail,re.IGNORECASE):
+        return detail
+    return (label+"\\n\\n"+detail)[:1000]
+
 def trend_cards(now):
     requests_doc=load("trends/requests.json",{"requests":[]})
     manual_doc=load("trends/telegram-manual-explained.json",{"items":[]})
@@ -156,12 +186,12 @@ def trend_cards(now):
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
         closer=trim((finished or {}).get("closer_text"),160)
         if closer and closer not in detail:detail+="\n"+closer
-        trend_text=detail if is_final else "⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
-        room=max(0,1000-len(label)-2)
-        body=label+"\n\n"+trend_text[:room]
+        body=trend_body(label,detail,is_final)
+        sources=verified_article_urls(finished or {},req)
         top_row=top.get(name.casefold()) or {}
         yield {"id":tid,"rev":rev,"text":body,
-               "image":image_url(finished or {}) or image_url(req),"search":name,
+               "image":image_url(finished or {}) or image_url(req),
+               "archive_articles":sources,"search":name,
                "final":is_final,"start":start,"title":name,
                "entered_top_at":top_row.get("entered_top10_at"),
                "novelty_verified":req.get("material_novelty_verified") is True,
@@ -239,12 +269,24 @@ def archival_image(url):
         for block in response.iter_content(64*1024):
             raw.extend(block)
             if len(raw)>PHOTO_MAX_BYTES:return None
-        # Telegram sendPhoto can accept JPG/PNG, not SVG/WEBP.
+        # Telegram sendPhoto accepts JPEG/PNG. Convert news-site WEBP and
+        # overly large formats locally; never create synthetic/AI content.
         raw=bytes(raw)
         if raw[:3]==bytes((0xff,0xd8,0xff)):
             return raw,"image/jpeg","archivo.jpg"
         if raw[:8]==bytes((137,80,78,71,13,10,26,10)):
             return raw,"image/png","archivo.png"
+        if typ.startswith(("image/webp","image/gif","image/avif","image/bmp")):
+            try:
+                from PIL import Image, ImageOps
+                picture=ImageOps.exif_transpose(Image.open(io.BytesIO(raw))).convert("RGB")
+                picture.thumbnail((1800,1800))
+                out=io.BytesIO()
+                picture.save(out,format="JPEG",quality=86,optimize=True)
+                if out.tell()<PHOTO_MAX_BYTES:
+                    return out.getvalue(),"image/jpeg","archivo.jpg"
+            except (OSError,ValueError,ImportError):
+                return None
     except requests.RequestException:
         pass
     return None
@@ -272,7 +314,11 @@ def process(project,now,token,chat):
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
-        if any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked):
+        deleted=any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked)
+        surviving=any(str(r.get("status") or "").lower()=="sent" for r in linked)
+        # A duplicate card's deletion should not hide the surviving one.
+        # A genuine full deletion (no active card) remains terminal.
+        if deleted and not surviving:
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
@@ -318,6 +364,15 @@ def process(project,now,token,chat):
             if not photo_url and project=="ttittulares" and not existing:
                 photo_url=fast_archive_from_article(card.get("source_url",""))
             image_data=archival_image(photo_url) if photo_url else None
+            if not image_data and project=="ttendencias" and not existing:
+                # Verification stays internal. Reuse the image embedded in a
+                # verified article to create one photo+caption Telegram card.
+                for article in card.get("archive_articles",[])[:2]:
+                    candidate=fast_archive_from_article(article)
+                    image_data=archival_image(candidate) if candidate else None
+                    if image_data:
+                        photo_url=candidate
+                        break
         else:
             photo_url=""
         body=card["text"]
@@ -378,6 +433,9 @@ def selftest():
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
     assert public_news_detail({"explanation":"Reuters y Associated Press coinciden en la noticia. Ambas fuentes corroboran los datos.","factual_summary":"El comité anunció el premio."})=="El comité anunció el premio."
     assert public_news_detail({"explanation":"La comisión ha aprobado un informe.","factual_summary":"Informe aprobado."})=="La comisión ha aprobado un informe."
+    assert trend_body("TT#14 #Sitges2026","TT#14 #Sitges2026 es tendencia por un festival.\\n🌶️ Remate.",True).count("TT#14")==1
+    assert trend_body("TT#14 #Sitges2026","",False).count("TT#14")==1
+    assert verified_article_urls({"verification_sources":[{"url":"https://sitgesfilmfestival.com/es"},{"url":"https://www.culturasitges.cat/actualitat/noticies/edicion"}]})==["https://www.culturasitges.cat/actualitat/noticies/edicion"]
     assert archival_image("") is None
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in news_cards(now))
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in trend_cards(now))
