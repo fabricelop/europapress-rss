@@ -60,6 +60,20 @@ def image_url(row):
 def trim(value,maxlen=900):
     return str(value or "").strip()[:maxlen]
 
+def public_news_detail(item):
+    """Keep multinewspaper verification internal; publish the verified facts."""
+    explanation=trim(item.get("explanation"),850)
+    factual=trim(item.get("factual_summary"),850)
+    tweet=trim((item.get("tweet") or {}).get("text"),850)
+    # Explanations produced under the old editorial contract sometimes
+    # describe the research process instead of explaining the actual event.
+    report_about_sources=bool(re.search(
+        r"\\b(?:Reuters|Associated Press|Europa Press|Cadena SER|"
+        r"fuentes?|ambos? medios?|periodicos?|periódicos?|agencias de noticias)\\b",
+        explanation,re.IGNORECASE
+    ))
+    return (factual or tweet or explanation) if report_about_sources else (explanation or factual or tweet)
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -69,7 +83,7 @@ def news_cards(now):
     ongoing={}
     for row in processing.get("items",[]):
         key=str(row.get("event_id") or "")
-        if key and str(row.get("status") or "").upper() in {"PROCESSING","PROBLEMATIC","READY"}:
+        if key and str(row.get("status") or "").upper() in {"PROCESSING","READY"}:
             ongoing[key]=row
     ready={str(x.get("event_id") or ""):x for x in prepared.get("items",[])
            if str(x.get("event_id") or "")}
@@ -84,7 +98,7 @@ def news_cards(now):
         revision=int(item.get("revision") or job.get("revision") or 1)
         title=trim(item.get("title") or job.get("title") or "Noticia",400)
         factual=trim(item.get("factual_summary") or (item.get("tweet") or {}).get("text"),850)
-        explanation=trim(item.get("explanation"),850)
+        explanation=public_news_detail(item)
         remate=trim((item.get("tweet") or {}).get("remate"),200)
         if is_final:
             # One good explanation, not a short teaser followed by a second text.
@@ -362,6 +376,8 @@ def selftest():
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
     assert not trend_repeat_allowed({"is_in_top":False,"entered_top_at":"2026-10-07T00:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
+    assert public_news_detail({"explanation":"Reuters y Associated Press coinciden en la noticia. Ambas fuentes corroboran los datos.","factual_summary":"El comité anunció el premio."})=="El comité anunció el premio."
+    assert public_news_detail({"explanation":"La comisión ha aprobado un informe.","factual_summary":"Informe aprobado."})=="La comisión ha aprobado un informe."
     assert archival_image("") is None
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in news_cards(now))
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in trend_cards(now))
