@@ -31,12 +31,15 @@ jobs:
       - name: Verify Cloudflare TTit target, and preserve TTendencias isolation
         shell: pwsh
         run: |
-          $files = @('windows/TTiTTularesDedicatedListener.ps1','windows/TTiTTularesImageBridge.js','windows/MobileChatTriggerListener.ps1','windows/TT-LocalWatchdog.ps1')
+          $files = @('windows/TTiTTularesDedicatedListener.ps1','windows/TTiTTularesImageBridge.js','windows/MobileChatTriggerListener.ps1')
           foreach ($p in $files) {
             $s = Get-Content $p -Raw
             if ($s -notmatch 'ttittulares-no-vercel-test\.fabricelop\.workers\.dev') { throw "Cloudflare URL missing in $p" }
             if ($s -match 'europapress-rss\.vercel\.app') { throw "Vercel residue in $p" }
           }
+          $watchdog = Get-Content windows/TT-LocalWatchdog.ps1 -Raw
+          if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue|Invoke-WebRequest') { throw "Watchdog must only supervise local processes" }
+          if ($watchdog -notmatch 'Enter-ProcessInstance') { throw "Watchdog lost process ownership" }
           $shared = Get-Content windows/MobileChatTriggerListener.ps1 -Raw
           if ($shared -notmatch 'ttendencias-no-vercel-test\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }
           $t = Get-Content windows/TTendenciasImageBridge.js -Raw
