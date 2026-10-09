@@ -39181,7 +39181,7 @@
       "percentage": 25,
       "first_seen": "2026-10-09T08:52:40.591717Z",
       "last_seen": "2026-10-09T14:03:51.429024Z",
-      "status": "PROBLEMATIC",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -39198,8 +39198,8 @@
       "eligible_at": "2026-10-09T14:03:51.429024Z",
       "event_id": "a62eea69fda0",
       "title": "Óscar Puente reprocha al alcalde de Valladolid que se burle de él cuando se rompió la pierna: “Cuando tuvo covid le escribí cada día”",
-      "selection_mode": "AUTO_WEB",
-      "selected_at": "2026-10-09T14:04:23.247508Z",
+      "selection_mode": "MANUAL_VALIDATED_PROBLEMATIC",
+      "selected_at": "2026-10-09T15:26:10.923Z",
       "source_evidence": [
         {
           "source": "Cadena SER",
@@ -39240,9 +39240,13 @@
       ],
       "drafted_source_count": 4,
       "verified_source_count": 4,
-      "problematic_at": "2026-10-09T14:15:34.286252Z",
-      "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "user_validated": true,
+      "user_validated_at": "2026-10-09T15:26:10.923Z",
+      "user_validation_source": "web_check",
+      "user_validation_version": 1,
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "29713db663cc",
@@ -40350,7 +40354,7 @@
         "Telecinco Noticias"
       ],
       "source_count": 8,
-      "percentage": 50.0,
+      "percentage": 50,
       "first_seen": "2026-10-08T16:52:28.720563Z",
       "last_seen": "2026-10-09T15:23:14.741261Z",
       "status": "PROCESSING",
@@ -40500,7 +40504,7 @@
         "Antena 3 Noticias"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-09T12:33:44.069680Z",
       "last_seen": "2026-10-09T15:23:14.741261Z",
       "status": "PROCESSING",
@@ -40608,7 +40612,7 @@
         "elDiario.es"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-09T15:23:14.741261Z",
       "last_seen": "2026-10-09T15:23:14.741261Z",
       "status": "PROCESSING",
@@ -40672,5 +40676,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-09T15:23:34.446820Z"
+  "updated_at": "2026-10-09T15:26:10.923Z"
 }
