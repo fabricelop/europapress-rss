@@ -39717,7 +39717,6 @@
       "reexplain": true,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -39791,9 +39790,28 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
-      "rewrite_pending": false
+      "image_status": "ready",
+      "image_pending": false,
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009105737_1200.jpg",
+        "source": "Europa Press · 9/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-juez-descarta-imputar-ahora-psoe-caso-leire-diez-esperara-practicar-mas-diligencias-20261009105737.html",
+        "alt": "Imagen de archivo relacionada con PSOE",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009105737_1200.jpg",
+        "source": "Europa Press · 9/10/2026",
+        "source_url": "https://www.europapress.es/nacional/noticia-juez-descarta-imputar-ahora-psoe-caso-leire-diez-esperara-practicar-mas-diligencias-20261009105737.html",
+        "alt": "Imagen de archivo relacionada con PSOE",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     },
     {
       "id": "660533085d21",
@@ -39806,7 +39824,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -39871,12 +39888,31 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "ready",
+      "image_pending": false,
       "rewrite_pending": false,
-      "ai_image_attempt": 0
+      "ai_image_attempt": 0,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-RP-MOURINHO-01_HE19670?wid=1200&hei=675",
+        "source": "Real Madrid · 9/10/2026",
+        "source_url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/ruedas-de-prensa/mourinho-09-10-2026",
+        "alt": "Imagen de archivo relacionada con Mourinho",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://assets.realmadrid.com/is/image/realmadrid/ND-RP-MOURINHO-01_HE19670?wid=1200&hei=675",
+        "source": "Real Madrid · 9/10/2026",
+        "source_url": "https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/ruedas-de-prensa/mourinho-09-10-2026",
+        "alt": "Imagen de archivo relacionada con Mourinho",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-09T12:11:30+02:00",
+  "updated_at": "2026-10-09T10:07:21.084491Z",
   "count": 675
 }
