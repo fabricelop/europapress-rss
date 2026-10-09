@@ -711,7 +711,7 @@ export default async function handler(req,res){
         ...(manualArchive.doc?.items||[]).filter(x=>String(x.status||"").toUpperCase()==="PUBLISHED").map(x=>String(x.event_id||""))
       ].filter(Boolean));
       const closedIds=new Set((decisions.doc?.items||[])
-        .filter(x=>["published","dismissed"].includes(String(x.status||"").toLowerCase()))
+        .filter(x=>["published","dismissed","deleted"].includes(String(x.status||"").toLowerCase()))
         .map(x=>String(x.event_id||"")));
       const rewritePendingPrepared=(prepared.doc?.items||[]).filter(x=>Boolean(x.rewrite_pending)&&!closedIds.has(String(x.event_id||"")));
       const rewritePendingIds=new Set(rewritePendingPrepared.map(x=>String(x.event_id||"")));
