@@ -96,7 +96,7 @@ def caption(text):
     # Do not place the author handle inside the description: IG displays it.
     # The platform shows @ttactualidad as author. Drop historical generic tags
     # from new Instagram captions; prefer specific evidence-based topics.
-    value = re.sub(r"(?<!\\w)#(?:TTActualidad|Actualidad)\\b", "", value, flags=re.IGNORECASE).strip()
+    value = re.sub(r"(?<!\w)#(?:TTActualidad|Actualidad)\b", "", value, flags=re.IGNORECASE).strip()
     if not value:
         raise ValueError("Missing approved text")
 
