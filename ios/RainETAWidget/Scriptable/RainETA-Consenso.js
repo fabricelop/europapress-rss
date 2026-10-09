@@ -559,7 +559,11 @@ function rainetaConsensusOutput(deterministic,ensembles,current,now){
   if(!timeline.length)throw Error('Consenso vacío');
   const hours=signalHours(timeline,now);
   if(!hours.length)throw Error('Sin horas previstas');
-  const events=detectRainEvents(timeline);
+  // Open-Meteo hourly precipitation belongs to the preceding hour. Translate
+  // interval end -> start before detecting onset/cessation, without changing
+  // RainETA's original consensus/event-detection functions.
+  const intervalRows=timeline.map(row=>({...row,time:new Date(Date.parse(row.time)-3600000).toISOString()}));
+  const events=detectRainEvents(intervalRows);
   const next=chooseNextEvent(events,now);
   // "Current" is model analysis, not a rain-gauge observation or radar detection.
   const curr=current?.current||{};
@@ -694,7 +698,7 @@ try{
   }
   widget.addSpacer();
   const updateText=(d.fromCache?'Guardado ':'Actualizado ')+hhmm(d.updatedAt);
-  label(updateText+' · '+d.modelCount+' modelos / '+d.familyCount+' familias',9,'#8eafc4');
+  label(updateText+' · '+d.modelCount+'M/'+d.familyCount+'F · Open-Meteo.com',9,'#8eafc4');
   widget.refreshAfterDate=new Date(now+(d.fromCache?5:REFRESH_MINUTES)*60000);
 }catch(error){
   widget.addSpacer(9);
