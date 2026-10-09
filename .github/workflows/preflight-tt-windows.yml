@@ -52,6 +52,28 @@ jobs:
             Write-Host "OK $p"
           }
 
+      - name: Guard image bridge single authority (both apps)
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach($project in @("TTendencias","TTiTTulares")){
+            $source=Get-Content ("windows/"+$project+"DedicatedListener.ps1") -Raw -Encoding UTF8
+            $begin=$source.IndexOf("  # 2) ")
+            if($begin -lt 0){throw "$project: image section not found"}
+            $image=$source.Substring($begin)
+            if(-not $image.Contains('Start-ImageBridge $commandId $targetId $uploadSecret "[]" ""')){
+              throw "$project: fixed-tab bridge missing from image section"
+            }
+            if($image -match 'Launch-ProjectChat|Launch-ImageChat'){
+              throw "$project: duplicate ChatGPT prompt launcher still active in image section"
+            }
+            $bridge=Get-Content ("windows/"+$project+"ImageBridge.js") -Raw -Encoding UTF8
+            if(-not $bridge.Contains('cdp=await openFreshDedicatedConversation()') -or -not $bridge.Contains('cdp=await ensureSubmitted(cdp,job)')){
+              throw "$project: bridge no longer owns ChatGPT prompt"
+            }
+          }
+          Write-Host "OK: both image bridges own their single ChatGPT prompt"
+
       - name: Check Node bridges
         shell: pwsh
         run: |
