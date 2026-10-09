@@ -21,7 +21,7 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=8
+BUTTONS_VERSION=9
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://ttittulares-no-vercel-test.fabricelop.workers.dev"
 TTEND_ORIGIN="https://ttendencias-no-vercel-test.fabricelop.workers.dev"
@@ -237,7 +237,6 @@ def keys(card,project):
             {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
         ])
         rows.append([
-            {"text":"🖼️ Mis imágenes IA","url":IMAGE_APP},
             {"text":"🔎 Buscar en X","url":search}
         ])
     else:
@@ -474,6 +473,9 @@ def selftest():
           "final":True,"x_text":"Hecho verificado.\n\n🌶️ Remate exacto."}
     kb=keys(card,"ttittulares")["inline_keyboard"]
     assert [b["text"] for b in kb[0]]==["📋 Copiar prompt GAG","🎨 Chat Images"]
+    assert [button["text"] for row in kb for button in row].count("🎨 Chat Images")==1
+    assert "🖼️ Mis imágenes IA" not in [button["text"] for row in kb for button in row]
+    assert [b["text"] for b in kb[2]]==["🔎 Buscar en X"]
     assert kb[1][0]["copy_text"]["text"]==card["x_text"]
     assert "intent/tweet?text=" in kb[1][1]["url"]
     assert kb[-1][0]["callback_data"]=="tt:b:abc123"
