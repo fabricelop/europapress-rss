@@ -17,7 +17,7 @@ import requests
 
 ROOT=Path(__file__).resolve().parents[1]
 TIMEOUT_MINUTES=60
-MAX_AGE=timedelta(days=7)
+MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
 TERMINAL={"deleted","published","dismissed","removed"}
@@ -340,6 +340,11 @@ def process(project,now,token,chat):
                 skipped+=1;continue
         # Never resurrect a deleted item; respect historical terminal decisions.
         if any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
+            skipped+=1;continue
+        # An empty ledger on deployment must NEVER backfill days of history.
+        # Existing provisional messages are still editable regardless of age.
+        started=date(card.get("start"))
+        if existing is None and (not started or now-started>timedelta(hours=12)):
             skipped+=1;continue
         new_hash=hashlib.sha256((card["text"]+"|"+card["image"]).encode("utf-8")).hexdigest()
         kb=keys(card,project)
