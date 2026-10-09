@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T01:45:00+02:00",
-  "last_completed_at": "2026-10-09T01:48:00+02:00",
-  "updated_at": "2026-10-09T01:48:00+02:00",
+  "last_started_at": "2026-10-09T02:15:00+02:00",
+  "last_completed_at": "2026-10-09T02:17:20+02:00",
+  "updated_at": "2026-10-09T02:17:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T014500-chat",
+    "run_id": "tr-20261009T021500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T01:45:00+02:00",
-    "updated_at": "2026-10-09T01:48:00+02:00",
-    "finished_at": "2026-10-09T01:48:00+02:00",
+    "started_at": "2026-10-09T02:15:00+02:00",
+    "updated_at": "2026-10-09T02:17:20+02:00",
+    "finished_at": "2026-10-09T02:17:20+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -52,59 +52,74 @@
       "concurrent_completed": 0,
       "new_queue_entries_during_run": 0
     },
-    "message": "Pasada completada · 0/0; radar 01:41 sin nuevas entradas; reparación visual lanzada",
+    "message": "Pasada completada · 0/0; radar 02:11 sin trabajo editorial pendiente; reparación visual lanzada",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-09T01:45:00+02:00",
+        "at": "2026-10-09T02:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada directa · cola inicial 0"
       },
       {
-        "at": "2026-10-09T01:47:00+02:00",
+        "at": "2026-10-09T02:15:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main tras disparar reparación visual"
       },
       {
-        "at": "2026-10-09T01:48:00+02:00",
+        "at": "2026-10-09T02:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparador visual recogido por GitHub Actions · run 37863954014 in_progress"
+      },
+      {
+        "at": "2026-10-09T02:17:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main · cola activa 0"
       },
       {
-        "at": "2026-10-09T01:48:00+02:00",
+        "at": "2026-10-09T02:17:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 0/0; radar 01:41 sin nuevas entradas; reparación visual lanzada"
+        "message": "Pasada completada · 0/0; radar 02:11 sin trabajo editorial pendiente; reparación visual lanzada"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [],
     "radar": {
-      "captured_at": "2026-10-09T01:41:42+02:00",
+      "captured_at": "2026-10-09T02:11:46+02:00",
       "top10": [
         "#SVGala5",
-        "#Horizonte",
         "Mari Carmen",
+        "#Horizonte",
         "PSOE",
         "Chiqui",
         "Biedma",
         "#ElPerroAndaluzTVE",
         "Olga",
-        "#LaRevuelta",
-        "Beiras"
+        "Beiras",
+        "Ivana"
       ],
-      "new_entries": []
+      "new_entries": [
+        "Ivana"
+      ]
+    },
+    "pending_repair_workflow": {
+      "run_id": 37863954014,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "335c4f6d993a01acd4611df6b88ac0af918a2588"
     }
   },
   "visual_repair": {
@@ -112,13 +127,13 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T014500-chat",
-    "last_triggered_at": "2026-10-09T01:46:29+02:00",
-    "observed_at": "2026-10-09T01:48:00+02:00",
-    "workflow_run_id": 37861279594,
+    "last_trigger_run_id": "tr-20261009T021500-chat",
+    "last_triggered_at": "2026-10-09T02:16:49+02:00",
+    "observed_at": "2026-10-09T02:17:10+02:00",
+    "workflow_run_id": 37863954014,
     "workflow_conclusion": null,
     "telegram_delivered": 0,
-    "observed_repair_commit": "1b8f2bf27afd8d2f54d0df3721678bc48994496c"
+    "observed_repair_commit": "335c4f6d993a01acd4611df6b88ac0af918a2588"
   },
   "error": null
 }
