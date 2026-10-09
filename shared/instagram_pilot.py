@@ -70,6 +70,57 @@ TAG_RULES = (
     (r"\blluvia\b|\btormenta\b", "#Lluvia"),
     (r"\binmigracion\b|\bmigracion\b|\bice\b", "#Migracion"),
     (r"\beconomia\b|\binflacion\b|\bprecios\b", "#Economia"),
+    (r"\brally\b|\brali\b", "#Rally"),
+    (r"\bmallorca\b", "#Mallorca"),
+    (r"\baccidente\b|\bsiniestro\b", "#Accidente"),
+    (r"\bterremoto\b|\bsismo\b", "#Terremoto"),
+    (r"\bpamplona\b", "#Pamplona"),
+    (r"\bnavarra\b", "#Navarra"),
+    (r"\bbarcelona\b", "#Barcelona"),
+    (r"\bmadrid\b", "#Madrid"),
+    (r"\bmalaga\b", "#Malaga"),
+    (r"\btoledo\b", "#Toledo"),
+    (r"\baragon\b|\bsijena\b", "#Aragon"),
+    (r"\bsijena\b", "#Sijena"),
+    (r"\btrenes?\b|\bferrocarril\b", "#Trenes"),
+    (r"\btransportes?\b|\btrafico\b", "#Transporte"),
+    (r"\bagricultor\w*|\btractor\w*|\bcampo\b", "#Agricultura"),
+    (r"\btractorada\b", "#Tractorada"),
+    (r"\bsalud mental\b", "#SaludMental"),
+    (r"\bhospital\b|\bmedic\w*|\bsanitari\w*", "#Sanidad"),
+    (r"\bcnmc\b", "#CNMC"),
+    (r"\bcentros? de datos\b", "#CentrosDeDatos"),
+    (r"\benergi\w*|\brenovable\w*", "#Energia"),
+    (r"\brenovable\w*", "#Renovables"),
+    (r"\bbanco de espana\b", "#BancoDeEspana"),
+    (r"\bpib\b|\bcrecimiento economico\b", "#PIB"),
+    (r"\binflacion\b", "#Inflacion"),
+    (r"\bibi\b|\bimpuest\w*", "#Impuestos"),
+    (r"\bpisos? turistico\w*|\bturismo\b", "#Turismo"),
+    (r"\bpedro sanchez\b", "#PedroSanchez"),
+    (r"\bpp\b|\bpartido popular\b", "#PartidoPopular"),
+    (r"\bpsoe\b", "#PSOE"),
+    (r"\bfiscalia\b", "#Fiscalia"),
+    (r"\btribunal supremo\b", "#TribunalSupremo"),
+    (r"\bindult\w*", "#Indulto"),
+    (r"\bnacionalizad\w*|\bnacionalidad\b", "#Nacionalidad"),
+    (r"\bguardia civil\b", "#GuardiaCivil"),
+    (r"\bmaltrato animal\b|\babandono animal\b", "#ProteccionAnimal"),
+    (r"\bperros?\b", "#Perros"),
+    (r"\brefn\b", "#NicolasWindingRefn"),
+    (r"\bsitges\b", "#Sitges"),
+    (r"\bpeliculas?\b|\bcine\b", "#Cine"),
+    (r"\bdeporte\w*", "#Deportes"),
+    (r"\bmoto\w*|\bcoche\w*|\bautomov\w*", "#Motor"),
+    (r"\bpresupuesto\w*|\bdeuda\b|\bfinanzas?\b", "#Finanzas"),
+    (r"\bunion europea\b|\bbruselas\b", "#UnionEuropea"),
+    (r"\bukrania\b", "#Ucrania"),
+    (r"\brusia\b", "#Rusia"),
+    (r"\bgaza\b", "#Gaza"),
+    (r"\bseguridad\b|\bpolicia\b", "#Seguridad"),
+    (r"\bcultura\b|\bpatrimonio\b", "#Cultura"),
+    (r"\beducacion\b|\buniversidad\b", "#Educacion"),
+    (r"\bempresa\w*|\bnegocio\w*", "#Empresas"),
 )
 TAG_PREFIX_RE = re.compile(r"^(?:@?ttactualidad)\s*[:—–-]?\s*", re.IGNORECASE)
 OLD_FOOTER_RE = re.compile(
@@ -113,7 +164,24 @@ def caption(text):
             tags.append(tag)
             present.add(tag.casefold())
             slots -= 1
-    # Unknown topics remain untagged. Never manufacture generic #Actualidad.
+    # When the rules cover fewer than two subjects, use exact proper names in
+    # the approved factual first paragraph. No invented events or generic tags.
+    if len(tags) + len(present) < 2:
+        factual = value.split("\\n\\n", 1)[0][:450]
+        # Names of people, institutions, places and titles as actually written.
+        names = re.findall(
+            r"\\b[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+(?:de|del|la|las|los|y)\\s+)?"
+            r"[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,}(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñü]{2,})?",
+            factual
+        )
+        for name in names:
+            if len(tags) + len(present) >= 3:
+                break
+            candidate = "#" + re.sub(r"[^A-Za-z0-9]", "", _fold(name).title().replace(" ", ""))
+            if 4 < len(candidate) <= 35 and candidate.casefold() not in present:
+                tags.append(candidate)
+                present.add(candidate.casefold())
+    # No filler #Actualidad or fabricated tags if there are truly no grounded subjects.
     result = value + ("\n\n" + " ".join(tags) if tags else "")
     if len(result) > 2200:
         # Tags are optional; never truncate the approved factual text or the gag.
