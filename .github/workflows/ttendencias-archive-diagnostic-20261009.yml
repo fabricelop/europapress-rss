@@ -37,6 +37,9 @@ jobs:
           print("SITGES_EXPLANATION",text[:120].replace("\\n"," / "))
           urls=verified_article_urls(row)
           print("SITGES_SOURCE_ARTICLES",len(urls))
+          urls.extend(["https://sitgesfilmfestival.com/es/noticies/durante-once-dias-cine-genero-nuestro-hogar",
+                       "https://sitgesfilmfestival.com/es",
+                       "https://cadenaser.com/cataluna/2026/10/09/laqui-catalunya-celebra-un-programa-especial-des-del-59e-festival-de-sitges-sercat/"])
           for article in urls:
               image_url=fast_archive_from_article(article)
               data=archival_image(image_url) if image_url else None
