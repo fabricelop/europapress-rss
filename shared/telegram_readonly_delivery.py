@@ -318,7 +318,7 @@ def process(project,now,token,chat):
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
-        if any(str(r.get("status") or "").lower()=="deleted" for r in linked):
+        if any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked):
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
