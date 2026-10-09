@@ -355,14 +355,14 @@ function Ensure-StateFields($State) {
   if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE INVALID: expected object" }
   foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","last_chrome_recovery_command_id","last_chrome_recovery_at")) {
     if (-not ($State.PSObject.Properties.Name -contains $n)) {
-      $State | Add-Member -NotePropertyName $n -NotePropertyValue "" -Force
+      Add-Member -InputObject $State -NotePropertyName $n -NotePropertyValue "" -Force
     }
   }
   if (-not ($State.PSObject.Properties.Name -contains "image_commands")) {
-    $State | Add-Member -NotePropertyName image_commands -NotePropertyValue @() -Force
+    Add-Member -InputObject $State -NotePropertyName image_commands -NotePropertyValue @() -Force
   }
   if (-not ($State.PSObject.Properties.Name -contains "active_image_commands")) {
-    $State | Add-Member -NotePropertyName active_image_commands -NotePropertyValue @() -Force
+    Add-Member -InputObject $State -NotePropertyName active_image_commands -NotePropertyValue @() -Force
   }
 }
 
