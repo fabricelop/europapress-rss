@@ -274,6 +274,12 @@ function Load-State {
   if (Test-Path -LiteralPath $StatePath) {
     try { $loaded = Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop; if ($loaded -is [pscustomobject]) { return $loaded } } catch {}
   }
+  if (Test-Path -LiteralPath ($StatePath + ".previous")) {
+    try {
+      $backup = Get-Content -LiteralPath ($StatePath + ".previous") -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
+      if ($backup -is [pscustomobject]) { Write-Log "STATE RECOVERED from previous valid snapshot"; return $backup }
+    } catch {}
+  }
   return [pscustomobject]@{
     last_command_id = ""
     conflict_command_id = ""
