@@ -194,6 +194,8 @@ def run():
             entry["http_status"] = code
             entry["publisher_state"] = str(answer.get("state") or "")[:48]
             entry["error"] = str(answer.get("error") or "")[:80]
+            entry["meta_error_code"] = answer.get("meta_error_code") if isinstance(answer.get("meta_error_code"), int) else None
+            entry["meta_error_subcode"] = answer.get("meta_error_subcode") if isinstance(answer.get("meta_error_subcode"), int) else None
             entry["status"] = classify(code, answer)
             if entry["status"] == "published":
                 entry["media_id"] = str(answer.get("media_id") or "")[:64]
