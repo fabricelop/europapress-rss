@@ -51,9 +51,17 @@ async function metaPreflight(env){
   let me,page;
   try{
     me=await meta(env,"me",{fields:"id,name"},"GET");
+  }catch(err){
+    return answer({ok:false,error:"META_TOKEN_INVALID_OR_INSUFFICIENT_PERMISSIONS",
+      meta_check:"page_token_identity",...safeMetaDiagnostic(err),
+      schema_ready:schemaReady,active:isActive(env)},502);
+  }
+  try{
     page=await meta(env,pageId,{fields:"id,name,instagram_business_account{id,username}"},"GET");
-  }catch(_err){
-    return answer({ok:false,error:"META_TOKEN_INVALID_OR_INSUFFICIENT_PERMISSIONS",schema_ready:schemaReady,active:isActive(env)},502);
+  }catch(err){
+    return answer({ok:false,error:"META_TOKEN_INVALID_OR_INSUFFICIENT_PERMISSIONS",
+      meta_check:"page_instagram_link",...safeMetaDiagnostic(err),
+      schema_ready:schemaReady,active:isActive(env)},502);
   }
   const pageMatches=String(me?.id||"")===pageId&&String(page?.id||"")===pageId;
   const linked=page?.instagram_business_account||{};
