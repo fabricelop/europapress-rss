@@ -12,6 +12,12 @@ on:
       - "windows/TTiTTularesImageBridge.js"
       - "windows/TTendenciasImageBridge.js"
       - ".github/workflows/preflight-tt-windows.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "windows/TTiTTularesDedicatedListener.ps1"
+      - "windows/TTendenciasDedicatedListener.ps1"
+      - ".github/workflows/preflight-tt-windows.yml"
   workflow_dispatch:
 
 permissions:
@@ -51,3 +57,39 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "TTiTTularesImageBridge.js inválido" }
           node --check windows/TTendenciasImageBridge.js
           if ($LASTEXITCODE -ne 0) { throw "TTendenciasImageBridge.js inválido" }
+
+      - name: Smoke Git control branches and RAW triggers (read-only)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $repo = "https://github.com/fabricelop/europapress-rss.git"
+          $controls = @(
+            @{ Name="TTiTTulares"; Branch="control/ttittulares-run-trigger-v2"; File="ttittulares/run-now-trigger.json"; Project="ttittulares" },
+            @{ Name="TTendencias"; Branch="control/ttendencias-run-trigger"; File="trends/run-now-trigger.json"; Project="ttendencias" }
+          )
+          foreach ($c in $controls) {
+            $line = git ls-remote $repo ("refs/heads/" + $c.Branch)
+            if ($LASTEXITCODE -ne 0 -or -not $line) { throw "$($c.Name): no se pudo resolver la rama por git" }
+            $sha = ($line | Select-Object -First 1) -split "\s+" | Select-Object -First 1
+            if ($sha -notmatch "^[0-9a-fA-F]{40}$") { throw "$($c.Name): SHA incorrecto" }
+            $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/$sha/$($c.File)"
+            $data = Invoke-RestMethod -Uri $url -TimeoutSec 20
+            if (-not $data.command_id -or $data.project -ne $c.Project) { throw "$($c.Name): RAW trigger inválido" }
+            Write-Host "OK $($c.Name): Git SHA + RAW command_id comprobados"
+          }
+
+      - name: Guard shared anonymous GitHub quota
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach ($path in @("windows/TTiTTularesDedicatedListener.ps1", "windows/TTendenciasDedicatedListener.ps1")) {
+            $code = Get-Content -LiteralPath $path -Raw
+            foreach ($required in @("git ls-remote", "Get-ControlRawUrl", "ControlHeadApiRetryAt", "AddMinutes(15)")) {
+              if (-not $code.Contains($required)) { throw "$path no contiene $required" }
+            }
+          }
+          $tr = Get-Content "windows/TTendenciasDedicatedListener.ps1" -Raw
+          if ($tr.Contains('api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json')) {
+            throw "TTendencias sigue haciendo polling directo sin autenticar"
+          }
+          Write-Host "OK: ambos listeners tienen fallback Git/RAW y limitan REST"

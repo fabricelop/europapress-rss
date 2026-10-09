@@ -22,8 +22,11 @@ $StatusBase = $StatusBase.TrimEnd("/")
 $ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
-$DirectTriggerApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json?ref=control%2Fttendencias-run-trigger"
-$DirectAckApi = "https://api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-ack.json?ref=control%2Fttendencias-run-trigger"
+$ControlBranch = "control/ttendencias-run-trigger"
+$ControlRepoUrl = "https://github.com/fabricelop/europapress-rss.git"
+$script:ControlHeadSha = ""
+$script:ControlHeadAt = [DateTimeOffset]::MinValue
+$script:ControlHeadApiRetryAt = [DateTimeOffset]::MinValue
 $DirectTriggerRefreshSeconds = 60
 $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
@@ -122,29 +125,90 @@ function Read-ListenerSnapshot {
   return $script:ListenerSnapshotCache
 }
 
-function Read-TriggerDirect([switch]$Force) {
+function Get-ControlHeadSha([switch]$Force) {
   $now=[DateTimeOffset]::UtcNow
-  if(-not $Force -and $script:DirectTriggerCache -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
-    return $script:DirectTriggerCache
+  # Los listeners ya comparten una cuota REST anonima de solo 60/h.
+  # Resolver primero con git ls-remote evita consumirla mientras git funcione.
+  $maxAge=if($Force){15}else{90}
+  if($script:ControlHeadSha -and (($now-$script:ControlHeadAt).TotalSeconds -lt $maxAge)){
+    return $script:ControlHeadSha
   }
   try{
-    $doc=Invoke-RestMethod -Uri (CacheBust $DirectTriggerApi) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTendencias-Dedicated-Listener-DirectTrigger"
-      "Cache-Control"="no-cache"
-    } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      $parsed=$raw|ConvertFrom-Json
-      if($parsed -and $parsed.command_id){
-        $script:DirectTriggerCache=$parsed
-        $script:DirectTriggerAt=$now
-        return $parsed
+    $git=Get-Command git.exe -ErrorAction SilentlyContinue
+    if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
+    if($git){
+      $oldPrompt=$env:GIT_TERMINAL_PROMPT
+      try{
+        $env:GIT_TERMINAL_PROMPT="0"
+        $line=& $git.Source ls-remote $ControlRepoUrl ("refs/heads/"+$ControlBranch) 2>$null | Select-Object -First 1
+      }finally{
+        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}
+        else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
+      }
+      if([string]$line -match '^([0-9a-fA-F]{40})\s'){
+        $script:ControlHeadSha=$Matches[1].ToLowerInvariant()
+        $script:ControlHeadAt=$now
+        return $script:ControlHeadSha
       }
     }
   }catch{
-    Write-Log "DIRECT TRIGGER ERROR :: $($_.Exception.Message)"
+    Write-Log "CONTROL HEAD GIT WARNING :: $($_.Exception.Message)"
   }
+  # REST anonima: solo como ultima alternativa y a lo sumo una vez cada 15 min
+  # ante errores. No convertir un 403 en cientos de reintentos por hora.
+  if($now -ge $script:ControlHeadApiRetryAt){
+    $script:ControlHeadApiRetryAt=$now.AddMinutes(15)
+    try{
+      $refUrl="https://api.github.com/repos/fabricelop/europapress-rss/git/ref/heads/"+$ControlBranch
+      $r=Invoke-RestMethod -Uri (CacheBust $refUrl) -Headers @{
+        "Accept"="application/vnd.github+json"
+        "User-Agent"="TT-Control-Head-Fallback"
+        "Cache-Control"="no-cache"
+      } -TimeoutSec 12
+      $sha=[string]$r.object.sha
+      if($sha -match '^[0-9a-fA-F]{40}$'){
+        $script:ControlHeadSha=$sha.ToLowerInvariant()
+        $script:ControlHeadAt=$now
+        # Incluso si REST funciona, reservar la cuota anonima para otros procesos.
+        # Durante este intervalo RAW por rama sigue disponible.
+        return $script:ControlHeadSha
+      }
+    }catch{
+      Write-Log "CONTROL HEAD ANON API WARNING :: $($_.Exception.Message)"
+    }
+  }
+  # Nunca fijar para siempre un SHA viejo si todas las fuentes fallan:
+  # la ruta RAW de rama con cache-busting es el fallback.
+  return ""
+}
+
+function Get-ControlRawUrl([string]$Path,[switch]$ForceHead) {
+  $sha=Get-ControlHeadSha -Force:$ForceHead
+  $ref=if($sha){$sha}else{$ControlBranch}
+  return "https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$ref+"/"+$Path.TrimStart("/")
+}
+
+function Read-TriggerDirect([switch]$Force) {
+  $now=[DateTimeOffset]::UtcNow
+  # Cachear incluso fallos para evitar 4 consultas/minuto si hay 403.
+  if(-not $Force -and (($now-$script:DirectTriggerAt).TotalSeconds -lt $DirectTriggerRefreshSeconds)){
+    return $script:DirectTriggerCache
+  }
+  try{
+    $parsed=Invoke-RestMethod -Uri (CacheBust (Get-ControlRawUrl "trends/run-now-trigger.json" -ForceHead:$Force)) -Headers @{
+      "User-Agent"="TTendencias-Dedicated-Listener-DirectTrigger-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
+    } -TimeoutSec 12
+    if($parsed -and $parsed.command_id){
+      $script:DirectTriggerCache=$parsed
+      $script:DirectTriggerAt=$now
+      return $parsed
+    }
+  }catch{
+    Write-Log "DIRECT TRIGGER RAW ERROR :: $($_.Exception.Message)"
+  }
+  $script:DirectTriggerAt=$now
   return $script:DirectTriggerCache
 }
 
@@ -175,17 +239,13 @@ function Confirm-DirectTriggerCurrent([string]$CommandId){
 
 function Read-AckDirect {
   try{
-    $doc=Invoke-RestMethod -Uri (CacheBust $DirectAckApi) -Headers @{
-      "Accept"="application/vnd.github+json"
-      "User-Agent"="TTendencias-Dedicated-Listener-DirectAck"
-      "Cache-Control"="no-cache"
+    return Invoke-RestMethod -Uri (CacheBust (Get-ControlRawUrl "trends/run-ack.json" -ForceHead)) -Headers @{
+      "User-Agent"="TTendencias-Dedicated-Listener-DirectAck-Raw"
+      "Cache-Control"="no-cache, no-store"
+      "Pragma"="no-cache"
     } -TimeoutSec 12
-    if($doc -and $doc.content){
-      $raw=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(([string]$doc.content -replace "\s","")))
-      return ($raw|ConvertFrom-Json)
-    }
   }catch{
-    Write-Log "DIRECT ACK ERROR :: $($_.Exception.Message)"
+    Write-Log "DIRECT ACK RAW ERROR :: $($_.Exception.Message)"
   }
   return $null
 }
