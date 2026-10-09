@@ -766,6 +766,12 @@ async function queueUpcomingNames(names) {
       req.with_image = false;
       req.alternatives_target = 0;
       req.anticipated = !signal.manual_top30;
+      // Reenvío excepcional solo ante una novedad contrastada en fuentes,
+      // nunca por una mera variación de la posición de X.
+      req.material_novelty_verified = Boolean(
+        explainedMap.get(norm(name)) &&
+        hasMaterialRadarNovelty(signal,explainedMap.get(norm(name)).explained_at)
+      );
       req.anticipated_at = signal.first_detected_at || now;
       req.anticipated_best_rank = Number(signal.best_observed_rank || 0);
       req.anticipated_social_source_count = Number(signal.social_source_count || 0);
