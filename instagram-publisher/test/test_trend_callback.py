@@ -51,6 +51,8 @@ class TrendCallbackTests(unittest.TestCase):
                   "INSTAGRAM_INTERNAL_SECRET":"a"*40
               })):
             self.assertTrue(bot.handle_instagram_package_callback(self.cb))
+        self.assertEqual(urlopen.call_args.args[0].get_header("User-agent"),
+                         "TTActualidad-Telegram/1.0")
         data=json.loads(urlopen.call_args.args[0].data)
         self.assertEqual(data["event_id"],"abc123")
         self.assertEqual(data["caption"],"Texto exacto")
