@@ -135,7 +135,7 @@ function reconcileTelegramDeliveryState(explainedDoc, deliveryDoc) {
     if (!leaderDelivery && deliveryRevision < itemRevision) return row;
     const merged = { ...row };
     const status = String(delivery?.status || "").toLowerCase();
-    if (["published", "dismissed"].includes(status)) {
+    if (["published", "dismissed", "deleted"].includes(status)) {
       merged.telegram_package_status = status;
       if (delivery.published_at) merged.published_at = delivery.published_at;
       if (delivery.dismissed_at) merged.dismissed_at = delivery.dismissed_at;
@@ -169,7 +169,7 @@ function buildPendingExplainedView(explainedDoc) {
   const cutoff=Date.now()-24*60*60*1000;
   const rows=(explainedDoc?.items||[])
     .filter(x=>x?.status!=="grouped"&&String(x?.explanation||"").trim())
-    .filter(x=>!["published","dismissed"].includes(String(x?.telegram_package_status||"").toLowerCase()))
+    .filter(x=>!["published","dismissed","deleted"].includes(String(x?.telegram_package_status||"").toLowerCase()))
     .filter(x=>!x?.copied&&!x?.rewrite_pending)
     .filter(x=>{const at=Date.parse(x?.explained_at||"");return Number.isFinite(at)&&at>=cutoff})
     .sort((a,b)=>String(b?.explained_at||"").localeCompare(String(a?.explained_at||"")));
