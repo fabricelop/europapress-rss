@@ -1,11 +1,14 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-09T23:15:00+02:00",
-  "last_completed_at": "2026-10-09T23:16:30+02:00",
-  "updated_at": "2026-10-09T23:16:30+02:00",
+  "last_started_at": "2026-10-09T23:45:30+02:00",
+  "last_completed_at": "2026-10-09T23:52:40+02:00",
+  "updated_at": "2026-10-09T23:52:40+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "19b8e054e055",
+    "fcba7ec7ae2c"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,23 +18,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261009T231500-chat",
+    "run_id": "tr-20261009T234530-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-09T23:15:00+02:00",
-    "updated_at": "2026-10-09T23:16:30+02:00",
-    "finished_at": "2026-10-09T23:16:30+02:00",
+    "started_at": "2026-10-09T23:45:30+02:00",
+    "updated_at": "2026-10-09T23:52:40+02:00",
+    "finished_at": "2026-10-09T23:52:40+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -47,36 +50,254 @@
       "archive_images_ready": 0,
       "archive_images_missing": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0
     },
-    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Saneamiento visual de Pendientes disparado mediante el trigger persistido en main.",
+    "message": "Pasada editorial completada · 2 tendencias explicadas y verificadas; cola final 0. La capa visual queda separada del cierre editorial.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
-    "remate_selections": [],
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 20
+    },
+    "remate_selections": [
+      {
+        "trend_id": "19b8e054e055",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "A",
+            "total": 8.9,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "B",
+            "total": 8.1,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "C",
+            "total": 8.4,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 2,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "D",
+            "total": 7.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "E",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          }
+        ],
+        "selected_candidate": "A",
+        "selected_score": 8.9,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "fcba7ec7ae2c",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "A",
+            "total": 9.1,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "B",
+            "total": 8.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "C",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "D",
+            "total": 8.5,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "E",
+            "total": 7.9,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          }
+        ],
+        "selected_candidate": "A",
+        "selected_score": 9.1,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-09T23:15:00+02:00",
+        "at": "2026-10-09T23:45:30+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada · cola editorial 0; activando saneamiento de Pendientes y revalidando main."
+        "message": "Pasada iniciada · 2 tendencias activas; saneamiento de Pendientes solicitado y snapshot de ratings congelado."
       },
       {
-        "at": "2026-10-09T23:16:10+02:00",
+        "at": "2026-10-09T23:46:20+02:00",
+        "phase": "verifying",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Releyendo estado autoritativo de Adrián Niño · activo=true, request=preparing, explained=false."
+      },
+      {
+        "at": "2026-10-09T23:46:35+02:00",
+        "phase": "investigating",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Buscando detonante actual de Adrián Niño."
+      },
+      {
+        "at": "2026-10-09T23:47:45+02:00",
+        "phase": "investigating",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Hecho esencial verificado · Adrián Niño empató el Málaga-Espanyol en el 93' tras entrar desde el banquillo."
+      },
+      {
+        "at": "2026-10-09T23:48:05+02:00",
+        "phase": "drafting",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Redactando explicación factual de Adrián Niño y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-09T23:48:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Evaluando candidatos de remate con el snapshot de ratings congelado."
+      },
+      {
+        "at": "2026-10-09T23:48:45+02:00",
+        "phase": "persisting",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Guardando ficha Explicada de Adrián Niño; después actualizaré request y retiraré la revisión de la cola."
+      },
+      {
+        "at": "2026-10-09T23:49:45+02:00",
+        "phase": "verifying",
+        "trend_id": "19b8e054e055",
+        "title": "Adrián Niño",
+        "message": "Releyendo main · ficha y request de Adrián Niño persistidos; revisión retirada de la cola."
+      },
+      {
+        "at": "2026-10-09T23:50:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Releyendo estado autoritativo de #FirstDates9o · activo=true, request=preparing, explained=false."
+      },
+      {
+        "at": "2026-10-09T23:50:20+02:00",
+        "phase": "investigating",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Buscando y contrastando detonante actual de #FirstDates9o · puesto observado ahora: 10."
+      },
+      {
+        "at": "2026-10-09T23:50:40+02:00",
+        "phase": "investigating",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Hecho esencial verificado · el hashtag acompaña la emisión del 9 de octubre de First Dates."
+      },
+      {
+        "at": "2026-10-09T23:50:55+02:00",
+        "phase": "drafting",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Explicación factual redactada y límite de X comprobado."
+      },
+      {
+        "at": "2026-10-09T23:51:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Remate seleccionado tras evaluar cinco candidatos."
+      },
+      {
+        "at": "2026-10-09T23:51:45+02:00",
+        "phase": "persisting",
+        "trend_id": "fcba7ec7ae2c",
+        "title": "#FirstDates9o",
+        "message": "Ficha y request de #FirstDates9o guardados; revisión retirada de la cola."
+      },
+      {
+        "at": "2026-10-09T23:52:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola editorial sigue en 0; disparador de reparación de Pendientes confirmado en main."
+        "message": "Releyendo main · las dos revisiones están explained y la cola autoritativa está vacía."
       },
       {
-        "at": "2026-10-09T23:16:30+02:00",
+        "at": "2026-10-09T23:52:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · sin tendencias nuevas; cola final 0. Reparación de Pendientes solicitada de forma independiente."
+        "message": "Pasada completada · 2 tendencias explicadas y verificadas; cola final 0."
       }
     ],
     "queue_complete": true,
@@ -88,9 +309,9 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261009T231500-chat",
-    "last_triggered_at": "2026-10-09T23:15:00+02:00",
-    "observed_at": "2026-10-09T23:16:10+02:00",
+    "last_trigger_run_id": "tr-20261009T234530-chat",
+    "last_triggered_at": "2026-10-09T23:45:30+02:00",
+    "observed_at": "2026-10-09T23:52:40+02:00",
     "archive_examined": 0,
     "archive_ready": 0,
     "archive_none": 0
