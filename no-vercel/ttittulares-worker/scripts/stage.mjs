@@ -23,6 +23,13 @@ fs.copyFileSync(path.join(root,"src","compat","sharp.js"),path.join(generated,"c
 const input=path.join(repo,"vercel-webhook","ttittulares");
 const output=path.join(assets,"ttittulares");
 fs.cpSync(input,output,{recursive:true,force:true});
+// PWA cards reference /tt-shared/*; deploy these assets to THIS Worker origin.
+const sharedInput=path.join(repo,"vercel-webhook","tt-shared");
+const sharedOutput=path.join(assets,"tt-shared");
+fs.cpSync(sharedInput,sharedOutput,{recursive:true,force:true});
+for(const name of ["gag-actions.js","gag-actions.css"]){
+  if(!fs.statSync(path.join(sharedOutput,name)).isFile())throw Error("Shared GAG asset missing: "+name);
+}
 for(const pathName of ["index.html","sw.js","manifest.webmanifest","icon.svg"]){
   if(!fs.statSync(path.join(output,pathName)).isFile())throw Error("Asset missing: "+pathName);
 }
