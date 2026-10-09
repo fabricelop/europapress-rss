@@ -18,6 +18,8 @@ on:
     paths:
       - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/TTendenciasDedicatedListener.ps1"
+      - "windows/TT-AutoUpdater.ps1"
+      - "windows/TT-LocalWatchdog.ps1"
       - ".github/workflows/preflight-tt-windows.yml"
   workflow_dispatch:
 
@@ -51,6 +53,20 @@ jobs:
             }
             Write-Host "OK $p"
           }
+
+      - name: Check recovery of missing listeners and watchdog
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          $wd=Get-Content "windows/TT-LocalWatchdog.ps1" -Raw
+          $up=Get-Content "windows/TT-AutoUpdater.ps1" -Raw
+          foreach($key in @("PROCESS MISSING", "START FAILED", "WATCHDOG LOOP ERROR", "WATCHDOG HEARTBEAT")){
+            if(-not $wd.Contains($key)){throw "Watchdog recovery missing: $key"}
+          }
+          foreach($key in @("function Ensure-Alive", "PROCESS MISSING", 'Ensure-Alive "TT-LocalWatchdog.ps1"', 'Ensure-Alive "TTiTTularesDedicatedListener.ps1"', 'Ensure-Alive "TTendenciasDedicatedListener.ps1"')){
+            if(-not $up.Contains($key)){throw "Updater liveness recovery missing: $key"}
+          }
+          Write-Host "OK: watchdog + updater recover absent TT processes"
 
       - name: Guard image bridge single authority (both apps)
         shell: powershell
