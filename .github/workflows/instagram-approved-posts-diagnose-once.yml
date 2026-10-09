@@ -41,7 +41,12 @@ jobs:
             "error":preflight.get("error"),"active":preflight.get("active"),
             "instagram_linked":preflight.get("instagram_account_linked"),
             "username_matches":preflight.get("instagram_username_matches"),
-            "schema_ready":preflight.get("schema_ready")}))
+            "schema_ready":preflight.get("schema_ready"),
+            "meta_check":preflight.get("meta_check"),
+            "meta_http_status":preflight.get("meta_http_status"),
+            "meta_error_code":preflight.get("meta_error_code"),
+            "meta_error_subcode":preflight.get("meta_error_subcode"),
+            "meta_error_type":preflight.get("meta_error_type")}))
           if code!=200 or not preflight.get("ok") or not preflight.get("active"):
             raise SystemExit("PUBLISH_ABORTED_READ_ONLY_PREFLIGHT_FAILED")
           targets=[
