@@ -59,7 +59,8 @@ test("Instagram callback errors notify Telegram; X handlers stay separate",()=>{
   assert.match(source,/No se ha podido confirmar la publicaci[oó]n/);
   assert.match(source,/await instagramTelegramNotice\(env,update/);
   assert.match(source,/if\(event\.type==="instagram_action"\)/);
-  assert.match(source,/if\(!edited\.ok\|\|!editResult\.ok\)/);
+  assert.match(source,/TTITTULARES_INSTAGRAM_BUTTON_EDIT_FAILED/);
+  assert.match(source,/TTITTULARES_INSTAGRAM_SUCCESS_NOTICE_FAILED/);
   assert.match(source,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "/);
   assert.match(source,/match\[1\]==="i"\?"instagram_action":"emergency_action"/);
 });
@@ -99,4 +100,13 @@ test("Instagram publisher calls are routed by same-account Cloudflare service bi
  assert.match(source,/await callInstagramPublisher\(env,endpoint,\{method:"POST"/);
  assert.match(source,/await callInstagramPublisher\(env,publisher\+"\/meta-preflight"/);
  assert.doesNotMatch(source,/await fetch\(endpoint,\{method:"POST"/);
+});
+
+test("A published Instagram image always triggers Telegram reply, not only a button edit",()=>{
+ const source=readFileSync(new URL("../src/index.js",import.meta.url),"utf8");
+ const published=source.slice(source.indexOf('if(result.state==="published"&&result.permalink?'));
+ const success=published.slice(0,published.indexOf("// Never delete Telegram"));
+ assert.match(success,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "\+result.permalink\)/);
+ assert.match(success,/return json\(\{ok:true,state:"published",permalink:result.permalink\}\)/);
+ assert.match(success,/TTITTULARES_INSTAGRAM_SUCCESS_NOTICE_FAILED/);
 });

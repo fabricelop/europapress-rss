@@ -306,13 +306,21 @@ async function publishTtiInstagramSelected(env,update,event){
     const revised=old.map(row=>row.map(button=>
       button?.callback_data==="tt:i:"+eventId?
       {text:"📸 Publicado en Instagram",url:result.permalink}:button));
-    const edited=await fetch(tg+"editMessageReplyMarkup",{method:"POST",headers:{"content-type":"application/json"},
-      body:JSON.stringify({chat_id:chat,message_id:messageId,reply_markup:{inline_keyboard:revised}})});
-    const editResult=await edited.json().catch(()=>({}));
-    if(!edited.ok||!editResult.ok){
-      // Publication is confirmed: if Telegram cannot edit the button, deliver
-      // its permalink in a reply instead. Never publish again to repair UI.
+    try{
+      const edited=await fetch(tg+"editMessageReplyMarkup",{method:"POST",headers:{"content-type":"application/json"},
+        body:JSON.stringify({chat_id:chat,message_id:messageId,reply_markup:{inline_keyboard:revised}})});
+      const editResult=await edited.json().catch(()=>({}));
+      if(!edited.ok||!editResult.ok)console.log("TTITTULARES_INSTAGRAM_BUTTON_EDIT_FAILED",edited.status);
+    }catch(error){
+      console.log("TTITTULARES_INSTAGRAM_BUTTON_EDIT_FAILED",String(error?.name||"Error"));
+    }
+    // Always confirm in chat, including after a successful button edit: a
+    // changed keyboard alone is easy to miss on a mobile Telegram feed.
+    // Never turn a Telegram notification error into another Meta POST.
+    try{
       await instagramTelegramNotice(env,update,"Publicado en Instagram: "+result.permalink);
+    }catch(error){
+      console.log("TTITTULARES_INSTAGRAM_SUCCESS_NOTICE_FAILED",String(error?.name||"Error"));
     }
     return json({ok:true,state:"published",permalink:result.permalink});
   }

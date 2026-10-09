@@ -1127,12 +1127,23 @@ def handle_instagram_package_callback(callback):
                     call("editMessageReplyMarkup",{
                         "chat_id":chat_id,"message_id":message_id,
                         "reply_markup":{"inline_keyboard":keyboard}})
-                except Exception:
-                    pass
-            else:
-                call("sendMessage",{"chat_id":chat_id,"text":"Publicado en Instagram: "+permalink})
+                except Exception as exc:
+                    print("TT_INSTAGRAM_BUTTON_EDIT_FAILED",type(exc).__name__,flush=True)
+            # Confirmation must appear as a reply even if the button was edited.
+            # A Telegram notification failure must never retry the Meta publish.
+            try:
+                call("sendMessage",{"chat_id":chat_id,
+                    "text":"📸 Publicado en Instagram: "+permalink,
+                    "reply_to_message_id":message_id})
+            except Exception as exc:
+                print("TT_INSTAGRAM_SUCCESS_NOTICE_FAILED",type(exc).__name__,flush=True)
         else:
-            call("sendMessage",{"chat_id":chat_id,"text":"Instagram confirma la publicación; enlace pendiente."})
+            try:
+                call("sendMessage",{"chat_id":chat_id,
+                    "text":"Instagram confirma la publicación; enlace pendiente.",
+                    "reply_to_message_id":message_id})
+            except Exception as exc:
+                print("TT_INSTAGRAM_SUCCESS_NOTICE_FAILED",type(exc).__name__,flush=True)
         return "published"
 
     reason=str(result.get("state") or "")
