@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-09T12:55:34.188065Z",
+  "updated_at": "2026-10-09T12:56:53.371Z",
   "items": [
     {
       "event_id": "106d65de7a34",
@@ -630,8 +630,8 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image_status": "ready",
       "image_pending": false,
@@ -647,12 +647,26 @@
       },
       "fallback_image_search_attempted_at": "2026-10-09T10:06:19.462269Z",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009083400_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/catalunya/noticia-metro-barcelona-minuto-viernes-12-horas-muerte-maricarmen-abascal-20261009083400.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "El Metro de Barcelona para 1 minuto este viernes a las 12 horas por la muerte de Maricarmen Abascal"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1fed4ea8485b-r1-ai1-791549547024.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "a3372b47e0d1ffb713a6f718234ad3fb075444793d88b358fde41680bb938d8c",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2940381,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1fed4ea8485b",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-1fed4ea8485b-r1-a4-1791549547024"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1fed4ea8485b-r1-ai1-791549547024.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "archive_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009083400_1200.jpg",
@@ -661,7 +675,33 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El Metro de Barcelona para 1 minuto este viernes a las 12 horas por la muerte de Maricarmen Abascal"
-      }
+      },
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/1fed4ea8485b-r1-ai1-791549547024.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "a3372b47e0d1ffb713a6f718234ad3fb075444793d88b358fde41680bb938d8c",
+        "width": 1254,
+        "height": 1254,
+        "bytes": 2940381,
+        "context_guard": {
+          "version": 3,
+          "event_id": "1fed4ea8485b",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-1fed4ea8485b-r1-a4-1791549547024"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/1fed4ea8485b-r1-ai1-791549547024.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-09T12:56:53.371Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T12:56:53.371Z"
     },
     {
       "event_id": "9235e5d8b34f",
