@@ -166,3 +166,32 @@ jobs:
             throw "Independent image queue lost"
           }
           Write-Host "OK: stale editorial trigger cannot skip the independent image queue"
+
+      - name: Test listener invalid JSON recovery
+        shell: pwsh
+        run: |
+          $ErrorActionPreference="Stop"
+          foreach($file in @("TTiTTularesDedicatedListener.ps1","TTendenciasDedicatedListener.ps1")){
+            $src=Get-Content ("windows/"+$file) -Raw
+            $tok=$null; $errs=$null
+            $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tok,[ref]$errs)
+            if($errs.Count){throw "Parse failed $file"}
+            foreach($name in @("Write-Log","Load-State","Save-State","Ensure-StateFields")){
+              $fn=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $name},$true)|Select-Object -First 1
+              Invoke-Expression $fn.Extent.Text
+            }
+            $StatePath=Join-Path $env:RUNNER_TEMP ($file+".json")
+            $LogPath=Join-Path $env:RUNNER_TEMP ($file+".log")
+            Set-Content $StatePath "null"
+            $state=Load-State
+            if($null -eq $state){throw "Null state in $file"}
+            Ensure-StateFields $state
+            $state.active_image_commands=@("job-test")
+            Save-State $state
+            $reloaded=Load-State
+            if(@($reloaded.active_image_commands).Count -ne 1){throw "State lost image job in $file"}
+            Set-Content $StatePath "{invalid"
+            $restored=Load-State
+            if($null -eq $restored){throw "Could not recover invalid state in $file"}
+            Write-Host "OK $file"
+          }
