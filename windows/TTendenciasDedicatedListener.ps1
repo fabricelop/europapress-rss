@@ -32,7 +32,7 @@ $script:DirectTriggerCache = $null
 $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
-$WorkerId = "ttendencias-dedicated-v19"
+$WorkerId = "ttendencias-dedicated-v20"
 $PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
@@ -316,16 +316,7 @@ function Read-ImageJob([string]$TargetId,[string]$ExpectedCommandId = ""){
   return $apiDoc
 }
 
-function Load-State {
-  if (Test-Path -LiteralPath $StatePath) {
-    try { $loaded = Get-Content -LiteralPath $StatePath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop; if ($loaded -is [pscustomobject]) { return $loaded } } catch {}
-  }
-  if (Test-Path -LiteralPath ($StatePath + ".previous")) {
-    try {
-      $backup = Get-Content -LiteralPath ($StatePath + ".previous") -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction Stop
-      if ($backup -is [pscustomobject]) { Write-Log "STATE RECOVERED from previous valid snapshot"; return $backup }
-    } catch {}
-  }
+function New-ListenerState {
   return [pscustomobject]@{
     last_command_id = ""
     conflict_command_id = ""
@@ -333,101 +324,91 @@ function Load-State {
     image_commands = @()
     active_image_commands = @()
     image_scan_cursor = 0
+    editorial_retry_command_id = ""
+    editorial_retry_after = ""
   }
 }
 
-function Save-State($State) {
-  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE SAVE BLOCKED: invalid object" }
-  Ensure-StateFields $State
-  $json = ConvertTo-Json -InputObject $State -Depth 8 -ErrorAction Stop
-  $tmp = $StatePath + ".tmp." + [guid]::NewGuid().ToString("N")
-  try {
-    Set-Content -LiteralPath $tmp -Value $json -Encoding UTF8 -ErrorAction Stop
-    if (Test-Path -LiteralPath $StatePath) {
-      [System.IO.File]::Replace($tmp, $StatePath, ($StatePath + ".previous"))
-    } else {
-      [System.IO.File]::Move($tmp, $StatePath)
+function ConvertTo-ListenerState($Candidate) {
+  if($null -eq $Candidate){return $null}
+  # Prior versions may have persisted a double-encoded JSON object or a
+  # single-element array. Keep the local command history wherever possible.
+  if($Candidate -is [string]){
+    $source=$Candidate.Trim()
+    if(-not $source.StartsWith("{")){return $null}
+    try{$Candidate=ConvertFrom-Json -InputObject $source -ErrorAction Stop}catch{return $null}
+  }
+  if($Candidate -is [array]){
+    if($Candidate.Count -ne 1){return $null}
+    $Candidate=$Candidate[0]
+  }
+  if($Candidate -is [System.Collections.IDictionary]){
+    $Candidate=[pscustomobject]$Candidate
+  }
+  if($null -eq $Candidate -or $Candidate -is [string] -or $Candidate -is [array] -or $Candidate -is [ValueType]){return $null}
+  if(-not $Candidate.PSObject -or -not $Candidate.PSObject.Properties){return $null}
+  # Never require the PSCustomObject accelerator here: it has been rejecting
+  # the user's actual persisted state on Windows PowerShell 5.1 at boot.
+  return $Candidate
+}
+
+function Load-State {
+  foreach($file in @($StatePath,($StatePath+".previous"))){
+    if(-not (Test-Path -LiteralPath $file)){continue}
+    try{
+      $raw=Get-Content -LiteralPath $file -Raw -Encoding UTF8 -ErrorAction Stop
+      $loaded=ConvertFrom-Json -InputObject $raw -ErrorAction Stop
+      $valid=ConvertTo-ListenerState $loaded
+      if($null -ne $valid){
+        if($file -ne $StatePath){Write-Log "STATE RECOVERED from previous valid snapshot"}
+        return $valid
+      }
+      Write-Log ("STATE LEGACY ROOT ignored file="+$file+" type="+$(if($null -eq $loaded){"null"}else{$loaded.GetType().FullName}))
+    }catch{
+      Write-Log ("STATE READ WARNING file="+$file+" :: "+$_.Exception.Message)
     }
-  } finally {
+  }
+  Write-Log "STATE DEFAULT RECOVERED; unreadable original files preserved"
+  return (New-ListenerState)
+}
+
+function Save-State($State) {
+  if($null -eq $State -or $State -is [string] -or $State -is [array] -or $State -is [ValueType]){
+    throw "STATE SAVE BLOCKED: invalid scalar/array"
+  }
+  Ensure-StateFields $State
+  $json=ConvertTo-Json -InputObject $State -Depth 8 -ErrorAction Stop
+  $tmp=$StatePath+".tmp."+[guid]::NewGuid().ToString("N")
+  try{
+    Set-Content -LiteralPath $tmp -Value $json -Encoding UTF8 -ErrorAction Stop
+    if(Test-Path -LiteralPath $StatePath){
+      [System.IO.File]::Replace($tmp,$StatePath,($StatePath+".previous"))
+    }else{
+      [System.IO.File]::Move($tmp,$StatePath)
+    }
+  }finally{
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
   }
 }
 
 function Ensure-StateFields($State) {
-  if ($null -eq $State -or $State -isnot [pscustomobject]) { throw "STATE INVALID: expected object" }
-  # El estado local puede proceder de versiones previas; declarar propiedades
-  # antes de cualquier acceso estricto para no inutilizar la cola de imagenes.
-  foreach ($n in @("last_command_id","conflict_command_id","conflict_first_at","editorial_retry_command_id","editorial_retry_after")) {
-    if (-not ($State.PSObject.Properties.Name -contains $n)) {
+  if($null -eq $State -or $State -is [string] -or $State -is [array] -or $State -is [ValueType]){
+    throw "STATE INVALID: expected object, got "+$(if($null -eq $State){"null"}else{$State.GetType().FullName})
+  }
+  $names=@($State.PSObject.Properties.Name)
+  foreach($n in @("last_command_id","conflict_command_id","conflict_first_at","editorial_retry_command_id","editorial_retry_after")){
+    if($names -notcontains $n){
       Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value "" -Force
     }
   }
-  if (-not ($State.PSObject.Properties.Name -contains "image_scan_cursor")) {
+  if($names -notcontains "image_scan_cursor"){
     Add-Member -InputObject $State -MemberType NoteProperty -Name image_scan_cursor -Value 0 -Force
   }
-  foreach ($n in @("image_commands","active_image_commands")) {
-    if (-not ($State.PSObject.Properties.Name -contains $n)) {
+  foreach($n in @("image_commands","active_image_commands")){
+    if(-not ($State.PSObject.Properties.Name -contains $n)){
       Add-Member -InputObject $State -MemberType NoteProperty -Name $n -Value ([object[]]@()) -Force
     }
-    if ($null -eq $State.$n) { $State.$n = @() }
-  }
-}
-
-function Test-EditorialRetryBackoff($State,[string]$CommandId) {
-  if ([string]$State.editorial_retry_command_id -ne $CommandId) { return $false }
-  try {
-    $until=[DateTimeOffset]::Parse([string]$State.editorial_retry_after)
-    return ([DateTimeOffset]::UtcNow -lt $until)
-  } catch { return $false }
-}
-
-function Set-EditorialRetryBackoff($State,[string]$CommandId) {
-  $State.editorial_retry_command_id=$CommandId
-  $State.editorial_retry_after=[DateTimeOffset]::UtcNow.AddMinutes($EditorialRetryBackoffMinutes).ToString("o")
-  Save-State $State
-  Write-Log "EDITORIAL RETRY DEFERRED command=$CommandId until=$($State.editorial_retry_after)"
-}
-
-function Send-Ack([string]$CommandId,[string]$Stage) {
-  $script:LastAckConflict = $null
-  try {
-    $payload = @{
-      task = "pc_ack"
-      command_id = $CommandId
-      stage = $Stage
-      worker_id = $WorkerId
-    } | ConvertTo-Json -Compress
-    Invoke-RestMethod -Method Post -Uri $RunUrl -ContentType "application/json" -Body $payload -TimeoutSec 12 | Out-Null
-    Write-Log "ACK $Stage command=$CommandId worker=$WorkerId"
-    return "OK"
-  } catch {
-    $code = 0
-    try { $code = [int]$_.Exception.Response.StatusCode } catch {}
-    if ($code -eq 409) {
-      $body = ""
-      $reason = ""
-      try {
-        $resp = $_.Exception.Response
-        if ($resp) {
-          $stream = $resp.GetResponseStream()
-          if ($stream) {
-            $reader = New-Object System.IO.StreamReader($stream)
-            try { $body = $reader.ReadToEnd() } finally { $reader.Dispose(); $stream.Dispose() }
-          }
-        }
-      } catch {}
-      try {
-        if ($body) {
-          $parsed = $body | ConvertFrom-Json
-          $reason = [string]$parsed.error
-        }
-      } catch {}
-      $script:LastAckConflict = [pscustomobject]@{ reason=$reason; body=$body }
-      Write-Log "ACK CONFLICT $Stage command=$CommandId reason=$reason"
-      return "CONFLICT"
-    }
-    Write-Log "ACK ERROR $Stage command=$CommandId :: $($_.Exception.Message)"
-    return "ERROR"
+    if($null -eq $State.$n){$State.$n=@()}
   }
 }
 
@@ -951,6 +932,7 @@ Ensure-LocalWatchdog
 Write-Log "LISTENER START worker=$WorkerId pid=$PID"
 try {
   $state = Load-State
+  Write-Log ("STATE LOAD type="+$(if($null -eq $state){"null"}else{$state.GetType().FullName}))
   Ensure-StateFields $state
   Save-State $state
   Write-Log "STATE READY worker=$WorkerId pid=$PID"
