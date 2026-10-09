@@ -63,3 +63,26 @@ test("Instagram callback errors notify Telegram; X handlers stay separate",()=>{
   assert.match(source,/await instagramTelegramNotice\(env,update,"Publicado en Instagram: "/);
   assert.match(source,/match\[1\]==="i"\?"instagram_action":"emergency_action"/);
 });
+
+test("Instagram preflight requires bearer secret and never publishes",async()=>{
+ const url="https://worker.example/api/ttittulares-instagram-preflight";
+ const denied=await worker.fetch(new Request(url),{});
+ assert.equal(denied.status,401);
+ const secret="test-secret-with-at-least-thirty-two-characters";
+ const prev=globalThis.fetch;
+ globalThis.fetch=async()=>Response.json({ok:true,active:true});
+ try{
+  const result=await worker.fetch(new Request(url+"?chat_id=-100222333444",{headers:{authorization:"Bearer "+secret}}),{
+   INSTAGRAM_INTERNAL_SECRET:secret,
+   INSTAGRAM_ALLOWED_CHAT_ID:"-100222333444",
+   INSTAGRAM_PUBLISHER_URL:"https://tt-actualidad-instagram-pilot.fabricelop.workers.dev",
+   GITHUB_TOKEN:"test",
+   TTITTULARES_CALLBACK_DECRYPT_KEY:"test"
+  });
+  assert.equal(result.status,200);
+  const d=await result.json();
+  assert.equal(d.chat_matches,true);
+  assert.equal(d.publisher_authenticated,true);
+  assert.equal(d.ok,true);
+ }finally{globalThis.fetch=prev}
+});
