@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-09T13:49:45.242Z",
+  "updated_at": "2026-10-09T13:51:31.102Z",
   "items": [
     {
       "event_id": "cdbac22167ce",
@@ -394,21 +394,61 @@
       "fallback_image_status": "ready",
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
-      "image_choice": "fallback",
+      "ai_image_status": "ready",
+      "image_choice": "ai",
       "selection_mode": "AUTO_WEB",
       "image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261009142715_690.jpg",
-        "source": "Europa Press",
-        "source_url": "https://www.europapress.es/illes-balears/noticia-muere-piloto-despenarse-barranco-rally-challenge-mallorca-20261009142715.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Carretera cortada en la Serra de Tramuntana, imagen de archivo"
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/fb3f29853c7d-r1-ai1-791553759315.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4a391c2b20f8674696b34f93b6f3395ebb44cb319d97b459468c1e3de74ab581",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2945189,
+        "context_guard": {
+          "version": 3,
+          "event_id": "fb3f29853c7d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-fb3f29853c7d-r1-a1-1791553759315"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/fb3f29853c7d-r1-ai1-791553759315.png",
+        "handoff": "pc-bridge-direct-materialized"
       },
       "image_status": "ready",
       "image_pending": false,
       "image_app_available": true,
-      "image_delivery": "app"
+      "image_delivery": "app",
+      "ai_image": {
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/fb3f29853c7d-r1-ai1-791553759315.png",
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "generation_attempt": 1,
+        "sha256": "4a391c2b20f8674696b34f93b6f3395ebb44cb319d97b459468c1e3de74ab581",
+        "width": 1122,
+        "height": 1402,
+        "bytes": 2945189,
+        "context_guard": {
+          "version": 3,
+          "event_id": "fb3f29853c7d",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-fb3f29853c7d-r1-a1-1791553759315"
+        },
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/fb3f29853c7d-r1-ai1-791553759315.png",
+        "handoff": "pc-bridge-direct-materialized"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_tool_called_at": "2026-10-09T13:51:31.102Z",
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-10-09T13:51:31.102Z"
     }
   ],
   "count": 12
