@@ -13,6 +13,7 @@ test("complete TTendencias PWA and all 3 original handlers were staged",()=>{
     "generated/assets/ttendencias/index.html",
     "generated/assets/tt-shared/gag-actions.js",
     "generated/assets/tt-shared/gag-actions.css",
+    "generated/assets/tt-shared/gag-copy.html",
     "generated/assets/ttendencias/explicadas/index.html",
     "generated/assets/ttendencias/preparados/index.html",
     "generated/assets/ttendencias/sw.js",

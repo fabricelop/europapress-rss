@@ -27,7 +27,7 @@ fs.cpSync(input,output,{recursive:true,force:true});
 const sharedInput=path.join(repo,"vercel-webhook","tt-shared");
 const sharedOutput=path.join(assets,"tt-shared");
 fs.cpSync(sharedInput,sharedOutput,{recursive:true,force:true});
-for(const name of ["gag-actions.js","gag-actions.css"]){
+for(const name of ["gag-actions.js","gag-actions.css","gag-copy.html"]){
   if(!fs.statSync(path.join(sharedOutput,name)).isFile())throw Error("Shared GAG asset missing: "+name);
 }
 for(const pathName of ["index.html","sw.js","manifest.webmanifest","icon.svg"]){

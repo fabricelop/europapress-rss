@@ -14,6 +14,7 @@ test("original TTiTTulares PWA and handlers staged (no replacement UI)",()=>{
     "generated/assets/ttittulares/index.html",
     "generated/assets/tt-shared/gag-actions.js",
     "generated/assets/tt-shared/gag-actions.css",
+    "generated/assets/tt-shared/gag-copy.html",
     "generated/assets/ttittulares/sw.js",
     "generated/assets/ttittulares/manifest.webmanifest",
     "generated/lib/ttittulares-control-handler.js",
