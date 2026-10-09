@@ -18,14 +18,91 @@ def enabled():
     return os.environ.get(FLAG, "").strip() == "1"
 
 
+# Tags are selected only when their subject occurs in the approved caption.
+# No inference about events, people or places absent from the supplied text.
+# Order favors specific subjects before broad categories.
+TAG_RULES = (
+    (r"\bshakira\b", "#Shakira"),
+    (r"\bla revuelta\b", "#LaRevuelta"),
+    (r"\bbroncano\b", "#DavidBroncano"),
+    (r"\breal madrid\b", "#RealMadrid"),
+    (r"\bbar[cç]a\b|\bfc barcelona\b", "#FCBarcelona"),
+    (r"\beuroliga\b", "#Euroliga"),
+    (r"\bpartizan\b", "#Partizan"),
+    (r"\batletico de madrid\b", "#AtleticoDeMadrid"),
+    (r"\blamine yamal\b", "#LamineYamal"),
+    (r"\balcaraz\b", "#CarlosAlcaraz"),
+    (r"\bsinner\b", "#JannikSinner"),
+    (r"\bverstappen\b", "#MaxVerstappen"),
+    (r"\balonso\b", "#FernandoAlonso"),
+    (r"\bformula 1\b|\bf1\b", "#Formula1"),
+    (r"\btenis\b", "#Tenis"),
+    (r"\bbaloncesto\b|\bcanasta\b|\bpartizan\b|\beuroliga\b", "#Baloncesto"),
+    (r"\bfutbol\b|\bgol\b|\bliga de campeones\b", "#Futbol"),
+    (r"\bcine\b|\bpelicula\b|\boscar\b", "#Cine"),
+    (r"\bconcierto\b|\bcantante\b|\bmusica\b", "#Musica"),
+    (r"\bserie\b|\bprograma de television\b|\btelevision\b", "#Television"),
+    (r"\bgobierno\b|\bcongreso\b|\belecciones?\b|\bministro\b|\bpolitica\b", "#Politica"),
+    (r"\bsanchez\b", "#PedroSanchez"),
+    (r"\bfeijoo\b", "#AlbertoNunezFeijoo"),
+    (r"\brufian\b", "#GabrielRufian"),
+    (r"\bdesahucio\b|\balquiler\b|\bvivienda\b", "#Vivienda"),
+    (r"\btribunal\b|\bsentencia\b|\bfiscalia\b", "#Justicia"),
+    (r"\binteligencia artificial\b|\btecnologia\b", "#Tecnologia"),
+    (r"\bclima\b|\btemperaturas?\b|\bmeteorologia\b", "#Meteorologia"),
+    (r"\blluvia\b|\btormenta\b", "#Lluvia"),
+    (r"\binmigracion\b|\bmigracion\b|\bice\b", "#Migracion"),
+    (r"\beconomia\b|\binflacion\b|\bprecios\b", "#Economia"),
+)
+TAG_PREFIX_RE = re.compile(r"^(?:@?ttactualidad)\s*[:—–-]?\s*", re.IGNORECASE)
+OLD_FOOTER_RE = re.compile(
+    r"\s*Ilustraci[oó]n sat[ií]rica generada con IA\.?(?:\s*#TTActualidad)?\s*$",
+    re.IGNORECASE,
+)
+INLINE_TAG_RE = re.compile(r"(?<!\w)#[\w]+", re.UNICODE)
+
+
+def _fold(value):
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFKD", value.casefold())
+                   if not unicodedata.combining(c))
+
+
 def caption(text):
-    value = str(text or "").strip()
+    """Use editorial text intact apart from account prefix; add up to 4 topical tags.
+
+    The existing Telegram/X caption is not changed. This only affects new
+    Instagram snapshots; already-delivered Instagram rows stay immutable.
+    """
+    value = TAG_PREFIX_RE.sub("", str(text or "").strip())
+    value = OLD_FOOTER_RE.sub("", value).strip()
+    # Do not place the author handle inside the description: IG displays it.
+    value = re.sub(r"\s*#TTActualidad\s*$", "", value, flags=re.IGNORECASE).strip()
     if not value:
         raise ValueError("Missing approved text")
-    note = "\n\nIlustración satírica generada con IA.\n#TTActualidad"
-    if len(value + note) > 2200:
+
+    present = {t.casefold() for t in INLINE_TAG_RE.findall(value)}
+    topics = _fold(value)
+    tags = []
+    slots = max(0, 4 - len(present))
+    for pattern, tag in TAG_RULES:
+        if not slots:
+            break
+        if tag.casefold() in present:
+            continue
+        if re.search(pattern, topics):
+            tags.append(tag)
+            present.add(tag.casefold())
+            slots -= 1
+    if not tags and not present:
+        tags = ["#Actualidad"]  # Last-resort description, never tag an unrelated person.
+    result = value + ("\n\n" + " ".join(tags) if tags else "")
+    if len(result) > 2200:
+        # Tags are optional; never truncate the approved factual text or the gag.
+        result = value
+    if len(result) > 2200:
         raise ValueError("Instagram caption too long")
-    return value + note
+    return result
 
 
 def materialize(root, project, event_id, revision, raw):
