@@ -1,10 +1,39 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import worker,{authorize,inputCheck} from "../src/index.js";
+import worker,{authorize,inputCheck,instagramCaption} from "../src/index.js";
 
 const img="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/example-r1.jpg";
 const item={source:"ttittulares",event_id:"abcde123",revision:1,telegram_message_id:200,image_url:img,caption:"Texto aprobado\n\nIlustración generada con IA."};
 const secret="only-test-not-a-production-credential-1234";
+
+test("Instagram topics cover both editorial feeds and remove generic labels",()=>{
+  const renoir=instagramCaption("ttactualidad: Francia recupera los dos Renoir robados en un museo. #Actualidad");
+  assert.equal(renoir.startsWith("Francia recupera"),true);
+  assert.match(renoir,/#Renoir/);
+  assert.match(renoir,/#Francia/);
+  assert.match(renoir,/#Arte/);
+  assert.doesNotMatch(renoir,/#Actualidad|#TTActualidad/i);
+  const nobel=instagramCaption("Premio Nobel de la Paz para Navi Pillay por el derecho internacional.");
+  assert.match(nobel,/#PremioNobelDeLaPaz/);
+  assert.match(nobel,/#NaviPillay/);
+  assert.match(nobel,/#DerechoInternacional/);
+  const rally=instagramCaption("Un piloto muere en accidente durante el Rally Challenge Mallorca.");
+  assert.match(rally,/#Rally/);
+  assert.match(rally,/#Mallorca/);
+  const trend=instagramCaption("TT#1 Shakira vuelve a La Revuelta con David Broncano.");
+  assert.match(trend,/#Shakira/);
+  assert.match(trend,/#LaRevuelta/);
+  assert.match(trend,/#DavidBroncano/);
+});
+
+test("Instagram captions never alter stored request identity and respect max length",()=>{
+  const tagged=instagramCaption("Una noticia sobre viviendas y alquileres #Vivienda");
+  assert.equal(tagged.match(/#Vivienda/g).length,1);
+  assert.equal(instagramCaption("A".repeat(2199)).length,2199);
+  const src="Pedro Sánchez reclama medidas de vivienda y el Congreso estudia la propuesta.";
+  assert.equal(instagramCaption(src).startsWith(src),true);
+  assert.ok(instagramCaption(src).length<=2200);
+});
 
 test("health never declares the Instagram publisher activated",async()=>{
   const r=await worker.fetch(new Request("https://example.com/health"),{});
