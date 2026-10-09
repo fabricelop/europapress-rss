@@ -211,6 +211,35 @@ function threeSourceSpeedMinutes(event){
     .sort((x,y)=>x-y);
   return times.length>=3?Math.max(0,Math.round((times[2]-times[0])/60000)):null
 }
+async function deleteReadyFromListas(eventId){
+  const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
+  const now=new Date().toISOString();
+  await mutateJson(DECISIONS,"Borrar noticia de Listas",doc=>{
+    doc.items ||= [];
+    let row=doc.items.find(x=>idOf(x.event_id)===id);
+    if(!row){row={event_id:id};doc.items.push(row);}
+    Object.assign(row,{status:"deleted",updated_at:now,deleted_at:now,decision_source:"user_delete"});
+    doc.updated_at=now;return doc;
+  });
+  const sync=await Promise.allSettled([
+    mutateJson(PREPARED,"Borrar noticia preparada",doc=>{
+      doc.items=(doc.items||[]).filter(x=>idOf(x.event_id)!==id);
+      doc.updated_at=now;return doc;
+    }),
+    mutateJson(PROCESSING,"Cerrar noticia borrada",doc=>{
+      for(const row of doc.items||[])if(idOf(row.event_id)===id)
+        Object.assign(row,{status:"DELETED",deleted_at:now,history_hidden_at:now});
+      doc.updated_at=now;return doc;
+    }),
+    mutateJson(EVENTS,"Excluir noticia borrada del radar",doc=>{
+      for(const row of doc.events||[])if(idOf(row.id||row.event_id)===id)
+        Object.assign(row,{status:"DELETED",deleted_at:now});
+      doc.updated_at=now;return doc;
+    })
+  ]);
+  return {ok:true,event_id:id,status:"deleted",sync_pending:sync.some(x=>x.status==="rejected")};
+}
+
 async function closePrepared(eventId,status){
   const id=idOf(eventId);if(!id)throw new Error("Falta event_id");
   const now=new Date().toISOString();
@@ -398,7 +427,7 @@ async function submitManualStory(url,title,instruction){
   if(archiveMatch&&["PUBLISHED","DISMISSED"].includes(String(archiveMatch.status||"").toUpperCase())){
     return {ok:true,duplicate:true,event_id:idOf(archiveMatch.event_id),status:String(archiveMatch.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"}
   }
-  const decision=(decisionsR.doc.items||[]).find(x=>candidateIds.has(idOf(x.event_id))&&["published","dismissed"].includes(String(x.status||"").toLowerCase()));
+  const decision=(decisionsR.doc.items||[]).find(x=>candidateIds.has(idOf(x.event_id))&&["published","dismissed","deleted"].includes(String(x.status||"").toLowerCase()));
   if(decision)return {ok:true,duplicate:true,event_id:idOf(decision.event_id),status:String(decision.status).toUpperCase(),message:"Esta noticia ya estaba cerrada"};
   if(preparedMatch)return {ok:true,duplicate:true,event_id:idOf(preparedMatch.event_id),status:"READY",message:"Esta noticia ya está lista"};
   const activeQueue=queueMatch&&String(queueMatch.status||"")==="PROCESSING"?queueMatch:
@@ -837,10 +866,11 @@ export default async function handler(req,res){
     const body=req.body||{},action=String(body.action||"");
     if(action==="ping"){const backend=await backendStatus();return res.status(backend.ok?200:503).json({ok:backend.ok,access:"granted",backend})}
     if(action==="rate-remate")return res.status(200).json(await rateTitularRemate(body.rating_key,body.rating));
-    if(action==="published")return res.status(200).json(await closePrepared(body.event_id,"published"));
-    if(action==="dismiss")return res.status(200).json(await closePrepared(body.event_id,"dismissed"));
+    if(action==="delete")return res.status(200).json(await deleteReadyFromListas(body.event_id));
+    if(action==="published")return res.status(410).json({ok:false,error:"Publicar en X retirado"});
+    if(action==="dismiss")return res.status(410).json({ok:false,error:"Desestimar retirado; usa Borrar"});
     if(action==="rework")return res.status(200).json(await rework(body.event_id,body.instruction,body.reinvestigate===true));
-    if(action==="regenerate-image")return res.status(200).json(await requestImageRegeneration(body.event_id));
+    if(action==="regenerate-image")return res.status(410).json({ok:false,error:"Generación IA retirada"});
     if(action==="use-fallback-image")return res.status(200).json(await useFallbackImage(body.event_id));
     if(action==="check")return res.status(200).json(await markUserValidated(body.event_id));
     if(action==="delete-tremending"||action==="discard-tremending")return res.status(200).json(await deleteTremending(body.entry_id));
