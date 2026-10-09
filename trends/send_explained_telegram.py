@@ -349,11 +349,16 @@ def run_send(patch_path):
 
     explained=load(EXPLAINED,{"items":[]})
     copy_state=load(ROOT/"trends/explained-copy-state.json",{"items":[]})
-    archived=set()
+    archived_ids=set()
+    archived_names_legacy=set()
     for x in copy_state.get("items",[]):
         rev=int(x.get("revision") or 0)
-        for name in x.get("trend_names") or []:
-            archived.add((str(name or "").strip().casefold(),rev))
+        item_id=str(x.get("item_id") or x.get("id") or "").strip()
+        if item_id:
+            archived_ids.add((item_id,rev))
+        else:
+            for name in x.get("trend_names") or []:
+                archived_names_legacy.add((str(name or "").strip().casefold(),rev))
     deliveries=load(DELIVERIES,{"version":1,"items":[]})
     deliveries.setdefault("items",[])
     tti_deliveries=load(TTI_DELIVERIES,{"items":[]})
@@ -363,7 +368,10 @@ def run_send(patch_path):
     for row in explained.get("items",[]):
         if str(row.get("status") or "").lower()!="explained":
             continue
-        if (str(row.get("name") or "").strip().casefold(),int(row.get("revision") or 0)) in archived:
+        row_id=str(row.get("id") or "").strip()
+        row_rev=int(row.get("revision") or 0)
+        if ((row_id and (row_id,row_rev) in archived_ids) or
+            (not row_id and (str(row.get("name") or "").strip().casefold(),row_rev) in archived_names_legacy)):
             continue
         if row.get("tremending_origin") or row.get("telegram_package_suppress"):
             continue
