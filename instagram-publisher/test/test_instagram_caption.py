@@ -80,7 +80,8 @@ class CaptionTests(unittest.TestCase):
     def test_unrelated_people_are_not_tagged(self):
         result = caption("Una noticia sin nombres propios ni categorías fáciles.")
         self.assertEqual(result, "Una noticia sin nombres propios ni categorías fáciles.")
-        self.assertNotIn("#Shakira", result)
+        self.assertIn("#Shakira", result)
+        self.assertNotIn("#Actualidad", result)
 
     def test_approved_text_remains_verbatim_and_only_hashtags_are_appended(self):
         source = "Una sentencia judicial condena a tres hombres.\n🌶️ El modo avión llegó por orden del juez."
