@@ -39633,7 +39633,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -39698,12 +39697,16 @@
       ],
       "duplicate_of": null,
       "ai_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "none",
+      "image_pending": false,
       "rewrite_pending": false,
-      "ai_image_attempt": 0
+      "ai_image_attempt": 0,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     }
   ],
-  "updated_at": "2026-10-09T12:04:00+02:00",
+  "updated_at": "2026-10-09T10:03:28.865129Z",
   "count": 673
 }
