@@ -8,7 +8,7 @@ on:
       - "ttittulares/prepared.json"
       - ".github/workflows/repair-ttittulares-listas.yml"
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
@@ -20,8 +20,6 @@ concurrency:
 
 jobs:
   repair:
-    # Desactivado: TTiTTulares ya no genera ni repara imágenes.
-    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -99,16 +97,11 @@ jobs:
               if not str(tweet.get("text") or "").strip() or not str(tweet.get("remate") or "").strip():
                   continue
 
-              mode=str(item.get("image_mode") or item.get("image_strategy") or "").lower()
-              if not item.get("tremending_origin") and mode!="tweet_capture_only":
-                  for key in ("disable_ai_image","ai_image_block_reason","image_block_reason"):
-                      if key in item:
-                          item.pop(key,None); changed=True
-                  if str(item.get("ai_image_status") or "").lower()=="disabled":
-                      item["ai_image_status"]="none"; changed=True
-                  for key in ("image_mode","image_strategy"):
-                      if str(item.get(key) or "").lower() in {"fallback_only","archive_only"}:
-                          item[key]="ai_plus_fallback"; changed=True
+              # La generación IA está retirada. No reactivar sus estrategias.
+              if item.get("image_mode")!="archive_only":
+                  item["image_mode"]="archive_only"; changed=True
+              if item.get("image_strategy")!="archive_only":
+                  item["image_strategy"]="archive_only"; changed=True
 
               archive=item.get("archive_image")
               fallback=item.get("fallback_image")
@@ -186,6 +179,7 @@ jobs:
           git reset --hard origin/main
 
       - name: Encolar IA ausente o inválida
+        if: ${{ false }}
         shell: bash
         run: |
           set -euo pipefail
