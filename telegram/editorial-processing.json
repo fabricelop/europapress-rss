@@ -28037,7 +28037,7 @@
       "percentage": 25,
       "first_seen": "2026-10-08T09:13:07.391559Z",
       "last_seen": "2026-10-08T11:33:13.202571Z",
-      "status": "PROBLEMATIC",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -28054,8 +28054,8 @@
       "eligible_at": "2026-10-08T11:33:13.202571Z",
       "event_id": "7dd90b5501fb",
       "title": "Llegan a Lanzarote 125 migrantes en una neumática, la mayor registrada en la Ruta Canaria",
-      "selection_mode": "AUTO_WEB",
-      "selected_at": "2026-10-08T11:33:42.647066Z",
+      "selection_mode": "MANUAL_VALIDATED_PROBLEMATIC",
+      "selected_at": "2026-10-09T14:01:42.606Z",
       "source_evidence": [
         {
           "source": "elDiario.es",
@@ -28096,9 +28096,13 @@
       ],
       "drafted_source_count": 4,
       "verified_source_count": 4,
-      "problematic_at": "2026-10-08T11:44:31.094013Z",
-      "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "user_validated": true,
+      "user_validated_at": "2026-10-09T14:01:42.606Z",
+      "user_validation_source": "web_check",
+      "user_validation_version": 1,
+      "with_image": true,
+      "image_mode": "ai_plus_fallback"
     },
     {
       "id": "6f863baf4fdd",
@@ -39063,7 +39067,7 @@
         "20minutos"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-09T10:24:26.818776Z",
       "last_seen": "2026-10-09T13:54:13.371432Z",
       "status": "PROCESSING",
@@ -39127,5 +39131,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-09T13:59:55.699484Z"
+  "updated_at": "2026-10-09T14:01:42.606Z"
 }
