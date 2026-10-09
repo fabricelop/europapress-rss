@@ -88,7 +88,7 @@ const TT_CALLBACK_INBOX="telegram/ttittulares-callback-inbox.json";
 function parseTtiCallback(update){
   const cq=update?.callback_query;
   const data=String(cq?.data||"");
-  const match=data.match(/^tt:([pdi]):([a-zA-Z0-9_-]{5,64})$/);
+  const match=data.match(/^tt:([pdib]):([a-zA-Z0-9_-]{5,64})$/);
   const instagramDelete=data.match(/^tt:igdel:([1-9][0-9]{0,14})$/);
   const uid=Number(update?.update_id);
   const mid=Number(cq?.message?.message_id);
@@ -101,7 +101,7 @@ function parseTtiCallback(update){
   if(instagramDelete)return {update_id:uid,type:"instagram_delete",
     original_message_id:Number(instagramDelete[1]),callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
-  return {update_id:uid,type:match[1]==="i"?"instagram_action":"emergency_action",text:(match[1]==="p"?"ttp":match[1]==="d"?"ttd":"tti_ig")+"|"+match[2],
+  return {update_id:uid,type:match[1]==="i"?"instagram_action":"emergency_action",text:(match[1]==="p"?"ttp":match[1]==="d"?"ttd":match[1]==="b"?"ttb":"tti_ig")+"|"+match[2],
     callback_query_id:qid,message_id:mid,
     source:"ttittulares_cloudflare_callback_v1",received_at:new Date().toISOString()};
 }
@@ -165,7 +165,7 @@ function linkedTtiTelegramMessages(rows,eventId,clickedMessageId){
 }
 async function inlineTtiTelegramDecision(env,update,event){
   const [rawAction,eventId]=event.text.split("|");
-  const status=rawAction==="ttp"?"published":"dismissed";
+  const status=rawAction==="ttb"?"deleted":rawAction==="ttp"?"published":"dismissed";
   const now=new Date().toISOString();
   const gh="https://api.github.com/repos/fabricelop/europapress-rss/contents/";
   const headers={
@@ -188,7 +188,7 @@ async function inlineTtiTelegramDecision(env,update,event){
     const doc=JSON.parse(Buffer.from(String(file.content||"").replace(/\s/g,""),"base64").toString("utf8"));
     if(!Array.isArray(doc.items))throw new Error("Decisions schema invalid");
     let row=doc.items.find(item=>String(item.event_id||"")===eventId);
-    if(row&&["dismissed","published"].includes(row.status)&&row.status!==status)
+    if(row&&["dismissed","published","deleted"].includes(row.status)&&row.status!==status)
       throw new Error("Conflicting terminal Telegram decision");
     if(row?.status===status){persisted=true;break;}
     if(!row){row={event_id:eventId};doc.items.push(row);}
@@ -409,6 +409,13 @@ async function enqueueTtiTelegramCallback(request,env){
     }
   }
   if(event.type==="instagram_action"){
+    // Publishing is permanently retired; legacy Instagram buttons are inert.
+    return json({ok:false,error:"Instagram publishing retired"},410);
+  }
+  if(event.text.startsWith("ttp|")||event.text.startsWith("ttd|")){
+    return json({ok:false,error:"X publication/dismissal actions retired"},410);
+  }
+  if(false&&event.type==="instagram_action"){
     // Instagram never changes the independent X Published / Dismissed state.
     // The callback is confirmed against Telegram before reading the trusted
     // delivery snapshot. Nothing submitted in callback_data is trusted as media.
