@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-701fa4d03e13-r1-a1-1791546354947",
+  "requested_at": "2026-10-09T11:45:54.946504Z",
+  "updated_at": "2026-10-09T11:45:54.946504Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "701fa4d03e13",
+  "event_id": "701fa4d03e13",
+  "target_name": "El Banco de España eleva al 2,6% su previsión de PIB este año, pero advierte de una inflación cercana al 4% hasta 2028",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El Banco de España eleva al 2,6% su previsión de PIB este año, pero advierte de una inflación cercana al 4% hasta 2028",
+    "revision": 1,
+    "factual_summary": "El Banco de España ha elevado al 2,6% su previsión de crecimiento del PIB para 2026 y al 2,2% la de 2027. También ha revisado al alza la inflación, hasta el 3,9% en 2026 y el 3,7% en 2027.",
+    "tweet_text": "El Banco de España eleva al 2,6% el crecimiento previsto para 2026 y al 2,2% para 2027, pero sube la inflación estimada al 3,9% y 3,7%, respectivamente.\n\n🌶️ La economía pisa el acelerador con el termómetro pegado al salpicadero.",
+    "remate": "🌶️ La economía pisa el acelerador con el termómetro pegado al salpicadero.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl Banco de España eleva al 2,6% el crecimiento previsto para 2026 y al 2,2% para 2027, pero sube la inflación estimada al 3,9% y 3,7%, respectivamente.\n\n🌶️ La economía pisa el acelerador con el termómetro pegado al salpicadero.\n\nREMATE EXACTO:\n🌶️ La economía pisa el acelerador con el termómetro pegado al salpicadero.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Banco de España ha elevado al 2,6% su previsión de crecimiento del PIB para 2026 y al 2,2% la de 2027. También ha revisado al alza la inflación, hasta el 3,9% en 2026 y el 3,7% en 2027.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/lainformacion/economia-y-finanzas/banco-espana-eleva-2-6-su-prevision-pib-este-ano-pero-advierte-una-inflacion-cercana-4-hasta-2028_7046850_0.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/economia/macroeconomia-00338/noticia-banco-espana-eleva-crecimiento-pib-26-ano-22-2027-empeora-inflacion-20261009130051.html"
+      },
+      {
+        "source": "Servimedia",
+        "url": "https://www.servimedia.es/noticias/banco-espana-mejora-tres-decimas-proyecciones-pib-hasta-2-6-2026-situa-inflacion-3-9/1413402966"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/economia/2026-10-09/el-banco-de-espana-mejora-la-prevision-de-crecimiento-hasta-el-26-para-2026-pero-alerta-de-un-duro-repunte-de-la-inflacion.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Reparación automática de imagen IA para noticia en Listas."
+}
