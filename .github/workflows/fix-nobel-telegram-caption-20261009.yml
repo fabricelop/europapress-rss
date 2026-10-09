@@ -1,0 +1,57 @@
+name: Corregir explicación pública del Nobel de la Paz en Telegram (una vez)
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fix-nobel-telegram-caption-20261009.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /telegram/ttittulares-deliveries.json
+      - name: Actualizar el mismo mensaje de Telegram sin citar periódicos
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,urllib.request
+          from urllib.parse import quote
+          entries=json.loads(pathlib.Path("telegram/ttittulares-deliveries.json").read_text(encoding="utf8")).get("items",[])
+          event_id="95be3b714328"
+          row=next((r for r in reversed(entries) if str(r.get("event_id"))==event_id and r.get("status")=="sent" and r.get("telegram_message_id")),None)
+          if not row:
+              print("NOBEL_CAPTION_SKIP_NOT_SENT")
+              raise SystemExit(0)
+          token=os.environ["TELEGRAM_BOT_TOKEN"].strip()
+          chat=os.environ["TELEGRAM_CHAT_ID"].strip()
+          title="Navanethem 'Navi' Pillay, jurista internacional, gana el Premio Nobel de la Paz 2026"
+          detail=("El Comité Noruego del Nobel concedió a Navi Pillay, jurista sudafricana de 85 años, "
+                  "exjueza de la Corte Penal Internacional y ex alta comisionada de la ONU para los Derechos Humanos, "
+                  "el Nobel de la Paz 2026 por sus esfuerzos para promover la paz y el derecho internacional. "
+                  "Pillay recibió la noticia en Núremberg.")
+          closer="🌶️ El derecho internacional acaba de ganar un Nobel por presentarse a trabajar."
+          caption=title+"\n\n"+detail+"\n\n"+closer
+          keyboard={"inline_keyboard":[
+              [{"text":"🔎 Buscar en X","url":"https://x.com/search?q="+quote(title)+"&f=live"}],
+              [{"text":"🗑️ Borrar","callback_data":"tt:b:"+event_id}]
+          ]}
+          method="editMessageCaption" if row.get("is_photo") else "editMessageText"
+          payload={"chat_id":chat,"message_id":int(row["telegram_message_id"]),
+                   ("caption" if row.get("is_photo") else "text"):caption,"reply_markup":keyboard}
+          request=urllib.request.Request("https://api.telegram.org/bot"+token+"/"+method,
+             data=json.dumps(payload,ensure_ascii=False).encode("utf8"),headers={"content-type":"application/json"})
+          with urllib.request.urlopen(request,timeout=30) as response:
+              ans=json.load(response)
+          if not ans.get("ok"):
+              raise RuntimeError("Telegram rechazó la actualización")
+          print("NOBEL_CAPTION_EDITED",row["telegram_message_id"],"NO_MEDIA_NAMES",True)
+          PY
