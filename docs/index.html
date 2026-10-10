@@ -195,11 +195,11 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  const url=telegramActionUrl(x._kind==='tti'?'ttittulares':'ttendencias',x._id,action);
+  const url=telegramActionUrl(x._kind==='tr'?'ttendencias':'ttittulares',x._id,action);
   if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
   const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
   b.textContent=label;b.addEventListener('click',event=>{
-   if(action==='deleted'&&!confirm('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?')){
+   if(action==='deleted'&&!confirm(x._kind==='tremending'?'¿Borrar esta entrada de Tremending del panel?':('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?'))){
      event.preventDefault();return;
    }
    showToast('La orden se enviará al bot de Telegram. Recibirás allí el resultado.');
@@ -217,6 +217,7 @@ function rowCard(x,i){
    tweets.forEach(t=>{const l=document.createElement('a');l.href=isHttp(t.url);l.target='_blank';l.rel='noopener';l.textContent=t.author||'Ver tuit';detail.append(l)});
    out.querySelector('.card-body').append(detail);
   }
+  command('🗑 Borrar','deleted');
   return out
  }
  if(x._historical){return out}
