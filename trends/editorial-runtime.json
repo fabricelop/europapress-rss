@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-10T08:31:00+02:00",
-  "last_completed_at": "2026-10-10T08:35:45+02:00",
-  "updated_at": "2026-10-10T08:35:45+02:00",
+  "last_started_at": "2026-10-10T08:45:00+02:00",
+  "last_completed_at": "2026-10-10T08:48:00+02:00",
+  "updated_at": "2026-10-10T08:48:00+02:00",
   "status": "success",
   "processed_ids": [
     "772cda27031c"
@@ -17,51 +17,43 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791613271251-c1522d",
+    "run_id": "tr-20261010T084500-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T08:31:00+02:00",
-    "updated_at": "2026-10-10T08:35:45+02:00",
-    "finished_at": "2026-10-10T08:35:45+02:00",
-    "trend_id": "772cda27031c",
-    "title": "#FelizSábado",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-10T08:45:00+02:00",
+    "updated_at": "2026-10-10T08:48:00+02:00",
+    "finished_at": "2026-10-10T08:48:00+02:00",
+    "trend_id": null,
+    "title": null,
+    "current": 0,
+    "total": 0,
     "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 4,
+      "pending_cards_reviewed": 18,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 5
     },
-    "message": "Pasada completada · 1 tendencia explicada y verificada; cola final 0. Reparación visual continúa aparte.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "connector_tool_call_limit_recovered",
-        "message": "La secuencia de persistencia alcanzó el límite de llamadas del conector; se releyó main y se verificó/reconcilió el estado sin pérdida.",
-        "trend_id": "772cda27031c",
-        "revision": 1,
-        "recovered": true
-      }
-    ],
+    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Se revisaron 18 Pendientes recientes y el reparador visual de Explicadas quedó lanzado de forma independiente.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -71,206 +63,100 @@
     },
     "remate_selections": [
       {
-        "trend_id": "772cda27031c",
+        "trend_id": "7d7133c58382",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "possible_sensitive_real_case_context"
+      },
+      {
+        "trend_id": "4b5c7e7d5b37",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_context_and_length_fit"
+      },
+      {
+        "trend_id": "2d65748bd484",
         "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.5,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 2,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.1,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.9,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 6.8,
-            "ratings_affinity": 1.6,
-            "trend_specificity": 1.8,
-            "punch": 1.3,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 6.2,
-            "ratings_affinity": 1.5,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.6,
-            "trend_specificity": 1.8,
-            "punch": 1.3,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 7.5,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_context"
+      },
+      {
+        "trend_id": "e29d470f50dd",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_international_context"
+      },
+      {
+        "trend_id": "227d4d40ff00",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "length_fit_and_judicial_context"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T08:32:20+02:00",
+        "at": "2026-10-10T08:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada · cola editorial 0; revalidando main y Pendientes."
+      },
+      {
+        "at": "2026-10-10T08:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Estado autoritativo confirmado · #FelizSábado r1 sigue preparing en cola y requests."
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura autoritativa · cola 0, requests preparing/update 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-10T08:32:25+02:00",
-        "phase": "investigating",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Buscando detonante actual de #FelizSábado en España."
-      },
-      {
-        "at": "2026-10-10T08:33:20+02:00",
-        "phase": "investigating",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Contrastando fuente 1/2 · Trends24 confirma #FelizSábado como nº1 en España a las 06:12 UTC."
-      },
-      {
-        "at": "2026-10-10T08:33:30+02:00",
-        "phase": "investigating",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Contrastando fuente 2/2 · historial del sábado anterior confirma que es un saludo recurrente en X."
-      },
-      {
-        "at": "2026-10-10T08:33:35+02:00",
-        "phase": "investigating",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Hecho esencial verificado · saludo sabatino recurrente, hoy nº1 en España."
-      },
-      {
-        "at": "2026-10-10T08:33:40+02:00",
-        "phase": "drafting",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Redactando explicación factual de #FelizSábado."
-      },
-      {
-        "at": "2026-10-10T08:33:45+02:00",
-        "phase": "drafting",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Comprobando límite de X · 182 caracteres, con margen bajo 280."
-      },
-      {
-        "at": "2026-10-10T08:33:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-10T08:33:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Evaluando candidatos con ratings · se evita repetir algoritmo/café del saludo dominical mal valorado."
-      },
-      {
-        "at": "2026-10-10T08:34:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Remate seleccionado."
-      },
-      {
-        "at": "2026-10-10T08:34:32+02:00",
+        "at": "2026-10-10T08:46:30+02:00",
         "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Releyendo estado autoritativo de #FelizSábado · r1 sigue activa."
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 18 tarjetas recientes."
       },
       {
-        "at": "2026-10-10T08:34:35+02:00",
-        "phase": "persisting",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-10T08:34:45+02:00",
-        "phase": "persisting",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-10T08:34:55+02:00",
-        "phase": "persisting",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-10T08:35:05+02:00",
+        "at": "2026-10-10T08:47:00+02:00",
         "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Releyendo main."
+        "trend_id": null,
+        "title": null,
+        "message": "Cinco Pendientes sin remate se mantienen sin forzar por sensibilidad, contexto político/judicial o falta de espacio."
       },
       {
-        "at": "2026-10-10T08:35:25+02:00",
+        "at": "2026-10-10T08:47:30+02:00",
         "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Verificando id+revision y texto persistido · consistencia exacta confirmada."
+        "trend_id": null,
+        "title": null,
+        "message": "Reparador visual de Explicadas confirmado en ejecución independiente."
       },
       {
-        "at": "2026-10-10T08:35:30+02:00",
+        "at": "2026-10-10T08:47:50+02:00",
         "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-10T08:35:35+02:00",
-        "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Revisando Pendientes · 4 tarjetas recientes; reparación visual ya solicitada."
-      },
-      {
-        "at": "2026-10-10T08:35:40+02:00",
-        "phase": "verifying",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
+        "trend_id": null,
+        "title": null,
         "message": "Relectura final de main · cola 0, requests activos 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-10T08:35:45+02:00",
+        "at": "2026-10-10T08:48:00+02:00",
         "phase": "closing",
-        "trend_id": "772cda27031c",
-        "title": "#FelizSábado",
-        "message": "Pasada completada · 1 tendencia explicada y verificada; cola final 0."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada · 0/0 editorial; saneamiento de Pendientes solicitado."
       }
     ],
     "queue_complete": true,
@@ -292,6 +178,5 @@
     "workflow_run_number": 898
   },
   "version": 1,
-  "canonical": true,
-  "error": null
+  "canonical": true
 }
