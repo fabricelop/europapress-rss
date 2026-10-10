@@ -4,14 +4,16 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-10T14:45:00+02:00",
-  "last_completed_at": "2026-10-10T14:48:30+02:00",
-  "updated_at": "2026-10-10T14:48:30+02:00",
+  "last_completed_at": "2026-10-10T14:52:00+02:00",
+  "updated_at": "2026-10-10T14:52:00+02:00",
   "status": "success",
   "processed_ids": [
     "fb2f758f05b5",
     "070d1f241927"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "070d1f241927"
+  ],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -37,8 +39,8 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-10T14:45:00+02:00",
-    "updated_at": "2026-10-10T14:48:30+02:00",
-    "finished_at": "2026-10-10T14:48:30+02:00",
+    "updated_at": "2026-10-10T14:52:00+02:00",
+    "finished_at": "2026-10-10T14:52:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 2,
@@ -54,7 +56,7 @@
       "trends_problematic": 1,
       "trends_dismissed": 0,
       "incidents": 1,
-      "queue_remaining": 0,
+      "queue_remaining": 1,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
@@ -65,7 +67,7 @@
       "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada completada · Colapinto explicado y verificado; «Vienes» queda problematic al no poder verificarse un detonante tras dos búsquedas. Cola editorial final 0.",
+    "message": "Pasada completada · Colapinto explicado y verificado; «Vienes» queda problematic al no poder verificarse un detonante tras dos búsquedas y el radar la mantiene para un reintento futuro. Sin revisiones preparing/update activas.",
     "incident_count": 1,
     "incidents": [
       {
@@ -276,6 +278,13 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada completada · Colapinto explicado; Vienes queda problematic; cola final 0."
+      },
+      {
+        "at": "2026-10-10T14:52:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre verificado · 0 revisiones preparing/update; 1 problematic retenida para reintento futuro."
       }
     ],
     "queue_complete": true,
