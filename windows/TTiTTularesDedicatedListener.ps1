@@ -40,7 +40,7 @@ $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
 $WorkerId = "ttittulares-dedicated-v57"
-$PollSeconds = 30
+$PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
 $MaxParallelImageChats = 1
@@ -1322,7 +1322,7 @@ while ($true) {
     $otherBridgeBusy=Test-OtherImageBridgeBusy
     $slots=if($localBridgeBusy -or $otherBridgeBusy){0}else{[Math]::Max(0,$MaxParallelImageChats-@($state.active_image_commands).Count)}
     if($otherBridgeBusy){Write-Log "IMAGE GLOBAL SLOT WAIT project=ttendencias"}
-    if($slots -gt 0){
+    if($slots -gt 0 -and ($loopCount % 2 -eq 0)) {
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
       # Evitar consultar trabajos historicos y agotar el limite REST de GitHub.
       $jobs=@($jobs | Where-Object {
