@@ -20,13 +20,14 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 </div>
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+<div class="notice">Las acciones Borrar, Publicar y Reelaborar abren <strong>tu bot privado de Telegram</strong>, nunca GitHub. Confirma allí con Iniciar si aparece; recibirás un mensaje al terminar. La tarjeta se actualiza al refrescar.</div>
 <div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div>
 <div id="cards" class="cards"></div>
-<div class="footer">Origen: repositorio público <a href="https://github.com/fabricelop/europapress-rss" target="_blank" rel="noopener">europapress-rss</a>. Los borrados, publicaciones y reelaboraciones requieren autenticación en GitHub y no exponen tokens en esta web. No hay generación automática de imágenes IA.</div>
-<details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se abren en GitHub con tu sesión de usuario, sin guardar contraseñas en el navegador.</p></details>
+<div class="footer">Origen: GitHub Pages y datos públicos de GitHub. Las acciones se confirman en Telegram y se ejecutan de forma segura en GitHub Actions, sin abrir formularios ni exponer credenciales en la web. Imágenes GAG solo mediante copia manual en ChatGPT Images.</div>
+<details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se reciben por el bot privado de Telegram y se ejecutan en GitHub Actions, sin guardar tokens en el navegador.</p></details>
 </main><div id="toast" class="toast" role="status"></div>
 <script>
 (()=>{'use strict';
@@ -123,9 +124,16 @@ async function copyText(value,label){
  showToast(label+' copiado')
 }
 function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
-function issueUrl(project,id,action,title){
- const q=new URLSearchParams({template:'tt-mobile-command.yml',title:'[TT-MOVIL] '+project+' '+action+' '+id,project,action,id,context:title.slice(0,110)});
- return 'https://github.com/'+REPO+'/issues/new?'+q.toString()
+function telegramActionUrl(project,id,action){
+ // Telegram deep links accept <=64 URL-safe characters. No browser token needed.
+ const app=project==='ttittulares'?'n':'t',kind=({published:'p',deleted:'d',rework:'r',prepare:'e'})[action];
+ if(!kind)return '';
+ const bytes=new TextEncoder().encode(String(id||''));
+ if(!bytes.length||bytes.length>39)return '';
+ let raw='';for(const byte of bytes)raw+=String.fromCharCode(byte);
+ const payload='ttm_'+app+'_'+kind+'_'+btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+ if(payload.length>64)return '';
+ return 'https://t.me/TTiTTulares_bot?start='+payload;
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
@@ -141,15 +149,22 @@ function rowCard(x,i){
  const a=out.querySelector('.actions');
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
+ function command(label,action){
+  const url=telegramActionUrl(x._kind==='tti'?'ttittulares':'ttendencias',x._id,action);
+  if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
+  const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
+  b.textContent=label;b.addEventListener('click',()=>showToast('Confirma la orden en Telegram. Recibirás el resultado allí.'));
+  a.append(b);return b
+ }
  if(showClip){
   btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
   if(hasPrompt)btn('🎨 Copiar GAG completo',()=>copyText(manualPrompt(x),'Prompt GAG'),true);
   if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
-  if(showControls){link('✓ Marcar publicado',issueUrl('ttittulares',x._id,'published',d.title));link('↻ Reelaborar',issueUrl('ttittulares',x._id,'rework',d.title));link('🗑 Borrar',issueUrl('ttittulares',x._id,'deleted',d.title))}
-  else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO'].includes(x._status)){link('Enviar a elaborar',issueUrl('ttittulares',x._id,'prepare',d.title));link('🗑 Borrar',issueUrl('ttittulares',x._id,'deleted',d.title))}
-  else if(x._kind==='tr'){link('✓ Marcar publicada',issueUrl('ttendencias',x._id,'published',d.title));link('↻ Reexplicar',issueUrl('ttendencias',x._id,'rework',d.title));link('🗑 Borrar',issueUrl('ttendencias',x._id,'deleted',d.title))}
+  if(showControls){command('✓ Marcar publicado','published');command('↻ Reelaborar','rework');command('🗑 Borrar','deleted')}
+  else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO','EN ELABORACIÓN'].includes(x._status)){command('Enviar a elaborar','prepare');command('🗑 Borrar','deleted')}
+  else if(x._kind==='tr'){command('✓ Marcar publicada','published');command('↻ Reexplicar','rework');command('🗑 Borrar','deleted')}
  }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
  return out
 }
