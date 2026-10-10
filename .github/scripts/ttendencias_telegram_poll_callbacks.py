@@ -75,9 +75,15 @@ def process(updates, allowed_chat, ledger, decisions, offset):
                                     "alert": True})
             continue
         terminal = {"published"} if status == "published" else {"delete_pending", "deleted"}
-        already = all(str(x.get("status") or "") in terminal for x in matched)
+        # The clicked message proves ownership of this event/revision. Close
+        # ALL still-active companion messages of the same event, not only the
+        # clicked photo, to prevent orphaned images in the Telegram chat.
+        companions = [x for x in ledger.get("items", [])
+                      if str(x.get("event_id") or "") == event_id
+                      and str(x.get("status") or "") == "sent"]
+        already = len(companions) == 0
         if not already:
-            for row in matched:
+            for row in companions:
                 row["status"] = "published" if status == "published" else "delete_pending"
                 row["decision_source"] = "telegram_bot_native_poll"
                 row["updated_at"] = stamp()
@@ -166,6 +172,14 @@ def selftest():
     assert state["last_update_id"] == 100
     changed2, _ = process([update], "456", ledger, decisions, state)
     assert not changed2
+    # Companion picture / different revision gets closed with verified click.
+    copy={"event_id":"abc123xyz","revision":1,"telegram_message_id":5555,"status":"sent"}
+    ledger["items"].append(copy)
+    companion_click={"update_id":102,"callback_query":{"id":"anothercallback123",
+        "data":"tx:b:abc123xyz:2","from":{"id":456},
+        "message":{"message_id":1234,"chat":{"id":456,"type":"private"}}}}
+    done,_=process([companion_click],"456",ledger,decisions,state)
+    assert done and copy["status"]=="delete_pending"
     bad = {"update_id":101,"callback_query":{"id":"badcallback321",
         "data":"tx:b:abc123xyz:2","from":{"id":999},
         "message":{"message_id":1234,"chat":{"id":999,"type":"private"}}}}
