@@ -72,6 +72,35 @@ jobs:
           test -s /tmp/tt-pages-site/index.html
           test -s /tmp/tt-pages-site/gag.html
           echo 'TT_MOBILE_STATIC_VALID'
+      - name: Generate PNG icons for iPhone, Android and legacy tabs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install -q --disable-pip-version-check CairoSVG
+          python3 - <<'PY'
+          from pathlib import Path
+          import cairosvg, json, struct
+          site=Path('/tmp/tt-pages-site')
+          source=site/'icon.svg'
+          assert source.is_file(), 'Missing vector favicon'
+          targets={'icon-32.png':32,'apple-touch-icon.png':180,
+                   'icon-192.png':192,'icon-512.png':512}
+          for filename,size in targets.items():
+              path=site/filename
+              cairosvg.svg2png(url=str(source),write_to=str(path),
+                               output_width=size,output_height=size)
+              raw=path.read_bytes()
+              assert raw[:8]==b'\\x89PNG\\r\\n\\x1a\\n',filename
+              assert struct.unpack('>II',raw[16:24])==(size,size),filename
+              print('TT_ICON_RENDERED',filename,size,len(raw),flush=True)
+          manifest=json.loads((site/'manifest.webmanifest').read_text(encoding='utf8'))
+          for item in manifest['icons']:
+              assert (site/item['src'].removeprefix('./')).is_file(),item['src']
+          for filename in ('index.html','gag.html','photo.html'):
+              html=(site/filename).read_text(encoding='utf8')
+              assert 'rel="icon"' in html and 'rel="apple-touch-icon"' in html
+              assert 'rel="manifest"' in html,filename
+          PY
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
