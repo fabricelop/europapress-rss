@@ -19,10 +19,15 @@ jobs:
           import urllib.request,urllib.error,time,json
           base='https://fabricelop.github.io/europapress-rss/'
           checks=[
-              ('panel',base,'TT Actualidad'),
+              ('panel',base,'apple-touch-icon'),
               ('native-mobile-actions',base,'https://t.me/TTiTTulares_bot?start='),
               ('GAG-completo',base+'gag.html','TEXTO EXACTO YA CERRADO'),
               ('copiar-foto-archivo',base+'photo.html?id=dc2f93fa0d39&rev=1','Copiar imagen de archivo'),
+              ('favicon-svg',base+'icon.svg','TT Actualidad'),
+              ('manifest',base+'manifest.webmanifest','"TT Actualidad"'),
+              ('ios-icon',base+'apple-touch-icon.png',180),
+              ('android-192',base+'icon-192.png',192),
+              ('android-512',base+'icon-512.png',512),
               ('TTiTTulares',base+'data/ttittulares/prepared.json','items'),
               ('TTendencias',base+'data/trends/recent.json','top10')]
           ok=False
@@ -32,8 +37,13 @@ jobs:
                   try:
                       req=urllib.request.Request(url,headers={'User-Agent':'TT-GitHub-Pages-Mobile-Smoke/1.0'})
                       with urllib.request.urlopen(req,timeout=15) as response:
-                          body=response.read(350000).decode('utf-8','replace')
-                          result.append({'name':name,'http':response.status,'ok':response.status==200 and marker in body,
+                          raw=response.read(350000)
+                          if isinstance(marker,int):
+                              size=int.from_bytes(raw[16:20],'big') if len(raw)>=24 else 0
+                              ok=raw[:8]==bytes((137,80,78,71,13,10,26,10)) and size==marker
+                          else:
+                              ok=marker in raw.decode('utf-8','replace')
+                          result.append({'name':name,'http':response.status,'ok':response.status==200 and ok,
                                          'type':response.headers.get('Content-Type','')})
                   except urllib.error.HTTPError as error:
                       result.append({'name':name,'http':error.code,'ok':False})
