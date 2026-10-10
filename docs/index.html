@@ -159,7 +159,12 @@ function rowCard(x,i){
   const url=telegramActionUrl(x._kind==='tti'?'ttittulares':'ttendencias',x._id,action);
   if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
   const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
-  b.textContent=label;b.addEventListener('click',()=>showToast('Confirma la orden en Telegram. Recibirás el resultado allí.'));
+  b.textContent=label;b.addEventListener('click',event=>{
+   if(action==='deleted'&&!confirm('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?')){
+     event.preventDefault();return;
+   }
+   showToast('La orden se enviará al bot de Telegram. Recibirás allí el resultado.');
+  });
   a.append(b);return b
  }
  if(showClip){
@@ -168,9 +173,9 @@ function rowCard(x,i){
   if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
-  if(showControls){command('✓ Marcar publicado','published');command('↻ Reelaborar','rework');command('🗑 Borrar','deleted')}
+  if(showControls){command('✓ Marcar publicado','published');command('↻ Reelaborar con instrucciones','rework');command('🗑 Borrar','deleted')}
   else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO','EN ELABORACIÓN'].includes(x._status)){command('Enviar a elaborar','prepare');command('🗑 Borrar','deleted')}
-  else if(x._kind==='tr'){command('✓ Marcar publicada','published');command('↻ Reexplicar','rework');command('🗑 Borrar','deleted')}
+  else if(x._kind==='tr'){command('✓ Marcar publicada','published');command('↻ Reexplicar con instrucciones','rework');command('🗑 Borrar','deleted')}
  }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
  return out
 }
