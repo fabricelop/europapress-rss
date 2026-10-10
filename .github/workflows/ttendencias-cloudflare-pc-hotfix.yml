@@ -39,7 +39,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          base='https://ttendencias-no-vercel-test.fabricelop.workers.dev'
+          base='https://tt-control.fabricelop.workers.dev'
           files=[
               'windows/TTendenciasDedicatedListener.ps1',
               'windows/TTendenciasImageBridge.js',
