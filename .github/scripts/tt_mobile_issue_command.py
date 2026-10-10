@@ -88,6 +88,25 @@ def matches(row, element_id):
 
 
 def tti_command(action, element_id, context, instruction, now):
+    # Tremending is a curated external-news list, not a TTiTTulares editorial
+    # event. Deleting an entry hides it persistently; it must not be sent into
+    # the editorial delete-message queue or modify other TTiTTulares entries.
+    if element_id.startswith("tremending-"):
+        if action != "deleted":
+            raise ValueError("Tremending solo permite borrar entradas")
+        path = "ttittulares/tremending/items.json"
+        tremending = load(path, {"project": "TTiTTulares", "items": []})
+        row = next((x for x in tremending.get("items", [])
+                    if str(x.get("id") or "") == element_id), None)
+        if row is None:
+            raise ValueError("Entrada Tremending no encontrada")
+        if str(row.get("status") or "").lower() in {"deleted", "dismissed"}:
+            return "Tremending: entrada ya borrada: " + element_id
+        row.update(status="deleted", deleted_at=now, updated_at=now,
+                   decision_source="github_pages_authorized_issue")
+        tremending["updated_at"] = now
+        save(path, tremending)
+        return "Tremending: borrada del panel: " + element_id
     p = "ttittulares/prepared.json"
     prepared = load(p, {"project": "TTiTTulares", "items": []})
     rows = prepared.get("items") or []
