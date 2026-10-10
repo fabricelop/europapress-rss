@@ -10,6 +10,7 @@ import json
 import io
 import os
 import re
+import unicodedata
 from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -351,6 +352,12 @@ def archival_image(url):
         pass
     return None
 
+def trend_title_key(value):
+    normalized=unicodedata.normalize("NFKD",str(value or "").casefold())
+    return re.sub(r"[^\\w#]+","", "".join(
+        char for char in normalized if not unicodedata.combining(char)
+    ))
+
 def trend_repeat_allowed(card,history,now):
     # Never resend the same trend for a rank movement or a routine reexplain.
     # Las novedades verificadas tampoco deben generar tres envíos del mismo evento.
@@ -376,10 +383,10 @@ def process(project,now,token,chat):
         if project=="ttendencias":
             # El radar puede asignar IDs diferentes al mismo nombre.
             # No enviar otra tarjeta de la misma tendencia durante 48 horas.
-            title=re.sub(r"[^\\w#]+","",str(card.get("title") or "").casefold())
+            title=trend_title_key(card.get("title"))
             repeated=any(
                 str(row.get("event_id") or "")!=eid and
-                re.sub(r"[^\\w#]+","",str(row.get("title") or row.get("name") or "").casefold())==title and
+                trend_title_key(row.get("title") or row.get("name"))==title and
                 (date(row.get("delivered_at")) is not None) and
                 timedelta(0)<=now-date(row.get("delivered_at"))<timedelta(hours=48)
                 for row in entries
