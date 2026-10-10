@@ -87,7 +87,7 @@ jobs:
             else
               python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
             fi
-            git add ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json \
+            git add ttittulares/decisions.json ttittulares/prepared.json ttittulares/tremending/items.json telegram/editorial-processing.json \
               telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
               trends/requests.json trends/telegram-image-deliveries.json \
               telegram/tt-mobile-command-queue.json || true
