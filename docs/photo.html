@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="robots" content="noindex,nofollow">
+<title>Copiar imagen de archivo · TTiTTulares</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#f1f5fc;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:690px;margin:auto;padding:calc(env(safe-area-inset-top) + 20px) 14px 70px}
+h1{font-size:25px;margin:8px 0 0}h2{font-size:17px;line-height:1.32}
+p{color:#b4c2d7}a{color:#a7c9ff}a.back{display:inline-block;margin-bottom:12px}
+.card{background:#151d31;border:1px solid #35415b;padding:14px;border-radius:16px;margin:14px 0}
+#photo{display:none;width:100%;max-height:58vh;object-fit:contain;user-select:auto;-webkit-touch-callout:default;border-radius:10px;background:#19263b}
+button,.button{display:block;width:100%;border:1px solid #5dbaa9;background:#245e64;color:#fff;border-radius:12px;padding:13px 12px;margin:11px 0;text-align:center;text-decoration:none;font:700 16px system-ui;cursor:pointer}
+.button{border-color:#6a91c1;background:#284774}.button[hidden]{display:none}button:disabled{opacity:.5}
+#status{font-size:13px;white-space:pre-wrap}small{color:#aebbd0}
+</style></head><body><main>
+<a class="back" href="./index.html#ttittulares">← TTiTTulares</a>
+<h1>Copiar imagen de archivo</h1>
+<p>Pulsa «Copiar imagen». Si Safari o el servidor de la fotografía no permite copiarla automáticamente, mantén pulsada la imagen y elige «Copiar» o «Guardar en Fotos».</p>
+<section class="card"><h2 id="title">Buscando fotografía…</h2>
+<img id="photo" alt="Fotografía de archivo para copiar">
+<button id="copy" type="button" disabled>Copiar imagen de archivo</button>
+<a id="original" class="button" hidden target="_blank" rel="noopener noreferrer">Abrir imagen original</a>
+<p id="status" role="status">Consultando los datos publicados…</p>
+<small>Se utiliza exclusivamente la fotografía de archivo original; no se solicita ni genera una imagen IA.</small>
+</section></main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const id=(params.get('id')||'').trim();
+const revision=Number(params.get('rev')||0);
+const root='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/';
+let imageUrl='';
+const validUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:''}catch{return ''}};
+const text=x=>String(x||'').trim();
+async function get(path){
+ for(const url of [root+path+'?v='+Math.floor(Date.now()/120000),'./data/'+path]){
+  try{const res=await fetch(url,{cache:'no-cache'});if(!res.ok)continue;
+   const json=await res.json();if(json&&typeof json==='object')return json
+  }catch(_){}
+ }
+ return {};
+}
+function candidate(item){
+ for(const key of ['archive_image','fallback_image','image']){
+  const obj=item?.[key];const url=validUrl(obj&&typeof obj==='object'?obj.url:'');
+  if(url&&!obj.generated)return url;
+ }
+ return validUrl(item?.image_url||'');
+}
+function display(url,title){
+ imageUrl=url;$('title').textContent=title||'Fotografía de archivo';
+ $('photo').src=url;$('photo').style.display='block';$('copy').disabled=false;
+ $('original').href=url;$('original').hidden=false;
+ $('status').textContent='Fotografía lista. Puedes copiarla con el botón o manteniendo el dedo pulsado sobre la imagen.';
+}
+async function start(){
+ if(!/^[a-zA-Z0-9_.-]{1,120}$/.test(id)){$('status').textContent='Identificador de noticia no válido.';return}
+ const prepared=await get('ttittulares/prepared.json');
+ const matches=(prepared.items||[]).filter(x=>text(x.event_id)===id);
+ const current=matches.find(x=>!revision||Number(x.revision||0)===revision)||matches[0];
+ if(current&&candidate(current)){display(candidate(current),current.title);return}
+ const ledger=await get('telegram/ttittulares-deliveries.json');
+ const found=(ledger.items||[]).filter(x=>text(x.event_id)===id)
+  .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0))
+  .find(x=>candidate(x));
+ if(found){display(candidate(found),found.title||found.name);return}
+ $('title').textContent='Fotografía no disponible';
+ $('status').textContent='No encuentro una fotografía de archivo publicada para esta noticia. Puedes copiar la foto del propio mensaje de Telegram manteniéndola pulsada, si el mensaje incluye una.';
+}
+async function pngBlob(url){
+ const response=await fetch(url,{mode:'cors',cache:'no-store'});
+ if(!response.ok)throw new Error('Fotografía no accesible desde Safari');
+ const blob=await response.blob();if(!blob.type.startsWith('image/'))throw new Error('No es una imagen');
+ if(blob.type==='image/png')return blob;
+ const bitmap=await createImageBitmap(blob);
+ try{
+  const canvas=document.createElement('canvas');
+  canvas.width=bitmap.width;canvas.height=bitmap.height;
+  canvas.getContext('2d').drawImage(bitmap,0,0);
+  return await new Promise((resolve,reject)=>canvas.toBlob(out=>out?resolve(out):reject(new Error('No se pudo convertir a PNG')),'image/png'));
+ }finally{bitmap.close?.()}
+}
+$('copy').addEventListener('click',()=>{
+ if(!imageUrl)return;
+ if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined'){
+  $('status').textContent='Este navegador no permite copiar imágenes con un botón. Mantén pulsada la fotografía para copiarla.';
+  return;
+ }
+ $('status').textContent='Copiando fotografía…';
+ // The ClipboardItem promise is created synchronously with the user gesture (iPhone Safari).
+ const result=pngBlob(imageUrl);
+ navigator.clipboard.write([new ClipboardItem({'image/png':result})])
+  .then(()=>$('status').textContent='Imagen de archivo copiada. Vuelve a X y pégala.')
+  .catch(()=>$('status').textContent='Safari o la web de origen ha impedido la copia automática. Mantén pulsada la imagen y elige «Copiar» o abre la original.');
+});
+$('photo').addEventListener('error',()=>{
+ $('status').textContent='La web de origen no permite mostrar la imagen aquí. Prueba «Abrir imagen original».';
+});
+start().catch(error=>$('status').textContent='No se pudo recuperar la fotografía: '+text(error?.message));
+})();
+</script></body></html>
