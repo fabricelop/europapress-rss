@@ -44360,13 +44360,29 @@
           "revision": 1
         }
       ],
-      "disable_ai_image": false,
       "image_strategy": "manual_prompt",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
-      "image_pending": false
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/TQYSWOQAPFFDXKXJBWTC7RAQ4E.jpg?auth=68ddccb4010d7efd21e75a4013880d27a30a674cfb77d4b46c27f592c84b6215&quality=70&width=1200&height=675&focal=3209,798",
+        "source": "Cadena SER · 10/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/10/fc-barcelona-3-0-getafe-cf-resumen-resultado-y-goles-del-partido-de-la-jornada-8-de-laliga-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Getafe",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/TQYSWOQAPFFDXKXJBWTC7RAQ4E.jpg?auth=68ddccb4010d7efd21e75a4013880d27a30a674cfb77d4b46c27f592c84b6215&quality=70&width=1200&height=675&focal=3209,798",
+        "source": "Cadena SER · 10/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/10/fc-barcelona-3-0-getafe-cf-resumen-resultado-y-goles-del-partido-de-la-jornada-8-de-laliga-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Getafe",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "e470cdee843b",
@@ -44440,17 +44456,33 @@
           "revision": 0
         }
       ],
-      "disable_ai_image": false,
       "image_strategy": "manual_prompt",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
       "telegram_package_status": "deleted",
-      "telegram_deleted_at": "2026-10-10T21:19:50+02:00"
+      "telegram_deleted_at": "2026-10-10T21:19:50+02:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/5YRK5VMPIZG5DBPWMCFOJHRREM.JPG?auth=64d561f9236a2d0de0e821c9049f13a8762a1281378570ee91244c65b265ee2c&width=1472&height=828&focal=1684%2C624",
+        "source": "AS · 10/10/2026",
+        "source_url": "https://as.com/futbol/primera/valverde-acaricia-el-milagro-f202610-n/",
+        "alt": "Imagen de archivo relacionada con Valverde",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.asmedia.epimg.net/resizer/v2/5YRK5VMPIZG5DBPWMCFOJHRREM.JPG?auth=64d561f9236a2d0de0e821c9049f13a8762a1281378570ee91244c65b265ee2c&width=1472&height=828&focal=1684%2C624",
+        "source": "AS · 10/10/2026",
+        "source_url": "https://as.com/futbol/primera/valverde-acaricia-el-milagro-f202610-n/",
+        "alt": "Imagen de archivo relacionada con Valverde",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-10T21:19:50+02:00",
+  "updated_at": "2026-10-10T19:20:55.725484Z",
   "count": 731
 }
