@@ -202,7 +202,7 @@ function rowCard(x,i){
   btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
   if(hasPrompt)btn('🎨 Copiar GAG completo',()=>copyText(manualPrompt(x),'Prompt GAG'),true);
   if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
-  if(img)btn('📷 Copiar foto de archivo',()=>openPhoto(img,d.title));
+  if(img)btn('📷 Copiar foto de archivo',()=>copyArchive(img,d.title));
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   if(showControls){command('↻ Reelaborar con instrucciones','rework');command('🗑 Borrar','deleted')}
@@ -240,6 +240,31 @@ function render(){
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
 function trendRowsFor(section){const saved=state.tab;state.tab=section;try{return trendRows()}finally{state.tab=saved}}
+async function archivePng(url){
+ const response=await fetch(url,{mode:'cors',cache:'force-cache'});
+ if(!response.ok)throw Error('Imagen no disponible');
+ const file=await response.blob();
+ if(file.type==='image/png')return file;
+ if(!file.type.startsWith('image/'))throw Error('Formato no disponible');
+ const bitmap=await createImageBitmap(file);
+ const canvas=document.createElement('canvas');
+ canvas.width=bitmap.width;canvas.height=bitmap.height;
+ const context=canvas.getContext('2d');
+ if(!context)throw Error('Lienzo no disponible');
+ context.drawImage(bitmap,0,0);
+ bitmap.close?.();
+ return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('PNG no disponible')),'image/png'));
+}
+function copyArchive(url,title){
+ if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined'){
+  openPhoto(url,title);return
+ }
+ // La promesa se entrega a ClipboardItem DENTRO del gesto del usuario (Safari).
+ const png=archivePng(url);
+ navigator.clipboard.write([new ClipboardItem({'image/png':png})])
+  .then(()=>showToast('Fotografía de archivo copiada'))
+  .catch(()=>openPhoto(url,title));
+}
 function openPhoto(url,title){
  const sheet=$('photo-sheet'),img=$('photo-preview'),link=$('photo-open');
  img.src=url;img.alt=title||'Fotografía de archivo';
