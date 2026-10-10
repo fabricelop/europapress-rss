@@ -5342,7 +5342,7 @@
       "id": "fb2f758f05b5",
       "name": "Colapinto",
       "rank": 9,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-10T14:22:03+02:00",
       "revision": 1,
       "reexplain": true,
@@ -5373,7 +5373,53 @@
       },
       "ready_at": "2026-09-26T15:29:00+02:00",
       "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "explained_at": "2026-10-10T14:46:50+02:00",
+      "explanation": "TT#9 Colapinto es tendencia porque abandonó la sprint de Singapur en la cuarta vuelta al apagarse su Alpine mientras estaba el Safety Car; el propio Franco dijo que algo se rompió y aún no sabía qué.\n🌶️ El Alpine hizo la parada más definitiva del sábado.",
+      "closer_text": "🌶️ El Alpine hizo la parada más definitiva del sábado.",
+      "category": "Motor",
+      "rank_at_explanation": 9,
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "Formula 1 · Colapinto DNF · 10/10/2026",
+          "url": "https://www.formula1.com/en/video/everything-switched-off-colapinto-explains-his-dnf-in-the-singapore-sprint.1878659173971329061"
+        },
+        {
+          "source": "Reuters · Singapore Sprint · 10/10/2026",
+          "url": "https://www.reuters.com/sports/formula1/verstappen-wins-singapore-sprint-after-chaotic-start-wet-conditions-2026-10-10/"
+        }
+      ],
+      "news_disposition": "candidate",
+      "news_note": "Franco Colapinto abandonó la sprint de Singapur por un fallo del Alpine durante el periodo de Safety Car.",
+      "group_id": "grp-colapinto-singapore-sprint-20261010",
+      "group_title": "Colapinto abandona la sprint de Singapur por una avería",
+      "explanation_group_id": "grp-colapinto-singapore-sprint-20261010",
+      "group_leader_id": "fb2f758f05b5",
+      "trend_names": [
+        "Colapinto"
+      ],
+      "trend_context": [
+        {
+          "name": "Colapinto",
+          "rank": 9
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "fb2f758f05b5",
+          "name": "Colapinto",
+          "revision": 1
+        }
+      ],
+      "ai_image_status": "pending",
+      "ai_image_attempt": 0,
+      "image_status": "pending",
+      "image_pending": true,
+      "fallback_image_strategy": "auto_repair",
+      "fallback_image_status": "pending",
+      "image_choice": null,
+      "rewrite_pending": false
     },
     {
       "id": "639897ea9580",
@@ -40814,6 +40860,6 @@
       "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-10T14:22:03+02:00",
-  "count": 746
+  "updated_at": "2026-10-10T14:46:50+02:00",
+  "count": 747
 }
