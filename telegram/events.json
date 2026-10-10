@@ -20918,7 +20918,7 @@
       "percentage": 50.0,
       "first_seen": "2026-10-10T12:43:15.039667Z",
       "last_seen": "2026-10-10T16:42:59.694961Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -20940,7 +20940,9 @@
       ],
       "outlet_count": 8,
       "sport_source_count": 3,
-      "eligible_at": "2026-10-10T12:54:41.309818Z"
+      "eligible_at": "2026-10-10T12:54:41.309818Z",
+      "deleted_at": "2026-10-10T16:50:32.108988Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "19051e73f05d",
@@ -23348,7 +23350,7 @@
       "percentage": 31.2,
       "first_seen": "2026-10-10T11:03:20.385015Z",
       "last_seen": "2026-10-10T13:03:16.329422Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -23363,7 +23365,9 @@
       ],
       "outlet_count": 5,
       "sport_source_count": 0,
-      "eligible_at": "2026-10-10T13:03:16.329422Z"
+      "eligible_at": "2026-10-10T13:03:16.329422Z",
+      "deleted_at": "2026-10-10T16:50:32.108988Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "e75f4c72352a",
@@ -42986,5 +42990,6 @@
   "active_event_cap": 450,
   "protected_event_count": 150,
   "single_source_event_cap": 450,
-  "pruned_at": "2026-10-10T16:43:24.121370Z"
+  "pruned_at": "2026-10-10T16:43:24.121370Z",
+  "updated_at": "2026-10-10T16:50:32.108988Z"
 }
