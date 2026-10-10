@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T18:45:00+02:00",
-  "last_completed_at": "2026-10-10T18:48:00+02:00",
-  "updated_at": "2026-10-10T18:48:00+02:00",
+  "last_started_at": "2026-10-10T19:15:00+02:00",
+  "last_completed_at": "2026-10-10T19:18:00+02:00",
+  "updated_at": "2026-10-10T19:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,11 +16,11 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "archive_repair_running_independently",
+    "status": "manual_gag_only; repair trigger persisted",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010184500-chatgpt",
-    "last_triggered_at": "2026-10-10T18:47:04+02:00",
-    "observed_at": "2026-10-10T18:48:00+02:00",
+    "last_trigger_run_id": "tr-20261010191500-chatgpt",
+    "last_triggered_at": "2026-10-10T19:15:00+02:00",
+    "observed_at": "2026-10-10T19:18:00+02:00",
     "workflow_run_id": 38069060819,
     "subsequent_item_repairs": [
       38065234790,
@@ -33,13 +33,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010184500-chatgpt",
+    "run_id": "tr-20261010191500-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T18:45:00+02:00",
-    "updated_at": "2026-10-10T18:48:00+02:00",
-    "finished_at": "2026-10-10T18:48:00+02:00",
+    "started_at": "2026-10-10T19:15:00+02:00",
+    "updated_at": "2026-10-10T19:18:00+02:00",
+    "finished_at": "2026-10-10T19:18:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -62,14 +62,14 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "pending_recent_reviewed": 12,
-      "pending_recent_without_remate": 1,
+      "pending_recent_reviewed": 2,
+      "pending_recent_without_remate": 0,
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Cierre verificado · no había revisiones editoriales activas ni reexplicaciones; cola final 0. Se revisaron 12 Pendientes recientes y no se lanzó ImageGen.",
+    "message": "Cierre verificado · no había revisiones editoriales activas ni reexplicaciones; cola final 0. Se revisaron 2 Pendientes recientes y no se lanzó ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -82,40 +82,36 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-10T18:45:00+02:00",
+        "at": "2026-10-10T19:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola activa 0; revisando reexplicaciones y saneamiento de Pendientes recientes."
       },
       {
-        "at": "2026-10-10T18:46:00+02:00",
+        "at": "2026-10-10T19:17:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 12 tarjetas recientes no terminales; 11 con remate y 1 sin remate por espacio/sensibilidad."
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 0 problematic en Top 10; saneamiento visual: 2 Pendientes recientes, ambos con remate."
       },
       {
-        "at": "2026-10-10T18:47:00+02:00",
+        "at": "2026-10-10T19:17:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 0 problematic en Top 10."
+        "message": "Verificado el flujo visual vigente · no se lanzó ImageGen ni se encoló Gag IA automático."
       },
       {
-        "at": "2026-10-10T18:47:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificado el flujo visual vigente · Encolar Gag IA automático está desactivado; no se genera ninguna imagen IA."
-      },
-      {
-        "at": "2026-10-10T18:48:00+02:00",
+        "at": "2026-10-10T19:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · sin trabajo editorial nuevo y cola activa en 0."
+        "message": "Cierre verificado · sin trabajo editorial nuevo; cola final 0 y estado autoritativo consistente."
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": []
   }
 }
