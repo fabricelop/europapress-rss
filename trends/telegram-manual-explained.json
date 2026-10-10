@@ -42054,7 +42054,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -42124,12 +42123,29 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "image_status": "pending",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.agropopular.com/wp-content/audios_agropopular/2026/10/WhatsApp-Image-2026-02-11-at-12.35.35-1.jpeg",
+        "source": "Agropopular · 9/10/2026",
+        "source_url": "https://www.agropopular.com/emision-agropopular-09102026/",
+        "alt": "Imagen de archivo relacionada con #AgropopularTractorada",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.agropopular.com/wp-content/audios_agropopular/2026/10/WhatsApp-Image-2026-02-11-at-12.35.35-1.jpeg",
+        "source": "Agropopular · 9/10/2026",
+        "source_url": "https://www.agropopular.com/emision-agropopular-09102026/",
+        "alt": "Imagen de archivo relacionada con #AgropopularTractorada",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-10T09:42:00+02:00",
+  "updated_at": "2026-10-10T07:39:20.740848Z",
   "count": 701
 }
