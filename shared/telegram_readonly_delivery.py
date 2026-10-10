@@ -23,6 +23,7 @@ MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new se
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
 BUTTONS_VERSION=12
+TTI_BUTTONS_VERSION=13  # Only TTiTTulares keyboard changes
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -246,7 +247,8 @@ def keys(card,project):
             {"text":"📄 GAG completo (copiar)","url":bridge},
             {"text":"🎨 Chat Images","url":IMAGE_APP}
         ])
-        rows.append([{"text":"📋 GAG rápido (abreviado)","copy_text":{"text":mobile_gag_prompt(card,project)}}])
+        if project=="ttendencias":
+            rows.append([{"text":"📋 GAG rápido (abreviado)","copy_text":{"text":mobile_gag_prompt(card,project)}}])
         # Telegram's copy_text is limited to 256 characters. Never truncate
         # editorial text: longer explanations open the full-text copy page.
         if len(x_text)<=256:
@@ -257,9 +259,15 @@ def keys(card,project):
             copy_x,
             {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
         ])
-        rows.append([
-            {"text":"🔎 Buscar en X","url":search}
-        ])
+        if project=="ttittulares" and str(card.get("image") or "").startswith("https://"):
+            photo="https://fabricelop.github.io/europapress-rss/photo.html?"+urlencode(
+                {"id":str(card["id"]),"rev":str(card["rev"])})
+            rows.append([
+                {"text":"📷 Copiar imagen de archivo","url":photo},
+                {"text":"🔎 Buscar en X","url":search}
+            ])
+        else:
+            rows.append([{"text":"🔎 Buscar en X","url":search}])
     else:
         rows.append([{"text":"🔎 Buscar en X","url":search}])
     rows.append([{"text":"🗑️ Borrar","callback_data":callback}])
@@ -450,22 +458,23 @@ def process(project,now,token,chat):
         if existing is None and (not started or now-started>timedelta(hours=12)):
             skipped+=1;continue
         new_hash=hashlib.sha256((card["text"]+"|"+card["image"]).encode("utf-8")).hexdigest()
+        button_version=TTI_BUTTONS_VERSION if project=="ttittulares" else BUTTONS_VERSION
         kb=keys(card,project)
         image_data=None
         if existing and existing.get("content_sha256")==new_hash:
-            if int(existing.get("buttons_version") or 0)==BUTTONS_VERSION:
+            if int(existing.get("buttons_version") or 0)==button_version:
                 skipped+=1;continue
             # Solo refrescar teclados recientes para no editar masivamente
             # centenares de mensajes históricos ni reabrir los ya cerrados.
             delivered_at=date(existing.get("delivered_at"))
-            if not delivered_at or now-delivered_at>timedelta(hours=12):
+            if not delivered_at or now-delivered_at>timedelta(hours=48 if project=="ttittulares" else 12):
                 skipped+=1;continue
             # Keyboard-only change: no new photo, no duplicated news card.
             result=send(token,"editMessageReplyMarkup",{
                 "chat_id":chat,"message_id":int(existing["telegram_message_id"]),
                 "reply_markup":kb})
             if not result:continue
-            existing.update({"buttons_version":BUTTONS_VERSION,"updated_at":now.isoformat()})
+            existing.update({"buttons_version":button_version,"updated_at":now.isoformat()})
             ledger["updated_at"]=now.isoformat()
             updated+=1
             continue
@@ -504,7 +513,7 @@ def process(project,now,token,chat):
                     "text":body,"reply_markup":kb})
             if not result:continue
             existing.update({"content_sha256":new_hash,"final":card["final"],
-                             "buttons_version":BUTTONS_VERSION,"updated_at":now.isoformat(),
+                             "buttons_version":button_version,"updated_at":now.isoformat(),
                              "revision":rev,"is_photo":old_photo})
             updated+=1
         else:
@@ -520,7 +529,7 @@ def process(project,now,token,chat):
                 "event_id":eid,"revision":rev,"title":card["title"],"name":card["title"],
                 "telegram_message_id":int(result["message_id"]),"status":"sent",
                 "is_photo":bool(image_data),"image_url":photo_url if image_data else "",
-                "content_sha256":new_hash,"final":card["final"],"buttons_version":BUTTONS_VERSION,
+                "content_sha256":new_hash,"final":card["final"],"buttons_version":button_version,
                 "started_at":str(card["start"]),"delivered_at":now.isoformat(),
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
@@ -536,19 +545,26 @@ def selftest():
     assert not fresh("2026-09-29T12:00:00Z",now)
     card={"id":"abc123","rev":1,"search":"Pedro Sánchez","title":"Pedro Sánchez",
           "final":True,"x_text":"Hecho verificado.\n\n🌶️ Remate exacto."}
-    kb=keys(card,"ttittulares")["inline_keyboard"]
+    kb=keys({**card,"image":"https://img.example.org/photo.jpg"},"ttittulares")["inline_keyboard"]
     assert [b["text"] for b in kb[0]]==["📄 GAG completo (copiar)","🎨 Chat Images"]
-    assert [button["text"] for row in kb for button in row].count("🎨 Chat Images")==1
-    assert kb[1][0].get("copy_text") and len(kb[1][0]["copy_text"]["text"])<=256
-    assert "GAG IA" in kb[1][0]["copy_text"]["text"]
-    assert "🌶" in kb[1][0]["copy_text"]["text"]
+    assert [b["text"] for row in kb for b in row].count("🎨 Chat Images")==1
+    assert not any("GAG rápido" in b["text"] for row in kb for b in row)
+    assert [b["text"] for b in kb[1]]==["📋 Copiar en X","↗ Abrir en X"]
+    assert [b["text"] for b in kb[2]]==["📷 Copiar imagen de archivo","🔎 Buscar en X"]
+    assert kb[2][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/photo.html?id=abc123&rev=1")
     assert kb[0][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/gag.html")
-    assert "🖼️ Mis imágenes IA" not in [button["text"] for row in kb for button in row]
-    assert [b["text"] for b in kb[3]]==["🔎 Buscar en X"]
-    assert kb[2][0]["copy_text"]["text"]==card["x_text"]
-    assert "intent/tweet?text=" in kb[2][1]["url"]
     assert kb[-1][0]["callback_data"]=="tt:b:abc123"
-    assert keys(card,"ttendencias")["inline_keyboard"][-1][0]["callback_data"]=="tx:b:abc123:1"
+    no_photo=keys(card,"ttittulares")["inline_keyboard"]
+    assert not any("Copiar imagen" in b["text"] for row in no_photo for b in row)
+    assert not any("GAG rápido" in b["text"] for row in no_photo for b in row)
+    trends_kb=keys(card,"ttendencias")["inline_keyboard"]
+    assert trends_kb[1][0].get("copy_text")
+    assert len(trends_kb[1][0]["copy_text"]["text"])<=256
+    assert "GAG IA" in trends_kb[1][0]["copy_text"]["text"]
+    assert "🌶" in trends_kb[1][0]["copy_text"]["text"]
+    assert trends_kb[2][0]["copy_text"]["text"]==card["x_text"]
+    assert [b["text"] for b in trends_kb[3]]==["🔎 Buscar en X"]
+    assert trends_kb[-1][0]["callback_data"]=="tx:b:abc123:1"
     long_card={**card,"x_text":"A"*270}
     long_x=keys(long_card,"ttendencias")["inline_keyboard"][2][0]
     assert "copy_text" not in long_x and "mode=x" in long_x["url"]
