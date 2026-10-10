@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="description" content="TTiTTulares y TTendencias: edición móvil sin Cloudflare">
+<title>TT Actualidad · móvil</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--surface:#151d31;--panel:#202a43;--stroke:#35415b;--ink:#f1f5fc;--sub:#a4b3ca;--blue:#6b9cff;--aqua:#63e1d4;--orange:#ffb975;--red:#ff848e}
+*{box-sizing:border-box}body{background:radial-gradient(circle at top right,#1d3153 0%,transparent 400px),var(--bg);color:var(--ink);margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button,a{touch-action:manipulation}
+header{padding:env(safe-area-inset-top) 14px 6px;max-width:1100px;margin:auto}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--aqua);font-weight:800}h1{margin:5px 0 2px;font-size:clamp(25px,5.4vw,36px);letter-spacing:-1px}header p{color:var(--sub);margin:0 0 12px}
+.tabbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:1100px;margin:4px auto 12px;padding:0 14px}.tabbar button,.chips button,.controls button,.action,.refresh{background:var(--panel);border:1px solid var(--stroke);border-radius:12px;color:var(--ink);padding:10px 13px;cursor:pointer}.tabbar button{font-size:16px;font-weight:850;padding:14px}.tabbar button[aria-selected=true]{background:#2b4a81;border-color:var(--blue)}.tabbar button[aria-selected=true] span{color:#a2c3ff}
+main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(--surface);border:1px solid var(--stroke);border-radius:15px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.search{flex:1;min-width:145px;background:#0d1528;color:var(--ink);border:1px solid #3b4863;border-radius:10px;padding:10px 12px;font-size:16px}.refresh{background:#285b69}.status{font-size:12px;color:var(--sub);margin:8px 2px 15px}.status strong{color:var(--aqua)}.chips{display:flex;gap:7px;overflow:auto;padding:2px 0 11px;scrollbar-width:thin}.chips button{white-space:nowrap;padding:9px 13px;font-size:13px}.chips button[aria-pressed=true]{background:#2b4c5f;color:#d3fff8;border-color:var(--aqua);font-weight:750}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:14px}.stat{background:var(--surface);border:1px solid var(--stroke);border-radius:13px;padding:10px 12px}.stat b{font-size:22px;display:block}.stat small{color:var(--sub);font-size:11px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px}.card{background:var(--surface);border:1px solid var(--stroke);border-radius:17px;overflow:hidden;min-width:0}.card .pic{width:100%;height:173px;object-fit:cover;background:#1d2945}.card-body{padding:13px 14px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.meta span{font-size:11px;padding:2px 7px;border:1px solid #435472;border-radius:99px;color:#bfd4f7}.meta .hot{border-color:#bb8b40;color:var(--orange)}h2{font-size:16px;line-height:1.32;margin:5px 0 9px}.fact{color:#d5dce9;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 8px;font-size:13px}.closer{font-weight:750;color:#fcd19a;white-space:pre-wrap;font-size:13px;margin:9px 0}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:10px}.action{padding:10px 8px;font-size:12px;font-weight:650;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center}.action.primary{background:#245a69;border-color:#4abcb5;color:#eafffa}.action.secondary{background:#283658}.action:disabled{opacity:.5}.empty{padding:32px 20px;text-align:center;color:var(--sub);background:var(--surface);border:1px dashed var(--stroke);border-radius:14px}.notice{border:1px solid #6c5d35;border-radius:12px;background:#29261b;color:#e0d1ab;padding:11px 12px;margin-bottom:11px;font-size:12px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#e0fff7;color:#0b2330;border-radius:12px;padding:12px 17px;font-weight:800;max-width:calc(100% - 30px);z-index:20;box-shadow:0 15px 45px #0008;display:none}.toast.show{display:block}.footer{color:#91a5bf;font-size:12px;line-height:1.6;margin-top:28px}a{color:#aac8ff}details{margin-top:16px;color:var(--sub);font-size:12px}details summary{cursor:pointer}
+@media(max-width:680px){.cards{grid-template-columns:minmax(0,1fr)}.card .pic{height:215px}.actions{grid-template-columns:1fr 1fr}header p{font-size:13px}}
+</style></head>
+<body>
+<header><div class="eyebrow">Edición web · sin Cloudflare · sin Vercel</div><h1>TT Actualidad</h1><p>TTiTTulares y TTendencias en el móvil. Imágenes GAG solo por solicitud manual en ChatGPT Images.</p></header>
+<div class="tabbar" role="tablist" aria-label="Proyecto">
+<button id="tab-tti" role="tab" aria-selected="true" type="button">TT<span>i</span>TTulares</button>
+<button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
+</div>
+<main>
+<div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+<div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div id="status" class="status" role="status">Leyendo datos…</div>
+<div id="chips" class="chips" aria-label="Secciones"></div>
+<div id="stats" class="stats"></div>
+<div id="cards" class="cards"></div>
+<div class="footer">Origen: repositorio público <a href="https://github.com/fabricelop/europapress-rss" target="_blank" rel="noopener">europapress-rss</a>. Los borrados, publicaciones y reelaboraciones requieren autenticación en GitHub y no exponen tokens en esta web. No hay generación automática de imágenes IA.</div>
+<details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se abren en GitHub con tu sesión de usuario, sin guardar contraseñas en el navegador.</p></details>
+</main><div id="toast" class="toast" role="status"></div>
+<script>
+(()=>{'use strict';
+const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
+const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const stamp=s=>{if(!s)return '—';const d=new Date(s);return isNaN(d)?'—':new Intl.DateTimeFormat('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Madrid'}).format(d)};
+const brief=(s,n=600)=>String(s||'').trim().slice(0,n);
+const isHttp=u=>{try{const x=new URL(u);return x.protocol==='https:'?x.href:''}catch{return ''}};
+const avatar=(title)=>title||'Sin título';
+const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
+const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
+const fields={
+tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json'],
+tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json']
+};
+const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries'};
+async function fetchJson(path,force=false){
+ let errors=[];
+ const sources=force?[RAW+path,SITE_DATA+path]:[RAW+path,SITE_DATA+path];
+ for(const source of sources){
+  const key='tt-web-cache-'+path;
+  try{const r=await fetch(source+(source===RAW+path?'?v='+Math.floor(Date.now()/120000):''),{cache:'no-cache'});
+   if(!r.ok)throw Error('HTTP '+r.status);const doc=await r.json();if(!doc||typeof doc!=='object')throw Error('JSON inválido');
+   try{localStorage.setItem(key,JSON.stringify({doc,at:Date.now()}))}catch{}
+   return doc
+  }catch(e){errors.push(String(e?.message||e))}
+ }
+ try{const cached=JSON.parse(localStorage.getItem('tt-web-cache-'+path)||'null');if(cached?.doc)return cached.doc}catch{}
+ throw Error(path+': '+errors.slice(0,2).join(', '))
+}
+async function load(force=false){
+ if(state.busy)return;state.busy=true;$('refresh').disabled=true;$('status').textContent='Actualizando datos públicos…';
+ let errors=[];const wanted=fields[state.app];
+ const output=await Promise.all(wanted.map(async path=>{try{return [aliases[path],await fetchJson(path,force)]}catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}}));
+ state.data=Object.fromEntries(output);state.updated=Date.now();state.lastError=errors.join(' · ');
+ state.busy=false;$('refresh').disabled=false;
+ try{sessionStorage.setItem('tt-web-snapshot-'+state.app,JSON.stringify(state.data))}catch{}
+ render()
+}
+function setApp(app){
+ state.app=app;state.tab=app==='tti'?'listas':'top';state.q='';
+ $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
+ history.replaceState(null,'','#'+(app==='tti'?'ttittulares':'ttendencias'));
+ try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
+ render();load(true)
+}
+function tabs(){return state.app==='tti'?[['listas','Listas'],['elaboracion','En elaboración'],['problematicas','Problemáticas'],['creciendo','Creciendo'],['fuentes','Fuentes']]:[['top','Top 10'],['explicadas','Explicadas'],['proximas','Próximas']]}
+function ttiRows(){
+ const s=state.data.status||{},d=decisions(),prepared=(state.data.prepared?.items||[]).filter(x=>!isClosed(d.get(String(x.event_id))));
+ if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
+ if(state.tab==='elaboracion'){
+  const rows=s.processing_items||state.data.processing?.items||[];return rows.filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))
+ }
+ if(state.tab==='problematicas')return (s.problematic_items||[]).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
+ if(state.tab==='creciendo')return (s.three_source_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
+ return (s.source_status||[]).map((x,i)=>({...x,title:x.source,_kind:'fuente',_id:String(i),_status:x.ok?'ACTIVA':'INCIDENCIA'}))
+}
+function trendRows(){
+ const recent=state.data.recent||{},top=recent.items||[],explained=[...(state.data.explained?.items||[]),...(state.data.manual?.items||[])],req=state.data.requests?.requests||[];
+ const latest=new Map();
+ for(const x of explained){const k=String(x.id||x.term_normalized||x.display_name||x.name||'').toLowerCase();if(!k)continue;const prev=latest.get(k);if(!prev||String(x.explained_at||'')>String(prev.explained_at||''))latest.set(k,x)}
+ const byName=new Map();for(const v of latest.values())byName.set(String(v.display_name||v.name||v.term_normalized||'').toLowerCase(),v);
+ if(state.tab==='top')return top.slice(0,10).map(x=>{const m=byName.get(String(x.name||'').toLowerCase())||req.find(z=>String(z.name||'').toLowerCase()===String(x.name||'').toLowerCase())||{};return {...m,title:x.name,rank:x.rank,trend:x,_kind:'tr',_id:String(m.id||x.name),_status:'TT#'+x.rank}});
+ if(state.tab==='proximas')return (recent.upcoming||[]).map((x,i)=>({...x,title:x.name,_kind:'tr',_id:String(x.id||x.name||i),_status:'PRÓXIMA',source_count:x.social_source_count||x.news_source_count||0}));
+ return [...latest.values()].sort((a,b)=>String(b.explained_at||'').localeCompare(String(a.explained_at||''))).slice(0,100).map((x,i)=>({...x,title:x.display_name||x.name||x.term_normalized,_kind:'tr',_id:String(x.id||x.term_normalized||i),_status:'EXPLICADA'}));
+}
+function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q)))}
+function itemData(x){
+ const tweet=String(x.tweet?.text||'').trim(),expl=String(x.explanation||x.factual_summary||x.detail||'').trim();
+ let closer=String(x.tweet?.remate||x.closer_text||'').trim();
+ if(!closer){const m=(tweet||expl).split('\n').map(s=>s.trim()).filter(s=>s.startsWith('🌶'));closer=m.at(-1)||''}
+ const editorial=tweet||expl;
+ return {tweet,expl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
+}
+function manualPrompt(x){
+ const c=itemData(x),kind=x._kind==='tti'?'TTiTTulares':'TTendencias';
+ const content=c.editorial||c.title,rank=x.rank?'TT#'+x.rank+' ':'';
+ return [
+  'Genera AHORA UNA SOLA imagen GAG IA original para '+kind+'. Usa la herramienta de imágenes de ChatGPT.',
+  'TÍTULO / '+(x._kind==='tti'?'NOTICIA':'TENDENCIA')+':\n'+rank+c.title,
+  'TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n'+content,
+  'REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n'+(c.closer||'Sin remate separado: utiliza exclusivamente el texto cerrado.'),
+  'CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n'+(c.factual||'Utiliza exclusivamente los hechos del texto exacto, sin completar datos.'),
+  'DIRECCIÓN VISUAL:\nViñeta satírica original, ingeniosa, expresiva y exagerada, con gag visual y metáfora humorística. No ilustrar literalmente la noticia. No inventar hechos ni atribuir acciones no verificadas. Entregar una sola imagen, sin reescribir el texto.'
+ ].join('\n\n')
+}
+async function copyText(value,label){
+ try{await navigator.clipboard.writeText(value)}catch(e){
+  const el=document.createElement('textarea');el.value=value;el.style.cssText='position:fixed;top:0;left:0;opacity:.01';document.body.append(el);el.focus();el.select();const ok=document.execCommand('copy');el.remove();if(!ok){showToast('No se pudo copiar; mantén pulsado el texto');return}
+ }
+ showToast(label+' copiado')
+}
+function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
+function issueUrl(project,id,action,title){
+ const q=new URLSearchParams({template:'tt-mobile-command.yml',title:'[TT-MOVIL] '+project+' '+action+' '+id,project,action,id,context:title.slice(0,110)});
+ return 'https://github.com/'+REPO+'/issues/new?'+q.toString()
+}
+function rowCard(x,i){
+ const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
+ const img=isHttp(x.image?.url||x.fallback_image?.url||x.archive_image?.url||'');
+ const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.expl;
+ const showClip=x._kind!=='fuente',showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial);
+ const out=document.createElement('article');out.className='card';
+ out.innerHTML=(img?'<img class="pic" loading="lazy" alt="" src="'+esc(img)+'">':'')+
+  '<div class="card-body"><div class="meta"><span'+(x._status==='PROBLEMÁTICA'?' class="hot"':'')+'>'+source+'</span>'+info.map(y=>'<span>'+esc(y)+'</span>').join('')+'</div>'+
+  '<h2>'+esc(d.title)+'</h2>'+(facts?'<p class="fact">'+esc(brief(facts,610))+'</p>':'')+
+  (d.closer?'<p class="closer">'+esc(d.closer)+'</p>':'')+
+  '<div class="actions"></div></div>';
+ const a=out.querySelector('.actions');
+ function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
+ function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
+ if(showClip){
+  btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
+  if(hasPrompt)btn('🎨 Copiar GAG completo',()=>copyText(manualPrompt(x),'Prompt GAG'),true);
+  if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
+  if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  if(showControls){link('✓ Marcar publicado',issueUrl('ttittulares',x._id,'published',d.title));link('↻ Reelaborar',issueUrl('ttittulares',x._id,'rework',d.title));link('🗑 Borrar',issueUrl('ttittulares',x._id,'deleted',d.title))}
+ }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
+ return out
+}
+function render(){
+ const tabsList=tabs();if(!tabsList.some(t=>t[0]===state.tab))state.tab=tabsList[0][0];
+ $('chips').replaceChildren(...tabsList.map(([key,name])=>{
+  const b=document.createElement('button');b.type='button';b.textContent=name;b.setAttribute('aria-pressed',String(state.tab===key));
+  b.onclick=()=>{state.tab=key;render()};return b
+ }));
+ const rows=dataRows();$('cards').replaceChildren(...(rows.length?rows.slice(0,130).map(rowCard):[Object.assign(document.createElement('div'),{className:'empty',textContent:'No hay elementos en esta sección, o no se han podido cargar los datos.'})]));
+ const rawCount=state.app==='tti'?state.data.status?.processing_count:state.data.recent?.items?.length;
+ const stats=state.app==='tti'?[
+  ['Listas',state.data.prepared?.items?.length??'—'],['En elaboración',rawCount??'—'],['Problemáticas',state.data.status?.problematic_count??'—']
+ ]:[['Top 10',state.data.recent?.top10?.length??'—'],['Explicadas',state.data.explained?.items?.length??'—'],['Próximas',state.data.recent?.upcoming?.length??'—']];
+ $('stats').innerHTML=stats.map(([name,n])=>'<div class="stat"><b>'+esc(n)+'</b><small>'+esc(name)+'</small></div>').join('');
+ const last=state.app==='tti'?state.data.status?.updated_at:state.data.recent?.captured_at;
+ $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'');
+ $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
+}
+$('tab-tti').addEventListener('click',()=>setApp('tti'));
+$('tab-tr').addEventListener('click',()=>setApp('tr'));
+$('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()});
+$('refresh').addEventListener('click',()=>load(true));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
+window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
+})();
+</script></body></html>
