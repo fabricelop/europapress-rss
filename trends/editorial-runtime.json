@@ -3,12 +3,17 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T23:15:00+02:00",
-  "last_completed_at": "2026-10-10T23:19:40+02:00",
-  "updated_at": "2026-10-10T23:19:40+02:00",
+  "last_started_at": "2026-10-10T23:45:00+02:00",
+  "last_completed_at": "2026-10-10T23:54:00+02:00",
+  "updated_at": "2026-10-10T23:54:00+02:00",
   "status": "success",
   "processed_ids": [
-    "3b949213aaf1"
+    "03e6546dc5f6",
+    "447e15e9015b",
+    "f90cc5271f93",
+    "81a8ac0e4777",
+    "22e6daa7340c",
+    "3b6f7a42e04e"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -31,49 +36,42 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010T231500+0200-chatgpt",
+    "run_id": "tr-20261010T234500+0200-chatgpt",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T23:15:00+02:00",
-    "updated_at": "2026-10-10T23:19:40+02:00",
-    "finished_at": "2026-10-10T23:19:40+02:00",
+    "started_at": "2026-10-10T23:45:00+02:00",
+    "updated_at": "2026-10-10T23:54:00+02:00",
+    "finished_at": "2026-10-10T23:54:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 6,
+    "total": 6,
     "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 0,
+      "trends_processed": 6,
+      "trends_explained": 6,
+      "explanation_groups": 4,
+      "new_cards": 3,
       "revisions_updated": 1,
-      "grouped_into_existing_card": 0,
-      "grouped_members_total": 1,
+      "grouped_into_existing_card": 2,
+      "grouped_members_total": 6,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
       "remates_omitted": 0,
-      "pending_cards_checked": 11,
+      "pending_cards_checked": 8,
+      "pending_missing_closer": 0,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 1,
+      "incidents": 0,
       "images_generated": 0
     },
-    "message": "Cierre verificado · 1 tendencia explicada; cola 0; sin generación IA directa",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-10T23:18:15+02:00",
-        "phase": "persisting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "reason": "El conector alcanzó su límite de llamadas al encadenar telemetría y escrituras; se releyó main y se completó idempotentemente la retirada de cola sin pérdida de datos."
-      }
-    ],
+    "message": "Cierre verificado · 6 tendencias, 4 grupos, cola 0; sin generación IA directa",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -83,206 +81,170 @@
     },
     "remate_selections": [
       {
-        "trend_id": "d438ccc039cc",
+        "trend_id": "03e6546dc5f6",
         "revision": 2,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.7,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.7,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.2,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.7,
-        "no_remate_reason": null
+        "selected_text": "🌶️ La campaña ya tiene sobremesa de tertulia.",
+        "selection_reason": "específico, breve y compatible con el límite"
+      },
+      {
+        "trend_id": "447e15e9015b",
+        "revision": 0,
+        "selected_text": "🌶️ El VAR le peinó la jugada completa.",
+        "selection_reason": "específico del detonante y compacto"
+      },
+      {
+        "trend_id": "f90cc5271f93",
+        "revision": 0,
+        "selected_text": "🌶️ El jugador extra llegó sin gol de regalo.",
+        "selection_reason": "específico del desarrollo final del partido"
+      },
+      {
+        "trend_id": "81a8ac0e4777",
+        "revision": 0,
+        "selected_text": "🌶️ El archivo también tiene memoria capilar.",
+        "selection_reason": "específico del precedente recuperado"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T23:15:00+02:00",
-        "phase": "preparing",
+        "at": "2026-10-10T23:46:40+02:00",
+        "phase": "investigating",
+        "trend_id": "03e6546dc5f6",
+        "title": "#MalasLenguasN",
+        "message": "Hecho esencial verificado · edición especial de Malas Lenguas Noche"
+      },
+      {
+        "at": "2026-10-10T23:47:00+02:00",
+        "phase": "drafting",
+        "trend_id": "03e6546dc5f6",
+        "title": "#MalasLenguasN",
+        "message": "Redactando explicación factual y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-10T23:47:30+02:00",
+        "phase": "investigating",
+        "trend_id": "447e15e9015b",
+        "title": "Vinicius",
+        "message": "Hecho esencial verificado · gol anulado y roja por tirón de pelo a Saliba"
+      },
+      {
+        "at": "2026-10-10T23:48:00+02:00",
+        "phase": "drafting",
+        "trend_id": "447e15e9015b",
+        "title": "Vinicius",
+        "message": "Redactando explicación factual y remate"
+      },
+      {
+        "at": "2026-10-10T23:48:25+02:00",
+        "phase": "investigating",
+        "trend_id": "f90cc5271f93",
+        "title": "Villarreal",
+        "message": "Hecho esencial verificado · derrota 1-0 y superioridad sin empate"
+      },
+      {
+        "at": "2026-10-10T23:48:45+02:00",
+        "phase": "drafting",
+        "trend_id": "f90cc5271f93",
+        "title": "Villarreal",
+        "message": "Redactando explicación factual y remate"
+      },
+      {
+        "at": "2026-10-10T23:49:10+02:00",
+        "phase": "investigating",
+        "trend_id": "81a8ac0e4777",
+        "title": "marcelo",
+        "message": "Hecho esencial verificado · precedente de 2020 recuperado tras la roja"
+      },
+      {
+        "at": "2026-10-10T23:49:35+02:00",
+        "phase": "drafting",
+        "trend_id": "81a8ac0e4777",
+        "title": "marcelo",
+        "message": "Redactando explicación factual y remate"
+      },
+      {
+        "at": "2026-10-10T23:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": "03e6546dc5f6",
+        "title": "#MalasLenguasN",
+        "message": "Guardando primer lote de fichas Explicadas"
+      },
+      {
+        "at": "2026-10-10T23:50:45+02:00",
+        "phase": "verifying",
+        "trend_id": "03e6546dc5f6",
+        "title": "#MalasLenguasN",
+        "message": "Primer lote persistido · cola reducida de 6 a 2"
+      },
+      {
+        "at": "2026-10-10T23:51:10+02:00",
+        "phase": "verifying",
+        "trend_id": "22e6daa7340c",
+        "title": "Saliba",
+        "message": "Releyendo estado autoritativo de Saliba"
+      },
+      {
+        "at": "2026-10-10T23:51:20+02:00",
+        "phase": "verifying",
+        "trend_id": "3b6f7a42e04e",
+        "title": "Bernabéu",
+        "message": "Releyendo estado autoritativo de Bernabéu"
+      },
+      {
+        "at": "2026-10-10T23:52:00+02:00",
+        "phase": "persisting",
+        "trend_id": "22e6daa7340c",
+        "title": "Saliba",
+        "message": "Enlazando Saliba con Vinicius y Bernabéu con Villarreal"
+      },
+      {
+        "at": "2026-10-10T23:52:30+02:00",
+        "phase": "persisting",
+        "trend_id": "3b6f7a42e04e",
+        "title": "Bernabéu",
+        "message": "Retirando revisiones agrupadas de la cola"
+      },
+      {
+        "at": "2026-10-10T23:53:00+02:00",
+        "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial 1 · iniciando pasada y saneamiento de Pendientes"
+        "message": "Releyendo main · requests, fichas Explicadas y cola"
       },
       {
-        "at": "2026-10-10T23:15:20+02:00",
+        "at": "2026-10-10T23:53:15+02:00",
         "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Releyendo estado autoritativo de #laSextaXplica"
+        "trend_id": null,
+        "title": null,
+        "message": "Verificando id+revision y texto persistido · 6/6 consistentes"
       },
       {
-        "at": "2026-10-10T23:15:40+02:00",
-        "phase": "investigating",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-10T23:16:05+02:00",
-        "phase": "investigating",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Contrastando fuente 1/2 · programación oficial de laSexta"
-      },
-      {
-        "at": "2026-10-10T23:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Contrastando fuente 2/2 · exclusiva publicada por laSexta Xplica"
-      },
-      {
-        "at": "2026-10-10T23:16:30+02:00",
-        "phase": "investigating",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Hecho esencial verificado · emisión en curso y exclusiva sobre la candidatura de Rufián"
-      },
-      {
-        "at": "2026-10-10T23:16:40+02:00",
-        "phase": "drafting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-10T23:16:50+02:00",
-        "phase": "drafting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Comprobando límite de X · 275 caracteres"
-      },
-      {
-        "at": "2026-10-10T23:17:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-10T23:17:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-10T23:17:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-10T23:17:20+02:00",
-        "phase": "persisting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-10T23:17:45+02:00",
-        "phase": "persisting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-10T23:18:30+02:00",
-        "phase": "persisting",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-10T23:18:50+02:00",
+        "at": "2026-10-10T23:53:30+02:00",
         "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 8 tarjetas vigentes de menos de 24 h"
       },
       {
-        "at": "2026-10-10T23:19:00+02:00",
+        "at": "2026-10-10T23:53:40+02:00",
         "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Verificando id+revision y texto persistido"
+        "trend_id": null,
+        "title": null,
+        "message": "Pendientes sin remates faltantes · reparación visual solicitada"
       },
       {
-        "at": "2026-10-10T23:19:10+02:00",
+        "at": "2026-10-10T23:53:50+02:00",
         "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Tendencia cerrada y verificada"
+        "trend_id": null,
+        "title": null,
+        "message": "Cola editorial verificada en 0"
       },
       {
-        "at": "2026-10-10T23:19:20+02:00",
-        "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Revisando Pendientes · 11 tarjetas vigentes de menos de 24 h"
-      },
-      {
-        "at": "2026-10-10T23:19:30+02:00",
-        "phase": "verifying",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Pendientes vigentes con remate; reparación visual solicitada"
-      },
-      {
-        "at": "2026-10-10T23:19:40+02:00",
+        "at": "2026-10-10T23:54:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 1 tendencia explicada; cola 0; sin generación IA directa"
+        "message": "Cierre verificado · 6 tendencias, 4 grupos, cola 0; sin generación IA directa"
       }
     ]
   },
