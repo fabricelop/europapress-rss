@@ -545,27 +545,43 @@ async function dispatchAuthorizedTelegramMobileCommand(request,env){
      !Number.isSafeInteger(updateId)||updateId<=0){
     return json({ok:false,error:"Invalid command"},400);
   }
-  const endpoint="https://api.github.com/repos/fabricelop/europapress-rss/actions/workflows/tt-mobile-github-commands.yml/dispatches";
-  const dispatched=await fetch(endpoint,{
-    method:"POST",
-    headers:{
-      "authorization":"Bearer "+env.GITHUB_TOKEN,
-      "accept":"application/vnd.github+json",
-      "x-github-api-version":"2022-11-28",
-      "content-type":"application/json",
-      "user-agent":"tt-mobile-telegram-dispatch"
-    },
-    body:JSON.stringify({
-      ref:"main",
-      inputs:{project,action,id,context:"Telegram mobile update "+updateId}
-    })
-  }).catch(()=>null);
-  if(!dispatched)return json({ok:false,error:"GitHub dispatch network failure"},503);
-  if(dispatched.status!==204){
-    console.log("TT_MOBILE_WORKFLOW_DISPATCH_FAILED",dispatched.status);
-    return json({ok:false,error:"GitHub dispatch unavailable",status:dispatched.status},502);
+  // Durable GitHub Contents queue is compatible with a contents-scoped token.
+  // The write itself triggers the existing GitHub Actions processor, even if
+  // the PC is powered off. No workflow_dispatch permission is required.
+  const path="telegram/tt-mobile-command-queue.json";
+  const endpoint="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+path;
+  const headers={
+    "authorization":"Bearer "+env.GITHUB_TOKEN,
+    "accept":"application/vnd.github+json",
+    "x-github-api-version":"2022-11-28",
+    "content-type":"application/json",
+    "user-agent":"tt-mobile-telegram-command-queue"
+  };
+  for(let attempt=0;attempt<6;attempt++){
+    const get=await fetch(endpoint+"?ref=main",{headers,cache:"no-store"}).catch(()=>null);
+    if(!get||(!get.ok&&get.status!==404))return json({ok:false,error:"GitHub command queue unavailable",http:get?.status||0},503);
+    const file=get.ok?await get.json():null;
+    let state={version:1,items:[]};
+    if(file?.content){
+      try{state=JSON.parse(Buffer.from(file.content.replace(/\s/g,""),"base64").toString("utf8"))}
+      catch{return json({ok:false,error:"Command queue JSON invalid"},503)}
+    }
+    const list=Array.isArray(state.items)?state.items:[];
+    if(list.some(x=>Number(x.update_id)===updateId))return json({ok:true,accepted:true,duplicate:true,update_id:updateId},202);
+    const item={update_id:updateId,project,action,id,
+      status:"pending",source:"telegram_private_deeplink",
+      submitted_at:new Date().toISOString()};
+    state.items=[...list,item].slice(-250);
+    state.updated_at=item.submitted_at;
+    const payload={message:"TT_MOBILE_QUEUE_WRITE: "+project+" "+action,
+      branch:"main",content:Buffer.from(JSON.stringify(state,null,2)+"\n","utf8").toString("base64")};
+    if(file?.sha)payload.sha=file.sha;
+    const put=await fetch(endpoint,{method:"PUT",headers,body:JSON.stringify(payload)}).catch(()=>null);
+    if(put?.ok)return json({ok:true,accepted:true,queued:true,update_id:updateId,project,action},202);
+    if(![409,422].includes(put?.status))return json({ok:false,error:"GitHub queue write refused",http:put?.status||0},503);
+    await new Promise(resolve=>setTimeout(resolve,140*(attempt+1)));
   }
-  return json({ok:true,accepted:true,update_id:updateId,project,action,id},202);
+  return json({ok:false,error:"GitHub queue concurrent updates"},503);
 }
 
 export default {
