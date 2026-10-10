@@ -40911,7 +40911,7 @@
       "id": "4d3e29179028",
       "name": "Rayo",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-10T19:52:15+02:00",
       "revision": 0,
       "reexplain": false,
@@ -40928,7 +40928,65 @@
         "Grimaldo",
         "Alavés"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-10-10T15:50:00+02:00",
+      "last_attempt_at": "2026-10-10T20:00:20+02:00",
+      "explanation": "TT#1 Rayo es tendencia porque el Rayo-Athletic fue suspendido en Vallecas tras repetidos lanzamientos de objetos durante una protesta de la afición contra el presidente Raúl Martín Presa.\n🌶️ Vallecas volvió a abrir y el partido duró menos que la protesta.",
+      "closer_text": "🌶️ Vallecas volvió a abrir y el partido duró menos que la protesta.",
+      "category": "Deportes",
+      "rank_at_explanation": 1,
+      "source": "editorial_chat_direct_reconcile",
+      "verification_sources": [
+        {
+          "source": "EL PAÍS · Rayo-Athletic suspendido · 10/10/2026",
+          "url": "https://elpais.com/deportes/futbol/2026-10-10/las-protestas-contra-presa-detienen-el-partido-entre-rayo-y-athletic-en-vallecas.html"
+        },
+        {
+          "source": "Cadena SER · suspensión Rayo-Athletic · 10/10/2026",
+          "url": "https://cadenaser.com/nacional/2026/10/10/un-asiento-sobre-el-cesped-y-una-lluvia-de-aviones-de-papel-asi-se-suspendio-el-rayo-athletic-en-vallecas-cadena-ser/"
+        }
+      ],
+      "group_id": "grp-rayo-athletic-protesta-vallecas-20261010",
+      "explanation_group_id": "grp-rayo-athletic-protesta-vallecas-20261010",
+      "group_title": "Protesta en Vallecas suspende el Rayo-Athletic",
+      "group_leader_id": "4d3e29179028",
+      "trend_names": [
+        "Rayo",
+        "Vallecas",
+        "Presa"
+      ],
+      "trend_context": [
+        {
+          "name": "Rayo",
+          "rank": 1
+        },
+        {
+          "name": "Vallecas",
+          "rank": 2
+        },
+        {
+          "name": "Presa",
+          "rank": 3
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "4d3e29179028",
+          "name": "Rayo",
+          "revision": 0
+        },
+        {
+          "id": "fdd0b4445d7a",
+          "name": "Vallecas",
+          "revision": 0
+        },
+        {
+          "id": "9848666f09f0",
+          "name": "Presa",
+          "revision": 0
+        }
+      ],
+      "rewrite_pending": false
     },
     {
       "id": "fdd0b4445d7a",
@@ -41974,6 +42032,6 @@
       "rewrite_pending": false
     }
   ],
-  "updated_at": "2026-10-10T19:59:30+02:00",
+  "updated_at": "2026-10-10T20:00:20+02:00",
   "count": 765
 }
