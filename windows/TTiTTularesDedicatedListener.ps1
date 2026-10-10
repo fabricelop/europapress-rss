@@ -40,13 +40,13 @@ $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 # Worker version visible in ACK: confirma remotamente que AutoUpdater instaló el listener v31.
 $WorkerId = "ttittulares-dedicated-v57"
-$PollSeconds = 15
+$PollSeconds = 30
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
 $MaxParallelImageChats = 1
 $MaxImageJobProbesPerCycle = 3
 $ImageStaleMinutes = 45
-$SnapshotStrongSeconds = 30
+$SnapshotStrongSeconds = 60
 $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
 $script:ListenerSnapshotAt = [DateTimeOffset]::MinValue
@@ -1330,7 +1330,7 @@ while ($true) {
       })
       $jobCount=$jobs.Count
       $scanStart=if($jobCount -gt 0){([Math]::Max(0,[int]$state.image_scan_cursor)%$jobCount)}else{0}
-      # Cada 15 s, como maximo 3 consultas de detalle; cursor rotatorio persistente.
+      # Cada 30 s, como maximo 3 consultas de detalle; cursor rotatorio persistente.
       for($scan=0;$scan -lt [Math]::Min($jobCount,$MaxImageJobProbesPerCycle);$scan++){
         if($slots -le 0){break}
         $position=($scanStart+$scan)%$jobCount
