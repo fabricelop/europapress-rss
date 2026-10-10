@@ -90,7 +90,7 @@ jobs:
               cairosvg.svg2png(url=str(source),write_to=str(path),
                                output_width=size,output_height=size)
               raw=path.read_bytes()
-              assert raw[:8]==b'\\x89PNG\\r\\n\\x1a\\n',filename
+              assert raw[:8]==b'\x89PNG\r\n\x1a\n',filename
               assert struct.unpack('>II',raw[16:24])==(size,size),filename
               print('TT_ICON_RENDERED',filename,size,len(raw),flush=True)
           manifest=json.loads((site/'manifest.webmanifest').read_text(encoding='utf8'))
