@@ -101,11 +101,14 @@ def tti_command(action, element_id, context, instruction, now):
                any(matches(r, element_id) for r in status.get("processing_items", [])) or
                any(matches(r, element_id) for r in status.get("problematic_items", [])) or
                any(matches(r, element_id) for r in status.get("three_source_items", [])))
-    if not existed:
-        raise ValueError("No se encontró el evento TTiTTulares en el estado actual")
     existing = next((x for x in decisions.get("items", []) if matches(x, element_id)), None)
     if existing and str(existing.get("status") or "").lower() in TERMINAL:
-        raise ValueError("Evento ya cerrado: " + str(existing.get("status")))
+        previous = str(existing.get("status") or "").lower()
+        if previous == action:
+            return "TTiTTulares: acción ya realizada anteriormente (" + action + "): " + element_id
+        raise ValueError("Evento ya cerrado: " + previous)
+    if not existed:
+        raise ValueError("No se encontró el evento TTiTTulares en el estado actual")
     if action in {"published", "deleted"}:
         row = existing or {"event_id": element_id}
         if existing is None:
@@ -189,6 +192,9 @@ def trend_command(action, element_id, context, instruction, now):
     decisions = load(dpath, {"items": []})
     decided = next((x for x in decisions["items"] if matches(x, element_id)), None)
     if decided and str(decided.get("status") or "") in TERMINAL:
+        previous = str(decided.get("status") or "")
+        if previous == action:
+            return "TTendencias: acción ya realizada anteriormente (" + action + "): " + element_id
         raise ValueError("Tendencia ya cerrada")
     if action in {"published", "deleted"}:
         if decided is None:
