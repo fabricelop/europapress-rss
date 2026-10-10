@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-v28c-mutqj9r6",
+  "requested_at": "2026-10-04T11:26:08.418Z",
+  "updated_at": "2026-10-04T11:30:56.590Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "ab55faea6d66",
+  "trend_id": "ab55faea6d66",
+  "target_name": "San Francisco de Asís",
+  "revision": 0,
+  "attempt": 9,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "San Francisco de Asís",
+    "revision": 0,
+    "explanation": "TT#11 San Francisco de Asís es tendencia porque hoy, 4 de octubre, se celebra su festividad y Asís conmemora los 800 años de su muerte con actos y peregrinos.\n🌶️ Ocho siglos después, Asís sigue sin necesitar algoritmo para ser tendencia.",
+    "closer_text": "🌶️ Ocho siglos después, Asís sigue sin necesitar algoritmo para ser tendencia.",
+    "trend_names": [
+      "San Francisco de Asís"
+    ],
+    "group_title": "Festividad de San Francisco de Asís y 800 años de su muerte",
+    "rank_at_explanation": 11,
+    "explained_at": "2026-10-04T12:00:30+02:00",
+    "verification_sources": [
+      {
+        "source": "Vatican News · septiembre 2026",
+        "url": "https://www.vaticannews.va/es/iglesia/news/2026-09/san-francisco-celebraciones-por-el-800-aniversario-de-su-muerte.html"
+      },
+      {
+        "source": "ACI Prensa · 20/9/2026",
+        "url": "https://www.aciprensa.com/noticias/128591/asis-celebracion-800-anos-san-francisco"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "No apareció un raster ImageGen capturable en 3 minutos; eval_error=CDP timeout Runtime.evaluate",
+  "pc_upload_secret_hash": "7e3a0ae76b97d19e3c014d5bbf70fe9ad9f6e19e47bce2db2f91ee1caa471b68",
+  "pc_worker_id": "ttendencias-image-bridge-v1",
+  "pc_picked_up_at": "2026-10-04T11:26:36.809Z",
+  "pc_launched_at": "2026-10-04T11:26:54.471Z",
+  "finished_at": "2026-10-04T11:30:56.590Z"
+}

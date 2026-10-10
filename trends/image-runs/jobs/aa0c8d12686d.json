@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-aa0c8d12686d-r1-a7-1791353283498",
+  "requested_at": "2026-10-07T06:08:03.495514Z",
+  "updated_at": "2026-10-07T07:22:27.957Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "aa0c8d12686d",
+  "trend_id": "aa0c8d12686d",
+  "target_name": "Messi",
+  "revision": 1,
+  "attempt": 7,
+  "auto_repair": true,
+  "auto_repair_attempt": 7,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "Messi",
+    "revision": 1,
+    "explanation": "TT#5 Messi es tendencia porque disputa en el Monumental su último partido con Argentina, un amistoso ante Benín preparado como homenaje tras anunciar su retirada internacional.\n🌶️ El 10 se despide y hasta el Monumental parece pedir tiempo añadido.",
+    "closer_text": "🌶️ El 10 se despide y hasta el Monumental parece pedir tiempo añadido.",
+    "trend_names": [
+      "Messi"
+    ],
+    "group_title": "Messi",
+    "rank_at_explanation": 5,
+    "explained_at": "2026-10-07T02:17:40+02:00",
+    "verification_sources": [
+      "https://www.reuters.com/sports/soccer/teammates-fans-bid-emotional-farewell-messi-ahead-argentina-finale-2026-10-06/",
+      "https://www.fifa.com/en/tournaments/mens/worldcup/articles/lionel-messi-argentina-farewell"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Fallback no pudo escribir el prompt completo len=1 expected>=500 active=_r_17k_",
+  "pc_upload_secret_hash": "adcf34394abd02edd6e48d5b104b303601d6dee395a4fec0e583af10f7786e46",
+  "pc_worker_id": "ttendencias-image-bridge-v40-user-turn-proof",
+  "pc_picked_up_at": "2026-10-07T07:22:13.329Z",
+  "finished_at": "2026-10-07T07:22:27.957Z"
+}
