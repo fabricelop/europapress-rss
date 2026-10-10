@@ -45349,7 +45349,7 @@
       "percentage": 31.2,
       "first_seen": "2026-10-09T10:54:32.594443Z",
       "last_seen": "2026-10-10T10:12:23.725645Z",
-      "status": "PROCESSING",
+      "status": "DISMISSED",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -45419,7 +45419,12 @@
         }
       ],
       "drafted_source_count": 5,
-      "verified_source_count": 5
+      "verified_source_count": 5,
+      "dismissed_at": "2026-10-10T10:29:40.094Z",
+      "manual_user_dismissed": true,
+      "dismissal_source": "web_user",
+      "history_hidden_at": "2026-10-10T10:29:40.094Z",
+      "history_hidden_source": "web_user_dismissal"
     },
     {
       "id": "42fd7160d353",
@@ -45466,7 +45471,7 @@
         "Telecinco Noticias"
       ],
       "source_count": 4,
-      "percentage": 25.0,
+      "percentage": 25,
       "first_seen": "2026-10-10T09:23:10.280450Z",
       "last_seen": "2026-10-10T10:12:23.725645Z",
       "status": "PROCESSING",
@@ -45530,5 +45535,5 @@
       "verified_source_count": 4
     }
   ],
-  "updated_at": "2026-10-10T10:12:42.517715Z"
+  "updated_at": "2026-10-10T10:29:40.094Z"
 }
