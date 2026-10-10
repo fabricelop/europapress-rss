@@ -17,8 +17,11 @@ $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
 $LaunchConfirmSeconds = 30
 $StatusBase = [Environment]::GetEnvironmentVariable("TTITTULARES_SERVICE_BASE", "User")
-if (-not $StatusBase) { $StatusBase = "https://ttittulares-no-vercel-test.fabricelop.workers.dev" }
+if (-not $StatusBase -or $StatusBase.TrimEnd("/") -eq "https://ttittulares-no-vercel-test.fabricelop.workers.dev") {
+  $StatusBase = "https://tt-control.fabricelop.workers.dev"
+}
 $StatusBase = $StatusBase.TrimEnd("/")
+$env:TTITTULARES_SERVICE_BASE = $StatusBase
 $env:TTITTULARES_SERVICE_BASE = $StatusBase
 $ListenerSnapshotUrl = "$StatusBase/api/ttittulares-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttittulares-run-status?view=image-job&strong=1&id="
