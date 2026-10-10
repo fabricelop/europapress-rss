@@ -1,11 +1,13 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-10T09:15:00+02:00",
-  "last_completed_at": "2026-10-10T09:19:00+02:00",
-  "updated_at": "2026-10-10T09:19:00+02:00",
+  "last_started_at": "2026-10-10T09:33:00+02:00",
+  "last_completed_at": "2026-10-10T09:47:00+02:00",
+  "updated_at": "2026-10-10T09:47:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "fd9d84772379"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -15,23 +17,23 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010T091500-chat",
+    "run_id": "tr-1791617617302-c92200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T09:15:00+02:00",
-    "updated_at": "2026-10-10T09:19:00+02:00",
-    "finished_at": "2026-10-10T09:19:00+02:00",
+    "started_at": "2026-10-10T09:33:00+02:00",
+    "updated_at": "2026-10-10T09:47:00+02:00",
+    "finished_at": "2026-10-10T09:47:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 1,
+    "total": 1,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -41,15 +43,15 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 18,
+      "pending_cards_reviewed": 28,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 5
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "remates_omitted": 10
     },
-    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Se revisaron 18 Pendientes recientes y el reparador visual de Explicadas (workflow 906) sigue en ejecución independiente.",
+    "message": "Pasada completada · 1 tendencia explicada y verificada; cola final 0. Se revisaron 28 Pendientes recientes y se solicitó su reparación visual independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -60,6 +62,93 @@
       "recent_considered": 20
     },
     "remate_selections": [
+      {
+        "trend_id": "fd9d84772379",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.7,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 7.5,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 0.8,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c3",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 7.4,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 0.9,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.9,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c5",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "571bfe869955",
+        "revision": 5,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_judicial_context"
+      },
+      {
+        "trend_id": "f19ca5a83016",
+        "revision": 2,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "death_and_housing_context"
+      },
+      {
+        "trend_id": "285a6550e6b8",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_judicial_context"
+      },
       {
         "trend_id": "7d7133c58382",
         "revision": 0,
@@ -77,6 +166,15 @@
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "political_context_and_length_fit"
+      },
+      {
+        "trend_id": "2001ce1304ef",
+        "revision": 1,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "judicial_context"
       },
       {
         "trend_id": "2d65748bd484",
@@ -104,57 +202,157 @@
         "selected_candidate": null,
         "selected_score": null,
         "no_remate_reason": "length_fit_and_judicial_context"
+      },
+      {
+        "trend_id": "4c806acff5a4",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "disaster_sensitivity"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T09:15:00+02:00",
+        "at": "2026-10-10T09:33:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada · cola editorial 0; revalidando main, requests, reexplicaciones y Pendientes."
+        "message": "Pasada iniciada · 1 tendencia activa; preparando revalidación JIT y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-10T09:16:00+02:00",
+        "at": "2026-10-10T09:34:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Releyendo estado autoritativo de #AgropopularTractorada"
+      },
+      {
+        "at": "2026-10-10T09:35:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-10T09:36:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-10T09:37:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-10T09:38:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-10T09:39:00+02:00",
+        "phase": "drafting",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-10T09:40:00+02:00",
+        "phase": "drafting",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-10T09:40:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-10T09:40:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-10T09:41:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-10T09:41:20+02:00",
+        "phase": "persisting",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-10T09:41:40+02:00",
+        "phase": "persisting",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-10T09:42:00+02:00",
+        "phase": "persisting",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-10T09:44:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-10T09:44:20+02:00",
+        "phase": "verifying",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-10T09:44:40+02:00",
+        "phase": "verifying",
+        "trend_id": "fd9d84772379",
+        "title": "#AgropopularTractorada",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-10T09:45:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura autoritativa · cola 0, requests preparing/update 0 y rewrite_pending 0."
+        "message": "Revisando Pendientes · 28 tarjetas"
       },
       {
-        "at": "2026-10-10T09:17:00+02:00",
+        "at": "2026-10-10T09:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 18 tarjetas recientes tras excluir copiadas/archivadas."
+        "message": "Relectura final de main · cola 0, requests activos 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-10T09:17:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cinco Pendientes sin remate se mantienen sin forzar por sensibilidad, contexto político/judicial o falta de espacio."
-      },
-      {
-        "at": "2026-10-10T09:18:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparador visual de Explicadas lanzado · workflow 906 en ejecución independiente."
-      },
-      {
-        "at": "2026-10-10T09:18:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main · cola 0, requests activos 0, problematic 0 y rewrite_pending 0."
-      },
-      {
-        "at": "2026-10-10T09:19:00+02:00",
+        "at": "2026-10-10T09:47:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 0/0 editorial; saneamiento de Pendientes solicitado y reparación visual en curso independiente."
+        "message": "Pasada completada · 1/1 editorial; saneamiento de Pendientes solicitado y reparación visual independiente."
       }
     ],
     "queue_complete": true,
@@ -164,16 +362,11 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "in_progress",
+    "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010T091500-chat",
-    "last_triggered_at": "2026-10-10T09:15:00+02:00",
-    "observed_at": "2026-10-10T09:18:00+02:00",
-    "archive_examined": 0,
-    "archive_ready": 0,
-    "archive_none": 0,
-    "workflow_run_id": 38033844682,
-    "workflow_run_number": 906
+    "last_trigger_run_id": "tr-1791617617302-c92200",
+    "last_triggered_at": "2026-10-10T09:33:00+02:00",
+    "observed_at": "2026-10-10T09:47:00+02:00"
   },
   "version": 1,
   "canonical": true
