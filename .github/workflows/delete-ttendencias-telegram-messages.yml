@@ -54,36 +54,54 @@ jobs:
                   try:
                       if datetime.fromisoformat(due.replace("Z","+00:00"))>now:continue
                   except ValueError:pass
-              mid=int(row.get("telegram_message_id") or 0)
-              if mid<=0:
+              # Borrar todo el paquete, imagen principal y foto de archivo.
+              mids=list(dict.fromkeys(
+                  int(row.get(k) or 0) for k in ("telegram_message_id","archive_telegram_message_id")
+                  if int(row.get(k) or 0)>0
+              ))
+              if not mids:
                   row.update(status="delete_failed",delete_error="message_id no válido",delete_last_attempt_at=stamp(now))
                   changed+=1;failed+=1;continue
-              payload=json.dumps({"chat_id":chat,"message_id":mid}).encode("utf8")
-              req=urllib.request.Request("https://api.telegram.org/bot"+token+"/deleteMessage",data=payload,headers={"content-type":"application/json"})
-              try:
-                  with urllib.request.urlopen(req,timeout=22) as resp:
-                      ans=json.loads(resp.read().decode("utf8"))
-                  code=200 if ans.get("ok") else int(ans.get("error_code") or 500)
-                  reason=str(ans.get("description") or "")
-                  retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
-              except urllib.error.HTTPError as err:
-                  code=err.code
-                  try: ans=json.loads(err.read().decode("utf8"))
-                  except Exception:ans={}
-                  reason=str(ans.get("description") or "Error HTTP")
-                  retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
-              except Exception as err:
-                  code=0;reason=type(err).__name__;retry=0
-              if code==200 or "message to delete not found" in reason.lower():
+              completed={int(mid) for mid in row.get("delete_completed_message_ids",[])
+                         if str(mid).isdigit()}
+              errors=[]
+              for mid in mids:
+                  if mid in completed:continue
+                  payload=json.dumps({"chat_id":chat,"message_id":mid}).encode("utf8")
+                  req=urllib.request.Request("https://api.telegram.org/bot"+token+"/deleteMessage",
+                     data=payload,headers={"content-type":"application/json"})
+                  try:
+                      with urllib.request.urlopen(req,timeout=22) as resp:
+                          ans=json.loads(resp.read().decode("utf8"))
+                      code=200 if ans.get("ok") else int(ans.get("error_code") or 500)
+                      reason=str(ans.get("description") or "")
+                      retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
+                  except urllib.error.HTTPError as err:
+                      code=err.code
+                      try:ans=json.loads(err.read().decode("utf8"))
+                      except Exception:ans={}
+                      reason=str(ans.get("description") or "Error HTTP")
+                      retry=int((ans.get("parameters") or {}).get("retry_after") or 0)
+                  except Exception as err:
+                      code=0;reason=type(err).__name__;retry=0
+                  if code==200 or "message to delete not found" in reason.lower():
+                      completed.add(mid)
+                      print("TTENDENCIAS_DELETE_OK",mid)
+                  else:
+                      errors.append((mid,code,reason,retry))
+              row["delete_completed_message_ids"]=sorted(completed)
+              if not errors and len(completed)==len(mids):
                   row.update(status="deleted",deleted_at=stamp(now),delete_last_attempt_at=stamp(now))
                   row.pop("delete_error",None);row.pop("delete_next_retry_at",None)
                   changed+=1;ok+=1
-                  print("TTENDENCIAS_DELETE_OK",mid)
               else:
                   attempts=int(row.get("delete_attempts") or 0)+1
-                  recoverable=code in {0,408,425,429} or 500<=code<600
+                  recoverable=all(code in (0,408,425,429) or 500<=code<600
+                                  for _,code,_,_ in errors)
                   next_status="delete_pending" if recoverable and attempts<6 else "delete_failed"
-                  row.update(status=next_status,delete_attempts=attempts,delete_error="HTTP "+str(code)+": "+reason[:160],delete_last_attempt_at=stamp(now))
+                  mid,code,reason,retry=errors[0] if errors else (0,500,"Paquete incompleto",60)
+                  row.update(status=next_status,delete_attempts=attempts,
+                    delete_error="HTTP "+str(code)+": "+reason[:160],delete_last_attempt_at=stamp(now))
                   if next_status=="delete_pending":
                       wait=max(retry,min(3600,60*2**min(attempts,5)))
                       row["delete_next_retry_at"]=stamp(now+timedelta(seconds=wait))
