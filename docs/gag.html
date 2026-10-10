@@ -43,8 +43,8 @@ function sortByPrecision(a,b){
  return val(b)-val(a)
 }
 function best(...docs){return docs.flatMap(rows).filter(matches).sort(sortByPrecision)[0]||{}}
-function display(title,body,punch,factual,rank){
- title=safe(title);body=safe(body);punch=safe(punch||closerFrom(body));factual=safe(factual);
+function display(title,body,punch,factual,rank,explanation=''){
+ title=safe(title);body=safe(body);punch=safe(punch||closerFrom(body));factual=safe(factual);explanation=safe(explanation);
  if(punch&&!body.includes(punch))body=(body+'\n\n'+punch).trim();
  if(!body){$('editorial').textContent='No se ha encontrado un texto editorial completo para este elemento.';$('status').textContent='No se ha creado el prompt para evitar una imagen basada solo en el titular.';$('status').className='note error';return}
  const decorated=(trend&&rank>0&&!/^TT#\d+/i.test(title)?'TT#'+rank+' ':'')+title;
@@ -53,6 +53,7 @@ function display(title,body,punch,factual,rank){
   'TÍTULO / '+(news?'NOTICIA':'TENDENCIA')+':\n'+decorated,
   'TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n'+body,
   'REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n'+(punch||'No consta un remate separado; no inventes ninguno.'),
+  'EXPLICACIÓN EDITORIAL COMPLETA (NO OMITIR NI REESCRIBIR):\n'+(explanation||body),
   'CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n'+(factual||'Utiliza solamente los hechos de la explicación completa.'),
   'DIRECCIÓN VISUAL:\nUna sola viñeta satírica original y exagerada, con metáfora visual ingeniosa basada en los hechos y en el remate. Nada de ilustración literal; sin texto en la imagen y sin inventar datos.'
  ];
@@ -72,7 +73,7 @@ async function start(){
  const x=best(...docs);
  if(news){
   const text=safe(x.tweet?.text||x.x_text||x.factual_summary||'');
-  display(x.title||name||id,text,x.tweet?.remate||x.closer_text,x.factual_summary,x.rank);
+  display(x.title||name||id,text,x.tweet?.remate||x.closer_text,x.factual_summary,x.rank,x.explanation);
  }else{
   const request=docs[2],manual=docs[0],explained=docs[1];
   const sameRequest=rows(request).filter(matches).sort(sortByPrecision)[0]||{};
@@ -86,7 +87,7 @@ async function start(){
   const punch=safe(selected.closer_text||requestCurrent.closer_text||closerFrom(text));
   const title=selected.display_name||sameRequest.name||selected.name||name||id;
   const rank=Number(sameRequest.rank||selected.rank||0);
-  display(title,text,punch,selected.factual_summary||requestCurrent.factual_summary,rank);
+  display(title,text,punch,selected.factual_summary||requestCurrent.factual_summary,rank,selected.explanation||requestCurrent.explanation);
  }
 }
 $('copy').onclick=async()=>{
