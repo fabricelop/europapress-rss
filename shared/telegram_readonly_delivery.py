@@ -358,6 +358,12 @@ def trend_title_key(value):
         char for char in normalized if not unicodedata.combining(char)
     ))
 
+def article_identity(url):
+    parsed=urlparse(str(url or "").strip())
+    host=(parsed.hostname or "").casefold().removeprefix("www.")
+    path=parsed.path.rstrip("/").casefold()
+    return host+path if host and path else ""
+
 def recently_delivered_same_title(card,history,now,days=7):
     """Avoid duplicate Telegram cards when a new radar ID represents the same story.
 
@@ -365,11 +371,14 @@ def recently_delivered_same_title(card,history,now,days=7):
     Revisions under the same ID may edit the original message, not resend it.
     """
     title=trend_title_key(card.get("title"))
-    if not title:return False
+    article=article_identity(card.get("source_url"))
+    if not title and not article:return False
     eid=str(card.get("id") or "")
     for row in history:
         if str(row.get("event_id") or "")==eid:continue
-        if trend_title_key(row.get("title") or row.get("name"))!=title:continue
+        title_match=bool(title and trend_title_key(row.get("title") or row.get("name"))==title)
+        article_match=bool(article and article_identity(row.get("source_url"))==article)
+        if not title_match and not article_match:continue
         when=date(row.get("delivered_at"))
         if when is not None and timedelta(0)<=now-when<timedelta(days=days) and int(row.get("telegram_message_id") or 0)>0:
             return True
@@ -406,7 +415,7 @@ def process(project,now,token,chat):
         # A Telegram deletion is permanent for this editorial cycle.
         # Deleting any of the duplicate Telegram cards closes the whole trend.
         # Never try to edit or resurrect another copy after a user deletion.
-        if any(str(r.get("status") or "").lower() in {"deleted","delete_pending","delete_failed"} for r in linked):
+        if any(str(r.get("status") or "").lower() in TERMINAL|{"delete_pending","delete_failed"} for r in linked):
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
@@ -512,7 +521,8 @@ def process(project,now,token,chat):
                 "telegram_message_id":int(result["message_id"]),"status":"sent",
                 "is_photo":bool(image_data),"image_url":photo_url if image_data else "",
                 "content_sha256":new_hash,"final":card["final"],"buttons_version":BUTTONS_VERSION,
-                "started_at":str(card["start"]),"delivered_at":now.isoformat()})
+                "started_at":str(card["start"]),"delivered_at":now.isoformat(),
+                "source_url":str(card.get("source_url") or "")})
             delivered+=1
         ledger["updated_at"]=now.isoformat()
     if delivered or updated:put(path,ledger)
@@ -566,6 +576,11 @@ def selftest():
     assert recently_delivered_same_title(
         {"id":"news2","title":"Dónde ver el Real Madrid - Villarreal"},
         [{"event_id":"news1","title":"Donde ver el Real Madrid Villarreal","status":"sent",
+          "telegram_message_id":3323,"delivered_at":"2026-10-09T15:00:00Z"}],now)
+    assert recently_delivered_same_title(
+        {"id":"news3","title":"Cambio de titular","source_url":"https://www.example.com/noticia?id=1"},
+        [{"event_id":"news1","title":"Titular anterior",
+          "source_url":"https://example.com/noticia?utm_source=telegram",
           "telegram_message_id":3323,"delivered_at":"2026-10-09T15:00:00Z"}],now)
     assert not trend_repeat_allowed(
         {"novelty_verified":True,"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
