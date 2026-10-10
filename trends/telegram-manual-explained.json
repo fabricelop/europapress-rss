@@ -41954,7 +41954,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -42020,11 +42019,29 @@
       "rewrite_pending": false,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://trends24.in/img/t24-logo-512.png",
+        "source": "Trends24 España · 10/10/2026 06:12 UTC",
+        "source_url": "https://trends24.in/spain/",
+        "alt": "Imagen de archivo relacionada con #FelizSábado",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://trends24.in/img/t24-logo-512.png",
+        "source": "Trends24 España · 10/10/2026 06:12 UTC",
+        "source_url": "https://trends24.in/spain/",
+        "alt": "Imagen de archivo relacionada con #FelizSábado",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-10T08:34:30+02:00",
+  "updated_at": "2026-10-10T06:37:23.131670Z",
   "count": 698
 }
