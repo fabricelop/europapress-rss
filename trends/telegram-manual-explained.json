@@ -44655,7 +44655,6 @@
       "news_disposition": "ignored",
       "rewrite_instruction": "",
       "rewrite_with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -44700,12 +44699,31 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "explained_at": "2026-10-10T23:17:20+02:00",
-      "category": "Política"
+      "category": "Política",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2026/10/02/99A21154-5A7D-4093-8309-4F714B5DA4E4/portavoz-erc-congreso-gabriel-rufian_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "laSexta Xplica · 10/10/2026",
+        "source_url": "https://www.lasexta.com/elecciones/generales/erc-encarrilada-negociacion-que-rufian-sea-lider-lista-barcelona-todo-apunta-colaboracion-podemos_202610106aca92edcfd4076f0c783af7.html",
+        "alt": "Imagen de archivo relacionada con #laSextaXplica",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://fotografias.lasexta.com/clipping/cmsimages02/2026/10/02/99A21154-5A7D-4093-8309-4F714B5DA4E4/portavoz-erc-congreso-gabriel-rufian_98.jpg?crop=191:100&width=1600&height=838&optimize=low&format=webply",
+        "source": "laSexta Xplica · 10/10/2026",
+        "source_url": "https://www.lasexta.com/elecciones/generales/erc-encarrilada-negociacion-que-rufian-sea-lider-lista-barcelona-todo-apunta-colaboracion-podemos_202610106aca92edcfd4076f0c783af7.html",
+        "alt": "Imagen de archivo relacionada con #laSextaXplica",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-10T23:17:20+02:00",
+  "updated_at": "2026-10-10T21:19:12.794577Z",
   "count": 734
 }
