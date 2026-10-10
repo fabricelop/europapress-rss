@@ -83,7 +83,7 @@ function ttiRows(){
  if(state.tab==='elaboracion'){
   const rows=s.processing_items||state.data.processing?.items||[];return rows.filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))
  }
- if(state.tab==='problematicas')return (s.problematic_items||[]).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
+ if(state.tab==='problematicas')return (s.problematic_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
  if(state.tab==='creciendo')return (s.three_source_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
  return (s.source_status||[]).map((x,i)=>({...x,title:x.source,_kind:'fuente',_id:String(i),_status:x.ok?'ACTIVA':'INCIDENCIA'}))
 }
