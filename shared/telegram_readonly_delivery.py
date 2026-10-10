@@ -373,6 +373,20 @@ def process(project,now,token,chat):
     for card in cards:
         eid=card["id"];rev=card["rev"]
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
+        if project=="ttendencias":
+            # El radar puede asignar IDs diferentes al mismo nombre.
+            # No enviar otra tarjeta de la misma tendencia durante 48 horas.
+            title=re.sub(r"[^\\w#]+","",str(card.get("title") or "").casefold())
+            repeated=any(
+                str(row.get("event_id") or "")!=eid and
+                re.sub(r"[^\\w#]+","",str(row.get("title") or row.get("name") or "").casefold())==title and
+                (date(row.get("delivered_at")) is not None) and
+                timedelta(0)<=now-date(row.get("delivered_at"))<timedelta(hours=48)
+                for row in entries
+            )
+            if title and repeated:
+                skipped+=1
+                continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
         # Deleting any of the duplicate Telegram cards closes the whole trend.
