@@ -27,6 +27,30 @@ with tempfile.TemporaryDirectory() as tmp:
     except ValueError:pass
 with tempfile.TemporaryDirectory() as tmp:
     m.ROOT=Path(tmp)
+    path="ttittulares/tremending/items.json"
+    keep={"id":"tremending-aaa111","title":"Noticia de Público","status":"pending","url":"https://www.publico.es/tremending/example"}
+    other={"id":"tremending-bbb222","title":"Otra noticia","status":"pending"}
+    put(m.ROOT,path,{"project":"TTiTTulares","items":[keep,other],"scan":{"seen_urls":[keep["url"]]}})
+    response=m.tti_command("deleted","tremending-aaa111","","","2026-10-11T00:00:00Z")
+    assert "borrada del panel" in response
+    saved=get(m.ROOT,path)
+    assert saved["items"][0]["status"]=="deleted"
+    assert saved["items"][0]["deleted_at"]=="2026-10-11T00:00:00Z"
+    assert saved["items"][1]==other
+    assert saved["scan"]["seen_urls"]==[keep["url"]]
+    assert not (m.ROOT/"telegram/delete-message-queue.json").exists()
+    assert "ya borrada" in m.tti_command("deleted","tremending-aaa111","","","2026-10-11T00:01:00Z")
+    try:
+        m.tti_command("rework","tremending-bbb222","","","2026-10-11T00:01:00Z")
+        raise AssertionError("Tremending must not join editorial rework")
+    except ValueError:pass
+    try:
+        m.tti_command("deleted","tremending-unknown","","","2026-10-11T00:01:00Z")
+        raise AssertionError("Unknown Tremending ID accepted")
+    except ValueError:pass
+
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
     put(m.ROOT,"trends/requests.json",{"requests":[{"id":"abc123xyz","name":"Tendencia verificada","revision":1,"status":"explained"}]})
     put(m.ROOT,"trends/telegram-image-deliveries.json",{"items":[{"event_id":"abc123xyz","status":"sent","telegram_message_id":45679}]})
     m.trend_command("deleted","abc123xyz","","","2026-10-10T16:00:00Z")
