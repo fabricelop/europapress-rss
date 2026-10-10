@@ -47,7 +47,8 @@ with tempfile.TemporaryDirectory() as tmp:
     put(m.ROOT,"ttittulares/status.json",{"processing_items":[]})
     put(m.ROOT,"telegram/ttittulares-deliveries.json",{"items":[{"event_id":"abcdef123456","status":"sent","telegram_message_id":45678}]})
     put(m.ROOT,"telegram/tt-mobile-command-queue.json",{"version":1,"items":[{"update_id":123456,
-        "project":"ttittulares","action":"deleted","id":"abcdef123456","status":"pending"}]})
+        "project":"ttittulares","action":"deleted","id":"abcdef123456","status":"pending",
+        "cleanup_command_mid":777,"cleanup_notice_mid":778}]})
     before=os.environ.get("GITHUB_ACTOR")
     os.environ["GITHUB_ACTOR"]="fabricelop"
     try:
@@ -55,6 +56,8 @@ with tempfile.TemporaryDirectory() as tmp:
         assert m.process_queue()==0
         items=get(m.ROOT,"telegram/tt-mobile-command-queue.json")["items"]
         assert len(items)==1 and items[0]["status"]=="completed"
+        result=json.loads(Path("/tmp/tt-mobile-queue-results.json").read_text(encoding="utf8"))[0]
+        assert result["cleanup_command_mid"]==777 and result["cleanup_notice_mid"]==778
         assert get(m.ROOT,"ttittulares/decisions.json")["items"][0]["status"]=="deleted"
         assert get(m.ROOT,"telegram/delete-message-queue.json")["items"][0]["message_id"]==45678
         try:
