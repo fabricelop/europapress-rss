@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T01:15:00+02:00",
-  "last_completed_at": "2026-10-11T01:26:00+02:00",
-  "updated_at": "2026-10-11T01:26:00+02:00",
+  "last_started_at": "2026-10-11T01:45:00+02:00",
+  "last_completed_at": "2026-10-11T01:49:00+02:00",
+  "updated_at": "2026-10-11T01:49:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,27 +18,40 @@
     "persisted_trigger": true,
     "status": "pending repair trigger persisted",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T011500+0200-chatgpt",
-    "requested_at": "2026-10-11T01:15:00+02:00",
+    "run_id": "tr-20261011T014500+0200-chatgpt",
+    "requested_at": "2026-10-11T01:45:00+02:00",
     "reason": "execution-start-pending-repair",
     "workflow_run_id": null,
-    "subsequent_item_repairs": []
+    "subsequent_item_repairs": [
+      {
+        "id": "1a1ad33aea16",
+        "name": "Le Normand",
+        "revision": 1,
+        "status": "requested"
+      },
+      {
+        "id": "d62b113bc862",
+        "name": "Getafe",
+        "revision": 1,
+        "status": "requested"
+      }
+    ]
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T011500+0200-chatgpt",
+    "run_id": "tr-20261011T014500+0200-chatgpt",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-11T01:15:00+02:00",
-    "updated_at": "2026-10-11T01:26:00+02:00",
-    "finished_at": "2026-10-11T01:26:00+02:00",
+    "started_at": "2026-10-11T01:45:00+02:00",
+    "updated_at": "2026-10-11T01:49:00+02:00",
+    "finished_at": "2026-10-11T01:49:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
     "partial": false,
     "summary": {
       "trends_processed": 0,
@@ -58,29 +71,14 @@
       "pending_missing_closer": 0,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 2,
+      "incidents": 0,
       "images_generated": 0,
-      "skipped_by_jit": 1,
-      "reconciled_terminal": 2
+      "skipped_by_jit": 0,
+      "reconciled_terminal": 0
     },
-    "message": "Cierre verificado · decisión móvil respetada tras dos reaperturas del radar; cola editorial vacía y 2 Pendientes saneados",
-    "incident_count": 2,
-    "incidents": [
-      {
-        "at": "2026-10-11T01:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "reason": "Primera reapertura de la revisión r0 por el radar pese a decisión móvil terminal; reconciliada."
-      },
-      {
-        "at": "2026-10-11T01:24:00+02:00",
-        "phase": "verifying",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "reason": "La relectura posterior al primer cierre detectó una segunda reapertura de la misma revisión r0; reconciliada antes del cierre final."
-      }
-    ],
+    "message": "Cierre verificado · cola editorial vacía; 2 Pendientes revisados y reparación visual solicitada",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -91,74 +89,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T01:15:00+02:00",
+        "at": "2026-10-11T01:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 1 entrada"
+        "message": "Preparando pasada editorial · verificando cola, reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-11T01:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "JIT · prevalece la decisión móvil terminal"
-      },
-      {
-        "at": "2026-10-11T01:20:00+02:00",
+        "at": "2026-10-11T01:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 2 tarjetas"
       },
       {
-        "at": "2026-10-11T01:21:07+02:00",
-        "phase": "persisting",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "Primera reconciliación aplicada"
-      },
-      {
-        "at": "2026-10-11T01:22:00+02:00",
-        "phase": "persisting",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "Primera retirada de cola aplicada"
-      },
-      {
-        "at": "2026-10-11T01:24:00+02:00",
+        "at": "2026-10-11T01:47:00+02:00",
         "phase": "verifying",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "Segunda reapertura detectada en verificación posterior"
+        "trend_id": "1a1ad33aea16",
+        "title": "Le Normand",
+        "message": "Pendiente 1/2 · reparación visual solicitada"
       },
       {
-        "at": "2026-10-11T01:25:04+02:00",
-        "phase": "persisting",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "Segunda reconciliación aplicada"
+        "at": "2026-10-11T01:47:20+02:00",
+        "phase": "verifying",
+        "trend_id": "d62b113bc862",
+        "title": "Getafe",
+        "message": "Pendiente 2/2 · reparación visual solicitada"
       },
       {
-        "at": "2026-10-11T01:25:20+02:00",
-        "phase": "persisting",
-        "trend_id": "33e8f8634680",
-        "title": "Roja",
-        "message": "Segunda retirada de cola aplicada"
-      },
-      {
-        "at": "2026-10-11T01:25:40+02:00",
+        "at": "2026-10-11T01:48:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final · cola 0 y 0 estados activos"
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-11T01:26:00+02:00",
+        "at": "2026-10-11T01:49:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre final verificado"
+        "message": "Cierre final verificado · cola editorial vacía"
       }
     ]
   },
