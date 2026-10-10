@@ -41,7 +41,8 @@ $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 86400
-$MaxParallelImageChats = 1
+# Imágenes solo bajo solicitud manual en ChatGPT Images; no lanzar puentes IA desde Windows.
+$MaxParallelImageChats = 0
 $MaxImageJobProbesPerCycle = 3
 $DirectImageRefreshSeconds = 60
 $script:DirectImageIndexCache = $null
