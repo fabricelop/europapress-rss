@@ -353,7 +353,8 @@ def archival_image(url):
 
 def trend_repeat_allowed(card,history,now):
     # Never resend the same trend for a rank movement or a routine reexplain.
-    if card.get("novelty_verified"):return True
+    # Las novedades verificadas tampoco deben generar tres envíos del mismo evento.
+    if card.get("novelty_verified") and not history:return True
     top_at=date(card.get("entered_top_at"))
     if not card.get("is_in_top") or not top_at or now-top_at<timedelta(hours=48):
         return False
