@@ -5378,27 +5378,28 @@
     {
       "id": "639897ea9580",
       "name": "Piastri",
-      "rank": 2,
-      "status": "explained",
-      "requested_at": "2026-09-26T15:01:17+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-10T13:11:56+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "0bfff481cd4a",
       "requested_together": [
         "Piastri"
       ],
       "captured_with": [
-        "Colapinto",
-        "Piastri",
         "Norris",
-        "Alpine",
-        "#AzerbaijanGP",
-        "Safety Car",
-        "Gasly",
-        "Desinflar",
-        "Verstappen"
+        "Russell",
+        "McLaren",
+        "Piastri",
+        "Stroll",
+        "#diamundialdelasaludmental",
+        "Lobato",
+        "Lando",
+        "Marc",
+        "#FelizSábado"
       ],
       "auto_queued": true,
       "image_checkpoint": {
@@ -5409,16 +5410,15 @@
       },
       "ready_at": "2026-09-26T15:34:00+02:00",
       "delivery_confirmation": "prepared_web",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-09-26T13:37:53.343Z"
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "3d6977e14685",
       "name": "Norris",
-      "rank": 2,
-      "status": "explained",
-      "requested_at": "2026-10-04T13:11:28+02:00",
-      "revision": 1,
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-10T13:11:56+02:00",
+      "revision": 2,
       "reexplain": true,
       "with_image": true,
       "alternatives_target": 0,
@@ -5427,16 +5427,16 @@
         "Norris"
       ],
       "captured_with": [
-        "Alonso",
         "Norris",
-        "Hamilton",
-        "Verstappen",
-        "#BahrainGP",
         "Russell",
-        "Safety Car",
-        "Antonelli",
-        "Malasia",
-        "Sepang"
+        "McLaren",
+        "Piastri",
+        "Stroll",
+        "#diamundialdelasaludmental",
+        "Lobato",
+        "Lando",
+        "Marc",
+        "#FelizSábado"
       ],
       "auto_queued": true,
       "image_checkpoint": {
@@ -5448,7 +5448,6 @@
       "ready_at": "2026-09-26T15:38:00+02:00",
       "delivery_confirmation": "prepared_web",
       "editorial_engine": "chatgpt-automation-outbox",
-      "explained_at": "2026-10-04T13:26:20.679+02:00",
       "explanation": "TT#5 Russell es tendencia porque abandonó por avería el GP de Baréin en Sepang; Verstappen ganó, Alonso fue 8.º, McLaren terminó 6.º y 9.º, Ocon 15.º y Albon también abandonó.\n🌶️ El diluvio puso el GP en modo lavadora con monoplazas.",
       "closer_text": "🌶️ El diluvio puso el GP en modo lavadora con monoplazas.",
       "category": "Motor",
@@ -25797,10 +25796,10 @@
     {
       "id": "c8b59b0888a8",
       "name": "McLaren",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-10-04T11:17:40.029Z",
-      "rank": 12,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-10T13:11:56+02:00",
+      "rank": 3,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -25813,7 +25812,6 @@
         "McLaren"
       ],
       "auto_queued": false,
-      "explained_at": "2026-10-04T13:26:20.679+02:00",
       "explanation": "TT#5 Russell es tendencia porque abandonó por avería el GP de Baréin en Sepang; Verstappen ganó, Alonso fue 8.º, McLaren terminó 6.º y 9.º, Ocon 15.º y Albon también abandonó.\n🌶️ El diluvio puso el GP en modo lavadora con monoplazas.",
       "closer_text": "🌶️ El diluvio puso el GP en modo lavadora con monoplazas.",
       "category": "Motor",
@@ -25908,7 +25906,20 @@
       "ai_image_attempt": 0,
       "image_status": "none",
       "image_pending": false,
-      "duplicate_of": "f03247d1c40e"
+      "duplicate_of": "f03247d1c40e",
+      "reexplain": true,
+      "captured_with": [
+        "Norris",
+        "Russell",
+        "McLaren",
+        "Piastri",
+        "Stroll",
+        "#diamundialdelasaludmental",
+        "Lobato",
+        "Lando",
+        "Marc",
+        "#FelizSábado"
+      ]
     },
     {
       "id": "8cd0489c3cae",
@@ -40636,8 +40647,27 @@
       "image_status": "none",
       "image_pending": false,
       "rewrite_pending": false
+    },
+    {
+      "id": "55afd11eaeda",
+      "name": "Lando",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-10T13:11:56+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "bab9c1474cad",
+      "requested_together": [
+        "Lando"
+      ],
+      "captured_with": [
+        "Lando"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-10T12:25:00+02:00",
+  "updated_at": "2026-10-10T13:11:56+02:00",
   "count": 740
 }
