@@ -21,6 +21,8 @@ with tempfile.TemporaryDirectory() as tmp:
     assert get(m.ROOT,"ttittulares/decisions.json")["items"][0]["status"]=="deleted"
     assert get(m.ROOT,"ttittulares/prepared.json")["items"]==[]
     assert get(m.ROOT,"telegram/delete-message-queue.json")["items"][0]["message_id"]==45678
+    assert "ya realizada" in m.tti_command("deleted","abcdef123456","","","2026-10-10T16:10:00Z")
+    assert len(get(m.ROOT,"telegram/delete-message-queue.json")["items"])==1
     try:m.tti_command("published","abcdef123456","","","2026-10-10T16:10:00Z");raise AssertionError("Closed record modified")
     except ValueError:pass
 with tempfile.TemporaryDirectory() as tmp:
@@ -30,6 +32,7 @@ with tempfile.TemporaryDirectory() as tmp:
     m.trend_command("deleted","abc123xyz","","","2026-10-10T16:00:00Z")
     assert get(m.ROOT,"trends/mobile-decisions.json")["items"][0]["status"]=="deleted"
     assert get(m.ROOT,"trends/telegram-image-deliveries.json")["items"][0]["status"]=="delete_pending"
+    assert "ya realizada" in m.trend_command("deleted","abc123xyz","","","2026-10-10T16:10:00Z")
 with tempfile.TemporaryDirectory() as tmp:
     m.ROOT=Path(tmp)
     put(m.ROOT,"trends/requests.json",{"requests":[{"id":"abc123xyz","name":"Tendencia verificada","revision":1,"status":"explained"}]})
