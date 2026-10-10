@@ -1,0 +1,44 @@
+name: TT mobile Pages public smoke (no mutations)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tt-mobile-pages-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public GitHub Pages shell and both data backups
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,time,json
+          base='https://fabricelop.github.io/europapress-rss/'
+          checks=[
+              ('panel',base,'TT Actualidad'),
+              ('TTiTTulares',base+'data/ttittulares/prepared.json','items'),
+              ('TTendencias',base+'data/trends/recent.json','top10')]
+          ok=False
+          for retry in range(6):
+              result=[]
+              for name,url,marker in checks:
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'TT-GitHub-Pages-Mobile-Smoke/1.0'})
+                      with urllib.request.urlopen(req,timeout=15) as response:
+                          body=response.read(350000).decode('utf-8','replace')
+                          result.append({'name':name,'http':response.status,'ok':response.status==200 and marker in body,
+                                         'type':response.headers.get('Content-Type','')})
+                  except urllib.error.HTTPError as error:
+                      result.append({'name':name,'http':error.code,'ok':False})
+                  except Exception as error:
+                      result.append({'name':name,'http':0,'ok':False,'error':type(error).__name__})
+              print('TT_MOBILE_PAGES_PUBLIC',retry+1,json.dumps(result),flush=True)
+              ok=all(r['ok'] for r in result)
+              if ok:break
+              time.sleep(8)
+          if not ok:raise SystemExit('TT mobile Pages was not publicly accessible')
+          PY
