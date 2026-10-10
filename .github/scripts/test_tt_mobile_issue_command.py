@@ -37,4 +37,29 @@ with tempfile.TemporaryDirectory() as tmp:
     new=get(m.ROOT,"trends/requests.json")["requests"][0]
     assert new["revision"]==2 and new["status"]=="preparing"
     assert new["reexplain_instructions"]=="Cambiar remate"
+with tempfile.TemporaryDirectory() as tmp:
+    import os
+    m.ROOT=Path(tmp)
+    put(m.ROOT,"ttittulares/prepared.json",{"items":[{"event_id":"abcdef123456","title":"Caso de prueba cola"}]})
+    put(m.ROOT,"ttittulares/status.json",{"processing_items":[]})
+    put(m.ROOT,"telegram/ttittulares-deliveries.json",{"items":[{"event_id":"abcdef123456","status":"sent","telegram_message_id":45678}]})
+    put(m.ROOT,"telegram/tt-mobile-command-queue.json",{"version":1,"items":[{"update_id":123456,
+        "project":"ttittulares","action":"deleted","id":"abcdef123456","status":"pending"}]})
+    before=os.environ.get("GITHUB_ACTOR")
+    os.environ["GITHUB_ACTOR"]="fabricelop"
+    try:
+        assert m.process_queue()==1
+        assert m.process_queue()==0
+        items=get(m.ROOT,"telegram/tt-mobile-command-queue.json")["items"]
+        assert len(items)==1 and items[0]["status"]=="completed"
+        assert get(m.ROOT,"ttittulares/decisions.json")["items"][0]["status"]=="deleted"
+        assert get(m.ROOT,"telegram/delete-message-queue.json")["items"][0]["message_id"]==45678
+        try:
+            os.environ["GITHUB_ACTOR"]="somebody_else"
+            m.parse_dispatch({"inputs":{"project":"ttittulares","action":"deleted","id":"abcdef123456"}})
+            raise AssertionError("Unauthorized dispatch accepted")
+        except ValueError:pass
+    finally:
+        if before is None:os.environ.pop("GITHUB_ACTOR",None)
+        else:os.environ["GITHUB_ACTOR"]=before
 print("TT_MOBILE_ISSUE_FIXTURES_OK")
