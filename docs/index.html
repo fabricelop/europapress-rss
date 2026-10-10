@@ -42,9 +42,9 @@ const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.e
 const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
 const fields={
 tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json'],
-tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json']
+tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json']
 };
-const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries'};
+const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions'};
 async function fetchJson(path,force=false){
  let errors=[];
  const sources=force?[RAW+path,SITE_DATA+path]:[RAW+path,SITE_DATA+path];
@@ -86,21 +86,22 @@ function ttiRows(){
  if(state.tab==='creciendo')return (s.three_source_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
  return (s.source_status||[]).map((x,i)=>({...x,title:x.source,_kind:'fuente',_id:String(i),_status:x.ok?'ACTIVA':'INCIDENCIA'}))
 }
+function trendClosed(x){const rows=state.data.mobileDecisions?.items||[];const key=String(x.id||x.name||x.display_name||x.term_normalized||'').toLowerCase();return rows.some(z=>['published','deleted','dismissed'].includes(String(z.status||''))&&String(z.id||z.name||'').toLowerCase()===key)}
 function trendRows(){
  const recent=state.data.recent||{},top=recent.items||[],explained=[...(state.data.explained?.items||[]),...(state.data.manual?.items||[])],req=state.data.requests?.requests||[];
  const latest=new Map();
  for(const x of explained){const k=String(x.id||x.term_normalized||x.display_name||x.name||'').toLowerCase();if(!k)continue;const prev=latest.get(k);if(!prev||String(x.explained_at||'')>String(prev.explained_at||''))latest.set(k,x)}
  const byName=new Map();for(const v of latest.values())byName.set(String(v.display_name||v.name||v.term_normalized||'').toLowerCase(),v);
- if(state.tab==='top')return top.slice(0,10).map(x=>{const m=byName.get(String(x.name||'').toLowerCase())||req.find(z=>String(z.name||'').toLowerCase()===String(x.name||'').toLowerCase())||{};return {...m,title:x.name,rank:x.rank,trend:x,_kind:'tr',_id:String(m.id||x.name),_status:'TT#'+x.rank}});
- if(state.tab==='proximas')return (recent.upcoming||[]).map((x,i)=>({...x,title:x.name,_kind:'tr',_id:String(x.id||x.name||i),_status:'PRÓXIMA',source_count:x.social_source_count||x.news_source_count||0}));
- return [...latest.values()].sort((a,b)=>String(b.explained_at||'').localeCompare(String(a.explained_at||''))).slice(0,100).map((x,i)=>({...x,title:x.display_name||x.name||x.term_normalized,_kind:'tr',_id:String(x.id||x.term_normalized||i),_status:'EXPLICADA'}));
+ if(state.tab==='top')return top.slice(0,10).filter(x=>!trendClosed(x)).map(x=>{const m=byName.get(String(x.name||'').toLowerCase())||req.find(z=>String(z.name||'').toLowerCase()===String(x.name||'').toLowerCase())||{};return {...m,title:x.name,rank:x.rank,trend:x,_kind:'tr',_id:String(m.id||x.name),_status:'TT#'+x.rank}});
+ if(state.tab==='proximas')return (recent.upcoming||[]).filter(x=>!trendClosed(x)).map((x,i)=>({...x,title:x.name,_kind:'tr',_id:String(x.id||x.name||i),_status:'PRÓXIMA',source_count:x.social_source_count||x.news_source_count||0}));
+ return [...latest.values()].filter(x=>!trendClosed(x)).sort((a,b)=>String(b.explained_at||'').localeCompare(String(a.explained_at||''))).slice(0,100).map((x,i)=>({...x,title:x.display_name||x.name||x.term_normalized,_kind:'tr',_id:String(x.id||x.term_normalized||i),_status:'EXPLICADA'}));
 }
 function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q)))}
 function itemData(x){
  const tweet=String(x.tweet?.text||'').trim(),expl=String(x.explanation||x.factual_summary||x.detail||'').trim();
  let closer=String(x.tweet?.remate||x.closer_text||'').trim();
  if(!closer){const m=(tweet||expl).split('\n').map(s=>s.trim()).filter(s=>s.startsWith('🌶'));closer=m.at(-1)||''}
- const editorial=tweet||expl;
+ const editorial=(tweet||expl)+(closer&&!String(tweet||expl).includes(closer)?'\n'+closer:'');
  return {tweet,expl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
 }
 function manualPrompt(x){
@@ -147,6 +148,8 @@ function rowCard(x,i){
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   if(showControls){link('✓ Marcar publicado',issueUrl('ttittulares',x._id,'published',d.title));link('↻ Reelaborar',issueUrl('ttittulares',x._id,'rework',d.title));link('🗑 Borrar',issueUrl('ttittulares',x._id,'deleted',d.title))}
+  else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO'].includes(x._status)){link('Enviar a elaborar',issueUrl('ttittulares',x._id,'prepare',d.title));link('🗑 Borrar',issueUrl('ttittulares',x._id,'deleted',d.title))}
+  else if(x._kind==='tr'){link('✓ Marcar publicada',issueUrl('ttendencias',x._id,'published',d.title));link('↻ Reexplicar',issueUrl('ttendencias',x._id,'rework',d.title));link('🗑 Borrar',issueUrl('ttendencias',x._id,'deleted',d.title))}
  }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
  return out
 }
