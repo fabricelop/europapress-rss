@@ -24594,7 +24594,7 @@
       "id": "ea998e8ec0b7",
       "name": "Marc Márquez",
       "rank": 5,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-10T10:31:56+02:00",
       "revision": 1,
       "reexplain": true,
@@ -24617,37 +24617,68 @@
         "#rcde"
       ],
       "auto_queued": true,
-      "explanation": "TT#5 Marc Márquez es tendencia porque ganó la carrera de MotoGP en Motegi, completó el doblete tras vencer también el sprint y se quedó a dos puntos de Jorge Martín en el Mundial.\n🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
-      "closer_text": "🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
-      "rank_at_explanation": 5,
+      "explanation": "TT#4 Marc Márquez es tendencia porque ganó el sprint del GP de Indonesia y arrebató a Jorge Martín el liderato de MotoGP: suma 343 puntos, cuatro más que Martín.\n🌶️ Mandalika convirtió el sprint en una mudanza de liderato.",
+      "closer_text": "🌶️ Mandalika convirtió el sprint en una mudanza de liderato.",
+      "rank_at_explanation": 4,
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "El Nacional · 4/10/2026",
-          "url": "https://www.elnacional.cat/es/deportes/marc-marquez-pletorico-vuelve-superar-jorge-martin-motegi-sacude-mundial-motogp_1704817_102.html"
+          "source": "Reuters · GP de Indonesia · 10/10/2026",
+          "url": "https://www.reuters.com/sports/marquez-takes-championship-lead-with-indonesian-gp-sprint-win-2026-10-10/"
+        },
+        {
+          "source": "AS · sprint GP de Indonesia · 10/10/2026",
+          "url": "https://as.com/motor/motociclismo/marquez-aprovecha-la-ruina-de-aprilia-f202610-n/"
         }
       ],
-      "news_disposition": "candidate",
-      "news_note": "Victoria de MotoGP en Motegi y situación del Mundial verificadas tras la carrera.",
-      "group_id": "grp-marc-marquez-motegi-20261004",
-      "explanation_group_id": "grp-marc-marquez-motegi-20261004",
+      "news_disposition": "ignored",
+      "news_note": "Marc Márquez y Jorge Martín comparten el mismo detonante: el sprint del GP de Indonesia cambió el liderato del Mundial a favor de Márquez.",
+      "group_id": "grp-marquez-martin-indonesia-sprint-20261010",
+      "explanation_group_id": "grp-marquez-martin-indonesia-sprint-20261010",
       "group_leader_id": "ea998e8ec0b7",
       "trend_names": [
-        "Marc Márquez"
+        "Marc Márquez",
+        "Martín"
       ],
       "grouped_member_revisions": [
         {
           "id": "ea998e8ec0b7",
           "name": "Marc Márquez",
+          "revision": 1
+        },
+        {
+          "id": "6311e2faf08c",
+          "name": "Martín",
           "revision": 0
         }
       ],
       "disable_ai_image": false,
-      "image_strategy": null,
-      "ai_image_status": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
       "ai_image_attempt": 0,
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "explained_at": "2026-10-10T10:49:30+02:00",
+      "last_attempt_at": "2026-10-10T10:49:30+02:00",
+      "category": "Deportes",
+      "editorial_engine": "chat-direct",
+      "group_title": "Marc Márquez arrebata a Jorge Martín el liderato en Indonesia",
+      "trend_context": [
+        {
+          "name": "Marc Márquez",
+          "rank": 4
+        },
+        {
+          "name": "Martín",
+          "rank": 6
+        }
+      ],
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "rewrite_pending": false,
+      "material_novelty_verified": true,
+      "prior_individual_explanation": "TT#5 Marc Márquez es tendencia porque ganó la carrera de MotoGP en Motegi, completó el doblete tras vencer también el sprint y se quedó a dos puntos de Jorge Martín en el Mundial.\n🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
+      "prior_individual_closer_text": "🌶️ Motegi le ha dejado el campeonato a distancia de rebufo."
     },
     {
       "id": "1a5d85302711",
@@ -40213,7 +40244,7 @@
       "id": "6311e2faf08c",
       "name": "Martín",
       "rank": 7,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-10T10:31:56+02:00",
       "revision": 0,
       "reexplain": false,
@@ -40227,9 +40258,68 @@
         "día de partido",
         "Martín"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-10-10T10:49:30+02:00",
+      "last_attempt_at": "2026-10-10T10:49:30+02:00",
+      "explanation": "TT#4 Marc Márquez es tendencia porque ganó el sprint del GP de Indonesia y arrebató a Jorge Martín el liderato de MotoGP: suma 343 puntos, cuatro más que Martín.\n🌶️ Mandalika convirtió el sprint en una mudanza de liderato.",
+      "closer_text": "🌶️ Mandalika convirtió el sprint en una mudanza de liderato.",
+      "category": "Deportes",
+      "rank_at_explanation": 6,
+      "source": "editorial_chat_direct_group_link",
+      "editorial_engine": "chat-direct",
+      "group_id": "grp-marquez-martin-indonesia-sprint-20261010",
+      "explanation_group_id": "grp-marquez-martin-indonesia-sprint-20261010",
+      "group_title": "Marc Márquez arrebata a Jorge Martín el liderato en Indonesia",
+      "group_leader_id": "ea998e8ec0b7",
+      "trend_names": [
+        "Marc Márquez",
+        "Martín"
+      ],
+      "trend_context": [
+        {
+          "name": "Marc Márquez",
+          "rank": 4
+        },
+        {
+          "name": "Martín",
+          "rank": 6
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "ea998e8ec0b7",
+          "name": "Marc Márquez",
+          "revision": 1
+        },
+        {
+          "id": "6311e2faf08c",
+          "name": "Martín",
+          "revision": 0
+        }
+      ],
+      "verification_sources": [
+        {
+          "source": "Reuters · GP de Indonesia · 10/10/2026",
+          "url": "https://www.reuters.com/sports/marquez-takes-championship-lead-with-indonesian-gp-sprint-win-2026-10-10/"
+        },
+        {
+          "source": "AS · sprint GP de Indonesia · 10/10/2026",
+          "url": "https://as.com/motor/motociclismo/marquez-aprovecha-la-ruina-de-aprilia-f202610-n/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Marc Márquez y Jorge Martín comparten el mismo detonante: el sprint del GP de Indonesia cambió el liderato del Mundial a favor de Márquez.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_status": "none",
+      "image_choice": null,
+      "image_pending": false,
+      "rewrite_pending": false,
+      "material_novelty_verified": true
     }
   ],
-  "updated_at": "2026-10-10T10:47:00+02:00",
+  "updated_at": "2026-10-10T10:49:30+02:00",
   "count": 740
 }
