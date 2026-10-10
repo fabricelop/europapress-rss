@@ -1,18 +1,17 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T14:51:34+02:00",
-  "last_completed_at": "2026-10-10T14:51:34+02:00",
-  "updated_at": "2026-10-10T14:51:34+02:00",
+  "last_started_at": "2026-10-10T14:45:00+02:00",
+  "last_completed_at": "2026-10-10T14:48:30+02:00",
+  "updated_at": "2026-10-10T14:48:30+02:00",
   "status": "success",
   "processed_ids": [
+    "fb2f758f05b5",
     "070d1f241927"
   ],
-  "remaining_ids": [
-    "070d1f241927"
-  ],
+  "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -24,8 +23,8 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010141500-chatgpt",
-    "last_triggered_at": "2026-10-10T14:15:00+02:00",
+    "last_trigger_run_id": "tr-20261010144500-chatgpt",
+    "last_triggered_at": "2026-10-10T14:45:00+02:00",
     "observed_at": "2026-10-10T14:17:00+02:00",
     "workflow_run_id": 38051384164
   },
@@ -33,45 +32,48 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010141500-chatgpt",
+    "run_id": "tr-20261010144500-chatgpt",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-10T14:15:00+02:00",
-    "updated_at": "2026-10-10T14:18:00+02:00",
-    "finished_at": "2026-10-10T14:18:00+02:00",
+    "started_at": "2026-10-10T14:45:00+02:00",
+    "updated_at": "2026-10-10T14:48:30+02:00",
+    "finished_at": "2026-10-10T14:48:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 2,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 26,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "pending_cards_ai_not_valid": 5,
-      "remates_repaired": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "remates_omitted": 0
     },
-    "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas y reparación visual activa para las 5 tarjetas sin IA válida.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada completada · Colapinto explicado y verificado; «Vienes» queda problematic al no poder verificarse un detonante tras dos búsquedas. Cola editorial final 0.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "reason": "«Vienes» aparece como señal del radar, pero tras dos búsquedas actuales distintas no se identifica con suficiente fiabilidad un acontecimiento, persona, programa o etiqueta concreta que explique la tendencia en España; las coincidencias web son usos genéricos de la palabra. No se inventa una causa."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -81,55 +83,205 @@
     },
     "remate_selections": [
       {
-        "trend_id": "227d4d40ff00",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "El texto factual ocupa 263 caracteres; no cabe un remate significativo manteniendo el límite estricto de 279."
+        "trend_id": "fb2f758f05b5",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.6,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 8.4,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.9,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.4,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T14:15:00+02:00",
+        "at": "2026-10-10T14:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola activa 0; revisando 26 Pendientes recientes"
+        "message": "Preparando pasada editorial · 2 revisiones activas; releyendo estado autoritativo."
       },
       {
-        "at": "2026-10-10T14:16:00+02:00",
+        "at": "2026-10-10T14:45:20+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": "Saneamiento de Pendientes",
-        "message": "Revisando Pendientes · 26 tarjetas; 1 sin remate y 5 con IA aún no válida"
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Releyendo estado autoritativo de Colapinto."
       },
       {
-        "at": "2026-10-10T14:17:00+02:00",
+        "at": "2026-10-10T14:45:30+02:00",
+        "phase": "investigating",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-10T14:45:40+02:00",
+        "phase": "investigating",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Contrastando fuente 1/2 · Fórmula 1."
+      },
+      {
+        "at": "2026-10-10T14:45:50+02:00",
+        "phase": "investigating",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Contrastando fuente 2/2 · cobertura de la sprint."
+      },
+      {
+        "at": "2026-10-10T14:45:55+02:00",
+        "phase": "investigating",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Hecho esencial verificado: abandono por avería en la sprint de Singapur."
+      },
+      {
+        "at": "2026-10-10T14:46:00+02:00",
+        "phase": "drafting",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Redactando explicación factual de Colapinto y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-10T14:46:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Generando candidatos de remate y evaluándolos con ratings."
+      },
+      {
+        "at": "2026-10-10T14:46:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Remate seleccionado para Colapinto; preparando persistencia."
+      },
+      {
+        "at": "2026-10-10T14:46:40+02:00",
+        "phase": "persisting",
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Guardando ficha Explicada y actualizando requests."
+      },
+      {
+        "at": "2026-10-10T14:47:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": "Saneamiento de Pendientes",
-        "message": "Reparación visual solicitada y workflow específico confirmado en ejecución"
+        "trend_id": "fb2f758f05b5",
+        "title": "Colapinto",
+        "message": "Tendencia cerrada y verificada; revisión retirada de la cola."
       },
       {
-        "at": "2026-10-10T14:17:30+02:00",
+        "at": "2026-10-10T14:47:15+02:00",
+        "phase": "verifying",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Releyendo estado autoritativo de Vienes."
+      },
+      {
+        "at": "2026-10-10T14:47:20+02:00",
+        "phase": "investigating",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-10T14:47:25+02:00",
+        "phase": "investigating",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Contrastando dos búsquedas distintas y señales del radar."
+      },
+      {
+        "at": "2026-10-10T14:47:30+02:00",
+        "phase": "investigating",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Dos búsquedas distintas sin detonante verificable para «Vienes»; preparando estado problematic."
+      },
+      {
+        "at": "2026-10-10T14:47:50+02:00",
+        "phase": "persisting",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Guardando resultado problematic y actualizando requests."
+      },
+      {
+        "at": "2026-10-10T14:48:00+02:00",
+        "phase": "persisting",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Retirando revisión activa de la cola tras registrar el problema."
+      },
+      {
+        "at": "2026-10-10T14:48:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activas 0 y reexplicaciones pendientes 0"
+        "message": "Releyendo main · cola 0, requests activas 0 y reexplicaciones pendientes 0."
       },
       {
-        "at": "2026-10-10T14:18:00+02:00",
+        "at": "2026-10-10T14:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola editorial 0; saneamiento visual continúa de forma independiente"
+        "message": "Pasada completada · Colapinto explicado; Vienes queda problematic; cola final 0."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "remaining_problematic_ids": []
-  },
-  "error": null
+    "remaining_problematic_ids": [
+      "070d1f241927"
+    ]
+  }
 }
