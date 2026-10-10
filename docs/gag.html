@@ -77,13 +77,16 @@ async function start(){
   const request=docs[2],manual=docs[0],explained=docs[1];
   const sameRequest=rows(request).filter(matches).sort(sortByPrecision)[0]||{};
   const related=[...rows(manual),...rows(explained)].filter(z=>matches(z)||safe(z.id)&&safe(z.id)===safe(sameRequest.id)).sort(sortByPrecision);
-  const completed=related.find(z=>safe(z.explanation))||{};
-  const selected=safe(completed.explanation)?completed:x;
-  let text=safe(selected.explanation||sameRequest.explanation||selected.x_text);
-  const punch=safe(selected.closer_text||sameRequest.closer_text||closerFrom(text));
+  // Do not use a stale explanation from an older revision.
+  const current=related.filter(z=>revision===0||Number(z.revision||0)===revision);
+  const completed=current.find(z=>safe(z.explanation))||{};
+  const requestCurrent=revision===0||Number(sameRequest.revision||0)===revision?sameRequest:{};
+  const selected=safe(completed.explanation)?completed:requestCurrent;
+  const text=safe(selected.explanation||selected.x_text);
+  const punch=safe(selected.closer_text||requestCurrent.closer_text||closerFrom(text));
   const title=selected.display_name||sameRequest.name||selected.name||name||id;
   const rank=Number(sameRequest.rank||selected.rank||0);
-  display(title,text,punch,selected.factual_summary||sameRequest.factual_summary,rank);
+  display(title,text,punch,selected.factual_summary||requestCurrent.factual_summary,rank);
  }
 }
 $('copy').onclick=async()=>{
