@@ -43620,7 +43620,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -43685,9 +43684,13 @@
       "ai_image_attempt": 0,
       "image_status": "none",
       "image_pending": false,
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_choice": "none"
     }
   ],
-  "updated_at": "2026-10-10T14:20:23.908189Z",
+  "updated_at": "2026-10-10T14:49:10.828716Z",
   "count": 715
 }
