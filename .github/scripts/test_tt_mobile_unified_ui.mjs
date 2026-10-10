@@ -29,6 +29,9 @@ st.data.tremending={items:[{id:'tremending-abc',title:'Público · Tremending',t
 st.tab='tremending';
 assert.equal(tt.ttiRows().length,1,'Tremending must be visible inside the unified app');
 assert.equal(tt.ttiRows()[0]._kind,'tremending','Tremending must not be treated as a ready editorial item');
+assert(html.includes("command('🗑 Borrar','deleted');"),'Tremending must provide a real delete action');
+st.data.tremending.items[0].status='deleted';
+assert.equal(tt.ttiRows().length,0,'Deleted Tremending must not reappear in the mobile list');
 
 st.app='tr';st.tab='top';
 st.data={recent:{items:Array.from({length:30},(_,i)=>({rank:i+1,name:'Tendencia '+(i+1)}))},
