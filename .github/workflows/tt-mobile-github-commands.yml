@@ -158,8 +158,11 @@ jobs:
                   result=api('sendMessage',{'chat_id':chat,'text':message})
                   sent=int((result.get('result') or {}).get('message_id') or 0)
                   print('TELEGRAM_MOBILE_ACK_OK',bool(result.get('ok')))
-                  if ok and sent and any(mid>0 for mid in mids):
-                      cleanup_ids.update([sent,*[mid for mid in mids if mid>0]])
+                  if ok and sent:
+                      # Always remove the confirmation. Older queued commands lack
+                      # cleanup metadata, but the bot's own ACK can still be erased.
+                      cleanup_ids.add(sent)
+                      cleanup_ids.update(mid for mid in mids if mid>0)
               except Exception as error:
                   print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
           if cleanup_ids:
