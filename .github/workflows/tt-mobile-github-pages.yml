@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/**'
       - '.github/scripts/test_tt_pages_prompts.mjs'
+      - '.github/scripts/test_tt_mobile_unified_ui.mjs'
       - '.github/workflows/tt-mobile-github-pages.yml'
   schedule:
     - cron: '17 */6 * * *'
