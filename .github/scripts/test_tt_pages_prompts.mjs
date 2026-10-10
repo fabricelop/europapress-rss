@@ -31,12 +31,13 @@ async function scenario(query,fixtures){
 const newsBody='La noticia contiene hechos verificados completos y una frase irónica.\n\n🌶️ Remate de noticia exacto.';
 const news=await scenario('?app=ttittulares&id=abcdef123456&rev=2',{
   'ttittulares/prepared.json':{items:[{event_id:'abcdef123456',revision:2,title:'Un gran titular',
-    factual_summary:'Contexto factual complementario sin inventar.',tweet:{text:newsBody,remate:'🌶️ Remate de noticia exacto.'}}]},
+    factual_summary:'Contexto factual complementario sin inventar.',explanation:'Explicación editorial completa y verificada.',tweet:{text:newsBody,remate:'🌶️ Remate de noticia exacto.'}}]},
   'telegram/editorial-processing.json':{items:[]}
 });
 assert(news.includes(newsBody),'News text was shortened');
 assert(news.includes('🌶️ Remate de noticia exacto.'),'News remate missing');
 assert(news.includes('Contexto factual complementario sin inventar.'),'News factual summary missing');
+assert(news.includes('Explicación editorial completa y verificada.'),'News editorial explanation omitted');
 const trendText='TT#4 Bukaneros es tendencia porque se suspendió el partido del Rayo por protestas y aviones de papel.';
 const trends=await scenario('?app=ttendencias&id=trends123&rev=3&name=Bukaneros',{
   'trends/telegram-manual-explained.json':{items:[{id:'trends123',revision:3,name:'Bukaneros',
