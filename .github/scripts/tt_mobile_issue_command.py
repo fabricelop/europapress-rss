@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Comandos TT enviados desde GitHub Issue Forms, autorizados por identidad GitHub.
+"""Comandos TT enviados desde Telegram privado o GitHub Issues, validados y autorizados.
 Sin Cloudflare, Vercel, tokens embebidos en Pages ni generación automática de imágenes.
 Solo lo ejecuta el workflow GitHub con actor == fabricelop.
 """
@@ -55,9 +55,26 @@ def parse_issue(event):
         raise ValueError("Proyecto desconocido")
     if action not in {"published", "deleted", "rework", "prepare"}:
         raise ValueError("Acción no admitida")
-    if not re.fullmatch(r"[A-Za-z0-9_#.\-\s]{1,120}", element_id):
+    if not re.fullmatch(r"[\w#.\- ]{1,120}", element_id):
         raise ValueError("Identificador inválido")
     return project, action, element_id, context, instruction
+
+
+def parse_dispatch(event):
+    """Only repository owner may dispatch this workflow via GitHub OAuth PAT."""
+    if os.environ.get("GITHUB_ACTOR") != OWNER:
+        raise ValueError("Workflow dispatch no autorizado")
+    inp = event.get("inputs") or {}
+    project = str(inp.get("project") or "")
+    action = str(inp.get("action") or "")
+    element_id = str(inp.get("id") or "").strip()
+    if project not in {"ttittulares", "ttendencias"}:
+        raise ValueError("Proyecto no autorizado")
+    if action not in {"published", "deleted", "rework", "prepare"}:
+        raise ValueError("Acción no autorizada")
+    if not re.fullmatch(r"[\w#.\- ]{1,120}", element_id):
+        raise ValueError("ID no admitido")
+    return project, action, element_id, str(inp.get("context") or "")[:300], str(inp.get("instruction") or "")[:1000]
 
 
 def timestamp():
@@ -210,10 +227,10 @@ def main():
     if len(sys.argv) < 2:
         raise SystemExit("Use: python tt_mobile_issue_command.py <event.json>")
     event = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-    project, action, element_id, context, instruction = parse_issue(event)
+    project, action, element_id, context, instruction = (parse_dispatch(event) if "inputs" in event else parse_issue(event))
     now = timestamp()
     result = (tti_command if project == "ttittulares" else trend_command)(action, element_id, context, instruction, now)
-    print("TT_MOBILE_ISSUE_OK " + result)
+    print("TT_MOBILE_COMMAND_OK " + result)
     Path("/tmp/tt-mobile-issue-result.txt").write_text(result + "\n", encoding="utf-8")
 
 
