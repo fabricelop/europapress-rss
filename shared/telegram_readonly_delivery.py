@@ -354,21 +354,38 @@ def archival_image(url):
 
 def trend_title_key(value):
     normalized=unicodedata.normalize("NFKD",str(value or "").casefold())
-    return re.sub(r"[^\\w#]+","", "".join(
+    return re.sub(r"[^\w#]+","", "".join(
         char for char in normalized if not unicodedata.combining(char)
     ))
 
+def recently_delivered_same_title(card,history,now,days=7):
+    """Avoid duplicate Telegram cards when a new radar ID represents the same story.
+
+    A deleted/published card still counts: removing one must not resurface it.
+    Revisions under the same ID may edit the original message, not resend it.
+    """
+    title=trend_title_key(card.get("title"))
+    if not title:return False
+    eid=str(card.get("id") or "")
+    for row in history:
+        if str(row.get("event_id") or "")==eid:continue
+        if trend_title_key(row.get("title") or row.get("name"))!=title:continue
+        when=date(row.get("delivered_at"))
+        if when is not None and timedelta(0)<=now-when<timedelta(days=days) and int(row.get("telegram_message_id") or 0)>0:
+            return True
+    return False
+
 def trend_repeat_allowed(card,history,now):
-    # Never resend the same trend for a rank movement or a routine reexplain.
-    # Las novedades verificadas tampoco deben generar tres envíos del mismo evento.
-    if card.get("novelty_verified") and not history:return True
+    # Never auto-repost a routine revision. Only a verified genuinely new
+    # development after seven days may justify a new Telegram card.
+    if not card.get("novelty_verified"):return False
     top_at=date(card.get("entered_top_at"))
-    if not card.get("is_in_top") or not top_at or now-top_at<timedelta(hours=48):
+    if not card.get("is_in_top") or not top_at or now-top_at<timedelta(days=7):
         return False
     dates=[date(x.get("delivered_at")) for x in history
            if str(x.get("status") or "").lower()=="sent"]
     latest=max((dt for dt in dates if dt is not None),default=None)
-    return bool(latest and now-latest>=timedelta(hours=48))
+    return bool(latest and now-latest>=timedelta(days=7))
 
 def process(project,now,token,chat):
     path=("telegram/ttittulares-deliveries.json" if project=="ttittulares"
@@ -380,20 +397,11 @@ def process(project,now,token,chat):
     for card in cards:
         eid=card["id"];rev=card["rev"]
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
-        if project=="ttendencias":
-            # El radar puede asignar IDs diferentes al mismo nombre.
-            # No enviar otra tarjeta de la misma tendencia durante 48 horas.
-            title=trend_title_key(card.get("title"))
-            repeated=any(
-                str(row.get("event_id") or "")!=eid and
-                trend_title_key(row.get("title") or row.get("name"))==title and
-                (date(row.get("delivered_at")) is not None) and
-                timedelta(0)<=now-date(row.get("delivered_at"))<timedelta(hours=48)
-                for row in entries
-            )
-            if title and repeated:
-                skipped+=1
-                continue
+        # The radar may assign distinct IDs to the same news/trend. Prevent
+        # a second card for seven days, including previously deleted ones.
+        if recently_delivered_same_title(card,entries,now):
+            skipped+=1
+            continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
         # Deleting any of the duplicate Telegram cards closes the whole trend.
@@ -539,11 +547,26 @@ def selftest():
     assert [b[0]["text"] for b in pending]==["🔎 Buscar en X","🗑️ Borrar"]
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
-    assert trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
-        [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
+    assert trend_repeat_allowed({"novelty_verified":True,"is_in_top":True,
+        "entered_top_at":"2026-10-01T00:00:00Z"},
+        [{"status":"sent","delivered_at":"2026-10-01T00:00:00Z"}],now)
     assert not trend_repeat_allowed({"is_in_top":False,"entered_top_at":"2026-10-07T00:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
-    assert trend_title_key("Diomandé")==trend_title_key("Diomande")
+    assert trend_title_key("Diomandé")=="diomande"  # Nonempty: catches escaped-regex bug.
+    assert trend_title_key("Diomande")=="diomande"
+    assert trend_title_key("Dónde ver")=="dondever"
+    assert recently_delivered_same_title(
+        {"id":"new-id","title":"Diomandé"},
+        [{"event_id":"old-id","title":"Diomande","status":"deleted",
+          "telegram_message_id":644,"delivered_at":"2026-10-09T15:00:00Z"}],now)
+    assert not recently_delivered_same_title(
+        {"id":"same-id","title":"Diomande"},
+        [{"event_id":"same-id","title":"Diomande","status":"sent",
+          "telegram_message_id":644,"delivered_at":"2026-10-09T15:00:00Z"}],now)
+    assert recently_delivered_same_title(
+        {"id":"news2","title":"Dónde ver el Real Madrid - Villarreal"},
+        [{"event_id":"news1","title":"Donde ver el Real Madrid Villarreal","status":"sent",
+          "telegram_message_id":3323,"delivered_at":"2026-10-09T15:00:00Z"}],now)
     assert not trend_repeat_allowed(
         {"novelty_verified":True,"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T15:00:00Z"}],now)
