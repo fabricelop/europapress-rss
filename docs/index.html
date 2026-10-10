@@ -11,21 +11,30 @@ header{padding:env(safe-area-inset-top) 14px 6px;max-width:1100px;margin:auto}.e
 main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(--surface);border:1px solid var(--stroke);border-radius:15px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.search{flex:1;min-width:145px;background:#0d1528;color:var(--ink);border:1px solid #3b4863;border-radius:10px;padding:10px 12px;font-size:16px}.refresh{background:#285b69}.status{font-size:12px;color:var(--sub);margin:8px 2px 15px}.status strong{color:var(--aqua)}.chips{display:flex;gap:7px;overflow:auto;padding:2px 0 11px;scrollbar-width:thin}.chips button{white-space:nowrap;padding:9px 13px;font-size:13px}.chips button[aria-pressed=true]{background:#2b4c5f;color:#d3fff8;border-color:var(--aqua);font-weight:750}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:14px}.stats button{text-align:left;color:var(--ink);cursor:pointer}.stat[aria-pressed=true]{border-color:var(--aqua);background:#234359}.source-counts{display:flex;gap:13px;flex-wrap:wrap;color:var(--sub);margin:-4px 0 14px;font-size:13px}.source-counts b{color:var(--ink)}.photo-sheet[hidden]{display:none}.photo-sheet{position:fixed;inset:0;background:#050912ed;z-index:100;display:flex;align-items:center;justify-content:center;padding:25px 12px;box-sizing:border-box}.photo-box{width:min(570px,100%);max-height:95vh;overflow:auto;text-align:center;background:var(--surface);border:1px solid var(--stroke);border-radius:17px;padding:15px}.photo-box img{display:block;max-width:100%;max-height:65vh;object-fit:contain;margin:10px auto;-webkit-touch-callout:default;user-select:auto}.photo-box p{font-size:13px;color:var(--sub)}.photo-box a{display:inline-block;margin:6px;color:var(--aqua)}.stat{background:var(--surface);border:1px solid var(--stroke);border-radius:13px;padding:10px 12px}.stat b{font-size:22px;display:block}.stat small{color:var(--sub);font-size:11px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px}.card{background:var(--surface);border:1px solid var(--stroke);border-radius:17px;overflow:hidden;min-width:0}.card .pic{width:100%;height:173px;object-fit:cover;background:#1d2945}.card-body{padding:13px 14px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.meta span{font-size:11px;padding:2px 7px;border:1px solid #435472;border-radius:99px;color:#bfd4f7}.meta .hot{border-color:#bb8b40;color:var(--orange)}h2{font-size:16px;line-height:1.32;margin:5px 0 9px}.fact{color:#d5dce9;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 8px;font-size:13px}.closer{font-weight:750;color:#fcd19a;white-space:pre-wrap;font-size:13px;margin:9px 0}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:10px}.action{padding:10px 8px;font-size:12px;font-weight:650;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center}.action.primary{background:#245a69;border-color:#4abcb5;color:#eafffa}.action.secondary{background:#283658}.action:disabled{opacity:.5}.empty{padding:32px 20px;text-align:center;color:var(--sub);background:var(--surface);border:1px dashed var(--stroke);border-radius:14px}.notice{border:1px solid #6c5d35;border-radius:12px;background:#29261b;color:#e0d1ab;padding:11px 12px;margin-bottom:11px;font-size:12px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#e0fff7;color:#0b2330;border-radius:12px;padding:12px 17px;font-weight:800;max-width:calc(100% - 30px);z-index:20;box-shadow:0 15px 45px #0008;display:none}.toast.show{display:block}.footer{color:#91a5bf;font-size:12px;line-height:1.6;margin-top:28px}a{color:#aac8ff}details{margin-top:16px;color:var(--sub);font-size:12px}details summary{cursor:pointer}
 @media(max-width:680px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:minmax(0,1fr)}.card .pic{height:215px}.actions{grid-template-columns:1fr 1fr}header p{font-size:13px}}
+
+/* Vista editorial compacta inspirada en los paneles originales, conservando una sola app. */
+.overview{padding:10px 2px 12px}.overview h2{font-size:22px;letter-spacing:-.35px;margin:0 0 3px}.radar-times{display:flex;gap:13px;flex-wrap:wrap;font-size:12px;color:var(--sub)}.radar-times strong{color:var(--aqua)}
+.stats.five{grid-template-columns:repeat(5,minmax(0,1fr))}.stat small{display:block;line-height:1.3}.stat b{line-height:1.1}
+.card.tremending{border-left:4px solid #d95f8d}.tremending-tweets{margin-top:10px;color:var(--sub)}.tremending-tweets summary{cursor:pointer;color:#ffbed8;font-weight:700}.tremending-tweets a{display:inline-block;margin:4px 8px 4px 0;padding:7px;border:1px solid var(--stroke);border-radius:9px}
+.cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
+.upcoming{margin-top:28px;padding-top:16px;border-top:1px solid var(--stroke)}.upcoming[hidden]{display:none}.upcoming h2{font-size:20px;margin:0 0 4px}.upcoming .hint{color:var(--sub);font-size:12px;margin:0 0 11px}.upcoming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:9px}.signal-card{background:var(--surface);border:1px solid var(--stroke);border-radius:13px;padding:10px 12px}.signal-card b{display:block}.signal-card small{color:var(--sub)}.signal-card a{font-size:12px}
+@media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
 </style></head>
 <body>
-<header><div class="eyebrow">Edición web · sin Cloudflare · sin Vercel</div><h1>TT Actualidad</h1><p>TTiTTulares y TTendencias en el móvil. Imágenes GAG solo por solicitud manual en ChatGPT Images.</p></header>
+<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Una sola aplicación · GAG IA manual</p></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
 <button id="tab-tti" role="tab" aria-selected="true" type="button">TT<span>i</span>TTulares</button>
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
 </div>
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
-<div class="notice">«Borrar» y «Reelaborar» utilizan <strong>tu bot privado de Telegram</strong>, sin abrir GitHub. Confirma con «Iniciar» cuando sea necesario; el resultado se refleja al actualizar. Los avisos auxiliares de borrado se limpian automáticamente tras la confirmación.</div>
+<details><summary>¿Por qué Borrar abre Telegram?</summary><p>GitHub Pages no puede autenticar por sí sola una orden privada. Telegram actúa como intermediario seguro, sin almacenar claves en el iPhone. El borrado de mensajes auxiliares se intenta tras completar la orden, pero depende de que se registren sus identificadores y de los límites de Telegram.</p></details>
 <div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
+<section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
-<div id="cards" class="cards"></div>
+<div id="cards" class="cards"></div><section id="upcoming" class="upcoming" hidden><h2>Próximas tendencias</h2><p class="hint">Señales al alza que aún no han entrado en el Top 30</p><div id="upcoming-grid" class="upcoming-grid"></div></section>
 <div class="footer">Origen: GitHub Pages y datos públicos de GitHub. Las acciones se confirman en Telegram y se ejecutan de forma segura en GitHub Actions, sin abrir formularios ni exponer credenciales en la web. Imágenes GAG solo mediante copia manual en ChatGPT Images.</div>
 <details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se reciben por el bot privado de Telegram y se ejecutan en GitHub Actions, sin guardar tokens en el navegador.</p></details>
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
@@ -42,10 +51,10 @@ const avatar=(title)=>title||'Sin título';
 const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
 const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
 const fields={
-tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json'],
+tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json'],
 tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json']
 };
-const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions'};
+const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions'};
 async function fetchJson(path,force=false){
  let errors=[];
  const sources=force?[RAW+path,SITE_DATA+path]:[RAW+path,SITE_DATA+path];
@@ -85,6 +94,7 @@ function ttiRows(){
  }
  if(state.tab==='problematicas')return (s.problematic_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
  if(state.tab==='creciendo')return (s.three_source_items||[]).filter(x=>!isClosed(d.get(String(x.event_id)))).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
+ if(state.tab==='tremending')return (state.data.tremending?.items||[]).filter(x=>!['deleted','dismissed'].includes(String(x.status||'').toLowerCase())).map(x=>({...x,_kind:'tremending',_id:String(x.id),_status:'TREMENDING'}));
  return (s.source_status||[]).map((x,i)=>({...x,title:x.source,_kind:'fuente',_id:String(i),_status:x.ok?'ACTIVA':'INCIDENCIA'}))
 }
 function trendKey(x){return String(x.event_id||x.id||x.term_normalized||x.display_name||x.name||x.title||'').toLocaleLowerCase('es-ES')}
@@ -133,7 +143,7 @@ function trendRows(){
 }
 function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q)))}
 function itemData(x){
- const tweet=String(x.tweet?.text||'').trim(),expl=String(x.explanation||x.factual_summary||x.detail||'').trim();
+ const tweet=String(x.tweet?.text||'').trim(),expl=String(x.explanation||x.factual_summary||x.description||x.detail||'').trim();
  let closer=String(x.tweet?.remate||x.closer_text||'').trim();
  if(!closer){const m=(tweet||expl).split('\n').map(s=>s.trim()).filter(s=>s.startsWith('🌶'));closer=m.at(-1)||''}
  const editorial=(tweet||expl)+(closer&&!String(tweet||expl).includes(closer)?'\n'+closer:'');
@@ -147,6 +157,7 @@ function manualPrompt(x){
   'TÍTULO / '+(x._kind==='tti'?'NOTICIA':'TENDENCIA')+':\n'+rank+c.title,
   'TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n'+content,
   'REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n'+(c.closer||'Sin remate separado: utiliza exclusivamente el texto cerrado.'),
+  'EXPLICACIÓN EDITORIAL COMPLETA (NO OMITIR NI REESCRIBIR):\n'+(c.expl||'Utiliza el texto exacto como explicación, sin inventar contexto.'),
   'CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n'+(c.factual||'Utiliza exclusivamente los hechos del texto exacto, sin completar datos.'),
   'DIRECCIÓN VISUAL:\nViñeta satírica original, ingeniosa, expresiva y exagerada, con gag visual y metáfora humorística. No ilustrar literalmente la noticia. No inventar hechos ni atribuir acciones no verificadas. Entregar una sola imagen, sin reescribir el texto.'
  ].join('\n\n')
@@ -173,7 +184,7 @@ function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
  const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.expl;
- const showClip=x._kind!=='fuente'&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
+ const showClip=!['fuente','tremending'].includes(x._kind)&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
  const out=document.createElement('article');out.className='card';
  out.innerHTML=(img?'<img class="pic" loading="lazy" alt="" src="'+esc(img)+'">':'')+
   '<div class="card-body"><div class="meta"><span'+(x._status==='PROBLEMÁTICA'?' class="hot"':'')+'>'+source+'</span>'+info.map(y=>'<span>'+esc(y)+'</span>').join('')+'</div>'+
@@ -196,7 +207,18 @@ function rowCard(x,i){
   a.append(b);return b
  $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
  }
- if(x._topOnly){link('🔎 Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');return out}
+ if(x._topOnly){out.classList.add('trend-top');link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');return out}
+ if(x._kind==='tremending'){
+  out.classList.add('tremending');
+  if(isHttp(x.url))link('Leer en Público',x.url,true);
+  const tweets=(x.tweets||[]).filter(t=>isHttp(t.url));
+  if(tweets.length){const detail=document.createElement('details');detail.className='tremending-tweets';
+   const summary=document.createElement('summary');summary.textContent='Ver '+tweets.length+' tuits relacionados';detail.append(summary);
+   tweets.forEach(t=>{const l=document.createElement('a');l.href=isHttp(t.url);l.target='_blank';l.rel='noopener';l.textContent=t.author||'Ver tuit';detail.append(l)});
+   out.querySelector('.card-body').append(detail);
+  }
+  return out
+ }
  if(x._historical){return out}
  if(showClip){
   btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
@@ -221,10 +243,11 @@ function render(){
   b.textContent=name+' · '+count;b.setAttribute('aria-pressed',String(state.tab===key));
   b.onclick=()=>{state.tab=key;render()};return b
  }));
- const rows=dataRows();$('cards').replaceChildren(...(rows.length?rows.slice(0,150).map(rowCard):[Object.assign(document.createElement('div'),{className:'empty',textContent:'No hay elementos en esta sección, o no se han podido cargar los datos.'})]));
+ const rows=dataRows();$('cards').className='cards'+(state.app==='tr'&&state.tab==='top'?' top30':'');$('cards').replaceChildren(...(rows.length?rows.slice(0,150).map(rowCard):[Object.assign(document.createElement('div'),{className:'empty',textContent:'No hay elementos en esta sección, o no se han podido cargar los datos.'})]));
  $('stats').style.display=state.app==='tti'?'grid':'none';
  if(state.app==='tti'){
-  const sections=[['listas','Listas'],['elaboracion','En elaboración'],['problematicas','Problemáticas'],['creciendo','Creciendo']];
+  const sections=[['listas','Listas'],['elaboracion','En elaboración'],['problematicas','Revisión'],['creciendo','Creciendo'],['tremending','Tremending']];
+   $('stats').classList.add('five');
   $('stats').replaceChildren(...sections.map(([section,label])=>{
    const count=ttiRowsFor(section).length;
    const b=document.createElement('button');b.className='stat';b.type='button';
@@ -234,8 +257,24 @@ function render(){
   }));
   const status=state.data.status||{};
   $('source-counts').innerHTML='<span>Con 1 fuente: <b>'+esc(status.one_source_count??'—')+'</b></span><span>Con 2 fuentes: <b>'+esc(status.two_source_count??'—')+'</b></span>';
- }else $('source-counts').replaceChildren();
- const last=state.app==='tti'?state.data.status?.updated_at:state.data.recent?.captured_at;
+ }else {$('source-counts').replaceChildren();$('stats').classList.remove('five')}
+  const titles=state.app==='tti'?{listas:'Noticias listas',elaboracion:'En elaboración',problematicas:'Revisión y problemáticas',creciendo:'Noticias creciendo',tremending:'Tremending · Público',fuentes:'Fuentes del radar'}:{top:'Top 30 España',explicadas:'Tendencias explicadas',historico:'Histórico de tendencias'};
+  $('view-title').textContent=titles[state.tab]||'TT Actualidad';
+  const upcoming=state.app==='tr'&&state.tab==='top'?(state.data.recent?.upcoming||[]).slice(0,12):[];
+  $('upcoming').hidden=upcoming.length===0;
+  $('upcoming-grid').replaceChildren(...upcoming.map(t=>{
+   const el=document.createElement('article');el.className='signal-card';
+   const name=document.createElement('b');name.textContent=String(t.name||'');el.append(name);
+   const info=document.createElement('small');info.textContent='Fuentes sociales: '+(t.social_source_count??'—')+' · Noticias: '+(t.news_source_count??'—');el.append(info);
+   const link=document.createElement('a');link.href='https://x.com/search?q='+encodeURIComponent(t.name||'')+'&f=live';link.target='_blank';link.rel='noopener';link.textContent='Buscar en X ↗';el.append(link);
+   return el;
+  }));
+ const last=state.app==='tti'?(state.data.status?.radar_at||state.data.status?.updated_at):state.data.recent?.captured_at;
+  $('last-radar').textContent='Último radar: '+stamp(last);
+  const next=new Date();next.setSeconds(0,0);
+  if(state.app==='tti')next.setMinutes(60);
+  else {const minute=next.getMinutes();next.setMinutes(minute<15?15:minute<45?45:75)}
+  $('next-radar').textContent='Próximo radar previsto: '+stamp(next.toISOString());
  $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'');
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
