@@ -44525,18 +44525,34 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "manual_prompt",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_choice": null,
-      "image_status": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
       "telegram_package_status": "deleted",
-      "telegram_deleted_at": "2026-10-10T22:18:54+02:00"
+      "telegram_deleted_at": "2026-10-10T22:18:54+02:00",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261010200042_1200.jpg",
+        "source": "Europa Press · 10/10/2026",
+        "source_url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-real-madrid-villareal-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261010200042.html",
+        "alt": "Imagen de archivo relacionada con #RealMadridVillarreal",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261010200042_1200.jpg",
+        "source": "Europa Press · 10/10/2026",
+        "source_url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-real-madrid-villareal-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261010200042.html",
+        "alt": "Imagen de archivo relacionada con #RealMadridVillarreal",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-10T22:18:56+02:00",
+  "updated_at": "2026-10-10T20:20:06.053075Z",
   "count": 732
 }
