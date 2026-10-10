@@ -1,13 +1,11 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-10T08:45:00+02:00",
-  "last_completed_at": "2026-10-10T08:48:00+02:00",
-  "updated_at": "2026-10-10T08:48:00+02:00",
+  "last_started_at": "2026-10-10T09:15:00+02:00",
+  "last_completed_at": "2026-10-10T09:19:00+02:00",
+  "updated_at": "2026-10-10T09:19:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "772cda27031c"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -17,13 +15,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010T084500-chat",
+    "run_id": "tr-20261010T091500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T08:45:00+02:00",
-    "updated_at": "2026-10-10T08:48:00+02:00",
-    "finished_at": "2026-10-10T08:48:00+02:00",
+    "started_at": "2026-10-10T09:15:00+02:00",
+    "updated_at": "2026-10-10T09:19:00+02:00",
+    "finished_at": "2026-10-10T09:19:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -51,7 +49,7 @@
       "remates_selected": 0,
       "remates_omitted": 5
     },
-    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Se revisaron 18 Pendientes recientes y el reparador visual de Explicadas quedó lanzado de forma independiente.",
+    "message": "Pasada editorial completada · 0 tendencias nuevas; cola final 0. Se revisaron 18 Pendientes recientes y el reparador visual de Explicadas (workflow 906) sigue en ejecución independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -110,53 +108,53 @@
     ],
     "activity": [
       {
-        "at": "2026-10-10T08:45:00+02:00",
+        "at": "2026-10-10T09:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada · cola editorial 0; revalidando main y Pendientes."
+        "message": "Pasada iniciada · cola editorial 0; revalidando main, requests, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-10T08:46:00+02:00",
+        "at": "2026-10-10T09:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura autoritativa · cola 0, requests preparing/update 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-10T08:46:30+02:00",
+        "at": "2026-10-10T09:17:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 18 tarjetas recientes."
+        "message": "Revisando Pendientes · 18 tarjetas recientes tras excluir copiadas/archivadas."
       },
       {
-        "at": "2026-10-10T08:47:00+02:00",
+        "at": "2026-10-10T09:17:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Cinco Pendientes sin remate se mantienen sin forzar por sensibilidad, contexto político/judicial o falta de espacio."
       },
       {
-        "at": "2026-10-10T08:47:30+02:00",
+        "at": "2026-10-10T09:18:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparador visual de Explicadas confirmado en ejecución independiente."
+        "message": "Reparador visual de Explicadas lanzado · workflow 906 en ejecución independiente."
       },
       {
-        "at": "2026-10-10T08:47:50+02:00",
+        "at": "2026-10-10T09:18:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main · cola 0, requests activos 0 y rewrite_pending 0."
+        "message": "Relectura final de main · cola 0, requests activos 0, problematic 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-10T08:48:00+02:00",
+        "at": "2026-10-10T09:19:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 0/0 editorial; saneamiento de Pendientes solicitado."
+        "message": "Pasada completada · 0/0 editorial; saneamiento de Pendientes solicitado y reparación visual en curso independiente."
       }
     ],
     "queue_complete": true,
@@ -168,14 +166,14 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-1791613271251-c1522d",
-    "last_triggered_at": "2026-10-10T08:31:00+02:00",
-    "observed_at": "2026-10-10T08:35:45+02:00",
+    "last_trigger_run_id": "tr-20261010T091500-chat",
+    "last_triggered_at": "2026-10-10T09:15:00+02:00",
+    "observed_at": "2026-10-10T09:18:00+02:00",
     "archive_examined": 0,
     "archive_ready": 0,
     "archive_none": 0,
-    "workflow_run_id": 38019979442,
-    "workflow_run_number": 898
+    "workflow_run_id": 38033844682,
+    "workflow_run_number": 906
   },
   "version": 1,
   "canonical": true
