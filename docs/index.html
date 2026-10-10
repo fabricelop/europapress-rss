@@ -93,7 +93,13 @@ function trendRows(){
  const latest=new Map();
  for(const x of explained){const k=String(x.id||x.term_normalized||x.display_name||x.name||'').toLowerCase();if(!k)continue;const prev=latest.get(k);if(!prev||String(x.explained_at||'')>String(prev.explained_at||''))latest.set(k,x)}
  const byName=new Map();for(const v of latest.values())byName.set(String(v.display_name||v.name||v.term_normalized||'').toLowerCase(),v);
- if(state.tab==='top')return top.slice(0,10).filter(x=>!trendClosed(x)).map(x=>{const m=byName.get(String(x.name||'').toLowerCase())||req.find(z=>String(z.name||'').toLowerCase()===String(x.name||'').toLowerCase())||{};return {...m,title:x.name,rank:x.rank,trend:x,_kind:'tr',_id:String(m.id||x.name),_status:'TT#'+x.rank}});
+ if(state.tab==='top')return top.slice(0,10).map(x=>{
+  const k=String(x.name||'').toLocaleLowerCase('es-ES'),request=req.filter(z=>String(z.name||'').toLocaleLowerCase('es-ES')===k).sort((a,b)=>Number(b.revision||0)-Number(a.revision||0))[0]||{};
+  const explanation=byName.get(k)||{};
+  const completed=(!request.revision||!explanation.revision||Number(request.revision)===Number(explanation.revision))?explanation:{};
+  const m={...request,...completed,id:request.id||completed.id,closer_text:completed.closer_text||request.closer_text||'',factual_summary:completed.factual_summary||request.factual_summary||''};
+  return {...m,title:x.name,rank:x.rank,trend:x,_kind:'tr',_id:String(m.id||x.name),_status:'TT#'+x.rank}
+ }).filter(x=>!trendClosed(x));
  if(state.tab==='proximas')return (recent.upcoming||[]).filter(x=>!trendClosed(x)).map((x,i)=>({...x,title:x.name,_kind:'tr',_id:String(x.id||x.name||i),_status:'PRÓXIMA',source_count:x.social_source_count||x.news_source_count||0}));
  return [...latest.values()].filter(x=>!trendClosed(x)).sort((a,b)=>String(b.explained_at||'').localeCompare(String(a.explained_at||''))).slice(0,100).map((x,i)=>({...x,title:x.display_name||x.name||x.term_normalized,_kind:'tr',_id:String(x.id||x.term_normalized||i),_status:'EXPLICADA'}));
 }
