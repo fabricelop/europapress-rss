@@ -21,7 +21,7 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=10
+BUTTONS_VERSION=11
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -212,6 +212,25 @@ def trend_cards(now):
                "novelty_verified":req.get("material_novelty_verified") is True,
                "is_in_top":bool(top_row and 1<=int(top_row.get("rank") or 0)<=10)}
 
+def mobile_gag_prompt(card,project):
+    """Telegram-native copy_text <=256 chars; never relies on a web browser."""
+    title=str(card.get("title") or "").strip()
+    editorial=str(card.get("x_text") or "").strip()
+    lines=[x.strip() for x in editorial.splitlines() if x.strip()]
+    punch=next((x for x in reversed(lines) if x.startswith("🌶")), "")
+    # When there is no explicit pepper, use only verified title/context.
+    lead="Genera UNA imagen GAG IA original: viñeta satírica exagerada, un gag visual ingenioso, sin texto. "
+    label="Noticia: " if project=="ttittulares" else "Tendencia: "
+    ending=(" Remate exacto: "+punch) if punch else ""
+    # Preserve the remate; shorten only the news title when needed.
+    if len(lead)+len(label)+len(ending)>248:
+        # Exceptional extremely long remate: respect Telegram's native-copy limit.
+        ending=ending[:max(0,248-len(lead)-len(label)-12)].rstrip()
+    room=max(0,248-len(lead)-len(label)-len(ending))
+    short_title=title if len(title)<=room else (title[:max(0,room-1)].rsplit(" ",1)[0].rstrip()+"…" if room>5 else "")
+    return (lead+label+short_title+ending).strip()[:248]
+
+
 def keys(card,project):
     callback=("tt:b:"+card["id"]) if project=="ttittulares" else ("tx:b:"+card["id"]+":"+str(card["rev"]))
     search="https://x.com/search?q="+quote(str(card["search"]))+"&f=live"
@@ -223,9 +242,11 @@ def keys(card,project):
         if project=="ttendencias":args["name"]=str(card.get("title") or "")[:100]
         bridge=origin+"/tt-shared/gag-copy.html?"+urlencode(args)
         rows.append([
-            {"text":"📋 Copiar prompt GAG","url":bridge},
+            {"text":"📋 Copiar prompt GAG","copy_text":{"text":mobile_gag_prompt(card,project)}},
             {"text":"🎨 Chat Images","url":IMAGE_APP}
         ])
+        # The full research-backed prompt remains available for browsers that work.
+        rows.append([{"text":"📄 Prompt completo (web)","url":bridge}])
         # Telegram's copy_text is limited to 256 characters. Never truncate
         # editorial text: longer explanations open the full-text copy page.
         if len(x_text)<=256:
@@ -479,6 +500,10 @@ def selftest():
     kb=keys(card,"ttittulares")["inline_keyboard"]
     assert [b["text"] for b in kb[0]]==["📋 Copiar prompt GAG","🎨 Chat Images"]
     assert [button["text"] for row in kb for button in row].count("🎨 Chat Images")==1
+    assert kb[0][0].get("copy_text") and len(kb[0][0]["copy_text"]["text"])<=256
+    assert "GAG IA" in kb[0][0]["copy_text"]["text"]
+    assert "🌶" in kb[0][0]["copy_text"]["text"]
+    assert kb[1][0]["url"].startswith(TTI_ORIGIN+"/tt-shared/gag-copy.html")
     assert "🖼️ Mis imágenes IA" not in [button["text"] for row in kb for button in row]
     assert [b["text"] for b in kb[2]]==["🔎 Buscar en X"]
     assert kb[1][0]["copy_text"]["text"]==card["x_text"]
