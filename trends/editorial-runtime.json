@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-10T02:45:00+02:00",
-  "last_completed_at": "2026-10-10T02:49:50+02:00",
-  "updated_at": "2026-10-10T02:49:50+02:00",
+  "last_started_at": "2026-10-10T03:45:00+02:00",
+  "last_completed_at": "2026-10-10T03:47:30+02:00",
+  "updated_at": "2026-10-10T03:47:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -12,23 +12,24 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "last_run": {
-    "run_id": "tr-20261010T024500-chat",
+    "run_id": "tr-20261010T034500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T02:45:00+02:00",
-    "updated_at": "2026-10-10T02:49:50+02:00",
-    "finished_at": "2026-10-10T02:49:50+02:00",
+    "started_at": "2026-10-10T03:45:00+02:00",
+    "updated_at": "2026-10-10T03:47:30+02:00",
+    "finished_at": "2026-10-10T03:47:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 0,
+    "total": 0,
+    "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -37,158 +38,54 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 17,
+      "pending_cards_reviewed": 0,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada completada 1/1 · #ADOMASpoilers explicada y cola editorial verificada en 0.",
+    "message": "Pasada completada · 0 tendencias nuevas; cola final 0. Saneamiento visual activado en GitHub Actions (run 894).",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 50
-    },
-    "remate_selections": [
-      {
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "revision": 0,
-        "selected": "🌶️ El spoiler ya ha pedido caballo y cantimplora."
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-10T02:45:00+02:00",
+        "at": "2026-10-10T03:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Pasada iniciada · 1 tendencia activa; preparando #ADOMASpoilers y saneamiento de Pendientes."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada · cola editorial 0; revalidando main y Pendientes."
       },
       {
-        "at": "2026-10-10T02:45:20+02:00",
-        "phase": "verifying",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Releyendo estado autoritativo de #ADOMASpoilers."
-      },
-      {
-        "at": "2026-10-10T02:46:00+02:00",
-        "phase": "investigating",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Buscando detonante actual de #ADOMASpoilers."
-      },
-      {
-        "at": "2026-10-10T02:46:25+02:00",
-        "phase": "investigating",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Contrastando fuente 1/2 · directo de LiliCross del 9 de octubre."
-      },
-      {
-        "at": "2026-10-10T02:46:45+02:00",
-        "phase": "investigating",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Contrastando fuente 2/2 · contexto oficial de Amor de Otro Mundo: Ascensión."
-      },
-      {
-        "at": "2026-10-10T02:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Hecho esencial verificado · emisión de ADOMA con salida de la cúpula y travesía al Oeste."
-      },
-      {
-        "at": "2026-10-10T02:47:20+02:00",
-        "phase": "drafting",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Redactando explicación factual de #ADOMASpoilers."
-      },
-      {
-        "at": "2026-10-10T02:47:35+02:00",
-        "phase": "drafting",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Comprobando límite de X · texto completo por debajo de 279 caracteres."
-      },
-      {
-        "at": "2026-10-10T02:47:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-10T02:48:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Evaluando candidatos con ratings históricos."
-      },
-      {
-        "at": "2026-10-10T02:48:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Remate seleccionado · «El spoiler ya ha pedido caballo y cantimplora.»"
-      },
-      {
-        "at": "2026-10-10T02:48:20+02:00",
+        "at": "2026-10-10T03:46:48+02:00",
         "phase": "persisting",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Guardando ficha Explicada de #ADOMASpoilers."
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento de Pendientes solicitado en main mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-10T02:48:35+02:00",
-        "phase": "persisting",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Actualizando requests de #ADOMASpoilers."
-      },
-      {
-        "at": "2026-10-10T02:48:45+02:00",
-        "phase": "persisting",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Retirando revisión de #ADOMASpoilers de la cola."
-      },
-      {
-        "at": "2026-10-10T02:49:05+02:00",
+        "at": "2026-10-10T03:46:52+02:00",
         "phase": "verifying",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Releyendo main tras persistir #ADOMASpoilers."
+        "trend_id": null,
+        "title": null,
+        "message": "Reparador visual de Explicadas iniciado en GitHub Actions · run 894."
       },
       {
-        "at": "2026-10-10T02:49:20+02:00",
+        "at": "2026-10-10T03:47:20+02:00",
         "phase": "verifying",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Verificando id+revision y texto persistido en Explicadas y requests."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola editorial confirmada en 0."
       },
       {
-        "at": "2026-10-10T02:49:35+02:00",
-        "phase": "verifying",
-        "trend_id": "a3c125709378",
-        "title": "#ADOMASpoilers",
-        "message": "Tendencia cerrada y verificada · cola editorial 0; 17 Pendientes revisados."
-      },
-      {
-        "at": "2026-10-10T02:49:50+02:00",
+        "at": "2026-10-10T03:47:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 1/1 · #ADOMASpoilers explicada y cola editorial verificada en 0."
+        "message": "Pasada completada · 0 tendencias nuevas; cola final 0. Reparación visual continúa de forma independiente."
       }
     ],
     "queue_complete": true,
@@ -198,14 +95,16 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "requested",
+    "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010T021500-chat",
-    "last_triggered_at": "2026-10-10T02:15:00+02:00",
-    "observed_at": "2026-10-10T02:16:30+02:00",
+    "last_trigger_run_id": "tr-20261010T034500-chat",
+    "last_triggered_at": "2026-10-10T03:46:48+02:00",
+    "observed_at": "2026-10-10T03:46:52+02:00",
     "archive_examined": 18,
     "archive_ready": 13,
-    "archive_none": 5
+    "archive_none": 5,
+    "workflow_run_id": 38014490563,
+    "workflow_run_number": 894
   },
   "version": 1,
   "canonical": true,
