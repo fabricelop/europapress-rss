@@ -34,14 +34,14 @@ jobs:
           $files = @('windows/TTiTTularesDedicatedListener.ps1','windows/TTiTTularesImageBridge.js','windows/MobileChatTriggerListener.ps1')
           foreach ($p in $files) {
             $s = Get-Content $p -Raw
-            if ($s -notmatch 'ttittulares-no-vercel-test\.fabricelop\.workers\.dev') { throw "Cloudflare URL missing in $p" }
+            if ($s -notmatch 'tt-control\.fabricelop\.workers\.dev') { throw "Cloudflare URL missing in $p" }
             if ($s -match 'europapress-rss\.vercel\.app') { throw "Vercel residue in $p" }
           }
           $watchdog = Get-Content windows/TT-LocalWatchdog.ps1 -Raw
           if ($watchdog -match 'CheckImageQueueHealth|RestartListenerForQueue|Invoke-WebRequest') { throw "Watchdog must only supervise local processes" }
           if ($watchdog -notmatch 'Enter-ProcessInstance') { throw "Watchdog lost process ownership" }
           $shared = Get-Content windows/MobileChatTriggerListener.ps1 -Raw
-          if ($shared -notmatch 'ttendencias-no-vercel-test\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }
+          if ($shared -notmatch 'tt-control\.fabricelop\.workers\.dev') { throw "TTendencias route altered" }
           $t = Get-Content windows/TTendenciasImageBridge.js -Raw
           if ($t -notmatch 'ttendencias-no-vercel-test\.fabricelop\.workers\.dev') { throw "TTendencias image routing altered" }
           Write-Host "PASS: TTiTTulares route migrated only on isolated branch; TTendencias unchanged"
