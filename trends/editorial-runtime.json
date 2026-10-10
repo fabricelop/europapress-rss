@@ -3,14 +3,11 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T11:15:48.518+02:00",
-  "last_completed_at": "2026-10-10T11:24:30+02:00",
-  "updated_at": "2026-10-10T11:24:30+02:00",
+  "last_started_at": "2026-10-10T11:45:00+02:00",
+  "last_completed_at": "2026-10-10T11:47:30+02:00",
+  "updated_at": "2026-10-10T11:47:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "88c3cf364123",
-    "7b238f268321"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -22,58 +19,51 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010111548-chatgpt",
-    "last_triggered_at": "2026-10-10T11:15:48.518+02:00",
-    "observed_at": "2026-10-10T11:24:30+02:00"
+    "last_trigger_run_id": "tr-20261010114500-chatgpt",
+    "last_triggered_at": "2026-10-10T11:45:00+02:00",
+    "observed_at": "2026-10-10T11:47:30+02:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010111548-chatgpt",
+    "run_id": "tr-20261010114500-chatgpt",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T11:15:48.518+02:00",
-    "updated_at": "2026-10-10T11:24:30+02:00",
-    "finished_at": "2026-10-10T11:24:30+02:00",
+    "started_at": "2026-10-10T11:45:00+02:00",
+    "updated_at": "2026-10-10T11:47:30+02:00",
+    "finished_at": "2026-10-10T11:47:30+02:00",
     "trend_id": null,
     "title": null,
-    "current": 2,
-    "total": 2,
+    "current": 0,
+    "total": 0,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 2,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 22,
+      "pending_cards_reviewed": 1,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada completada · 2/2 revisiones agrupadas en tarjeta existente; cola final 0.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "connector_guarded_large_write",
-        "scope": "trends/requests.json",
-        "recovered": true,
-        "detail": "La escritura directa del JSON grande fue bloqueada por el conector; la reconciliación idempotente completó el cierre y la relectura final verificó consistencia."
-      }
-    ],
+    "message": "Pasada completada · sin revisiones editoriales activas; cola final 0.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -84,81 +74,39 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-10T11:15:48.518+02:00",
+        "at": "2026-10-10T11:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 2 revisiones activas"
+        "message": "Preparando pasada editorial · releyendo cola y estado autoritativo"
       },
       {
-        "at": "2026-10-10T11:17:17.579+02:00",
-        "phase": "verifying",
-        "trend_id": "88c3cf364123",
-        "title": "Marc + Aprilia",
-        "message": "Releyendo estado autoritativo de Marc y Aprilia"
-      },
-      {
-        "at": "2026-10-10T11:17:20.876+02:00",
-        "phase": "investigating",
-        "trend_id": "88c3cf364123",
-        "title": "Marc + Aprilia",
-        "message": "Hecho esencial verificado · ambas etiquetas corresponden al mismo sprint de Mandalika ya explicado"
-      },
-      {
-        "at": "2026-10-10T11:17:23.240+02:00",
-        "phase": "drafting",
-        "trend_id": "88c3cf364123",
-        "title": "Marc + Aprilia",
-        "message": "Reutilizando la explicación factual ya verificada · sin crear tarjeta duplicada"
-      },
-      {
-        "at": "2026-10-10T11:17:25.773+02:00",
-        "phase": "persisting",
-        "trend_id": "88c3cf364123",
-        "title": "Marc + Aprilia",
-        "message": "Guardando enlace de grupo en ficha Explicada"
-      },
-      {
-        "at": "2026-10-10T11:17:33.042+02:00",
-        "phase": "persisting",
-        "trend_id": "88c3cf364123",
-        "title": "Marc + Aprilia",
-        "message": "Actualizando requests de Marc y Aprilia"
-      },
-      {
-        "at": "2026-10-10T11:20:00+02:00",
-        "phase": "persisting",
-        "trend_id": "7b238f268321",
-        "title": "Aprilia",
-        "message": "Retirando ambas revisiones ya explicadas de la cola"
-      },
-      {
-        "at": "2026-10-10T11:22:00+02:00",
+        "at": "2026-10-10T11:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main"
+        "message": "Revisando Pendientes · 1 tarjeta vigente"
       },
       {
-        "at": "2026-10-10T11:22:10+02:00",
+        "at": "2026-10-10T11:46:30+02:00",
+        "phase": "verifying",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez",
+        "message": "Pendiente 1/1 · IA pendiente; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-10T11:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando id+revision y texto persistido · coincidencia exacta en Marc y Aprilia"
+        "message": "Releyendo main · cola, requests y reexplicaciones"
       },
       {
-        "at": "2026-10-10T11:22:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 22 tarjetas vigentes; reparación visual solicitada"
-      },
-      {
-        "at": "2026-10-10T11:24:30+02:00",
+        "at": "2026-10-10T11:47:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 2/2 revisiones agrupadas en tarjeta existente; cola final 0."
+        "message": "Pasada completada · sin revisiones editoriales activas; cola final 0"
       }
     ],
     "queue_complete": true,
