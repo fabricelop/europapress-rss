@@ -1,14 +1,16 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T16:52:34+02:00",
-  "last_completed_at": "2026-10-10T16:52:34+02:00",
-  "updated_at": "2026-10-10T16:52:34+02:00",
+  "last_started_at": "2026-10-10T16:45:00+02:00",
+  "last_completed_at": "2026-10-10T16:55:00+02:00",
+  "updated_at": "2026-10-10T16:55:00+02:00",
   "status": "success",
   "processed_ids": [
-    "070d1f241927"
+    "070d1f241927",
+    "1a1c513e1b82",
+    "c999199b2612"
   ],
   "remaining_ids": [
     "070d1f241927"
@@ -24,8 +26,8 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010161500-chatgpt",
-    "last_triggered_at": "2026-10-10T16:15:00+02:00",
+    "last_trigger_run_id": "tr-20261010164500-chatgpt",
+    "last_triggered_at": "2026-10-10T16:45:00+02:00",
     "observed_at": "2026-10-10T14:17:00+02:00",
     "workflow_run_id": 38051384164
   },
@@ -33,25 +35,24 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010161500-chatgpt",
+    "run_id": "tr-20261010164500-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-10T16:15:00+02:00",
-    "updated_at": "2026-10-10T16:21:30+02:00",
-    "finished_at": "2026-10-10T16:21:30+02:00",
+    "started_at": "2026-10-10T16:45:00+02:00",
+    "updated_at": "2026-10-10T16:55:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 2,
-    "total": 2,
+    "current": 3,
+    "total": 3,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 1,
-      "explanation_groups": 1,
+      "trends_processed": 3,
+      "trends_explained": 2,
+      "explanation_groups": 2,
       "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 1,
       "grouped_members_total": 1,
       "trends_problematic": 1,
       "trends_dismissed": 0,
@@ -62,19 +63,19 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 1
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
+      "remates_omitted": 0
     },
-    "message": "Pasada completada · Dos Hermanas explicada y verificada; Vienes sigue problematic tras nuevas búsquedas sin detonante concreto. No quedan revisiones preparing/update ni reexplicaciones pendientes.",
+    "message": "Cierre verificado · Bukaneros explicada, Arsenal agrupada con Leeds y Vienes permanece problematic.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-10T16:20:20+02:00",
+        "at": "2026-10-10T16:53:00+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "reason": "El término sigue en TT#4, pero nuevas búsquedas actuales no permiten verificar un detonante concreto en España; se evita inventar una causa."
+        "reason": "El término sigue en Top 10, pero búsquedas actuales no permiten verificar un detonante concreto en España; main registra 7 intentos y se evita inventar una causa."
       }
     ],
     "ratings_snapshot": {
@@ -86,162 +87,171 @@
     },
     "remate_selections": [
       {
-        "trend_id": "8f12ec7f550c",
+        "trend_id": "1a1c513e1b82",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [],
+        "selected_candidate": "🌶️ La protesta llegó con aerodinámica de barrio.",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "c999199b2612",
         "revision": 0,
         "candidate_count": 0,
         "candidates": [],
         "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": "political_content"
+        "no_remate_reason": "grouped_into_existing_card"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T16:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · 2 entradas activas; releyendo estado autoritativo."
-      },
-      {
-        "at": "2026-10-10T16:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Releyendo estado autoritativo de Dos Hermanas."
-      },
-      {
-        "at": "2026-10-10T16:16:10+02:00",
+        "at": "2026-10-10T16:49:40+02:00",
         "phase": "investigating",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Buscando detonante actual."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Contrastando fuente 2/2 · The Guardian."
       },
       {
-        "at": "2026-10-10T16:16:35+02:00",
+        "at": "2026-10-10T16:49:50+02:00",
         "phase": "investigating",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Contrastando fuente 1/2 · RTVE."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Hecho esencial verificado · Arsenal remontó 2-1 al Leeds."
       },
       {
-        "at": "2026-10-10T16:16:50+02:00",
-        "phase": "investigating",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Contrastando fuente 2/2 · Euronews."
-      },
-      {
-        "at": "2026-10-10T16:17:00+02:00",
-        "phase": "investigating",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Hecho esencial verificado · Sánchez inicia allí la precampaña del PSOE del 29N."
-      },
-      {
-        "at": "2026-10-10T16:17:15+02:00",
+        "at": "2026-10-10T16:50:00+02:00",
         "phase": "drafting",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Redactando explicación factual."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Detectando explicación existente del mismo partido."
       },
       {
-        "at": "2026-10-10T16:17:25+02:00",
+        "at": "2026-10-10T16:50:10+02:00",
         "phase": "drafting",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Comprobando límite de X · 165 caracteres."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Sin nueva tarjeta · se enlaza al grupo ya explicado de Leeds."
       },
       {
-        "at": "2026-10-10T16:17:35+02:00",
-        "phase": "remate_selection",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Sin remate · contenido político."
-      },
-      {
-        "at": "2026-10-10T16:18:00+02:00",
+        "at": "2026-10-10T16:50:20+02:00",
         "phase": "persisting",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Guardando ficha Explicada de Dos Hermanas."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Actualizando grupo existente Leeds-Arsenal."
       },
       {
-        "at": "2026-10-10T16:19:20+02:00",
+        "at": "2026-10-10T16:50:30+02:00",
+        "phase": "persisting",
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Actualizando request de Arsenal."
+      },
+      {
+        "at": "2026-10-10T16:50:40+02:00",
+        "phase": "persisting",
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Retirando revisión de Arsenal de la cola."
+      },
+      {
+        "at": "2026-10-10T16:51:30+02:00",
         "phase": "verifying",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Tendencia cerrada y verificada."
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Releyendo main tras reconciliar el conflicto de escritura."
       },
       {
-        "at": "2026-10-10T16:19:30+02:00",
+        "at": "2026-10-10T16:51:40+02:00",
+        "phase": "verifying",
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Verificando grupo Leeds-Arsenal y request persistida."
+      },
+      {
+        "at": "2026-10-10T16:51:50+02:00",
+        "phase": "verifying",
+        "trend_id": "c999199b2612",
+        "title": "Arsenal",
+        "message": "Tendencia cerrada y agrupada sin crear tarjeta duplicada."
+      },
+      {
+        "at": "2026-10-10T16:52:00+02:00",
         "phase": "verifying",
         "trend_id": "070d1f241927",
         "title": "Vienes",
         "message": "Releyendo estado autoritativo de Vienes."
       },
       {
-        "at": "2026-10-10T16:19:40+02:00",
+        "at": "2026-10-10T16:52:10+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
         "message": "Buscando detonante actual con consultas nuevas."
       },
       {
-        "at": "2026-10-10T16:20:10+02:00",
+        "at": "2026-10-10T16:52:25+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Contrastando segunda búsqueda con contexto social y noticias actuales."
+        "message": "Contrastando búsqueda exacta del término con resultados actuales."
       },
       {
-        "at": "2026-10-10T16:20:20+02:00",
+        "at": "2026-10-10T16:52:45+02:00",
+        "phase": "investigating",
+        "trend_id": "070d1f241927",
+        "title": "Vienes",
+        "message": "Contrastando segunda búsqueda con contexto de tendencias de España."
+      },
+      {
+        "at": "2026-10-10T16:53:00+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
         "message": "Sin detonante concreto verificable; no se inventa una causa."
       },
       {
-        "at": "2026-10-10T16:20:30+02:00",
+        "at": "2026-10-10T16:53:10+02:00",
         "phase": "persisting",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Guardando nuevo intento problematic de Vienes."
+        "message": "Guardando sexto intento problematic de Vienes."
       },
       {
-        "at": "2026-10-10T16:20:50+02:00",
+        "at": "2026-10-10T16:54:00+02:00",
         "phase": "verifying",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Verificando id+revision y quinto intento problematic persistido."
+        "message": "Verificando id+revision y estado problematic persistido · contador actual 7 intentos."
       },
       {
-        "at": "2026-10-10T16:21:00+02:00",
+        "at": "2026-10-10T16:54:20+02:00",
         "phase": "verifying",
-        "trend_id": "8f12ec7f550c",
-        "title": "Dos Hermanas",
-        "message": "Verificando id+revision y texto persistido en ficha y request."
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 32 tarjetas vigentes de menos de 24 h; reparación visual ya solicitada."
       },
       {
-        "at": "2026-10-10T16:21:15+02:00",
+        "at": "2026-10-10T16:54:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 1 problematic."
       },
       {
-        "at": "2026-10-10T16:21:30+02:00",
+        "at": "2026-10-10T16:55:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · Dos Hermanas explicada; Vienes permanece problematic."
+        "message": "Cierre verificado · Bukaneros explicada, Arsenal agrupada con Leeds y Vienes permanece problematic."
       }
     ],
+    "finished_at": "2026-10-10T16:55:00+02:00",
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": [
       "070d1f241927"
     ]
-  },
-  "error": null
+  }
 }
