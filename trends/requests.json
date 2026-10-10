@@ -24321,10 +24321,10 @@
     {
       "id": "1a1ad33aea16",
       "name": "Le Normand",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-10-04T00:31:39.112Z",
-      "rank": 22,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
+      "rank": 1,
       "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
@@ -24337,7 +24337,6 @@
         "Le Normand"
       ],
       "auto_queued": false,
-      "explained_at": "2026-10-04T09:12:00+02:00",
       "explanation": "TT#22 Le Normand es tendencia por su titularidad en el 3-1 de España a Chequia en Oviedo, formando pareja con Laporte y dando equilibrio a la defensa.\n🌶️ Le Normand hizo de central y de cinturón de seguridad.",
       "closer_text": "🌶️ Le Normand hizo de central y de cinturón de seguridad.",
       "rank_at_explanation": 22,
@@ -24372,7 +24371,20 @@
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "reexplain": true,
+      "captured_with": [
+        "Le Normand",
+        "Rayo",
+        "Lookman",
+        "Presa",
+        "Vallecas",
+        "Grimaldo",
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
+      ]
     },
     {
       "id": "6f69ffb91e09",
@@ -40846,7 +40858,7 @@
       "id": "070d1f241927",
       "name": "Vienes",
       "rank": 9,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-10T14:22:03+02:00",
       "revision": 0,
       "reexplain": false,
@@ -40864,96 +40876,32 @@
       "last_attempt_at": "2026-10-10T17:18:10+02:00",
       "problematic_at": "2026-10-10T17:52:46+02:00",
       "problematic_attempts": 9,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "inactive_at": "2026-10-10T18:04:28+02:00",
+      "inactive_reason": "left-top10-radar"
     },
     {
       "id": "4d3e29179028",
       "name": "Rayo",
-      "rank": 1,
-      "status": "deleted",
-      "requested_at": "2026-10-10T15:22:02+02:00",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
       "revision": 0,
       "reexplain": false,
       "with_image": true,
       "alternatives_target": 0,
-      "batch_id": "262cef182c30",
+      "batch_id": "9ba6074e2abb",
       "requested_together": [
         "Rayo"
       ],
       "captured_with": [
         "Rayo",
-        "Vallecas",
-        "Presa",
-        "SACRIFICIOS",
-        "Dos Hermanas",
-        "Leeds"
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
       ],
-      "auto_queued": true,
-      "explained_at": "2026-10-10T15:50:00+02:00",
-      "explanation": "TT#1 Rayo es tendencia porque el Rayo-Athletic fue suspendido en Vallecas tras repetidos lanzamientos de objetos durante una protesta de la afición contra el presidente Raúl Martín Presa.\n🌶️ Vallecas volvió a abrir y el partido duró menos que la protesta.",
-      "closer_text": "🌶️ Vallecas volvió a abrir y el partido duró menos que la protesta.",
-      "category": "Deportes",
-      "rank_at_explanation": 1,
-      "source": "editorial_chat_direct",
-      "verification_sources": [
-        {
-          "source": "EL PAÍS · Rayo-Athletic suspendido · 10/10/2026",
-          "url": "https://elpais.com/deportes/futbol/2026-10-10/las-protestas-contra-presa-detienen-el-partido-entre-rayo-y-athletic-en-vallecas.html"
-        },
-        {
-          "source": "Cadena SER · suspensión Rayo-Athletic · 10/10/2026",
-          "url": "https://cadenaser.com/nacional/2026/10/10/un-asiento-sobre-el-cesped-y-una-lluvia-de-aviones-de-papel-asi-se-suspendio-el-rayo-athletic-en-vallecas-cadena-ser/"
-        }
-      ],
-      "group_id": "grp-rayo-athletic-protesta-vallecas-20261010",
-      "group_title": "Protesta en Vallecas suspende el Rayo-Athletic",
-      "explanation_group_id": "grp-rayo-athletic-protesta-vallecas-20261010",
-      "group_leader_id": "4d3e29179028",
-      "trend_names": [
-        "Rayo",
-        "Vallecas",
-        "Presa"
-      ],
-      "trend_context": [
-        {
-          "name": "Rayo",
-          "rank": 1
-        },
-        {
-          "name": "Vallecas",
-          "rank": 2
-        },
-        {
-          "name": "Presa",
-          "rank": 3
-        }
-      ],
-      "grouped_member_revisions": [
-        {
-          "id": "4d3e29179028",
-          "name": "Rayo",
-          "revision": 0
-        },
-        {
-          "id": "fdd0b4445d7a",
-          "name": "Vallecas",
-          "revision": 0
-        },
-        {
-          "id": "9848666f09f0",
-          "name": "Presa",
-          "revision": 0
-        }
-      ],
-      "disable_ai_image": false,
-      "ai_image_block_reason": null,
-      "ai_image_status": "pending",
-      "ai_image_attempt": 0,
-      "image_status": "none",
-      "image_pending": false,
-      "rewrite_pending": false,
-      "deleted_at": "2026-10-10T16:03:08.367Z",
-      "updated_at": "2026-10-10T16:03:08.367Z"
+      "auto_queued": true
     },
     {
       "id": "fdd0b4445d7a",
@@ -41635,8 +41583,100 @@
       "image_choice": null,
       "image_status": "none",
       "image_pending": false
+    },
+    {
+      "id": "3653323c16ba",
+      "name": "Alavés",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9ba6074e2abb",
+      "requested_together": [
+        "Alavés"
+      ],
+      "captured_with": [
+        "Rayo",
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "9f13bef418e6",
+      "name": "Paul Seixas",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9ba6074e2abb",
+      "requested_together": [
+        "Paul Seixas"
+      ],
+      "captured_with": [
+        "Rayo",
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "78f942e2cf0f",
+      "name": "Sacrificio",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9ba6074e2abb",
+      "requested_together": [
+        "Sacrificio"
+      ],
+      "captured_with": [
+        "Rayo",
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
+      ],
+      "auto_queued": true
+    },
+    {
+      "id": "d52db359fba0",
+      "name": "Enric Mas",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-10T18:04:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9ba6074e2abb",
+      "requested_together": [
+        "Enric Mas"
+      ],
+      "captured_with": [
+        "Rayo",
+        "Alavés",
+        "Paul Seixas",
+        "Sacrificio",
+        "Enric Mas"
+      ],
+      "auto_queued": true
     }
   ],
-  "updated_at": "2026-10-10T16:03:08.367Z",
+  "updated_at": "2026-10-10T18:04:28+02:00",
   "count": 758
 }
