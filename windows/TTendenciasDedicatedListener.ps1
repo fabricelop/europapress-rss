@@ -36,7 +36,7 @@ $script:DirectTriggerAt = [DateTimeOffset]::MinValue
 $script:LastAckConflict = $null
 
 $WorkerId = "ttendencias-dedicated-v20"
-$PollSeconds = 30
+$PollSeconds = 15
 $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
@@ -1141,7 +1141,7 @@ while ($true) {
 
     # El puente de imagen usa CDP y no depende de mensajes personalizados del runner.
     # Aunque Ejecutar.js no admita TT_CHAT_MESSAGE_B64, la cola IA debe continuar.
-    if ($slots -gt 0) {
+    if ($slots -gt 0 -and ($loopCount % 2 -eq 0)) {
       $jobs=@();if($idx -and $idx.jobs){$jobs=@($idx.jobs)}
       # Evitar consultar trabajos historicos y agotar el limite REST de GitHub.
       $jobs=@($jobs | Where-Object {
