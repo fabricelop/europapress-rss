@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T13:45:00+02:00",
-  "last_completed_at": "2026-10-10T13:50:00+02:00",
-  "updated_at": "2026-10-10T13:50:00+02:00",
+  "last_started_at": "2026-10-10T14:15:00+02:00",
+  "last_completed_at": "2026-10-10T14:18:00+02:00",
+  "updated_at": "2026-10-10T14:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,23 +16,24 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "requested",
+    "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010134500-chatgpt",
-    "last_triggered_at": "2026-10-10T13:45:00+02:00",
-    "observed_at": "2026-10-10T13:49:00+02:00"
+    "last_trigger_run_id": "tr-20261010141500-chatgpt",
+    "last_triggered_at": "2026-10-10T14:15:00+02:00",
+    "observed_at": "2026-10-10T14:17:00+02:00",
+    "workflow_run_id": 38051384164
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010134500-chatgpt",
+    "run_id": "tr-20261010141500-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T13:45:00+02:00",
-    "updated_at": "2026-10-10T13:50:00+02:00",
-    "finished_at": "2026-10-10T13:50:00+02:00",
+    "started_at": "2026-10-10T14:15:00+02:00",
+    "updated_at": "2026-10-10T14:18:00+02:00",
+    "finished_at": "2026-10-10T14:18:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -55,14 +56,14 @@
       "pending_cards_reviewed": 26,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
-      "pending_cards_ai_not_valid": 26,
-      "remates_repaired": 4,
-      "remates_selected": 4,
+      "pending_cards_ai_not_valid": 5,
+      "remates_repaired": 0,
+      "remates_selected": 0,
       "remates_omitted": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 4
+      "explanations_verified_under_280": 0
     },
-    "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas, 4 remates reparados y reparación visual solicitada.",
+    "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas y reparación visual activa para las 5 tarjetas sin IA válida.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -73,246 +74,6 @@
       "recent_considered": 100
     },
     "remate_selections": [
-      {
-        "trend_id": "7d7133c58382",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.4,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c2",
-            "total": 7.6,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c3",
-            "total": 7.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c4",
-            "total": 7.5,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c5",
-            "total": 8.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          }
-        ],
-        "selected_candidate": "c5",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "4b5c7e7d5b37",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.1,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c2",
-            "total": 7.2,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.4,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c3",
-            "total": 8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c4",
-            "total": 7,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.4,
-            "punch": 1.3,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c5",
-            "total": 7.4,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "2d65748bd484",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.5,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c2",
-            "total": 7.6,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c3",
-            "total": 8.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c4",
-            "total": 7.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c5",
-            "total": 7.3,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.2,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e29d470f50dd",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c2",
-            "total": 7.4,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c3",
-            "total": 7.7,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.8,
-            "punch": 1.4,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c4",
-            "total": 7.2,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.6,
-            "punch": 1.3,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c5",
-            "total": 7.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8,
-        "no_remate_reason": null
-      },
       {
         "trend_id": "227d4d40ff00",
         "revision": 0,
@@ -325,46 +86,39 @@
     ],
     "activity": [
       {
-        "at": "2026-10-10T13:45:00+02:00",
+        "at": "2026-10-10T14:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola activa 0; revisando 26 Pendientes recientes"
       },
       {
-        "at": "2026-10-10T13:46:00+02:00",
+        "at": "2026-10-10T14:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": "Saneamiento de Pendientes",
+        "message": "Revisando Pendientes · 26 tarjetas; 1 sin remate y 5 con IA aún no válida"
+      },
+      {
+        "at": "2026-10-10T14:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": "Saneamiento de Pendientes",
+        "message": "Reparación visual solicitada y workflow específico confirmado en ejecución"
+      },
+      {
+        "at": "2026-10-10T14:17:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 26 tarjetas; 5 sin remate y 26 con IA aún no válida"
+        "message": "Releyendo main · cola 0, requests activas 0 y reexplicaciones pendientes 0"
       },
       {
-        "at": "2026-10-10T13:47:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": "Saneamiento de Pendientes",
-        "message": "Evaluando candidatos de remate para 5 tarjetas sin remate; respetando límite de 279"
-      },
-      {
-        "at": "2026-10-10T13:48:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": "Saneamiento de Pendientes",
-        "message": "Guardando 4 remates válidos y sincronizando requests; Fernando Camino queda sin remate por límite"
-      },
-      {
-        "at": "2026-10-10T13:49:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": "Saneamiento de Pendientes",
-        "message": "Releyendo main para verificar cola, remates sincronizados y saneamiento visual solicitado"
-      },
-      {
-        "at": "2026-10-10T13:50:00+02:00",
+        "at": "2026-10-10T14:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas, 4 remates reparados y reparación visual solicitada"
+        "message": "Pasada completada · cola editorial 0; saneamiento visual continúa de forma independiente"
       }
     ],
     "queue_complete": true,
