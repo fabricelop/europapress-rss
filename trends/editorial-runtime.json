@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T13:15:00+02:00",
-  "last_completed_at": "2026-10-10T13:22:00+02:00",
-  "updated_at": "2026-10-10T13:22:00+02:00",
+  "last_started_at": "2026-10-10T13:45:00+02:00",
+  "last_completed_at": "2026-10-10T13:50:00+02:00",
+  "updated_at": "2026-10-10T13:50:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,33 +18,33 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010124500-chatgpt",
-    "last_triggered_at": "2026-10-10T12:45:00+02:00",
-    "observed_at": "2026-10-10T12:45:30+02:00"
+    "last_trigger_run_id": "tr-20261010134500-chatgpt",
+    "last_triggered_at": "2026-10-10T13:45:00+02:00",
+    "observed_at": "2026-10-10T13:49:00+02:00"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010131500-chatgpt",
+    "run_id": "tr-20261010134500-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T13:15:00+02:00",
-    "updated_at": "2026-10-10T13:22:00+02:00",
-    "finished_at": "2026-10-10T13:22:00+02:00",
+    "started_at": "2026-10-10T13:45:00+02:00",
+    "updated_at": "2026-10-10T13:50:00+02:00",
+    "finished_at": "2026-10-10T13:50:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 4,
-    "total": 4,
+    "current": 0,
+    "total": 0,
     "partial": false,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 3,
-      "grouped_into_existing_card": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -52,15 +52,17 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 26,
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
+      "pending_cards_ai_not_valid": 26,
+      "remates_repaired": 4,
+      "remates_selected": 4,
+      "remates_omitted": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 4
     },
-    "message": "Pasada completada · 4 revisiones cerradas en 1 grupo; cola final 0.",
+    "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas, 4 remates reparados y reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,67 +74,297 @@
     },
     "remate_selections": [
       {
-        "group_id": "grp-norris-piastri-mclaren-singapore-sprint-20261010",
-        "leader_id": "3d6977e14685",
-        "closer_text": "🌶️ McLaren encontró el único hueco que no debía: entre sus dos coches."
+        "trend_id": "7d7133c58382",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.4,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.6
+          },
+          {
+            "id": "c2",
+            "total": 7.6,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.6
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.6
+          },
+          {
+            "id": "c4",
+            "total": 7.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c5",
+            "total": 8.3,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          }
+        ],
+        "selected_candidate": "c5",
+        "selected_score": 8.3,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "4b5c7e7d5b37",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.1,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c2",
+            "total": 7.2,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c3",
+            "total": 8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c4",
+            "total": 7,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.4,
+            "punch": 1.3,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c5",
+            "total": 7.4,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "2d65748bd484",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.5,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c2",
+            "total": 7.6,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c3",
+            "total": 8.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c4",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c5",
+            "total": 7.3,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "e29d470f50dd",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "c2",
+            "total": 7.4,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.6
+          },
+          {
+            "id": "c3",
+            "total": 7.7,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.8,
+            "punch": 1.4,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.6,
+            "punch": 1.3,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          },
+          {
+            "id": "c5",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.5
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "227d4d40ff00",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "El texto factual ocupa 263 caracteres; no cabe un remate significativo manteniendo el límite estricto de 279."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T13:15:00+02:00",
+        "at": "2026-10-10T13:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola activa 4; iniciando saneamiento de Pendientes"
+        "message": "Preparando pasada editorial · cola activa 0; revisando 26 Pendientes recientes"
       },
       {
-        "at": "2026-10-10T13:16:00+02:00",
+        "at": "2026-10-10T13:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Releyendo estado autoritativo y validando posible agrupación"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 26 tarjetas; 5 sin remate y 26 con IA aún no válida"
       },
       {
-        "at": "2026-10-10T13:17:00+02:00",
-        "phase": "investigating",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Hecho esencial verificado · choque Norris-Piastri en la última vuelta de la sprint de Singapur"
-      },
-      {
-        "at": "2026-10-10T13:18:00+02:00",
-        "phase": "drafting",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-10T13:19:00+02:00",
+        "at": "2026-10-10T13:47:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Remate seleccionado"
+        "trend_id": null,
+        "title": "Saneamiento de Pendientes",
+        "message": "Evaluando candidatos de remate para 5 tarjetas sin remate; respetando límite de 279"
       },
       {
-        "at": "2026-10-10T13:20:00+02:00",
+        "at": "2026-10-10T13:48:00+02:00",
         "phase": "persisting",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisiones de la cola"
+        "trend_id": null,
+        "title": "Saneamiento de Pendientes",
+        "message": "Guardando 4 remates válidos y sincronizando requests; Fernando Camino queda sin remate por límite"
       },
       {
-        "at": "2026-10-10T13:21:00+02:00",
+        "at": "2026-10-10T13:49:00+02:00",
         "phase": "verifying",
-        "trend_id": "3d6977e14685",
-        "title": "Norris / McLaren / Piastri / Lando",
-        "message": "Releyendo main · id+revision y texto persistido verificados"
+        "trend_id": null,
+        "title": "Saneamiento de Pendientes",
+        "message": "Releyendo main para verificar cola, remates sincronizados y saneamiento visual solicitado"
       },
       {
-        "at": "2026-10-10T13:22:00+02:00",
+        "at": "2026-10-10T13:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 4 revisiones cerradas en 1 grupo; cola final 0"
+        "message": "Pasada completada · cola editorial 0; 26 Pendientes revisadas, 4 remates reparados y reparación visual solicitada"
       }
     ],
     "queue_complete": true,
