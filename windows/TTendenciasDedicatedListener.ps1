@@ -17,8 +17,11 @@ $LauncherLogPath = Join-Path $BaseDir "tendencias.log"
 
 # TTendencias uses Cloudflare independently of Vercel. Optional user-scoped rollback override.
 $StatusBase = [Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE", "User")
-if (-not $StatusBase) { $StatusBase = "https://ttendencias-no-vercel-test.fabricelop.workers.dev" }
+if (-not $StatusBase -or $StatusBase.TrimEnd("/") -eq "https://ttendencias-no-vercel-test.fabricelop.workers.dev") {
+  $StatusBase = "https://tt-control.fabricelop.workers.dev"
+}
 $StatusBase = $StatusBase.TrimEnd("/")
+$env:TTENDENCIAS_SERVICE_BASE = $StatusBase
 $ListenerSnapshotUrl = "$StatusBase/api/ttendencias-run-status?view=listener-snapshot"
 $ImageJobUrlBase = "$StatusBase/api/ttendencias-run-status?view=image-job&strong=1&id="
 $RunUrl = "$StatusBase/api/ttendencias-run"
