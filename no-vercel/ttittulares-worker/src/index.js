@@ -539,6 +539,7 @@ async function dispatchAuthorizedTelegramMobileCommand(request,env){
   const action=String(obj?.action||"");
   const id=String(obj?.id||"").trim();
   const updateId=Number(obj?.update_id);
+  const instruction=String(obj?.instruction||"").trim().slice(0,1000);
   if(!["ttittulares","ttendencias"].includes(project)||
      !["published","deleted","rework","prepare"].includes(action)||
      !/^[\p{L}\p{N}_#.\- ]{1,120}$/u.test(id)||
@@ -569,6 +570,7 @@ async function dispatchAuthorizedTelegramMobileCommand(request,env){
     const list=Array.isArray(state.items)?state.items:[];
     if(list.some(x=>Number(x.update_id)===updateId))return json({ok:true,accepted:true,duplicate:true,update_id:updateId},202);
     const item={update_id:updateId,project,action,id,
+      instruction:action==="rework"?instruction:"",
       status:"pending",source:"telegram_private_deeplink",
       submitted_at:new Date().toISOString()};
     state.items=[...list,item].slice(-250);
