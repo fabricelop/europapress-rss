@@ -8,6 +8,8 @@ on:
       - "trends/telegram-manual-explained.json"
       - "trends/editorial-runtime.json"
       - "trends/pending-repair-trigger.json"
+      - "trends/direct-reconcile-command.json"
+      - "trends/apply_direct_reconcile.py"
       - ".github/workflows/repair-ttendencias-explicadas.yml"
   schedule:
     - cron: "*/30 * * * *"
@@ -33,6 +35,35 @@ jobs:
         run: |
           git fetch origin main
           git reset --hard origin/main
+
+      - name: Reconciliar cierre editorial directo
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f trends/direct-reconcile-command.json ]; then
+            echo "Sin reconciliación editorial directa pendiente."
+            exit 0
+          fi
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            if [ ! -f trends/direct-reconcile-command.json ]; then
+              exit 0
+            fi
+            python3 trends/apply_direct_reconcile.py
+            git add trends/requests.json trends/editorial-queue.json trends/direct-reconcile-command.json
+            if git diff --cached --quiet; then
+              exit 0
+            fi
+            git commit -m "Reconciliar cierre editorial directo TTendencias"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          exit 1
 
       - name: Preparar dependencias
         run: python3 -m pip install --disable-pip-version-check --quiet Pillow requests beautifulsoup4
