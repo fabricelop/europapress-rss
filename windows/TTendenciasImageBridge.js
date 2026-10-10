@@ -1,6 +1,6 @@
 // TTendenciasImageBridge.js
 const BASE_CDP="http://127.0.0.1:9223";
-const SERVICE_BASE=String(process.env.TTENDENCIAS_SERVICE_BASE||"https://ttendencias-no-vercel-test.fabricelop.workers.dev").replace(new RegExp("/+$"),"");
+const SERVICE_BASE=String(process.env.TTENDENCIAS_SERVICE_BASE||"https://tt-control.fabricelop.workers.dev").replace("https://ttendencias-no-vercel-test.fabricelop.workers.dev","https://tt-control.fabricelop.workers.dev").replace(new RegExp("/+$"),"");
 const RUN_URL=SERVICE_BASE+"/api/ttendencias-run";
 const JOB_URL=SERVICE_BASE+"/api/ttendencias-run-status?view=image-job&strong=1&id=";
 const commandId=String(process.argv[2]||"").trim();
