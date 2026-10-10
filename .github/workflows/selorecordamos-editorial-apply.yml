@@ -17,7 +17,8 @@ jobs:
     if: >-
       github.event.issue.number == 16 &&
       github.event.comment.user.login == 'fabricelop' &&
-      startsWith(github.event.comment.body, 'SELORECORDAMOS_OUTBOX_V1')
+      (startsWith(github.event.comment.body, 'SELORECORDAMOS_OUTBOX_V1') ||
+      startsWith(github.event.comment.body, 'SELORECORDAMOS_OUTBOX_V2'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -31,6 +32,9 @@ jobs:
           git config user.name "selorecordamos-editorial-bot"
           git config user.email "actions@users.noreply.github.com"
           git pull --rebase origin main
+
+      - name: Probar contrato de transporte V1 y V2
+        run: python3 -m unittest discover -s selorecordamos -p 'test_editorial_outbox_transport.py'
 
       - name: Validar y aplicar paquete editorial
         env:

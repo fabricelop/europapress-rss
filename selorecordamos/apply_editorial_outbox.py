@@ -45,21 +45,34 @@ def madrid_time(value):
         return "fecha/hora no disponible"
 
 def parse_payload():
+    """Acepta V2 JSON legible; V1 base64 sigue admitido para mensajes antiguos."""
     body = os.environ.get("SELORECORDAMOS_COMMENT_BODY", "")
-    lines = body.splitlines()
-    if not lines or lines[0].strip() != MARKER:
+    marker, newline, content = body.partition("\n")
+    marker = marker.rstrip("\r").strip()
+    if not newline or marker not in ("SELORECORDAMOS_OUTBOX_V1", "SELORECORDAMOS_OUTBOX_V2"):
         raise ValueError("Marcador de outbox ausente o inválido")
-    encoded = "".join(line.strip() for line in lines[1:] if line.strip())
-    if not encoded:
-        raise ValueError("Payload base64 vacío")
-    raw = base64.b64decode(encoded, validate=True)
-    payload = json.loads(raw.decode("utf-8"))
-    if payload.get("version") != 1:
+    if not content.strip():
+        raise ValueError("Payload editorial vacío")
+
+    if marker == "SELORECORDAMOS_OUTBOX_V1":
+        encoded = "".join(line.strip() for line in content.splitlines() if line.strip())
+        raw = base64.b64decode(encoded, validate=True)
+        payload = json.loads(raw.decode("utf-8"))
+        expected_version = 1
+    else:
+        # Sin envoltorios opacos: contenido humano-legible y revisable.
+        payload = json.loads(content)
+        expected_version = 2
+
+    if not isinstance(payload, dict) or payload.get("version") != expected_version:
         raise ValueError("Versión de payload no soportada")
+    if not isinstance(payload.get("run_id"), str) or not payload["run_id"].strip():
+        raise ValueError("run_id obligatorio")
     outputs = payload.get("outputs")
     if not isinstance(outputs, list) or not outputs or len(outputs) > 20:
         raise ValueError("outputs debe contener entre 1 y 20 elementos")
     return payload
+
 
 def validate_output(item, req):
     key = request_key(req)
