@@ -21,10 +21,10 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=9
+BUTTONS_VERSION=10
 IMAGE_APP="https://chatgpt.com/images"
-TTI_ORIGIN="https://ttittulares-no-vercel-test.fabricelop.workers.dev"
-TTEND_ORIGIN="https://ttendencias-no-vercel-test.fabricelop.workers.dev"
+TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
+TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TERMINAL={"deleted","published","dismissed","removed"}
 
 def load(path,default):
@@ -395,6 +395,11 @@ def process(project,now,token,chat):
         image_data=None
         if existing and existing.get("content_sha256")==new_hash:
             if int(existing.get("buttons_version") or 0)==BUTTONS_VERSION:
+                skipped+=1;continue
+            # Solo refrescar teclados recientes para no editar masivamente
+            # centenares de mensajes históricos ni reabrir los ya cerrados.
+            delivered_at=date(existing.get("delivered_at"))
+            if not delivered_at or now-delivered_at>timedelta(hours=12):
                 skipped+=1;continue
             # Keyboard-only change: no new photo, no duplicated news card.
             result=send(token,"editMessageReplyMarkup",{
