@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'docs/**'
+      - '.github/scripts/test_tt_pages_prompts.mjs'
       - '.github/workflows/tt-mobile-github-pages.yml'
   schedule:
     - cron: '17 */6 * * *'
@@ -64,7 +65,9 @@ jobs:
             assert (dest/'data'/must).is_file(),must
           PY
           node --check /tmp/tt-site-check.js
+          node .github/scripts/test_tt_pages_prompts.mjs
           test -s /tmp/tt-pages-site/index.html
+          test -s /tmp/tt-pages-site/gag.html
           echo 'TT_MOBILE_STATIC_VALID'
       - name: Configure Pages
         uses: actions/configure-pages@v5
