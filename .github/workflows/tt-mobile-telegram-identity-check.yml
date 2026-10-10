@@ -1,0 +1,56 @@
+name: TT mobile Telegram bot safe identity check
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tt-mobile-telegram-identity-check.yml'
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check bot username and allowed chat type (never write secrets)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,datetime
+          token=os.environ.get('TELEGRAM_BOT_TOKEN','')
+          chat=os.environ.get('TELEGRAM_CHAT_ID','')
+          data={'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'ok':False,'username':'','authorized_chat_type':'unknown'}
+          if token:
+            try:
+              with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/getMe',timeout=20) as r:
+                d=json.load(r)
+              data['ok']=bool(d.get('ok'))
+              data['username']=str((d.get('result') or {}).get('username') or '') if data['ok'] else ''
+              if chat:
+                with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/getChat?chat_id='+chat,timeout=20) as r:
+                  c=json.load(r)
+                data['authorized_chat_type']=str((c.get('result') or {}).get('type') or 'unknown')
+            except Exception as e:data['error']=type(e).__name__
+          with open('/tmp/tt-mobile-bot.json','w') as f:json.dump(data,f,ensure_ascii=False,indent=2)
+          print('TT_TELEGRAM_BOT_METADATA',data)
+          PY
+      - name: Record public-safe bot metadata only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git checkout -B main origin/main
+            cp /tmp/tt-mobile-bot.json docs/tt-mobile-bot.json
+            git add docs/tt-mobile-bot.json
+            git commit -m "TT mobile: record public Telegram bot username and chat type" || exit 0
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 2
+          done
+          exit 1
