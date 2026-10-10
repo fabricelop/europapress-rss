@@ -3,18 +3,11 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T18:15:00+02:00",
-  "last_completed_at": "2026-10-10T18:27:00+02:00",
-  "updated_at": "2026-10-10T18:27:00+02:00",
+  "last_started_at": "2026-10-10T18:45:00+02:00",
+  "last_completed_at": "2026-10-10T18:48:00+02:00",
+  "updated_at": "2026-10-10T18:48:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "1a1ad33aea16",
-    "4d3e29179028",
-    "3653323c16ba",
-    "9f13bef418e6",
-    "78f942e2cf0f",
-    "d52db359fba0"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -23,41 +16,42 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "running_independently",
+    "status": "archive_repair_running_independently",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010181500-chatgpt",
-    "last_triggered_at": "2026-10-10T18:16:16+02:00",
-    "observed_at": "2026-10-10T18:27:00+02:00",
-    "workflow_run_id": null,
+    "last_trigger_run_id": "tr-20261010184500-chatgpt",
+    "last_triggered_at": "2026-10-10T18:47:04+02:00",
+    "observed_at": "2026-10-10T18:48:00+02:00",
+    "workflow_run_id": 38069060819,
     "subsequent_item_repairs": [
       38065234790,
       38065338313,
       38065393180
-    ]
+    ],
+    "automatic_gag_queue_disabled": true
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010181500-chatgpt",
+    "run_id": "tr-20261010184500-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T18:15:00+02:00",
-    "updated_at": "2026-10-10T18:27:00+02:00",
-    "finished_at": "2026-10-10T18:27:00+02:00",
+    "started_at": "2026-10-10T18:45:00+02:00",
+    "updated_at": "2026-10-10T18:48:00+02:00",
+    "finished_at": "2026-10-10T18:48:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 6,
-    "total": 6,
+    "current": 0,
+    "total": 0,
     "partial": false,
     "summary": {
-      "trends_processed": 6,
-      "trends_explained": 5,
-      "already_explained_reconciled": 1,
-      "explanation_groups": 5,
-      "new_cards": 4,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "already_explained_reconciled": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
@@ -68,161 +62,60 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
+      "pending_recent_reviewed": 12,
+      "pending_recent_without_remate": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 5,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Cierre verificado · 5 revisiones cerradas, Rayo ya estaba explained y no queda cola activa.",
+    "message": "Cierre verificado · no había revisiones editoriales activas ni reexplicaciones; cola final 0. Se revisaron 12 Pendientes recientes y no se lanzó ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "1a1ad33aea16",
-        "title": "Le Normand",
-        "revision": 1,
-        "closer_text": "🌶️ Le Normand regaló el empate y el Atleti tuvo que envolver la victoria otra vez."
-      },
-      {
-        "trend_id": "3653323c16ba",
-        "title": "Alavés",
-        "revision": 0,
-        "closer_text": "🌶️ Mendizorroza aguantó hasta que Cuti puso el cierre."
-      },
-      {
-        "trend_id": "9f13bef418e6",
-        "title": "Paul Seixas",
-        "revision": 0,
-        "closer_text": "🌶️ Seixas estrenó Monumento antes de que le diera tiempo a parecer veterano."
-      },
-      {
-        "trend_id": "78f942e2cf0f",
-        "title": "Sacrificio",
-        "revision": 0,
-        "closer_text": "🌶️ La precampaña ya trae el recibo antes que el programa."
-      },
-      {
-        "trend_id": "d52db359fba0",
-        "title": "Enric Mas",
-        "revision": 0,
-        "closer_text": "🌶️ Mas cerró la temporada en Italia con plata y apellido de sobra."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-10T18:18:00+02:00",
-        "phase": "investigating",
-        "trend_id": "1a1ad33aea16",
-        "title": "Le Normand",
-        "message": "Hecho esencial verificado · penalti ante el Alavés y final 1-2."
-      },
-      {
-        "at": "2026-10-10T18:19:00+02:00",
-        "phase": "verifying",
-        "trend_id": "4d3e29179028",
-        "title": "Rayo",
-        "message": "Rayo ya figura explained; no se duplica."
-      },
-      {
-        "at": "2026-10-10T18:20:00+02:00",
-        "phase": "investigating",
-        "trend_id": "3653323c16ba",
-        "title": "Alavés",
-        "message": "Hecho esencial verificado · derrota 1-2 ante el Atlético."
-      },
-      {
-        "at": "2026-10-10T18:21:00+02:00",
-        "phase": "investigating",
-        "trend_id": "9f13bef418e6",
-        "title": "Paul Seixas",
-        "message": "Hecho esencial verificado · ganador de Il Lombardia."
-      },
-      {
-        "at": "2026-10-10T18:22:00+02:00",
-        "phase": "investigating",
-        "trend_id": "78f942e2cf0f",
-        "title": "Sacrificio",
-        "message": "Detonante verificado · frase de Feijóo sobre un Gobierno que pediría sacrificio."
-      },
-      {
-        "at": "2026-10-10T18:23:00+02:00",
-        "phase": "investigating",
-        "trend_id": "d52db359fba0",
-        "title": "Enric Mas",
-        "message": "Hecho esencial verificado · segundo en Il Lombardia."
-      },
-      {
-        "at": "2026-10-10T18:24:00+02:00",
-        "phase": "drafting",
+        "at": "2026-10-10T18:45:00+02:00",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Redactando cinco explicaciones y comprobando límite de X."
+        "message": "Preparando pasada editorial · cola activa 0; revisando reexplicaciones y saneamiento de Pendientes recientes."
       },
       {
-        "at": "2026-10-10T18:24:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "Evaluando candidatos de remate con el historial de ratings."
-      },
-      {
-        "at": "2026-10-10T18:24:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "Cinco remates seleccionados."
-      },
-      {
-        "at": "2026-10-10T18:25:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando cinco fichas Explicadas."
-      },
-      {
-        "at": "2026-10-10T18:25:20+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Actualizando cinco revisiones exactas en requests."
-      },
-      {
-        "at": "2026-10-10T18:25:40+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Retirando las revisiones cerradas de la cola."
-      },
-      {
-        "at": "2026-10-10T18:26:00+02:00",
+        "at": "2026-10-10T18:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura de main: ficha y request coinciden exactamente para las seis tendencias."
+        "message": "Revisando Pendientes · 12 tarjetas recientes no terminales; 11 con remate y 1 sin remate por espacio/sensibilidad."
       },
       {
-        "at": "2026-10-10T18:26:20+02:00",
+        "at": "2026-10-10T18:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial vacía: 0 preparing, 0 update y 0 problematic."
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 0 problematic en Top 10."
       },
       {
-        "at": "2026-10-10T18:27:00+02:00",
+        "at": "2026-10-10T18:47:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificado el flujo visual vigente · Encolar Gag IA automático está desactivado; no se genera ninguna imagen IA."
+      },
+      {
+        "at": "2026-10-10T18:48:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 5 revisiones cerradas, Rayo ya estaba explained y no queda cola activa."
+        "message": "Cierre verificado · sin trabajo editorial nuevo y cola activa en 0."
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": []
+    ]
   }
 }
