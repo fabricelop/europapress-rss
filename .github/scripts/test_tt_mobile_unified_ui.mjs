@@ -25,6 +25,10 @@ st.data={prepared:{items:[{event_id:'a'},{event_id:'b'},{event_id:'c'}]},
 assert.equal(tt.ttiRows().length,2,'Listas counter differs from visible cards');
 st.tab='problematicas';assert.equal(tt.ttiRows().length,1,'Closed problematic card must disappear');
 st.tab='creciendo';assert.equal(tt.ttiRows().length,1,'Closed growing card must disappear');
+st.data.tremending={items:[{id:'tremending-abc',title:'Público · Tremending',tweets:[{author:'@ejemplo',url:'https://x.com/example/status/1'}]}]};
+st.tab='tremending';
+assert.equal(tt.ttiRows().length,1,'Tremending must be visible inside the unified app');
+assert.equal(tt.ttiRows()[0]._kind,'tremending','Tremending must not be treated as a ready editorial item');
 
 st.app='tr';st.tab='top';
 st.data={recent:{items:Array.from({length:30},(_,i)=>({rank:i+1,name:'Tendencia '+(i+1)}))},
