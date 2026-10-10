@@ -23,7 +23,7 @@ jobs:
           import json,os,urllib.request,datetime
           token=os.environ.get('TELEGRAM_BOT_TOKEN','')
           chat=os.environ.get('TELEGRAM_CHAT_ID','')
-          data={'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'ok':False,'username':'','authorized_chat_type':'unknown'}
+          data={'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'ok':False,'username':'','authorized_chat_type':'unknown','webhook_url':'','pending_update_count':None,'last_webhook_error':''}
           if token:
             try:
               with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/getMe',timeout=20) as r:
@@ -34,6 +34,12 @@ jobs:
                 with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/getChat?chat_id='+chat,timeout=20) as r:
                   c=json.load(r)
                 data['authorized_chat_type']=str((c.get('result') or {}).get('type') or 'unknown')
+              with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/getWebhookInfo',timeout=20) as r:
+                w=json.load(r)
+              meta=w.get('result') or {}
+              data['webhook_url']=str(meta.get('url') or '')
+              data['pending_update_count']=meta.get('pending_update_count')
+              data['last_webhook_error']=str(meta.get('last_error_message') or '')[:200]
             except Exception as e:data['error']=type(e).__name__
           with open('/tmp/tt-mobile-bot.json','w') as f:json.dump(data,f,ensure_ascii=False,indent=2)
           print('TT_TELEGRAM_BOT_METADATA',data)
