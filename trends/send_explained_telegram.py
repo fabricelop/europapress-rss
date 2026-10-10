@@ -27,7 +27,6 @@ DELIVERIES=ROOT/"trends/telegram-image-deliveries.json"
 BOT_STATE=ROOT/"trends/telegram-bot-state.json"
 TTI_DELIVERIES=ROOT/"telegram/ttittulares-deliveries.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
-WORKER="https://tt-control.fabricelop.workers.dev"
 APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://ttendencias-no-vercel-test.fabricelop.workers.dev").rstrip("/")
 BUTTONS_VERSION=5
 TERMINAL={"published","dismissed"}
@@ -239,6 +238,14 @@ def trend_search_term(row):
     return str(row.get("name") or "").strip()
 
 
+def detail_url(tid,rev):
+    return APP_URL+"/ttendencias/explicadas/?"+urllib.parse.urlencode({"open":f"{tid}:r{int(rev)}"})
+
+
+def x_compose_url(text):
+    return "https://twitter.com/intent/tweet?"+urllib.parse.urlencode({"text":text})
+
+
 def reexplain_url(tid,rev):
     return APP_URL+"/ttendencias/explicadas/?"+urllib.parse.urlencode({
         "open":f"{tid}:r{int(rev)}",
@@ -250,18 +257,18 @@ def keyboard(tid,rev,text,ai_url="",archive_url="",search_term="",timeout_fallba
     rows=[]
     if timeout_fallback or archive_only:
         if archive_url:
-            rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
+            rows.append([{"text":"🗂️ Copiar imagen archivo","url":detail_url(tid,rev)}])
     else:
-        rows.append([{"text":"🖼️ Copiar imagen IA","url":q(WORKER+"/copy-image",{"src":ai_url})}])
+        rows.append([{"text":"🖼️ Copiar imagen IA","url":detail_url(tid,rev)}])
         if archive_url:
-            rows.append([{"text":"🗂️ Copiar imagen archivo","url":q(WORKER+"/copy-image",{"src":archive_url})}])
+            rows.append([{"text":"🗂️ Copiar imagen archivo","url":detail_url(tid,rev)}])
     if len(text)<=256:
         copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
     else:
-        copy_button={"text":"📋 Copiar texto","url":q(WORKER+"/copy-text",{"text":text})}
+        copy_button={"text":"📋 Copiar texto","url":detail_url(tid,rev)}
     rows.append([
         copy_button,
-        {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})}
+        {"text":"✍️ Abrir en X","url":x_compose_url(text)}
     ])
     action_row=[]
     if str(search_term or "").strip():
@@ -282,11 +289,11 @@ def cross_quote_keyboard(tid,rev,text,search_url,timeout_fallback=False):
     if len(text)<=256:
         copy_button={"text":"📋 Copiar texto","copy_text":{"text":text}}
     else:
-        copy_button={"text":"📋 Copiar texto","url":q(WORKER+"/copy-text",{"text":text})}
+        copy_button={"text":"📋 Copiar texto","url":detail_url(tid,rev)}
     return {"inline_keyboard":[
         [
             copy_button,
-            {"text":"✍️ Abrir en X","url":q(WORKER+"/x-compose",{"text":text})},
+            {"text":"✍️ Abrir en X","url":x_compose_url(text)},
         ],
         [
             {"text":"🔎 Buscar en @ttittulares","url":search_url},
