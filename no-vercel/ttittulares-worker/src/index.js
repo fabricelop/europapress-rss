@@ -569,8 +569,12 @@ async function dispatchAuthorizedTelegramMobileCommand(request,env){
     }
     const list=Array.isArray(state.items)?state.items:[];
     if(list.some(x=>Number(x.update_id)===updateId))return json({ok:true,accepted:true,duplicate:true,update_id:updateId},202);
+    const cleanMid=Number(obj?.cleanup_command_mid||0);
+    const cleanNotice=Number(obj?.cleanup_notice_mid||0);
     const item={update_id:updateId,project,action,id,
       instruction:action==="rework"?instruction:"",
+      cleanup_command_mid:Number.isSafeInteger(cleanMid)&&cleanMid>0?cleanMid:0,
+      cleanup_notice_mid:Number.isSafeInteger(cleanNotice)&&cleanNotice>0?cleanNotice:0,
       status:"pending",source:"telegram_private_deeplink",
       submitted_at:new Date().toISOString()};
     state.items=[...list,item].slice(-250);
