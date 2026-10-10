@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - '.github/scripts/tt_mobile_issue_command.py'
+      - '.github/scripts/test_tt_mobile_issue_command.py'
       - '.github/ISSUE_TEMPLATE/tt-mobile-command.yml'
       - '.github/workflows/tt-mobile-github-commands.yml'
 permissions:
@@ -37,6 +38,7 @@ jobs:
           except ValueError:pass
           print('TT_MOBILE_COMMANDS_SAFE_VALID')
           PY
+          python3 .github/scripts/test_tt_mobile_issue_command.py
   apply:
     if: github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')
     runs-on: ubuntu-latest
