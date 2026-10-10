@@ -11,7 +11,8 @@ $StatePath = Join-Path $BaseDir "mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "mobile-trigger.log"
 $PollSeconds = 4
 $RunTimeoutMinutes = 35
-$MaxParallelImageChats = 4
+# Imágenes solo bajo solicitud manual en ChatGPT Images; no lanzar puentes IA desde Windows.
+$MaxParallelImageChats = 0
 $ImageStaleMinutes = 45
 $StatusBase = [Environment]::GetEnvironmentVariable("TTITTULARES_SERVICE_BASE", "User")
 if (-not $StatusBase -or $StatusBase.TrimEnd("/") -eq "https://ttittulares-no-vercel-test.fabricelop.workers.dev") { $StatusBase = "https://tt-control.fabricelop.workers.dev" }
