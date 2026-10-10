@@ -43,7 +43,8 @@ $WorkerId = "ttittulares-dedicated-v57"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
-$MaxParallelImageChats = 1
+# Imágenes solo bajo solicitud manual en ChatGPT Images; no lanzar puentes IA desde Windows.
+$MaxParallelImageChats = 0
 $MaxImageJobProbesPerCycle = 3
 $ImageStaleMinutes = 45
 $SnapshotStrongSeconds = 60
