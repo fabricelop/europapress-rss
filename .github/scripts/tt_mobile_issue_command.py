@@ -247,6 +247,9 @@ def process_queue():
         if not isinstance(item, dict) or item.get("status") != "pending":
             continue
         action_id = str(item.get("update_id") or "")
+        cleanup = {key:int(item.get(key) or 0) for key in
+                   ("cleanup_command_mid","cleanup_notice_mid")
+                   if str(item.get(key) or "").isdigit()}
         try:
             project, action, element_id, context, instruction = parse_dispatch(
                 {"inputs": {"project": item.get("project"), "action": item.get("action"),
@@ -258,12 +261,12 @@ def process_queue():
             )
             item.update(status="completed", completed_at=timestamp())
             item.pop("error", None)
-            results.append({"update_id": action_id, "ok": True, "message": result})
+            results.append({"update_id": action_id, "ok": True, "message": result, **cleanup})
         except Exception as exc:
             error = str(exc)[:180]
             item.update(status="failed", completed_at=timestamp(), error=error)
             results.append({"update_id": action_id, "ok": False,
-                            "message": "No se completó la orden " + action_id + ": " + error})
+                            "message": "No se completó la orden " + action_id + ": " + error, **cleanup})
     if results:
         queue["updated_at"] = timestamp()
         save(path, queue)
