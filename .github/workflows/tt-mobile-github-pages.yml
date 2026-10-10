@@ -66,6 +66,7 @@ jobs:
           PY
           node --check /tmp/tt-site-check.js
           node .github/scripts/test_tt_pages_prompts.mjs
+          node .github/scripts/test_tt_mobile_unified_ui.mjs
           test -s /tmp/tt-pages-site/index.html
           test -s /tmp/tt-pages-site/gag.html
           echo 'TT_MOBILE_STATIC_VALID'
