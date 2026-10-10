@@ -42394,7 +42394,7 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "explained_at": "2026-10-10T10:49:30+02:00",
       "last_attempt_at": "2026-10-10T10:49:30+02:00",
@@ -42418,16 +42418,31 @@
           "rank": 6
         }
       ],
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "rewrite_pending": false,
       "material_novelty_verified": true,
       "prior_individual_explanation": "TT#5 Marc Márquez es tendencia porque ganó la carrera de MotoGP en Motegi, completó el doblete tras vencer también el sprint y se quedó a dos puntos de Jorge Martín en el Mundial.\n🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
       "prior_individual_closer_text": "🌶️ Motegi le ha dejado el campeonato a distancia de rebufo.",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/3YCIXHNUCNLQDBBUK3XKUGN3DA.jpg?auth=170dcec5ede1f129df3af992c19a14eed22c8106270c910ee081a504f6dddb1e&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · GP de Indonesia · 10/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/10/marc-marquez-aprovecha-la-escabechina-de-las-aprilia-y-recupera-el-liderato-de-motogp-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Marc Márquez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cadenaser.com/resizer/v2/3YCIXHNUCNLQDBBUK3XKUGN3DA.jpg?auth=170dcec5ede1f129df3af992c19a14eed22c8106270c910ee081a504f6dddb1e&quality=70&width=1200&height=675&smart=true",
+        "source": "Cadena SER · GP de Indonesia · 10/10/2026",
+        "source_url": "https://cadenaser.com/nacional/2026/10/10/marc-marquez-aprovecha-la-escabechina-de-las-aprilia-y-recupera-el-liderato-de-motogp-cadena-ser/",
+        "alt": "Imagen de archivo relacionada con Marc Márquez",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-10T11:06:34+02:00",
+  "updated_at": "2026-10-10T09:19:19.356120Z",
   "count": 704
 }
