@@ -1,0 +1,85 @@
+name: TT mobile authorized commands from GitHub Issues
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/tt_mobile_issue_command.py'
+      - '.github/ISSUE_TEMPLATE/tt-mobile-command.yml'
+      - '.github/workflows/tt-mobile-github-commands.yml'
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: tt-mobile-issue-commands
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.event_name != 'issues'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and authorization checks without mutations
+        run: |
+          python3 -m py_compile .github/scripts/tt_mobile_issue_command.py
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,'.github/scripts')
+          import tt_mobile_issue_command as m
+          good={'sender':{'login':'fabricelop'},'issue':{'user':{'login':'fabricelop'},'title':'[TT-MOVIL] test',
+            'body':'### Proyecto\n\nttittulares\n\n### Acción\n\npublished\n\n### ID del elemento\n\nabc123\n\n### Titular o contexto\n\nPrueba'}}
+          assert m.parse_issue(good)[:3]==('ttittulares','published','abc123')
+          good['sender']['login']='random'
+          try:m.parse_issue(good);raise AssertionError('Unauthorized user accepted')
+          except ValueError:pass
+          print('TT_MOBILE_COMMANDS_SAFE_VALID')
+          PY
+  apply:
+    if: github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply only authorized changes to current main (retry on concurrent updates)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main
+            git checkout -B main origin/main
+            python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
+            git add ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json \
+              telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
+              trends/requests.json trends/telegram-image-deliveries.json || true
+            if test -e trends/mobile-decisions.json; then git add trends/mobile-decisions.json; fi
+            if git diff --cached --quiet; then
+              echo "TT_MOBILE_NO_CHANGE"
+              break
+            fi
+            git commit -m "TT móvil: aplicar orden #${{ github.event.issue.number }} en GitHub"
+            if git push origin HEAD:main; then
+              echo "TT_MOBILE_PERSISTED"
+              break
+            fi
+            if [[ "$attempt" == 6 ]]; then echo "TT_MOBILE_WRITE_CONFLICT" >&2;exit 1;fi
+            sleep "$attempt"
+          done
+      - name: Acknowledge GitHub issue only after persisted change
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --body "$(cat /tmp/tt-mobile-issue-result.txt)
+          
+          Orden guardada en GitHub. Las tareas de borrado de mensajes se completan después por GitHub Actions. No se ha lanzado generación IA."
+          gh issue close ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --reason completed
