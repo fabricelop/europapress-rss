@@ -48,9 +48,10 @@ jobs:
           (dest/'.nojekyll').write_text('',encoding='utf8')
           names=['ttittulares/prepared.json','ttittulares/status.json',
                  'ttittulares/decisions.json','telegram/editorial-processing.json',
+                 'ttittulares/tremending/items.json',
                  'trends/recent.json','trends/explained.json',
                  'trends/requests.json','trends/telegram-manual-explained.json',
-                 'trends/telegram-image-deliveries.json']
+                 'trends/telegram-image-deliveries.json','trends/mobile-decisions.json']
           for name in names:
             source=Path(name)
             target=dest/'data'/name
