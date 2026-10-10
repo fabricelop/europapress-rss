@@ -42307,15 +42307,30 @@
       "news_note": "La expresión coincide con la conversación de jornada de LaLiga del sábado, con cuatro partidos programados; no se atribuye a un único club.",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "telegram_package_status": "deleted",
-      "telegram_deleted_at": "2026-10-10T11:05:58+02:00"
+      "telegram_deleted_at": "2026-10-10T11:05:58+02:00",
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/BNO6WNJJBVMFZHOFXJFQJCDOJY.jpg?auth=ca92c5b921c96da1afcb59de12615a3a0d7717536fea25fdc957ea9d1936e88b&width=1200",
+        "source": "El País / AS · jornada de LaLiga 10/10/2026",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-10/la-baja-de-raphinha-pone-a-prueba-el-ritmo-del-barca.html",
+        "alt": "Imagen de archivo relacionada con día de partido",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/BNO6WNJJBVMFZHOFXJFQJCDOJY.jpg?auth=ca92c5b921c96da1afcb59de12615a3a0d7717536fea25fdc957ea9d1936e88b&width=1200",
+        "source": "El País / AS · jornada de LaLiga 10/10/2026",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-10/la-baja-de-raphinha-pone-a-prueba-el-ritmo-del-barca.html",
+        "alt": "Imagen de archivo relacionada con día de partido",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "ea998e8ec0b7",
@@ -42443,6 +42458,6 @@
       }
     }
   ],
-  "updated_at": "2026-10-10T09:19:19.356120Z",
+  "updated_at": "2026-10-10T09:25:27.938597Z",
   "count": 704
 }
