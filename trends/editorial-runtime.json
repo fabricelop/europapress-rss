@@ -1,9 +1,9 @@
 {
   "project": "TTendencias",
   "engine": "chat-direct",
-  "last_started_at": "2026-10-10T10:15:30+02:00",
-  "last_completed_at": "2026-10-10T10:19:00+02:00",
-  "updated_at": "2026-10-10T10:19:00+02:00",
+  "last_started_at": "2026-10-10T10:45:00+02:00",
+  "last_completed_at": "2026-10-10T10:52:10+02:00",
+  "updated_at": "2026-10-10T10:52:10+02:00",
   "status": "success",
   "processed_ids": [
     "9b45eb15eae0"
@@ -17,24 +17,24 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010T1015-chatgpt",
+    "run_id": "tr-20261010T1045-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T10:15:30+02:00",
-    "updated_at": "2026-10-10T10:19:00+02:00",
-    "finished_at": "2026-10-10T10:19:00+02:00",
+    "started_at": "2026-10-10T10:45:00+02:00",
+    "updated_at": "2026-10-10T10:52:10+02:00",
+    "finished_at": "2026-10-10T10:52:10+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
+    "current": 3,
+    "total": 3,
     "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 2,
+      "new_cards": 2,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -47,11 +47,11 @@
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0
     },
-    "message": "Pasada completada · 1/1 editorial; cola final 0 y sin reexplicaciones pendientes.",
+    "message": "Pasada completada · 3/3 revisiones cerradas en 2 explicaciones; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,27 +63,27 @@
     },
     "remate_selections": [
       {
-        "trend_id": "9b45eb15eae0",
+        "trend_id": "0fe61402e93a",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 8.5,
-            "ratings_affinity": 2.2,
+            "total": 8.6,
+            "ratings_affinity": 2.3,
             "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.4,
+            "punch": 1.8,
+            "originality": 1.6,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.4,
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
             "length_fit": 1,
             "repetition_penalty": 0
           },
@@ -92,114 +92,237 @@
             "total": 7.5,
             "ratings_affinity": 2,
             "trend_specificity": 1.8,
-            "punch": 1.5,
+            "punch": 1.6,
             "originality": 1.2,
             "length_fit": 1,
-            "repetition_penalty": 0
+            "repetition_penalty": -0.1
           },
           {
             "id": "c4",
-            "total": 7.1,
+            "total": 7,
             "ratings_affinity": 1.9,
             "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 6.5,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
             "punch": 1.4,
-            "originality": 1.2,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ea998e8ec0b7",
+        "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.6,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
+            "id": "c2",
+            "total": 8.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
             "length_fit": 1,
             "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 6.7,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
           }
         ],
         "selected_candidate": "c1",
-        "selected_score": 8.5,
+        "selected_score": 8.7,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-10T10:15:30+02:00",
-        "phase": "preparing",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Pasada iniciada · 1 tendencia activa. Revalidando revisión 0 y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-10T10:16:10+02:00",
+        "at": "2026-10-10T10:47:15+02:00",
         "phase": "verifying",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Releyendo estado autoritativo de #DíaMundialDeLaSaludMental"
-      },
-      {
-        "at": "2026-10-10T10:16:30+02:00",
-        "phase": "investigating",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Contrastando fuente 1/2 · OMS confirma el Día Mundial y el lema 2026"
-      },
-      {
-        "at": "2026-10-10T10:16:45+02:00",
-        "phase": "investigating",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Contrastando fuente 2/2 · RTVE confirma la campaña española centrada en infancia y juventud"
-      },
-      {
-        "at": "2026-10-10T10:17:00+02:00",
-        "phase": "drafting",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Redactando explicación factual y comprobando límite de X · 246 caracteres"
-      },
-      {
-        "at": "2026-10-10T10:17:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Remate seleccionado · sátira dirigida al lema, no a pacientes"
-      },
-      {
-        "at": "2026-10-10T10:17:20+02:00",
-        "phase": "persisting",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-10T10:18:20+02:00",
-        "phase": "verifying",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
+        "trend_id": "0fe61402e93a",
+        "title": "día de partido",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-10T10:18:35+02:00",
+        "at": "2026-10-10T10:47:25+02:00",
         "phase": "verifying",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Verificando id+revision y texto persistido · coincidencia exacta en Explicadas y requests"
+        "trend_id": "0fe61402e93a",
+        "title": "día de partido",
+        "message": "Verificando id+revision y texto persistido · coincidencia exacta"
       },
       {
-        "at": "2026-10-10T10:18:45+02:00",
+        "at": "2026-10-10T10:47:30+02:00",
         "phase": "verifying",
-        "trend_id": "9b45eb15eae0",
-        "title": "#DíaMundialDeLaSaludMental",
-        "message": "Tendencia cerrada y verificada · revisión 0 fuera de la cola"
+        "trend_id": "0fe61402e93a",
+        "title": "día de partido",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-10T10:19:00+02:00",
+        "at": "2026-10-10T10:47:40+02:00",
+        "phase": "verifying",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Releyendo estado autoritativo de Marc Márquez y Martín"
+      },
+      {
+        "at": "2026-10-10T10:47:50+02:00",
+        "phase": "investigating",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Buscando detonante actual y confirmando agrupación"
+      },
+      {
+        "at": "2026-10-10T10:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Contrastando fuente 1/2 · Reuters confirma victoria de Márquez y cambio de líder"
+      },
+      {
+        "at": "2026-10-10T10:48:10+02:00",
+        "phase": "investigating",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Contrastando fuente 2/2 · AS confirma el sprint y el cuarto puesto de Jorge Martín"
+      },
+      {
+        "at": "2026-10-10T10:48:20+02:00",
+        "phase": "investigating",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Hecho esencial verificado · ambas tendencias describen el mismo sprint de Indonesia"
+      },
+      {
+        "at": "2026-10-10T10:48:30+02:00",
+        "phase": "drafting",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Redactando explicación factual agrupada"
+      },
+      {
+        "at": "2026-10-10T10:48:40+02:00",
+        "phase": "drafting",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Comprobando límite de X · 222 caracteres"
+      },
+      {
+        "at": "2026-10-10T10:48:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-10T10:49:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-10T10:49:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-10T10:49:20+02:00",
+        "phase": "persisting",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-10T10:49:30+02:00",
+        "phase": "persisting",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Actualizando requests de Marc Márquez y Martín"
+      },
+      {
+        "at": "2026-10-10T10:49:35+02:00",
+        "phase": "persisting",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Retirando ambas revisiones de la cola"
+      },
+      {
+        "at": "2026-10-10T10:49:45+02:00",
+        "phase": "verifying",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-10T10:49:55+02:00",
+        "phase": "verifying",
+        "trend_id": "ea998e8ec0b7",
+        "title": "Marc Márquez + Martín",
+        "message": "Verificando id+revision y texto persistido · coincidencia exacta en ambos miembros"
+      },
+      {
+        "at": "2026-10-10T10:51:55+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final · cola 0, requests activas 0 y ningún problematic vigente en Top 10"
+      },
+      {
+        "at": "2026-10-10T10:52:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 1/1 editorial; cola final 0 y sin reexplicaciones pendientes."
+        "message": "Pasada completada · 3/3 revisiones cerradas en 2 explicaciones; cola final 0."
       }
     ],
     "queue_complete": true,
