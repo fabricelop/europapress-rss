@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T12:45:00+02:00",
-  "last_completed_at": "2026-10-10T12:45:30+02:00",
-  "updated_at": "2026-10-10T12:45:30+02:00",
+  "last_started_at": "2026-10-10T13:15:00+02:00",
+  "last_completed_at": "2026-10-10T13:22:00+02:00",
+  "updated_at": "2026-10-10T13:22:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -13,7 +13,6 @@
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "error": null,
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
@@ -27,25 +26,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010124500-chatgpt",
+    "run_id": "tr-20261010131500-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-10T12:45:00+02:00",
-    "updated_at": "2026-10-10T12:45:30+02:00",
-    "finished_at": "2026-10-10T12:45:30+02:00",
+    "started_at": "2026-10-10T13:15:00+02:00",
+    "updated_at": "2026-10-10T13:22:00+02:00",
+    "finished_at": "2026-10-10T13:22:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 4,
+    "total": 4,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "trends_processed": 4,
+      "trends_explained": 4,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 3,
+      "grouped_into_existing_card": 3,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -57,11 +56,11 @@
       "pending_repair_triggered": 1,
       "visual_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada completada · cola editorial 0; saneamiento de Pendientes solicitado; cola final 0.",
+    "message": "Pasada completada · 4 revisiones cerradas en 1 grupo; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -71,28 +70,69 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "group_id": "grp-norris-piastri-mclaren-singapore-sprint-20261010",
+        "leader_id": "3d6977e14685",
+        "closer_text": "🌶️ McLaren encontró el único hueco que no debía: entre sus dos coches."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-10T12:45:00+02:00",
+        "at": "2026-10-10T13:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola activa 0; iniciando saneamiento de Pendientes"
+        "message": "Preparando pasada editorial · cola activa 4; iniciando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-10T12:45:15+02:00",
+        "at": "2026-10-10T13:16:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · verificando cola y trigger de saneamiento"
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Releyendo estado autoritativo y validando posible agrupación"
       },
       {
-        "at": "2026-10-10T12:45:30+02:00",
+        "at": "2026-10-10T13:17:00+02:00",
+        "phase": "investigating",
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Hecho esencial verificado · choque Norris-Piastri en la última vuelta de la sprint de Singapur"
+      },
+      {
+        "at": "2026-10-10T13:18:00+02:00",
+        "phase": "drafting",
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Redactando explicación factual y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-10T13:19:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-10T13:20:00+02:00",
+        "phase": "persisting",
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Guardando ficha Explicada, actualizando requests y retirando revisiones de la cola"
+      },
+      {
+        "at": "2026-10-10T13:21:00+02:00",
+        "phase": "verifying",
+        "trend_id": "3d6977e14685",
+        "title": "Norris / McLaren / Piastri / Lando",
+        "message": "Releyendo main · id+revision y texto persistido verificados"
+      },
+      {
+        "at": "2026-10-10T13:22:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola editorial 0; saneamiento de Pendientes solicitado; cola final 0"
+        "message": "Pasada completada · 4 revisiones cerradas en 1 grupo; cola final 0"
       }
     ],
     "queue_complete": true,
