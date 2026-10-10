@@ -124,7 +124,7 @@ function trendRows(){
   const closer=String(named.closer_text||'').trim();
   return {...x,...named,title:String(x.name||x.title||named.display_name||named.name||id),
     explanation,closer_text:closer,rank:Number(named.rank||0),revision:rev,
-    image_url:x.image_url||named.image?.url||named.archive_image?.url||'',
+    image_url:named.archive_image?.url||named.fallback_image?.url||(/\/generated-images\//.test(String(x.image_url||''))?'':x.image_url)||'',
     _kind:'tr',_id:id,_status:history?'HISTÓRICO':'EXPLICADA',_historical:history,
     _ledger_status:x.status,_last_at:x.deleted_at||x.updated_at||x.delivered_at||named.explained_at||''
   };
@@ -171,7 +171,7 @@ function telegramActionUrl(project,id,action){
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
- const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image?.url||x.image_url||'');
+ const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
  const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.expl;
  const showClip=x._kind!=='fuente'&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
  const out=document.createElement('article');out.className='card';
