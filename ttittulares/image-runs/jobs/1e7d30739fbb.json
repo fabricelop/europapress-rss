@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-1e7d30739fbb-r1-a3-1791378092823",
+  "requested_at": "2026-10-07T13:01:32.822111Z",
+  "updated_at": "2026-10-07T13:21:59.123Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "1e7d30739fbb",
+  "event_id": "1e7d30739fbb",
+  "target_name": "La acampada de València se mantendrá el 9 d’Octubre",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 3,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La acampada de València se mantendrá el 9 d’Octubre",
+    "revision": 1,
+    "factual_summary": "La acampada por la vivienda de la plaza del Ayuntamiento de València se mantendrá el 9 d’Octubre. La Delegación del Gobierno sostiene que garantizará la seguridad.",
+    "tweet_text": "La acampada por la vivienda de la plaza del Ayuntamiento de València se mantendrá el 9 d’Octubre. La Delegación del Gobierno dice que garantizará la seguridad.\n\n🌶️ Este 9 d’Octubre el programa oficial también tendrá que acampar.",
+    "remate": "🌶️ Este 9 d’Octubre el programa oficial también tendrá que acampar.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.",
+    "image_style_name": "tinta_acuarela",
+    "image_style_index": 0,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa acampada por la vivienda de la plaza del Ayuntamiento de València se mantendrá el 9 d’Octubre. La Delegación del Gobierno dice que garantizará la seguridad.\n\n🌶️ Este 9 d’Octubre el programa oficial también tendrá que acampar.\n\nREMATE EXACTO:\n🌶️ Este 9 d’Octubre el programa oficial también tendrá que acampar.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa acampada por la vivienda de la plaza del Ayuntamiento de València se mantendrá el 9 d’Octubre. La Delegación del Gobierno sostiene que garantizará la seguridad.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/comunidad-valenciana/2026-10-06/la-acampada-de-valencia-no-preve-desplazarse-por-el-9-doctubre-y-plantea-al-ayuntamiento-trasladar-los-actos.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/comunidad-valenciana/2026-10-06/la-acampada-de-valencia-no-preve-desplazarse-por-el-9-doctubre-y-plantea-al-ayuntamiento-trasladar-los-actos.html"
+      },
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/valencia/noticia-acampada-valencia-no-preveu-desplacar-pel-doctubre-exigix-lajuntament-buscar-alternatives-per-als-actes-20261006142833.html"
+      },
+      {
+        "source": "La Vanguardia",
+        "url": "https://www.lavanguardia.com/local/valencia/20261007/11653235/pilar-bernabe-anuncia-acampada-ayuntamiento-mantendra-9-d-octubre.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Upload 409: target_no_elegible",
+  "pc_upload_secret_hash": "124c498bdf96d00844456b1ca8b4ee4ad46e77e25ec88f55d28815d4ad4cb175",
+  "pc_worker_id": "ttittulares-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-07T13:19:27.772Z",
+  "pc_launched_at": "2026-10-07T13:19:36.570Z",
+  "finished_at": "2026-10-07T13:21:59.123Z"
+}
