@@ -21,7 +21,7 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=11
+BUTTONS_VERSION=12
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -497,7 +497,7 @@ def selftest():
     card={"id":"abc123","rev":1,"search":"Pedro Sánchez","title":"Pedro Sánchez",
           "final":True,"x_text":"Hecho verificado.\n\n🌶️ Remate exacto."}
     kb=keys(card,"ttittulares")["inline_keyboard"]
-    assert [b["text"] for b in kb[0]]==["📋 Copiar prompt GAG","🎨 Chat Images"]
+    assert [b["text"] for b in kb[0]]==["📄 GAG completo (copiar)","🎨 Chat Images"]
     assert [button["text"] for row in kb for button in row].count("🎨 Chat Images")==1
     assert kb[1][0].get("copy_text") and len(kb[1][0]["copy_text"]["text"])<=256
     assert "GAG IA" in kb[1][0]["copy_text"]["text"]
