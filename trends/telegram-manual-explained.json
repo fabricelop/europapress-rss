@@ -43054,17 +43054,34 @@
           "revision": 0
         }
       ],
-      "disable_ai_image": false,
-      "ai_image_block_reason": null,
       "image_strategy": null,
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "explained_at": "2026-10-10T13:20:00+02:00",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_2048/q_auto/v1740000001/fom-website/2026/Singapore/GettyImages-2299496793.webp",
+        "source": "Formula 1 · Singapore Sprint · 10/10/2026",
+        "source_url": "https://www.formula1.com/en/latest/article/verstappen-wins-dramatic-rain-hit-singapore-sprint-as-russell-crashes-and-mclarens-collide.4r90mH2skljBa5sinFAsyp",
+        "alt": "Imagen de archivo relacionada con Norris",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_2048/q_auto/v1740000001/fom-website/2026/Singapore/GettyImages-2299496793.webp",
+        "source": "Formula 1 · Singapore Sprint · 10/10/2026",
+        "source_url": "https://www.formula1.com/en/latest/article/verstappen-wins-dramatic-rain-hit-singapore-sprint-as-russell-crashes-and-mclarens-collide.4r90mH2skljBa5sinFAsyp",
+        "alt": "Imagen de archivo relacionada con Norris",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-10T13:20:00+02:00",
+  "updated_at": "2026-10-10T11:18:55.226951Z",
   "count": 710
 }
