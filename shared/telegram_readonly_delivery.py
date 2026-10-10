@@ -505,15 +505,15 @@ def selftest():
     assert "🌶" in kb[0][0]["copy_text"]["text"]
     assert kb[1][0]["url"].startswith(TTI_ORIGIN+"/tt-shared/gag-copy.html")
     assert "🖼️ Mis imágenes IA" not in [button["text"] for row in kb for button in row]
-    assert [b["text"] for b in kb[2]]==["🔎 Buscar en X"]
-    assert kb[1][0]["copy_text"]["text"]==card["x_text"]
-    assert "intent/tweet?text=" in kb[1][1]["url"]
+    assert [b["text"] for b in kb[3]]==["🔎 Buscar en X"]
+    assert kb[2][0]["copy_text"]["text"]==card["x_text"]
+    assert "intent/tweet?text=" in kb[2][1]["url"]
     assert kb[-1][0]["callback_data"]=="tt:b:abc123"
     assert keys(card,"ttendencias")["inline_keyboard"][-1][0]["callback_data"]=="tx:b:abc123:1"
     long_card={**card,"x_text":"A"*270}
-    long_x=keys(long_card,"ttendencias")["inline_keyboard"][1][0]
+    long_x=keys(long_card,"ttendencias")["inline_keyboard"][2][0]
     assert "copy_text" not in long_x and "mode=x" in long_x["url"]
-    assert len(keys(long_card,"ttendencias")["inline_keyboard"][1][1]["url"])<2048
+    assert len(keys(long_card,"ttendencias")["inline_keyboard"][2][1]["url"])<2048
     pending=keys({**card,"final":False},"ttittulares")["inline_keyboard"]
     assert [b[0]["text"] for b in pending]==["🔎 Buscar en X","🗑️ Borrar"]
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
