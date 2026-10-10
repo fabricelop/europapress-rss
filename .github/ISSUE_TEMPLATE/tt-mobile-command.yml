@@ -1,0 +1,52 @@
+name: "TT móvil: orden editorial"
+description: "Envía una orden segura desde TTiTTulares o TTendencias. Solo se procesan las órdenes del propietario del repositorio."
+title: "[TT-MOVIL] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        La orden se procesa en GitHub Actions tras pulsar **Submit new issue**.
+        No compartas contraseñas ni tokens en este formulario.
+        Puedes volver a la web al enviarla. La confirmación aparecerá en esta incidencia.
+  - type: dropdown
+    id: project
+    attributes:
+      label: "Proyecto"
+      options:
+        - ttittulares
+        - ttendencias
+    validations:
+      required: true
+  - type: dropdown
+    id: action
+    attributes:
+      label: "Acción"
+      options:
+        - published
+        - deleted
+        - rework
+        - prepare
+    validations:
+      required: true
+  - type: input
+    id: id
+    attributes:
+      label: "ID del elemento"
+      description: "Identificador que ha generado la app. No modifiques este campo."
+      placeholder: "abc123"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: "Titular o contexto"
+      description: "Para identificar la noticia, sin repetir información privada."
+    validations:
+      required: false
+  - type: textarea
+    id: instructions
+    attributes:
+      label: "Instrucciones para reelaborar (opcional)"
+      placeholder: "Qué quieres cambiar de esta noticia o tendencia"
+    validations:
+      required: false
