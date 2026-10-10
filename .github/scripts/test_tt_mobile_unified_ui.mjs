@@ -10,7 +10,7 @@ const code=match[1].replace(
   'globalThis.__TT_UI_TEST__={tabs,ttiRows,trendRows,itemData,manualPrompt,state};'
 );
 const el={addEventListener(){},setAttribute(){},replaceChildren(){},style:{},classList:{add(){},remove(){}},removeAttribute(){},onclick:null,href:'',src:'',innerHTML:'',textContent:''};
-const context={document:{getElementById:()=>({...el}),createElement:()=>({...el})},location:{hash:''},
+const context={document:{getElementById:()=>({...el}),createElement:()=>({...el}),addEventListener(){}},window:{addEventListener(){}},location:{hash:''},
   URL,URLSearchParams,TextEncoder,TextDecoder,Uint8Array,navigator:{clipboard:{}},
   btoa,localStorage:{},sessionStorage:{},history:{replaceState(){}},confirm:()=>true,console};
 vm.runInNewContext(code,context,{timeout:1000});
