@@ -26,7 +26,7 @@ $targets = @(
 
 function Request-Status([string]$uri) {
   try {
-    $r = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 22 -MaximumRedirection 3
+    $r = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec 7 -MaximumRedirection 3
     return [pscustomobject]@{ OK = ($r.StatusCode -eq 200); Info = "HTTP $($r.StatusCode)"; Http = [int]$r.StatusCode }
   } catch {
     $response = $_.Exception.Response
@@ -50,9 +50,18 @@ function Check-Target($target) {
     [pscustomobject]@{ Label="API editorial"; Path=$target.Api }
   )
   $healthy = $true
+  $workerReachable = $true
   foreach ($c in $checks) {
+    if (-not $workerReachable) {
+      Write-Host ("{0,-15} {1}" -f $c.Label,"omitido: /health no responde")
+      continue
+    }
+    Write-Host ("Comprobando {0}: {1}" -f $c.Label,($target.Url + $c.Path)) -ForegroundColor DarkGray
     $v = Request-Status ($target.Url + $c.Path)
-    if (-not $v.OK) { $healthy = $false }
+    if (-not $v.OK) {
+      $healthy = $false
+      if ($c.Label -eq "Worker") { $workerReachable = $false }
+    }
     Write-Host ("{0,-15} {1}" -f $c.Label,$v.Info)
   }
   return $healthy
@@ -71,6 +80,7 @@ foreach ($target in $targets) {
 }
 Write-Host ""
 Write-Host "==== Webhook independiente (solo comprobar) ====" -ForegroundColor Cyan
+Write-Host "Comprobando tt-control (webhook; solo lectura)..." -ForegroundColor DarkGray
 $callback = Request-Status "https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version"
 Write-Host ("tt-control: " + $callback.Info)
 
@@ -85,6 +95,7 @@ if ($broken.Count -eq 0) {
 Write-Warning ("Comprobaciones fallidas en: " + (($broken | ForEach-Object { $_.Name }) -join ", "))
 if (-not $Repair) {
   Write-Host "Diagnostico sin cambios. Para recuperar las dos apps ejecuta este script con -Repair."
+  Write-Host "Si falla tambien tt-control, comprobad subdominio workers.dev y Cloudflare Access antes de otro despliegue."
   exit 2
 }
 
