@@ -114,7 +114,7 @@ jobs:
           
           Orden guardada en GitHub. Las tareas de borrado de mensajes se completan después por GitHub Actions. No se ha lanzado generación IA."
           gh issue close ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --reason completed
-      - name: Confirm or report Telegram command result in private chat
+      - name: Confirm commands in Telegram and auto-clean auxiliary messages
         if: always() && (github.event_name == 'workflow_dispatch' || (github.event_name=='schedule') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:')))
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -122,7 +122,7 @@ jobs:
           TT_JOB_STATUS: ${{ job.status }}
         run: |
           python3 - <<'PY'
-          import json,os,urllib.request
+          import json,os,urllib.request,time
           token=os.environ.get('TELEGRAM_BOT_TOKEN') or ''
           chat=os.environ.get('TELEGRAM_CHAT_ID') or ''
           if not token or not chat:
@@ -133,25 +133,42 @@ jobs:
           if event in ('push','schedule') and success:
               try:
                   items=json.load(open('/tmp/tt-mobile-queue-results.json',encoding='utf8'))
-                  messages=[('✅ ' if item.get('ok') else '⚠️ ')+str(item.get('message',''))[:3000] for item in items]
-              except (OSError,ValueError):messages=[]
+                  for item in items:
+                      message=('✅ ' if item.get('ok') else '⚠️ ')+str(item.get('message',''))[:3000]
+                      cleanup=[int(item.get(k) or 0) for k in ('cleanup_command_mid','cleanup_notice_mid')]
+                      messages.append((message,item.get('ok') is True,cleanup))
+              except (OSError,ValueError,TypeError):messages=[]
           elif success:
               try:
                   result=open('/tmp/tt-mobile-issue-result.txt',encoding='utf8').read().strip()
-                  if result:messages=['✅ '+result]
+                  if result:messages=[('✅ '+result,False,[])]
               except FileNotFoundError:pass
           if not messages:
               if success:raise SystemExit(0)
-              messages=['⚠️ No se completó la orden. Comprueba el estado antes de reintentar.']
-          for message in messages:
-              req=urllib.request.Request('https://api.telegram.org/bot'+token+'/sendMessage',
-                data=json.dumps({'chat_id':chat,'text':message}).encode(),
+              messages=[('⚠️ No se completó la orden. Comprueba el estado antes de reintentar.',False,[])]
+          base='https://api.telegram.org/bot'+token+'/'
+          def api(method,data):
+              req=urllib.request.Request(base+method,
+                data=json.dumps(data).encode(),
                 headers={'content-type':'application/json'})
+              with urllib.request.urlopen(req,timeout=25) as response:return json.load(response)
+          cleanup_ids=set()
+          for message,ok,mids in messages:
               try:
-                  with urllib.request.urlopen(req,timeout=25) as response:
-                      data=json.load(response)
-                  print('TELEGRAM_MOBILE_ACK_OK',bool(data.get('ok')))
+                  result=api('sendMessage',{'chat_id':chat,'text':message})
+                  sent=int((result.get('result') or {}).get('message_id') or 0)
+                  print('TELEGRAM_MOBILE_ACK_OK',bool(result.get('ok')))
+                  if ok and sent and any(mid>0 for mid in mids):
+                      cleanup_ids.update([sent,*[mid for mid in mids if mid>0]])
               except Exception as error:
                   print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
+          if cleanup_ids:
+              # Keep confirmation visible long enough to read on mobile.
+              time.sleep(45)
+              for mid in sorted(cleanup_ids):
+                  try:
+                      result=api('deleteMessage',{'chat_id':chat,'message_id':mid})
+                      print('TELEGRAM_MOBILE_AUX_DELETE',mid,bool(result.get('ok')))
+                  except Exception as error:
+                      print('TELEGRAM_MOBILE_AUX_DELETE_WARNING',mid,type(error).__name__)
           PY
-
