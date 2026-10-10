@@ -27,6 +27,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'telegram/tt-mobile-command-queue.json'
       - '.github/scripts/tt_mobile_issue_command.py'
       - '.github/scripts/test_tt_mobile_issue_command.py'
       - '.github/ISSUE_TEMPLATE/tt-mobile-command.yml'
@@ -61,7 +62,7 @@ jobs:
           PY
           python3 .github/scripts/test_tt_mobile_issue_command.py
   apply:
-    if: (github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')) || (github.event_name == 'workflow_dispatch' && github.actor == 'fabricelop')
+    if: (github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')) || (github.event_name == 'workflow_dispatch' && github.actor == 'fabricelop') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:'))
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -79,10 +80,15 @@ jobs:
           for attempt in 1 2 3 4 5 6; do
             git fetch origin main
             git checkout -B main origin/main
-            python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
+            if [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
+              python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH" --queue
+            else
+              python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
+            fi
             git add ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json \
               telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
-              trends/requests.json trends/telegram-image-deliveries.json || true
+              trends/requests.json trends/telegram-image-deliveries.json \
+              telegram/tt-mobile-command-queue.json || true
             if test -e trends/mobile-decisions.json; then git add trends/mobile-decisions.json; fi
             if git diff --cached --quiet; then
               echo "TT_MOBILE_NO_CHANGE"
@@ -107,7 +113,7 @@ jobs:
           Orden guardada en GitHub. Las tareas de borrado de mensajes se completan después por GitHub Actions. No se ha lanzado generación IA."
           gh issue close ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --reason completed
       - name: Confirm or report Telegram command result in private chat
-        if: always() && github.event_name == 'workflow_dispatch'
+        if: always() && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:')))
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -120,18 +126,30 @@ jobs:
           if not token or not chat:
               print('TELEGRAM_ACK_CREDENTIAL_MISSING');raise SystemExit(0)
           success=os.environ.get('TT_JOB_STATUS')=='success'
-          try:
-              result=open('/tmp/tt-mobile-issue-result.txt',encoding='utf8').read().strip() if success else ''
-          except FileNotFoundError:result=''
-          message=('✅ '+result if success and result else '⚠️ No se completó la orden. Comprueba el estado antes de reintentar.')
-          req=urllib.request.Request('https://api.telegram.org/bot'+token+'/sendMessage',
-            data=json.dumps({'chat_id':chat,'text':message}).encode(),
-            headers={'content-type':'application/json'})
-          try:
-              with urllib.request.urlopen(req,timeout=25) as response:
-                  data=json.load(response)
-              print('TELEGRAM_MOBILE_ACK_OK',bool(data.get('ok')))
-          except Exception as error:
-              print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
+          event=os.environ.get('GITHUB_EVENT_NAME','')
+          messages=[]
+          if event=='push' and success:
+              try:
+                  items=json.load(open('/tmp/tt-mobile-queue-results.json',encoding='utf8'))
+                  messages=[('✅ ' if item.get('ok') else '⚠️ ')+str(item.get('message',''))[:3000] for item in items]
+              except (OSError,ValueError):messages=[]
+          elif success:
+              try:
+                  result=open('/tmp/tt-mobile-issue-result.txt',encoding='utf8').read().strip()
+                  if result:messages=['✅ '+result]
+              except FileNotFoundError:pass
+          if not messages:
+              if success:raise SystemExit(0)
+              messages=['⚠️ No se completó la orden. Comprueba el estado antes de reintentar.']
+          for message in messages:
+              req=urllib.request.Request('https://api.telegram.org/bot'+token+'/sendMessage',
+                data=json.dumps({'chat_id':chat,'text':message}).encode(),
+                headers={'content-type':'application/json'})
+              try:
+                  with urllib.request.urlopen(req,timeout=25) as response:
+                      data=json.load(response)
+                  print('TELEGRAM_MOBILE_ACK_OK',bool(data.get('ok')))
+              except Exception as error:
+                  print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
           PY
 
