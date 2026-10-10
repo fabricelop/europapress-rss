@@ -14,10 +14,10 @@ $RunTimeoutMinutes = 35
 $MaxParallelImageChats = 4
 $ImageStaleMinutes = 45
 $StatusBase = [Environment]::GetEnvironmentVariable("TTITTULARES_SERVICE_BASE", "User")
-if (-not $StatusBase) { $StatusBase = "https://ttittulares-no-vercel-test.fabricelop.workers.dev" }
+if (-not $StatusBase -or $StatusBase.TrimEnd("/") -eq "https://ttittulares-no-vercel-test.fabricelop.workers.dev") { $StatusBase = "https://tt-control.fabricelop.workers.dev" }
 $StatusBase = $StatusBase.TrimEnd("/")
 $TendenciasBase = [Environment]::GetEnvironmentVariable("TTENDENCIAS_SERVICE_BASE", "User")
-if (-not $TendenciasBase) { $TendenciasBase = "https://ttendencias-no-vercel-test.fabricelop.workers.dev" }
+if (-not $TendenciasBase -or $TendenciasBase.TrimEnd("/") -eq "https://ttendencias-no-vercel-test.fabricelop.workers.dev") { $TendenciasBase = "https://tt-control.fabricelop.workers.dev" }
 $TendenciasBase = $TendenciasBase.TrimEnd("/")
 $RepoRaw = "https://raw.githubusercontent.com/fabricelop/europapress-rss"
 
