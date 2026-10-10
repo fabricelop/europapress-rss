@@ -543,6 +543,10 @@ def selftest():
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
     assert not trend_repeat_allowed({"is_in_top":False,"entered_top_at":"2026-10-07T00:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-07T00:00:00Z"}],now)
+    assert trend_title_key("Diomandé")==trend_title_key("Diomande")
+    assert not trend_repeat_allowed(
+        {"novelty_verified":True,"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
+        [{"status":"sent","delivered_at":"2026-10-09T15:00:00Z"}],now)
     assert public_news_detail({"explanation":"Reuters y Associated Press coinciden en la noticia. Ambas fuentes corroboran los datos.","factual_summary":"El comité anunció el premio."})=="El comité anunció el premio."
     assert public_news_detail({"explanation":"La comisión ha aprobado un informe.","factual_summary":"Informe aprobado."})=="La comisión ha aprobado un informe."
     assert trend_body("TT#14 #Sitges2026","TT#14 #Sitges2026 es tendencia por un festival.\\n🌶️ Remate.",True).count("TT#14")==1
