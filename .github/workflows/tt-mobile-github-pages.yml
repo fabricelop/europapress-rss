@@ -1,0 +1,79 @@
+name: TT mobile web on GitHub Pages (no Cloudflare, no Vercel)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/tt-mobile-github-pages.yml'
+  schedule:
+    - cron: '17 */6 * * *'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: tt-mobile-github-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate HTML JavaScript and prepare public snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil,json,re
+          src=Path('docs/index.html').read_text(encoding='utf8')
+          code=re.findall(r'<script>(.*?)</script>',src,re.S)
+          assert len(code)==1,'Expected a single local script'
+          Path('/tmp/tt-site-check.js').write_text(code[0],encoding='utf8')
+          assert 'cloudflare' not in code[0].lower()
+          assert 'vercel' not in code[0].lower()
+          assert 'GITHUB_TOKEN' not in code[0]
+          dest=Path('/tmp/tt-pages-site')
+          shutil.copytree('docs',dest)
+          (dest/'.nojekyll').write_text('',encoding='utf8')
+          names=['ttittulares/prepared.json','ttittulares/status.json',
+                 'ttittulares/decisions.json','telegram/editorial-processing.json',
+                 'trends/recent.json','trends/explained.json',
+                 'trends/requests.json','trends/telegram-manual-explained.json',
+                 'trends/telegram-image-deliveries.json']
+          for name in names:
+            source=Path(name)
+            target=dest/'data'/name
+            target.parent.mkdir(parents=True,exist_ok=True)
+            if not source.is_file(): continue
+            try:
+              json.loads(source.read_text(encoding='utf8'))
+              shutil.copyfile(source,target)
+              print('STATIC_BACKUP',name,source.stat().st_size)
+            except (ValueError,UnicodeError) as e:
+              print('STATIC_BACKUP_SKIP_INVALID_JSON',name,type(e).__name__)
+          for must in ['ttittulares/status.json','ttittulares/prepared.json','trends/recent.json']:
+            assert (dest/'data'/must).is_file(),must
+          PY
+          node --check /tmp/tt-site-check.js
+          test -s /tmp/tt-pages-site/index.html
+          echo 'TT_MOBILE_STATIC_VALID'
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/tt-pages-site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Record successful route in output
+        run: echo "TT_MOBILE_PAGES_URL=${{ steps.deployment.outputs.page_url }}"
