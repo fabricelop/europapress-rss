@@ -223,9 +223,57 @@ def trend_command(action, element_id, context, instruction, now):
     return "TTendencias: petición de explicación registrada: " + element_id
 
 
+
+def process_queue():
+    """Consume queued Telegram commands from a trusted, repository-owned commit.
+
+    Updates are idempotent: completed/failed items are never replayed.
+    The GitHub Actions commit includes the decision ledgers and queue receipt
+    together, so a concurrent push retry starts from the latest main.
+    """
+    path = "telegram/tt-mobile-command-queue.json"
+    queue = load(path, {"version": 1, "items": []})
+    items = queue.get("items") or []
+    if not isinstance(items, list):
+        raise ValueError("Malformed Telegram command queue")
+    results = []
+    for item in items:
+        if not isinstance(item, dict) or item.get("status") != "pending":
+            continue
+        action_id = str(item.get("update_id") or "")
+        try:
+            project, action, element_id, context, instruction = parse_dispatch(
+                {"inputs": {"project": item.get("project"), "action": item.get("action"),
+                            "id": item.get("id"), "context": "",
+                            "instruction": item.get("instruction", "")}}
+            )
+            result = (tti_command if project == "ttittulares" else trend_command)(
+                action, element_id, context, instruction, timestamp()
+            )
+            item.update(status="completed", completed_at=timestamp())
+            item.pop("error", None)
+            results.append({"update_id": action_id, "ok": True, "message": result})
+        except Exception as exc:
+            error = str(exc)[:180]
+            item.update(status="failed", completed_at=timestamp(), error=error)
+            results.append({"update_id": action_id, "ok": False,
+                            "message": "No se completó la orden " + action_id + ": " + error})
+    if results:
+        queue["updated_at"] = timestamp()
+        save(path, queue)
+    Path("/tmp/tt-mobile-queue-results.json").write_text(
+        json.dumps(results, ensure_ascii=False), encoding="utf-8"
+    )
+    print("TT_MOBILE_QUEUE_RESULTS", json.dumps(results, ensure_ascii=False))
+    return len(results)
+
+
 def main():
     if len(sys.argv) < 2:
         raise SystemExit("Use: python tt_mobile_issue_command.py <event.json>")
+    if "--queue" in sys.argv[2:]:
+        process_queue()
+        return
     event = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
     project, action, element_id, context, instruction = (parse_dispatch(event) if "inputs" in event else parse_issue(event))
     now = timestamp()
