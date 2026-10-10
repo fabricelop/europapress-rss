@@ -237,16 +237,15 @@ def keys(card,project):
     rows=[]
     x_text=str(card.get("x_text") or "").strip()
     if card.get("final") and x_text:
-        origin=TTI_ORIGIN if project=="ttittulares" else TTEND_ORIGIN
         args={"app":project,"id":str(card["id"]),"rev":str(card["rev"])}
         if project=="ttendencias":args["name"]=str(card.get("title") or "")[:100]
-        bridge=origin+"/tt-shared/gag-copy.html?"+urlencode(args)
+        # Github Pages works on iPhone even when workers.dev is unreachable.
+        bridge="https://fabricelop.github.io/europapress-rss/gag.html?"+urlencode(args)
         rows.append([
-            {"text":"📋 Copiar prompt GAG","copy_text":{"text":mobile_gag_prompt(card,project)}},
+            {"text":"📄 GAG completo (copiar)","url":bridge},
             {"text":"🎨 Chat Images","url":IMAGE_APP}
         ])
-        # The full research-backed prompt remains available for browsers that work.
-        rows.append([{"text":"📄 Prompt completo (web)","url":bridge}])
+        rows.append([{"text":"📋 GAG rápido (abreviado)","copy_text":{"text":mobile_gag_prompt(card,project)}}])
         # Telegram's copy_text is limited to 256 characters. Never truncate
         # editorial text: longer explanations open the full-text copy page.
         if len(x_text)<=256:
@@ -500,10 +499,10 @@ def selftest():
     kb=keys(card,"ttittulares")["inline_keyboard"]
     assert [b["text"] for b in kb[0]]==["📋 Copiar prompt GAG","🎨 Chat Images"]
     assert [button["text"] for row in kb for button in row].count("🎨 Chat Images")==1
-    assert kb[0][0].get("copy_text") and len(kb[0][0]["copy_text"]["text"])<=256
-    assert "GAG IA" in kb[0][0]["copy_text"]["text"]
-    assert "🌶" in kb[0][0]["copy_text"]["text"]
-    assert kb[1][0]["url"].startswith(TTI_ORIGIN+"/tt-shared/gag-copy.html")
+    assert kb[1][0].get("copy_text") and len(kb[1][0]["copy_text"]["text"])<=256
+    assert "GAG IA" in kb[1][0]["copy_text"]["text"]
+    assert "🌶" in kb[1][0]["copy_text"]["text"]
+    assert kb[0][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/gag.html")
     assert "🖼️ Mis imágenes IA" not in [button["text"] for row in kb for button in row]
     assert [b["text"] for b in kb[3]]==["🔎 Buscar en X"]
     assert kb[2][0]["copy_text"]["text"]==card["x_text"]
