@@ -1,13 +1,18 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-10T15:51:51+02:00",
-  "last_completed_at": "2026-10-10T15:18:30+02:00",
-  "updated_at": "2026-10-10T15:51:51+02:00",
+  "last_started_at": "2026-10-10T15:45:00+02:00",
+  "last_completed_at": "2026-10-10T16:00:00+02:00",
+  "updated_at": "2026-10-10T16:00:00+02:00",
   "status": "waiting",
   "processed_ids": [
+    "4d3e29179028",
+    "fdd0b4445d7a",
+    "9848666f09f0",
+    "fe94b9166f83",
+    "8593b9db6521",
     "070d1f241927"
   ],
   "remaining_ids": [
@@ -27,8 +32,8 @@
     "persisted_trigger": true,
     "status": "in_progress",
     "direct_imagegen": false,
-    "last_trigger_run_id": "tr-20261010144500-chatgpt",
-    "last_triggered_at": "2026-10-10T14:45:00+02:00",
+    "last_trigger_run_id": "tr-20261010154500-chatgpt",
+    "last_triggered_at": "2026-10-10T15:45:00+02:00",
     "observed_at": "2026-10-10T14:17:00+02:00",
     "workflow_run_id": 38051384164
   },
@@ -36,129 +41,207 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261010151500-chatgpt",
+    "run_id": "tr-20261010154500-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-10T15:15:00+02:00",
-    "updated_at": "2026-10-10T15:18:30+02:00",
-    "finished_at": "2026-10-10T15:18:30+02:00",
+    "started_at": "2026-10-10T15:45:00+02:00",
+    "updated_at": "2026-10-10T16:00:00+02:00",
+    "finished_at": "2026-10-10T16:00:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 1,
-    "total": 1,
-    "partial": false,
+    "current": 6,
+    "total": 7,
+    "partial": true,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 6,
+      "trends_explained": 5,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 2,
+      "grouped_members_total": 5,
       "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 1,
-      "queue_remaining": 1,
+      "incidents": 2,
+      "queue_remaining": 2,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 5,
+      "remates_selected": 2,
+      "remates_omitted": 1
     },
-    "message": "Pasada completada · «Vienes» sigue en TT#5, pero dos búsquedas actuales distintas no permiten verificar un detonante concreto. Permanece problematic; no hay revisiones preparing/update ni reexplicaciones pendientes.",
-    "incident_count": 1,
+    "message": "Pasada cerrada parcialmente · 5 tendencias explicadas en 3 grupos; Vienes continúa problematic y Dos Hermanas permanece preparing.",
+    "incident_count": 2,
     "incidents": [
       {
-        "trend_id": "070d1f241927",
-        "title": "Vienes",
-        "reason": "El término «Vienes» sigue en el Top 10, pero dos búsquedas actuales y distintas no permiten identificar con fiabilidad un detonante concreto en España. Los resultados son usos genéricos de la palabra; no se inventa una causa."
+        "at": "2026-10-10T15:52:30+02:00",
+        "phase": "persisting",
+        "trend_id": "fe94b9166f83",
+        "title": "SACRIFICIOS",
+        "reason": "La operación de persistencia fue interrumpida por los controles del conector; al releer main se comprobó que ficha y request sí habían quedado consistentes y el flujo retiró la revisión de la cola."
+      },
+      {
+        "at": "2026-10-10T15:59:00+02:00",
+        "phase": "verifying",
+        "trend_id": "8f12ec7f550c",
+        "title": "Dos Hermanas",
+        "reason": "La revisión permanece en preparing porque no se completó su persistencia editorial durante esta pasada."
       }
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "4d3e29179028",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "fe94b9166f83",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "political_content"
+      },
+      {
+        "trend_id": "8593b9db6521",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-10T15:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · 1 problematic activo; releyendo estado autoritativo."
+        "at": "2026-10-10T15:50:30+02:00",
+        "phase": "verifying",
+        "trend_id": "4d3e29179028",
+        "title": "Rayo",
+        "message": "Rayo/Vallecas/Presa cerrados y verificados"
       },
       {
-        "at": "2026-10-10T15:15:20+02:00",
+        "at": "2026-10-10T15:52:30+02:00",
+        "phase": "persisting",
+        "trend_id": "fe94b9166f83",
+        "title": "SACRIFICIOS",
+        "message": "Persistencia interrumpida por controles del conector"
+      },
+      {
+        "at": "2026-10-10T15:53:00+02:00",
+        "phase": "verifying",
+        "trend_id": "8593b9db6521",
+        "title": "Leeds",
+        "message": "Releyendo estado autoritativo de Leeds"
+      },
+      {
+        "at": "2026-10-10T15:53:20+02:00",
+        "phase": "investigating",
+        "trend_id": "8593b9db6521",
+        "title": "Leeds",
+        "message": "Contrastando resultado y remontada"
+      },
+      {
+        "at": "2026-10-10T15:53:40+02:00",
+        "phase": "drafting",
+        "trend_id": "8593b9db6521",
+        "title": "Leeds",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-10T15:53:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "8593b9db6521",
+        "title": "Leeds",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-10T15:54:20+02:00",
+        "phase": "verifying",
+        "trend_id": "8593b9db6521",
+        "title": "Leeds",
+        "message": "Leeds cerrado y verificado"
+      },
+      {
+        "at": "2026-10-10T15:55:00+02:00",
         "phase": "verifying",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Releyendo estado autoritativo de Vienes."
+        "message": "Releyendo estado autoritativo de Vienes"
       },
       {
-        "at": "2026-10-10T15:15:35+02:00",
+        "at": "2026-10-10T15:55:20+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Buscando detonante actual con consultas nuevas."
+        "message": "Repitiendo búsqueda con consultas distintas"
       },
       {
-        "at": "2026-10-10T15:16:00+02:00",
+        "at": "2026-10-10T15:55:40+02:00",
         "phase": "investigating",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Contrastando segunda búsqueda con contexto social y señales del Top 10."
+        "message": "Sin detonante actual verificable tras dos búsquedas distintas"
       },
       {
-        "at": "2026-10-10T15:16:10+02:00",
-        "phase": "investigating",
-        "trend_id": "070d1f241927",
-        "title": "Vienes",
-        "message": "Dos búsquedas nuevas sin detonante verificable; no se redacta una causa inventada."
-      },
-      {
-        "at": "2026-10-10T15:16:25+02:00",
+        "at": "2026-10-10T15:56:00+02:00",
         "phase": "persisting",
         "trend_id": "070d1f241927",
         "title": "Vienes",
-        "message": "Guardando nuevo intento problematic en el outbox editorial."
+        "message": "Registrando tercer intento problematic"
       },
       {
-        "at": "2026-10-10T15:17:05+02:00",
-        "phase": "persisting",
-        "trend_id": "070d1f241927",
-        "title": "Vienes",
-        "message": "El aplicador consumió el outbox y actualizó requests/cola; corrigiendo el solape de contador."
-      },
-      {
-        "at": "2026-10-10T15:17:20+02:00",
+        "at": "2026-10-10T15:57:00+02:00",
         "phase": "verifying",
-        "trend_id": "070d1f241927",
-        "title": "Vienes",
-        "message": "Verificando id+revision y estado problematic persistido."
+        "trend_id": "fe94b9166f83",
+        "title": "SACRIFICIOS",
+        "message": "Releyendo ficha y request tras la interrupción"
       },
       {
-        "at": "2026-10-10T15:18:15+02:00",
+        "at": "2026-10-10T15:58:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fe94b9166f83",
+        "title": "SACRIFICIOS",
+        "message": "Ficha y request coinciden exactamente; revisión fuera de cola"
+      },
+      {
+        "at": "2026-10-10T15:59:00+02:00",
+        "phase": "verifying",
+        "trend_id": "8f12ec7f550c",
+        "title": "Dos Hermanas",
+        "message": "Revisión sigue preparing y no puede contarse como cerrada"
+      },
+      {
+        "at": "2026-10-10T15:59:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y 1 problematic."
+        "message": "Releyendo main · 1 preparing y 1 problematic"
       },
       {
-        "at": "2026-10-10T15:18:30+02:00",
+        "at": "2026-10-10T16:00:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · sin trabajo editorial nuevo; Vienes permanece problematic para próximo reintento mientras siga en Top 10."
+        "message": "Cierre parcial verificado · queda 1 preparing y 1 problematic"
       }
     ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "8f12ec7f550c"
+    ],
     "remaining_problematic_ids": [
       "070d1f241927"
     ]
