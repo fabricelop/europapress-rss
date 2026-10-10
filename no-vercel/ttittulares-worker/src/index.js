@@ -519,11 +519,61 @@ async function acceptTelegramUserProposal(request,env){
   return json({ok:false,error:"Concurrent editorial queue writes"},503);
 }
 
+
+async function dispatchAuthorizedTelegramMobileCommand(request,env){
+  if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
+  if(!env.GITHUB_TOKEN)return json({ok:false,error:"GitHub dispatch not configured"},503);
+  let token;
+  try{token=await cloudflareTelegramBotToken(env)}
+  catch{return json({ok:false,error:"Telegram credential verification unavailable"},503)}
+  const received=String(request.headers.get("authorization")||"");
+  const expected="Bearer "+token;
+  let verified=received.length===expected.length;
+  for(let i=0;i<Math.max(received.length,expected.length);i++){
+    verified=(received.charCodeAt(i)===expected.charCodeAt(i))&&verified;
+  }
+  if(!verified)return json({ok:false,error:"Unauthorized"},401);
+  let obj;
+  try{obj=await request.json()}catch{return json({ok:false,error:"Invalid JSON"},400)}
+  const project=String(obj?.project||"");
+  const action=String(obj?.action||"");
+  const id=String(obj?.id||"").trim();
+  const updateId=Number(obj?.update_id);
+  if(!["ttittulares","ttendencias"].includes(project)||
+     !["published","deleted","rework","prepare"].includes(action)||
+     !/^[\p{L}\p{N}_#.\- ]{1,120}$/u.test(id)||
+     !Number.isSafeInteger(updateId)||updateId<=0){
+    return json({ok:false,error:"Invalid command"},400);
+  }
+  const endpoint="https://api.github.com/repos/fabricelop/europapress-rss/actions/workflows/tt-mobile-github-commands.yml/dispatches";
+  const dispatched=await fetch(endpoint,{
+    method:"POST",
+    headers:{
+      "authorization":"Bearer "+env.GITHUB_TOKEN,
+      "accept":"application/vnd.github+json",
+      "x-github-api-version":"2022-11-28",
+      "content-type":"application/json",
+      "user-agent":"tt-mobile-telegram-dispatch"
+    },
+    body:JSON.stringify({
+      ref:"main",
+      inputs:{project,action,id,context:"Telegram mobile update "+updateId}
+    })
+  }).catch(()=>null);
+  if(!dispatched)return json({ok:false,error:"GitHub dispatch network failure"},503);
+  if(dispatched.status!==204){
+    console.log("TT_MOBILE_WORKFLOW_DISPATCH_FAILED",dispatched.status);
+    return json({ok:false,error:"GitHub dispatch unavailable",status:dispatched.status},502);
+  }
+  return json({ok:true,accepted:true,update_id:updateId,project,action,id},202);
+}
+
 export default {
   async fetch(request,env){
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-user-proposal")return acceptTelegramUserProposal(request,env);
+    if(path==="/api/tt-mobile-telegram-dispatch")return dispatchAuthorizedTelegramMobileCommand(request,env);
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2",instagram_cleanup:"paired-delete-v1"});
     if(path==="/api/ttittulares-instagram-preflight"&&request.method==="GET"){
