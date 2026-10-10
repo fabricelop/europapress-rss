@@ -153,21 +153,25 @@ jobs:
                 headers={'content-type':'application/json'})
               with urllib.request.urlopen(req,timeout=25) as response:return json.load(response)
           cleanup_ids=set()
+          had_error=False
           for message,ok,mids in messages:
               try:
                   result=api('sendMessage',{'chat_id':chat,'text':message})
                   sent=int((result.get('result') or {}).get('message_id') or 0)
                   print('TELEGRAM_MOBILE_ACK_OK',bool(result.get('ok')))
-                  if ok and sent:
-                      # Always remove the confirmation. Older queued commands lack
-                      # cleanup metadata, but the bot's own ACK can still be erased.
+                  if sent:
+                      # Delete the /start, the receipt and this confirmation,
+                      # including failed commands (after giving time to read).
                       cleanup_ids.add(sent)
                       cleanup_ids.update(mid for mid in mids if mid>0)
+                      if not ok:had_error=True
               except Exception as error:
                   print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
+                  had_error=True
           if cleanup_ids:
-              # Keep confirmation visible long enough to read on mobile.
-              time.sleep(45)
+              # Successful commands disappear promptly. Failure notices stay
+              # briefly longer, but no auxiliary Telegram chatter is permanent.
+              time.sleep(60 if had_error else 20)
               for mid in sorted(cleanup_ids):
                   try:
                       result=api('deleteMessage',{'chat_id':chat,'message_id':mid})
