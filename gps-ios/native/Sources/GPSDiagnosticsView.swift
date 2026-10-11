@@ -9,7 +9,8 @@ struct GPSDiagnosticsView: View {
         List {
             Section("Seguimiento") {
                 LabeledContent("Estado",value:model.gpsStatus)
-                LabeledContent("Modo",value:"Continuo · sin pausa automática")
+                LabeledContent("Modo",value:model.isResting ? "Pausa voluntaria (tiempo asumido)" : "GPS continuo")
+                LabeledContent("Reactivaciones automáticas tras pausa",value:String(gps.automaticRestResumptions))
                 LabeledContent("Pausas notificadas por iOS",value:String(gps.pauseCount))
                 LabeledContent("Reanudaciones notificadas",value:String(gps.resumeCount))
                 LabeledContent("Último hueco entre muestras",value:DurationFormat.full(gps.lastGapSeconds))
@@ -52,7 +53,8 @@ struct GPSDiagnosticsView: View {
             }
             Section("Interpretación") {
                 Text("Posiciones conservadas no equivale al número de posiciones recibidas. En estancias quietas se guardan menos muestras, pero las duraciones de las muestras recibidas se siguen asignando a sus cuadrículas.")
-                Text("Los tramos sin muestras fiables se registran como incertidumbre, no como una estancia confirmada. CoreMotion es solo diagnóstico: no puede garantizar la reactivación de una app suspendida.")
+                Text("Los intervalos de pausa manual se atribuyen a la última cuadrícula como tiempo asumido, diferenciados del GPS observado. Las interrupciones involuntarias del GPS siguen sin reconstruirse.")
+                Text("Los avisos de salida de región pueden reactivar el GPS si iOS permite la ejecución y está concedida la ubicación Siempre. No se garantiza una detección inmediata.")
                 Text("Un iPhone puede limitar o detener la localización por permisos, falta de señal o cierre del proceso. Este diagnóstico no demuestra continuidad mientras el teléfono esté bloqueado.")
                 Text("La migración inicial conserva el JSON previo y crea una nueva base SQLite. Exporta una copia JSON antes de actualizar o cambiar de dispositivo.")
             }.font(.caption).foregroundStyle(.secondary)
