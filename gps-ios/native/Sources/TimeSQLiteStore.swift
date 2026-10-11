@@ -12,6 +12,7 @@ struct TimeStoreHeader: Codable {
     var manualBreaks: [Date]
     // Opcionales: las cabeceras de SQLite v0.3 no contienen estos campos.
     var places: [UserPlace]?
+    var customZones: [TimeCustomZone]?
     var territoryCache: [String:TerritoryRecord]?
     var powerEvents: [GPSPowerEvent]?
     var shortIDs: [String:Int]?
@@ -26,6 +27,7 @@ struct TimeStoreHeader: Codable {
         trackingEnabled = state.trackingEnabled
         manualBreaks = state.manualBreaks
         places = state.places
+        customZones = state.customZones
         territoryCache = state.territoryCache
         powerEvents = state.powerEvents
         shortIDs = state.shortIDs
@@ -181,6 +183,7 @@ final class TimeSQLiteStore {
                 data.trackingEnabled = header.trackingEnabled
                 data.manualBreaks = header.manualBreaks
                 data.places = header.places ?? []
+                data.customZones = header.customZones ?? []
                 data.territoryCache = header.territoryCache ?? [:]
                 data.powerEvents = header.powerEvents ?? []
                 data.shortIDs = header.shortIDs ?? [:]
