@@ -572,7 +572,8 @@ def process(project,now,token,chat):
                 note=("📷 Fotografía de archivo añadida como respuesta."
                       if existing and not old_photo else
                       "📷 Fotografía de archivo disponible.")
-                body=body.replace("📷 Fotografía de archivo pendiente.",note)
+                body=(body.replace("📷 Fotografía de archivo pendiente.",note)
+                          .replace("📷 Fotografía de archivo disponible.",note))
         kb=keys(card,project)
         # The digest includes the actual displayed text, not an image URL that
         # was fetched but could not be sent. Preserve the same Telegram card ID.
