@@ -54,6 +54,34 @@ jobs:
               out.write('active='+str(active).lower()+'\n')
           print('TTI_NATIVE_LISTENER_READY' if active else 'TTI_NATIVE_STAGED_WEBHOOK_UNTOUCHED')
           PY
+      - name: Confirmar desde GitHub acceso autenticado a preguntas
+        if: steps.gate.outputs.active == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error,json
+          token=os.environ['TELEGRAM_BOT_TOKEN'].strip()
+          assert token,'Bot credential unavailable'
+          req=urllib.request.Request(
+            'https://tt-control.fabricelop.workers.dev/api/telegram-native-question',
+            method='POST',data=b'{}',headers={
+              'Content-Type':'application/json',
+              'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Authorization':'Bearer '+token})
+          try:
+              with urllib.request.urlopen(req,timeout=25) as r:
+                  code=r.status
+          except urllib.error.HTTPError as e:
+              code=e.code
+              body=e.read(3000)
+              if code==422:
+                  payload=json.loads(body)
+                  assert payload.get('error')=='question_not_handled',payload
+          assert code==422,'Private Q&A is not reachable, webhook must be preserved'
+          print('TTITTULARES_QA_RELAY_VERIFIED_NO_INFERENCE')
+          PY
+
       - name: Conmutar de webhook a getUpdates sin descartar mensajes
         if: steps.gate.outputs.active == 'true'
         env:
