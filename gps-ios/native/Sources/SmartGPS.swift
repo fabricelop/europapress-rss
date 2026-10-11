@@ -14,44 +14,29 @@ enum GPSPowerMode: String {
     case rest = "Reposo inteligente"
 }
 
-/// Decisión de modo separada del GPS real, comprobable con datos ficticios.
+/// Política conservadora de continuidad: no se permite un reposo automático
+/// que podría suspender la aplicación antes de que CoreMotion pueda despertarla.
+/// La intención "Voy a moverme" es solo informativa y nunca altera el GPS.
 struct SmartGPSDecision {
     private(set) var mode: GPSPowerMode = .precision
     private(set) var movingSoon = false
-    private(set) var restSince: Date?
     private(set) var lastActivity: Date?
-    static let quietThreshold: TimeInterval = 10 * 60
 
-    mutating func anticipate() {
-        movingSoon = true
-        mode = .precision
-        restSince = nil
-    }
-    mutating func cancelAnticipation() {
-        movingSoon = false
-        mode = .precision
-        restSince = nil // Auto: una parada nueva debe ser confirmada, no presupuesta.
-    }
+    mutating func anticipate() { movingSoon = true }
+    mutating func cancelAnticipation() { movingSoon = false }
+
     mutating func observe(date: Date, speed: Double, metersSincePrevious: Double,
                           motionMoving: Bool?) {
-        let moving = motionMoving == true || speed >= 1.15 || metersSincePrevious >= 28
-        if moving {
-            restSince = nil
+        if motionMoving == true || speed >= 1.15 || metersSincePrevious >= 28 {
             lastActivity = date
-            mode = .precision
-            return
-        }
-        // Core Motion explícitamente inmóvil o GPS sin desplazamiento relevante.
-        if restSince == nil { restSince = date }
-        if let restSince, date.timeIntervalSince(restSince) >= Self.quietThreshold {
             movingSoon = false
-            mode = .rest
         }
+        // Sin transición a .rest: la ausencia de nuevas posiciones no prueba
+        // inmovilidad y ningún callback CoreMotion garantiza despertar iOS.
     }
     mutating func motionStarted(at date: Date) {
         lastActivity = date
-        restSince = nil
-        mode = .precision
+        movingSoon = false
     }
 }
 
