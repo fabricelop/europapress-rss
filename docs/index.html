@@ -189,11 +189,20 @@ function trendRows(){
 }
 function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q)))}
 function itemData(x){
- const tweet=String(x.tweet?.text||'').trim(),expl=String(x.explanation||x.factual_summary||x.description||x.detail||'').trim();
+ const tweet=String(x.tweet?.text||'').trim();
+ const expl=String(x.explanation||x.factual_summary||x.description||x.detail||'').trim();
+ const source=tweet||expl;
+ // Editorial records commonly include the punchline in the full explanation
+ // AND repeat it in closer_text. Display and copy it exactly once.
+ const pepper=line=>/^🌶(?:\uFE0F)?(?:\s|$)/u.test(String(line||'').trim());
+ const allLines=source.split('\n').map(line=>line.trim()).filter(Boolean);
+ const embedded=allLines.filter(pepper);
  let closer=String(x.tweet?.remate||x.closer_text||'').trim();
- if(!closer){const m=(tweet||expl).split('\n').map(s=>s.trim()).filter(s=>s.startsWith('🌶'));closer=m.at(-1)||''}
- const editorial=(tweet||expl)+(closer&&!String(tweet||expl).includes(closer)?'\n'+closer:'');
- return {tweet,expl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
+ if(!closer)closer=embedded.at(-1)||'';
+ const plain=allLines.filter(line=>!pepper(line)).join('\n');
+ const editorial=plain+(closer?(plain?'\n':'')+closer:'');
+ const displayExpl=expl.split('\n').map(line=>line.trim()).filter(line=>line&&!pepper(line)).join('\n');
+ return {tweet,expl,displayExpl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
 }
 function manualPrompt(x){
  const c=itemData(x),kind=x._kind==='tti'?'TTiTTulares':'TTendencias';
@@ -229,7 +238,7 @@ function telegramActionUrl(project,id,action){
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
- const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.expl;
+ const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.displayExpl;
  const showClip=!['fuente','tremending'].includes(x._kind)&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
  const out=document.createElement('article');out.className='card';
  out.innerHTML=(img?'<img class="pic" loading="lazy" alt="" src="'+esc(img)+'">':'')+
