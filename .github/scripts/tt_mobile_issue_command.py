@@ -113,7 +113,10 @@ def original_news_metadata(element_id, *rows):
                        str(a.get("url") or "").startswith("https://")), {})
     if not url:
         url = str(appearance.get("url") or "")
-    source = str(appearance.get("source") or "")
+    source = next((str(a.get("source")) for r in candidates for a in (r.get("appearances") or [])
+                   if isinstance(a, dict) and str(a.get("url") or "") == url and a.get("source")), "")
+    if not source:
+        source = str(appearance.get("source") or "")
     if not source:
         source = next((str(r.get("source") or "") for r in candidates if r.get("source")), "")
     return title, url, source
