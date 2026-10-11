@@ -181,6 +181,11 @@ struct SavedState: Codable {
             gpsStatus = "Espera una posición GPS reciente antes de pausar"
             return false
         }
+        let latest = lastProcessedSample?.date ?? point.date
+        if date >= latest && date.timeIntervalSince(latest) <= 120 {
+            addInterval(start:latest,end:date,cell:cell,
+                        quality:"asumido · transición a pausa",source:"descanso")
+        }
         data.gpsRest = GPSRestSession(startedAt: date, cell: cell,
                                       latitude: point.latitude, longitude: point.longitude)
         recording = false
@@ -200,6 +205,8 @@ struct SavedState: Codable {
                         quality:"asumido · pausa voluntaria",source:"descanso")
         }
         data.gpsRest = nil
+        restContinuationStart = currentVisitStart
+        restContinuationCell = rest.cell
         lastProcessedSample = nil
         stableCell = nil
         candidateCell = nil
@@ -228,6 +235,8 @@ struct SavedState: Codable {
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var lastProcessedSample: GPSPoint?
+    private var restContinuationStart: Date?
+    private var restContinuationCell: Cell?
     private var pendingFixes: [GPSPoint] = []
     private var pendingIntervals: [AssignedInterval] = []
     private var pendingTotals: [String: TimeInterval] = [:]
@@ -573,15 +582,19 @@ struct SavedState: Codable {
                 .distance(from:location)
         } ?? .infinity
         let retainedAge = lastRetained.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
-        if retainedAge >= 120 || retainedDistance >= 16 || lastRetained?.cell != sample.cell {
+        if previous == nil || retainedAge >= 120 || retainedDistance >= 16 || lastRetained?.cell != sample.cell {
             data.fixes.append(sample)
             pendingFixes.append(sample)
         }
         if stableCell != beforeStable ||
            delta > GPSHistoryGrouping.gapLimit || currentVisitStart == nil {
-            currentVisitStart = sample.date
-            data.savedVisitStart = sample.date
+            let continued = previous == nil && restContinuationCell == stableCell ?
+                restContinuationStart : nil
+            currentVisitStart = continued ?? sample.date
+            data.savedVisitStart = currentVisitStart
         }
+        restContinuationStart = nil
+        restContinuationCell = nil
         current = sample
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
@@ -661,6 +674,7 @@ struct SavedState: Codable {
         let points = try parse.read(bytes)
         guard !points.isEmpty else { throw ImportFailure.noTimes }
         let previousSnapshot = data
+        let manualRestIntervals = data.intervals.filter { $0.source == "descanso" }
         data.importedHashes.append(hash)
         // Rebuild from the combined timeline to avoid double-adding old intervals.
         let combined = (data.fixes + points).sorted { $0.date < $1.date }
@@ -685,6 +699,16 @@ struct SavedState: Codable {
         pendingIntervals = []
         pendingTotals = [:]
         for i in 1..<dedup.count { attribute(from:dedup[i-1], to:dedup[i]) }
+        // GPX reconstruye los intervalos de GPS, pero NO los periodos nocturnos
+        // asumidos que fueron registrados explícitamente por el usuario.
+        if !manualRestIntervals.isEmpty {
+            data.intervals = (data.intervals + manualRestIntervals)
+                .sorted { $0.start < $1.start }
+            data.totals = TimeAttribution.byCell(data.intervals)
+            pendingIntervals = data.intervals
+            pendingTotals = data.totals
+            normalizedCacheIntervalCount = -1
+        }
         do {
             try store?.replaceAll(data)
             pendingFixes = []
