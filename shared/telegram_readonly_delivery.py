@@ -566,10 +566,10 @@ def selftest():
     assert age_ready("2026-10-09T15:00:00Z",now)
     assert not fresh("2026-09-29T12:00:00Z",now)
     # Prepared 14:00 after selection 01:00: eligible as a fresh Listas card.
-    selected={"selected_at":"2026-10-10T01:00:00Z"}
+    selected={"selected_at":"2026-10-08T01:00:00Z"}
     ready={"prepared_at":"2026-10-11T14:00:00Z","revision":1}
     assert news_delivery_start(selected,ready)=="2026-10-11T14:00:00Z"
-    assert news_delivery_start(selected,{**ready,"rewrite_pending":True})=="2026-10-10T01:00:00Z"
+    assert news_delivery_start(selected,{**ready,"rewrite_pending":True})=="2026-10-08T01:00:00Z"
     assert age_ready(news_delivery_start(selected,{}),now)
 
     card={"id":"abc123","rev":1,"search":"Pedro Sánchez","title":"Pedro Sánchez",
