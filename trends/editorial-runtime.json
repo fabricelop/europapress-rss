@@ -3,18 +3,11 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T23:45:51.112+02:00",
-  "last_completed_at": "2026-10-11T23:54:45.792+02:00",
-  "updated_at": "2026-10-11T23:54:45.792+02:00",
+  "last_started_at": "2026-10-12T00:15:00+02:00",
+  "last_completed_at": "2026-10-12T00:16:00+02:00",
+  "updated_at": "2026-10-12T00:16:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "998c17ccf3c9",
-    "ea3625e55ffd",
-    "137861eda08f",
-    "c5bf058adab8",
-    "e60b9ca97db8",
-    "19649a7e10aa"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -25,8 +18,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T234551.112+0200-chat",
-    "requested_at": "2026-10-11T23:45:51.112+02:00",
+    "run_id": "tr-20261012T001500+0200-chat",
+    "requested_at": "2026-10-12T00:15:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -35,42 +28,33 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T234551.112+0200-chat",
+    "run_id": "tr-20261012T001500+0200-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-11T23:45:51.112+02:00",
-    "updated_at": "2026-10-11T23:54:45.792+02:00",
-    "finished_at": "2026-10-11T23:54:45.792+02:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-12T00:15:00+02:00",
+    "updated_at": "2026-10-12T00:16:00+02:00",
+    "finished_at": "2026-10-12T00:16:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada completada · 6 revisiones tratadas, cola editorial 0",
+    "message": "Pasada completada · 0 revisiones editoriales pendientes; saneamiento de Pendientes solicitado",
     "summary": {
-      "processed": 6,
-      "closed": 6,
+      "processed": 0,
+      "closed": 0,
       "problematic": 0,
       "skipped": 0,
       "visual_backlog": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
       "pending_repair_requested": 1,
-      "new_cards": 3,
-      "reused_existing_card": 1,
-      "duplicate_cards_created": 0,
-      "deleted_after_close": 1
+      "new_cards": 0,
+      "reused_existing_card": 0,
+      "duplicate_cards_created": 0
     },
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-11T23:49:20+02:00",
-        "phase": "persisting",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "reason": "Conflicto SHA al escribir Explicadas por una actualización concurrente del reparador visual; se releyó main y el reintento quedó persistido correctamente."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -78,164 +62,46 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "998c17ccf3c9",
-        "revision": 1,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.6,
-        "closer_text": "🌶️ Aguirre debutó con empate: Otorbi puso el 2-2 y el 3-2 se le escapó a Hugo Duro."
-      },
-      {
-        "trend_id": "c5bf058adab8",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.5,
-        "closer_text": "🌶️ Sandra se casó y Jorge Javier heredó la guardia del domingo."
-      },
-      {
-        "trend_id": "19649a7e10aa",
-        "revision": 1,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8,
-        "closer_text": "🌶️ La nave del misterio ha vuelto a pedir pista en pleno prime time."
-      },
-      {
-        "trend_id": "e60b9ca97db8",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "reused_existing_group"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T23:45:51.112+02:00",
+        "at": "2026-10-12T00:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 5 revisiones activas"
+        "message": "Preparando pasada editorial · cola editorial 0; revisando saneamiento y estado autoritativo"
       },
       {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "verifying",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Releyendo estado autoritativo del grupo Racing–Valencia"
-      },
-      {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "investigating",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Hecho esencial verificado · Racing 2-2 Valencia; Otorbi marcó el empate y Hugo Duro tuvo la ocasión final"
-      },
-      {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "drafting",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "remate_selection",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "investigating",
-        "trend_id": "c5bf058adab8",
-        "title": "#ConexiónHonduras5",
-        "message": "Hecho esencial verificado · episodio 5 en emisión con Jorge Javier Vázquez"
-      },
-      {
-        "at": "2026-10-11T23:47:40.080+02:00",
-        "phase": "verifying",
-        "trend_id": "e60b9ca97db8",
-        "title": "#EstrenoJotalent5",
-        "message": "Mismo estreno ya explicado como #jotalent5 · se reutiliza el grupo existente"
-      },
-      {
-        "at": "2026-10-11T23:49:55.435+02:00",
-        "phase": "persisting",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Ficha Explicada guardada tras resolver una carrera de SHA con el reparador visual"
-      },
-      {
-        "at": "2026-10-11T23:51:31+02:00",
-        "phase": "verifying",
-        "trend_id": "998c17ccf3c9",
-        "title": "Hugo Duro",
-        "message": "Grupo Racing–Valencia reconciliado en requests y retirado de la cola"
-      },
-      {
-        "at": "2026-10-11T23:51:32.293+02:00",
-        "phase": "investigating",
-        "trend_id": "19649a7e10aa",
-        "title": "#CuartoMilenio",
-        "message": "Solicitud manual nueva detectada · episodio 5 verificado a las 21:40"
-      },
-      {
-        "at": "2026-10-11T23:51:32.293+02:00",
-        "phase": "drafting",
-        "trend_id": "19649a7e10aa",
-        "title": "#CuartoMilenio",
-        "message": "Explicación factual redactada y comprobada · 233 caracteres"
-      },
-      {
-        "at": "2026-10-11T23:52:43+02:00",
-        "phase": "verifying",
-        "trend_id": "c5bf058adab8",
-        "title": "#ConexiónHonduras5",
-        "message": "Conexión Honduras reconciliada y cola editorial en 0"
-      },
-      {
-        "at": "2026-10-11T23:53:20+02:00",
-        "phase": "verifying",
-        "trend_id": "19649a7e10aa",
-        "title": "#CuartoMilenio",
-        "message": "Inconsistencia histórica de revisión detectada; saneamiento automático la reconcilió con la ficha nueva"
-      },
-      {
-        "at": "2026-10-11T23:54:45.792+02:00",
+        "at": "2026-10-12T00:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0 y las seis revisiones tratadas en estado terminal"
+        "message": "Releyendo main · cola 0 y captura fresca de las 00:12"
       },
       {
-        "at": "2026-10-11T23:54:45.792+02:00",
+        "at": "2026-10-12T00:16:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 6 revisiones tratadas, cola editorial 0"
+        "message": "Pasada completada · 0 revisiones editoriales pendientes; saneamiento de Pendientes solicitado"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261011T234551.112+0200-chat",
+  "run_id": "tr-20261012T001500+0200-chat",
   "summary": {
-    "processed": 6,
-    "closed": 6,
+    "processed": 0,
+    "closed": 0,
     "problematic": 0,
     "skipped": 0,
     "visual_backlog": 0,
     "queue_remaining": 0,
     "remaining_active_ids": [],
     "pending_repair_requested": 1,
-    "new_cards": 3,
-    "reused_existing_card": 1,
-    "duplicate_cards_created": 0,
-    "deleted_after_close": 1
+    "new_cards": 0,
+    "reused_existing_card": 0,
+    "duplicate_cards_created": 0
   },
   "error": null
 }
