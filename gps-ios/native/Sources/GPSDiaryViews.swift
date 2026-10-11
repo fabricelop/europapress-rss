@@ -22,13 +22,13 @@ struct GPSDiaryShell: View {
                         GPSDayView(day: day, fixes: fixes, intervals: model.data.intervals)
                     } label: {
                         VStack(alignment: .leading) {
-                            Text(day, format: .dateTime.weekday(.wide).day().month().year())
+                            Text(day.formatted(.dateTime.weekday(.wide).day().month().year().locale(Locale(identifier:"es_ES"))))
                             Text("Trayectos, estancias y reproducción")
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                     }
                 }
-                Text("Horas según el dispositivo; la zona horaria de cada lugar sigue pendiente.")
+                Text("Diario en español. Las fechas usan por ahora la hora local del iPhone; la hora histórica de cada lugar se añadirá después.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             .navigationTitle("Diario GPS")
