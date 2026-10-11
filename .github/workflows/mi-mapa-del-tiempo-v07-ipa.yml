@@ -1,0 +1,60 @@
+name: Mi Mapa del Tiempo v0.7 - IPA nativa validada (sin simulador)
+
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v07
+    paths:
+      - '.github/workflows/mi-mapa-del-tiempo-v07-ipa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar proyecto y verificar sintaxis Swift
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Widgets/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Construir IPA sin firma para Sideloadly
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gps-v07" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/gps-v07/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP/PlugIns/MiMapaWidgets.appex"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          main=plistlib.loads((app/"Info.plist").read_bytes())
+          widget=plistlib.loads((app/"PlugIns/MiMapaWidgets.appex/Info.plist").read_bytes())
+          assert main["CFBundleIdentifier"]=="es.mimapadeltiempo.app"
+          assert main["CFBundleVersion"]=="7"
+          assert widget["CFBundleVersion"]=="7"
+          assert widget["NSExtension"]["NSExtensionPointIdentifier"]=="com.apple.widgetkit-extension"
+          print("Bundle ID, versión y extensión confirmados")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -q -r MiMapaDelTiempo-v07-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-v07-unsigned.ipa >/dev/null
+      - name: Publicar IPA de evaluación
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-v07-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-v07-unsigned.ipa
+          retention-days: 5
+          if-no-files-found: error
