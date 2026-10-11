@@ -37,9 +37,15 @@ jobs:
             /trends/*.md
             /trends/*.txt
             /shared/
+            /tests/test_trends_telegram_reexplain.py
 
       - name: Instalar dependencias de actualización
         run: python3 -m pip install -q requests beautifulsoup4
+
+      - name: Verificar reexplicación Telegram
+        run: |
+          python3 -m py_compile trends/telegram_bot.py
+          python3 -m unittest discover -s tests -p 'test_trends_telegram_reexplain.py' -v
 
       - name: Detectar modo de control
         id: control_mode
