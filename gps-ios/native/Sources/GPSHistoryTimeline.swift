@@ -2,8 +2,25 @@ import Foundation
 
 // Diary-only classification; never modifies GPS samples or time totals.
 extension GPSHistoryGrouping {
-    static func episodes(_ fixes: [GPSHistoryFix]) -> [GPSHistoryEpisode] {
-        chunks(fixes).flatMap { classify($0) }
+    static func episodes(_ fixes: [GPSHistoryFix], manualBreaks: [Date] = []) -> [GPSHistoryEpisode] {
+        let orderedBreaks = manualBreaks.sorted()
+        return chunks(fixes).flatMap { chunk -> [GPSHistoryEpisode] in
+            guard !orderedBreaks.isEmpty else { return classify(chunk) }
+            var result: [GPSHistoryEpisode] = []
+            var current: [GPSHistoryFix] = []
+            for fix in chunk {
+                if !current.isEmpty && orderedBreaks.contains(where: {
+                    let start = current.last!.date
+                    return $0 > start && $0 <= fix.date
+                }) {
+                    result += classify(current)
+                    current = []
+                }
+                current.append(fix)
+            }
+            result += classify(current)
+            return result
+        }
     }
 
     private static func classify(_ chunk: [GPSHistoryFix]) -> [GPSHistoryEpisode] {
