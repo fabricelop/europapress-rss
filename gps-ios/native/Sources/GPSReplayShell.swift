@@ -26,6 +26,10 @@ struct GPSReplayShell: View {
             if playbackDate <= b.date {
                 let a = points[index - 1]
                 let span = max(0.001, b.date.timeIntervalSince(a.date))
+                guard PlaybackGapPolicy.canInterpolate(seconds: span),
+                      GPSHistoryGrouping.connected(a, b) else {
+                    return .init(latitude: a.latitude, longitude: a.longitude)
+                }
                 let fraction = min(1, max(0, playbackDate.timeIntervalSince(a.date) / span))
                 return .init(latitude: a.latitude + (b.latitude - a.latitude) * fraction,
                              longitude: a.longitude + (b.longitude - a.longitude) * fraction)
