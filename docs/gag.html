@@ -55,7 +55,7 @@ function display(title,body,punch,factual,rank,explanation='',provisional=false)
  if(provisional){
   body=body||'⚠️ Titular detectado, a la espera de verificación: '+title;
   if(!body.startsWith('⚠️')&&!body.startsWith('🔎'))
-   body='⏳ EN ELABORACIÓN · Sin explicación editorial definitiva.\\n'+body;
+   body='⏳ EN ELABORACIÓN · Sin explicación editorial definitiva.\n'+body;
   punch='';
  }
  if(punch&&!body.includes(punch))body=(body+'\n\n'+punch).trim();
@@ -89,7 +89,7 @@ async function start(){
  const x=finalized||best(...docs);
  if(news){
   const pending=!finalized;
-  const verified=Number(x.verified_source_count||0)>=2;
+  const verified=Boolean(finalized)||Number(x.verified_source_count||0)>=2;
   const text=safe(x.tweet?.text||x.x_text||(verified?x.factual_summary:'')||'');
   display(x.title||name||id,text,x.tweet?.remate||x.closer_text,
       verified?x.factual_summary:'',x.rank,x.explanation,pending);
