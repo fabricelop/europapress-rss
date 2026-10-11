@@ -43,14 +43,29 @@ def key(r):
   if r.get("type")=="evaluate": return "evaluate:"+str(r.get("tweet_id",""))
   if r.get("type")=="telegram_instruction": return "telegram_instruction:"+str(r.get("telegram_update_id",""))
   return ""
-pending=[key(r) for r in req if key(r) and key(r) not in st and key(r) not in out]
-print(len(pending))
+pending=sorted(set(key(r) for r in req if key(r) and key(r) not in st and key(r) not in out))
+print(json.dumps({"count":len(pending),"keys":pending}))
 '@
     $countText = $checkScript | python - $snapshot
     if ($LASTEXITCODE -ne 0) { throw 'Error leyendo la cola' }
-    $count = [int]($countText | Select-Object -Last 1)
+    $pendingState = ($countText | Select-Object -Last 1) | ConvertFrom-Json
+    $count = [int]$pendingState.count
     if ($count -eq 0) { Log 'DONE: no hay evaluaciones pendientes'; exit 0 }
+    $fingerprint = (@($pendingState.keys) -join '|')
     Log "Pendientes: $count"
+    # El chat puede tardar en redactar y persistir. No lanzar la misma cola
+    # cada 15 minutos: la tarea vigila, sin duplicar mensajes en ChatGPT.
+    $launchStateFile = Join-Path $runtime 'editorial-launch-state.json'
+    if (Test-Path $launchStateFile) {
+        try {
+            $previous = Get-Content -LiteralPath $launchStateFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            $elapsed = ([DateTimeOffset]::UtcNow - [DateTimeOffset]::Parse([string]$previous.confirmed_at)).TotalMinutes
+            if ([string]$previous.pending_fingerprint -eq $fingerprint -and $elapsed -ge 0 -and $elapsed -lt 60) {
+                Log ("WAIT: la misma cola ya se envió a ChatGPT hace "+[math]::Round($elapsed,1)+" min (run="+$previous.run_id+"). Sin duplicar.")
+                exit 0
+            }
+        } catch { Log ("AVISO: no se pudo leer el estado de espera: "+$_.Exception.Message) }
+    }
     $node = Get-Command node.exe -ErrorAction Stop
     $commandId = 'sr-'+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     $message = "SELORECORDAMOS_EDITORIAL_JOB_V1 $commandId | Ejecuta AHORA la pasada editorial de SeLoRecordamos. Lee primero selorecordamos/editorial-run-prompt.md y las solicitudes vigentes de selorecordamos/requests.json desde main. Procesa las pendientes, con cuatro propuestas A/B/C/D por evaluación, y persiste exclusivamente por el issue #16 mediante SELORECORDAMOS_OUTBOX_V2. Verifica la persistencia y no marques éxito sin confirmación. No invoques ImageGen ni cambies ninguna automatización."
@@ -79,7 +94,14 @@ print(len(pending))
         $proc.Refresh()
     }
     if (-not $confirmed) { throw 'No se confirmó el envío real a ChatGPT; no se declara ejecutado' }
-    Log "LAUNCH CONFIRMED: mensaje ChatGPT $commandId. La entrega Telegram requiere persistencia posterior."
+    # Solo registrar el último intento tras confirmación efectiva de envío.
+    @{
+        run_id = $commandId
+        confirmed_at = [DateTimeOffset]::UtcNow.ToString('o')
+        pending_count = $count
+        pending_fingerprint = $fingerprint
+    } | ConvertTo-Json -Compress | Set-Content -LiteralPath $launchStateFile -Encoding UTF8
+    Log "LAUNCH CONFIRMED: mensaje ChatGPT $commandId; pendiente validación del outbox #16 y Telegram."
 } catch {
     Log ('ERROR: '+$_.Exception.Message)
     exit 1
