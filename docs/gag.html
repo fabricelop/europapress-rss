@@ -112,7 +112,11 @@ async function start(){
   const rank=Number(sameRequest.rank||selected.rank||0);
   // The joint Telegram card is authoritative for presentation: do not copy
   // four duplicated Raba texts from the four individual request records.
-  const joint=grouped?title+'\n\n'+text.replace(/^TT#\d+\s+/i,''):text;
+  const jointDetail=grouped?text.replace(
+    /^TT#\d+\s+(.+?)\s+es tendencia por(?:que)?\s+/i,
+    (_,leader)=>'Todas se relacionan con el mismo acontecimiento: '+leader+' '
+  ).replace(/^TT#\d+\s+/i,''):text;
+  const joint=grouped?title+'\n\n'+jointDetail:text;
   display(title,joint,punch,selected.factual_summary||requestCurrent.factual_summary,rank,selected.explanation||requestCurrent.explanation);
  }
 }
