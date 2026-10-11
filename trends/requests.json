@@ -46284,7 +46284,7 @@
       "id": "07101faa0e40",
       "name": "Cherki",
       "rank": 5,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-11T20:11:30+02:00",
       "revision": 0,
       "reexplain": false,
@@ -46301,7 +46301,83 @@
         "Cucho"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-11T20:20:30+02:00",
+      "last_attempt_at": "2026-10-11T20:20:30+02:00",
+      "explanation": "TT#4 Anfield es tendencia porque el City ganó 0-3 al Liverpool en su primer partido tras el fallo por infracciones financieras; Gravenberch fue expulsado y marcaron Haaland, Doku y Cherki.\n🌶️ El City llegó con 114 cargos y se fue con tres goles.",
+      "closer_text": "🌶️ El City llegó con 114 cargos y se fue con tres goles.",
+      "closer_missing": false,
+      "rank_at_explanation": 5,
+      "category": "Deportes",
+      "source": "editorial_chat_direct_group_link",
+      "verification_sources": [
+        "https://www.reuters.com/sports/soccer/man-city-silence-hostile-anfield-with-3-0-win-over-liverpool-2026-10-11/",
+        "https://www.theguardian.com/football/live/2026/oct/11/liverpool-v-manchester-city-premier-league-live-score-updates"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Cherki pertenece al Liverpool 0-3 Manchester City ya explicado mediante Anfield; enlazado sin tarjeta duplicada.",
+      "group_id": "grp-edba32c9b800",
+      "explanation_group_id": "grp-edba32c9b800",
+      "group_title": "Liverpool 0-3 Manchester City en Anfield",
+      "group_leader_id": "edba32c9b800",
+      "trend_names": [
+        "Anfield",
+        "Doku",
+        "Gravenberch",
+        "Cherki"
+      ],
+      "trend_context": [
+        {
+          "name": "Anfield",
+          "rank": 4
+        },
+        {
+          "name": "Doku",
+          "rank": 1,
+          "role": "marcó el 0-2 del Manchester City en Anfield"
+        },
+        {
+          "name": "Gravenberch",
+          "rank": 2,
+          "role": "fue expulsado en el minuto 62 del Liverpool-City"
+        },
+        {
+          "name": "Cherki",
+          "rank": 5,
+          "role": "marcó el 0-3 del Manchester City en Anfield"
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "edba32c9b800",
+          "name": "Anfield",
+          "revision": 0
+        },
+        {
+          "id": "2a9d508bdc77",
+          "name": "Doku",
+          "revision": 0
+        },
+        {
+          "id": "50ce52d86120",
+          "name": "Gravenberch",
+          "revision": 0
+        },
+        {
+          "id": "07101faa0e40",
+          "name": "Cherki",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_status": "none",
+      "image_pending": false,
+      "selected_tweet_image": null,
+      "rewrite_pending": false,
+      "grouped_into_existing_card": true
     },
     {
       "id": "e4dd7f5e3716",
@@ -46373,6 +46449,6 @@
       "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-11T20:11:30+02:00",
-  "count": 815
+  "updated_at": "2026-10-11T20:20:30+02:00",
+  "count": 820
 }
