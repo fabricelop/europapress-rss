@@ -8,6 +8,12 @@ on:
     paths:
       - '.github/workflows/ttendencias-telegram-native-callback-poller.yml'
       - '.github/scripts/ttendencias_telegram_poll_callbacks.py'
+      - 'trends/telegram_bot.py'
+      - 'selorecordamos/telegram_local.js'
+      - 'api/telegram-webhook.js'
+      - 'vercel-webhook/api/telegram-webhook.js'
+      - '.github/scripts/test_telegram_run.py'
+      - '.github/scripts/test_tti_telegram_run.mjs'
 permissions:
   contents: write
 concurrency:
