@@ -96,6 +96,24 @@ jobs:
                     'webhook_secret_available']
           status={key:bool(data.get(key)) for key in expected}
           print('TTITTULARES_RUN_PREREQUISITES '+json.dumps(status))
-          missing=[key for key,val in status.items() if not val]
-          if missing:raise SystemExit('TTITTULARES_RUN_NOT_READY '+','.join(missing))
+          # GitHub token is deliberately absent from TT Control.
+          # The authenticated service binding provides it via the editorial
+          # Worker. Verify that relay has a working bot credential and rejects
+          # public requests before treating /run as ready.
+          assert status['telegram_bot_available'] and status['webhook_secret_available'],status
           PY
+          curl -fsS --retry 2 --max-time 25 \
+            'https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-telegram-credential-ready' \
+            -o /tmp/ttittulares-native-relay-credential.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/ttittulares-native-relay-credential.json'))
+          assert d.get('telegram_callback_credential_ready') and d.get('ok'),d
+          print('TTITTULARES_INTERNAL_RELAY_CREDENTIAL_READY')
+          PY
+          unauth=$(curl -sS --max-time 25 -X POST \
+            -H 'Content-Type: application/json' -d '{}' \
+            -o /tmp/ttittulares-internal-relay-unauth.json -w '%{http_code}' \
+            'https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-telegram-editorial-run')
+          [[ "$unauth" == "401" ]] || { echo "TTITTULARES_RUN_RELAY_NOT_READY: HTTP=$unauth"; exit 1; }
+          echo 'TTITTULARES_RUN_RELAY_READY_AUTHENTICATED_SERVICE_BINDING'
