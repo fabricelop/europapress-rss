@@ -25,7 +25,7 @@ def key(req):
     return ''
 def madrid(iso):
     try: return datetime.fromisoformat(iso.replace('Z','+00:00')).astimezone(ZoneInfo('Europe/Madrid')).strftime('%d/%m/%Y %H:%M')
-    except (ValueError,AttributeError): return 'fecha/hora no disponible'
+    except Exception: return 'fecha/hora no disponible'
 def generate(req):
     instruction=str(req.get('instruction','')).strip()
     prompt=(
