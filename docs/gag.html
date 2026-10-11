@@ -83,7 +83,8 @@ async function start(){
  const docs=await Promise.all(news?[
   get('ttittulares/prepared.json'),get('telegram/editorial-processing.json')
  ]:[
-  get('trends/telegram-manual-explained.json'),get('trends/explained.json'),get('trends/requests.json')
+  get('trends/telegram-manual-explained.json'),get('trends/explained.json'),
+  get('trends/requests.json'),get('trends/telegram-image-deliveries.json')
  ]);
  const finalized=news?rows(docs[0]).find(x=>safe(x.event_id)===id&&!x.rewrite_pending):null;
  const x=finalized||best(...docs);
@@ -104,9 +105,15 @@ async function start(){
   const selected=safe(completed.explanation)?completed:requestCurrent;
   const text=safe(selected.explanation||selected.x_text);
   const punch=safe(selected.closer_text||requestCurrent.closer_text||closerFrom(text));
-  const title=selected.display_name||sameRequest.name||selected.name||name||id;
+  const grouped=rows(docs[3]).find(x=>safe(x.event_id)===id &&
+    safe(x.status)==='sent'&&safe(x.group_id)&&Array.isArray(x.group_member_ids)&&
+    x.group_member_ids.length>1);
+  const title=grouped?.group_title||selected.display_name||sameRequest.name||selected.name||name||id;
   const rank=Number(sameRequest.rank||selected.rank||0);
-  display(title,text,punch,selected.factual_summary||requestCurrent.factual_summary,rank,selected.explanation||requestCurrent.explanation);
+  // The joint Telegram card is authoritative for presentation: do not copy
+  // four duplicated Raba texts from the four individual request records.
+  const joint=grouped?title+'\n\n'+text.replace(/^TT#\d+\s+/i,''):text;
+  display(title,joint,punch,selected.factual_summary||requestCurrent.factual_summary,rank,selected.explanation||requestCurrent.explanation);
  }
 }
 $('copy').onclick=async()=>{
