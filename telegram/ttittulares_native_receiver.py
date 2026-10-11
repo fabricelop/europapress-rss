@@ -301,6 +301,16 @@ def selftest():
     pending = {"pending_rework":{"project":"ttendencias", "id":"abc123",
               "prompt_message_id":45,"expires_at":time.time()+100}}
     assert classify(message, "456", ledger, pending)["kind"] == "mobile_rework_reply"
+    ledger_fast = {"items": [{"event_id": "abc123xyz", "status": "sent",
+                             "telegram_message_id": 95,
+                             "archive_telegram_message_id": 96},
+                            {"event_id": "another", "status": "sent",
+                             "telegram_message_id": 100}]}
+    clicked = classify(base, "456", ledger_fast)
+    assert deletion_message_ids(clicked, ledger_fast) == [95, 96]
+    assert deletion_message_ids({**clicked, "message_id": 100}, ledger_fast) == []
+    assert deletion_message_ids({**clicked, "action": "p"}, ledger_fast) == []
+    print("TTI_NATIVE_FAST_DELETE_SELFTEST_OK")
     print("TTITTULARES_NATIVE_RECEIVER_SELFTEST_OK")
 
 
@@ -372,6 +382,55 @@ def forward_contextual_question(bot_token, update):
     if not result.get("ok"):
         raise RuntimeError("The contextual-answer service did not accept the question")
     return result
+
+
+def deletion_message_ids(act, ledger):
+    """Delete only validated messages belonging to the SAME delivered event."""
+    if act.get("kind") != "decision" or act.get("action") != "b":
+        return []
+    eid = str(act.get("event_id") or "")
+    clicked = int(act.get("message_id") or 0)
+    rows = [row for row in ledger.get("items", []) if
+            str(row.get("event_id") or "") == eid and
+            str(row.get("status") or "").lower() == "sent"]
+    if not any(clicked in [int(row.get(k) or 0) for k in
+                           ("telegram_message_id", "archive_telegram_message_id",
+                            "cross_quote_message_id")] for row in rows):
+        return []
+    mids = {clicked}
+    for row in rows:
+        for key in ("telegram_message_id", "archive_telegram_message_id",
+                    "cross_quote_message_id"):
+            mid = int(row.get(key) or 0)
+            if mid > 0:
+                mids.add(mid)
+    return sorted(mids)
+
+
+def delete_delivered_now(token, chat, act, ledger):
+    """Fast user-visible deletion after the durable GitHub decision was queued.
+
+    The Actions decision processor remains the retry/reconciliation mechanism.
+    """
+    mids = deletion_message_ids(act, ledger)
+    if not mids:
+        return False
+    failed = []
+    for mid in mids:
+        try:
+            telegram_call(token, "deleteMessage", {"chat_id": chat, "message_id": mid})
+            print("TTI_NATIVE_FAST_DELETE_OK", act["event_id"], mid, flush=True)
+        except urllib.error.HTTPError as exc:
+            body = exc.read(400).decode("utf-8", "replace").lower()
+            if exc.code == 400 and "message to delete not found" in body:
+                print("TTI_NATIVE_FAST_DELETE_ALREADY_GONE", act["event_id"], mid, flush=True)
+            else:
+                failed.append(mid)
+        except (urllib.error.URLError, ValueError, RuntimeError):
+            failed.append(mid)
+    if failed:
+        print("TTI_NATIVE_FAST_DELETE_RETRY_IN_ACTIONS", act["event_id"], len(failed), flush=True)
+    return not failed
 
 
 def handle_live_action(token, chat, act, github, update):
@@ -503,10 +562,19 @@ def listen():
                 persisted = commit_event(update, act)
                 last = uid
                 if kind == "decision":
+                    # No waiting for Actions checkout, processing or cron.
+                    # Commit first, then delete the verified message+archive now.
+                    fast_deleted = (delete_delivered_now(token, chat, act, ledger)
+                                    if act["action"] == "b" else False)
+                    ack = ("Borrado de Telegram completado; GitHub actualizará Listas."
+                           if fast_deleted else
+                           "Borrado registrado; terminando en GitHub."
+                           if act["action"] == "b" else
+                           "Decisión registrada en GitHub.")
                     try:
                         telegram_call(token, "answerCallbackQuery", {
                             "callback_query_id": act["callback_id"],
-                            "text": "Decisión registrada en GitHub."})
+                            "text": ack})
                     except (urllib.error.HTTPError, RuntimeError):
                         telegram_call(token, "sendMessage", {"chat_id": chat,
                             "text": "La decisión se ha registrado; Telegram no pudo confirmar el botón."})
