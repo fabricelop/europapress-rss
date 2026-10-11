@@ -56,7 +56,7 @@ jobs:
           assert ext["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension", ext
           print("App y widget con identificadores verificados")
           PY
-      - name: Ejecutar pruebas en simulador de iPhone
+      - name: Elegir simulador de iPhone
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -68,6 +68,9 @@ jobs:
               f.write("SIMULATOR_ID="+matches[0]["udid"]+"\n")
           print(matches[0]["name"])
           PY
+      - name: Ejecutar XCTest en simulador iPhone
+        run: |
+          set -euo pipefail
           xcodebuild test -project MiMapaDelTiempo.xcodeproj \
             -scheme MiMapaDelTiempo -configuration Debug \
             -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
