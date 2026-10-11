@@ -156,7 +156,6 @@ struct SavedState: Codable {
     @Published var gpsStatus = "Sin iniciar"
     @Published var recording = false
     @Published var explore = false
-    @Published var obscured = false
     @Published var adaptive = true
     @Published var showRoutes = true
     @Published var period: TimePeriod = .all
@@ -554,6 +553,9 @@ struct SavedState: Codable {
         }
     }
     private func addInterval(start: Date, end: Date, cell: Cell, quality: String, source: String) {
+        // Los nuevos intervalos deben ser monotónicos. Se conserva sin cambios
+        // el historial antiguo, que se normaliza únicamente al consultarlo.
+        let start=max(start,data.intervals.last?.end ?? start)
         guard end > start else { return }
         if let last = pendingIntervals.last, let existing = data.intervals.last,
            last.id == existing.id && last.cell == cell && last.quality == quality &&
@@ -597,6 +599,8 @@ struct SavedState: Codable {
         data.savedVisitStart = nil
         data.intervals = []
         data.totals = [:]
+        normalizedCacheIntervalCount = -1
+        normalizedTotalsCache = [:]
         data.missingSeconds = 0
         let oldPendingFixes = pendingFixes
         let oldPendingIntervals = pendingIntervals
@@ -1324,7 +1328,6 @@ struct TimeSettingsView: View {
                             UserDefaults.standard.set(value,forKey:"mapAdaptiveV5")
                         }
                     Text("Permanencia: tiempo acumulado. Exploración: territorio descubierto. La escala adaptada resalta las diferencias entre cuadrículas visibles.")
-                        .font(.caption).foregroundStyle(.secondary)
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Widgets iPhone") {
