@@ -56,6 +56,30 @@ private struct GPSWidgetFace: View {
 
     var body: some View {
         Group {
+            if entry.value == nil {
+                switch family {
+                case .accessoryInline:
+                    Text("Mi Mapa del Tiempo · Abrir")
+                case .accessoryCircular:
+                    Image(systemName:"map.fill").font(.title3)
+                case .accessoryRectangular:
+                    VStack(alignment:.leading,spacing:2) {
+                        Text("Mi Mapa del Tiempo").font(.headline)
+                        Text("Toca para abrir el mapa").font(.caption2)
+                    }
+                default:
+                    VStack(alignment:.leading,spacing:8) {
+                        Label("Mi Mapa del Tiempo",systemImage:"map.fill")
+                            .font(.caption.weight(.semibold)).foregroundStyle(.teal)
+                        Spacer(minLength:2)
+                        Image(systemName:"map.circle.fill")
+                            .font(.system(size:38)).foregroundStyle(.teal)
+                        Text("Abrir mi mapa").font(.headline)
+                        Text("Widget de acceso sin datos compartidos")
+                            .font(.caption2).foregroundStyle(.secondary)
+                    }
+                }
+            } else {
             switch family {
             case .accessoryInline:
                 Text("Mapa del Tiempo · \(total)")
@@ -103,6 +127,7 @@ private struct GPSWidgetFace: View {
                         .lineLimit(1).minimumScaleFactor(0.6)
                 }
             }
+            }
         }
         .widgetURL(URL(string: "mimapadeltiempo://mapa"))
         .containerBackground(for:.widget) {
@@ -121,7 +146,7 @@ struct MiMapaTiempoWidget: Widget {
             GPSWidgetFace(entry:entry)
         }
         .configurationDisplayName("Mi Mapa del Tiempo")
-        .description("Tiempo histórico registrado y última estancia GPS fiable.")
+        .description("Acceso rápido al mapa. Los tiempos se muestran solo si iOS autoriza compartir datos.")
         .supportedFamilies([
             .systemSmall, .systemMedium,
             .accessoryInline, .accessoryCircular, .accessoryRectangular
