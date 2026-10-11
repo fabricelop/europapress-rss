@@ -7,6 +7,7 @@ on:
     paths:
       - "ttittulares/editorial-outbox/**"
       - "ttittulares/apply-trigger.txt"
+      - "ttittulares/normalize_outbox_media.py"
       - "ttittulares/reconcile_confirmed_stale.py"
       - ".github/workflows/apply-ttittulares-outbox.yml"
   schedule:
@@ -46,6 +47,8 @@ jobs:
             python3 ttittulares/reconcile_confirmed_stale.py --selftest
             python3 ttittulares/auto_queue.py --selftest
             python3 ttittulares/apply_editorial_outbox.py --selftest-duplicate
+            python3 ttittulares/normalize_outbox_media.py --selftest
+            python3 ttittulares/normalize_outbox_media.py
             python3 ttittulares/apply_editorial_outbox.py
 
             # The reviewed 29 September backlog is one-off and idempotent.
