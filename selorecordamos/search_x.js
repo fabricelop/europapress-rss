@@ -72,9 +72,36 @@ const { chromium } = require('playwright');
   if (authToken && ct0) await context.addCookies([{name:'auth_token',value:authToken,domain:'.x.com',path:'/',httpOnly:true,secure:true,sameSite:'None'},{name:'ct0',value:ct0,domain:'.x.com',path:'/',httpOnly:false,secure:true,sameSite:'Lax'}]);
   const page = await context.newPage();
   const result={query,search_url:url,fetched_at:new Date().toISOString(),authenticated_cookie_pair_present:Boolean(authToken&&ct0),mode:isBackfill?`backfill_since_${new Date(backfillCutoff).toISOString()}`:'incremental',final_url:null,title:null,extracted:0,scroll_rounds:0,already_seen:0,rejected:[],candidates:[],status:'unknown',note:null};
+  async function openSearchWithRetry() {
+    // X frequently hangs while firing background network requests. A visible
+    // page can still be usable even if the navigation promise times out.
+    const attempts = [];
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        await page.goto(url, { waitUntil: 'commit', timeout: 25000 });
+        await page.locator('article[data-testid="tweet"], [data-testid="primaryColumn"], main')
+          .first().waitFor({ state: 'attached', timeout: 20000 });
+        return { ok: true, attempt };
+      } catch (error) {
+        attempts.push(String(error?.message || error).slice(0, 240));
+        const current = page.url();
+        const visible = await page.locator('article[data-testid="tweet"]').count().catch(() => 0);
+        // On a partial-but-usable load, consume the tweets instead of
+        // losing the whole search run to domcontentloaded timeout.
+        if (visible > 0 && current.startsWith('https://x.com/')) {
+          return { ok: true, attempt, recovered_partial: true };
+        }
+        if (attempt < 2) {
+          await page.waitForTimeout(1500 * attempt);
+        }
+      }
+    }
+    throw new Error('X_SEARCH_NAVIGATION_FAILED after 2 attempts: ' + attempts.join(' / '));
+  }
+
   const readVisibleTweets=async()=>{const articles=page.locator('article[data-testid="tweet"]');const count=await articles.count();const tweets=[];for(let i=0;i<count;i++){const article=articles.nth(i);const text=await article.locator('[data-testid="tweetText"]').innerText().catch(()=>'');const timeEl=article.locator('time').first();const datetime=await timeEl.getAttribute('datetime').catch(()=>null);const timeHref=await timeEl.locator('xpath=..').getAttribute('href').catch(()=>null);const links=await article.locator('a[href*="/status/"]').evaluateAll(els=>els.map(a=>a.getAttribute('href')).filter(Boolean)).catch(()=>[]);const statusPath=(timeHref&&/^\/[^/]+\/status\/\d+/.test(timeHref))?timeHref:links.find(h=>/^\/[^/]+\/status\/\d+/.test(h));if(!text||!statusPath)continue;const m=statusPath.match(/^\/([^/]+)\/status\/(\d+)/);if(!m)continue;const[,user,id]=m;tweets.push({id,user:`@${user}`,text,datetime,url:`https://x.com/${user}/status/${id}`});}return tweets;};
   try{
-    await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});await page.waitForTimeout(7000);result.final_url=page.url();result.title=await page.title();const loginVisible=await page.locator('text=Inicia sesión').first().isVisible().catch(()=>false);const extractedMap=new Map();let stableRounds=0,seenBoundaryRounds=0;const incrementalLookbackMs=24*60*60*1000;const incrementalCutoff=Date.now()-incrementalLookbackMs;const maxScrollRounds=isBackfill?200:60;
+    result.navigation=await openSearchWithRetry();await page.waitForTimeout(4000);result.final_url=page.url();result.title=await page.title();const loginVisible=await page.locator('text=Inicia sesión').first().isVisible().catch(()=>false);const extractedMap=new Map();let stableRounds=0,seenBoundaryRounds=0;const incrementalLookbackMs=24*60*60*1000;const incrementalCutoff=Date.now()-incrementalLookbackMs;const maxScrollRounds=isBackfill?200:60;
     for(let round=0;round<maxScrollRounds;round++){const visible=await readVisibleTweets();const before=extractedMap.size;for(const tweet of visible)extractedMap.set(tweet.id,tweet);const added=extractedMap.size-before;result.scroll_rounds=round+1;if(added===0)stableRounds++;else stableRounds=0;if(isBackfill){const dated=visible.map(t=>t.datetime?Date.parse(t.datetime):NaN).filter(Number.isFinite);if(dated.length&&Math.min(...dated)<=backfillCutoff)break;if(stableRounds>=6)break;}else{const dated=visible.map(t=>t.datetime?Date.parse(t.datetime):NaN).filter(Number.isFinite);const oldest=dated.length?Math.min(...dated):null;const visibleIds=visible.map(t=>t.id);const reachedSeenBoundary=visibleIds.some(id=>Boolean(seen[id]));if(reachedSeenBoundary)seenBoundaryRounds++;else seenBoundaryRounds=0;if(oldest!==null&&oldest<=incrementalCutoff&&seenBoundaryRounds>=2)break;if(stableRounds>=6)break;}await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(1400);}
     let extracted=Array.from(extractedMap.values());if(isBackfill)extracted=extracted.filter(t=>!t.datetime||Date.parse(t.datetime)>=backfillCutoff);result.extracted=extracted.length;
     for(const tweet of extracted){if(seen[tweet.id]){result.already_seen++;continue;}const reason=rejectReason(tweet.text);seen[tweet.id]={first_seen_at:result.fetched_at,url:tweet.url,rejected:Boolean(reason),datetime:tweet.datetime||null};if(reason){result.rejected.push({...tweet,reason});continue;}const candidate={...tweet,first_seen_at:result.fetched_at,status:'pending'};result.candidates.push(candidate);fs.writeFileSync(path.join(candidatesDir,`${tweet.id}.json`),JSON.stringify(candidate,null,2),'utf8');}
@@ -83,5 +110,15 @@ const { chromium } = require('playwright');
     fs.writeFileSync(outboxFile,JSON.stringify({generated_at:result.fetched_at,candidates:[...pendingBeforeSearch.values()].slice(-200)},null,2),'utf8');
     if(result.candidates.length){result.status='ok';result.note=`${result.candidates.length} candidatos nuevos de ${result.extracted} tuits extraídos.`;}else if(!authToken||!ct0){result.status='missing_secrets';result.note='Faltan X_AUTH_TOKEN y/o X_CT0 en las variables de entorno.';}else if(loginVisible||/login|i\/flow\/login/.test(result.final_url||'')){result.status='auth_required';result.note='Las cookies no han autenticado la sesión de X o han caducado.';}else{result.status='no_new_candidates';result.note=`Sin candidatos nuevos. Extraídos: ${result.extracted}; ya vistos: ${result.already_seen}; descartados: ${result.rejected.length}.`;}
     await page.screenshot({path:path.join(outDir,'search.png'),fullPage:true});fs.writeFileSync(path.join(outDir,'page.html'),await page.content(),'utf8');
-  }catch(e){result.status='error';result.note=String(e&&e.stack?e.stack:e);}finally{fs.writeFileSync(path.join(outDir,'results.json'),JSON.stringify(result,null,2),'utf8');console.log(JSON.stringify(result,null,2));await browser.close();}
+  }catch(e){
+    result.status='error';result.note=String(e&&e.stack?e.stack:e);
+    // Never silently lose candidates if X is temporarily unreachable.
+    // Keep any pre-existing unsent candidates available to the Telegram listener.
+    if (pendingBeforeSearch.size) {
+      const recovered={generated_at:new Date().toISOString(),
+        candidates:[...pendingBeforeSearch.values()].slice(-200)};
+      fs.writeFileSync(outboxFile,JSON.stringify(recovered,null,2),'utf8');
+      result.pending_preserved=recovered.candidates.length;
+    }
+  }finally{fs.writeFileSync(path.join(outDir,'results.json'),JSON.stringify(result,null,2),'utf8');console.log(JSON.stringify(result,null,2));await browser.close();}
 })();
