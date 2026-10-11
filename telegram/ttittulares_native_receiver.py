@@ -354,8 +354,31 @@ def request_model_answer(token, text, context):
     return answer[:3400]
 
 
-def handle_live_action(token, chat, act, github):
+def forward_contextual_question(bot_token, update):
+    """Private HTTPS relay: GitHub receives Telegram, CF only answers Q&A.
+
+    No question content is written to GitHub, the repository or the logs.
+    """
+    target = "https://tt-control.fabricelop.workers.dev/api/telegram-native-question"
+    request = urllib.request.Request(
+        target,
+        data=json.dumps(update,ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type":"application/json",
+                 "Authorization":"Bearer "+bot_token,
+                 "User-Agent":"ttittulares-github-native-question"},
+        method="POST")
+    with urllib.request.urlopen(request,timeout=45) as response:
+        result = json.loads(response.read().decode("utf-8"))
+    if not result.get("ok"):
+        raise RuntimeError("The contextual-answer service did not accept the question")
+    return result
+
+
+def handle_live_action(token, chat, act, github, update):
     kind = act["kind"]
+    if kind in {"question", "delete_pair"}:
+        forward_contextual_question(token, update)
+        return
     if kind in {"not_active", "unsupported_callback", "unavailable_action"}:
         telegram_call(token, "answerCallbackQuery", {
             "callback_query_id": act["callback_id"],
@@ -471,7 +494,7 @@ def listen():
             act = classify(update, chat, ledger, state)
             kind = act["kind"]
             try:
-                handle_live_action(token, chat, act, github)
+                handle_live_action(token, chat, act, github, update)
                 if kind == "mobile" and act["action"] == "rework":
                     kind = "mobile_await"
                 if kind == "mobile_rework_reply":
