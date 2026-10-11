@@ -18,6 +18,14 @@
       57
     ],
     "auto_queue_new_trends": true,
+    "automatic_explanation_selection": {
+      "top10": "Encolar todas las del Top 10 no explicadas o con explicación de más de 48 h.",
+      "positions_11_to_30": "Solo la siguiente no explicada por rango (11 primero) mientras no haya otra pendiente de esa franja.",
+      "max_pending_outside_top10": 1,
+      "max_rank": 30,
+      "upcoming_enabled_in_ui": false,
+      "images_are_not_part_of_editorial_run": true
+    },
     "delay_warning_after_minutes": 30,
     "problematic_only_on_editorial_failure": true,
     "image_policy": {
