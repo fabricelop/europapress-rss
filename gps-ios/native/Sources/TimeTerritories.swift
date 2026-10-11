@@ -15,31 +15,6 @@ enum RouteDisplayPeriod: String, CaseIterable, Identifiable {
     }
 }
 
-enum TerritoryLevel: String, CaseIterable, Identifiable {
-    case country, community, province, city, district, neighborhood
-    var id: String { rawValue }
-    var title: String {
-        switch self {
-        case .country: return "Países"
-        case .community: return "Comunidades/estados"
-        case .province: return "Provincias"
-        case .city: return "Municipios"
-        case .district: return "Distritos"
-        case .neighborhood: return "Barrios"
-        }
-    }
-    func value(_ path: TerritoryRecord) -> String? {
-        switch self {
-        case .country: return path.country
-        case .community: return path.community
-        case .province: return path.province
-        case .city: return path.city
-        case .district: return path.district
-        case .neighborhood: return path.neighborhood
-        }
-    }
-}
-
 @MainActor final class TerritoryResolver: ObservableObject {
     @Published private(set) var busy = false
     @Published private(set) var hitError = false
@@ -87,64 +62,49 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
     }
 }
 
-private struct TerritoryRank: Identifiable {
-    var id:String
-    var title:String
-    var path:[String]
-    var seconds:TimeInterval
-    var cells:Int
-}
-
-struct TerritoryStatsView: View {
+struct TerritoryStatsView:View {
     @ObservedObject var model:TimeModel
     @StateObject private var resolver=TerritoryResolver()
     @State private var level:TerritoryLevel = .country
-    @State private var breadcrumb:[String]=[]
+    @State private var scope:[TerritoryPart]=[]
 
-    private var totals:[String:TimeInterval] {
-        model.periodTotals()
+    private var totals:[String:TimeInterval] { model.periodTotals() }
+    private var cache:[String:TerritoryRecord] { model.data.territoryCache }
+    private var available:[TerritoryLevel] {
+        TerritoryGrouping.availableLevels(cache,totals:totals)
+    }
+    private var ranked:[TerritoryRank] {
+        TerritoryGrouping.rows(totals:totals,cache:cache,level:level,scope:scope)
     }
     private var pending:Int {
-        totals.keys.filter { model.data.territoryCache[$0] == nil }.count
+        totals.keys.filter { cache[$0] == nil }.count
     }
-    private var rows:[TerritoryRank] {
-        var ranking:[String:TerritoryRank] = [:]
-        guard let target=TerritoryLevel.allCases.firstIndex(of:level) else { return [] }
-        for (id,seconds) in totals where seconds>0 {
-            guard let record=model.data.territoryCache[id] else { continue }
-            let levels=Array(TerritoryLevel.allCases.prefix(target+1))
-            let names=levels.compactMap { item -> String? in
-                guard let value=item.value(record),!value.isEmpty else { return nil }
-                return value
-            }
-            guard names.count==target+1,
-                  names.prefix(breadcrumb.count).elementsEqual(breadcrumb) else { continue }
-            let key=names.joined(separator:" / ")
-            let title=names.last ?? ""
-            var entry=ranking[key] ?? TerritoryRank(id:key,title:title,path:names,
-                                                     seconds:0,cells:0)
-            entry.seconds+=seconds
-            entry.cells+=1
-            ranking[key]=entry
-        }
-        return ranking.values.sorted { $0.seconds > $1.seconds }
+    private var classifiedSeconds:TimeInterval {
+        ranked.reduce(0) { $0+$1.seconds }
     }
-    private var totalClassified:TimeInterval {
-        rows.reduce(0) { $0+$1.seconds }
-    }
-    private var depth:Int { TerritoryLevel.allCases.firstIndex(of:level) ?? 0 }
-    private var maxSeconds:TimeInterval { max(1,rows.first?.seconds ?? 0) }
-    private func descend(_ rank:TerritoryRank) {
-        guard depth+1<TerritoryLevel.allCases.count else { return }
-        breadcrumb=rank.path
-        level=TerritoryLevel.allCases[depth+1]
-    }
-    private func jumpToDepth(_ index:Int) {
-        breadcrumb=Array(breadcrumb.prefix(index))
-        level=TerritoryLevel.allCases[min(index,TerritoryLevel.allCases.count-1)]
+    private var incompleteSeconds:TimeInterval {
+        TerritoryGrouping.missingLevelSeconds(totals:totals,cache:cache,
+                                              level:level,scope:scope)
     }
 
-    var body: some View {
+    private func descend(_ row:TerritoryRank) {
+        guard let next=TerritoryGrouping.nextLevel(after:level,scope:row.path,
+                       totals:totals,cache:cache) else { return }
+        scope=row.path
+        level=next
+    }
+    private func choose(_ next:TerritoryLevel) {
+        level=next
+        scope=[]
+    }
+    private func jump(_ index:Int) {
+        guard index<scope.count else { return }
+        let trail=scope
+        level=trail[index].level
+        scope=Array(trail.prefix(index))
+    }
+
+    var body:some View {
         VStack(alignment:.leading,spacing:14) {
             HStack {
                 VStack(alignment:.leading,spacing:4) {
@@ -158,60 +118,57 @@ struct TerritoryStatsView: View {
             }
             ScrollView(.horizontal,showsIndicators:false) {
                 HStack(spacing:7) {
-                    ForEach(TerritoryLevel.allCases) { choice in
-                        Button(choice.title) {
-                            level=choice
-                            breadcrumb=[]
-                        }
-                        .font(.caption.weight(level == choice ? .bold:.medium))
-                        .padding(.horizontal,12).padding(.vertical,8)
-                        .foregroundStyle(level == choice ? Color.white : Color.primary)
-                        .background(level == choice ? Color.teal :
-                            Color(.secondarySystemGroupedBackground),in:Capsule())
+                    ForEach(available) { choice in
+                        Button(choice.title) { choose(choice) }
+                            .font(.caption.weight(level == choice ? .bold:.medium))
+                            .padding(.horizontal,12).padding(.vertical,8)
+                            .foregroundStyle(level == choice ? Color.white : Color.primary)
+                            .background(level == choice ? Color.teal :
+                                Color(.secondarySystemGroupedBackground),in:Capsule())
                     }
                 }
             }
-            if !breadcrumb.isEmpty {
+            if !scope.isEmpty {
                 ScrollView(.horizontal,showsIndicators:false) {
                     HStack(spacing:5) {
-                        Button("Mundo") { jumpToDepth(0) }
-                        ForEach(breadcrumb.indices,id:\.self) { i in
+                        Button("Mundo") { choose(.country) }
+                        ForEach(Array(scope.enumerated()),id:\.element.id) { i,part in
                             Image(systemName:"chevron.right")
                                 .font(.caption2).foregroundStyle(.secondary)
-                            Button(breadcrumb[i]) {
-                                jumpToDepth(i+1)
-                            }
+                            Button(part.name) { jump(i) }
                         }
                     }.font(.caption).buttonStyle(.plain).foregroundStyle(.teal)
                 }
             }
             HStack(spacing:9) {
-                summary(title:"Tiempo clasificado",value:DurationFormat.full(totalClassified))
-                summary(title:"Territorios",value:String(rows.count))
+                summary(title:"Tiempo en este nivel",
+                        value:DurationFormat.full(classifiedSeconds))
+                summary(title:level.title,value:String(ranked.count))
             }
-            if rows.isEmpty {
-                ContentUnavailableView("Sin territorios en este nivel",
-                    systemImage:"globe",
-                    description:Text("Puede faltar una subdivisión en los datos de Apple, o aún no haber lugares clasificados."))
+            if ranked.isEmpty {
+                ContentUnavailableView("Sin datos en este nivel",systemImage:"globe",
+                    description:Text("Solo aparecen las divisiones disponibles. Los niveles ausentes no impiden ver las zonas inferiores."))
             } else {
-                ForEach(Array(rows.enumerated()),id:\.element.id) { i,rank in
-                    Button { descend(rank) } label: {
+                ForEach(Array(ranked.prefix(100).enumerated()),id:\.element.id) { i,row in
+                    Button { descend(row) } label: {
                         VStack(alignment:.leading,spacing:8) {
                             HStack(alignment:.firstTextBaseline) {
-                                Text("\(i+1).").foregroundStyle(.secondary)
+                                Text("\(i+1).")
+                                    .foregroundStyle(.secondary)
                                     .frame(width:24,alignment:.leading)
                                 VStack(alignment:.leading,spacing:3) {
-                                    Text(rank.title).font(.subheadline.bold())
+                                    Text(row.title).font(.subheadline.bold())
                                         .foregroundStyle(.primary)
-                                    Text("\(rank.cells) cuadrículas")
+                                    Text("\(row.cells) cuadrículas")
                                         .font(.caption2).foregroundStyle(.secondary)
                                 }
                                 Spacer(minLength:2)
-                                Text(DurationFormat.full(rank.seconds))
+                                Text(DurationFormat.full(row.seconds))
                                     .font(.caption.monospacedDigit())
                                     .foregroundStyle(.teal).lineLimit(1)
                                     .minimumScaleFactor(0.6)
-                                if depth+1<TerritoryLevel.allCases.count {
+                                if TerritoryGrouping.nextLevel(after:level,scope:row.path,
+                                      totals:totals,cache:cache) != nil {
                                     Image(systemName:"chevron.right")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }
@@ -219,7 +176,7 @@ struct TerritoryStatsView: View {
                             GeometryReader { g in
                                 Capsule().fill(Color.teal.opacity(0.10)).overlay(alignment:.leading) {
                                     Capsule().fill(.teal.gradient)
-                                        .frame(width:g.size.width*rank.seconds/maxSeconds)
+                                        .frame(width:g.size.width*row.seconds/max(1,ranked.first?.seconds ?? 1))
                                 }
                             }.frame(height:7)
                         }
@@ -229,15 +186,14 @@ struct TerritoryStatsView: View {
                     }.buttonStyle(.plain)
                 }
             }
-            let missingTime=max(0,TimeAnalytics.sum(totals)-totalClassified)
-            if missingTime>0 {
-                Label("Sin clasificar en este nivel: \(DurationFormat.full(missingTime))",
+            if incompleteSeconds>0 {
+                Label("Sin dato de \(level.title.lowercased()) para parte del tiempo: \(DurationFormat.full(incompleteSeconds))",
                       systemImage:"info.circle")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if pending>0 {
                 HStack(spacing:7) {
-                    Label("\(pending) cuadrículas pendientes",systemImage:"mappin.slash")
+                    Label("\(pending) cuadrículas sin clasificar",systemImage:"mappin.slash")
                         .font(.caption).foregroundStyle(.secondary)
                     Spacer()
                     Button(resolver.busy ? "Clasificando" : "Continuar") {
@@ -245,12 +201,12 @@ struct TerritoryStatsView: View {
                     }.font(.caption).disabled(resolver.busy)
                 }
             }
-            if resolver.hitError { Text(resolver.message).font(.caption2).foregroundStyle(.orange) }
+            if resolver.hitError {
+                Text(resolver.message).font(.caption2).foregroundStyle(.orange)
+            }
         }
         .padding(.top,6)
         .task {
-            // Las antiguas pendientes se clasifican gradualmente; la clasificación
-            // de cuadrículas nuevas se pone en cola desde el seguimiento GPS.
             while !Task.isCancelled && pending>0 && !resolver.hitError {
                 await resolver.classify(model,batch:8)
                 if Task.isCancelled || resolver.hitError { break }
@@ -258,14 +214,14 @@ struct TerritoryStatsView: View {
             }
         }
     }
-    private func summary(title:String,value:String)->some View {
+
+    private func summary(title:String,value:String) -> some View {
         VStack(alignment:.leading,spacing:4) {
             Text(title).font(.caption2).foregroundStyle(.secondary)
             Text(value).font(.headline.monospacedDigit())
                 .foregroundStyle(.primary).lineLimit(1).minimumScaleFactor(0.6)
         }
-        .frame(maxWidth:.infinity,alignment:.leading)
-        .padding(12)
+        .frame(maxWidth:.infinity,alignment:.leading).padding(12)
         .background(Color.teal.opacity(0.09),in:RoundedRectangle(cornerRadius:15))
     }
 }
