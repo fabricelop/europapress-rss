@@ -39,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           swiftc -frontend -parse Sources/*.swift Tests/*.swift
+          python3 tools/make_icon.py
           xcodegen generate --spec project.yml
           test -e MiMapaDelTiempo.xcodeproj/project.pbxproj
 
