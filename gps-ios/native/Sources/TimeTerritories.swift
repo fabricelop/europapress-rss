@@ -50,7 +50,7 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
         busy = true
         defer { busy = false }
         let cells = model.allCells.filter { model.data.territoryCache[$0.id] == nil }
-            .sorted { (model.data.totals[$0.id] ?? 0) > (model.data.totals[$1.id] ?? 0) }
+            .sorted { (model.confirmedTotals()[$0.id] ?? 0) > (model.confirmedTotals()[$1.id] ?? 0) }
         var successful = 0
         for c in cells.prefix(batch) {
             if Task.isCancelled { break }
