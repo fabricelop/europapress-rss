@@ -258,6 +258,11 @@ def trend_command(action, element_id, context, instruction, now):
         if previous == action:
             return "TTendencias: acción ya realizada anteriormente (" + action + "): " + element_id
         raise ValueError("Tendencia ya cerrada")
+    # Manual Prepare behaves like a Top 10 editorial item, but is created
+    # only once while that specific revision is already under investigation.
+    if (action == "prepare" and r is not None and
+            str(r.get("status") or "") in {"preparing", "update"}):
+        return "TTendencias: ya está en elaboración: " + str(r.get("name") or element_id)
     if action in {"published", "deleted"}:
         if decided is None:
             decided = {"id": element_id}
@@ -298,7 +303,8 @@ def trend_command(action, element_id, context, instruction, now):
         r["name"] = str(top_row.get("name") or r.get("name") or "")
     r.update(status="preparing", requested_at=now, revision=int(r.get("revision") or 0) + 1,
              auto_queued=False, request_source="github_pages_authorized_issue",
-             reexplain_instructions=instruction or "Explicar la novedad contrastada sin generar imágenes.")
+             task="explain", with_image=False, disable_ai_image=True,
+             reexplain_instructions=instruction or "Investiga y explica esta tendencia con el mismo rigor que una Top 10. El texto y remate se cierran antes de las imágenes.")
     doc["updated_at"] = now
     save(p, doc)
     # Apply to the queue immediately instead of waiting for the Top 30 refresh.
@@ -310,6 +316,7 @@ def trend_command(action, element_id, context, instruction, now):
         "status": "preparing", "requested_at": now,
         "revision": r["revision"], "task": "explain",
         "auto_queued": False, "request_source": "github_pages_authorized_issue",
+        "with_image": False, "disable_ai_image": True,
         "rewrite_instruction": r["reexplain_instructions"],
     })
     queue.update(project="TTendencias", items=rows, count=len(rows), updated_at=now)
