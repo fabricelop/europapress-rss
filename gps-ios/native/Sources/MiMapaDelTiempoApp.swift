@@ -419,7 +419,7 @@ struct SavedState: Codable {
         let count=data.intervals.count
         let changed=cachedPeriod != period || cachedPeriodCount != count ||
                     cachedPeriodEnd != data.intervals.last?.end
-        if cachedPeriod == nil || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
+        if cachedPeriod != period || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
             cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
             cachedPeriod=period
             cachedPeriodCount=count
@@ -1364,7 +1364,7 @@ struct TimeMapView: View {
     @State private var followLocation = false
     @State private var restoredCamera = false
     @Environment(\.scenePhase) private var scenePhase
-    var relevant:[MapCellRender] {
+    private var relevant:[MapCellRender] {
         let now=Date()
         let totals=model.periodTotals(now:now)
         let active=model.activeCell
@@ -1820,9 +1820,9 @@ struct TimeSettingsView: View {
                     Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
                     VStack(alignment:.leading,spacing:5) {
                         HStack {
-                            Text("Transparencia de cuadrículas")
+                            Text("Opacidad de cuadrículas")
                             Spacer()
-                            Text("\(Int((1-model.cellFillOpacity)*100)) %")
+                            Text("\(Int(model.cellFillOpacity*100)) %")
                                 .monospacedDigit().foregroundStyle(.secondary)
                         }
                         Slider(value:$model.cellFillOpacity,in:0.08...1,step:0.04)
