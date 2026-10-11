@@ -1,6 +1,11 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
-## Widgets iPhone — desarrollo aislado (NO instalado todavía)
+## Widgets iPhone — código y artefacto verificados (NO instalado todavía)
+- [x] [GitHub Actions: compilación iPhone + extensión WidgetKit y XCTest, ejecución 38124014988](https://github.com/fabricelop/europapress-rss/actions/runs/38124014988), 11/10/2026: **26 pruebas, 0 fallos**. El paso de compilación iPhone y widget terminó correctamente. Artefacto 11695859793 disponible hasta 16/10/2026.
+- [x] IPA experimental desempaquetada: `MiMapaDelTiempo-widgets-unsigned.ipa` (506989 bytes); aplicación `es.mimapadeltiempo.app` versión `1.0.3` build 4; extensión embebida `MiMapaWidgets.appex` con `com.apple.widgetkit-extension` y build 4.
+- [ ] **Pendiente crítico:** verificar firma/instalación real con Sideloadly y cuenta Apple gratuita, y comprobar que ambos procesos pueden leer/escribir App Group en iPhone. La IPA sin firmar NO demuestra que las capacidades del perfil gratuito incluyan App Groups.
+- [ ] Pendiente: revisar en el iPhone la disponibilidad de los cinco tamaños y recargas reales (WidgetKit puede retrasarlas).
+
 - Rama de pruebas: `feature/mi-mapa-del-tiempo-ios-widgets`. La v0.3 que el usuario está probando sigue intacta en `feature/mi-mapa-del-tiempo-ios`.
 - WidgetKit: widget pequeño/mediano de inicio y widgets de bloqueo rectangular, circular y en línea. Total histórico principal y última estancia secundaria. Una pulsación abre la app.
 - Datos compartidos: un snapshot pequeño `TimeWidgetSnapshot` con duraciones ya asignadas, fecha de última lectura, estado de tracking y nombre de lugar **solo si el usuario lo permite**. No se comparten coordenadas ni la base SQLite entera. Por defecto los nombres de lugares permanecen ocultos.
@@ -8,7 +13,7 @@
 - Requiere `group.es.mimapadeltiempo.widgets` en los entitlements de la app y de su extensión. **Bloqueo externo por verificar**: la cuenta Apple gratuita/Sideloadly debe proporcionar un perfil de aprovisionamiento compatible con App Groups a ambos targets; la compilación sin firma NO demuestra que pueda firmarse o instalarse. Si el grupo no está disponible, los widgets muestran el estado vacío, nunca cifras falsas.
 - Workflow macOS independiente: `.github/workflows/mi-mapa-del-tiempo-widgets-verify.yml` solo en la rama de widgets; comprueba compilación iOS, existencia de .appex y XCTest. No usa Vercel.
 - Antes de una eventual instalación: exportar JSON desde la v0.3, mantener el mismo bundle principal, cerrar por completo la app y no desinstalarla. No instalar hasta verificar build y conocer limitación de firma.
-- Próxima validación: XCTest de serialización, formatos y frescura de datos; después instalación con firma real y prueba del permiso de grupo y aparición en galería de widgets.
+- [x] XCTest de serialización, formatos y frescura de datos superados; pendiente instalación con firma real y aparición en galería de widgets.
 
 
 ## Nueva tanda v0.3 (compilación y tests automáticos confirmados; instalación física pendiente)
