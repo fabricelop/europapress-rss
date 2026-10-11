@@ -80,6 +80,33 @@ struct OfflineGridMap: View {
                                 .foregroundColor(.black),at:CGPoint(x:rect.midX,y:rect.midY))
                         }
                     }
+                    // Misma delimitación visible sin Internet ni mapas descargados.
+                    // El perímetro de una zona es más grueso que la rejilla normal.
+                    for zone in model.visibleZones.prefix(18) {
+                        let boundary=TimeZoneOutline.segments(for:zone,maxCells:600)
+                        for edge in boundary {
+                            let a=screen(edge.start,size:size),b=screen(edge.end,size:size)
+                            if CGRect(x:min(a.x,b.x),y:min(a.y,b.y),
+                                      width:max(1,abs(a.x-b.x)),
+                                      height:max(1,abs(a.y-b.y)))
+                                .intersects(CGRect(origin:.zero,size:size)) {
+                                var path=Path()
+                                path.move(to:a);path.addLine(to:b)
+                                context.stroke(path,with:.color(.teal),lineWidth:3)
+                            }
+                        }
+                        if let middle=TimeZoneOutline.visibleCenter(for:zone) {
+                            let center=screen(middle,size:size)
+                            if center.x>=0 && center.x<size.width &&
+                               center.y>=0 && center.y<size.height &&
+                               region.span.latitudeDelta<0.07 {
+                                context.draw(Text("\(zone.name) · \(zone.cells.count)")
+                                    .font(.system(size:11,weight:.bold))
+                                    .foregroundColor(.teal),
+                                    at:center)
+                            }
+                        }
+                    }
                     if let current=model.current {
                         let p=screen(current.coordinate,size:size)
                         context.fill(Path(ellipseIn:CGRect(x:p.x-7,y:p.y-7,width:14,height:14)),
