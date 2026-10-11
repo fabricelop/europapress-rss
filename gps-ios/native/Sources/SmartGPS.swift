@@ -11,7 +11,27 @@ struct GPSPowerEvent: Codable, Equatable, Identifiable {
 
 enum GPSPowerMode: String {
     case precision = "Máxima precisión"
-    case rest = "Reposo inteligente"
+    case rest = "Pausa voluntaria"
+}
+
+/// Descanso voluntario: se conserva la última cuadrícula sin fingir muestras GPS.
+struct GPSRestSession: Codable, Equatable {
+    let startedAt: Date
+    let cell: Cell
+    let latitude: Double
+    let longitude: Double
+}
+
+/// La salida de una zona reactiva el GPS cuando iOS entrega el evento.
+enum GPSRestPolicy {
+    static let geofenceRadius: CLLocationDistance = 160
+    static let movementThreshold: CLLocationDistance = 180
+    static func elapsed(start: Date, end: Date, lowerBound: Date? = nil) -> TimeInterval {
+        max(0, end.timeIntervalSince(max(start, lowerBound ?? start)))
+    }
+    static func shouldResume(distance: CLLocationDistance, accuracy: CLLocationAccuracy) -> Bool {
+        accuracy >= 0 && accuracy <= 120 && distance >= max(movementThreshold, accuracy * 2)
+    }
 }
 
 /// Configuración auditable y verificable sin un iPhone físico.
