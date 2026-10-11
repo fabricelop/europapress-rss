@@ -1,4 +1,4 @@
-name: Actualizar Top 10 TTendencias
+name: Actualizar Top 30 y cola editorial TTendencias
 
 on:
   workflow_dispatch:
@@ -8,6 +8,9 @@ on:
     branches: [main]
     paths:
       - "trends/refresh-trigger.txt"
+      - "trends/auto_queue_new.py"
+      - ".github/scripts/test_ttendencias_top30_queue.py"
+      - ".github/workflows/ttendencias-refresh.yml"
 
 permissions:
   contents: write
@@ -34,7 +37,10 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Actualizar Top 10 y cola web
+      - name: Verificar que nunca se encolen varias tendencias 11-30 a la vez
+        run: python3 .github/scripts/test_ttendencias_top30_queue.py
+
+      - name: Actualizar Top 30 y cola web
         run: |
           git config user.name "ttendencias-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -88,8 +94,9 @@ jobs:
           git pull --rebase --autostash origin main
           git push origin HEAD:main
 
-          # Las nuevas tendencias se explican en la ejecución horaria de TTendencias.
-          # Ya no se crea un trigger separado de ChatGPT Work por cada entrada nueva.
+          # La cola prioriza todas las Top 10 sin explicación reciente y una
+          # única tendencia por turno en puestos 11-30. El siguiente puesto
+          # se incorpora solo al cerrarse el anterior y tras refrescar radar.
 
       # El panel Cloudflare consulta directamente el estado versionado en GitHub.
       # Sin notificaciones push heredadas ni peticiones a Vercel.
