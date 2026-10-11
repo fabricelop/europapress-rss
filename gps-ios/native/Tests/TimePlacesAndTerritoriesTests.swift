@@ -18,7 +18,8 @@ final class TimePlacesAndTerritoriesTests: XCTestCase {
     }
     func testHistoricDailySplitAcrossMidnight() {
         let c=Cell(row:3,column:4)
-        let calendar=Calendar(identifier:.gregorian)
+        var calendar=Calendar(identifier:.gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT:0)!
         let items=[segment(86350,86500,cell:c)]
         let days=TimeAttribution.byDay(items,cellIDs:[c.id],calendar:calendar)
         XCTAssertEqual(days.count,2)
