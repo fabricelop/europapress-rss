@@ -51,8 +51,9 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
         busy = true
         hitError = false
         defer { busy = false }
+        let totals=model.confirmedTotals()
         let cells = model.allCells.filter { model.data.territoryCache[$0.id] == nil }
-            .sorted { (model.confirmedTotals()[$0.id] ?? 0) > (model.confirmedTotals()[$1.id] ?? 0) }
+            .sorted { (totals[$0.id] ?? 0) > (totals[$1.id] ?? 0) }
         var successful = 0
         for c in cells.prefix(batch) {
             if Task.isCancelled { break }
@@ -86,125 +87,186 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
     }
 }
 
+private struct TerritoryRank: Identifiable {
+    var id:String
+    var title:String
+    var path:[String]
+    var seconds:TimeInterval
+    var cells:Int
+}
+
 struct TerritoryStatsView: View {
-    @ObservedObject var model: TimeModel
-    @StateObject private var resolver = TerritoryResolver()
-    @State private var level: TerritoryLevel = .country
-    private var totals: [String:TimeInterval] { TimeAttribution.byCell(model.data.intervals,
-                              window:TimeAnalytics.window(for:model.period,now:.now)) }
-    private var classified: [(name:String,seconds:TimeInterval,cells:Int)] {
-        var seconds:[String:TimeInterval] = [:]
-        var counts:[String:Int] = [:]
-        for (id, duration) in totals where duration > 0 {
-            guard let record=model.data.territoryCache[id],
-                  let name=level.value(record), !name.isEmpty else { continue }
-            // Las zonas homónimas de diferentes provincias no deben confundirse.
-            let names=record.hierarchy
-            let selected=names.firstIndex(where: { $0.0 == levelName }) ?? (names.count-1)
-            let unique=names.prefix(max(0,selected+1)).map(\.1).joined(separator:" / ")
-            seconds[unique,default:0] += duration
-            counts[unique,default:0] += 1
-        }
-        return seconds.map { (name:$0.key,seconds:$0.value,cells:counts[$0.key] ?? 0) }
-            .sorted { $0.seconds > $1.seconds }
+    @ObservedObject var model:TimeModel
+    @StateObject private var resolver=TerritoryResolver()
+    @State private var level:TerritoryLevel = .country
+    @State private var breadcrumb:[String]=[]
+
+    private var totals:[String:TimeInterval] {
+        TimeAttribution.byCell(model.data.intervals,
+            window:TimeAnalytics.window(for:model.period,now:.now))
     }
-    private var levelName:String {
-        switch level {
-        case .country:return "País"
-        case .community:return "Comunidad/estado"
-        case .province:return "Provincia"
-        case .city:return "Municipio"
-        case .district:return "Distrito"
-        case .neighborhood:return "Barrio"
-        }
-    }
-    private var classifiedSeconds:TimeInterval {
-        totals.reduce(0) { sum,item in
-            guard let record=model.data.territoryCache[item.key],
-                  level.value(record) != nil else { return sum }
-            return sum + item.value
-        }
-    }
-    private var remaining:Int {
+    private var pending:Int {
         totals.keys.filter { model.data.territoryCache[$0] == nil }.count
     }
-    var body: some View {
-        VStack(alignment:.leading,spacing:12) {
-            Picker("Nivel territorial",selection:$level) {
-                ForEach(TerritoryLevel.allCases) { v in
-                    Text(v.title).tag(v)
-                }
-            }.pickerStyle(.menu)
-            HStack {
-                VStack(alignment:.leading,spacing:3) {
-                    Text("\(totals.count-remaining) de \(totals.count) cuadrículas clasificadas")
-                        .font(.caption.weight(.semibold))
-                    Text("Clasificación aproximada mediante Apple; puede faltar barrio o distrito.")
-                        .font(.caption2).foregroundStyle(.secondary)
-                }
-                Spacer()
-                Button {
-                    Task { await resolver.classify(model,batch:24) }
-                } label: {
-                    if resolver.busy { ProgressView() }
-                    else { Label("Continuar 24",systemImage:"mappin.and.ellipse") }
-                }
-                .buttonStyle(.bordered)
-                .disabled(resolver.busy || remaining == 0)
+    private var rows:[TerritoryRank] {
+        var ranking:[String:TerritoryRank] = [:]
+        guard let target=TerritoryLevel.allCases.firstIndex(of:level) else { return [] }
+        for (id,seconds) in totals where seconds>0 {
+            guard let record=model.data.territoryCache[id] else { continue }
+            let levels=Array(TerritoryLevel.allCases.prefix(target+1))
+            let names=levels.compactMap { item -> String? in
+                guard let value=item.value(record),!value.isEmpty else { return nil }
+                return value
             }
-            ProgressView(value:Double(totals.count-remaining),
-                         total:Double(max(1,totals.count)))
-                .tint(.teal)
-            Text("Clasificación automática y gradual mientras esta pantalla esté abierta: grupos de hasta 8 cuadrículas, con pausas entre lotes y caché local. Si Apple limita el servicio, se detiene y podrás reanudarla con el botón. Requiere Internet y envía a Apple los centros consultados.")
-                .font(.caption2).foregroundStyle(.secondary)
-            HStack {
-                Text("Tiempo clasificado en este nivel")
-                Spacer()
-                Text(DurationFormat.full(classifiedSeconds)).monospacedDigit()
-            }.font(.caption)
-            if TimeAnalytics.sum(totals) > classifiedSeconds {
-                HStack {
-                    Text("Sin atribución territorial")
-                    Spacer()
-                    Text(DurationFormat.full(TimeAnalytics.sum(totals)-classifiedSeconds))
-                        .monospacedDigit()
-                }.font(.caption).foregroundStyle(.orange)
-            }
-            if resolver.busy { Text(resolver.message).font(.caption2) }
-            if classified.isEmpty {
-                ContentUnavailableView("Aún sin territorios",systemImage:"globe.europe.africa",
-                  description:Text("La clasificación empieza automáticamente por las cuadrículas donde más tiempo has pasado."))
-            } else {
-                ForEach(classified,id:\.name) { row in
-                    HStack(alignment:.top) {
-                        VStack(alignment:.leading,spacing:3) {
-                            Text(row.name.replacingOccurrences(of:" / ",with:" › "))
-                                .font(.subheadline.weight(.medium))
-                            Text("\(row.cells) cuadrículas · solo tiempo ya clasificado")
-                                .font(.caption2).foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Text(DurationFormat.full(row.seconds)).font(.caption.weight(.semibold))
-                            .monospacedDigit().foregroundStyle(.teal)
-                    }
-                    .padding(11).background(Color(.secondarySystemGroupedBackground),
-                                             in:RoundedRectangle(cornerRadius:12))
-                }
-            }
-            if remaining > 0 {
-                Text("Quedan \(remaining) cuadrículas pendientes. Los territorios todavía sin clasificar no se atribuyen a países o barrios inventados.")
-                    .font(.caption2).foregroundStyle(.secondary)
-            }
+            guard names.count==target+1,
+                  names.prefix(breadcrumb.count).elementsEqual(breadcrumb) else { continue }
+            let key=names.joined(separator:" / ")
+            let title=names.last ?? ""
+            var entry=ranking[key] ?? TerritoryRank(id:key,title:title,path:names,
+                                                     seconds:0,cells:0)
+            entry.seconds+=seconds
+            entry.cells+=1
+            ranking[key]=entry
         }
-        .padding(.top,5)
+        return ranking.values.sorted { $0.seconds > $1.seconds }
+    }
+    private var totalClassified:TimeInterval {
+        rows.reduce(0) { $0+$1.seconds }
+    }
+    private var depth:Int { TerritoryLevel.allCases.firstIndex(of:level) ?? 0 }
+    private var maxSeconds:TimeInterval { max(1,rows.first?.seconds ?? 0) }
+    private func descend(_ rank:TerritoryRank) {
+        guard depth+1<TerritoryLevel.allCases.count else { return }
+        breadcrumb=rank.path
+        level=TerritoryLevel.allCases[depth+1]
+    }
+    private func jumpToDepth(_ index:Int) {
+        breadcrumb=Array(breadcrumb.prefix(index))
+        level=TerritoryLevel.allCases[min(index,TerritoryLevel.allCases.count-1)]
+    }
+
+    var body: some View {
+        VStack(alignment:.leading,spacing:14) {
+            HStack {
+                VStack(alignment:.leading,spacing:4) {
+                    Label("Mi mundo",systemImage:"globe.europe.africa.fill")
+                        .font(.title2.bold()).foregroundStyle(.teal)
+                    Text("Dónde acumulas más tiempo")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer()
+                if resolver.busy { ProgressView().tint(.teal) }
+            }
+            ScrollView(.horizontal,showsIndicators:false) {
+                HStack(spacing:7) {
+                    ForEach(TerritoryLevel.allCases) { choice in
+                        Button(choice.title) {
+                            level=choice
+                            breadcrumb=[]
+                        }
+                        .font(.caption.weight(level == choice ? .bold:.medium))
+                        .padding(.horizontal,12).padding(.vertical,8)
+                        .foregroundStyle(level == choice ? Color.white : Color.primary)
+                        .background(level == choice ? Color.teal :
+                            Color(.secondarySystemGroupedBackground),in:Capsule())
+                    }
+                }
+            }
+            if !breadcrumb.isEmpty {
+                ScrollView(.horizontal,showsIndicators:false) {
+                    HStack(spacing:5) {
+                        Button("Mundo") { jumpToDepth(0) }
+                        ForEach(breadcrumb.indices,id:\.self) { i in
+                            Image(systemName:"chevron.right")
+                                .font(.caption2).foregroundStyle(.secondary)
+                            Button(breadcrumb[i]) {
+                                jumpToDepth(i+1)
+                            }
+                        }
+                    }.font(.caption).buttonStyle(.plain).foregroundStyle(.teal)
+                }
+            }
+            HStack(spacing:9) {
+                summary(title:"Tiempo clasificado",value:DurationFormat.full(totalClassified))
+                summary(title:"Territorios",value:String(rows.count))
+            }
+            if rows.isEmpty {
+                ContentUnavailableView("Sin territorios en este nivel",
+                    systemImage:"globe",
+                    description:Text("Puede faltar una subdivisión en los datos de Apple, o aún no haber lugares clasificados."))
+            } else {
+                ForEach(Array(rows.enumerated()),id:\.element.id) { i,rank in
+                    Button { descend(rank) } label: {
+                        VStack(alignment:.leading,spacing:8) {
+                            HStack(alignment:.firstTextBaseline) {
+                                Text("\(i+1).").foregroundStyle(.secondary)
+                                    .frame(width:24,alignment:.leading)
+                                VStack(alignment:.leading,spacing:3) {
+                                    Text(rank.title).font(.subheadline.bold())
+                                        .foregroundStyle(.primary)
+                                    Text("\(rank.cells) cuadrículas")
+                                        .font(.caption2).foregroundStyle(.secondary)
+                                }
+                                Spacer(minLength:2)
+                                Text(DurationFormat.full(rank.seconds))
+                                    .font(.caption.monospacedDigit())
+                                    .foregroundStyle(.teal).lineLimit(1)
+                                    .minimumScaleFactor(0.6)
+                                if depth+1<TerritoryLevel.allCases.count {
+                                    Image(systemName:"chevron.right")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                            }
+                            GeometryReader { g in
+                                Capsule().fill(Color.teal.opacity(0.10)).overlay(alignment:.leading) {
+                                    Capsule().fill(.teal.gradient)
+                                        .frame(width:g.size.width*rank.seconds/maxSeconds)
+                                }
+                            }.frame(height:7)
+                        }
+                        .padding(13)
+                        .background(Color(.secondarySystemGroupedBackground),
+                                    in:RoundedRectangle(cornerRadius:16))
+                    }.buttonStyle(.plain)
+                }
+            }
+            let missingTime=max(0,TimeAnalytics.sum(totals)-totalClassified)
+            if missingTime>0 {
+                Label("Sin clasificar en este nivel: \(DurationFormat.full(missingTime))",
+                      systemImage:"info.circle")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if pending>0 {
+                HStack(spacing:7) {
+                    Label("\(pending) cuadrículas pendientes",systemImage:"mappin.slash")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Spacer()
+                    Button(resolver.busy ? "Clasificando" : "Continuar") {
+                        Task { await resolver.classify(model,batch:24) }
+                    }.font(.caption).disabled(resolver.busy)
+                }
+            }
+            if resolver.hitError { Text(resolver.message).font(.caption2).foregroundStyle(.orange) }
+        }
+        .padding(.top,6)
         .task {
-            // Sin pulsar repetidamente: trabajo solo con la vista abierta.
-            // No reintenta en bucle cuando Apple devuelve un error/cuota.
-            while !Task.isCancelled && remaining > 0 && !resolver.hitError {
+            // Las antiguas pendientes se clasifican gradualmente; la clasificación
+            // de cuadrículas nuevas se pone en cola desde el seguimiento GPS.
+            while !Task.isCancelled && pending>0 && !resolver.hitError {
                 await resolver.classify(model,batch:8)
                 if Task.isCancelled || resolver.hitError { break }
                 try? await Task.sleep(for:.seconds(20))
             }
         }
+    }
+    private func summary(title:String,value:String)->some View {
+        VStack(alignment:.leading,spacing:4) {
+            Text(title).font(.caption2).foregroundStyle(.secondary)
+            Text(value).font(.headline.monospacedDigit())
+                .foregroundStyle(.primary).lineLimit(1).minimumScaleFactor(0.6)
+        }
+        .frame(maxWidth:.infinity,alignment:.leading)
+        .padding(12)
+        .background(Color.teal.opacity(0.09),in:RoundedRectangle(cornerRadius:15))
     }
 }
