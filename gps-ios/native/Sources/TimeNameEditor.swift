@@ -18,16 +18,16 @@ struct TimeNameEditor: View {
                 Section("Nombre de la cuadrícula") {
                     TextField("Casa, Montevalle, Trabajo…",text:$name)
                         .textInputAutocapitalization(.words)
-                    Text("Cada nombre representa un Lugar. Si escribes el mismo nombre en cuadrículas próximas, se unen automáticamente.")
+                    Text("Las cuadrículas con el mismo nombre pueden formar una zona. También puedes dibujarla en Estadísticas.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
-                Section("Lugar actual") {
+                Section("Zona actual") {
                     LabeledContent("Cuadrícula",value:model.label(for:cell))
                     if let place=model.placeFor(cell) {
-                        LabeledContent("Lugar",value:place.name)
+                        LabeledContent("Zona",value:place.name)
                         LabeledContent("Cuadrículas agrupadas",value:String(place.cellIDs.count))
                     }
-                    Text("Dejar vacío el nombre devuelve esta cuadrícula a su Zona y la separa del lugar.")
+                    Text("Dejar vacío el nombre devuelve esta cuadrícula a su Zona y la separa de la zona.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 if model.renameUndoAvailable {
@@ -39,7 +39,7 @@ struct TimeNameEditor: View {
                     }
                 }
             }
-            .navigationTitle("Nombrar lugar")
+            .navigationTitle("Nombrar zona")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement:.cancellationAction) {
@@ -50,21 +50,21 @@ struct TimeNameEditor: View {
                 }
             }
             .confirmationDialog(
-                "Ya existe un lugar lejano con este nombre",
+                "Ya existe una zona lejana con este nombre",
                 isPresented:$confirmingDistant,
                 titleVisibility:.visible
             ) {
-                Button("Unir al lugar existente") {
+                Button("Unir a la zona existente") {
                     model.assignName(cell,to:name,groupID:distantGroupID)
                     dismiss()
                 }
-                Button("Crear otro lugar independiente") {
+                Button("Crear otra zona independiente") {
                     model.assignName(cell,to:name,groupID:nil)
                     dismiss()
                 }
                 Button("Cancelar",role:.cancel) {}
             } message: {
-                Text("\(distantGroupName) está a unos \(Int(distantMeters)) m. ¿Es el mismo lugar?")
+                Text("\(distantGroupName) está a unos \(Int(distantMeters)) m. ¿Es la misma zona?")
             }
         }
         .onAppear { name=model.data.names[cell.id] ?? "" }
