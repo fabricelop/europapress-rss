@@ -3,15 +3,12 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T19:16:25.102+02:00",
-  "last_completed_at": "2026-10-11T19:20:13.234+02:00",
-  "updated_at": "2026-10-11T19:20:13.234+02:00",
+  "last_started_at": "2026-10-11T19:45:00+02:00",
+  "last_completed_at": "2026-10-11T19:50:35+02:00",
+  "updated_at": "2026-10-11T19:50:35+02:00",
   "status": "success",
   "processed_ids": [
-    "edba32c9b800",
-    "0712f2c884d4",
-    "e399446d2db8",
-    "b73c43b052f7"
+    "4da2ed940534"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -23,8 +20,8 @@
     "persisted_trigger": true,
     "status": "solicitada; reparación visual independiente pendiente/no bloqueante",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T191625+0200-chatgpt",
-    "requested_at": "2026-10-11T19:16:25.102+02:00",
+    "run_id": "tr-20261011T194500+0200-chatgpt",
+    "requested_at": "2026-10-11T19:50:35+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair + post-explained repair"
   },
@@ -32,31 +29,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T191625+0200-chatgpt",
+    "run_id": "tr-20261011T194500+0200-chatgpt",
     "source": "chat",
     "status": "DONE",
-    "phase": "closing",
+    "started_at": "2026-10-11T19:45:00+02:00",
+    "finished_at": "2026-10-11T19:50:35+02:00",
     "current": 4,
     "total": 4,
-    "trend_id": null,
-    "title": null,
-    "started_at": "2026-10-11T19:16:25.102+02:00",
-    "updated_at": "2026-10-11T19:20:13.234+02:00",
-    "finished_at": "2026-10-11T19:20:13.234+02:00",
-    "incident_count": 0,
-    "incidents": [],
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
-      "explanation_groups": 2,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
       "new_cards": 1,
-      "revisions_updated": 4,
-      "grouped_into_existing_card": 3,
-      "grouped_members_total": 3,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 0,
+      "grouped_members_total": 0,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "explanations_verified_under_280": 2,
+      "explanations_verified_under_280": 1,
       "remates_selected": 1,
       "remates_omitted": 0,
       "political_closers_repaired": 0,
@@ -67,132 +58,12 @@
       "incidents": 0,
       "images_generated": 0,
       "telegram_deliveries_confirmed": 0,
-      "skipped_by_jit": 0,
-      "reconciled_terminal": 0,
+      "skipped_by_jit": 3,
+      "reconciled_terminal": 3,
       "pending_repair_requested": 2
     },
-    "message": "Cierre verificado · Anfield explicado; Leo Román, Depor y Yeremay enlazados al grupo Real Sociedad 3-2 Deportivo; cola editorial vacía",
-    "activity": [
-      {
-        "at": "2026-10-11T19:16:25.102+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · 4 revisiones activas; saneamiento visual de Pendientes solicitado"
-      },
-      {
-        "at": "2026-10-11T19:16:55.936+02:00",
-        "phase": "investigating",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Buscando detonante actual de Anfield y contrastando el contexto deportivo de la cola"
-      },
-      {
-        "at": "2026-10-11T19:18:14.696+02:00",
-        "phase": "investigating",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Contrastando fuente 1/2 · Reuters confirma el recibimiento hostil y el contexto del fallo financiero"
-      },
-      {
-        "at": "2026-10-11T19:18:45.652+02:00",
-        "phase": "investigating",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Contrastando fuente 2/2 · Guardian confirma el 0-3, la expulsión de Gravenberch y los goleadores"
-      },
-      {
-        "at": "2026-10-11T19:18:45.657+02:00",
-        "phase": "investigating",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Hecho esencial verificado · Manchester City ganó 0-3 al Liverpool en Anfield"
-      },
-      {
-        "at": "2026-10-11T19:18:45.662+02:00",
-        "phase": "drafting",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Redactando explicación factual de Anfield"
-      },
-      {
-        "at": "2026-10-11T19:18:45.667+02:00",
-        "phase": "drafting",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Comprobando límite de X · texto final 245 caracteres"
-      },
-      {
-        "at": "2026-10-11T19:18:45.672+02:00",
-        "phase": "remate_selection",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-11T19:18:45.677+02:00",
-        "phase": "remate_selection",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Evaluando candidatos con ratings · 154 valoraciones; 100 recientes consideradas"
-      },
-      {
-        "at": "2026-10-11T19:18:45.682+02:00",
-        "phase": "remate_selection",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Remate seleccionado · candidato c1"
-      },
-      {
-        "at": "2026-10-11T19:18:45.687+02:00",
-        "phase": "persisting",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Guardando ficha Explicada de Anfield y enlazando Leo Román, Depor y Yeremay al grupo existente"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "persisting",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Actualizando requests · Anfield explicado y tres tendencias enlazadas al grupo Real Sociedad–Deportivo"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "persisting",
-        "trend_id": "b73c43b052f7",
-        "title": "Yeremay",
-        "message": "Retirando las cuatro revisiones tratadas de la cola editorial"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "verifying",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "verifying",
-        "trend_id": "edba32c9b800",
-        "title": "Anfield",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "verifying",
-        "trend_id": "b73c43b052f7",
-        "title": "Yeremay",
-        "message": "Tendencias cerradas y verificadas · Anfield nueva; Leo Román, Depor y Yeremay agrupadas sin duplicado"
-      },
-      {
-        "at": "2026-10-11T19:20:13.234+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre verificado · Anfield explicado; Leo Román, Depor y Yeremay enlazados al grupo Real Sociedad 3-2 Deportivo; cola editorial vacía"
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -202,66 +73,152 @@
     },
     "remate_selections": [
       {
-        "trend_id": "edba32c9b800",
+        "trend_id": "4da2ed940534",
         "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.7,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c2",
-            "total": 8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.9,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.7,
-        "no_remate_reason": null
+        "name": "Ferrera",
+        "closer_text": "🌶️ Las Ventas acabó poniendo la Puerta Grande en modo automático."
       }
-    ]
+    ],
+    "activity": [
+      {
+        "at": "2026-10-11T19:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · 4 revisiones activas; saneamiento visual de Pendientes solicitado"
+      },
+      {
+        "at": "2026-10-11T19:46:30+02:00",
+        "phase": "verifying",
+        "trend_id": "2a9d508bdc77",
+        "title": "Doku",
+        "message": "JIT · Doku ya fue enlazado al grupo Anfield por otra ejecución; revisión omitida"
+      },
+      {
+        "at": "2026-10-11T19:46:35+02:00",
+        "phase": "verifying",
+        "trend_id": "50ce52d86120",
+        "title": "Gravenberch",
+        "message": "JIT · Gravenberch ya fue enlazado al grupo Anfield por otra ejecución; revisión omitida"
+      },
+      {
+        "at": "2026-10-11T19:48:10+02:00",
+        "phase": "verifying",
+        "trend_id": "81eb0a519a53",
+        "title": "Amatucci",
+        "message": "JIT · Amatucci ya fue enlazado al grupo Real Sociedad–Deportivo por otra ejecución; revisión omitida"
+      },
+      {
+        "at": "2026-10-11T19:49:00+02:00",
+        "phase": "verifying",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Releyendo estado autoritativo de Ferrera"
+      },
+      {
+        "at": "2026-10-11T19:49:10+02:00",
+        "phase": "investigating",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Contrastando fuente 1/2 · Telemadrid confirma el mano a mano Ferrera–Román en la Feria de Otoño"
+      },
+      {
+        "at": "2026-10-11T19:49:20+02:00",
+        "phase": "investigating",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Contrastando fuente 2/2 · Aplausos confirma silencio, oreja y oreja para Ferrera y su segunda Puerta Grande en Las Ventas"
+      },
+      {
+        "at": "2026-10-11T19:49:30+02:00",
+        "phase": "drafting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Redactando explicación factual de Ferrera"
+      },
+      {
+        "at": "2026-10-11T19:49:35+02:00",
+        "phase": "drafting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Comprobando límite de X · texto final 231 caracteres"
+      },
+      {
+        "at": "2026-10-11T19:49:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Generando y evaluando candidatos de remate con ratings recientes"
+      },
+      {
+        "at": "2026-10-11T19:49:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Remate seleccionado · «Las Ventas acabó poniendo la Puerta Grande en modo automático.»"
+      },
+      {
+        "at": "2026-10-11T19:49:50+02:00",
+        "phase": "persisting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Guardando ficha Explicada de Ferrera"
+      },
+      {
+        "at": "2026-10-11T19:50:05+02:00",
+        "phase": "persisting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Ficha Explicada guardada en main"
+      },
+      {
+        "at": "2026-10-11T19:50:10+02:00",
+        "phase": "persisting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Actualizando requests · Ferrera r0 marcada explained"
+      },
+      {
+        "at": "2026-10-11T19:50:15+02:00",
+        "phase": "persisting",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Retirando revisión de Ferrera de la cola editorial"
+      },
+      {
+        "at": "2026-10-11T19:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-11T19:50:25+02:00",
+        "phase": "verifying",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Verificando id+revision y texto persistido en Explicadas y requests"
+      },
+      {
+        "at": "2026-10-11T19:50:30+02:00",
+        "phase": "verifying",
+        "trend_id": "4da2ed940534",
+        "title": "Ferrera",
+        "message": "Tendencia cerrada y verificada · cola editorial vacía y sin reexplicaciones pendientes"
+      },
+      {
+        "at": "2026-10-11T19:50:35+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre verificado · Ferrera explicada; Doku, Gravenberch y Amatucci ya estaban cerradas por ejecución concurrente; cola vacía"
+      }
+    ],
+    "updated_at": "2026-10-11T19:50:35+02:00",
+    "phase": "closing",
+    "trend_id": null,
+    "title": null,
+    "message": "Cierre verificado · Ferrera explicada; Doku, Gravenberch y Amatucci ya estaban cerradas por ejecución concurrente; cola vacía"
   },
   "error": null
 }
