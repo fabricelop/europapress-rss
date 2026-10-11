@@ -22,7 +22,7 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=14  # TTendencias: archive copy and no quick gag
+BUTTONS_VERSION=15  # TTendencias: re-explain inline
 TTI_BUTTONS_VERSION=13  # Preserve existing TTiTTulares keyboard
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -208,6 +208,9 @@ def trend_cards(now):
         rev=int(req.get("revision") or 0)
         finished=explained.get((tid,rev))
         is_final=bool((finished and str(finished.get("explanation") or "").strip()) or (status=="explained" and str(req.get("explanation") or "").strip()))
+        if req.get("reexplain") and not is_final:
+            # Keep previous explanation while editorial checks the new outcome.
+            continue
         if not is_final and not age_ready(start,now):continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
@@ -220,6 +223,7 @@ def trend_cards(now):
                "image":image_url(finished or {}) or image_url(req),
                "archive_articles":sources,"search":name,
                "final":is_final,"start":start,"title":name,
+               "editorial_rework":bool(req.get("reexplain") or req.get("request_source")=="telegram_reexplain"),
                "entered_top_at":top_row.get("entered_top10_at"),
                "novelty_verified":req.get("material_novelty_verified") is True,
                "is_in_top":bool(top_row and 1<=int(top_row.get("rank") or 0)<=10)}
@@ -280,6 +284,8 @@ def keys(card,project):
             rows.append([{"text":"🔎 Buscar en X","url":search}])
     else:
         rows.append([{"text":"🔎 Buscar en X","url":search}])
+    if project=="ttendencias" and card.get("final"):
+        rows.append([{"text":"↻ Reexplicar / actualizar","callback_data":"tx:r:"+card["id"]+":"+str(card["rev"])}])
     rows.append([{"text":"🗑️ Borrar","callback_data":callback}])
     return {"inline_keyboard":rows}
 
@@ -441,6 +447,11 @@ def process(project,now,token,chat):
                        if str(r.get("status") or "").lower()=="sent"
                        and int(r.get("telegram_message_id") or 0)>0
                        and not r.get("final")),None)
+        if existing is None and project=="ttendencias" and card.get("editorial_rework") and card.get("final"):
+            # For an explicit user re-explanation, update the same Telegram card.
+            existing=next((r for r in reversed(linked)
+                           if str(r.get("status") or "").lower()=="sent"
+                           and int(r.get("telegram_message_id") or 0)>0),None)
         if existing is None and project=="ttittulares":
             # Always update the existing news card, never post a second card
             # just because editorial revisions changed.
@@ -594,6 +605,7 @@ def selftest():
     assert [b["text"] for b in trends_kb[2]]==["📷 Copiar foto de archivo","🔎 Buscar en X"]
     assert "app=ttendencias" in trends_kb[2][0]["url"]
     assert trends_kb[2][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/photo.html?")
+    assert trends_kb[-2][0]["callback_data"]=="tx:r:abc123:1"
     assert trends_kb[-1][0]["callback_data"]=="tx:b:abc123:1"
     trends_no_photo=keys(card,"ttendencias")["inline_keyboard"]
     assert not any("Copiar foto" in b["text"] for row in trends_no_photo for b in row)
