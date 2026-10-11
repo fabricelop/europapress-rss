@@ -130,7 +130,9 @@ def recover_news_metadata(eid,*rows):
                      if isinstance(a,dict) and a.get("source")
                      and str(a.get("url") or "").startswith("https://")), {})
     if not url:url=str(appearance.get("url") or "")
-    source=next((str(row.get("source") or "") for row in candidates if row.get("source")), "")
+    source=next((str(a.get("source")) for row in candidates for a in (row.get("appearances") or [])
+                 if isinstance(a,dict) and str(a.get("url") or "")==url and a.get("source")), "")
+    if not source:source=next((str(row.get("source") or "") for row in candidates if row.get("source")), "")
     if not source:source=str(appearance.get("source") or "")
     if not source:
         source=next((str(row.get("sources")[0]) for row in candidates
