@@ -15,6 +15,7 @@ struct TerritoryRecord: Codable, Equatable {
     var city: String?
     var district: String?
     var neighborhood: String?
+    var timeZoneIdentifier: String? = nil
 
     var hierarchy: [(String, String)] {
         [("País",country),("Comunidad/estado",community),
