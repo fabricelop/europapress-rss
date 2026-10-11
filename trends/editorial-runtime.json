@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T12:45:00+02:00",
-  "last_completed_at": "2026-10-11T12:48:50+02:00",
-  "updated_at": "2026-10-11T12:48:50+02:00",
+  "last_started_at": "2026-10-11T13:15:00+02:00",
+  "last_completed_at": "2026-10-11T13:18:00+02:00",
+  "updated_at": "2026-10-11T13:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,23 +18,23 @@
     "persisted_trigger": true,
     "status": "completed; archive repair workflow succeeded; Gag IA enqueue step skipped because condition is disabled",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T124500+0200-chatgpt",
-    "requested_at": "2026-10-11T12:45:00+02:00",
-    "completed_at": "2026-10-11T12:48:50+02:00",
+    "run_id": "tr-20261011T131500+0200-chatgpt",
+    "requested_at": "2026-10-11T13:15:00+02:00",
+    "completed_at": "2026-10-11T13:17:38+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_id": 38133191958
+    "workflow_run_id": 38134938760
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T124500+0200-chatgpt",
+    "run_id": "tr-20261011T131500+0200-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-11T12:45:00+02:00",
-    "updated_at": "2026-10-11T12:48:50+02:00",
-    "finished_at": "2026-10-11T12:48:50+02:00",
+    "started_at": "2026-10-11T13:15:00+02:00",
+    "updated_at": "2026-10-11T13:18:00+02:00",
+    "finished_at": "2026-10-11T13:18:00+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -69,7 +69,7 @@
       {
         "code": "visual_ai_enqueue_step_disabled",
         "scope": "visual_repair",
-        "message": "El workflow repair-ttendencias-explicadas.yml conserva `if: ${{ false }}` en el paso 'Encolar Gag IA ausente o inválido'. El run 38133191958 terminó correctamente, pero ese paso quedó skipped."
+        "message": "El workflow repair-ttendencias-explicadas.yml conserva `if: ${{ false }}` en el paso 'Encolar Gag IA ausente o inválido'. El run 38134938760 terminó correctamente, pero ese paso quedó skipped."
       }
     ],
     "ratings_snapshot": {
@@ -82,74 +82,74 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T12:45:00+02:00",
+        "at": "2026-10-11T13:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando ejecución · cola editorial inicial 0; 0 rewrite_pending; solicitando saneamiento de Pendientes"
+        "message": "Preparando ejecución · cola editorial inicial 0; solicitando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-11T12:47:20+02:00",
+        "at": "2026-10-11T13:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo estado autoritativo y revisiones recientes"
       },
       {
-        "at": "2026-10-11T12:47:45+02:00",
+        "at": "2026-10-11T13:16:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 4 tarjetas vigentes menores de 24 h"
       },
       {
-        "at": "2026-10-11T12:47:55+02:00",
+        "at": "2026-10-11T13:16:30+02:00",
         "phase": "verifying",
         "trend_id": "1a1ad33aea16",
         "title": "Le Normand",
-        "message": "Pendiente 1/4 · remate listo; faltan imagen de archivo y Gag IA; reparación visual solicitada"
+        "message": "Pendiente 1/4 · remate listo; falta Gag IA y no hay nueva imagen de archivo que persistir; reparación visual solicitada"
       },
       {
-        "at": "2026-10-11T12:48:05+02:00",
+        "at": "2026-10-11T13:16:40+02:00",
         "phase": "verifying",
         "trend_id": "d62b113bc862",
         "title": "Getafe",
         "message": "Pendiente 2/4 · remate e imagen de archivo listos; Gag IA pendiente de encolado"
       },
       {
-        "at": "2026-10-11T12:48:15+02:00",
+        "at": "2026-10-11T13:16:50+02:00",
         "phase": "verifying",
         "trend_id": "3813e99f80c5",
         "title": "#UFCHBOMax",
-        "message": "Pendiente 3/4 · remate e imagen de archivo listos; Gag IA pendiente de encolado"
+        "message": "Pendiente 3/4 · revisión actual explicada; archivo listo; Gag IA sin job vigente para la revisión actual"
       },
       {
-        "at": "2026-10-11T12:48:25+02:00",
+        "at": "2026-10-11T13:17:00+02:00",
         "phase": "verifying",
         "trend_id": "88badc81e464",
         "title": "#FelizDomingo",
-        "message": "Pendiente 4/4 · remate e imagen de archivo listos; Gag IA pendiente de encolado"
+        "message": "Pendiente 4/4 · revisión actual explicada; archivo listo; Gag IA sin job vigente para la revisión actual"
       },
       {
-        "at": "2026-10-11T12:48:28+02:00",
+        "at": "2026-10-11T13:17:38+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola editorial 0; 0 preparing/update/problematic y 0 rewrite_pending"
+        "message": "Reparación visual terminada · archivo ya al día; encolado Gag IA omitido por condición deshabilitada"
       },
       {
-        "at": "2026-10-11T12:48:30+02:00",
+        "at": "2026-10-11T13:17:50+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola editorial 0; sin entradas activas"
+      },
+      {
+        "at": "2026-10-11T13:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación visual automática lanzada"
-      },
-      {
-        "at": "2026-10-11T12:48:50+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual terminada · archivo procesado; encolado Gag IA omitido por condición deshabilitada"
+        "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación de archivo completada; Gag IA automático sigue deshabilitado"
       }
     ]
   },
