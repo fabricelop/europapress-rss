@@ -152,15 +152,15 @@
         "do_not_delay_next_trend": true,
         "required_for_eligible": true,
         "eligible_exceptions": [
-          "sensitive_event",
-          "political_content"
+          "sensitive_event"
         ],
-        "flag_field": "closer_missing"
+        "flag_field": "closer_missing",
+        "political_neutral_satire": "No omitir un remate únicamente por ser contenido político. Humor sobre hechos, plazos, trámites o contradicciones verificadas, sin favorecer opciones electorales ni inventar intenciones."
       },
       "tremending_prefix": "TT 🗯️ ",
       "tremending_prefix_once": true,
       "closer_required_for_eligible": true,
-      "closer_eligible_rule": "Obligatorio salvo sucesos sensibles/trágicos o contenido político, donde se mantiene redacción neutral sin remate."
+      "closer_eligible_rule": "Intentar un único remate en toda tendencia verificable, incluidas las políticas, con sátira situacional neutral y sin consignas partidistas. Solo los sucesos sensibles/trágicos pueden justificar omisión deliberada; si no surge un remate apropiado o no cabe, conservar el texto factual sin bloquearlo."
     },
     "progress_policy": {
       "enabled": true,
