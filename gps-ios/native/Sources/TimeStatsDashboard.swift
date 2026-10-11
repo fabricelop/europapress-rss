@@ -55,7 +55,8 @@ struct TimeStatsDashboard: View {
                         ContentUnavailableView("Todavía sin registros", systemImage:"map",
                             description:Text("Activa el GPS en Ajustes para comenzar a acumular tiempo."))
                     }
-                    ForEach(Array(sorted.enumerated()), id:\.element.key) { index, entry in
+                    ForEach(sorted.indices, id:\.self) { index in
+                        let entry = sorted[index]
                         VStack(alignment:.leading,spacing:8) {
                             HStack(alignment:.firstTextBaseline) {
                                 Text("\(index+1).").foregroundStyle(.secondary).frame(width:25,alignment:.leading)
