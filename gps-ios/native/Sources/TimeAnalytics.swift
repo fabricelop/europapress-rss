@@ -28,7 +28,7 @@ enum TimeAnalytics {
     static func totals(_ intervals: [AssignedInterval], from: Date, to: Date) -> [String: TimeInterval] {
         guard from < to else { return [:] }
         var values: [String: TimeInterval] = [:]
-        for segment in intervals {
+        for segment in TimeAttribution.canonical(intervals) {
             let begin = max(from, segment.start), end = min(to, segment.end)
             guard begin < end else { continue }
             values[segment.cell.id, default: 0] += end.timeIntervalSince(begin)
