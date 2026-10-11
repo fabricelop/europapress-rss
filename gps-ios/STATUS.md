@@ -1,5 +1,19 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## v0.6 — calendario, lugares por nombre y comprobaciones (rama de prueba)
+
+- Rama aislada `feature/mi-mapa-del-tiempo-ios-v06`. No modifica `main`, la versión que ya está en iPhone ni los proyectos TT/AquíEstuve.
+- **Calendario por lugar/cuadrícula:** consolida los intervalos de segundos en visitas; saltos GPS cortos no se atribuyen como tiempo confirmado. Consulta por mes/año, día y visitas; el horario local del iPhone se aplica al historial.
+- **Diario:** oculta episodios aislados o de cero segundos; reconoce paradas superiores a unos ocho minutos con pruebas suficientes y da etiquetas humanas de origen/destino. Clasificación heurística; no convierte huecos en movimientos inventados.
+- **Búsqueda universal:** lugares, zonas e identificadores, territorios ya clasificados, desde mapa y estadísticas; muestra un representante por territorio. No geocodifica en la búsqueda.
+- **Calidad de datos:** horas observadas, reconstruidas, sin ubicación fiable y solapamientos originales; vista estadística calcula cronología sin sumar segundos dos veces.
+- **Lugares solo por nombre:** `NamedPlaces.migrate` conserva grupos previos y nombres, crea un lugar automáticamente al nombrar una cuadrícula. Mismo nombre cercano (<450 m entre centros) se agrupa; homónimos lejanos preguntan si unir o crear otro grupo independiente. Quitar nombre separa la cuadrícula; renombrar todo el lugar y deshacer el último cambio disponibles. Se elimina la selección manual de grupos.
+- **Mapa:** se cambia el control de navegación repetida para centrar correctamente la misma cuadrícula de nuevo; al abandonar la ficha histórica modal cambia de pestaña después de cerrarla.
+- **Widgets:** prueba de extensión WidgetKit **SIN capability App Group** en perfil de firma, para diagnosticar la ausencia del widget con Sideloadly gratuito. Si aparece pero no puede leer datos, muestra acceso a la app, sin inventar duración. NO afirmar que los contadores en widgets ni la galería funcionan hasta probarlo físicamente.
+- **Seguridad del historial:** migración de nombres y grupos solo modifica metadatos y verifica que el número de intervalos, muestras y totales permanezca igual; el SQLite y JSON originales no se borran. Exportar copia JSON antes de instalar y actualizar sobre la misma aplicación con mismo Apple ID.
+- **Limitaciones:** el ahorro de batería no está demostrado en un iPhone real, iOS puede pausar GPS en segundo plano, barrios y distritos dependen de cartografía Apple; no hay copia cifrada propia en iCloud, ni widgets dinámicos confirmados en dispositivo.
+
+
 ## v0.5 — verificación final (11/10/2026)
 - [x] [Build Release + XCTest en macOS / Xcode, run 38141212774](https://github.com/fabricelop/europapress-rss/actions/runs/38141212774): **34 tests ejecutados, 0 fallos**.
 - [x] IPA `MiMapaDelTiempo-v05-unsigned.ipa` (677877 bytes) recuperada y comprobada: ZIP válido, `CFBundleIdentifier=es.mimapadeltiempo.app`, `CFBundleShortVersionString=1.0.5`, build 5. La extensión `MiMapaWidgets.appex` está incluida, con build 5 y `com.apple.widgetkit-extension`.
