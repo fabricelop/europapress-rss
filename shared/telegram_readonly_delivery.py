@@ -335,7 +335,11 @@ def trend_cards(now):
             # Header makes visible that the explanation covers all trends.
             group_title=" · ".join(terms)
             if is_final:
-                body=group_title+"\n\n"+detail
+                # The leading historic rank belongs to the leader and may
+                # already have changed. Show the current rank for EVERY term
+                # in the joint header, then ONE untouched factual paragraph.
+                group_detail=re.sub(r"^TT#\\d+\\s+", "", detail, count=1, flags=re.I)
+                body=group_title+"\n\n"+group_detail
                 # A single joint copy, never the same separate tweet repeated
                 # four times. A long joint caption uses the full-copy page.
                 x_text=body
