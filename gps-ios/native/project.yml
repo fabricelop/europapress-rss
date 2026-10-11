@@ -15,13 +15,14 @@ targets:
     platform: iOS
     sources:
       - Sources
+      - Shared
       - Resources.xcassets
     info:
       path: Info.plist
       properties:
         CFBundleDisplayName: Mi Mapa del Tiempo
         CFBundleShortVersionString: "1.0.3"
-        CFBundleVersion: "3"
+        CFBundleVersion: "4"
         UILaunchScreen: {}
         UIBackgroundModes:
           - location
@@ -33,7 +34,29 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: es.mimapadeltiempo.app
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_ENTITLEMENTS: App.entitlements
         OTHER_LDFLAGS: ["-lsqlite3"]
+    dependencies:
+      - target: MiMapaWidgets
+        embed: true
+  MiMapaWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widgets/TimeWidgets.swift
+      - Shared
+    info:
+      path: Widgets/Info.plist
+      properties:
+        CFBundleDisplayName: Mi Mapa del Tiempo
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: es.mimapadeltiempo.app.widgets
+        CODE_SIGN_ENTITLEMENTS: Widgets/Widget.entitlements
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
   MiMapaDelTiempoTests:
     type: bundle.unit-test
     platform: iOS
