@@ -109,14 +109,19 @@ editorial = editorial_config.get("editorial") or {}
 explanation_only = bool(editorial.get("explanation_only"))
 alt_target = int(editorial.get("alternatives_target") or 0)
 alt_non_blocking = editorial.get("alternatives_block_send") is False
-image_enabled = bool((editorial.get("image_policy") or {}).get("enabled"))
-editorial_ok = (alt_target == 0 and not image_enabled) if explanation_only else (alt_target == 3 and alt_non_blocking)
+image_policy = editorial.get("image_policy") or {}
+image_enabled = bool(image_policy.get("enabled"))
+# Las imágenes se solicitan manualmente y por separado; no forman parte de
+# la ejecución editorial. Habilitar ChatGPT Images no es un error de configuración.
+editorial_generates_images = bool(image_policy.get("editorial_run_generates_ai"))
+editorial_ok = (alt_target == 0 and not editorial_generates_images) if explanation_only else (alt_target == 3 and alt_non_blocking)
 modules["editorial_config"] = {
     "ok": editorial_ok,
     "mode": "explanation_only" if explanation_only else "editorial",
     "alternatives_target": alt_target,
     "alternatives_block_send": editorial.get("alternatives_block_send"),
     "images_enabled": image_enabled,
+    "editorial_generates_images": editorial_generates_images,
 }
 if not modules["editorial_config"]["ok"]:
     blocking.append("config TTendencias incompatible con el modo activo")
@@ -210,7 +215,9 @@ else:
 
 # Cola: estados desconocidos sí son anomalía; preparing/ready/explained son válidos.
 if isinstance(requests_doc, dict):
-    allowed = {"preparing", "ready", "explained", "update", "dismissed", "problematic"}
+    # El radar archiva solicitudes que ya no están vigentes: inactive/deleted
+    # son terminales legítimos y no deben provocar falsas alarmas de salud.
+    allowed = {"preparing", "ready", "explained", "update", "dismissed", "problematic", "inactive", "deleted"}
     bad = [x for x in requests_doc.get("requests", []) if x.get("status") not in allowed]
     noisy = [x for x in requests_doc.get("requests", []) if noise_name(x.get("name"))]
     modules["request_queue"] = {
