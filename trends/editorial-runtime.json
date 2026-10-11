@@ -4,14 +4,14 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-11T23:45:51.112+02:00",
-  "last_completed_at": "2026-10-11T23:54:30+02:00",
-  "updated_at": "2026-10-11T23:54:30+02:00",
+  "last_completed_at": "2026-10-11T23:54:45.792+02:00",
+  "updated_at": "2026-10-11T23:54:45.792+02:00",
   "status": "success",
   "processed_ids": [
-    "ea3625e55ffd",
     "998c17ccf3c9",
-    "c5bf058adab8",
+    "ea3625e55ffd",
     "137861eda08f",
+    "c5bf058adab8",
     "e60b9ca97db8",
     "19649a7e10aa"
   ],
@@ -25,8 +25,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-1791755381589-manual",
-    "requested_at": "2026-10-11T23:50:00+02:00",
+    "run_id": "tr-20261011T234551.112+0200-chat",
+    "requested_at": "2026-10-11T23:45:51.112+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -40,13 +40,13 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-11T23:45:51.112+02:00",
-    "updated_at": "2026-10-11T23:54:30+02:00",
-    "finished_at": "2026-10-11T23:54:30+02:00",
+    "updated_at": "2026-10-11T23:54:45.792+02:00",
+    "finished_at": "2026-10-11T23:54:45.792+02:00",
     "current": 6,
     "total": 6,
     "trend_id": null,
     "title": null,
-    "message": "Pasada completada · 6 revisiones cerradas y cola editorial vacía",
+    "message": "Pasada completada · 6 revisiones tratadas, cola editorial 0",
     "summary": {
       "processed": 6,
       "closed": 6,
@@ -57,27 +57,18 @@
       "remaining_active_ids": [],
       "pending_repair_requested": 1,
       "new_cards": 3,
+      "reused_existing_card": 1,
       "duplicate_cards_created": 0,
-      "reconciled": 3,
-      "rewrite_pending_remaining": 0,
-      "recent_explained_reviewed": 3,
-      "sensitive_no_remate_kept": 3
+      "deleted_after_close": 1
     },
-    "incident_count": 2,
+    "incident_count": 1,
     "incidents": [
       {
         "at": "2026-10-11T23:49:20+02:00",
         "phase": "persisting",
         "trend_id": "998c17ccf3c9",
         "title": "Hugo Duro",
-        "reason": "Conflicto SHA al escribir Explicadas por actualización concurrente del reparador visual; releído main y reintentado correctamente."
-      },
-      {
-        "at": "2026-10-11T23:53:30+02:00",
-        "phase": "persisting",
-        "trend_id": "19649a7e10aa",
-        "title": "#CuartoMilenio",
-        "reason": "La ficha Explicada r1 estaba persistida, pero requests.json conservaba texto/fecha/grupo de la revisión anterior; reconciliado idempotentemente y verificado en main."
+        "reason": "Conflicto SHA al escribir Explicadas por una actualización concurrente del reparador visual; se releyó main y el reintento quedó persistido correctamente."
       }
     ],
     "ratings_snapshot": {
@@ -91,6 +82,7 @@
       {
         "trend_id": "998c17ccf3c9",
         "revision": 1,
+        "candidate_count": 5,
         "selected_candidate": "c1",
         "selected_score": 8.6,
         "closer_text": "🌶️ Aguirre debutó con empate: Otorbi puso el 2-2 y el 3-2 se le escapó a Hugo Duro."
@@ -98,6 +90,7 @@
       {
         "trend_id": "c5bf058adab8",
         "revision": 0,
+        "candidate_count": 5,
         "selected_candidate": "c1",
         "selected_score": 8.5,
         "closer_text": "🌶️ Sandra se casó y Jorge Javier heredó la guardia del domingo."
@@ -105,9 +98,18 @@
       {
         "trend_id": "19649a7e10aa",
         "revision": 1,
+        "candidate_count": 5,
         "selected_candidate": "c1",
         "selected_score": 8,
         "closer_text": "🌶️ La nave del misterio ha vuelto a pedir pista en pleno prime time."
+      },
+      {
+        "trend_id": "e60b9ca97db8",
+        "revision": 0,
+        "candidate_count": 0,
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "reused_existing_group"
       }
     ],
     "activity": [
@@ -117,6 +119,13 @@
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · 5 revisiones activas"
+      },
+      {
+        "at": "2026-10-11T23:47:40.080+02:00",
+        "phase": "verifying",
+        "trend_id": "998c17ccf3c9",
+        "title": "Hugo Duro",
+        "message": "Releyendo estado autoritativo del grupo Racing–Valencia"
       },
       {
         "at": "2026-10-11T23:47:40.080+02:00",
@@ -130,7 +139,7 @@
         "phase": "drafting",
         "trend_id": "998c17ccf3c9",
         "title": "Hugo Duro",
-        "message": "Redactando explicación factual del grupo Racing–Valencia"
+        "message": "Redactando explicación factual y comprobando límite de X"
       },
       {
         "at": "2026-10-11T23:47:40.080+02:00",
@@ -151,7 +160,7 @@
         "phase": "verifying",
         "trend_id": "e60b9ca97db8",
         "title": "#EstrenoJotalent5",
-        "message": "Mismo estreno ya explicado como #jotalent5 · se evita tarjeta duplicada"
+        "message": "Mismo estreno ya explicado como #jotalent5 · se reutiliza el grupo existente"
       },
       {
         "at": "2026-10-11T23:49:55.435+02:00",
@@ -182,41 +191,36 @@
         "message": "Explicación factual redactada y comprobada · 233 caracteres"
       },
       {
-        "at": "2026-10-11T23:52:06.806+02:00",
-        "phase": "persisting",
+        "at": "2026-10-11T23:52:43+02:00",
+        "phase": "verifying",
         "trend_id": "c5bf058adab8",
         "title": "#ConexiónHonduras5",
-        "message": "Reconciliando revisión de Conexión Honduras con su ficha Explicada"
+        "message": "Conexión Honduras reconciliada y cola editorial en 0"
       },
       {
-        "at": "2026-10-11T23:53:30+02:00",
-        "phase": "persisting",
+        "at": "2026-10-11T23:53:20+02:00",
+        "phase": "verifying",
         "trend_id": "19649a7e10aa",
         "title": "#CuartoMilenio",
-        "message": "Reconciliando request r1 con su ficha Explicada"
+        "message": "Inconsistencia histórica de revisión detectada; saneamiento automático la reconcilió con la ficha nueva"
       },
       {
-        "at": "2026-10-11T23:54:00+02:00",
+        "at": "2026-10-11T23:54:45.792+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, 0 preparing/update, 0 rewrite_pending"
+        "message": "Releyendo main · cola 0 y las seis revisiones tratadas en estado terminal"
       },
       {
-        "at": "2026-10-11T23:54:15+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificando id+revision y texto persistido · consistencia confirmada"
-      },
-      {
-        "at": "2026-10-11T23:54:30+02:00",
+        "at": "2026-10-11T23:54:45.792+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 6 revisiones cerradas y cola editorial vacía"
+        "message": "Pasada completada · 6 revisiones tratadas, cola editorial 0"
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": []
   },
   "run_id": "tr-20261011T234551.112+0200-chat",
   "summary": {
@@ -229,10 +233,9 @@
     "remaining_active_ids": [],
     "pending_repair_requested": 1,
     "new_cards": 3,
+    "reused_existing_card": 1,
     "duplicate_cards_created": 0,
-    "reconciled": 3,
-    "rewrite_pending_remaining": 0,
-    "recent_explained_reviewed": 3,
-    "sensitive_no_remate_kept": 3
-  }
+    "deleted_after_close": 1
+  },
+  "error": null
 }
