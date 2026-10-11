@@ -672,6 +672,11 @@ def selftest():
     assert [row[0]["text"] for row in pending_trends]==["🔎 Buscar en X","🗑️ Borrar"]
     import tempfile
     original_root=ROOT
+    original_send=send
+    methods=[]
+    def synthetic_send(token,method,payload,photo=None):
+        methods.append((method,int(payload.get("message_id") or 0)))
+        return {"message_id":991}
     try:
         with tempfile.TemporaryDirectory() as folder:
             globals()["ROOT"]=Path(folder)
@@ -687,6 +692,14 @@ def selftest():
             assert "Falta explicación" in provisional_rows[0]["text"]
             assert "Fotografía de archivo pendiente" in provisional_rows[0]["text"]
             assert "confirmó" in provisional_rows[0]["x_text"]
+            globals()["send"]=synthetic_send
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert (n_sent,n_updated)==(1,0)
+            assert methods==[("sendMessage",0)]
+            pending_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            assert len(pending_ledger["items"])==1
+            assert not pending_ledger["items"][0]["final"]
+            assert pending_ledger["items"][0]["telegram_message_id"]==991
             final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
                 "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
                 "tweet":{"text":"Un organismo confirmó la medida.",
@@ -696,8 +709,17 @@ def selftest():
             finished=list(news_cards(now))
             assert len(finished)==1 and finished[0]["final"]
             assert "Remate exacto" in finished[0]["text"]
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert (n_sent,n_updated)==(0,1), "A final item must EDIT the first message"
+            assert methods==[("sendMessage",0),("editMessageText",991)]
+            final_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            assert len(final_ledger["items"])==1, "Never send a duplicate Telegram card"
+            assert final_ledger["items"][0]["telegram_message_id"]==991
+            assert final_ledger["items"][0]["final"]
+            assert final_ledger["items"][0]["revision"]==2
     finally:
         globals()["ROOT"]=original_root
+        globals()["send"]=original_send
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
     assert trend_repeat_allowed({"novelty_verified":True,"is_in_top":True,
