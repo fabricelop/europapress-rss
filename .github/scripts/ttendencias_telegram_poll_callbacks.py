@@ -192,6 +192,20 @@ def live():
     if not result.get("ok"):
         raise RuntimeError("Telegram getUpdates no respondió correctamente")
     updates = result.get("result") or []
+    # Este consumidor también puede recibir /run antes que el listener principal.
+    # Ambos comparten la misma protección anti-duplicados en la rama control.
+    fresh_commands = [
+        u.get("message") for u in updates
+        if int(u.get("update_id") or 0) > int(offset.get("last_update_id") or 0)
+        and isinstance(u.get("message"), dict)
+        and str((u.get("message") or {}).get("text") or "").strip().lower()
+            in ("/run", "/run@ttendenciases_bot", "/tendencias", "/tendencias@ttendenciases_bot")
+    ]
+    if fresh_commands:
+        sys.path.insert(0, str(ROOT))
+        from trends.telegram_bot import handle_run_command
+        for message in fresh_commands:
+            handle_run_command(message)
     changed, acks = process(updates, chat, ledger, decisions, offset, requests)
     if changed:
         write(LEDGER, ledger)
