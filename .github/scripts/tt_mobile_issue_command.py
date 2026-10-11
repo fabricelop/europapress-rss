@@ -60,9 +60,13 @@ def parse_issue(event):
     return project, action, element_id, context, instruction
 
 
-def parse_dispatch(event):
-    """Only repository owner may dispatch this workflow via GitHub OAuth PAT."""
-    if os.environ.get("GITHUB_ACTOR") != OWNER:
+def parse_dispatch(event, trusted_queue=False):
+    """Direct commands require owner; native-receiver queue is preauthorized.
+
+    The queue must only be written by the authenticated private Telegram bot.
+    GitHub Actions uses its own bot actor to dispatch that trusted queue.
+    """
+    if not trusted_queue and os.environ.get("GITHUB_ACTOR") != OWNER:
         raise ValueError("Workflow dispatch no autorizado")
     inp = event.get("inputs") or {}
     project = str(inp.get("project") or "")
@@ -349,7 +353,8 @@ def process_queue():
             project, action, element_id, context, instruction = parse_dispatch(
                 {"inputs": {"project": item.get("project"), "action": item.get("action"),
                             "id": item.get("id"), "context": "",
-                            "instruction": item.get("instruction", "")}}
+                            "instruction": item.get("instruction", "")}},
+                trusted_queue=True
             )
             result = (tti_command if project == "ttittulares" else trend_command)(
                 action, element_id, context, instruction, timestamp()
