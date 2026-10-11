@@ -24,6 +24,20 @@ jobs:
         run: |
           set -euo pipefail
           [[ -n "${TELEGRAM_BOT_TOKEN:-}" ]] || { echo 'Bot credential unavailable'; exit 2; }
+          # Never re-enable Cloudflare after the explicitly gated native cutover.
+          if python3 - <<'PY'
+          import json,urllib.request
+          url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/telegram/ttittulares-transport.json'
+          with urllib.request.urlopen(url,timeout=18) as response:
+              cfg=json.load(response)
+          active=cfg.get('mode')=='native' and cfg.get('native_ready') is True
+          print('TTITTULARES_NATIVE_TRANSPORT_ACTIVE' if active else 'TTITTULARES_WEBHOOK_TRANSPORT')
+          raise SystemExit(0 if active else 1)
+          PY
+          then
+            echo 'TTITTULARES_NATIVE_TRANSPORT_SKIP_WEBHOOK_REPAIR'
+            exit 0
+          fi
           curl -fsS --retry 2 --max-time 20 \
             https://ttittulares-no-vercel-test.fabricelop.workers.dev/health \
             -o /tmp/ttit.json
