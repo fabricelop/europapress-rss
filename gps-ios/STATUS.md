@@ -1,4 +1,27 @@
-# Estado — 11 octubre 2026 · nueva build visual + periodos
+# Estado — 11 octubre 2026 · v0.3 GPS inteligente
+
+## Nueva tanda v0.3 (código integrado; instalación física pendiente)
+- Motor inteligente: precisión máxima en desplazamientos; reposo de menor consumo tras 10 minutos inmóvil, con detección asistida por Core Motion cuando iOS entrega actividad.
+- Interruptor «Voy a moverme» en el mapa y en Ajustes: entra de inmediato en máxima precisión; se apaga tras parada prolongada detectada o por decisión manual; seguimiento automático permanece activo.
+- Persistencia SQLite WAL: migración transaccional desde el JSON de versiones anteriores, dejando ese archivo sin borrar para recuperación. Guardados incrementales, sin reescribir todo el GPS en cada actualización. Se conservan datos y nombres si la migración termina correctamente; existe modo de respaldo JSON si no puede abrirse SQLite.
+- Conservación selectiva de posiciones casi redundantes durante estancias. El tiempo se asigna por intervalos entre muestras recibidas; si hay un hueco superior a 180 s, se registra incertidumbre, no se inventa permanencia.
+- Histeresis ante oscilaciones de cuadrícula; el comienzo de estancia usa cuadrícula estabilizada.
+- Mapa de cuadrículas independiente de teselas: con la red desconectada aparece un fondo básico propio; también se puede activarlo manualmente desde Ajustes.
+- Posiciones GPS trasladadas al diagnóstico técnico, con modo, precisión y estado SQLite; panel principal sin el contador de coordenadas.
+- Diario: división manual de episodios por punto central GPS y opción de deshacer la división («Unir de nuevo»); los tiempos originales no se modifican. Todavía no se pueden fusionar arbitrariamente dos episodios clasificados automáticamente.
+- Tests de estados GPS, migración JSON/SQLite, recorte de intervalos y divisiones añadidos a Sources/Tests. **No declarar los tests superados hasta que GitHub Actions ejecute su verificación.**
+- **Sin Vercel. Sin cambios en main, AquíEstuve ni TTendencias/TTiTTulares.**
+
+## Límites que requieren pruebas con el teléfono
+- La reactivación de Core Motion al caminar/conducir en segundo plano no es instantánea ni garantizada; comprobar recorrido real con pantalla bloqueada.
+- Una muestra nueva tras un largo intervalo sin GPS no prueba por sí sola la permanencia durante todo el hueco.
+- SQLite es persistencia incremental, pero el modelo aún carga toda la historia en memoria; quedan indexación y consultas paginadas para muchos años.
+- El mapa básico usa cuadrículas locales y no incorpora calles ni satélite. El interruptor offline no descarga cartografía.
+- GPX importado reconstruye con reglas conservadoras; falta endurecer importaciones masivas y solapamientos.
+- Batería real y pérdida de señal no medidas en iPhone para v0.3.
+- Falta backup cifrado en iCloud, widgets, edición de zonas libres, avisos GPS graves, estadísticas por nombres administrativos y edición generalizada de trayectos.
+
+---
 
 ## En desarrollo para la próxima IPA (pendiente de compilación y prueba)
 - [x] Código: formato legible de duración sin prefijos de cero (1 min 25 s, 2 h 4 min).
