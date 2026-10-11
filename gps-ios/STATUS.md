@@ -31,6 +31,11 @@
 - [x] Tests XCTest de separación de rutas y huecos GPS añadidos a la rama.
 - [x] Instrucciones para Windows + Sideloadly añadidas a README.md.
 
+## Instalación en iPhone comunicada por el usuario · 11/10/2026
+- [x] El usuario confirmó que Mi Mapa del Tiempo v0.2 se actualizó correctamente desde Windows/Sideloadly tras **cerrar completamente la app abierta en el iPhone**. La instalación previamente detenida en «Installing… 90%» avanzó inmediatamente. Este diagnóstico es observación del usuario, no una reproducción automatizada.
+- [ ] Comprobar en el dispositivo los nuevos filtros, Face ID y continuidad GPS durante una vuelta con pantalla bloqueada.
+- [ ] Se inició un build de diagnóstico con CFBundleVersion 2 antes de recibir la confirmación de la causa real; **no se necesita instalar esa compilación** para resolver este incidente.
+
 ## Limitaciones verificadas
 - [x] Historial de compilación: run #5 versión anterior [38119202534](https://github.com/fabricelop/europapress-rss/actions/runs/38119202534). Nueva versión: [38120719702](https://github.com/fabricelop/europapress-rss/actions/runs/38120719702) Xcode build correcto, IPA sin firmar válida. No probada aún en iPhone.
 - [ ] Probar actualización continua, consumo y precisión con iPhone bloqueado: requiere iPhone.
