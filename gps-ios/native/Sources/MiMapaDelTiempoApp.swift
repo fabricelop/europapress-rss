@@ -164,6 +164,7 @@ struct SavedState: Codable {
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
     @Published var targetMapCell: Cell?
+    @Published var mapNavigationRevision = UUID()
     @Published private(set) var renameUndoAvailable = false
     private var renameUndoSnapshot: (names:[String:String],places:[UserPlace])?
     var savedPowerEvents: [GPSPowerEvent] { data.powerEvents }
@@ -297,6 +298,7 @@ struct SavedState: Codable {
     func navigate(to cell: Cell) {
         selected = cell
         targetMapCell = cell
+        mapNavigationRevision=UUID() // permite navegar dos veces a la misma zona
         selectedTab = 0
     }
     func proposalForRename(_ cell:Cell, to rawName:String) -> NameProposal {
@@ -315,6 +317,16 @@ struct SavedState: Codable {
     }
     func assignName(_ cell:Cell, to rawName:String, groupID:UUID? = nil) {
         let name=rawName.trimmingCharacters(in:.whitespacesAndNewlines)
+        if let current=data.places.first(where:{$0.cellIDs.contains(cell.id)}),
+           current.id==groupID,NamedPlaces.normalize(name)==NamedPlaces.normalize(current.name) {
+            // El usuario no ha cambiado de lugar: conservar su ID y sus otras casillas.
+            if data.names[cell.id] != current.name {
+                preserveNamesForUndo()
+                data.names[cell.id]=current.name
+                save(force:true)
+            }
+            return
+        }
         preserveNamesForUndo()
         // Una cuadrícula solo tiene un lugar; cambiar el nombre abandona el anterior.
         for i in data.places.indices { data.places[i].cellIDs.removeAll { $0 == cell.id } }
@@ -891,7 +903,7 @@ struct TimeMapView: View {
                     camera = .region(newRegion)
                 }
                 .onAppear { centerOnRequestedCell() }
-                .onChange(of:model.targetMapCell) { _,_ in centerOnRequestedCell() }
+                .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             } else {
             MapReader { proxy in
                 Map(position: $camera) {
@@ -940,7 +952,7 @@ struct TimeMapView: View {
                     model.updateCamera(ctx.region)
                 }
                 .onAppear { centerOnRequestedCell() }
-                .onChange(of:model.targetMapCell) { _,_ in centerOnRequestedCell() }
+                .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
             }
             VStack {
