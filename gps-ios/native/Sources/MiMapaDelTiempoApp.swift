@@ -163,6 +163,7 @@ struct SavedState: Codable {
     @Published var recording = false
     @Published var explore = false
     @Published var adaptive = true
+    @Published var cellFillOpacity: Double = 0.52
     @Published var showRoutes = true
     @Published var period: TimePeriod = .all
     @Published var mapKind: MKMapType = .standard
@@ -253,6 +254,50 @@ struct SavedState: Codable {
     private var normalizedCacheIntervalCount = -1
     private var normalizedCacheLastEnd: Date?
     private var normalizedCacheTime: Date = .distantPast
+    private var zoneCatalogCache:[TimeCustomZone]?
+    private var zoneIndexCache:[String:Int]=[:]
+    private var zoneOverlayCache:[TimeZoneOverlay]=[]
+    private var cachedPeriod:TimePeriod?
+    private var cachedPeriodValues:[String:TimeInterval]=[:]
+    private var cachedPeriodCount = -1
+    private var cachedPeriodEnd:Date?
+    private var cachedPeriodSince:Date = .distantPast
+
+    /// Un índice para nombres/contornos. No reconstruir en cada muestra GPS.
+    private func ensureZoneCatalog() {
+        guard zoneCatalogCache == nil else { return }
+        let zones=TimeZoneCatalog.visible(custom:data.customZones,legacy:data.places)
+        var index:[String:Int]=[:]
+        for (i,z) in zones.enumerated() {
+            let size=z.cellIDs.count
+            for id in z.cellIDs {
+                if let other=index[id] {
+                    let old=zones[other]
+                    if size<old.cellIDs.count ||
+                       (size==old.cellIDs.count &&
+                        z.name.localizedStandardCompare(old.name) == .orderedAscending) {
+                        index[id]=i
+                    }
+                } else { index[id]=i }
+            }
+        }
+        zoneIndexCache=index
+        zoneOverlayCache=zones.prefix(18).map { zone in
+            TimeZoneOverlay(zone:zone,
+                            edges:TimeZoneOutline.renderSegments(for:zone),
+                            center:TimeZoneOutline.visibleCenter(for:zone))
+        }
+        zoneCatalogCache=zones
+    }
+    private func invalidateZoneCatalog() {
+        zoneCatalogCache=nil
+        zoneIndexCache.removeAll(keepingCapacity:true)
+        zoneOverlayCache=[]
+    }
+    var zoneOverlays:[TimeZoneOverlay] {
+        ensureZoneCatalog()
+        return zoneOverlayCache
+    }
 
     init() {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -300,6 +345,7 @@ struct SavedState: Codable {
             save(force:true)
         }
         adaptive = UserDefaults.standard.object(forKey:"mapAdaptiveV5") as? Bool ?? true
+        cellFillOpacity = min(1,max(0.08,UserDefaults.standard.object(forKey:"mapCellOpacityV13") as? Double ?? 0.52))
         showRoutes = UserDefaults.standard.object(forKey:"mapRoutesV5") as? Bool ?? true
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
         widgetPublisher.publish(from:self,force:true)
@@ -307,7 +353,8 @@ struct SavedState: Codable {
     // Sólo una lista visible de zonas. La agrupación histórica de nombres sigue
     // conservada y cada UserPlace se presenta como una zona editable.
     var visibleZones: [TimeCustomZone] {
-        TimeZoneCatalog.visible(custom:data.customZones,legacy:data.places)
+        ensureZoneCatalog()
+        return zoneCatalogCache ?? []
     }
     func putZone(_ zone:TimeCustomZone) {
         guard !zone.cellIDs.isEmpty else { return }
@@ -332,6 +379,7 @@ struct SavedState: Codable {
         } else {
             data.customZones.append(zone)
         }
+        invalidateZoneCatalog()
         save(force:true)
         refreshWidgets()
     }
@@ -340,6 +388,7 @@ struct SavedState: Codable {
             removePlace(original)
         } else {
             data.customZones.removeAll(where:{$0.id == id})
+            invalidateZoneCatalog()
             save(force:true)
         }
     }
@@ -367,7 +416,17 @@ struct SavedState: Codable {
         guard let window = TimeAnalytics.window(for:period,now:now) else {
             return confirmedTotals(now:now)
         }
-        return TimeAttribution.byCell(data.intervals,window:window)
+        let count=data.intervals.count
+        let changed=cachedPeriod != period || cachedPeriodCount != count ||
+                    cachedPeriodEnd != data.intervals.last?.end
+        if cachedPeriodValues.isEmpty || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
+            cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
+            cachedPeriod=period
+            cachedPeriodCount=count
+            cachedPeriodEnd=data.intervals.last?.end
+            cachedPeriodSince=now
+        }
+        return cachedPeriodValues
     }
     func confirmed(for cell:Cell,now:Date = .now) -> TimeInterval {
         periodTotals(now:now)[cell.id] ?? 0
@@ -412,7 +471,10 @@ struct SavedState: Codable {
             provisionalSeconds(for:zone.cells,now:now)
     }
     func primaryZone(for cell:Cell) -> TimeCustomZone? {
-        TimeZoneCatalog.primary(for:cell.id,zones:visibleZones)
+        ensureZoneCatalog()
+        guard let i=zoneIndexCache[cell.id], let zones=zoneCatalogCache,
+              i<zones.count else { return nil }
+        return zones[i]
     }
     func allZones(for cell:Cell) -> [TimeCustomZone] {
         visibleZones.filter { $0.cells.contains(cell.id) }
@@ -493,7 +555,8 @@ struct SavedState: Codable {
         data.shortIDs[id] = (data.shortIDs.values.max() ?? 0)+1
     }
     func hasCustomName(_ id: String) -> Bool {
-        visibleZones.contains(where:{$0.cells.contains(id)}) ||
+        ensureZoneCatalog()
+        return zoneIndexCache[id] != nil ||
             !(data.names[id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
     }
     func navigate(to cell: Cell) {
@@ -552,6 +615,7 @@ struct SavedState: Codable {
                 data.places.append(UserPlace(name:name,cellIDs:[cell.id]))
             }
         }
+        invalidateZoneCatalog()
         save(force:true)
         refreshWidgets()
     }
@@ -562,6 +626,7 @@ struct SavedState: Codable {
         data.places=snapshot.places
         renameUndoSnapshot=nil
         renameUndoAvailable=false
+        invalidateZoneCatalog()
         save(force:true)
         refreshWidgets()
         return true
@@ -576,6 +641,7 @@ struct SavedState: Codable {
         preserveNamesForUndo()
         data.places[index].name=name
         for id in data.places[index].cellIDs { data.names[id]=name }
+        invalidateZoneCatalog()
         save(force:true)
         refreshWidgets()
         return true
@@ -584,6 +650,7 @@ struct SavedState: Codable {
         preserveNamesForUndo()
         for id in place.cellIDs { data.names.removeValue(forKey:id) }
         data.places.removeAll { $0.id == place.id }
+        invalidateZoneCatalog()
         save(force:true)
         refreshWidgets()
     }
@@ -862,6 +929,7 @@ struct SavedState: Codable {
             try JSONEncoder().encode(restored).write(to:fileURL,options:.atomic)
         }
         data=restored
+        invalidateZoneCatalog()
         current=nil
         lastProcessedSample=restored.fixes.last
         stableCell=restored.fixes.last?.cell
