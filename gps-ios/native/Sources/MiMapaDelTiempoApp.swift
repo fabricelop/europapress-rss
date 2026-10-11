@@ -743,9 +743,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     /// CoreMotion informa, pero nunca reduce ni detiene el seguimiento.
     private func configureContinuous() {
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.distanceFilter = kCLDistanceFilterNone
+        manager.distanceFilter = GPSContinuityPolicy.distanceFilter
         manager.activityType = .otherNavigation
-        manager.pausesLocationUpdatesAutomatically = false
+        manager.pausesLocationUpdatesAutomatically = GPSContinuityPolicy.pausesAutomatically
         manager.allowsBackgroundLocationUpdates = true
         manager.showsBackgroundLocationIndicator = true
     }
@@ -824,14 +824,12 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                       location.timestamp <= Date().addingTimeInterval(5) else { continue }
                 // No registrar de nuevo muestras antiguas tras un despertar.
                 guard lastReceivedAt.map({ location.timestamp > $0 }) ?? true else { continue }
-                if let previous = lastReceivedAt {
-                    let gap = location.timestamp.timeIntervalSince(previous)
-                    if gap >= 30 {
-                        lastGapSeconds = gap
-                        if gap >= 60 {
-                            model?.recordPowerEvent(mode: .precision,
-                                cause: "Hueco GPS observado: \(Int(gap)) segundos; no se reconstruye")
-                        }
+                if let gap = GPSContinuityPolicy.observedGap(
+                    after:lastReceivedAt, at:location.timestamp) {
+                    lastGapSeconds = gap
+                    if gap >= 60 {
+                        model?.recordPowerEvent(mode: .precision,
+                            cause: "Hueco GPS observado: \(Int(gap)) segundos; no se reconstruye")
                     }
                 }
                 lastReceivedAt = location.timestamp
