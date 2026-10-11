@@ -27,7 +27,7 @@ jobs:
         run: |
           set -u
           PATH_STATUS=".build-status/mi-mapa-v09-ipa.json"
-          CONTENT="$(printf '{"run_id":%s,"sha":"%s","kind":"ipa"}' "$GITHUB_RUN_ID" "$GITHUB_SHA" | base64 | tr -d '\\n')"
+          CONTENT="$(printf '{"run_id":%s,"sha":"%s","kind":"ipa"}' "$GITHUB_RUN_ID" "$GITHUB_SHA" | base64 | tr -d '\n')"
           OLD_SHA="$(gh api "repos/$GITHUB_REPOSITORY/contents/$PATH_STATUS?ref=$GITHUB_REF_NAME" --jq '.sha' 2>/dev/null || true)"
           if [ -n "$OLD_SHA" ]; then
             gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$PATH_STATUS" -f message="CI: registrar identificador del run ipa" -f content="$CONTENT" -f branch="$GITHUB_REF_NAME" -f sha="$OLD_SHA" >/dev/null || true
