@@ -399,14 +399,37 @@ async function pollOnce(timeoutSeconds = 25) {
       continue;
     }
     const msg = update.message;
-    if (msg && String((msg.chat || {}).id || '') === chatId && /^\/sr_run(?:@\w+)?\s*$/i.test(String(msg.text || ''))) {
-      const task = cp.spawnSync('schtasks.exe', ['/Run', '/TN', 'SeLoRecordamos-Editorial-Local'], { encoding: 'utf8', timeout: 12000, windowsHide: true });
-      await telegram('sendMessage', {
-        chat_id: chatId,
-        text: task.status === 0
-          ? 'SeLoRecordamos: ejecución local solicitada. Las evaluaciones pendientes se enviarán por Telegram al terminar.'
-          : 'No se ha podido ejecutar la tarea Windows SeLoRecordamos-Editorial-Local. Comprueba la instalación y el registro local.'
-      });
+    // Mismo comando en los tres bots. ACK incluso cuando no hay pendientes;
+    // no afirmar que la redacción terminó al arrancar una tarea de Windows.
+    if (msg && /^\/(?:run|sr_run)(?:@[a-zA-Z0-9_]{5,32})?\s*$/i.test(String(msg.text || '').trim())) {
+      if (String((msg.chat || {}).id || '') !== chatId || String((msg.chat || {}).type || '') !== 'private') {
+        console.warn('SR_RUN_REJECTED unauthorized chat');
+        continue;
+      }
+      console.log('SR_RUN_RECEIVED update=' + update.update_id);
+      let response;
+      try {
+        const task = cp.spawnSync('schtasks.exe', ['/Run', '/TN', 'SeLoRecordamos-Editorial-Local'], {
+          encoding: 'utf8', timeout: 12000, windowsHide: true,
+        });
+        const output = String(task.stderr || task.stdout || '').trim().slice(0, 180);
+        if (task.error) throw task.error;
+        if (task.status === 0) {
+          response = 'SeLoRecordamos: /run recibido. Windows ha aceptado la solicitud editorial. Si no hay evaluaciones pendientes, no se generarán respuestas nuevas.';
+        } else {
+          console.error('SR_RUN_SCHTASKS_FAILED status=' + task.status + ' detail=' + output);
+          response = 'SeLoRecordamos: no he podido arrancar la tarea Windows (código ' + String(task.status) + '). Revisa editorial-local.log.';
+        }
+      } catch (error) {
+        console.error('SR_RUN_EXCEPTION', error.message || error);
+        response = 'SeLoRecordamos: error al solicitar la tarea Windows. Revisa telegram-listener.log.';
+      }
+      try {
+        await telegram('sendMessage', { chat_id: chatId, text: response });
+        console.log('SR_RUN_ACK_SENT update=' + update.update_id);
+      } catch (error) {
+        console.error('SR_RUN_ACK_FAILED update=' + update.update_id, error.message || error);
+      }
       continue;
     }
     if (!msg || String((msg.chat || {}).id || '') !== chatId || !msg.reply_to_message || !String(msg.text || '').trim()) continue;
