@@ -9,8 +9,10 @@ struct GPSDiagnosticsView: View {
         List {
             Section("Seguimiento") {
                 LabeledContent("Estado",value:model.gpsStatus)
-                LabeledContent("Modo",value:gps.mode.rawValue)
-                LabeledContent("Voy a moverme",value:gps.movingSoon ? "Activado" : "Automático")
+                LabeledContent("Modo",value:"Continuo · sin pausa automática")
+                LabeledContent("Pausas notificadas por iOS",value:String(gps.pauseCount))
+                LabeledContent("Reanudaciones notificadas",value:String(gps.resumeCount))
+                LabeledContent("Último hueco entre muestras",value:DurationFormat.full(gps.lastGapSeconds))
                 LabeledContent("Core Motion",value:gps.motionAvailable ? "Disponible" : "No disponible")
                 if let accuracy=model.lastAccuracy {
                     LabeledContent("Precisión de última muestra",
@@ -18,6 +20,9 @@ struct GPSDiagnosticsView: View {
                 }
                 if let last=model.lastGPSFix {
                     LabeledContent("Última muestra",value:last.formatted(date:.abbreviated,time:.standard))
+                    TimelineView(.periodic(from:.now,by:1)) { context in
+                        LabeledContent("Edad del GPS",value:"\(Int(max(0,context.date.timeIntervalSince(last)))) s")
+                    }
                 }
             }
             Section("Datos locales") {
@@ -28,7 +33,7 @@ struct GPSDiagnosticsView: View {
                                value:DurationFormat.full(model.data.missingSeconds))
                 LabeledContent("Cuadrículas visitadas",value:String(model.allCells.count))
             }
-            Section("GPS inteligente · cambios recientes") {
+            Section("Continuidad GPS · eventos recientes") {
                 if model.savedPowerEvents.isEmpty {
                     Text("Aún no hay registros de cambios de modo")
                 } else {
@@ -47,7 +52,8 @@ struct GPSDiagnosticsView: View {
             }
             Section("Interpretación") {
                 Text("Posiciones conservadas no equivale al número de posiciones recibidas. En estancias quietas se guardan menos muestras, pero las duraciones de las muestras recibidas se siguen asignando a sus cuadrículas.")
-                Text("Los tramos sin muestras fiables se registran como incertidumbre, no como una estancia confirmada. Core Motion y el GPS de bajo consumo pueden tardar en detectar el inicio de un movimiento con la pantalla bloqueada.")
+                Text("Los tramos sin muestras fiables se registran como incertidumbre, no como una estancia confirmada. CoreMotion es solo diagnóstico: no puede garantizar la reactivación de una app suspendida.")
+                Text("Un iPhone puede limitar o detener la localización por permisos, falta de señal o cierre del proceso. Este diagnóstico no demuestra continuidad mientras el teléfono esté bloqueado.")
                 Text("La migración inicial conserva el JSON previo y crea una nueva base SQLite. Exporta una copia JSON antes de actualizar o cambiar de dispositivo.")
             }.font(.caption).foregroundStyle(.secondary)
         }
