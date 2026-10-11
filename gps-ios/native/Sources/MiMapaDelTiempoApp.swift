@@ -1346,6 +1346,11 @@ struct RootView: View {
         }
     }
 }
+private struct MapCellRender: Identifiable {
+    let cell:Cell
+    let seconds:TimeInterval
+    var id:String { cell.id }
+}
 struct TimeMapView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
@@ -1359,20 +1364,31 @@ struct TimeMapView: View {
     @State private var followLocation = false
     @State private var restoredCamera = false
     @Environment(\.scenePhase) private var scenePhase
-    var relevant: [Cell] {
-        model.allCells.filter { c in
-            guard model.total(for: c) > 0 else { return false }
-            let point = Grid.center(c)
-            return abs(point.latitude - region.center.latitude) < region.span.latitudeDelta * 1.1 &&
-                   abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.1
-        }.prefix(2_000).map { $0 }
+    var relevant:[MapCellRender] {
+        let now=Date()
+        let totals=model.periodTotals(now:now)
+        let active=model.activeCell
+        let activeExtra=active.map {
+            model.provisionalSeconds(for:[$0.id],now:now)
+        } ?? 0
+        var result:[MapCellRender]=[]
+        for c in model.allCells {
+            let sec=(totals[c.id] ?? 0)+(c == active ? activeExtra : 0)
+            guard sec>0 else { continue }
+            let point=Grid.center(c)
+            guard abs(point.latitude-region.center.latitude) < region.span.latitudeDelta*1.1 &&
+                  abs(point.longitude-region.center.longitude) < region.span.longitudeDelta*1.1 else { continue }
+            result.append(MapCellRender(cell:c,seconds:sec))
+            if result.count >= 2000 { break }
+        }
+        return result
     }
-    private var zoneHighlights: [TimeCustomZone] {
-        model.visibleZones.filter { zone in
-            guard let center=TimeZoneOutline.visibleCenter(for:zone) else { return false }
+    private var zoneHighlights:[TimeZoneOverlay] {
+        model.zoneOverlays.filter { overlay in
+            guard let center=overlay.center else { return false }
             return abs(center.latitude-region.center.latitude) < region.span.latitudeDelta*1.8 &&
                    abs(center.longitude-region.center.longitude) < region.span.longitudeDelta*1.8
-        }.prefix(18).map { $0 }
+        }
     }
     func paint(_ sec: TimeInterval, maximum: TimeInterval) -> Color {
         if model.explore { return .cyan }
@@ -1392,7 +1408,7 @@ struct TimeMapView: View {
     var body: some View {
         let visibleCells = relevant
         let visibleZones = zoneHighlights
-        let maximumVisibleTime = max(1,visibleCells.map { model.total(for:$0) }.max() ?? 1)
+        let maximumVisibleTime = max(1,visibleCells.map(\.seconds).max() ?? 1)
         ZStack(alignment: .bottom) {
             if model.forceBasicMap || !connectivity.connected {
                 OfflineGridMap(model:model,region:$region) { newRegion in
@@ -1405,13 +1421,13 @@ struct TimeMapView: View {
             } else {
             MapReader { proxy in
                 Map(position: $camera) {
-                    ForEach(visibleCells) { cell in
-                        MapPolygon(coordinates: Grid.polygon(cell))
-                            .foregroundStyle(paint(model.total(for:cell),maximum:maximumVisibleTime).opacity(0.52))
+                    ForEach(visibleCells) { item in
+                        MapPolygon(coordinates: Grid.polygon(item.cell))
+                            .foregroundStyle(paint(item.seconds,maximum:maximumVisibleTime).opacity(model.cellFillOpacity))
                             .stroke(.white.opacity(0.85), lineWidth: 1)
                         if region.span.latitudeDelta < 0.015 {
-                            Annotation("", coordinate: Grid.center(cell), anchor: .center) {
-                                Text(DurationFormat.small(model.total(for: cell)))
+                            Annotation("", coordinate: Grid.center(item.cell), anchor: .center) {
+                                Text(DurationFormat.small(item.seconds))
                                     .font(.system(size: 10, weight: .bold))
                                     .foregroundStyle(.black)
                                     .padding(2)
@@ -1419,18 +1435,17 @@ struct TimeMapView: View {
                             }
                         }
                     }
-                    ForEach(visibleZones) { zone in
-                        let edges=TimeZoneOutline.segments(for:zone)
-                        ForEach(edges.indices,id:\.self) { i in
-                            MapPolyline(coordinates:[edges[i].start,edges[i].end])
+                    ForEach(visibleZones) { overlay in
+                        ForEach(overlay.edges.indices,id:\.self) { i in
+                            MapPolyline(coordinates:[overlay.edges[i].start,overlay.edges[i].end])
                                 .stroke(.teal,lineWidth:4)
                         }
                         if region.span.latitudeDelta < 0.07,
-                           let center=TimeZoneOutline.visibleCenter(for:zone) {
+                           let center=overlay.center {
                             Annotation("",coordinate:center) {
                                 VStack(spacing:2) {
-                                    Text(zone.name).font(.caption2.bold()).lineLimit(1)
-                                    Text("\(zone.cells.count) cuadrículas")
+                                    Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
+                                    Text("\(overlay.zone.cellIDs.count) cuadrículas")
                                         .font(.system(size:9))
                                 }
                                 .padding(.horizontal,8).padding(.vertical,5)
