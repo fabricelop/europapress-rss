@@ -87,6 +87,38 @@ def matches(row, element_id):
                ("event_id", "id", "name", "title", "display_name", "term_normalized"))
 
 
+
+def original_news_metadata(element_id, *rows):
+    """Resolve genuine news capture metadata; never trust a generic UI label."""
+    candidates = [r for r in rows if isinstance(r, dict)]
+    for path, fields in (
+        ("telegram/events.json", ("events",)),
+        ("ttittulares/editorial-queue.json", ("items",)),
+        ("ttittulares/status.json", ("processing_items", "problematic_items", "three_source_items")),
+        ("telegram/editorial-processing.json", ("items",)),
+    ):
+        doc = load(path, {})
+        for field in fields:
+            candidates.extend(r for r in doc.get(field, [])
+                              if isinstance(r, dict) and
+                              str(r.get("event_id") or r.get("id") or "") == element_id)
+    generic = {"", "noticia", "sin título", "sin titulo", "actualidad", "titular pendiente"}
+    title = next((t for r in candidates
+                  if (t := str(r.get("canonical_title") or r.get("title") or "").strip())
+                  and t.casefold().strip(" .:–-") not in generic), "")
+    url = next((u for r in candidates
+                if (u := str(r.get("url") or "").strip()).startswith("https://")), "")
+    appearance = next((a for r in candidates for a in (r.get("appearances") or [])
+                       if isinstance(a, dict) and a.get("source") and
+                       str(a.get("url") or "").startswith("https://")), {})
+    if not url:
+        url = str(appearance.get("url") or "")
+    source = str(appearance.get("source") or "")
+    if not source:
+        source = next((str(r.get("source") or "") for r in candidates if r.get("source")), "")
+    return title, url, source
+
+
 def tti_command(action, element_id, context, instruction, now):
     # Tremending is a curated external-news list, not a TTiTTulares editorial
     # event. Deleting an entry hides it persistently; it must not be sent into
@@ -179,9 +211,17 @@ def tti_command(action, element_id, context, instruction, now):
         processing.setdefault("items", []).append(record)
     if not instruction and action == "rework":
         instruction = "Reelaborar el texto y el remate editorial manteniendo los hechos verificados."
+    title, url, source = original_news_metadata(element_id, ready, record)
+    if not title:
+        # Keep existing state untouched; do not persist anonymous new records.
+        raise ValueError("Titular auténtico no disponible en la captura; solicitud no enviada")
     record.update(status="PROCESSING", selected_at=now, selection_mode="GITHUB_PAGES_MANUAL",
-                  rewrite_instruction=instruction, title=str(ready.get("title") if ready else context or record.get("title") or "Noticia"),
+                  rewrite_instruction=instruction, title=title,
                   revision=max(1, int(record.get("revision") or 0) + 1))
+    if url:
+        record["url"] = url
+    if source:
+        record["source"] = source
     processing["updated_at"] = now
     save(processing_path, processing)
     # Eliminar la versión lista para que reaparezca solo cuando exista una nueva.
