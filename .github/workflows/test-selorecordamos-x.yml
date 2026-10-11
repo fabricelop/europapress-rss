@@ -1,11 +1,9 @@
 name: Test SeLoRecordamos X search
 
+# X bloquea a veces el navegador de los runners públicos. La prueba real
+# queda disponible manualmente; la sintaxis se valida en CI sin consumir X.
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'selorecordamos/search_x.js'
-      - '.github/workflows/test-selorecordamos-x.yml'
 
 jobs:
   test-x-search:
