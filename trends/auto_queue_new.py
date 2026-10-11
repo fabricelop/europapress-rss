@@ -49,7 +49,9 @@ def save_editorial_queue(requests_doc):
         # in the editorial work queue once they leave the displayed window.
         if status == "problematic" and req_name not in top30_names:
             continue
-        if req.get("auto_queued") and req_name not in top30_names:
+        # Only positions 1-10 may be automatically prepared. A position
+        # 11-30 MUST come from explicit "Preparar novedad" or reexplanation.
+        if req.get("auto_queued") and req_name not in top10_names:
             continue
         active.append({
             "id": req.get("id"),
@@ -341,40 +343,26 @@ for item in (recent.get("items") or [])[:10]:
     name = str(item.get("name") or "").strip()
     if name:
         current.append({"name": name, "rank": int(item.get("rank") or 0)})
-# Only positions 11-30 are eligible; "Próximas" and ranks 31+ never queue.
-outside = [
-    {"name": str(item.get("name") or "").strip(),
-     "rank": int(item.get("rank") or 0)}
-    for item in (recent.get("items") or [])[10:30]
-    if str(item.get("name") or "").strip()
-]
-outside_names = {norm(x["name"]) for x in outside}
-outside_active = any(
-    norm(req.get("name")) in outside_names
-    and str(req.get("status") or "") in {"preparing","update","problematic","ready"}
-    for req in requests
-)
-outside_selected = None
-if not outside_active:
-    for item in outside:
-        key = norm(item["name"])
-        if key in recently_closed_names:
-            continue
-        req = by_name.get(key)
-        status = str((req or {}).get("status") or "")
-        if status in {"preparing","update","problematic","ready","explained",
-                      "dismissed","published","removed","deleted"}:
-            continue
-        # Explained trends do not become "unexplained" merely because the
-        # 48h Top-10 freshness window expires.
-        if key in explained:
-            continue
-        outside_selected = item
-        break
-if outside_selected:
-    print("Próxima no explicada del puesto 11-30:",
-          outside_selected["rank"],outside_selected["name"])
-    current.append(outside_selected)
+# Top 30 is a DISPLAY, not an automatic editorial queue.
+# Ranks 11-30 enter "preparing" ONLY when explicitly requested by the editor
+# using Preparar novedad; rank <=10 is eligible for automatic investigation.
+# Retire mistakenly automatic outside-Top-10 work without erasing explanations.
+retired_outside = 0
+for req in requests:
+    if (req.get("auto_queued") is True and
+            int(req.get("rank") or 999) > 10 and
+            str(req.get("status") or "") in {"preparing", "update", "problematic", "ready"} and
+            str(req.get("request_source") or "") not in
+              {"telegram_reexplain", "github_pages_authorized_issue", "telegram_private_deeplink"}):
+        req["status"] = "inactive"
+        req["inactive_at"] = now_dt.isoformat(timespec="seconds")
+        req["inactive_reason"] = "top11_30_manual_only"
+        req["auto_queue_scope"] = "retired"
+        retired_outside += 1
+if retired_outside:
+    reconciled = True
+    print("Fuera de Top 10 automático: retiradas", retired_outside,
+          "solicitudes de posiciones 11-30; preparar novedad es manual")
 
 # Las problemáticas solo son trabajo vivo mientras sigan en Top 10 o Radar.
 # Si salen de ambos, se retiran a un estado inerte. Si vuelven a aparecer,
@@ -525,7 +513,7 @@ for item in to_queue:
         "requested_together": [name],
         "captured_with": names,
         "auto_queued": True,
-        "auto_queue_scope": "top10" if item["rank"] <= 10 else "next_unexplained_11_30",
+        "auto_queue_scope": "top10",
     }
     if req is None:
         requests.append(new_req)
