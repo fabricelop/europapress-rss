@@ -1,5 +1,20 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## v0.5 — siguiente bloque tras prueba de paseo (11/10/2026)
+- Rama aislada `feature/mi-mapa-del-tiempo-ios-v05`; `main`, la rama v0.3 y la v0.4 instalada no se modifican.
+- **Batería:** se sustituye `kCLLocationAccuracyBestForNavigation` por `kCLLocationAccuracyBest`, filtro de distancia 5 m en movimiento y 35 m en reposo; detección por movimiento y reanudación explícita de actualizaciones desde reposo. La autonomía real queda por medir en iPhone. El 13 % de Ajustes → Batería no es una medida causal de consumo ahorrable. Registro local de eventos `GPSPowerEvent`, disparos manuales y descansos, con diagnóstico.
+- **Histórico por cuadrícula:** días desglosados en intervalos/hora y calidad de atribución, con enlace directo al mapa. Se eliminan solapamientos solo en las vistas calculadas, sin editar los datos brutos.
+- **Nombres cortos:** Zona 001, 002... persistente, nombres personalizados prioritarios; migración del histórico previo a índices sin cambiar los IDs internos.
+- **Lugares personalizados:** selección de cuadrículas visitadas sobre el mapa, creación, renombrado, incorporación/eliminación de casillas y estadísticas conjuntas. Un mismo segundo nunca se suma varias veces en las vistas normalizadas. El intervalo bruto por cuadrícula permanece.
+- **Estadísticas:** Top 10, 25, 50 o todas; renombradas/no renombradas/todas; botón en el ranking que centra la cuadrícula en Mapa; vista Lugares y Territorios.
+- **Territorios:** niveles país, comunidad/estado, provincia, municipio, distrito, barrio. Geocodificación **bajo demanda** de los centros de cuadrícula mediante CLGeocoder de Apple (12 por lote), sin costes añadidos ni descarga de mapas detallados. Caché territorial en SQLite y JSON exportado. Cuando no exista etiqueta o consulta dé error se indica pendiente, nunca se inventan barrios. Geocodificación puede ser lenta/limitada por Apple y necesitar conectividad.
+- **Mapa:** escala adaptada y recorridos activos por defecto, persistentes; recorridos seleccionables por últimas 2 h, hoy, 24 h, 7 días o todo. No se añade leyenda de colores.
+- **WidgetKit:** se conserva el código y extensión previa. **No se ha confirmado solución para la galería ni el App Group no autorizado** con Sideloadly/Apple gratuita. No afirmar funcionalidad del widget en dispositivo.
+- **Persistencia:** nuevos campos opcionales en cabecera SQLite, compatibles con instalaciones existentes; JSON antiguo también se decodifica conservando nombres y duraciones. No desinstalar ni borrar datos. Exportar JSON antes de actualización y usar misma identidad Apple.
+- **Pendientes/pruebas:** verificar compilación y XCTest macOS `.github/workflows/mi-mapa-del-tiempo-v05-verify.yml`; comprobar movilidad bloqueada, ahorro real, geocodificación y agrupación en iPhone. Resolución de barrios depende de cobertura del sistema. No hay seguimiento continuo en segundo plano garantizado.
+
+---
+
 ## Resultado en iPhone con Sideloadly (comunicado por el usuario, 11/10/2026)
 - [x] El usuario instaló la compilación de widgets (la app presenta su sección de ajustes para widgets).
 - [ ] iPhone muestra **«App Group no autorizado»**: el contenedor compartido no está disponible al ejecutarse con el perfil generado por Sideloadly y Apple ID personal gratuito.
