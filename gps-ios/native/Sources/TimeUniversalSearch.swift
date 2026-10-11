@@ -28,7 +28,7 @@ struct TimeUniversalSearch: View {
             if NamedPlaces.normalize(model.label(for:cell)).contains(needle) ||
                 cell.id.contains(needle) {
                 results.append(TimeSearchHit(id:"c"+cell.id,title:model.label(for:cell),
-                   subtitle:"Cuadrícula · \(DurationFormat.small(model.data.totals[cell.id] ?? 0))",
+                   subtitle:"Cuadrícula · \(DurationFormat.small(model.confirmedTotals()[cell.id] ?? 0))",
                    cell:cell,symbol:"square"))
             }
         }
