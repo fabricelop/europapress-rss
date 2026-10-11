@@ -399,7 +399,7 @@ async function pollOnce(timeoutSeconds = 25) {
       continue;
     }
     const msg = update.message;
-    if (msg && String((msg.chat || {}).id || '') === chatId && /^\\/sr_run(?:@\\w+)?\\s*$/i.test(String(msg.text || ''))) {
+    if (msg && String((msg.chat || {}).id || '') === chatId && /^\/sr_run(?:@\w+)?\s*$/i.test(String(msg.text || ''))) {
       const task = cp.spawnSync('schtasks.exe', ['/Run', '/TN', 'SeLoRecordamos-Editorial-Local'], { encoding: 'utf8', timeout: 12000, windowsHide: true });
       await telegram('sendMessage', {
         chat_id: chatId,
