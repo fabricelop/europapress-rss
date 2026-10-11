@@ -120,6 +120,23 @@ struct SavedState: Codable {
     var manualBreaks: [Date] = []
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
+
+    init() {}
+    // El JSON v1 carece de manualBreaks y de otras propiedades posteriores.
+    // No hacer que una propiedad nueva inutilice una copia histórica antigua.
+    init(from decoder: Decoder) throws {
+        let box = try decoder.container(keyedBy:CodingKeys.self)
+        fixes = try box.decodeIfPresent([GPSPoint].self,forKey:.fixes) ?? []
+        intervals = try box.decodeIfPresent([AssignedInterval].self,forKey:.intervals) ?? []
+        totals = try box.decodeIfPresent([String:TimeInterval].self,forKey:.totals) ?? [:]
+        names = try box.decodeIfPresent([String:String].self,forKey:.names) ?? [:]
+        importedHashes = try box.decodeIfPresent([String].self,forKey:.importedHashes) ?? []
+        camera = try box.decodeIfPresent(CameraSave.self,forKey:.camera) ?? CameraSave()
+        missingSeconds = try box.decodeIfPresent(TimeInterval.self,forKey:.missingSeconds) ?? 0
+        savedVisitStart = try box.decodeIfPresent(Date.self,forKey:.savedVisitStart)
+        trackingEnabled = try box.decodeIfPresent(Bool.self,forKey:.trackingEnabled) ?? false
+        manualBreaks = try box.decodeIfPresent([Date].self,forKey:.manualBreaks) ?? []
+    }
 }
 @MainActor final class TimeModel: ObservableObject {
     @Published private(set) var data = SavedState()
@@ -243,6 +260,7 @@ struct SavedState: Codable {
 
         // Histeresis para cambios de cuadrícula causados por oscilaciones del GPS.
         let target = sample.cell
+        let beforeStable = stableCell
         if stableCell == nil { stableCell = target }
         if target == stableCell {
             candidateCell = nil
@@ -274,14 +292,14 @@ struct SavedState: Codable {
             data.fixes.append(sample)
             pendingFixes.append(sample)
         }
-        if stableCell != current.map({ Grid.cell(latitude:$0.latitude,longitude:$0.longitude) }) ||
+        if stableCell != beforeStable ||
            delta > GPSHistoryGrouping.gapLimit || currentVisitStart == nil {
             currentVisitStart = sample.date
             data.savedVisitStart = sample.date
         }
         current = sample
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
-        save(force: delta > GPSHistoryGrouping.gapLimit || data.intervals.count % 25 == 0)
+        save(force: delta > GPSHistoryGrouping.gapLimit)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
