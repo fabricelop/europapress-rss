@@ -785,7 +785,9 @@ def selftest():
             assert len(updated_ledger["items"])==1
             before=len(methods)
             process("ttittulares",now,"mock","mockchat")
-            assert len(methods)==before, "Do not duplicate a companion photo"
+            assert len(methods)==before, ("Do not duplicate a companion photo: "+str(methods[before:])+
+                " ledger="+str(load("telegram/ttittulares-deliveries.json",{"items":[]})["items"][0].get("content_sha256"))+
+                " body="+str(list(news_cards(now))[0]["text"][-180:]))
             final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
                 "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
                 "tweet":{"text":"Un organismo confirmó la medida.",
