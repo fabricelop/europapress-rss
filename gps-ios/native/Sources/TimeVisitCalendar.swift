@@ -6,10 +6,22 @@ struct TimeVisitCalendar: View {
     let cellIDs: Set<String>
     @State private var month: Date = Calendar.current.dateInterval(of:.month,for:.now)?.start ?? .now
     @State private var selectedDay: Date?
+    private var zoneTimeZone:TimeZone? {
+        cellIDs.compactMap { model.data.territoryCache[$0]?.timeZoneIdentifier }
+            .compactMap(TimeZone.init(identifier:)).first
+    }
     private var calendar:Calendar {
         var c=Calendar.current
         c.firstWeekday=2 // lunes
+        if let zoneTimeZone { c.timeZone=zoneTimeZone }
         return c
+    }
+    private func localTime(_ date:Date) -> String {
+        let formatter=DateFormatter()
+        formatter.locale=Locale(identifier:"es_ES")
+        formatter.timeZone=calendar.timeZone
+        formatter.timeStyle = .short
+        return formatter.string(from:date)
     }
     private var allVisits:[TimeVisit] {
         TimeVisitIndex.visits(model.data.intervals,cells:cellIDs)
@@ -37,6 +49,10 @@ struct TimeVisitCalendar: View {
         VStack(alignment:.leading,spacing:13) {
             HStack {
                 Text("Calendario de visitas").font(.headline)
+            if let zoneTimeZone {
+                Text("Horas locales: \(zoneTimeZone.identifier)")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
                 Spacer()
                 Text("\(allVisits.count) visitas").font(.caption).foregroundStyle(.secondary)
             }
@@ -93,7 +109,7 @@ struct TimeVisitCalendar: View {
                 ForEach(focusVisits,id:\.visit.id) { item in
                     HStack {
                         VStack(alignment:.leading,spacing:3) {
-                            Text("\(item.start.formatted(date:.omitted,time:.shortened)) – \(item.end.formatted(date:.omitted,time:.shortened))")
+                            Text("\(localTime(item.start)) – \(localTime(item.end))")
                                 .font(.subheadline)
                             if item.visit.duration-item.visit.confirmedSeconds>1 {
                                 Text("Incluye un hueco GPS breve no atribuido")
