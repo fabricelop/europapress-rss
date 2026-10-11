@@ -276,14 +276,24 @@ struct SavedState: Codable {
     // La estimación se muestra separada: nunca se persiste ni se atribuye
     // a intervalos GPS hasta comprobar una nueva posición.
     func provisionalSeconds(for cellIDs:Set<String>,now:Date = .now) -> TimeInterval {
-        guard recording,let fix=current,
-              let stable=activeCell,cellIDs.contains(stable.id),
-              fix.date <= now else { return 0 }
-        let age=now.timeIntervalSince(fix.date)
-        guard age>=0,age<=120 else { return 0 }
-        let currentStart=max(fix.date,
-                             TimeAnalytics.window(for:period,now:now)?.start ?? .distantPast)
-        return max(0,now.timeIntervalSince(currentStart))
+        // confirmedTotals() puede seguir usando su caché de cinco segundos.
+        // El reloj visible interpola desde EL FINAL DE ESA CACHÉ, no desde la
+        // última muestra GPS. Así no retrocede a cero cuando llega cada fix.
+        let cachedThrough:Date?
+        if period == .all {
+            cachedThrough = normalizedCacheLastEnd
+        } else {
+            // El cálculo de períodos acotados se actualiza en cada consulta.
+            cachedThrough = data.intervals.last?.end
+        }
+        return LiveCounterProjection.provisionalSeconds(
+            recording:recording,
+            currentLocationInTarget:activeCell.map { cellIDs.contains($0.id) } ?? false,
+            lastFix:current?.date,
+            cacheEnd:cachedThrough,
+            currentVisitStart:currentVisitStart,
+            periodStart:TimeAnalytics.window(for:period,now:now)?.start,
+            now:now)
     }
     func gpsFixAge(now:Date = .now) -> TimeInterval? {
         guard let date=lastGPSFix else { return nil }
