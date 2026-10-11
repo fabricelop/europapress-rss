@@ -1,0 +1,66 @@
+name: TTiTTulares native Telegram listener watchdog
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "telegram/ttittulares-transport.json"
+      - ".github/workflows/ttittulares-native-listener-watchdog.yml"
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: ttittulares-native-telegram-watchdog
+  cancel-in-progress: true
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /telegram/ttittulares-transport.json
+      - name: Comprobar webhook y continuidad sin cambiar la ruta de Telegram
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          config=json.load(open('telegram/ttittulares-transport.json',encoding='utf8'))
+          if config.get('mode')!='native' or config.get('native_ready') is not True:
+              print('TTI_NATIVE_WATCHDOG_STAGED_NO_ACTION')
+              raise SystemExit(0)
+          token=os.environ['TELEGRAM_BOT_TOKEN'].strip()
+          gh=os.environ['GH_TOKEN'].strip()
+          assert token and gh,'Missing GitHub or Telegram credential'
+          headers={'Authorization':'Bearer '+gh,
+                   'Accept':'application/vnd.github+json',
+                   'User-Agent':'TTiTTulares-native-watchdog'}
+          repo=os.environ['GITHUB_REPOSITORY']
+          base='https://api.github.com/repos/'+repo+'/actions/workflows/ttittulares-native-telegram.yml'
+          def read(url,extra=None):
+              rq=urllib.request.Request(url,headers={**headers,**(extra or {})})
+              with urllib.request.urlopen(rq,timeout=25) as resp:
+                  return json.load(resp)
+          info=read('https://api.telegram.org/bot'+token+'/getWebhookInfo',{})
+          target=str((info.get('result') or {}).get('url') or '')
+          print('TTI_NATIVE_TELEGRAM_WEBHOOK_EMPTY',not bool(target))
+          # If any unexpected webhook exists, refuse to register a second consumer.
+          if target:raise SystemExit('TTI_NATIVE_WEBHOOK_DRIFT: '+target)
+          runs=read(base+'/runs?per_page=20').get('workflow_runs',[])
+          active=[x for x in runs if x.get('status') in
+                  ('in_progress','queued','pending','waiting','requested')]
+          if active:
+              print('TTI_NATIVE_LISTENER_RUNNING',[(x['id'],x['status']) for x in active[:3]])
+              raise SystemExit(0)
+          req=urllib.request.Request(base+'/dispatches',data=b'{"ref":"main"}',
+              headers={**headers,'Content-Type':'application/json'},method='POST')
+          with urllib.request.urlopen(req,timeout=25) as resp:
+              assert resp.status==204,'Native listener dispatch failed'
+          print('TTI_NATIVE_LISTENER_RESTART_REQUESTED')
+          PY
