@@ -13,7 +13,7 @@ struct TimeZonesPanel: View {
             HStack {
                 VStack(alignment:.leading,spacing:4) {
                     Text("Mis zonas").font(.headline)
-                    Text("Zonas construidas con cuadrículas completas. Su tiempo no se duplica en el total global.")
+                    Text("Agrupa cuadrículas dibujando, sin alterar su tiempo.")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
                 Spacer()
@@ -21,12 +21,12 @@ struct TimeZonesPanel: View {
                     Label("Dibujar",systemImage:"pencil.tip.crop.circle")
                 }.buttonStyle(.borderedProminent)
             }
-            if model.data.customZones.isEmpty {
-                ContentUnavailableView("Aún no has dibujado zonas",
+            if model.visibleZones.isEmpty {
+                ContentUnavailableView("Aún no hay zonas",
                     systemImage:"square.3.layers.3d",
-                    description:Text("Dibuja un contorno en el mapa para seleccionar cuadrículas, incluidas las que visitarás en el futuro."))
+                    description:Text("Dibuja un contorno para seleccionar cuadrículas, incluso sin visitar."))
             }
-            ForEach(model.data.customZones) { zone in
+            ForEach(model.visibleZones) { zone in
                 NavigationLink {
                     TimeZoneEditor(model:model,existing:zone)
                 } label: {
