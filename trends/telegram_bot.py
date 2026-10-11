@@ -152,6 +152,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
     for rel, path in (
         ("trends/telegram-image-deliveries.json", IMAGE_DELIVERIES),
         ("trends/telegram-manual-explained.json", MANUAL),
+        ("trends/requests.json", REQUESTS),
         ("trends/telegram-package-listener-state.json", PACKAGE_STATE),
         ("trends/explained-copy-state.json", COPY_STATE),
     ):
@@ -221,6 +222,34 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         remote_manual["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
         save(MANUAL, remote_manual)
 
+        # Persist authoritative package decisions in the editorial queue too,
+        # without replacing concurrent editor changes with a stale snapshot.
+        remote_requests = load(REQUESTS, {"requests": []})
+        local_requests = load(snapshots.get("trends/requests.json", Path("/nonexistent")),
+                              {"requests": []})
+        terminal_requests = {
+            str(x.get("id") or ""): x
+            for x in local_requests.get("requests", [])
+            if str(x.get("id") or "") and
+               str(x.get("telegram_package_status") or "").lower()
+                   in {"published", "dismissed", "deleted"}
+        }
+        request_changed = False
+        for req in remote_requests.get("requests", []):
+            local = terminal_requests.get(str(req.get("id") or ""))
+            if not local:
+                continue
+            outcome = str(local.get("telegram_package_status") or "").lower()
+            if (str(req.get("status") or "").lower() != outcome or
+                    str(req.get("telegram_package_status") or "").lower() != outcome):
+                req.update(status=outcome, telegram_package_status=outcome,
+                           telegram_closed_at=local.get("telegram_closed_at"),
+                           reexplain=False)
+                request_changed = True
+        if request_changed:
+            remote_requests["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+            save(REQUESTS, remote_requests)
+
         remote_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
         local_state = load(snapshots.get("trends/telegram-package-listener-state.json", Path("/nonexistent")), {"last_update_id": 0})
         remote_state["version"] = 1
@@ -252,6 +281,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
             "git", "add",
             "trends/telegram-image-deliveries.json",
             "trends/telegram-manual-explained.json",
+            "trends/requests.json",
             "trends/telegram-package-listener-state.json",
             "trends/explained-copy-state.json",
         ], check=False)
@@ -555,54 +585,14 @@ def panel_keyboard():
     return {"inline_keyboard": rows}
 
 def send_new_status_alerts(state):
-    chat_id = state.get("chat_id")
-    if not chat_id:
-        return
+    """Retired: radar status changes must never create new Telegram messages.
 
-    listener_state = load(LISTENER_STATE, {})
-    current_items = trend_statuses()
-    previous = listener_state.get("alert_status_snapshot")
+    Only shared/telegram_readonly_delivery.py may deliver a trend card.
+    Historically a change red/yellow sent T<rank> · <name> even after Borrar.
+    Those alerts had no delivery ledger, so no duplicate protection applied.
+    """
+    return
 
-    # Primera ejecución tras activar la función: fijamos una línea base para
-    # no enviar de golpe alertas por tendencias que ya estaban en la tabla.
-    if previous is None:
-        listener_state["alert_status_snapshot"] = {
-            item["key"]: item["status"] for item in current_items
-        }
-        save(LISTENER_STATE, listener_state)
-        return
-
-    for item in current_items:
-        prev_status = previous.get(item["key"])
-        status = item["status"]
-
-        should_alert = (
-            (status == "red" and prev_status is None)
-            or (status == "yellow" and prev_status != "yellow")
-        )
-        if not should_alert:
-            continue
-
-        text = f'T{item["rank"]} · {item["name"]}'
-        try:
-            call("sendMessage", {
-                "chat_id": chat_id,
-                "text": text,
-                "reply_markup": {
-                    "inline_keyboard": [[{
-                        "text": "🗑️ Borrar",
-                        "callback_data": "alert:delete",
-                    }]]
-                },
-                "disable_web_page_preview": True,
-            })
-        except Exception as e:
-            print("No se pudo enviar alerta TTendencias:", e, flush=True)
-
-    listener_state["alert_status_snapshot"] = {
-        item["key"]: item["status"] for item in current_items
-    }
-    save(LISTENER_STATE, listener_state)
 
 
 def unpin_panels(chat_id):
@@ -1431,6 +1421,14 @@ def handle_readonly_delete(callback):
     for row in manual.get("items",[]):
         if str(row.get("id") or "")==tid and int(row.get("revision") or 0)==rev:
             row.update({"telegram_package_status":"deleted","telegram_deleted_at":now})
+    # The visible Telegram card may belong to an older editorial revision:
+    # close the whole subject, otherwise the next radar pass resends it.
+    requests_doc=load_remote_json("trends/requests.json",load(REQUESTS,{"requests":[]}))
+    for request in requests_doc.get("requests",[]):
+        if str(request.get("id") or "")==tid:
+            request.update(status="deleted",telegram_package_status="deleted",
+                           telegram_closed_at=now,reexplain=False)
+    save(REQUESTS,requests_doc)
     save(IMAGE_DELIVERIES,ledger)
     save(MANUAL,manual)
     if not persist_package_state("Borrar tarjeta informativa TTendencias"):
