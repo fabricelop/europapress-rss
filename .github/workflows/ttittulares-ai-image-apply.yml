@@ -8,4 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: No-op
-        run: echo "Flujo retirado: solo Telegram informativo, sin imágenes IA ni publicación"
+        run: |
+          echo "Flujo retirado: solo Telegram informativo, sin imágenes IA ni publicación"
