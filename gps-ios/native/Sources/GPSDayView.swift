@@ -47,6 +47,6 @@ struct GPSDayView: View {
                 }
             }
         }
-        .navigationTitle(day.formatted(.dateTime.day().month().year()))
+        .navigationTitle(day.formatted(.dateTime.day().month().year().locale(Locale(identifier:"es_ES"))))
     }
 }
