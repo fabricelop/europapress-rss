@@ -187,6 +187,7 @@ struct SavedState: Codable {
         gpsStatus = "GPS en pausa · tiempo acumulándose en \(label(for:cell))"
         recordPowerEvent(mode:.rest,cause:"Pausa voluntaria desde \(label(for:cell))")
         widgetPublisher.publish(from:self,force:true)
+        activityPublisher.refresh(from:self,force:true)
         return true
     }
     /// El periodo de reposo se consolida UNA sola vez cuando el GPS se reanuda.
@@ -210,6 +211,7 @@ struct SavedState: Codable {
         save(force:true)
         widgetPublisher.publish(from:self,force:true)
         recordPowerEvent(mode:.precision,cause:"Pausa finalizada; tiempo asumido guardado")
+        activityPublisher.refresh(from:self,force:true)
     }
     func recordPowerEvent(mode:GPSPowerMode,cause:String) {
         data.powerEvents.append(GPSPowerEvent(date:Date(),mode:mode.rawValue,cause:cause))
@@ -222,6 +224,7 @@ struct SavedState: Codable {
     @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
     private let widgetPublisher = TimeWidgetPublisher()
+    private let activityPublisher = TimeLiveActivityPublisher()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var lastProcessedSample: GPSPoint?
@@ -366,9 +369,14 @@ struct SavedState: Codable {
         let provisionalEnd=min(now,lastFix.addingTimeInterval(120))
         return max(0, provisionalEnd.timeIntervalSince(start))
     }
-    var activeCell: Cell? { stableCell ?? current?.cell }
+    var activeCell: Cell? { data.gpsRest?.cell ?? stableCell ?? current?.cell }
     func refreshWidgets() {
         widgetPublisher.publish(from:self,force:true)
+        activityPublisher.refresh(from:self)
+    }
+    func setLockScreenEnabled(_ enabled: Bool) {
+        UserDefaults.standard.set(enabled,forKey:"miMapaLiveActivity")
+        activityPublisher.refresh(from:self,force:true)
     }
     var retainedFixCount: Int { data.fixes.count }
     var lastGPSFix: Date? { lastProcessedSample?.date ?? data.fixes.last?.date }
@@ -513,6 +521,7 @@ struct SavedState: Codable {
         data.trackingEnabled = enabled
         save(force: true)
         widgetPublisher.publish(from:self,force:true)
+        activityPublisher.refresh(from:self,force:true)
     }
     func updateCamera(_ region: MKCoordinateRegion) {
         data.camera = CameraSave(region)
@@ -577,6 +586,7 @@ struct SavedState: Codable {
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
         widgetPublisher.publish(from:self)
+        activityPublisher.refresh(from:self)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
