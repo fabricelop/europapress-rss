@@ -1,6 +1,9 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
-## Nueva tanda v0.3 (código integrado; instalación física pendiente)
+## Nueva tanda v0.3 (compilación y tests automáticos confirmados; instalación física pendiente)
+- [x] [Build iOS Release verde, GitHub Actions run 38122579172](https://github.com/fabricelop/europapress-rss/actions/runs/38122579172), IPA sin firmar artifact 11696021211 (fecha 11/10/2026); verificados Info.plist 1.0.3 (build 3), bundle ID es.mimapadeltiempo.app y permiso Core Motion.
+- [x] [XCTest iOS Simulator verde, run 38122779881](https://github.com/fabricelop/europapress-rss/actions/runs/38122779881): 23 tests ejecutados, 0 errores. Incluye migración JSON → SQLite y comparación de totales/nombres; batería y segundo plano siguen sin verificación física.
+
 - Motor inteligente: precisión máxima en desplazamientos; reposo de menor consumo tras 10 minutos inmóvil, con detección asistida por Core Motion cuando iOS entrega actividad.
 - Interruptor «Voy a moverme» en el mapa y en Ajustes: entra de inmediato en máxima precisión; se apaga tras parada prolongada detectada o por decisión manual; seguimiento automático permanece activo.
 - Persistencia SQLite WAL: migración transaccional desde el JSON de versiones anteriores, dejando ese archivo sin borrar para recuperación. Guardados incrementales, sin reescribir todo el GPS en cada actualización. Se conservan datos y nombres si la migración termina correctamente; existe modo de respaldo JSON si no puede abrirse SQLite.
@@ -9,7 +12,7 @@
 - Mapa de cuadrículas independiente de teselas: con la red desconectada aparece un fondo básico propio; también se puede activarlo manualmente desde Ajustes.
 - Posiciones GPS trasladadas al diagnóstico técnico, con modo, precisión y estado SQLite; panel principal sin el contador de coordenadas.
 - Diario: división manual de episodios por punto central GPS y opción de deshacer la división («Unir de nuevo»); los tiempos originales no se modifican. Todavía no se pueden fusionar arbitrariamente dos episodios clasificados automáticamente.
-- Tests de estados GPS, migración JSON/SQLite, recorte de intervalos y divisiones añadidos a Sources/Tests. **No declarar los tests superados hasta que GitHub Actions ejecute su verificación.**
+- [x] Tests de estados GPS, migración JSON/SQLite, recorte de intervalos y divisiones: 23 XCTest superados en simulador iOS.
 - **Sin Vercel. Sin cambios en main, AquíEstuve ni TTendencias/TTiTTulares.**
 
 ## Límites que requieren pruebas con el teléfono
