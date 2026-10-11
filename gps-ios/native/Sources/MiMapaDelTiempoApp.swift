@@ -414,14 +414,55 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
 struct RootView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
+    @AppStorage("miMapaFaceID") private var faceIDEnabled = false
+    @Environment(\.scenePhase) private var phase
+    @State private var unlocked = false
+    @State private var checking = false
     var body: some View {
-        TabView {
-            TimeMapView(model: model).tabItem { Label("Mapa", systemImage: "map") }
-            TimeStatsDashboard(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }
-            GPSDiaryShell(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
-            TimeCompareView(model: model).tabItem { Label("Comparar", systemImage: "square.split.2x1") }
-            TimeSettingsView(model: model, gps: gps).tabItem { Label("Ajustes", systemImage: "gearshape") }
-        }.tint(.teal)
+        ZStack {
+            TabView {
+                TimeMapView(model: model).tabItem { Label("Mapa", systemImage: "map") }
+                TimeStatsDashboard(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }
+                GPSDiaryShell(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
+                TimeCompareView(model: model).tabItem { Label("Comparar", systemImage: "square.split.2x1") }
+                TimeSettingsView(model: model, gps: gps).tabItem { Label("Ajustes", systemImage: "gearshape") }
+            }.tint(.teal)
+            if faceIDEnabled && !unlocked {
+                VStack(spacing:20) {
+                    Image(systemName:"lock.shield.fill").font(.system(size:54)).foregroundStyle(.teal)
+                    Text("Mi Mapa del Tiempo").font(.title2.bold())
+                    Text("El seguimiento GPS continúa aunque la pantalla esté protegida.")
+                        .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
+                    Button {
+                        checkFaceID()
+                    } label: {
+                        Label(checking ? "Verificando…" : "Desbloquear",systemImage:"faceid")
+                    }.buttonStyle(.borderedProminent).disabled(checking)
+                }
+                .padding(28)
+                .frame(maxWidth:.infinity,maxHeight:.infinity)
+                .background(Color(.systemBackground).ignoresSafeArea())
+            }
+        }
+        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() } }
+        .onChange(of:faceIDEnabled) { _, enabled in
+            unlocked = !enabled
+            if enabled { checkFaceID() }
+        }
+        .onChange(of:phase) { _, state in
+            if faceIDEnabled {
+                if state == .background { unlocked = false }
+                if state == .active && !unlocked { checkFaceID() }
+            }
+        }
+    }
+    private func checkFaceID() {
+        guard faceIDEnabled, !checking else { return }
+        checking = true
+        DeviceAccess.authenticate { approved in
+            checking = false
+            unlocked = approved
+        }
     }
 }
 struct TimeMapView: View {
@@ -666,6 +707,7 @@ struct TimeSettingsView: View {
     @State private var importing = false
     @State private var message = ""
     @State private var exportFile: URL?
+    @AppStorage("miMapaFaceID") private var faceIDEnabled = false
     var body: some View {
         NavigationStack {
             Form {
@@ -676,6 +718,11 @@ struct TimeSettingsView: View {
                     Button(model.recording ? "Detener GPS" : "Iniciar GPS de máxima precisión") {
                         if model.recording { gps.end(model) } else { gps.begin(model) }
                     }
+                }
+                Section("Privacidad") {
+                    Toggle("Solicitar Face ID o código", isOn:$faceIDEnabled)
+                    Text("Solo bloquea el acceso a la pantalla. El GPS continúa registrando en segundo plano cuando iOS lo permita.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Mapa") {
                     Toggle("Mostrar recorridos recientes", isOn: $model.showRoutes)
