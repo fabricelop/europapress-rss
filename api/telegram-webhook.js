@@ -107,6 +107,43 @@ async function safeTelegram(method, payload) {
   catch (e) { console.error(e); return null; }
 }
 
+
+// /run en TTiTTulares: reutilizar la rama de control del launcher Windows.
+async function requestTtiWindowsRun() {
+  const branch = "control/ttittulares-run-trigger-v2";
+  const path = "ttittulares/run-now-trigger.json";
+  const endpoint = "contents/" + path;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const read = await gh(endpoint + "?ref=" + encodeURIComponent(branch));
+    if (!read.ok) throw new Error("No se pudo leer el disparador TT (HTTP " + read.status + ")");
+    const file = await read.json();
+    const current = JSON.parse(b64decode(file.content) || "{}");
+    const age = Date.now() - Date.parse(String(current.requested_at || ""));
+    if (current.command_id && Number.isFinite(age) && age >= 0 && age < 90000) {
+      return { status: "already_requested", command_id: current.command_id };
+    }
+    const commandId = "tt-" + Date.now() + "-tg-" + Math.random().toString(16).slice(2, 8);
+    const doc = {
+      version: 2, command_id: commandId, requested_at: new Date().toISOString(),
+      mode: "manual_pc_chat", executor: "pc_chat_ttittulares_dedicated",
+      project: "ttittulares", launcher_arg: "titulares", task: "editorial",
+      auto_image_followup: false
+    };
+    const put = await gh(endpoint, {
+      method: "PUT", headers: {"content-type": "application/json"},
+      body: JSON.stringify({
+        branch, sha: file.sha,
+        message: "TTiTTulares: ejecución Windows desde Telegram " + commandId,
+        content: b64encode(JSON.stringify(doc, null, 2) + "\n")
+      })
+    });
+    if (put.ok) return { status: "requested", command_id: commandId };
+    if (![409, 422].includes(put.status)) throw new Error("No se pudo guardar /run (HTTP " + put.status + ")");
+    await new Promise(resolve => setTimeout(resolve, 250 * (attempt + 1)));
+  }
+  throw new Error("GitHub ocupado; /run no registrado tras reintentos");
+}
+
 function requestObj(update, type, text, dedupe_text = false) {
   return { update_id: update.update_id, created_at: new Date().toISOString(), type, text, dedupe_text };
 }
@@ -358,6 +395,24 @@ export default async function handler(req, res) {
       const rr=await fetch("https://tt-control.fabricelop.workers.dev/api/control",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:contextual})});
       if(rr.ok) await safeTelegram("sendMessage",{chat_id:allowedChat,text:"📝 Instrucción guardada para esta noticia."});
       else await safeTelegram("sendMessage",{chat_id:allowedChat,text:"No se pudo guardar la instrucción."});
+      return res.status(200).json({ok:true});
+    }
+    // No reemplazar el webhook: los botones y callbacks siguen su circuito normal.
+    if (text.toLowerCase() === "/run" || text.toLowerCase() === "/run@ttittulares_bot") {
+      if (String((message.chat || {}).type || "") !== "private") {
+        return res.status(200).json({ok:true,ignored:true});
+      }
+      try {
+        const result = await requestTtiWindowsRun();
+        const note = result.status === "already_requested"
+          ? "TTiTTulares: ya hay una orden reciente; no la duplico. ID: " + result.command_id
+          : "TTiTTulares: solicitud /run guardada. El listener Windows la recogerá. ID: " + result.command_id;
+        await safeTelegram("sendMessage", {chat_id:allowedChat,text:note});
+      } catch (error) {
+        console.error("TTITTULARES_TELEGRAM_RUN_ERROR", String(error.message || error));
+        await safeTelegram("sendMessage",{chat_id:allowedChat,
+          text:"TTiTTulares: no se pudo registrar /run. Revisa el webhook y el disparador Windows."});
+      }
       return res.status(200).json({ok:true});
     }
     const normalized = text.toLocaleLowerCase("es-ES").replace(/[.!]+$/g, "").trim();
