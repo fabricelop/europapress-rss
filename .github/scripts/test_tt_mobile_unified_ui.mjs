@@ -43,7 +43,25 @@ st.data={recent:{items:Array.from({length:30},(_,i)=>({rank:i+1,name:'Tendencia 
   requests:{requests:[{id:'live',revision:1,name:'Diomande'}]},
   explained:{items:[]},mobileDecisions:{items:[{id:'old',status:'deleted'}]}};
 assert.equal(tt.trendRows().length,30,'Top 30 must display all positions');
-assert(tt.trendRows().every(x=>x._topOnly),'Top 30 should be search-only');
+assert(tt.trendRows().every(x=>x._topOnly),'Top 30 should retain compact ranking cards');
+assert(!html.includes('id="upcoming"'),'Upcoming trends should not appear separately');
+st.data.manual.items.push({id:'test-ready',name:'Tendencia 1',revision:0,
+  explanation:'Explicación completa de la primera tendencia.',
+  closer_text:'🌶️ Remate exacto.',
+  explained_at:new Date().toISOString()});
+st.data.requests.requests.push({id:'test-progress',name:'Tendencia 2',
+  status:'preparing',revision:0,requested_at:new Date().toISOString()});
+st.data.manual.items.push({id:'test-group',name:'Evento agrupado',
+  trend_names:['Tendencia 3'],status:'explained',revision:0,
+  explanation:'Explicación compartida de la tercera tendencia.',
+  explained_at:new Date().toISOString()});
+const topRows=tt.trendRows();
+assert.equal(topRows[0]._status,'EXPLICADA','Explained trend should show its status in Top 30');
+assert(topRows[0].explanation.includes('Explicación completa'),'Top 30 should show the editorial text');
+assert.equal(topRows[1]._status,'EN ELABORACIÓN','Top 30 should distinguish work in progress');
+assert.equal(topRows[2]._status,'EXPLICADA','A group member must inherit the group explanation');
+assert(topRows[2].explanation.includes('compartida'),'Group explanation should be visible');
+assert.equal(topRows[3]._status,'PENDIENTE','Unexplained positions must remain distinguishable');
 st.tab='explicadas';
 const inbox=tt.trendRows();
 assert.equal(inbox.length,1,'Explicadas must include only new active delivered cards');
