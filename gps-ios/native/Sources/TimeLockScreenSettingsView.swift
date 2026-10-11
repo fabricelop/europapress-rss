@@ -6,7 +6,7 @@ struct TimeLockScreenSettingsView: View {
     @AppStorage("miMapaLiveActivity") private var liveActivityEnabled = false
     @AppStorage("timeWidgetShowPlace") private var showPlace = false
     @State private var scriptableFile:URL?
-    @State private var error = ""
+    @State private var exportErrorMessage = ""
 
     var body: some View {
         Form {
@@ -35,7 +35,7 @@ struct TimeLockScreenSettingsView: View {
             Section("Alternativa Scriptable") {
                 Button("Preparar resumen para Scriptable") {
                     do { scriptableFile=try model.exportScriptableSnapshot() }
-                    catch { error=error.localizedDescription }
+                    catch { exportErrorMessage=error.localizedDescription }
                 }
                 if let scriptableFile {
                     ShareLink(item:scriptableFile) {
@@ -45,7 +45,7 @@ struct TimeLockScreenSettingsView: View {
                 }
                 Text("Guarda MiMapaEstado.json en iCloud Drive/Scriptable y selecciona el script en el widget rectangular de Scriptable. El resumen debe exportarse otra vez para reflejar movimientos nuevos.")
                     .font(.caption).foregroundStyle(.secondary)
-                if !error.isEmpty { Text(error).font(.caption).foregroundStyle(.orange) }
+                if !exportErrorMessage.isEmpty { Text(exportErrorMessage).font(.caption).foregroundStyle(.orange) }
             }
         }
         .navigationTitle("Bloqueo y widgets")
