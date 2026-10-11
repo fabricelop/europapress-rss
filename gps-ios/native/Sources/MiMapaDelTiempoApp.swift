@@ -303,18 +303,51 @@ struct SavedState: Codable {
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
         widgetPublisher.publish(from:self,force:true)
     }
+    // Sólo una lista visible de zonas. La agrupación histórica de nombres sigue
+    // conservada y cada UserPlace se presenta como una zona editable.
+    var visibleZones: [TimeCustomZone] {
+        let custom=data.customZones
+        let ids=Set(custom.map(\.id))
+        let legacy=data.places.filter { !ids.contains($0.id) }
+            .map { TimeCustomZone(id:$0.id,name:$0.name,
+                                  cellIDs:$0.cellIDs,createdAt:.distantPast) }
+        return (custom + legacy).sorted {
+            $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        }
+    }
     func putZone(_ zone:TimeCustomZone) {
         guard !zone.cellIDs.isEmpty else { return }
-        if let index = data.customZones.firstIndex(where:{$0.id == zone.id}) {
-            data.customZones[index] = zone
+        if let index=data.places.firstIndex(where:{$0.id == zone.id}) {
+            // Una antigua agrupación con nombre se edita como zona sin duplicarla.
+            let before=data.places[index]
+            preserveNamesForUndo()
+            let kept=Set(zone.cellIDs)
+            for id in before.cellIDs where !kept.contains(id) {
+                if data.names[id] == before.name { data.names.removeValue(forKey:id) }
+            }
+            for i in data.places.indices where i != index {
+                data.places[i].cellIDs.removeAll(where:{ kept.contains($0) })
+            }
+            data.places.removeAll(where:{$0.cellIDs.isEmpty && $0.id != before.id})
+            guard let newIndex=data.places.firstIndex(where:{$0.id == before.id}) else { return }
+            data.places[newIndex].name=zone.name
+            data.places[newIndex].cellIDs=zone.cellIDs
+            for id in kept { data.names[id]=zone.name }
+        } else if let index=data.customZones.firstIndex(where:{$0.id == zone.id}) {
+            data.customZones[index]=zone
         } else {
             data.customZones.append(zone)
         }
         save(force:true)
+        refreshWidgets()
     }
     func deleteZone(_ id:UUID) {
-        data.customZones.removeAll(where:{$0.id == id})
-        save(force:true)
+        if let original=data.places.first(where:{$0.id == id}) {
+            removePlace(original)
+        } else {
+            data.customZones.removeAll(where:{$0.id == id})
+            save(force:true)
+        }
     }
     var totalSeconds: TimeInterval { confirmedTotals().values.reduce(0, +) }
     var allCells: [Cell] {
