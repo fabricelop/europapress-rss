@@ -790,11 +790,17 @@ export default async function handler(req, res) {
         const note = result.status === "already_requested"
           ? "TTiTTulares: ya hay una orden reciente; no la duplico. ID: " + result.command_id
           : "TTiTTulares: solicitud /run guardada. El listener Windows la recogerá. ID: " + result.command_id;
-        await safeTelegram("sendMessage", {chat_id:allowedChat,text:note});
+        // Exigir ACK real de Telegram: si falla, reintentar el mismo update.
+        await telegram("sendMessage", {chat_id:allowedChat,text:note});
       } catch (error) {
         console.error("TTITTULARES_TELEGRAM_RUN_ERROR", String(error.message || error));
-        await safeTelegram("sendMessage",{chat_id:allowedChat,
-          text:"TTiTTulares: no se pudo registrar /run. Revisa el webhook y el disparador Windows."});
+        try {
+          await telegram("sendMessage",{chat_id:allowedChat,
+            text:"TTiTTulares: no se pudo registrar /run. Revisa el webhook y el disparador Windows."});
+        } catch (ackError) {
+          console.error("TTITTULARES_RUN_ACK_FAILED", String(ackError.message || ackError));
+          return res.status(503).json({ok:false,error:"No se pudo confirmar /run por Telegram"});
+        }
       }
       return res.status(200).json({ok:true});
     }
