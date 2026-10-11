@@ -327,8 +327,12 @@ function rowCard(x,i){
    btn('📋 Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Abrir en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   }
-  if(Number(x.rank)>10&&!x._inExplained&&!['EN ELABORACIÓN','REVISIÓN'].includes(x._status)&&!x._telegramConfirmed){
-   command('Preparar novedad','prepare');
+  // Manual request always remains available for ranks 11-30 that are
+  // NOT currently in Explicadas or under editorial processing. A historical
+  // explanation without Telegram delivery is not a completed current card.
+  if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
+     !['EN ELABORACIÓN','REVISIÓN','EXPLICADA'].includes(x._status)){
+   command('Preparar','prepare');
   }
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   return out
