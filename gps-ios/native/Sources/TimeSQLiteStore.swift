@@ -15,6 +15,7 @@ struct TimeStoreHeader: Codable {
     var territoryCache: [String:TerritoryRecord]?
     var powerEvents: [GPSPowerEvent]?
     var shortIDs: [String:Int]?
+    var gpsRest: GPSRestSession?
 
     init(_ state: SavedState) {
         names = state.names
@@ -28,6 +29,7 @@ struct TimeStoreHeader: Codable {
         territoryCache = state.territoryCache
         powerEvents = state.powerEvents
         shortIDs = state.shortIDs
+        gpsRest = state.gpsRest
     }
 }
 
@@ -182,6 +184,7 @@ final class TimeSQLiteStore {
                 data.territoryCache = header.territoryCache ?? [:]
                 data.powerEvents = header.powerEvents ?? []
                 data.shortIDs = header.shortIDs ?? [:]
+                data.gpsRest = header.gpsRest
             }
         }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
