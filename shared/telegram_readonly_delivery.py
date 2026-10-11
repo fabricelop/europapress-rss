@@ -338,7 +338,13 @@ def trend_cards(now):
                 # The leading historic rank belongs to the leader and may
                 # already have changed. Show the current rank for EVERY term
                 # in the joint header, then ONE untouched factual paragraph.
-                group_detail=re.sub(r"^TT#\\d+\\s+", "", detail, count=1, flags=re.I)
+                match=re.match(r"^TT#\\d+\\s+(.+?)\\s+es tendencia por(?:que)?\\s+",
+                               detail, flags=re.I)
+                if match:
+                    group_detail=("Todas se relacionan con el mismo acontecimiento: "+
+                                  match.group(1)+" "+detail[match.end():])
+                else:
+                    group_detail=re.sub(r"^TT#\\d+\\s+", "", detail, count=1, flags=re.I)
                 body=group_title+"\n\n"+group_detail
                 # A single joint copy, never the same separate tweet repeated
                 # four times. A long joint caption uses the full-copy page.
@@ -1151,6 +1157,8 @@ def selftest():
             assert cards[0]["group_member_ids"]==["raba","corberan","racing","aguirre"]
             assert all(term in cards[0]["text"] for term in
                        ("Raba","Corberan","Racing","Aguirre"))
+            assert "Todas se relacionan con el mismo acontecimiento" in cards[0]["text"]
+            assert cards[0]["text"].count("🌶️") == 1
             operations=[]
             def fake_send(token,method,payload,photo=None):
                 operations.append((method,int(payload.get("message_id") or 0)))
