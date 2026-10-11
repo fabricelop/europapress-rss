@@ -933,9 +933,7 @@ struct TimeMapView: View {
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
     @State private var followLocation = false
-    @State private var liveNow = Date()
     @Environment(\.scenePhase) private var scenePhase
-    private let refreshClock = Timer.publish(every:1,on:.main,in:.common).autoconnect()
     var relevant: [Cell] {
         model.allCells.filter { c in
             guard model.total(for: c) > 0 else { return false }
@@ -1118,37 +1116,7 @@ struct TimeMapView: View {
                     }
                     if !model.minimized {
                         let picked = model.selected ?? model.activeCell
-                        VStack(alignment:.leading,spacing:7) {
-                            let selectedPlace=picked.flatMap { model.placeFor($0) }
-                            if let place=selectedPlace {
-                                Text("Lugar · \(place.name)")
-                                    .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
-                                Text(DurationFormat.full(model.total(for:place,now:liveNow)))
-                                    .font(.system(size:21,weight:.bold,design:.rounded))
-                                    .lineLimit(1).minimumScaleFactor(0.65)
-                            }
-                            if let picked {
-                                Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
-                                     "Esta cuadrícula · tiempo acumulado")
-                                    .font(.caption2).foregroundStyle(.secondary)
-                                Text(DurationFormat.full(model.total(for:picked,now:liveNow)))
-                                    .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
-                                                                       .system(size:16,weight:.semibold,design:.rounded))
-                                    .lineLimit(1).minimumScaleFactor(0.65)
-                            }
-                            HStack {
-                                Text("Estancia actual (provisional)")
-                                Spacer()
-                                Text(picked == model.activeCell ?
-                                     DurationFormat.full(model.staySeconds(now:liveNow)) : "—")
-                            }.font(.footnote).foregroundStyle(.secondary)
-                            if let age=model.gpsFixAge(now:liveNow),age>30 {
-                                Text(age>120 ?
-                                     "Sin GPS reciente (\(Int(age/60)) min). La estimación está detenida." :
-                                     "Última posición hace \(Int(age)) s · avance provisional")
-                                    .font(.caption2).foregroundStyle(.orange)
-                            }
-                        }
+                        TimeLiveCounterNumbers(model:model,picked:picked)
                         HStack {
                             Label(model.gpsStatus, systemImage: "location.circle").font(.caption2)
                             Spacer()
@@ -1189,12 +1157,8 @@ struct TimeMapView: View {
                 model.navigate(to:cell)
             }
         }
-        .onReceive(refreshClock) { value in
-            if scenePhase == .active { liveNow=value }
-        }
-        .onChange(of:scenePhase) { _,phase in
+.onChange(of:scenePhase) { _,phase in
             if phase == .active {
-                liveNow = Date()
                 gps.refreshWhenForeground()
                 if followLocation && (model.forceBasicMap || !connectivity.connected) {
                     focusOnCurrentLocation()
@@ -1229,6 +1193,56 @@ struct TimeMapView: View {
         }
     }
 }
+/// El reloj de 1Hz actualiza SOLO esta tarjeta y no invalida el mapa
+/// completo, que puede tener cientos de polígonos SwiftUI/MapKit.
+private struct TimeLiveCounterNumbers: View {
+    @ObservedObject var model:TimeModel
+    let picked:Cell?
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var now = Date()
+    private let clock = Timer.publish(every:1,on:.main,in:.common).autoconnect()
+
+    var body: some View {
+        VStack(alignment:.leading,spacing:7) {
+            let selectedPlace=picked.flatMap { model.placeFor($0) }
+            if let place=selectedPlace {
+                Text("Lugar · \(place.name)")
+                    .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
+                Text(DurationFormat.full(model.total(for:place,now:now)))
+                    .font(.system(size:21,weight:.bold,design:.rounded))
+                    .lineLimit(1).minimumScaleFactor(0.65)
+            }
+            if let picked {
+                Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
+                     "Esta cuadrícula · tiempo acumulado")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Text(DurationFormat.full(model.total(for:picked,now:now)))
+                    .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
+                                               .system(size:16,weight:.semibold,design:.rounded))
+                    .lineLimit(1).minimumScaleFactor(0.65)
+            }
+            HStack {
+                Text("Estancia actual (provisional)")
+                Spacer()
+                Text(picked == model.activeCell ?
+                     DurationFormat.full(model.staySeconds(now:now)) : "—")
+            }.font(.footnote).foregroundStyle(.secondary)
+            if let age=model.gpsFixAge(now:now),age>30 {
+                Text(age>120 ?
+                     "Sin GPS reciente (\(Int(age/60)) min). La estimación está detenida." :
+                     "Última posición hace \(Int(age)) s · avance provisional")
+                    .font(.caption2).foregroundStyle(.orange)
+            }
+        }
+        .onReceive(clock) { tick in
+            if scenePhase == .active { now=tick }
+        }
+        .onChange(of:scenePhase) { _,phase in
+            if phase == .active { now=Date() }
+        }
+    }
+}
+
 struct TimeStatsView: View {
     @ObservedObject var model: TimeModel
     var body: some View {
