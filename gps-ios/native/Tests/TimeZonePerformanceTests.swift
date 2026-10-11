@@ -3,12 +3,17 @@ import CoreLocation
 @testable import MiMapaDelTiempo
 
 final class TimeZonePerformanceTests: XCTestCase {
-    func testHugeZoneUsesFourRenderLinesWithoutLosingCells() {
+    func testHugeZoneKeepsAllCellsAndContoursInsteadOfBoundingRectangle() {
         let ids=(0..<1000).map { n in
             Cell(row:500 + n / 20,column:100 + n % 20).id
         }
         let zone=TimeCustomZone(name:"Parque del Retiro",cellIDs:ids)
-        XCTAssertEqual(TimeZoneOutline.renderSegments(for:zone).count,4)
+        let border=TimeZoneOutline.renderSegments(for:zone)
+        let paths=TimeZoneOutline.contours(for:zone)
+        XCTAssertGreaterThan(border.count,4)
+        XCTAssertFalse(paths.isEmpty)
+        XCTAssertLessThan(paths.count,150)
+        XCTAssertGreaterThan(paths.reduce(0) { $0 + $1.coordinates.count },4)
         XCTAssertEqual(zone.cellIDs.count,1000)
         XCTAssertEqual(zone.cells.count,1000)
     }
