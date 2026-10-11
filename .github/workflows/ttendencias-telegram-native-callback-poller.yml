@@ -35,6 +35,7 @@ jobs:
           node --check selorecordamos/telegram_local.js
           node --input-type=module --check < api/telegram-webhook.js
           node --input-type=module --check < vercel-webhook/api/telegram-webhook.js
+          node .github/scripts/test_tti_telegram_run.mjs
       - name: Fetch Telegram callbacks and atomically persist editor decisions
         shell: bash
         run: |
