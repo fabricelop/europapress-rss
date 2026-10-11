@@ -1103,22 +1103,13 @@ struct TimeMapView: View {
                 }.padding(12)
                 if model.recording {
                     HStack {
-                        Button {
-                            gps.setAnticipation(!gps.movingSoon)
-                        } label: {
-                            Label(gps.movingSoon ? "Movimiento anticipado" : "Voy a moverme",
-                                  systemImage:gps.movingSoon ? "location.north.fill" : "figure.walk")
-                                .font(.caption.weight(.semibold))
-                                .padding(.horizontal,12).padding(.vertical,7)
-                                .foregroundStyle(gps.movingSoon ? Color.white : Color.primary)
-                                .background(gps.movingSoon ? Color.teal : Color(.secondarySystemBackground),
-                                            in:Capsule())
-                        }
+                        Label("GPS continuo", systemImage:"location.fill")
+                            .font(.caption.weight(.semibold))
                         Spacer()
-                        Text(gps.mode.rawValue)
-                            .font(.caption2).padding(.horizontal,9).padding(.vertical,6)
-                            .background(.regularMaterial,in:Capsule())
-                    }.padding(.horizontal,12)
+                        Text("Sin reposo automático")
+                            .font(.caption2)
+                    }
+                    .padding(.horizontal,12)
                 }
                 // Los lugares se forman exclusivamente nombrando cuadrículas.
                 HStack(spacing:4) {
