@@ -607,7 +607,7 @@ struct RootView: View {
     var body: some View {
         ZStack {
             TabView {
-                TimeMapView(model: model).tabItem { Label("Mapa", systemImage: "map") }
+                TimeMapView(model: model, gps: gps).tabItem { Label("Mapa", systemImage: "map") }
                 TimeStatsDashboard(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }
                 GPSDiaryShell(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
                 TimeCompareView(model: model).tabItem { Label("Comparar", systemImage: "square.split.2x1") }
@@ -653,6 +653,8 @@ struct RootView: View {
 }
 struct TimeMapView: View {
     @ObservedObject var model: TimeModel
+    @ObservedObject var gps: GPSService
+    @StateObject private var connectivity = MapConnectivity()
     @State private var camera: MapCameraPosition = .automatic
     @State private var region: MKCoordinateRegion = CameraSave().region
     @State private var rename = false
@@ -684,6 +686,13 @@ struct TimeMapView: View {
     }
     var body: some View {
         ZStack(alignment: .bottom) {
+            if model.forceBasicMap || !connectivity.connected {
+                OfflineGridMap(model:model,region:$region) { newRegion in
+                    model.updateCamera(newRegion)
+                    camera = .region(newRegion)
+                }
+                .onAppear { region = model.data.camera.region }
+            } else {
             MapReader { proxy in
                 Map(position: $camera) {
                     ForEach(relevant) { cell in
@@ -731,6 +740,7 @@ struct TimeMapView: View {
                 }
                 .onAppear { camera = .region(model.data.camera.region); region = model.data.camera.region }
             }
+            }
             VStack {
                 HStack {
                     Menu {
@@ -750,15 +760,37 @@ struct TimeMapView: View {
                     Spacer()
                     Button {
                         if let fix = model.current {
-                            camera = .region(MKCoordinateRegion(center: fix.coordinate,
-                                span: .init(latitudeDelta: 0.004, longitudeDelta: 0.004)))
-                            model.selected = fix.cell
+                            let target = MKCoordinateRegion(center: fix.coordinate,
+                                span: .init(latitudeDelta: 0.004, longitudeDelta: 0.004))
+                            camera = .region(target)
+                            region = target
+                            model.updateCamera(target)
+                            model.selected = model.activeCell
                         }
                     } label: {
                         Image(systemName: "location.fill").padding(11)
                             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
                     }
                 }.padding(12)
+                if model.recording {
+                    HStack {
+                        Button {
+                            gps.setAnticipation(!gps.movingSoon)
+                        } label: {
+                            Label(gps.movingSoon ? "Movimiento anticipado" : "Voy a moverme",
+                                  systemImage:gps.movingSoon ? "location.north.fill" : "figure.walk")
+                                .font(.caption.weight(.semibold))
+                                .padding(.horizontal,12).padding(.vertical,7)
+                                .foregroundStyle(gps.movingSoon ? Color.white : Color.primary)
+                                .background(gps.movingSoon ? Color.teal : Color(.secondarySystemBackground),
+                                            in:Capsule())
+                        }
+                        Spacer()
+                        Text(gps.mode.rawValue)
+                            .font(.caption2).padding(.horizontal,9).padding(.vertical,6)
+                            .background(.regularMaterial,in:Capsule())
+                    }.padding(.horizontal,12)
+                }
                 HStack(spacing:4) {
                     ForEach(TimePeriod.allCases) { p in
                         Button(p.title) { model.period = p }
@@ -774,7 +806,7 @@ struct TimeMapView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text(model.selected.map { model.label(for:$0) } ??
-                             (model.current.map { model.label(for:$0.cell) } ?? "Mi cuadrícula actual"))
+                             (model.activeCell.map { model.label(for:$0) } ?? "Mi cuadrícula actual"))
                             .font(.headline)
                         Spacer()
                         Button {
@@ -784,7 +816,7 @@ struct TimeMapView: View {
                         }.accessibilityLabel("Minimizar o expandir la tarjeta")
                     }
                     if !model.minimized {
-                        let picked = model.selected ?? model.current?.cell
+                        let picked = model.selected ?? model.activeCell
                         TimelineView(.periodic(from: .now, by: 1)) { tick in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(picked.map { DurationFormat.full(model.total(for: $0, now: tick.date)) }
@@ -795,7 +827,7 @@ struct TimeMapView: View {
                                 HStack {
                                     Text("Estancia actual")
                                     Spacer()
-                                    Text(picked == model.current?.cell
+                                    Text(picked == model.activeCell
                                          ? DurationFormat.full(model.staySeconds(now: tick.date)) : "—")
                                 }.font(.footnote).foregroundStyle(.secondary)
                             }
@@ -901,7 +933,13 @@ struct TimeSettingsView: View {
                     LabeledContent("Estado", value: model.gpsStatus)
                     Text("Tras activarlo una vez, el seguimiento se reanuda automáticamente al abrir la aplicación. iOS puede limitar o interrumpir la localización en segundo plano.")
                         .font(.caption).foregroundStyle(.secondary)
-                    Button(model.recording ? "Detener GPS" : "Iniciar GPS de máxima precisión") {
+                    LabeledContent("Modo GPS",value:gps.mode.rawValue)
+                    Toggle("Voy a moverme",isOn:Binding(get:{gps.movingSoon},
+                        set:{gps.setAnticipation($0)}))
+                        .disabled(!model.recording)
+                    Text("Anticipa máxima precisión. Se desactiva automáticamente tras 10 minutos de reposo confirmado; aunque lo olvides, el móvil intenta detectar movimiento por sí solo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Button(model.recording ? "Detener GPS" : "Iniciar GPS inteligente") {
                         if model.recording { gps.end(model) } else { gps.begin(model) }
                     }
                 }
@@ -912,12 +950,22 @@ struct TimeSettingsView: View {
                 }
                 Section("Mapa") {
                     Toggle("Mostrar recorridos recientes", isOn: $model.showRoutes)
+                    Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
+                    Text("Se activa automáticamente si no hay Internet; el mapa básico funciona sin descargar cartografía.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Toggle("Territorio por descubrir", isOn: $model.obscured)
                         .disabled(true)
                     Text("Sombrear las áreas no visitadas sigue pendiente. Este interruptor se activará cuando esté implementado.")
                         .font(.caption).foregroundStyle(.secondary)
                     Toggle("Escala de colores adaptada", isOn: $model.adaptive)
                     Text("Permanencia: tiempo en cada cuadrícula. Exploración: territorio visitado. La escala adaptada destaca las diferencias en la zona visible.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Section("Diagnóstico") {
+                    NavigationLink("Estado técnico del GPS y almacenamiento") {
+                        GPSDiagnosticsView(model:model,gps:gps)
+                    }
+                    Text("Las posiciones técnicas se consultan aquí, no en Estadísticas.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Datos") {
@@ -932,7 +980,7 @@ struct TimeSettingsView: View {
                     if !message.isEmpty { Text(message).font(.footnote) }
                 }
                 Section("Limitaciones actuales") {
-                    Text("Versión inicial: requiere probar permisos y segundo plano en un iPhone real. No incluye todavía copia cifrada propia en iCloud, Face ID, widgets, geometrías libres, análisis de lugares, comparaciones ni reproducción animada completa.")
+                    Text("GPS inteligente y base SQLite experimental: comprobar la batería y el segundo plano en iPhone. Aún faltan widgets, copia cifrada iCloud, zonas libres y estadísticas por ciudad.")
                         .font(.footnote)
                 }
             }
