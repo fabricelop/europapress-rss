@@ -236,6 +236,7 @@ struct SavedState: Codable {
     private var lastSaved = Date.distantPast
     private let widgetPublisher = TimeWidgetPublisher()
     private let activityPublisher = TimeLiveActivityPublisher()
+    private let territoryAutoClassifier = TerritoryAutoClassifier()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var lastProcessedSample: GPSPoint?
@@ -679,6 +680,10 @@ struct SavedState: Codable {
         restContinuationStart = nil
         restContinuationCell = nil
         current = sample
+        if let stableCell,stableCell != beforeStable,
+           location.horizontalAccuracy <= 45 {
+            territoryAutoClassifier.enqueue(stableCell,model:self)
+        }
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
         widgetPublisher.publish(from:self)
