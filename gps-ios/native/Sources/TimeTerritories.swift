@@ -65,7 +65,7 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
                         province:p.subAdministrativeArea,
                         city:p.locality,
                         district:p.subLocality,
-                        neighborhood:p.areasOfInterest?.first)
+                        neighborhood:nil)
                     if !item.hierarchy.isEmpty {
                         model.saveTerritory(item,cellIDs:[c.id])
                         successful += 1
