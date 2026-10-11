@@ -31,6 +31,9 @@ struct TimeLockScreenSettingsView: View {
                 }
                 Text(model.widgetDiagnostic)
                     .font(.caption).foregroundStyle(.secondary).textSelection(.enabled)
+                Link("Diagnosticar en Windows (registros USB)",
+                     destination:URL(string:"https://github.com/fabricelop/europapress-rss/blob/feature/mi-mapa-del-tiempo-ios-v12/gps-ios/native/DIAGNOSTICO-WINDOWS-LIVE-ACTIVITY.md")!)
+                    .font(.caption)
             }
             Section("Alternativa Scriptable") {
                 Button("Preparar resumen para Scriptable") {
