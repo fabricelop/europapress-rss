@@ -1,0 +1,57 @@
+name: TT Actualidad y SeLoRecordamos - comprobaciones no invasivas
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'selorecordamos/search_x.js'
+      - 'trends/healthcheck.py'
+      - '.github/workflows/tt-slr-health-verification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /selorecordamos/search_x.js
+            /selorecordamos/requests.json
+            /selorecordamos/assistant-state.json
+            /selorecordamos/assistant-output.json
+            /trends/healthcheck.py
+            /trends/editorial-config.json
+            /trends/requests.json
+            /trends/editorial-queue.json
+            /ttittulares/editorial-queue.json
+      - name: Verify scripts and report pending work without modifying data
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check selorecordamos/search_x.js
+          python3 -m py_compile trends/healthcheck.py
+          python3 - <<'PY'
+          import json,collections,datetime
+          from pathlib import Path
+          def get(p):return json.loads(Path(p).read_text(encoding='utf8'))
+          requests=get('trends/requests.json').get('requests',[])
+          counter=collections.Counter(str(x.get('status')) for x in requests)
+          print('TT_TRENDS_REQUEST_STATES',json.dumps(dict(counter),ensure_ascii=False),flush=True)
+          for path in ('trends/editorial-queue.json','ttittulares/editorial-queue.json'):
+              doc=get(path)
+              print('TT_EDITORIAL_QUEUE',path,len(doc.get('items',[])),
+                    [str(x.get('id') or x.get('event_id')) for x in doc.get('items',[])],flush=True)
+          inputs=get('selorecordamos/requests.json').get('requests',[])
+          processed=set(get('selorecordamos/assistant-state.json').get('processed',[]))
+          output={str(x.get('request_key')) for x in get('selorecordamos/assistant-output.json').get('outputs',[])}
+          pending=[]
+          for x in inputs:
+              key='evaluate:'+str(x.get('tweet_id')) if x.get('type')=='evaluate' else 'telegram_instruction:'+str(x.get('telegram_update_id'))
+              if key not in processed:pending.append(key)
+          print('SLR_PENDING_EDITORIAL',len(pending),json.dumps(pending),flush=True)
+          print('SLR_OUTPUT_COUNT',len(output),flush=True)
+          PY
