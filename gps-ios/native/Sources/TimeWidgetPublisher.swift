@@ -26,7 +26,7 @@ import WidgetKit
         let snapshot = TimeWidgetSnapshot(
             recordedAt: now,
             totalAssignedSeconds: model.totalSeconds,
-            currentCellSeconds: cell.map { model.data.totals[$0.id] ?? 0 } ?? 0,
+            currentCellSeconds: cell.map { model.confirmedTotals(now:now)[$0.id] ?? 0 } ?? 0,
             currentStaySeconds: stay,
             currentCellName: UserDefaults.standard.bool(forKey: "timeWidgetShowPlace") ?
                 cell.map { model.label(for: $0) } : nil,
