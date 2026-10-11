@@ -14,6 +14,19 @@ enum GPSPowerMode: String {
     case rest = "Reposo inteligente"
 }
 
+/// Configuración auditable y verificable sin un iPhone físico.
+enum GPSContinuityPolicy {
+    static let pausesAutomatically = false
+    static let distanceFilter: CLLocationDistance = kCLDistanceFilterNone
+    static let reportGapAt: TimeInterval = 30
+
+    static func observedGap(after previous: Date?, at current: Date) -> TimeInterval? {
+        guard let previous else { return nil }
+        let seconds = current.timeIntervalSince(previous)
+        return seconds >= reportGapAt ? seconds : nil
+    }
+}
+
 /// Política conservadora de continuidad: no se permite un reposo automático
 /// que podría suspender la aplicación antes de que CoreMotion pueda despertarla.
 /// La intención "Voy a moverme" es solo informativa y nunca altera el GPS.
