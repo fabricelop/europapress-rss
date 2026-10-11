@@ -26,7 +26,10 @@ final class GridTests: XCTestCase {
         XCTAssertEqual(vertical, 100, accuracy: 3)
     }
     func testMonthDurationIsExactlyThirtyDays() {
-        XCTAssertEqual(DurationFormat.full(2_592_000), "1M-0D-0H:0m:0sg")
-        XCTAssertEqual(DurationFormat.full(3_661), "0M-0D-1H:1m:1sg")
+        XCTAssertEqual(DurationFormat.full(2_592_000), "1 mes")
+        XCTAssertEqual(DurationFormat.full(3_661), "1 h 1 min 1 s")
+        XCTAssertEqual(DurationFormat.full(85), "1 min 25 s")
+        XCTAssertEqual(DurationFormat.full(0), "0 s")
+        XCTAssertEqual(DurationFormat.small(85), "1m 25s")
     }
 }
