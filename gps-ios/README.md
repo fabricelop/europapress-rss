@@ -8,6 +8,18 @@ La rama en desarrollo añade icono de iPhone, contadores compactos en español s
 
 **La comparación actual es por cuadrículas y tiempos efectivamente registrados.** Aún no hay análisis retroactivo por ciudades y barrios, edición de polígonos libres, backups cifrados automáticos de iCloud ni widgets. Territorio por descubrir todavía no representa áreas no visitadas y, por claridad, su interruptor está desactivado. El formato de meses utiliza siempre 30 días.
 
+## Widgets nativos — rama de preparación
+
+La rama `feature/mi-mapa-del-tiempo-ios-widgets` añade una **extensión WidgetKit** compilada junto con la app. Tipos: widget pequeño y mediano en inicio, y widget rectangular/circular/en línea en bloqueo. El total acumulado es principal y la última estancia GPS confirmada es secundaria; no hay cronómetro de segundos en tiempo real. Los valores aparecen con la última muestra compartida y se pueden actualizar con retraso según la política de iOS.
+
+- **Privacidad:** no se envían coordenadas al widget ni a ningún servidor. Por defecto se oculta el nombre de los lugares. La opción «Mostrar nombres de lugares en widgets» en Ajustes es voluntaria.
+- **Transporte:** `TimeWidgetSnapshot` por UserDefaults con App Group `group.es.mimapadeltiempo.widgets`, con entitlements incluidos en app y extensión.
+- **Advertencia de firma:** la IPA generada por GitHub no está firmada. Que compile correctamente no garantiza que Sideloadly con cuenta Apple gratuita pueda instalar/aprovisionar la capacidad App Groups necesaria para compartir datos. No sustituir tu v0.3 durante la prueba de GPS hasta validar el circuito de firma; conservar la exportación JSON.
+- **Cómo añadirlos cuando la firma esté validada:** abrir una vez Mi Mapa del Tiempo, en inicio mantener pulsado → editar widgets → buscar la aplicación; en bloqueo mantener pulsado → Personalizar → añadir widget de la app.
+- **Diagnóstico:** Ajustes → Widgets iPhone muestra si el contenedor App Group está autorizado. Si no lo está, los widgets mostrarán un estado sin datos en vez de cifras inventadas.
+
+[Ver comprobación Xcode de widgets](https://github.com/fabricelop/europapress-rss/actions/workflows/mi-mapa-del-tiempo-widgets-verify.yml).
+
 ## Qué contiene esta rama
 
 - native/: aplicación SwiftUI inicial para iOS 17+ con CoreLocation de máxima precisión, mapa MapKit, acumulación entre fijaciones GPS, datos JSON locales, estadísticas iniciales, diario por días/trayectos, reproducción con huecos explícitos y GPX.
