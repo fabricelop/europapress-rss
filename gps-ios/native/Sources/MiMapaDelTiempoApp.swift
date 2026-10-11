@@ -1483,6 +1483,7 @@ struct TimeSettingsView: View {
     @State private var exportFile: URL?
     @AppStorage("miMapaFaceID") private var faceIDEnabled = false
     @AppStorage("timeWidgetShowPlace") private var showPlaceInWidgets = false
+    @AppStorage("miMapaLiveActivity") private var lockScreenEnabled = false
     var body: some View {
         NavigationStack {
             Form {
@@ -1539,8 +1540,18 @@ struct TimeSettingsView: View {
                     Text("Permanencia: tiempo acumulado. Exploración: territorio descubierto. La escala adaptada resalta las diferencias entre cuadrículas visibles.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+                Section("Pantalla de bloqueo") {
+                    Toggle("Mostrar estancia con Actividad en directo",isOn:$lockScreenEnabled)
+                        .onChange(of:lockScreenEnabled) { _,enabled in
+                            model.setLockScreenEnabled(enabled)
+                        }
+                    Text("La Actividad en directo utiliza el reloj de iOS para avanzar sin consumir GPS adicional. Es opcional y requiere que iOS registre la extensión de widgets y permita Actividades en directo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Text("La duración de una Actividad en directo está limitada por iOS; el histórico sigue guardándose aunque desaparezca de la pantalla bloqueada.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 Section("Widgets iPhone") {
-                    Text("Prueba de galería: esta compilación intenta registrar un widget de acceso al mapa sin depender de App Groups. Si aparece, se podrá tocar para abrir la aplicación; no mostrará duraciones GPS mientras no exista comunicación autorizada.")
+                    Text("Esta versión incluye un widget de acceso y una Actividad en directo. El widget puede abrir el mapa sin App Group; para mostrar estadísticas necesita permisos de datos compartidos en la firma.")
                         .font(.caption).foregroundStyle(.secondary)
                     Toggle("Mostrar nombres de lugares en widgets",isOn:$showPlaceInWidgets)
                         .disabled(!TimeWidgetStorage.isAvailable)
