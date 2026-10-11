@@ -1,0 +1,64 @@
+name: Mi Mapa del Tiempo v0.6 - IPA final
+
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v06
+    paths:
+      - '.github/workflows/mi-mapa-del-tiempo-v06-build-only.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    runs-on: macos-15
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generar icono y proyecto
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Compilar aplicación y widget
+        run: |
+          set -euo pipefail
+          xcodebuild build -project MiMapaDelTiempo.xcodeproj \
+            -scheme MiMapaDelTiempo -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gps-v06-release" \
+            CODE_SIGNING_ALLOWED=NO
+          APP="$RUNNER_TEMP/gps-v06-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP/PlugIns/MiMapaWidgets.appex"
+          APP="$APP" python3 - <<'PY'
+          import os, plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          metadata=plistlib.load((app/"Info.plist").open("rb"))
+          widget=plistlib.load((app/"PlugIns/MiMapaWidgets.appex/Info.plist").open("rb"))
+          assert metadata["CFBundleIdentifier"] == "es.mimapadeltiempo.app"
+          assert metadata["CFBundleVersion"] == "6"
+          assert widget["CFBundleVersion"] == "6"
+          assert widget["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension"
+          print("App v0.6 y extensión WidgetKit verificadas")
+          PY
+      - name: Empaquetar IPA sin firma
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/gps-v06-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-v06-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-v06-unsigned.ipa > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-v06-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-v06-unsigned.ipa
+          retention-days: 5
+          if-no-files-found: error
