@@ -1228,7 +1228,7 @@ struct TimeStatsView: View {
                 }
                 Section("Cuadrículas con más tiempo") {
                     ForEach(model.allCells.sorted {
-                        (model.data.totals[$0.id] ?? 0) > (model.data.totals[$1.id] ?? 0)
+                        (model.confirmedTotals()[$0.id] ?? 0) > (model.confirmedTotals()[$1.id] ?? 0)
                     }.prefix(30)) { cell in
                         LabeledContent(model.label(for: cell),
                                        value: DurationFormat.full(model.data.totals[cell.id] ?? 0))
