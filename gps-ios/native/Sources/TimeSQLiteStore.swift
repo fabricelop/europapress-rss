@@ -13,6 +13,7 @@ struct TimeStoreHeader: Codable {
     // Opcionales: las cabeceras de SQLite v0.3 no contienen estos campos.
     var places: [UserPlace]?
     var territoryCache: [String:TerritoryRecord]?
+    var powerEvents: [GPSPowerEvent]?
 
     init(_ state: SavedState) {
         names = state.names
@@ -24,6 +25,7 @@ struct TimeStoreHeader: Codable {
         manualBreaks = state.manualBreaks
         places = state.places
         territoryCache = state.territoryCache
+        powerEvents = state.powerEvents
     }
 }
 
@@ -176,6 +178,7 @@ final class TimeSQLiteStore {
                 data.manualBreaks = header.manualBreaks
                 data.places = header.places ?? []
                 data.territoryCache = header.territoryCache ?? [:]
+                data.powerEvents = header.powerEvents ?? []
             }
         }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
