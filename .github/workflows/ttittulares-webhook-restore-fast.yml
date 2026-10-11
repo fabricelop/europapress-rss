@@ -85,3 +85,17 @@ jobs:
           assert d.get('url')==expected,'Webhook points away from Cloudflare'
           print('TTITTULARES_WEBHOOK_HEALTHY')
           PY
+          # /run needs an authenticated GitHub writer and a Telegram bot token.
+          curl -fsS --retry 2 --max-time 25 \
+            'https://tt-control.fabricelop.workers.dev/api/ttittulares-webhook-version' \
+            -o /tmp/ttittulares-webhook-prereqs.json
+          python3 - <<'PY'
+          import json
+          data=json.load(open('/tmp/ttittulares-webhook-prereqs.json',encoding='utf8'))
+          expected=['github_token_available','telegram_bot_available',
+                    'webhook_secret_available']
+          status={key:bool(data.get(key)) for key in expected}
+          print('TTITTULARES_RUN_PREREQUISITES '+json.dumps(status))
+          missing=[key for key,val in status.items() if not val]
+          if missing:raise SystemExit('TTITTULARES_RUN_NOT_READY '+','.join(missing))
+          PY
