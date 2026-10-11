@@ -103,6 +103,8 @@ struct SavedState: Codable {
     var importedHashes: [String] = []
     var camera = CameraSave()
     var missingSeconds: TimeInterval = 0
+    // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
+    var trackingEnabled = false
 }
 @MainActor final class TimeModel: ObservableObject {
     @Published private(set) var data = SavedState()
@@ -149,6 +151,10 @@ struct SavedState: Codable {
     func label(for cell: Cell) -> String { data.names[cell.id] ?? "Cuadrícula \(cell.id)" }
     func rename(_ cell: Cell, to name: String) {
         data.names[cell.id] = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        save(force: true)
+    }
+    func setTrackingEnabled(_ enabled: Bool) {
+        data.trackingEnabled = enabled
         save(force: true)
     }
     func updateCamera(_ region: MKCoordinateRegion) {
@@ -326,11 +332,13 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
         model.recording = true
+        model.setTrackingEnabled(true)
         model.gpsStatus = "Esperando ubicación GPS"
     }
     @MainActor func end(_ model: TimeModel) {
         manager.stopUpdatingLocation()
         model.recording = false
+        model.setTrackingEnabled(false)
         model.gpsStatus = "Detenido"
         model.save(force: true)
     }
@@ -355,10 +363,17 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
 @main struct MiMapaDelTiempoApp: App {
     @StateObject private var model = TimeModel()
     @StateObject private var gps = GPSService()
+    @Environment(\.scenePhase) private var phase
     var body: some Scene {
         WindowGroup {
             RootView(model: model, gps: gps)
-                .onChange(of: model.recording) { _, isOn in if !isOn { model.save(force: true) } }
+                .onAppear {
+                    // Se reactiva al volver a abrir la app, respetando la opción previa.
+                    if model.data.trackingEnabled && !model.recording { gps.begin(model) }
+                }
+                .onChange(of: phase) { _, state in
+                    if state != .active { model.save(force: true) }
+                }
         }
     }
 }
@@ -369,7 +384,7 @@ struct RootView: View {
         TabView {
             TimeMapView(model: model).tabItem { Label("Mapa", systemImage: "map") }
             TimeStatsView(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar") }
-            TimeDiaryView(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
+            GPSDiaryShell(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
             TimeSettingsView(model: model, gps: gps).tabItem { Label("Ajustes", systemImage: "gearshape") }
         }.tint(.teal)
     }
@@ -425,9 +440,14 @@ struct TimeMapView: View {
                     }
                     if model.showRoutes {
                         let recent = Array(model.data.fixes.suffix(800))
-                        if recent.count > 1 {
-                            MapPolyline(coordinates: recent.map(\.coordinate))
-                                .stroke(.blue, lineWidth: 3)
+                        let groups = GPSRouteSegments.split(recent.map {
+                            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
+                        })
+                        ForEach(groups.indices, id: \.self) { index in
+                            MapPolyline(coordinates: groups[index].map {
+                                CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+                            })
+                            .stroke(.blue, lineWidth: 3)
                         }
                     }
                 }
@@ -588,6 +608,8 @@ struct TimeSettingsView: View {
             Form {
                 Section("Seguimiento") {
                     LabeledContent("Estado", value: model.gpsStatus)
+                    Text("Tras activarlo una vez, el seguimiento se reanuda automáticamente al abrir la aplicación. iOS puede limitar o interrumpir la localización en segundo plano.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Button(model.recording ? "Detener GPS" : "Iniciar GPS de máxima precisión") {
                         if model.recording { gps.end(model) } else { gps.begin(model) }
                     }
