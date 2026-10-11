@@ -92,4 +92,30 @@ with tempfile.TemporaryDirectory() as tmp:
     finally:
         if before is None:os.environ.pop("GITHUB_ACTOR",None)
         else:os.environ["GITHUB_ACTOR"]=before
+# A manual action must resolve the original RSS/capture title by event ID.
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    eid="ceuta123"
+    put(m.ROOT,"telegram/events.json",{"events":[{
+        "id":eid,"canonical_title":"Titular real de Ceuta",
+        "url":"https://example.org/ceuta",
+        "appearances":[{"source":"laSexta","url":"https://example.org/ceuta"}]}]})
+    put(m.ROOT,"ttittulares/status.json",{"processing_items":[{"event_id":eid,"title":"Noticia"}]})
+    result=m.tti_command("prepare",eid,"Noticia","","2026-10-11T16:00:00Z")
+    assert "petición registrada" in result
+    stored=get(m.ROOT,"telegram/editorial-processing.json")["items"][0]
+    assert stored["title"]=="Titular real de Ceuta"
+    assert stored["url"]=="https://example.org/ceuta"
+    assert stored["source"]=="laSexta"
+    assert stored["status"]=="PROCESSING"
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    put(m.ROOT,"ttittulares/status.json",{"processing_items":[{"event_id":"unknown","title":"Noticia"}]})
+    try:
+        m.tti_command("prepare","unknown","Noticia","","2026-10-11T16:00:00Z")
+        raise AssertionError("A generic headline was incorrectly accepted")
+    except ValueError as exc:
+        assert "Titular auténtico" in str(exc)
+    assert not (m.ROOT/"telegram/editorial-processing.json").exists()
+
 print("TT_MOBILE_ISSUE_FIXTURES_OK")
