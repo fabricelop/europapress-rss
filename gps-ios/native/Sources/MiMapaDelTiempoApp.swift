@@ -1146,10 +1146,9 @@ struct TimeMapView: View {
                    abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.1
         }.prefix(2_000).map { $0 }
     }
-    func paint(_ sec: TimeInterval) -> Color {
+    func paint(_ sec: TimeInterval, maximum: TimeInterval) -> Color {
         if model.explore { return .cyan }
         if model.adaptive {
-            let maximum = max(1, relevant.map { model.total(for:$0) }.max() ?? 1)
             let t = min(1, max(0, log1p(sec) / log1p(maximum)))
             return Color(hue:0.58 - 0.56*t, saturation:0.76, brightness:0.93)
         }
@@ -1163,6 +1162,8 @@ struct TimeMapView: View {
         return .cyan
     }
     var body: some View {
+        let visibleCells = relevant
+        let maximumVisibleTime = max(1,visibleCells.map { model.total(for:$0) }.max() ?? 1)
         ZStack(alignment: .bottom) {
             if model.forceBasicMap || !connectivity.connected {
                 OfflineGridMap(model:model,region:$region) { newRegion in
@@ -1175,9 +1176,9 @@ struct TimeMapView: View {
             } else {
             MapReader { proxy in
                 Map(position: $camera) {
-                    ForEach(relevant) { cell in
+                    ForEach(visibleCells) { cell in
                         MapPolygon(coordinates: Grid.polygon(cell))
-                            .foregroundStyle(paint(model.total(for:cell)).opacity(0.52))
+                            .foregroundStyle(paint(model.total(for:cell),maximum:maximumVisibleTime).opacity(0.52))
                             .stroke(.white.opacity(0.85), lineWidth: 1)
                         if region.span.latitudeDelta < 0.015 {
                             Annotation("", coordinate: Grid.center(cell), anchor: .center) {
