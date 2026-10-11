@@ -10,8 +10,8 @@ struct GPSDiaryShell: View {
     }
 
     private var days: [Date] {
-        let cal = Calendar.current
-        return Array(Set(fixes.map { cal.startOfDay(for: $0.date) })).sorted(by: >)
+        let calendar = Calendar.current
+        return Array(Set(fixes.map { calendar.startOfDay(for: $0.date) })).sorted(by: >)
     }
 
     var body: some View {
@@ -19,7 +19,7 @@ struct GPSDiaryShell: View {
             List {
                 ForEach(days, id: \.self) { day in
                     NavigationLink {
-                        GPSDayView(day: day, fixes: fixes)
+                        GPSDayView(day: day, fixes: fixes, intervals: model.data.intervals)
                     } label: {
                         VStack(alignment: .leading) {
                             Text(day, format: .dateTime.weekday(.wide).day().month().year())
@@ -28,7 +28,7 @@ struct GPSDiaryShell: View {
                         }
                     }
                 }
-                Text("Horas en la zona horaria del dispositivo; duración real en UTC.")
+                Text("Horas según el dispositivo; la zona horaria de cada lugar sigue pendiente.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             .navigationTitle("Diario GPS")
