@@ -14,6 +14,8 @@ struct TimeStatsDashboard: View {
     @State private var page: StatisticsPage = .cells
     @State private var filter: NamedFilter = .all
     @State private var top = 25
+    @State private var searchOpen = false
+    @State private var searchMapCell: Cell?
 
     private var values: [String:TimeInterval] {
         TimeAttribution.byCell(model.data.intervals,
@@ -94,6 +96,32 @@ struct TimeStatsDashboard: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Estadísticas")
+            .toolbar {
+                ToolbarItem(placement:.topBarTrailing) {
+                    NavigationLink {
+                        TimeQualityView(model:model)
+                    } label: {
+                        Image(systemName:"checkmark.shield")
+                    }.accessibilityLabel("Calidad del historial")
+                }
+                ToolbarItem(placement:.topBarTrailing) {
+                    Button { searchOpen=true } label: {
+                        Image(systemName:"magnifyingglass")
+                    }.accessibilityLabel("Buscar lugares, cuadrículas y territorios")
+                }
+            }
+            .sheet(isPresented:$searchOpen) {
+                TimeUniversalSearch(model:model) { cell in
+                    searchMapCell=cell
+                    searchOpen=false
+                }
+            }
+            .onChange(of:searchOpen) { _,open in
+                if !open,let cell=searchMapCell {
+                    searchMapCell=nil
+                    model.navigate(to:cell)
+                }
+            }
         }
     }
 
