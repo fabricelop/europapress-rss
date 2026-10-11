@@ -43828,7 +43828,7 @@
       "id": "3ef249cab883",
       "name": "elche",
       "rank": 9,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-11T12:56:57.130436Z",
       "revision": 1,
       "reexplain": false,
@@ -43847,35 +43847,47 @@
         "El Papa"
       ],
       "auto_queued": false,
-      "explained_at": "2026-10-11T14:18:40+02:00",
-      "last_attempt_at": "2026-10-11T14:18:40+02:00",
-      "explanation": "TT#9 elche es tendencia por el Elche-Celta de la jornada 8 de LaLiga, que se disputa desde las 14:00 en el Martínez Valero; los ilicitanos buscan su primera victoria en casa de la temporada.\n🌶️ La sobremesa en Elche hoy viene con marcador.",
-      "closer_text": "🌶️ La sobremesa en Elche hoy viene con marcador.",
+      "explained_at": "2026-10-11T16:20:00+02:00",
+      "last_attempt_at": "2026-10-11T16:20:00+02:00",
+      "explanation": "TT#3 Celta es tendencia porque empató 0-0 con el Elche en el Martínez Valero, en un partido con pocas ocasiones claras y sin goles.\n\n🌶️ El marcador también se tomó la tarde libre.",
+      "closer_text": "🌶️ El marcador también se tomó la tarde libre.",
       "rank_at_explanation": 9,
       "category": "Deportes",
       "source": "editorial_chat_direct",
       "verification_sources": [
-        "https://cadenaser.com/nacional/2026/10/11/elche-cf-celta-de-vigo-en-directo-el-partido-de-la-jornada-8-en-vivo-cadena-ser/",
-        "https://as.com/futbol/primera/a-que-hora-es-el-elche-celta-canal-tv-horario-y-como-ver-hoy-laliga-ea-sports-online-f202610-n/"
+        "https://as.com/futbol/aceleron-insuficiente-para-elche-y-celta-f202610-n/",
+        "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-elche-celta-vigo-resumen-goles-resultado-partido-hoy-20261011155543.html"
       ],
-      "news_disposition": "ignored",
-      "news_note": "Partido en curso; no se atribuye resultado final.",
-      "group_id": "grp-3ef249cab883",
-      "explanation_group_id": "grp-3ef249cab883",
-      "group_title": "elche",
-      "group_leader_id": "3ef249cab883",
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Reexplicación pendiente cerrada tras confirmarse el 0-0 final del Elche-Celta.",
+      "group_id": "grp-4fa75451fa6d",
+      "explanation_group_id": "grp-4fa75451fa6d",
+      "group_title": "Elche-Celta 0-0",
+      "group_leader_id": "4fa75451fa6d",
       "trend_names": [
-        "elche"
+        "Celta",
+        "elche",
+        "Martínez Valero"
       ],
       "grouped_member_revisions": [
         {
+          "id": "4fa75451fa6d",
+          "name": "Celta",
+          "revision": 0
+        },
+        {
           "id": "3ef249cab883",
           "name": "elche",
+          "revision": 1
+        },
+        {
+          "id": "425e95efd6a8",
+          "name": "Martínez Valero",
           "revision": 0
         }
       ],
       "disable_ai_image": false,
-      "image_strategy": "ai_plus_fallback",
+      "image_strategy": "group_existing",
       "ai_image_status": "not_requested",
       "fallback_image_status": "none",
       "image_choice": null,
@@ -44244,7 +44256,7 @@
       "id": "425e95efd6a8",
       "name": "Martínez Valero",
       "rank": 6,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-11T15:02:24+02:00",
       "revision": 0,
       "reexplain": false,
@@ -44261,7 +44273,53 @@
         "Martínez Valero"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-11T16:20:00+02:00",
+      "last_attempt_at": "2026-10-11T16:20:00+02:00",
+      "explanation": "TT#3 Celta es tendencia porque empató 0-0 con el Elche en el Martínez Valero, en un partido con pocas ocasiones claras y sin goles.\n\n🌶️ El marcador también se tomó la tarde libre.",
+      "closer_text": "🌶️ El marcador también se tomó la tarde libre.",
+      "rank_at_explanation": 13,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://as.com/futbol/aceleron-insuficiente-para-elche-y-celta-f202610-n/",
+        "https://www.europapress.es/deportes/estadisticas-deportivas/noticia-elche-celta-vigo-resumen-goles-resultado-partido-hoy-20261011155543.html"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Agrupado con Celta por el mismo Elche-Celta finalizado 0-0.",
+      "group_id": "grp-4fa75451fa6d",
+      "explanation_group_id": "grp-4fa75451fa6d",
+      "group_title": "Elche-Celta 0-0",
+      "group_leader_id": "4fa75451fa6d",
+      "trend_names": [
+        "Celta",
+        "elche",
+        "Martínez Valero"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "4fa75451fa6d",
+          "name": "Celta",
+          "revision": 0
+        },
+        {
+          "id": "3ef249cab883",
+          "name": "elche",
+          "revision": 1
+        },
+        {
+          "id": "425e95efd6a8",
+          "name": "Martínez Valero",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "4b4bd188986f",
@@ -44339,6 +44397,6 @@
       "auto_queue_scope": "next_unexplained_11_30"
     }
   ],
-  "updated_at": "2026-10-11T16:19:00+02:00",
+  "updated_at": "2026-10-11T16:20:00+02:00",
   "count": 800
 }
