@@ -11,6 +11,20 @@ struct TimeCustomZone: Identifiable, Codable, Equatable {
     var cells: Set<String> { Set(cellIDs) }
 }
 
+enum TimeZoneCatalog {
+    /// Los lugares de versiones anteriores se muestran como zonas, sin
+    /// duplicar sus identificadores ni reescribir su historial.
+    static func visible(custom:[TimeCustomZone], legacy:[UserPlace]) -> [TimeCustomZone] {
+        let ids=Set(custom.map(\.id))
+        let previous=legacy.filter { !ids.contains($0.id) }
+            .map { TimeCustomZone(id:$0.id,name:$0.name,
+                                  cellIDs:$0.cellIDs,createdAt:.distantPast) }
+        return (custom + previous).sorted {
+            $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        }
+    }
+}
+
 enum TimeZoneGeometry {
     static let maximumCells = 3_000
     static func contains(_ point: CLLocationCoordinate2D, in polygon: [CLLocationCoordinate2D]) -> Bool {
