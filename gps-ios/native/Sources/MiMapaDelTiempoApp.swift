@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import MapKit
 import CoreLocation
 import CoreMotion
@@ -770,6 +771,13 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         decision = SmartGPSDecision()
         mode = .precision
     }
+    @MainActor func refreshWhenForeground() {
+        guard model?.recording == true,
+              manager.authorizationStatus == .authorizedAlways ||
+              manager.authorizationStatus == .authorizedWhenInUse else { return }
+        manager.requestLocation()
+        // La solicitud puntual no cancela la vigilancia inteligente en reposo.
+    }
     @MainActor func setAnticipation(_ enabled: Bool) {
         if enabled { decision.anticipate() }
         else { decision.cancelAnticipation() }
@@ -906,6 +914,10 @@ struct TimeMapView: View {
     @State private var historyCell: Cell?
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
+    @State private var followLocation = false
+    @State private var liveNow = Date()
+    @Environment(\.scenePhase) private var scenePhase
+    private let refreshClock = Timer.publish(every:1,on:.main,in:.common).autoconnect()
     var relevant: [Cell] {
         model.allCells.filter { c in
             guard model.total(for: c) > 0 else { return false }
@@ -985,6 +997,10 @@ struct TimeMapView: View {
                 .onMapCameraChange(frequency: .onEnd) { ctx in
                     region = ctx.region
                     model.updateCamera(ctx.region)
+                    // MapKit abandona el modo de seguimiento al arrastrar/zoom manual.
+                    if followLocation && !camera.followsUserLocation {
+                        followLocation = false
+                    }
                 }
                 .onAppear { centerOnRequestedCell() }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
@@ -1012,18 +1028,27 @@ struct TimeMapView: View {
                             .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
                     }.accessibilityLabel("Buscar lugares y cuadrículas")
                     Button {
-                        if let fix = model.current {
-                            let target = MKCoordinateRegion(center: fix.coordinate,
-                                span: .init(latitudeDelta: 0.004, longitudeDelta: 0.004))
-                            camera = .region(target)
-                            region = target
-                            model.updateCamera(target)
-                            model.selected = model.activeCell
+                        followLocation.toggle()
+                        if followLocation {
+                            model.selected=nil
+                            if model.forceBasicMap || !connectivity.connected {
+                                focusOnCurrentLocation()
+                            } else {
+                                camera = .userLocation(followsHeading:false,
+                                       fallback:.region(region))
+                            }
+                            gps.refreshWhenForeground()
+                        } else {
+                            camera = .region(region)
                         }
                     } label: {
-                        Image(systemName: "location.fill").padding(11)
-                            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                        Image(systemName:followLocation ? "location.north.line.fill" : "location")
+                            .foregroundStyle(followLocation ? Color.white : Color.primary)
+                            .padding(11)
+                            .background(followLocation ? Color.teal : Color(.secondarySystemBackground),
+                                        in:RoundedRectangle(cornerRadius:12))
                     }
+                    .accessibilityLabel(followLocation ? "Seguimiento activo; pasar a mapa libre" : "Mapa libre; seguir mi posición")
                 }.padding(12)
                 if model.recording {
                     HStack {
@@ -1056,6 +1081,10 @@ struct TimeMapView: View {
                     }
                     Spacer(minLength:0)
                 }.padding(.horizontal,12)
+                if followLocation {
+                    Text("Siguiéndome · toca la flecha para explorar libremente")
+                        .font(.caption2).padding(.horizontal,16)
+                }
                 Spacer()
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
@@ -1071,19 +1100,35 @@ struct TimeMapView: View {
                     }
                     if !model.minimized {
                         let picked = model.selected ?? model.activeCell
-                        TimelineView(.periodic(from: .now, by: 1)) { tick in
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(picked.map { DurationFormat.full(model.total(for: $0, now: tick.date)) }
-                                     ?? DurationFormat.full(0))
-                                    .font(.system(size: 21, weight: .bold, design: .rounded))
-                                    .minimumScaleFactor(0.6)
-                                    .lineLimit(1)
-                                HStack {
-                                    Text("Estancia actual")
-                                    Spacer()
-                                    Text(picked == model.activeCell
-                                         ? DurationFormat.full(model.staySeconds(now: tick.date)) : "—")
-                                }.font(.footnote).foregroundStyle(.secondary)
+                        VStack(alignment:.leading,spacing:7) {
+                            let selectedPlace=picked.flatMap { model.placeFor($0) }
+                            if let place=selectedPlace {
+                                Text("Lugar · \(place.name)")
+                                    .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
+                                Text(DurationFormat.full(model.total(for:place,now:liveNow)))
+                                    .font(.system(size:21,weight:.bold,design:.rounded))
+                                    .lineLimit(1).minimumScaleFactor(0.65)
+                            }
+                            if let picked {
+                                Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
+                                     "Esta cuadrícula · tiempo acumulado")
+                                    .font(.caption2).foregroundStyle(.secondary)
+                                Text(DurationFormat.full(model.total(for:picked,now:liveNow)))
+                                    .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
+                                                                       .system(size:16,weight:.semibold,design:.rounded))
+                                    .lineLimit(1).minimumScaleFactor(0.65)
+                            }
+                            HStack {
+                                Text("Estancia actual (provisional)")
+                                Spacer()
+                                Text(picked == model.activeCell ?
+                                     DurationFormat.full(model.staySeconds(now:liveNow)) : "—")
+                            }.font(.footnote).foregroundStyle(.secondary)
+                            if let age=model.gpsFixAge(now:liveNow),age>30 {
+                                Text(age>120 ?
+                                     "Sin GPS reciente (\(Int(age/60)) min). La estimación está detenida." :
+                                     "Última posición hace \(Int(age)) s · avance provisional")
+                                    .font(.caption2).foregroundStyle(.orange)
                             }
                         }
                         HStack {
@@ -1126,9 +1171,33 @@ struct TimeMapView: View {
                 model.navigate(to:cell)
             }
         }
+        .onReceive(refreshClock) { value in
+            if scenePhase == .active { liveNow=value }
+        }
+        .onChange(of:scenePhase) { _,phase in
+            if phase == .active {
+                liveNow = Date()
+                gps.refreshWhenForeground()
+                if followLocation && (model.forceBasicMap || !connectivity.connected) {
+                    focusOnCurrentLocation()
+                }
+            }
+        }
+        .onChange(of:model.current?.date) { _,_ in
+            if followLocation && (model.forceBasicMap || !connectivity.connected) {
+                focusOnCurrentLocation()
+            }
+        }
+    }
+    private func focusOnCurrentLocation() {
+        guard let position=model.current else { return }
+        let target=MKCoordinateRegion(center:position.coordinate,span:region.span)
+        region=target
+        camera = .region(target)
     }
     private func centerOnRequestedCell() {
         if let c = model.targetMapCell {
+            followLocation=false
             let center=Grid.center(c)
             let target=MKCoordinateRegion(center:center,
                    span:MKCoordinateSpan(latitudeDelta:0.003,longitudeDelta:0.003))
@@ -1249,10 +1318,6 @@ struct TimeSettingsView: View {
                     }
                     Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
                     Text("Se activa automáticamente si no hay Internet; el mapa básico funciona sin descargar cartografía.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Toggle("Territorio por descubrir", isOn: $model.obscured)
-                        .disabled(true)
-                    Text("Sombrear las áreas no visitadas sigue pendiente. Este interruptor se activará cuando esté implementado.")
                         .font(.caption).foregroundStyle(.secondary)
                     Toggle("Escala de colores adaptada",isOn:$model.adaptive)
                         .onChange(of:model.adaptive) { _,value in
