@@ -1,7 +1,7 @@
 import SwiftUI
 
 private enum StatisticsPage: String, CaseIterable, Identifiable {
-    case cells = "Cuadrículas", places = "Lugares", zones = "Zonas", territories = "Territorios"
+    case cells = "Cuadrículas", zones = "Zonas", territories = "Territorios"
     var id: String { rawValue }
 }
 private enum NamedFilter: String, CaseIterable, Identifiable {
@@ -76,7 +76,7 @@ struct TimeStatsDashboard: View {
                     }
                     HStack(spacing:9) {
                         tile("Sin localizar",value:DurationFormat.full(model.data.missingSeconds),icon:"location.slash")
-                        tile("Lugares propios",value:String(model.data.places.count),icon:"mappin.and.ellipse")
+                        tile("Mis zonas",value:String(model.visibleZones.count),icon:"mappin.and.ellipse")
                     }
 
                     Picker("Vista de estadísticas",selection:$page) {
@@ -86,8 +86,6 @@ struct TimeStatsDashboard: View {
                     switch page {
                     case .cells:
                         cellList
-                    case .places:
-                        UserPlacesView(model:model)
                     case .zones:
                         TimeZonesPanel(model:model)
                     case .territories:
@@ -109,7 +107,7 @@ struct TimeStatsDashboard: View {
                 ToolbarItem(placement:.topBarTrailing) {
                     Button { searchOpen=true } label: {
                         Image(systemName:"magnifyingglass")
-                    }.accessibilityLabel("Buscar lugares, cuadrículas y territorios")
+                    }.accessibilityLabel("Buscar zonas, cuadrículas y territorios")
                 }
             }
             .sheet(isPresented:$searchOpen) {
