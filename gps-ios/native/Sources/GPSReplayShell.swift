@@ -10,48 +10,36 @@ struct GPSReplayShell: View {
     @State private var elapsed: Double = 0
     @State private var playing = false
     @State private var speed: Double = 60
+    @State private var showRoute = true
     @State private var camera: MapCameraPosition = .automatic
     private let ticker = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
     private var playbackDate: Date { episode.start.addingTimeInterval(elapsed) }
 
-    private var playbackPosition: CLLocationCoordinate2D {
-        let points = episode.points
-        guard let first = points.first else { return .init(latitude: 0, longitude: 0) }
-        if playbackDate <= first.date || points.count == 1 {
-            return .init(latitude: first.latitude, longitude: first.longitude)
+    private var playbackPosition: CLLocationCoordinate2D? {
+        guard let point = GPSPlaybackPosition.at(playbackDate, in: episode.points).coordinates else {
+            return nil
         }
-        for index in points.indices.dropFirst() {
-            let b = points[index]
-            if playbackDate <= b.date {
-                let a = points[index - 1]
-                let span = max(0.001, b.date.timeIntervalSince(a.date))
-                guard PlaybackGapPolicy.canInterpolate(seconds: span),
-                      GPSHistoryGrouping.connected(a, b) else {
-                    return .init(latitude: a.latitude, longitude: a.longitude)
-                }
-                let fraction = min(1, max(0, playbackDate.timeIntervalSince(a.date) / span))
-                return .init(latitude: a.latitude + (b.latitude - a.latitude) * fraction,
-                             longitude: a.longitude + (b.longitude - a.longitude) * fraction)
-            }
-        }
-        let last = points[points.count - 1]
-        return .init(latitude: last.latitude, longitude: last.longitude)
+        return .init(latitude: point.latitude, longitude: point.longitude)
     }
 
-    private var cell: Cell {
-        Grid.cell(latitude: playbackPosition.latitude, longitude: playbackPosition.longitude)
+    private var cell: Cell? {
+        guard let playbackPosition else { return nil }
+        return Grid.cell(latitude: playbackPosition.latitude, longitude: playbackPosition.longitude)
     }
 
     private var accumulated: TimeInterval {
-        intervals.reduce(0) { sum, segment in
+        guard let cell else { return 0 }
+        return intervals.reduce(0) { sum, segment in
             guard segment.cell == cell && segment.start < playbackDate else { return sum }
             return sum + max(0, min(segment.end, playbackDate).timeIntervalSince(segment.start))
         }
     }
 
-    private var route: [CLLocationCoordinate2D] {
-        episode.points.map { .init(latitude: $0.latitude, longitude: $0.longitude) }
+    private var routeSegments: [[CLLocationCoordinate2D]] {
+        GPSRouteSegments.split(episode.points).map { group in
+            group.map { .init(latitude: $0.latitude, longitude: $0.longitude) }
+        }
     }
 
     private func initialRegion() -> MKCoordinateRegion {
@@ -71,16 +59,22 @@ struct GPSReplayShell: View {
     var body: some View {
         VStack(spacing: 12) {
             Map(position: $camera) {
-                if route.count > 1 {
-                    MapPolyline(coordinates: route)
-                        .stroke(.blue, lineWidth: 3)
+                if showRoute {
+                    ForEach(routeSegments.indices, id: \.self) { index in
+                        MapPolyline(coordinates: routeSegments[index])
+                            .stroke(.blue, lineWidth: 3)
+                    }
                 }
-                MapPolygon(coordinates: Grid.polygon(cell))
-                    .foregroundStyle(.teal.opacity(0.18))
-                    .stroke(.teal, lineWidth: 2)
-                Annotation("Posición", coordinate: playbackPosition) {
-                    Circle().fill(.blue).frame(width: 16, height: 16)
-                        .overlay(Circle().stroke(.white, lineWidth: 3))
+                if let cell {
+                    MapPolygon(coordinates: Grid.polygon(cell))
+                        .foregroundStyle(.teal.opacity(0.18))
+                        .stroke(.teal, lineWidth: 2)
+                }
+                if let playbackPosition {
+                    Annotation("Posición", coordinate: playbackPosition) {
+                        Circle().fill(.blue).frame(width: 16, height: 16)
+                            .overlay(Circle().stroke(.white, lineWidth: 3))
+                    }
                 }
             }
             .frame(maxHeight: .infinity)
@@ -112,10 +106,16 @@ struct GPSReplayShell: View {
                         Text("×360").tag(360.0)
                     }.pickerStyle(.menu)
                 }
-                LabeledContent("Tiempo histórico de esta cuadrícula",
-                               value: DurationFormat.full(accumulated))
-                    .font(.caption)
-                Text("La línea entre posiciones GPS es aproximada; no se rellenan intervalos sin señal.")
+                Toggle("Mostrar trayecto GPS", isOn: $showRoute)
+                if cell != nil {
+                    LabeledContent("Tiempo histórico de esta cuadrícula",
+                                   value: DurationFormat.full(accumulated))
+                        .font(.caption)
+                } else {
+                    Label("Sin posición GPS fiable en este instante", systemImage: "location.slash")
+                        .font(.caption).foregroundStyle(.orange)
+                }
+                Text("No se unen tramos separados por huecos GPS ni saltos imposibles.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             .padding()
