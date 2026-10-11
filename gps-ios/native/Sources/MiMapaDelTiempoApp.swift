@@ -119,6 +119,8 @@ struct SavedState: Codable {
     var missingSeconds: TimeInterval = 0
     var savedVisitStart: Date?
     var manualBreaks: [Date] = []
+    var places: [UserPlace] = []
+    var territoryCache: [String:TerritoryRecord] = [:]
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
 
@@ -137,6 +139,8 @@ struct SavedState: Codable {
         savedVisitStart = try box.decodeIfPresent(Date.self,forKey:.savedVisitStart)
         trackingEnabled = try box.decodeIfPresent(Bool.self,forKey:.trackingEnabled) ?? false
         manualBreaks = try box.decodeIfPresent([Date].self,forKey:.manualBreaks) ?? []
+        places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
+        territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
     }
 }
 @MainActor final class TimeModel: ObservableObject {
@@ -148,11 +152,15 @@ struct SavedState: Codable {
     @Published var recording = false
     @Published var explore = false
     @Published var obscured = false
-    @Published var adaptive = false
-    @Published var showRoutes = false
+    @Published var adaptive = true
+    @Published var showRoutes = true
     @Published var period: TimePeriod = .all
     @Published var mapKind: MKMapType = .standard
     @Published var minimized = false
+    @Published var routePeriod: RouteDisplayPeriod = .today
+    @Published var selectedTab = 0
+    @Published var targetMapCell: Cell?
+    @Published var gpsModeEvents: [String] = []
     @Published var forceBasicMap = false
     @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
@@ -187,6 +195,9 @@ struct SavedState: Codable {
         currentVisitStart = data.savedVisitStart
         stableCell = data.fixes.last?.cell
         lastProcessedSample = data.fixes.last
+        adaptive = UserDefaults.standard.object(forKey:"mapAdaptiveV5") as? Bool ?? true
+        showRoutes = UserDefaults.standard.object(forKey:"mapRoutesV5") as? Bool ?? true
+        routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
         widgetPublisher.publish(from:self,force:true)
     }
     var totalSeconds: TimeInterval { data.totals.values.reduce(0, +) }
@@ -235,9 +246,62 @@ struct SavedState: Codable {
         save(force: true)
         objectWillChange.send()
     }
-    func label(for cell: Cell) -> String { data.names[cell.id] ?? "Cuadrícula \(cell.id)" }
+    func label(for cell: Cell) -> String { FriendlyCellName.title(cell,data.names[cell.id]) }
+    func hasCustomName(_ id: String) -> Bool {
+        !(data.names[id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
+    }
+    func navigate(to cell: Cell) {
+        selected = cell
+        targetMapCell = cell
+        selectedTab = 0
+    }
+    func addPlace(_ title:String, cells:Set<String>) -> Bool {
+        let name = title.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !name.isEmpty, !cells.isEmpty else { return false }
+        guard cells.allSatisfy({ cellID in
+            !data.places.contains(where:{$0.cellIDs.contains(cellID)})
+        }) else { return false }
+        data.places.append(UserPlace(name:name,cellIDs:cells.sorted()))
+        save(force:true)
+        return true
+    }
+    func removePlace(_ place: UserPlace) {
+        data.places.removeAll { $0.id == place.id }
+        save(force:true)
+    }
+    func changePlace(_ place:UserPlace, name:String) {
+        let clean = name.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !clean.isEmpty, let index=data.places.firstIndex(where:{$0.id == place.id}) else { return }
+        data.places[index].name = clean
+        save(force:true)
+    }
+    func changePlaceCells(_ place:UserPlace, cells:Set<String>) {
+        guard !cells.isEmpty, let index=data.places.firstIndex(where:{$0.id == place.id}) else { return }
+        let occupied=Set(data.places.filter{$0.id != place.id}.flatMap(\.cellIDs))
+        guard occupied.isDisjoint(with:cells) else { return }
+        data.places[index].cellIDs = cells.sorted()
+        save(force:true)
+    }
+    func saveTerritory(_ value:TerritoryRecord, cellIDs:[String]) {
+        for id in cellIDs { data.territoryCache[id] = value }
+        save(force:true)
+    }
+    func routePoints(at now:Date = .now) -> [GPSPoint] {
+        let lower: Date?
+        switch routePeriod {
+        case .lastTrip: lower = now.addingTimeInterval(-2*3600)
+        case .today: lower = Calendar.current.startOfDay(for:now)
+        case .day: lower = now.addingTimeInterval(-86400)
+        case .week: lower = now.addingTimeInterval(-7*86400)
+        case .all: lower = nil
+        }
+        let points = data.fixes.filter { ($0.date <= now) && (lower == nil || $0.date >= lower!) }
+        return Array(points.suffix(12_000))
+    }
     func rename(_ cell: Cell, to name: String) {
-        data.names[cell.id] = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleaned=name.trimmingCharacters(in:.whitespacesAndNewlines)
+        if cleaned.isEmpty { data.names.removeValue(forKey:cell.id) }
+        else { data.names[cell.id] = cleaned }
         save(force: true)
         widgetPublisher.publish(from:self,force:true)
     }
@@ -296,7 +360,7 @@ struct SavedState: Codable {
                 .distance(from:location)
         } ?? .infinity
         let retainedAge = lastRetained.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
-        if retainedAge >= 90 || retainedDistance >= 12 || lastRetained?.cell != sample.cell {
+        if retainedAge >= 120 || retainedDistance >= 16 || lastRetained?.cell != sample.cell {
             data.fixes.append(sample)
             pendingFixes.append(sample)
         }
