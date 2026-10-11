@@ -67,7 +67,7 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
                         province:p.subAdministrativeArea,
                         city:p.locality,
                         district:p.subLocality,
-                        neighborhood:nil)
+                        neighborhood:nil,timeZoneIdentifier:p.timeZone?.identifier)
                     if !item.hierarchy.isEmpty {
                         model.saveTerritory(item,cellIDs:[c.id])
                         successful += 1
@@ -118,6 +118,13 @@ struct TerritoryStatsView: View {
         case .neighborhood:return "Barrio"
         }
     }
+    private var classifiedSeconds:TimeInterval {
+        totals.reduce(0) { sum,item in
+            guard let record=model.data.territoryCache[item.key],
+                  level.value(record) != nil else { return sum }
+            return sum + item.value
+        }
+    }
     private var remaining:Int {
         totals.keys.filter { model.data.territoryCache[$0] == nil }.count
     }
@@ -150,6 +157,19 @@ struct TerritoryStatsView: View {
                 .tint(.teal)
             Text("Clasificación automática y gradual mientras esta pantalla esté abierta: grupos de hasta 8 cuadrículas, con pausas entre lotes y caché local. Si Apple limita el servicio, se detiene y podrás reanudarla con el botón. Requiere Internet y envía a Apple los centros consultados.")
                 .font(.caption2).foregroundStyle(.secondary)
+            HStack {
+                Text("Tiempo clasificado en este nivel")
+                Spacer()
+                Text(DurationFormat.full(classifiedSeconds)).monospacedDigit()
+            }.font(.caption)
+            if TimeAnalytics.sum(totals) > classifiedSeconds {
+                HStack {
+                    Text("Sin atribución territorial")
+                    Spacer()
+                    Text(DurationFormat.full(TimeAnalytics.sum(totals)-classifiedSeconds))
+                        .monospacedDigit()
+                }.font(.caption).foregroundStyle(.orange)
+            }
             if resolver.busy { Text(resolver.message).font(.caption2) }
             if classified.isEmpty {
                 ContentUnavailableView("Aún sin territorios",systemImage:"globe.europe.africa",
