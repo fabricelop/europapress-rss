@@ -466,6 +466,56 @@ async function enqueueTtiTelegramCallback(request,env){
   return json({ok:false,error:"Concurrent callback queue write"},503);
 }
 
+// Temporary /run relay. TT Control cannot write GitHub; this already
+// authenticated editorial Worker owns the scoped GitHub credential.
+// The relay accepts the bot credential, never an unauthenticated public call.
+async function acceptTelegramEditorialRun(request,env){
+  if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
+  if(!env.GITHUB_TOKEN)return json({ok:false,error:"github_credential_unavailable"},503);
+  let bot;
+  try{bot=await cloudflareTelegramBotToken(env)}
+  catch{return json({ok:false,error:"telegram_credential_unavailable"},503)}
+  const received=String(request.headers.get("authorization")||"");
+  const expected="Bearer "+bot;
+  let valid=received.length===expected.length;
+  for(let i=0;i<Math.max(received.length,expected.length);i++)
+    valid=(received.charCodeAt(i)===expected.charCodeAt(i))&&valid;
+  if(!valid)return json({ok:false,error:"unauthorized"},401);
+  const branch="control/ttittulares-run-trigger-v2";
+  const path="ttittulares/run-now-trigger.json";
+  const endpoint="https://api.github.com/repos/fabricelop/europapress-rss/contents/"+path;
+  const headers={"authorization":"Bearer "+env.GITHUB_TOKEN,
+    "accept":"application/vnd.github+json",
+    "content-type":"application/json",
+    "x-github-api-version":"2022-11-28",
+    "user-agent":"ttittulares-telegram-editorial-run"};
+  for(let attempt=0;attempt<5;attempt++){
+    const current=await fetch(endpoint+"?ref="+encodeURIComponent(branch),
+                              {headers,cache:"no-store"}).catch(()=>null);
+    if(!current?.ok)return json({ok:false,error:"github_trigger_read_failed",http:current?.status||0},503);
+    const file=await current.json();
+    let previous;
+    try{previous=JSON.parse(Buffer.from(String(file.content||"").replace(/\s/g,""),"base64").toString("utf8"))}
+    catch{return json({ok:false,error:"invalid_trigger_json"},503)}
+    const age=Date.now()-Date.parse(String(previous.requested_at||""));
+    if(previous.command_id&&Number.isFinite(age)&&age>=0&&age<90000)
+      return json({ok:true,command_id:String(previous.command_id),duplicate:true});
+    const cmd="tt-"+Date.now()+"-tg-"+crypto.randomUUID().slice(0,6);
+    const trigger={version:2,command_id:cmd,requested_at:new Date().toISOString(),
+      mode:"manual_pc_chat",executor:"pc_chat_ttittulares_dedicated",
+      project:"ttittulares",launcher_arg:"titulares",task:"editorial",auto_image_followup:false};
+    const payload={message:"TTiTTulares: /run recibido desde Telegram "+cmd,
+      branch,sha:file.sha,
+      content:Buffer.from(JSON.stringify(trigger,null,2)+"\n","utf8").toString("base64")};
+    const saved=await fetch(endpoint,{method:"PUT",headers,body:JSON.stringify(payload)}).catch(()=>null);
+    if(saved?.ok)return json({ok:true,command_id:cmd,duplicate:false});
+    if(![409,422].includes(saved?.status))
+      return json({ok:false,error:"github_trigger_write_failed",http:saved?.status||0},503);
+    await new Promise(resolve=>setTimeout(resolve,200*(attempt+1)));
+  }
+  return json({ok:false,error:"github_trigger_concurrency"},503);
+}
+
 // Writes are isolated to the existing TTiTTulares Worker: TT Control has no PAT.
 async function acceptTelegramUserProposal(request,env){
   if(request.method!=="POST")return json({ok:false,error:"Method Not Allowed"},405);
@@ -595,6 +645,7 @@ export default {
     const url=new URL(request.url),path=url.pathname.replace(/\/+$/,"")||"/";
     if(path==="/health")return json({ok:true,service:"ttittulares-cloudflare",mode:"legacy-handlers"});
     if(path==="/api/ttittulares-telegram-user-proposal")return acceptTelegramUserProposal(request,env);
+    if(path==="/api/ttittulares-telegram-editorial-run")return acceptTelegramEditorialRun(request,env);
     if(path==="/api/tt-mobile-telegram-dispatch")return dispatchAuthorizedTelegramMobileCommand(request,env);
     if(path==="/api/ttittulares-telegram-credential-ready"&&request.method==="GET")return telegramCryptoReady(env);
     if(path==="/api/ttittulares-telegram-pipeline-version"&&request.method==="GET")return json({ok:true,version:"immediate-decision-delete-v2",instagram_cleanup:"paired-delete-v1"});
