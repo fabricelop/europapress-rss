@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - "ttittulares/prepared.json"
+      - "ttittulares/editorial-queue.json"
+      - "telegram/events.json"
       - "telegram/editorial-processing.json"
       - "ttittulares/decisions.json"
       - "shared/telegram_readonly_delivery.py"
@@ -30,6 +32,10 @@ jobs:
             /telegram/editorial-processing.json
             /telegram/ttittulares-deliveries.json
             /ttittulares/prepared.json
+            /ttittulares/editorial-queue.json
+            /ttittulares/status.json
+            /telegram/events.json
+            /tests/test_tti_authentic_title.py
             /ttittulares/decisions.json
             /trends/requests.json
             /trends/recent.json
@@ -42,6 +48,7 @@ jobs:
           python3 -m pip install -q requests pillow
           python3 -m py_compile shared/telegram_readonly_delivery.py
           python3 shared/telegram_readonly_delivery.py selftest
+          python3 -m unittest discover -s tests -p "test_tti_authentic_title.py" -v
       - name: Enviar o actualizar mensaje Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
