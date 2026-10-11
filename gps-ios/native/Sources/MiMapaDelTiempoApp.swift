@@ -210,7 +210,19 @@ struct SavedState: Codable {
         lastProcessedSample = data.fixes.last
         let previousNames = data.names
         let previousPlaces = data.places
-        NamedPlaces.migrate(names:&data.names,places:&data.places)
+        let integrityBefore = (data.fixes.count,data.intervals.count,data.totals)
+        var migratedNames=data.names
+        var migratedPlaces=data.places
+        NamedPlaces.migrate(names:&migratedNames,places:&migratedPlaces)
+        // La migración de nombres nunca tiene permiso para alterar los intervalos.
+        if data.fixes.count == integrityBefore.0 &&
+           data.intervals.count == integrityBefore.1 &&
+           data.totals == integrityBefore.2 {
+            data.names=migratedNames
+            data.places=migratedPlaces
+        } else {
+            storeStatus="Datos antiguos conservados; revisar migración de nombres"
+        }
         if data.names != previousNames || data.places != previousPlaces {
             save(force:true)
         }
@@ -1204,6 +1216,8 @@ struct TimeSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Widgets iPhone") {
+                    Text("Prueba de galería: esta compilación intenta registrar un widget de acceso al mapa sin depender de App Groups. Si aparece, se podrá tocar para abrir la aplicación; no mostrará duraciones GPS mientras no exista comunicación autorizada.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Toggle("Mostrar nombres de lugares en widgets",isOn:$showPlaceInWidgets)
                         .onChange(of:showPlaceInWidgets) { _,_ in model.refreshWidgets() }
                     LabeledContent("Datos compartidos",
