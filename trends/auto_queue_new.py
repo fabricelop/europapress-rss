@@ -38,12 +38,18 @@ def parse_timestamp(value):
 def save_editorial_queue(requests_doc):
     recent_now = load("recent.json", {"items": []})
     top10_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:10] if x.get("name")}
+    top30_names = {norm(x.get("name")) for x in (recent_now.get("items") or [])[:30] if x.get("name")}
     active = []
     for req in requests_doc.get("requests", []) or []:
         status = str(req.get("status") or "")
         if status not in {"preparing", "update", "problematic"}:
             continue
-        if status == "problematic" and norm(req.get("name")) not in top10_names:
+        req_name = norm(req.get("name"))
+        # Legacy auto-queued requests from below the Top 30 must not linger
+        # in the editorial work queue once they leave the displayed window.
+        if status == "problematic" and req_name not in top30_names:
+            continue
+        if req.get("auto_queued") and req_name not in top30_names:
             continue
         active.append({
             "id": req.get("id"),
@@ -77,6 +83,8 @@ def save_editorial_queue(requests_doc):
             "anticipated_news_title": req.get("anticipated_news_title") or "",
             "anticipated_entered_top10_at": req.get("anticipated_entered_top10_at"),
         })
+    # A maximum of ONE automatic outside-Top-10 request is kept active.
+    # Existing manually requested work is preserved.
     # Evita starvation: trabajo nuevo/revisiones primero; problematic al final.
     active.sort(key=lambda x: (
         1 if str(x.get("status") or "") == "problematic" else 0,
@@ -299,6 +307,38 @@ for item in (recent.get("items") or [])[:10]:
     name = str(item.get("name") or "").strip()
     if name:
         current.append({"name": name, "rank": int(item.get("rank") or 0)})
+# Only positions 11-30 are eligible; "Próximas" and ranks 31+ never queue.
+outside = [
+    {"name": str(item.get("name") or "").strip(),
+     "rank": int(item.get("rank") or 0)}
+    for item in (recent.get("items") or [])[10:30]
+    if str(item.get("name") or "").strip()
+]
+outside_names = {norm(x["name"]) for x in outside}
+outside_active = any(
+    norm(req.get("name")) in outside_names
+    and str(req.get("status") or "") in {"preparing","update","problematic","ready"}
+    for req in requests
+)
+outside_selected = None
+if not outside_active:
+    for item in outside:
+        key = norm(item["name"])
+        req = by_name.get(key)
+        status = str((req or {}).get("status") or "")
+        if status in {"preparing","update","problematic","ready","explained",
+                      "dismissed","published","removed","deleted"}:
+            continue
+        # Explained trends do not become "unexplained" merely because the
+        # 48h Top-10 freshness window expires.
+        if key in explained:
+            continue
+        outside_selected = item
+        break
+if outside_selected:
+    print("Próxima no explicada del puesto 11-30:",
+          outside_selected["rank"],outside_selected["name"])
+    current.append(outside_selected)
 
 # Las problemáticas solo son trabajo vivo mientras sigan en Top 10 o Radar.
 # Si salen de ambos, se retiran a un estado inerte. Si vuelven a aparecer,
@@ -341,7 +381,7 @@ for item in current:
     req = by_name.get(key)
     status = str((req or {}).get("status") or "")
     if req:
-        if status == "explained" and explanation_expired(key):
+        if item["rank"] <= 10 and status == "explained" and explanation_expired(key):
             reopened_at = now_dt.isoformat(timespec="seconds")
             req["rank"] = item["rank"]
             req["status"] = "preparing"
@@ -375,7 +415,7 @@ for item in current:
                     req.pop("delivery_confirmation", None)
                     reconciled = True
                     status = "update"
-                    print("Radar anticipado entra en Top 10; actualizar:", name)
+                    print("Radar anticipado entra en Top 10; actualizar:", item["name"])
                     continue
                 continue
             req["status"] = "preparing"
@@ -402,7 +442,8 @@ for item in current:
                 req["rank"] = item["rank"]
                 reconciled = True
             continue
-        if status in {"preparing", "update", "explained", "dismissed"}:
+        if status in {"preparing", "update", "explained", "dismissed",
+                      "published", "removed", "deleted"}:
             continue
     elif key in explained and not explanation_expired(key):
         continue
@@ -443,6 +484,7 @@ for item in to_queue:
         "requested_together": [name],
         "captured_with": names,
         "auto_queued": True,
+        "auto_queue_scope": "top10" if item["rank"] <= 10 else "next_unexplained_11_30",
     }
     if req is None:
         requests.append(new_req)
