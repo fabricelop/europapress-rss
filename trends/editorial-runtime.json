@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T10:15:00+02:00",
-  "last_completed_at": "2026-10-11T10:17:20+02:00",
-  "updated_at": "2026-10-11T10:17:20+02:00",
+  "last_started_at": "2026-10-11T10:45:00+02:00",
+  "last_completed_at": "2026-10-11T10:47:45+02:00",
+  "updated_at": "2026-10-11T10:47:45+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,8 +18,8 @@
     "persisted_trigger": true,
     "status": "requested; archive repair may run; automatic Gag IA enqueue step remains disabled",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T101500+0200-chatgpt",
-    "requested_at": "2026-10-11T10:15:00+02:00",
+    "run_id": "tr-20261011T104500+0200-chatgpt",
+    "requested_at": "2026-10-11T10:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -27,13 +27,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T101500+0200-chatgpt",
+    "run_id": "tr-20261011T104500+0200-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-11T10:15:00+02:00",
-    "updated_at": "2026-10-11T10:17:20+02:00",
-    "finished_at": "2026-10-11T10:17:20+02:00",
+    "started_at": "2026-10-11T10:45:00+02:00",
+    "updated_at": "2026-10-11T10:47:45+02:00",
+    "finished_at": "2026-10-11T10:47:45+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -62,7 +62,7 @@
       "pending_reviewed": 4,
       "pending_repair_requested": 1
     },
-    "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes recientes revisados; reparación visual solicitada con incidencia Gag IA conocida",
+    "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación visual solicitada con incidencia Gag IA conocida",
     "incident_count": 1,
     "incidents": [
       {
@@ -81,67 +81,67 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T10:15:00+02:00",
+        "at": "2026-10-11T10:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando ejecución · cola editorial inicial 0; saneamiento de Pendientes solicitado"
       },
       {
-        "at": "2026-10-11T10:15:20+02:00",
+        "at": "2026-10-11T10:46:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo estado autoritativo y revisiones recientes"
       },
       {
-        "at": "2026-10-11T10:15:45+02:00",
+        "at": "2026-10-11T10:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 4 tarjetas vigentes menores de 24 h"
       },
       {
-        "at": "2026-10-11T10:16:00+02:00",
+        "at": "2026-10-11T10:47:05+02:00",
         "phase": "verifying",
         "trend_id": "1a1ad33aea16",
         "title": "Le Normand",
-        "message": "Pendiente 1/4 · remate completo; sin imagen lista; reparación visual solicitada"
+        "message": "Pendiente 1/4 · remate completo; sin imagen de archivo lista ni Gag IA; reparación visual solicitada"
       },
       {
-        "at": "2026-10-11T10:16:10+02:00",
+        "at": "2026-10-11T10:47:10+02:00",
         "phase": "verifying",
         "trend_id": "d62b113bc862",
         "title": "Getafe",
         "message": "Pendiente 2/4 · remate e imagen de archivo listos; Gag IA no solicitado"
       },
       {
-        "at": "2026-10-11T10:16:20+02:00",
+        "at": "2026-10-11T10:47:15+02:00",
         "phase": "verifying",
         "trend_id": "3813e99f80c5",
         "title": "#UFCHBOMax",
         "message": "Pendiente 3/4 · remate e imagen de archivo listos; Gag IA no solicitado"
       },
       {
-        "at": "2026-10-11T10:16:30+02:00",
+        "at": "2026-10-11T10:47:20+02:00",
         "phase": "verifying",
         "trend_id": "88badc81e464",
         "title": "#FelizDomingo",
         "message": "Pendiente 4/4 · remate e imagen de archivo listos; Gag IA no solicitado"
       },
       {
-        "at": "2026-10-11T10:17:00+02:00",
+        "at": "2026-10-11T10:47:41+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola editorial sigue vacía"
+        "message": "Releyendo main · cola editorial sigue vacía; 0 rewrite_pending; 4 Pendientes vigentes"
       },
       {
-        "at": "2026-10-11T10:17:20+02:00",
+        "at": "2026-10-11T10:47:45+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 0/0 editorial; 4 Pendientes revisados; reparación visual solicitada con incidencia Gag IA conocida"
+        "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación visual solicitada con incidencia Gag IA conocida"
       }
     ]
   },
