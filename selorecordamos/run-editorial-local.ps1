@@ -16,17 +16,20 @@ try {
     if (-not $runnerText.Contains('TT_CHAT_MESSAGE_B64') -or -not $runnerText.Contains('--enviar')) { throw 'Ejecutar.js no admite mensajes personalizados en modo envio real' }
     $repo = Split-Path -Parent $PSScriptRoot
     Set-Location $repo
-    $gitStatus = & git status --porcelain -- selorecordamos/requests.json selorecordamos/assistant-output.json selorecordamos/assistant-state.json
-    if ($gitStatus) { throw 'Hay cambios locales en los ficheros editoriales; no realizar pull automático' }
+    # Leer el estado Git remoto sin checkout, pull, rebase ni modificaciones del árbol compartido.
     & git fetch origin main --quiet
     if ($LASTEXITCODE -ne 0) { throw 'No se pudo consultar GitHub' }
-    # Solo actualizar los ficheros de estado necesarios, evitando rebase con otros trabajos TT.
-    & git checkout 'origin/main' -- selorecordamos/requests.json selorecordamos/assistant-output.json selorecordamos/assistant-state.json
-    if ($LASTEXITCODE -ne 0) { throw 'No se pudieron sincronizar los ficheros de SeLoRecordamos' }
+    $snapshot = Join-Path $runtime 'editorial-snapshot'
+    New-Item -ItemType Directory -Path $snapshot -Force | Out-Null
+    foreach ($name in @('requests.json','assistant-state.json','assistant-output.json')) {
+        $raw = & git show ("origin/main:selorecordamos/"+$name)
+        if ($LASTEXITCODE -ne 0) { throw "No se pudo leer $name desde origin/main" }
+        [IO.File]::WriteAllText((Join-Path $snapshot $name), ($raw -join "`n"), [Text.UTF8Encoding]::new($false))
+    }
     $checkScript = @'
 import json,sys
 from pathlib import Path
-p=Path("selorecordamos")
+p=Path(sys.argv[1])
 req=json.loads((p/"requests.json").read_text(encoding="utf-8")).get("requests",[])
 st=set(json.loads((p/"assistant-state.json").read_text(encoding="utf-8")).get("processed",[]))
 out={str(x.get("request_key")) for x in json.loads((p/"assistant-output.json").read_text(encoding="utf-8")).get("outputs",[]) if x.get("request_key") and x.get("send_to_telegram") is True}
@@ -37,7 +40,7 @@ def key(r):
 pending=[key(r) for r in req if key(r) and key(r) not in st and key(r) not in out]
 print(len(pending))
 '@
-    $countText = $checkScript | python -
+    $countText = $checkScript | python - $snapshot
     if ($LASTEXITCODE -ne 0) { throw 'Error leyendo la cola' }
     $count = [int]($countText | Select-Object -Last 1)
     if ($count -eq 0) { Log 'No hay evaluaciones pendientes'; exit 0 }
