@@ -4,15 +4,18 @@ private enum StatisticsPage: String, CaseIterable, Identifiable {
     case cells = "Cuadrículas", zones = "Zonas", territories = "Territorios"
     var id: String { rawValue }
 }
-private enum NamedFilter: String, CaseIterable, Identifiable {
-    case all = "Todas", named = "Renombradas", unnamed = "Sin renombrar"
-    var id: String { rawValue }
+private struct TimeRankEntry:Identifiable {
+    var id:String
+    var title:String
+    var seconds:TimeInterval
+    var cellIDs:[String]
+    var zoneID:UUID?
 }
 
 struct TimeStatsDashboard: View {
     @ObservedObject var model: TimeModel
     @State private var page: StatisticsPage = .cells
-    @State private var filter: NamedFilter = .all
+    @State private var expandedZones:Set<UUID> = []
     @State private var top = 25
     @State private var searchOpen = false
     @State private var searchMapCell: Cell?
@@ -21,25 +24,25 @@ struct TimeStatsDashboard: View {
         TimeAttribution.byCell(model.data.intervals,
             window:TimeAnalytics.window(for:model.period,now:.now))
     }
-    private var filtered: [(key:String,value:TimeInterval)] {
-        let base = values.filter { key,value in
-            guard value > 0 else { return false }
-            switch filter {
-            case .all: return true
-            case .named: return model.hasCustomName(key)
-            case .unnamed: return !model.hasCustomName(key)
-            }
-        }.sorted { $0.value > $1.value }
-        return top > 0 ? Array(base.prefix(top)) : base
+    private var ranked:[TimeRankEntry] {
+        let zones=model.visibleZones
+        let covered=Set(zones.flatMap(\.cellIDs))
+        let named=zones.compactMap { zone -> TimeRankEntry? in
+            let seconds=zone.cells.reduce(0) { $0+(values[$1] ?? 0) }
+            guard seconds>0 else { return nil }
+            return TimeRankEntry(id:"z"+zone.id.uuidString,title:zone.name,seconds:seconds,
+                                 cellIDs:zone.cellIDs,zoneID:zone.id)
+        }
+        let independent=values.compactMap { id,seconds -> TimeRankEntry? in
+            guard seconds>0 && !covered.contains(id),
+                  let cell=TimeAnalytics.cell(id) else { return nil }
+            return TimeRankEntry(id:"c"+id,title:model.label(for:cell),
+                    seconds:seconds,cellIDs:[id],zoneID:nil)
+        }
+        return (named+independent).sorted { $0.seconds>$1.seconds }
     }
-    private var matchingCount: Int {
-        values.keys.filter { key in
-            switch filter {
-            case .all: return true
-            case .named: return model.hasCustomName(key)
-            case .unnamed: return !model.hasCustomName(key)
-            }
-        }.count
+    private var displayed:[TimeRankEntry] {
+        top>0 ? Array(ranked.prefix(top)) : ranked
     }
 
     var body: some View {
@@ -128,9 +131,9 @@ struct TimeStatsDashboard: View {
     private var cellList: some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
-                Text("Dónde has pasado más tiempo").font(.headline)
+                Text("Top de zonas y cuadrículas independientes").font(.headline)
                 Spacer()
-                Text("\(filtered.count) de \(matchingCount)")
+                Text("\(displayed.count) de \(ranked.count)")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             Picker("Mostrar",selection:$top) {
@@ -139,53 +142,77 @@ struct TimeStatsDashboard: View {
                 Text("Top 50").tag(50)
                 Text("Todas").tag(-1)
             }.pickerStyle(.segmented)
-            Picker("Tipo de cuadrícula",selection:$filter) {
-                ForEach(NamedFilter.allCases) { filter in Text(filter.rawValue).tag(filter) }
-            }.pickerStyle(.menu)
-            if filtered.isEmpty {
-                ContentUnavailableView("No hay resultados",systemImage:"square.grid.3x3",
-                  description:Text("Cambia el periodo o el filtro de nombres."))
+            if displayed.isEmpty {
+                ContentUnavailableView("Sin registros",systemImage:"map",
+                    description:Text("Todavía no hay cuadrículas con tiempo registrado."))
             }
-            ForEach(Array(filtered.enumerated()),id:\.element.key) { index,item in
-                if let cell=TimeAnalytics.cell(item.key) {
-                    HStack(spacing:11) {
-                        Text("\(index+1).").font(.caption.monospacedDigit())
-                            .foregroundStyle(.secondary).frame(width:25,alignment:.leading)
-                        Button {
-                            model.navigate(to:cell)
-                        } label: {
-                            VStack(alignment:.leading,spacing:3) {
-                                Text(model.label(for:cell))
-                                    .font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+            ForEach(Array(displayed.enumerated()),id:\.element.id) { index,item in
+                VStack(alignment:.leading,spacing:8) {
+                    HStack(spacing:10) {
+                        Text("\(index+1).")
+                            .font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary).frame(width:23,alignment:.leading)
+                        VStack(alignment:.leading,spacing:4) {
+                            HStack(spacing:5) {
+                                Text(item.title).font(.subheadline.weight(.semibold))
                                     .lineLimit(1)
-                                Text(DurationFormat.full(item.value))
-                                    .font(.caption.monospacedDigit()).foregroundStyle(.teal)
-                                GeometryReader { geo in
-                                    Capsule().fill(Color.teal.opacity(0.15))
-                                        .overlay(alignment:.leading) {
-                                            Capsule().fill(.teal.gradient).frame(width:
-                                                geo.size.width * item.value /
-                                                max(1,filtered.first?.value ?? 1))
-                                        }
-                                }.frame(height:5)
+                                if item.zoneID != nil {
+                                    Image(systemName:"square.3.layers.3d")
+                                        .foregroundStyle(.teal)
+                                }
+                            }
+                            Text(item.zoneID == nil ? "Cuadrícula independiente" :
+                                "Zona · \(item.cellIDs.count) cuadrículas")
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
+                        Spacer(minLength:4)
+                        Text(DurationFormat.full(item.seconds))
+                            .font(.caption.monospacedDigit()).foregroundStyle(.teal)
+                            .lineLimit(1).minimumScaleFactor(0.6)
+                        if let zoneID=item.zoneID {
+                            Button {
+                                if expandedZones.contains(zoneID) { expandedZones.remove(zoneID) }
+                                else { expandedZones.insert(zoneID) }
+                            } label: {
+                                Image(systemName:expandedZones.contains(zoneID) ?
+                                      "chevron.up.circle.fill":"chevron.down.circle")
+                            }.accessibilityLabel("Desplegar cuadrículas de \(item.title)")
+                        }
+                    }
+                    GeometryReader { geo in
+                        Capsule().fill(Color.teal.opacity(0.12)).overlay(alignment:.leading) {
+                            Capsule().fill(.teal.gradient).frame(width:
+                                geo.size.width*item.seconds/max(1,ranked.first?.seconds ?? 1))
+                        }
+                    }.frame(height:5)
+                    if let zoneID=item.zoneID,expandedZones.contains(zoneID) {
+                        ForEach(item.cellIDs,id:\.self) { id in
+                            if let cell=TimeAnalytics.cell(id) {
+                                Button {
+                                    model.navigate(to:cell)
+                                } label: {
+                                    HStack {
+                                        Image(systemName:"square").foregroundStyle(.secondary)
+                                        Text("Cuadrícula \(model.data.shortIDs[id] ?? 0)")
+                                            .foregroundStyle(.primary)
+                                        Spacer()
+                                        Text(DurationFormat.full(values[id] ?? 0))
+                                            .monospacedDigit().foregroundStyle(.teal)
+                                    }.font(.caption)
+                                }
                             }
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityHint("Centrar esta cuadrícula en el mapa")
-                        NavigationLink {
-                            CellHistoryView(model:model,cell:cell)
-                        } label: {
-                            Image(systemName:"calendar.badge.clock")
-                                .font(.title3).foregroundStyle(.teal)
-                        }
-                        .accessibilityLabel("Ver historial por día")
+                    } else if item.zoneID == nil,
+                              let cell=item.cellIDs.first.flatMap(TimeAnalytics.cell) {
+                        Button("Ver en el mapa") { model.navigate(to:cell) }
+                            .font(.caption2)
                     }
-                    .padding(12)
-                    .background(Color(.secondarySystemGroupedBackground),
-                                in:RoundedRectangle(cornerRadius:14))
                 }
+                .padding(12)
+                .background(Color(.secondarySystemGroupedBackground),
+                            in:RoundedRectangle(cornerRadius:14))
             }
-            Text("Toca el nombre para verla en el mapa; toca el calendario para consultar todas sus visitas.")
+            Text("Las zonas agrupan cuadrículas completas. Si dos zonas se solapan, pueden compartir tiempo; el total global nunca lo duplica.")
                 .font(.caption2).foregroundStyle(.secondary)
         }
     }
