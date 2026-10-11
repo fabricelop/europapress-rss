@@ -1,4 +1,17 @@
-# Estado — 11 octubre 2026
+# Estado — 11 octubre 2026 · nueva build visual + periodos
+
+## En desarrollo para la próxima IPA (pendiente de compilación y prueba)
+- [x] Código: formato legible de duración sin prefijos de cero (1 min 25 s, 2 h 4 min).
+- [x] Código: icono propio generado como AppIcon en el build iOS.
+- [x] Código: panel renovado de estadísticas con tarjetas, ranking y barras.
+- [x] Código: selección de periodo Todo/Hoy/7 días/Mes/Año en mapa y estadísticas.
+- [x] Código: comparación entre dos intervalos por cuadrículas, sin alterar datos originales.
+- [x] Código: español en el diario de días y raíz de la aplicación.
+- [x] Código: acceso protegido mediante autenticación iOS opcional (Face ID o código).
+- [x] Código: modo adaptativo de colores funcional y selector Permanencia/Exploración más claro.
+- [x] Código: restaura inicio de estancia local y detecta cortes largos de señal GPS.
+- [ ] Compilación de este bloque, instalación Sideloadly, observación con el móvil bloqueado. No afirmar resultados sin comprobar.
+- [ ] La opción de territorio no visitado se muestra desactivada hasta implementar el sombreado real; no es funcional.
 
 ## Ya guardado
 - [x] Rama independiente feature/mi-mapa-del-tiempo-ios, sin modificar main.
@@ -30,9 +43,9 @@
 1. Descargar la IPA del run verde, firmarla con Sideloadly y probarla en un iPhone físico. Registrar resultados de instalación y localización.
 2. SQLite y mecanismos de continuidad de registro en background.
 3. Gestión robusta de solapamientos en importación, pérdida de señal y auditoría de correcciones.
-4. Mapa básico de cuadrículas offline, polígonos dibujables y cálculo zonal retroactivo.
-5. Filtros, reproducción completa y comparación entre periodos.
-6. Widgets, Face ID, copia cifrada con recuperación en iCloud, avisos GPS graves.
+4. Mapa básico de cuadrículas offline, territorios por descubrir, polígonos dibujables y cálculo zonal retroactivo.
+5. Ya hay filtros rápidos de fecha y comparación por cuadrículas, pendientes: fechas arbitrarias en mapa, gráficos de zonas geográficas, animación completa y rendimiento a gran escala.
+6. Face ID implementado en el código, sin validar en iPhone. Pendientes: widgets, copia cifrada recuperable en iCloud y avisos GPS graves.
 7. Firmar IPA en Windows mediante Sideloadly y probar GPS en dispositivo real; distribución TestFlight no forma parte de la primera prueba.
 
 ## Seguridad
