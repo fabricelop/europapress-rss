@@ -862,7 +862,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         automaticMonitoringStart()
     }
 
-    private func automaticMonitoringStart() {
+    @MainActor private func automaticMonitoringStart() {
         guard let rest = model?.data.gpsRest,
               manager.authorizationStatus == .authorizedAlways else { return }
         manager.startMonitoringSignificantLocationChanges()
@@ -1080,7 +1080,7 @@ struct RootView: View {
                 .background(Color(.systemBackground).ignoresSafeArea())
             }
         }
-        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() } }
+        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() }; model.refreshWidgets() }
         .onChange(of:faceIDEnabled) { _, enabled in
             unlocked = !enabled
             if enabled { checkFaceID() }
