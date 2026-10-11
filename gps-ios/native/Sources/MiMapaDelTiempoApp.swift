@@ -1818,6 +1818,19 @@ struct TimeSettingsView: View {
                         }
                     }
                     Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
+                    VStack(alignment:.leading,spacing:5) {
+                        HStack {
+                            Text("Transparencia de cuadrículas")
+                            Spacer()
+                            Text("\(Int((1-model.cellFillOpacity)*100)) %")
+                                .monospacedDigit().foregroundStyle(.secondary)
+                        }
+                        Slider(value:$model.cellFillOpacity,in:0.08...1,step:0.04)
+                            .tint(.teal)
+                            .onChange(of:model.cellFillOpacity) { _,value in
+                                UserDefaults.standard.set(value,forKey:"mapCellOpacityV13")
+                            }
+                    }
                     Toggle("Escala de colores adaptada",isOn:$model.adaptive)
                         .onChange(of:model.adaptive) { _,value in
                             UserDefaults.standard.set(value,forKey:"mapAdaptiveV5")
