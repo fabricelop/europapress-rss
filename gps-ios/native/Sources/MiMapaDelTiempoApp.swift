@@ -188,6 +188,11 @@ struct SavedState: Codable {
     private var stableCell: Cell?
     private var candidateCell: Cell?
     private var candidateSince: Date?
+    // Vista canónica cacheada: evita recalcular miles de intervalos en cada repintado.
+    private var normalizedTotalsCache: [String:TimeInterval] = [:]
+    private var normalizedCacheIntervalCount = -1
+    private var normalizedCacheLastEnd: Date?
+    private var normalizedCacheTime: Date = .distantPast
 
     init() {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -239,7 +244,7 @@ struct SavedState: Codable {
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
         widgetPublisher.publish(from:self,force:true)
     }
-    var totalSeconds: TimeInterval { data.totals.values.reduce(0, +) }
+    var totalSeconds: TimeInterval { confirmedTotals().values.reduce(0, +) }
     var allCells: [Cell] {
         data.totals.keys.compactMap {
             let a = $0.split(separator: ":")
@@ -247,20 +252,50 @@ struct SavedState: Codable {
             return Cell(row: row, column: col)
         }
     }
-    func periodTotals(now: Date = .now) -> [String:TimeInterval] {
-        guard let window = TimeAnalytics.window(for: period, now: now) else { return data.totals }
-        return TimeAnalytics.totals(data.intervals, from:window.start, to:window.end)
-    }
-    func total(for cell: Cell, now: Date = .now) -> TimeInterval {
-        let base = period == .all ? (data.totals[cell.id] ?? 0) : (periodTotals(now: now)[cell.id] ?? 0)
-        // Solo contar provisionalmente si la muestra actual sigue siendo reciente.
-        guard recording, let p = current, p.cell == cell else { return base }
-        let age = now.timeIntervalSince(p.date)
-        guard age >= 0 && age < 120 else { return base }
-        if let window = TimeAnalytics.window(for: period, now: now) {
-            return base + max(0, now.timeIntervalSince(max(window.start,p.date)))
+    func confirmedTotals(now:Date = .now) -> [String:TimeInterval] {
+        let changed = data.intervals.count != normalizedCacheIntervalCount ||
+                      data.intervals.last?.end != normalizedCacheLastEnd
+        if normalizedCacheIntervalCount < 0 ||
+           changed && now.timeIntervalSince(normalizedCacheTime) >= 5 {
+            normalizedTotalsCache=TimeAttribution.byCell(data.intervals)
+            normalizedCacheIntervalCount=data.intervals.count
+            normalizedCacheLastEnd=data.intervals.last?.end
+            normalizedCacheTime=now
         }
-        return base + age
+        return normalizedTotalsCache
+    }
+    func periodTotals(now: Date = .now) -> [String:TimeInterval] {
+        guard let window = TimeAnalytics.window(for:period,now:now) else {
+            return confirmedTotals(now:now)
+        }
+        return TimeAttribution.byCell(data.intervals,window:window)
+    }
+    func confirmed(for cell:Cell,now:Date = .now) -> TimeInterval {
+        periodTotals(now:now)[cell.id] ?? 0
+    }
+    // La estimación se muestra separada: nunca se persiste ni se atribuye
+    // a intervalos GPS hasta comprobar una nueva posición.
+    func provisionalSeconds(for cellIDs:Set<String>,now:Date = .now) -> TimeInterval {
+        guard recording,let fix=current,
+              let stable=activeCell,cellIDs.contains(stable.id),
+              fix.date <= now else { return 0 }
+        let age=now.timeIntervalSince(fix.date)
+        guard age>=0,age<=120 else { return 0 }
+        let currentStart=max(fix.date,
+                             TimeAnalytics.window(for:period,now:now)?.start ?? .distantPast)
+        return max(0,now.timeIntervalSince(currentStart))
+    }
+    func gpsFixAge(now:Date = .now) -> TimeInterval? {
+        guard let date=lastGPSFix else { return nil }
+        return max(0,now.timeIntervalSince(date))
+    }
+    func total(for cell:Cell,now:Date = .now) -> TimeInterval {
+        confirmed(for:cell,now:now)+provisionalSeconds(for:[cell.id],now:now)
+    }
+    func total(for place:UserPlace,now:Date = .now) -> TimeInterval {
+        let totals=periodTotals(now:now)
+        return place.normalizedCellIDs.reduce(0){$0+(totals[$1] ?? 0)}
+             + provisionalSeconds(for:place.normalizedCellIDs,now:now)
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
         guard recording, current != nil, let start = currentVisitStart else { return 0 }
