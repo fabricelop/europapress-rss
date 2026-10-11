@@ -2,6 +2,12 @@
 
 Proyecto personal para iPhone. Cuadrículas de aproximadamente 100 × 100 metros, contador de tiempo histórico acumulado y estancia actual, incluyendo desplazamientos. La hora se conservará internamente en UTC; la aplicación final mostrará la hora local de cada lugar.
 
+## Próxima versión: interfaz pulida y análisis temporal
+
+La rama en desarrollo añade icono de iPhone, contadores compactos en español sin unidades iniciales a cero, panel de estadísticas, filtros rápidos Todo/Hoy/7 días/Mes/Año, comparación por dos intervalos, diario español y bloqueo de interfaz opcional con Face ID o código. Estos cambios requieren una compilación Xcode verde y después pruebas reales en iPhone.
+
+**La comparación actual es por cuadrículas y tiempos efectivamente registrados.** Aún no hay análisis retroactivo por ciudades y barrios, edición de polígonos libres, backups cifrados automáticos de iCloud ni widgets. Territorio por descubrir todavía no representa áreas no visitadas y, por claridad, su interruptor está desactivado. El formato de meses utiliza siempre 30 días.
+
 ## Qué contiene esta rama
 
 - native/: aplicación SwiftUI inicial para iOS 17+ con CoreLocation de máxima precisión, mapa MapKit, acumulación entre fijaciones GPS, datos JSON locales, estadísticas iniciales, diario por días/trayectos, reproducción con huecos explícitos y GPX.
