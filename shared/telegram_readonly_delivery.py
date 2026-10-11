@@ -601,7 +601,7 @@ def process(project,now,token,chat):
           else "trends/telegram-image-deliveries.json")
     ledger=load(path,{"version":3,"items":[]})
     entries=ledger.setdefault("items",[])
-    cards=news_cards(now) if project=="ttittulares" else trend_cards(now)
+    cards=list(news_cards(now) if project=="ttittulares" else trend_cards(now))
     delivered=updated=skipped=0
     for card in cards:
         eid=card["id"];rev=card["rev"]
@@ -824,6 +824,52 @@ def process(project,now,token,chat):
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
         ledger["updated_at"]=now.isoformat()
+    # Consolidate already-posted sibling messages AFTER the leader exists.
+    # Never delete a sibling merely for sharing a picture or being in a batch:
+    # explicit editor-verified group identity is required.
+    if project=="ttendencias":
+        for group in cards:
+            members=set(str(v) for v in group.get("group_member_ids") or [])
+            leader_id=str(group.get("id") or "")
+            if not group.get("final") or leader_id not in members or len(members)<2:
+                continue
+            leader=next((row for row in reversed(entries) if
+                str(row.get("event_id") or "")==leader_id and
+                str(row.get("status") or "").lower()=="sent" and
+                int(row.get("telegram_message_id") or 0)>0),None)
+            if not leader:continue
+            if leader.get("group_id")!=group["group_id"] or leader.get("group_member_ids")!=group["group_member_ids"]:
+                leader.update(group_id=group["group_id"],
+                              group_member_ids=group["group_member_ids"],
+                              group_title=group["title"],
+                              updated_at=now.isoformat())
+                updated+=1
+            for sibling in entries:
+                sibling_id=str(sibling.get("event_id") or "")
+                if sibling_id==leader_id or sibling_id not in members:
+                    continue
+                if str(sibling.get("status") or "").lower()!="sent":
+                    continue
+                mids={int(sibling.get(k) or 0)
+                      for k in ("telegram_message_id","archive_telegram_message_id")
+                      if int(sibling.get(k) or 0)>0}
+                if not mids:continue
+                ok=True
+                for mid in sorted(mids):
+                    result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
+                    if result is None:
+                        ok=False
+                        print("TT_GROUP_SIBLING_DELETE_RETRY",sibling_id,mid,flush=True)
+                if ok:
+                    sibling.update(status="grouped",
+                                   group_leader_id=leader_id,
+                                   group_id=group["group_id"],
+                                   grouped_into=leader_id,
+                                   grouped_at=now.isoformat(),
+                                   updated_at=now.isoformat())
+                    updated+=1
+                    print("TT_TRENDS_GROUP_DUPLICATE_REMOVED",
+                          sibling_id,"leader="+leader_id,flush=True)
     if delivered or updated:put(path,ledger)
     print(f"TELEGRAM_READONLY {project} delivered={delivered} updated={updated} skipped={skipped}",flush=True)
     return delivered,updated
