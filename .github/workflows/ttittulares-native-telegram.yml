@@ -47,11 +47,41 @@ jobs:
           python3 - <<'PY'
           import json,os
           doc=json.load(open('telegram/ttittulares-transport.json',encoding='utf8'))
-          active=(doc.get('mode')=='native' and doc.get('native_ready') is True)
+          active=(doc.get('mode')=='native' and doc.get('native_ready') is True
+                  and doc.get('native_commands_ready') is True
+                  and doc.get('native_chat_ready') is True)
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf8') as out:
               out.write('active='+str(active).lower()+'\n')
           print('TTI_NATIVE_LISTENER_READY' if active else 'TTI_NATIVE_STAGED_WEBHOOK_UNTOUCHED')
           PY
+      - name: Conmutar de webhook a getUpdates sin descartar mensajes
+        if: steps.gate.outputs.active == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          token=os.environ['TELEGRAM_BOT_TOKEN'].strip()
+          assert token,'Telegram token missing'
+          def api(method,data):
+              request=urllib.request.Request(
+                'https://api.telegram.org/bot'+token+'/'+method,
+                data=json.dumps(data).encode(),
+                headers={'Content-Type':'application/json'})
+              with urllib.request.urlopen(request,timeout=25) as response:
+                  result=json.load(response)
+              if not result.get('ok'):raise RuntimeError('Telegram '+method+' failed')
+              return result.get('result')
+          current=api('getWebhookInfo',{})
+          url=str(current.get('url') or '')
+          expected='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
+          if url and url!=expected:raise SystemExit('Unrecognized webhook; cutover refused')
+          if url:api('deleteWebhook',{'drop_pending_updates':False})
+          final=api('getWebhookInfo',{})
+          if final.get('url'):raise SystemExit('Cannot safely start getUpdates')
+          print('TTI_TELEGRAM_NATIVE_CUTOVER_OK webhook_deleted='+str(bool(url)))
+          PY
+
       - name: Escuchar Telegram solo tras migración y sin webhook
         if: steps.gate.outputs.active == 'true'
         env:
