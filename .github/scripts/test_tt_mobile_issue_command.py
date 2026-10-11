@@ -118,4 +118,23 @@ with tempfile.TemporaryDirectory() as tmp:
         assert "Titular auténtico" in str(exc)
     assert not (m.ROOT/"telegram/editorial-processing.json").exists()
 
+# Top 11-30 are displayed automatically, but only enter the editorial
+# queue on the editor's authenticated Prepare novelty command.
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    put(m.ROOT,"trends/requests.json",{"requests":[]})
+    put(m.ROOT,"trends/recent.json",{"items":[
+        {"name":"Gularte","rank":22},{"name":"#Tema Con Espacios","rank":26}]})
+    response=m.trend_command("prepare","Gularte","","","2026-10-11T22:20:00Z")
+    assert "registrada" in response
+    req=get(m.ROOT,"trends/requests.json")["requests"][0]
+    queue=get(m.ROOT,"trends/editorial-queue.json")["items"]
+    assert req["status"]=="preparing" and req["rank"]==22 and req["auto_queued"] is False
+    assert len(queue)==1 and queue[0]["id"]==req["id"]
+    assert queue[0]["rank"]==22 and queue[0]["auto_queued"] is False
+    result=m.trend_command("prepare","#Tema Con Espacios","","","2026-10-11T22:20:01Z")
+    items=get(m.ROOT,"trends/requests.json")["requests"]
+    assert len(items)==2 and items[1]["name"]=="#Tema Con Espacios"
+    assert len(items[1]["id"])==12 and " " not in items[1]["id"]
+    assert len(get(m.ROOT,"trends/editorial-queue.json")["items"])==2
 print("TT_MOBILE_ISSUE_FIXTURES_OK")
