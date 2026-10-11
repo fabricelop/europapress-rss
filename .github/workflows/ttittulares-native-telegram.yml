@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttittulares-telegram-native
@@ -34,6 +35,7 @@ jobs:
             /telegram/ttittulares-callback-inbox.json
             /telegram/ttittulares-user-proposals.json
             /telegram/ttittulares-deliveries.json
+            /telegram/tt-mobile-command-queue.json
       - name: Verificar el receptor sin tocar Telegram
         run: |
           set -euo pipefail
