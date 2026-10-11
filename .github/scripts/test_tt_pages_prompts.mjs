@@ -38,6 +38,30 @@ assert(news.includes(newsBody),'News text was shortened');
 assert(news.includes('🌶️ Remate de noticia exacto.'),'News remate missing');
 assert(news.includes('Contexto factual complementario sin inventar.'),'News factual summary missing');
 assert(news.includes('Explicación editorial completa y verificada.'),'News editorial explanation omitted');
+const early=await scenario('?app=ttittulares&id=urgent123&rev=1',{
+  'ttittulares/prepared.json':{items:[]},
+  'telegram/editorial-processing.json':{items:[{
+    event_id:'urgent123',revision:1,title:'Titular urgente por verificar',
+    status:'PROCESSING',verified_source_count:0
+  }]}
+});
+assert(early.includes('BORRADOR PROVISIONAL'), 'Early GAG must be explicitly provisional');
+assert(early.includes('Titular urgente por verificar'), 'Early GAG must work without finished text');
+assert(!early.includes('TEXTO EXACTO YA CERRADO'),'Early GAG cannot claim finished editorial verification');
+const earlyReady=await scenario('?app=ttittulares&id=urgent123&rev=1',{
+  'ttittulares/prepared.json':{items:[{
+    event_id:'urgent123',revision:2,title:'Titular confirmado',
+    factual_summary:'Las autoridades confirmaron el hecho.',
+    explanation:'Explicación final verificada.',tweet:{text:'Texto final comprobado.\n🌶️ Remate final.'}
+  }]},
+  'telegram/editorial-processing.json':{items:[{
+    event_id:'urgent123',revision:1,title:'Titular urgente por verificar',
+    status:'PROCESSING',verified_source_count:0
+  }]}
+});
+assert(earlyReady.includes('TEXTO EXACTO YA CERRADO'), 'Original early link must resolve to READY');
+assert(earlyReady.includes('Texto final comprobado.'),'Finished explanation must override draft');
+assert(!earlyReady.includes('BORRADOR PROVISIONAL'),'GAG must not keep stale warning after finalization');
 const trendText='TT#4 Bukaneros es tendencia porque se suspendió el partido del Rayo por protestas y aviones de papel.';
 const trends=await scenario('?app=ttendencias&id=trends123&rev=3&name=Bukaneros',{
   'trends/telegram-manual-explained.json':{items:[{id:'trends123',revision:3,name:'Bukaneros',
