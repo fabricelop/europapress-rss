@@ -1140,7 +1140,19 @@ struct TimeSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Mapa") {
-                    Toggle("Mostrar recorridos recientes", isOn: $model.showRoutes)
+                    Toggle("Mostrar recorridos recientes", isOn:$model.showRoutes)
+                        .onChange(of:model.showRoutes) { _,value in
+                            UserDefaults.standard.set(value,forKey:"mapRoutesV5")
+                        }
+                    if model.showRoutes {
+                        Picker("Recorridos visibles",selection:$model.routePeriod) {
+                            ForEach(RouteDisplayPeriod.allCases) { period in
+                                Text(period.label).tag(period)
+                            }
+                        }.onChange(of:model.routePeriod) { _,period in
+                            UserDefaults.standard.set(period.rawValue,forKey:"mapRoutePeriodV5")
+                        }
+                    }
                     Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
                     Text("Se activa automáticamente si no hay Internet; el mapa básico funciona sin descargar cartografía.")
                         .font(.caption).foregroundStyle(.secondary)
@@ -1148,8 +1160,12 @@ struct TimeSettingsView: View {
                         .disabled(true)
                     Text("Sombrear las áreas no visitadas sigue pendiente. Este interruptor se activará cuando esté implementado.")
                         .font(.caption).foregroundStyle(.secondary)
-                    Toggle("Escala de colores adaptada", isOn: $model.adaptive)
-                    Text("Permanencia: tiempo en cada cuadrícula. Exploración: territorio visitado. La escala adaptada destaca las diferencias en la zona visible.")
+                    Toggle("Escala de colores adaptada",isOn:$model.adaptive)
+                        .onChange(of:model.adaptive) { _,value in
+                            UserDefaults.standard.set(value,forKey:"mapAdaptiveV5")
+                        }
+                    Text("Permanencia: tiempo acumulado. Exploración: territorio descubierto. La escala adaptada resalta las diferencias entre cuadrículas visibles.")
+                        .font(.caption).foregroundStyle(.secondary)
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Widgets iPhone") {
@@ -1181,7 +1197,7 @@ struct TimeSettingsView: View {
                     if !message.isEmpty { Text(message).font(.footnote) }
                 }
                 Section("Limitaciones actuales") {
-                    Text("GPS inteligente y base SQLite experimental: comprobar la batería y el segundo plano en iPhone. Aún faltan widgets, copia cifrada iCloud, zonas libres y estadísticas por ciudad.")
+                    Text("El histórico, los lugares y la clasificación territorial se guardan en SQLite. Los territorios se clasifican bajo demanda, usando Internet y las consultas de Apple. Los widgets todavía pueden no aparecer con firmas gratuitas; no se garantiza su disponibilidad ni recarga. El consumo GPS debe contrastarse con pruebas reales.")
                         .font(.footnote)
                 }
             }
