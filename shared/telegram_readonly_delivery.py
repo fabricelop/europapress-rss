@@ -712,24 +712,41 @@ def selftest():
                  "source_url":"https://www.example.org/noticias/noticia"}
     pending=keys(provisional,"ttittulares")["inline_keyboard"]
     assert [row[0]["text"] for row in pending]==[
-        "📋 Copiar borrador para X","🔗 Fuente original","🗑️ Borrar"]
-    assert pending[0][0]["copy_text"]["text"]==draft
-    assert "intent/tweet" in pending[0][1]["url"]
-    assert pending[1][1]["text"]=="🔎 Buscar en X"
+        "📄 GAG completo (copiar)","📋 Copiar borrador para X",
+        "🔎 Buscar en X","🔗 Fuente original","🗑️ Borrar"]
+    assert pending[0][1]["text"]=="🎨 Chat Images"
+    assert pending[1][0]["copy_text"]["text"]==draft
+    assert "intent/tweet" in pending[1][1]["url"]
+    assert pending[2][0]["text"]=="🔎 Buscar en X"
     assert pending[-1][0]["callback_data"]=="tt:b:abc123"
     no_source=keys({**provisional,"source_url":""},"ttittulares")["inline_keyboard"]
     assert [row[0]["text"] for row in no_source]==[
-        "📋 Copiar borrador para X","🔎 Buscar en X","🗑️ Borrar"]
+        "📄 GAG completo (copiar)","📋 Copiar borrador para X",
+        "🔎 Buscar en X","🗑️ Borrar"]
+    photo_pending=keys({**provisional,"image":"https://img.example.org/news.jpg"},"ttittulares")["inline_keyboard"]
+    assert photo_pending[2][0]["text"]=="📷 Copiar foto de archivo"
+    assert photo_pending[2][0]["url"].startswith(
+        "https://fabricelop.github.io/europapress-rss/photo.html?")
     pending_trends=keys({**card,"final":False,"x_text":""},"ttendencias")["inline_keyboard"]
     assert [row[0]["text"] for row in pending_trends]==["🔎 Buscar en X","🗑️ Borrar"]
     import tempfile
     original_root=ROOT
     original_send=send
+    original_fast=fast_archive_from_article
+    original_archive=archival_image
     methods=[]
+    message_sequence=[991,992,993]
     def synthetic_send(token,method,payload,photo=None):
-        methods.append((method,int(payload.get("message_id") or 0)))
-        return {"message_id":991}
+        methods.append((method,int(payload.get("message_id") or 0),
+                        int(payload.get("reply_to_message_id") or 0),bool(photo)))
+        return {"message_id":(message_sequence.pop(0) if method in {"sendMessage","sendPhoto"}
+                               else int(payload.get("message_id") or 0))}
     try:
+        globals()["fast_archive_from_article"]=lambda url:""
+        globals()["archival_image"]=lambda url:(
+            (b"jpeg","image/jpeg","photo.jpg") if url.startswith("https://img.example.org/")
+            else None)
+
         with tempfile.TemporaryDirectory() as folder:
             globals()["ROOT"]=Path(folder)
             put("telegram/editorial-processing.json",{"items":[{
@@ -747,11 +764,28 @@ def selftest():
             globals()["send"]=synthetic_send
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(1,0)
-            assert methods==[("sendMessage",0)]
+            assert methods==[("sendMessage",0,0,False)]
             pending_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             assert len(pending_ledger["items"])==1
             assert not pending_ledger["items"][0]["final"]
             assert pending_ledger["items"][0]["telegram_message_id"]==991
+            # Later an archive photo appears: attach once AS A REPLY to 991,
+            # keep the editorial controls and explanation on 991.
+            job=load("telegram/editorial-processing.json",{"items":[]})
+            job["items"][0]["archive_image"]={"url":"https://img.example.org/late.jpg",
+                "generated":False}
+            put("telegram/editorial-processing.json",job)
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert (n_sent,n_updated)==(0,1)
+            assert methods[-2:]==[("sendPhoto",0,991,True),
+                                  ("editMessageText",991,0,False)]
+            updated_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            assert updated_ledger["items"][0]["archive_telegram_message_id"]==992
+            assert updated_ledger["items"][0]["archive_image_url"].endswith("/late.jpg")
+            assert len(updated_ledger["items"])==1
+            before=len(methods)
+            process("ttittulares",now,"mock","mockchat")
+            assert len(methods)==before, "Do not duplicate a companion photo"
             final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
                 "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
                 "tweet":{"text":"Un organismo confirmó la medida.",
@@ -763,15 +797,33 @@ def selftest():
             assert "Remate exacto" in finished[0]["text"]
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(0,1), "A final item must EDIT the first message"
-            assert methods==[("sendMessage",0),("editMessageText",991)]
+            assert methods[-1]==("editMessageText",991,0,False)
+            assert sum(method=="sendPhoto" for method,*_ in methods)==1
             final_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             assert len(final_ledger["items"])==1, "Never send a duplicate Telegram card"
             assert final_ledger["items"][0]["telegram_message_id"]==991
             assert final_ledger["items"][0]["final"]
             assert final_ledger["items"][0]["revision"]==2
+            assert final_ledger["items"][0]["archive_telegram_message_id"]==992
+            # Photo already present at first arrival: a SINGLE photo/card,
+            # not an extra notification.
+            put("telegram/editorial-processing.json",{"items":[{
+                "event_id":"photo123","status":"PROCESSING","title":"Urgencia con foto inicial",
+                "selected_at":"2026-10-09T15:59:00Z","archive_image":{
+                    "url":"https://img.example.org/early.jpg","generated":False}
+            }]})
+            put("ttittulares/prepared.json",{"items":[]})
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert n_sent==1 and methods[-1]==("sendPhoto",0,0,True)
+            ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            new=next(x for x in ledger["items"] if x["event_id"]=="photo123")
+            assert new["is_photo"] and new["telegram_message_id"]==993
+            assert len(ledger["items"])==2
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
+        globals()["fast_archive_from_article"]=original_fast
+        globals()["archival_image"]=original_archive
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
     assert trend_repeat_allowed({"novelty_verified":True,"is_in_top":True,
