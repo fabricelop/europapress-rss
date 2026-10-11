@@ -121,6 +121,25 @@ enum TimeZoneOutline {
         }
         return segments
     }
+    /// Más de 80 cuadrículas: usar solo el recuadro exterior en vez de generar
+    /// cientos de MapPolyline en cada cambio GPS. La geometría real se guarda
+    /// intacta, esta simplificación afecta SOLO al dibujo.
+    static func renderSegments(for zone:TimeCustomZone) -> [TimeZoneBorderSegment] {
+        guard zone.cellIDs.count > 80 else { return segments(for:zone,maxCells:80) }
+        let points=zone.cellIDs.compactMap(TimeAnalytics.cell).flatMap(Grid.polygon)
+        guard let minLat=points.map(\.latitude).min(),
+              let maxLat=points.map(\.latitude).max(),
+              let minLon=points.map(\.longitude).min(),
+              let maxLon=points.map(\.longitude).max() else { return [] }
+        let a=CLLocationCoordinate2D(latitude:minLat,longitude:minLon)
+        let b=CLLocationCoordinate2D(latitude:minLat,longitude:maxLon)
+        let c=CLLocationCoordinate2D(latitude:maxLat,longitude:maxLon)
+        let d=CLLocationCoordinate2D(latitude:maxLat,longitude:minLon)
+        return [(a,b),(b,c),(c,d),(d,a)].map {
+            TimeZoneBorderSegment(start:$0.0,end:$0.1)
+        }
+    }
+
     static func visibleCenter(for zone:TimeCustomZone) -> CLLocationCoordinate2D? {
         let coords=zone.cellIDs.compactMap(TimeAnalytics.cell).map(Grid.center)
         guard !coords.isEmpty else { return nil }
