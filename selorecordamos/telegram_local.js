@@ -399,6 +399,16 @@ async function pollOnce(timeoutSeconds = 25) {
       continue;
     }
     const msg = update.message;
+    if (msg && String((msg.chat || {}).id || '') === chatId && /^\\/sr_run(?:@\\w+)?\\s*$/i.test(String(msg.text || ''))) {
+      const task = cp.spawnSync('schtasks.exe', ['/Run', '/TN', 'SeLoRecordamos-Editorial-Local'], { encoding: 'utf8', timeout: 12000 });
+      await telegram('sendMessage', {
+        chat_id: chatId,
+        text: task.status === 0
+          ? 'SeLoRecordamos: ejecución local solicitada. Las evaluaciones pendientes se enviarán por Telegram al terminar.'
+          : 'No se ha podido ejecutar la tarea Windows SeLoRecordamos-Editorial-Local. Comprueba la instalación y el registro local.'
+      });
+      continue;
+    }
     if (!msg || String((msg.chat || {}).id || '') !== chatId || !msg.reply_to_message || !String(msg.text || '').trim()) continue;
     const c = candidateFromTelegramMessage(msg.reply_to_message);
     if (!c) { console.log(`Mensaje ${msg.message_id} ignorado: la respuesta no apunta a un candidato/evaluación SLR reconocible.`); continue; }
