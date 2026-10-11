@@ -121,6 +121,7 @@ struct SavedState: Codable {
     var savedVisitStart: Date?
     var manualBreaks: [Date] = []
     var places: [UserPlace] = []
+    var customZones: [TimeCustomZone] = []
     var territoryCache: [String:TerritoryRecord] = [:]
     var powerEvents: [GPSPowerEvent] = []
     var shortIDs: [String:Int] = [:]
@@ -145,6 +146,7 @@ struct SavedState: Codable {
         gpsRest = try box.decodeIfPresent(GPSRestSession.self,forKey:.gpsRest)
         manualBreaks = try box.decodeIfPresent([Date].self,forKey:.manualBreaks) ?? []
         places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
+        customZones = try box.decodeIfPresent([TimeCustomZone].self,forKey:.customZones) ?? []
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
         powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
         shortIDs = try box.decodeIfPresent([String:Int].self,forKey:.shortIDs) ?? [:]
@@ -298,6 +300,19 @@ struct SavedState: Codable {
         showRoutes = UserDefaults.standard.object(forKey:"mapRoutesV5") as? Bool ?? true
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
         widgetPublisher.publish(from:self,force:true)
+    }
+    func putZone(_ zone:TimeCustomZone) {
+        guard !zone.cellIDs.isEmpty else { return }
+        if let index = data.customZones.firstIndex(where:{$0.id == zone.id}) {
+            data.customZones[index] = zone
+        } else {
+            data.customZones.append(zone)
+        }
+        save(force:true)
+    }
+    func deleteZone(_ id:UUID) {
+        data.customZones.removeAll(where:{$0.id == id})
+        save(force:true)
     }
     var totalSeconds: TimeInterval { confirmedTotals().values.reduce(0, +) }
     var allCells: [Cell] {
