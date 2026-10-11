@@ -124,6 +124,23 @@ function trendRows(){
    const existing=requestsByName.get(name);
    if(!existing||ts(row)>=ts(existing))requestsByName.set(name,row);
   }
+  const activeInExplained=new Set();
+  // Active Telegram "Explicadas" cards take precedence over the Top 30 text.
+  // Closing/Borrar that card hides it in Explicadas but retains its explanation.
+  for(const delivery of ledger){
+   if(String(delivery.status||'').toLowerCase()!=='sent'||delivery.final===false||trendClosed(delivery))continue;
+   const id=String(delivery.event_id||'');
+   const related=[...requests,...explained].filter(x=>String(x.id||x.event_id||'')===id);
+   if(!related.length){
+    const name=normal(delivery.name||delivery.title);
+    if(name)activeInExplained.add(name);
+   }
+   for(const item of related){
+    const values=[item.name,item.display_name,...(item.trend_names||[]),
+       ...(item.trend_context||[]).map(x=>x.name)];
+    for(const value of values){const name=normal(value);if(name)activeInExplained.add(name)}
+   }
+  }
   for(const row of [...explained,...requests]){
    const expl=String(row.explanation||'').trim();
    if(!expl)continue;
@@ -146,11 +163,12 @@ function trendRows(){
       Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
    const working=['preparing','update','ready'].includes(status);
    const failure=status==='problematic';
-   const text=String(finished.explanation||req.explanation||'').trim();
-   const editorialState=working?'EN ELABORACIÓN':failure?'REVISIÓN':text&&(staleTop10?'POR ACTUALIZAR':'EXPLICADA')||'PENDIENTE';
+   const inExplained=activeInExplained.has(normal(x.name));
+   const text=inExplained?'':String(finished.explanation||req.explanation||'').trim();
+   const editorialState=inExplained?'PENDIENTE EN EXPLICADAS':working?'EN ELABORACIÓN':failure?'REVISIÓN':text&&(staleTop10?'POR ACTUALIZAR':'EXPLICADA')||'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
-    _status:editorialState,_topOnly:true,rank:Number(x.rank||i+1),
-    explanation:text,closer_text:finished.closer_text||req.closer_text||'',
+    _status:editorialState,_topOnly:true,_inExplained:inExplained,rank:Number(x.rank||i+1),
+    explanation:text,closer_text:inExplained?'':finished.closer_text||req.closer_text||'',
     explained_at:latestAt,revision:finished.revision||req.revision||0};
   });
  }
@@ -264,6 +282,13 @@ function rowCard(x,i){
  }
  if(x._topOnly){
   out.classList.add('trend-top');
+  if(x._inExplained){
+   const note=document.createElement('p');
+   note.className='fact';
+   note.textContent='Esta tendencia está pendiente en Explicadas. Su explicación aparecerá aquí cuando borres esa tarjeta.';
+   out.querySelector('.card-body').insertBefore(note,a);
+   btn('Ver en Explicadas',()=>{state.tab='explicadas';render()},true);
+  }
   if(d.editorial&&x._status==='EXPLICADA'){
    btn('📋 Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Abrir en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
