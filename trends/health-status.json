@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-11T21:14:32.943421+00:00",
+  "checked_at": "2026-10-11T21:16:16.714103+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -43,7 +43,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 2.7,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -53,9 +53,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.1,
+      "age_minutes": 1.6,
       "run_id": 38175469646,
       "reason": null,
       "repairable": true,
@@ -76,38 +76,27 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 1,
-      "oldest_age_minutes": 52.3,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "1dca58f1b860",
-          "name": "Wirtz",
-          "status": "preparing",
-          "age_minutes": 52.3
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "1dca58f1b860",
-        "998c17ccf3c9"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 115 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 52.3 min"
+    "cola con 115 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 115 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 52.3 min"
+  "last_alert_signature": "cola con 115 estado(s) inválido(s)"
 }
