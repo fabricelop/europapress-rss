@@ -542,6 +542,9 @@ def process(project,now,token,chat):
         # a second card for seven days, including previously deleted ones.
         older=matching_previous_story(card,entries,now)
         if older:
+            print("TT_STORY_DUPLICATE_BLOCKED",project,trim(card.get("title"),120),
+                  "new_id="+str(eid),"previous_id="+str(older.get("event_id") or ""),
+                  "previous_status="+str(older.get("status") or ""),flush=True)
             # An old tombstone overrides a newer radar event ID. If a buggy
             # anonymous provisional was already sent, remove that duplicate.
             if str(older.get("status") or "").lower() in TERMINAL:
@@ -571,6 +574,8 @@ def process(project,now,token,chat):
         # Deleting any of the duplicate Telegram cards closes the whole trend.
         # Never try to edit or resurrect another copy after a user deletion.
         if any(str(r.get("status") or "").lower() in TERMINAL|{"delete_pending","delete_failed"} for r in linked):
+            print("TT_STORY_CLOSED_BLOCKED",project,trim(card.get("title"),120),
+                  "event_id="+str(eid),flush=True)
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
