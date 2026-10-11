@@ -23,7 +23,7 @@ MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new se
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
 BUTTONS_VERSION=15  # TTendencias: re-explain inline
-TTI_BUTTONS_VERSION=16  # Immediate TTi news: urgent draft buttons
+TTI_BUTTONS_VERSION=17  # Provisional: full native controls and archive image
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -306,20 +306,30 @@ def keys(card,project):
         else:
             rows.append([{"text":"🔎 Buscar en X","url":search}])
     elif project=="ttittulares" and x_text:
-        # Manual early publishing is permitted, but never hide that the
-        # explanation and independent editorial verification are pending.
+        # Provisional does not mean unusable: copy/compose X is available
+        # immediately, with a visible verification warning in the draft.
+        args={"app":project,"id":str(card["id"]),"rev":str(card["rev"])}
+        bridge="https://fabricelop.github.io/europapress-rss/gag.html?"+urlencode(args)
+        rows.append([
+            {"text":"📄 GAG completo (copiar)","url":bridge},
+            {"text":"🎨 Chat Images","url":IMAGE_APP}
+        ])
         rows.append([
             {"text":"📋 Copiar borrador para X","copy_text":{"text":x_text[:256]}},
             {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
         ])
-        source_url=str(card.get("source_url") or "")
-        if source_url.startswith("https://"):
+        if str(card.get("image") or "").startswith("https://"):
+            photo="https://fabricelop.github.io/europapress-rss/photo.html?"+urlencode(
+                {"id":str(card["id"]),"rev":str(card["rev"])})
             rows.append([
-                {"text":"🔗 Fuente original","url":source_url},
+                {"text":"📷 Copiar foto de archivo","url":photo},
                 {"text":"🔎 Buscar en X","url":search}
             ])
         else:
             rows.append([{"text":"🔎 Buscar en X","url":search}])
+        source_url=str(card.get("source_url") or "")
+        if source_url.startswith("https://"):
+            rows.append([{"text":"🔗 Fuente original","url":source_url}])
     else:
         rows.append([{"text":"🔎 Buscar en X","url":search}])
     if project=="ttendencias" and card.get("final"):
