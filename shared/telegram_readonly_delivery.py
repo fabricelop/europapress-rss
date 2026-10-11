@@ -526,63 +526,106 @@ def process(project,now,token,chat):
         started=date(card.get("start"))
         if existing is None and (not started or now-started>timedelta(hours=12)):
             skipped+=1;continue
-        new_hash=hashlib.sha256((card["text"]+"|"+card["image"]).encode("utf-8")).hexdigest()
         button_version=TTI_BUTTONS_VERSION if project=="ttittulares" else BUTTONS_VERSION
-        if existing and not card["image"] and existing.get("is_photo"):
-            # The article's og:image may only have been recorded in the
-            # readonly Telegram receipt, not in the editorial input.
-            if str(existing.get("delivery_key") or "").endswith(":readonly"):
-                retained=str(existing.get("image_url") or "")
+        # Existing archive photographs and already-posted replies survive
+        # editorial updates even when the new READY row omits the URL.
+        if existing and not card["image"]:
+            for field in ("image_url","archive_image_url"):
+                retained=str(existing.get(field) or "")
                 if retained.startswith("https://"):
                     card["image"]=retained
-        kb=keys(card,project)
+                    break
+        photo_url=card["image"]
         image_data=None
-        if existing and existing.get("content_sha256")==new_hash:
-            if int(existing.get("buttons_version") or 0)==button_version:
-                skipped+=1;continue
-            # Solo refrescar teclados recientes para no editar masivamente
-            # centenares de mensajes históricos ni reabrir los ya cerrados.
-            delivered_at=date(existing.get("delivered_at"))
-            if not delivered_at or now-delivered_at>timedelta(hours=48):
-                skipped+=1;continue
-            # Keyboard-only change: no new photo, no duplicated news card.
-            result=send(token,"editMessageReplyMarkup",{
-                "chat_id":chat,"message_id":int(existing["telegram_message_id"]),
-                "reply_markup":kb})
-            if not result:continue
-            existing.update({"buttons_version":button_version,"updated_at":now.isoformat()})
-            ledger["updated_at"]=now.isoformat()
-            updated+=1
-            continue
-        # Try for an archive picture only on the first delivery (or where the
-        # existing card is a photo): no separate photo post and no long wait.
-        if not existing or existing.get("is_photo"):
-            photo_url=card["image"]
-            if not photo_url and project=="ttittulares" and not existing and card["final"]:
+        old_photo=bool(existing and (existing.get("is_photo") or existing.get("image_sha256")))
+        is_late_photo=bool(project=="ttittulares" and existing and not old_photo
+                           and not int(existing.get("archive_telegram_message_id") or 0))
+        # First provisional delivery tries the same fast archive lookup as a
+        # completed news story. The lookup is bounded; it must never block
+        # urgent text delivery.
+        if not photo_url and project=="ttittulares" and (not existing or is_late_photo):
+            last=date(existing.get("archive_checked_at")) if existing else None
+            if last is None or now-last>=timedelta(minutes=20):
                 photo_url=fast_archive_from_article(card.get("source_url",""))
+                if existing:
+                    existing["archive_checked_at"]=now.isoformat()
+        if not existing or old_photo or is_late_photo:
             image_data=archival_image(photo_url) if photo_url else None
             if not image_data and project=="ttendencias" and not existing:
-                # Verification stays internal. Reuse the image embedded in a
-                # verified article to create one photo+caption Telegram card.
                 for article in card.get("archive_articles",[])[:2]:
                     candidate=fast_archive_from_article(article)
                     image_data=archival_image(candidate) if candidate else None
                     if image_data:
                         photo_url=candidate
                         break
-        else:
-            photo_url=""
-        # An archive image discovered from a verified article must appear in
-        # the keyboard of the FIRST Telegram photo, not only in later edits.
-        if photo_url and image_data and project=="ttendencias":
+        # Offer "copy archive photo" only for a photo actually sent to
+        # Telegram, or the verified original already recorded in the ledger.
+        if photo_url and (image_data or (existing and
+                (existing.get("is_photo") or existing.get("archive_telegram_message_id")))):
             card["image"]=photo_url
-            kb=keys(card,project)
+        else:
+            card["image"]=""
         body=card["text"]
+        if project=="ttittulares" and not card["final"]:
+            if image_data or (existing and (existing.get("is_photo") or
+                    existing.get("archive_telegram_message_id"))):
+                note=("📷 Fotografía de archivo añadida como respuesta."
+                      if existing and not old_photo else
+                      "📷 Fotografía de archivo disponible.")
+                body=body.replace("📷 Fotografía de archivo pendiente.",note)
+        kb=keys(card,project)
+        # The digest includes the actual displayed text, not an image URL that
+        # was fetched but could not be sent. Preserve the same Telegram card ID.
+        new_hash=hashlib.sha256((body+"|"+card["image"]).encode("utf-8")).hexdigest()
+        if existing and existing.get("content_sha256")==new_hash:
+            if int(existing.get("buttons_version") or 0)==button_version:
+                if not (is_late_photo and image_data):
+                    skipped+=1
+                    continue
+            else:
+                # Keyboard-only changes do not create a second news card.
+                delivered_at=date(existing.get("delivered_at"))
+                if (not delivered_at or now-delivered_at>timedelta(hours=48)):
+                    skipped+=1;continue
+                if not (is_late_photo and image_data):
+                    result=send(token,"editMessageReplyMarkup",{
+                        "chat_id":chat,"message_id":int(existing["telegram_message_id"]),
+                        "reply_markup":kb})
+                    if result:
+                        existing.update({"buttons_version":button_version,
+                                         "updated_at":now.isoformat()})
+                        updated+=1
+                    continue
         if existing:
             mid=int(existing["telegram_message_id"])
-            old_photo=bool(existing.get("is_photo") or existing.get("image_sha256"))
+            # Telegram cannot turn a text message into a photo in place.
+            # Attach ONE photo as a reply and keep editing the ORIGINAL text
+            # message. Persist its ID before trying to edit the original, so
+            # a failed edit cannot create another identical photo.
+            if is_late_photo and image_data:
+                caption="📷 Foto de archivo · "+trim(card["title"],180)
+                companion=send(token,"sendPhoto",{
+                    "chat_id":chat,"caption":caption,
+                    "reply_to_message_id":mid},image_data)
+                if companion and companion.get("message_id"):
+                    existing["archive_telegram_message_id"]=int(companion["message_id"])
+                    existing["archive_image_url"]=photo_url
+                    existing["archive_attached_at"]=now.isoformat()
+                    existing["updated_at"]=now.isoformat()
+                    ledger["updated_at"]=now.isoformat()
+                    put(path,ledger)  # crash-safe auxiliary message identity
+                    card["image"]=photo_url
+                    kb=keys(card,project)
+                    if not card["final"]:
+                        body=body.replace("📷 Fotografía de archivo disponible.",
+                                          "📷 Fotografía de archivo añadida como respuesta.")
+                    new_hash=hashlib.sha256((body+"|"+card["image"]).encode("utf-8")).hexdigest()
+                else:
+                    card["image"]=""
+                    kb=keys(card,project)
+                    body=card["text"]
+                    new_hash=hashlib.sha256((body+"|").encode("utf-8")).hexdigest()
             if old_photo and image_data:
-                # Replace media in the SAME message, not a new photo-plus-text pair.
                 result=send(token,"editMessageMedia",{"chat_id":chat,"message_id":mid,
                     "media":{"type":"photo","media":"attach://photo","caption":body},
                     "reply_markup":kb},image_data)
@@ -598,7 +641,6 @@ def process(project,now,token,chat):
                              "revision":rev,"is_photo":old_photo})
             updated+=1
         else:
-            # In case old non-photo deliveries exist, do not duplicate them.
             if image_data:
                 result=send(token,"sendPhoto",{"chat_id":chat,"caption":body,
                     "reply_markup":kb},image_data)
