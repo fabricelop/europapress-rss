@@ -18,10 +18,18 @@ struct TimeCompareView: View {
         TimeAnalytics.totals(model.data.intervals, from: Calendar.current.startOfDay(for:bStart), to:afterDay(bEnd))
     }
     private var changed: [(key:String,delta:TimeInterval)] {
-        Set(a.keys).union(b.keys).map { key in (key:key,delta:(b[key] ?? 0)-(a[key] ?? 0)) }
-            .filter { abs($0.delta) > 0.01 }
-            .sorted { abs($0.delta) > abs($1.delta) }
-            .prefix(50).map { $0 }
+        let previous = a
+        let latest = b
+        let keys = Set(previous.keys).union(Set(latest.keys))
+        var entries: [(key:String,delta:TimeInterval)] = []
+        for key in keys {
+            let difference = (latest[key] ?? 0) - (previous[key] ?? 0)
+            if abs(difference) > 0.01 {
+                entries.append((key:key,delta:difference))
+            }
+        }
+        entries.sort { abs($0.delta) > abs($1.delta) }
+        return Array(entries.prefix(50))
     }
     var body: some View {
         NavigationStack {
