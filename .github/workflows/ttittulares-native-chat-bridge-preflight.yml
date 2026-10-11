@@ -25,6 +25,8 @@ jobs:
           def test(auth):
               req=urllib.request.Request(endpoint,method='POST',data=b'{}',
                 headers={'content-type':'application/json',
+                'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'accept':'application/json',
                 **({'authorization':'Bearer '+token} if auth else {})})
               try:
                   with urllib.request.urlopen(req,timeout=25) as resp:
