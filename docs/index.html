@@ -139,11 +139,15 @@ function trendRows(){
    const finished=completedByName.get(normal(x.name))||{};
    const status=String(req.status||'').toLowerCase();
    const latestAt=finished.explained_at||req.explained_at||'';
-   const old=latestAt&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
+   // The 48-hour refresh policy applies only to positions 1-10.
+   // Outside the Top 10, a past explanation remains explained unless a new
+   // revision is explicitly in progress; never label it "por actualizar".
+   const staleTop10=Number(x.rank||i+1)<=10&&latestAt&&
+      Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
    const working=['preparing','update','ready'].includes(status);
    const failure=status==='problematic';
    const text=String(finished.explanation||req.explanation||'').trim();
-   const editorialState=working?'EN ELABORACIÓN':failure?'REVISIÓN':text&&!old?'EXPLICADA':old?'POR ACTUALIZAR':'PENDIENTE';
+   const editorialState=working?'EN ELABORACIÓN':failure?'REVISIÓN':text&&(staleTop10?'POR ACTUALIZAR':'EXPLICADA')||'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,rank:Number(x.rank||i+1),
     explanation:text,closer_text:finished.closer_text||req.closer_text||'',
