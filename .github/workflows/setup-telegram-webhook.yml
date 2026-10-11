@@ -16,6 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Prohibir restaurar Cloudflare si bot nativo está activo
+        run: |
+          python3 - <<'PY'
+          import json
+          with open('telegram/ttittulares-transport.json',encoding='utf8') as file: doc=json.load(file)
+          if doc.get('mode')=='native' and doc.get('native_ready') is True:
+              raise SystemExit('TTITTULARES_NATIVE_ACTIVE: no volver a registrar webhook')
+          PY
+
       - name: Registrar webhook TTiTTulares
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
