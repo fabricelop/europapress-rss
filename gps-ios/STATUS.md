@@ -1,5 +1,16 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## Widgets iPhone — desarrollo aislado (NO instalado todavía)
+- Rama de pruebas: `feature/mi-mapa-del-tiempo-ios-widgets`. La v0.3 que el usuario está probando sigue intacta en `feature/mi-mapa-del-tiempo-ios`.
+- WidgetKit: widget pequeño/mediano de inicio y widgets de bloqueo rectangular, circular y en línea. Total histórico principal y última estancia secundaria. Una pulsación abre la app.
+- Datos compartidos: un snapshot pequeño `TimeWidgetSnapshot` con duraciones ya asignadas, fecha de última lectura, estado de tracking y nombre de lugar **solo si el usuario lo permite**. No se comparten coordenadas ni la base SQLite entera. Por defecto los nombres de lugares permanecen ocultos.
+- Actualización: petición al sistema cuando cambia la cuadrícula o el seguimiento y como máximo periódicamente (mínimo de ~5 minutos); los widgets no calculan segundos inventados ni hacen GPS propio. WidgetKit puede retrasar o limitar las actualizaciones.
+- Requiere `group.es.mimapadeltiempo.widgets` en los entitlements de la app y de su extensión. **Bloqueo externo por verificar**: la cuenta Apple gratuita/Sideloadly debe proporcionar un perfil de aprovisionamiento compatible con App Groups a ambos targets; la compilación sin firma NO demuestra que pueda firmarse o instalarse. Si el grupo no está disponible, los widgets muestran el estado vacío, nunca cifras falsas.
+- Workflow macOS independiente: `.github/workflows/mi-mapa-del-tiempo-widgets-verify.yml` solo en la rama de widgets; comprueba compilación iOS, existencia de .appex y XCTest. No usa Vercel.
+- Antes de una eventual instalación: exportar JSON desde la v0.3, mantener el mismo bundle principal, cerrar por completo la app y no desinstalarla. No instalar hasta verificar build y conocer limitación de firma.
+- Próxima validación: XCTest de serialización, formatos y frescura de datos; después instalación con firma real y prueba del permiso de grupo y aparición en galería de widgets.
+
+
 ## Nueva tanda v0.3 (compilación y tests automáticos confirmados; instalación física pendiente)
 - [x] [Build iOS Release verde, GitHub Actions run 38122579172](https://github.com/fabricelop/europapress-rss/actions/runs/38122579172), IPA sin firmar artifact 11696021211 (fecha 11/10/2026); verificados Info.plist 1.0.3 (build 3), bundle ID es.mimapadeltiempo.app y permiso Core Motion.
 - [x] [XCTest iOS Simulator verde, run 38122779881](https://github.com/fabricelop/europapress-rss/actions/runs/38122779881): 23 tests ejecutados, 0 errores. Incluye migración JSON → SQLite y comparación de totales/nombres; batería y segundo plano siguen sin verificación física.
