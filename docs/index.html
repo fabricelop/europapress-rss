@@ -124,7 +124,7 @@ function trendRows(){
    const existing=requestsByName.get(name);
    if(!existing||ts(row)>=ts(existing))requestsByName.set(name,row);
   }
-  const activeInExplained=new Set(),confirmedTelegramNames=new Set();
+  const activeInExplained=new Set(),confirmedTelegramByName=new Map();
   // Never show a claim as EXPLICADA in Top 30 until the corresponding
   // explanation actually reached Telegram/Explicadas at least once.
   for(const delivery of ledger){
@@ -135,7 +135,14 @@ function trendRows(){
    const names=[delivery.name,delivery.title];
    for(const x of related)names.push(x.name,x.display_name,...(x.trend_names||[]),
       ...(x.trend_context||[]).map(v=>v.name));
-   for(const value of names){const normalized=normal(value);if(normalized)confirmedTelegramNames.add(normalized)}
+   for(const value of names){
+    const normalized=normal(value);if(!normalized)continue;
+    const previous=confirmedTelegramByName.get(normalized)||[];
+    previous.push({id,revision:Number(delivery.revision||0),
+      at:Math.max(Date.parse(delivery.updated_at||'')||0,Date.parse(delivery.delivered_at||'')||0),
+      status:String(delivery.status||'').toLowerCase()});
+    confirmedTelegramByName.set(normalized,previous);
+   }
   }
   // Active Telegram "Explicadas" cards take precedence over the Top 30 text.
   // Closing/Borrar that card hides it in Explicadas but retains its explanation.
@@ -176,7 +183,13 @@ function trendRows(){
    const working=['preparing','update','ready'].includes(status);
    const failure=status==='problematic';
    const nameKey=normal(x.name),inExplained=activeInExplained.has(nameKey);
-   const wasDelivered=confirmedTelegramNames.has(nameKey);
+   const currentId=String(req.id||finished.id||'');
+   const currentRevision=Number(finished.revision??req.revision??0);
+   const explainedTime=Date.parse(finished.explained_at||req.explained_at||'')||0;
+   const wasDelivered=(confirmedTelegramByName.get(nameKey)||[]).some(delivery=>
+     (!currentId||delivery.id===currentId)&&
+     delivery.revision===currentRevision&&
+     (!explainedTime||delivery.at+60000>=explainedTime));
    const readyText=String(finished.explanation||req.explanation||'').trim();
    const text=inExplained?'':wasDelivered?readyText:'';
    const editorialState=inExplained?'PENDIENTE EN EXPLICADAS':
