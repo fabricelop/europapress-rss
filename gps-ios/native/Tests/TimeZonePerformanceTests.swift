@@ -1,0 +1,32 @@
+import XCTest
+import CoreLocation
+@testable import MiMapaDelTiempo
+
+final class TimeZonePerformanceTests: XCTestCase {
+    func testHugeZoneUsesFourRenderLinesWithoutLosingCells() {
+        let ids=(0..<1000).map { n in
+            Cell(row:500 + n / 20,column:100 + n % 20).id
+        }
+        let zone=TimeCustomZone(name:"Parque del Retiro",cellIDs:ids)
+        XCTAssertEqual(TimeZoneOutline.renderSegments(for:zone).count,4)
+        XCTAssertEqual(zone.cellIDs.count,1000)
+        XCTAssertEqual(zone.cells.count,1000)
+    }
+
+    func testSmallZonePreservesPreciseBorders() {
+        let a=Cell(row:500,column:500)
+        let b=Cell(row:500,column:501)
+        let zone=TimeCustomZone(name:"Montevalle",cellIDs:[a.id,b.id])
+        XCTAssertEqual(TimeZoneOutline.renderSegments(for:zone).count,
+                       TimeZoneOutline.segments(for:zone).count)
+    }
+
+    func testNamesKeepZonePriorityWhenOverlapping() {
+        let area=TimeCustomZone(name:"Parque del Retiro",
+            cellIDs:(0..<100).map { Cell(row:600,column:800+$0).id })
+        let selected=Cell(row:600,column:803)
+        let small=TimeCustomZone(name:"Zona pequeña",cellIDs:[selected.id])
+        XCTAssertEqual(TimeZoneCatalog.primary(for:selected.id,zones:[area,small])?.name,
+                       "Zona pequeña")
+    }
+}
