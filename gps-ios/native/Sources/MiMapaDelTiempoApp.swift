@@ -1294,6 +1294,13 @@ struct TimeMapView: View {
                    abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.1
         }.prefix(2_000).map { $0 }
     }
+    private var zoneHighlights: [TimeCustomZone] {
+        model.visibleZones.filter { zone in
+            guard let center=TimeZoneOutline.visibleCenter(for:zone) else { return false }
+            return abs(center.latitude-region.center.latitude) < region.span.latitudeDelta*1.8 &&
+                   abs(center.longitude-region.center.longitude) < region.span.longitudeDelta*1.8
+        }.prefix(18).map { $0 }
+    }
     func paint(_ sec: TimeInterval, maximum: TimeInterval) -> Color {
         if model.explore { return .cyan }
         if model.adaptive {
@@ -1311,6 +1318,7 @@ struct TimeMapView: View {
     }
     var body: some View {
         let visibleCells = relevant
+        let visibleZones = zoneHighlights
         let maximumVisibleTime = max(1,visibleCells.map { model.total(for:$0) }.max() ?? 1)
         ZStack(alignment: .bottom) {
             if model.forceBasicMap || !connectivity.connected {
@@ -1335,6 +1343,27 @@ struct TimeMapView: View {
                                     .foregroundStyle(.black)
                                     .padding(2)
                                     .allowsHitTesting(false)
+                            }
+                        }
+                    }
+                    ForEach(visibleZones) { zone in
+                        let edges=TimeZoneOutline.segments(for:zone)
+                        ForEach(edges.indices,id:\.self) { i in
+                            MapPolyline(coordinates:[edges[i].start,edges[i].end])
+                                .stroke(.teal,lineWidth:4)
+                        }
+                        if region.span.latitudeDelta < 0.07,
+                           let center=TimeZoneOutline.visibleCenter(for:zone) {
+                            Annotation("",coordinate:center) {
+                                VStack(spacing:2) {
+                                    Text(zone.name).font(.caption2.bold()).lineLimit(1)
+                                    Text("\(zone.cells.count) cuadrículas")
+                                        .font(.system(size:9))
+                                }
+                                .padding(.horizontal,8).padding(.vertical,5)
+                                .foregroundStyle(.white)
+                                .background(Color.teal.opacity(0.91),in:Capsule())
+                                .allowsHitTesting(false)
                             }
                         }
                     }
@@ -1549,20 +1578,20 @@ private struct TimeLiveCounterNumbers: View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
             let now = context.date
             VStack(alignment: .leading, spacing: 7) {
-                let selectedPlace = picked.flatMap { model.placeFor($0) }
-                if let place = selectedPlace {
-                    Text("Zona · \(place.name)")
+                let selectedZone = picked.flatMap { model.primaryZone(for:$0) }
+                if let zone = selectedZone {
+                    Text("Zona · \(zone.cells.count) cuadrícula\(zone.cells.count == 1 ? "" : "s")")
                         .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
-                    Text(DurationFormat.full(model.total(for:place,now:now)))
+                    Text(DurationFormat.full(model.total(for:zone,now:now)))
                         .font(.system(size:21,weight:.bold,design:.rounded))
                         .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
                 }
                 if let picked {
-                    Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
-                         "Esta cuadrícula · tiempo acumulado")
+                    Text(selectedZone == nil ? "Cuadrícula · tiempo acumulado" :
+                         "Desglose · esta cuadrícula")
                         .font(.caption2).foregroundStyle(.secondary)
                     Text(DurationFormat.full(model.total(for:picked,now:now)))
-                        .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
+                        .font(selectedZone == nil ? .system(size:21,weight:.bold,design:.rounded) :
                                                    .system(size:16,weight:.semibold,design:.rounded))
                         .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
                 }
