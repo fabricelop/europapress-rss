@@ -7678,7 +7678,7 @@
       "id": "88badc81e464",
       "name": "#FelizDomingo",
       "rank": 3,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-11T08:27:08+02:00",
       "revision": 2,
       "reexplain": true,
@@ -7701,20 +7701,24 @@
         "Presa"
       ],
       "auto_queued": true,
-      "explanation": "TT#3 #FelizDomingo es tendencia por el saludo dominical recurrente en X, que vuelve a entrar entre las tendencias de España este domingo.\n🌶️ El algoritmo también se ha levantado con café.",
+      "explanation": "TT#3 #FelizDomingo es tendencia por el saludo dominical recurrente en X, que vuelve a entrar entre las tendencias de España este domingo.\n🌶️ Hasta el algoritmo ficha los domingos.",
       "rank_at_explanation": 3,
       "news_disposition": "ignored",
-      "closer_text": "🌶️ El algoritmo también se ha levantado con café.",
+      "closer_text": "🌶️ Hasta el algoritmo ficha los domingos.",
       "source": "editorial_chat_direct",
       "verification_sources": [
         {
-          "source": "Trends24 España · 4/10/2026",
+          "source": "Radar TTendencias · 11/10/2026",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json"
+        },
+        {
+          "source": "Trends24 España",
           "url": "https://trends24.in/spain/"
         }
       ],
       "news_note": "Hashtag social recurrente de saludo dominical; no abre noticia independiente.",
-      "group_id": "grp-felizdomingo-20261004",
-      "explanation_group_id": "grp-felizdomingo-20261004",
+      "group_id": "grp-88badc81e464",
+      "explanation_group_id": "grp-88badc81e464",
       "group_leader_id": "88badc81e464",
       "trend_names": [
         "#FelizDomingo"
@@ -7723,15 +7727,21 @@
         {
           "id": "88badc81e464",
           "name": "#FelizDomingo",
-          "revision": 1
+          "revision": 2
         }
       ],
       "disable_ai_image": false,
-      "image_strategy": null,
-      "ai_image_status": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
       "ai_image_attempt": 0,
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "explained_at": "2026-10-11T09:15:00+02:00",
+      "last_attempt_at": "2026-10-11T09:15:00+02:00",
+      "category": "Otros",
+      "group_title": "#FelizDomingo",
+      "fallback_image_status": "none",
+      "image_choice": null
     },
     {
       "id": "e2275ce7e61b",
@@ -43317,7 +43327,7 @@
       "id": "ad2158fb13c9",
       "name": "Máximo Quiles",
       "rank": 2,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-11T07:21:59+02:00",
       "revision": 0,
       "reexplain": false,
@@ -43330,9 +43340,49 @@
       "captured_with": [
         "Máximo Quiles"
       ],
-      "auto_queued": true
+      "auto_queued": true,
+      "explained_at": "2026-10-11T09:15:00+02:00",
+      "last_attempt_at": "2026-10-11T09:15:00+02:00",
+      "explanation": "TT#2 Máximo Quiles es tendencia porque ganó el GP de Indonesia de Moto3 y se proclamó campeón del mundo a falta de cinco carreras, con su décima victoria del año.\n🌶️ Llegó a meta y al calendario le sobraron cinco domingos.",
+      "closer_text": "🌶️ Llegó a meta y al calendario le sobraron cinco domingos.",
+      "rank_at_explanation": 2,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "source": "MotoGP · 11/10/2026",
+          "url": "https://www.motogp.com/es/news/2026/10/11/quiles-crowned-moto3-world-champion-with-mandalika-victory/1174842"
+        },
+        {
+          "source": "EFE · 11/10/2026",
+          "url": "https://efe.com/deportes/2026-10-11/gran-premio-indonesia-motociclismo/"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Hecho deportivo verificado: victoria en Mandalika y título matemático de Moto3 a falta de cinco grandes premios.",
+      "group_id": "grp-ad2158fb13c9",
+      "explanation_group_id": "grp-ad2158fb13c9",
+      "group_title": "Máximo Quiles",
+      "group_leader_id": "ad2158fb13c9",
+      "trend_names": [
+        "Máximo Quiles"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "ad2158fb13c9",
+          "name": "Máximo Quiles",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-11T06:41:29.615152Z",
-  "count": 783
+  "updated_at": "2026-10-11T09:15:00+02:00",
+  "count": 784
 }
