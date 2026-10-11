@@ -104,15 +104,15 @@ def provisional_news_copy(job,title):
     return lead+body
 
 GENERIC_NEWS_TITLES={"noticia","sin título","sin titulo","actualidad","titular pendiente",""}
-
 def authentic_news_title(value):
     title=trim(value,400)
     return title if title.casefold().strip(" .:–-") not in GENERIC_NEWS_TITLES else ""
 
 def recover_news_metadata(eid,*rows):
-    """Recover original capture metadata; never manufacture a headline."""
-    candidates=list(rows)
+    """Recover capture metadata by ID; never invent a headline or source."""
+    candidates=[row for row in rows if isinstance(row,dict)]
     for filename,fields in (
+        ("telegram/events.json",("events",)),
         ("ttittulares/editorial-queue.json",("items",)),
         ("ttittulares/status.json",("processing_items","ready_items","items")),
         ("ttittulares/prepared.json",("items",)),
@@ -120,14 +120,23 @@ def recover_news_metadata(eid,*rows):
         document=load(filename,{})
         for field in fields:
             candidates.extend(row for row in (document.get(field) or [])
-                              if isinstance(row,dict) and str(row.get("event_id") or "")==eid)
-    title=next((t for row in candidates if isinstance(row,dict)
-                if (t:=authentic_news_title(row.get("title")))), "")
-    url=next((str(row.get("url") or "") for row in candidates if isinstance(row,dict)
-              and str(row.get("url") or "").startswith("https://")), "")
-    source=next((str(row.get("source") or "") for row in candidates if isinstance(row,dict)
-                 and row.get("source")), "")
-    return title,url,source
+                              if isinstance(row,dict) and
+                              str(row.get("event_id") or row.get("id") or "")==eid)
+    title=next((t for row in candidates
+                if (t:=authentic_news_title(row.get("canonical_title") or row.get("title")))), "")
+    url=next((str(row.get("url") or "") for row in candidates
+              if str(row.get("url") or "").startswith("https://")), "")
+    appearance=next((a for row in candidates for a in (row.get("appearances") or [])
+                     if isinstance(a,dict) and a.get("source")
+                     and str(a.get("url") or "").startswith("https://")), {})
+    if not url:url=str(appearance.get("url") or "")
+    source=next((str(row.get("source") or "") for row in candidates if row.get("source")), "")
+    if not source:source=str(appearance.get("source") or "")
+    if not source:
+        source=next((str(row.get("sources")[0]) for row in candidates
+                     if isinstance(row.get("sources"),list) and row["sources"]), "")
+    image=next((image_url(row) for row in candidates if image_url(row)), "")
+    return title,url,source,image
 
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
@@ -151,7 +160,7 @@ def news_cards(now):
         if not fresh(start,now):continue
         # New PROCESSING news is sent immediately, with an explicit warning.
         revision=int(item.get("revision") or job.get("revision") or 1)
-        title,original_url,original_source=recover_news_metadata(eid,item,job)
+        title,original_url,original_source,original_image=recover_news_metadata(eid,item,job)
         if not title:
             print("TTI_MISSING_AUTHENTIC_TITLE",eid,"delivery blocked; retry next run",flush=True)
             continue
@@ -172,9 +181,11 @@ def news_cards(now):
             try:verified=int(job.get("verified_source_count") or 0)>=2
             except (ValueError,TypeError):verified=False
             preview=trim(job.get("factual_summary"),350) if verified else ""
-            available_photo=bool(image_url(job) or image_url(item))
+            available_photo=bool(original_image)
             body=("🟠 EN ELABORACIÓN · NOTICIA PROVISIONAL\n\n"
-                  +trim(title,340)+"\n\n"
+                  +trim(title,400)+"\n\n"
+                  +("Fuente: "+trim(original_source,100)+"\n" if original_source else "")
+                  +("Artículo: "+trim(original_url,280)+"\n\n" if original_url else "\n")
                   +(preview+"\n\n" if preview and preview not in title else "")
                   +("📌 Datos iniciales de al menos dos fuentes; falta revisión editorial.\n"
                     if verified else
@@ -186,7 +197,7 @@ def news_cards(now):
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
-               "image":image_url(item) or image_url(job),
+               "image":original_image,
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":original_url,"source":original_source}
 
@@ -671,7 +682,9 @@ def process(project,now,token,chat):
                 result=send(token,"editMessageText",{"chat_id":chat,"message_id":mid,
                     "text":body,"reply_markup":kb})
             if not result:continue
-            existing.update({"content_sha256":new_hash,"final":card["final"],
+            existing.update({"title":card["title"],"name":card["title"],
+                             "source_url":str(card.get("source_url") or existing.get("source_url") or ""),
+                             "content_sha256":new_hash,"final":card["final"],
                              "buttons_version":button_version,"updated_at":now.isoformat(),
                              "revision":rev,"is_photo":old_photo})
             updated+=1
