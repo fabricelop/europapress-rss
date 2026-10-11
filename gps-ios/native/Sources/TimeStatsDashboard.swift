@@ -1,7 +1,7 @@
 import SwiftUI
 
 private enum StatisticsPage: String, CaseIterable, Identifiable {
-    case cells = "Cuadrículas", places = "Lugares", territories = "Territorios"
+    case cells = "Cuadrículas", places = "Lugares", zones = "Zonas", territories = "Territorios"
     var id: String { rawValue }
 }
 private enum NamedFilter: String, CaseIterable, Identifiable {
@@ -88,6 +88,8 @@ struct TimeStatsDashboard: View {
                         cellList
                     case .places:
                         UserPlacesView(model:model)
+                    case .zones:
+                        TimeZonesPanel(model:model)
                     case .territories:
                         TerritoryStatsView(model:model)
                     }
