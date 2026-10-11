@@ -243,6 +243,12 @@ def trend_body(label,detail,is_final):
     return (label+"\n\n"+detail)[:1000]
 
 def trend_cards(now):
+    """One Telegram card per verified editorial event, not per related term.
+
+    Shared photographs or a common batch are NOT sufficient to group stories.
+    Only a persisted editorial group_leader_id/explanation_group_id can merge
+    members. Each term still has its own Top 30 rank and request status.
+    """
     requests_doc=load("trends/requests.json",{"requests":[]})
     manual_doc=load("trends/telegram-manual-explained.json",{"items":[]})
     explained_doc=load("trends/explained.json",{"items":[]})
@@ -260,34 +266,96 @@ def trend_cards(now):
             current=explained.get((key,rev))
             if current is None or str(row.get("explained_at") or "")>str(current.get("explained_at") or ""):
                 explained[(key,rev)]=row
+
+    groups={}
+    for tid,req in latest.items():
+        leader=str(req.get("group_leader_id") or "").strip()
+        group_id=str(req.get("explanation_group_id") or req.get("group_id") or "").strip()
+        if leader and group_id:
+            group=groups.setdefault(leader,{"group_id":group_id,"members":{}})
+            if group["group_id"]==group_id:
+                group["members"][tid]=req
+    # Also respect group membership persisted in the only explanation row
+    # when the per-request metadata was not synchronized yet.
+    for row in manual_doc.get("items",[]):
+        leader=str(row.get("group_leader_id") or row.get("id") or "").strip()
+        gid=str(row.get("explanation_group_id") or row.get("group_id") or "").strip()
+        if not leader or not gid or not row.get("grouped_member_revisions"):
+            continue
+        group=groups.setdefault(leader,{"group_id":gid,"members":{}})
+        if group["group_id"]!=gid:
+            continue
+        for member in row["grouped_member_revisions"]:
+            if isinstance(member,dict):
+                mid=str(member.get("id") or "")
+                if mid in latest: group["members"][mid]=latest[mid]
+
     for tid,req in latest.items():
         status=str(req.get("status") or "").lower()
         if status not in {"preparing","update","ready","explained"}:continue
         name=trim(req.get("name"),200)
         if not name:continue
+        group_leader=str(req.get("group_leader_id") or "").strip()
+        group_id=str(req.get("explanation_group_id") or req.get("group_id") or "").strip()
+        # A group's followers NEVER produce another message, even if the
+        # grouped explanation text was copied into every request row.
+        if group_id and group_leader and group_leader!=tid:continue
+
         rank=int(req.get("rank") or (top.get(name.casefold()) or {}).get("rank") or 0)
-        # Unranked legacy/manual trends and positions 11-30 are opt-in only.
         if rank>10 and req.get("auto_queued") is True:continue
         start=req.get("requested_at") or req.get("anticipated_at")
         if not fresh(start,now):continue
         rev=int(req.get("revision") or 0)
         finished=explained.get((tid,rev))
-        is_final=bool((finished and str(finished.get("explanation") or "").strip()) or (status=="explained" and str(req.get("explanation") or "").strip()))
+        is_final=bool((finished and str(finished.get("explanation") or "").strip())
+                      or (status=="explained" and str(req.get("explanation") or "").strip()))
         if req.get("reexplain") and not is_final:
-            # Keep previous explanation while editorial checks the new outcome.
             continue
         if not is_final and not age_ready(start,now):continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
         closer=trim((finished or {}).get("closer_text"),160)
         if closer and closer not in detail:detail+="\n"+closer
-        body=trend_body(label,detail,is_final)
+        group=groups.get(tid) if group_id else None
+        member_ids=[]
+        group_title=""
+        if group and len(group["members"])>1:
+            members=sorted(group["members"].items(), key=lambda pair:(
+                int((top.get(str(pair[1].get("name") or "").casefold()) or {}).get("rank")
+                    or pair[1].get("rank") or 999),
+                str(pair[1].get("name") or "")))
+            member_ids=[mid for mid,_ in members]
+            terms=[]
+            for mid,member in members:
+                term=trim(member.get("name"),100)
+                number=int((top.get(term.casefold()) or {}).get("rank")
+                           or member.get("rank") or 0)
+                terms.append(f"TT#{number} {term}" if 1<=number<=30 else term)
+            # Keep the editorial paragraph and ONE punchline intact.
+            # Header makes visible that the explanation covers all trends.
+            group_title=" · ".join(terms)
+            if is_final:
+                body=group_title+"\n\n"+detail
+                # A single joint copy, never the same separate tweet repeated
+                # four times. A long joint caption uses the full-copy page.
+                x_text=body
+            else:
+                body=group_title+"\n\n⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
+                x_text=""
+            body=trim(body,1000)
+        else:
+            body=trend_body(label,detail,is_final)
+            x_text=detail if is_final else ""
         sources=verified_article_urls(finished or {},req)
         top_row=top.get(name.casefold()) or {}
-        yield {"id":tid,"rev":rev,"text":body,"x_text":detail if is_final else "",
+        yield {"id":tid,"rev":rev,"text":body,"x_text":x_text,
                "image":image_url(finished or {}) or image_url(req),
-               "archive_articles":sources,"search":name,
-               "final":is_final,"start":start,"title":name,
+               "archive_articles":sources,
+               "search":(" ".join(str(g["name"]) for g in group["members"].values())
+                         if member_ids else name),
+               "final":is_final,"start":start,
+               "title":group_title or name,"group_id":group["group_id"] if member_ids else "",
+               "group_member_ids":member_ids,
                "editorial_rework":bool(req.get("reexplain") or req.get("request_source")=="telegram_reexplain"),
                "entered_top_at":top_row.get("entered_top10_at"),
                "novelty_verified":req.get("material_novelty_verified") is True,
