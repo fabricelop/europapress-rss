@@ -25,6 +25,10 @@ DELIVERIES = Path("telegram/ttittulares-deliveries.json")
 CONTROL_BRANCH = "control/ttittulares-run-trigger-v2"
 CONTROL_FILE = "ttittulares/run-now-trigger.json"
 CALLBACK = re.compile(r"^tt:([pdb]):([A-Za-z0-9_-]{5,80})$")
+MOBILE = re.compile(r"^/start(?:@[A-Za-z0-9_]+)?\\s+ttm_([nt])_([pdre])_([A-Za-z0-9_-]{1,56})$", re.I)
+REWORK_TTL_SECONDS = 1800
+MOBILE_QUEUE = Path("telegram/tt-mobile-command-queue.json")
+MODEL_ENDPOINT = "https://models.github.ai/inference/chat/completions"
 
 
 def stamp():
@@ -43,8 +47,26 @@ def save(path, doc):
     path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def classify(update, chat_id, ledger):
-    """No side effects. Validate user + delivered exact message, not just ID."""
+def decode_mobile_command(text):
+    match = MOBILE.fullmatch(text)
+    if not match:
+        return None
+    encoded = match.group(3).replace("-", "+").replace("_", "/")
+    try:
+        raw = base64.b64decode(encoded + "=" * ((-len(encoded)) % 4), validate=True)
+        element_id = raw.decode("utf-8").strip()
+    except (ValueError, UnicodeError):
+        return None
+    if not (1 <= len(element_id) <= 120 and
+            re.fullmatch(r"[\\w# .-]+", element_id, re.UNICODE)):
+        return None
+    return {"kind": "mobile", "project": "ttittulares" if match.group(1) == "n" else "ttendencias",
+            "action": {"p":"published","d":"deleted","r":"rework","e":"prepare"}[match.group(2)],
+            "id": element_id}
+
+
+def classify(update, chat_id, ledger, state=None):
+    """No side effects. Validate owner and exact Telegram message/revision."""
     callback = update.get("callback_query") or {}
     msg = callback.get("message") if callback else update.get("message")
     msg = msg or {}
@@ -59,7 +81,21 @@ def classify(update, chat_id, ledger):
         raw = str(callback.get("data") or "")
         match = CALLBACK.fullmatch(raw)
         if not match:
-            return {"kind": "unsupported_callback"}
+            if raw.startswith("tts:del:") and re.fullmatch(r"tts:del:[1-9]\\d{0,14}", raw):
+                return {"kind":"delete_pair", "original_message_id":int(raw.split(":")[-1]),
+                        "message_id":int(msg.get("message_id") or 0),
+                        "callback_id":callback.get("id")}
+            if raw == "delete:message":
+                return {"kind":"delete_message", "message_id":int(msg.get("message_id") or 0),
+                        "callback_id":callback.get("id")}
+            if raw.startswith("dg:") and re.fullmatch(r"dg:[0-9,]{1,100}",raw):
+                mids=[int(v) for v in raw[3:].split(",") if v.isdigit()]
+                mids.append(int(msg.get("message_id") or 0))
+                return {"kind":"delete_group","message_ids":list(dict.fromkeys(x for x in mids if x>0)),
+                        "callback_id":callback.get("id")}
+            if re.fullmatch(r"tt:i:[A-Za-z0-9_-]{5,80}",raw):
+                return {"kind":"unavailable_action","callback_id":callback.get("id")}
+            return {"kind": "unsupported_callback", "callback_id":callback.get("id")}
         action, eid = match.groups()
         mid = int(msg.get("message_id") or 0)
         linked = any(str(x.get("event_id") or "") == eid and
@@ -75,10 +111,30 @@ def classify(update, chat_id, ledger):
     text = str(msg.get("text") or "").strip()
     if re.fullmatch(r"/run(?:@ttittulares_bot)?", text, re.I):
         return {"kind": "run"}
-    if text.startswith("/") or msg.get("reply_to_message"):
-        # Chat, questions and reply workflows must be migrated before cutover.
-        return {"kind": "requires_conversation_migration"}
-    if text:
+    mobile = decode_mobile_command(text)
+    if mobile:
+        return mobile
+    if text.startswith("/start"):
+        return {"kind":"help" if text == "/start" else "invalid_mobile"}
+    reply = msg.get("reply_to_message") or {}
+    prompt = (state or {}).get("pending_rework") or {}
+    original_mid = int(reply.get("message_id") or 0)
+    if (original_mid and original_mid == int(prompt.get("prompt_message_id") or 0)
+            and time.time() < float(prompt.get("expires_at") or 0)
+            and 3 <= len(text) <= 1000 and not text.startswith("/")):
+        return {"kind":"mobile_rework_reply","project":prompt["project"],
+                "id":prompt["id"],"text":text,"prompt_message_id":original_mid}
+    if re.match(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\\s+\\S",text,re.I):
+        return {"kind":"question","text":re.sub(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\\s+","",text,flags=re.I),
+                "context":str(reply.get("text") or reply.get("caption") or "")[:1800],
+                "message_id":int(msg.get("message_id") or 0)}
+    if reply and (reply.get("from") or {}).get("is_bot"):
+        return {"kind":"question","text":text[:3000],
+                "context":str(reply.get("text") or reply.get("caption") or "")[:1800],
+                "message_id":int(msg.get("message_id") or 0)}
+    if text.startswith("/"):
+        return {"kind":"unknown_command"}
+    if text and not reply:
         return {"kind": "proposal", "text": text[:3000]}
     return {"kind": "ignore"}
 
