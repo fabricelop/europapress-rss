@@ -43702,15 +43702,30 @@
       ],
       "ai_image_status": "pending",
       "ai_image_attempt": 0,
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
       "rewrite_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "telegram_package_status": "deleted",
-      "telegram_deleted_at": "2026-10-10T18:31:21+02:00"
+      "telegram_deleted_at": "2026-10-10T18:31:21+02:00",
+      "fallback_image": {
+        "url": "https://www.reuters.com/resizer/v2/MP2BWZP32BOFLCGQUB5K5KKTF4.jpg?auth=f2af36783071b97dea727c8fb1c31009378ab728ea19bc9136992d4a5a7dd124&height=1005&width=1920&quality=80&smart=true",
+        "source": "Reuters · Rayo-Athletic suspendido por protestas contra Presa · 10/10/2026",
+        "source_url": "https://www.reuters.com/sports/soccer/rayo-bilbao-match-abandoned-after-fans-protest-against-club-owner-2026-10-10/",
+        "alt": "Imagen de archivo relacionada con Bukaneros",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.reuters.com/resizer/v2/MP2BWZP32BOFLCGQUB5K5KKTF4.jpg?auth=f2af36783071b97dea727c8fb1c31009378ab728ea19bc9136992d4a5a7dd124&height=1005&width=1920&quality=80&smart=true",
+        "source": "Reuters · Rayo-Athletic suspendido por protestas contra Presa · 10/10/2026",
+        "source_url": "https://www.reuters.com/sports/soccer/rayo-bilbao-match-abandoned-after-fans-protest-against-club-owner-2026-10-10/",
+        "alt": "Imagen de archivo relacionada con Bukaneros",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "9b4b10c8f7a7",
@@ -45057,6 +45072,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-11T02:55:56.682549Z",
+  "updated_at": "2026-10-11T03:19:26.699205Z",
   "count": 741
 }
