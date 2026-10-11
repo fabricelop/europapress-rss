@@ -8,7 +8,7 @@ on:
       - 'gps-ios/native/**'
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: gps-ios-v09-package
   cancel-in-progress: true
@@ -21,6 +21,19 @@ jobs:
         working-directory: gps-ios/native
     steps:
       - uses: actions/checkout@v4
+      - name: Registrar ID de compilación para diagnóstico
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -u
+          PATH_STATUS=".build-status/mi-mapa-v09-ipa.json"
+          CONTENT="$(printf '{"run_id":%s,"sha":"%s","kind":"ipa"}' "$GITHUB_RUN_ID" "$GITHUB_SHA" | base64 | tr -d '\\n')"
+          OLD_SHA="$(gh api "repos/$GITHUB_REPOSITORY/contents/$PATH_STATUS?ref=$GITHUB_REF_NAME" --jq '.sha' 2>/dev/null || true)"
+          if [ -n "$OLD_SHA" ]; then
+            gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$PATH_STATUS" -f message="CI: registrar identificador del run ipa" -f content="$CONTENT" -f branch="$GITHUB_REF_NAME" -f sha="$OLD_SHA" >/dev/null || true
+          else
+            gh api -X PUT "repos/$GITHUB_REPOSITORY/contents/$PATH_STATUS" -f message="CI: registrar identificador del run ipa" -f content="$CONTENT" -f branch="$GITHUB_REF_NAME" >/dev/null || true
+          fi
       - name: Preparar proyecto y validar sintaxis
         run: |
           set -euo pipefail
