@@ -155,12 +155,16 @@
           "sensitive_event"
         ],
         "flag_field": "closer_missing",
-        "political_neutral_satire": "No omitir un remate únicamente por ser contenido político. Humor sobre hechos, plazos, trámites o contradicciones verificadas, sin favorecer opciones electorales ni inventar intenciones."
+        "political_neutral_satire": "No omitir un remate únicamente por ser contenido político. Humor sobre hechos, plazos, trámites o contradicciones verificadas, sin favorecer opciones electorales ni inventar intenciones.",
+        "political_required_to_finalize": true,
+        "political_on_failure": "mantener preparando o revisión editorial y no entregar como explicado hasta tener un remate verificable, específico y respetuoso",
+        "non_blocking_except_politics": true,
+        "sensitive_exception": "La sátira nunca se dirige a víctimas, tragedias ni personas vulnerables, incluso en noticias políticas."
       },
       "tremending_prefix": "TT 🗯️ ",
       "tremending_prefix_once": true,
       "closer_required_for_eligible": true,
-      "closer_eligible_rule": "Intentar un único remate en toda tendencia verificable, incluidas las políticas, con sátira situacional neutral y sin consignas partidistas. Solo los sucesos sensibles/trágicos pueden justificar omisión deliberada; si no surge un remate apropiado o no cabe, conservar el texto factual sin bloquearlo."
+      "closer_eligible_rule": "En política es obligatorio un remate satírico neutral y específico para finalizar como explicada; si no existe, mantener revisión editorial. En otros temas se intenta, y en tragedias/sucesos sensibles puede omitirse."
     },
     "progress_policy": {
       "enabled": true,
