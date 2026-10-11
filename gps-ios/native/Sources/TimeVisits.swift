@@ -7,7 +7,7 @@ struct TimeVisit: Identifiable {
     let start: Date
     let end: Date
     let confirmedSeconds: TimeInterval
-    let fragments: Int
+    let fragments: [AssignedInterval]
     var duration: TimeInterval { end.timeIntervalSince(start) }
 }
 
@@ -21,7 +21,7 @@ enum TimeVisitIndex {
         var start:Date?
         var lastEnd:Date?
         var seconds:TimeInterval=0
-        var fragments=0
+        var fragments:[AssignedInterval]=[]
 
         func finish() {
             guard let start, let lastEnd, seconds>0 else { return }
@@ -35,19 +35,19 @@ enum TimeVisitIndex {
                 start=nil
                 lastEnd=nil
                 seconds=0
-                fragments=0
+                fragments=[]
                 continue
             }
             if let lastEnd, piece.start.timeIntervalSince(lastEnd)>maximumGap {
                 finish()
                 start=nil
                 seconds=0
-                fragments=0
+                fragments=[]
             }
             if start == nil { start=piece.start }
             lastEnd=piece.end
             seconds+=piece.seconds
-            fragments+=1
+            fragments.append(piece)
         }
         finish()
         return result
@@ -59,9 +59,10 @@ enum TimeVisitIndex {
         return visits.compactMap { visit in
             let begin=max(day,visit.start), end=min(finish,visit.end)
             guard end>begin else { return nil }
-            // Los huecos muy cortos dentro de la visita no se atribuyen como tiempo confirmado.
-            let scale=visit.duration>0 ? min(1,visit.confirmedSeconds/visit.duration) : 0
-            return (visit,begin,end,end.timeIntervalSince(begin)*scale)
+            let confirmed=visit.fragments.reduce(0) { total,segment in
+                total+max(0,min(finish,segment.end).timeIntervalSince(max(day,segment.start)))
+            }
+            return (visit,begin,end,confirmed)
         }
     }
 
