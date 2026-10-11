@@ -549,6 +549,11 @@ def process(project,now,token,chat):
                 photo_url=fast_archive_from_article(card.get("source_url",""))
                 if existing:
                     existing["archive_checked_at"]=now.isoformat()
+                    ledger["updated_at"]=now.isoformat()
+                    # Persist the throttle even if neither text nor photo
+                    # changes; otherwise a busy radar can refetch the same
+                    # unreachable article every ten minutes.
+                    put(path,ledger)
         if not existing or old_photo or is_late_photo:
             image_data=archival_image(photo_url) if photo_url else None
             if not image_data and project=="ttendencias" and not existing:
