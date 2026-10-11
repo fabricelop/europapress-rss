@@ -120,5 +120,5 @@ const { chromium } = require('playwright');
       fs.writeFileSync(outboxFile,JSON.stringify(recovered,null,2),'utf8');
       result.pending_preserved=recovered.candidates.length;
     }
-  }finally{fs.writeFileSync(path.join(outDir,'results.json'),JSON.stringify(result,null,2),'utf8');console.log(JSON.stringify(result,null,2));await browser.close();}
+  }finally{fs.writeFileSync(path.join(outDir,'results.json'),JSON.stringify(result,null,2),'utf8');console.log(JSON.stringify(result,null,2));await browser.close();if(['error','auth_required','missing_secrets'].includes(result.status))process.exitCode=1;}
 })();
