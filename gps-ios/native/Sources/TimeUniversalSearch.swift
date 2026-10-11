@@ -21,7 +21,7 @@ struct TimeUniversalSearch: View {
             guard NamedPlaces.normalize(place.name).contains(needle),
                   let first=place.cellIDs.compactMap(TimeAnalytics.cell).first else { continue }
             results.append(TimeSearchHit(id:"p"+place.id.uuidString,title:place.name,
-               subtitle:"Lugar · \(place.cellIDs.count) cuadrícula(s)",
+               subtitle:"Zona · \(place.cellIDs.count) cuadrícula(s)",
                cell:first,symbol:"mappin.and.ellipse"))
         }
         for cell in model.allCells {
@@ -53,7 +53,7 @@ struct TimeUniversalSearch: View {
             List {
                 if query.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty {
                     ContentUnavailableView("Busca en tu mapa",systemImage:"magnifyingglass",
-                      description:Text("Lugares como Montevalle, códigos Zona 001, coordenadas de cuadrícula o territorios ya clasificados."))
+                      description:Text("Zonas como Montevalle, códigos Zona 001, coordenadas de cuadrícula o territorios ya clasificados."))
                 } else if hits.isEmpty {
                     ContentUnavailableView.search(text:query)
                 }
@@ -81,7 +81,7 @@ struct TimeUniversalSearch: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
-            .searchable(text:$query,prompt:"Lugar, zona, país, ciudad…")
+            .searchable(text:$query,prompt:"Zona, cuadrícula, país, ciudad…")
             .navigationTitle("Buscar")
             .toolbar {
                 ToolbarItem(placement:.cancellationAction) {
