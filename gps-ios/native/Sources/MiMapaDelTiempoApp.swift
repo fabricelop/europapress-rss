@@ -1643,25 +1643,18 @@ struct TimeSettingsView: View {
     @State private var confirmRestore = false
     @State private var backupPassword = ""
     @State private var secureExportFile: URL?
-    @State private var scriptableExportFile: URL?
     @State private var message = ""
     @State private var exportFile: URL?
     @AppStorage("miMapaFaceID") private var faceIDEnabled = false
-    @AppStorage("timeWidgetShowPlace") private var showPlaceInWidgets = false
-    @AppStorage("miMapaLiveActivity") private var lockScreenEnabled = false
     var body: some View {
         NavigationStack {
             Form {
                 Section("Seguimiento") {
                     LabeledContent("Estado", value: model.gpsStatus)
-                    Text("La pausa conserva la última cuadrícula y continúa contando el tiempo, incluso con el móvil bloqueado. Ese periodo quedará señalado como asumido, no como GPS verificado.")
-                        .font(.caption).foregroundStyle(.secondary)
                     LabeledContent("Modo GPS",value:model.isResting ? "Pausa voluntaria · bajo consumo" :
                         model.recording ? "Continuo · máxima precisión" : "Detenido")
                     if let resting = model.restingCellName {
                         LabeledContent("Cuadrícula en pausa",value:resting)
-                        Text("La reactivación es manual. Como respaldo, iOS puede detectar que sales de la zona y solicitar el GPS; no garantiza cuándo llegará ese aviso.")
-                            .font(.caption).foregroundStyle(.secondary)
                     }
                     Button(model.isResting ? "Reanudar GPS" :
                            model.recording ? "Detener GPS · seguir contando" : "Iniciar GPS continuo") {
@@ -1678,8 +1671,6 @@ struct TimeSettingsView: View {
                 }
                 Section("Privacidad") {
                     Toggle("Solicitar Face ID o código", isOn:$faceIDEnabled)
-                    Text("Solo bloquea el acceso a la pantalla. El GPS continúa registrando en segundo plano cuando iOS lo permita.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Mapa") {
                     Toggle("Mostrar recorridos recientes", isOn:$model.showRoutes)
@@ -1696,70 +1687,20 @@ struct TimeSettingsView: View {
                         }
                     }
                     Toggle("Usar mapa básico (sin calles)", isOn:$model.forceBasicMap)
-                    Text("Se activa automáticamente si no hay Internet; el mapa básico funciona sin descargar cartografía.")
-                        .font(.caption).foregroundStyle(.secondary)
                     Toggle("Escala de colores adaptada",isOn:$model.adaptive)
                         .onChange(of:model.adaptive) { _,value in
                             UserDefaults.standard.set(value,forKey:"mapAdaptiveV5")
                         }
-                    Text("Permanencia: tiempo acumulado. Exploración: territorio descubierto. La escala adaptada resalta las diferencias entre cuadrículas visibles.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Pantalla de bloqueo") {
-                    Toggle("Mostrar estancia con Actividad en directo",isOn:$lockScreenEnabled)
-                        .onChange(of:lockScreenEnabled) { _,enabled in
-                            model.setLockScreenEnabled(enabled)
-                        }
-                    Text("La Actividad en directo utiliza el reloj de iOS para avanzar sin consumir GPS adicional. Es opcional y requiere que iOS registre la extensión de widgets y permita Actividades en directo.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Button("Probar Actividad en directo ahora") {
-                        model.testLiveActivity()
+                    NavigationLink("Actividad en directo, widgets y Scriptable") {
+                        TimeLockScreenSettingsView(model:model)
                     }
-                    .buttonStyle(.borderedProminent)
-                    Button("Actualizar diagnóstico de bloqueo y widgets") {
-                        model.checkLockScreen()
-                    }
-                    Text(model.liveActivityDiagnostic).font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textSelection(.enabled)
-                    Text("La duración de una Actividad en directo está limitada por iOS; el histórico sigue guardándose aunque desaparezca de la pantalla bloqueada.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                Section("Widgets iPhone") {
-                    Text("Esta versión incluye un widget de acceso y una Actividad en directo. El widget puede abrir el mapa sin App Group; para mostrar estadísticas necesita permisos de datos compartidos en la firma.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Toggle("Mostrar nombres de lugares en widgets",isOn:$showPlaceInWidgets)
-                        .disabled(!TimeWidgetStorage.isAvailable)
-                        .onChange(of:showPlaceInWidgets) { _,_ in model.refreshWidgets() }
-                    LabeledContent("Datos compartidos",
-                        value: TimeWidgetStorage.isAvailable ? "Contenedor autorizado" : "No disponible con esta firma")
-                    Text(model.widgetDiagnostic).font(.caption)
-                        .foregroundStyle(.secondary).textSelection(.enabled)
-                    Button("Exportar resumen para Scriptable") {
-                        do { scriptableExportFile = try model.exportScriptableSnapshot() }
-                        catch { message=error.localizedDescription }
-                    }
-                    if let scriptableExportFile {
-                        ShareLink(item:scriptableExportFile) {
-                            Label("Enviar MiMapaEstado.json a Scriptable",systemImage:"square.and.arrow.up")
-                        }
-                    }
-                    Text("Scriptable puede mostrar este resumen desde su carpeta de iCloud Drive. Es una copia manual: no tiene acceso al GPS ni a la base SQLite y su actualización no es instantánea.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("La extensión compila y va incluida en la IPA, pero iOS aún no la muestra en tu galería. La firma real de Sideloadly y el registro del widget requieren diagnóstico en el iPhone. No prometemos contadores en widgets en esta versión.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("En la pantalla de inicio: mantén pulsado un espacio libre, toca Editar → Añadir widget y busca Mi Mapa del Tiempo. En la pantalla bloqueada: mantén pulsado, Personalizar y selecciona Widgets.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Text("Si iOS llega a registrar la extensión sin App Group, mostrará un acceso a la aplicación. La visualización de tiempos dinámicos requiere una vía de datos compartidos autorizada.")
-                        .font(.caption).foregroundStyle(.secondary)
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Diagnóstico") {
                     NavigationLink("Estado técnico del GPS y almacenamiento") {
                         GPSDiagnosticsView(model:model,gps:gps)
                     }
-                    Text("Las posiciones técnicas se consultan aquí, no en Estadísticas.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Copia segura en iCloud Drive") {
                     SecureField("Contraseña de la copia (mín. 10 caracteres)",text:$backupPassword)
@@ -1776,13 +1717,11 @@ struct TimeSettingsView: View {
                     Button("Elegir copia de iCloud Drive para restaurar") {
                         importBackup=true
                     }.disabled(backupPassword.count < 10 || model.recording || model.isResting)
-                    Text("La copia es manual y cifrada; NO existe sincronización automática con esta firma. Guarda la contraseña fuera del iPhone. Restaurar reemplaza el historial actual y requiere detener el seguimiento.")
+                    Text("Guarda la copia y su contraseña por separado. Restaurar reemplaza los datos.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Datos") {
                     Button("Importar archivo GPX") { importing = true }
-                    Text("Importar GPX añade recorridos antiguos con hora. Exportar JSON crea una copia de seguridad manual; conviene conservarla fuera del iPhone.")
-                        .font(.caption).foregroundStyle(.secondary)
                     Button("Preparar exportación JSON") {
                         do { exportFile = try model.exportJSON() }
                         catch { message = error.localizedDescription }
@@ -1790,13 +1729,8 @@ struct TimeSettingsView: View {
                     if let exportFile { ShareLink(item: exportFile) { Label("Compartir copia JSON", systemImage: "square.and.arrow.up") } }
                     if !message.isEmpty { Text(message).font(.footnote) }
                 }
-                Section("Limitaciones actuales") {
-                    Text("El histórico, los lugares y la clasificación territorial se guardan en SQLite. Los territorios se clasifican bajo demanda, usando Internet y las consultas de Apple. Los widgets todavía pueden no aparecer con firmas gratuitas; no se garantiza su disponibilidad ni recarga. El consumo GPS debe contrastarse con pruebas reales.")
-                        .font(.footnote)
-                }
             }
             .navigationTitle("Ajustes")
-            .onAppear { model.checkLockScreen() }
             .confirmationDialog("Esta acción sustituirá todos los datos locales",isPresented:$confirmRestore) {
                 Button("Restaurar y sustituir historial",role:.destructive) {
                     guard let pendingBackup else { return }
