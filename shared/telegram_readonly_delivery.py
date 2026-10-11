@@ -103,6 +103,32 @@ def provisional_news_copy(job,title):
         body=body[:limit].rsplit(" ",1)[0].rstrip(".,;: ")+"…"
     return lead+body
 
+GENERIC_NEWS_TITLES={"noticia","sin título","sin titulo","actualidad","titular pendiente",""}
+
+def authentic_news_title(value):
+    title=trim(value,400)
+    return title if title.casefold().strip(" .:–-") not in GENERIC_NEWS_TITLES else ""
+
+def recover_news_metadata(eid,*rows):
+    """Recover original capture metadata; never manufacture a headline."""
+    candidates=list(rows)
+    for filename,fields in (
+        ("ttittulares/editorial-queue.json",("items",)),
+        ("ttittulares/status.json",("processing_items","ready_items","items")),
+        ("ttittulares/prepared.json",("items",)),
+    ):
+        document=load(filename,{})
+        for field in fields:
+            candidates.extend(row for row in (document.get(field) or [])
+                              if isinstance(row,dict) and str(row.get("event_id") or "")==eid)
+    title=next((t for row in candidates if isinstance(row,dict)
+                if (t:=authentic_news_title(row.get("title")))), "")
+    url=next((str(row.get("url") or "") for row in candidates if isinstance(row,dict)
+              and str(row.get("url") or "").startswith("https://")), "")
+    source=next((str(row.get("source") or "") for row in candidates if isinstance(row,dict)
+                 and row.get("source")), "")
+    return title,url,source
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -125,7 +151,10 @@ def news_cards(now):
         if not fresh(start,now):continue
         # New PROCESSING news is sent immediately, with an explicit warning.
         revision=int(item.get("revision") or job.get("revision") or 1)
-        title=trim(item.get("title") or job.get("title") or "Noticia",400)
+        title,original_url,original_source=recover_news_metadata(eid,item,job)
+        if not title:
+            print("TTI_MISSING_AUTHENTIC_TITLE",eid,"delivery blocked; retry next run",flush=True)
+            continue
         factual=trim(item.get("factual_summary") or (item.get("tweet") or {}).get("text"),850)
         explanation=public_news_detail(item)
         remate=trim((item.get("tweet") or {}).get("remate"),200)
@@ -159,7 +188,7 @@ def news_cards(now):
         yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
                "image":image_url(item) or image_url(job),
                "search":search,"final":is_final,"start":start,"title":title,
-               "source_url":str(item.get("url") or job.get("url") or "")}
+               "source_url":original_url,"source":original_source}
 
 def verified_article_urls(*rows):
     """Prefer a checked news article, not a homepage or a generated image."""
