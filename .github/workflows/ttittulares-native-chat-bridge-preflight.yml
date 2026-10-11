@@ -35,6 +35,8 @@ jobs:
           auth,body=test(True)
           print('TTI_CHAT_BRIDGE_UNAUTHORIZED_HTTP',noauth)
           print('TTI_CHAT_BRIDGE_AUTHENTICATED_EMPTY_HTTP',auth)
+          print('TTI_CHAT_BRIDGE_UNAUTHORIZED_RESPONSE',repr(_[:140]))
+          print('TTI_CHAT_BRIDGE_AUTHORIZED_RESPONSE',repr(body[:140]))
           # Authorized empty JSON is not a question; only 422 proves the
           # authentication and the route worked without calling Workers AI.
           assert noauth==403,(noauth,'missing security gate')
