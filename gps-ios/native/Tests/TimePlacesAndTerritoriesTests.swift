@@ -33,7 +33,7 @@ final class TimePlacesAndTerritoriesTests: XCTestCase {
         let territory=TerritoryRecord(country:"España",community:"Madrid",
                    province:nil,city:"Madrid",district:nil,neighborhood:nil)
         XCTAssertEqual(territory.hierarchy.map(\.0),["País","Comunidad/estado","Municipio"])
-        XCTAssertNil(TerritoryLevel.neighborhood.value(territory))
+        XCTAssertNil(TerritoryLevel.urban.value(territory))
     }
     func testShortZoneCodesUniqueAcrossOldCoordinates() {
         let a=Cell(row:145195,column:149400)
