@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: ttittulares-radar-watchdog
@@ -46,6 +47,7 @@ jobs:
       - name: Verificar, recuperar y guardar radar TTiTTulares
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           git config user.name "ttittulares-radar-watchdog"
@@ -106,6 +108,15 @@ jobs:
 
             if git push origin HEAD:main; then
               echo "Radar actualizado correctamente."
+              # GITHUB_TOKEN commits do not trigger push workflows. Explicitly
+              # dispatch Telegram so new PROCESSING cards arrive promptly.
+              if gh workflow run send-ttittulares-ready-telegram.yml --repo "$GITHUB_REPOSITORY" --ref main; then
+                echo "TTITTULARES_EARLY_TELEGRAM_DISPATCHED"
+              else
+                # Cron remains as backstop; never mark a good radar run failed
+                # solely because GitHub delayed dispatching its downstream job.
+                echo "Aviso: Telegram dispatch falló; cron */10 reintentará." >&2
+              fi
               exit 0
             fi
 
