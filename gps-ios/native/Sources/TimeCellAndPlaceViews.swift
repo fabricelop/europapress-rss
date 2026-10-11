@@ -32,7 +32,7 @@ struct CellHistoryView: View {
                     DisclosureGroup {
                         let entries=TimeAttribution.canonical(model.data.intervals).filter {
                             $0.cell.id == cell.id &&
-                            $0.start < Calendar.current.date(byAdding:.day,value:1,to:day.date) ?? day.date &&
+                            $0.start < (Calendar.current.date(byAdding:.day,value:1,to:day.date) ?? day.date) &&
                             $0.end > day.date
                         }
                         ForEach(entries) { interval in
