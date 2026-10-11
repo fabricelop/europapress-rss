@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-27T22:15:40.020044Z",
-      "event_id": "dab5ca1ae833-r1",
-      "phase": "outbox",
-      "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento dab5ca1ae833-r1: dab5ca1ae833-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-27T22:15:44.455587Z",
       "event_id": "0ec9b53c91e8-r1",
       "phase": "outbox",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "666a9e0f5baa-r1.json: AttributeError: 'str' object has no attribute 'get'",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 666a9e0f5baa-r1: 666a9e0f5baa-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-11T20:34:19.688974Z",
+      "event_id": "1759943d83c8-r1",
+      "phase": "outbox",
+      "reason": "1759943d83c8-r1.json: AttributeError: 'str' object has no attribute 'get'",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 1759943d83c8-r1: 1759943d83c8-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
