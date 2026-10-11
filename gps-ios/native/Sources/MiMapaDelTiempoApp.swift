@@ -743,6 +743,64 @@ struct SavedState: Codable {
             throw error
         }
     }
+    func exportEncryptedBackup(password:String) throws -> URL {
+        save(force:true)
+        var snapshot=data
+        // Una copia nocturna congela su fecha; restaurarla otro día nunca
+        // puede multiplicar el tiempo asumido desde la antigua pausa.
+        if let rest=snapshot.gpsRest {
+            let now=Date()
+            if now>rest.startedAt {
+                let part=AssignedInterval(start:rest.startedAt,end:now,cell:rest.cell,
+                        quality:"asumido · copia durante pausa",source:"descanso")
+                snapshot.intervals.append(part)
+                snapshot.totals[rest.cell.id,default:0] += now.timeIntervalSince(rest.startedAt)
+            }
+        }
+        snapshot.gpsRest=nil
+        snapshot.trackingEnabled=false
+        snapshot.savedVisitStart=nil
+        let data=try TimeSecureBackup.encrypt(snapshot,password:password)
+        let stamp=Date().formatted(.iso8601.year().month().day().dateSeparator(.dash))
+        let file=FileManager.default.temporaryDirectory.appendingPathComponent(
+            "MiMapaDelTiempo-\(stamp).mmapbak")
+        try data.write(to:file,options:.atomic)
+        return file
+    }
+
+    func inspectEncryptedBackup(_ bytes:Data,password:String) throws -> String {
+        let restored=try TimeSecureBackup.decrypt(bytes,password:password)
+        return "\(restored.fixes.count) posiciones, \(restored.intervals.count) intervalos, \(restored.customZones.count) zonas"
+    }
+
+    /// Restauración TOTAL únicamente con seguimiento apagado y confirmación.
+    /// SQLite.replaceAll es transaccional, no deja media copia restaurada.
+    func restoreEncryptedBackup(_ bytes:Data,password:String) throws {
+        guard !recording && !isResting else {
+            throw TimeBackupError.invalidBackup
+        }
+        var restored=try TimeSecureBackup.decrypt(bytes,password:password)
+        restored.trackingEnabled=false
+        restored.gpsRest=nil
+        restored.savedVisitStart=nil
+        if let store {
+            try store.replaceAll(restored)
+        } else {
+            try JSONEncoder().encode(restored).write(to:fileURL,options:.atomic)
+        }
+        data=restored
+        current=nil
+        lastProcessedSample=restored.fixes.last
+        stableCell=restored.fixes.last?.cell
+        currentVisitStart=nil
+        normalizedTotalsCache=[:]
+        normalizedCacheIntervalCount = -1
+        pendingFixes=[]; pendingIntervals=[]; pendingTotals=[:]
+        gpsStatus="Historial restaurado · GPS detenido"
+        widgetPublisher.publish(from:self,force:true)
+        activityPublisher.refresh(from:self,force:true)
+    }
+
     func exportJSON() throws -> URL {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("Mi-Mapa-del-Tiempo.json")
         try JSONEncoder().encode(data).write(to: url, options: .atomic)
