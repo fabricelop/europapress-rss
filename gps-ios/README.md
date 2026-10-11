@@ -4,19 +4,45 @@ Proyecto personal para iPhone. Cuadrículas de aproximadamente 100 × 100 metros
 
 ## Qué contiene esta rama
 
-- native/: aplicación SwiftUI inicial para iOS 17+ con CoreLocation de máxima precisión, mapa MapKit, acumulación entre fijaciones GPS, datos JSON locales, estadísticas iniciales, diario de ubicaciones y GPX.
+- native/: aplicación SwiftUI inicial para iOS 17+ con CoreLocation de máxima precisión, mapa MapKit, acumulación entre fijaciones GPS, datos JSON locales, estadísticas iniciales, diario por días/trayectos, reproducción con huecos explícitos y GPX.
 - preview/index.html: prototipo web autónomo para probar cuadrículas, GPS en primer plano, mapa básico sin calles, modos permanencia/exploración, un recorrido de demostración, estadísticas, importación GPX y exportación JSON.
 
-## Probar la app nativa (Mac necesario)
+## Prueba en iPhone sin Mac propio ni Vercel (Windows + Sideloadly)
 
-1. Descargar los archivos de la carpeta gps-ios/native.
-2. En un Mac, instalar Xcode y XcodeGen (github.com/yonaskolb/XcodeGen).
-3. En Terminal, dentro de native, ejecutar: xcodegen generate
-4. Abrir MiMapaDelTiempo.xcodeproj, seleccionar un equipo de firma (Signing & Capabilities) y un identificador de paquete propio.
-5. Conectar un iPhone, seleccionar ese destino y pulsar Run.
-6. Conceder los permisos de localización precisa y siempre, probar andando, en coche y con pantalla bloqueada.
+La app es **nativa SwiftUI**, no una web. El repositorio contiene el workflow
+`.github/workflows/mi-mapa-del-tiempo-ios-build.yml`, que compila sobre el
+runner `macos-15` de GitHub Actions y empaqueta la IPA **sin firmar**.
+No utiliza servidores de Vercel, alojamiento web ni despliegues.
 
-No se ha compilado en Xcode ni hay IPA/TestFlight firmado. Para la prueba en iPhone hace falta Mac, cuenta Apple y compilación/firma.
+1. Consultar [GitHub Actions](https://github.com/fabricelop/europapress-rss/actions),
+   localizar **Mi Mapa del Tiempo - IPA iPhone** y abrir el último run VERDE
+   de la rama `feature/mi-mapa-del-tiempo-ios`. Si no aparece un run correcto,
+   no hay una IPA validada todavía.
+2. Abrir **Artifacts → MiMapaDelTiempo-unsigned-IPA** y descargar el ZIP.
+   Extraer `MiMapaDelTiempo-unsigned.ipa` en Windows.
+3. Conectar el iPhone al PC (confiar en el equipo y conservar Modo Desarrollador).
+4. Arrastrar la IPA a **Sideloadly**, elegir el iPhone y firmarla con una
+   cuenta Apple autorizada. Una cuenta Apple gratuita suele requerir
+   renovar la firma cada 7 días.
+5. Abrir **Mi Mapa del Tiempo** en el iPhone. En Ajustes, pulsar
+   **Iniciar GPS de máxima precisión** y autorizar localización precisa
+   y «Siempre». Comprobar el estado del GPS y que las cuadrículas y
+   contadores se actualizan en Mapa, incluso al desplazarse.
+6. Probar primero con pantalla encendida y después bloqueada;
+   volver a abrir la app y verificar el historial, continuidad
+   y exportación. Si iOS restringe el segundo plano, recoger
+   el diagnóstico sin dar por registrada ninguna duración desconocida.
+
+La IPA no está firmada por GitHub: **la firma se hace en Windows con
+Sideloadly**. El proyecto debe superar una compilación Xcode real antes
+de considerar instalable cualquier artefacto. Una IPA compilada no garantiza
+seguimiento 24/7: iOS puede suspender o cerrar el proceso.
+
+Archivos relevantes:
+- [Código nativo](native/Sources/MiMapaDelTiempoApp.swift)
+- [Diario GPS](native/Sources/GPSDiaryViews.swift)
+- [Reproducción](native/Sources/GPSReplayShell.swift)
+- [Estado y limitaciones](STATUS.md)
 
 ## Probar la vista web
 
