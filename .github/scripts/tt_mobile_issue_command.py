@@ -280,15 +280,41 @@ def trend_command(action, element_id, context, instruction, now):
         deliveries["updated_at"] = now
         save(deliveries_path, deliveries)
         return "TTendencias: " + ("publicada" if action == "published" else "borrado Telegram en cola") + ": " + element_id
+    recent = load("trends/recent.json", {"items": []})
+    top_row = next((x for x in recent.get("items", [])[:30]
+                    if matches(x, element_id) or
+                    (r and str(x.get("name") or "").casefold()==
+                     str(r.get("name") or "").casefold())), None)
     if r is None:
-        r = {"id": element_id, "name": context or element_id}
+        # New 11-30 cards may use their visible name as the Telegram deep-link
+        # ID. The editorial ID must be stable and safe for outbox filenames.
+        import hashlib
+        name = str((top_row or {}).get("name") or context or element_id)
+        stable_id = element_id if re.fullmatch(r"[A-Za-z0-9_-]{3,80}",element_id) else hashlib.sha256(name.encode("utf-8")).hexdigest()[:12]
+        r = {"id": stable_id, "name": name}
         requests.append(r)
+    if top_row:
+        r["rank"] = int(top_row.get("rank") or r.get("rank") or 0)
+        r["name"] = str(top_row.get("name") or r.get("name") or "")
     r.update(status="preparing", requested_at=now, revision=int(r.get("revision") or 0) + 1,
              auto_queued=False, request_source="github_pages_authorized_issue",
-             reexplain_instructions=instruction or "Reexplicar con los hechos verificados, sin generar imágenes.")
+             reexplain_instructions=instruction or "Explicar la novedad contrastada sin generar imágenes.")
     doc["updated_at"] = now
     save(p, doc)
-    return "TTendencias: petición de explicación registrada: " + element_id
+    # Apply to the queue immediately instead of waiting for the Top 30 refresh.
+    path = "trends/editorial-queue.json"
+    queue = load(path, {"project": "TTendencias", "items": []})
+    rows = [x for x in queue.get("items", []) if str(x.get("id") or "") != str(r["id"])]
+    rows.append({
+        "id": r["id"], "name": r["name"], "rank": r.get("rank"),
+        "status": "preparing", "requested_at": now,
+        "revision": r["revision"], "task": "explain",
+        "auto_queued": False, "request_source": "github_pages_authorized_issue",
+        "rewrite_instruction": r["reexplain_instructions"],
+    })
+    queue.update(project="TTendencias", items=rows, count=len(rows), updated_at=now)
+    save(path, queue)
+    return "TTendencias: petición de explicación registrada: " + str(r["name"])
 
 
 
