@@ -1,5 +1,14 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## Verificación v0.6 (11/10/2026)
+- [x] [GitHub Actions: XCTest inicial de v0.6, run 38146997366](https://github.com/fabricelop/europapress-rss/actions/runs/38146997366): **44 tests, 0 fallos** y compilación Release iOS con WidgetKit.
+- [x] [GitHub Actions: compilación final de v0.6, run 38147674624](https://github.com/fabricelop/europapress-rss/actions/runs/38147674624): build Release correcto, artefacto IPA 11704869636.
+- [x] IPA descargada y validada: `MiMapaDelTiempo-v06-unsigned.ipa` (775878 bytes); ZIP sin errores, `CFBundleIdentifier=es.mimapadeltiempo.app`, versión `1.0.6`, build 6, `UIBackgroundModes=location`, widget embebido `MiMapaWidgets.appex` build 6 con punto de extensión WidgetKit correcto.
+- [ ] Las pruebas completas del último ajuste de la interfaz estaban todavía pendientes en la ejecución v0.6 de simulador cuando se verificó la compilación final. Los 44 tests son de la versión de código inmediatamente anterior a los últimos cambios de navegación/contadores.
+- [ ] Sin prueba de instalación iPhone con firma Sideloadly ni confirmación de widget en la galería. La versión v0.6 no exige App Groups y solo muestra un widget de acceso a la app si no existe snapshot compartido.
+- [ ] Probar in situ: preservar 278 cuadrículas e historial, nombres Montevalle, calendarios y nombres duplicados cercanos/lejanos, botón Ver en el mapa, batería y clasificación de trayectos.
+
+
 ## v0.6 — calendario, lugares por nombre y comprobaciones (rama de prueba)
 
 - Rama aislada `feature/mi-mapa-del-tiempo-ios-v06`. No modifica `main`, la versión que ya está en iPhone ni los proyectos TT/AquíEstuve.
