@@ -76,12 +76,19 @@ st.data.manual.items.push({id:'test-group',name:'Evento agrupado',
   explanation:'Explicación compartida de la tercera tendencia.',
   explained_at:new Date().toISOString()});
 const topRows=tt.trendRows();
-assert.equal(topRows[0]._status,'EXPLICADA','Explained trend should show its status in Top 30');
-assert(topRows[0].explanation.includes('Explicación completa'),'Top 30 should show the editorial text');
+assert.equal(topRows[0]._status,'PENDIENTE DE TELEGRAM',
+  'An editorial explanation without Telegram proof is not yet EXPLICADA');
+assert.equal(topRows[0].explanation,'',
+  'Never offer unpublished explanations directly in Top 30');
 assert.equal(topRows[1]._status,'EN ELABORACIÓN','Top 30 should distinguish work in progress');
-assert.equal(topRows[2]._status,'EXPLICADA','A group member must inherit the group explanation');
-assert(topRows[2].explanation.includes('compartida'),'Group explanation should be visible');
-assert.equal(topRows[3]._status,'PENDIENTE','Unexplained positions must remain distinguishable');
+assert.equal(topRows[2]._status,'PENDIENTE DE TELEGRAM',
+  'A grouped explanation is not publishable until its Telegram delivery');
+assert.equal(topRows[2].explanation,'',
+  'Grouped explanations may not bypass Explicadas');
+assert.equal(topRows[3]._status,'PENDIENTE','Unexplained Top 10 positions remain pending');
+assert.equal(topRows[10]._status,'PREPARACIÓN MANUAL','Top 11-30 should not be auto-explained');
+assert(html.includes("command('Preparar novedad','prepare');"),
+  'Top 11-30 must offer the explicit Prepare novelty command');
 // A completed trend is visible only in Explicadas until the actual delivery is
 // closed/deleted. The exact historical explanation then reappears in Top 30.
 st.data.deliveries.items.push({event_id:'test-ready',revision:0,
