@@ -1345,13 +1345,10 @@ struct TimeSettingsView: View {
                     LabeledContent("Estado", value: model.gpsStatus)
                     Text("Tras activarlo una vez, el seguimiento se reanuda automáticamente al abrir la aplicación. iOS puede limitar o interrumpir la localización en segundo plano.")
                         .font(.caption).foregroundStyle(.secondary)
-                    LabeledContent("Modo GPS",value:gps.mode.rawValue)
-                    Toggle("Voy a moverme",isOn:Binding(get:{gps.movingSoon},
-                        set:{gps.setAnticipation($0)}))
-                        .disabled(!model.recording)
-                    Text("Anticipa máxima precisión. Se desactiva automáticamente tras 10 minutos de reposo confirmado; aunque lo olvides, el móvil intenta detectar movimiento por sí solo.")
+                    LabeledContent("Modo GPS",value:"Continuo · máxima precisión")
+                    Text("El seguimiento permanece activo sin reposo automático, incluso en paradas prolongadas. CoreMotion no condiciona la recepción del GPS.")
                         .font(.caption).foregroundStyle(.secondary)
-                    Button(model.recording ? "Detener GPS" : "Iniciar GPS inteligente") {
+                    Button(model.recording ? "Detener GPS" : "Iniciar GPS continuo") {
                         if model.recording { gps.end(model) } else { gps.begin(model) }
                     }
                 }
