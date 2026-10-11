@@ -783,6 +783,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     @Published private(set) var resumeCount = 0
     @Published private(set) var lastGapSeconds: TimeInterval = 0
     @Published private(set) var lastCallbackAt: Date?
+    @Published private(set) var automaticRestResumptions = 0
 
     override init() {
         super.init()
@@ -803,6 +804,12 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
 
     @MainActor func begin(_ model: TimeModel) {
         self.model = model
+        if model.isResting {
+            model.finishRest()
+            automaticMonitoringStop()
+        }
+        lastPosition = nil
+        lastReceivedAt = nil
         configureContinuous()
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
@@ -826,8 +833,56 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                                cause: "Inicio GPS continuo · sin pausa automática")
     }
 
-    @MainActor func end(_ model: TimeModel) {
+    /// Pausa de precisión con seguimiento de salida de zona de bajo consumo.
+    @MainActor func rest(_ model: TimeModel) {
+        guard model.pauseForRest() else { return }
+        self.model = model
         manager.stopUpdatingLocation()
+        motion.end()
+        automaticMonitoringStart()
+    }
+
+    @MainActor func restoreRest(_ model: TimeModel) {
+        guard model.isResting else { return }
+        self.model = model
+        manager.stopUpdatingLocation()
+        motion.end()
+        model.recording = false
+        model.gpsStatus = "GPS en pausa · tiempo acumulándose en \(model.restingCellName ?? "cuadrícula")"
+        automaticMonitoringStart()
+    }
+
+    private func automaticMonitoringStart() {
+        guard let rest = model?.data.gpsRest,
+              manager.authorizationStatus == .authorizedAlways else { return }
+        manager.startMonitoringSignificantLocationChanges()
+        guard CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self),
+              manager.maximumRegionMonitoringDistance > 0 else { return }
+        let radius = min(GPSRestPolicy.geofenceRadius,
+                         manager.maximumRegionMonitoringDistance)
+        guard radius >= 100 else { return }
+        let region = CLCircularRegion(
+            center: CLLocationCoordinate2D(latitude: rest.latitude, longitude: rest.longitude),
+            radius: radius, identifier: "mimapa-descanso")
+        region.notifyOnEntry = false
+        region.notifyOnExit = true
+        for old in manager.monitoredRegions where old.identifier == region.identifier {
+            manager.stopMonitoring(for: old)
+        }
+        manager.startMonitoring(for: region)
+    }
+
+    private func automaticMonitoringStop() {
+        for region in manager.monitoredRegions where region.identifier == "mimapa-descanso" {
+            manager.stopMonitoring(for: region)
+        }
+        manager.stopMonitoringSignificantLocationChanges()
+    }
+
+    @MainActor func end(_ model: TimeModel) {
+        if model.isResting { model.finishRest() }
+        manager.stopUpdatingLocation()
+        automaticMonitoringStop()
         manager.stopMonitoringSignificantLocationChanges()
         motion.end()
         model.recording = false
@@ -842,7 +897,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func refreshWhenForeground() {
-        guard model?.recording == true,
+        guard model?.recording == true, !model!.isResting,
               manager.authorizationStatus == .authorizedAlways ||
               manager.authorizationStatus == .authorizedWhenInUse else { return }
         // startUpdatingLocation es idempotente; no depende de CoreMotion.
@@ -873,6 +928,19 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
             for location in locations.sorted(by: { $0.timestamp < $1.timestamp }) {
                 guard location.horizontalAccuracy >= 0,
                       location.timestamp <= Date().addingTimeInterval(5) else { continue }
+                // Durante el descanso los eventos de localización de bajo consumo
+                // solo sirven para solicitar GPS si la salida está suficientemente lejos.
+                if let rest = model?.data.gpsRest {
+                    let anchor = CLLocation(latitude:rest.latitude,longitude:rest.longitude)
+                    if GPSRestPolicy.shouldResume(distance:anchor.distance(from:location),
+                                                  accuracy:location.horizontalAccuracy),
+                       let model {
+                        automaticRestResumptions += 1
+                        begin(model)
+                        model.recordPowerEvent(mode:.precision,
+                            cause:"GPS reactivado al detectar desplazamiento fuera de la zona")
+                    } else { continue }
+                }
                 // No registrar de nuevo muestras antiguas tras un despertar.
                 guard lastReceivedAt.map({ location.timestamp > $0 }) ?? true else { continue }
                 if let gap = GPSContinuityPolicy.observedGap(
@@ -888,6 +956,17 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 model?.record(location)
                 observe(location)
             }
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        Task { @MainActor in
+            guard region.identifier == "mimapa-descanso",
+                  let model, model.isResting else { return }
+            automaticRestResumptions += 1
+            begin(model)
+            model.recordPowerEvent(mode:.precision,
+                cause:"GPS reactivado tras aviso de salida de la zona de descanso")
         }
     }
 
@@ -923,6 +1002,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
             if manager.authorizationStatus == .denied || manager.authorizationStatus == .restricted {
                 model?.gpsStatus = "Permiso GPS denegado"
                 model?.recordPowerEvent(mode: .precision, cause: "Autorización GPS denegada")
+            } else if manager.authorizationStatus == .authorizedAlways,
+                      model?.isResting == true {
+                automaticMonitoringStart()
             } else if manager.authorizationStatus == .authorizedAlways, model?.recording == true {
                 manager.startMonitoringSignificantLocationChanges()
                 configureContinuous()
