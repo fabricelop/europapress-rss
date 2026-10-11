@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T22:45:00+02:00",
-  "last_completed_at": "2026-10-11T22:57:35+02:00",
-  "updated_at": "2026-10-11T22:57:35+02:00",
+  "last_started_at": "2026-10-11T23:15:00+02:00",
+  "last_completed_at": "2026-10-11T23:17:00+02:00",
+  "updated_at": "2026-10-11T23:17:00+02:00",
   "status": "success",
   "processed_ids": [
     "86ff744b54b9",
@@ -31,35 +31,36 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-20261011T224500-chat",
+    "marker": "TTENDENCIAS_RUNTRACE_V1",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-20261011T231500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-11T22:45:00+02:00",
-    "updated_at": "2026-10-11T22:57:35+02:00",
-    "finished_at": "2026-10-11T22:57:35+02:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-11T23:15:00+02:00",
+    "updated_at": "2026-10-11T23:17:00+02:00",
+    "finished_at": "2026-10-11T23:17:00+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
+    "message": "Pasada completada · 0 revisiones activas y ninguna explicación nueva necesaria",
     "summary": {
-      "processed": 6,
-      "closed": 6,
+      "processed": 0,
+      "closed": 0,
       "problematic": 0,
-      "skipped": 0,
+      "skipped": 1,
       "visual_backlog": 0,
-      "group_links": 4,
-      "duplicate_cards_created": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "pending_repair_requested": 1
+      "pending_repair_requested": 1,
+      "recent_explained_reviewed": 37,
+      "sensitive_no_remate_kept": 3
     },
-    "message": "Pasada completada · 6/6 revisiones cerradas · 0 activas",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "workflow_overlap",
-        "detail": "El primer evento de Pellegrini fue cancelado por solape; se reintentó y quedó cerrado. La verificación detectó además una sustitución parcial de miembros del grupo Betis–Osasuna y se reconcilió conservando Betis, Morante y Ramis."
-      }
-    ],
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -69,159 +70,109 @@
     },
     "remate_selections": [
       {
-        "trend_id": "86ff744b54b9",
+        "trend_id": "db8e8811643b",
         "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.7,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_health"
       },
       {
-        "trend_id": "6983c81bc62a",
+        "trend_id": "38a1a9c41507",
         "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.2,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_migration_context"
+      },
+      {
+        "trend_id": "3e3d3995fd67",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitive_health"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-11T22:45:00+02:00",
+        "at": "2026-10-11T23:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 6 revisiones activas"
+        "message": "Preparando pasada editorial · 1 revisión activa"
       },
       {
-        "at": "2026-10-11T22:45:20+02:00",
+        "at": "2026-10-11T23:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "86ff744b54b9",
-        "title": "Raba",
-        "message": "Releyendo estado autoritativo de Raba"
+        "trend_id": "998c17ccf3c9",
+        "title": "Hugo Duro",
+        "message": "Releyendo estado autoritativo de Hugo Duro"
       },
       {
-        "at": "2026-10-11T22:47:20+02:00",
-        "phase": "investigating",
-        "trend_id": "86ff744b54b9",
-        "title": "Raba",
-        "message": "Hecho esencial verificado · gol al 2' y debut de Aguirre"
-      },
-      {
-        "at": "2026-10-11T22:47:40+02:00",
-        "phase": "drafting",
-        "trend_id": "86ff744b54b9",
-        "title": "Raba",
-        "message": "Comprobando límite de X · 271 caracteres"
-      },
-      {
-        "at": "2026-10-11T22:48:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "86ff744b54b9",
-        "title": "Raba",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-11T22:50:43+02:00",
+        "at": "2026-10-11T23:16:14+02:00",
         "phase": "verifying",
-        "trend_id": "86ff744b54b9",
-        "title": "Raba",
-        "message": "Tendencia cerrada y verificada en main"
+        "trend_id": "998c17ccf3c9",
+        "title": "Hugo Duro",
+        "message": "JIT: revisión retirada por el refresco oficial · top11_30_manual_only"
       },
       {
-        "at": "2026-10-11T22:48:40+02:00",
-        "phase": "verifying",
-        "trend_id": "6983c81bc62a",
-        "title": "#jotalent5",
-        "message": "Releyendo estado autoritativo de #jotalent5"
-      },
-      {
-        "at": "2026-10-11T22:49:00+02:00",
-        "phase": "drafting",
-        "trend_id": "6983c81bc62a",
-        "title": "#jotalent5",
-        "message": "Redactando explicación factual · 206 caracteres"
-      },
-      {
-        "at": "2026-10-11T22:49:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6983c81bc62a",
-        "title": "#jotalent5",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-11T22:52:17+02:00",
-        "phase": "verifying",
-        "trend_id": "6983c81bc62a",
-        "title": "#jotalent5",
-        "message": "Tendencia cerrada y verificada en main"
-      },
-      {
-        "at": "2026-10-11T22:51:20+02:00",
-        "phase": "persisting",
-        "trend_id": "4d7d1fcdb251",
-        "title": "Corberan",
-        "message": "Enviando enlace grupal de Corberan, Racing y Aguirre a Raba"
-      },
-      {
-        "at": "2026-10-11T22:53:38+02:00",
-        "phase": "verifying",
-        "trend_id": "4d7d1fcdb251",
-        "title": "Corberan",
-        "message": "Grupo Racing–Valencia cerrado · 3 enlaces verificados"
-      },
-      {
-        "at": "2026-10-11T22:50:30+02:00",
-        "phase": "persisting",
-        "trend_id": "6941ab3b36d0",
-        "title": "Pellegrini",
-        "message": "Primer outbox cancelado por solape del aplicador serial"
-      },
-      {
-        "at": "2026-10-11T22:55:10+02:00",
-        "phase": "persisting",
-        "trend_id": "6941ab3b36d0",
-        "title": "Pellegrini",
-        "message": "Reintentando enlace al grupo Betis–Osasuna"
-      },
-      {
-        "at": "2026-10-11T22:55:40+02:00",
-        "phase": "verifying",
-        "trend_id": "6941ab3b36d0",
-        "title": "Pellegrini",
-        "message": "Pellegrini cerrado; detectada pérdida de miembros históricos en metadatos del grupo"
-      },
-      {
-        "at": "2026-10-11T22:56:20+02:00",
-        "phase": "persisting",
-        "trend_id": "6941ab3b36d0",
-        "title": "Pellegrini",
-        "message": "Reconciliando grupo Betis–Osasuna con todos sus miembros existentes"
-      },
-      {
-        "at": "2026-10-11T22:57:23+02:00",
-        "phase": "verifying",
-        "trend_id": "6941ab3b36d0",
-        "title": "Pellegrini",
-        "message": "Reconciliación verificada · Betis, Morante y Ramis preservados"
-      },
-      {
-        "at": "2026-10-11T22:57:28+02:00",
+        "at": "2026-10-11T23:16:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final · cola editorial 0"
+        "message": "Revisando Explicadas recientes · 37 fichas en las últimas 24 h"
       },
       {
-        "at": "2026-10-11T22:57:35+02:00",
+        "at": "2026-10-11T23:16:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "db8e8811643b",
+        "title": "Leon XIV",
+        "message": "Sin remate · contexto de salud; se mantiene factual"
+      },
+      {
+        "at": "2026-10-11T23:16:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Sin remate · contexto sensible de migración; se mantiene factual"
+      },
+      {
+        "at": "2026-10-11T23:16:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "3e3d3995fd67",
+        "title": "Papa León XIV",
+        "message": "Sin remate · contexto de salud; se mantiene factual"
+      },
+      {
+        "at": "2026-10-11T23:16:55+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, 0 preparing/update, 0 rewrite_pending"
+      },
+      {
+        "at": "2026-10-11T23:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 6/6 revisiones cerradas · 0 activas"
+        "message": "Pasada completada · 0 revisiones activas y ninguna explicación nueva necesaria"
       }
-    ]
+    ],
+    "jit_skipped": {
+      "id": "998c17ccf3c9",
+      "name": "Hugo Duro",
+      "revision": 0,
+      "status": "inactive",
+      "inactive_at": "2026-10-11T23:16:14+02:00",
+      "inactive_reason": "top11_30_manual_only"
+    },
+    "queue_complete": true,
+    "remaining_active_ids": []
   },
-  "error": null,
   "run_id": "tr-20261011T224500-chat",
   "summary": {
     "processed": 6,
