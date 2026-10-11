@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101827"><meta name="robots" content="noindex,nofollow">
-<title>Copiar imagen de archivo · TTiTTulares</title>
+<title>Copiar foto de archivo · TT Actualidad</title>
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="icon" href="./icon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180">
@@ -22,7 +22,7 @@ button,.button{display:block;width:100%;border:1px solid #5dbaa9;background:#245
 .button{border-color:#6a91c1;background:#284774}.button[hidden]{display:none}button:disabled{opacity:.5}
 #status{font-size:13px;white-space:pre-wrap}small{color:#aebbd0}
 </style></head><body><main>
-<a class="back" href="./index.html#ttittulares">← TTiTTulares</a>
+<a class="back" id="back" href="./index.html#ttittulares">← TTiTTulares</a>
 <h1>Copiar imagen de archivo</h1>
 <p>Pulsa «Copiar imagen». Si Safari o el servidor de la fotografía no permite copiarla automáticamente, mantén pulsada la imagen y elige «Copiar» o «Guardar en Fotos».</p>
 <section class="card"><h2 id="title">Buscando fotografía…</h2>
@@ -38,6 +38,11 @@ const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const id=(params.get('id')||'').trim();
 const revision=Number(params.get('rev')||0);
+const app=params.get('app')==='ttendencias'?'ttendencias':'ttittulares';
+if(app==='ttendencias'){
+ $('back').href='./index.html#ttendencias';
+ $('back').textContent='← TTendencias';
+}
 const root='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/';
 let imageUrl='';
 const validUrl=value=>{try{const u=new URL(value);return u.protocol==='https:'?u.href:''}catch{return ''}};
@@ -51,11 +56,20 @@ async function get(path){
  return {};
 }
 function candidate(item){
- for(const key of ['archive_image','fallback_image','image']){
+ for(const key of ['archive_image','fallback_image']){
   const obj=item?.[key];const url=validUrl(obj&&typeof obj==='object'?obj.url:'');
   if(url&&!obj.generated)return url;
  }
- return validUrl(item?.image_url||'');
+ // Legacy TTendencias deliveries contain BOTH AI and genuine archive URLs.
+ // Never mistake the AI image_url for an archival photograph.
+ const stored=validUrl(item?.archive_materialized_url||item?.archive_image_url);
+ if(stored)return stored;
+ const original=item?.image;
+ const originalUrl=validUrl(original&&typeof original==='object'?original.url:'');
+ if(originalUrl && !original.generated && !original.provider)return originalUrl;
+ if(item?.is_photo && String(item?.delivery_key||'').endsWith(':readonly'))
+  return validUrl(item.image_url);
+ return '';
 }
 function display(url,title){
  imageUrl=url;$('title').textContent=title||'Fotografía de archivo';
@@ -64,18 +78,32 @@ function display(url,title){
  $('status').textContent='Fotografía lista. Puedes copiarla con el botón o manteniendo el dedo pulsado sobre la imagen.';
 }
 async function start(){
- if(!/^[a-zA-Z0-9_.-]{1,120}$/.test(id)){$('status').textContent='Identificador de noticia no válido.';return}
- const prepared=await get('ttittulares/prepared.json');
- const matches=(prepared.items||[]).filter(x=>text(x.event_id)===id);
- const current=matches.find(x=>!revision||Number(x.revision||0)===revision)||matches[0];
- if(current&&candidate(current)){display(candidate(current),current.title);return}
- const ledger=await get('telegram/ttittulares-deliveries.json');
- const found=(ledger.items||[]).filter(x=>text(x.event_id)===id)
-  .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0))
-  .find(x=>candidate(x));
- if(found){display(candidate(found),found.title||found.name);return}
+ if(!/^[a-zA-Z0-9_.-]{1,120}$/.test(id)){$('status').textContent='Identificador no válido.';return}
+ if(app==='ttendencias'){
+  const ledger=await get('trends/telegram-image-deliveries.json');
+  const rows=(ledger.items||[]).filter(x=>text(x.event_id)===id)
+   .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0));
+  const found=rows.find(x=>(!revision||Number(x.revision||0)===revision)&&candidate(x))
+   ||rows.find(x=>candidate(x));
+  if(found){display(candidate(found),found.title||found.name);return}
+  const explained=await get('trends/explained.json');
+  const candidates=(explained.items||[]).filter(x=>text(x.id)===id);
+  const fallback=candidates.find(x=>(!revision||Number(x.revision||0)===revision)&&candidate(x))
+   ||candidates.find(x=>candidate(x));
+  if(fallback){display(candidate(fallback),fallback.display_name||fallback.name);return}
+ }else{
+  const prepared=await get('ttittulares/prepared.json');
+  const matches=(prepared.items||[]).filter(x=>text(x.event_id)===id);
+  const current=matches.find(x=>!revision||Number(x.revision||0)===revision)||matches[0];
+  if(current&&candidate(current)){display(candidate(current),current.title);return}
+  const ledger=await get('telegram/ttittulares-deliveries.json');
+  const found=(ledger.items||[]).filter(x=>text(x.event_id)===id)
+   .sort((a,b)=>Number(b.revision||0)-Number(a.revision||0))
+   .find(x=>candidate(x));
+  if(found){display(candidate(found),found.title||found.name);return}
+ }
  $('title').textContent='Fotografía no disponible';
- $('status').textContent='No encuentro una fotografía de archivo publicada para esta noticia. Puedes copiar la foto del propio mensaje de Telegram manteniéndola pulsada, si el mensaje incluye una.';
+ $('status').textContent='No encuentro una fotografía de archivo registrada para esta '+(app==='ttendencias'?'tendencia':'noticia')+'. Si el mensaje de Telegram incluye una fotografía, mantenla pulsada y elige «Copiar» o «Guardar en Fotos».';
 }
 async function pngBlob(url){
  const response=await fetch(url,{mode:'cors',cache:'no-store'});
