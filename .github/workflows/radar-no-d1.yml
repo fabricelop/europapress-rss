@@ -13,6 +13,7 @@ on:
       - "telegram/radar_no_d1.py"
       - "telegram/content_filters.py"
       - "ttittulares/auto_queue.py"
+      - "ttittulares/repair_processing_metadata.py"
       - "ttittulares/apply_editorial_outbox.py"
       - "ttittulares/editorial-outbox/**"
 
@@ -64,13 +65,15 @@ jobs:
             python3 telegram/prune_events.py
             python3 ttittulares/auto_queue.py --selftest
             python3 ttittulares/auto_queue.py
+            python3 ttittulares/repair_processing_metadata.py --selftest
+            python3 ttittulares/repair_processing_metadata.py
             python3 ttittulares/reconcile_state.py
             python3 ttittulares/apply_editorial_outbox.py
             python3 ttittulares/build_status.py
             python3 telegram/autocheck_ttittulares.py
 
             git add telegram/events.json telegram/event-seeds.json telegram/processed-events.json telegram/editorial-processing.json \
-              telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json ttittulares/prepared.json ttittulares/editorial-queue.json
+              telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json ttittulares/prepared.json ttittulares/editorial-queue.json ttittulares/execution-errors.json
             git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
 
             if git diff --cached --quiet; then
