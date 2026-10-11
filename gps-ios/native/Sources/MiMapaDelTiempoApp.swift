@@ -1231,7 +1231,7 @@ struct TimeStatsView: View {
                         (model.confirmedTotals()[$0.id] ?? 0) > (model.confirmedTotals()[$1.id] ?? 0)
                     }.prefix(30)) { cell in
                         LabeledContent(model.label(for: cell),
-                                       value: DurationFormat.full(model.data.totals[cell.id] ?? 0))
+                                       value: DurationFormat.full(model.confirmedTotals()[cell.id] ?? 0))
                     }
                 }
             }
