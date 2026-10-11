@@ -37,6 +37,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write
 concurrency:
   group: tt-mobile-issue-commands
   cancel-in-progress: false
@@ -99,6 +100,11 @@ jobs:
             git commit -m "TT móvil: aplicar orden editorial autenticada"
             if git push origin HEAD:main; then
               echo "TT_MOBILE_PERSISTED"
+              if gh workflow run send-ttittulares-ready-telegram.yml -R "$GITHUB_REPOSITORY" --ref main; then
+                echo "TTI_PROVISIONAL_DELIVERY_DISPATCHED"
+              else
+                echo "Aviso: el cron del repartidor reintentará la entrega" >&2
+              fi
               break
             fi
             if [[ "$attempt" == 6 ]]; then echo "TT_MOBILE_WRITE_CONFLICT" >&2;exit 1;fi
