@@ -1,68 +1,9 @@
-name: Preflight TTiTTulares web
+name: Preflight legado TTiTTulares web
 
+# Antiguo preflight de interfaces Vercel; el producto actual es GitHub Pages.
+# Solo ejecución manual de mantenimiento, nunca en cada push.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ttittulares-preflight.yml"
-      - "ttittulares/**/*.py"
-      - "ttittulares/**/*.js"
-      - "ttittulares/**/*.mjs"
-      - "ttittulares/**/*.md"
-      - "ttittulares/app.js"
-      - "ttittulares/config.json"
-      - "ttittulares/control-mode.json"
-      - "telegram/radar_no_d1.py"
-      - "telegram/source_telemetry.py"
-      - "telegram/source_publication.py"
-      - "telegram/autocheck_ttittulares.py"
-      - "vercel-webhook/ttittulares/**"
-      - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
-      - "vercel-webhook/test/ttittulares-source-table.test.mjs"
-      - "vercel-webhook/test/ttittulares-search-x.test.mjs"
-      - "vercel-webhook/test/ttittulares-actions.test.mjs"
-      - "vercel-webhook/test/ttittulares-actions.test.mjs"
-      - "vercel-webhook/api/ttittulares-control.js"
-      - "vercel-webhook/api/ttittulares-run-status.js"
-      - "vercel-webhook/api/ttittulares-run.js"
-      - "windows/TTiTTularesDedicatedListener.ps1"
-      - "windows/Install-TTiTTularesMobileChatTrigger.ps1"
-      - "windows/Install-TTiTTulares-v15.ps1"
-      - "vercel-webhook/api/ttendencias-control.js"
-      - "ttittulares/tremending/**"
-      - ".github/workflows/tremending-collect.yml"
-      - ".github/workflows/tremending-capture.yml"
-      - ".github/workflows/ai-image-generate.yml"
-      - ".github/workflows/ttittulares-ai-image-apply.yml"
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/ttittulares-preflight.yml"
-      - "ttittulares/**/*.py"
-      - "ttittulares/**/*.js"
-      - "ttittulares/**/*.mjs"
-      - "ttittulares/**/*.md"
-      - "ttittulares/app.js"
-      - "ttittulares/config.json"
-      - "ttittulares/control-mode.json"
-      - "telegram/radar_no_d1.py"
-      - "telegram/source_telemetry.py"
-      - "telegram/source_publication.py"
-      - "telegram/autocheck_ttittulares.py"
-      - "vercel-webhook/ttittulares/**"
-      - "vercel-webhook/test/ttittulares-image-ui.test.mjs"
-      - "vercel-webhook/test/ttittulares-source-table.test.mjs"
-      - "vercel-webhook/test/ttittulares-search-x.test.mjs"
-      - "vercel-webhook/api/ttittulares-control.js"
-      - "vercel-webhook/api/ttittulares-run-status.js"
-      - "windows/Install-TTiTTulares-v15.ps1"
-      - "vercel-webhook/api/ttendencias-control.js"
-      - "ttittulares/tremending/**"
-      - ".github/workflows/tremending-collect.yml"
-      - ".github/workflows/tremending-capture.yml"
-      - ".github/workflows/ai-image-generate.yml"
-      - ".github/workflows/ttittulares-ai-image-apply.yml"
 
 concurrency:
   group: ttittulares-preflight
