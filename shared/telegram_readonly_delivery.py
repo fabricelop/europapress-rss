@@ -27,7 +27,7 @@ TTI_BUTTONS_VERSION=17  # Provisional: full native controls and archive image
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
-TERMINAL={"deleted","published","dismissed","removed"}
+TERMINAL={"deleted","published","dismissed","removed","delete_pending","delete_failed"}
 
 def load(path,default):
     try:
@@ -479,20 +479,39 @@ def article_identity(url):
     return host+path if host and path else ""
 
 def matching_previous_story(card,history,now,days=7):
-    """Look up the older Telegram story, including deleted/published tombstones."""
+    """Idempotence by actual story, including deletion and publication tombstones."""
     title=trend_title_key(card.get("title"))
     article=article_identity(card.get("source_url"))
     if not title and not article:return None
     eid=str(card.get("id") or "")
+    is_news=bool(card.get("source_url"))
+    def words(value):
+        value=unicodedata.normalize("NFKD",str(value or "").casefold())
+        value="".join(c for c in value if not unicodedata.combining(c))
+        return {w for w in re.findall(r"[a-z0-9]{4,}",value)
+                if w not in {"para","como","sobre","entre","desde","esta","este","tras","ante","hasta","segun"}}
+    subject_words=words(card.get("title")) if is_news else set()
+    matches=[]
     for row in history:
         if str(row.get("event_id") or "")==eid:continue
-        title_match=bool(title and trend_title_key(row.get("title") or row.get("name"))==title)
+        old_title=row.get("title") or row.get("name")
+        title_match=bool(title and trend_title_key(old_title)==title)
         article_match=bool(article and article_identity(row.get("source_url"))==article)
-        if not title_match and not article_match:continue
-        when=date(row.get("delivered_at"))
-        if when is not None and timedelta(0)<=now-when<timedelta(days=days) and int(row.get("telegram_message_id") or 0)>0:
-            return row
-    return None
+        similar=False
+        if is_news and not title_match and not article_match and len(subject_words)>=6:
+            prior_words=words(old_title)
+            common=len(subject_words & prior_words)
+            similar=bool(len(prior_words)>=6 and common>=6 and
+                         common/max(len(subject_words),len(prior_words))>=0.84)
+        if not (title_match or article_match or similar):continue
+        when=(date(row.get("delivered_at")) or date(row.get("deleted_at"))
+              or date(row.get("published_at")) or date(row.get("dismissed_at")))
+        if when is not None and -timedelta(minutes=5)<=now-when<timedelta(days=days):
+            matches.append(row)
+    # The user decision wins even if another 'sent' card preceded it.
+    return next((r for r in matches if str(r.get("status") or "").lower() in TERMINAL),
+                None) or (matches[0] if matches else None)
+
 
 def recently_delivered_same_title(card,history,now,days=7):
     return matching_previous_story(card,history,now,days) is not None
@@ -525,23 +544,26 @@ def process(project,now,token,chat):
         if older:
             # An old tombstone overrides a newer radar event ID. If a buggy
             # anonymous provisional was already sent, remove that duplicate.
-            if (project=="ttittulares" and
-                str(older.get("status") or "").lower() in TERMINAL):
+            if str(older.get("status") or "").lower() in TERMINAL:
+                # Applies to BOTH products, not just TTiTTulares.
                 for duplicate in linked:
                     if str(duplicate.get("status") or "").lower()!="sent":
                         continue
-                    mid=int(duplicate.get("telegram_message_id") or 0)
-                    if not mid:continue
-                    result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
-                    if result is not None:
+                    mids={int(duplicate.get(k) or 0) for k in
+                          ("telegram_message_id","archive_telegram_message_id")}
+                    ok=True
+                    for mid in sorted(x for x in mids if x>0):
+                        result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
+                        if result is None:
+                            ok=False
+                            print("TT_DUPLICATE_DELETE_RETRY",project,eid,mid,flush=True)
+                    if ok:
                         duplicate.update(status="deleted",deleted_at=now.isoformat(),
                             updated_at=now.isoformat(),duplicate_of=str(older.get("event_id") or ""),
                             decision_source="duplicate_of_terminal_story")
                         ledger["updated_at"]=now.isoformat()
                         put(path,ledger)
                         updated+=1
-                    else:
-                        print("TTI_DUPLICATE_DELETE_RETRY",eid,mid,flush=True)
             skipped+=1
             continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
@@ -930,6 +952,17 @@ def selftest():
         {"id":"new-id","title":"Diomandé"},
         [{"event_id":"old-id","title":"Diomande","status":"deleted",
           "telegram_message_id":644,"delivered_at":"2026-10-09T15:00:00Z"}],now)
+    # Regression: Anfield was explicitly deleted; new radar IDs may not resend.
+    tombstone={"event_id":"anfield-old","name":"Anfield","status":"deleted",
+               "delivered_at":"2026-10-11T17:19:28Z","deleted_at":"2026-10-11T17:38:32Z",
+               "telegram_message_id":674}
+    assert matching_previous_story({"id":"anfield-new","title":"Anfield"},
+        [tombstone],datetime(2026,10,11,18,0,tzinfo=timezone.utc)) is tombstone
+    assert matching_previous_story({"id":"anfield-new","title":"Anfield"},
+        [{**tombstone,"status":"published"}],
+        datetime(2026,10,11,18,0,tzinfo=timezone.utc))
+    assert not matching_previous_story({"id":"new","title":"Elche"},
+        [tombstone],datetime(2026,10,11,18,0,tzinfo=timezone.utc))
     assert not recently_delivered_same_title(
         {"id":"same-id","title":"Diomande"},
         [{"event_id":"same-id","title":"Diomande","status":"sent",
