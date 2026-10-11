@@ -23,6 +23,18 @@ enum TimeZoneCatalog {
             $0.name.localizedStandardCompare($1.name) == .orderedAscending
         }
     }
+    /// Selección determinista si una cuadrícula pertenece a varias zonas:
+    /// primero la zona más pequeña, después nombre e identificador. Nunca
+    /// modifica nombres ni tiempos almacenados.
+    static func primary(for cellID:String, zones:[TimeCustomZone]) -> TimeCustomZone? {
+        zones.filter { $0.cells.contains(cellID) }.sorted {
+            if $0.cells.count != $1.cells.count { return $0.cells.count < $1.cells.count }
+            let compare=$0.name.localizedStandardCompare($1.name)
+            if compare != .orderedSame { return compare == .orderedAscending }
+            return $0.id.uuidString < $1.id.uuidString
+        }.first
+    }
+
 }
 
 enum TimeZoneGeometry {
@@ -72,5 +84,48 @@ enum TimeZoneGeometry {
             }
         }
         return selected
+    }
+}
+
+struct TimeZoneBorderSegment {
+    var start: CLLocationCoordinate2D
+    var end: CLLocationCoordinate2D
+}
+
+/// Delimitación de la zona sin dibujar líneas internas entre sus cuadrículas.
+/// Los vértices provienen de Grid.polygon; son aptos para mapa online y offline.
+enum TimeZoneOutline {
+    static func segments(for zone:TimeCustomZone, maxCells:Int = 600) -> [TimeZoneBorderSegment] {
+        let ids=zone.cells
+        var segments:[TimeZoneBorderSegment]=[]
+        for id in zone.cellIDs.prefix(maxCells) {
+            guard let cell=TimeAnalytics.cell(id) else { continue }
+            let vertices=Grid.polygon(cell)
+            for i in 0..<4 {
+                let a=vertices[i],b=vertices[(i+1)%4]
+                let center=CLLocationCoordinate2D(
+                    latitude:(a.latitude+b.latitude)/2,
+                    longitude:(a.longitude+b.longitude)/2)
+                // Coordenada 1.5 metros fuera de la casilla en dirección
+                // opuesta al centro: comprueba un vecino sin asumir columnas
+                // iguales en distintas latitudes.
+                let middle=Grid.center(cell)
+                let outside=CLLocationCoordinate2D(
+                    latitude:center.latitude+(center.latitude-middle.latitude)*0.04,
+                    longitude:center.longitude+(center.longitude-middle.longitude)*0.04)
+                let neighbor=Grid.cell(latitude:outside.latitude,longitude:outside.longitude)
+                if !ids.contains(neighbor.id) {
+                    segments.append(TimeZoneBorderSegment(start:a,end:b))
+                }
+            }
+        }
+        return segments
+    }
+    static func visibleCenter(for zone:TimeCustomZone) -> CLLocationCoordinate2D? {
+        let coords=zone.cellIDs.compactMap(TimeAnalytics.cell).map(Grid.center)
+        guard !coords.isEmpty else { return nil }
+        return CLLocationCoordinate2D(
+            latitude:coords.map(\.latitude).reduce(0,+)/Double(coords.count),
+            longitude:coords.map(\.longitude).reduce(0,+)/Double(coords.count))
     }
 }
