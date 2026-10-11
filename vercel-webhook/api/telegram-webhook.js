@@ -782,6 +782,10 @@ export default async function handler(req, res) {
     }
     // No reemplazar el webhook: los botones y callbacks siguen su circuito normal.
     if (text.toLowerCase() === "/run" || text.toLowerCase() === "/run@ttittulares_bot") {
+      // Lanzar el PC requiere autenticidad del webhook, no solo chat_id.
+      if (!expected || received !== expected) {
+        return res.status(401).json({ok:false,error:"Telegram webhook no autenticado"});
+      }
       if (String((message.chat || {}).type || "") !== "private") {
         return res.status(200).json({ok:true,ignored:true});
       }
