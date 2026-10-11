@@ -94,7 +94,7 @@ enum TerritoryGrouping {
         }
         return result.values.sorted {
             if $0.seconds != $1.seconds { return $0.seconds > $1.seconds }
-            return $0.title.localizedStandardCompare($1.title)==.orderedAscending
+            return $0.title.localizedStandardCompare($1.title) == .orderedAscending
         }
     }
     static func nextLevel(after level:TerritoryLevel,
