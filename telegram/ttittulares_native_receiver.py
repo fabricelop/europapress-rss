@@ -215,6 +215,35 @@ def commit_event(update, act):
                 inbox["updated_at"] = stamp()
                 save(INBOX, inbox)
                 touched.append(str(INBOX))
+        elif act["kind"] in {"mobile", "mobile_rework_reply"}:
+            queue = read(MOBILE_QUEUE, {"version": 1, "items": []})
+            pending = queue.setdefault("items", [])
+            if not any(int(x.get("update_id") or 0) == uid for x in pending):
+                item = {
+                    "update_id": uid,
+                    "project": act["project"],
+                    "action": "rework" if act["kind"] == "mobile_rework_reply" else act["action"],
+                    "id": act["id"],
+                    "status": "pending",
+                    "source": "telegram_private_deeplink_native",
+                    "submitted_at": stamp(),
+                    "cleanup_command_mid": int(act.get("message_id") or 0),
+                    "cleanup_notice_mid": int(act.get("notice_message_id") or 0),
+                }
+                if act["kind"] == "mobile_rework_reply":
+                    item["instruction"] = act["text"]
+                pending.append(item)
+                queue["items"] = pending[-250:]
+                queue["updated_at"] = stamp()
+                save(MOBILE_QUEUE, queue)
+                touched.append(str(MOBILE_QUEUE))
+                state.pop("pending_rework", None)
+        elif act["kind"] == "mobile_await":
+            state["pending_rework"] = {
+                "project": act["project"], "id": act["id"],
+                "prompt_message_id": int(act["prompt_message_id"]),
+                "expires_at": time.time() + REWORK_TTL_SECONDS,
+            }
         elif act["kind"] == "proposal":
             proposals = read(PROPOSALS, {"version": 1, "items": []})
             eid = "telegram-" + str(uid)
@@ -257,7 +286,21 @@ def selftest():
                     "from": {"id": 456}, "text": "/run"}}
     assert classify(message, "456", ledger)["kind"] == "run"
     message["message"]["text"] = "/chat ¿Qué tal?"
-    assert classify(message, "456", ledger)["kind"] == "requires_conversation_migration"
+    assert classify(message, "456", ledger)["kind"] == "question"
+    message["message"]["text"] = "/start ttm_n_d_YWJjMTIz"
+    assert classify(message, "456", ledger)["kind"] == "mobile"
+    assert classify(message, "456", ledger)["id"] == "abc123"
+    message["message"]["text"] = "/start ttm_t_r_YWJjMTIz"
+    assert classify(message, "456", ledger)["project"] == "ttendencias"
+    message["message"]["text"] = "/start ttm_n_d_@@@"
+    assert classify(message, "456", ledger)["kind"] == "help" or classify(message, "456", ledger)["kind"] == "invalid_mobile"
+    message["message"]["text"] = "/chat Segunda cuestión"
+    message["message"]["reply_to_message"] = {"from":{"is_bot":True},"message_id":45,"text":"Contexto"}
+    assert classify(message, "456", ledger)["context"] == "Contexto"
+    message["message"]["text"] = "Termina el marcador"
+    pending = {"pending_rework":{"project":"ttendencias", "id":"abc123",
+              "prompt_message_id":45,"expires_at":time.time()+100}}
+    assert classify(message, "456", ledger, pending)["kind"] == "mobile_rework_reply"
     print("TTITTULARES_NATIVE_RECEIVER_SELFTEST_OK")
 
 
