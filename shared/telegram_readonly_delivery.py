@@ -81,6 +81,16 @@ def public_news_detail(item):
     ))
     return (factual or tweet or explanation) if report_about_sources else (explanation or factual or tweet)
 
+def news_delivery_start(job,item):
+    """Final news ages from entering Listas; provisional news ages from selection.
+
+    A long editorial investigation must not make an otherwise fresh READY card
+    silently ineligible for Telegram's first-delivery window.
+    """
+    if item and not item.get("rewrite_pending"):
+        return item.get("prepared_at") or item.get("ready_at") or item.get("selected_at") or job.get("selected_at")
+    return job.get("selected_at") or item.get("selected_at") or item.get("prepared_at")
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -98,9 +108,9 @@ def news_cards(now):
         if eid in closed:continue
         job=ongoing.get(eid,{})
         item=ready.get(eid,{})
-        start=job.get("selected_at") or item.get("selected_at") or item.get("prepared_at")
-        if not fresh(start,now):continue
         is_final=bool(item and not item.get("rewrite_pending"))
+        start=news_delivery_start(job,item)
+        if not fresh(start,now):continue
         if not is_final and not age_ready(start,now):continue
         revision=int(item.get("revision") or job.get("revision") or 1)
         title=trim(item.get("title") or job.get("title") or "Noticia",400)
@@ -555,6 +565,13 @@ def selftest():
     assert not age_ready("2026-10-09T15:01:00Z",now)
     assert age_ready("2026-10-09T15:00:00Z",now)
     assert not fresh("2026-09-29T12:00:00Z",now)
+    # Prepared 14:00 after selection 01:00: eligible as a fresh Listas card.
+    selected={"selected_at":"2026-10-10T01:00:00Z"}
+    ready={"prepared_at":"2026-10-11T14:00:00Z","revision":1}
+    assert news_delivery_start(selected,ready)=="2026-10-11T14:00:00Z"
+    assert news_delivery_start(selected,{**ready,"rewrite_pending":True})=="2026-10-10T01:00:00Z"
+    assert age_ready(news_delivery_start(selected,{}),now)
+
     card={"id":"abc123","rev":1,"search":"Pedro Sánchez","title":"Pedro Sánchez",
           "final":True,"x_text":"Hecho verificado.\n\n🌶️ Remate exacto."}
     kb=keys({**card,"image":"https://img.example.org/photo.jpg"},"ttittulares")["inline_keyboard"]
