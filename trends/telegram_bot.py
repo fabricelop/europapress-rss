@@ -234,7 +234,41 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
                str(x.get("telegram_package_status") or "").lower()
                    in {"published", "dismissed", "deleted"}
         }
+        # Explicit Telegram re-explanations also have to survive the fresh
+        # origin/main checkout above. The former merge kept ONLY terminal states:
+        # this silently erased every tx:r request after acknowledging it.
+        local_reworks = {
+            str(x.get("id") or ""): x
+            for x in local_requests.get("requests", [])
+            if str(x.get("id") or "") and
+               str(x.get("request_source") or "") == "telegram_reexplain" and
+               str(x.get("status") or "").lower() in {"preparing", "update"} and
+               bool(x.get("reexplain"))
+        }
         request_changed = False
+        remote_ids = set()
+        for req in remote_requests.get("requests", []):
+            rid = str(req.get("id") or "")
+            remote_ids.add(rid)
+            rework = local_reworks.get(rid)
+            if rework and str(req.get("status") or "").lower() not in {
+                "published", "dismissed", "deleted", "removed"} and (
+                int(rework.get("revision") or 0) > int(req.get("revision") or 0)
+                or (int(rework.get("revision") or 0) == int(req.get("revision") or 0)
+                    and str(req.get("status") or "").lower() not in {"preparing", "update"})
+            ):
+                for key in ("status", "revision", "requested_at", "reexplain",
+                            "request_source", "reexplain_instructions",
+                            "rewrite_instruction", "with_image", "auto_queued",
+                            "telegram_reexplain_from_revision",
+                            "telegram_reexplain_from_message_id"):
+                    if key in rework:
+                        req[key] = rework[key]
+                request_changed = True
+        for rid, rework in local_reworks.items():
+            if rid not in remote_ids:
+                remote_requests.setdefault("requests", []).append(rework)
+                request_changed = True
         for req in remote_requests.get("requests", []):
             local = terminal_requests.get(str(req.get("id") or ""))
             if not local:
@@ -1445,11 +1479,114 @@ def handle_readonly_delete(callback):
     return "deleted"
 
 
+def handle_readonly_reexplain(callback, instruction=""):
+    """Persist tx:r and editorial replies through the SAME active listener.
+
+    The old listener consumed tx:r via getUpdates but did not handle it; the
+    separate native-poller had the implementation, but could not safely run
+    concurrently because Telegram distributes updates across consumers.
+    """
+    data = str(callback.get("data") or "")
+    parts = data.split(":")
+    if len(parts) != 4 or parts[:2] != ["tx", "r"]:
+        return "invalid_reexplain"
+    tid = parts[2]
+    try:
+        rev = int(parts[3])
+    except (ValueError, TypeError):
+        return "invalid_revision"
+    msg = callback.get("message") or {}
+    chat_obj = msg.get("chat") or {}
+    chat_id = str(chat_obj.get("id") or "")
+    sender = str((callback.get("from") or {}).get("id") or "")
+    allowed = str(load_remote_json("trends/telegram-bot-state.json",
+                                  load(STATE, {})).get("chat_id") or "")
+    if not allowed or chat_id != allowed or str(chat_obj.get("type") or "") != "private" or sender != allowed:
+        print("TTENDENCIAS_REEXPLAIN_UNAUTHORIZED", flush=True)
+        return "unauthorized"
+    mid = int(msg.get("message_id") or 0)
+    ledger = load_remote_json("trends/telegram-image-deliveries.json",
+                              load(IMAGE_DELIVERIES, {"items": []}))
+    rows = [x for x in ledger.get("items", [])
+            if str(x.get("event_id") or "") == tid]
+    active = [x for x in rows
+              if int(x.get("revision") or 0) == rev
+              and str(x.get("status") or "").lower() == "sent"
+              and mid in {int(x.get("telegram_message_id") or 0),
+                          int(x.get("archive_telegram_message_id") or 0)}]
+    if not active or any(str(x.get("status") or "").lower() in
+                         {"deleted", "dismissed", "published", "removed", "delete_pending"}
+                         for x in rows):
+        print("TTENDENCIAS_REEXPLAIN_NOT_ACTIVE", tid, rev, mid, flush=True)
+        return "not_active"
+    requests_doc = load_remote_json("trends/requests.json", load(REQUESTS, {"requests": []}))
+    request = next((x for x in requests_doc.get("requests", [])
+                    if str(x.get("id") or "") == tid), None)
+    if request is None:
+        # Recover the original title/id even if an older request was pruned.
+        request = {"id": tid, "name": str(active[0].get("name") or
+                      active[0].get("title") or "").strip(), "revision": rev}
+        if not request["name"]:
+            return "request_missing"
+        requests_doc.setdefault("requests", []).append(request)
+    if str(request.get("status") or "").lower() in {
+            "published", "deleted", "dismissed", "removed"}:
+        return "closed"
+    if str(request.get("status") or "").lower() in {"preparing", "update"} and request.get("reexplain"):
+        return "already_pending"
+    now = datetime.now(MADRID).isoformat(timespec="seconds")
+    details = str(instruction or "").strip()[:600] or (
+        "Vuelve a investigar esta tendencia con información ACTUALIZADA. "
+        "Si se anunciaba un partido o acontecimiento futuro, comprueba "
+        "si ya terminó y explica el resultado confirmado, no la previa.")
+    request.update(status="update", revision=max(int(request.get("revision") or 0), rev)+1,
+                   requested_at=now, reexplain=True, request_source="telegram_reexplain",
+                   reexplain_instructions=details, rewrite_instruction=details,
+                   with_image=False, auto_queued=False,
+                   telegram_reexplain_from_revision=rev,
+                   telegram_reexplain_from_message_id=mid)
+    requests_doc["updated_at"] = now
+    save(REQUESTS, requests_doc)
+    if not persist_package_state("Encolar nueva explicacion TTendencias desde Telegram"):
+        return "persistence_failed"
+    print("TTENDENCIAS_REEXPLAIN_PERSISTED", tid, request["revision"], flush=True)
+    return "queued"
+
+
+def notify_reexplain(result, chat_id, callback_id=None):
+    labels = {
+        "queued": "Nueva explicación solicitada y guardada en la cola editorial.",
+        "already_pending": "Ya hay una reexplicación pendiente; no la duplico.",
+        "not_active": "Esta tarjeta ya no está activa o no coincide con la versión original.",
+        "closed": "Esta tendencia está cerrada; no la volveré a enviar.",
+        "request_missing": "No encuentro el título original; no se ha creado otra tendencia.",
+        "persistence_failed": "No se pudo guardar la nueva explicación. Vuelve a intentarlo.",
+    }
+    label = labels.get(result, "No se pudo procesar la reexplicación.")
+    if callback_id:
+        try:
+            call("answerCallbackQuery", {"callback_query_id": callback_id,
+                                          "text": label[:190],
+                                          "show_alert": result not in {"queued", "already_pending"}})
+            return
+        except Exception:
+            pass
+    try:
+        call("sendMessage", {"chat_id": chat_id, "text": "TTendencias: " + label})
+    except Exception:
+        pass
+
+
 def route_package_callback(callback):
     """Use the same approved Telegram package routing in web and legacy mode."""
     data = str(callback.get("data") or "")
     if data.startswith("tx:i:"):
         return "instagram_retired"
+    if data.startswith("tx:r:"):
+        result = handle_readonly_reexplain(callback)
+        notify_reexplain(result, (callback.get("message") or {}).get("chat", {}).get("id"),
+                         callback.get("id"))
+        return result
     if data.startswith("tx:b:"):
         return handle_readonly_delete(callback)
     if data.startswith("tx:igdel:"):
@@ -1486,6 +1623,30 @@ def poll_packages(seconds=3300):
 
                 if handle_run_command(upd.get("message")):
                     continue
+
+                # Re-explain by replying directly to the delivered card.
+                reply = upd.get("message") or {}
+                parent = reply.get("reply_to_message") or {}
+                if parent and str(reply.get("text") or "").strip():
+                    target = int(parent.get("message_id") or 0)
+                    if target:
+                        state = load_remote_json("trends/telegram-image-deliveries.json",
+                                                 load(IMAGE_DELIVERIES, {"items": []}))
+                        linked = next((x for x in reversed(state.get("items", []))
+                          if target in {int(x.get("telegram_message_id") or 0),
+                                        int(x.get("archive_telegram_message_id") or 0)}
+                          and str(x.get("status") or "").lower() == "sent"), None)
+                        if linked:
+                            fake = {"data": "tx:r:" + str(linked.get("event_id")) + ":" +
+                                str(int(linked.get("revision") or 0)),
+                                "message": {"chat": reply.get("chat") or {},
+                                            "message_id": target},
+                                "from": reply.get("from") or {}}
+                            outcome = handle_readonly_reexplain(fake, reply.get("text"))
+                            notify_reexplain(outcome, (reply.get("chat") or {}).get("id"))
+                            dirty = False
+                            last_persist = time.time()
+                            continue
 
                 cb = upd.get("callback_query")
                 if cb and str(cb.get("data") or "").startswith("tx:"):
