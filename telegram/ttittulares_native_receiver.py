@@ -25,7 +25,7 @@ DELIVERIES = Path("telegram/ttittulares-deliveries.json")
 CONTROL_BRANCH = "control/ttittulares-run-trigger-v2"
 CONTROL_FILE = "ttittulares/run-now-trigger.json"
 CALLBACK = re.compile(r"^tt:([pdb]):([A-Za-z0-9_-]{5,80})$")
-MOBILE = re.compile(r"^/start(?:@[A-Za-z0-9_]+)?\\s+ttm_([nt])_([pdre])_([A-Za-z0-9_-]{1,56})$", re.I)
+MOBILE = re.compile(r"^/start(?:@[A-Za-z0-9_]+)?\s+ttm_([nt])_([pdre])_([A-Za-z0-9_-]{1,56})$", re.I)
 REWORK_TTL_SECONDS = 1800
 MOBILE_QUEUE = Path("telegram/tt-mobile-command-queue.json")
 MODEL_ENDPOINT = "https://models.github.ai/inference/chat/completions"
@@ -58,7 +58,7 @@ def decode_mobile_command(text):
     except (ValueError, UnicodeError):
         return None
     if not (1 <= len(element_id) <= 120 and
-            re.fullmatch(r"[\\w# .-]+", element_id, re.UNICODE)):
+            re.fullmatch(r"[\w# .-]+", element_id, re.UNICODE)):
         return None
     return {"kind": "mobile", "project": "ttittulares" if match.group(1) == "n" else "ttendencias",
             "action": {"p":"published","d":"deleted","r":"rework","e":"prepare"}[match.group(2)],
@@ -81,7 +81,7 @@ def classify(update, chat_id, ledger, state=None):
         raw = str(callback.get("data") or "")
         match = CALLBACK.fullmatch(raw)
         if not match:
-            if raw.startswith("tts:del:") and re.fullmatch(r"tts:del:[1-9]\\d{0,14}", raw):
+            if raw.startswith("tts:del:") and re.fullmatch(r"tts:del:[1-9]\d{0,14}", raw):
                 return {"kind":"delete_pair", "original_message_id":int(raw.split(":")[-1]),
                         "message_id":int(msg.get("message_id") or 0),
                         "callback_id":callback.get("id")}
@@ -124,8 +124,8 @@ def classify(update, chat_id, ledger, state=None):
             and 3 <= len(text) <= 1000 and not text.startswith("/")):
         return {"kind":"mobile_rework_reply","project":prompt["project"],
                 "id":prompt["id"],"text":text,"prompt_message_id":original_mid}
-    if re.match(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\\s+\\S",text,re.I):
-        return {"kind":"question","text":re.sub(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\\s+","",text,flags=re.I),
+    if re.match(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\s+\S",text,re.I):
+        return {"kind":"question","text":re.sub(r"^/(?:chat|pregunta)(?:@[A-Za-z0-9_]+)?\s+","",text,flags=re.I),
                 "context":str(reply.get("text") or reply.get("caption") or "")[:1800],
                 "message_id":int(msg.get("message_id") or 0)}
     if reply and (reply.get("from") or {}).get("is_bot"):
