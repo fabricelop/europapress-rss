@@ -2,5 +2,7 @@
   "version": 1,
   "mode": "webhook",
   "native_ready": false,
-  "reason": "Native GitHub receiver staged; current Cloudflare webhook retains Telegram Q&A, replies, and other conversations until feature parity and safe cutover."
+  "reason": "GitHub Actions native receiver tested for /run, callbacks, Telegram proposals and TT Actualidad deep links. Do not delete the Cloudflare webhook until private contextual Q&A has a working no-extra-cost replacement. GitHub Models metadata preflight did not return a valid catalog on 2026-10-11.",
+  "native_commands_ready": true,
+  "native_chat_ready": false
 }
