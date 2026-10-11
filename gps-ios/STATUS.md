@@ -10,8 +10,8 @@
 - [x] Código: acceso protegido mediante autenticación iOS opcional (Face ID o código).
 - [x] Código: modo adaptativo de colores funcional y selector Permanencia/Exploración más claro.
 - [x] Código: restaura inicio de estancia local y detecta cortes largos de señal GPS.
-- [ ] Compilación de este bloque, instalación Sideloadly, observación con el móvil bloqueado. No afirmar resultados sin comprobar.
-- [ ] La opción de territorio no visitado se muestra desactivada hasta implementar el sombreado real; no es funcional.
+- [x] Compilación Xcode Release iOS 17+ correcta del nuevo bloque: [GitHub Actions run 38120719702](https://github.com/fabricelop/europapress-rss/actions/runs/38120719702), artefacto 11695925258 `MiMapaDelTiempo-unsigned-IPA` (11/10/2026). ZIP e IPA desempaquetados y comprobados, Info.plist `es.mimapadeltiempo.app`, `Assets.car` con AppIcon, modo de ubicación en segundo plano. Pendiente de probar en iPhone.
+- [x] La opción de territorio no visitado se muestra desactivada hasta implementar el sombreado real; no es funcional.
 
 ## Ya guardado
 - [x] Rama independiente feature/mi-mapa-del-tiempo-ios, sin modificar main.
@@ -32,15 +32,15 @@
 - [x] Instrucciones para Windows + Sideloadly añadidas a README.md.
 
 ## Limitaciones verificadas
-- [x] Compilación nativa iOS Release correcta en GitHub Actions, run #5 del 11/10/2026, [ver ejecución](https://github.com/fabricelop/europapress-rss/actions/runs/38119202534). Artefacto **MiMapaDelTiempo-unsigned-IPA**, ID 11694464174, 219461 bytes ZIP, disponible en GitHub hasta 18/10/2026. No está firmado ni probado en iPhone.
+- [x] Historial de compilación: run #5 versión anterior [38119202534](https://github.com/fabricelop/europapress-rss/actions/runs/38119202534). Nueva versión: [38120719702](https://github.com/fabricelop/europapress-rss/actions/runs/38120719702) Xcode build correcto, IPA sin firmar válida. No probada aún en iPhone.
 - [ ] Probar actualización continua, consumo y precisión con iPhone bloqueado: requiere iPhone.
-- [ ] Hosting HTTPS del prototipo: Vercel devolvió HTTP 402 resource_creation_blocked por límite del equipo; no se creó ningún proyecto ni despliegue.
+- [x] Sin Vercel: compilación e instalación de app nativa a través de GitHub Actions y Sideloadly (no se despliega web).
 - [ ] Pruebas masivas de importación y prevención de todos los solapamientos.
 - [x] MapPolyline segmentado en el mapa y la reproducción usando GPSRouteSegments: no unir interrupciones GPS ni saltos físicamente imposibles.
 - [ ] La vista web es experimental y Safari puede suspenderla en segundo plano.
 
 ## Pendientes técnicos importantes
-1. Descargar la IPA del run verde, firmarla con Sideloadly y probarla en un iPhone físico. Registrar resultados de instalación y localización.
+1. Instalar la IPA validada del nuevo run mediante Sideloadly, sin desinstalar la app anterior y tras exportar JSON; probar el GPS bloqueado, estancia y trayecto real.
 2. SQLite y mecanismos de continuidad de registro en background.
 3. Gestión robusta de solapamientos en importación, pérdida de señal y auditoría de correcciones.
 4. Mapa básico de cuadrículas offline, territorios por descubrir, polígonos dibujables y cálculo zonal retroactivo.
