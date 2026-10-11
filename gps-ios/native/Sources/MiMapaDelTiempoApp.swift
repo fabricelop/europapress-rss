@@ -306,14 +306,7 @@ struct SavedState: Codable {
     // Sólo una lista visible de zonas. La agrupación histórica de nombres sigue
     // conservada y cada UserPlace se presenta como una zona editable.
     var visibleZones: [TimeCustomZone] {
-        let custom=data.customZones
-        let ids=Set(custom.map(\.id))
-        let legacy=data.places.filter { !ids.contains($0.id) }
-            .map { TimeCustomZone(id:$0.id,name:$0.name,
-                                  cellIDs:$0.cellIDs,createdAt:.distantPast) }
-        return (custom + legacy).sorted {
-            $0.name.localizedStandardCompare($1.name) == .orderedAscending
-        }
+        TimeZoneCatalog.visible(custom:data.customZones,legacy:data.places)
     }
     func putZone(_ zone:TimeCustomZone) {
         guard !zone.cellIDs.isEmpty else { return }
