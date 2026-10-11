@@ -91,7 +91,7 @@ jobs:
             git add ttittulares/decisions.json ttittulares/prepared.json ttittulares/tremending/items.json telegram/editorial-processing.json \
               telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
               trends/requests.json trends/telegram-image-deliveries.json \
-              telegram/tt-mobile-command-queue.json || true
+              telegram/tt-mobile-command-queue.json trends/editorial-queue.json || true
             if test -e trends/mobile-decisions.json; then git add trends/mobile-decisions.json; fi
             if git diff --cached --quiet; then
               echo "TT_MOBILE_NO_CHANGE"
