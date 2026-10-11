@@ -365,7 +365,7 @@ def forward_contextual_question(bot_token, update):
         data=json.dumps(update,ensure_ascii=False).encode("utf-8"),
         headers={"Content-Type":"application/json",
                  "Authorization":"Bearer "+bot_token,
-                 "User-Agent":"ttittulares-github-native-question"},
+                 "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"},
         method="POST")
     with urllib.request.urlopen(request,timeout=45) as response:
         result = json.loads(response.read().decode("utf-8"))
