@@ -1,0 +1,70 @@
+name: Mi Mapa del Tiempo - IPA iPhone
+run-name: 'Mi Mapa del Tiempo - ${{ github.sha }}'
+
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios
+    paths:
+      - 'gps-ios/native/**'
+      - '.github/workflows/mi-mapa-del-tiempo-ios-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mi-mapa-del-tiempo-ios
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar generador Xcode
+        run: |
+          set -euo pipefail
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+          xcodegen --version
+
+      - name: Comprobar sintaxis Swift y generar proyecto
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Tests/*.swift
+          xcodegen generate --spec project.yml
+          test -e MiMapaDelTiempo.xcodeproj/project.pbxproj
+
+      - name: Compilar IPA de iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj \
+            -scheme MiMapaDelTiempo \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/mi-mapa-derived" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+          APP="$RUNNER_TEMP/mi-mapa-derived/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP"
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-unsigned.ipa >/dev/null
+          test -s MiMapaDelTiempo-unsigned.ipa
+
+      - name: Guardar IPA para Sideloadly
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-unsigned-IPA
+          path: gps-ios/native/MiMapaDelTiempo-unsigned.ipa
+          retention-days: 7
+          if-no-files-found: error
