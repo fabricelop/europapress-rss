@@ -82,6 +82,25 @@ assert.equal(topRows[1]._status,'EN ELABORACIÓN','Top 30 should distinguish wor
 assert.equal(topRows[2]._status,'EXPLICADA','A group member must inherit the group explanation');
 assert(topRows[2].explanation.includes('compartida'),'Group explanation should be visible');
 assert.equal(topRows[3]._status,'PENDIENTE','Unexplained positions must remain distinguishable');
+// A completed trend is visible only in Explicadas until the actual delivery is
+// closed/deleted. The exact historical explanation then reappears in Top 30.
+st.data.deliveries.items.push({event_id:'test-ready',revision:0,
+    name:'Tendencia 1',status:'sent',final:true,delivered_at:new Date().toISOString()});
+const stillInExplained=tt.trendRows()[0];
+assert.equal(stillInExplained._status,'PENDIENTE EN EXPLICADAS');
+assert.equal(stillInExplained.explanation,'','Top30 must not reveal active Explicadas text');
+assert.equal(stillInExplained.closer_text,'','Top30 must not reveal active remate');
+assert.equal(stillInExplained._inExplained,true);
+st.data.mobileDecisions.items.push({id:'test-ready',status:'deleted'});
+const closedInExplained=tt.trendRows()[0];
+assert.equal(closedInExplained._status,'EXPLICADA','Closing Explicadas reveals saved text in Top 30');
+assert(closedInExplained.explanation.includes('Explicación completa'));
+assert.equal(closedInExplained._inExplained,false);
+st.data.deliveries.items.push({event_id:'test-group',revision:0,
+    name:'Evento agrupado',status:'sent',final:true,delivered_at:new Date().toISOString()});
+assert.equal(tt.trendRows()[2]._status,'PENDIENTE EN EXPLICADAS','Grouped trend shares the active explanation');
+st.data.mobileDecisions.items.push({id:'test-group',status:'deleted'});
+assert(tt.trendRows()[2].explanation.includes('compartida'),'Closing grouped card restores its historical text');
 st.tab='explicadas';
 const inbox=tt.trendRows();
 assert.equal(inbox.length,1,'Explicadas must include only new active delivered cards');
