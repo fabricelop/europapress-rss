@@ -20,18 +20,20 @@ targets:
       path: Info.plist
       properties:
         CFBundleDisplayName: Mi Mapa del Tiempo
-        CFBundleShortVersionString: "1.0.2"
-        CFBundleVersion: "2"
+        CFBundleShortVersionString: "1.0.3"
+        CFBundleVersion: "3"
         UILaunchScreen: {}
         UIBackgroundModes:
           - location
         NSLocationWhenInUseUsageDescription: "Mi Mapa del Tiempo necesita la ubicación para sumar tiempo a las cuadrículas geográficas."
         NSLocationAlwaysAndWhenInUseUsageDescription: "Se necesita la ubicación siempre para registrar estancias y trayectos incluso con el iPhone bloqueado."
         NSFaceIDUsageDescription: "Face ID protege tu mapa de ubicaciones personales al abrir la aplicación."
+        NSMotionUsageDescription: "La detección de caminar, conducir o estar parado permite ajustar automáticamente la precisión GPS y reducir el consumo de batería."
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: es.mimapadeltiempo.app
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        OTHER_LDFLAGS: ["-lsqlite3"]
   MiMapaDelTiempoTests:
     type: bundle.unit-test
     platform: iOS
