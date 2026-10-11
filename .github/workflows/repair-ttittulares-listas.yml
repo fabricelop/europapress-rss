@@ -178,6 +178,20 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
+      - name: Entregar noticias listas a Telegram sin esperar al cron
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Los commits hechos por GITHUB_TOKEN no disparan automáticamente
+          # los workflows push. workflow_dispatch sí está permitido y el
+          # repartidor tiene exclusión mutua e idempotencia por event_id.
+          gh workflow run send-ttittulares-ready-telegram.yml --repo "$REPO" --ref main
+          echo "TTITTULARES_TELEGRAM_DISPATCH_REQUESTED"
+
       - name: Encolar IA ausente o inválida
         if: ${{ false }}
         shell: bash
