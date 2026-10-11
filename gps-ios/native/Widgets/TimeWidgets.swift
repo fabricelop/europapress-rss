@@ -1,5 +1,6 @@
 import SwiftUI
 import WidgetKit
+import ActivityKit
 
 private struct GPSWidgetEntry: TimelineEntry {
     var date: Date
@@ -154,9 +155,55 @@ struct MiMapaTiempoWidget: Widget {
     }
 }
 
+/// Alternativa nativa para la pantalla bloqueada: temporizador de iOS,
+/// sin App Group ni actualizaciones GPS cada segundo.
+struct MiMapaRestLiveActivity: Widget {
+    var body: some WidgetConfiguration {
+        ActivityConfiguration(for: TimeMapActivityAttributes.self) { context in
+            HStack(spacing:12) {
+                Image(systemName: context.state.resting ? "moon.zzz.fill" : "location.fill")
+                    .font(.title2).foregroundStyle(.teal)
+                VStack(alignment:.leading,spacing:3) {
+                    Text(context.state.cellName).font(.headline).lineLimit(1)
+                    Text(context.state.resting ? "GPS en pausa · tiempo asumido" : "GPS activo · estancia")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Spacer(minLength:4)
+                Text(context.state.stayStartedAt,style:.timer)
+                    .font(.headline.monospacedDigit())
+            }
+            .padding(14)
+            .activityBackgroundTint(Color(.systemBackground))
+            .activitySystemActionForegroundColor(.teal)
+        } dynamicIsland: { context in
+            DynamicIsland {
+                DynamicIslandExpandedRegion(.center) {
+                    VStack(spacing:4) {
+                        Text(context.state.cellName).font(.headline).lineLimit(1)
+                        Text(context.state.resting ? "GPS pausado · sumando tiempo" : "Estancia actual")
+                            .font(.caption2)
+                        Text(context.state.stayStartedAt,style:.timer)
+                            .font(.title3.monospacedDigit())
+                    }
+                }
+            } compactLeading: {
+                Image(systemName:context.state.resting ? "moon.zzz.fill" : "hourglass")
+            } compactTrailing: {
+                Text(context.state.stayStartedAt,style:.timer)
+                    .font(.caption2.monospacedDigit())
+                    .frame(maxWidth:52)
+            } minimal: {
+                Image(systemName:"hourglass")
+            }
+            .widgetURL(URL(string:"mimapadeltiempo://mapa"))
+        }
+    }
+}
+
 @main
 struct MiMapaTiempoWidgetBundle: WidgetBundle {
     var body: some Widget {
         MiMapaTiempoWidget()
+        MiMapaRestLiveActivity()
     }
 }
