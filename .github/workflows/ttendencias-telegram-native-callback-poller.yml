@@ -1,19 +1,9 @@
 name: TTendencias native Telegram buttons without webhook
+# Only the continuous TTendencias package-listen may poll Telegram updates
+# automatically. Two getUpdates consumers compete and can lose callbacks.
+# Manual fallback remains available for an explicitly diagnosed outage.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/5 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/ttendencias-telegram-native-callback-poller.yml'
-      - '.github/scripts/ttendencias_telegram_poll_callbacks.py'
-      - 'trends/telegram_bot.py'
-      - 'selorecordamos/telegram_local.js'
-      - 'api/telegram-webhook.js'
-      - 'vercel-webhook/api/telegram-webhook.js'
-      - '.github/scripts/test_telegram_run.py'
-      - '.github/scripts/test_tti_telegram_run.mjs'
 permissions:
   contents: write
 concurrency:
