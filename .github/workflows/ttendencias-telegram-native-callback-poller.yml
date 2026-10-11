@@ -40,7 +40,7 @@ jobs:
             git fetch origin main
             git checkout -B main origin/main
             python3 .github/scripts/ttendencias_telegram_poll_callbacks.py
-            git add trends/telegram-image-deliveries.json trends/mobile-decisions.json
+            git add trends/telegram-image-deliveries.json trends/mobile-decisions.json trends/requests.json
             if test -f trends/telegram-native-callback-offset.json; then git add trends/telegram-native-callback-offset.json; fi
             if git diff --cached --quiet; then
               echo TTENDENCIAS_CALLBACKS_NO_CHANGE
@@ -78,7 +78,7 @@ jobs:
                       with urllib.request.urlopen(request,timeout=20) as response:
                           return json.load(response).get('ok') is True
                   except Exception:return False
-              answered=send(url,payload)
+              answered=send(url,payload) if item.get('callback_id') else False
               if not answered and chat:
                   notified=send('https://api.telegram.org/bot'+token+'/sendMessage',
                                 {'chat_id':chat,'text':item['text']})
