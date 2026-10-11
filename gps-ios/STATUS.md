@@ -19,7 +19,7 @@
 - [x] Instrucciones para Windows + Sideloadly añadidas a README.md.
 
 ## Limitaciones verificadas
-- [ ] Compilación nativa con runner macOS de GitHub Actions configurada; pendiente verificar run exitoso y artefacto IPA. No hay Mac/Xcode local.
+- [x] Compilación nativa iOS Release correcta en GitHub Actions, run #5 del 11/10/2026, [ver ejecución](https://github.com/fabricelop/europapress-rss/actions/runs/38119202534). Artefacto **MiMapaDelTiempo-unsigned-IPA**, ID 11694464174, 219461 bytes ZIP, disponible en GitHub hasta 18/10/2026. No está firmado ni probado en iPhone.
 - [ ] Probar actualización continua, consumo y precisión con iPhone bloqueado: requiere iPhone.
 - [ ] Hosting HTTPS del prototipo: Vercel devolvió HTTP 402 resource_creation_blocked por límite del equipo; no se creó ningún proyecto ni despliegue.
 - [ ] Pruebas masivas de importación y prevención de todos los solapamientos.
@@ -27,7 +27,7 @@
 - [ ] La vista web es experimental y Safari puede suspenderla en segundo plano.
 
 ## Pendientes técnicos importantes
-1. Verificar la compilación real en el runner macOS, corregir posibles errores Xcode y descargar IPA sin firmar para Sideloadly.
+1. Descargar la IPA del run verde, firmarla con Sideloadly y probarla en un iPhone físico. Registrar resultados de instalación y localización.
 2. SQLite y mecanismos de continuidad de registro en background.
 3. Gestión robusta de solapamientos en importación, pérdida de señal y auditoría de correcciones.
 4. Mapa básico de cuadrículas offline, polígonos dibujables y cálculo zonal retroactivo.
