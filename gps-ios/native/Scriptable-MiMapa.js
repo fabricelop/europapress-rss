@@ -1,7 +1,8 @@
 // Mi Mapa del Tiempo — Widget Scriptable (pantalla de inicio y bloqueo)
 // En Mi Mapa: Ajustes → Widgets → Exportar resumen para Scriptable.
 // En Archivos guarda MiMapaEstado.json en iCloud Drive / Scriptable.
-// El tiempo es el del ÚLTIMO resumen exportado; Scriptable no lee el GPS\n// ni detecta por sí solo los cambios de zona.
+// El tiempo es el del ÚLTIMO resumen exportado; Scriptable no lee el GPS
+// ni detecta por sí solo los cambios de zona.
 const fm=FileManager.iCloud();
 const filepath=fm.joinPath(fm.documentsDirectory(),"MiMapaEstado.json");
 const widget=new ListWidget();
@@ -32,7 +33,7 @@ if(data) {
   const header=widget.addText(displayName);
   header.font=Font.boldSystemFont(family==="accessoryRectangular"?12:17);
   header.textColor=Color.white();
-  header.lineLimit(2);
+  header.lineLimit = 2;
   widget.addSpacer(3);
   const kind=widget.addText(isZone?
       ("ZONA · "+count+" cuadrícula"+(count===1?"":"s")):
