@@ -42,6 +42,12 @@ struct OfflineGridMap: View {
         return .cyan.opacity(0.8)
     }
     var body: some View {
+        let cachedTotals=model.periodTotals()
+        let activeCell=model.activeCell
+        let activeExtra=activeCell.map {
+            model.provisionalSeconds(for:[$0.id])
+        } ?? 0
+        let overlays=model.zoneOverlays
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
                 Canvas { context, size in
@@ -67,13 +73,13 @@ struct OfflineGridMap: View {
                         }
                     }
                     for c in model.allCells.prefix(12_000) {
-                        let secs=model.total(for:c)
+                        let secs=(cachedTotals[c.id] ?? 0)+(c==activeCell ? activeExtra : 0)
                         guard secs>0 else { continue }
                         let poly=Grid.polygon(c)
                         let p0=screen(poly[3],size:size),p1=screen(poly[1],size:size)
                         let rect=CGRect(x:p0.x,y:p0.y,width:p1.x-p0.x,height:p1.y-p0.y)
                         guard rect.intersects(CGRect(origin:.zero,size:size)), rect.width>0 else { continue }
-                        context.fill(Path(rect),with:.color(colour(secs).opacity(0.85)))
+                        context.fill(Path(rect),with:.color(colour(secs).opacity(model.cellFillOpacity)))
                         if rect.width >= 38 && rect.height >= 30 {
                             context.draw(Text(DurationFormat.small(secs))
                                 .font(.system(size:10,weight:.bold))
@@ -82,9 +88,8 @@ struct OfflineGridMap: View {
                     }
                     // Misma delimitación visible sin Internet ni mapas descargados.
                     // El perímetro de una zona es más grueso que la rejilla normal.
-                    for zone in model.visibleZones.prefix(18) {
-                        let boundary=TimeZoneOutline.segments(for:zone,maxCells:600)
-                        for edge in boundary {
+                    for overlay in overlays {
+                        for edge in overlay.edges {
                             let a=screen(edge.start,size:size),b=screen(edge.end,size:size)
                             if CGRect(x:min(a.x,b.x),y:min(a.y,b.y),
                                       width:max(1,abs(a.x-b.x)),
@@ -95,12 +100,12 @@ struct OfflineGridMap: View {
                                 context.stroke(path,with:.color(.teal),lineWidth:3)
                             }
                         }
-                        if let middle=TimeZoneOutline.visibleCenter(for:zone) {
+                        if let middle=overlay.center {
                             let center=screen(middle,size:size)
                             if center.x>=0 && center.x<size.width &&
                                center.y>=0 && center.y<size.height &&
                                region.span.latitudeDelta<0.07 {
-                                context.draw(Text("\(zone.name) · \(zone.cells.count)")
+                                context.draw(Text("\(overlay.zone.name) · \(overlay.zone.cellIDs.count)")
                                     .font(.system(size:11,weight:.bold))
                                     .foregroundColor(.teal),
                                     at:center)
