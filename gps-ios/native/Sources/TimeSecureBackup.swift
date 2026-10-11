@@ -33,6 +33,7 @@ enum TimeSecureBackup {
             throw TimeBackupError.invalidBackup
         }
         var result=[UInt8](repeating:0,count:32)
+        let keyLength=result.count
         let status: Int32 = password.withCString { pwd in
             salt.withUnsafeBytes { saltBytes in
                 result.withUnsafeMutableBytes { output in
@@ -41,7 +42,7 @@ enum TimeSecureBackup {
                          saltBytes.bindMemory(to:UInt8.self).baseAddress, salt.count,
                          CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA256),
                          UInt32(iterations),
-                         output.bindMemory(to:UInt8.self).baseAddress, result.count)
+                         output.bindMemory(to:UInt8.self).baseAddress, keyLength)
                 }
             }
         }
