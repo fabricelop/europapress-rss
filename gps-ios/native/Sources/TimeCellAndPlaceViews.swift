@@ -17,6 +17,11 @@ struct CellHistoryView: View {
                 LabeledContent("Tiempo confirmado",
                     value:DurationFormat.full(visits.reduce(0) { $0+$1.confirmedSeconds }))
                 LabeledContent("Visitas",value:String(visits.count))
+                LabeledContent("Días con presencia",
+                    value:String(TimeVisitIndex.daily(visits).count))
+                LabeledContent("Media por visita",
+                    value:DurationFormat.full(visits.isEmpty ? 0 :
+                        visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
                 LabeledContent("Identificador",value:cell.id)
                 if let place=model.placeFor(cell) {
                     LabeledContent("Lugar",value:place.name)
@@ -114,6 +119,11 @@ struct UserPlaceDetailView: View {
                     LabeledContent("Tiempo confirmado",
                         value:DurationFormat.full(visits.reduce(0) {$0+$1.confirmedSeconds}))
                     LabeledContent("Visitas",value:String(visits.count))
+                    LabeledContent("Días con presencia",
+                        value:String(TimeVisitIndex.daily(visits).count))
+                    LabeledContent("Media por visita",
+                        value:DurationFormat.full(visits.isEmpty ? 0 :
+                            visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
                     LabeledContent("Cuadrículas",value:String(place.cellIDs.count))
                     Button("Renombrar todo el lugar") {
                         newName=place.name
