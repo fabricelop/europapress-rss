@@ -163,7 +163,7 @@ struct SavedState: Codable {
     @Published var minimized = false
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
-    @Published var targetMapCell: Cell?
+    private var mapNavigation = MapNavigationOnce()
     @Published var mapNavigationRevision = UUID()
     @Published private(set) var renameUndoAvailable = false
     private var renameUndoSnapshot: (names:[String:String],places:[UserPlace])?
@@ -346,10 +346,11 @@ struct SavedState: Codable {
     }
     func navigate(to cell: Cell) {
         selected = cell
-        targetMapCell = cell
+        mapNavigation.enqueue(cell)
         mapNavigationRevision=UUID() // permite navegar dos veces a la misma zona
         selectedTab = 0
     }
+    func takeMapTarget() -> Cell? { mapNavigation.consume() }
     func proposalForRename(_ cell:Cell, to rawName:String) -> NameProposal {
         let title=rawName.trimmingCharacters(in:.whitespacesAndNewlines)
         let excluding = data.places.filter { !$0.cellIDs.contains(cell.id) }
@@ -969,6 +970,7 @@ struct TimeMapView: View {
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
     @State private var followLocation = false
+    @State private var restoredCamera = false
     @Environment(\.scenePhase) private var scenePhase
     var relevant: [Cell] {
         model.allCells.filter { c in
@@ -998,6 +1000,7 @@ struct TimeMapView: View {
         ZStack(alignment: .bottom) {
             if model.forceBasicMap || !connectivity.connected {
                 OfflineGridMap(model:model,region:$region) { newRegion in
+                    followLocation = false // un gesto o zoom manual activa mapa libre
                     model.updateCamera(newRegion)
                     camera = .region(newRegion)
                 }
@@ -1040,6 +1043,9 @@ struct TimeMapView: View {
                     }
                 }
                 .mapStyle(model.mapKind == .satellite ? .imagery : model.mapKind == .hybrid ? .hybrid : .standard)
+                .simultaneousGesture(DragGesture(minimumDistance:8).onChanged { _ in
+                    if followLocation { followLocation = false }
+                })
                 .onTapGesture { point in
                     if let coord = proxy.convert(point, from: .local) {
                         let touched=Grid.cell(latitude:coord.latitude,longitude:coord.longitude)
@@ -1049,10 +1055,8 @@ struct TimeMapView: View {
                 .onMapCameraChange(frequency: .onEnd) { ctx in
                     region = ctx.region
                     model.updateCamera(ctx.region)
-                    // MapKit abandona el modo de seguimiento al arrastrar/zoom manual.
-                    if followLocation && !camera.followsUserLocation {
-                        followLocation = false
-                    }
+                    // Solo un gesto manual desactiva Seguirme; un cambio de
+                    // cámara programático no debe hacerlo.
                 }
                 .onAppear { centerOnRequestedCell() }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
@@ -1083,12 +1087,7 @@ struct TimeMapView: View {
                         followLocation.toggle()
                         if followLocation {
                             model.selected=nil
-                            if model.forceBasicMap || !connectivity.connected {
-                                focusOnCurrentLocation()
-                            } else {
-                                camera = .userLocation(followsHeading:false,
-                                       fallback:.region(region))
-                            }
+                            focusOnCurrentLocation() // conserva exactamente el zoom actual
                             gps.refreshWhenForeground()
                         } else {
                             camera = .region(region)
@@ -1196,25 +1195,24 @@ struct TimeMapView: View {
 .onChange(of:scenePhase) { _,phase in
             if phase == .active {
                 gps.refreshWhenForeground()
-                if followLocation && (model.forceBasicMap || !connectivity.connected) {
-                    focusOnCurrentLocation()
-                }
+                if followLocation { focusOnCurrentLocation() }
             }
         }
         .onChange(of:model.current?.date) { _,_ in
-            if followLocation && (model.forceBasicMap || !connectivity.connected) {
-                focusOnCurrentLocation()
-            }
+            if followLocation { focusOnCurrentLocation() }
         }
     }
     private func focusOnCurrentLocation() {
         guard let position=model.current else { return }
         let target=MKCoordinateRegion(center:position.coordinate,span:region.span)
         region=target
-        camera = .region(target)
+        withAnimation(.easeInOut(duration:0.24)) {
+            camera = .region(target)
+        }
     }
     private func centerOnRequestedCell() {
-        if let c = model.targetMapCell {
+        if let c = model.takeMapTarget() {
+            restoredCamera = true
             followLocation=false
             let center=Grid.center(c)
             let target=MKCoordinateRegion(center:center,
@@ -1223,7 +1221,10 @@ struct TimeMapView: View {
             camera = .region(target)
             model.selected=c
             model.updateCamera(target)
-        } else {
+        } else if !restoredCamera {
+            // Solo en la primera aparición: nunca rehacer el centrado
+            // al cambiar de pestaña o alternar el mapa offline.
+            restoredCamera = true
             camera = .region(model.data.camera.region)
             region = model.data.camera.region
         }
