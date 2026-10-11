@@ -298,8 +298,12 @@ struct SavedState: Codable {
              + provisionalSeconds(for:place.normalizedCellIDs,now:now)
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
-        guard recording, current != nil, let start = currentVisitStart else { return 0 }
-        return max(0, now.timeIntervalSince(start))
+        guard recording, current != nil, let start = currentVisitStart,
+              let lastFix=lastGPSFix else { return 0 }
+        // Si iOS deja de proporcionar posiciones no se puede afirmar
+        // que la estancia siga en la misma casilla indefinidamente.
+        let provisionalEnd=min(now,lastFix.addingTimeInterval(120))
+        return max(0, provisionalEnd.timeIntervalSince(start))
     }
     var activeCell: Cell? { stableCell ?? current?.cell }
     func refreshWidgets() {
@@ -1334,12 +1338,16 @@ struct TimeSettingsView: View {
                     Text("Prueba de galería: esta compilación intenta registrar un widget de acceso al mapa sin depender de App Groups. Si aparece, se podrá tocar para abrir la aplicación; no mostrará duraciones GPS mientras no exista comunicación autorizada.")
                         .font(.caption).foregroundStyle(.secondary)
                     Toggle("Mostrar nombres de lugares en widgets",isOn:$showPlaceInWidgets)
+                        .disabled(!TimeWidgetStorage.isAvailable)
                         .onChange(of:showPlaceInWidgets) { _,_ in model.refreshWidgets() }
                     LabeledContent("Datos compartidos",
-                        value: TimeWidgetStorage.isAvailable ? "App Group disponible" : "App Group no autorizado")
+                        value: TimeWidgetStorage.isAvailable ? "Contenedor autorizado" : "No disponible con esta firma")
+                    Text("La extensión compila y va incluida en la IPA, pero iOS aún no la muestra en tu galería. La firma real de Sideloadly y el registro del widget requieren diagnóstico en el iPhone. No prometemos contadores en widgets en esta versión.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Text("En la pantalla de inicio: mantén pulsado un espacio libre, toca Editar → Añadir widget y busca Mi Mapa del Tiempo. En la pantalla bloqueada: mantén pulsado, Personalizar y selecciona Widgets.")
                         .font(.caption).foregroundStyle(.secondary)
-                    Text("Muestran tiempo histórico confirmado y última estancia conocida. No se actualizan cada segundo; iOS regula sus recargas. La firma gratuita puede impedir el App Group y entonces el widget aparecerá sin datos.")
+                    Text("Si iOS llega a registrar la extensión sin App Group, mostrará un acceso a la aplicación. La visualización de tiempos dinámicos requiere una vía de datos compartidos autorizada.")
+                        .font(.caption).foregroundStyle(.secondary)
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Diagnóstico") {
