@@ -474,7 +474,7 @@ for item in to_queue:
         "rank": item["rank"],
         "status": "preparing",
         "requested_at": now,
-        "revision": int((req or {}).get("revision") or 0) + (1 if req and status == "inactive" else 0),
+        "revision": int((req or {}).get("revision") or 0) + (1 if req and str(req.get("status") or "") == "inactive" else 0),
         "reexplain": False,
         "with_image": True,
         "alternatives_target": 0,
