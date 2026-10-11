@@ -102,8 +102,7 @@ struct TerritoryStatsView: View {
     @State private var breadcrumb:[String]=[]
 
     private var totals:[String:TimeInterval] {
-        TimeAttribution.byCell(model.data.intervals,
-            window:TimeAnalytics.window(for:model.period,now:.now))
+        model.periodTotals()
     }
     private var pending:Int {
         totals.keys.filter { model.data.territoryCache[$0] == nil }.count
