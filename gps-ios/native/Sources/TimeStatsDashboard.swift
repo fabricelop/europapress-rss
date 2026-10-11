@@ -41,9 +41,9 @@ struct TimeStatsDashboard: View {
                     }
                     HStack(spacing:10) {
                         tile("Sin localizar", value:DurationFormat.full(model.data.missingSeconds), icon:"location.slash")
-                        tile("Posiciones GPS", value:String(model.data.fixes.count), icon:"location.north.circle")
+                        tile("Tramos con movimiento", value:String(model.data.intervals.filter { $0.quality == "reconstruido" }.count), icon:"figure.walk")
                     }
-                    Text("Superficie aproximada de las cuadrículas visitadas. «Sin localizar» y posiciones GPS corresponden al histórico completo.")
+                    Text("Superficie aproximada de las cuadrículas visitadas. «Sin localizar» y los tramos reconstruidos corresponden al histórico completo. Los detalles técnicos están en Ajustes.")
                         .font(.caption).foregroundStyle(.secondary)
 
                     HStack {
