@@ -7,6 +7,8 @@ on:
       - ttittulares/import_telegram_proposals.py
       - .github/workflows/import-ttittulares-telegram-proposals.yml
   workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
 permissions:
   contents: write
 concurrency:
