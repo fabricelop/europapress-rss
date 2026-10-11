@@ -50,15 +50,28 @@ enum DurationFormat {
         let days = n / 86_400; n %= 86_400
         let hours = n / 3_600; n %= 3_600
         let minutes = n / 60; n %= 60
-        return "\(months)M-\(days)D-\(hours)H:\(minutes)m:\(n)sg"
+        var parts: [String] = []
+        if months > 0 { parts.append("\(months) \(months == 1 ? "mes" : "meses")") }
+        if days > 0 { parts.append("\(days) d") }
+        if hours > 0 { parts.append("\(hours) h") }
+        if minutes > 0 { parts.append("\(minutes) min") }
+        if n > 0 || parts.isEmpty { parts.append("\(n) s") }
+        return parts.joined(separator:" ")
     }
     static func small(_ seconds: TimeInterval) -> String {
-        let n = Int(max(0, seconds))
-        if n >= 2_592_000 { return "\(n / 2_592_000)M" }
-        if n >= 86_400 { return "\(n / 86_400)D" }
-        if n >= 3_600 { return "\(n / 3_600)H" }
-        if n >= 60 { return "\(n / 60)m" }
-        return "\(n)sg"
+        var n = Int(max(0, seconds))
+        let months = n / 2_592_000; n %= 2_592_000
+        let days = n / 86_400; n %= 86_400
+        let hours = n / 3_600; n %= 3_600
+        let minutes = n / 60; n %= 60
+        let parts = [
+            months > 0 ? "\(months)mes" : "",
+            days > 0 ? "\(days)d" : "",
+            hours > 0 ? "\(hours)h" : "",
+            minutes > 0 ? "\(minutes)m" : "",
+            n > 0 ? "\(n)s" : ""
+        ].filter { !$0.isEmpty }
+        return parts.isEmpty ? "0s" : parts.prefix(2).joined(separator:" ")
     }
 }
 struct GPSPoint: Codable, Identifiable {
@@ -103,6 +116,7 @@ struct SavedState: Codable {
     var importedHashes: [String] = []
     var camera = CameraSave()
     var missingSeconds: TimeInterval = 0
+    var savedVisitStart: Date?
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
 }
@@ -117,6 +131,7 @@ struct SavedState: Codable {
     @Published var obscured = false
     @Published var adaptive = false
     @Published var showRoutes = false
+    @Published var period: TimePeriod = .all
     @Published var mapKind: MKMapType = .standard
     @Published var minimized = false
     private var lastSaved = Date.distantPast
@@ -127,7 +142,10 @@ struct SavedState: Codable {
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         fileURL = dir.appendingPathComponent("time-map-v1.json")
         if let blob = try? Data(contentsOf: fileURL),
-           let saved = try? JSONDecoder().decode(SavedState.self, from: blob) { data = saved }
+           let saved = try? JSONDecoder().decode(SavedState.self, from: blob) {
+            data = saved
+            currentVisitStart = saved.savedVisitStart
+        }
     }
     var totalSeconds: TimeInterval { data.totals.values.reduce(0, +) }
     var allCells: [Cell] {
@@ -137,12 +155,20 @@ struct SavedState: Codable {
             return Cell(row: row, column: col)
         }
     }
+    func periodTotals(now: Date = .now) -> [String:TimeInterval] {
+        guard let window = TimeAnalytics.window(for: period, now: now) else { return data.totals }
+        return TimeAnalytics.totals(data.intervals, from:window.start, to:window.end)
+    }
     func total(for cell: Cell, now: Date = .now) -> TimeInterval {
-        let base = data.totals[cell.id] ?? 0
-        // The running value is provisional until the next GPS fix arrives.
+        let base = period == .all ? (data.totals[cell.id] ?? 0) : (periodTotals(now: now)[cell.id] ?? 0)
+        // Solo contar provisionalmente si la muestra actual sigue siendo reciente.
         guard recording, let p = current, p.cell == cell else { return base }
         let age = now.timeIntervalSince(p.date)
-        return base + (age >= 0 && age < 120 ? age : 0)
+        guard age >= 0 && age < 120 else { return base }
+        if let window = TimeAnalytics.window(for: period, now: now) {
+            return base + max(0, now.timeIntervalSince(max(window.start,p.date)))
+        }
+        return base + age
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
         guard let start = currentVisitStart else { return 0 }
@@ -171,7 +197,12 @@ struct SavedState: Codable {
         if let last = data.fixes.last, sample.date <= last.date { return }
         if let last = data.fixes.last { attribute(from: last, to: sample) }
         data.fixes.append(sample)
-        if current?.cell != sample.cell { currentVisitStart = sample.date }
+        let previous = data.fixes.dropLast().last
+        let gap = previous.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
+        if previous?.cell != sample.cell || gap > GPSHistoryGrouping.gapLimit || currentVisitStart == nil {
+            currentVisitStart = sample.date
+            data.savedVisitStart = sample.date
+        }
         current = sample
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save()
@@ -241,6 +272,8 @@ struct SavedState: Codable {
             dedup.append(point)
         }
         data.fixes = dedup
+        currentVisitStart = nil
+        data.savedVisitStart = nil
         data.intervals = []
         data.totals = [:]
         data.missingSeconds = 0
@@ -367,6 +400,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     var body: some Scene {
         WindowGroup {
             RootView(model: model, gps: gps)
+                .environment(\.locale, Locale(identifier:"es_ES"))
                 .onAppear {
                     // Se reactiva al volver a abrir la app, respetando la opción previa.
                     if model.data.trackingEnabled && !model.recording { gps.begin(model) }
@@ -383,8 +417,9 @@ struct RootView: View {
     var body: some View {
         TabView {
             TimeMapView(model: model).tabItem { Label("Mapa", systemImage: "map") }
-            TimeStatsView(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar") }
+            TimeStatsDashboard(model: model).tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }
             GPSDiaryShell(model: model).tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }
+            TimeCompareView(model: model).tabItem { Label("Comparar", systemImage: "square.split.2x1") }
             TimeSettingsView(model: model, gps: gps).tabItem { Label("Ajustes", systemImage: "gearshape") }
         }.tint(.teal)
     }
@@ -398,6 +433,7 @@ struct TimeMapView: View {
     @State private var selectedSheet = false
     var relevant: [Cell] {
         model.allCells.filter { c in
+            guard model.total(for: c) > 0 else { return false }
             let point = Grid.center(c)
             return abs(point.latitude - region.center.latitude) < region.span.latitudeDelta * 1.1 &&
                    abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.1
@@ -405,6 +441,11 @@ struct TimeMapView: View {
     }
     func paint(_ sec: TimeInterval) -> Color {
         if model.explore { return .cyan }
+        if model.adaptive {
+            let maximum = max(1, relevant.map { model.total(for:$0) }.max() ?? 1)
+            let t = min(1, max(0, log1p(sec) / log1p(maximum)))
+            return Color(hue:0.58 - 0.56*t, saturation:0.76, brightness:0.93)
+        }
         let d = sec / 86400
         if d > 365 { return Color(red: 0.59, green: 0.22, blue: 0.4) }
         if d > 30 { return .red }
@@ -465,10 +506,20 @@ struct TimeMapView: View {
             }
             VStack {
                 HStack {
-                    Picker("Mapa", selection: $model.explore) {
-                        Text("Permanencia").tag(false)
-                        Text("Exploración").tag(true)
-                    }.pickerStyle(.segmented).frame(maxWidth: 260)
+                    Menu {
+                        Button { model.explore = false } label: {
+                            Label("Permanencia · tiempo acumulado", systemImage:"hourglass")
+                        }
+                        Button { model.explore = true } label: {
+                            Label("Exploración · zonas descubiertas", systemImage:"figure.walk")
+                        }
+                    } label: {
+                        Label(model.explore ? "Exploración" : "Permanencia",
+                              systemImage:model.explore ? "figure.walk" : "hourglass")
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal,12).padding(.vertical,9)
+                            .background(.regularMaterial,in:Capsule())
+                    }
                     Spacer()
                     Button {
                         if let fix = model.current {
@@ -481,10 +532,22 @@ struct TimeMapView: View {
                             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
                     }
                 }.padding(12)
+                HStack(spacing:4) {
+                    ForEach(TimePeriod.allCases) { p in
+                        Button(p.title) { model.period = p }
+                            .font(.caption2.weight(model.period == p ? .bold : .medium))
+                            .padding(.horizontal,9).padding(.vertical,7)
+                            .background(model.period == p ? Color.teal.opacity(0.86) :
+                                        Color(.secondarySystemBackground).opacity(0.92),in:Capsule())
+                            .foregroundStyle(model.period == p ? Color.white : Color.primary)
+                    }
+                    Spacer(minLength:0)
+                }.padding(.horizontal,12)
                 Spacer()
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(model.selected.map { model.label(for: $0) } ?? "Mi cuadrícula actual")
+                        Text(model.selected.map { model.label(for:$0) } ??
+                             (model.current.map { model.label(for:$0.cell) } ?? "Mi cuadrícula actual"))
                             .font(.headline)
                         Spacer()
                         Button {
@@ -617,10 +680,17 @@ struct TimeSettingsView: View {
                 Section("Mapa") {
                     Toggle("Mostrar recorridos recientes", isOn: $model.showRoutes)
                     Toggle("Territorio por descubrir", isOn: $model.obscured)
+                        .disabled(true)
+                    Text("Sombrear las áreas no visitadas sigue pendiente. Este interruptor se activará cuando esté implementado.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Toggle("Escala de colores adaptada", isOn: $model.adaptive)
+                    Text("Permanencia: tiempo en cada cuadrícula. Exploración: territorio visitado. La escala adaptada destaca las diferencias en la zona visible.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Datos") {
                     Button("Importar archivo GPX") { importing = true }
+                    Text("Importar GPX añade recorridos antiguos con hora. Exportar JSON crea una copia de seguridad manual; conviene conservarla fuera del iPhone.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Button("Preparar exportación JSON") {
                         do { exportFile = try model.exportJSON() }
                         catch { message = error.localizedDescription }
