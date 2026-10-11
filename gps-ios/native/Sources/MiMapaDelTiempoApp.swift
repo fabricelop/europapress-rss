@@ -843,15 +843,10 @@ struct TimeMapView: View {
     @StateObject private var connectivity = MapConnectivity()
     @State private var camera: MapCameraPosition = .automatic
     @State private var region: MKCoordinateRegion = CameraSave().region
-    @State private var rename = false
-    @State private var newName = ""
-    @State private var selectedSheet = false
+    @State private var namingCell: Cell?
     @State private var historyCell: Cell?
-    @State private var grouping = false
-    @State private var groupCells = Set<String>()
-    @State private var placeName = ""
-    @State private var namingPlace = false
-    @State private var groupMessage = ""
+    @State private var searchOpen = false
+    @State private var queuedCellForMap: Cell?
     var relevant: [Cell] {
         model.allCells.filter { c in
             guard model.total(for: c) > 0 else { return false }
@@ -890,8 +885,7 @@ struct TimeMapView: View {
                 Map(position: $camera) {
                     ForEach(relevant) { cell in
                         MapPolygon(coordinates: Grid.polygon(cell))
-                            .foregroundStyle(grouping && groupCells.contains(cell.id)
-                                ? Color.indigo.opacity(0.82) : paint(model.total(for: cell)).opacity(0.52))
+                            .foregroundStyle(paint(model.total(for:cell)).opacity(0.52))
                             .stroke(.white.opacity(0.85), lineWidth: 1)
                         if region.span.latitudeDelta < 0.015 {
                             Annotation("", coordinate: Grid.center(cell), anchor: .center) {
@@ -926,14 +920,7 @@ struct TimeMapView: View {
                 .onTapGesture { point in
                     if let coord = proxy.convert(point, from: .local) {
                         let touched=Grid.cell(latitude:coord.latitude,longitude:coord.longitude)
-                        if grouping {
-                            if model.data.totals[touched.id] != nil {
-                                if groupCells.contains(touched.id) { groupCells.remove(touched.id) }
-                                else { groupCells.insert(touched.id) }
-                            }
-                        } else {
-                            model.selected=touched
-                        }
+                        model.selected=touched
                     }
                 }
                 .onMapCameraChange(frequency: .onEnd) { ctx in
@@ -961,6 +948,10 @@ struct TimeMapView: View {
                             .background(.regularMaterial,in:Capsule())
                     }
                     Spacer()
+                    Button { searchOpen=true } label: {
+                        Image(systemName:"magnifyingglass").padding(11)
+                            .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
+                    }.accessibilityLabel("Buscar lugares y cuadrículas")
                     Button {
                         if let fix = model.current {
                             let target = MKCoordinateRegion(center: fix.coordinate,
@@ -994,22 +985,7 @@ struct TimeMapView: View {
                             .background(.regularMaterial,in:Capsule())
                     }.padding(.horizontal,12)
                 }
-                HStack(spacing:7) {
-                    Button {
-                        grouping.toggle()
-                        if !grouping { groupCells.removeAll() }
-                    } label: {
-                        Label(grouping ? "Cancelar grupo" : "Agrupar cuadrículas",
-                              systemImage:grouping ? "xmark.circle" : "square.3.layers.3d")
-                            .font(.caption.weight(.semibold))
-                    }.buttonStyle(.bordered)
-                    if grouping {
-                        Text("\(groupCells.count) elegidas").font(.caption2)
-                        Button("Crear lugar") { namingPlace=true }
-                            .buttonStyle(.borderedProminent).disabled(groupCells.isEmpty)
-                    }
-                    Spacer(minLength:0)
-                }.padding(.horizontal,12)
+                // Los lugares se forman exclusivamente nombrando cuadrículas.
                 HStack(spacing:4) {
                     ForEach(TimePeriod.allCases) { p in
                         Button(p.title) { model.period = p }
@@ -1056,11 +1032,7 @@ struct TimeMapView: View {
                             Spacer()
                             if let cell = model.selected ?? model.activeCell {
                                 Button("Histórico") { historyCell=cell }.font(.caption)
-                                Button("Nombre") {
-                                    newName=model.data.names[cell.id] ?? ""
-                                    model.selected=cell
-                                    rename=true
-                                }.font(.caption)
+                                Button("Nombre") { namingCell=cell }.font(.caption)
                             }
                         }.foregroundStyle(.secondary)
                     }
@@ -1080,31 +1052,20 @@ struct TimeMapView: View {
                     }
             }
         }
-        .alert("Crear lugar",isPresented:$namingPlace) {
-            TextField("Nombre del lugar",text:$placeName)
-            Button("Guardar") {
-                if model.addPlace(placeName,cells:groupCells) {
-                    groupCells.removeAll()
-                    grouping=false
-                    placeName=""
-                } else {
-                    groupMessage="Elige un nombre y cuadrículas que no pertenezcan ya a otro lugar."
-                }
-            }
-            Button("Cancelar",role:.cancel) {}
-        } message: {
-            Text("Agrupa las cuadrículas seleccionadas sin cambiar sus tiempos históricos.")
+        .sheet(item:$namingCell) { cell in
+            TimeNameEditor(model:model,cell:cell)
         }
-        .alert("No se pudo crear el lugar",isPresented:Binding(
-            get:{!groupMessage.isEmpty},set:{if !$0 {groupMessage=""}})) {
-                Button("Entendido") { groupMessage="" }
-        } message: { Text(groupMessage) }
-        .alert("Nombrar cuadrícula", isPresented: $rename) {
-            TextField("Nombre", text: $newName)
-            Button("Guardar") {
-                if let selected = model.selected { model.rename(selected, to: newName) }
+        .sheet(isPresented:$searchOpen) {
+            TimeUniversalSearch(model:model) { cell in
+                queuedCellForMap=cell
+                searchOpen=false
             }
-            Button("Cancelar", role: .cancel) {}
+        }
+        .onChange(of:searchOpen) { _,open in
+            if !open,let cell=queuedCellForMap {
+                queuedCellForMap=nil
+                model.navigate(to:cell)
+            }
         }
     }
     private func centerOnRequestedCell() {
