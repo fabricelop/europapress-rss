@@ -5,8 +5,7 @@ struct TimeZonesPanel: View {
     @ObservedObject var model: TimeModel
     @State private var creating = false
     private var values: [String:TimeInterval] {
-        TimeAttribution.byCell(model.data.intervals,
-            window:TimeAnalytics.window(for:model.period,now:.now))
+        model.periodTotals()
     }
     var body: some View {
         VStack(alignment:.leading,spacing:12) {
