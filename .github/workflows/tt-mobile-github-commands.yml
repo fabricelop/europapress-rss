@@ -6,19 +6,24 @@ on:
     - cron: '*/10 * * * *'
   workflow_dispatch:
     inputs:
+      run_pending:
+        description: Procesar órdenes previamente autenticadas desde el bot nativo Telegram
+        required: false
+        type: boolean
+        default: false
       project:
         description: Proyecto editorial
-        required: true
+        required: false
         type: choice
         options: [ttittulares, ttendencias]
       action:
         description: Acción solicitada desde Telegram
-        required: true
+        required: false
         type: choice
         options: [published, deleted, rework, prepare]
       id:
         description: ID de noticia o tendencia
-        required: true
+        required: false
         type: string
       context:
         required: false
@@ -65,7 +70,7 @@ jobs:
           PY
           python3 .github/scripts/test_tt_mobile_issue_command.py
   apply:
-    if: (github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')) || (github.event_name == 'workflow_dispatch' && github.actor == 'fabricelop') || (github.event_name=='schedule') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:'))
+    if: (github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')) || (github.event_name == 'workflow_dispatch' && (github.actor == 'fabricelop' || inputs.run_pending == true)) || (github.event_name=='schedule') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:'))
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -76,6 +81,7 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TT_MOBILE_QUEUE_DISPATCH: ${{ inputs.run_pending }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -83,7 +89,8 @@ jobs:
           for attempt in 1 2 3 4 5 6; do
             git fetch origin main
             git checkout -B main origin/main
-            if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "schedule" ]]; then
+            rm -f /tmp/tt-mobile-issue-result.txt /tmp/tt-mobile-queue-results.json
+            if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "schedule" || "$TT_MOBILE_QUEUE_DISPATCH" == "true" ]]; then
               python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH" --queue
             else
               python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
@@ -100,6 +107,10 @@ jobs:
             git commit -m "TT móvil: aplicar orden editorial autenticada"
             if git push origin HEAD:main; then
               echo "TT_MOBILE_PERSISTED"
+              # Manual Preparar launches exactly the same Windows/ChatGPT
+              # editorial run as Top10, AFTER the GitHub queue is committed.
+              python3 trends/request_pc_editorial.py --selftest
+              python3 trends/request_pc_editorial.py
               if gh workflow run send-ttittulares-ready-telegram.yml -R "$GITHUB_REPOSITORY" --ref main; then
                 echo "TTI_PROVISIONAL_DELIVERY_DISPATCHED"
               else
