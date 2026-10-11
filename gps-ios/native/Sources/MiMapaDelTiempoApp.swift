@@ -467,36 +467,102 @@ final class GPXReader: NSObject, XMLParserDelegate {
 }
 final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     private let manager = CLLocationManager()
+    private let motion = MotionObserver()
+    private var decision = SmartGPSDecision()
+    private var motionMoving: Bool?
+    private var lastPosition: CLLocation?
+    private var lastMotionChange: Date = .distantPast
     weak var model: TimeModel?
+
+    @Published private(set) var mode: GPSPowerMode = .precision
+    @Published private(set) var movingSoon = false
+    @Published private(set) var motionAvailable = CMMotionActivityManager.isActivityAvailable()
+
     override init() {
         super.init()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-        manager.distanceFilter = kCLDistanceFilterNone
-        manager.activityType = .otherNavigation
-        manager.pausesLocationUpdatesAutomatically = false
+        configure(.precision)
+    }
+    private func configure(_ target: GPSPowerMode) {
+        guard mode != target || manager.desiredAccuracy != (target == .precision ?
+                    kCLLocationAccuracyBestForNavigation : kCLLocationAccuracyNearestTenMeters)
+        else { return }
+        mode = target
+        if target == .precision {
+            manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            manager.distanceFilter = kCLDistanceFilterNone
+            manager.activityType = .otherNavigation
+            manager.pausesLocationUpdatesAutomatically = false
+        } else {
+            manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            manager.distanceFilter = 20
+            manager.activityType = .other
+            manager.pausesLocationUpdatesAutomatically = true
+        }
         manager.allowsBackgroundLocationUpdates = true
         manager.showsBackgroundLocationIndicator = true
     }
     @MainActor func begin(_ model: TimeModel) {
         self.model = model
         manager.requestAlwaysAuthorization()
+        configure(.precision)
         manager.startUpdatingLocation()
+        if manager.authorizationStatus == .authorizedAlways {
+            manager.startMonitoringSignificantLocationChanges()
+        }
+        motion.begin { [weak self] moving in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.motionMoving = moving
+                if moving == true {
+                    self.decision.motionStarted(at:Date())
+                    self.applyMode()
+                }
+            }
+        }
         model.recording = true
         model.setTrackingEnabled(true)
-        model.gpsStatus = "Esperando ubicación GPS"
+        model.gpsStatus = "GPS inteligente · buscando ubicación"
     }
     @MainActor func end(_ model: TimeModel) {
         manager.stopUpdatingLocation()
+        manager.stopMonitoringSignificantLocationChanges()
+        motion.end()
         model.recording = false
         model.setTrackingEnabled(false)
         model.gpsStatus = "Detenido"
-        model.save(force: true)
+        model.save(force:true)
+        movingSoon = false
+        decision = SmartGPSDecision()
+        mode = .precision
+    }
+    @MainActor func setAnticipation(_ enabled: Bool) {
+        if enabled { decision.anticipate() }
+        else { decision.cancelAnticipation() }
+        movingSoon = decision.movingSoon
+        applyMode()
+    }
+    @MainActor private func applyMode() {
+        movingSoon = decision.movingSoon
+        if mode != decision.mode {
+            configure(decision.mode)
+            // La modificación del filtro entra en vigor sin reiniciar la sesión GPS.
+        }
+    }
+    @MainActor private func observe(_ location: CLLocation) {
+        let distance = lastPosition.map { $0.distance(from:location) } ?? 0
+        lastPosition = location
+        decision.observe(date:location.timestamp,
+                         speed: max(0,location.speed),
+                         metersSincePrevious:distance,
+                         motionMoving:motionMoving)
+        applyMode()
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         Task { @MainActor in
             for location in locations.sorted(by: { $0.timestamp < $1.timestamp }) {
                 model?.record(location)
+                observe(location)
             }
         }
     }
@@ -507,6 +573,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         Task { @MainActor in
             if manager.authorizationStatus == .denied || manager.authorizationStatus == .restricted {
                 model?.gpsStatus = "Permiso GPS denegado"
+            } else if manager.authorizationStatus == .authorizedAlways, model?.recording == true {
+                manager.startMonitoringSignificantLocationChanges()
             }
         }
     }
