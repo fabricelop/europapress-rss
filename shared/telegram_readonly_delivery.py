@@ -476,15 +476,11 @@ def article_identity(url):
     path=parsed.path.rstrip("/").casefold()
     return host+path if host and path else ""
 
-def recently_delivered_same_title(card,history,now,days=7):
-    """Avoid duplicate Telegram cards when a new radar ID represents the same story.
-
-    A deleted/published card still counts: removing one must not resurface it.
-    Revisions under the same ID may edit the original message, not resend it.
-    """
+def matching_previous_story(card,history,now,days=7):
+    """Look up the older Telegram story, including deleted/published tombstones."""
     title=trend_title_key(card.get("title"))
     article=article_identity(card.get("source_url"))
-    if not title and not article:return False
+    if not title and not article:return None
     eid=str(card.get("id") or "")
     for row in history:
         if str(row.get("event_id") or "")==eid:continue
@@ -493,8 +489,11 @@ def recently_delivered_same_title(card,history,now,days=7):
         if not title_match and not article_match:continue
         when=date(row.get("delivered_at"))
         if when is not None and timedelta(0)<=now-when<timedelta(days=days) and int(row.get("telegram_message_id") or 0)>0:
-            return True
-    return False
+            return row
+    return None
+
+def recently_delivered_same_title(card,history,now,days=7):
+    return matching_previous_story(card,history,now,days) is not None
 
 def trend_repeat_allowed(card,history,now):
     # Never auto-repost a routine revision. Only a verified genuinely new
@@ -520,7 +519,27 @@ def process(project,now,token,chat):
         linked=[r for r in entries if str(r.get("event_id") or "")==eid]
         # The radar may assign distinct IDs to the same news/trend. Prevent
         # a second card for seven days, including previously deleted ones.
-        if recently_delivered_same_title(card,entries,now):
+        older=matching_previous_story(card,entries,now)
+        if older:
+            # An old tombstone overrides a newer radar event ID. If a buggy
+            # anonymous provisional was already sent, remove that duplicate.
+            if (project=="ttittulares" and
+                str(older.get("status") or "").lower() in TERMINAL):
+                for duplicate in linked:
+                    if str(duplicate.get("status") or "").lower()!="sent":
+                        continue
+                    mid=int(duplicate.get("telegram_message_id") or 0)
+                    if not mid:continue
+                    result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
+                    if result is not None:
+                        duplicate.update(status="deleted",deleted_at=now.isoformat(),
+                            updated_at=now.isoformat(),duplicate_of=str(older.get("event_id") or ""),
+                            decision_source="duplicate_of_terminal_story")
+                        ledger["updated_at"]=now.isoformat()
+                        put(path,ledger)
+                        updated+=1
+                    else:
+                        print("TTI_DUPLICATE_DELETE_RETRY",eid,mid,flush=True)
             skipped+=1
             continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
@@ -611,6 +630,9 @@ def process(project,now,token,chat):
         else:
             card["image"]=""
         body=card["text"]
+        if project=="ttittulares" and not card["final"] and not card["image"]:
+            body=body.replace("📷 Fotografía de archivo disponible.",
+                              "📷 Fotografía de archivo pendiente.")
         if project=="ttittulares" and not card["final"]:
             if image_data or (existing and (existing.get("is_photo") or
                     existing.get("archive_telegram_message_id"))):
