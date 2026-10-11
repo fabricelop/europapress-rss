@@ -89,9 +89,14 @@ enum TimeZoneGeometry {
 
 struct TimeZoneOverlay: Identifiable {
     let zone:TimeCustomZone
-    let edges:[TimeZoneBorderSegment]
+    let contours:[TimeZoneBorderPath]
     let center:CLLocationCoordinate2D?
     var id:UUID { zone.id }
+}
+
+struct TimeZoneBorderPath:Identifiable {
+    let id:Int
+    let coordinates:[CLLocationCoordinate2D]
 }
 
 struct TimeZoneBorderSegment {
@@ -99,52 +104,82 @@ struct TimeZoneBorderSegment {
     var end: CLLocationCoordinate2D
 }
 
-/// Delimitación de la zona sin dibujar líneas internas entre sus cuadrículas.
-/// Los vértices provienen de Grid.polygon; son aptos para mapa online y offline.
+/// El contorno exacto de la selección se calcula una sola vez por zona.
+/// Se unen lados adyacentes en líneas continuas para crear muy pocas
+/// superposiciones MapPolyline, incluso en zonas de miles de casillas.
 enum TimeZoneOutline {
-    static func segments(for zone:TimeCustomZone, maxCells:Int = 600) -> [TimeZoneBorderSegment] {
+    static func segments(for zone:TimeCustomZone,maxCells:Int = TimeZoneGeometry.maximumCells) -> [TimeZoneBorderSegment] {
         let ids=zone.cells
-        var segments:[TimeZoneBorderSegment]=[]
+        var boundary:[TimeZoneBorderSegment]=[]
         for id in zone.cellIDs.prefix(maxCells) {
             guard let cell=TimeAnalytics.cell(id) else { continue }
             let vertices=Grid.polygon(cell)
+            let middle=Grid.center(cell)
             for i in 0..<4 {
                 let a=vertices[i],b=vertices[(i+1)%4]
-                let center=CLLocationCoordinate2D(
+                let midpoint=CLLocationCoordinate2D(
                     latitude:(a.latitude+b.latitude)/2,
                     longitude:(a.longitude+b.longitude)/2)
-                // Coordenada 1.5 metros fuera de la casilla en dirección
-                // opuesta al centro: comprueba un vecino sin asumir columnas
-                // iguales en distintas latitudes.
-                let middle=Grid.center(cell)
                 let outside=CLLocationCoordinate2D(
-                    latitude:center.latitude+(center.latitude-middle.latitude)*0.04,
-                    longitude:center.longitude+(center.longitude-middle.longitude)*0.04)
-                let neighbor=Grid.cell(latitude:outside.latitude,longitude:outside.longitude)
-                if !ids.contains(neighbor.id) {
-                    segments.append(TimeZoneBorderSegment(start:a,end:b))
+                    latitude:midpoint.latitude+(midpoint.latitude-middle.latitude)*0.04,
+                    longitude:midpoint.longitude+(midpoint.longitude-middle.longitude)*0.04)
+                let neighbour=Grid.cell(latitude:outside.latitude,longitude:outside.longitude)
+                if !ids.contains(neighbour.id) {
+                    boundary.append(TimeZoneBorderSegment(start:a,end:b))
                 }
             }
         }
-        return segments
+        return boundary
     }
-    /// Más de 80 cuadrículas: usar solo el recuadro exterior en vez de generar
-    /// cientos de MapPolyline en cada cambio GPS. La geometría real se guarda
-    /// intacta, esta simplificación afecta SOLO al dibujo.
-    static func renderSegments(for zone:TimeCustomZone) -> [TimeZoneBorderSegment] {
-        guard zone.cellIDs.count > 80 else { return segments(for:zone,maxCells:80) }
-        let points=zone.cellIDs.compactMap(TimeAnalytics.cell).flatMap(Grid.polygon)
-        guard let minLat=points.map(\.latitude).min(),
-              let maxLat=points.map(\.latitude).max(),
-              let minLon=points.map(\.longitude).min(),
-              let maxLon=points.map(\.longitude).max() else { return [] }
-        let a=CLLocationCoordinate2D(latitude:minLat,longitude:minLon)
-        let b=CLLocationCoordinate2D(latitude:minLat,longitude:maxLon)
-        let c=CLLocationCoordinate2D(latitude:maxLat,longitude:maxLon)
-        let d=CLLocationCoordinate2D(latitude:maxLat,longitude:minLon)
-        return [(a,b),(b,c),(c,d),(d,a)].map {
-            TimeZoneBorderSegment(start:$0.0,end:$0.1)
+
+    /// Coordenadas vecinas de filas métricas diferentes pueden diferir
+    /// ligeramente en longitud. Clave a ~10 m, frente a celdas de ~100 m.
+    private struct Vertex:Hashable {
+        let lat:Int
+        let lon:Int
+        init(_ coordinate:CLLocationCoordinate2D) {
+            lat=Int((coordinate.latitude*10000).rounded())
+            lon=Int((coordinate.longitude*10000).rounded())
         }
+    }
+
+    static func contours(for zone:TimeCustomZone) -> [TimeZoneBorderPath] {
+        let edges=segments(for:zone)
+        guard !edges.isEmpty else { return [] }
+        var adjacency:[Vertex:[Int]] = [:]
+        for (i,e) in edges.enumerated() {
+            adjacency[Vertex(e.start),default:[]].append(i)
+            adjacency[Vertex(e.end),default:[]].append(i)
+        }
+        var seen=Set<Int>()
+        var paths:[TimeZoneBorderPath]=[]
+        // Unimos todos los lados conexos en vez de dibujar cada uno por separado.
+        // No se simplifican las posiciones de los puntos GPS ni el perímetro real.
+        for initial in edges.indices where !seen.contains(initial) {
+            var coordinates=[edges[initial].start,edges[initial].end]
+            seen.insert(initial)
+            var current=Vertex(edges[initial].end)
+            let origin=Vertex(edges[initial].start)
+            while seen.count < edges.count {
+                if current == origin { break }
+                guard let next=adjacency[current]?.first(where:{!seen.contains($0)}) else { break }
+                seen.insert(next)
+                let edge=edges[next]
+                let point = Vertex(edge.start)==current ? edge.end : edge.start
+                coordinates.append(point)
+                current=Vertex(point)
+            }
+            if coordinates.count>=2 {
+                paths.append(TimeZoneBorderPath(id:paths.count,coordinates:coordinates))
+            }
+        }
+        return paths
+    }
+
+    /// Compatibilidad de las pruebas antiguas: ahora devuelve también la forma
+    /// exacta y no un rectángulo exterior.
+    static func renderSegments(for zone:TimeCustomZone) -> [TimeZoneBorderSegment] {
+        segments(for:zone)
     }
 
     static func visibleCenter(for zone:TimeCustomZone) -> CLLocationCoordinate2D? {
