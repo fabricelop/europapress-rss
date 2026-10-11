@@ -23,6 +23,15 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Prohibir restaurar Cloudflare si bot nativo está activo
+        run: |
+          python3 - <<'PY'
+          import json
+          with open('telegram/ttittulares-transport.json',encoding='utf8') as file: doc=json.load(file)
+          if doc.get('mode')=='native' and doc.get('native_ready') is True:
+              raise SystemExit('TTITTULARES_NATIVE_ACTIVE: no volver a registrar webhook')
+          PY
+
       - name: Comprobar Cloudflare TTiTTulares receptor (no alterar si no responde)
         run: |
           set -euo pipefail
