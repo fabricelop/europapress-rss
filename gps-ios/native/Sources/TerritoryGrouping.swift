@@ -40,6 +40,7 @@ struct TerritoryRank:Identifiable {
     var path:[TerritoryPart]
     var seconds:TimeInterval
     var cells:Int
+    var nextLevel:TerritoryLevel?
 }
 /// La jerarquía visual utiliza los niveles presentes. Un campo provincial
 /// vacío NO descarta una localidad ni una zona urbana ya geocodificadas.
@@ -77,9 +78,18 @@ enum TerritoryGrouping {
             let key=path.map(\.id).joined(separator:" / ")
             guard let last=path.last,last.level==level else { continue }
             var row=result[key] ?? TerritoryRank(id:key,title:last.name,
-                                                  path:path,seconds:0,cells:0)
+                                                  path:path,seconds:0,cells:0,nextLevel:nil)
             row.seconds+=seconds
             row.cells+=1
+            let index=TerritoryLevel.allCases.firstIndex(of:level) ?? 0
+            if let next=TerritoryLevel.allCases.dropFirst(index+1)
+                .first(where:{ $0.value(record) != nil }) {
+                if let existing=row.nextLevel,
+                   let existingIndex=TerritoryLevel.allCases.firstIndex(of:existing),
+                   let candidateIndex=TerritoryLevel.allCases.firstIndex(of:next) {
+                    if candidateIndex<existingIndex { row.nextLevel=next }
+                } else { row.nextLevel=next }
+            }
             result[key]=row
         }
         return result.values.sorted {
