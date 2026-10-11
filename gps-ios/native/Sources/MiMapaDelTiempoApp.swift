@@ -965,6 +965,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 // Durante el descanso los eventos de localización de bajo consumo
                 // solo sirven para solicitar GPS si la salida está suficientemente lejos.
                 if let rest = model?.data.gpsRest {
+                    guard location.timestamp >= rest.startedAt else { continue }
                     let anchor = CLLocation(latitude:rest.latitude,longitude:rest.longitude)
                     if GPSRestPolicy.shouldResume(distance:anchor.distance(from:location),
                                                   accuracy:location.horizontalAccuracy),
@@ -996,7 +997,13 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         Task { @MainActor in
             guard region.identifier == "mimapa-descanso",
-                  let model, model.isResting else { return }
+                  let model, model.isResting,
+                  let rest = model.data.gpsRest,
+                  let observed = region as? CLCircularRegion else { return }
+            let anchor = CLLocation(latitude:rest.latitude,longitude:rest.longitude)
+            let monitored = CLLocation(latitude:observed.center.latitude,
+                                       longitude:observed.center.longitude)
+            guard anchor.distance(from:monitored) < 5 else { return }
             automaticRestResumptions += 1
             begin(model)
             model.recordPowerEvent(mode:.precision,
