@@ -284,7 +284,7 @@ struct SavedState: Codable {
         zoneIndexCache=index
         zoneOverlayCache=zones.prefix(18).map { zone in
             TimeZoneOverlay(zone:zone,
-                            edges:TimeZoneOutline.renderSegments(for:zone),
+                            contours:TimeZoneOutline.contours(for:zone),
                             center:TimeZoneOutline.visibleCenter(for:zone))
         }
         zoneCatalogCache=zones
@@ -1436,8 +1436,8 @@ struct TimeMapView: View {
                         }
                     }
                     ForEach(visibleZones) { overlay in
-                        ForEach(overlay.edges.indices,id:\.self) { i in
-                            MapPolyline(coordinates:[overlay.edges[i].start,overlay.edges[i].end])
+                        ForEach(overlay.contours) { line in
+                            MapPolyline(coordinates:line.coordinates)
                                 .stroke(.teal,lineWidth:4)
                         }
                         if region.span.latitudeDelta < 0.07,
