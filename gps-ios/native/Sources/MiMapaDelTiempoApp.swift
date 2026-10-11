@@ -667,7 +667,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     @MainActor private func applyMode() {
         movingSoon = decision.movingSoon
         if mode != decision.mode {
+            let wakeFromRest = mode == .rest && decision.mode == .precision
             configure(decision.mode)
+            if wakeFromRest { manager.startUpdatingLocation() }
             model?.recordPowerEvent(mode:decision.mode,
                  cause:decision.mode == .rest ? "Parada prolongada detectada" : "Movimiento detectado")
             // La modificación del filtro entra en vigor sin reiniciar la sesión GPS.
@@ -826,7 +828,8 @@ struct TimeMapView: View {
                     model.updateCamera(newRegion)
                     camera = .region(newRegion)
                 }
-                .onAppear { region = model.data.camera.region }
+                .onAppear { centerOnRequestedCell() }
+                .onChange(of:model.targetMapCell) { _,_ in centerOnRequestedCell() }
             } else {
             MapReader { proxy in
                 Map(position: $camera) {
