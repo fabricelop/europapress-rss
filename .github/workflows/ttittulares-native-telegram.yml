@@ -59,3 +59,11 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GH_TOKEN: ${{ github.token }}
         run: python3 telegram/ttittulares_native_receiver.py listen
+
+      - name: Reiniciar único listener nativo al completar su ventana
+        if: ${{ !cancelled() && steps.gate.outputs.active == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 2
+          gh workflow run ttittulares-native-telegram.yml -R "$GITHUB_REPOSITORY" --ref main
