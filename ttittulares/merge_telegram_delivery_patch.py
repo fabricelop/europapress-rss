@@ -4,7 +4,7 @@ import pathlib
 import subprocess
 import sys
 
-TERMINAL={"published","dismissed"}
+TERMINAL={"published","dismissed","deleted","removed","delete_pending","delete_failed"}
 
 def load_file(path):
     p=pathlib.Path(path)
@@ -58,7 +58,7 @@ def apply(patch_path, current_path):
         terminal=str(existing.get("status") or "").lower() in TERMINAL
         keep={}
         if terminal:
-            for k in ("status","published_at","dismissed_at","decision_source"):
+            for k in ("status","published_at","dismissed_at","deleted_at","decision_source","updated_at"):
                 if k in existing:
                     keep[k]=existing[k]
         existing.update(incoming)
