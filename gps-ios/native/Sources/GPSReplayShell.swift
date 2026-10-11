@@ -107,14 +107,23 @@ struct GPSReplayShell: View {
                     }.pickerStyle(.menu)
                 }
                 Toggle("Mostrar trayecto GPS", isOn: $showRoute)
-                if cell != nil {
-                    LabeledContent("Tiempo histórico de esta cuadrícula",
-                                   value: DurationFormat.full(accumulated))
-                        .font(.caption)
-                } else {
-                    Label("Sin posición GPS fiable en este instante", systemImage: "location.slash")
-                        .font(.caption).foregroundStyle(.orange)
+                VStack(alignment:.leading,spacing:4) {
+                    Text("TIEMPO HISTÓRICO DE ESTA CUADRÍCULA")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1).minimumScaleFactor(0.7)
+                    HStack(alignment:.firstTextBaseline) {
+                        Text(cell == nil ? "—" : DurationFormat.full(accumulated))
+                            .font(.headline.monospacedDigit())
+                            .lineLimit(1).minimumScaleFactor(0.7)
+                            .foregroundStyle(cell == nil ? Color.orange : Color.teal)
+                        Spacer(minLength:4)
+                        if cell == nil {
+                            Image(systemName:"location.slash").foregroundStyle(.orange)
+                        }
+                    }
                 }
+                .frame(height:48,alignment:.topLeading)
                 Text("No se unen tramos separados por huecos GPS ni saltos imposibles.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
