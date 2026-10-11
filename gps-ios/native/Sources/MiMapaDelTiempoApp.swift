@@ -121,6 +121,7 @@ struct SavedState: Codable {
     var manualBreaks: [Date] = []
     var places: [UserPlace] = []
     var territoryCache: [String:TerritoryRecord] = [:]
+    var powerEvents: [GPSPowerEvent] = []
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
 
@@ -141,6 +142,7 @@ struct SavedState: Codable {
         manualBreaks = try box.decodeIfPresent([Date].self,forKey:.manualBreaks) ?? []
         places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
+        powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
     }
 }
 @MainActor final class TimeModel: ObservableObject {
@@ -160,7 +162,14 @@ struct SavedState: Codable {
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
     @Published var targetMapCell: Cell?
-    @Published var gpsModeEvents: [String] = []
+    var savedPowerEvents: [GPSPowerEvent] { data.powerEvents }
+    func recordPowerEvent(mode:GPSPowerMode,cause:String) {
+        data.powerEvents.append(GPSPowerEvent(date:Date(),mode:mode.rawValue,cause:cause))
+        if data.powerEvents.count > 500 {
+            data.powerEvents.removeFirst(data.powerEvents.count-500)
+        }
+        save(force:true)
+    }
     @Published var forceBasicMap = false
     @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
@@ -577,17 +586,18 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
     private func configure(_ target: GPSPowerMode) {
         guard mode != target || manager.desiredAccuracy != (target == .precision ?
-                    kCLLocationAccuracyBestForNavigation : kCLLocationAccuracyNearestTenMeters)
+                    kCLLocationAccuracyBest : kCLLocationAccuracyNearestTenMeters)
         else { return }
         mode = target
         if target == .precision {
-            manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-            manager.distanceFilter = kCLDistanceFilterNone
-            manager.activityType = .otherNavigation
+            // Para cuadrículas de 100 m, Best basta sin navegación por segundo.
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+            manager.distanceFilter = 5
+            manager.activityType = .fitness
             manager.pausesLocationUpdatesAutomatically = false
         } else {
             manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            manager.distanceFilter = 20
+            manager.distanceFilter = 35
             manager.activityType = .other
             manager.pausesLocationUpdatesAutomatically = true
         }
@@ -615,6 +625,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         model.recording = true
         model.setTrackingEnabled(true)
         model.gpsStatus = "GPS inteligente · buscando ubicación"
+        model.recordPowerEvent(mode:mode,cause:"Inicio de seguimiento")
     }
     @MainActor func end(_ model: TimeModel) {
         manager.stopUpdatingLocation()
@@ -623,6 +634,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         model.recording = false
         model.setTrackingEnabled(false)
         model.gpsStatus = "Detenido"
+        model.recordPowerEvent(mode:mode,cause:"Seguimiento detenido")
         model.save(force:true)
         movingSoon = false
         decision = SmartGPSDecision()
@@ -632,12 +644,16 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         if enabled { decision.anticipate() }
         else { decision.cancelAnticipation() }
         movingSoon = decision.movingSoon
+        model?.recordPowerEvent(mode:decision.mode,
+               cause:enabled ? "Voy a moverme activado" : "Anticipación desactivada manualmente")
         applyMode()
     }
     @MainActor private func applyMode() {
         movingSoon = decision.movingSoon
         if mode != decision.mode {
             configure(decision.mode)
+            model?.recordPowerEvent(mode:decision.mode,
+                 cause:decision.mode == .rest ? "Parada prolongada detectada" : "Movimiento detectado")
             // La modificación del filtro entra en vigor sin reiniciar la sesión GPS.
         }
     }
