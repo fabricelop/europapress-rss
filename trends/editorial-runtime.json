@@ -3,11 +3,14 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T00:15:00+02:00",
-  "last_completed_at": "2026-10-12T00:16:00+02:00",
-  "updated_at": "2026-10-12T00:16:00+02:00",
+  "last_started_at": "2026-10-12T00:45:00+02:00",
+  "last_completed_at": "2026-10-12T00:51:00+02:00",
+  "updated_at": "2026-10-12T00:51:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "19215c9e7cd9",
+    "27641cb948c3"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -24,70 +27,180 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "marker": "TTENDENCIAS_RUNTRACE_V1",
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261012T001500+0200-chat",
+    "run_id": "tr-20261012T004500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T00:15:00+02:00",
-    "updated_at": "2026-10-12T00:16:00+02:00",
-    "finished_at": "2026-10-12T00:16:00+02:00",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
-    "message": "Pasada completada · 0 revisiones editoriales pendientes; saneamiento de Pendientes solicitado",
+    "started_at": "2026-10-12T00:45:00+02:00",
+    "updated_at": "2026-10-12T00:51:00+02:00",
+    "finished_at": "2026-10-12T00:51:00+02:00",
+    "current": 2,
+    "total": 2,
     "summary": {
-      "processed": 0,
-      "closed": 0,
-      "problematic": 0,
+      "processed": 2,
+      "closed": 2,
       "skipped": 0,
-      "visual_backlog": 0,
-      "queue_remaining": 0,
-      "remaining_active_ids": [],
-      "pending_repair_requested": 1,
-      "new_cards": 0,
-      "reused_existing_card": 0,
-      "duplicate_cards_created": 0
+      "problematic": 0,
+      "visual_backlog": 0
     },
+    "message": "Pasada completada · 2/2 cerradas y verificadas",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
-    },
-    "remate_selections": [],
+    "ratings_snapshot": {},
+    "remate_selections": [
+      {
+        "id": "19215c9e7cd9",
+        "name": "Sporting",
+        "selected": "🌶️ El Sporting esperó 87 minutos y 18 años para cobrar la visita."
+      },
+      {
+        "id": "27641cb948c3",
+        "name": "Mayol",
+        "selected": "🌶️ De gol en Mestalla a examen de banquillo en Santander."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-12T00:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · cola editorial 0; revisando saneamiento y estado autoritativo"
+        "at": "2026-10-12T00:47:50+02:00",
+        "phase": "persisting",
+        "trend_id": "19215c9e7cd9",
+        "title": "Sporting",
+        "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-12T00:16:00+02:00",
+        "at": "2026-10-12T00:48:00+02:00",
+        "phase": "persisting",
+        "trend_id": "19215c9e7cd9",
+        "title": "Sporting",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-12T00:48:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0 y captura fresca de las 00:12"
+        "trend_id": "19215c9e7cd9",
+        "title": "Sporting",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-12T00:16:00+02:00",
+        "at": "2026-10-12T00:48:20+02:00",
+        "phase": "verifying",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Releyendo estado autoritativo de Mayol"
+      },
+      {
+        "at": "2026-10-12T00:48:30+02:00",
+        "phase": "investigating",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-12T00:48:40+02:00",
+        "phase": "investigating",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-12T00:48:50+02:00",
+        "phase": "investigating",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-12T00:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-12T00:49:10+02:00",
+        "phase": "drafting",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-12T00:49:20+02:00",
+        "phase": "drafting",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-12T00:49:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-12T00:49:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-12T00:49:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-12T00:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-12T00:50:10+02:00",
+        "phase": "persisting",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-12T00:50:20+02:00",
+        "phase": "persisting",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-12T00:50:30+02:00",
+        "phase": "verifying",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-12T00:50:40+02:00",
+        "phase": "verifying",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-12T00:50:50+02:00",
+        "phase": "verifying",
+        "trend_id": "27641cb948c3",
+        "title": "Mayol",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-12T00:51:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · 0 revisiones editoriales pendientes; saneamiento de Pendientes solicitado"
+        "message": "Cola editorial vacía · cerrando telemetría"
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": []
+    ]
   },
   "run_id": "tr-20261012T001500+0200-chat",
   "summary": {
@@ -102,6 +215,5 @@
     "new_cards": 0,
     "reused_existing_card": 0,
     "duplicate_cards_created": 0
-  },
-  "error": null
+  }
 }
