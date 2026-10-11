@@ -1,98 +1,175 @@
 import SwiftUI
 
+private enum StatisticsPage: String, CaseIterable, Identifiable {
+    case cells = "Cuadrículas", places = "Lugares", territories = "Territorios"
+    var id: String { rawValue }
+}
+private enum NamedFilter: String, CaseIterable, Identifiable {
+    case all = "Todas", named = "Renombradas", unnamed = "Sin renombrar"
+    var id: String { rawValue }
+}
+
 struct TimeStatsDashboard: View {
     @ObservedObject var model: TimeModel
-    private var values: [String:TimeInterval] { model.periodTotals() }
-    private var sorted: [(key:String,value:TimeInterval)] {
-        Array(values.sorted { $0.value > $1.value }.prefix(40))
+    @State private var page: StatisticsPage = .cells
+    @State private var filter: NamedFilter = .all
+    @State private var top = 25
+
+    private var values: [String:TimeInterval] {
+        TimeAttribution.byCell(model.data.intervals,
+            window:TimeAnalytics.window(for:model.period,now:.now))
+    }
+    private var filtered: [(key:String,value:TimeInterval)] {
+        let base = values.filter { key,value in
+            guard value > 0 else { return false }
+            switch filter {
+            case .all: return true
+            case .named: return model.hasCustomName(key)
+            case .unnamed: return !model.hasCustomName(key)
+            }
+        }.sorted { $0.value > $1.value }
+        return top > 0 ? Array(base.prefix(top)) : base
+    }
+    private var matchingCount: Int {
+        values.keys.filter { key in
+            switch filter {
+            case .all: return true
+            case .named: return model.hasCustomName(key)
+            case .unnamed: return !model.hasCustomName(key)
+            }
+        }.count
     }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    VStack(alignment: .leading, spacing: 9) {
-                        Label("Tu tiempo en el mapa", systemImage: "hourglass")
+                VStack(alignment:.leading,spacing:16) {
+                    VStack(alignment:.leading,spacing:7) {
+                        Label("Tu tiempo en el mapa",systemImage:"hourglass")
                             .font(.subheadline.weight(.semibold)).foregroundStyle(.teal)
                         Text(DurationFormat.full(TimeAnalytics.sum(values)))
-                            .font(.system(size:30,weight:.bold,design:.rounded))
+                            .font(.system(size:29,weight:.bold,design:.rounded))
                             .minimumScaleFactor(0.6).lineLimit(2)
-                        Text("Tiempo GPS asignado · \(model.period.title)")
-                            .font(.footnote).foregroundStyle(.secondary)
+                        Text("Tiempo atribuido sin solapamientos · \(model.period.title)")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth:.infinity,alignment:.leading)
-                    .padding(20)
+                    .padding(18)
                     .background(LinearGradient(colors:[.teal.opacity(0.18),.cyan.opacity(0.06)],
-                                  startPoint:.topLeading,endPoint:.bottomTrailing),
-                                in:RoundedRectangle(cornerRadius:22))
-
+                                              startPoint:.topLeading,endPoint:.bottomTrailing),
+                                in:RoundedRectangle(cornerRadius:20))
                     ScrollView(.horizontal,showsIndicators:false) {
-                        HStack(spacing:8) {
-                            ForEach(TimePeriod.allCases) { p in
-                                Button(p.title) { model.period = p }
+                        HStack(spacing:6) {
+                            ForEach(TimePeriod.allCases) { period in
+                                Button(period.title) { model.period=period }
                                     .buttonStyle(.bordered)
-                                    .tint(model.period == p ? .teal : .secondary)
+                                    .tint(model.period == period ? .teal : .secondary)
                             }
                         }
                     }
-                    HStack(spacing:10) {
-                        tile("Cuadrículas", value:String(values.count), icon:"square.grid.3x3.fill")
-                        tile("Superficie", value:String(format:"%.2f km²",Double(values.count)*0.01), icon:"map.fill")
+                    HStack(spacing:9) {
+                        tile("Cuadrículas",value:String(values.count),icon:"square.grid.3x3.fill")
+                        tile("Superficie aprox.",value:String(format:"%.2f km²",Double(values.count)*0.01),
+                             icon:"map")
                     }
-                    HStack(spacing:10) {
-                        tile("Sin localizar", value:DurationFormat.full(model.data.missingSeconds), icon:"location.slash")
-                        tile("Tramos con movimiento", value:String(model.data.intervals.filter { $0.quality == "reconstruido" }.count), icon:"figure.walk")
+                    HStack(spacing:9) {
+                        tile("Sin localizar",value:DurationFormat.full(model.data.missingSeconds),icon:"location.slash")
+                        tile("Lugares propios",value:String(model.data.places.count),icon:"mappin.and.ellipse")
                     }
-                    Text("Superficie aproximada de las cuadrículas visitadas. «Sin localizar» y los tramos reconstruidos corresponden al histórico completo. Los detalles técnicos están en Ajustes.")
-                        .font(.caption).foregroundStyle(.secondary)
 
-                    HStack {
-                        Text("Dónde has pasado más tiempo").font(.headline)
-                        Spacer()
-                        Text("\(sorted.count) de \(values.count)").font(.caption).foregroundStyle(.secondary)
+                    Picker("Vista de estadísticas",selection:$page) {
+                        ForEach(StatisticsPage.allCases) { page in Text(page.rawValue).tag(page) }
+                    }.pickerStyle(.segmented)
+
+                    switch page {
+                    case .cells:
+                        cellList
+                    case .places:
+                        UserPlacesView(model:model)
+                    case .territories:
+                        TerritoryStatsView(model:model)
                     }
-                    if sorted.isEmpty {
-                        ContentUnavailableView("Todavía sin registros", systemImage:"map",
-                            description:Text("Activa el GPS en Ajustes para comenzar a acumular tiempo."))
-                    }
-                    ForEach(sorted.indices, id:\.self) { index in
-                        let entry = sorted[index]
-                        VStack(alignment:.leading,spacing:8) {
-                            HStack(alignment:.firstTextBaseline) {
-                                Text("\(index+1).").foregroundStyle(.secondary).frame(width:25,alignment:.leading)
-                                Text(TimeAnalytics.cell(entry.key).map { model.label(for:$0) } ?? entry.key)
-                                    .fontWeight(.medium).lineLimit(1)
-                                Spacer()
-                                Text(DurationFormat.full(entry.value))
-                                    .font(.subheadline.monospacedDigit()).foregroundStyle(.teal)
-                                    .minimumScaleFactor(0.6).lineLimit(1)
-                            }
-                            GeometryReader { geometry in
-                                Capsule().fill(.teal.opacity(0.12))
-                                    .overlay(alignment:.leading) {
-                                        Capsule().fill(.teal.gradient)
-                                            .frame(width:geometry.size.width * entry.value/max(1,sorted.first?.value ?? 1))
-                                    }
-                            }.frame(height:7)
-                        }
-                        .padding(13)
-                        .background(Color(.secondarySystemGroupedBackground),in:RoundedRectangle(cornerRadius:15))
-                    }
-                }.padding(16)
+                }
+                .padding(14)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Estadísticas")
         }
     }
+
+    private var cellList: some View {
+        VStack(alignment:.leading,spacing:12) {
+            HStack {
+                Text("Dónde has pasado más tiempo").font(.headline)
+                Spacer()
+                Text("\(filtered.count) de \(matchingCount)")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+            Picker("Mostrar",selection:$top) {
+                Text("Top 10").tag(10)
+                Text("Top 25").tag(25)
+                Text("Top 50").tag(50)
+                Text("Todas").tag(-1)
+            }.pickerStyle(.segmented)
+            Picker("Tipo de cuadrícula",selection:$filter) {
+                ForEach(NamedFilter.allCases) { filter in Text(filter.rawValue).tag(filter) }
+            }.pickerStyle(.menu)
+            if filtered.isEmpty {
+                ContentUnavailableView("No hay resultados",systemImage:"square.grid.3x3",
+                  description:Text("Cambia el periodo o el filtro de nombres."))
+            }
+            ForEach(Array(filtered.enumerated()),id:\.element.key) { index,item in
+                if let cell=TimeAnalytics.cell(item.key) {
+                    HStack(spacing:11) {
+                        Text("\(index+1).").font(.caption.monospacedDigit())
+                            .foregroundStyle(.secondary).frame(width:25,alignment:.leading)
+                        Button {
+                            model.navigate(to:cell)
+                        } label: {
+                            VStack(alignment:.leading,spacing:3) {
+                                Text(model.label(for:cell))
+                                    .font(.subheadline.weight(.semibold)).foregroundStyle(.primary)
+                                    .lineLimit(1)
+                                Text(DurationFormat.full(item.value))
+                                    .font(.caption.monospacedDigit()).foregroundStyle(.teal)
+                                GeometryReader { geo in
+                                    Capsule().fill(Color.teal.opacity(0.15))
+                                        .overlay(alignment:.leading) {
+                                            Capsule().fill(.teal.gradient).frame(width:
+                                                geo.size.width * item.value /
+                                                max(1,filtered.first?.value ?? 1))
+                                        }
+                                }.frame(height:5)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityHint("Centrar esta cuadrícula en el mapa")
+                        NavigationLink {
+                            CellHistoryView(model:model,cell:cell)
+                        } label: {
+                            Image(systemName:"calendar.badge.clock")
+                                .font(.title3).foregroundStyle(.teal)
+                        }
+                        .accessibilityLabel("Ver historial por día")
+                    }
+                    .padding(12)
+                    .background(Color(.secondarySystemGroupedBackground),
+                                in:RoundedRectangle(cornerRadius:14))
+                }
+            }
+            Text("Toca el nombre para verla en el mapa; toca el calendario para consultar todas sus visitas.")
+                .font(.caption2).foregroundStyle(.secondary)
+        }
+    }
     private func tile(_ label:String,value:String,icon:String) -> some View {
-        VStack(alignment:.leading,spacing:8) {
+        VStack(alignment:.leading,spacing:7) {
             Image(systemName:icon).foregroundStyle(.teal)
             Text(value).font(.system(.title3,design:.rounded,weight:.bold))
                 .lineLimit(2).minimumScaleFactor(0.55)
             Text(label).font(.caption).foregroundStyle(.secondary)
         }
-        .frame(maxWidth:.infinity,minHeight:90,alignment:.leading)
-        .padding(14)
-        .background(Color(.secondarySystemGroupedBackground),in:RoundedRectangle(cornerRadius:17))
+        .frame(maxWidth:.infinity,minHeight:88,alignment:.leading)
+        .padding(12)
+        .background(Color(.secondarySystemGroupedBackground),in:RoundedRectangle(cornerRadius:15))
     }
 }
