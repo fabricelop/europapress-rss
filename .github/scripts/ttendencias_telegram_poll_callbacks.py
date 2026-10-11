@@ -14,9 +14,10 @@ from pathlib import Path
 ROOT = Path.cwd()
 LEDGER = Path("trends/telegram-image-deliveries.json")
 DECISIONS = Path("trends/mobile-decisions.json")
+REQUESTS = Path("trends/requests.json")
 OFFSET = Path("trends/telegram-native-callback-offset.json")
 ACKS = Path("/tmp/tt-tr-telegram-callback-acks.json")
-PATTERN = re.compile(r"^tx:([bdp]):([A-Za-z0-9_-]{5,80}):(\d{1,8})$")
+PATTERN = re.compile(r"^tx:([bdrp]):([A-Za-z0-9_-]{5,80}):(\d{1,8})$")
 
 
 def stamp():
@@ -36,7 +37,9 @@ def write(path, doc):
     dest.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
 
 
-def process(updates, allowed_chat, ledger, decisions, offset):
+def process(updates, allowed_chat, ledger, decisions, offset, requests=None):
+    if requests is None:
+        requests = {"requests": []}
     changed = False
     acknowledgements = []
     current = int(offset.get("last_update_id") or 0)
@@ -46,20 +49,36 @@ def process(updates, allowed_chat, ledger, decisions, offset):
             continue
         current = uid
         cq = item.get("callback_query") or {}
-        match = PATTERN.fullmatch(str(cq.get("data") or ""))
-        if not match:
+        qid = str(cq.get("id") or "")
+        reply = item.get("message") or {}
+        if cq:
+            match = PATTERN.fullmatch(str(cq.get("data") or ""))
+            if not match:continue
+            msg = cq.get("message") or {}
+            chat = msg.get("chat") or {}
+            chat_id = str(chat.get("id") or "")
+            sender = str((cq.get("from") or {}).get("id") or "")
+            if not allowed_chat or chat_id != allowed_chat or (str(chat.get("type") or "")=="private" and sender!=chat_id):
+                continue
+            raw_action, event_id, rev = match.groups()
+            rev = int(rev)
+            mid = int(msg.get("message_id") or 0)
+        elif reply and reply.get("reply_to_message"):
+            chat = reply.get("chat") or {}
+            chat_id = str(chat.get("id") or "")
+            sender = str((reply.get("from") or {}).get("id") or "")
+            if not allowed_chat or chat_id!=allowed_chat or sender!=chat_id:
+                continue
+            original = int((reply.get("reply_to_message") or {}).get("message_id") or 0)
+            matched_reply = next((x for x in reversed(ledger.get("items", []))
+                if str(x.get("status") or "")=="sent" and original>0
+                and original in {int(x.get("telegram_message_id") or 0),
+                                 int(x.get("archive_telegram_message_id") or 0)}),None)
+            if not matched_reply:continue
+            raw_action, event_id, rev = "r",str(matched_reply["event_id"]),int(matched_reply.get("revision") or 0)
+            mid=original
+        else:
             continue
-        msg = cq.get("message") or {}
-        chat = msg.get("chat") or {}
-        chat_id = str(chat.get("id") or "")
-        sender = str((cq.get("from") or {}).get("id") or "")
-        if not allowed_chat or chat_id != allowed_chat:
-            continue
-        if str(chat.get("type") or "") == "private" and sender != chat_id:
-            continue
-        raw_action, event_id, rev = match.groups()
-        rev = int(rev)
-        mid = int(msg.get("message_id") or 0)
         matched = [x for x in ledger.get("items", [])
                    if str(x.get("event_id") or "") == event_id
                    and int(x.get("revision") or 0) == rev
@@ -68,11 +87,40 @@ def process(updates, allowed_chat, ledger, decisions, offset):
                        int(x.get("archive_telegram_message_id") or 0)
                    }]
         status = "published" if raw_action == "p" else "deleted"
-        qid = str(cq.get("id") or "")
         if not matched:
             acknowledgements.append({"callback_id": qid,
                                     "text": "No se encontró el paquete exacto; no se borró nada.",
                                     "alert": True})
+            continue
+        if raw_action == "r":
+            req = next((x for x in requests.get("requests", [])
+                        if str(x.get("id") or "")==event_id),None)
+            if req is None:
+                acknowledgements.append({"callback_id":qid,
+                    "text":"No encuentro la solicitud editorial; no se ha creado otra tendencia.",
+                    "alert":True})
+                continue
+            if str(req.get("status") or "") in {"preparing","update"} and req.get("reexplain"):
+                acknowledgements.append({"callback_id":qid,
+                    "text":"La reexplicación ya está pendiente.","alert":False})
+                continue
+            # A button uses a generic update request. A reply supplies useful
+            # context, e.g. "acabó Elche-Celta, comprueba el resultado final".
+            details=str(reply.get("text") or reply.get("caption") or "").strip() if not cq else ""
+            instruction=details[:600] or (
+                "Investiga de nuevo esta tendencia con información ACTUAL. "
+                "Si se anunciaba un partido o acontecimiento futuro, verifica "
+                "si ya terminó y explica su resultado confirmado, no la previa.")
+            req.update(status="preparing",revision=int(req.get("revision") or 0)+1,
+                requested_at=stamp(),reexplain=True,request_source="telegram_reexplain",
+                reexplain_instructions=instruction,rewrite_instruction=instruction,
+                with_image=False,auto_queued=False,telegram_reexplain_from_revision=rev,
+                telegram_reexplain_from_message_id=mid)
+            requests["updated_at"]=stamp()
+            changed=True
+            acknowledgements.append({"callback_id":qid,
+                "text":"Reexplicación en cola: revisaré los hechos actuales en la siguiente pasada editorial.",
+                "alert":False})
             continue
         terminal = {"published"} if status == "published" else {"delete_pending", "deleted"}
         # The clicked message proves ownership of this event/revision. Close
@@ -133,20 +181,22 @@ def live():
     offset = read(OFFSET, {"version": 1, "last_update_id": 0})
     ledger = read(LEDGER, {"items": []})
     decisions = read(DECISIONS, {"items": []})
+    requests = read(REQUESTS, {"requests": []})
     params = urllib.parse.urlencode({
         "offset": int(offset.get("last_update_id") or 0) + 1,
         "limit": 100, "timeout": 0,
-        "allowed_updates": json.dumps(["callback_query"])
+        "allowed_updates": json.dumps(["callback_query", "message"])
     })
     base = "https://api.telegram.org/bot" + token + "/"
     result = request_json(base + "getUpdates?" + params)
     if not result.get("ok"):
         raise RuntimeError("Telegram getUpdates no respondió correctamente")
     updates = result.get("result") or []
-    changed, acks = process(updates, chat, ledger, decisions, offset)
+    changed, acks = process(updates, chat, ledger, decisions, offset, requests)
     if changed:
         write(LEDGER, ledger)
         write(DECISIONS, decisions)
+        write(REQUESTS, requests)
         write(OFFSET, offset)
     ACKS.write_text(json.dumps(acks, ensure_ascii=False), encoding="utf8")
     print("TTENDENCIAS_TELEGRAM_CALLBACKS", json.dumps({
@@ -185,6 +235,33 @@ def selftest():
         "message":{"message_id":1234,"chat":{"id":999,"type":"private"}}}}
     process([bad], "456", ledger, decisions, state)
     assert ledger["items"][0]["status"] == "delete_pending"
+    # A request from a verified message schedules ONE new editorial revision.
+    reqs={"requests":[{"id":"abc123xyz","revision":2,"name":"Elche",
+                         "status":"explained","explanation":"Previa de las 14:00."}]}
+    fresh_ledger={"items":[{"event_id":"abc123xyz","revision":2,
+        "telegram_message_id":1234,"status":"sent"}]}
+    fresh_state={"last_update_id":0}
+    rework={"update_id":10,"callback_query":{"id":"rew123",
+        "data":"tx:r:abc123xyz:2","from":{"id":456},
+        "message":{"message_id":1234,"chat":{"id":456,"type":"private"}}}}
+    valid,acks=process([rework],"456",fresh_ledger,{"items":[]},fresh_state,reqs)
+    assert valid and reqs["requests"][0]["status"]=="preparing"
+    assert reqs["requests"][0]["revision"]==3 and reqs["requests"][0]["reexplain"]
+    assert fresh_ledger["items"][0]["status"]=="sent"
+    repeat={"update_id":11,"callback_query":{**rework["callback_query"],"id":"rew124"}}
+    process([repeat],"456",fresh_ledger,{"items":[]},fresh_state,reqs)
+    assert reqs["requests"][0]["revision"]==3
+    # A reply to the original card carries a specific editorial instruction.
+    reqs2={"requests":[{"id":"abc123xyz","revision":2,"name":"Elche","status":"explained"}]}
+    reply={"update_id":15,"message":{"message_id":700,"text":"El partido ya terminó: revisa el marcador",
+        "from":{"id":456},"chat":{"id":456,"type":"private"},
+        "reply_to_message":{"message_id":1234}}}
+    process([reply],"456",fresh_ledger,{"items":[]},{"last_update_id":0},reqs2)
+    assert "partido ya terminó" in reqs2["requests"][0]["reexplain_instructions"]
+    assert reqs2["requests"][0]["revision"]==3
+    forbidden={"update_id":16,"message":{**reply["message"],"from":{"id":999}}}
+    process([forbidden],"456",fresh_ledger,{"items":[]},{"last_update_id":0},reqs2)
+    assert reqs2["requests"][0]["revision"]==3
     print("TTENDENCIAS_TELEGRAM_CALLBACK_SELFTEST_OK")
 
 
