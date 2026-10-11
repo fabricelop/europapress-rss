@@ -3,16 +3,16 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T19:38:00+02:00",
-  "last_completed_at": "2026-10-11T19:52:37+02:00",
-  "updated_at": "2026-10-11T19:52:37+02:00",
+  "last_started_at": "2026-10-11T20:17:12+02:00",
+  "last_completed_at": "2026-10-11T20:26:45+02:00",
+  "updated_at": "2026-10-11T20:26:45+02:00",
   "status": "success",
   "processed_ids": [
-    "ab81ca4afa45",
-    "2a9d508bdc77",
-    "50ce52d86120",
-    "81eb0a519a53",
-    "4da2ed940534"
+    "07101faa0e40",
+    "e4dd7f5e3716",
+    "fb7576c95542",
+    "12fbd9c70903",
+    "de698606778d"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -24,50 +24,64 @@
     "persisted_trigger": true,
     "status": "solicitada; reparación visual independiente pendiente/no bloqueante",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T194500+0200-chatgpt",
-    "requested_at": "2026-10-11T19:50:35+02:00",
+    "run_id": "tr-20261011T201712+0200-chatgpt",
+    "requested_at": "2026-10-11T20:17:12+02:00",
     "completed_at": null,
-    "reason": "execution-start-pending-repair + post-explained repair"
+    "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T194500+0200-chatgpt",
+    "run_id": "tr-20261011T201712+0200-chatgpt",
     "source": "chat",
-    "status": "DONE",
-    "started_at": "2026-10-11T19:45:00+02:00",
-    "finished_at": "2026-10-11T19:50:35+02:00",
-    "current": 4,
-    "total": 4,
+    "status": "DONE_WITH_INCIDENTS",
+    "phase": "closing",
+    "started_at": "2026-10-11T20:17:12+02:00",
+    "updated_at": "2026-10-11T20:26:45+02:00",
+    "finished_at": "2026-10-11T20:26:45+02:00",
+    "current": 5,
+    "total": 5,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 0,
-      "grouped_members_total": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 2,
+      "new_cards": 2,
+      "revisions_updated": 5,
+      "grouped_into_existing_card": 2,
+      "grouped_members_total": 3,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "rewrite_pending": 0,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "political_closers_repaired": 0,
       "deferred_waiting_final": 0,
       "deferred_by_selection_rule": 0,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 0,
+      "incidents": 1,
       "images_generated": 0,
       "telegram_deliveries_confirmed": 0,
-      "skipped_by_jit": 3,
-      "reconciled_terminal": 3,
-      "pending_repair_requested": 2
+      "skipped_by_jit": 0,
+      "reconciled_terminal": 0,
+      "pending_repair_requested": 1
     },
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Cierre verificado · 5/5 revisiones cerradas; cola editorial vacía. Un conflicto SHA concurrente fue resuelto sin pérdida de cambios.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-11T20:22:00+02:00",
+        "phase": "persisting",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "reason": "Conflicto SHA por escritura concurrente; resuelto releyendo main y reintentando idempotentemente."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -77,168 +91,188 @@
     },
     "remate_selections": [
       {
-        "trend_id": "4da2ed940534",
+        "trend_id": "e4dd7f5e3716",
         "revision": 0,
-        "name": "Ferrera",
-        "closer_text": "🌶️ Las Ventas acabó poniendo la Puerta Grande en modo automático."
+        "name": "Osasuna + Cucho",
+        "closer_text": "🌶️ Isco le puso un cuarto candado a la remontada rojilla."
+      },
+      {
+        "trend_id": "de698606778d",
+        "revision": 0,
+        "name": "#LaRoca246",
+        "closer_text": "🌶️ El domingo llegó numerado hasta el sofá."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-11T19:45:00+02:00",
-        "phase": "preparing",
+        "at": "2026-10-11T20:20:22+02:00",
+        "phase": "verifying",
+        "trend_id": "07101faa0e40",
+        "title": "Cherki",
+        "message": "Releyendo estado autoritativo de Cherki"
+      },
+      {
+        "at": "2026-10-11T20:20:22+02:00",
+        "phase": "investigating",
+        "trend_id": "07101faa0e40",
+        "title": "Cherki",
+        "message": "Hecho esencial verificado · pertenece al Liverpool–City ya explicado"
+      },
+      {
+        "at": "2026-10-11T20:20:30+02:00",
+        "phase": "persisting",
+        "trend_id": "07101faa0e40",
+        "title": "Cherki",
+        "message": "Enlazando Cherki a la ficha de Anfield"
+      },
+      {
+        "at": "2026-10-11T20:21:10+02:00",
+        "phase": "verifying",
+        "trend_id": "07101faa0e40",
+        "title": "Cherki",
+        "message": "Tendencia cerrada y verificada · sin tarjeta duplicada"
+      },
+      {
+        "at": "2026-10-11T20:21:38+02:00",
+        "phase": "investigating",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "message": "Hecho esencial verificado · Betis 4-2 Osasuna en el 79'; Cucho titular"
+      },
+      {
+        "at": "2026-10-11T20:21:38+02:00",
+        "phase": "drafting",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "message": "Comprobando límite de X · texto final 245 caracteres"
+      },
+      {
+        "at": "2026-10-11T20:21:38+02:00",
+        "phase": "remate_selection",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "message": "Remate seleccionado · «Isco le puso un cuarto candado a la remontada rojilla.»"
+      },
+      {
+        "at": "2026-10-11T20:22:05+02:00",
+        "phase": "persisting",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "message": "Persistencia reintentada sobre SHA fresco tras carrera concurrente"
+      },
+      {
+        "at": "2026-10-11T20:23:20+02:00",
+        "phase": "verifying",
+        "trend_id": "e4dd7f5e3716",
+        "title": "Osasuna + Cucho",
+        "message": "Grupo cerrado y verificado · dos revisiones retiradas de la cola"
+      },
+      {
+        "at": "2026-10-11T20:23:35+02:00",
+        "phase": "verifying",
+        "trend_id": "12fbd9c70903",
+        "title": "Román",
+        "message": "Releyendo estado autoritativo de Román"
+      },
+      {
+        "at": "2026-10-11T20:23:35+02:00",
+        "phase": "investigating",
+        "trend_id": "12fbd9c70903",
+        "title": "Román",
+        "message": "Hecho esencial verificado · pertenece al mano a mano con Ferrera ya explicado"
+      },
+      {
+        "at": "2026-10-11T20:23:45+02:00",
+        "phase": "persisting",
+        "trend_id": "12fbd9c70903",
+        "title": "Román",
+        "message": "Enlazando Román a la ficha existente de Ferrera"
+      },
+      {
+        "at": "2026-10-11T20:24:40+02:00",
+        "phase": "verifying",
+        "trend_id": "12fbd9c70903",
+        "title": "Román",
+        "message": "Tendencia cerrada y verificada · sin tarjeta duplicada"
+      },
+      {
+        "at": "2026-10-11T20:24:56+02:00",
+        "phase": "verifying",
+        "trend_id": "de698606778d",
+        "title": "#LaRoca246",
+        "message": "Releyendo estado autoritativo de #LaRoca246 · rango actual TT#18"
+      },
+      {
+        "at": "2026-10-11T20:24:56+02:00",
+        "phase": "investigating",
+        "trend_id": "de698606778d",
+        "title": "#LaRoca246",
+        "message": "Contrastando emisión actual · episodio 246 de La Roca en laSexta"
+      },
+      {
+        "at": "2026-10-11T20:24:56+02:00",
+        "phase": "drafting",
+        "trend_id": "de698606778d",
+        "title": "#LaRoca246",
+        "message": "Comprobando límite de X · texto final 220 caracteres"
+      },
+      {
+        "at": "2026-10-11T20:24:56+02:00",
+        "phase": "remate_selection",
+        "trend_id": "de698606778d",
+        "title": "#LaRoca246",
+        "message": "Remate seleccionado · «El domingo llegó numerado hasta el sofá.»"
+      },
+      {
+        "at": "2026-10-11T20:25:10+02:00",
+        "phase": "persisting",
+        "trend_id": "de698606778d",
+        "title": "#LaRoca246",
+        "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-11T20:26:20+02:00",
+        "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 4 revisiones activas; saneamiento visual de Pendientes solicitado"
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y las 5 revisiones verificadas"
       },
       {
-        "at": "2026-10-11T19:46:30+02:00",
-        "phase": "verifying",
-        "trend_id": "2a9d508bdc77",
-        "title": "Doku",
-        "message": "JIT · Doku ya fue enlazado al grupo Anfield por otra ejecución; revisión omitida"
-      },
-      {
-        "at": "2026-10-11T19:46:35+02:00",
-        "phase": "verifying",
-        "trend_id": "50ce52d86120",
-        "title": "Gravenberch",
-        "message": "JIT · Gravenberch ya fue enlazado al grupo Anfield por otra ejecución; revisión omitida"
-      },
-      {
-        "at": "2026-10-11T19:48:10+02:00",
-        "phase": "verifying",
-        "trend_id": "81eb0a519a53",
-        "title": "Amatucci",
-        "message": "JIT · Amatucci ya fue enlazado al grupo Real Sociedad–Deportivo por otra ejecución; revisión omitida"
-      },
-      {
-        "at": "2026-10-11T19:49:00+02:00",
-        "phase": "verifying",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Releyendo estado autoritativo de Ferrera"
-      },
-      {
-        "at": "2026-10-11T19:49:10+02:00",
-        "phase": "investigating",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Contrastando fuente 1/2 · Telemadrid confirma el mano a mano Ferrera–Román en la Feria de Otoño"
-      },
-      {
-        "at": "2026-10-11T19:49:20+02:00",
-        "phase": "investigating",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Contrastando fuente 2/2 · Aplausos confirma silencio, oreja y oreja para Ferrera y su segunda Puerta Grande en Las Ventas"
-      },
-      {
-        "at": "2026-10-11T19:49:30+02:00",
-        "phase": "drafting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Redactando explicación factual de Ferrera"
-      },
-      {
-        "at": "2026-10-11T19:49:35+02:00",
-        "phase": "drafting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Comprobando límite de X · texto final 231 caracteres"
-      },
-      {
-        "at": "2026-10-11T19:49:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Generando y evaluando candidatos de remate con ratings recientes"
-      },
-      {
-        "at": "2026-10-11T19:49:45+02:00",
-        "phase": "remate_selection",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Remate seleccionado · «Las Ventas acabó poniendo la Puerta Grande en modo automático.»"
-      },
-      {
-        "at": "2026-10-11T19:49:50+02:00",
-        "phase": "persisting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Guardando ficha Explicada de Ferrera"
-      },
-      {
-        "at": "2026-10-11T19:50:05+02:00",
-        "phase": "persisting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Ficha Explicada guardada en main"
-      },
-      {
-        "at": "2026-10-11T19:50:10+02:00",
-        "phase": "persisting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Actualizando requests · Ferrera r0 marcada explained"
-      },
-      {
-        "at": "2026-10-11T19:50:15+02:00",
-        "phase": "persisting",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Retirando revisión de Ferrera de la cola editorial"
-      },
-      {
-        "at": "2026-10-11T19:50:20+02:00",
-        "phase": "verifying",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-11T19:50:25+02:00",
-        "phase": "verifying",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Verificando id+revision y texto persistido en Explicadas y requests"
-      },
-      {
-        "at": "2026-10-11T19:50:30+02:00",
-        "phase": "verifying",
-        "trend_id": "4da2ed940534",
-        "title": "Ferrera",
-        "message": "Tendencia cerrada y verificada · cola editorial vacía y sin reexplicaciones pendientes"
-      },
-      {
-        "at": "2026-10-11T19:50:35+02:00",
+        "at": "2026-10-11T20:26:45+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · Ferrera explicada; Doku, Gravenberch y Amatucci ya estaban cerradas por ejecución concurrente; cola vacía"
+        "message": "Cierre verificado · 5/5 revisiones cerradas; cola editorial vacía"
       }
-    ],
-    "updated_at": "2026-10-11T19:50:35+02:00",
-    "phase": "closing",
-    "trend_id": null,
-    "title": null,
-    "message": "Cierre verificado · Ferrera explicada; Doku, Gravenberch y Amatucci ya estaban cerradas por ejecución concurrente; cola vacía"
+    ]
   },
   "error": null,
-  "run_id": "tr-1791739010295-tg-417862",
+  "run_id": "tr-20261011T201712+0200-chatgpt",
   "summary": {
     "trends_processed": 5,
     "trends_explained": 5,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 5,
-    "grouped_into_existing_card": 4,
-    "grouped_members_total": 4,
+    "grouped_into_existing_card": 2,
+    "grouped_members_total": 3,
     "trends_problematic": 0,
     "queue_remaining": 0,
+    "remaining_active_ids": [],
     "rewrite_pending": 0,
+    "explanations_verified_under_280": 5,
+    "remates_selected": 2,
+    "remates_omitted": 0,
+    "political_closers_repaired": 0,
+    "deferred_waiting_final": 0,
+    "deferred_by_selection_rule": 0,
+    "visual_repair_requested": true,
+    "visual_backlog": 0,
     "incidents": 1,
     "images_generated": 0,
+    "telegram_deliveries_confirmed": 0,
+    "skipped_by_jit": 0,
+    "reconciled_terminal": 0,
     "pending_repair_requested": 1
   }
 }
