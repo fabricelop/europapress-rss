@@ -338,13 +338,13 @@ def trend_cards(now):
                 # The leading historic rank belongs to the leader and may
                 # already have changed. Show the current rank for EVERY term
                 # in the joint header, then ONE untouched factual paragraph.
-                match=re.match(r"^TT#\\d+\\s+(.+?)\\s+es tendencia por(?:que)?\\s+",
+                match=re.match(r"^TT#\d+\s+(.+?)\s+es tendencia por(?:que)?\s+",
                                detail, flags=re.I)
                 if match:
                     group_detail=("Todas se relacionan con el mismo acontecimiento: "+
                                   match.group(1)+" "+detail[match.end():])
                 else:
-                    group_detail=re.sub(r"^TT#\\d+\\s+", "", detail, count=1, flags=re.I)
+                    group_detail=re.sub(r"^TT#\d+\s+", "", detail, count=1, flags=re.I)
                 body=group_title+"\n\n"+group_detail
                 # A single joint copy, never the same separate tweet repeated
                 # four times. A long joint caption uses the full-copy page.
