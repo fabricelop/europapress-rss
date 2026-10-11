@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-11T07:15:55.318126+00:00",
+  "updated_at": "2026-10-11T07:21:27.278230Z",
   "items": [
     {
       "delivery_key": "3ce5afef7763:r0:74b13ac1200b9fd3a7f938eac4c84365582093fab5d42ed595e41cf3de5bdc4a",
@@ -1911,7 +1911,7 @@
       "image_url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/36a6f15af1f8-r0-ai1-791387432436.png",
       "telegram_message_id": 336,
       "delivered_at": "2026-10-07T15:42:03.050686Z",
-      "status": "delete_pending",
+      "status": "delete_failed",
       "buttons_version": 9,
       "archive_telegram_message_id": 335,
       "archive_image_url": "https://static.eldiario.es/clip/8d756c4a-03d0-4736-a63b-f7afb2be6a81_facebook-aspect-ratio-1200-675_default_0_x1115y343.jpg",
@@ -1922,7 +1922,11 @@
       "content_sha256": "0013c066db779d450abace0a5070dc3d66553060c56e05c3b00ecc4a1df2be26",
       "final": true,
       "updated_at": "2026-10-11T06:41:29.615152Z",
-      "is_photo": true
+      "is_photo": true,
+      "delete_completed_message_ids": [],
+      "delete_attempts": 1,
+      "delete_error": "HTTP 400: Bad Request: message can't be deleted for everyone",
+      "delete_last_attempt_at": "2026-10-11T07:21:27.278230Z"
     },
     {
       "delivery_key": "fb7c22073523:r0:223d77310d4eec9ae87eb31a941fb687f1bd0379814287186f8bf87ba9fcb889",
