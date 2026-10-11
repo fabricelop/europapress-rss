@@ -1,0 +1,59 @@
+name: TTiTTulares Telegram nativo (migración segura)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "telegram/ttittulares_native_receiver.py"
+      - "telegram/ttittulares-transport.json"
+      - ".github/workflows/ttittulares-native-telegram.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-telegram-native
+  cancel-in-progress: true
+
+jobs:
+  check-and-listen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 29
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /telegram/ttittulares_native_receiver.py
+            /telegram/ttittulares-transport.json
+            /telegram/ttittulares-native-offset.json
+            /telegram/ttittulares-callback-inbox.json
+            /telegram/ttittulares-user-proposals.json
+            /telegram/ttittulares-deliveries.json
+      - name: Verificar el receptor sin tocar Telegram
+        run: |
+          set -euo pipefail
+          python3 -m py_compile telegram/ttittulares_native_receiver.py
+          python3 telegram/ttittulares_native_receiver.py selftest
+      - name: Comprobar migración sin cortar funciones existentes
+        id: gate
+        run: |
+          python3 - <<'PY'
+          import json,os
+          doc=json.load(open('telegram/ttittulares-transport.json',encoding='utf8'))
+          active=(doc.get('mode')=='native' and doc.get('native_ready') is True)
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf8') as out:
+              out.write('active='+str(active).lower()+'\n')
+          print('TTI_NATIVE_LISTENER_READY' if active else 'TTI_NATIVE_STAGED_WEBHOOK_UNTOUCHED')
+          PY
+      - name: Escuchar Telegram solo tras migración y sin webhook
+        if: steps.gate.outputs.active == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 telegram/ttittulares_native_receiver.py listen
