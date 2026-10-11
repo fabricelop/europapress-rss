@@ -158,6 +158,8 @@ struct SavedState: Codable {
     @Published var currentVisitStart: Date?
     @Published var selected: Cell?
     @Published var gpsStatus = "Sin iniciar"
+    @Published var liveActivityDiagnostic = "Sin comprobar"
+    @Published var widgetDiagnostic = "Sin comprobar"
     @Published var recording = false
     @Published var explore = false
     @Published var adaptive = true
@@ -394,6 +396,25 @@ struct SavedState: Codable {
         return max(0, provisionalEnd.timeIntervalSince(start))
     }
     var activeCell: Cell? { data.gpsRest?.cell ?? stableCell ?? current?.cell }
+    func testLiveActivity() { activityPublisher.test(from:self) }
+    func checkLockScreen() { activityPublisher.check(from:self) }
+    func exportScriptableSnapshot() throws -> URL {
+        let cell=activeCell
+        let details:[String:Any] = [
+            "generatedAt":Date().timeIntervalSince1970,
+            "place":cell.map { label(for:$0) } ?? "Sin posición",
+            "recordedSeconds":totalSeconds,
+            "stayStart":currentVisitStart?.timeIntervalSince1970 ??
+                data.gpsRest?.startedAt.timeIntervalSince1970 ?? 0,
+            "resting":isResting,
+            "tracking":recording,
+            "note":"Datos exportados manualmente. La actualización depende de iOS."
+        ]
+        let file=FileManager.default.temporaryDirectory.appendingPathComponent("MiMapaEstado.json")
+        let bytes=try JSONSerialization.data(withJSONObject:details,options:[.prettyPrinted,.sortedKeys])
+        try bytes.write(to:file,options:.atomic)
+        return file
+    }
     func refreshWidgets() {
         widgetPublisher.publish(from:self,force:true)
         activityPublisher.refresh(from:self)
@@ -1584,6 +1605,12 @@ struct TimeSettingsView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
     @State private var importing = false
+    @State private var importBackup = false
+    @State private var pendingBackup: Data?
+    @State private var confirmRestore = false
+    @State private var backupPassword = ""
+    @State private var secureExportFile: URL?
+    @State private var scriptableExportFile: URL?
     @State private var message = ""
     @State private var exportFile: URL?
     @AppStorage("miMapaFaceID") private var faceIDEnabled = false
@@ -1652,6 +1679,16 @@ struct TimeSettingsView: View {
                         }
                     Text("La Actividad en directo utiliza el reloj de iOS para avanzar sin consumir GPS adicional. Es opcional y requiere que iOS registre la extensión de widgets y permita Actividades en directo.")
                         .font(.caption).foregroundStyle(.secondary)
+                    Button("Probar Actividad en directo ahora") {
+                        model.testLiveActivity()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Button("Actualizar diagnóstico de bloqueo y widgets") {
+                        model.checkLockScreen()
+                    }
+                    Text(model.liveActivityDiagnostic).font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
                     Text("La duración de una Actividad en directo está limitada por iOS; el histórico sigue guardándose aunque desaparezca de la pantalla bloqueada.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
@@ -1663,6 +1700,19 @@ struct TimeSettingsView: View {
                         .onChange(of:showPlaceInWidgets) { _,_ in model.refreshWidgets() }
                     LabeledContent("Datos compartidos",
                         value: TimeWidgetStorage.isAvailable ? "Contenedor autorizado" : "No disponible con esta firma")
+                    Text(model.widgetDiagnostic).font(.caption)
+                        .foregroundStyle(.secondary).textSelection(.enabled)
+                    Button("Exportar resumen para Scriptable") {
+                        do { scriptableExportFile = try model.exportScriptableSnapshot() }
+                        catch { message=error.localizedDescription }
+                    }
+                    if let scriptableExportFile {
+                        ShareLink(item:scriptableExportFile) {
+                            Label("Enviar MiMapaEstado.json a Scriptable",systemImage:"square.and.arrow.up")
+                        }
+                    }
+                    Text("Scriptable puede mostrar este resumen desde su carpeta de iCloud Drive. Es una copia manual: no tiene acceso al GPS ni a la base SQLite y su actualización no es instantánea.")
+                        .font(.caption).foregroundStyle(.secondary)
                     Text("La extensión compila y va incluida en la IPA, pero iOS aún no la muestra en tu galería. La firma real de Sideloadly y el registro del widget requieren diagnóstico en el iPhone. No prometemos contadores en widgets en esta versión.")
                         .font(.caption).foregroundStyle(.secondary)
                     Text("En la pantalla de inicio: mantén pulsado un espacio libre, toca Editar → Añadir widget y busca Mi Mapa del Tiempo. En la pantalla bloqueada: mantén pulsado, Personalizar y selecciona Widgets.")
@@ -1676,6 +1726,24 @@ struct TimeSettingsView: View {
                         GPSDiagnosticsView(model:model,gps:gps)
                     }
                     Text("Las posiciones técnicas se consultan aquí, no en Estadísticas.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Section("Copia segura en iCloud Drive") {
+                    SecureField("Contraseña de la copia (mín. 10 caracteres)",text:$backupPassword)
+                        .textContentType(.newPassword)
+                    Button("Preparar copia cifrada AES-256") {
+                        do { secureExportFile=try model.exportEncryptedBackup(password:backupPassword) }
+                        catch { message=error.localizedDescription }
+                    }.disabled(backupPassword.count < 10)
+                    if let secureExportFile {
+                        ShareLink(item:secureExportFile) {
+                            Label("Guardar copia en Archivos → iCloud Drive",systemImage:"icloud.and.arrow.up")
+                        }
+                    }
+                    Button("Elegir copia de iCloud Drive para restaurar") {
+                        importBackup=true
+                    }.disabled(backupPassword.count < 10 || model.recording || model.isResting)
+                    Text("La copia es manual y cifrada; NO existe sincronización automática con esta firma. Guarda la contraseña fuera del iPhone. Restaurar reemplaza el historial actual y requiere detener el seguimiento.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Datos") {
@@ -1695,6 +1763,33 @@ struct TimeSettingsView: View {
                 }
             }
             .navigationTitle("Ajustes")
+            .onAppear { model.checkLockScreen() }
+            .confirmationDialog("Esta acción sustituirá todos los datos locales",isPresented:$confirmRestore) {
+                Button("Restaurar y sustituir historial",role:.destructive) {
+                    guard let pendingBackup else { return }
+                    do {
+                        try model.restoreEncryptedBackup(pendingBackup,password:backupPassword)
+                        message="Copia restaurada. GPS detenido hasta que lo actives."
+                        self.pendingBackup=nil
+                    } catch { message=error.localizedDescription }
+                }
+                Button("Cancelar",role:.cancel) { pendingBackup=nil }
+            } message: {
+                Text("Si necesitas conservar el historial actual, exporta antes una copia. Esta operación reemplaza las posiciones, zonas y nombres.")
+            }
+            .fileImporter(isPresented:$importBackup,
+                allowedContentTypes:[UTType(filenameExtension:"mmapbak") ?? .data,.data]) { result in
+                do {
+                    let url=try result.get()
+                    let granted=url.startAccessingSecurityScopedResource()
+                    defer { if granted { url.stopAccessingSecurityScopedResource() } }
+                    let bytes=try Data(contentsOf:url)
+                    let details=try model.inspectEncryptedBackup(bytes,password:backupPassword)
+                    pendingBackup=bytes
+                    message="Copia válida: \(details). Confirma si quieres restaurar."
+                    confirmRestore=true
+                } catch { message=error.localizedDescription }
+            }
             .fileImporter(isPresented: $importing,
                           allowedContentTypes: [UTType(filenameExtension: "gpx") ?? .xml, .xml]) { result in
                 do {
