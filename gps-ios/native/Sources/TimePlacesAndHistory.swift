@@ -88,17 +88,10 @@ enum TimeAttribution {
 }
 
 enum FriendlyCellName {
-    static func title(_ cell: Cell, custom: String?) -> String {
+    static func title(_ cell: Cell, index:Int?, custom:String?) -> String {
         if let custom, !custom.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty { return custom }
-        // Código determinista compacto; el ID completo sigue disponible en la ficha.
-        let number = UInt64(bitPattern:Int64(cell.row)) &* 73_856_093 ^
-                     UInt64(bitPattern:Int64(cell.column)) &* 19_349_663
-        return "Zona " + String(number % 100_000).leftPad(to:5)
+        if let index { return "Zona " + String(format:"%03d",index) }
+        return "Zona · " + cell.id // si aún no se ha visitado, evitar nombres duplicados
     }
 }
 
-private extension String {
-    func leftPad(to n: Int) -> String {
-        String(repeating:"0",count:max(0,n-count)) + self
-    }
-}
