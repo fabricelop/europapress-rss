@@ -12,7 +12,7 @@ struct GPSHistoryEpisode: Identifiable {
 
 enum GPSHistoryGrouping {
     static let gapLimit: TimeInterval = 180
-    static let stayThreshold: TimeInterval = 20 * 60
+    static let stayThreshold: TimeInterval = 8 * 60
     static let stayRadius = 65.0
 
     static func distance(_ a: GPSHistoryFix, _ b: GPSHistoryFix) -> Double {
