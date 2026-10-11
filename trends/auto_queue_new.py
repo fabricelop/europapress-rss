@@ -106,6 +106,40 @@ requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
 reconciled = False
 
+# Terminal Telegram decisions are authoritative, including across radar IDs.
+# They must be reconciled BEFORE stale explained/ready repair can reopen work.
+CLOSED = {"published", "dismissed", "deleted", "removed",
+          "delete_pending", "delete_failed"}
+deliveries = load("telegram-image-deliveries.json", {"items": []})
+mobile_decisions = load("mobile-decisions.json", {"items": []})
+closed_by_id = {}
+recently_closed_names = set()
+for event in (deliveries.get("items") or []):
+    outcome = str(event.get("status") or "").lower()
+    if outcome not in CLOSED:
+        continue
+    event_id = str(event.get("event_id") or "")
+    if event_id:
+        closed_by_id[event_id] = outcome
+    when = parse_timestamp(event.get("deleted_at") or event.get("published_at")
+                           or event.get("dismissed_at") or event.get("delivered_at"))
+    if when and timedelta(0) <= now_dt - when < timedelta(days=7):
+        for name in (event.get("name"), event.get("title")):
+            key = norm(name)
+            if key:
+                recently_closed_names.add(key)
+for decision in (mobile_decisions.get("items") or []):
+    outcome = str(decision.get("status") or "").lower()
+    if outcome in CLOSED and decision.get("id"):
+        closed_by_id[str(decision["id"])] = outcome
+for request in requests:
+    outcome = closed_by_id.get(str(request.get("id") or ""))
+    if outcome and str(request.get("status") or "").lower() not in CLOSED:
+        request["status"] = "deleted" if outcome.startswith("delete_") else outcome
+        request["telegram_package_status"] = request["status"]
+        request["reexplain"] = False
+        reconciled = True
+
 def canonicalize_explained_groups():
     """Mantiene una sola tarjeta visible por grupo editorial.
 
@@ -324,6 +358,8 @@ outside_selected = None
 if not outside_active:
     for item in outside:
         key = norm(item["name"])
+        if key in recently_closed_names:
+            continue
         req = by_name.get(key)
         status = str((req or {}).get("status") or "")
         if status in {"preparing","update","problematic","ready","explained",
@@ -379,6 +415,11 @@ to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
+    # A deliberate new manual investigation is separate; routine radar
+    # captures may not resurrect a Telegram-closed subject for seven days.
+    if key in recently_closed_names and (not req or req.get("auto_queued") is True
+                                         or str(req.get("status") or "").lower() in CLOSED):
+        continue
     status = str((req or {}).get("status") or "")
     if req:
         if item["rank"] <= 10 and status == "explained" and explanation_expired(key):
