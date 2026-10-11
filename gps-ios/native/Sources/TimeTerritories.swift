@@ -134,15 +134,18 @@ struct TerritoryStatsView: View {
                 }
                 Spacer()
                 Button {
-                    Task { await resolver.classify(model) }
+                    Task { await resolver.classify(model,batch:24) }
                 } label: {
                     if resolver.busy { ProgressView() }
-                    else { Label("Clasificar 12",systemImage:"mappin.and.ellipse") }
+                    else { Label("Continuar 24",systemImage:"mappin.and.ellipse") }
                 }
                 .buttonStyle(.bordered)
                 .disabled(resolver.busy || remaining == 0)
             }
-            Text("Las consultas requieren Internet y envían a Apple el centro de las cuadrículas elegidas. Solo se hacen al pulsar Clasificar. Lo ya resuelto queda guardado para trabajar sin conexión.")
+            ProgressView(value:Double(totals.count-remaining),
+                         total:Double(max(1,totals.count)))
+                .tint(.teal)
+            Text("Clasificación progresiva: al abrir esta pantalla se consultan hasta 8 cuadrículas pendientes. Puedes continuar con otras 24. Requiere Internet y envía a Apple el centro de cada cuadrícula consultada; las ya clasificadas quedan guardadas sin conexión.")
                 .font(.caption2).foregroundStyle(.secondary)
             if resolver.busy { Text(resolver.message).font(.caption2) }
             if classified.isEmpty {
@@ -154,7 +157,8 @@ struct TerritoryStatsView: View {
                         VStack(alignment:.leading,spacing:3) {
                             Text(row.name.replacingOccurrences(of:" / ",with:" › "))
                                 .font(.subheadline.weight(.medium))
-                            Text("\(row.cells) cuadrículas").font(.caption2).foregroundStyle(.secondary)
+                            Text("\(row.cells) cuadrículas · solo tiempo ya clasificado")
+                                .font(.caption2).foregroundStyle(.secondary)
                         }
                         Spacer()
                         Text(DurationFormat.full(row.seconds)).font(.caption.weight(.semibold))
@@ -170,5 +174,8 @@ struct TerritoryStatsView: View {
             }
         }
         .padding(.top,5)
+        .task {
+            if remaining > 0 { await resolver.classify(model,batch:8) }
+        }
     }
 }
