@@ -28,7 +28,10 @@ def article_metadata(row):
     title = genuine(row.get("canonical_title") or row.get("title"))
     url = str(row.get("url") or "")
     appearances = [a for a in row.get("appearances") or [] if isinstance(a, dict)]
-    source = next((str(a.get("source")) for a in appearances if a.get("source")), "")
+    source = next((str(a.get("source")) for a in appearances
+                   if str(a.get("url") or "") == url and a.get("source")), "")
+    if not source:
+        source = next((str(a.get("source")) for a in appearances if a.get("source")), "")
     if not url.startswith("https://"):
         url = next((str(a.get("url")) for a in appearances
                     if str(a.get("url") or "").startswith("https://")), "")
