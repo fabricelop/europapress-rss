@@ -48,6 +48,16 @@ for (const filename of ['api/telegram-webhook.js', 'vercel-webhook/api/telegram-
   assert.equal(second.status,'already_requested');
   assert.equal(writes.length,1);
   stored={ command_id: 'tt-old', requested_at: '2026-09-01T00:00:00Z' };
+  const deniedRes={
+    code:200, status(code){this.code=code;return this;},
+    json(data){this.data=data;return this;}
+  };
+  await ctx.__test.handler({
+    method:'POST',headers:{},
+    body:{update_id:99,message:{chat:{id:1234,type:'private'},text:'/run'}}
+  },deniedRes);
+  assert.equal(deniedRes.code,401);
+  assert.equal(writes.length,1);
   const res={
     code:200, status(code){this.code=code;return this;},
     json(data){this.data=data;return this;}
