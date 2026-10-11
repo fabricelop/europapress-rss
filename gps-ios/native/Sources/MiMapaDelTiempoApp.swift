@@ -122,6 +122,7 @@ struct SavedState: Codable {
     var places: [UserPlace] = []
     var territoryCache: [String:TerritoryRecord] = [:]
     var powerEvents: [GPSPowerEvent] = []
+    var shortIDs: [String:Int] = [:]
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
 
@@ -143,6 +144,7 @@ struct SavedState: Codable {
         places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
         powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
+        shortIDs = try box.decodeIfPresent([String:Int].self,forKey:.shortIDs) ?? [:]
     }
 }
 @MainActor final class TimeModel: ObservableObject {
@@ -204,6 +206,13 @@ struct SavedState: Codable {
         currentVisitStart = data.savedVisitStart
         stableCell = data.fixes.last?.cell
         lastProcessedSample = data.fixes.last
+        if data.shortIDs.isEmpty && !data.intervals.isEmpty {
+            for interval in data.intervals.sorted(by:{$0.start < $1.start}) {
+                assignShortID(interval.cell.id)
+            }
+            for id in data.totals.keys.sorted() { assignShortID(id) }
+            save(force:true)
+        }
         adaptive = UserDefaults.standard.object(forKey:"mapAdaptiveV5") as? Bool ?? true
         showRoutes = UserDefaults.standard.object(forKey:"mapRoutesV5") as? Bool ?? true
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
@@ -255,7 +264,13 @@ struct SavedState: Codable {
         save(force: true)
         objectWillChange.send()
     }
-    func label(for cell: Cell) -> String { FriendlyCellName.title(cell,data.names[cell.id]) }
+    func label(for cell:Cell) -> String {
+        FriendlyCellName.title(cell,index:data.shortIDs[cell.id],custom:data.names[cell.id])
+    }
+    private func assignShortID(_ id:String) {
+        guard data.shortIDs[id] == nil else { return }
+        data.shortIDs[id] = (data.shortIDs.values.max() ?? 0)+1
+    }
     func hasCustomName(_ id: String) -> Bool {
         !(data.names[id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
     }
@@ -438,6 +453,7 @@ struct SavedState: Codable {
             data.intervals.append(segment)
             pendingIntervals.append(segment)
         }
+        assignShortID(cell.id)
         let delta = end.timeIntervalSince(start)
         data.totals[cell.id, default:0] += delta
         pendingTotals[cell.id, default:0] += delta
