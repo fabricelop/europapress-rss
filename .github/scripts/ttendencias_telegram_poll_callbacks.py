@@ -139,6 +139,20 @@ def process(updates, allowed_chat, ledger, decisions, offset, requests=None):
                     row["published_at"] = stamp()
             ledger["updated_at"] = stamp()
             changed = True
+        # A Telegram decision closes the editorial request as well as the
+        # delivery ledger; otherwise auto-queue may resurrect old revisions.
+        for req in requests.get("requests", []):
+            if str(req.get("id") or "") != event_id:
+                continue
+            if (str(req.get("status") or "").lower() != status
+                    or str(req.get("telegram_package_status") or "").lower() != status):
+                req["status"] = status
+                req["telegram_package_status"] = status
+                req["telegram_closed_at"] = stamp()
+                req["telegram_closed_revision"] = rev
+                req["reexplain"] = False
+                requests["updated_at"] = stamp()
+                changed = True
         record = next((x for x in decisions.get("items", [])
                        if str(x.get("id") or "") == event_id), None)
         if record is None:
