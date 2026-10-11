@@ -91,11 +91,12 @@ function Run-NodeToLog([string[]]$arguments, [int]$timeoutSeconds = 0) {
 
 try {
     Add-LogLine "[$(Get-Date -Format s)] Inicio busqueda"
-    $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'search_x.js'))
-    if ($code -ne 0) { throw "search_x.js termino con codigo $code" }
-
-    $code = Run-NodeToLog @((Join-Path $PSScriptRoot 'publish_search_report.js'))
-    if ($code -ne 0) { throw "publish_search_report.js termino con codigo $code" }
+    $searchCode = Run-NodeToLog @((Join-Path $PSScriptRoot 'search_x.js')) 240
+    # Publicar SIEMPRE el diagnóstico, también cuando X ha rechazado la
+    # navegación; nunca dejar un reporte antiguo que aparente estar sano.
+    $reportCode = Run-NodeToLog @((Join-Path $PSScriptRoot 'publish_search_report.js')) 90
+    if ($reportCode -ne 0) { throw "publish_search_report.js termino con codigo $reportCode" }
+    if ($searchCode -ne 0) { throw "search_x.js termino con codigo $searchCode; resultado publicado" }
 
     Add-LogLine "[$(Get-Date -Format s)] Outbox delegado al listener Telegram continuo."
 
