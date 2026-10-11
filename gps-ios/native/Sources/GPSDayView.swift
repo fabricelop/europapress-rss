@@ -36,7 +36,7 @@ struct GPSDayView: View {
                                 Text("—")
                                 Text(episode.end, style: .time)
                             }
-                            Text(DurationFormat.full(episode.duration))
+                            Text(DurationFormat.full(max(0, min(episode.end, nextDay).timeIntervalSince(max(episode.start, day)))))
                                 .font(.caption).foregroundStyle(.secondary)
                             if episode.start < day || episode.end >= nextDay {
                                 Text("El episodio cruza medianoche")
