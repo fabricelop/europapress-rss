@@ -42,7 +42,7 @@ private struct GPSWidgetFace: View {
         entry.value.map { TimeWidgetDuration.compact($0.totalAssignedSeconds) } ?? "—"
     }
     private var place: String {
-        entry.value?.currentCellName ?? "Ubicación pendiente"
+        entry.value?.currentCellName ?? "Lugar privado"
     }
     private var stay: String {
         entry.value?.currentStaySeconds.map(TimeWidgetDuration.compact) ?? "—"
