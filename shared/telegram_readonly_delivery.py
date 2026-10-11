@@ -142,18 +142,22 @@ def news_cards(now):
         else:
             try:verified=int(job.get("verified_source_count") or 0)>=2
             except (ValueError,TypeError):verified=False
+            preview=trim(job.get("factual_summary"),350) if verified else ""
+            available_photo=bool(image_url(job) or image_url(item))
             body=("🟠 EN ELABORACIÓN · NOTICIA PROVISIONAL\n\n"
-                  +trim(title,550)+"\n\n"
-                  +("📌 Datos iniciales con al menos dos fuentes; aún falta la revisión editorial.\n"
+                  +trim(title,340)+"\n\n"
+                  +(preview+"\n\n" if preview and preview not in title else "")
+                  +("📌 Datos iniciales de al menos dos fuentes; falta revisión editorial.\n"
                     if verified else
-                    "⚠️ Titular detectado; sus hechos aún no están verificados editorialmente.\n")
+                    "⚠️ Titular detectado; hechos todavía sin verificar editorialmente.\n")
                   +"⏳ Falta explicación y remate.\n"
-                  +"📷 Falta fotografía de archivo.\n"
+                  +("📷 Fotografía de archivo disponible.\n" if available_photo else
+                    "📷 Fotografía de archivo pendiente.\n")
                   +"↻ Se actualizará ESTA MISMA tarjeta al finalizar.")[:1000]
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
-               "image":image_url(item),
+               "image":image_url(item) or image_url(job),
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":str(item.get("url") or job.get("url") or "")}
 
@@ -544,7 +548,7 @@ def process(project,now,token,chat):
         # existing card is a photo): no separate photo post and no long wait.
         if not existing or existing.get("is_photo"):
             photo_url=card["image"]
-            if not photo_url and project=="ttittulares" and not existing:
+            if not photo_url and project=="ttittulares" and not existing and card["final"]:
                 photo_url=fast_archive_from_article(card.get("source_url",""))
             image_data=archival_image(photo_url) if photo_url else None
             if not image_data and project=="ttendencias" and not existing:
@@ -681,7 +685,7 @@ def selftest():
             provisional_rows=list(news_cards(now))
             assert len(provisional_rows)==1 and not provisional_rows[0]["final"]
             assert "Falta explicación" in provisional_rows[0]["text"]
-            assert "Falta fotografía" in provisional_rows[0]["text"]
+            assert "Fotografía de archivo pendiente" in provisional_rows[0]["text"]
             assert "confirmó" in provisional_rows[0]["x_text"]
             final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
                 "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
