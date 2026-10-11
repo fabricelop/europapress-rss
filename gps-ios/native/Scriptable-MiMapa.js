@@ -1,7 +1,7 @@
 // Mi Mapa del Tiempo — Widget Scriptable (pantalla de inicio y bloqueo)
 // En Mi Mapa: Ajustes → Widgets → Exportar resumen para Scriptable.
 // En Archivos guarda MiMapaEstado.json en iCloud Drive / Scriptable.
-// Este script no rastrea ubicaciones ni tiene acceso a datos privados de otra app.
+// El tiempo es el del ÚLTIMO resumen exportado; Scriptable no lee el GPS\n// ni detecta por sí solo los cambios de zona.
 const fm=FileManager.iCloud();
 const filepath=fm.joinPath(fm.documentsDirectory(),"MiMapaEstado.json");
 const widget=new ListWidget();
@@ -26,27 +26,37 @@ function duration(seconds){
   return h>0?h+" h "+m+" min":m+" min "+s+" s";
 }
 if(data) {
-  let name=widget.addText(String(data.place||"Sin lugar"));
-  name.font=Font.boldSystemFont(family==="accessoryRectangular"?12:17);
-  name.textColor=Color.white();
-  name.lineLimit=2;
-  widget.addSpacer(4);
-  const active=Boolean(data.resting||data.tracking);
-  const elapsed=active&&data.stayStart>0?
-    Date.now()/1000-Number(data.stayStart):0;
-  let stay=widget.addText(duration(elapsed));
-  stay.font=Font.boldSystemFont(family==="accessoryRectangular"?14:22);
-  stay.textColor=new Color("#FFFFFF");
+  const count=Math.max(0,Number(data.cellCount)||0);
+  const isZone=data.placeType==="zona" || (data.placeType===undefined && count>1);
+  const displayName=String(data.place||"Cuadrícula sin nombre");
+  const header=widget.addText(displayName);
+  header.font=Font.boldSystemFont(family==="accessoryRectangular"?12:17);
+  header.textColor=Color.white();
+  header.lineLimit(2);
   widget.addSpacer(3);
-  const age=Math.max(0,Math.floor((Date.now()/1000-Number(data.generatedAt))/60));
-  let detail=widget.addText((data.resting?"GPS pausado":data.tracking?"GPS activo":"GPS parado")+" · copia "+age+" min");
+  const kind=widget.addText(isZone?
+      ("ZONA · "+count+" cuadrícula"+(count===1?"":"s")):
+      "CUADRÍCULA INDEPENDIENTE");
+  kind.font=Font.boldSystemFont(9);
+  kind.textColor=new Color("#70DFD5");
+  widget.addSpacer(4);
+  const seconds=isZone?Number(data.zoneSeconds||0):Number(data.cellSeconds||0);
+  const hasTotal=Number.isFinite(seconds) && data.schema>=2;
+  const main=widget.addText(hasTotal?duration(seconds):"Resumen anterior");
+  main.font=Font.boldSystemFont(family==="accessoryRectangular"?14:21);
+  main.textColor=Color.white();
+  widget.addSpacer(3);
+  const age=Math.max(0,Math.floor((Date.now()/1000-Number(data.generatedAt||0))/60));
+  const mode=data.resting?"Pausa GPS":data.tracking?"GPS activo":"GPS detenido";
+  const detail=widget.addText(mode+" · última copia "+age+" min");
   detail.font=Font.systemFont(10);
   detail.textColor=new Color("#B9CFC9");
 }else{
-  let text=widget.addText("Exporta MiMapaEstado.json desde la aplicación");
-  text.textColor=Color.white();
-  text.font=Font.systemFont(13);
+  const missing=widget.addText("Exporta MiMapaEstado.json desde Mi Mapa");
+  missing.textColor=Color.white();
+  missing.font=Font.systemFont(12);
 }
+
 widget.addSpacer();
 widget.refreshAfterDate=new Date(Date.now()+10*60*1000);
 if(config.runsInWidget){ Script.setWidget(widget); }
