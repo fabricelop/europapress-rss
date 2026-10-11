@@ -24,7 +24,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .stats.five{grid-template-columns:repeat(5,minmax(0,1fr))}.stat small{display:block;line-height:1.3}.stat b{line-height:1.1}
 .card.tremending{border-left:4px solid #d95f8d}.tremending-tweets{margin-top:10px;color:var(--sub)}.tremending-tweets summary{cursor:pointer;color:#ffbed8;font-weight:700}.tremending-tweets a{display:inline-block;margin:4px 8px 4px 0;padding:7px;border:1px solid var(--stroke);border-radius:9px}
 .cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
-.upcoming{margin-top:28px;padding-top:16px;border-top:1px solid var(--stroke)}.upcoming[hidden]{display:none}.upcoming h2{font-size:20px;margin:0 0 4px}.upcoming .hint{color:var(--sub);font-size:12px;margin:0 0 11px}.upcoming-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:9px}.signal-card{background:var(--surface);border:1px solid var(--stroke);border-radius:13px;padding:10px 12px}.signal-card b{display:block}.signal-card small{color:var(--sub)}.signal-card a{font-size:12px}
+/* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
 @media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
 </style></head>
 <body>
@@ -41,7 +41,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
-<div id="cards" class="cards"></div><section id="upcoming" class="upcoming" hidden><h2>Próximas tendencias</h2><p class="hint">Señales al alza que aún no han entrado en el Top 30</p><div id="upcoming-grid" class="upcoming-grid"></div></section>
+<div id="cards" class="cards"></div>
 <div class="footer">Origen: GitHub Pages y datos públicos de GitHub. Las acciones se confirman en Telegram y se ejecutan de forma segura en GitHub Actions, sin abrir formularios ni exponer credenciales en la web. Imágenes GAG solo mediante copia manual en ChatGPT Images.</div>
 <details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se reciben por el bot privado de Telegram y se ejecutan en GitHub Actions, sin guardar tokens en el navegador.</p></details>
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
@@ -112,9 +112,44 @@ function trendClosed(x){
 function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
- if(state.tab==='top')return (recent.items||[]).slice(0,30).map((x,i)=>({
-  ...x,title:x.name,_kind:'tr',_id:String(x.name||i),_status:'TT#'+(x.rank||i+1),_topOnly:true
- }));
+ if(state.tab==='top'){
+  // A single view shows BOTH the rank and the current editorial state.
+  // Matching is by normalized literal trend name (including group members),
+  // not by mutable ranking or by Telegram delivery alone.
+  const normal=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES').replace(/\s+/g,' ');
+  const requestsByName=new Map(),completedByName=new Map();
+  const ts=row=>Date.parse(row.explained_at||row.requested_at||row.updated_at||'')||0;
+  for(const row of requests){
+   const name=normal(row.name);if(!name)continue;
+   const existing=requestsByName.get(name);
+   if(!existing||ts(row)>=ts(existing))requestsByName.set(name,row);
+  }
+  for(const row of [...explained,...requests]){
+   const expl=String(row.explanation||'').trim();
+   if(!expl)continue;
+   const names=[row.name,row.display_name,...(row.trend_names||[]),...(row.trend_context||[]).map(x=>x.name)];
+   for(const value of names){
+    const name=normal(value);if(!name)continue;
+    const previous=completedByName.get(name);
+    if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
+   }
+  }
+  return (recent.items||[]).slice(0,30).map((x,i)=>{
+   const req=requestsByName.get(normal(x.name))||{};
+   const finished=completedByName.get(normal(x.name))||{};
+   const status=String(req.status||'').toLowerCase();
+   const latestAt=finished.explained_at||req.explained_at||'';
+   const old=latestAt&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
+   const working=['preparing','update','ready'].includes(status);
+   const failure=status==='problematic';
+   const text=String(finished.explanation||req.explanation||'').trim();
+   const editorialState=working?'EN ELABORACIÓN':failure?'REVISIÓN':text&&!old?'EXPLICADA':old?'POR ACTUALIZAR':'PENDIENTE';
+   return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
+    _status:editorialState,_topOnly:true,rank:Number(x.rank||i+1),
+    explanation:text,closer_text:finished.closer_text||req.closer_text||'',
+    explained_at:latestAt,revision:finished.revision||req.revision||0};
+  });
+ }
  const latest=new Map();
  for(const x of ledger){
   const id=String(x.event_id||'');if(!id)continue;
@@ -214,7 +249,15 @@ function rowCard(x,i){
   a.append(b);return b
  $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
  }
- if(x._topOnly){out.classList.add('trend-top');link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');return out}
+ if(x._topOnly){
+  out.classList.add('trend-top');
+  if(d.editorial&&x._status==='EXPLICADA'){
+   btn('📋 Copiar explicación',()=>copyText(d.editorial,'Explicación'));
+   link('Abrir en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
+  }
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  return out
+ }
  if(x._kind==='tremending'){
   out.classList.add('tremending');
   if(isHttp(x.url))link('Leer en Público',x.url,true);
@@ -268,15 +311,6 @@ function render(){
  }else {$('source-counts').replaceChildren();$('stats').classList.remove('five')}
   const titles=state.app==='tti'?{listas:'Noticias listas',elaboracion:'En elaboración',problematicas:'Revisión y problemáticas',creciendo:'Noticias creciendo',tremending:'Tremending · Público',fuentes:'Fuentes del radar'}:{top:'Top 30 España',explicadas:'Tendencias explicadas',historico:'Histórico de tendencias'};
   $('view-title').textContent=titles[state.tab]||'TT Actualidad';
-  const upcoming=state.app==='tr'&&state.tab==='top'?(state.data.recent?.upcoming||[]).slice(0,12):[];
-  $('upcoming').hidden=upcoming.length===0;
-  $('upcoming-grid').replaceChildren(...upcoming.map(t=>{
-   const el=document.createElement('article');el.className='signal-card';
-   const name=document.createElement('b');name.textContent=String(t.name||'');el.append(name);
-   const info=document.createElement('small');info.textContent='Fuentes sociales: '+(t.social_source_count??'—')+' · Noticias: '+(t.news_source_count??'—');el.append(info);
-   const link=document.createElement('a');link.href='https://x.com/search?q='+encodeURIComponent(t.name||'')+'&f=live';link.target='_blank';link.rel='noopener';link.textContent='Buscar en X ↗';el.append(link);
-   return el;
-  }));
  const last=state.app==='tti'?(state.data.status?.radar_at||state.data.status?.updated_at):state.data.recent?.captured_at;
   $('last-radar').textContent='Último radar: '+stamp(last);
   const next=new Date();next.setSeconds(0,0);
