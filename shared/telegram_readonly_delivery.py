@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PC-independent Telegram delivery: explanation first, or provisional after 60m.
+"""PC-independent Telegram delivery: immediate news provisional and in-place final edits.
 
 There is NO X or Instagram publishing, and NO AI image generation here.
 A final explanation edits the original Telegram card if it has not been deleted.
@@ -23,7 +23,7 @@ MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new se
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
 BUTTONS_VERSION=15  # TTendencias: re-explain inline
-TTI_BUTTONS_VERSION=13  # Preserve existing TTiTTulares keyboard
+TTI_BUTTONS_VERSION=16  # Immediate TTi news: urgent draft buttons
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -91,6 +91,18 @@ def news_delivery_start(job,item):
         return item.get("prepared_at") or item.get("ready_at") or item.get("selected_at") or job.get("selected_at")
     return job.get("selected_at") or item.get("selected_at") or item.get("prepared_at")
 
+def provisional_news_copy(job,title):
+    """Clearly labeled early draft for manual X posting, never a verified fact."""
+    try:verified=int(job.get("verified_source_count") or 0)>=2
+    except (ValueError,TypeError):verified=False
+    draft=trim(job.get("factual_summary"),210) if verified else ""
+    lead="🔎 EN ELABORACIÓN (aún sin explicación): " if verified and draft else "⚠️ TITULAR EN VERIFICACIÓN: "
+    body=draft or trim(title,210)
+    limit=250-len(lead)
+    if len(body)>limit:
+        body=body[:limit].rsplit(" ",1)[0].rstrip(".,;: ")+"…"
+    return lead+body
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -111,7 +123,7 @@ def news_cards(now):
         is_final=bool(item and not item.get("rewrite_pending"))
         start=news_delivery_start(job,item)
         if not fresh(start,now):continue
-        if not is_final and not age_ready(start,now):continue
+        # New PROCESSING news is sent immediately, with an explicit warning.
         revision=int(item.get("revision") or job.get("revision") or 1)
         title=trim(item.get("title") or job.get("title") or "Noticia",400)
         factual=trim(item.get("factual_summary") or (item.get("tweet") or {}).get("text"),850)
@@ -128,12 +140,19 @@ def news_cards(now):
             room=max(0,1000-len(head)-len(tail))
             body=head+detail[:room]+tail
         else:
-            pending="⏳ Pendiente de explicación. Se actualizará cuando esté elaborada."
-            room=max(0,1000-len(title)-2)
-            body=title+"\n\n"+pending[:room]
+            try:verified=int(job.get("verified_source_count") or 0)>=2
+            except (ValueError,TypeError):verified=False
+            body=("🟠 EN ELABORACIÓN · NOTICIA PROVISIONAL\n\n"
+                  +trim(title,550)+"\n\n"
+                  +("📌 Datos iniciales con al menos dos fuentes; aún falta la revisión editorial.\n"
+                    if verified else
+                    "⚠️ Titular detectado; sus hechos aún no están verificados editorialmente.\n")
+                  +"⏳ Falta explicación y remate.\n"
+                  +"📷 Falta fotografía de archivo.\n"
+                  +"↻ Se actualizará ESTA MISMA tarjeta al finalizar.")[:1000]
         # Search is read-only; it never opens a composer.
         search=title
-        yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else "",
+        yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
                "image":image_url(item),
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":str(item.get("url") or job.get("url") or "")}
@@ -278,6 +297,21 @@ def keys(card,project):
             photo="https://fabricelop.github.io/europapress-rss/photo.html?"+urlencode(photo_args)
             rows.append([
                 {"text":"📷 Copiar foto de archivo","url":photo},
+                {"text":"🔎 Buscar en X","url":search}
+            ])
+        else:
+            rows.append([{"text":"🔎 Buscar en X","url":search}])
+    elif project=="ttittulares" and x_text:
+        # Manual early publishing is permitted, but never hide that the
+        # explanation and independent editorial verification are pending.
+        rows.append([
+            {"text":"📋 Copiar borrador para X","copy_text":{"text":x_text[:256]}},
+            {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
+        ])
+        source_url=str(card.get("source_url") or "")
+        if source_url.startswith("https://"):
+            rows.append([
+                {"text":"🔗 Fuente original","url":source_url},
                 {"text":"🔎 Buscar en X","url":search}
             ])
         else:
@@ -613,8 +647,53 @@ def selftest():
     long_x=keys(long_card,"ttendencias")["inline_keyboard"][1][0]
     assert "copy_text" not in long_x and "mode=x" in long_x["url"]
     assert len(keys(long_card,"ttendencias")["inline_keyboard"][1][1]["url"])<2048
-    pending=keys({**card,"final":False},"ttittulares")["inline_keyboard"]
-    assert [b[0]["text"] for b in pending]==["🔎 Buscar en X","🗑️ Borrar"]
+    draft=provisional_news_copy({"verified_source_count":0},"Noticia urgente por verificar")
+    assert "VERIFICACIÓN" in draft and len(draft)<=256
+    verified_draft=provisional_news_copy({"verified_source_count":2,
+        "factual_summary":"El ayuntamiento anunció una medida."},"Noticia urgente")
+    assert "EN ELABORACIÓN" in verified_draft and "anunció" in verified_draft
+    provisional={**card,"final":False,"x_text":draft,
+                 "source_url":"https://www.example.org/noticias/noticia"}
+    pending=keys(provisional,"ttittulares")["inline_keyboard"]
+    assert [row[0]["text"] for row in pending]==[
+        "📋 Copiar borrador para X","🔗 Fuente original","🗑️ Borrar"]
+    assert pending[0][0]["copy_text"]["text"]==draft
+    assert "intent/tweet" in pending[0][1]["url"]
+    assert pending[1][1]["text"]=="🔎 Buscar en X"
+    assert pending[-1][0]["callback_data"]=="tt:b:abc123"
+    no_source=keys({**provisional,"source_url":""},"ttittulares")["inline_keyboard"]
+    assert [row[0]["text"] for row in no_source]==[
+        "📋 Copiar borrador para X","🔎 Buscar en X","🗑️ Borrar"]
+    pending_trends=keys({**card,"final":False,"x_text":""},"ttendencias")["inline_keyboard"]
+    assert [row[0]["text"] for row in pending_trends]==["🔎 Buscar en X","🗑️ Borrar"]
+    import tempfile
+    original_root=ROOT
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            put("telegram/editorial-processing.json",{"items":[{
+                "event_id":"urgent123","status":"PROCESSING","title":"Urgencia aún en elaboración",
+                "selected_at":"2026-10-09T15:59:00Z","verified_source_count":2,
+                "factual_summary":"Un organismo confirmó la medida.",
+                "url":"https://www.example.org/noticias/urgencia"}]})
+            put("ttittulares/prepared.json",{"items":[]})
+            put("ttittulares/decisions.json",{"items":[]})
+            provisional_rows=list(news_cards(now))
+            assert len(provisional_rows)==1 and not provisional_rows[0]["final"]
+            assert "Falta explicación" in provisional_rows[0]["text"]
+            assert "Falta fotografía" in provisional_rows[0]["text"]
+            assert "confirmó" in provisional_rows[0]["x_text"]
+            final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
+                "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
+                "tweet":{"text":"Un organismo confirmó la medida.",
+                         "remate":"🌶️ Remate exacto."},
+                "factual_summary":"Un organismo confirmó la medida."}
+            put("ttittulares/prepared.json",{"items":[final]})
+            finished=list(news_cards(now))
+            assert len(finished)==1 and finished[0]["final"]
+            assert "Remate exacto" in finished[0]["text"]
+    finally:
+        globals()["ROOT"]=original_root
     assert not trend_repeat_allowed({"is_in_top":True,"entered_top_at":"2026-10-09T13:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T12:00:00Z"}],now)
     assert trend_repeat_allowed({"novelty_verified":True,"is_in_top":True,
