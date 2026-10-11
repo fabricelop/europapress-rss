@@ -4,8 +4,9 @@ import CoreLocation
 
 final class TimeZonePerformanceTests: XCTestCase {
     func testHugeZoneKeepsAllCellsAndContoursInsteadOfBoundingRectangle() {
+        let base=Grid.cell(latitude:40.4,longitude:-3.7)
         let ids=(0..<1000).map { n in
-            Cell(row:500 + n / 20,column:100 + n % 20).id
+            Cell(row:base.row + n / 20,column:base.column + n % 20).id
         }
         let zone=TimeCustomZone(name:"Parque del Retiro",cellIDs:ids)
         let border=TimeZoneOutline.renderSegments(for:zone)
