@@ -3,11 +3,14 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T05:15:00+02:00",
-  "last_completed_at": "2026-10-11T05:17:17.725+02:00",
-  "updated_at": "2026-10-11T05:17:17.725+02:00",
+  "last_started_at": "2026-10-11T09:15:00+02:00",
+  "last_completed_at": "2026-10-11T09:20:50+02:00",
+  "updated_at": "2026-10-11T09:20:50+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "ad2158fb13c9",
+    "88badc81e464"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -16,58 +19,59 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "repair requested; automatic Gag IA enqueue step remains disabled in repair workflow",
+    "status": "repair completed; archive-image recovery ran; automatic Gag IA enqueue step was skipped because the workflow keeps if:false",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T051500+0200-chatgpt",
-    "requested_at": "2026-10-11T05:15:00+02:00",
-    "reason": "execution-start-pending-repair"
+    "run_id": "tr-20261011T091500+0200-chatgpt",
+    "requested_at": "2026-10-11T09:15:00+02:00",
+    "completed_at": "2026-10-11T09:20:50+02:00",
+    "reason": "post-editorial-visual-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T051500+0200-chatgpt",
+    "run_id": "tr-20261011T091500+0200-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-11T05:15:00+02:00",
-    "updated_at": "2026-10-11T05:17:17.725+02:00",
-    "finished_at": "2026-10-11T05:17:17.725+02:00",
+    "started_at": "2026-10-11T09:15:00+02:00",
+    "updated_at": "2026-10-11T09:20:50+02:00",
+    "finished_at": "2026-10-11T09:20:50+02:00",
     "trend_id": null,
     "title": null,
-    "current": 0,
-    "total": 0,
+    "current": 2,
+    "total": 2,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "grouped_members_total": 0,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "visual_repair_requested": true,
-      "visual_backlog": 0,
+      "visual_backlog": 2,
       "incidents": 1,
       "images_generated": 0,
       "skipped_by_jit": 0,
       "reconciled_terminal": 0,
-      "pending_reviewed": 0,
+      "pending_reviewed": 2,
       "pending_repair_requested": 1
     },
-    "message": "Cierre verificado · 0/0 trabajo editorial; cola vacía; reparación de Pendientes solicitada; incidencia visual conocida",
+    "message": "Cierre verificado · 2/2 explicadas; cola vacía; reparación visual ejecutada; Gag IA automático no encolado por paso deshabilitado",
     "incident_count": 1,
     "incidents": [
       {
         "code": "visual_ai_enqueue_step_disabled",
         "scope": "visual_repair",
-        "message": "El workflow repair-ttendencias-explicadas.yml mantiene deshabilitado con if:false el paso 'Encolar Gag IA ausente o inválido'. La reparación visual global se solicita, pero este run no puede confirmar el encolado automático de Gag IA."
+        "message": "El workflow repair-ttendencias-explicadas.yml mantiene if:false en el paso 'Encolar Gag IA ausente o inválido'. La reparación de imágenes de archivo se ejecutó, pero los dos Gag IA quedan sin encolar automáticamente."
       }
     ],
     "ratings_snapshot": {
@@ -77,28 +81,48 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "ad2158fb13c9",
+        "name": "Máximo Quiles",
+        "revision": 0,
+        "closer_text": "🌶️ Llegó a meta y al calendario le sobraron cinco domingos."
+      },
+      {
+        "id": "88badc81e464",
+        "name": "#FelizDomingo",
+        "revision": 2,
+        "closer_text": "🌶️ Hasta el algoritmo ficha los domingos."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-11T05:15:00+02:00",
+        "at": "2026-10-11T09:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando ejecución · cola editorial inicial 0; verificando reexplicaciones y Pendientes"
+        "message": "Preparando ejecución · cola editorial inicial 2"
       },
       {
-        "at": "2026-10-11T05:16:43.286+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola y estado autoritativo antes del cierre"
+        "at": "2026-10-11T09:15:00+02:00",
+        "phase": "persisting",
+        "trend_id": "ad2158fb13c9",
+        "title": "Máximo Quiles",
+        "message": "Explicación verificada y persistida"
       },
       {
-        "at": "2026-10-11T05:17:17.725+02:00",
-        "phase": "verifying",
+        "at": "2026-10-11T09:15:00+02:00",
+        "phase": "persisting",
+        "trend_id": "88badc81e464",
+        "title": "#FelizDomingo",
+        "message": "Reexplicación verificada y persistida"
+      },
+      {
+        "at": "2026-10-11T09:20:50+02:00",
+        "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola vacía · sin preparing/update ni rewrite_pending detectados; reparación de Pendientes solicitada"
+        "message": "Cola vacía · reparación visual completada con incidencia Gag IA conocida"
       }
     ]
   },
