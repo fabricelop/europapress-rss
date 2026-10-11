@@ -314,15 +314,19 @@ def selftest():
     print("TTITTULARES_NATIVE_RECEIVER_SELFTEST_OK")
 
 
-def dispatch_workflow(token, filename):
+def dispatch_workflow(token, filename, inputs=None):
     """Explicit dispatch because GITHUB_TOKEN commits do not trigger push jobs."""
     endpoint = f"https://api.github.com/repos/{REPO}/actions/workflows/{filename}/dispatches"
     headers = {"Authorization": "Bearer " + token,
                "Accept": "application/vnd.github+json",
                "Content-Type": "application/json",
                "User-Agent": "ttittulares-native-telegram-dispatch"}
+    request_body={"ref":"main"}
+    if inputs is not None:
+        request_body["inputs"]=inputs
     req = urllib.request.Request(
-        endpoint, data=b'{"ref":"main"}', headers=headers, method="POST")
+        endpoint, data=json.dumps(request_body).encode("utf-8"),
+        headers=headers, method="POST")
     with urllib.request.urlopen(req, timeout=25) as response:
         if response.status not in (200, 204):
             raise RuntimeError(f"Cannot dispatch {filename}: {response.status}")
@@ -590,9 +594,15 @@ def listen():
                 elif persisted and kind == "proposal":
                     dispatch_workflow(github, "import-ttittulares-telegram-proposals.yml")
                 elif persisted and kind in ("mobile", "mobile_rework_reply"):
-                    # Queue consumer has a scheduled retry. Do not assume a
-                    # GITHUB_TOKEN push will trigger its push workflow.
-                    print("TTI_MOBILE_QUEUED_FOR_SCHEDULE", uid, flush=True)
+                    # Queue accepted in GitHub: dispatch the same validated
+                    # consumer immediately, with its scheduled retry as backup.
+                    try:
+                        dispatch_workflow(github, "tt-mobile-github-commands.yml",
+                                          {"run_pending":"true"})
+                        print("TTI_MOBILE_QUEUE_APPLY_DISPATCHED", uid, flush=True)
+                    except (RuntimeError, urllib.error.HTTPError, urllib.error.URLError) as exc:
+                        print("TTI_MOBILE_QUEUE_SCHEDULED_FALLBACK", uid,
+                              type(exc).__name__, flush=True)
                 print("TTI_NATIVE_UPDATE_PROCESSED", uid, kind, flush=True)
             except Exception as exc:
                 # Do not move the update offset on failure. Retrying remains
