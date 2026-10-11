@@ -63,7 +63,7 @@ struct TimeZoneEditor: View {
     @State private var confirmDelete = false
 
     private var candidateCells: [Cell] {
-        Array(selected.prefix(TimeZoneGeometry.maximumCells)).compactMap(TimeAnalytics.cell)
+        Array(selected.prefix(160)).compactMap(TimeAnalytics.cell)
     }
     var body: some View {
         VStack(spacing:10) {
@@ -71,6 +71,9 @@ struct TimeZoneEditor: View {
                 TextField("Nombre de la zona",text:$name)
                     .textFieldStyle(.roundedBorder)
                 Text("\(selected.count) celdas").font(.caption.monospacedDigit())
+                if selected.count > 160 {
+                    Text("Vista previa parcial").font(.caption2).foregroundStyle(.secondary)
+                }
             }.padding(.horizontal)
             HStack(spacing:8) {
                 Button(drawing ? "Dibujando…" : "Dibujar contorno") {
