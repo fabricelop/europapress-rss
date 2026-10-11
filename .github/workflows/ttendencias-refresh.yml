@@ -94,9 +94,8 @@ jobs:
           git pull --rebase --autostash origin main
           git push origin HEAD:main
 
-          # La cola prioriza todas las Top 10 sin explicación reciente y una
-          # única tendencia por turno en puestos 11-30. El siguiente puesto
-          # se incorpora solo al cerrarse el anterior y tras refrescar radar.
+          # Solo Top 10 se encola automáticamente. Puestos 11-30 son
+          # visuales y solo entran a Explicadas al pulsar Preparar novedad.
 
       # El panel Cloudflare consulta directamente el estado versionado en GitHub.
       # Sin notificaciones push heredadas ni peticiones a Vercel.
