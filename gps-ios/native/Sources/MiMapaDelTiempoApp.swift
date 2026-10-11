@@ -126,6 +126,7 @@ struct SavedState: Codable {
     var shortIDs: [String:Int] = [:]
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
+    var gpsRest: GPSRestSession?
 
     init() {}
     // El JSON v1 carece de manualBreaks y de otras propiedades posteriores.
@@ -141,6 +142,7 @@ struct SavedState: Codable {
         missingSeconds = try box.decodeIfPresent(TimeInterval.self,forKey:.missingSeconds) ?? 0
         savedVisitStart = try box.decodeIfPresent(Date.self,forKey:.savedVisitStart)
         trackingEnabled = try box.decodeIfPresent(Bool.self,forKey:.trackingEnabled) ?? false
+        gpsRest = try box.decodeIfPresent(GPSRestSession.self,forKey:.gpsRest)
         manualBreaks = try box.decodeIfPresent([Date].self,forKey:.manualBreaks) ?? []
         places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
@@ -168,6 +170,47 @@ struct SavedState: Codable {
     @Published private(set) var renameUndoAvailable = false
     private var renameUndoSnapshot: (names:[String:String],places:[UserPlace])?
     var savedPowerEvents: [GPSPowerEvent] { data.powerEvents }
+    var isResting: Bool { data.gpsRest != nil }
+    var restingCell: Cell? { data.gpsRest?.cell }
+    var restingCellName: String? { data.gpsRest.map { label(for: $0.cell) } }
+    func pauseForRest(at date: Date = .now) -> Bool {
+        guard recording, let point = current,
+              date.timeIntervalSince(point.date) >= 0,
+              date.timeIntervalSince(point.date) <= 180,
+              let cell = activeCell else {
+            gpsStatus = "Espera una posición GPS reciente antes de pausar"
+            return false
+        }
+        data.gpsRest = GPSRestSession(startedAt: date, cell: cell,
+                                      latitude: point.latitude, longitude: point.longitude)
+        recording = false
+        gpsStatus = "GPS en pausa · tiempo acumulándose en \(label(for:cell))"
+        recordPowerEvent(mode:.rest,cause:"Pausa voluntaria desde \(label(for:cell))")
+        widgetPublisher.publish(from:self,force:true)
+        return true
+    }
+    /// El periodo de reposo se consolida UNA sola vez cuando el GPS se reanuda.
+    /// No se conecta con el primer fix nuevo: así no se duplica una noche en missingSeconds.
+    func finishRest(at date: Date = .now) {
+        guard let rest = data.gpsRest else { return }
+        let end = max(date,rest.startedAt)
+        if end > rest.startedAt {
+            addInterval(start:rest.startedAt,end:end,cell:rest.cell,
+                        quality:"asumido · pausa voluntaria",source:"descanso")
+        }
+        data.gpsRest = nil
+        lastProcessedSample = nil
+        stableCell = nil
+        candidateCell = nil
+        candidateSince = nil
+        current = nil
+        currentVisitStart = nil
+        data.savedVisitStart = nil
+        normalizedCacheIntervalCount = -1
+        save(force:true)
+        widgetPublisher.publish(from:self,force:true)
+        recordPowerEvent(mode:.precision,cause:"Pausa finalizada; tiempo asumido guardado")
+    }
     func recordPowerEvent(mode:GPSPowerMode,cause:String) {
         data.powerEvents.append(GPSPowerEvent(date:Date(),mode:mode.rawValue,cause:cause))
         if data.powerEvents.count > 500 {
@@ -286,6 +329,11 @@ struct SavedState: Codable {
             // El cálculo de períodos acotados se actualiza en cada consulta.
             cachedThrough = data.intervals.last?.end
         }
+        if let rest = data.gpsRest {
+            guard cellIDs.contains(rest.cell.id) else { return 0 }
+            return GPSRestPolicy.elapsed(start:rest.startedAt,end:now,
+                lowerBound:TimeAnalytics.window(for:period,now:now)?.start)
+        }
         return LiveCounterProjection.provisionalSeconds(
             recording:recording,
             currentLocationInTarget:activeCell.map { cellIDs.contains($0.id) } ?? false,
@@ -308,6 +356,9 @@ struct SavedState: Codable {
              + provisionalSeconds(for:place.normalizedCellIDs,now:now)
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
+        if let rest = data.gpsRest {
+            return max(0, now.timeIntervalSince(currentVisitStart ?? rest.startedAt))
+        }
         guard recording, current != nil, let start = currentVisitStart,
               let lastFix=lastGPSFix else { return 0 }
         // Si iOS deja de proporcionar posiciones no se puede afirmar
@@ -890,7 +941,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 .environment(\.locale, Locale(identifier:"es_ES"))
                 .onAppear {
                     // Se reactiva al volver a abrir la app, respetando la opción previa.
-                    if model.data.trackingEnabled && !model.recording { gps.begin(model) }
+                    if model.isResting { gps.restoreRest(model) }
+                    else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
                 }
                 .onChange(of: phase) { _, state in
                     if state != .active { model.save(force: true) }
@@ -1099,12 +1151,13 @@ struct TimeMapView: View {
                     }
                     .accessibilityLabel(followLocation ? "Seguimiento activo; pasar a mapa libre" : "Mapa libre; seguir mi posición")
                 }.padding(12)
-                if model.recording {
+                if model.recording || model.isResting {
                     HStack {
-                        Label("GPS continuo", systemImage:"location.fill")
+                        Label(model.isResting ? "GPS en pausa · sumando tiempo" : "GPS continuo",
+                              systemImage:model.isResting ? "moon.zzz.fill" : "location.fill")
                             .font(.caption.weight(.semibold))
                         Spacer()
-                        Text("Sin reposo automático")
+                        Text(model.isResting ? "Reanuda en Ajustes" : "Sin reposo automático")
                             .font(.caption2)
                     }
                     .padding(.horizontal,12)
@@ -1222,53 +1275,53 @@ struct TimeMapView: View {
 /// El reloj de 1Hz actualiza SOLO esta tarjeta y no invalida el mapa
 /// completo, que puede tener cientos de polígonos SwiftUI/MapKit.
 private struct TimeLiveCounterNumbers: View {
-    @ObservedObject var model:TimeModel
-    let picked:Cell?
-    @Environment(\.scenePhase) private var scenePhase
-    @State private var now = Date()
-    private let clock = Timer.publish(every:1,on:.main,in:.common).autoconnect()
+    @ObservedObject var model: TimeModel
+    let picked: Cell?
 
     var body: some View {
-        VStack(alignment:.leading,spacing:7) {
-            let selectedPlace=picked.flatMap { model.placeFor($0) }
-            if let place=selectedPlace {
-                Text("Lugar · \(place.name)")
-                    .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
-                Text(DurationFormat.full(model.total(for:place,now:now)))
-                    .font(.system(size:21,weight:.bold,design:.rounded))
-                    .lineLimit(1).minimumScaleFactor(0.65)
+        // TimelineView es el dueño del reloj: las notificaciones GPS no reinician
+        // un Timer.publish mientras SwiftUI reconstruye la tarjeta.
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            let now = context.date
+            VStack(alignment: .leading, spacing: 7) {
+                let selectedPlace = picked.flatMap { model.placeFor($0) }
+                if let place = selectedPlace {
+                    Text("Lugar · \(place.name)")
+                        .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
+                    Text(DurationFormat.full(model.total(for:place,now:now)))
+                        .font(.system(size:21,weight:.bold,design:.rounded))
+                        .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
+                }
+                if let picked {
+                    Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
+                         "Esta cuadrícula · tiempo acumulado")
+                        .font(.caption2).foregroundStyle(.secondary)
+                    Text(DurationFormat.full(model.total(for:picked,now:now)))
+                        .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
+                                                   .system(size:16,weight:.semibold,design:.rounded))
+                        .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
+                }
+                HStack {
+                    Text(model.isResting ? "Estancia actual (tiempo asumido)" :
+                         "Estancia actual (provisional)")
+                    Spacer()
+                    Text((picked == model.activeCell || picked == model.restingCell) ?
+                         DurationFormat.full(model.staySeconds(now:now)) : "—")
+                        .monospacedDigit()
+                }.font(.footnote).foregroundStyle(.secondary)
+                if model.isResting {
+                    Label("GPS pausado · tiempo acumulándose",systemImage:"moon.zzz.fill")
+                        .font(.caption2).foregroundStyle(.orange)
+                } else if let age=model.gpsFixAge(now:now), age>30 {
+                    Text(age>120 ?
+                         "Sin GPS reciente (\(Int(age/60)) min). Estimación detenida." :
+                         "Última posición hace \(Int(age)) s · avance provisional")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
             }
-            if let picked {
-                Text(selectedPlace == nil ? "Cuadrícula · tiempo acumulado" :
-                     "Esta cuadrícula · tiempo acumulado")
-                    .font(.caption2).foregroundStyle(.secondary)
-                Text(DurationFormat.full(model.total(for:picked,now:now)))
-                    .font(selectedPlace == nil ? .system(size:21,weight:.bold,design:.rounded) :
-                                               .system(size:16,weight:.semibold,design:.rounded))
-                    .lineLimit(1).minimumScaleFactor(0.65)
-            }
-            HStack {
-                Text("Estancia actual (provisional)")
-                Spacer()
-                Text(picked == model.activeCell ?
-                     DurationFormat.full(model.staySeconds(now:now)) : "—")
-            }.font(.footnote).foregroundStyle(.secondary)
-            if let age=model.gpsFixAge(now:now),age>30 {
-                Text(age>120 ?
-                     "Sin GPS reciente (\(Int(age/60)) min). La estimación está detenida." :
-                     "Última posición hace \(Int(age)) s · avance provisional")
-                    .font(.caption2).foregroundStyle(.orange)
-            }
-        }
-        .onReceive(clock) { tick in
-            if scenePhase == .active { now=tick }
-        }
-        .onChange(of:scenePhase) { _,phase in
-            if phase == .active { now=Date() }
         }
     }
 }
-
 struct TimeStatsView: View {
     @ObservedObject var model: TimeModel
     var body: some View {
@@ -1343,13 +1396,26 @@ struct TimeSettingsView: View {
             Form {
                 Section("Seguimiento") {
                     LabeledContent("Estado", value: model.gpsStatus)
-                    Text("Tras activarlo una vez, el seguimiento se reanuda automáticamente al abrir la aplicación. iOS puede limitar o interrumpir la localización en segundo plano.")
+                    Text("La pausa conserva la última cuadrícula y continúa contando el tiempo, incluso con el móvil bloqueado. Ese periodo quedará señalado como asumido, no como GPS verificado.")
                         .font(.caption).foregroundStyle(.secondary)
-                    LabeledContent("Modo GPS",value:"Continuo · máxima precisión")
-                    Text("El seguimiento permanece activo sin reposo automático, incluso en paradas prolongadas. CoreMotion no condiciona la recepción del GPS.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    Button(model.recording ? "Detener GPS" : "Iniciar GPS continuo") {
-                        if model.recording { gps.end(model) } else { gps.begin(model) }
+                    LabeledContent("Modo GPS",value:model.isResting ? "Pausa voluntaria · bajo consumo" :
+                        model.recording ? "Continuo · máxima precisión" : "Detenido")
+                    if let resting = model.restingCellName {
+                        LabeledContent("Cuadrícula en pausa",value:resting)
+                        Text("La reactivación es manual. Como respaldo, iOS puede detectar que sales de la zona y solicitar el GPS; no garantiza cuándo llegará ese aviso.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Button(model.isResting ? "Reanudar GPS" :
+                           model.recording ? "Detener GPS · seguir contando" : "Iniciar GPS continuo") {
+                        if model.isResting { gps.begin(model) }
+                        else if model.recording { gps.rest(model) }
+                        else { gps.begin(model) }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    if model.recording || model.isResting {
+                        Button("Detener seguimiento por completo",role:.destructive) {
+                            gps.end(model)
+                        }
                     }
                 }
                 Section("Privacidad") {
