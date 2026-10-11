@@ -85,6 +85,15 @@ Esas API coordinan **trabajos, imágenes, estados y ACK**; no alojan TT Actualid
 4. Desactivar después los Workers antiguos, sus pasarelas y tareas obsoletas, sin tocar Workers de **otros proyectos**, como FabCalendar.
 5. **Mantener TT Actualidad en GitHub Pages. No recrearla ni migrarla otra vez.**
 
+## Actualización operativa 11/10/2026 — borrado inmediato y coherencia de Explicadas
+
+- **TTiTTulares Telegram nativo:** `telegram/ttittulares_native_receiver.py` ahora intenta borrar **directamente** la tarjeta y sus fotografías de archivo asociadas mediante Telegram `deleteMessage` inmediatamente después de validar su vínculo con el evento y registrar la decisión durable en GitHub. La GitHub Action de decisiones continúa como respaldo, reconcilia `Listas` y reintenta si falla Telegram. Evitar afirmar un tiempo garantizado: queda por observar una pulsación real después del cambio.
+- **TTendencias Top 30:** `trends/auto_queue_new.py` encola automáticamente **solo los diez primeros puestos**. Las posiciones 11-30 son visibles, pero requieren una orden expresa **«Preparar novedad»** desde TT Actualidad para incorporarse a `trends/editorial-queue.json`. Las pendientes legadas 11-30 encoladas automáticamente se marcan inactivas; no eliminar explicaciones históricas ni enviarlas automáticamente por sorpresa.
+- **TT Actualidad (GitHub Pages):** la pestaña Top 30 **no considera «EXPLICADA» una redacción solo por estar guardada en `trends/explained.json` o `trends/telegram-manual-explained.json`**. Para habilitar copiar/publicar, exige entrega final de **esa identidad y revisión** en el ledger `trends/telegram-image-deliveries.json`. Si ya se recibió, la tarjeta se ve en **Explicadas**; al cerrarla puede conservarse el historial en Top.
+- **Distribución TTendencias:** `apply-ttendencias-chat-outbox.yml` y `repair-ttendencias-explicadas.yml` despachan el workflow `send-ttendencias-explained-telegram.yml` inmediatamente; no se espera al cron ni a una imagen.
+- **Recuperación confirmada:** el 11/10/2026 a las **23:20:32 Madrid** Telegram recibió las cinco explicaciones finales de **Raba, Corberan, Racing, #jotalent5 y Aguirre**, IDs de mensaje 687-691. La segunda pasada registró `delivered=0 updated=0 skipped=5` (sin duplicaciones).
+- **No confundir recepción y resultado:** TTiTTulares «Decisión registrada» no garantiza que esté borrada la tarjeta salvo éxito de `deleteMessage`; TTendencias «texto explicado» en GitHub no garantiza entrada a Explicadas sin `final:true` en el ledger de entregas.
+
 ## Regla operativa para futuros chats
 
 - Nunca decir que **la app unificada TT Actualidad** está en Cloudflare o Vercel: está en **GitHub Pages**.
