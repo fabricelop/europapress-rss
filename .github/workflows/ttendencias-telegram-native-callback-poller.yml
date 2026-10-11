@@ -29,8 +29,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile .github/scripts/ttendencias_telegram_poll_callbacks.py
+          python3 -m py_compile .github/scripts/ttendencias_telegram_poll_callbacks.py trends/telegram_bot.py
           python3 .github/scripts/ttendencias_telegram_poll_callbacks.py selftest
+          python3 .github/scripts/test_telegram_run.py
+          node --check selorecordamos/telegram_local.js
+          node --input-type=module --check < api/telegram-webhook.js
+          node --input-type=module --check < vercel-webhook/api/telegram-webhook.js
       - name: Fetch Telegram callbacks and atomically persist editor decisions
         shell: bash
         run: |
