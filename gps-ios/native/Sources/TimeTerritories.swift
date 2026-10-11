@@ -88,8 +88,7 @@ struct TerritoryStatsView:View {
     }
 
     private func descend(_ row:TerritoryRank) {
-        guard let next=TerritoryGrouping.nextLevel(after:level,scope:row.path,
-                       totals:totals,cache:cache) else { return }
+        guard let next=row.nextLevel else { return }
         scope=row.path
         level=next
     }
@@ -105,6 +104,9 @@ struct TerritoryStatsView:View {
     }
 
     var body:some View {
+        let entries=ranked
+        let maxSeconds=max(1,entries.first?.seconds ?? 1)
+        let options=available
         VStack(alignment:.leading,spacing:14) {
             HStack {
                 VStack(alignment:.leading,spacing:4) {
@@ -118,7 +120,7 @@ struct TerritoryStatsView:View {
             }
             ScrollView(.horizontal,showsIndicators:false) {
                 HStack(spacing:7) {
-                    ForEach(available) { choice in
+                    ForEach(options) { choice in
                         Button(choice.title) { choose(choice) }
                             .font(.caption.weight(level == choice ? .bold:.medium))
                             .padding(.horizontal,12).padding(.vertical,8)
@@ -143,13 +145,13 @@ struct TerritoryStatsView:View {
             HStack(spacing:9) {
                 summary(title:"Tiempo en este nivel",
                         value:DurationFormat.full(classifiedSeconds))
-                summary(title:level.title,value:String(ranked.count))
+                summary(title:level.title,value:String(entries.count))
             }
-            if ranked.isEmpty {
+            if entries.isEmpty {
                 ContentUnavailableView("Sin datos en este nivel",systemImage:"globe",
                     description:Text("Solo aparecen las divisiones disponibles. Los niveles ausentes no impiden ver las zonas inferiores."))
             } else {
-                ForEach(Array(ranked.prefix(100).enumerated()),id:\.element.id) { i,row in
+                ForEach(Array(entries.prefix(100).enumerated()),id:\.element.id) { i,row in
                     Button { descend(row) } label: {
                         VStack(alignment:.leading,spacing:8) {
                             HStack(alignment:.firstTextBaseline) {
@@ -167,8 +169,7 @@ struct TerritoryStatsView:View {
                                     .font(.caption.monospacedDigit())
                                     .foregroundStyle(.teal).lineLimit(1)
                                     .minimumScaleFactor(0.6)
-                                if TerritoryGrouping.nextLevel(after:level,scope:row.path,
-                                      totals:totals,cache:cache) != nil {
+                                if row.nextLevel != nil {
                                     Image(systemName:"chevron.right")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }
@@ -176,7 +177,7 @@ struct TerritoryStatsView:View {
                             GeometryReader { g in
                                 Capsule().fill(Color.teal.opacity(0.10)).overlay(alignment:.leading) {
                                     Capsule().fill(.teal.gradient)
-                                        .frame(width:g.size.width*row.seconds/max(1,ranked.first?.seconds ?? 1))
+                                        .frame(width:g.size.width*row.seconds/maxSeconds)
                                 }
                             }.frame(height:7)
                         }
