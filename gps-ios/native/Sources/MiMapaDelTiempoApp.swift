@@ -156,6 +156,7 @@ struct SavedState: Codable {
     @Published var forceBasicMap = false
     @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
+    private let widgetPublisher = TimeWidgetPublisher()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var lastProcessedSample: GPSPoint?
@@ -186,6 +187,7 @@ struct SavedState: Codable {
         currentVisitStart = data.savedVisitStart
         stableCell = data.fixes.last?.cell
         lastProcessedSample = data.fixes.last
+        widgetPublisher.publish(from:self,force:true)
     }
     var totalSeconds: TimeInterval { data.totals.values.reduce(0, +) }
     var allCells: [Cell] {
@@ -234,10 +236,12 @@ struct SavedState: Codable {
     func rename(_ cell: Cell, to name: String) {
         data.names[cell.id] = name.trimmingCharacters(in: .whitespacesAndNewlines)
         save(force: true)
+        widgetPublisher.publish(from:self,force:true)
     }
     func setTrackingEnabled(_ enabled: Bool) {
         data.trackingEnabled = enabled
         save(force: true)
+        widgetPublisher.publish(from:self,force:true)
     }
     func updateCamera(_ region: MKCoordinateRegion) {
         data.camera = CameraSave(region)
@@ -301,6 +305,7 @@ struct SavedState: Codable {
         current = sample
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
+        widgetPublisher.publish(from:self)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
@@ -401,6 +406,7 @@ struct SavedState: Codable {
             lastProcessedSample = data.fixes.last
             stableCell = data.fixes.last?.cell
             save(force:true)
+            widgetPublisher.publish(from:self,force:true)
             objectWillChange.send()
             return points.count
         } catch {
@@ -978,6 +984,14 @@ struct TimeSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                     Toggle("Escala de colores adaptada", isOn: $model.adaptive)
                     Text("Permanencia: tiempo en cada cuadrícula. Exploración: territorio visitado. La escala adaptada destaca las diferencias en la zona visible.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                Section("Widgets iPhone") {
+                    LabeledContent("Datos compartidos",
+                        value: TimeWidgetStorage.isAvailable ? "App Group disponible" : "App Group no autorizado")
+                    Text("En la pantalla de inicio: mantén pulsado un espacio libre, toca Editar → Añadir widget y busca Mi Mapa del Tiempo. En la pantalla bloqueada: mantén pulsado, Personalizar y selecciona Widgets.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Text("Muestran tiempo histórico confirmado y última estancia conocida. No se actualizan cada segundo; iOS regula sus recargas. La firma gratuita puede impedir el App Group y entonces el widget aparecerá sin datos.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Diagnóstico") {
