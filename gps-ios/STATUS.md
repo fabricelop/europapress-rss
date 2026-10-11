@@ -1,5 +1,15 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## Corrección v0.7.1 — contador continuo (compilación 8)
+- Rama independiente `feature/mi-mapa-del-tiempo-ios-v071-counterfix`, basada en v0.7. No toca `main`.
+- Corregir el ancla temporal del contador provisional: debe usar el final de los intervalos INCLUIDOS en el cache normalizado, no la fecha de la última posición GPS. Antes la visualización perdía hasta cinco segundos cada vez que llegaba una nueva posición mientras la caché seguía antigua.
+- Mantener el cálculo canónico y la caché de 5 segundos para evitar añadir segundos duplicados; la interpolación mostrada avanza 1 segundo por tic sin escribir esos segundos estimados en SQLite.
+- Mover el reloj de 1Hz a una subvista de la ficha de contador. El mapa MapKit y sus polígonos no se redibujan cada segundo por la animación del cronómetro.
+- Cuando no hay GPS fresco, parar la estimación a los 120 segundos desde la última posición, sin salto de tiempo provisional a cero.
+- Añadir 6 regresiones específicas para llegada de muestras por segundo, recálculo cada cinco segundos, cambio de estancia, GPS sin datos y períodos cortos. Verificar con workflow independiente, Xcode Release y XCTest simulador.
+- Mantener todas las precauciones previas: exportar JSON y actualizar sobre la app existente con mismo Apple ID, sin desinstalar. El widget no está resuelto todavía.
+
+
 ## v0.7 — coherencia temporal y seguimiento (octubre 2026)
 - Rama aislada `feature/mi-mapa-del-tiempo-ios-v07`. Sin modificaciones en `main`. Actualizar sobre la app ya instalada con el mismo identificador y el mismo Apple ID. No desinstalar; exportar JSON antes de instalar.
 - **Contabilidad:** mapa, cuadrículas, lugares, estadísticas, comparación, búsqueda y snapshot para widget comparten la atribución canónica sin segundos solapados. El historial bruto preexistente se conserva sin sobrescribir; los nuevos intervalos se escriben evitando superposiciones.
