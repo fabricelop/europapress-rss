@@ -419,7 +419,7 @@ struct SavedState: Codable {
         let count=data.intervals.count
         let changed=cachedPeriod != period || cachedPeriodCount != count ||
                     cachedPeriodEnd != data.intervals.last?.end
-        if cachedPeriodValues.isEmpty || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
+        if cachedPeriod == nil || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
             cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
             cachedPeriod=period
             cachedPeriodCount=count
