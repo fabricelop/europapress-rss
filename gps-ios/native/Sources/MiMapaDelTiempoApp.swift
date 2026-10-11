@@ -117,6 +117,7 @@ struct SavedState: Codable {
     var camera = CameraSave()
     var missingSeconds: TimeInterval = 0
     var savedVisitStart: Date?
+    var manualBreaks: [Date] = []
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
 }
@@ -134,18 +135,39 @@ struct SavedState: Codable {
     @Published var period: TimePeriod = .all
     @Published var mapKind: MKMapType = .standard
     @Published var minimized = false
+    @Published var forceBasicMap = false
+    @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
     private let fileURL: URL
+    private var store: TimeSQLiteStore?
+    private var lastProcessedSample: GPSPoint?
+    private var pendingFixes: [GPSPoint] = []
+    private var pendingIntervals: [AssignedInterval] = []
+    private var pendingTotals: [String: TimeInterval] = [:]
+    private var stableCell: Cell?
+    private var candidateCell: Cell?
+    private var candidateSince: Date?
 
     init() {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         fileURL = dir.appendingPathComponent("time-map-v1.json")
-        if let blob = try? Data(contentsOf: fileURL),
-           let saved = try? JSONDecoder().decode(SavedState.self, from: blob) {
-            data = saved
-            currentVisitStart = saved.savedVisitStart
+        let legacy: SavedState? = (try? Data(contentsOf: fileURL))
+            .flatMap { try? JSONDecoder().decode(SavedState.self, from: $0) }
+        do {
+            let db = try TimeSQLiteStore(url: dir.appendingPathComponent("time-map-v3.sqlite"))
+            if !db.hasExistingState { try db.replaceAll(legacy ?? SavedState()) }
+            data = try db.load()
+            store = db
+            storeStatus = "SQLite · protegido localmente"
+        } catch {
+            // Si falla una migración, los datos anteriores siguen en el JSON original.
+            data = legacy ?? SavedState()
+            storeStatus = "JSON de respaldo · revisar SQLite: \(error.localizedDescription)"
         }
+        currentVisitStart = data.savedVisitStart
+        stableCell = data.fixes.last?.cell
+        lastProcessedSample = data.fixes.last
     }
     var totalSeconds: TimeInterval { data.totals.values.reduce(0, +) }
     var allCells: [Cell] {
@@ -171,8 +193,24 @@ struct SavedState: Codable {
         return base + age
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
-        guard let start = currentVisitStart else { return 0 }
+        guard recording, current != nil, let start = currentVisitStart else { return 0 }
         return max(0, now.timeIntervalSince(start))
+    }
+    var activeCell: Cell? { stableCell ?? current?.cell }
+    var retainedFixCount: Int { data.fixes.count }
+    var lastGPSFix: Date? { lastProcessedSample?.date ?? data.fixes.last?.date }
+    var lastAccuracy: Double? { current?.accuracy }
+    func splitEpisode(at date: Date) {
+        guard !data.manualBreaks.contains(where: { abs($0.timeIntervalSince(date)) < 1 }) else { return }
+        data.manualBreaks.append(date)
+        data.manualBreaks.sort()
+        save(force: true)
+        objectWillChange.send()
+    }
+    func removeSplit(at date: Date) {
+        data.manualBreaks.removeAll { abs($0.timeIntervalSince(date)) < 1 }
+        save(force: true)
+        objectWillChange.send()
     }
     func label(for cell: Cell) -> String { data.names[cell.id] ?? "Cuadrícula \(cell.id)" }
     func rename(_ cell: Cell, to name: String) {
@@ -190,22 +228,60 @@ struct SavedState: Codable {
     func record(_ location: CLLocation) {
         guard location.coordinate.latitude.isFinite,
               location.coordinate.longitude.isFinite,
-              location.horizontalAccuracy >= 0 else { return }
+              location.horizontalAccuracy >= 0,
+              location.timestamp <= Date().addingTimeInterval(5) else { return }
         let sample = GPSPoint(date: location.timestamp, latitude: location.coordinate.latitude,
                               longitude: location.coordinate.longitude,
                               accuracy: location.horizontalAccuracy, source: "gps")
-        if let last = data.fixes.last, sample.date <= last.date { return }
-        if let last = data.fixes.last { attribute(from: last, to: sample) }
-        data.fixes.append(sample)
-        let previous = data.fixes.dropLast().last
-        let gap = previous.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
-        if previous?.cell != sample.cell || gap > GPSHistoryGrouping.gapLimit || currentVisitStart == nil {
+        let previous = lastProcessedSample
+        if let previous, sample.date <= previous.date { return }
+        let distance = previous.map { a in
+            CLLocation(latitude:a.latitude, longitude:a.longitude)
+                .distance(from:location)
+        } ?? 0
+        let delta = previous.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
+
+        // Histeresis para cambios de cuadrícula causados por oscilaciones del GPS.
+        let target = sample.cell
+        if stableCell == nil { stableCell = target }
+        if target == stableCell {
+            candidateCell = nil
+            candidateSince = nil
+        } else if distance > max(18, min(45, sample.accuracy * 1.8)) {
+            stableCell = target
+            candidateCell = nil
+            candidateSince = nil
+        } else {
+            if candidateCell != target { candidateCell = target; candidateSince = sample.date }
+            if let since = candidateSince, sample.date.timeIntervalSince(since) >= 10,
+               sample.accuracy <= 35 {
+                stableCell = target
+                candidateCell = nil
+                candidateSince = nil
+            }
+        }
+        if let previous { attribute(from:previous,to:sample) }
+        lastProcessedSample = sample
+        // Conservar muestras representativas, no miles de coordenadas repetidas
+        // cuando las muestras intermedias solo confirman inmovilidad.
+        let lastRetained = data.fixes.last
+        let retainedDistance = lastRetained.map { old in
+            CLLocation(latitude:old.latitude, longitude:old.longitude)
+                .distance(from:location)
+        } ?? .infinity
+        let retainedAge = lastRetained.map { sample.date.timeIntervalSince($0.date) } ?? .infinity
+        if retainedAge >= 90 || retainedDistance >= 12 || lastRetained?.cell != sample.cell {
+            data.fixes.append(sample)
+            pendingFixes.append(sample)
+        }
+        if stableCell != current.map({ Grid.cell(latitude:$0.latitude,longitude:$0.longitude) }) ||
+           delta > GPSHistoryGrouping.gapLimit || currentVisitStart == nil {
             currentVisitStart = sample.date
             data.savedVisitStart = sample.date
         }
         current = sample
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
-        save()
+        save(force: delta > GPSHistoryGrouping.gapLimit || data.intervals.count % 25 == 0)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
@@ -221,7 +297,7 @@ struct SavedState: Codable {
         }
         // For stationary positions, suppress minor GPS wobble.
         if distance <= min(35, max(a.accuracy, b.accuracy) * 1.4) {
-            addInterval(start: a.date, end: b.date, cell: a.cell,
+            addInterval(start: a.date, end: b.date, cell: stableCell ?? a.cell,
                         quality: "observado", source: a.source)
             return
         }
@@ -249,9 +325,22 @@ struct SavedState: Codable {
     }
     private func addInterval(start: Date, end: Date, cell: Cell, quality: String, source: String) {
         guard end > start else { return }
-        let segment = AssignedInterval(start: start, end: end, cell: cell, quality: quality, source: source)
-        data.intervals.append(segment)
-        data.totals[cell.id, default: 0] += segment.seconds
+        if let last = pendingIntervals.last, let existing = data.intervals.last,
+           last.id == existing.id && last.cell == cell && last.quality == quality &&
+           last.source == source && abs(last.end.timeIntervalSince(start)) < 0.05 {
+            let replacement = AssignedInterval(id: last.id, start:last.start, end:end,
+                                               cell:cell, quality:quality, source:source)
+            pendingIntervals[pendingIntervals.count - 1] = replacement
+            data.intervals[data.intervals.count - 1] = replacement
+        } else {
+            let segment = AssignedInterval(start:start, end:end, cell:cell,
+                                           quality:quality, source:source)
+            data.intervals.append(segment)
+            pendingIntervals.append(segment)
+        }
+        let delta = end.timeIntervalSince(start)
+        data.totals[cell.id, default:0] += delta
+        pendingTotals[cell.id, default:0] += delta
     }
     func importGPX(from url: URL) throws -> Int {
         let permitted = url.startAccessingSecurityScopedResource()
@@ -262,6 +351,7 @@ struct SavedState: Codable {
         let parse = GPXReader()
         let points = try parse.read(bytes)
         guard !points.isEmpty else { throw ImportFailure.noTimes }
+        let previousSnapshot = data
         data.importedHashes.append(hash)
         // Rebuild from the combined timeline to avoid double-adding old intervals.
         let combined = (data.fixes + points).sorted { $0.date < $1.date }
@@ -277,10 +367,30 @@ struct SavedState: Codable {
         data.intervals = []
         data.totals = [:]
         data.missingSeconds = 0
-        for i in 1..<dedup.count { attribute(from: dedup[i - 1], to: dedup[i]) }
-        save(force: true)
-        objectWillChange.send()
-        return points.count
+        let oldPendingFixes = pendingFixes
+        let oldPendingIntervals = pendingIntervals
+        let oldPendingTotals = pendingTotals
+        pendingFixes = []
+        pendingIntervals = []
+        pendingTotals = [:]
+        for i in 1..<dedup.count { attribute(from:dedup[i-1], to:dedup[i]) }
+        do {
+            try store?.replaceAll(data)
+            pendingFixes = []
+            pendingIntervals = []
+            pendingTotals = [:]
+            lastProcessedSample = data.fixes.last
+            stableCell = data.fixes.last?.cell
+            save(force:true)
+            objectWillChange.send()
+            return points.count
+        } catch {
+            data = previousSnapshot
+            pendingFixes = oldPendingFixes
+            pendingIntervals = oldPendingIntervals
+            pendingTotals = oldPendingTotals
+            throw error
+        }
     }
     func exportJSON() throws -> URL {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("Mi-Mapa-del-Tiempo.json")
@@ -288,9 +398,17 @@ struct SavedState: Codable {
         return url
     }
     func save(force: Bool = false) {
-        guard force || Date().timeIntervalSince(lastSaved) > 5 else { return }
+        guard force || Date().timeIntervalSince(lastSaved) > 20 else { return }
         do {
-            try JSONEncoder().encode(data).write(to: fileURL, options: .atomic)
+            if let store {
+                try store.append(fixes:pendingFixes, intervals:pendingIntervals,
+                                 totals:pendingTotals, header:TimeStoreHeader(data))
+                pendingFixes.removeAll(keepingCapacity:true)
+                pendingIntervals.removeAll(keepingCapacity:true)
+                pendingTotals.removeAll(keepingCapacity:true)
+            } else {
+                try JSONEncoder().encode(data).write(to:fileURL,options:.atomic)
+            }
             lastSaved = .now
         } catch {
             gpsStatus = "Error guardando datos: \(error.localizedDescription)"
