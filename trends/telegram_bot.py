@@ -1171,10 +1171,106 @@ def handle_instagram_package_callback(callback):
     return ("publisher_"+code.lower()[:42]+"_http"+str(http_status))[:64]
 
 
+def request_windows_editorial_run():
+    """Solicita la pasada al listener Windows EXISTENTE mediante su rama de control.
+    No modifica main ni inicia otra automatización."""
+    import base64
+    import secrets
+    token = (os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "").strip()
+    if not token:
+        raise RuntimeError("GitHub Actions no ha proporcionado GH_TOKEN al listener de Telegram")
+    repo = os.environ.get("GITHUB_REPOSITORY", "fabricelop/europapress-rss")
+    branch = "control/ttendencias-run-trigger"
+    filepath = "trends/run-now-trigger.json"
+    endpoint = f"https://api.github.com/repos/{repo}/contents/{filepath}"
+    headers = {
+        "Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "ttendencias-telegram-run",
+    }
+    for attempt in range(4):
+        url = endpoint + "?ref=" + urllib.parse.quote(branch, safe="")
+        get = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(get, timeout=20) as response:
+            current = json.loads(response.read().decode("utf-8"))
+        doc = json.loads(base64.b64decode(current["content"]).decode("utf-8"))
+        # Evitar enviar dos órdenes idénticas si el usuario repite /run.
+        try:
+            age = (datetime.now(ZoneInfo("UTC")) - datetime.fromisoformat(
+                str(doc.get("requested_at", "")).replace("Z", "+00:00")
+            )).total_seconds()
+        except (ValueError, TypeError):
+            age = 9999
+        if doc.get("command_id") and 0 <= age < 90:
+            return {"status": "already_requested", "command_id": doc["command_id"]}
+        moment = datetime.now(ZoneInfo("UTC"))
+        cmd = "tr-" + str(int(moment.timestamp() * 1000)) + "-tg-" + secrets.token_hex(3)
+        payload = {
+            "version": 2, "command_id": cmd,
+            "requested_at": moment.isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+            "mode": "manual_pc_chat", "executor": "pc_chat_ttendencias_dedicated",
+            "project": "ttendencias", "launcher_arg": "tendencias",
+            "task": "editorial", "auto_image_followup": False,
+        }
+        put = {
+            "message": "TTendencias: ejecución Windows solicitada por Telegram " + cmd,
+            "branch": branch, "sha": current["sha"],
+            "content": base64.b64encode((json.dumps(payload, ensure_ascii=False, indent=2)+"\n").encode("utf-8")).decode("ascii"),
+        }
+        request = urllib.request.Request(
+            endpoint, data=json.dumps(put).encode("utf-8"), headers={
+                **headers, "Content-Type": "application/json",
+            }, method="PUT",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=25) as response:
+                if response.status in (200, 201):
+                    return {"status": "requested", "command_id": cmd}
+        except urllib.error.HTTPError as exc:
+            if exc.code in (409, 422) and attempt < 3:
+                time.sleep(0.3 * (attempt + 1))
+                continue
+            raise RuntimeError("GitHub no aceptó la solicitud Windows (HTTP " + str(exc.code) + ")")
+    raise RuntimeError("No se pudo registrar la orden por concurrencia")
+
+
+def handle_run_command(message):
+    """Ruta de /run en modo web Y en modo legacy, sin cambiar panel ni callbacks."""
+    if not isinstance(message, dict):
+        return False
+    command = str(message.get("text") or "").strip().lower()
+    if command not in ("/run", "/run@ttendenciases_bot", "/tendencias", "/tendencias@ttendenciases_bot"):
+        return False
+    chat = message.get("chat") or {}
+    expected = str(load(STATE, {}).get("chat_id") or "")
+    if str(chat.get("id") or "") != expected or str(chat.get("type") or "") != "private":
+        print("TTENDENCIAS_RUN_UNAUTHORIZED_CHAT", flush=True)
+        return True
+    try:
+        result = request_windows_editorial_run()
+        if result["status"] == "already_requested":
+            note = "TTendencias: ya hay una orden reciente. No la duplico. ID: " + result["command_id"]
+        else:
+            note = "TTendencias: solicitud /run guardada. Windows ejecutará la pasada editorial. ID: " + result["command_id"]
+        call("sendMessage", {"chat_id": chat["id"], "text": note})
+        print("TTENDENCIAS_RUN_ACCEPTED " + result["command_id"], flush=True)
+    except Exception as exc:
+        print("TTENDENCIAS_RUN_FAILED " + str(exc), flush=True)
+        try:
+            call("sendMessage", {"chat_id": chat["id"],
+                "text": "TTendencias: no se ha podido enviar /run a Windows. Revisa el listener y GitHub."})
+        except Exception as notify_exc:
+            print("TTENDENCIAS_RUN_ACK_FAILED " + type(notify_exc).__name__, flush=True)
+    return True
+
+
 def handle(update):
     state = load(STATE, {"chat_id": None, "panel_message_id": None, "last_update_id": 0, "pending": {}})
     message = update.get("message")
     if message:
+        if handle_run_command(message):
+            return
         text = (message.get("text") or "").strip().lower()
         if text in {"/start", "/panel", "/tt"}:
             state["chat_id"] = message["chat"]["id"]
@@ -1389,6 +1485,9 @@ def poll_packages(seconds=3300):
                 package_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
                 save(PACKAGE_STATE, package_state)
                 dirty = True
+
+                if handle_run_command(upd.get("message")):
+                    continue
 
                 cb = upd.get("callback_query")
                 if cb and str(cb.get("data") or "").startswith("tx:"):
