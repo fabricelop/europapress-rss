@@ -170,3 +170,6 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           gh workflow run repair-ttendencias-explicadas.yml --repo "$REPO" --ref main
+          # La entrega informativa se dispara en cuanto se guarda la
+          # explicación; no esperar al cron o al enriquecimiento visual.
+          gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
