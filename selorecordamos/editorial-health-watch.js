@@ -82,7 +82,7 @@ function buildAlert(health) {
   ];
   if (oldest) lines.push(`Más antigua: ${oldest.key} (${Math.round(oldest.ageMs / 60000)} min).`);
   if (health.inconsistent.length) lines.push(`${health.inconsistent.length} solicitudes marcadas como procesadas sin salida completa.`);
-  lines.push('Comprobar tarea Windows SeLoRecordamos-Editorial-Local y runtime/editorial-local.log. Verificar Ollama, modelo local y Git; Telegram no puede enviar alternativas inexistentes.');
+  lines.push('Comprobar tarea Windows SeLoRecordamos-Editorial-Local y runtime/editorial-local.log. Verificar lanzamiento de ChatGPT, persistencia en GitHub issue #16 y entrega Telegram. No se utiliza Ollama.');
   return lines.join('\n');
 }
 
