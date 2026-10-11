@@ -3,16 +3,12 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T20:17:12+02:00",
-  "last_completed_at": "2026-10-11T20:26:45+02:00",
-  "updated_at": "2026-10-11T20:26:45+02:00",
+  "last_started_at": "2026-10-11T20:45:00+02:00",
+  "last_completed_at": "2026-10-11T20:52:00+02:00",
+  "updated_at": "2026-10-11T20:52:00+02:00",
   "status": "success",
   "processed_ids": [
-    "07101faa0e40",
-    "e4dd7f5e3716",
-    "fb7576c95542",
-    "12fbd9c70903",
-    "de698606778d"
+    "6644107e889c"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -22,10 +18,10 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "solicitada; reparación visual independiente pendiente/no bloqueante",
+    "status": "solicitada; reparación visual independiente lanzada/no bloqueante",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T201712+0200-chatgpt",
-    "requested_at": "2026-10-11T20:17:12+02:00",
+    "run_id": "tr-20261011T204500+0200-chatgpt",
+    "requested_at": "2026-10-11T20:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -33,55 +29,47 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T201712+0200-chatgpt",
+    "run_id": "tr-20261011T204500+0200-chatgpt",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-11T20:17:12+02:00",
-    "updated_at": "2026-10-11T20:26:45+02:00",
-    "finished_at": "2026-10-11T20:26:45+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-11T20:45:00+02:00",
+    "updated_at": "2026-10-11T20:52:00+02:00",
+    "finished_at": "2026-10-11T20:52:00+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 5,
-      "grouped_into_existing_card": 2,
-      "grouped_members_total": 3,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 1,
+      "grouped_members_total": 1,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
       "rewrite_pending": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "political_closers_repaired": 0,
       "deferred_waiting_final": 0,
       "deferred_by_selection_rule": 0,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 1,
+      "incidents": 0,
       "images_generated": 0,
       "telegram_deliveries_confirmed": 0,
       "skipped_by_jit": 0,
       "reconciled_terminal": 0,
       "pending_repair_requested": 1
     },
-    "message": "Cierre verificado · 5/5 revisiones cerradas; cola editorial vacía. Un conflicto SHA concurrente fue resuelto sin pérdida de cambios.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-11T20:22:00+02:00",
-        "phase": "persisting",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "reason": "Conflicto SHA por escritura concurrente; resuelto releyendo main y reintentando idempotentemente."
-      }
-    ],
+    "message": "Cierre verificado · 1/1 revisión cerrada; Isco agrupado sin tarjeta duplicada; cola vacía",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -89,186 +77,138 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "e4dd7f5e3716",
-        "revision": 0,
-        "name": "Osasuna + Cucho",
-        "closer_text": "🌶️ Isco le puso un cuarto candado a la remontada rojilla."
-      },
-      {
-        "trend_id": "de698606778d",
-        "revision": 0,
-        "name": "#LaRoca246",
-        "closer_text": "🌶️ El domingo llegó numerado hasta el sofá."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T20:20:22+02:00",
-        "phase": "verifying",
-        "trend_id": "07101faa0e40",
-        "title": "Cherki",
-        "message": "Releyendo estado autoritativo de Cherki"
-      },
-      {
-        "at": "2026-10-11T20:20:22+02:00",
-        "phase": "investigating",
-        "trend_id": "07101faa0e40",
-        "title": "Cherki",
-        "message": "Hecho esencial verificado · pertenece al Liverpool–City ya explicado"
-      },
-      {
-        "at": "2026-10-11T20:20:30+02:00",
-        "phase": "persisting",
-        "trend_id": "07101faa0e40",
-        "title": "Cherki",
-        "message": "Enlazando Cherki a la ficha de Anfield"
-      },
-      {
-        "at": "2026-10-11T20:21:10+02:00",
-        "phase": "verifying",
-        "trend_id": "07101faa0e40",
-        "title": "Cherki",
-        "message": "Tendencia cerrada y verificada · sin tarjeta duplicada"
-      },
-      {
-        "at": "2026-10-11T20:21:38+02:00",
-        "phase": "investigating",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "message": "Hecho esencial verificado · Betis 4-2 Osasuna en el 79'; Cucho titular"
-      },
-      {
-        "at": "2026-10-11T20:21:38+02:00",
-        "phase": "drafting",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "message": "Comprobando límite de X · texto final 245 caracteres"
-      },
-      {
-        "at": "2026-10-11T20:21:38+02:00",
-        "phase": "remate_selection",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "message": "Remate seleccionado · «Isco le puso un cuarto candado a la remontada rojilla.»"
-      },
-      {
-        "at": "2026-10-11T20:22:05+02:00",
-        "phase": "persisting",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "message": "Persistencia reintentada sobre SHA fresco tras carrera concurrente"
-      },
-      {
-        "at": "2026-10-11T20:23:20+02:00",
-        "phase": "verifying",
-        "trend_id": "e4dd7f5e3716",
-        "title": "Osasuna + Cucho",
-        "message": "Grupo cerrado y verificado · dos revisiones retiradas de la cola"
-      },
-      {
-        "at": "2026-10-11T20:23:35+02:00",
-        "phase": "verifying",
-        "trend_id": "12fbd9c70903",
-        "title": "Román",
-        "message": "Releyendo estado autoritativo de Román"
-      },
-      {
-        "at": "2026-10-11T20:23:35+02:00",
-        "phase": "investigating",
-        "trend_id": "12fbd9c70903",
-        "title": "Román",
-        "message": "Hecho esencial verificado · pertenece al mano a mano con Ferrera ya explicado"
-      },
-      {
-        "at": "2026-10-11T20:23:45+02:00",
-        "phase": "persisting",
-        "trend_id": "12fbd9c70903",
-        "title": "Román",
-        "message": "Enlazando Román a la ficha existente de Ferrera"
-      },
-      {
-        "at": "2026-10-11T20:24:40+02:00",
-        "phase": "verifying",
-        "trend_id": "12fbd9c70903",
-        "title": "Román",
-        "message": "Tendencia cerrada y verificada · sin tarjeta duplicada"
-      },
-      {
-        "at": "2026-10-11T20:24:56+02:00",
-        "phase": "verifying",
-        "trend_id": "de698606778d",
-        "title": "#LaRoca246",
-        "message": "Releyendo estado autoritativo de #LaRoca246 · rango actual TT#18"
-      },
-      {
-        "at": "2026-10-11T20:24:56+02:00",
-        "phase": "investigating",
-        "trend_id": "de698606778d",
-        "title": "#LaRoca246",
-        "message": "Contrastando emisión actual · episodio 246 de La Roca en laSexta"
-      },
-      {
-        "at": "2026-10-11T20:24:56+02:00",
-        "phase": "drafting",
-        "trend_id": "de698606778d",
-        "title": "#LaRoca246",
-        "message": "Comprobando límite de X · texto final 220 caracteres"
-      },
-      {
-        "at": "2026-10-11T20:24:56+02:00",
-        "phase": "remate_selection",
-        "trend_id": "de698606778d",
-        "title": "#LaRoca246",
-        "message": "Remate seleccionado · «El domingo llegó numerado hasta el sofá.»"
-      },
-      {
-        "at": "2026-10-11T20:25:10+02:00",
-        "phase": "persisting",
-        "trend_id": "de698606778d",
-        "title": "#LaRoca246",
-        "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-11T20:26:20+02:00",
-        "phase": "verifying",
+        "at": "2026-10-11T20:45:00+02:00",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y las 5 revisiones verificadas"
+        "message": "Preparando pasada editorial · 1 revisión activa; saneamiento visual de Pendientes solicitado"
       },
       {
-        "at": "2026-10-11T20:26:45+02:00",
+        "at": "2026-10-11T20:45:35+02:00",
+        "phase": "verifying",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Releyendo estado autoritativo de Isco"
+      },
+      {
+        "at": "2026-10-11T20:45:50+02:00",
+        "phase": "investigating",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Buscando detonante actual de Isco"
+      },
+      {
+        "at": "2026-10-11T20:46:15+02:00",
+        "phase": "investigating",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Contrastando fuente 1/2 · Isco marcó ante Osasuna y volvió a anotar tras cinco meses"
+      },
+      {
+        "at": "2026-10-11T20:46:45+02:00",
+        "phase": "investigating",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Contrastando fuente 2/2 · Betis 5-2 Osasuna; Isco firmó un doblete"
+      },
+      {
+        "at": "2026-10-11T20:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Hecho esencial verificado · mismo Betis–Osasuna ya explicado mediante Osasuna + Cucho"
+      },
+      {
+        "at": "2026-10-11T20:47:10+02:00",
+        "phase": "drafting",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Reutilizando explicación del grupo existente para evitar tarjeta duplicada"
+      },
+      {
+        "at": "2026-10-11T20:47:15+02:00",
+        "phase": "drafting",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Comprobando límite de X · explicación existente 246 caracteres"
+      },
+      {
+        "at": "2026-10-11T20:47:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Sin remate nuevo · se conserva el remate ya seleccionado del grupo Betis–Osasuna"
+      },
+      {
+        "at": "2026-10-11T20:47:25+02:00",
+        "phase": "persisting",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Enlazando Isco a la ficha existente de Betis–Osasuna"
+      },
+      {
+        "at": "2026-10-11T20:50:49+02:00",
+        "phase": "persisting",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Persistencia aplicada en main · Isco r0 marcada explained y retirada de la cola"
+      },
+      {
+        "at": "2026-10-11T20:51:15+02:00",
+        "phase": "verifying",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-11T20:51:35+02:00",
+        "phase": "verifying",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Verificando id+revision y vínculo de grupo persistido"
+      },
+      {
+        "at": "2026-10-11T20:51:45+02:00",
+        "phase": "verifying",
+        "trend_id": "6644107e889c",
+        "title": "Isco",
+        "message": "Tendencia cerrada y verificada · Isco enlazado a Betis–Osasuna y cola editorial vacía"
+      },
+      {
+        "at": "2026-10-11T20:52:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 5/5 revisiones cerradas; cola editorial vacía"
+        "message": "Cierre verificado · 1/1 revisión cerrada; Isco agrupado sin tarjeta duplicada; cola vacía"
       }
     ]
   },
   "error": null,
-  "run_id": "tr-20261011T201712+0200-chatgpt",
+  "run_id": "tr-20261011T204500+0200-chatgpt",
   "summary": {
-    "trends_processed": 5,
-    "trends_explained": 5,
-    "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 5,
-    "grouped_into_existing_card": 2,
-    "grouped_members_total": 3,
+    "trends_processed": 1,
+    "trends_explained": 1,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 1,
+    "grouped_members_total": 1,
     "trends_problematic": 0,
     "queue_remaining": 0,
     "remaining_active_ids": [],
     "rewrite_pending": 0,
-    "explanations_verified_under_280": 5,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "political_closers_repaired": 0,
     "deferred_waiting_final": 0,
     "deferred_by_selection_rule": 0,
     "visual_repair_requested": true,
     "visual_backlog": 0,
-    "incidents": 1,
+    "incidents": 0,
     "images_generated": 0,
     "telegram_deliveries_confirmed": 0,
     "skipped_by_jit": 0,
