@@ -164,6 +164,8 @@ struct SavedState: Codable {
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
     @Published var targetMapCell: Cell?
+    @Published private(set) var renameUndoAvailable = false
+    private var renameUndoSnapshot: (names:[String:String],places:[UserPlace])?
     var savedPowerEvents: [GPSPowerEvent] { data.powerEvents }
     func recordPowerEvent(mode:GPSPowerMode,cause:String) {
         data.powerEvents.append(GPSPowerEvent(date:Date(),mode:mode.rawValue,cause:cause))
@@ -206,6 +208,12 @@ struct SavedState: Codable {
         currentVisitStart = data.savedVisitStart
         stableCell = data.fixes.last?.cell
         lastProcessedSample = data.fixes.last
+        let previousNames = data.names
+        let previousPlaces = data.places
+        NamedPlaces.migrate(names:&data.names,places:&data.places)
+        if data.names != previousNames || data.places != previousPlaces {
+            save(force:true)
+        }
         if data.shortIDs.isEmpty && !data.intervals.isEmpty {
             for interval in data.intervals.sorted(by:{$0.start < $1.start}) {
                 assignShortID(interval.cell.id)
@@ -279,32 +287,82 @@ struct SavedState: Codable {
         targetMapCell = cell
         selectedTab = 0
     }
-    func addPlace(_ title:String, cells:Set<String>) -> Bool {
-        let name = title.trimmingCharacters(in:.whitespacesAndNewlines)
-        guard !name.isEmpty, !cells.isEmpty else { return false }
-        guard cells.allSatisfy({ cellID in
-            !data.places.contains(where:{$0.cellIDs.contains(cellID)})
-        }) else { return false }
-        data.places.append(UserPlace(name:name,cellIDs:cells.sorted()))
+    func proposalForRename(_ cell:Cell, to rawName:String) -> NameProposal {
+        let title=rawName.trimmingCharacters(in:.whitespacesAndNewlines)
+        let excluding = data.places.filter { !$0.cellIDs.contains(cell.id) }
+        // Si ya pertenece al lugar con el mismo nombre, no hay nada que confirmar.
+        if let mine=data.places.first(where:{$0.cellIDs.contains(cell.id)}),
+           NamedPlaces.normalize(mine.name)==NamedPlaces.normalize(title) {
+            return .assign(mine.id)
+        }
+        return NamedPlaces.proposal(cell:cell,name:title,places:excluding)
+    }
+    private func preserveNamesForUndo() {
+        renameUndoSnapshot=(data.names,data.places)
+        renameUndoAvailable=true
+    }
+    func assignName(_ cell:Cell, to rawName:String, groupID:UUID? = nil) {
+        let name=rawName.trimmingCharacters(in:.whitespacesAndNewlines)
+        preserveNamesForUndo()
+        // Una cuadrícula solo tiene un lugar; cambiar el nombre abandona el anterior.
+        for i in data.places.indices { data.places[i].cellIDs.removeAll { $0 == cell.id } }
+        data.places.removeAll { $0.cellIDs.isEmpty }
+        if name.isEmpty {
+            data.names.removeValue(forKey:cell.id)
+        } else {
+            data.names[cell.id]=name
+            let resolved:UUID?
+            if let groupID { resolved=groupID }
+            else {
+                switch NamedPlaces.proposal(cell:cell,name:name,places:data.places) {
+                case .assign(let id): resolved=id
+                case .distant: resolved=nil // la UI debe pedir confirmación antes
+                }
+            }
+            if let resolved,let index=data.places.firstIndex(where:{$0.id==resolved}) {
+                data.names[cell.id]=data.places[index].name
+                data.places[index].cellIDs.append(cell.id)
+            } else {
+                data.places.append(UserPlace(name:name,cellIDs:[cell.id]))
+            }
+        }
         save(force:true)
+        refreshWidgets()
+    }
+    @discardableResult
+    func undoLastRename() -> Bool {
+        guard let snapshot=renameUndoSnapshot else { return false }
+        data.names=snapshot.names
+        data.places=snapshot.places
+        renameUndoSnapshot=nil
+        renameUndoAvailable=false
+        save(force:true)
+        refreshWidgets()
         return true
     }
-    func removePlace(_ place: UserPlace) {
+    @discardableResult
+    func renameWholePlace(_ placeID:UUID, to rawName:String) -> Bool {
+        let name=rawName.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !name.isEmpty,let index=data.places.firstIndex(where:{$0.id==placeID}) else { return false }
+        // No fusionar lugares de modo silencioso si hay homónimos preexistentes.
+        if data.places.contains(where:{$0.id != placeID &&
+                 NamedPlaces.normalize($0.name)==NamedPlaces.normalize(name)}) { return false }
+        preserveNamesForUndo()
+        data.places[index].name=name
+        for id in data.places[index].cellIDs { data.names[id]=name }
+        save(force:true)
+        refreshWidgets()
+        return true
+    }
+    func removePlace(_ place:UserPlace) {
+        preserveNamesForUndo()
+        for id in place.cellIDs { data.names.removeValue(forKey:id) }
         data.places.removeAll { $0.id == place.id }
         save(force:true)
+        refreshWidgets()
     }
-    func changePlace(_ place:UserPlace, name:String) {
-        let clean = name.trimmingCharacters(in:.whitespacesAndNewlines)
-        guard !clean.isEmpty, let index=data.places.firstIndex(where:{$0.id == place.id}) else { return }
-        data.places[index].name = clean
-        save(force:true)
-    }
-    func changePlaceCells(_ place:UserPlace, cells:Set<String>) {
-        guard !cells.isEmpty, let index=data.places.firstIndex(where:{$0.id == place.id}) else { return }
-        let occupied=Set(data.places.filter{$0.id != place.id}.flatMap(\.cellIDs))
-        guard occupied.isDisjoint(with:cells) else { return }
-        data.places[index].cellIDs = cells.sorted()
-        save(force:true)
+    func placeFor(_ cell:Cell) -> UserPlace? {
+        data.places.first(where:{$0.cellIDs.contains(cell.id)})
     }
     func saveTerritory(_ value:TerritoryRecord, cellIDs:[String]) {
         for id in cellIDs { data.territoryCache[id] = value }
@@ -322,12 +380,9 @@ struct SavedState: Codable {
         let points = data.fixes.filter { ($0.date <= now) && (lower == nil || $0.date >= lower!) }
         return Array(points.suffix(12_000))
     }
-    func rename(_ cell: Cell, to name: String) {
-        let cleaned=name.trimmingCharacters(in:.whitespacesAndNewlines)
-        if cleaned.isEmpty { data.names.removeValue(forKey:cell.id) }
-        else { data.names[cell.id] = cleaned }
-        save(force: true)
-        widgetPublisher.publish(from:self,force:true)
+    func rename(_ cell:Cell,to name:String) {
+        // Los editores de nombre comprueban antes los homónimos remotos.
+        assignName(cell,to:name)
     }
     func setTrackingEnabled(_ enabled: Bool) {
         data.trackingEnabled = enabled
