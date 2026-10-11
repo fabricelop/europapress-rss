@@ -19,7 +19,7 @@ struct GPSDiaryShell: View {
             List {
                 ForEach(days, id: \.self) { day in
                     NavigationLink {
-                        GPSDayView(day: day, fixes: fixes, intervals: model.data.intervals)
+                        GPSDayView(day: day, fixes: fixes, intervals: model.data.intervals, model: model)
                     } label: {
                         VStack(alignment: .leading) {
                             Text(day.formatted(.dateTime.weekday(.wide).day().month().year().locale(Locale(identifier:"es_ES"))))
