@@ -7,9 +7,15 @@ New-Item -ItemType Directory -Force -Path $runtime | Out-Null
 $log = Join-Path $runtime 'editorial-local.log'
 $lock = Join-Path $runtime 'editorial-local.lock'
 $handle = $null
-try { $handle = [IO.File]::Open($lock,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None) }
-catch { exit 0 }
-function Log([string]$text) { ('['+(Get-Date -Format s)+'] '+$text) | Add-Content -LiteralPath $log }
+function Log([string]$text) { ('['+(Get-Date -Format s)+'] '+$text) | Add-Content -LiteralPath $log -Encoding UTF8 }
+# Registrar el inicio ANTES de cualquier exclusión o comprobación, incluso sin cola.
+Log "START pid=$PID user=$([Security.Principal.WindowsIdentity]::GetCurrent().Name) script=$PSCommandPath"
+try {
+    $handle = [IO.File]::Open($lock,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
+} catch {
+    Log "SKIP: hay otra instancia que posee el candado de ejecución ($($_.Exception.Message))"
+    exit 0
+}
 try {
     if (-not (Test-Path $Runner)) { throw 'Falta C:\TTiTTulares\Ejecutar.js' }
     $runnerText = Get-Content -LiteralPath $Runner -Raw -Encoding UTF8
@@ -43,7 +49,7 @@ print(len(pending))
     $countText = $checkScript | python - $snapshot
     if ($LASTEXITCODE -ne 0) { throw 'Error leyendo la cola' }
     $count = [int]($countText | Select-Object -Last 1)
-    if ($count -eq 0) { Log 'No hay evaluaciones pendientes'; exit 0 }
+    if ($count -eq 0) { Log 'DONE: no hay evaluaciones pendientes'; exit 0 }
     Log "Pendientes: $count"
     $node = Get-Command node.exe -ErrorAction Stop
     $commandId = 'sr-'+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
@@ -73,8 +79,8 @@ print(len(pending))
         $proc.Refresh()
     }
     if (-not $confirmed) { throw 'No se confirmó el envío real a ChatGPT; no se declara ejecutado' }
-    Log "Mensaje ChatGPT confirmado: $commandId. La entrega Telegram requiere persistencia posterior."
+    Log "LAUNCH CONFIRMED: mensaje ChatGPT $commandId. La entrega Telegram requiere persistencia posterior."
 } catch {
     Log ('ERROR: '+$_.Exception.Message)
     exit 1
-} finally { if ($handle) { $handle.Dispose() } }
+} finally { if ($handle) { $handle.Dispose() }; Log "END pid=$PID" }
