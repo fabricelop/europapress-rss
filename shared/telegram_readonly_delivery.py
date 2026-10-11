@@ -1098,6 +1098,78 @@ def selftest():
     assert not trend_repeat_allowed(
         {"novelty_verified":True,"is_in_top":True,"entered_top_at":"2026-10-07T00:00:00Z"},
         [{"status":"sent","delivered_at":"2026-10-09T15:00:00Z"}],now)
+    # Regression: same Racing-Valencia episode had 4 request IDs and 4
+    # Telegram photos, despite only ONE editorial explanation. Consolidate
+    # only when the explicit persisted group metadata matches.
+    original_root=ROOT
+    original_send=send
+    original_archive=archival_image
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            members=[("raba","Raba",1,687),("corberan","Corberan",4,688),
+                     ("racing","Racing",5,689),("aguirre","Aguirre",9,691)]
+            group_id="grp-raba"
+            explanation=("TT#1 Raba es tendencia porque marcó al 2' ante Racing "
+                         "en el debut de Aguirre tras el cese de Corberán.\n"
+                         "🌶️ Un gol abrió la función.")
+            reqs=[]
+            ledger=[]
+            for mid,name,rank,tgmid in members:
+                reqs.append({"id":mid,"name":name,"rank":rank,"status":"explained",
+                             "revision":0,"requested_at":now.isoformat(),
+                             "explained_at":now.isoformat(),
+                             "explanation":explanation,"group_id":group_id,
+                             "explanation_group_id":group_id,
+                             "group_leader_id":"raba","auto_queued":True,
+                             "archive_image":{"url":"https://img.example.org/raba.jpg"}})
+                ledger.append({"event_id":mid,"name":name,"title":name,"revision":0,
+                               "status":"sent","final":True,
+                               "telegram_message_id":tgmid,"is_photo":True,
+                               "image_url":"https://img.example.org/raba.jpg",
+                               "content_sha256":"old","delivered_at":now.isoformat()})
+            put("trends/requests.json",{"requests":reqs})
+            put("trends/recent.json",{"items":[
+                {"name":name,"rank":rank} for mid,name,rank,tgmid in members]})
+            put("trends/telegram-manual-explained.json",{"items":[{
+                "id":"raba","status":"explained","revision":0,
+                "explained_at":now.isoformat(),"explanation":explanation,
+                "closer_text":"🌶️ Un gol abrió la función.",
+                "group_id":group_id,"explanation_group_id":group_id,
+                "group_leader_id":"raba",
+                "grouped_member_revisions":[{"id":mid,"revision":0}
+                                            for mid,*_ in members]}]})
+            put("trends/explained.json",{"items":[]})
+            put("trends/telegram-image-deliveries.json",{"items":ledger})
+            cards=list(trend_cards(now))
+            assert len(cards)==1,cards
+            assert cards[0]["group_member_ids"]==["raba","corberan","racing","aguirre"]
+            assert all(term in cards[0]["text"] for term in
+                       ("Raba","Corberan","Racing","Aguirre"))
+            operations=[]
+            def fake_send(token,method,payload,photo=None):
+                operations.append((method,int(payload.get("message_id") or 0)))
+                return {"message_id":int(payload.get("message_id") or 0)}
+            globals()["send"]=fake_send
+            globals()["archival_image"]=lambda url:(
+                (b"jpeg","image/jpeg","raba.jpg")
+                if url=="https://img.example.org/raba.jpg" else None)
+            count=process("ttendencias",now,"mock","chat")
+            assert count[0]==0,count
+            assert [mid for method,mid in operations if method=="deleteMessage"]==[688,689,691],operations
+            fixed=load("trends/telegram-image-deliveries.json",{"items":[]})
+            assert len([x for x in fixed["items"] if x["status"]=="sent"])==1
+            assert len([x for x in fixed["items"] if x["status"]=="grouped"])==3
+            assert next(x for x in fixed["items"] if x["status"]=="sent")["telegram_message_id"]==687
+            operations.clear()
+            process("ttendencias",now,"mock","chat")
+            assert not operations,operations
+            print("TT_GROUP_SINGLE_EVENT_SINGLE_TELEGRAM_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
+        globals()["send"]=original_send
+        globals()["archival_image"]=original_archive
     assert public_news_detail({"explanation":"Reuters y Associated Press coinciden en la noticia. Ambas fuentes corroboran los datos.","factual_summary":"El comité anunció el premio."})=="El comité anunció el premio."
     assert public_news_detail({"explanation":"La comisión ha aprobado un informe.","factual_summary":"Informe aprobado."})=="La comisión ha aprobado un informe."
     assert trend_body("TT#14 #Sitges2026","TT#14 #Sitges2026 es tendencia por un festival.\\n🌶️ Remate.",True).count("TT#14")==1
