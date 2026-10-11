@@ -1,5 +1,15 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## v0.7 — coherencia temporal y seguimiento (octubre 2026)
+- Rama aislada `feature/mi-mapa-del-tiempo-ios-v07`. Sin modificaciones en `main`. Actualizar sobre la app ya instalada con el mismo identificador y el mismo Apple ID. No desinstalar; exportar JSON antes de instalar.
+- **Contabilidad:** mapa, cuadrículas, lugares, estadísticas, comparación, búsqueda y snapshot para widget comparten la atribución canónica sin segundos solapados. El historial bruto preexistente se conserva sin sobrescribir; los nuevos intervalos se escriben evitando superposiciones.
+- **Pantalla de mapa:** mostrar separados el tiempo del lugar y el de la cuadrícula; avance provisional limitado por frescura GPS, aviso de ubicación caducada, reloj reactivado al regresar a primer plano y solicitud puntual de ubicación. Nunca persistir segundos provisionales como confirmados.
+- **Modo navegación:** botón alterna entre seguimiento con centro automático y mapa libre; manipulación del mapa permite exploración. El mapa básico sin conexión también puede seguir la ubicación.
+- **Territorios:** clasificación progresiva y voluntaria al abrir la sección de estadísticas, mostrando cobertura y resúmenes parciales; consultas con Apple espaciadas y caché local. No inventar barrios.
+- **Interfaz:** eliminar definitivamente «Territorio por descubrir»; conservar colores adaptados, sin leyenda.
+- **Widgets:** extensión de acceso sin App Group conservada; su aparición en el iPhone con Sideloadly sigue sin estar confirmada y no se presenta como resuelta. Ajustes describen la limitación.
+- **Pruebas:** tests sintéticos de solapamientos, agrupación, integridad y coherencia de periodos, build y pruebas del simulador en el flujo `mi-mapa-del-tiempo-v07-verify.yml`. El GPS físico y consumo energético requieren verificación en teléfono.
+
 ## Verificación v0.6 (11/10/2026)
 - [x] [GitHub Actions: XCTest inicial de v0.6, run 38146997366](https://github.com/fabricelop/europapress-rss/actions/runs/38146997366): **44 tests, 0 fallos** y compilación Release iOS con WidgetKit.
 - [x] [GitHub Actions: compilación final de v0.6, run 38147674624](https://github.com/fabricelop/europapress-rss/actions/runs/38147674624): build Release correcto, artefacto IPA 11704869636.
