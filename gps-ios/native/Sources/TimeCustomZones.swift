@@ -87,6 +87,13 @@ enum TimeZoneGeometry {
     }
 }
 
+struct TimeZoneOverlay: Identifiable {
+    let zone:TimeCustomZone
+    let edges:[TimeZoneBorderSegment]
+    let center:CLLocationCoordinate2D?
+    var id:UUID { zone.id }
+}
+
 struct TimeZoneBorderSegment {
     var start: CLLocationCoordinate2D
     var end: CLLocationCoordinate2D
