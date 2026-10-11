@@ -21,19 +21,19 @@ struct TimeStatsDashboard: View {
     @State private var searchMapCell: Cell?
 
     private var values: [String:TimeInterval] {
-        TimeAttribution.byCell(model.data.intervals,
-            window:TimeAnalytics.window(for:model.period,now:.now))
+        model.periodTotals()
     }
     private var ranked:[TimeRankEntry] {
         let zones=model.visibleZones
+        let perCell=values
         let covered=Set(zones.flatMap(\.cellIDs))
         let named=zones.compactMap { zone -> TimeRankEntry? in
-            let seconds=zone.cells.reduce(0) { $0+(values[$1] ?? 0) }
+            let seconds=zone.cellIDs.reduce(0) { $0+(perCell[$1] ?? 0) }
             guard seconds>0 else { return nil }
             return TimeRankEntry(id:"z"+zone.id.uuidString,title:zone.name,seconds:seconds,
                                  cellIDs:zone.cellIDs,zoneID:zone.id)
         }
-        let independent=values.compactMap { id,seconds -> TimeRankEntry? in
+        let independent=perCell.compactMap { id,seconds -> TimeRankEntry? in
             guard seconds>0 && !covered.contains(id),
                   let cell=TimeAnalytics.cell(id) else { return nil }
             return TimeRankEntry(id:"c"+id,title:model.label(for:cell),
