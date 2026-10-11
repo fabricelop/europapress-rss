@@ -28,7 +28,8 @@ import WidgetKit
             totalAssignedSeconds: model.totalSeconds,
             currentCellSeconds: cell.map { model.data.totals[$0.id] ?? 0 } ?? 0,
             currentStaySeconds: stay,
-            currentCellName: cell.map { model.label(for: $0) },
+            currentCellName: UserDefaults.standard.bool(forKey: "timeWidgetShowPlace") ?
+                cell.map { model.label(for: $0) } : nil,
             lastLocationAt: lastLocationAt,
             trackingEnabled: model.recording,
             hasFix: recent
