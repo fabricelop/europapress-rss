@@ -4,12 +4,13 @@ struct GPSDayView: View {
     let day: Date
     let fixes: [GPSHistoryFix]
     let intervals: [AssignedInterval]
+    @ObservedObject var model: TimeModel
 
     private var nextDay: Date {
         Calendar.current.date(byAdding: .day, value: 1, to: day) ?? day.addingTimeInterval(86400)
     }
     private var episodes: [GPSHistoryEpisode] {
-        GPSHistoryGrouping.episodes(fixes).filter { $0.end >= day && $0.start < nextDay }
+        GPSHistoryGrouping.episodes(fixes,manualBreaks:model.data.manualBreaks).filter { $0.end >= day && $0.start < nextDay }
     }
     private var assigned: TimeInterval {
         intervals.reduce(0) { result, segment in
@@ -43,6 +44,28 @@ struct GPSDayView: View {
                                     .font(.caption2).foregroundStyle(.orange)
                             }
                         }
+                    }
+                    .swipeActions(edge:.trailing) {
+                        if episode.points.count > 2 {
+                            Button {
+                                let index = episode.points.count / 2
+                                model.splitEpisode(at:episode.points[index].date)
+                            } label: {
+                                Label("Dividir episodio",systemImage:"scissors")
+                            }.tint(.teal)
+                        }
+                    }
+                }
+            }
+            Section("Edición del diario") {
+                Text("Desliza un episodio para dividirlo en dos por el punto GPS central. Los tiempos de las cuadrículas no cambian.")
+                    .font(.caption).foregroundStyle(.secondary)
+                ForEach(model.data.manualBreaks.filter({ $0 >= day && $0 < nextDay }),id:\.self) { timestamp in
+                    HStack {
+                        Text("División: \(timestamp.formatted(date:.omitted,time:.shortened))")
+                        Spacer()
+                        Button("Unir de nuevo") { model.removeSplit(at:timestamp) }
+                            .buttonStyle(.borderless)
                     }
                 }
             }
