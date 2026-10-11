@@ -332,7 +332,7 @@ function rowCard(x,i){
   // explanation without Telegram delivery is not a completed current card.
   if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
      !['EN ELABORACIÓN','REVISIÓN','EXPLICADA'].includes(x._status)){
-   command('Preparar','prepare');
+   command('Preparar novedad','prepare');
   }
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   return out
