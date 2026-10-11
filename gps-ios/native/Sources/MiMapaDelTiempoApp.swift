@@ -1,6 +1,7 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import CoreMotion
 import UniformTypeIdentifiers
 import CryptoKit
 import Foundation
