@@ -3,94 +3,92 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T15:45:00+02:00",
-  "last_completed_at": "2026-10-11T15:51:00+02:00",
-  "updated_at": "2026-10-11T15:51:00+02:00",
+  "last_started_at": "2026-10-11T16:15:00+02:00",
+  "last_completed_at": "2026-10-11T16:27:00+02:00",
+  "updated_at": "2026-10-11T16:27:00+02:00",
   "status": "success",
   "processed_ids": [
-    "4b4bd188986f"
+    "ff5aa449aa6e",
+    "beb5f267e132",
+    "a4a691b7cac1",
+    "cc9091b36b3b",
+    "0eb183243950",
+    "4fa75451fa6d",
+    "3ef249cab883",
+    "425e95efd6a8",
+    "205740091d52"
   ],
   "remaining_ids": [
-    "3ef249cab883",
-    "4fa75451fa6d",
-    "425e95efd6a8"
+    "6a5ed83658ef"
   ],
   "api_failover_enabled": false,
   "queue_complete": false,
   "remaining_active_ids": [
-    "3ef249cab883",
-    "4fa75451fa6d",
-    "425e95efd6a8"
+    "6a5ed83658ef"
   ],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "saneamiento inicial completado; reparación posterior a Vini en curso",
+    "status": "solicitada; ciclo visual independiente de la pasada editorial",
     "direct_imagegen": false,
-    "run_id": "tr-20261011T154500+0200-chatgpt",
-    "requested_at": "2026-10-11T15:45:00+02:00",
+    "run_id": "tr-20261011T161500+0200-chatgpt",
+    "requested_at": "2026-10-11T16:15:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair + post-explained repair",
     "workflow_run_ids": [
-      38144550653,
-      38144739678
+      38147009760,
+      38147168952,
+      38147172463
     ]
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T154500+0200-chatgpt",
+    "run_id": "tr-20261011T161500+0200-chatgpt",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-11T15:45:00+02:00",
-    "updated_at": "2026-10-11T15:51:00+02:00",
-    "finished_at": "2026-10-11T15:51:00+02:00",
+    "started_at": "2026-10-11T16:15:00+02:00",
+    "updated_at": "2026-10-11T16:27:00+02:00",
+    "finished_at": "2026-10-11T16:27:00+02:00",
     "trend_id": null,
     "title": null,
-    "current": 4,
-    "total": 4,
-    "partial": true,
+    "current": 9,
+    "total": 9,
+    "partial": false,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 0,
-      "grouped_members_total": 0,
+      "trends_processed": 9,
+      "trends_explained": 9,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 9,
+      "grouped_into_existing_card": 6,
+      "grouped_members_total": 6,
       "trends_problematic": 0,
-      "queue_remaining": 3,
+      "queue_remaining": 1,
       "remaining_active_ids": [
-        "3ef249cab883",
-        "4fa75451fa6d",
-        "425e95efd6a8"
+        "6a5ed83658ef"
       ],
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
       "remates_omitted": 0,
       "political_closers_repaired": 0,
-      "deferred_waiting_final": 3,
+      "deferred_waiting_final": 0,
+      "deferred_by_selection_rule": 1,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 1,
+      "incidents": 0,
       "images_generated": 0,
       "telegram_deliveries_confirmed": 0,
       "skipped_by_jit": 0,
       "reconciled_terminal": 0,
       "pending_repair_requested": 1
     },
-    "message": "Cierre parcial verificado · Vini cerrado y retirado de cola; elche, Celta y Martínez Valero siguen abiertos hasta confirmar el resultado final",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "code": "waiting_final_result",
-        "scope": "elche-celta",
-        "message": "Tres revisiones del mismo partido quedan abiertas porque las fuentes siguen mostrando el Elche-Celta en directo y existe instrucción expresa de esperar al final."
-      }
-    ],
+    "message": "Cierre verificado · 9 revisiones cerradas en 3 grupos; Liverpool queda para la siguiente pasada",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -100,110 +98,164 @@
     },
     "remate_selections": [
       {
-        "id": "4b4bd188986f",
+        "id": "ff5aa449aa6e",
+        "revision": 1,
+        "name": "Ferrari",
+        "closer_text": "🌶️ Ferrari metió dos coches en los puntos, pero el rojo ganador llevaba alas."
+      },
+      {
+        "id": "4fa75451fa6d",
         "revision": 0,
-        "name": "Vini",
-        "closer_text": "🌶️ Del banquillo al túnel sin escala."
+        "name": "Celta",
+        "closer_text": "🌶️ El marcador también se tomó la tarde libre."
+      },
+      {
+        "id": "205740091d52",
+        "revision": 1,
+        "name": "Güímar",
+        "closer_text": "🌶️ La eliminatoria necesitó prórroga y todavía le sobraba polémica."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-11T15:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando ejecución · 4 revisiones activas; saneamiento visual de Pendientes solicitado"
-      },
-      {
-        "at": "2026-10-11T15:45:40+02:00",
+        "at": "2026-10-11T16:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "3ef249cab883",
-        "title": "elche",
-        "message": "Releyendo estado autoritativo · sigue vigente la instrucción de esperar al final del Elche-Celta"
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Releyendo estado autoritativo del bloque Ferrari/Hamilton/Leclerc/Antonelli/Verstappen"
       },
       {
-        "at": "2026-10-11T15:46:20+02:00",
+        "at": "2026-10-11T16:16:20+02:00",
         "phase": "investigating",
-        "trend_id": "3ef249cab883",
-        "title": "elche",
-        "message": "Fuentes en directo aún no confirman resultado final; cierre diferido"
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Contrastando Formula 1 y Autosport sobre el GP de Singapur"
       },
       {
-        "at": "2026-10-11T15:46:40+02:00",
+        "at": "2026-10-11T16:16:40+02:00",
+        "phase": "investigating",
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Hecho esencial verificado · Verstappen 1º, Leclerc 2º, Antonelli 3º y Hamilton 6º"
+      },
+      {
+        "at": "2026-10-11T16:17:00+02:00",
+        "phase": "drafting",
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Redactando explicación factual agrupada y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-11T16:17:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Remate seleccionado para el grupo del GP de Singapur"
+      },
+      {
+        "at": "2026-10-11T16:17:30+02:00",
+        "phase": "persisting",
+        "trend_id": "ff5aa449aa6e",
+        "title": "Ferrari",
+        "message": "Guardando ficha Explicada líder de Ferrari"
+      },
+      {
+        "at": "2026-10-11T16:18:00+02:00",
         "phase": "verifying",
         "trend_id": "4fa75451fa6d",
         "title": "Celta",
-        "message": "Mismo acontecimiento que elche · sin resultado final autoritativo todavía"
+        "message": "Releyendo estado autoritativo de Celta, elche y Martínez Valero"
       },
       {
-        "at": "2026-10-11T15:46:50+02:00",
-        "phase": "verifying",
-        "trend_id": "425e95efd6a8",
-        "title": "Martínez Valero",
-        "message": "Mismo acontecimiento que elche · sin resultado final autoritativo todavía"
-      },
-      {
-        "at": "2026-10-11T15:47:10+02:00",
-        "phase": "verifying",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Releyendo estado autoritativo de Vini"
-      },
-      {
-        "at": "2026-10-11T15:47:25+02:00",
+        "at": "2026-10-11T16:18:10+02:00",
         "phase": "investigating",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Contrastando Real Madrid, EL PAÍS y Cadena SER sobre suplencia, gol anulado y expulsión"
+        "trend_id": "4fa75451fa6d",
+        "title": "Celta",
+        "message": "Resultado final confirmado · Elche 0-0 Celta en el Martínez Valero"
       },
       {
-        "at": "2026-10-11T15:47:40+02:00",
+        "at": "2026-10-11T16:18:20+02:00",
         "phase": "drafting",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
+        "trend_id": "4fa75451fa6d",
+        "title": "Celta",
+        "message": "Redactando explicación agrupada del Elche-Celta y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-11T16:18:30+02:00",
+        "phase": "persisting",
+        "trend_id": "4fa75451fa6d",
+        "title": "Celta",
+        "message": "Guardando ficha Explicada líder de Celta"
+      },
+      {
+        "at": "2026-10-11T16:18:40+02:00",
+        "phase": "verifying",
+        "trend_id": "205740091d52",
+        "title": "Güímar",
+        "message": "Releyendo estado autoritativo de Güímar"
+      },
+      {
+        "at": "2026-10-11T16:18:50+02:00",
+        "phase": "investigating",
+        "trend_id": "205740091d52",
+        "title": "Güímar",
+        "message": "Contrastando AS y Cadena SER sobre el 3-3 y la clasificación del Sporting Hortaleza"
+      },
+      {
+        "at": "2026-10-11T16:19:00+02:00",
+        "phase": "drafting",
+        "trend_id": "205740091d52",
+        "title": "Güímar",
         "message": "Redactando explicación factual y comprobando límite de X"
       },
       {
-        "at": "2026-10-11T15:47:50+02:00",
+        "at": "2026-10-11T16:19:10+02:00",
         "phase": "remate_selection",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Remate seleccionado con apoyo de ratings recientes"
+        "trend_id": "205740091d52",
+        "title": "Güímar",
+        "message": "Remate seleccionado · prórroga y polémica verificadas"
       },
       {
-        "at": "2026-10-11T15:48:00+02:00",
+        "at": "2026-10-11T16:19:20+02:00",
         "phase": "persisting",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Guardando ficha Explicada de Vini"
+        "trend_id": "205740091d52",
+        "title": "Güímar",
+        "message": "Guardando ficha Explicada de Güímar"
       },
       {
-        "at": "2026-10-11T15:49:58+02:00",
-        "phase": "verifying",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Aplicador editorial completado correctamente"
+        "at": "2026-10-11T16:20:00+02:00",
+        "phase": "persisting",
+        "trend_id": "beb5f267e132",
+        "title": "Hamilton",
+        "message": "Enlazando Hamilton, Leclerc, Antonelli y Verstappen al grupo Ferrari"
       },
       {
-        "at": "2026-10-11T15:50:20+02:00",
-        "phase": "verifying",
-        "trend_id": "4b4bd188986f",
-        "title": "Vini",
-        "message": "Releyendo main · Vini coincide en Explicadas y requests y ya no está en cola"
-      },
-      {
-        "at": "2026-10-11T15:50:40+02:00",
-        "phase": "verifying",
+        "at": "2026-10-11T16:20:20+02:00",
+        "phase": "persisting",
         "trend_id": "3ef249cab883",
         "title": "elche",
-        "message": "Nueva comprobación · Elche-Celta continúa figurando en directo; se mantienen tres revisiones abiertas"
+        "message": "Enlazando elche y Martínez Valero al grupo Celta tras el resultado final"
       },
       {
-        "at": "2026-10-11T15:51:00+02:00",
+        "at": "2026-10-11T16:26:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · todas las revisiones seleccionadas retiradas de la cola"
+      },
+      {
+        "at": "2026-10-11T16:26:40+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación final · solo Liverpool permanece pendiente por la regla de una única tendencia 11-30 por pasada"
+      },
+      {
+        "at": "2026-10-11T16:27:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre parcial verificado · Vini cerrado; elche, Celta y Martínez Valero esperan resultado final confirmado"
+        "message": "Cierre verificado · 9 revisiones cerradas en 3 grupos; Liverpool queda para la siguiente pasada"
       }
     ]
   },
