@@ -405,6 +405,17 @@ struct SavedState: Codable {
     func total(for cell:Cell,now:Date = .now) -> TimeInterval {
         confirmed(for:cell,now:now)+provisionalSeconds(for:[cell.id],now:now)
     }
+    func total(for zone:TimeCustomZone,now:Date = .now) -> TimeInterval {
+        let totals=periodTotals(now:now)
+        return zone.cells.reduce(0) { $0 + (totals[$1] ?? 0) } +
+            provisionalSeconds(for:zone.cells,now:now)
+    }
+    func primaryZone(for cell:Cell) -> TimeCustomZone? {
+        TimeZoneCatalog.primary(for:cell.id,zones:visibleZones)
+    }
+    func allZones(for cell:Cell) -> [TimeCustomZone] {
+        visibleZones.filter { $0.cells.contains(cell.id) }
+    }
     func total(for place:UserPlace,now:Date = .now) -> TimeInterval {
         let totals=periodTotals(now:now)
         return place.normalizedCellIDs.reduce(0){$0+(totals[$1] ?? 0)}
@@ -426,15 +437,23 @@ struct SavedState: Codable {
     func checkLockScreen() { activityPublisher.check(from:self) }
     func exportScriptableSnapshot() throws -> URL {
         let cell=activeCell
+        let zone=cell.flatMap { primaryZone(for:$0) }
+        let now=Date()
+        let place=zone?.name ?? cell.map { label(for:$0) } ?? "Sin posición"
         let details:[String:Any] = [
-            "generatedAt":Date().timeIntervalSince1970,
-            "place":cell.map { label(for:$0) } ?? "Sin posición",
+            "schema":2,
+            "generatedAt":now.timeIntervalSince1970,
+            "place":place,
+            "placeType":zone != nil ? "zona" : "cuadricula",
+            "cellCount":zone?.cells.count ?? (cell == nil ? 0 : 1),
+            "zoneSeconds":zone.map { total(for:$0,now:now) } ?? 0,
+            "cellSeconds":cell.map { total(for:$0,now:now) } ?? 0,
             "recordedSeconds":totalSeconds,
             "stayStart":currentVisitStart?.timeIntervalSince1970 ??
                 data.gpsRest?.startedAt.timeIntervalSince1970 ?? 0,
             "resting":isResting,
             "tracking":recording,
-            "note":"Datos exportados manualmente. La actualización depende de iOS."
+            "note":"Resumen exportado manualmente. Su refresco depende de iOS."
         ]
         let file=FileManager.default.temporaryDirectory.appendingPathComponent("MiMapaEstado.json")
         let bytes=try JSONSerialization.data(withJSONObject:details,options:[.prettyPrinted,.sortedKeys])
@@ -465,14 +484,16 @@ struct SavedState: Codable {
         objectWillChange.send()
     }
     func label(for cell:Cell) -> String {
-        FriendlyCellName.title(cell,index:data.shortIDs[cell.id],custom:data.names[cell.id])
+        if let zone=primaryZone(for:cell) { return zone.name }
+        return FriendlyCellName.title(cell,index:data.shortIDs[cell.id],custom:data.names[cell.id])
     }
     private func assignShortID(_ id:String) {
         guard data.shortIDs[id] == nil else { return }
         data.shortIDs[id] = (data.shortIDs.values.max() ?? 0)+1
     }
     func hasCustomName(_ id: String) -> Bool {
-        !(data.names[id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
+        visibleZones.contains(where:{$0.cells.contains(id)}) ||
+            !(data.names[id] ?? "").trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
     }
     func navigate(to cell: Cell) {
         selected = cell
