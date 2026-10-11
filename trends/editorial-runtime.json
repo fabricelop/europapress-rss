@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-11T14:15:00+02:00",
-  "last_completed_at": "2026-10-11T14:24:20+02:00",
-  "updated_at": "2026-10-11T14:24:20+02:00",
+  "last_started_at": "2026-10-11T14:45:00+02:00",
+  "last_completed_at": "2026-10-11T14:48:20+02:00",
+  "updated_at": "2026-10-11T14:48:20+02:00",
   "status": "success",
   "processed_ids": [
     "74a31fe68bb7",
@@ -40,48 +40,48 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261011T141500+0200-chatgpt",
+    "run_id": "tr-20261011T144500+0200-chatgpt",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-11T14:15:00+02:00",
-    "updated_at": "2026-10-11T14:24:20+02:00",
-    "finished_at": "2026-10-11T14:24:20+02:00",
+    "started_at": "2026-10-11T14:45:00+02:00",
+    "updated_at": "2026-10-11T14:48:20+02:00",
+    "finished_at": "2026-10-11T14:48:20+02:00",
     "trend_id": null,
     "title": null,
-    "current": 7,
-    "total": 7,
+    "current": 1,
+    "total": 1,
     "partial": false,
     "summary": {
-      "trends_processed": 7,
-      "trends_explained": 7,
-      "explanation_groups": 5,
-      "new_cards": 5,
-      "revisions_updated": 7,
-      "grouped_into_existing_card": 2,
-      "grouped_members_total": 2,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 0,
+      "grouped_members_total": 0,
       "trends_problematic": 0,
       "queue_remaining": 0,
       "remaining_active_ids": [],
-      "explanations_verified_under_280": 5,
-      "remates_selected": 1,
-      "remates_omitted": 4,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 0,
+      "remates_omitted": 1,
       "visual_repair_requested": true,
       "visual_backlog": 0,
       "incidents": 1,
       "images_generated": 0,
       "skipped_by_jit": 0,
       "reconciled_terminal": 0,
-      "pending_reviewed": 34,
+      "pending_reviewed": 31,
       "pending_repair_requested": 1
     },
-    "message": "Cierre verificado · 7/7 revisiones cerradas en 5 fichas; 2 agrupadas; cola editorial vacía; reparación visual lanzada; Gag IA automático sigue deshabilitado",
+    "message": "Cierre verificado · Guano 1/1 explicado; cola editorial vacía; reparación visual solicitada",
     "incident_count": 1,
     "incidents": [
       {
         "code": "visual_ai_enqueue_step_disabled",
         "scope": "visual_repair",
-        "message": "El workflow repair-ttendencias-explicadas.yml conserva `if: ${{ false }}` en el paso 'Encolar Gag IA ausente o inválido'. Los runs de reparación completan archivo, pero ese paso queda skipped."
+        "message": "El workflow repair-ttendencias-explicadas.yml mantiene `if: ${{ false }}` en el paso de encolado de Gag IA; la reparación visual fue solicitada pero la IA automática no puede encolarse desde ese paso."
       }
     ],
     "ratings_snapshot": {
@@ -91,154 +91,112 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "id": "3ef249cab883",
-        "revision": 0,
-        "name": "elche",
-        "closer_text": "🌶️ La sobremesa en Elche hoy viene con marcador."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-11T14:16:10+02:00",
-        "phase": "investigating",
-        "trend_id": "74a31fe68bb7",
-        "title": "IRPF",
-        "message": "Hecho esencial verificado · simulador fiscal de Vox viralizado en precampaña"
+        "at": "2026-10-11T14:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Preparando ejecución · 1 entrada editorial activa; solicitando saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-11T14:16:20+02:00",
+        "at": "2026-10-11T14:45:20+02:00",
+        "phase": "verifying",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Releyendo estado autoritativo de Guano"
+      },
+      {
+        "at": "2026-10-11T14:45:35+02:00",
+        "phase": "investigating",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Contrastando fuentes actuales sobre el desalojo de El Guano en Ceuta"
+      },
+      {
+        "at": "2026-10-11T14:45:50+02:00",
+        "phase": "investigating",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Hecho esencial verificado · desalojo del último gran campamento de migrantes de El Guano"
+      },
+      {
+        "at": "2026-10-11T14:46:05+02:00",
         "phase": "drafting",
-        "trend_id": "74a31fe68bb7",
-        "title": "IRPF",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
         "message": "Redactando explicación factual y comprobando límite de X"
       },
       {
-        "at": "2026-10-11T14:16:35+02:00",
-        "phase": "verifying",
-        "trend_id": "a4efa9a9c94b",
-        "title": "ERC al Congreso",
-        "message": "Releyendo estado autoritativo de ERC al Congreso"
-      },
-      {
-        "at": "2026-10-11T14:16:45+02:00",
-        "phase": "investigating",
-        "trend_id": "a4efa9a9c94b",
-        "title": "ERC al Congreso",
-        "message": "Hecho esencial verificado · Rufián confirmado como cabeza de lista de ERC"
-      },
-      {
-        "at": "2026-10-11T14:17:05+02:00",
-        "phase": "verifying",
-        "trend_id": "f17beb92b1ee",
-        "title": "Ponferrada",
-        "message": "Releyendo estado autoritativo de Ponferrada"
-      },
-      {
-        "at": "2026-10-11T14:17:15+02:00",
-        "phase": "investigating",
-        "trend_id": "f17beb92b1ee",
-        "title": "Ponferrada",
-        "message": "Hecho esencial verificado · mitin de Sánchez y petición al Supremo"
-      },
-      {
-        "at": "2026-10-11T14:17:35+02:00",
-        "phase": "verifying",
-        "trend_id": "db8e8811643b",
-        "title": "Leon XIV",
-        "message": "Releyendo estado autoritativo de Leon XIV"
-      },
-      {
-        "at": "2026-10-11T14:17:45+02:00",
-        "phase": "investigating",
-        "trend_id": "db8e8811643b",
-        "title": "Leon XIV",
-        "message": "Hecho esencial verificado · operación anunciada tras el Ángelus"
-      },
-      {
-        "at": "2026-10-11T14:18:05+02:00",
-        "phase": "verifying",
-        "trend_id": "3ef249cab883",
-        "title": "elche",
-        "message": "Releyendo estado autoritativo de elche"
-      },
-      {
-        "at": "2026-10-11T14:18:15+02:00",
-        "phase": "investigating",
-        "trend_id": "3ef249cab883",
-        "title": "elche",
-        "message": "Hecho esencial verificado · Elche-Celta en juego desde las 14:00"
-      },
-      {
-        "at": "2026-10-11T14:18:25+02:00",
+        "at": "2026-10-11T14:46:15+02:00",
         "phase": "remate_selection",
-        "trend_id": "3ef249cab883",
-        "title": "elche",
-        "message": "Remate seleccionado y texto completo comprobado bajo el límite de X"
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Sin remate · contexto migratorio sensible; explicación factual suficiente"
       },
       {
-        "at": "2026-10-11T14:18:35+02:00",
+        "at": "2026-10-11T14:46:25+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando cinco fichas Explicadas líderes sobre main fresco"
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Guardando ficha Explicada de Guano"
       },
       {
-        "at": "2026-10-11T14:22:12+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cinco líderes persistidos en requests, Explicadas y retirados de la cola"
-      },
-      {
-        "at": "2026-10-11T14:22:20+02:00",
-        "phase": "verifying",
-        "trend_id": "96ac0f511265",
-        "title": "Gabriel Rufián",
-        "message": "Releyendo estado autoritativo · agrupación ERC al Congreso confirmada"
-      },
-      {
-        "at": "2026-10-11T14:22:22+02:00",
-        "phase": "verifying",
-        "trend_id": "24e168306b00",
-        "title": "El Papa",
-        "message": "Releyendo estado autoritativo · agrupación Leon XIV confirmada"
-      },
-      {
-        "at": "2026-10-11T14:23:40+02:00",
+        "at": "2026-10-11T14:46:40+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Enlazando dos miembros a sus fichas líderes sin crear duplicados"
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Actualizando requests para Guano"
       },
       {
-        "at": "2026-10-11T14:23:45+02:00",
+        "at": "2026-10-11T14:46:55+02:00",
+        "phase": "persisting",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Retirando revisión cerrada de la cola"
+      },
+      {
+        "at": "2026-10-11T14:47:20+02:00",
+        "phase": "verifying",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-11T14:47:30+02:00",
+        "phase": "verifying",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-11T14:47:40+02:00",
+        "phase": "verifying",
+        "trend_id": "38a1a9c41507",
+        "title": "Guano",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-11T14:48:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · requests y Explicadas contienen ambos grupos completos"
+        "message": "Revisando Pendientes · 31 tarjetas vigentes menores de 24 h; reparación visual solicitada"
       },
       {
-        "at": "2026-10-11T14:23:50+02:00",
+        "at": "2026-10-11T14:48:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola editorial · 0 entradas activas"
+        "message": "Incidencia visual · el paso automático de encolado Gag IA sigue deshabilitado por condición del workflow"
       },
       {
-        "at": "2026-10-11T14:24:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual automática lanzada; el paso Gag IA sigue deshabilitado por condición del workflow"
-      },
-      {
-        "at": "2026-10-11T14:24:20+02:00",
+        "at": "2026-10-11T14:48:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 7/7 revisiones cerradas en 5 fichas; cola editorial vacía"
+        "message": "Cierre verificado · Guano 1/1 explicado; cola editorial vacía; reparación visual solicitada"
       }
     ]
   },
