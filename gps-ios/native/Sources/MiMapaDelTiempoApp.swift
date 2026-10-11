@@ -217,6 +217,9 @@ struct SavedState: Codable {
         return max(0, now.timeIntervalSince(start))
     }
     var activeCell: Cell? { stableCell ?? current?.cell }
+    func refreshWidgets() {
+        widgetPublisher.publish(from:self,force:true)
+    }
     var retainedFixCount: Int { data.fixes.count }
     var lastGPSFix: Date? { lastProcessedSample?.date ?? data.fixes.last?.date }
     var lastAccuracy: Double? { current?.accuracy }
@@ -951,6 +954,7 @@ struct TimeSettingsView: View {
     @State private var message = ""
     @State private var exportFile: URL?
     @AppStorage("miMapaFaceID") private var faceIDEnabled = false
+    @AppStorage("timeWidgetShowPlace") private var showPlaceInWidgets = false
     var body: some View {
         NavigationStack {
             Form {
@@ -987,6 +991,8 @@ struct TimeSettingsView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Widgets iPhone") {
+                    Toggle("Mostrar nombres de lugares en widgets",isOn:$showPlaceInWidgets)
+                        .onChange(of:showPlaceInWidgets) { _,_ in model.refreshWidgets() }
                     LabeledContent("Datos compartidos",
                         value: TimeWidgetStorage.isAvailable ? "App Group disponible" : "App Group no autorizado")
                     Text("En la pantalla de inicio: mantén pulsado un espacio libre, toca Editar → Añadir widget y busca Mi Mapa del Tiempo. En la pantalla bloqueada: mantén pulsado, Personalizar y selecciona Widgets.")
