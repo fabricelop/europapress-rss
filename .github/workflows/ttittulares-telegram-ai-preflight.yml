@@ -27,7 +27,14 @@ jobs:
             'user-agent':'ttittulares-no-cloudflare-readiness'})
           try:
             with urllib.request.urlopen(r,timeout=25) as resp:
-              doc=json.load(resp)
+              raw=resp.read(500000)
+              content_type=resp.headers.get('Content-Type','')
+              status=resp.status
+            print('TTI_GH_MODELS_METADATA_HTTP',status,'CONTENT_TYPE',content_type,'BYTES',len(raw))
+            try:doc=json.loads(raw)
+            except (ValueError,UnicodeError):
+              print('TTI_GH_MODELS_CATALOG_NOT_JSON')
+              raise SystemExit(3)
             models=doc if isinstance(doc,list) else doc.get('models',[])
             print('TTI_GH_MODELS_CATALOG_ACCESS',len(models),type(doc).__name__)
             print('TTI_GH_MODELS_METADATA_ONLY_NO_INFERENCE')
