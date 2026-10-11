@@ -73,4 +73,25 @@ await scenario('?id=abc123&rev=1',{
     archive_image:{url:'https://example.org/news.jpg',generated:false}
   }]}
 },'https://example.org/news.jpg');
+// A provisional Telegram photo can exist BEFORE the editorial READY file.
+await scenario('?id=early123&rev=1',{
+ 'ttittulares/prepared.json':{items:[]},
+ 'telegram/ttittulares-deliveries.json':{items:[{
+   event_id:'early123',revision:1,delivery_key:'early123:r1:readonly',
+   status:'sent',final:false,is_photo:true,
+   image_url:'https://img.example.org/first-provisional.jpg',
+   telegram_message_id:1011
+ }]}
+},'https://img.example.org/first-provisional.jpg');
+// When the article photo arrives after a text alert, retrieve exactly the
+// original archive URL stored on the same editorial ledger row.
+await scenario('?id=late123&rev=1',{
+ 'ttittulares/prepared.json':{items:[]},
+ 'telegram/ttittulares-deliveries.json':{items:[{
+   event_id:'late123',revision:2,delivery_key:'late123:r1:readonly',
+   status:'sent',final:true,is_photo:false,
+   telegram_message_id:2011,archive_telegram_message_id:2012,
+   archive_image_url:'https://img.example.org/late-archive.jpg'
+ }]}
+},'https://img.example.org/late-archive.jpg');
 console.log('TT_MOBILE_ARCHIVE_PHOTO_TEST_OK');
