@@ -17,6 +17,26 @@ vm.runInNewContext(code,context,{timeout:1000});
 const tt=context.__TT_UI_TEST__, st=tt.state;
 assert(tt,'UI test hooks unavailable');
 
+// Regression: the screenshot showed the same 🌶️ line once inside "explanation"
+// and again below the card, because closer_text was repeated visually.
+const twice=tt.itemData({
+  name:'Vinicius',
+  explanation:'TT#1 Vinicius es tendencia por una expulsión.\n🌶️ El VAR le peinó la jugada completa.',
+  closer_text:'🌶️ El VAR le peinó la jugada completa.'
+});
+assert.equal(twice.closer,'🌶️ El VAR le peinó la jugada completa.');
+assert.equal(twice.displayExpl,'TT#1 Vinicius es tendencia por una expulsión.');
+assert.equal(twice.editorial.split('🌶️').length-1,1,'Copied explanation must have exactly one remate');
+const embeddedOnly=tt.itemData({
+  explanation:'TT#3 #FelizDomingo es tendencia hoy.\n🌶️ Hasta el algoritmo ficha los domingos.\n🌶️ Hasta el algoritmo ficha los domingos.'
+});
+assert.equal(embeddedOnly.editorial.split('🌶️').length-1,1,'Duplicate embedded pepper line');
+assert(!embeddedOnly.displayExpl.includes('🌶️'),'Display explanation must exclude the punchline');
+const neutral=tt.itemData({explanation:'TT#2 ERC al Congreso es tendencia porque se confirmó la candidatura.'});
+assert.equal(neutral.editorial,neutral.displayExpl,'Missing remate must not be invented by the UI');
+assert.equal(neutral.closer,'','Missing remate is an editorial task, not a display duplication');
+
+
 st.app='tti';st.tab='listas';
 st.data={prepared:{items:[{event_id:'a'},{event_id:'b'},{event_id:'c'}]},
   decisions:{items:[{event_id:'a',status:'deleted'}]},
