@@ -29,7 +29,7 @@ TTI_DELIVERIES=ROOT/"telegram/ttittulares-deliveries.json"
 ARCHIVE_DIR=ROOT/"trends/archive-images"
 APP_URL=str(os.environ.get("TTENDENCIAS_APP_URL") or "https://tt-control.fabricelop.workers.dev").rstrip("/")
 BUTTONS_VERSION=5
-TERMINAL={"published","dismissed"}
+TERMINAL={"published","dismissed","deleted","removed","delete_pending","delete_failed"}
 
 
 def load(path, default):
@@ -395,6 +395,22 @@ def run_send(patch_path):
         rev=int(row.get("revision") or 0)
         if not tid:
             continue
+        # Guard even this legacy sender: image SHA changes or a new editorial
+        # revision must not resurrect an explicitly published/deleted story.
+        # The main readonly sender applies the same rule to both projects.
+        prior=[d for d in deliveries.get("items",[])
+               if (str(d.get("event_id") or "")==tid
+                   or (str(d.get("name") or "").strip().casefold()
+                       ==str(row.get("name") or "").strip().casefold()
+                       and str(row.get("name") or "").strip()))]
+        if any(str(d.get("status") or "").lower() in TERMINAL for d in prior):
+            print("TTENDENCIAS_SKIP_CLOSED_STORY",tid,flush=True)
+            continue
+        if any(str(d.get("status") or "").lower()=="sent" for d in prior):
+            # The text/photograph package is already in Telegram. Editing
+            # its buttons is safe, sending a second photograph is not.
+            print("TTENDENCIAS_SKIP_ALREADY_SENT",tid,flush=True)
+            continue
         text=package_text(row)
         if not text:
             continue
@@ -689,7 +705,7 @@ def apply_patch(patch_path):
         terminal=str(existing.get("status") or "").lower() in TERMINAL
         terminal_fields={}
         if terminal:
-            for k in ("status","published_at","dismissed_at","decision_source"):
+            for k in ("status","published_at","dismissed_at","deleted_at","decision_source"):
                 if k in existing:
                     terminal_fields[k]=existing[k]
         existing.update(incoming)
