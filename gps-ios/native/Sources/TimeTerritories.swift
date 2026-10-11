@@ -42,12 +42,14 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
 
 @MainActor final class TerritoryResolver: ObservableObject {
     @Published private(set) var busy = false
+    @Published private(set) var hitError = false
     @Published private(set) var message = "Pendiente de clasificar"
     private let geocoder = CLGeocoder()
 
     func classify(_ model: TimeModel, batch: Int = 12) async {
         guard !busy else { return }
         busy = true
+        hitError = false
         defer { busy = false }
         let cells = model.allCells.filter { model.data.territoryCache[$0.id] == nil }
             .sorted { (model.confirmedTotals()[$0.id] ?? 0) > (model.confirmedTotals()[$1.id] ?? 0) }
@@ -73,6 +75,7 @@ enum TerritoryLevel: String, CaseIterable, Identifiable {
                     }
                 }
             } catch {
+                hitError = true
                 message = "Consultas geográficas pausadas: \(error.localizedDescription)"
                 break // no bombardear el servicio de Apple si devuelve límite/error
             }
@@ -145,12 +148,12 @@ struct TerritoryStatsView: View {
             ProgressView(value:Double(totals.count-remaining),
                          total:Double(max(1,totals.count)))
                 .tint(.teal)
-            Text("Clasificación progresiva: al abrir esta pantalla se consultan hasta 8 cuadrículas pendientes. Puedes continuar con otras 24. Requiere Internet y envía a Apple el centro de cada cuadrícula consultada; las ya clasificadas quedan guardadas sin conexión.")
+            Text("Clasificación automática y gradual mientras esta pantalla esté abierta: grupos de hasta 8 cuadrículas, con pausas entre lotes y caché local. Si Apple limita el servicio, se detiene y podrás reanudarla con el botón. Requiere Internet y envía a Apple los centros consultados.")
                 .font(.caption2).foregroundStyle(.secondary)
             if resolver.busy { Text(resolver.message).font(.caption2) }
             if classified.isEmpty {
                 ContentUnavailableView("Aún sin territorios",systemImage:"globe.europe.africa",
-                  description:Text("Pulsa Clasificar 12 para empezar por las cuadrículas donde más tiempo has pasado."))
+                  description:Text("La clasificación empieza automáticamente por las cuadrículas donde más tiempo has pasado."))
             } else {
                 ForEach(classified,id:\.name) { row in
                     HStack(alignment:.top) {
@@ -175,7 +178,13 @@ struct TerritoryStatsView: View {
         }
         .padding(.top,5)
         .task {
-            if remaining > 0 { await resolver.classify(model,batch:8) }
+            // Sin pulsar repetidamente: trabajo solo con la vista abierta.
+            // No reintenta en bucle cuando Apple devuelve un error/cuota.
+            while !Task.isCancelled && remaining > 0 && !resolver.hitError {
+                await resolver.classify(model,batch:8)
+                if Task.isCancelled || resolver.hitError { break }
+                try? await Task.sleep(for:.seconds(20))
+            }
         }
     }
 }
