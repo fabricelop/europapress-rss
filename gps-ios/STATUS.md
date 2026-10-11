@@ -1,5 +1,12 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## Resultado en iPhone con Sideloadly (comunicado por el usuario, 11/10/2026)
+- [x] El usuario instaló la compilación de widgets (la app presenta su sección de ajustes para widgets).
+- [ ] iPhone muestra **«App Group no autorizado»**: el contenedor compartido no está disponible al ejecutarse con el perfil generado por Sideloadly y Apple ID personal gratuito.
+- [ ] El widget **no aparece en la galería**: comprobar primero «Advanced Options → Remove App Extensions (PlugIns)» de Sideloadly; el estado de App Group y la ausencia de widget son problemas distintos.
+- No volver a generar otra IPA ni recomendar desinstalar la app sin comprobar el estado de la extensión y la firma; preservar datos SQLite y copia JSON.
+- App Groups requieren autorización del identificador en el perfil de aprovisionamiento tanto de la app como de la extensión; compilación Xcode sin firma y los 26 tests no validan esa autorización en el teléfono.
+
 ## Widgets iPhone — código y artefacto verificados (NO instalado todavía)
 - [x] [GitHub Actions: compilación iPhone + extensión WidgetKit y XCTest, ejecución 38124014988](https://github.com/fabricelop/europapress-rss/actions/runs/38124014988), 11/10/2026: **26 pruebas, 0 fallos**. El paso de compilación iPhone y widget terminó correctamente. Artefacto 11695859793 disponible hasta 16/10/2026.
 - [x] IPA experimental desempaquetada: `MiMapaDelTiempo-widgets-unsigned.ipa` (506989 bytes); aplicación `es.mimapadeltiempo.app` versión `1.0.3` build 4; extensión embebida `MiMapaWidgets.appex` con `com.apple.widgetkit-extension` y build 4.
