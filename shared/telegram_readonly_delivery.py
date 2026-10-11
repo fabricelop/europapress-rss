@@ -827,6 +827,24 @@ def selftest():
             new=next(x for x in ledger["items"] if x["event_id"]=="photo123")
             assert new["is_photo"] and new["telegram_message_id"]==993
             assert len(ledger["items"])==2
+            put("ttittulares/prepared.json",{"items":[{
+                "event_id":"photo123","revision":2,
+                "prepared_at":"2026-10-09T16:00:00Z",
+                "title":"Urgencia con foto inicial",
+                "factual_summary":"El organismo confirmó los datos.",
+                "tweet":{"text":"El organismo confirmó los datos.",
+                         "remate":"🌶️ Remate aprobado."},
+                "archive_image":{"url":"https://img.example.org/early.jpg",
+                                 "generated":False}
+            }]})
+            before=len(methods)
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert (n_sent,n_updated)==(0,1)
+            assert methods[before:]==[("editMessageMedia",993,0,True)]
+            ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            updated_photo=next(x for x in ledger["items"] if x["event_id"]=="photo123")
+            assert updated_photo["telegram_message_id"]==993 and updated_photo["final"]
+            assert len(ledger["items"])==2,"Final photo must edit the first card"
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
