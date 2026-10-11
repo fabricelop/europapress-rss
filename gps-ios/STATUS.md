@@ -1,5 +1,11 @@
 # Estado — 11 octubre 2026 · v0.3 GPS inteligente
 
+## v0.5 — verificación final (11/10/2026)
+- [x] [Build Release + XCTest en macOS / Xcode, run 38141212774](https://github.com/fabricelop/europapress-rss/actions/runs/38141212774): **34 tests ejecutados, 0 fallos**.
+- [x] IPA `MiMapaDelTiempo-v05-unsigned.ipa` (677877 bytes) recuperada y comprobada: ZIP válido, `CFBundleIdentifier=es.mimapadeltiempo.app`, `CFBundleShortVersionString=1.0.5`, build 5. La extensión `MiMapaWidgets.appex` está incluida, con build 5 y `com.apple.widgetkit-extension`.
+- [ ] Pendiente confirmar en iPhone instalación real y preservación del historial; los tests de simulador no validan consumo GPS, geocodificación en calle ni App Group con Apple ID gratuita.
+- [ ] Widget en la galería y App Group autorizado **siguen sin resolver**; no confundir extensión compilada con widget operativo en iPhone.
+
 ## v0.5 — siguiente bloque tras prueba de paseo (11/10/2026)
 - Rama aislada `feature/mi-mapa-del-tiempo-ios-v05`; `main`, la rama v0.3 y la v0.4 instalada no se modifican.
 - **Batería:** se sustituye `kCLLocationAccuracyBestForNavigation` por `kCLLocationAccuracyBest`, filtro de distancia 5 m en movimiento y 35 m en reposo; detección por movimiento y reanudación explícita de actualizaciones desde reposo. La autonomía real queda por medir en iPhone. El 13 % de Ajustes → Batería no es una medida causal de consumo ahorrable. Registro local de eventos `GPSPowerEvent`, disparos manuales y descansos, con diagnóstico.
