@@ -89,16 +89,12 @@ struct OfflineGridMap: View {
                     // Misma delimitación visible sin Internet ni mapas descargados.
                     // El perímetro de una zona es más grueso que la rejilla normal.
                     for overlay in overlays {
-                        for edge in overlay.edges {
-                            let a=screen(edge.start,size:size),b=screen(edge.end,size:size)
-                            if CGRect(x:min(a.x,b.x),y:min(a.y,b.y),
-                                      width:max(1,abs(a.x-b.x)),
-                                      height:max(1,abs(a.y-b.y)))
-                                .intersects(CGRect(origin:.zero,size:size)) {
-                                var path=Path()
-                                path.move(to:a);path.addLine(to:b)
-                                context.stroke(path,with:.color(.teal),lineWidth:3)
-                            }
+                        for line in overlay.contours {
+                            let points=line.coordinates.map { screen($0,size:size) }
+                            guard points.count>1 else { continue }
+                            var path=Path()
+                            path.addLines(points)
+                            context.stroke(path,with:.color(.teal),lineWidth:3)
                         }
                         if let middle=overlay.center {
                             let center=screen(middle,size:size)
