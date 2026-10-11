@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-11T12:45:00+02:00",
-  "last_completed_at": "2026-10-11T12:48:30+02:00",
-  "updated_at": "2026-10-11T12:48:30+02:00",
+  "last_completed_at": "2026-10-11T12:48:50+02:00",
+  "updated_at": "2026-10-11T12:48:50+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,11 +16,11 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "workflow launched; repair run 38133191958 in progress; Gag IA enqueue step enabled",
+    "status": "completed; archive repair workflow succeeded; Gag IA enqueue step skipped because condition is disabled",
     "direct_imagegen": false,
     "run_id": "tr-20261011T124500+0200-chatgpt",
     "requested_at": "2026-10-11T12:45:00+02:00",
-    "completed_at": null,
+    "completed_at": "2026-10-11T12:48:50+02:00",
     "reason": "execution-start-pending-repair",
     "workflow_run_id": 38133191958
   },
@@ -30,11 +30,11 @@
     "project": "TTendencias",
     "run_id": "tr-20261011T124500+0200-chatgpt",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-11T12:45:00+02:00",
-    "updated_at": "2026-10-11T12:48:30+02:00",
-    "finished_at": "2026-10-11T12:48:30+02:00",
+    "updated_at": "2026-10-11T12:48:50+02:00",
+    "finished_at": "2026-10-11T12:48:50+02:00",
     "trend_id": null,
     "title": null,
     "current": 0,
@@ -56,16 +56,22 @@
       "remates_omitted": 0,
       "visual_repair_requested": true,
       "visual_backlog": 0,
-      "incidents": 0,
+      "incidents": 1,
       "images_generated": 0,
       "skipped_by_jit": 0,
       "reconciled_terminal": 0,
       "pending_reviewed": 4,
       "pending_repair_requested": 1
     },
-    "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación visual automática lanzada",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación de archivo completada; Gag IA automático sigue deshabilitado",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "code": "visual_ai_enqueue_step_disabled",
+        "scope": "visual_repair",
+        "message": "El workflow repair-ttendencias-explicadas.yml conserva `if: ${{ false }}` en el paso 'Encolar Gag IA ausente o inválido'. El run 38133191958 terminó correctamente, pero ese paso quedó skipped."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -137,6 +143,13 @@
         "trend_id": null,
         "title": null,
         "message": "Cierre verificado · 0/0 editorial; cola vacía; 4 Pendientes revisados; reparación visual automática lanzada"
+      },
+      {
+        "at": "2026-10-11T12:48:50+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual terminada · archivo procesado; encolado Gag IA omitido por condición deshabilitada"
       }
     ]
   },
