@@ -1376,7 +1376,7 @@ struct TimeMapView: View {
                     Button { searchOpen=true } label: {
                         Image(systemName:"magnifyingglass").padding(11)
                             .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
-                    }.accessibilityLabel("Buscar lugares y cuadrículas")
+                    }.accessibilityLabel("Buscar zonas y cuadrículas")
                     Button {
                         followLocation.toggle()
                         if followLocation {
@@ -1530,7 +1530,7 @@ private struct TimeLiveCounterNumbers: View {
             VStack(alignment: .leading, spacing: 7) {
                 let selectedPlace = picked.flatMap { model.placeFor($0) }
                 if let place = selectedPlace {
-                    Text("Lugar · \(place.name)")
+                    Text("Zona · \(place.name)")
                         .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
                     Text(DurationFormat.full(model.total(for:place,now:now)))
                         .font(.system(size:21,weight:.bold,design:.rounded))
