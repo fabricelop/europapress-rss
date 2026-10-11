@@ -24,8 +24,8 @@ struct CellHistoryView: View {
                         visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
                 LabeledContent("Identificador",value:cell.id)
                 if let place=model.placeFor(cell) {
-                    LabeledContent("Lugar",value:place.name)
-                    LabeledContent("Cuadrículas del lugar",value:String(place.cellIDs.count))
+                    LabeledContent("Zona",value:place.name)
+                    LabeledContent("Cuadrículas de la zona",value:String(place.cellIDs.count))
                 }
                 Button("Cambiar nombre") { nameEditor=true }
                 Button {
@@ -68,7 +68,7 @@ struct UserPlacesView: View {
     var body: some View {
         VStack(alignment:.leading,spacing:10) {
             if sorted.isEmpty {
-                ContentUnavailableView("Aún no hay lugares",systemImage:"mappin.and.ellipse",
+                ContentUnavailableView("Aún no hay zonas",systemImage:"mappin.and.ellipse",
                     description:Text("Pon nombre a una cuadrícula. Repite el mismo nombre en otra próxima para unirlas automáticamente."))
             }
             ForEach(sorted) { place in
@@ -92,7 +92,7 @@ struct UserPlacesView: View {
                                 in:RoundedRectangle(cornerRadius:13))
                 }
             }
-            Text("Los lugares se forman únicamente por nombres iguales. Un nombre repetido muy lejos no se agrupa sin confirmación.")
+            Text("Las zonas pueden agrupar cuadrículas nombradas o dibujadas.")
                 .font(.caption2).foregroundStyle(.secondary)
         }
     }
@@ -114,7 +114,7 @@ struct UserPlaceDetailView: View {
     var body: some View {
         List {
             if let place {
-                Section("Lugar") {
+                Section("Zona") {
                     LabeledContent("Nombre",value:place.name)
                     LabeledContent("Tiempo confirmado",
                         value:DurationFormat.full(visits.reduce(0) {$0+$1.confirmedSeconds}))
@@ -125,7 +125,7 @@ struct UserPlaceDetailView: View {
                         value:DurationFormat.full(visits.isEmpty ? 0 :
                             visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
                     LabeledContent("Cuadrículas",value:String(place.cellIDs.count))
-                    Button("Renombrar todo el lugar") {
+                    Button("Renombrar toda la zona") {
                         newName=place.name
                         changingName=true
                     }
@@ -138,7 +138,7 @@ struct UserPlaceDetailView: View {
                 Section("Calendario de presencia") {
                     TimeVisitCalendar(model:model,cellIDs:place.normalizedCellIDs)
                 }
-                Section("Cuadrículas de este lugar") {
+                Section("Cuadrículas de esta zona") {
                     ForEach(place.cellIDs,id:\.self) { id in
                         if let cell=TimeAnalytics.cell(id) {
                             Button {
@@ -154,7 +154,7 @@ struct UserPlaceDetailView: View {
                             }
                         }
                     }
-                    Text("Para sacar una cuadrícula del lugar, cámbiale o quítale el nombre. No se modifica su historial.")
+                    Text("Para sacar una cuadrícula de la zona, cámbiale o quítale el nombre. No se modifica su historial.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Section {
@@ -165,21 +165,21 @@ struct UserPlaceDetailView: View {
                 }
             }
         }
-        .navigationTitle(place?.name ?? "Lugar")
+        .navigationTitle(place?.name ?? "Zona")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Nuevo nombre del lugar",isPresented:$changingName) {
+        .alert("Nuevo nombre de la zona",isPresented:$changingName) {
             TextField("Nombre",text:$newName)
             Button("Guardar") {
                 if !model.renameWholePlace(placeID,to:newName) { failedName=true }
             }
             Button("Cancelar",role:.cancel) {}
         } message: {
-            Text("Cambia el nombre de todas las cuadrículas de este lugar, conservando sus tiempos.")
+            Text("Cambia el nombre de todas las cuadrículas de esta zona, conservando sus tiempos.")
         }
         .alert("Nombre ya utilizado",isPresented:$failedName) {
             Button("Entendido") {}
         } message: {
-            Text("Ya existe otro lugar con ese nombre. Renombra sus cuadrículas individualmente para decidir si unirlas.")
+            Text("Ya existe otra zona con ese nombre. Renombra sus cuadrículas individualmente para decidir si unirlas.")
         }
         .sheet(item:$editingCell) { c in
             TimeNameEditor(model:model,cell:c)
