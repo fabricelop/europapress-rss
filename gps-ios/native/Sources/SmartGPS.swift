@@ -2,6 +2,13 @@ import Foundation
 import CoreMotion
 import CoreLocation
 
+struct GPSPowerEvent: Codable, Equatable, Identifiable {
+    var id = UUID()
+    let date: Date
+    let mode: String
+    let cause: String
+}
+
 enum GPSPowerMode: String {
     case precision = "Máxima precisión"
     case rest = "Reposo inteligente"
