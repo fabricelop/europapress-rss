@@ -9,11 +9,15 @@ final class LiveActivityPresentationTests:XCTestCase {
             cellName:"Montevalle",cellNumber:"Cuadrícula 397",
             zoneName:"Montevalle",confirmedCellSeconds:45,
             confirmedZoneSeconds:1800,stayStartedAt:start,
-            timerValidUntil:start.addingTimeInterval(120),lastGPSAt:start,resting:false)
+            timerValidUntil:start.addingTimeInterval(120),lastGPSAt:start,resting:false,
+            nearbyIntensity:[0,1,2,1,4,2,0,2,0],
+            lastSixHours:[0,25,65,100,100,20],chartIsZone:true)
         let bytes=try! JSONEncoder().encode(state)
         let decoded=try! JSONDecoder().decode(TimeMapActivityAttributes.ContentState.self,from:bytes)
         XCTAssertEqual(decoded,state)
         XCTAssertEqual(decoded.confirmedZoneSeconds,1800)
+        XCTAssertEqual(decoded.nearbyIntensity.count,9)
+        XCTAssertEqual(decoded.lastSixHours.count,6)
     }
     func testUnavailableZoneIsNotFalselyReported() {
         let start=Date(timeIntervalSince1970:10000)
@@ -21,7 +25,9 @@ final class LiveActivityPresentationTests:XCTestCase {
             cellName:"Cuadrícula 12",cellNumber:"Cuadrícula 12",
             zoneName:nil,confirmedCellSeconds:20,confirmedZoneSeconds:nil,
             stayStartedAt:start,timerValidUntil:start.addingTimeInterval(120),
-            lastGPSAt:start,resting:false)
+            lastGPSAt:start,resting:false,
+            nearbyIntensity:Array(repeating:0,count:9),
+            lastSixHours:Array(repeating:0,count:6),chartIsZone:false)
         XCTAssertNil(state.confirmedZoneSeconds)
         XCTAssertNil(state.zoneName)
     }

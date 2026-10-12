@@ -1,6 +1,5 @@
 import Foundation
 import ActivityKit
-import WidgetKit
 
 /// Solicita y restaura la Live Activity sin App Group ni permisos de servidor.
 /// iOS puede terminarla por su límite de duración; solo se recupera al abrir la app
@@ -22,23 +21,14 @@ import WidgetKit
         let states=items.map { "\($0.id.prefix(8)): \($0.activityState)" }.joined(separator:", ")
         model.liveActivityDiagnostic = "ActivityKit: \(enabled ? "autorizado" : "no permitido") · \(items.count) actividad(es)" +
             (states.isEmpty ? "" : " · "+states)
-        let extensionURL=Bundle.main.builtInPlugInsURL?.appendingPathComponent("MiMapaWidgets.appex")
-        let embedded=extensionURL.map { FileManager.default.fileExists(atPath:$0.path) } ?? false
-        let extensionBundle=extensionURL.flatMap(Bundle.init(url:))
-        let point=(extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any])?["NSExtensionPointIdentifier"] as? String ?? "no consta"
-        model.widgetDiagnostic=embedded ?
-            "Extensión instalada · \(extensionBundle?.bundleIdentifier ?? "?") · \(point). App Group: \(TimeWidgetStorage.isAvailable ? "autorizado" : "no autorizado")." :
-            "Extensión MiMapaWidgets.appex no incluida: revisar IPA y firma de Impactor."
-        WidgetCenter.shared.getCurrentConfigurations { result in
-            Task { @MainActor in
-                switch result {
-                case .success(let widgets):
-                    model.widgetDiagnostic += " Widgets añadidos: \(widgets.count)."
-                case .failure(let error):
-                    model.widgetDiagnostic += " Error WidgetCenter: \(error.localizedDescription)"
-                }
-            }
-        }
+        let embedded=Bundle.main.builtInPlugInsURL.map {
+            FileManager.default.fileExists(atPath:
+                $0.appendingPathComponent("MiMapaWidgets.appex").path)
+        } ?? false
+        model.liveActivityDiagnostic += embedded ?
+            " · Extensión En vivo instalada" :
+            " · FALTA extensión En vivo en IPA firmado"
+
     }
 
     func restoreIfNeeded(from model:TimeModel) {
@@ -123,6 +113,10 @@ import WidgetKit
             end=max(start.addingTimeInterval(1),
                     (fix ?? now).addingTimeInterval(120))
         }
+        let visual=TimeLiveVisualization.neighborhood(center:cell,totals:confirmed)
+        let chartIDs=zone?.cellIDs ?? Set([cell.id])
+        let sixHours=TimeLiveVisualization.hourlyPresence(
+            intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
         let state=TimeMapActivityAttributes.ContentState(
             cellName:name,
             cellNumber:model.data.shortIDs[cell.id].map { "Cuadrícula \($0)" } ?? "Cuadrícula actual",
@@ -132,7 +126,10 @@ import WidgetKit
             stayStartedAt:start,
             timerValidUntil:end,
             lastGPSAt:fix,
-            resting:resting)
+            resting:resting,
+            nearbyIntensity:visual,
+            lastSixHours:sixHours,
+            chartIsZone:zone != nil)
         let content=ActivityContent(
             state:state,
             staleDate:resting ? nil : fix?.addingTimeInterval(90),

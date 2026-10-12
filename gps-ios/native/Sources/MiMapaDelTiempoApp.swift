@@ -161,7 +161,6 @@ struct SavedState: Codable {
     @Published var selected: Cell?
     @Published var gpsStatus = "Sin iniciar"
     @Published var liveActivityDiagnostic = "Sin comprobar"
-    @Published var widgetDiagnostic = "Sin comprobar"
     @Published var recording = false
     @Published var explore = false
     @Published var adaptive = true
@@ -204,7 +203,6 @@ struct SavedState: Codable {
         recording = false
         gpsStatus = "GPS en pausa · tiempo acumulándose en \(label(for:cell))"
         recordPowerEvent(mode:.rest,cause:"Pausa voluntaria desde \(label(for:cell))")
-        widgetPublisher.publish(from:self,force:true)
         activityPublisher.refresh(from:self,force:true)
         return true
     }
@@ -229,7 +227,6 @@ struct SavedState: Codable {
         data.savedVisitStart = nil
         normalizedCacheIntervalCount = -1
         save(force:true)
-        widgetPublisher.publish(from:self,force:true)
         recordPowerEvent(mode:.precision,cause:"Pausa finalizada; tiempo asumido guardado")
         activityPublisher.refresh(from:self,force:true)
     }
@@ -243,7 +240,6 @@ struct SavedState: Codable {
     @Published var forceBasicMap = false
     @Published private(set) var storeStatus = "Cargando"
     private var lastSaved = Date.distantPast
-    private let widgetPublisher = TimeWidgetPublisher()
     private let activityPublisher = TimeLiveActivityPublisher()
     private let territoryAutoClassifier = TerritoryAutoClassifier()
     private let fileURL: URL
@@ -363,7 +359,6 @@ struct SavedState: Codable {
         cellFillOpacity = min(1,max(0.08,UserDefaults.standard.object(forKey:"mapCellOpacityV13") as? Double ?? 0.52))
         showRoutes = UserDefaults.standard.object(forKey:"mapRoutesV5") as? Bool ?? true
         routePeriod = RouteDisplayPeriod(rawValue:UserDefaults.standard.string(forKey:"mapRoutePeriodV5") ?? "") ?? .today
-        widgetPublisher.publish(from:self,force:true)
     }
     // Sólo una lista visible de zonas. La agrupación histórica de nombres sigue
     // conservada y cada UserPlace se presenta como una zona editable.
@@ -396,7 +391,7 @@ struct SavedState: Codable {
         }
         invalidateZoneCatalog()
         save(force:true)
-        refreshWidgets()
+        refreshLive()
     }
     func deleteZone(_ id:UUID) {
         if let original=data.places.first(where:{$0.id == id}) {
@@ -541,8 +536,7 @@ struct SavedState: Codable {
     func reactivateLiveActivity() { activityPublisher.reactivate(from:self) }
     func restoreLiveActivityIfNeeded() { activityPublisher.restoreIfNeeded(from:self) }
     func checkLockScreen() { activityPublisher.check(from:self) }
-    func refreshWidgets() {
-        widgetPublisher.publish(from:self,force:true)
+    func refreshLive() {
         activityPublisher.refresh(from:self)
     }
     func setLockScreenEnabled(_ enabled: Bool) {
@@ -635,7 +629,7 @@ struct SavedState: Codable {
         }
         invalidateZoneCatalog()
         save(force:true)
-        refreshWidgets()
+        refreshLive()
     }
     @discardableResult
     func undoLastRename() -> Bool {
@@ -646,7 +640,7 @@ struct SavedState: Codable {
         renameUndoAvailable=false
         invalidateZoneCatalog()
         save(force:true)
-        refreshWidgets()
+        refreshLive()
         return true
     }
     @discardableResult
@@ -661,7 +655,7 @@ struct SavedState: Codable {
         for id in data.places[index].cellIDs { data.names[id]=name }
         invalidateZoneCatalog()
         save(force:true)
-        refreshWidgets()
+        refreshLive()
         return true
     }
     func removePlace(_ place:UserPlace) {
@@ -670,7 +664,7 @@ struct SavedState: Codable {
         data.places.removeAll { $0.id == place.id }
         invalidateZoneCatalog()
         save(force:true)
-        refreshWidgets()
+        refreshLive()
     }
     func placeFor(_ cell:Cell) -> UserPlace? {
         data.places.first(where:{$0.cellIDs.contains(cell.id)})
@@ -703,7 +697,6 @@ struct SavedState: Codable {
     func setTrackingEnabled(_ enabled: Bool) {
         data.trackingEnabled = enabled
         save(force: true)
-        widgetPublisher.publish(from:self,force:true)
         activityPublisher.refresh(from:self,force:true)
     }
     func updateCamera(_ region: MKCoordinateRegion) {
@@ -783,7 +776,6 @@ struct SavedState: Codable {
         }
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
-        widgetPublisher.publish(from:self)
         activityPublisher.refresh(from:self)
         GPSPersonalAlerts.shared.evaluate(model:self)
         objectWillChange.send()
@@ -903,8 +895,7 @@ struct SavedState: Codable {
             lastProcessedSample = data.fixes.last
             stableCell = data.fixes.last?.cell
             save(force:true)
-            widgetPublisher.publish(from:self,force:true)
-            objectWillChange.send()
+                objectWillChange.send()
             return points.count
         } catch {
             data = previousSnapshot
@@ -971,7 +962,6 @@ struct SavedState: Codable {
         normalizedCacheIntervalCount = -1
         pendingFixes=[]; pendingIntervals=[]; pendingTotals=[:]
         gpsStatus="Historial restaurado · GPS detenido"
-        widgetPublisher.publish(from:self,force:true)
         activityPublisher.refresh(from:self,force:true)
     }
 
@@ -1360,7 +1350,7 @@ struct RootView: View {
                 .background(Color(.systemBackground).ignoresSafeArea())
             }
         }
-        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() }; model.refreshWidgets() }
+        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() }; model.refreshLive() }
         .onChange(of:faceIDEnabled) { _, enabled in
             unlocked = !enabled
             if enabled { checkFaceID() }
@@ -1936,8 +1926,8 @@ struct TimeSettingsView: View {
                         }
                 }
                 Section("Pantalla de bloqueo") {
-                    NavigationLink("Widgets y actividad en directo") {
-                        TimeLockScreenSettingsView(model:model)
+                    NavigationLink("En vivo · pantalla bloqueada") {
+                        TimeLiveSettingsView(model:model)
                     }
                 }
                 Section("Diagnóstico") {
