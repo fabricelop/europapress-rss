@@ -487,8 +487,8 @@ def resolve_duplicate(payload, eid, previous, queue, decisions, status=None):
     if original is None and decision is None and status_original is None:
         raise ValueError("el acontecimiento original no existe en el estado autoritativo")
     state=str((decision or {}).get("status") or (original or {}).get("status") or (status_original or {}).get("status") or "").upper()
-    if state not in {"PUBLISHED","DISMISSED"}:
-        raise ValueError("la noticia original no consta publicada ni descartada por el usuario")
+    if state not in {"PUBLISHED","DISMISSED","DELETED"}:
+        raise ValueError("la noticia original no consta publicada, descartada o borrada por el usuario")
     if state=="PUBLISHED" and payload.get("no_material_update") is not True:
         raise ValueError("falta confirmar explícitamente ausencia de novedad material")
     return ("SKIPPED_DUPLICATE" if state=="PUBLISHED" else "DISMISSED"),original_id,reason
@@ -496,10 +496,11 @@ def resolve_duplicate(payload, eid, previous, queue, decisions, status=None):
 
 def selftest_duplicate():
     queue={"items":[{"event_id":"old","status":"PUBLISHED"},{"event_id":"dismissed","status":"DISMISSED"}]}
-    decisions={"items":[{"event_id":"old","status":"published"},{"event_id":"dismissed","status":"dismissed"}]}
+    decisions={"items":[{"event_id":"old","status":"published"},{"event_id":"dismissed","status":"dismissed"},{"event_id":"deleted","status":"deleted"}]}
     payload={"duplicate_of_event_id":"old","reason":"Mismo hecho sin información adicional","no_material_update":True}
     assert resolve_duplicate(payload,"new",None,queue,decisions)[0]=="SKIPPED_DUPLICATE"
     assert resolve_duplicate({**payload,"duplicate_of_event_id":"dismissed"},"new",None,queue,decisions)[0]=="DISMISSED"
+    assert resolve_duplicate({**payload,"duplicate_of_event_id":"deleted"},"new",None,queue,decisions)[0]=="DISMISSED"
     for invalid in ({**payload,"no_material_update":False},{**payload,"duplicate_of_event_id":"unknown"}):
         try: resolve_duplicate(invalid,"new",None,queue,decisions)
         except ValueError: pass
