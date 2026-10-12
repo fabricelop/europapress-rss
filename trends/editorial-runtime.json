@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T21:46:23+02:00",
-  "last_completed_at": "2026-10-12T21:48:56+02:00",
-  "updated_at": "2026-10-12T21:48:56+02:00",
+  "last_started_at": "2026-10-12T22:15:00+02:00",
+  "last_completed_at": "2026-10-12T22:17:40+02:00",
+  "updated_at": "2026-10-12T22:17:40+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,9 +18,9 @@
     "persisted_trigger": true,
     "status": "completed",
     "direct_imagegen": false,
-    "run_id": "tr-1791834387-chat",
-    "requested_at": "2026-10-12T21:46:23+02:00",
-    "completed_at": "2026-10-12T21:48:15+02:00",
+    "run_id": "tr-20261012T221500+0200-chat",
+    "requested_at": "2026-10-12T22:15:00+02:00",
+    "completed_at": "2026-10-12T22:17:24+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "skipped"
   },
@@ -28,13 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791834387-chat",
+    "run_id": "tr-20261012T221500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T21:46:23+02:00",
-    "updated_at": "2026-10-12T21:48:56+02:00",
-    "finished_at": "2026-10-12T21:48:56+02:00",
+    "started_at": "2026-10-12T22:15:00+02:00",
+    "updated_at": "2026-10-12T22:17:40+02:00",
+    "finished_at": "2026-10-12T22:17:40+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,7 +62,7 @@
       "telegram_provisionals_finalized": 0,
       "telegram_orphans": 0
     },
-    "message": "Cierre verificado · 0/0 trabajo editorial; cola 0, sin reexplicaciones pendientes y Telegram sin huérfanos. El saneamiento de Pendientes se ejecutó y la auditoría Telegram quedó en 0. Sin ImageGen directo ni Vercel.",
+    "message": "Cierre verificado · 0/0 trabajo editorial; cola 0, sin reexplicaciones y Telegram consistente. Saneamiento de Pendientes disparado; sin ImageGen directo ni Vercel.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,45 +75,38 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T21:46:23+02:00",
+        "at": "2026-10-12T22:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, reexplicaciones, Pendientes y auditoría Telegram antes de cerrar la pasada."
+        "message": "Inicio · cola editorial 0; comprobando reexplicaciones, Pendientes recientes y correspondencia con Telegram."
       },
       {
-        "at": "2026-10-12T21:48:13+02:00",
+        "at": "2026-10-12T22:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando cierre · cola editorial 0; sin nuevas revisiones activas ni reexplicaciones detectadas; auditoría Telegram sin huérfanos."
+        "message": "Verificando saneamiento de Pendientes y auditoría Telegram tras el trigger de esta pasada."
       },
       {
-        "at": "2026-10-12T21:48:15+02:00",
+        "at": "2026-10-12T22:17:24+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes ejecutado · reparación de imágenes de archivo aplicada donde correspondía."
+        "message": "Auditoría Telegram actualizada · 0 huérfanos y 0 desajustes bidireccionales."
       },
       {
-        "at": "2026-10-12T21:48:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Auditoría Telegram actualizada · 0 huérfanos sin resolver."
-      },
-      {
-        "at": "2026-10-12T21:48:56+02:00",
+        "at": "2026-10-12T22:17:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 0/0 trabajo editorial; cola 0, sin reexplicaciones pendientes y Telegram sin huérfanos. Sin ImageGen directo ni Vercel."
+        "message": "Cierre verificado · 0/0 trabajo editorial; cola 0, sin reexplicaciones y Telegram consistente. Saneamiento de Pendientes disparado; sin ImageGen directo ni Vercel."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-1791834387-chat",
+  "run_id": "tr-20261012T221500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
