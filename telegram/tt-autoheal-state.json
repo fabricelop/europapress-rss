@@ -2,65 +2,48 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-12T21:58:29.831563+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-12T21:58:47.138228+00:00",
+      "issue_count": 1,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "725f2c198fc7",
           "title": "Locura en el Levante - Sevilla: tres goles y una expulsión en el descuento para firmar un empate de ",
-          "seconds": 274,
+          "seconds": 292,
           "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 579,
-          "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
-        "telegram-pinned-index.yml"
+        "send-ttittulares-ready-telegram.yml"
       ],
       "repair_errors": [],
-      "open_signature": "3b96fec7181fbc2f85759a0c1ecc071f49f0e9ef13e92d7ef615947b8939d666",
+      "open_signature": "71ec99765cc44efb46590468c85dab11b55fd21ca9f837fd339bfb68703aed30",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-12T21:58:29.831563+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-12T21:58:47.138228+00:00",
+      "issue_count": 1,
       "issues": [
         {
           "kind": "orphan_provisional",
           "id": "d7b672dc554f",
           "title": "Bale",
-          "seconds": 2160,
+          "seconds": 2178,
           "workflow": null
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 579,
-          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "b0e674652052a7f83c7fa882d94f2931690718b75dfd5193dafefed55f946f92",
+      "open_signature": "6455f8bbaa9c337dc2bda671dd3bc0e2fe0dbb3142c0a62549a6c83d79e76942",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-12T21:58:29.831563+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-12T21:58:47.138228+00:00",
     "ttittulares:telegram-pinned-index.yml": "2026-10-12T21:58:29.831563+00:00",
     "ttendencias:telegram-pinned-index.yml": "2026-10-12T21:58:29.831563+00:00"
   },
-  "checked_at": "2026-10-12T21:58:29.831563+00:00"
+  "checked_at": "2026-10-12T21:58:47.138228+00:00"
 }
