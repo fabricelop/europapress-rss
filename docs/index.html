@@ -59,9 +59,9 @@ const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.e
 const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
 const fields={
 tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json'],
-tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json']
+tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
 };
-const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions'};
+const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  let errors=[];
  const sources=force?[RAW+path,SITE_DATA+path]:[RAW+path,SITE_DATA+path];
@@ -92,7 +92,7 @@ function setApp(app){
  try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
  render();load(true)
 }
-function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['explicadas','Explicadas'],['historico','Histórico']]}
+function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['pendientes','Pendientes'],['explicadas','Explicadas'],['historico','Histórico']]}
 function ttiRows(){
  const s=state.data.status||{},d=decisions(),prepared=(state.data.prepared?.items||[]).filter(x=>!isClosed(d.get(String(x.event_id))));
  if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
@@ -112,12 +112,15 @@ function trendClosed(x){
 function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
- if(state.tab==='top'){
+ if(state.tab==='top'||state.tab==='pendientes'){
   // A single view shows BOTH the rank and the current editorial state.
   // Matching is by normalized literal trend name (including group members),
   // not by mutable ranking or by Telegram delivery alone.
   const normal=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES').replace(/\s+/g,' ');
   const requestsByName=new Map(),completedByName=new Map();
+  const queued=new Map((state.data.editorialQueue?.items||[]).filter(v=>['preparing','update','ready'].includes(String(v.status||'').toLowerCase())).map(v=>[String(v.id||''),v]));
+  const running=state.data.editorialRuntime?.last_run;
+  const activeRun=running?.status==='RUNNING'&&!Number.isNaN(Date.parse(running.updated_at||''))&&Date.now()-Date.parse(running.updated_at)<15*60000;
   const ts=row=>Date.parse(row.updated_at||row.deleted_at||row.published_at||row.dismissed_at||
     row.explained_at||row.requested_at||row.delivered_at||'')||0;
   const closedStatuses=new Set(['deleted','published','dismissed','removed']);
@@ -224,7 +227,7 @@ function trendRows(){
     if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
    }
   }
-  return (recent.items||[]).slice(0,30).map((x,i)=>{
+  const mapped=(recent.items||[]).slice(0,30).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
    const finished=completedByName.get(normal(x.name))||{};
    const status=String(req.status||'').toLowerCase();
@@ -234,7 +237,9 @@ function trendRows(){
    // revision is explicitly in progress; never label it "por actualizar".
    const staleTop10=Number(x.rank||i+1)<=10&&latestAt&&
       Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
-   const working=['preparing','update','ready'].includes(status);
+   const queueItem=queued.get(String(req.id||''));
+   const working=!!queueItem||['preparing','update','ready'].includes(status);
+   const activelyEditing=!!(activeRun&&running.trend_id&&String(running.trend_id)===String(req.id||''));
    const failure=status==='problematic';
    const nameKey=normal(x.name);
    const currentId=String(req.id||finished.id||'');
@@ -257,7 +262,7 @@ function trendRows(){
    const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
    const editorialState=terminal?terminalLabel[terminal.status]:
       inExplained?'PENDIENTE EN EXPLICADAS':
-      working?'EN ELABORACIÓN':failure?'REVISIÓN':
+      activelyEditing?'EN ELABORACIÓN':working?'EN COLA':failure?'REVISIÓN':
       wasDelivered&&text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
       Number(x.rank||i+1)>10&&req.auto_queued===true?
         'NO PUBLICADA · PREPARAR NOVEDAD':
@@ -267,8 +272,10 @@ function trendRows(){
     _status:editorialState,_topOnly:true,_inExplained:inExplained,_telegramConfirmed:!!(wasDelivered&&!terminal),
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:inExplained||!wasDelivered?'':finished.closer_text||req.closer_text||'',
-    explained_at:latestAt,revision:finished.revision||req.revision||0};
+    explained_at:latestAt,revision:finished.revision||req.revision||0,
+    _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
+  return state.tab==='pendientes'?mapped.filter(x=>['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&x.rank<=10):mapped;
  }
  const latest=new Map();
  for(const x of ledger){
@@ -380,6 +387,9 @@ function rowCard(x,i){
  }
  if(x._topOnly){
   out.classList.add('trend-top');
+  if(x._queuedAt&&['EN COLA','EN ELABORACIÓN'].includes(x._status)){
+   const note=document.createElement('p');note.className='fact';note.textContent='En cola desde '+stamp(x._queuedAt)+(x._status==='EN COLA'?' · Aún no consta elaboración activa':' · Elaboración activa confirmada');out.querySelector('.card-body').insertBefore(note,a);
+  }
   if(x._inExplained){
    const note=document.createElement('p');
    note.className='fact';
@@ -395,7 +405,7 @@ function rowCard(x,i){
   // NOT currently in Explicadas or under editorial processing. A historical
   // explanation without Telegram delivery is not a completed current card.
   if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
-     !['EN ELABORACIÓN','REVISIÓN','EXPLICADA','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
+     !['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
    command('Preparar novedad','prepare');
   }
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
@@ -452,7 +462,7 @@ function render(){
   const status=state.data.status||{};
   $('source-counts').innerHTML='<span>Con 1 fuente: <b>'+esc(status.one_source_count??'—')+'</b></span><span>Con 2 fuentes: <b>'+esc(status.two_source_count??'—')+'</b></span>';
  }else {$('source-counts').replaceChildren();$('stats').classList.remove('five')}
-  const titles=state.app==='tti'?{listas:'Noticias listas',elaboracion:'En elaboración',problematicas:'Revisión y problemáticas',creciendo:'Noticias creciendo',tremending:'Tremending · Público',fuentes:'Fuentes del radar'}:{top:'Top 30 España',explicadas:'Tendencias explicadas',historico:'Histórico de tendencias'};
+  const titles=state.app==='tti'?{listas:'Noticias listas',elaboracion:'En elaboración',problematicas:'Revisión y problemáticas',creciendo:'Noticias creciendo',tremending:'Tremending · Público',fuentes:'Fuentes del radar'}:{top:'Top 30 España',explicadas:'Tendencias explicadas',historico:'Histórico de tendencias',pendientes:'Pendientes de elaborar · Top 10'};
   $('view-title').textContent=titles[state.tab]||'TT Actualidad';
  const last=state.app==='tti'?(state.data.status?.radar_at||state.data.status?.updated_at):state.data.recent?.captured_at;
   $('last-radar').textContent='Último radar: '+stamp(last);
