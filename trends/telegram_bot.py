@@ -1709,10 +1709,20 @@ def poll_packages(seconds=3300):
                 offset = max(offset, uid + 1)
                 package_state["last_update_id"] = uid
                 package_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+                newer=load(PACKAGE_STATE,{})
+                receipts=newer.get("technical_notices") or []
+                known={int(x.get("message_id") or 0) for x in receipts}
+                for entry in package_state.get("technical_notices") or []:
+                    mid=int(entry.get("message_id") or 0)
+                    if mid and mid not in known:
+                        receipts.append(entry)
+                        known.add(mid)
+                package_state["technical_notices"]=receipts[-200:]
                 save(PACKAGE_STATE, package_state)
                 dirty = True
 
                 if handle_run_command(upd.get("message")):
+                    package_state=load(PACKAGE_STATE,package_state)
                     continue
 
                 # Re-explain by replying directly to the delivered card.
