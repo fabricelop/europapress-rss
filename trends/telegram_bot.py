@@ -293,6 +293,14 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         )
         remote_state["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
         merge_instagram_last_action(remote_state, local_state)
+        receipts=remote_state.get("technical_notices") or []
+        receipt_ids={int(x.get("message_id") or 0) for x in receipts}
+        for notice in local_state.get("technical_notices") or []:
+            mid=int(notice.get("message_id") or 0)
+            if mid and mid not in receipt_ids and notice.get("bot_authored") is True:
+                receipts.append(notice)
+                receipt_ids.add(mid)
+        remote_state["technical_notices"]=receipts[-200:]
         save(PACKAGE_STATE, remote_state)
 
         remote_copy = load(COPY_STATE, {"version": 1, "items": []})
@@ -505,7 +513,26 @@ def call(method, payload=None):
             raise RuntimeError(body or str(e))
     if not out.get("ok"):
         raise RuntimeError(out.get("description") or out)
-    return out.get("result")
+    result=out.get("result")
+    if method=="sendMessage" and isinstance(result,dict):
+        body=str((payload or {}).get("text") or "")
+        safe_prefixes=("TTendencias: solicitud /run", "TTendencias: ya hay una orden",
+                       "TTendencias: no se ha podido enviar /run",
+                       "Top 10 actualizado", "⚠️ No se pudo actualizar el Top 10",
+                       "⚠️ No encuentro el paquete vigente",
+                       "⚠️ No se pudo guardar el estado de TTendencias")
+        mid=int(result.get("message_id") or 0)
+        if mid>0 and body.startswith(safe_prefixes):
+            registry=load(PACKAGE_STATE,{"version":1,"last_update_id":0})
+            notices=registry.setdefault("technical_notices",[])
+            if not any(int(x.get("message_id") or 0)==mid for x in notices):
+                notices.append({"project":"ttendencias","message_id":mid,
+                                "kind":"execution_ack" if "/run" in body else "status_notice",
+                                "bot_authored":True,
+                                "created_at":datetime.now(MADRID).isoformat()})
+            registry["technical_notices"]=notices[-200:]
+            save(PACKAGE_STATE,registry)
+    return result
 
 
 def known_explained():
