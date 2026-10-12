@@ -34,6 +34,12 @@ struct TimeLiveSettingsView:View {
                 Label("Minimapa esquemático 3×3",systemImage:"square.grid.3x3")
                 Label("Permanencia confirmada en las últimas 6 horas",
                       systemImage:"chart.bar.fill")
+                Label("Cambio automático: estancia o desplazamiento",
+                      systemImage:"figure.walk.motion")
+                Label("Rastro de cuadrículas y distancia GPS de los últimos 15 min",
+                      systemImage:"point.topleft.down.to.point.bottomright.curvepath")
+                Label("Estancia de esta visita en la zona e hitos discretos",
+                      systemImage:"flag.checkered")
                 Text("El gráfico usa las posiciones ya registradas. No añade tiempo provisional. Si el GPS deja de informar, el reloj queda limitado y la actividad indica que sus datos están desactualizados.")
                     .font(.caption).foregroundStyle(.secondary)
             }

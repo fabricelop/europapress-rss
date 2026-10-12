@@ -8,6 +8,10 @@ import ActivityKit
     private var lastUpdated:Date = .distantPast
     private var lastFingerprint:TimeActivityFingerprint?
     private var updateTask:Task<Void,Never>?
+    private var previousZoneVisitSeconds:TimeInterval?
+    private var previousZoneID:UUID?
+    private var lastMilestone:String?
+    private var milestoneUntil:Date = .distantPast
 
     private func ongoingActivities()->[Activity<TimeMapActivityAttributes>] {
         Activity<TimeMapActivityAttributes>.activities.filter {
@@ -117,6 +121,30 @@ import ActivityKit
         let chartIDs=Set(zone?.cellIDs ?? [cell.id])
         let sixHours=TimeLiveVisualization.hourlyPresence(
             intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
+        let sixMinutes=TimeLiveVisualization.hourlyMinutes(
+            intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
+        let motion=TimeLiveMotion.analyze(model.data.fixes,now:now,center:cell)
+        let zoneStay=zone.map { model.zoneStaySeconds(for:$0,now:now) }
+        // Anunciar un hito únicamente al cruzarlo durante esta sesión; no
+        // repetir las horas acumuladas anteriores cuando se abre la app.
+        if let zone,let seconds=zoneStay {
+            if previousZoneID == zone.id,let previous=previousZoneVisitSeconds,
+               Int(previous/3600) < Int(seconds/3600),seconds>=3600 {
+                lastMilestone="\(Int(seconds/3600)) h en esta visita a \(zone.name)"
+                milestoneUntil=now.addingTimeInterval(90)
+            }
+            previousZoneID=zone.id
+            previousZoneVisitSeconds=seconds
+        } else {
+            previousZoneID=nil
+            previousZoneVisitSeconds=nil
+        }
+        if changed && model.data.intervals.filter({$0.cell.id==cell.id}).count<=1,
+           (confirmed[cell.id] ?? 0) < 60,
+           now.timeIntervalSince(start)<=100 {
+            lastMilestone="Nueva cuadrícula descubierta"
+            milestoneUntil=now.addingTimeInterval(90)
+        }
         let state=TimeMapActivityAttributes.ContentState(
             cellName:name,
             cellNumber:model.data.shortIDs[cell.id].map { "Cuadrícula \($0)" } ?? "Cuadrícula actual",
@@ -129,7 +157,15 @@ import ActivityKit
             resting:resting,
             nearbyIntensity:visual,
             lastSixHours:sixHours,
-            chartIsZone:zone != nil)
+            chartIsZone:zone != nil,
+            moving:motion.moving,
+            recentDistanceMeters:motion.recentDistanceMeters,
+            crossedCells:motion.crossedCells,
+            trailIndices:motion.trailIndices,
+            headingDegrees:motion.headingDegrees,
+            currentZoneStaySeconds:zoneStay,
+            lastSixMinutes:sixMinutes,
+            milestone:now<=milestoneUntil ? lastMilestone : nil)
         let content=ActivityContent(
             state:state,
             staleDate:resting ? nil : fix?.addingTimeInterval(90),

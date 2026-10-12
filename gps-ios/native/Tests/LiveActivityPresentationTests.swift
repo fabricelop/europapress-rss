@@ -11,7 +11,10 @@ final class LiveActivityPresentationTests:XCTestCase {
             confirmedZoneSeconds:1800,stayStartedAt:start,
             timerValidUntil:start.addingTimeInterval(120),lastGPSAt:start,resting:false,
             nearbyIntensity:[0,1,2,1,4,2,0,2,0],
-            lastSixHours:[0,25,65,100,100,20],chartIsZone:true)
+            lastSixHours:[0,25,65,100,100,20],chartIsZone:true,
+            moving:false,recentDistanceMeters:0,crossedCells:0,
+            trailIndices:[],headingDegrees:nil,currentZoneStaySeconds:300,
+            lastSixMinutes:[0,15,39,60,60,12],milestone:nil)
         let bytes=try! JSONEncoder().encode(state)
         let decoded=try! JSONDecoder().decode(TimeMapActivityAttributes.ContentState.self,from:bytes)
         XCTAssertEqual(decoded,state)
@@ -27,7 +30,10 @@ final class LiveActivityPresentationTests:XCTestCase {
             stayStartedAt:start,timerValidUntil:start.addingTimeInterval(120),
             lastGPSAt:start,resting:false,
             nearbyIntensity:Array(repeating:0,count:9),
-            lastSixHours:Array(repeating:0,count:6),chartIsZone:false)
+            lastSixHours:Array(repeating:0,count:6),chartIsZone:false,
+            moving:false,recentDistanceMeters:0,crossedCells:0,
+            trailIndices:[],headingDegrees:nil,currentZoneStaySeconds:nil,
+            lastSixMinutes:Array(repeating:0,count:6),milestone:nil)
         XCTAssertNil(state.confirmedZoneSeconds)
         XCTAssertNil(state.zoneName)
     }

@@ -19,6 +19,18 @@ struct TimeMapActivityAttributes:ActivityAttributes {
         // Porcentaje de presencia CONFIRMADA en cada hora (0...100).
         var lastSixHours:[Int]
         var chartIsZone:Bool
+        // Modo contextual y datos de un recorrido confirmado por muestras GPS.
+        var moving:Bool
+        var recentDistanceMeters:Int
+        var crossedCells:Int
+        var trailIndices:[Int]
+        var headingDegrees:Double?
+        // Esta visita a la zona, distinta del tiempo histórico total.
+        var currentZoneStaySeconds:TimeInterval?
+        // Minutos reales de cada ventana del gráfico (última a la derecha).
+        var lastSixMinutes:[Int]
+        // Hitos discretos; no se envían notificaciones adicionales.
+        var milestone:String?
     }
     var title="Mi Mapa Prueba"
 }

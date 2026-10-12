@@ -42,3 +42,28 @@ enum TimeLiveVisualization {
         return result.map { min(100,max(0,Int((min(3600,$0)/36).rounded()))) }
     }
 }
+
+
+extension TimeLiveVisualization {
+    /// Barras para el panel: minutos confirmados por bloque móvil de 60 min.
+    /// Las 6 ventanas avanzan hasta "ahora", la última equivale a los
+    /// 60 minutos previos, no a la hora civil en curso.
+    static func hourlyMinutes(intervals:[AssignedInterval],
+                              cellIDs:Set<String>,endingAt end:Date)->[Int] {
+        guard !cellIDs.isEmpty else { return Array(repeating:0,count:6) }
+        let start=end.addingTimeInterval(-21600)
+        let canonical=TimeAttribution.canonical(intervals.filter {
+            $0.end>start && $0.start<end
+        })
+        var results=[TimeInterval](repeating:0,count:6)
+        for interval in canonical where cellIDs.contains(interval.cell.id) {
+            for index in 0..<6 {
+                let lower=start.addingTimeInterval(TimeInterval(index*3600))
+                let upper=lower.addingTimeInterval(3600)
+                results[index] += max(0,min(interval.end,upper).timeIntervalSince(
+                    max(interval.start,lower)))
+            }
+        }
+        return results.map { min(60,max(0,Int(($0/60).rounded()))) }
+    }
+}
