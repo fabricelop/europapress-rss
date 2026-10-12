@@ -1,6 +1,12 @@
 name: TTendencias consolidar editorial
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - 'TTendencias Telegram informativo (sin IA ni publicación)'
+    types: [completed]
+  schedule:
+    - cron: '*/15 * * * *'
   push:
     branches: [main]
     paths:
