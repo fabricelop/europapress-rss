@@ -394,7 +394,7 @@ def trend_cards(now):
             continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
-        closer=trim((finished or {}).get("closer_text"),160)
+        closer=trim((finished or {}).get("closer_text") or req.get("closer_text"),160)
         if closer and closer not in detail:detail+="\n"+closer
         group=groups.get(tid) if group_id else None
         member_ids=[]
