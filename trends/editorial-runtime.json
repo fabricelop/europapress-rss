@@ -3,16 +3,13 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T12:09:48+02:00",
-  "last_completed_at": "2026-10-12T12:19:23+02:00",
-  "updated_at": "2026-10-12T12:19:23+02:00",
+  "last_started_at": "2026-10-12T12:45:00+02:00",
+  "last_completed_at": "2026-10-12T12:58:10+02:00",
+  "updated_at": "2026-10-12T12:58:10+02:00",
   "status": "success",
   "processed_ids": [
-    "e438eba75520",
-    "16948a69ceda",
-    "baa657b1d6a7",
-    "f4eca47349a7",
-    "03e585c1605f"
+    "760b1723977b",
+    "ba3f8b950b44"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -24,8 +21,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-1791799712505-tg-be685c",
-    "requested_at": "2026-10-12T12:09:48+02:00",
+    "run_id": "tr-20261012T124500+0200-chat",
+    "requested_at": "2026-10-12T12:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -33,25 +30,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791799712505-tg-be685c",
+    "run_id": "tr-20261012T124500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T12:09:48+02:00",
-    "updated_at": "2026-10-12T12:19:23+02:00",
-    "finished_at": "2026-10-12T12:19:23+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-12T12:45:00+02:00",
+    "updated_at": "2026-10-12T12:58:10+02:00",
+    "finished_at": "2026-10-12T12:58:10+02:00",
+    "current": 2,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 1,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 0,
       "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 3,
+      "grouped_into_existing_card": 2,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -61,12 +58,12 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 5,
+      "explanations_verified_under_280": 2,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "concurrent_closures": 2
+      "skipped_jit": 1
     },
-    "message": "Pasada completada · 5/5 revisiones resueltas. Viva España, Fiesta Nacional y Arriba España quedaron enlazadas al grupo existente de Fiesta Nacional; Viva la Guardia Civil y patrona quedaron cerradas por una pasada concurrente en su grupo de la Virgen del Pilar. Cola final 0, sin reexplicaciones pendientes. Sin ImageGen.",
+    "message": "Cierre verificado · Guardia Civil y Fuerzas Armadas quedaron enlazadas a grupos existentes; America r0 fue sustituida y la r1 quedó borrada antes del tratamiento. Cola final 0, sin reexplicaciones activas y sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,108 +76,157 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T12:09:48+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · 5 revisiones activas; releyendo estado autoritativo y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-12T12:10:10+02:00",
+        "at": "2026-10-12T12:48:35+02:00",
         "phase": "verifying",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Releyendo estado autoritativo del bloque de Fiesta Nacional."
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Releyendo estado autoritativo de America."
       },
       {
-        "at": "2026-10-12T12:10:25+02:00",
+        "at": "2026-10-12T12:48:45+02:00",
         "phase": "investigating",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Buscando detonante actual del 12 de octubre y el desfile de Madrid."
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Contrastando fuente 1/2 · el 12 de octubre recuerda la llegada de Colón a América en 1492."
       },
       {
-        "at": "2026-10-12T12:10:50+02:00",
+        "at": "2026-10-12T12:48:55+02:00",
         "phase": "investigating",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Contrastando fuentes actuales de la Fiesta Nacional."
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Contrastando fuente 2/2 · hoy España celebra la Fiesta Nacional y la Hispanidad."
       },
       {
-        "at": "2026-10-12T12:11:19+02:00",
+        "at": "2026-10-12T12:49:05+02:00",
         "phase": "investigating",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Hecho esencial verificado · corresponde al grupo de Fiesta Nacional ya explicado hoy."
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Hecho esencial verificado · America pertenece al mismo episodio de Fiesta Nacional ya explicado hoy."
       },
       {
-        "at": "2026-10-12T12:11:40+02:00",
-        "phase": "verifying",
-        "trend_id": "f4eca47349a7",
-        "title": "Viva la Guardia Civil / patrona",
-        "message": "Releyendo estado autoritativo del bloque de Guardia Civil y patrona."
-      },
-      {
-        "at": "2026-10-12T12:11:55+02:00",
-        "phase": "investigating",
-        "trend_id": "f4eca47349a7",
-        "title": "Viva la Guardia Civil / patrona",
-        "message": "Contrastando la festividad de la Virgen del Pilar y los actos del 12 de octubre."
-      },
-      {
-        "at": "2026-10-12T12:12:05+02:00",
+        "at": "2026-10-12T12:49:15+02:00",
         "phase": "drafting",
-        "trend_id": "f4eca47349a7",
-        "title": "Viva la Guardia Civil / patrona",
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Redactando explicación factual y comprobando límite de X; se reutiliza el remate del grupo existente."
+      },
+      {
+        "at": "2026-10-12T12:49:30+02:00",
+        "phase": "persisting",
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Guardando ficha Explicada enlazada al grupo de Fiesta Nacional."
+      },
+      {
+        "at": "2026-10-12T12:54:20+02:00",
+        "phase": "verifying",
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "Barrera JIT · la revisión 0 fue sustituida por la revisión 1; releyendo la acción más reciente."
+      },
+      {
+        "at": "2026-10-12T12:54:30+02:00",
+        "phase": "verifying",
+        "trend_id": "98d7f113aa13",
+        "title": "America",
+        "message": "La revisión 1 ya está terminalmente borrada; se omite sin reabrir ni duplicar la tarjeta."
+      },
+      {
+        "at": "2026-10-12T12:54:45+02:00",
+        "phase": "verifying",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Releyendo estado autoritativo de Fuerzas Armadas."
+      },
+      {
+        "at": "2026-10-12T12:55:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Contrastando fuente 1/2 · el desfile de la Fiesta Nacional reúne hoy a más de 4.300 efectivos."
+      },
+      {
+        "at": "2026-10-12T12:55:10+02:00",
+        "phase": "investigating",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Contrastando fuente 2/2 · Fuerzas Armadas protagonizan el desfile junto a Guardia Civil, Policía y otros cuerpos."
+      },
+      {
+        "at": "2026-10-12T12:55:20+02:00",
+        "phase": "investigating",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Hecho esencial verificado · corresponde al mismo episodio de Fiesta Nacional ya explicado hoy."
+      },
+      {
+        "at": "2026-10-12T12:55:30+02:00",
+        "phase": "drafting",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
         "message": "Redactando explicación factual y comprobando límite de X."
       },
       {
-        "at": "2026-10-12T12:13:26+02:00",
+        "at": "2026-10-12T12:55:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Remate del grupo existente revalidado; no se crea una tarjeta nueva."
+      },
+      {
+        "at": "2026-10-12T12:55:55+02:00",
         "phase": "persisting",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Guardando vínculo de las tres revisiones con la ficha ya explicada de Fiesta Nacional."
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Ficha Explicada guardada; actualizando requests."
       },
       {
-        "at": "2026-10-12T12:16:02+02:00",
+        "at": "2026-10-12T12:56:05+02:00",
+        "phase": "persisting",
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Requests actualizado; retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-12T12:57:35+02:00",
         "phase": "verifying",
-        "trend_id": "e438eba75520",
-        "title": "Viva España / Fiesta Nacional / Arriba España",
-        "message": "Tres revisiones enlazadas al grupo existente y retiradas de la cola."
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-12T12:18:31+02:00",
+        "at": "2026-10-12T12:57:45+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · verificando las 5 revisiones, la cola final y reexplicaciones pendientes."
+        "trend_id": "ba3f8b950b44",
+        "title": "Fuerzas Armadas",
+        "message": "Tendencia cerrada y verificada; el estado terminal deleted se hereda de la tarjeta de grupo ya borrada."
       },
       {
-        "at": "2026-10-12T12:19:23+02:00",
+        "at": "2026-10-12T12:57:55+02:00",
         "phase": "verifying",
-        "trend_id": "f4eca47349a7",
-        "title": "Viva la Guardia Civil / patrona",
-        "message": "Cierre concurrente detectado y verificado · ambas revisiones ya están explained en un grupo consistente; se conserva la versión autoritativa."
+        "trend_id": "760b1723977b",
+        "title": "Guardia Civil",
+        "message": "Reverificación correcta · texto y revisión coinciden; el aviso previo era efecto del estado terminal deleted heredado del grupo."
       },
       {
-        "at": "2026-10-12T12:19:23+02:00",
+        "at": "2026-10-12T12:58:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 5/5 revisiones resueltas; cola 0 y sin reexplicaciones pendientes."
+        "message": "Cierre verificado · Guardia Civil y Fuerzas Armadas quedaron enlazadas a grupos existentes; America r0 fue sustituida y la r1 quedó borrada antes del tratamiento. Cola final 0, sin reexplicaciones activas y sin ImageGen."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-1791799712505-tg-be685c",
+  "run_id": "tr-20261012T124500+0200-chat",
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 1,
+    "trends_processed": 2,
+    "trends_explained": 2,
+    "explanation_groups": 0,
     "new_cards": 0,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 3,
+    "grouped_into_existing_card": 2,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -190,9 +236,9 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 5,
+    "explanations_verified_under_280": 2,
     "remates_selected": 0,
     "remates_omitted": 0,
-    "concurrent_closures": 2
+    "skipped_jit": 1
   }
 }
