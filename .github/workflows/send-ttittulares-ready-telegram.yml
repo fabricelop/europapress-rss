@@ -30,6 +30,7 @@ jobs:
           sparse-checkout: |
             /shared/telegram_readonly_delivery.py
             /shared/telegram_orphan_audit.py
+            /telegram/orphan-audit-ttittulares.json
             /telegram/editorial-processing.json
             /telegram/ttittulares-deliveries.json
             /ttittulares/prepared.json
@@ -124,7 +125,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/orphan-audit-ttittulares.json telegram/orphan-audit-ttittulares.json
-            git add telegram/orphan-audit-ttittulares.json
+            git add --sparse telegram/orphan-audit-ttittulares.json
             if git diff --cached --quiet; then
               echo "TT_ORPHAN_AUDIT_NO_CHANGE"
               exit 0
