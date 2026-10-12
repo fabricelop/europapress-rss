@@ -173,6 +173,19 @@ def render(project,bot_id):
         count_pending+=1
     if not pending:chunks.append("• Ninguna")
     if count_pending<len(pending):chunks.append(f"… y {len(pending)-count_pending} más")
+    # Persistent diagnostics are shown INSIDE the existing pinned message:
+    # no extra Telegram alerts, no flooded widget or new chat cards.
+    audit=read("telegram/tt-autoheal-state.json",{})
+    last=moment(audit.get("checked_at"))
+    if last and (datetime.now(timezone.utc)-last).total_seconds()<12*60:
+        diag=(audit.get("projects") or {}).get(project) or {}
+        urgent=[x for x in diag.get("issues",[]) if
+                str(x.get("kind") or "") in {"editorial_overdue",
+                    "orphan_provisional","missing_delivery","unfinished_ready"}
+                and int(x.get("seconds") or 0)>=20*60]
+        if urgent:
+            chunks.append("\n⚠️ <b>Revisión necesaria: "+
+                          str(len(urgent))+" entrada(s)</b> · pulsa Autocorregir.")
     chunks.append("\n<i>Se actualiza sin crear nuevos índices. Borrar desde Telegram cierra cada entrada.</i>")
     text="\n".join(chunks)
     assert len(text)<=MAX_TEXT
