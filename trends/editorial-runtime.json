@@ -3,11 +3,13 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T08:15:00+02:00",
-  "last_completed_at": "2026-10-12T08:17:20+02:00",
-  "updated_at": "2026-10-12T08:17:20+02:00",
+  "last_started_at": "2026-10-12T08:45:00+02:00",
+  "last_completed_at": "2026-10-12T08:51:30+02:00",
+  "updated_at": "2026-10-12T08:51:30+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "62c80555d298"
+  ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
@@ -18,8 +20,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T081500+0200-chat",
-    "requested_at": "2026-10-12T08:15:00+02:00",
+    "run_id": "tr-1791787479008-manual",
+    "requested_at": "2026-10-12T08:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -27,35 +29,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T081500+0200-chat",
+    "run_id": "tr-1791787479008-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T08:15:00+02:00",
-    "updated_at": "2026-10-12T08:17:20+02:00",
-    "finished_at": "2026-10-12T08:17:20+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-12T08:45:00+02:00",
+    "updated_at": "2026-10-12T08:51:30+02:00",
+    "finished_at": "2026-10-12T08:51:30+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "processed": 0,
-      "closed": 0,
-      "skipped": 0,
+      "processed": 1,
+      "closed": 1,
+      "skipped": 2,
       "problematic": 0,
       "visual_backlog": 0,
       "pending_repair_requested": 1,
-      "pending_cards_checked": 10,
-      "missing_closer_reviewed": 3,
-      "pending_missing_closer": 2,
-      "stale_requests_reconciled": 0,
       "queue_remaining": 0,
       "new_cards": 0,
-      "reused_existing_card": 0,
+      "reused_existing_card": 1,
       "duplicate_cards_created": 0,
       "remaining_active_ids": []
     },
-    "message": "Cierre verificado · cola 0 y saneamiento visual solicitado",
+    "message": "Cierre verificado · cola editorial 0; una revisión enlazada y dos reconciliadas por mismo asunto",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -67,96 +65,173 @@
     },
     "remate_selections": [
       {
-        "trend_id": "db8e8811643b",
-        "revision": 0,
+        "trend_id": "62c80555d298",
+        "revision": 1,
         "candidate_count": 0,
         "candidates": [],
-        "selected_candidate": null,
+        "selected_candidate": "existing_group_closer",
         "selected_score": null,
-        "no_remate_reason": "sensitivity"
-      },
-      {
-        "trend_id": "38a1a9c41507",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitivity"
-      },
-      {
-        "trend_id": "3e3d3995fd67",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitivity"
+        "no_remate_reason": null,
+        "closer_text": "🌶️ Hasta el calendario ha salido de gala."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-12T08:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · cola 0; comprobando estado y saneamiento de Pendientes"
-      },
-      {
-        "at": "2026-10-12T08:16:00+02:00",
+        "at": "2026-10-12T08:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 10 tarjetas activas de menos de 24 h"
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Releyendo estado autoritativo de Hispanidad y #12DeOctubre"
       },
       {
-        "at": "2026-10-12T08:16:20+02:00",
+        "at": "2026-10-12T08:46:30+02:00",
+        "phase": "investigating",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Buscando detonante actual y relación con #12DeOctubre"
+      },
+      {
+        "at": "2026-10-12T08:47:10+02:00",
+        "phase": "investigating",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Contrastando fuente 1/2 · RTVE confirma Fiesta Nacional y desfile de hoy"
+      },
+      {
+        "at": "2026-10-12T08:47:20+02:00",
+        "phase": "investigating",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Contrastando fuente 2/2 · Defensa confirma acto central a las 11:00"
+      },
+      {
+        "at": "2026-10-12T08:47:30+02:00",
+        "phase": "investigating",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Hecho esencial verificado · mismo episodio que la ficha Feliz Día de la Hispanidad"
+      },
+      {
+        "at": "2026-10-12T08:48:00+02:00",
+        "phase": "drafting",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Reutilizando explicación factual del mismo episodio ya verificado"
+      },
+      {
+        "at": "2026-10-12T08:48:10+02:00",
+        "phase": "drafting",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Comprobando límite de X · ficha vigente 238 caracteres"
+      },
+      {
+        "at": "2026-10-12T08:48:20+02:00",
         "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "Tres Explicadas recientes conservan texto factual sin remate por sensibilidad"
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Remate existente conservado · no se genera tarjeta duplicada"
       },
       {
-        "at": "2026-10-12T08:16:40+02:00",
+        "at": "2026-10-12T08:48:40+02:00",
+        "phase": "persisting",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Guardando enlace de grupo en la ficha Explicada existente"
+      },
+      {
+        "at": "2026-10-12T08:49:10+02:00",
+        "phase": "persisting",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Actualizando requests de las tres revisiones con el grupo existente"
+      },
+      {
+        "at": "2026-10-12T08:49:30+02:00",
+        "phase": "verifying",
+        "trend_id": "69f612f2f564",
+        "title": "Hispanidad",
+        "message": "Hispanidad dejó de estar activa tras reconciliación por mismo asunto; se omite sin duplicar"
+      },
+      {
+        "at": "2026-10-12T08:49:35+02:00",
+        "phase": "verifying",
+        "trend_id": "a1651b732761",
+        "title": "#12DeOctubre",
+        "message": "#12DeOctubre dejó de estar activa tras reconciliación por mismo asunto; se omite sin duplicar"
+      },
+      {
+        "at": "2026-10-12T08:49:40+02:00",
+        "phase": "verifying",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Releyendo estado autoritativo de Feliz 12 · revisión 1 sigue preparing"
+      },
+      {
+        "at": "2026-10-12T08:49:50+02:00",
+        "phase": "investigating",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Señal social confirmada · Feliz 12 aparece asociado a saludos del Día de la Hispanidad"
+      },
+      {
+        "at": "2026-10-12T08:50:00+02:00",
+        "phase": "drafting",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Enlazando al texto factual ya verificado del mismo episodio"
+      },
+      {
+        "at": "2026-10-12T08:50:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Remate existente conservado · explicación compartida 238 caracteres"
+      },
+      {
+        "at": "2026-10-12T08:51:00+02:00",
+        "phase": "verifying",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Releyendo main · Feliz 12 r1 figura explained en el grupo existente"
+      },
+      {
+        "at": "2026-10-12T08:51:10+02:00",
+        "phase": "verifying",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Verificando id+revision y texto persistido · explicación y remate coinciden con la ficha de grupo"
+      },
+      {
+        "at": "2026-10-12T08:51:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual solicitado · 10 Pendientes revisadas; sin ImageGen directo"
+        "message": "Releyendo main · cola 0, sin preparing/update, sin rewrite_pending y sin problematic Top 10"
       },
       {
-        "at": "2026-10-12T08:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0 y sin preparing/update/problematic"
-      },
-      {
-        "at": "2026-10-12T08:17:20+02:00",
+        "at": "2026-10-12T08:51:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola 0 y saneamiento visual solicitado"
+        "message": "Cierre verificado · cola editorial 0; una revisión enlazada y dos reconciliadas por mismo asunto"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "remaining_problematic_ids": []
   },
-  "run_id": "tr-20261012T081500+0200-chat",
+  "run_id": "tr-1791787479008-manual",
   "summary": {
-    "processed": 0,
-    "closed": 0,
-    "skipped": 0,
+    "processed": 1,
+    "closed": 1,
+    "skipped": 2,
     "problematic": 0,
     "visual_backlog": 0,
     "pending_repair_requested": 1,
-    "pending_cards_checked": 10,
-    "missing_closer_reviewed": 3,
-    "pending_missing_closer": 2,
-    "stale_requests_reconciled": 0,
     "queue_remaining": 0,
     "new_cards": 0,
-    "reused_existing_card": 0,
+    "reused_existing_card": 1,
     "duplicate_cards_created": 0,
     "remaining_active_ids": []
   }
