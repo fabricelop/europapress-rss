@@ -19,7 +19,17 @@ REPEAT_ALERT_HOURS=6
 
 def read(name,default=None):
     try:return json.loads((ROOT/name).read_text(encoding="utf-8"))
-    except (OSError,ValueError):return default
+    except (OSError,ValueError):
+        if name=="telegram/lifecycle-baseline.json" and ROOT==Path(__file__).resolve().parents[1]:
+            try:
+                import subprocess
+                result=subprocess.run(
+                    ["git","show","origin/main:telegram/lifecycle-baseline.json"],
+                    cwd=str(ROOT),capture_output=True,text=True,check=True,timeout=8)
+                return json.loads(result.stdout)
+            except (OSError,ValueError,subprocess.SubprocessError):
+                print("TT_ORPHAN_BASELINE_NOT_READABLE",flush=True)
+        return default
 
 def when(value):
     try:
