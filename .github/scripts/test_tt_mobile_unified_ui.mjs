@@ -80,7 +80,7 @@ assert.equal(topRows[0]._status,'EXPLICACIÓN SIN ENTREGAR',
   'An editorial explanation without Telegram proof is not yet EXPLICADA');
 assert.equal(topRows[0].explanation,'',
   'Never offer unpublished explanations directly in Top 30');
-assert.equal(topRows[1]._status,'EN ELABORACIÓN','Top 30 should distinguish work in progress');
+assert.equal(topRows[1]._status,'EN COLA','Queued work must not be mistaken for active editorial execution');
 assert.equal(topRows[2]._status,'EXPLICACIÓN SIN ENTREGAR',
   'A grouped explanation is not publishable until its Telegram delivery');
 assert.equal(topRows[2].explanation,'',
