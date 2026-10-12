@@ -470,7 +470,10 @@ function render(){
   if(state.app==='tti')next.setMinutes(60);
   else {const minute=next.getMinutes();next.setMinutes(minute<15?15:minute<45?45:75)}
   $('next-radar').textContent='Próximo radar previsto: '+stamp(next.toISOString());
- $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'');
+ const editorialQueue=state.app==='tr'?(state.data.editorialQueue?.items||[]).filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())):[];
+ const oldest=editorialQueue.reduce((n,x)=>Math.min(n,Date.parse(x.requested_at||'')||Date.now()),Date.now());
+ const stalled=editorialQueue.length>0&&Date.now()-oldest>15*60000;
+ $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(state.app==='tr'?' · Interfaz v2026.10.12.2':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
 function trendRowsFor(section){const saved=state.tab;state.tab=section;try{return trendRows()}finally{state.tab=saved}}
