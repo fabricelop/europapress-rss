@@ -1,0 +1,59 @@
+name: WidgetProbe - IPA iPhone de diagnóstico
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v19-filter-diagnostics
+    paths:
+      - 'gps-ios/widget-probe/**'
+      - '.github/workflows/mi-mapa-widget-probe-ipa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/widget-probe
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generar proyecto sin App Group
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Widgets/*.swift
+          xcodegen generate --spec project.yml
+      - name: Compilar app y extensión
+        run: |
+          set -euo pipefail
+          xcodebuild -project WidgetProbe.xcodeproj -scheme WidgetProbe -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/widgetprobe" CODE_SIGNING_ALLOWED=NO build
+      - name: Verificar extensión y empaquetar
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/widgetprobe/Build/Products/Release-iphoneos/WidgetProbe.app"
+          test -d "$APP/PlugIns/WidgetProbeExtension.appex"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          path=Path(os.environ["APP"])
+          main=plistlib.loads((path/"Info.plist").read_bytes())
+          ext=plistlib.loads((path/"PlugIns/WidgetProbeExtension.appex/Info.plist").read_bytes())
+          assert main["CFBundleIdentifier"] == "es.mimapadeltiempo.widgetprobe"
+          assert ext["CFBundleIdentifier"] == "es.mimapadeltiempo.widgetprobe.widgets"
+          assert ext["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension"
+          assert main["NSSupportsLiveActivities"] is True
+          print("WidgetKit y Live Activity sin App Group comprobados")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -q -r WidgetProbe-unsigned.ipa Payload
+          unzip -t WidgetProbe-unsigned.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WidgetProbe-unsigned
+          path: gps-ios/widget-probe/WidgetProbe-unsigned.ipa
+          retention-days: 7
+          if-no-files-found: error
