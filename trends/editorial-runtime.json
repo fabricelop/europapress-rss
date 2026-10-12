@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-12T23:45:00+02:00",
-  "last_completed_at": "2026-10-12T23:49:10+02:00",
-  "updated_at": "2026-10-12T23:49:10+02:00",
+  "last_completed_at": "2026-10-12T23:49:15+02:00",
+  "updated_at": "2026-10-12T23:49:15+02:00",
   "status": "success",
   "processed_ids": [
     "d7b672dc554f"
@@ -22,7 +22,7 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "requested",
     "direct_imagegen": false,
     "run_id": "tr-20261012T234500+0200-chat",
     "requested_at": "2026-10-12T23:45:00+02:00",
@@ -38,8 +38,8 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-12T23:45:00+02:00",
-    "updated_at": "2026-10-12T23:49:10+02:00",
-    "finished_at": "2026-10-12T23:49:10+02:00",
+    "updated_at": "2026-10-12T23:49:15+02:00",
+    "finished_at": "2026-10-12T23:49:15+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -64,13 +64,11 @@
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 1,
+      "remates_omitted": 0,
       "telegram_provisionals_finalized": 0,
-      "telegram_orphans": 0,
-      "telegram_group_cards_updated": 0,
-      "telegram_duplicate_group_cards_preserved": 0
+      "telegram_orphans": 0
     },
-    "message": "Cierre · 1 tendencia reintentada; Bale continúa problematic por falta de detonante corroborado. Sin preparing/update, Telegram sin huérfanos.",
+    "message": "Cierre verificado · 0 preparing/update y 0 reexplicaciones pendientes. Bale fue reintentado y permanece problematic por falta de detonante actual corroborado; se conserva la tarjeta provisional 741.",
     "incident_count": 1,
     "incidents": [
       {
@@ -82,16 +80,10 @@
         "telegram_message_ids": [
           741
         ],
-        "message": "Bale sigue en Top 10, pero el segundo reintento tampoco aportó corroboración independiente suficiente del detonante español. Se conserva el provisional y no se publica una explicación especulativa."
+        "message": "Se localizaron referencias actuales a Gareth Bale y una comparación con Mbappé, pero no corroboración suficiente para atribuir con rigor ese contenido al origen del TT en España. Se mantiene la tarjeta provisional y el estado problematic."
       }
     ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 20
-    },
+    "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
@@ -141,28 +133,21 @@
         "phase": "persisting",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
-        "message": "Intento problemático persistido en requests y cola; provisional Telegram 741 conservado."
-      },
-      {
-        "at": "2026-10-12T23:48:50+02:00",
-        "phase": "verifying",
-        "trend_id": "d7b672dc554f",
-        "title": "Bale",
-        "message": "Releyendo main · Bale r0 sigue #6, problematic y sin explicación inventada."
+        "message": "Actualizando intento problemático sin cerrar ni borrar la tarjeta provisional."
       },
       {
         "at": "2026-10-12T23:49:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Telegram verificado · send workflow OK y auditoría con 0 huérfanos."
+        "trend_id": "d7b672dc554f",
+        "title": "Bale",
+        "message": "Releyendo main · Bale r0 persiste como problematic; 0 preparing/update y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-12T23:49:10+02:00",
+        "at": "2026-10-12T23:49:15+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre · sin preparing/update; queda Bale como problematic para un futuro reintento mientras siga Top 10."
+        "message": "Cierre verificado · sin cola editorial activa; Bale permanece problematic y la tarjeta provisional 741 se conserva."
       }
     ],
     "queue_complete": true,
@@ -191,10 +176,8 @@
     "vercel_deploys": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 1,
+    "remates_omitted": 0,
     "telegram_provisionals_finalized": 0,
-    "telegram_orphans": 0,
-    "telegram_group_cards_updated": 0,
-    "telegram_duplicate_group_cards_preserved": 0
+    "telegram_orphans": 0
   }
 }
