@@ -110,6 +110,11 @@ def telegram_delete(project,mid):
     chat_env="TELEGRAM_CHAT_ID" if project=="ttittulares" else "TTENDENCIAS_CHAT_ID"
     token=os.getenv(env,"")
     chat=os.getenv(chat_env,"")
+    if not chat:
+        # Authenticated index creation already persisted the exact private chat.
+        index=load("telegram/pinned-index-"+project+".json",{})
+        if index.get("pinned") is True:
+            chat=str(index.get("chat_id") or "")
     if not token or not chat:raise RuntimeError("Bot credentials/chat not configured")
     url="https://api.telegram.org/bot"+token+"/deleteMessage"
     payload=json.dumps({"chat_id":str(chat),"message_id":mid}).encode()

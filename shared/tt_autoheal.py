@@ -229,6 +229,9 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
         eligible=bool(human and os.getenv("TT_AUTOHEAL_SEND_ALERTS","0")=="1"
             and (signature!=prev.get("last_alert_signature")
             or not last or (now-last).total_seconds()>=3600))
+        # Silent by design: diagnostics live in GitHub and the fixed index.
+        # Never create any standalone maintenance notice, regardless of env.
+        eligible=False
         if eligible:
             try:
                 mid=notice(project,human,prev,now,send=send)
