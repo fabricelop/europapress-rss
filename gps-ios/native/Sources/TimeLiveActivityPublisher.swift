@@ -22,8 +22,8 @@ import WidgetKit
         let extensionURL=plugIns?.appendingPathComponent("MiMapaWidgets.appex")
         let extensionBundle=extensionURL.flatMap(Bundle.init(url:))
         let extensionID=extensionBundle?.bundleIdentifier ?? "sin ID"
-        let point=(extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any])?
-            ["NSExtensionPointIdentifier"] as? String ?? "sin NSExtension"
+        let extensionInfo=extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any]
+        let point=extensionInfo?["NSExtensionPointIdentifier"] as? String ?? "sin NSExtension"
         let appGroup=TimeWidgetStorage.isAvailable
         model.widgetDiagnostic=embedded ?
             "Extensión incluida · \(extensionID) · punto \(point). App Group: \(appGroup ? "autorizado" : "no disponible"). El alta en la galería depende de la firma de iOS." :

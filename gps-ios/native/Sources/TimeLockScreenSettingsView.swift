@@ -81,7 +81,8 @@ struct TimeLockScreenSettingsView:View {
             extensionDetails="No incorporada"
             return
         }
-        let point=(ext.infoDictionary?["NSExtension"] as? [String:Any])?["NSExtensionPointIdentifier"] as? String
+        let extensionInfo=ext.infoDictionary?["NSExtension"] as? [String:Any]
+        let point=extensionInfo?["NSExtensionPointIdentifier"] as? String
         let validPoint=point == "com.apple.widgetkit-extension"
         extensionDetails=validPoint ?
             "Incluida · \(ext.bundleIdentifier ?? "ID desconocido")" :

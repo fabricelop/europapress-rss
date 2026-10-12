@@ -3,7 +3,7 @@ import XCTest
 final class TimeGeoAlertRulesTests:XCTestCase {
     func testEntryRequiresActualChangeAndPreviousObservation() {
         XCTAssertFalse(GeoAlertRules.zoneEntered(previous:nil,current:"A"))
-        XCTAssertFalse(GeoAlertRules.zoneEntered(previous:"none",current:"A"))
+        XCTAssertTrue(GeoAlertRules.zoneEntered(previous:"none",current:"A"))
         XCTAssertFalse(GeoAlertRules.zoneEntered(previous:"A",current:"A"))
         XCTAssertTrue(GeoAlertRules.zoneEntered(previous:"A",current:"B"))
     }

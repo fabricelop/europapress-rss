@@ -6,7 +6,7 @@ import Foundation
 /// No crea un segundo CLLocationManager ni modifica la política de batería.
 enum GeoAlertRules {
     static func zoneEntered(previous:String?,current:String?)->Bool {
-        guard let previous,previous != "none",let current else { return false }
+        guard let previous,let current else { return false }
         return previous != current
     }
     static func stayReached(_ seconds:TimeInterval,minutes:Int)->Bool {
@@ -25,11 +25,13 @@ enum GeoAlertRules {
         let currentZone=model.activeCell.flatMap { model.primaryZone(for:$0) }
         let zoneID=currentZone?.id.uuidString
         let previous=settings.string(forKey:"gpsAlertsObservedZone")
-        // Guardar transición aun sin permiso para evitar repetir avisos antiguos.
-        if previous != zoneID {
-            settings.set(zoneID ?? "none",forKey:"gpsAlertsObservedZone")
+        let observedID=zoneID ?? "none"
+        // No repetir avisos ni modificar estado cuando seguimos sin zona.
+        if previous != observedID {
+            settings.set(observedID,forKey:"gpsAlertsObservedZone")
             settings.removeObject(forKey:"gpsAlertsStaySent")
-            if let currentZone, GeoAlertRules.zoneEntered(previous:previous,current:zoneID),
+            if let currentZone,let zoneID,
+               GeoAlertRules.zoneEntered(previous:previous,current:zoneID),
                eligible(zoneID,settings:settings),
                settings.bool(forKey:"gpsAlertsOnEnter") {
                 notify(title:"Has entrado en \(currentZone.name)",
