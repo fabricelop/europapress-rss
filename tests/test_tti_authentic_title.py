@@ -91,7 +91,7 @@ class AuthenticTitleTests(unittest.TestCase):
                 self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,0))
                 send.assert_not_called()
 
-    def test_earlier_deleted_story_deletes_duplicate_without_resurrection(self):
+    def test_earlier_deleted_story_keeps_other_telegram_message_for_editorial(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
             now=self._fixture(root,"ceuta")
@@ -105,10 +105,9 @@ class AuthenticTitleTests(unittest.TestCase):
                 "delivered_at":now.isoformat()
             }]})
             with patch.object(module,"ROOT",root), patch.object(module,"send",return_value=True) as send:
-                self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,1))
-                self.assertEqual(send.call_args.args[1],"deleteMessage")
-                self.assertEqual(send.call_args.args[2]["message_id"],3466)
-                self.assertEqual(module.load("telegram/ttittulares-deliveries.json",{})["items"][1]["status"],"deleted")
+                self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,0))
+                send.assert_not_called()
+                self.assertEqual(module.load("telegram/ttittulares-deliveries.json",{})["items"][1]["status"],"sent")
                 send.reset_mock()
                 self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,0))
                 send.assert_not_called()
