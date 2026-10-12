@@ -139,9 +139,16 @@ import ActivityKit
             previousZoneID=nil
             previousZoneVisitSeconds=nil
         }
-        if changed && model.data.intervals.filter({$0.cell.id==cell.id}).count<=1,
-           (confirmed[cell.id] ?? 0) < 60,
-           now.timeIntervalSince(start)<=100 {
+        // La prioridad es el descubrimiento de zona, seguido de cuadrícula.
+        // Sin historial previo confirmado nunca se atribuye "primera visita"
+        // a una zona que ya tenga horas acumuladas.
+        if changed,let zone,let total=zoneTotal,
+           total<60,now.timeIntervalSince(start)<=100 {
+            lastMilestone="Primera visita a \(zone.name)"
+            milestoneUntil=now.addingTimeInterval(90)
+        } else if changed,
+                  (confirmed[cell.id] ?? 0)<60,
+                  now.timeIntervalSince(start)<=100 {
             lastMilestone="Nueva cuadrícula descubierta"
             milestoneUntil=now.addingTimeInterval(90)
         }
@@ -158,7 +165,7 @@ import ActivityKit
             nearbyIntensity:visual,
             lastSixHours:sixHours,
             chartIsZone:zone != nil,
-            moving:motion.moving,
+            moving:motion.moving && !resting,
             recentDistanceMeters:motion.recentDistanceMeters,
             crossedCells:motion.crossedCells,
             trailIndices:motion.trailIndices,
