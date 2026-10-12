@@ -49319,11 +49319,11 @@
       "id": "98d7f113aa13",
       "name": "America",
       "rank": 8,
-      "status": "preparing",
-      "requested_at": "2026-10-12T12:21:46+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": true,
+      "status": "update",
+      "requested_at": "2026-10-12T12:52:17+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "05b3c6ce728b",
       "requested_together": [
@@ -49334,8 +49334,13 @@
         "America",
         "Fuerzas Armadas"
       ],
-      "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queued": false,
+      "auto_queue_scope": "top10",
+      "request_source": "telegram_reexplain",
+      "reexplain_instructions": "Vuelve a investigar esta tendencia con información ACTUALIZADA. Si se anunciaba un partido o acontecimiento futuro, comprueba si ya terminó y explica el resultado confirmado, no la previa.",
+      "rewrite_instruction": "Vuelve a investigar esta tendencia con información ACTUALIZADA. Si se anunciaba un partido o acontecimiento futuro, comprueba si ya terminó y explica el resultado confirmado, no la previa.",
+      "telegram_reexplain_from_revision": 0,
+      "telegram_reexplain_from_message_id": 707
     },
     {
       "id": "ba3f8b950b44",
@@ -49360,6 +49365,6 @@
       "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-12T12:49:57+02:00",
+  "updated_at": "2026-10-12T12:52:17+02:00",
   "count": 853
 }
