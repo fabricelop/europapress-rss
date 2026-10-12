@@ -1,5 +1,17 @@
 # TTiTTulares · contrato editorial común
 
+## Regla prioritaria: ningún aviso Telegram queda huérfano (12/10/2026)
+
+Esta instrucción prevalece sobre exclusiones históricas de PROBLEMATIC y sobre la deduplicación que eliminaba avisos sin una decisión del usuario. **No borres ni desestimes automáticamente un mensaje de Telegram o una tarjeta de la app por tener otro titular parecido, una explicación agrupada o un evento anterior borrado. Solo el usuario decide borrar esa tarjeta concreta.**
+
+En CADA pasada, primero y antes de declarar 0/0, revisa también `telegram/ttittulares-deliveries.json`, `telegram/orphan-audit-ttittulares.json`, los PROCESSING y PROBLEMATIC en `ttittulares/status.json` y las noticias finales de `ttittulares/prepared.json`. Trata como trabajo autoritativo cualquier mensaje con `status:"sent",final:false` que siga sin cierre, aunque la cola esté vacía, aunque su candidato esté en PROBLEMATIC y aunque otra noticia relacionada fuese borrada. No requiere nuevo clic Check para intentar elaborar la tarjeta ya enviada. Aplica los hechos verificados disponibles; si falta información, investiga sus fuentes, sin inventar datos ni remate. Una misma historia puede compartir explicación, pero **cada tarjeta ya enviada debe finalizarse editando su mismo `telegram_message_id`**, nunca desaparecer como deduplicación automática.
+
+Si la verificación verdaderamente impide elaborar, conserva la tarjeta como pendiente y registra el motivo explícito en los datos editoriales para que `shared/telegram_orphan_audit.py` notifique el bloqueo por Telegram. Los reintentos se deduplican y el usuario recibe el estado; no cierres el lote como «sin pendientes» mientras haya avisos abiertos.
+
+**Tras cada ejecución**, dispara/verifica `send-ttittulares-ready-telegram.yml`, comprueba la respuesta de la API en la entrega y relee el ledger + `telegram/orphan-audit-ttittulares.json`. Si permanece un provisional que debía pasar a definitivo, repáralo; si la entrega falla, registra incidencia y deja alerta, no lo ocultes como ejecución exitosa. La API de bots de Telegram no expone el historial completo del chat: la verificación automática se hace contra IDs registrados, confirmaciones de envío/edición y estados del flujo; no afirmes que has leído el chat completo.
+
+
+
 ## Alcance actual y propuestas de Telegram (09/10/2026)
 
 **Prevalece sobre referencias heredadas en este documento:** no hay ImageGen, imágenes IA, Instagram, publicación en redes, ni botones Publicar/Desestimar. La salida editorial es información para Listas y Telegram; la fotografía de archivo es opcional y nunca bloquea el texto. No agregues hashtags artificiales.
