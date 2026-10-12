@@ -20,7 +20,8 @@ import CoreLocation
 struct OfflineGridMap: View {
     @ObservedObject var model: TimeModel
     @Binding var region: MKCoordinateRegion
-    var onNavigate: (MKCoordinateRegion) -> Void
+    var onNavigate:(MKCoordinateRegion)->Void
+    var onSelect:((Cell)->Void)? = nil
     @State private var dragOffset: CGSize = .zero
 
     private func screen(_ coordinate: CLLocationCoordinate2D, size: CGSize) -> CGPoint {
@@ -86,6 +87,16 @@ struct OfflineGridMap: View {
                                 .foregroundColor(.black),at:CGPoint(x:rect.midX,y:rect.midY))
                         }
                     }
+                    if let cell=activeCell {
+                        let polygon=Grid.polygon(cell)
+                        let p0=screen(polygon[3],size:size)
+                        let p1=screen(polygon[1],size:size)
+                        let square=CGRect(x:min(p0.x,p1.x),y:min(p0.y,p1.y),
+                                        width:abs(p1.x-p0.x),height:abs(p1.y-p0.y))
+                        if square.intersects(CGRect(origin:.zero,size:size)) {
+                            context.stroke(Path(square),with:.color(.orange),lineWidth:4)
+                        }
+                    }
                     // Misma delimitación visible sin Internet ni mapas descargados.
                     // El perímetro de una zona es más grueso que la rejilla normal.
                     for overlay in overlays {
@@ -117,6 +128,13 @@ struct OfflineGridMap: View {
                     }
                 }
                 .contentShape(Rectangle())
+                .onTapGesture { point in
+                    let longitude=region.center.longitude +
+                        (Double(point.x / max(1,geo.size.width))-0.5)*region.span.longitudeDelta
+                    let latitude=region.center.latitude -
+                        (Double(point.y / max(1,geo.size.height))-0.5)*region.span.latitudeDelta
+                    onSelect?(Grid.cell(latitude:latitude,longitude:longitude))
+                }
                 .gesture(DragGesture(minimumDistance:5)
                     .onChanged { dragOffset=$0.translation }
                     .onEnded { translation in
