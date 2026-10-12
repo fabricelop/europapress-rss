@@ -1745,47 +1745,70 @@ struct TimeMapView: View {
 /// El reloj de 1Hz actualiza SOLO esta tarjeta y no invalida el mapa
 /// completo, que puede tener cientos de polígonos SwiftUI/MapKit.
 private struct TimeLiveCounterNumbers: View {
-    @ObservedObject var model: TimeModel
-    let picked: Cell?
+    @ObservedObject var model:TimeModel
+    let picked:Cell?
+    let following:Bool
 
-    var body: some View {
-        // TimelineView es el dueño del reloj: las notificaciones GPS no reinician
-        // un Timer.publish mientras SwiftUI reconstruye la tarjeta.
-        TimelineView(.periodic(from: .now, by: 1)) { context in
-            let now = context.date
-            VStack(alignment: .leading, spacing: 7) {
-                let selectedZone = picked.flatMap { model.primaryZone(for:$0) }
-                if let zone = selectedZone {
-                    Text("Zona · \(zone.cells.count) cuadrícula\(zone.cells.count == 1 ? "" : "s")")
-                        .font(.caption2.weight(.medium)).foregroundStyle(.secondary)
+    var body:some View {
+        TimelineView(.periodic(from:.now,by:1)) { context in
+            let now=context.date
+            let zone=picked.flatMap { model.primaryZone(for:$0) }
+            let isHere=picked != nil && picked == model.activeCell
+            VStack(alignment:.leading,spacing:9) {
+                if let zone {
+                    HStack {
+                        Label("Zona · \(zone.cellIDs.count) cuadrículas",
+                              systemImage:"square.3.layers.3d")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        if following { Image(systemName:"location.fill").foregroundStyle(.teal) }
+                    }
                     Text(DurationFormat.full(model.total(for:zone,now:now)))
-                        .font(.system(size:21,weight:.bold,design:.rounded))
+                        .font(.system(size:20,weight:.bold,design:.rounded))
                         .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
+                    if isHere {
+                        HStack(alignment:.top,spacing:12) {
+                            VStack(alignment:.leading,spacing:3) {
+                                Text("Estancia en zona").font(.caption2).foregroundStyle(.secondary)
+                                Text(DurationFormat.full(model.zoneStaySeconds(for:zone,now:now)))
+                                    .font(.subheadline.weight(.semibold)).monospacedDigit()
+                                    .lineLimit(1).minimumScaleFactor(0.6)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                            VStack(alignment:.leading,spacing:3) {
+                                Text("Estancia en cuadrícula").font(.caption2).foregroundStyle(.secondary)
+                                Text(DurationFormat.full(model.staySeconds(now:now)))
+                                    .font(.subheadline.weight(.semibold)).monospacedDigit()
+                                    .lineLimit(1).minimumScaleFactor(0.6)
+                            }.frame(maxWidth:.infinity,alignment:.leading)
+                        }
+                    }
                 }
                 if let picked {
-                    Text(selectedZone == nil ? "Cuadrícula · tiempo acumulado" :
-                         "Desglose · esta cuadrícula")
-                        .font(.caption2).foregroundStyle(.secondary)
-                    Text(DurationFormat.full(model.total(for:picked,now:now)))
-                        .font(selectedZone == nil ? .system(size:21,weight:.bold,design:.rounded) :
-                                                   .system(size:16,weight:.semibold,design:.rounded))
-                        .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
+                    HStack(alignment:.firstTextBaseline) {
+                        Text(zone == nil ? "Tiempo de cuadrícula" : "Acumulado de esta cuadrícula")
+                            .font(.caption2).foregroundStyle(.secondary)
+                        Spacer(minLength:5)
+                        Text(DurationFormat.full(model.total(for:picked,now:now)))
+                            .font(.subheadline.weight(.semibold))
+                            .monospacedDigit().lineLimit(1).minimumScaleFactor(0.6)
+                    }
+                    if zone == nil && isHere {
+                        HStack {
+                            Text("Estancia actual").font(.caption2).foregroundStyle(.secondary)
+                            Spacer()
+                            Text(DurationFormat.full(model.staySeconds(now:now)))
+                                .font(.subheadline.weight(.semibold)).monospacedDigit()
+                        }
+                    }
                 }
-                HStack {
-                    Text(model.isResting ? "Estancia actual (tiempo asumido)" :
-                         "Estancia actual (provisional)")
-                    Spacer()
-                    Text((picked == model.activeCell || picked == model.restingCell) ?
-                         DurationFormat.full(model.staySeconds(now:now)) : "—")
-                        .monospacedDigit()
-                }.font(.footnote).foregroundStyle(.secondary)
                 if model.isResting {
-                    Label("GPS pausado · tiempo acumulándose",systemImage:"moon.zzz.fill")
+                    Label("GPS en pausa · tiempo asumido",systemImage:"moon.zzz.fill")
                         .font(.caption2).foregroundStyle(.orange)
-                } else if let age=model.gpsFixAge(now:now), age>30 {
+                } else if let age=model.gpsFixAge(now:now),age>30 {
                     Text(age>120 ?
-                         "Sin GPS reciente (\(Int(age/60)) min). Estimación detenida." :
-                         "Última posición hace \(Int(age)) s · avance provisional")
+                         "Sin GPS reciente (\(Int(age/60)) min); contador provisional detenido." :
+                         "Último GPS hace \(Int(age)) s · tiempo provisional")
                         .font(.caption2).foregroundStyle(.orange)
                 }
             }
