@@ -69,7 +69,7 @@ enum GeoAlertRules {
         let content=UNMutableNotificationContent()
         content.title=title
         content.body=body
-        content.sound=.default
+        content.sound = .default
         center.add(UNNotificationRequest(identifier:UUID().uuidString,
                                           content:content,trigger:nil))
     }

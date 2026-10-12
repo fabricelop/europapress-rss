@@ -149,8 +149,7 @@ struct TimeWhereWasIView:View {
                             VStack(alignment:.leading,spacing:4) {
                                 Text(model.primaryZone(for:item.cell)?.name ?? model.label(for:item.cell))
                                     .font(.subheadline.weight(.semibold))
-                                Text(item.start.formatted(date:.abbreviated,time:.shortened)
-                                     +" – "+item.end.formatted(date:.abbreviated,time:.shortened))
+                                Text(item.start.formatted(date:.abbreviated,time:.shortened) + " – " + item.end.formatted(date:.abbreviated,time:.shortened))
                                     .font(.caption.monospacedDigit())
                                 HStack {
                                     Text(DurationFormat.full(item.seconds))
