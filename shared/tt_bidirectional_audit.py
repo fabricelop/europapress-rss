@@ -101,8 +101,8 @@ def audit(project,now=None):
             if str(x.get("status") or "").lower() in OPEN:
                 add(x,"app_requests",x.get("requested_at"))
         for x in archived.get("items",[]):
-            if str(x.get("status") or "").lower() in OPEN or
-               str(x.get("explanation") or "").strip():
+            if (str(x.get("status") or "").lower() in OPEN or
+                    str(x.get("explanation") or "").strip()):
                 add({**x,"status":"explained"},"app_explicadas",
                     x.get("requested_at") or x.get("explained_at"))
     issues=[]
@@ -124,9 +124,6 @@ def audit(project,now=None):
             issues.append({"kind":"app_final_not_delivered","id":eid,
                            "title":x["title"],"message_id":delivery["telegram_message_id"],
                            "repairable":True})
-        if (delivery.get("final") is True and x["status"] in {"preparing","processing","update","in_progress"}
-                and str(x.get("sources"))=="__unused__"):
-            pass
     # Telegram -> App: active news/trends must exist in current app state or
     # its durable editorial history; do NOT equate an old closed row with active.
     ready_ids={str(x.get("event_id") or x.get("id") or "") for x in archived.get("items",[])}
