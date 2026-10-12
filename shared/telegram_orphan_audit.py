@@ -36,7 +36,13 @@ def audit(project,now=None,root=None):
     delivery_path=("trends/telegram-image-deliveries.json" if trend
                    else "telegram/ttittulares-deliveries.json")
     doc=read(delivery_path,{"items":[]}) or {}
-    deliveries=doc.get("items") or []
+    checkpoint=read("telegram/lifecycle-baseline.json",{}) or {}
+    reset=(checkpoint.get("project_state") or {}).get(project) or {}
+    cutoff=when(checkpoint.get("activated_at"))
+    prior_max_mid=int(reset.get("historic_max_message_id") or 0)
+    protected_ids={str(x) for x in (reset.get("preserve_pending_ids") or [])}
+    deliveries=[x for x in doc.get("items",[]) or []
+                if not cutoff or int(x.get("telegram_message_id") or 0)>prior_max_mid]
     terminal={"deleted","published","dismissed","removed","delete_pending","delete_failed"}
     problems={}
     requests={}
@@ -93,6 +99,9 @@ def audit(project,now=None,root=None):
             manual=(req.get("auto_queued") is False)
             if rank>10 and not manual:continue
             started=when(req.get("requested_at") or req.get("explained_at"))
+            if cutoff and event_id not in protected_ids and (
+                    not started or started<=cutoff):
+                continue
             # Work older than 12h is archive, not a fresh Telegram delivery.
             # The standalone provisional scan above still catches old open cards.
             age_minutes=(now-started).total_seconds()/60 if started else 0
@@ -111,6 +120,9 @@ def audit(project,now=None,root=None):
     else:
         for event_id,req in requests.items():
             started=when(req.get("selected_at") or req.get("problematic_at"))
+            if cutoff and event_id not in protected_ids and (
+                    not started or started<=cutoff):
+                continue
             # Work older than 12h is archive, not a fresh Telegram delivery.
             # The standalone provisional scan above still catches old open cards.
             age_minutes=(now-started).total_seconds()/60 if started else 0
@@ -136,7 +148,10 @@ def audit(project,now=None,root=None):
     unique.sort(key=lambda x:(-x["age_min"],x["key"]))
     return {"project":project,"checked_at":now.isoformat(),
             "verification":"Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
-            "ledger_entries":len(deliveries),"unresolved_count":len(unique),
+            "ledger_entries":len(deliveries),
+            "baseline_at":checkpoint.get("activated_at"),
+            "archived_before_message_id":prior_max_mid,
+            "unresolved_count":len(unique),
             "unresolved":unique[:40]}
 
 def persist_and_alert(project,report,token,chat):
@@ -209,6 +224,22 @@ def selftest():
             {"event_id":"j","status":"sent","final":True,"telegram_message_id":714,
              "delivered_at":"2026-10-12T14:18:00Z"}]}))
         assert audit("ttendencias",now,root)["unresolved_count"]==0
+        # Post-reset: historic missing requests and delivered messages are
+        # finished, while protected pending requests MUST remain actionable.
+        baseline={"activated_at":"2026-10-12T15:25:23Z",
+                  "project_state":{"ttendencias":{
+                      "historic_max_message_id":714,
+                      "preserve_pending_ids":["new-trend"]},
+                    "ttittulares":{"historic_max_message_id":3555,
+                                   "preserve_pending_ids":[]}}}
+        (root/"telegram/lifecycle-baseline.json").write_text(json.dumps(baseline))
+        (root/"trends/requests.json").write_text(json.dumps({"requests":[
+            {"id":"historic","rank":1,"name":"Historic","status":"preparing",
+             "requested_at":"2026-10-12T14:12:00Z"},
+            {"id":"new-trend","rank":8,"name":"New","status":"preparing",
+             "requested_at":"2026-10-12T15:23:00Z"}]}))
+        assert [v["id"] for v in audit("ttendencias",now,root)["unresolved"]]==["new-trend"]
+        assert audit("ttittulares",now,root)["unresolved_count"]==0
     print("TT_ORPHAN_AUDIT_SELFTEST_OK")
 
 if __name__=="__main__":
