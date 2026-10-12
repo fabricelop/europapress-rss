@@ -25,7 +25,11 @@ struct TimeZonesPanel: View {
                     systemImage:"square.3.layers.3d",
                     description:Text("Dibuja un contorno para seleccionar cuadrículas, incluso sin visitar."))
             }
-            ForEach(model.visibleZones) { zone in
+            ForEach(model.visibleZones.sorted {
+                let a=$0.cells.reduce(0) { $0+(values[$1] ?? 0) }
+                let b=$1.cells.reduce(0) { $0+(values[$1] ?? 0) }
+                return a == b ? $0.name.localizedStandardCompare($1.name) == .orderedAscending : a>b
+            }) { zone in
                 NavigationLink {
                     TimeZoneEditor(model:model,existing:zone)
                 } label: {

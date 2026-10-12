@@ -23,9 +23,9 @@ struct CellHistoryView: View {
                     value:DurationFormat.full(visits.isEmpty ? 0 :
                         visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
                 LabeledContent("Identificador",value:cell.id)
-                if let place=model.placeFor(cell) {
-                    LabeledContent("Zona",value:place.name)
-                    LabeledContent("Cuadrículas de la zona",value:String(place.cellIDs.count))
+                if let zone=model.primaryZone(for:cell) {
+                    LabeledContent("Zona",value:zone.name)
+                    LabeledContent("Cuadrículas de la zona",value:String(zone.cellIDs.count))
                 }
                 Button("Cambiar nombre") { nameEditor=true }
                 Button {
@@ -33,6 +33,18 @@ struct CellHistoryView: View {
                     dismiss()
                 } label: {
                     Label("Ver en el mapa",systemImage:"map")
+                }
+            }
+            Section("Territorios") {
+                if let territory=model.data.territoryCache[cell.id] {
+                    ForEach(TerritoryLevel.allCases) { level in
+                        if let name=level.value(territory) {
+                            LabeledContent(level.title,value:name)
+                        }
+                    }
+                } else {
+                    Text("Territorio pendiente de identificar.")
+                        .foregroundStyle(.secondary)
                 }
             }
             Section("Histórico") {

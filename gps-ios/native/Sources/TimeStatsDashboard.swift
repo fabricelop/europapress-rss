@@ -17,6 +17,7 @@ struct TimeStatsDashboard: View {
     @State private var page: StatisticsPage = .cells
     @State private var expandedZones:Set<UUID> = []
     @State private var top = 25
+    @State private var onlyIndividualCells = false
     @State private var searchOpen = false
     @State private var searchMapCell: Cell?
 
@@ -26,6 +27,13 @@ struct TimeStatsDashboard: View {
     private var ranked:[TimeRankEntry] {
         let zones=model.visibleZones
         let perCell=values
+        if onlyIndividualCells {
+            return perCell.compactMap { id,seconds -> TimeRankEntry? in
+                guard seconds>0,let cell=TimeAnalytics.cell(id) else { return nil }
+                return TimeRankEntry(id:"c"+id,title:model.label(for:cell),
+                    seconds:seconds,cellIDs:[id],zoneID:nil)
+            }.sorted { $0.seconds>$1.seconds }
+        }
         let covered=Set(zones.flatMap(\.cellIDs))
         let named=zones.compactMap { zone -> TimeRankEntry? in
             let seconds=zone.cellIDs.reduce(0) { $0+(perCell[$1] ?? 0) }
@@ -78,8 +86,8 @@ struct TimeStatsDashboard: View {
                              icon:"map")
                     }
                     HStack(spacing:9) {
-                        tile("Sin localizar",value:DurationFormat.full(model.data.missingSeconds),icon:"location.slash")
                         tile("Mis zonas",value:String(model.visibleZones.count),icon:"mappin.and.ellipse")
+                        tile("Tiempo asignado",value:DurationFormat.full(TimeAnalytics.sum(values)),icon:"clock")
                     }
 
                     Picker("Vista de estadísticas",selection:$page) {
@@ -131,11 +139,16 @@ struct TimeStatsDashboard: View {
     private var cellList: some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
-                Text("Top de zonas y cuadrículas independientes").font(.headline)
+                Text(onlyIndividualCells ? "Todas las cuadrículas" :
+                     "Zonas y cuadrículas independientes").font(.headline)
                 Spacer()
                 Text("\(displayed.count) de \(ranked.count)")
                     .font(.caption2).foregroundStyle(.secondary)
             }
+            Picker("Tipo de listado",selection:$onlyIndividualCells) {
+                Text("Todo").tag(false)
+                Text("Solo cuadrículas").tag(true)
+            }.pickerStyle(.segmented)
             Picker("Mostrar",selection:$top) {
                 Text("Top 10").tag(10)
                 Text("Top 25").tag(25)
@@ -212,7 +225,9 @@ struct TimeStatsDashboard: View {
                 .background(Color(.secondarySystemGroupedBackground),
                             in:RoundedRectangle(cornerRadius:14))
             }
-            Text("Las zonas agrupan cuadrículas completas. Si dos zonas se solapan, pueden compartir tiempo; el total global nunca lo duplica.")
+            Text(onlyIndividualCells ?
+                "Cada cuadrícula aparece por separado, aunque pertenezca a una zona." :
+                "Las zonas agrupan cuadrículas completas. Si dos zonas se solapan, pueden compartir tiempo; el total global nunca lo duplica.")
                 .font(.caption2).foregroundStyle(.secondary)
         }
     }

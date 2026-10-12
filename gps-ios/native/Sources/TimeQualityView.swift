@@ -16,8 +16,6 @@ struct TimeQualityView: View {
                                value:DurationFormat.full(values.observed))
                 LabeledContent("Reconstruido entre puntos",
                                value:DurationFormat.full(values.reconstructed))
-                LabeledContent("Sin ubicación fiable",
-                               value:DurationFormat.full(values.uncertain))
             }
             Section("Comprobaciones") {
                 LabeledContent("Solapamiento detectado en datos originales",
@@ -32,7 +30,6 @@ struct TimeQualityView: View {
             Section("Cómo interpretar estos datos") {
                 Text("Observado: tiempo atribuido entre muestras GPS cercanas y coherentes; no equivale a una ubicación verificada cada segundo.")
                 Text("Reconstruido: reparto de tiempo entre muestras con desplazamiento compatible; su geometría intermedia es estimada.")
-                Text("Sin ubicación fiable: huecos que no atribuimos a una cuadrícula. No los convertimos automáticamente en estancias.")
                 Text("Un porcentaje alto de tiempo observado no permite garantizar que iOS registrara cada esquina del trayecto ni atribuir toda la batería a esta aplicación.")
             }
             .font(.caption).foregroundStyle(.secondary)
