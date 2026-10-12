@@ -104,9 +104,10 @@ class AuthenticTitleTests(unittest.TestCase):
                 "telegram_message_id":3466,"final":False,
                 "delivered_at":now.isoformat()
             }]})
-            with patch.object(module,"ROOT",root), patch.object(module,"send",return_value=True) as send:
-                self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,0))
-                send.assert_not_called()
+            with patch.object(module,"ROOT",root), patch.object(module,"send",return_value={"message_id":3466}) as send:
+                self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,1))
+                self.assertEqual(send.call_args.args[1],"editMessageText")
+                self.assertEqual(send.call_args.args[2]["message_id"],3466)
                 self.assertEqual(module.load("telegram/ttittulares-deliveries.json",{})["items"][1]["status"],"sent")
                 send.reset_mock()
                 self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,0))
