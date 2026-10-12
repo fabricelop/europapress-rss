@@ -70,4 +70,30 @@ with tempfile.TemporaryDirectory() as foldername:
     assert any(x["id"] == "manual-r17" and x["status"] == "preparing"
                for x in cleaned), cleaned
     assert not any(x["name"] == "Tendencia 31" for x in cleaned)
-    print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, no silent explanations")
+
+    # Regression: a closed Telegram card under an equivalent holiday label
+    # must not reopen another automatic editorial package.
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    now=datetime.now(ZoneInfo("Europe/Madrid")).isoformat(timespec="seconds")
+    snapshot=load(folder / "recent.json")
+    snapshot["items"][1]["name"]="Hispanidad"
+    snapshot["items"][4]["name"]="#12DeOctubre"
+    snapshot["items"][10]["name"]="Feliz 12"
+    put(folder / "recent.json", snapshot)
+    put(folder / "telegram-image-deliveries.json", {"items": [{
+        "event_id":"closed-holiday","name":"Feliz Día de la Hispanidad",
+        "status":"deleted","deleted_at":now,"delivered_at":now}]})
+    queued=run()
+    names={x["name"]:x for x in queued}
+    assert "Hispanidad" not in names or names["Hispanidad"]["status"] not in {"preparing","update"}, queued
+    assert "#12DeOctubre" not in names or names["#12DeOctubre"]["status"] not in {"preparing","update"}, queued
+    # Manual preparation is still allowed, including a related topic.
+    queued.append({"id":"manual-feliz-12","name":"Feliz 12","rank":11,
+                   "auto_queued":False,"request_source":"github_pages_authorized_issue",
+                   "revision":1,"status":"preparing","requested_at":now})
+    put(folder / "requests.json", {"requests":queued})
+    after=run()
+    assert any(x["id"]=="manual-feliz-12" and x["status"]=="preparing"
+               for x in after), after
+    print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, closed synonyms suppressed")
