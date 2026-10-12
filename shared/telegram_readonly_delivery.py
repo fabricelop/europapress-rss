@@ -379,7 +379,9 @@ def trend_cards(now):
         if group_id and group_leader and group_leader!=tid and tid not in protected:
             continue
 
-        rank=int(req.get("rank") or (top.get(name.casefold()) or {}).get("rank") or 0)
+        # An old request may retain rank 11-30 after re-entering the Top 10.
+        # Current captured rank wins over stale request rank for delivery.
+        rank=int((top.get(name.casefold()) or {}).get("rank") or req.get("rank") or 0)
         if rank>10 and req.get("auto_queued") is True:continue
         start=req.get("requested_at") or req.get("anticipated_at")
         if not fresh(start,now) or not baseline_allows("ttendencias",tid,start):
