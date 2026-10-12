@@ -854,7 +854,7 @@ def process(project,now,token,chat):
         problem_items=status_doc.get("problematic_items") or []
         # The editorial statement, not fuzzy matching, establishes identity.
         relation=re.compile(
-            r"\\bcoincide(?:\\s+materialmente)?\\s+con\\s+el\\s+evento\\s+([0-9a-f]{12})\\b",
+            r"\bcoincide(?:\s+materialmente)?\s+con\s+el\s+evento\s+([0-9a-f]{12})\b",
             re.IGNORECASE)
         deleted_by_id={str(row.get("event_id") or ""):row for row in entries
                        if (str(row.get("status") or "").lower()=="deleted"
