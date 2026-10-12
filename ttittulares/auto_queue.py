@@ -72,7 +72,7 @@ def terminal_map(decisions):
     for d in decisions.get('items') or []:
         eid=str(d.get('event_id') or '')
         st=str(d.get('status') or '').lower()
-        if eid and st in {'published','dismissed'}: out[eid]=st
+        if eid and st in {'published','dismissed','deleted'}: out[eid]=st
     return out
 
 def base_id(eid): return re.sub(r'-r\d+$','',str(eid or ''))
