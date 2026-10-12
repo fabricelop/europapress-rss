@@ -79,6 +79,8 @@ def classify(update, chat_id, ledger, state=None):
         return {"kind": "ignore"}
     if callback:
         raw = str(callback.get("data") or "")
+        if raw == "tt:heal":
+            return {"kind":"autoheal","callback_id":callback.get("id")}
         match = CALLBACK.fullmatch(raw)
         if not match:
             if raw.startswith("tts:del:") and re.fullmatch(r"tts:del:[1-9]\d{0,14}", raw):
@@ -279,6 +281,10 @@ def selftest():
         "message": {"message_id": 95, "chat": {"id": 456, "type": "private"}}}}
     assert classify(base, "456", ledger)["kind"] == "decision"
     assert classify(base, "999", ledger)["kind"] == "ignore"
+    heal=json.loads(json.dumps(base))
+    heal["callback_query"]["data"]="tt:heal"
+    assert classify(heal,"456",ledger)["kind"]=="autoheal"
+    assert classify(heal,"999",ledger)["kind"]=="ignore"
     other = json.loads(json.dumps(base))
     other["callback_query"]["message"]["message_id"] = 90
     assert classify(other, "456", ledger)["kind"] == "not_active"
@@ -441,6 +447,13 @@ def handle_live_action(token, chat, act, github, update):
     kind = act["kind"]
     if kind in {"question", "delete_pair"}:
         forward_contextual_question(token, update)
+        return
+    if kind == "autoheal":
+        # Telegram is the authenticated trigger; GitHub performs the work.
+        dispatch_workflow(github,"tt-autorepair.yml",{"force":"true"})
+        telegram_call(token,"answerCallbackQuery",{
+            "callback_query_id":act["callback_id"],
+            "text":"Autocorrección solicitada. Revisaré colas y Telegram."})
         return
     if kind in {"not_active", "unsupported_callback", "unavailable_action"}:
         telegram_call(token, "answerCallbackQuery", {
