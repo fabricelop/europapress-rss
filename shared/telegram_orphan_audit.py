@@ -171,15 +171,20 @@ def persist_and_alert(project,report,token,chat):
     now=when(report["checked_at"]) or datetime.now(timezone.utc)
     new_alerts={}
     urgent=[]
+    send_notices=os.getenv("TT_ORPHAN_CHAT_NOTIFICATIONS","0")=="1"
     for item in report["unresolved"]:
         signature=hashlib.sha256((item["key"]+"|"+item["reason"]).encode()).hexdigest()[:18]
         old=prev_alerts.get(item["key"]) or {}
         last=when(old.get("notified_at"))
         should_alert=(old.get("signature")!=signature or not last or
                       (now-last).total_seconds()>=REPEAT_ALERT_HOURS*3600)
-        if should_alert:urgent.append(item)
+        if should_alert and send_notices:urgent.append(item)
         new_alerts[item["key"]]={"signature":signature,
-            "notified_at":(now.isoformat() if should_alert else old.get("notified_at"))}
+            "notified_at":(now.isoformat() if should_alert and send_notices
+                           else old.get("notified_at"))}
+    if not send_notices and report["unresolved"]:
+        print("TT_ORPHAN_INDEX_ONLY",project,
+              "unresolved="+str(report["unresolved_count"]),flush=True)
     if urgent:
         parts=[f"⚠️ {project.upper()} · {len(urgent)} aviso(s) sin resolver.",
                "No se ha borrado ninguna tarjeta automáticamente."]
