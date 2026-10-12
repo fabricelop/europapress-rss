@@ -7,6 +7,7 @@ on:
       - "TTendencias Telegram informativo (sin IA ni publicación)"
       - "TTendencias Telegram continuo"
       - "TTiTTulares Telegram nativo (migración segura)"
+      - "TT Autocorrección automática"
     types: [completed]
   schedule:
     - cron: "*/5 * * * *"
@@ -37,6 +38,7 @@ jobs:
           sparse-checkout: |
             /shared/telegram_pinned_index.py
             /telegram/lifecycle-baseline.json
+            /telegram/tt-autoheal-state.json
             /telegram/ttittulares-deliveries.json
             /trends/telegram-image-deliveries.json
             /ttittulares/editorial-queue.json
