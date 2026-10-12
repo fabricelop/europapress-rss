@@ -1,0 +1,75 @@
+name: Mi Mapa Prueba v1.0.20 - IPA paralelo Impactor
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v20-parallel-impactor
+    paths:
+      - '.github/workflows/mi-mapa-del-tiempo-v20-impactor-ipa.yml'
+      - 'gps-ios/native/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gps-ios-v20-parallel-package
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar proyecto y validar sintaxis
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Widgets/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          plutil -lint App.entitlements Widgets/Widget.entitlements
+          grep -q 'CODE_SIGN_ENTITLEMENTS = App.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+          grep -q 'CODE_SIGN_ENTITLEMENTS = Widgets/Widget.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+      - name: Compilar aplicación y WidgetKit para iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gps-v20-parallel-package" CODE_SIGNING_ALLOWED=NO build
+      - name: Verificar identificador, versiones, extensión y empaquetar
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/gps-v20-parallel-package/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP/PlugIns/MiMapaWidgets.appex"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          main=plistlib.loads((app/"Info.plist").read_bytes())
+          widget=plistlib.loads((app/"PlugIns/MiMapaWidgets.appex/Info.plist").read_bytes())
+          assert main["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba", main
+          assert main["CFBundleShortVersionString"]=="1.0.20", main
+          assert main["CFBundleVersion"]=="21", main
+          assert "location" in main["UIBackgroundModes"], main
+          assert widget["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba.widgets", widget
+          assert widget["CFBundleShortVersionString"]=="1.0.20", widget
+          assert widget["CFBundleVersion"]=="21", widget
+          assert widget["NSExtension"]["NSExtensionPointIdentifier"]=="com.apple.widgetkit-extension", widget
+          assert main["CFBundleDisplayName"]=="Mi Mapa Prueba", main
+          assert widget["CFBundleDisplayName"]=="Mi Mapa Prueba", widget
+          assert "mimapadeltiempoprueba" in str(main.get("CFBundleURLTypes",[]))
+          print("IPA DE PRUEBA y extensión WidgetKit verificadas como aplicación INDEPENDIENTE")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaPrueba-v20-unsigned.ipa Payload
+          unzip -t MiMapaPrueba-v20-unsigned.ipa >/dev/null
+          ls -lh MiMapaPrueba-v20-unsigned.ipa
+      - name: Publicar IPA unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaPrueba-v20-unsigned
+          path: gps-ios/native/MiMapaPrueba-v20-unsigned.ipa
+          retention-days: 7
+          if-no-files-found: error
