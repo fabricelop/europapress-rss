@@ -192,6 +192,42 @@ if closed_topic_requests:
     print("Temas ya cerrados: retiradas solicitudes automáticas sin publicar duplicados:",
           closed_topic_requests)
 
+# A manual request may be incorrectly marked explained by a prior group
+# whose explanation predates the request. A historical editorial result is
+# NEVER proof that the newly requested revision was researched or delivered.
+restored_manual = 0
+for req in requests:
+    if (req.get("auto_queued") is not False or
+            str(req.get("request_source") or "") not in
+            {"github_pages_authorized_issue", "telegram_reexplain",
+             "telegram_private_deeplink_native"} or
+            str(req.get("status") or "") != "explained"):
+        continue
+    requested_at = parse_timestamp(req.get("requested_at"))
+    explained_at = parse_timestamp(req.get("explained_at"))
+    has_delivery = any(
+        str(row.get("event_id") or "") == str(req.get("id") or "")
+        and int(row.get("revision") or 0) == int(req.get("revision") or 0)
+        and row.get("final") is True
+        and str(row.get("status") or "").lower() in {"sent", "published"}
+        for row in deliveries.get("items", []) or []
+    )
+    if not requested_at or not explained_at or explained_at >= requested_at or has_delivery:
+        continue
+    req["status"] = "preparing"
+    req["stale_group_explanation_ignored_at"] = now_dt.isoformat(timespec="seconds")
+    req["stale_group_explanation_reason"] = "explanation_predates_manual_request"
+    for field in ("explained_at", "explanation", "closer_text", "group_id",
+                  "explanation_group_id", "group_title", "group_leader_id",
+                  "trend_names", "rank_at_explanation", "verification_sources",
+                  "trend_context", "news_disposition"):
+        req.pop(field, None)
+    restored_manual += 1
+    reconciled = True
+if restored_manual:
+    print("Restauradas solicitudes manuales cerradas con explicación antigua:",
+          restored_manual)
+
 def canonicalize_explained_groups():
     """Mantiene una sola tarjeta visible por grupo editorial.
 
@@ -276,6 +312,14 @@ def reconcile_persisted_explanations():
         key = (str(req.get("id") or ""), int(req.get("revision") or 0))
         entry = coverage.get(key)
         if not entry:
+            continue
+        # Previous grouped explanations do not complete a later revision,
+        # even when an old group has been backfilled with that member ID.
+        request_started = parse_timestamp(req.get("requested_at"))
+        entry_explained = parse_timestamp(entry.get("explained_at"))
+        if request_started and entry_explained and entry_explained < request_started:
+            continue
+        if str(entry.get("telegram_package_status") or "").lower() in CLOSED:
             continue
         status = str(req.get("status") or "")
         if status == "explained":
