@@ -29,6 +29,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /shared/telegram_readonly_delivery.py
+            /shared/telegram_orphan_audit.py
             /telegram/editorial-processing.json
             /telegram/ttittulares-deliveries.json
             /ttittulares/prepared.json
@@ -44,6 +45,7 @@ jobs:
           python3 -m pip install -q requests pillow
           python3 -m py_compile shared/telegram_readonly_delivery.py
           python3 shared/telegram_readonly_delivery.py selftest
+          python3 shared/telegram_orphan_audit.py selftest
       - name: Enviar o actualizar mensaje Telegram
         env:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
@@ -96,4 +98,37 @@ jobs:
             sleep $((attempt*2))
           done
           echo "No se pudo guardar ledger Telegram" >&2
+          exit 1
+
+      - name: Auditar los avisos de Telegram después de la ejecución
+        if: always()
+        env:
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # The audit MUST compare against the committed delivery ledger.
+          git fetch origin main
+          git reset --hard origin/main
+          python3 shared/telegram_orphan_audit.py ttendencias
+          cp telegram/orphan-audit-ttendencias.json /tmp/orphan-audit-ttendencias.json
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/orphan-audit-ttendencias.json telegram/orphan-audit-ttendencias.json
+            git add telegram/orphan-audit-ttendencias.json
+            if git diff --cached --quiet; then
+              echo "TT_ORPHAN_AUDIT_NO_CHANGE"
+              exit 0
+            fi
+            git commit -m "TT auditoría de avisos Telegram ttendencias"
+            if git push origin HEAD:main; then
+              echo "TT_ORPHAN_AUDIT_PERSISTED"
+              exit 0
+            fi
+            sleep "$attempt"
+          done
+          echo "TT_ORPHAN_AUDIT_PERSIST_FAILED" >&2
           exit 1
