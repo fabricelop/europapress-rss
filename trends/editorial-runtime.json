@@ -1,11 +1,11 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-13T00:18:04+02:00",
-  "last_completed_at": "2026-10-13T00:18:05+02:00",
-  "updated_at": "2026-10-13T00:18:05+02:00",
+  "last_started_at": "2026-10-13T00:15:00+02:00",
+  "last_completed_at": "2026-10-13T00:18:56+02:00",
+  "updated_at": "2026-10-13T00:18:56+02:00",
   "status": "success",
   "processed_ids": [
     "d7b672dc554f"
@@ -33,13 +33,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791842287195-tg-12180e",
+    "run_id": "tr-20261013T001637+0200-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-12T23:58:30+02:00",
-    "updated_at": "2026-10-13T00:01:30+02:00",
-    "finished_at": "2026-10-13T00:01:30+02:00",
+    "started_at": "2026-10-13T00:15:00+02:00",
+    "updated_at": "2026-10-13T00:18:56+02:00",
+    "finished_at": "2026-10-13T00:18:56+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -68,7 +68,7 @@
       "telegram_provisionals_finalized": 0,
       "telegram_orphans": 1
     },
-    "message": "Cierre con incidencia · 0 preparing/update y 0 reexplicaciones pendientes. Bale fue reintentado y permanece problematic; la tarjeta provisional 741 sigue sin explicación definitiva y queda conservada.",
+    "message": "Cierre con incidencia · 0 preparing/update y 0 reexplicaciones pendientes. Bale fue reintentado, sigue problematic y la tarjeta provisional 741 continúa sin explicación definitiva.",
     "incident_count": 1,
     "incidents": [
       {
@@ -80,74 +80,100 @@
         "telegram_message_ids": [
           741
         ],
-        "message": "Bale sigue #6, pero dos tandas de búsqueda solo permiten localizar una comparación actual Mbappé-Bale originada en talkSPORT y réplicas derivadas; no hay corroboración independiente suficiente del detonante del TT en España. Se conserva la tarjeta provisional 741."
+        "message": "Bale sigue #6, pero las búsquedas actuales solo permiten vincularlo a una comparación Mbappé–Gareth Bale originada en talkSPORT y réplicas derivadas; no hay corroboración independiente suficiente para atribuir con rigor ese contenido al detonante del TT en España. Se conserva la tarjeta provisional 741."
       }
     ],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T23:58:30+02:00",
+        "at": "2026-10-13T00:15:05+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio · 0 preparing/update, 0 reexplicaciones pendientes y 1 problematic Top 10 para reintento."
       },
       {
-        "at": "2026-10-12T23:59:00+02:00",
+        "at": "2026-10-13T00:15:25+02:00",
         "phase": "verifying",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
         "message": "Releyendo estado autoritativo de Bale r0 · sigue problematic y #6."
       },
       {
-        "at": "2026-10-12T23:59:20+02:00",
+        "at": "2026-10-13T00:15:50+02:00",
         "phase": "investigating",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
         "message": "Buscando detonante actual con consultas nuevas."
       },
       {
-        "at": "2026-10-13T00:00:20+02:00",
+        "at": "2026-10-13T00:16:37+02:00",
         "phase": "investigating",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
-        "message": "Segundo contraste completado · no hay corroboración independiente del detonante español."
+        "message": "Segundo contraste completado · solo aparece la comparación Mbappé-Bale de talkSPORT y réplicas derivadas; falta corroboración independiente del detonante español."
       },
       {
-        "at": "2026-10-13T00:00:35+02:00",
+        "at": "2026-10-13T00:16:57+02:00",
         "phase": "drafting",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
         "message": "No se redacta explicación: el detonante sigue sin verificarse con suficiente fiabilidad."
       },
       {
-        "at": "2026-10-13T00:00:50+02:00",
+        "at": "2026-10-13T00:17:05+02:00",
         "phase": "persisting",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
-        "message": "Conservando Bale como problematic y manteniendo la tarjeta provisional 741."
+        "message": "Guardando el reintento como problematic en requests y outbox editorial."
       },
       {
-        "at": "2026-10-13T00:01:10+02:00",
+        "at": "2026-10-13T00:17:16+02:00",
+        "phase": "persisting",
+        "trend_id": "d7b672dc554f",
+        "title": "Bale",
+        "message": "Reintento problematic persistido; el aplicador editorial ha sido activado por push."
+      },
+      {
+        "at": "2026-10-13T00:18:04+02:00",
         "phase": "verifying",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
-        "message": "Reparación visual y envío Telegram ejecutados con éxito; auditoría posterior mantiene 1 provisional sin explicación definitiva."
+        "message": "Aplicador editorial completado con éxito; Bale r0 permanece problematic y no se crea ficha Explicada."
       },
       {
-        "at": "2026-10-13T00:01:25+02:00",
+        "at": "2026-10-13T00:18:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · 0 preparing/update y 0 rewrite_pending; Bale permanece problematic."
+        "message": "Revisando Pendientes recientes · 2 paquetes vigentes, ambos con remate; reparación visual automática activada."
       },
       {
-        "at": "2026-10-13T00:01:30+02:00",
+        "at": "2026-10-13T00:18:33+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación de Explicadas completada con éxito y envío Telegram dedicado verificado."
+      },
+      {
+        "at": "2026-10-13T00:18:43+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Segundo envío Telegram dedicado completado con éxito; auditoría conserva 1 provisional sin explicación definitiva: Bale 741."
+      },
+      {
+        "at": "2026-10-13T00:18:56+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre con incidencia · cola editorial activa 0; Bale sigue problematic y la tarjeta provisional 741 queda conservada y auditada."
+        "message": "Cierre con incidencia · 0 preparing/update y 0 reexplicaciones pendientes. Bale sigue problematic; tarjeta provisional 741 conservada y auditada."
       }
     ],
     "queue_complete": true,
@@ -179,6 +205,5 @@
     "remates_omitted": 0,
     "telegram_provisionals_finalized": 0,
     "telegram_orphans": 1
-  },
-  "error": null
+  }
 }
