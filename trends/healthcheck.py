@@ -217,7 +217,9 @@ else:
 if isinstance(requests_doc, dict):
     # El radar archiva solicitudes que ya no están vigentes: inactive/deleted
     # son terminales legítimos y no deben provocar falsas alarmas de salud.
-    allowed = {"preparing", "ready", "explained", "update", "dismissed", "problematic", "inactive", "deleted"}
+    allowed = {"preparing", "ready", "explained", "update", "dismissed",
+               "problematic", "inactive", "deleted", "published", "removed",
+               "delete_pending", "delete_failed", "grouped"}
     bad = [x for x in requests_doc.get("requests", []) if x.get("status") not in allowed]
     noisy = [x for x in requests_doc.get("requests", []) if noise_name(x.get("name"))]
     modules["request_queue"] = {
@@ -328,6 +330,59 @@ if isinstance(requests_doc, dict):
             blocking.append(
                 "runtime editorial en failure: " + str(editorial_runtime.get("error") or "sin detalle")
             )
+
+# A clean editorial queue is NOT proof Telegram has been updated. Track
+# provisional messages older than the configured threshold separately.
+deliveries_doc = load("telegram-image-deliveries.json", {"items":[]}) or {"items":[]}
+if isinstance(requests_doc, dict) and isinstance(deliveries_doc, dict):
+    by_id = {str(req.get("id") or ""): req
+             for req in requests_doc.get("requests", []) if req.get("id")}
+    delayed = []
+    repairable = []
+    now_utc = datetime.now(timezone.utc)
+    for row in deliveries_doc.get("items", []) or []:
+        if str(row.get("status") or "").lower() != "sent" or row.get("final") is not False:
+            continue
+        start = row.get("delivered_at") or row.get("started_at")
+        try:
+            entered = datetime.fromisoformat(str(start).replace("Z","+00:00"))
+            if entered.tzinfo is None:
+                entered = entered.replace(tzinfo=timezone.utc)
+            minutes = max(0, (now_utc-entered.astimezone(timezone.utc)).total_seconds()/60)
+        except Exception:
+            continue
+        # Do not treat multi-day historical messages as current editorial work.
+        if minutes > 12*60 or minutes <= warn_after:
+            continue
+        req = by_id.get(str(row.get("event_id") or ""), {})
+        editorial_status = str(req.get("status") or "unknown").lower()
+        grouped = bool(req.get("grouped_into_existing_card"))
+        item = {
+            "id": row.get("event_id"), "name": row.get("name") or req.get("name"),
+            "message_id": row.get("telegram_message_id"),
+            "age_minutes": round(minutes,1), "editorial_status": editorial_status,
+            "grouped": grouped
+        }
+        delayed.append(item)
+        if editorial_status in {"explained", "deleted", "published", "grouped"} or grouped:
+            repairable.append(item)
+    modules["telegram_provisional"] = {
+        "ok": not delayed,
+        "overdue_count": len(delayed),
+        "actionable_count": len(repairable),
+        "oldest_age_minutes": max((x["age_minutes"] for x in delayed),default=0),
+        "warning_after_minutes": warn_after,
+        "overdue_items": delayed[:15],
+        "repairable": bool(repairable),
+    }
+    if delayed:
+        blocking.append(f"Telegram: {len(delayed)} aviso(s) provisional(es) > {warn_after} min")
+    if repairable:
+        # The normal sender runs every ten minutes; explicitly queue a repair
+        # when an already-explained provisional is still outstanding.
+        if dispatch("send-ttendencias-explained-telegram.yml"):
+            repairs.append("revisar y reconciliar avisos Telegram provisionales")
+            modules["telegram_provisional"]["repair_started"] = True
 
 signature = " | ".join(sorted(blocking))
 alerted = False

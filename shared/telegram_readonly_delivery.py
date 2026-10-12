@@ -890,6 +890,72 @@ def process(project,now,token,chat):
                     updated+=1
                     print("TT_TRENDS_GROUP_DUPLICATE_REMOVED",
                           sibling_id,"leader="+leader_id,flush=True)
+    # A newer trend can be explained as an editorial alias of an older card.
+    # That older card might ALREADY have been deleted by the user. Because
+    # trend_cards() deliberately suppresses grouped followers, their earlier
+    # provisional Telegram messages otherwise stay pending forever.
+    # Reconcile ONLY explicitly verified group aliases and only when the
+    # leader has a confirmed final/terminal delivery.
+    if project=="ttendencias":
+        doc=load("trends/requests.json",{"requests":[]})
+        by_id={str(req.get("id") or ""):req
+               for req in doc.get("requests",[]) if req.get("id")}
+        for follower_id,req in by_id.items():
+            if str(req.get("status") or "").lower()!="explained":
+                continue
+            if req.get("grouped_into_existing_card") is not True:
+                continue
+            leader_id=str(req.get("group_leader_id") or "")
+            group_id=str(req.get("explanation_group_id") or req.get("group_id") or "")
+            if not leader_id or leader_id==follower_id or not group_id:
+                continue
+            leader_req=by_id.get(leader_id)
+            if leader_req:
+                their_group=str(leader_req.get("explanation_group_id") or leader_req.get("group_id") or "")
+                if their_group and their_group!=group_id:
+                    continue
+            leaders=[row for row in entries
+                     if str(row.get("event_id") or "")==leader_id and
+                     (str(row.get("status") or "").lower() in TERMINAL or
+                      (str(row.get("status") or "").lower()=="sent" and
+                       row.get("final") is True))]
+            if not leaders:
+                continue
+            leader_delivery=leaders[-1]
+            leader_status=str(leader_delivery.get("status") or "").lower()
+            for ghost in entries:
+                if (str(ghost.get("event_id") or "")!=follower_id or
+                    str(ghost.get("status") or "").lower()!="sent" or
+                    ghost.get("final") is True):
+                    continue
+                mids={int(ghost.get(key) or 0) for key in
+                      ("telegram_message_id","archive_telegram_message_id")
+                      if int(ghost.get(key) or 0)>0}
+                if not mids:
+                    continue
+                all_deleted=True
+                for mid in sorted(mids):
+                    if send(token,"deleteMessage",{"chat_id":chat,"message_id":mid}) is None:
+                        all_deleted=False
+                        print("TT_GROUP_ORPHAN_PROVISIONAL_RETRY",follower_id,mid,flush=True)
+                if all_deleted:
+                    ghost.update(
+                        status=("deleted" if leader_status in
+                                {"deleted","dismissed","removed","delete_pending","delete_failed"}
+                                else "grouped"),
+                        final=False,
+                        group_id=group_id,
+                        group_leader_id=leader_id,
+                        grouped_into=leader_id,
+                        duplicate_of=leader_id,
+                        decision_source="grouped_alias_of_final_or_terminal_card",
+                        grouped_at=now.isoformat(),updated_at=now.isoformat())
+                    if ghost["status"]=="deleted":
+                        ghost["deleted_at"]=now.isoformat()
+                    updated+=1
+                    ledger["updated_at"]=now.isoformat()
+                    print("TT_GROUP_ORPHAN_PROVISIONAL_CLEANED",follower_id,
+                          "leader="+leader_id,"leader_status="+leader_status,flush=True)
     if delivered or updated:put(path,ledger)
     print(f"TELEGRAM_READONLY {project} delivered={delivered} updated={updated} skipped={skipped}",flush=True)
     return delivered,updated
@@ -1259,6 +1325,55 @@ def selftest():
             assert final["telegram_message_id"]==first_mid and final["final"]
             assert process("ttendencias",now,"mock","chat")==(0,0)
             print("TT_TRENDS_IMMEDIATE_PENDING_EDIT_IN_PLACE_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
+        globals()["send"]=original_send
+        globals()["archival_image"]=original_archive
+    # Regression: Jagoba's original editorial card was deleted at 14:45,
+    # but the new alias Jagoba Arrasate got a provisional Telegram at 15:18.
+    # Closing the editorial alias must remove ONLY the orphan provisional,
+    # preserve the user's original deletion, and be idempotent.
+    original_root=ROOT
+    original_send=send
+    original_archive=archival_image
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            put("trends/requests.json",{"requests":[
+                {"id":"jagoba","name":"Jagoba","status":"deleted",
+                 "group_leader_id":"jagoba","group_id":"grp-jagoba"},
+                {"id":"arrasate","name":"Jagoba Arrasate","rank":5,
+                 "status":"explained","revision":0,
+                 "group_id":"grp-jagoba","group_leader_id":"jagoba",
+                 "grouped_into_existing_card":True,
+                 "explanation":"Explicación agrupada con Jagoba."}]})
+            put("trends/recent.json",{"items":[
+                {"name":"Jagoba Arrasate","rank":5}]})
+            put("trends/telegram-manual-explained.json",{"items":[]})
+            put("trends/explained.json",{"items":[]})
+            put("trends/telegram-image-deliveries.json",{"items":[
+                {"event_id":"jagoba","revision":0,"status":"deleted",
+                 "final":True,"telegram_message_id":710,
+                 "delivered_at":now.isoformat()},
+                {"event_id":"arrasate","revision":0,"status":"sent",
+                 "final":False,"telegram_message_id":714,
+                 "delivered_at":now.isoformat()}]})
+            operations=[]
+            def fake_sender(token,method,payload,photo=None):
+                operations.append((method,payload.get("message_id")))
+                return True if method=="deleteMessage" else {"message_id":999}
+            globals()["send"]=fake_sender
+            globals()["archival_image"]=lambda url:None
+            assert process("ttendencias",now,"mock","mockchat")==(0,1)
+            assert operations==[("deleteMessage",714)],operations
+            ledger=load("trends/telegram-image-deliveries.json",{"items":[]})
+            ghost=next(x for x in ledger["items"] if x["event_id"]=="arrasate")
+            assert ghost["status"]=="deleted"
+            assert ghost["duplicate_of"]=="jagoba"
+            assert process("ttendencias",now,"mock","mockchat")==(0,0)
+            assert operations==[("deleteMessage",714)],operations
+            print("TT_GROUP_ORPHAN_PROVISIONAL_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
