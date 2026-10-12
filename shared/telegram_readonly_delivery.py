@@ -1613,6 +1613,18 @@ def selftest():
             print("TT_LIFECYCLE_RESET_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
+    # A revised group explanation must not re-edit every already-finalized
+    # sibling: Fofana/Robbie Ure/#LevanteSevilla remain separate user cards,
+    # but only the canonical leader gets subsequent editorial updates.
+    sibling={"event_id":"fofana","telegram_message_id":735,
+             "status":"sent","final":True,"grouped_into":"levante-sevilla",
+             "content_sha256":"old"}
+    assert finalize_existing_group_message(sibling,
+        {"id":"levante-sevilla","title":"Levante-Sevilla","search":"Fofana"},
+        "Resultado definitivo 3-3","levante-sevilla",now,
+        "mock-token","mock-chat") is False
+    assert sibling["content_sha256"]=="old"
+    print("TT_GROUP_NO_FINAL_SIBLING_FANOUT_SELFTEST_OK")
     print("TELEGRAM_READONLY_SELFTEST_OK")
 
 if __name__=="__main__":
