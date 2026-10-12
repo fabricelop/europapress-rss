@@ -87,7 +87,7 @@ def latest_trace(project):
     issue=api("issues/"+str(cfg["issue"]))
     count=int(issue.get("comments") or 0)
     if not count:return {}
-    # Get only the last two pages; a stream of old outbox comments must not
+    # Get only the last page; a stream of old outbox comments must not
     # make us believe the editor is RUNNING today.
     page=max(1,(count-1)//20+1)
     comments=api("issues/"+str(cfg["issue"])+"/comments?per_page=20&page="+str(page))
@@ -156,21 +156,27 @@ def pending(project):
               "reason":"app_awaiting_editorial"}
     # An empty queue can conceal an unresolved older provisional. No omission.
     for eid in closed:by_id.pop(eid,None)
-    return sorted(by_id.values(),key=lambda x:str(x.get("start") or ""))
+    return sorted(by_id.values(),key=lambda x:(moment(x.get("start")) or datetime.max.replace(tzinfo=timezone.utc)))
 
 def evaluate(project,now,previous,command=None,run=None):
     rows=pending(project)
     out={"project":project,"checked_at":now.isoformat(),"pending_count":len(rows),
          "pending_ids":[x["id"] for x in rows[:35]],
-         "oldest_at":rows[0]["start"] if rows else None,
+         "oldest_at":(min((x["start"] for x in rows if x.get("start")),default=None)),
          "latest_run":run or {},"control_command":(command or {}).get("command_id"),
          "last_command_at":(command or {}).get("requested_at"),
          "status":"no_work","should_dispatch":False}
     if not rows:return out
-    oldest=moment(rows[0].get("start"))
+    oldest_candidates=[moment(x.get("start")) for x in rows]
+    oldest_candidates=[x for x in oldest_candidates if x is not None]
+    oldest=min(oldest_candidates) if oldest_candidates else None
     if not oldest:
         out["status"]="missing_event_timestamp"
         return out
+    key=hashlib.sha256("|".join(sorted(x["id"] for x in rows)).encode()).hexdigest()[:16]
+    out["backlog_signature"]=key
+    out["attempts"]=(int(previous.get("attempts") or 0)
+                     if previous.get("backlog_signature")==key else 0)
     if now-oldest<START_AFTER:
         out["status"]="within_start_window"
         return out
@@ -187,7 +193,6 @@ def evaluate(project,now,previous,command=None,run=None):
     if active_control and active_control>=oldest and now-active_control<RETRY_AFTER:
         out["status"]="dispatch_pending_ack" if not run_upd or run_upd<active_control else "awaiting_editorial_completion"
         return out
-    key=hashlib.sha256("|".join(x["id"] for x in rows).encode()).hexdigest()[:16]
     previous_key=previous.get("backlog_signature")
     last=moment(previous.get("last_request_at"))
     tries=int(previous.get("attempts") or 0) if previous_key==key else 0
