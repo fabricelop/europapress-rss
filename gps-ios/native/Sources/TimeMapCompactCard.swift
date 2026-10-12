@@ -85,14 +85,14 @@ private struct TimeMapCardLiveRows:View {
     }
 
     private var table:some View {
-        Grid(alignment:.leading,horizontalSpacing:12,verticalSpacing:5) {
-            GridRow {
+        SwiftUI.Grid(alignment:.leading,horizontalSpacing:12,verticalSpacing:5) {
+            SwiftUI.GridRow {
                 Text("").frame(minWidth:64,alignment:.leading)
                 Text("Total").foregroundStyle(.secondary)
                 Text("Estancia").foregroundStyle(.secondary)
             }
             if let zone {
-                GridRow {
+                SwiftUI.GridRow {
                     Text("Zona")
                     Text(TimeMapCardClock.display(model.total(for:zone,now:now)))
                         .fontWeight(.semibold)
@@ -102,7 +102,7 @@ private struct TimeMapCardLiveRows:View {
                 }
             }
             if let picked {
-                GridRow {
+                SwiftUI.GridRow {
                     Text("Cuadrícula")
                     Text(TimeMapCardClock.display(model.total(for:picked,now:now)))
                         .fontWeight(.semibold)
