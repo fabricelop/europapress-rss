@@ -759,14 +759,13 @@ def process(project,now,token,chat):
     for card in cards:
         eid=card["id"];rev=card["rev"]
         linked=[r for r in active_entries if str(r.get("event_id") or "")==eid]
-        # The radar may assign distinct IDs to the same news/trend. Prevent
-        # a second card for seven days, including previously deleted ones.
+        # Cross-event similarity is an editorial concern, not a Telegram
+        # deletion rule.  For TTiTTulares every distinct active card must get
+        # its own Telegram counterpart; deleting an older related card never
+        # authorizes suppressing this one.  TTendencias keeps its separate
+        # anti-repeat policy here.
         older=matching_previous_story(card,active_entries,now)
-        if older:
-            # A previous deleted card must prevent NEW unsolicited reposts.
-            # But if this distinct ID already has its OWN provisional message
-            # and a verified final explanation exists, finish THAT message,
-            # preserving the original user's separate deletion.
+        if older and project=="ttendencias":
             own_provisional=next((r for r in linked
                 if str(r.get("status") or "").lower()=="sent" and
                 r.get("final") is False and
@@ -780,6 +779,9 @@ def process(project,now,token,chat):
                       "previous_id="+str(older.get("event_id") or ""),flush=True)
                 skipped+=1
                 continue
+        elif older and project=="ttittulares":
+            print("TTI_RELATED_STORY_SEPARATE_CARD",eid,
+                  "previous_id="+str(older.get("event_id") or ""),flush=True)
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
         # Deleting any of the duplicate Telegram cards closes the whole trend.
@@ -1280,7 +1282,7 @@ def selftest():
         {"id":"new-id","title":"Diomandé"},
         [{"event_id":"old-id","title":"Diomande","status":"deleted",
           "telegram_message_id":644,"delivered_at":"2026-10-09T15:00:00Z"}],now)
-    # Regression: Anfield was explicitly deleted; new radar IDs may not resend.
+    # The similarity helper still detects a prior related deletion; TTiTTulares process() no longer uses it to suppress a distinct active card.
     tombstone={"event_id":"anfield-old","name":"Anfield","status":"deleted",
                "delivered_at":"2026-10-11T17:19:28Z","deleted_at":"2026-10-11T17:38:32Z",
                "telegram_message_id":674}
