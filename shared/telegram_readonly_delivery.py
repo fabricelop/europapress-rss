@@ -890,25 +890,39 @@ def process(project,now,token,chat):
                     updated+=1
                     print("TT_TRENDS_GROUP_DUPLICATE_REMOVED",
                           sibling_id,"leader="+leader_id,flush=True)
-    # A newer trend can be explained as an editorial alias of an older card.
-    # That older card might ALREADY have been deleted by the user. Because
-    # trend_cards() deliberately suppresses grouped followers, their earlier
-    # provisional Telegram messages otherwise stay pending forever.
-    # Reconcile ONLY explicitly verified group aliases and only when the
-    # leader has a confirmed final/terminal delivery.
+    # Explicit group membership is durable in BOTH the requests and the
+    # leader's explained record. A refresh may mark the follower inactive or
+    # deleted after the editor finishes; do not require status=explained here.
     if project=="ttendencias":
         doc=load("trends/requests.json",{"requests":[]})
         by_id={str(req.get("id") or ""):req
                for req in doc.get("requests",[]) if req.get("id")}
+        aliases={}
         for follower_id,req in by_id.items():
-            if str(req.get("status") or "").lower()!="explained":
-                continue
             if req.get("grouped_into_existing_card") is not True:
                 continue
             leader_id=str(req.get("group_leader_id") or "")
             group_id=str(req.get("explanation_group_id") or req.get("group_id") or "")
-            if not leader_id or leader_id==follower_id or not group_id:
+            if leader_id and leader_id!=follower_id and group_id:
+                aliases[follower_id]=(leader_id,group_id,int(req.get("revision") or 0))
+        manual=load("trends/telegram-manual-explained.json",{"items":[]})
+        for row in manual.get("items",[]) or []:
+            leader_id=str(row.get("group_leader_id") or row.get("id") or "")
+            group_id=str(row.get("explanation_group_id") or row.get("group_id") or "")
+            members=row.get("grouped_member_revisions") or []
+            # Require persisted explicit leader+member linkage; a similar
+            # title or shared image is NOT enough to delete any Telegram card.
+            if not leader_id or not group_id or len(members)<2 or not any(
+                str(m.get("id") or "")==leader_id
+                for m in members if isinstance(m,dict)):
                 continue
+            for member in members:
+                if not isinstance(member,dict):
+                    continue
+                follower_id=str(member.get("id") or "")
+                if follower_id and follower_id!=leader_id:
+                    aliases[follower_id]=(leader_id,group_id,int(member.get("revision") or 0))
+        for follower_id,(leader_id,group_id,linked_revision) in aliases.items():
             leader_req=by_id.get(leader_id)
             if leader_req:
                 their_group=str(leader_req.get("explanation_group_id") or leader_req.get("group_id") or "")
@@ -926,7 +940,12 @@ def process(project,now,token,chat):
             for ghost in entries:
                 if (str(ghost.get("event_id") or "")!=follower_id or
                     str(ghost.get("status") or "").lower()!="sent" or
-                    ghost.get("final") is True):
+                    ghost.get("final") is True or
+                    int(ghost.get("revision") or 0)!=linked_revision):
+                    continue
+                current_req=by_id.get(follower_id) or {}
+                if (str(current_req.get("status") or "").lower() in {"preparing","update"} and
+                    int(current_req.get("revision") or 0)>linked_revision):
                     continue
                 mids={int(ghost.get(key) or 0) for key in
                       ("telegram_message_id","archive_telegram_message_id")
@@ -943,11 +962,8 @@ def process(project,now,token,chat):
                         status=("deleted" if leader_status in
                                 {"deleted","dismissed","removed","delete_pending","delete_failed"}
                                 else "grouped"),
-                        final=False,
-                        group_id=group_id,
-                        group_leader_id=leader_id,
-                        grouped_into=leader_id,
-                        duplicate_of=leader_id,
+                        group_id=group_id,group_leader_id=leader_id,
+                        grouped_into=leader_id,duplicate_of=leader_id,
                         decision_source="grouped_alias_of_final_or_terminal_card",
                         grouped_at=now.isoformat(),updated_at=now.isoformat())
                     if ghost["status"]=="deleted":
@@ -1373,6 +1389,27 @@ def selftest():
             assert ghost["duplicate_of"]=="jagoba"
             assert process("ttendencias",now,"mock","mockchat")==(0,0)
             assert operations==[("deleteMessage",714)],operations
+            # A later refresh may archive the request and remove its active
+            # grouped flag. The explained group's durable membership still
+            # has to reconcile the provisional without reopening the story.
+            reqs=load("trends/requests.json",{"requests":[]})
+            reqs["requests"][1]["status"]="inactive"
+            reqs["requests"][1].pop("grouped_into_existing_card",None)
+            put("trends/requests.json",reqs)
+            put("trends/telegram-manual-explained.json",{"items":[{
+                "id":"jagoba","group_leader_id":"jagoba",
+                "group_id":"grp-jagoba",
+                "grouped_member_revisions":[
+                    {"id":"jagoba","revision":0},
+                    {"id":"arrasate","revision":0}]}]})
+            ledger["items"][1].update(status="sent",
+                                     telegram_message_id=715,
+                                     final=False)
+            ledger["items"][1].pop("deleted_at",None)
+            put("trends/telegram-image-deliveries.json",ledger)
+            assert process("ttendencias",now,"mock","mockchat")==(0,1)
+            assert operations==[("deleteMessage",714),
+                                ("deleteMessage",715)],operations
             print("TT_GROUP_ORPHAN_PROVISIONAL_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
