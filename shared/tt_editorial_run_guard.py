@@ -184,8 +184,13 @@ def evaluate(project,now,previous,command=None,run=None):
         return out
     key=hashlib.sha256("|".join(sorted(x["id"] for x in rows)).encode()).hexdigest()[:16]
     out["backlog_signature"]=key
+    out["expected_start_by"]=(oldest+START_AFTER).isoformat()
     out["attempts"]=(int(previous.get("attempts") or 0)
                      if previous.get("backlog_signature")==key else 0)
+    seen_start=moment((run or {}).get("started_at"))
+    if seen_start and seen_start>=oldest:
+        out["actual_start_at"]=seen_start.isoformat()
+        out["start_delay_seconds"]=round((seen_start-oldest).total_seconds())
     if now-oldest<START_AFTER:
         out["status"]="within_start_window"
         return out
