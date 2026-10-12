@@ -9,5 +9,5 @@ struct TimeMapActivityAttributes: ActivityAttributes {
         var stayStartedAt: Date
         var resting: Bool
     }
-    var title = "Mi Mapa del Tiempo"
+    var title = "Mi Mapa Prueba"
 }

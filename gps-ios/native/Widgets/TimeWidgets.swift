@@ -38,7 +38,8 @@ private struct GPSWidgetFace: View {
     let entry: GPSWidgetEntry
     @Environment(\.widgetFamily) private var family
 
-    private var hasData: Bool { entry.value != nil }
+    private let ink=Color(red:0.09,green:0.20,blue:0.25)
+    private let subdued=Color(red:0.24,green:0.35,blue:0.39)
     private var total: String {
         entry.value.map { TimeWidgetDuration.compact($0.totalAssignedSeconds) } ?? "—"
     }
@@ -60,24 +61,26 @@ private struct GPSWidgetFace: View {
             if entry.value == nil {
                 switch family {
                 case .accessoryInline:
-                    Text("Mi Mapa PRUEBA · Abrir")
+                    Text("Mi Mapa Prueba · Abrir").foregroundStyle(ink)
                 case .accessoryCircular:
-                    Image(systemName:"map.fill").font(.title3)
+                    Image(systemName:"map.fill").font(.title3).foregroundStyle(ink)
                 case .accessoryRectangular:
                     VStack(alignment:.leading,spacing:2) {
-                        Text("Mi Mapa PRUEBA").font(.headline)
-                        Text("Toca para abrir el mapa").font(.caption2)
+                        Text("Mi Mapa Prueba").font(.headline).foregroundStyle(ink)
+                        Text("Abrir mapa").font(.caption2).foregroundStyle(subdued)
                     }
                 default:
                     VStack(alignment:.leading,spacing:8) {
-                        Label("Mi Mapa PRUEBA",systemImage:"map.fill")
-                            .font(.caption.weight(.semibold)).foregroundStyle(.teal)
+                        Label("Mi Mapa Prueba",systemImage:"map.fill")
+                            .font(.caption.weight(.semibold)).foregroundStyle(ink)
                         Spacer(minLength:2)
                         Image(systemName:"map.circle.fill")
                             .font(.system(size:38)).foregroundStyle(.teal)
-                        Text("Abrir mi mapa").font(.headline)
-                        Text("Widget de acceso sin datos compartidos")
-                            .font(.caption2).foregroundStyle(.secondary)
+                        Text("Abrir mi mapa")
+                            .font(.headline).foregroundStyle(ink)
+                        Text("Datos no disponibles: App Group sin autorización")
+                            .font(.caption2).foregroundStyle(subdued)
+                            .fixedSize(horizontal:false,vertical:true).lineLimit(3)
                     }
                 }
             } else {
@@ -135,7 +138,9 @@ private struct GPSWidgetFace: View {
             Color(red: 0.92, green: 0.96, blue: 0.95)
         }
         .accessibilityElement(children:.combine)
-        .accessibilityLabel("Mi Mapa del Tiempo. Total \(total). Estancia actual \(stay). \(status)")
+        .accessibilityLabel(entry.value == nil ?
+            "Mi Mapa Prueba. Abrir mapa. El App Group no está autorizado para compartir los tiempos." :
+            "Mi Mapa Prueba. Total \(total). Estancia actual \(stay). \(status)")
     }
 }
 
@@ -160,26 +165,41 @@ struct MiMapaTiempoWidget: Widget {
 struct MiMapaRestLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TimeMapActivityAttributes.self) { context in
-            HStack(spacing:12) {
-                Image(systemName: context.state.resting ? "moon.zzz.fill" : "location.fill")
-                    .font(.title2).foregroundStyle(.teal)
-                VStack(alignment:.leading,spacing:3) {
-                    Text(context.state.cellName).font(.headline).lineLimit(1)
-                    Text(context.state.resting ? "GPS en pausa · tiempo asumido" : "GPS activo · estancia")
-                        .font(.caption).foregroundStyle(.secondary)
+            VStack(alignment:.leading,spacing:7) {
+                HStack(alignment:.top,spacing:9) {
+                    Image(systemName:context.state.resting ? "moon.zzz.fill" : "location.fill")
+                        .font(.headline).foregroundStyle(.teal)
+                        .frame(width:22)
+                    Text(context.state.cellName)
+                        .font(.system(.subheadline,design:.rounded,weight:.semibold))
+                        .foregroundStyle(.primary)
+                        .lineLimit(2)
+                        .fixedSize(horizontal:false,vertical:true)
+                        .frame(maxWidth:.infinity,alignment:.leading)
                 }
-                Spacer(minLength:4)
-                Text(context.state.stayStartedAt,style:.timer)
-                    .font(.headline.monospacedDigit())
+                HStack(alignment:.firstTextBaseline,spacing:8) {
+                    Text(context.state.resting ? "GPS en pausa · tiempo asumido" :
+                         "GPS activo · estancia")
+                        .font(.caption2).foregroundStyle(.secondary)
+                        .lineLimit(1).minimumScaleFactor(0.75)
+                    Spacer(minLength:0)
+                    Text(context.state.stayStartedAt,style:.timer)
+                        .font(.system(.subheadline,design:.rounded,weight:.semibold))
+                        .monospacedDigit()
+                        .fixedSize()
+                }
             }
-            .padding(14)
+            .padding(.horizontal,14).padding(.vertical,12)
             .activityBackgroundTint(Color(.systemBackground))
             .activitySystemActionForegroundColor(.teal)
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.center) {
                     VStack(spacing:4) {
-                        Text(context.state.cellName).font(.headline).lineLimit(1)
+                        Text(context.state.cellName)
+                            .font(.headline).lineLimit(2)
+                            .multilineTextAlignment(.center)
+                            .minimumScaleFactor(0.85)
                         Text(context.state.resting ? "GPS pausado · sumando tiempo" : "Estancia actual")
                             .font(.caption2)
                         Text(context.state.stayStartedAt,style:.timer)

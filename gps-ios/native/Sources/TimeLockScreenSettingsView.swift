@@ -7,9 +7,7 @@ struct TimeLockScreenSettingsView:View {
     @ObservedObject var model:TimeModel
     @AppStorage("miMapaLiveActivity") private var liveActivityEnabled=false
     @AppStorage("timeWidgetShowPlace") private var showPlace=false
-    @State private var actualGalleryResult=""
-    @State private var actualActivityResult=""
-    @State private var extensionDetails="Pendiente"
+     @State private var extensionDetails="Pendiente"
     private var appGroupOK:Bool { TimeWidgetStorage.isAvailable }
 
     var body:some View {
@@ -17,9 +15,13 @@ struct TimeLockScreenSettingsView:View {
             Section("Widget nativo") {
                 LabeledContent("Compartición de datos",
                     value:appGroupOK ? "App Group autorizado" : "App Group no autorizado")
-                Toggle("Mostrar nombres en el widget",isOn:$showPlace)
-                    .disabled(!appGroupOK)
-                    .onChange(of:showPlace) { _,_ in model.refreshWidgets() }
+                if appGroupOK {
+                    Toggle("Mostrar nombres en el widget",isOn:$showPlace)
+                        .onChange(of:showPlace) { _,_ in model.refreshWidgets() }
+                } else {
+                    Label("El widget funciona como acceso al mapa. La firma instalada no autoriza compartir sus datos.",systemImage:"lock.shield")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 Button("Actualizar widget y comprobar extensión") {
                     model.refreshWidgets()
                     model.checkLockScreen()
@@ -29,15 +31,8 @@ struct TimeLockScreenSettingsView:View {
                 Text(model.widgetDiagnostic)
                     .font(.caption).foregroundStyle(.secondary)
                     .textSelection(.enabled)
-                Text("La galería depende del registro de la extensión en iOS. Un App Group sin autorización impide compartir los datos, pero no prueba por sí solo que falte de la galería.")
+                Text("Si el widget aparece en la galería pero el App Group está bloqueado, la extensión está registrada correctamente. No inventaremos cifras: se ofrece un acceso al mapa.")
                     .font(.caption2).foregroundStyle(.secondary)
-                Button("En mi iPhone NO aparece en la galería") {
-                    actualGalleryResult="No visible. Revisar firma individual de MiMapaWidgets.appex, identificador de equipo y perfiles de app + extensión en Sideloadly. Prueba tras reinstalar firmando ambas."
-                }
-                if !actualGalleryResult.isEmpty {
-                    Text(actualGalleryResult).font(.caption).foregroundStyle(.orange)
-                        .textSelection(.enabled)
-                }
             }
             Section("Actividad en directo · bloqueo") {
                 Toggle("Mostrar estancia en el bloqueo",isOn:$liveActivityEnabled)
@@ -52,18 +47,13 @@ struct TimeLockScreenSettingsView:View {
                 Text(model.liveActivityDiagnostic)
                     .font(.caption).foregroundStyle(.secondary)
                     .textSelection(.enabled)
-                Button("La actividad NO aparece al bloquear el iPhone") {
-                    actualActivityResult="Si ActivityKit acepta la solicitud pero no se ve, comprobar Ajustes de iOS → app → Actividades en directo y la firma de la extensión WidgetKit. La confirmación definitiva exige prueba con pantalla bloqueada en iPhone."
-                }
-                if !actualActivityResult.isEmpty {
-                    Text(actualActivityResult).font(.caption).foregroundStyle(.orange)
-                        .textSelection(.enabled)
-                }
+                Text("La actividad muestra el lugar y el temporizador mediante ActivityKit, sin depender del App Group.")
+                    .font(.caption2).foregroundStyle(.secondary)
             }
             Section("Cómo verificar en el dispositivo") {
-                Text("1. Reinstala el IPA asegurando la firma de la app y MiMapaWidgets.appex.\n2. Abre la app y pulsa «Actualizar widget y comprobar extensión».\n3. Mantén pulsado el escritorio, pulsa Añadir widget y busca «Mi Mapa del Tiempo».\n4. En esta pantalla crea la actividad de prueba y bloquea el iPhone.\n5. Comprueba que iOS permite Actividades en directo.\n6. Si falla, copia el diagnóstico de esta pantalla.")
+                Text("1. Instala la actualización de Mi Mapa Prueba con Impactor conservando su identificador.\\n2. Busca «Mi Mapa Prueba» en Añadir widget.\\n3. Activa la actividad y bloquéalo.\\n4. Revisa los diagnósticos si hay un error.")
                     .font(.caption)
-                Text("Con una cuenta gratuita, iOS puede rechazar el App Group o la extensión firmada. La presencia de un IPA compilado no demuestra que los permisos sobrevivan a Sideloadly.")
+                Text("La autorización de App Groups se concede en la firma y los perfiles de iOS, no mediante un interruptor de la aplicación.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
