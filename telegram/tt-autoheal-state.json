@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "projects": {
+    "ttittulares": {
+      "checked_at": "2026-10-12T18:25:34.166640+00:00",
+      "issue_count": 4,
+      "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "341646431f8d",
+          "title": "Ucrania informa de ataque ruso a un objetivo energético tras el anuncio de tregua de Trump - EFE - A",
+          "seconds": 1907,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "1b13139d24ff",
+          "title": "Alineaciones oficiales del Levante - Sevilla de LaLiga EA Sports 2026-2027: Robbie Ure, el delantero",
+          "seconds": 1283,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "081e2e54a88e",
+          "title": "El gesto del rey Felipe VI con Juan Vivas, presidente de Ceuta, un día antes de visitar la ciudad au",
+          "seconds": 725,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1566,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [],
+      "repair_errors": [
+        "send-ttittulares-ready-telegram.yml HTTPError",
+        "telegram-pinned-index.yml HTTPError",
+        "telegram_alert HTTPError"
+      ],
+      "open_signature": "34fece5b93b672fb84da6c98d02bee14e5a2072827476117472e39aefbfe894b"
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-12T18:25:34.166640+00:00",
+      "issue_count": 2,
+      "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "3308803efaac",
+          "title": "Sofía Puente",
+          "seconds": 1375,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1565,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [],
+      "repair_errors": [
+        "telegram-pinned-index.yml HTTPError",
+        "telegram_alert HTTPError"
+      ],
+      "open_signature": "f4a49c354782842513f4b3b830769a00a24a508363503df0c17daae49d0a3f15"
+    }
+  },
+  "attempts": {},
+  "checked_at": "2026-10-12T18:25:34.166640+00:00"
+}
