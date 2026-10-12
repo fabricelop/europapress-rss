@@ -46,7 +46,7 @@ struct TimeLiveSettingsView:View {
             Section("Recuperación") {
                 Text("Al volver a abrir el mapa se recupera la actividad si iOS la terminó. También puedes tocar «En vivo» en el mapa o el botón de arriba. Si todavía no existe una posición GPS actual, comenzará con la próxima muestra válida.")
                     .font(.caption)
-                Text("iOS controla la duración y el tamaño de las actividades en directo. Esta función no necesita widgets del escritorio ni App Groups.")
+                Text("iOS controla la duración y el tamaño de la pantalla En vivo. Si se interrumpe, puedes reactivarla aquí o volviendo al mapa.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

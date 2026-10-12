@@ -203,7 +203,8 @@ struct SavedState: Codable {
         recording = false
         gpsStatus = "GPS en pausa · tiempo acumulándose en \(label(for:cell))"
         recordPowerEvent(mode:.rest,cause:"Pausa voluntaria desde \(label(for:cell))")
-        activityPublisher.refresh(from:self,force:true)
+        // La actualización ActivityKit se enviará DESPUÉS de detener CoreLocation
+        // y configurar la vigilancia de salida: no reentrar en SwiftUI aquí.
         return true
     }
     /// El periodo de reposo se consolida UNA sola vez cuando el GPS se reanuda.
@@ -1055,6 +1056,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     @Published private(set) var lastGapSeconds: TimeInterval = 0
     @Published private(set) var lastCallbackAt: Date?
     @Published private(set) var automaticRestResumptions = 0
+    @Published private(set) var lastPauseTransition = "Sin incidencias registradas"
+    private var restTransitionInProgress = false
 
     override init() {
         super.init()
@@ -1074,6 +1077,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func begin(_ model: TimeModel) {
+        guard !restTransitionInProgress else { return }
         self.model = model
         if model.isResting {
             model.finishRest()
@@ -1106,11 +1110,26 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
 
     /// Pausa de precisión con seguimiento de salida de zona de bajo consumo.
     @MainActor func rest(_ model: TimeModel) {
-        guard model.pauseForRest() else { return }
+        // Transición serial: protege frente a doble pulsación y cambios de
+        // CoreLocation mientras el modelo se marca como pausado.
+        guard !restTransitionInProgress,!model.isResting,model.recording else { return }
+        restTransitionInProgress = true
+        defer { restTransitionInProgress = false }
         self.model = model
+        guard model.pauseForRest() else {
+            lastPauseTransition = "Pausa no iniciada: se necesita GPS reciente"
+            return
+        }
         manager.stopUpdatingLocation()
         motion.end()
         automaticMonitoringStart()
+        lastPauseTransition = "Pausa activada y guardada · \(Date().formatted(date:.omitted,time:.shortened))"
+        // No iniciar la presentación de ActivityKit en mitad de la transición
+        // síncrona de SwiftUI/CoreLocation. Si ya se ha reanudado, ignorarla.
+        Task { @MainActor [weak model] in
+            guard let model,model.isResting else { return }
+            model.refreshLive()
+        }
     }
 
     @MainActor func restoreRest(_ model: TimeModel) {
@@ -1168,7 +1187,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func refreshWhenForeground() {
-        guard model?.recording == true, !model!.isResting,
+        guard let model,model.recording,!model.isResting,
               manager.authorizationStatus == .authorizedAlways ||
               manager.authorizationStatus == .authorizedWhenInUse else { return }
         // startUpdatingLocation es idempotente; no depende de CoreMotion.
@@ -1336,7 +1355,7 @@ struct RootView: View {
             if faceIDEnabled && !unlocked {
                 VStack(spacing:20) {
                     Image(systemName:"lock.shield.fill").font(.system(size:54)).foregroundStyle(.teal)
-                    Text("Mi Mapa · PRUEBA").font(.title2.bold())
+                    Text("Mi Mapa del Tiempo").font(.title2.bold())
                     Text("El seguimiento GPS continúa aunque la pantalla esté protegida.")
                         .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     Button {
@@ -1529,7 +1548,7 @@ struct TimeMapView: View {
                     }
                 }
                 .mapStyle(model.mapKind == .satellite ? .imagery : model.mapKind == .hybrid ? .hybrid : .standard)
-                .simultaneousGesture(DragGesture(minimumDistance:8)
+                .simultaneousGesture(DragGesture(minimumDistance:24)
                     .onChanged { _ in
                         if followLocation { followLocation = false }
                         beginMapDrag()
@@ -1591,6 +1610,48 @@ struct TimeMapView: View {
                     }
                     .accessibilityLabel(followLocation ? "Seguimiento activo; pasar a mapa libre" : "Mapa libre; seguir mi posición")
                 }.padding(12)
+                if !model.forceBasicMap && connectivity.connected {
+                    HStack {
+                        Spacer()
+                        VStack(spacing:4) {
+                            Button { zoomMap(factor:0.6) } label: {
+                                Image(systemName:"plus").font(.headline)
+                                    .frame(width:38,height:34)
+                            }
+                            .accessibilityLabel("Acercar mapa")
+                            Divider().frame(width:27)
+                            Button { zoomMap(factor:1.65) } label: {
+                                Image(systemName:"minus").font(.headline)
+                                    .frame(width:38,height:34)
+                            }
+                            .accessibilityLabel("Alejar mapa")
+                        }
+                        .buttonStyle(.plain)
+                        .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
+                        .padding(.trailing,12)
+                    }
+                }
+                TimelineView(.periodic(from:.now,by:20)) { context in
+                    let health=GPSHealthAssessment.evaluate(
+                        recording:model.recording,
+                        resting:model.isResting,
+                        lastFix:model.current?.date,
+                        now:context.date)
+                    HStack(spacing:7) {
+                        Image(systemName:health.symbol)
+                            .foregroundStyle(health.needsAttention ? Color.orange : Color.teal)
+                        Text(health.message).lineLimit(1).minimumScaleFactor(0.85)
+                        Spacer(minLength:2)
+                        if health.needsAttention && model.recording {
+                            Button("Actualizar GPS") {
+                                gps.refreshWhenForeground()
+                            }.font(.caption2.weight(.semibold))
+                        }
+                    }
+                    .font(.caption2)
+                    .padding(.horizontal,12)
+                    .accessibilityElement(children:.combine)
+                }
                 if model.recording || model.isResting {
                     HStack(spacing:8) {
                         Label(model.isResting ? "GPS en pausa · sumando tiempo" : "GPS continuo",
@@ -1760,6 +1821,13 @@ struct TimeMapView: View {
             inspectedZone=zone
         }
     }
+    private func zoomMap(factor:Double) {
+        let center=followLocation ? (model.current?.coordinate ?? region.center) : region.center
+        let target=MapZoomPolicy.scaled(region,factor:factor,center:center)
+        region=target
+        withAnimation(.easeOut(duration:0.18)) { camera = .region(target) }
+        model.updateCamera(target)
+    }
     private func focusOnCurrentLocation() {
         guard let position=model.current else { return }
         let target=MKCoordinateRegion(center:position.coordinate,span:region.span)
@@ -1863,11 +1931,12 @@ struct TimeSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Instalación de prueba") {
-                    Label("Versión independiente · IMPACTOR",systemImage:"checkmark.shield")
+                Section("Mi Mapa del Tiempo") {
+                    Label("Versión 1.0.24 · datos guardados en este iPhone",
+                          systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
-                    Text("Esta app conserva sus datos por separado de Mi Mapa del Tiempo original. Para recuperar una copia, detén primero el seguimiento e importa el archivo cifrado .mmapbak. No se sincronizan automáticamente entre ambas instalaciones.")
-                        .font(.caption)
+                    Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Seguimiento") {
                     LabeledContent("Estado", value: model.gpsStatus)
@@ -1930,7 +1999,7 @@ struct TimeSettingsView: View {
                         TimeLiveSettingsView(model:model)
                     }
                 }
-                Section("Diagnóstico") {
+                Section("Ayuda y diagnóstico") {
                     NavigationLink("Estado técnico del GPS y almacenamiento") {
                         GPSDiagnosticsView(model:model,gps:gps)
                     }

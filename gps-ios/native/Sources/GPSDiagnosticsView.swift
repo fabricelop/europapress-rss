@@ -10,6 +10,8 @@ struct GPSDiagnosticsView: View {
             Section("Seguimiento") {
                 LabeledContent("Estado",value:model.gpsStatus)
                 LabeledContent("Modo",value:model.isResting ? "Pausa voluntaria (tiempo asumido)" : "GPS continuo")
+                LabeledContent("Última transición de pausa",
+                               value:gps.lastPauseTransition)
                 LabeledContent("Reactivaciones automáticas tras pausa",value:String(gps.automaticRestResumptions))
                 LabeledContent("Pausas notificadas por iOS",value:String(gps.pauseCount))
                 LabeledContent("Reanudaciones notificadas",value:String(gps.resumeCount))

@@ -32,7 +32,7 @@ struct TimeMapActivityAttributes:ActivityAttributes {
         // Hitos discretos; no se envían notificaciones adicionales.
         var milestone:String?
     }
-    var title="Mi Mapa Prueba"
+    var title="Mi Mapa del Tiempo"
 }
 
 /// Una nueva visita a la misma zona exige un cronómetro nuevo.

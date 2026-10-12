@@ -24,14 +24,6 @@ for y in range(h):
         if (abs(x-512)<10 and 390<y<512) or (abs(y-(512+0.7*(x-512)))<10 and 512<x<605):
             rgb=[252,221,121]
         if r<15: rgb=[255,231,145]
-        # Distintivo dorado en la esquina para no confundir la edición de prueba.
-        if 737<x<983 and 737<y<982:
-            rgb=[246,194,68]
-            # P mayúscula en contraste, sin tipografías externas.
-            px,py=x-790,y-786
-            if (0<px<29 and 0<py<150) or (0<px<135 and 0<py<28) or \
-               (108<px<135 and 0<py<86) or (0<px<135 and 58<py<86):
-                rgb=[21,67,87]
         pixels.extend(rgb)
 def chunk(kind,data):
     val=kind+data
