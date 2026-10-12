@@ -726,6 +726,10 @@ def finalize_existing_group_message(entry,card,body,leader_id,now,token,chat):
     if not body.strip():
         return False
     same_hash=hashlib.sha256((body+"|"+str(entry.get("image_url") or "")).encode("utf-8")).hexdigest()
+    if entry.get("final") is True and str(entry.get("grouped_into") or "")==str(leader_id):
+        # A previously finalised sibling remains the user's OWN card. Do not
+        # fan out later group revisions to every sibling (triple Telegram copy).
+        return False
     if entry.get("final") is True and entry.get("content_sha256")==same_hash:
         return False
     group_card={**card,"id":str(entry.get("event_id") or ""),

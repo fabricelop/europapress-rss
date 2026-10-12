@@ -23,6 +23,7 @@ PREPARED = ROOT / "prepared.json"
 IMAGE_DELIVERIES = ROOT / "telegram-image-deliveries.json"
 PACKAGE_STATE = ROOT / "telegram-package-listener-state.json"
 COPY_STATE = ROOT / "explained-copy-state.json"
+EDITORIAL_QUEUE = ROOT / "editorial-queue.json"
 
 TOKEN = os.environ["TTENDENCIAS_BOT_TOKEN"]
 API = f"https://api.telegram.org/bot{TOKEN}/"
@@ -155,6 +156,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
         ("trends/requests.json", REQUESTS),
         ("trends/telegram-package-listener-state.json", PACKAGE_STATE),
         ("trends/explained-copy-state.json", COPY_STATE),
+        ("trends/editorial-queue.json", EDITORIAL_QUEUE),
     ):
         if path.exists():
             dst = tmp / path.name
@@ -284,6 +286,35 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
             remote_requests["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
             save(REQUESTS, remote_requests)
 
+        # Persist re-explain work immediately, not only the request flag. A
+        # successful tx:r must appear in editorial-queue.json on the same push.
+        local_queue = load(snapshots.get("trends/editorial-queue.json", Path("/nonexistent")),
+                           {"items": []})
+        remote_queue = load(EDITORIAL_QUEUE, {"project": "TTendencias", "items": []})
+        queue_items = remote_queue.setdefault("items", [])
+        queue_changed = False
+        for incoming in local_queue.get("items", []):
+            rid = str(incoming.get("id") or "")
+            if not rid or not incoming.get("reexplain") or str(incoming.get("status") or "") not in {"preparing","update"}:
+                continue
+            remote_req = next((r for r in remote_requests.get("requests", [])
+                               if str(r.get("id") or "") == rid), None)
+            if (not remote_req or str(remote_req.get("status") or "") not in {"preparing","update"}
+                    or not remote_req.get("reexplain")
+                    or int(remote_req.get("revision") or 0) != int(incoming.get("revision") or 0)):
+                continue
+            old = next((row for row in queue_items if str(row.get("id") or "") == rid), None)
+            if old is None:
+                queue_items.append(incoming)
+                queue_changed = True
+            elif int(old.get("revision") or 0) <= int(incoming.get("revision") or 0) and old != incoming:
+                old.update(incoming)
+                queue_changed = True
+        if queue_changed:
+            remote_queue["count"] = len(queue_items)
+            remote_queue["updated_at"] = datetime.now(MADRID).isoformat(timespec="seconds")
+            save(EDITORIAL_QUEUE, remote_queue)
+
         remote_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
         local_state = load(snapshots.get("trends/telegram-package-listener-state.json", Path("/nonexistent")), {"last_update_id": 0})
         remote_state["version"] = 1
@@ -326,6 +357,7 @@ def persist_package_state(message="Actualizar paquetes Telegram TTendencias"):
             "trends/requests.json",
             "trends/telegram-package-listener-state.json",
             "trends/explained-copy-state.json",
+            "trends/editorial-queue.json",
         ], check=False)
         if subprocess.run(["git", "diff", "--cached", "--quiet"], check=False).returncode == 0:
             return True
@@ -1502,6 +1534,23 @@ def handle_readonly_reexplain(callback, instruction=""):
     requests_doc = load_remote_json("trends/requests.json", load(REQUESTS, {"requests": []}))
     request = next((x for x in requests_doc.get("requests", [])
                     if str(x.get("id") or "") == tid), None)
+    original_tid = tid
+    # Clicking any sibling of an editorial group must request a SINGLE
+    # re-explanation of the canonical leader, not a new copy per sibling.
+    leader_id = str((request or {}).get("group_leader_id") or
+                    active[0].get("group_leader_id") or "").strip()
+    group_id = str((request or {}).get("explanation_group_id") or
+                   (request or {}).get("group_id") or
+                   active[0].get("group_id") or "").strip()
+    if leader_id and leader_id != tid and group_id:
+        leader_req = next((x for x in requests_doc.get("requests", [])
+                           if str(x.get("id") or "") == leader_id
+                           and str(x.get("explanation_group_id") or x.get("group_id") or "") == group_id), None)
+        leader_live = any(str(x.get("event_id") or "") == leader_id
+                          and str(x.get("status") or "").lower() == "sent"
+                          for x in ledger.get("items", []))
+        if leader_req and leader_live:
+            tid, request = leader_id, leader_req
     if request is None:
         # Recover the original title/id even if an older request was pruned.
         request = {"id": tid, "name": str(active[0].get("name") or
@@ -1527,6 +1576,27 @@ def handle_readonly_reexplain(callback, instruction=""):
                    telegram_reexplain_from_message_id=mid)
     requests_doc["updated_at"] = now
     save(REQUESTS, requests_doc)
+    # Queue on the same transaction: the previous implementation waited for
+    # an unrelated radar run and left /Reexplicar apparently inert.
+    queue_doc = load_remote_json("trends/editorial-queue.json",
+                                 load(EDITORIAL_QUEUE, {"project":"TTendencias","items":[]}))
+    work = queue_doc.setdefault("items", [])
+    work[:] = [q for q in work if str(q.get("id") or "") != tid]
+    work.append({
+        "id": tid, "name": request.get("name"), "rank": request.get("rank"),
+        "status": "update", "revision": request["revision"],
+        "requested_at": now, "reexplain": True, "auto_queued": False,
+        "with_image": False, "rewrite_with_image": False,
+        "rewrite_instruction": details, "task": "explain",
+        "group_id": group_id or request.get("group_id"),
+        "group_leader_id": tid if group_id else None,
+        "requested_together": [x.get("name") for x in requests_doc.get("requests", [])
+                               if group_id and
+                               str(x.get("explanation_group_id") or x.get("group_id") or "") == group_id],
+    })
+    queue_doc["count"] = len(work)
+    queue_doc["updated_at"] = now
+    save(EDITORIAL_QUEUE, queue_doc)
     if not persist_package_state("Encolar nueva explicacion TTendencias desde Telegram"):
         return "persistence_failed"
     print("TTENDENCIAS_REEXPLAIN_PERSISTED", tid, request["revision"], flush=True)
