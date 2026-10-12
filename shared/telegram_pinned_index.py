@@ -198,6 +198,35 @@ def telegram(token,method,data):
         raise TelegramError(method,str(answer.get("description") or "API error"))
     return answer.get("result")
 
+def dispatch_delivery_if_missing(project,ready,pending):
+    # GitHub's built-in GITHUB_TOKEN commits do not trigger push workflows.
+    # The continuous Telegram listener is our independent repair clock.
+    if project!="ttendencias" or not os.environ.get("GH_TOKEN"):
+        return
+    undelivered=[x for x in pending if not int(x.get("mid") or 0)]
+    queue=read("trends/editorial-queue.json",{"items":[]})
+    finalizable={str(x.get("id") or "") for x in queue.get("items",[])
+                 if str(x.get("status") or "").lower() in {"explained","ready"}
+                 and bool(x.get("explanation"))}
+    provisional=[x for x in pending if x["id"] in finalizable
+                 and int(x.get("mid") or 0)>0]
+    if not undelivered and not provisional:
+        return
+    from urllib.request import Request,urlopen
+    target=("https://api.github.com/repos/fabricelop/europapress-rss/"
+            "actions/workflows/send-ttendencias-explained-telegram.yml/dispatches")
+    request=Request(target,data=b'{"ref":"main"}',method="POST",headers={
+        "Authorization":"Bearer "+os.environ["GH_TOKEN"],
+        "Accept":"application/vnd.github+json",
+        "Content-Type":"application/json",
+        "User-Agent":"TTendencias-pinned-index-repair"})
+    with urlopen(request,timeout=20) as response:
+        if response.status!=204:raise RuntimeError("TT delivery dispatch rejected")
+    print("TT_PINNED_INDEX_DELIVERY_REPAIR_DISPATCHED",
+          "missing="+str(len(undelivered)),
+          "ready_to_finalize="+str(len(provisional)),flush=True)
+
+
 def update(project,api=telegram):
     conf=PROJECTS[project]
     if os.getenv("TT_PINNED_INDEX_REMOTE")=="1":
@@ -259,6 +288,12 @@ def update(project,api=telegram):
           f" message_id={mid} pinned={pinned}",flush=True)
     if not pinned:
         raise RuntimeError("Telegram did not pin index; will retry")
+    if os.getenv("TT_PINNED_INDEX_REMOTE")=="1":
+        try:
+            dispatch_delivery_if_missing(project,ready,pending)
+        except Exception as exc:
+            print("TT_PINNED_INDEX_DELIVERY_REPAIR_FAILED",project,
+                  type(exc).__name__,flush=True)
     return st
 
 def selftest():
