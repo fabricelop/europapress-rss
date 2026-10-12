@@ -91,6 +91,18 @@ def candidates(now):
         found.setdefault(("ttittulares",mid),{"project":"ttittulares",
             "message_id":mid,"kind":"execution_ack",
             "source":"completed_mobile_command_notice","created_at":at.isoformat()})
+    # Exact bot-persisted legacy panel IDs, never guessed message sequences.
+    panel=load("trends/telegram-bot-state.json",{})
+    panel_ids=set()
+    for value in list(panel.get("panel_message_ids") or [])+[panel.get("panel_message_id")]:
+        try:
+            mid=int(value or 0)
+            if mid>0:panel_ids.add(mid)
+        except (TypeError,ValueError):pass
+    for mid in panel_ids-trends_reserved:
+        found.setdefault(("ttendencias",mid),{
+            "project":"ttendencias","message_id":mid,"kind":"legacy_panel",
+            "source":"persisted_bot_panel_id","created_at":now.isoformat()})
     return list(found.values())
 
 def telegram_delete(project,mid):
@@ -108,9 +120,10 @@ def telegram_delete(project,mid):
     except HTTPError as exc:
         # Existing message may already have been cleared manually.
         body=exc.read(600).decode(errors="replace").lower()
-        if exc.code==400 and ("message to delete not found" in body or
-                 "message can't be deleted" in body):
-            return "not_found_or_expired"
+        if exc.code==400 and "message to delete not found" in body:
+            return "not_found"
+        if exc.code==400 and ("message can't be deleted" in body or "message cannot be deleted" in body):
+            return "not_deletable"
         raise RuntimeError("Telegram delete HTTP "+str(exc.code)) from exc
     if response.get("ok") is not True:
         raise RuntimeError("Telegram delete not acknowledged")
@@ -126,7 +139,7 @@ def run(now=None,deleter=telegram_delete):
     for row in candidates(now):
         key=row["project"]+":"+str(row["message_id"])
         old=processed.get(key,{})
-        if old.get("result") in {"deleted","not_found_or_expired"}:
+        if old.get("result") in {"deleted","not_found","not_deletable","not_found_or_expired"}:
             results.append(old);continue
         try:
             status=deleter(row["project"],row["message_id"])

@@ -45,6 +45,7 @@ jobs:
             /telegram/tt-technical-receipts.json
             /trends/telegram-package-listener-state.json
             /telegram/technical-cleanup-report.json
+            /trends/telegram-bot-state.json
             /telegram/bidirectional-audit-ttittulares.json
             /telegram/bidirectional-audit-ttendencias.json
             /ttittulares/status.json
@@ -80,6 +81,7 @@ jobs:
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
           TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
           FORCE: ${{ inputs.force }}
+          TT_AUTOHEAL_DIRECT_DISPATCH: "1"
         run: |
           set -euo pipefail
           git fetch origin main

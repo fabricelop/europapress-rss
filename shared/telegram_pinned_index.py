@@ -74,12 +74,16 @@ def active_records(project):
     ledger=read(conf["ledger"],{"items":[]})
     final=[]
     pending={}
+    closed_ids={str(x.get("event_id") or "") for x in ledger.get("items",[])
+        if int(x.get("telegram_message_id") or 0)>watermark
+        and str(x.get("status") or "").lower() in {"deleted","removed","delete_pending"}}
     for entry in ledger.get("items",[]):
         mid=int(entry.get("telegram_message_id") or 0)
         if mid<=watermark or str(entry.get("status") or "").lower()!="sent":
             continue
         if not mid:continue
         event_id=str(entry.get("event_id") or "")
+        if event_id in closed_ids:continue
         title=shorten(entry.get("title") or entry.get("name") or event_id)
         row={"id":event_id,"title":title,"mid":mid,
              "at":entry.get("delivered_at") or entry.get("updated_at") or ""}
@@ -107,7 +111,7 @@ def active_records(project):
         if status not in {"preparing","update","processing","ready","in_progress"}:
             continue
         event_id=str(entry.get("id") or entry.get("event_id") or "")
-        if not event_id or event_id in pending or any(x["id"]==event_id for x in final):
+        if not event_id or event_id in closed_ids or event_id in pending or any(x["id"]==event_id for x in final):
             continue
         at=entry.get("requested_at") or entry.get("selected_at") or queue.get("updated_at")
         if cutoff and event_id not in protected:
@@ -121,7 +125,7 @@ def active_records(project):
         status_doc=read("ttittulares/status.json",{})
         for entry in status_doc.get("processing_items",[]):
             event_id=str(entry.get("event_id") or "")
-            if not event_id or event_id in pending or any(x["id"]==event_id for x in final):
+            if not event_id or event_id in closed_ids or event_id in pending or any(x["id"]==event_id for x in final):
                 continue
             start=moment(entry.get("selected_at"))
             if cutoff and (start is None or start<=cutoff):continue
@@ -142,20 +146,11 @@ def active_records(project):
 def render(project,bot_id):
     conf=PROJECTS[project]
     ready,pending=active_records(project)
-    first=f"LISTAS: {len(ready)}  |  EN ELABORACIÓN: {len(pending)}"
-    header=f"{first}\n<b>{conf['label']} · índice fijado</b>\n"
-    ready_lines=[]
-    for item in ready:
-        # Telegram private conversations have no t.me/c/post public link.
-        # tg://openmessage jumps to a bot's private message on supported apps.
-        # Include #id in visible text for clients that only open the chat.
-        label=html.escape(shorten(item["title"],95))
-        direct=(f"tg://openmessage?user_id={bot_id}&amp;"
-                f"message_id={item['mid']}")
-        ready_lines.append(f"• <a href=\"{direct}\">{label} ↗</a> · #{item['mid']}")
-    pending_lines=[f"• {html.escape(shorten(x['title'],95))}"+
-                   ("" if x["mid"] else " · pendiente de Telegram")
-                   for x in pending]
+    first=f"LISTAS: {len(ready)} | EN ELABORACIÓN: {len(pending)}"
+    header=first
+    # One short plain-text line per entry, never a deep link or message ID.
+    ready_lines=["• "+html.escape(shorten(x["title"],65)) for x in ready]
+    pending_lines=["• "+html.escape(shorten(x["title"],65)) for x in pending]
     chunks=[header,"\n<b>LISTAS</b>"]
     room=MAX_TEXT-100
     count_shown=0
@@ -173,41 +168,6 @@ def render(project,bot_id):
         count_pending+=1
     if not pending:chunks.append("• Ninguna")
     if count_pending<len(pending):chunks.append(f"… y {len(pending)-count_pending} más")
-    # Bidirectional source of truth. Never turn a discrepancy into a
-    # Telegram delete: the button triggers the existing safe repair workflow.
-    bidir=read("telegram/bidirectional-audit-"+project+".json",{})
-    bidir_at=moment(bidir.get("checked_at"))
-    if (bidir_at and (datetime.now(timezone.utc)-bidir_at).total_seconds()<15*60
-            and int(bidir.get("issues_count") or 0)>0):
-        chunks.append("\n⚠️ <b>App ↔ Telegram: "+
-                      str(bidir["issues_count"])+" discrepancia(s)</b> · Autocorregir.")
-    # Include editor-start watchdog state only when something needs action.
-    # No extra chat messages or repetitive runtime notifications.
-    guard=read("telegram/editorial-run-guard.json",{})
-    guard_at=moment(guard.get("checked_at"))
-    if guard_at and (datetime.now(timezone.utc)-guard_at).total_seconds()<15*60:
-        work=(guard.get("projects") or {}).get(project) or {}
-        status=str(work.get("status") or "")
-        if status=="dispatch_requested_awaiting_run":
-            chunks.append("\n⏳ <b>Elaboración atrasada: relanzamiento solicitado</b> · esperando confirmación.")
-        elif status=="editorial_executor_unresponsive":
-            chunks.append("\n⚠️ <b>Elaboración sin respuesta</b> · requiere intervención.")
-        elif status=="guard_error":
-            chunks.append("\n⚠️ <b>Control de elaboración sin respuesta</b> · Autocorregir.")
-    # Persistent diagnostics are shown INSIDE the existing pinned message:
-    # no extra Telegram alerts, no flooded widget or new chat cards.
-    audit=read("telegram/tt-autoheal-state.json",{})
-    last=moment(audit.get("checked_at"))
-    if last and (datetime.now(timezone.utc)-last).total_seconds()<12*60:
-        diag=(audit.get("projects") or {}).get(project) or {}
-        urgent=[x for x in diag.get("issues",[]) if
-                str(x.get("kind") or "") in {"editorial_overdue",
-                    "orphan_provisional","missing_delivery","unfinished_ready"}
-                and int(x.get("seconds") or 0)>=20*60]
-        if urgent:
-            chunks.append("\n⚠️ <b>Revisión necesaria: "+
-                          str(len(urgent))+" entrada(s)</b> · pulsa Autocorregir.")
-    chunks.append("\n<i>Se actualiza sin crear nuevos índices. Borrar desde Telegram cierra cada entrada.</i>")
     text="\n".join(chunks)
     assert len(text)<=MAX_TEXT
     return text,ready,pending
@@ -309,7 +269,7 @@ def update(project,api=telegram):
                 pass
             elif ("message to edit not found" in exc.description.lower()
                   or "message_id_invalid" in exc.description.lower()):
-                mid=0
+                raise RuntimeError("Pinned index missing; refuse duplicate index")
             else:raise
     if mid and not applied_keyboard and int(st.get("keyboard_version") or 0)<1:
         api(token,"editMessageReplyMarkup",{
@@ -324,15 +284,18 @@ def update(project,api=telegram):
         mid=int(response["message_id"])
         print("TT_PINNED_INDEX_CREATED",project,mid,flush=True)
     # Enforce a visible pinned header, not only a message in chat history.
-    try:
-        api(token,"pinChatMessage",{
-            "chat_id":chat,"message_id":mid,"disable_notification":True})
-        pinned=True
-    except TelegramError as exc:
-        if "already pinned" in exc.description.lower():pinned=True
-        else:
-            pinned=False
-            print("TT_PINNED_INDEX_PIN_RETRY",project,str(exc),flush=True)
+    if mid==prev_mid and st.get("pinned") is True:
+        pinned=True  # Avoid re-pinning an already confirmed fixed index.
+    else:
+        try:
+            api(token,"pinChatMessage",{
+                "chat_id":chat,"message_id":mid,"disable_notification":True})
+            pinned=True
+        except TelegramError as exc:
+            if "already pinned" in exc.description.lower():pinned=True
+            else:
+                pinned=False
+                print("TT_PINNED_INDEX_PIN_RETRY",project,str(exc),flush=True)
     st.update(version=1,keyboard_version=1,project=project,chat_id=chat,message_id=mid,
               pinned=pinned,bot_id=bot_id,content_sha256=signature,
               ready_count=len(ready),preparing_count=len(pending),
@@ -377,9 +340,9 @@ def selftest():
                 {"id":"historic-id","name":"Histórica","status":"preparing",
                  "requested_at":"2026-10-12T14:00:00Z"}]})
             body,ready,pending=render("ttendencias",123456)
-            assert body.startswith("LISTAS: 1  |  EN ELABORACIÓN: 2"),body
+            assert body.startswith("LISTAS: 1 | EN ELABORACIÓN: 2"),body
             assert len(ready)==1 and len(pending)==2
-            assert "tg://openmessage?user_id=123456&amp;message_id=722" in body
+            assert "tg://openmessage" not in body and "message_id=" not in body
             assert "message_id=723" not in body
             calls=[]
             def mock(token,method,data):
@@ -394,13 +357,13 @@ def selftest():
             assert [x[0] for x in calls]==["getMe","sendMessage","pinChatMessage"]
             calls.clear()
             update("ttendencias",mock)
-            assert [x[0] for x in calls]==["getMe","pinChatMessage"]
+            assert [x[0] for x in calls]==["getMe"]
             deliveries=read("trends/telegram-image-deliveries.json",{})
             deliveries["items"][2]["final"]=True
             write("trends/telegram-image-deliveries.json",deliveries)
             calls.clear()
             update("ttendencias",mock)
-            assert [x[0] for x in calls]==["getMe","editMessageText","pinChatMessage"]
+            assert [x[0] for x in calls]==["getMe","editMessageText"]
             assert calls[1][1]["message_id"]==900
             print("TT_PINNED_INDEX_SELFTEST_OK")
         finally:

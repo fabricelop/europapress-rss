@@ -68,14 +68,18 @@ def audit(project,now=None):
         if str(row.get("status") or "").lower()=="sent" and mid>0:
             if eid not in active or mid>=int(active[eid].get("telegram_message_id") or 0):
                 active[eid]=row
+    # Telegram delete tombstones override any earlier sent acknowledgement.
+    terminal_ids={str(x.get("event_id") or "") for x in rows
+        if int(x.get("telegram_message_id") or 0)>watermark
+        and str(x.get("status") or "").lower() in CLOSED}
+    active={eid:row for eid,row in active.items() if eid not in terminal_ids}
     decisions_by_id={str(x.get("event_id") or x.get("id") or ""):
                      str(x.get("status") or "").lower()
                      for x in decisions.get("items",[])}
     # The user's Telegram delete callback is authoritative. Keep Explicadas
     # and READY as *history*, not a fresh active APP row after delete.
-    for eid,row in history.items():
-        if str(row.get("status") or "").lower() in CLOSED:
-            decisions_by_id[eid]="deleted"
+    for eid in terminal_ids:
+        decisions_by_id[eid]="deleted"
     app={}
     def add(row,source,stamp):
         eid=str(row.get("event_id") or row.get("id") or "")
@@ -88,11 +92,13 @@ def audit(project,now=None):
         if status not in OPEN:return
         if eid in app:
             app[eid]["sources"].add(source)
+            app[eid]["has_final_copy"]=app[eid]["has_final_copy"] or bool(row.get("explanation") or row.get("editorial_verified"))
             return
         app[eid]={"id":eid,"title":str(row.get("name") or row.get("title") or eid),
                   "status":status,"sources":{source},
                   "created":start.isoformat() if start else None,
-                  "revision":int(row.get("revision") or 0)}
+                  "revision":int(row.get("revision") or 0),
+                  "has_final_copy":bool(row.get("explanation") or row.get("editorial_verified") or source=="app_listas")}
     for x in app_queue:
         add(x,"editorial_queue",x.get("requested_at") or x.get("selected_at"))
     if is_tti:
@@ -124,7 +130,7 @@ def audit(project,now=None):
                            "source":sorted(x["sources"]),"repairable":kind=="app_without_telegram"})
             continue
         matched+=1
-        if x["status"] in {"explained","ready"} and delivery.get("final") is not True:
+        if x["status"] in {"explained","ready"} and x["has_final_copy"] and delivery.get("final") is not True:
             # Ready queue rows may lack full text. Sender still must finish.
             issues.append({"kind":"app_final_not_delivered","id":eid,
                            "title":x["title"],"message_id":delivery["telegram_message_id"],

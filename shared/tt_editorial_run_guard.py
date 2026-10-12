@@ -176,6 +176,14 @@ def evaluate(project,now,previous,command=None,run=None):
          "last_command_at":(command or {}).get("requested_at"),
          "status":"no_work","should_dispatch":False}
     if not rows:return out
+    # A global RUN/DONE alone is not a verified per-item completion.
+    run_start=moment((run or {}).get("started_at"))
+    out["item_execution"]=[{
+        "id":x["id"],"entered_at":x.get("start"),
+        "should_start_by":(moment(x.get("start"))+START_AFTER).isoformat() if moment(x.get("start")) else None,
+        "global_run_after_entry":bool(run_start and moment(x.get("start")) and run_start>=moment(x.get("start"))),
+        "final_telegram_delivery_confirmed":False
+        } for x in rows[:35]]
     oldest_candidates=[moment(x.get("start")) for x in rows]
     oldest_candidates=[x for x in oldest_candidates if x is not None]
     oldest=min(oldest_candidates) if oldest_candidates else None
@@ -202,7 +210,7 @@ def evaluate(project,now,previous,command=None,run=None):
     run_finished=moment(run.get("finished_at"))
     if run_status.startswith("DONE") or run_status in {"SUCCESS","COMPLETED"}:
         if run_finished and now-run_finished<RECENT_DONE_GRACE:
-            out["status"]="recent_editorial_completion";return out
+            out["status"]="editorial_run_finished_delivery_unverified";return out
     active_control=moment((command or {}).get("requested_at"))
     if active_control and active_control>=oldest and now-active_control<RETRY_AFTER:
         out["status"]="dispatch_pending_ack" if not run_upd or run_upd<active_control else "awaiting_editorial_completion"
@@ -325,7 +333,7 @@ def selftest():
             assert active["status"]=="editor_running_acknowledged",active
             done=evaluate("ttittulares",now,{},run={"status":"DONE",
                     "finished_at":(now-timedelta(minutes=2)).isoformat()},command=commands["ttittulares"])
-            assert done["status"]=="recent_editorial_completion",done
+            assert done["status"]=="editorial_run_finished_delivery_unverified",done
             # Terminal Telegram decisions suppress re-trigger even with a stale APP queue.
             save("telegram/ttittulares-deliveries.json",{"items":[
                 {"event_id":"a","telegram_message_id":3582,"status":"deleted","final":False}]})
