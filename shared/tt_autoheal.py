@@ -10,6 +10,7 @@ import os
 import hashlib
 import sys
 import urllib.request
+import urllib.error
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
 from urllib.parse import quote
@@ -142,16 +143,24 @@ def github_dispatch(workflow):
         "Authorization":"Bearer "+token,
         "Accept":"application/vnd.github+json",
         "Content-Type":"application/json","User-Agent":"TT-autorepair"})
-    with urllib.request.urlopen(req,timeout=25) as r:
-        if r.status!=204:raise RuntimeError("GitHub refused dispatch")
+    try:
+        with urllib.request.urlopen(req,timeout=25) as r:
+            if r.status!=204:raise RuntimeError("GitHub refused dispatch")
+    except urllib.error.HTTPError as exc:
+        desc=exc.read(400).decode(errors="replace")
+        raise RuntimeError("GitHub dispatch HTTP "+str(exc.code)+" "+desc) from exc
     return True
 
 def telegram(token,method,body):
     req=urllib.request.Request(f"https://api.telegram.org/bot{token}/{method}",
         data=json.dumps(body,ensure_ascii=False).encode(),method="POST",
         headers={"Content-Type":"application/json"})
-    with urllib.request.urlopen(req,timeout=25) as r:
-        data=json.load(r)
+    try:
+        with urllib.request.urlopen(req,timeout=25) as r:
+            data=json.load(r)
+    except urllib.error.HTTPError as exc:
+        body=exc.read(400).decode(errors="replace")
+        raise RuntimeError("Telegram "+method+" HTTP "+str(exc.code)+" "+body) from exc
     if not data.get("ok"):raise RuntimeError("Telegram "+method+" returned false")
     return data.get("result")
 
@@ -203,7 +212,7 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
                 triggered.append(wf)
                 attempts[project+":"+wf]=now.isoformat()
             except Exception as e:
-                errors.append(wf+" "+type(e).__name__)
+                errors.append(wf+" "+str(e)[:300])
         prev=state.setdefault("projects",{}).get(project,{})
         summary="|".join(sorted(x["kind"]+":"+x["id"] for x in issues))
         signature=hashlib.sha256(summary.encode()).hexdigest()
@@ -221,7 +230,7 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
                 prev["last_alert_at"]=now.isoformat()
                 prev["last_alert_signature"]=signature
             except Exception as e:
-                errors.append("telegram_alert "+type(e).__name__)
+                errors.append("telegram_alert "+str(e)[:300])
         prev.update({"checked_at":now.isoformat(),"issue_count":len(issues),
                      "issues":issues[:30],"actions_started":triggered,
                      "repair_errors":errors,"open_signature":signature})
