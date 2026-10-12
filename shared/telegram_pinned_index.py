@@ -227,6 +227,18 @@ def dispatch_delivery_if_missing(project,ready,pending):
           "ready_to_finalize="+str(len(provisional)),flush=True)
 
 
+def index_keyboard(project):
+    callback="tt:heal" if project=="ttittulares" else "tx:heal"
+    text=("Autocorrige "+project+" en fabricelop/europapress-rss. "+
+          "Lee telegram/tt-autoheal-state.json, repara colas, envíos e índice, "+
+          "verifica Telegram. No borres entradas ni inventes hechos.")
+    return {"inline_keyboard":[
+        [{"text":"🔧 Autocorregir ahora","callback_data":callback}],
+        [{"text":"📋 Orden para ChatGPT","copy_text":{"text":text[:256]}},
+         {"text":"Abrir ChatGPT","url":"https://chatgpt.com/"}]
+    ]}
+
+
 def update(project,api=telegram):
     conf=PROJECTS[project]
     if os.getenv("TT_PINNED_INDEX_REMOTE")=="1":
@@ -246,14 +258,17 @@ def update(project,api=telegram):
     body,ready,pending=render(project,bot_id)
     signature=hashlib.sha256(body.encode("utf8")).hexdigest()
     st=read(conf["state"],{})
+    keyboard=index_keyboard(project)
     prev_mid=int(st.get("message_id") or 0)
     mid=prev_mid
+    applied_keyboard=False
     if prev_mid and signature!=st.get("content_sha256"):
         try:
             api(token,"editMessageText",{
                 "chat_id":chat,"message_id":prev_mid,
-                "text":body,"parse_mode":"HTML",
+                "text":body,"parse_mode":"HTML","reply_markup":keyboard,
                 "link_preview_options":{"is_disabled":True}})
+            applied_keyboard=True
             print("TT_PINNED_INDEX_EDITED",project,prev_mid,flush=True)
         except TelegramError as exc:
             if "message is not modified" in exc.description.lower():
@@ -262,9 +277,14 @@ def update(project,api=telegram):
                   or "message_id_invalid" in exc.description.lower()):
                 mid=0
             else:raise
+    if mid and not applied_keyboard and int(st.get("keyboard_version") or 0)<1:
+        api(token,"editMessageReplyMarkup",{
+            "chat_id":chat,"message_id":mid,"reply_markup":keyboard})
+        applied_keyboard=True
     if not mid:
         response=api(token,"sendMessage",{
             "chat_id":chat,"text":body,"parse_mode":"HTML",
+            "reply_markup":keyboard,
             "disable_notification":True,
             "link_preview_options":{"is_disabled":True}})
         mid=int(response["message_id"])
@@ -279,7 +299,7 @@ def update(project,api=telegram):
         else:
             pinned=False
             print("TT_PINNED_INDEX_PIN_RETRY",project,str(exc),flush=True)
-    st.update(version=1,project=project,chat_id=chat,message_id=mid,
+    st.update(version=1,keyboard_version=1,project=project,chat_id=chat,message_id=mid,
               pinned=pinned,bot_id=bot_id,content_sha256=signature,
               ready_count=len(ready),preparing_count=len(pending),
               checked_at=datetime.now(timezone.utc).isoformat())
