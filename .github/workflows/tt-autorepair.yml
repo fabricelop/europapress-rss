@@ -1,0 +1,79 @@
+name: TT Autocorrección automática
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Saltar espera entre reintentos desde Telegram
+        required: false
+        type: boolean
+        default: false
+  schedule:
+    - cron: "*/5 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "shared/tt_autoheal.py"
+      - ".github/workflows/tt-autorepair.yml"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: tt-autorepair-coordinator
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/tt_autoheal.py
+            /telegram/lifecycle-baseline.json
+            /telegram/tt-autoheal-state.json
+            /ttittulares/editorial-queue.json
+            /telegram/ttittulares-deliveries.json
+            /telegram/pinned-index-ttittulares.json
+            /trends/editorial-queue.json
+            /trends/telegram-image-deliveries.json
+            /telegram/pinned-index-ttendencias.json
+      - name: Verificar salvaguardas y detección
+        run: |
+          python3 -m py_compile shared/tt_autoheal.py
+          python3 shared/tt_autoheal.py selftest
+      - name: Comprobar anomalías y activar reparadores seguros
+        env:
+          GH_TOKEN: \${{ github.token }}
+          TELEGRAM_BOT_TOKEN: \${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: \${{ secrets.TELEGRAM_CHAT_ID }}
+          TTENDENCIAS_BOT_TOKEN: \${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_CHAT_ID: \${{ secrets.TTENDENCIAS_CHAT_ID }}
+          FORCE: \${{ inputs.force }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          if test "$FORCE" = "true"; then
+            python3 shared/tt_autoheal.py --force
+          else
+            python3 shared/tt_autoheal.py
+          fi
+          cp telegram/tt-autoheal-state.json /tmp/tt-autoheal-state.json
+      - name: Registrar diagnósticos y enfriar reintentos
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/tt-autoheal-state.json telegram/tt-autoheal-state.json
+            git add --sparse telegram/tt-autoheal-state.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "TT autoheal: verificar colas y registrar intentos"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          exit 1
