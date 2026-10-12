@@ -46,11 +46,11 @@ jobs:
           main=plistlib.loads((app/"Info.plist").read_bytes())
           widget=plistlib.loads((app/"PlugIns/MiMapaWidgets.appex/Info.plist").read_bytes())
           assert main["CFBundleIdentifier"]=="es.mimapadeltiempo.app", main
-          assert main["CFBundleShortVersionString"]=="1.0.16", main
+          assert main["CFBundleShortVersionString"]=="1.0.17", main
           assert main["CFBundleVersion"]=="18", main
           assert "location" in main["UIBackgroundModes"], main
           assert widget["CFBundleIdentifier"]=="es.mimapadeltiempo.app.widgets", widget
-          assert widget["CFBundleShortVersionString"]=="1.0.16", widget
+          assert widget["CFBundleShortVersionString"]=="1.0.17", widget
           assert widget["CFBundleVersion"]=="18", widget
           assert widget["NSExtension"]["NSExtensionPointIdentifier"]=="com.apple.widgetkit-extension", widget
           print("Bundle IDs, builds, modo location y extensión WidgetKit verificados")

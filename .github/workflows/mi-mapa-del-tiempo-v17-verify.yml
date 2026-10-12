@@ -53,10 +53,10 @@ jobs:
           ext=plistlib.load((a/"PlugIns/MiMapaWidgets.appex/Info.plist").open("rb"))
           assert app["CFBundleIdentifier"] == "es.mimapadeltiempo.app", app
           assert app["CFBundleVersion"] == "18", app
-          assert app["CFBundleShortVersionString"] == "1.0.16", app
+          assert app["CFBundleShortVersionString"] == "1.0.17", app
           assert ext["CFBundleIdentifier"] == "es.mimapadeltiempo.app.widgets", ext
           assert ext["CFBundleVersion"] == "18", ext
-          assert ext["CFBundleShortVersionString"] == "1.0.16", ext
+          assert ext["CFBundleShortVersionString"] == "1.0.17", ext
           assert ext["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension", ext
           print("App y widget con identificadores verificados")
           PY
