@@ -395,8 +395,13 @@ def trend_cards(now):
         finished=explained.get((tid,rev))
         is_final=bool((finished and str(finished.get("explanation") or "").strip())
                       or (status=="explained" and str(req.get("explanation") or "").strip()))
-        if req.get("reexplain") and not is_final:
-            if any(str(x.get("id") or "")==tid for x in editorial_queue.get("items",[])):
+        queued_current=next((x for x in editorial_queue.get("items",[])
+                            if str(x.get("id") or "")==tid and
+                               int(x.get("revision") or 0)==rev and
+                               str(x.get("status") or "").lower() in {"preparing","update","ready"}),None)
+        if req.get("reexplain") and not is_final and not (
+                queued_current and queued_current.get("reexplain") is False):
+            if queued_current:
                 print("TT_TREND_PENDING_DIAG",tid,"reexplain_without_final",rev,flush=True)
             continue
         # Provisional notices for newly pending TTendencias go out immediately.
