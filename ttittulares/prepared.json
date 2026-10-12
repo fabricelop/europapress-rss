@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-12T20:39:00Z",
+  "updated_at": "2026-10-12T20:40:00.346532Z",
   "items": [
     {
       "event_id": "5ed36ae6662f",
@@ -455,16 +455,34 @@
       "verified_source_count": 2,
       "prepared_at": "2026-10-12T20:39:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-12T20:40:00.346532Z",
+      "fallback_image_search_attempted_at": "2026-10-12T20:40:00.346532Z",
+      "archive_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/52S6NMJOERDPVHMEQYBYVZJJLE.jpg?auth=b9251df1acbde9f1bfd5c0c2479c19ee092e8f6249d1029cccbe911bf858933b&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/2026-10-12/el-pp-de-cadiz-exige-la-dimision-del-alcalde-de-algeciras-tras-conocer-una-nueva-denuncia-de-agresion-sexual.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El PP de Cádiz exige la dimisión del alcalde de Algeciras tras conocer una nueva denuncia de agresión sexual"
+      },
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/52S6NMJOERDPVHMEQYBYVZJJLE.jpg?auth=b9251df1acbde9f1bfd5c0c2479c19ee092e8f6249d1029cccbe911bf858933b&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/2026-10-12/el-pp-de-cadiz-exige-la-dimision-del-alcalde-de-algeciras-tras-conocer-una-nueva-denuncia-de-agresion-sexual.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El PP de Cádiz exige la dimisión del alcalde de Algeciras tras conocer una nueva denuncia de agresión sexual"
+      }
     }
   ],
   "count": 6
