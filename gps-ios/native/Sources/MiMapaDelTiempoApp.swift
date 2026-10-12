@@ -1410,6 +1410,7 @@ struct TimeMapView: View {
     @State private var region: MKCoordinateRegion = CameraSave().region
     @State private var namingCell: Cell?
     @State private var historyCell: Cell?
+    @State private var inspectedZone: TimeCustomZone?
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
     @State private var followLocation = false
@@ -1462,11 +1463,13 @@ struct TimeMapView: View {
         let maximumVisibleTime = max(1,visibleCells.map(\.seconds).max() ?? 1)
         ZStack(alignment: .bottom) {
             if model.forceBasicMap || !connectivity.connected {
-                OfflineGridMap(model:model,region:$region) { newRegion in
-                    followLocation = false // un gesto o zoom manual activa mapa libre
+                OfflineGridMap(model:model,region:$region,onNavigate:{ newRegion in
+                    followLocation = false
                     model.updateCamera(newRegion)
                     camera = .region(newRegion)
-                }
+                },onSelect:{ cell in
+                    selectOnMap(cell)
+                })
                 .onAppear { centerOnRequestedCell() }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             } else {
@@ -1486,6 +1489,11 @@ struct TimeMapView: View {
                             }
                         }
                     }
+                    if followLocation,let currentCell=model.activeCell {
+                        MapPolygon(coordinates:Grid.polygon(currentCell))
+                            .foregroundStyle(Color.teal.opacity(0.10))
+                            .stroke(Color.orange,lineWidth:4)
+                    }
                     ForEach(visibleZones) { overlay in
                         ForEach(overlay.contours) { line in
                             MapPolyline(coordinates:line.coordinates)
@@ -1494,15 +1502,19 @@ struct TimeMapView: View {
                         if region.span.latitudeDelta < 0.07,
                            let center=overlay.center {
                             Annotation("",coordinate:center) {
-                                VStack(spacing:2) {
-                                    Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
-                                    Text("\(overlay.zone.cellIDs.count) cuadrículas")
-                                        .font(.system(size:9))
-                                }
-                                .padding(.horizontal,8).padding(.vertical,5)
-                                .foregroundStyle(.white)
-                                .background(Color.teal.opacity(0.91),in:Capsule())
-                                .allowsHitTesting(false)
+                                Button {
+                                    followLocation=false
+                                    inspectedZone=overlay.zone
+                                } label: {
+                                    VStack(spacing:2) {
+                                        Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
+                                        Text("\(overlay.zone.cellIDs.count) cuadrículas")
+                                            .font(.system(size:9))
+                                    }
+                                    .padding(.horizontal,8).padding(.vertical,5)
+                                    .foregroundStyle(.white)
+                                    .background(Color.teal.opacity(0.91),in:Capsule())
+                                }.buttonStyle(.plain)
                             }
                         }
                     }
@@ -1532,7 +1544,7 @@ struct TimeMapView: View {
                 .onTapGesture { point in
                     if let coord = proxy.convert(point, from: .local) {
                         let touched=Grid.cell(latitude:coord.latitude,longitude:coord.longitude)
-                        model.selected=touched
+                        selectOnMap(touched)
                     }
                 }
                 .onMapCameraChange(frequency: .onEnd) { ctx in
@@ -1614,8 +1626,8 @@ struct TimeMapView: View {
                 Spacer()
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(model.selected.map { model.label(for:$0) } ??
-                             (model.activeCell.map { model.label(for:$0) } ?? "Mi cuadrícula actual"))
+                        let picked=followLocation ? model.activeCell : (model.selected ?? model.activeCell)
+                        Text(picked.map { model.label(for:$0) } ?? "Sin cuadrícula actual")
                             .font(.subheadline.weight(.semibold)).lineLimit(1)
                         Spacer()
                         Button {
@@ -1625,12 +1637,15 @@ struct TimeMapView: View {
                         }.accessibilityLabel("Minimizar o expandir la tarjeta")
                     }
                     if !model.minimized {
-                        let picked = model.selected ?? model.activeCell
-                        TimeLiveCounterNumbers(model:model,picked:picked)
+                        let picked = followLocation ? model.activeCell :
+                            (model.selected ?? model.activeCell)
+                        TimeLiveCounterNumbers(model:model,picked:picked,
+                                               following:followLocation)
                         HStack {
                             Label(model.gpsStatus, systemImage: "location.circle").font(.caption2)
                             Spacer()
-                            if let cell = model.selected ?? model.activeCell {
+                            if let cell = followLocation ? model.activeCell :
+                                (model.selected ?? model.activeCell) {
                                 Button("Histórico") { historyCell=cell }.font(.caption)
                                 Button("Nombre") { namingCell=cell }.font(.caption)
                             }
@@ -1640,6 +1655,15 @@ struct TimeMapView: View {
                 .padding(16)
                 .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20))
                 .padding(12)
+            }
+        }
+        .sheet(item:$inspectedZone) { zone in
+            TimeMapZoneSummary(model:model,zone:zone) { cell in
+                followLocation=false
+                model.selected=cell
+                let target=MKCoordinateRegion(center:Grid.center(cell),span:region.span)
+                region=target
+                camera = .region(target)
             }
         }
         .sheet(item:$historyCell) { cell in
@@ -1674,7 +1698,20 @@ struct TimeMapView: View {
             }
         }
         .onChange(of:model.current?.date) { _,_ in
-            if followLocation { focusOnCurrentLocation() }
+            if followLocation {
+                model.selected=nil
+                focusOnCurrentLocation()
+            }
+        }
+        .onChange(of:model.activeCell?.id) { _,_ in
+            if followLocation { model.selected=nil }
+        }
+    }
+    private func selectOnMap(_ cell:Cell) {
+        followLocation=false
+        model.selected=cell
+        if let zone=model.primaryZone(for:cell) {
+            inspectedZone=zone
         }
     }
     private func focusOnCurrentLocation() {
