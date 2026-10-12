@@ -516,6 +516,23 @@ def handle_live_action(token, chat, act, github, update):
         return
 
 
+def refresh_live_pinned_index(project):
+    """Refresh from current main instead of relying on GitHub schedule/push."""
+    script="shared/telegram_pinned_index.py"
+    if not os.path.isfile(script):
+        print("TT_PINNED_INDEX_SCRIPT_MISSING",project,flush=True)
+        return
+    env=dict(os.environ,TT_PINNED_INDEX_REMOTE="1")
+    try:
+        result=subprocess.run([sys.executable,script,project],
+                              env=env,capture_output=True,text=True,timeout=100)
+        print("TT_PINNED_INDEX_LISTENER",project,
+              "OK" if result.returncode==0 else "ERROR",
+              (result.stdout+result.stderr)[-1000:],flush=True)
+    except Exception as exc:
+        print("TT_PINNED_INDEX_LISTENER_FAILED",project,type(exc).__name__,flush=True)
+
+
 def listen():
     token = os.environ["TELEGRAM_BOT_TOKEN"].strip()
     chat = os.environ["TELEGRAM_CHAT_ID"].strip()
@@ -530,8 +547,12 @@ def listen():
                     "41898282+github-actions[bot]@users.noreply.github.com"], check=True)
     last = int(read(STATE, {"last_update_id": 0}).get("last_update_id") or 0)
     end = time.monotonic() + 24 * 60
+    last_index_refresh=0.0
     print("TTI_NATIVE_LISTEN_STARTED offset", last, flush=True)
     while time.monotonic() < end:
+        if time.monotonic()-last_index_refresh>=180:
+            last_index_refresh=time.monotonic()
+            refresh_live_pinned_index("ttittulares")
         updates = telegram_call(token, "getUpdates", {
             "offset": last + 1, "limit": 50, "timeout": 20,
             "allowed_updates": ["callback_query", "message"]})
