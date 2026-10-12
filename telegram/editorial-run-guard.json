@@ -1,13 +1,15 @@
 {
   "version": 1,
-  "checked_at": "2026-10-12T21:45:13.146012+00:00",
+  "checked_at": "2026-10-12T21:58:27.702962+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-12T21:45:13.146012+00:00",
-      "pending_count": 1,
+      "checked_at": "2026-10-12T21:58:27.702962+00:00",
+      "pending_count": 3,
       "pending_ids": [
-        "a8d269a02538"
+        "a8d269a02538",
+        "telegram-218638444",
+        "725f2c198fc7"
       ],
       "oldest_at": "2026-10-12T21:43:40.895982Z",
       "latest_run": {
@@ -18,9 +20,9 @@
         "finished_at": "2026-10-12T20:13:33Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-autoguard-1791834049",
-      "last_command_at": "2026-10-12T19:40:49.979916Z",
-      "status": "within_start_window",
+      "control_command": "tt-1791842272045-tg-native",
+      "last_command_at": "2026-10-12T21:57:52.045287Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
         {
@@ -29,52 +31,62 @@
           "should_start_by": "2026-10-12T21:48:40.895982+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "telegram-218638444",
+          "entered_at": "2026-10-12T21:44:02.667493Z",
+          "should_start_by": "2026-10-12T21:49:02.667493+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "725f2c198fc7",
+          "entered_at": "2026-10-12T21:53:54.929165Z",
+          "should_start_by": "2026-10-12T21:58:54.929165+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "32986157d11d5d65",
+      "backlog_signature": "e8eb0f1ba113e095",
       "expected_start_by": "2026-10-12T21:48:40.895982+00:00",
       "attempts": 0,
       "last_request_at": "2026-10-12T19:40:49.979916+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-12T21:45:13.146012+00:00",
+      "checked_at": "2026-10-12T21:58:27.702962+00:00",
       "pending_count": 1,
       "pending_ids": [
         "d7b672dc554f"
       ],
       "oldest_at": "2026-10-12T23:22:29+02:00",
       "latest_run": {
-        "id": "tr-20261012T231500+0200-chat",
+        "id": "tr-20261012T234500+0200-chat",
         "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-10-12T23:15:00+02:00",
-        "updated_at": "2026-10-12T21:30:00+00:00",
-        "finished_at": "2026-10-12T23:30:00+02:00",
+        "started_at": "2026-10-12T23:45:00+02:00",
+        "updated_at": "2026-10-12T21:49:15+00:00",
+        "finished_at": "2026-10-12T23:49:15+02:00",
         "source": "editorial_runtime"
       },
-      "control_command": "tr-1791824763464-00cb5d",
-      "last_command_at": "2026-10-12T17:06:03.464Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tr-1791842287195-tg-12180e",
+      "last_command_at": "2026-10-12T21:58:07.195Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "d7b672dc554f",
           "entered_at": "2026-10-12T23:22:29+02:00",
           "should_start_by": "2026-10-12T21:27:29+00:00",
-          "global_run_after_entry": false,
+          "global_run_after_entry": true,
           "final_telegram_delivery_confirmed": false
         }
       ],
       "backlog_signature": "38526872081bcbfc",
       "expected_start_by": "2026-10-12T21:27:29+00:00",
       "attempts": 1,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tr-autoguard-1791841513",
-        "requested_at": "2026-10-12T21:45:13.146012Z"
-      },
-      "last_request_at": "2026-10-12T21:45:13.146012+00:00",
-      "last_requested_command_id": "tr-autoguard-1791841513"
+      "actual_start_at": "2026-10-12T21:45:00+00:00",
+      "start_delay_seconds": 1351,
+      "last_request_at": "2026-10-12T21:45:13.146012+00:00"
     }
   },
   "policy": {
