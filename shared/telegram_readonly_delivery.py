@@ -300,6 +300,30 @@ def trend_cards(now):
     for row in requests_doc.get("requests",[]):
         key=str(row.get("id") or "")
         if key:latest[key]=row
+    # The radar/editor queue can advance before the massive requests.json is
+    # persisted. Read the queue itself so a Top 10 trend cannot remain
+    # "pendiente de Telegram" indefinitely. Existing Telegram deletions are
+    # still enforced by process() against the authoritative delivery ledger.
+    editorial_queue=load("trends/editorial-queue.json",{"items":[]})
+    for queued in editorial_queue.get("items",[]):
+        tid=str(queued.get("id") or "")
+        if not tid or str(queued.get("status") or "").lower() not in {
+                "preparing","update","ready","explained"}:
+            continue
+        prior=latest.get(tid)
+        if prior is None:
+            latest[tid]=dict(queued)
+        elif int(prior.get("revision") or 0)==int(queued.get("revision") or 0):
+            # Keep the request's durable metadata, but reflect freshly
+            # verified editorial text if it was committed in the queue.
+            if queued.get("editorial_verified") is True and queued.get("explanation"):
+                latest[tid]={**prior,**queued}
+            elif not str(prior.get("status") or "") in {
+                    "explained","deleted","dismissed","published","removed"}:
+                latest[tid]={**queued,**prior}
+                for field in ("rank","name","requested_at","source_url"):
+                    if not latest[tid].get(field):
+                        latest[tid][field]=queued.get(field)
     explained={}
     for row in [*explained_doc.get("items",[]),*manual_doc.get("items",[])]:
         key=str(row.get("id") or "")
