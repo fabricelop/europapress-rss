@@ -1,0 +1,72 @@
+name: Mi Mapa del Tiempo v1.0.18 - IPA sin firma
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v18-discovery-widgets
+    paths:
+      - '.github/workflows/mi-mapa-del-tiempo-v18-ipa.yml'
+      - 'gps-ios/native/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gps-ios-v18-package
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar proyecto y validar sintaxis
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Widgets/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          plutil -lint App.entitlements Widgets/Widget.entitlements
+          grep -q 'CODE_SIGN_ENTITLEMENTS = App.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+          grep -q 'CODE_SIGN_ENTITLEMENTS = Widgets/Widget.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+      - name: Compilar aplicación y WidgetKit para iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gps-v18-package" CODE_SIGNING_ALLOWED=NO build
+      - name: Verificar identificador, versiones, extensión y empaquetar
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/gps-v18-package/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP/PlugIns/MiMapaWidgets.appex"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          main=plistlib.loads((app/"Info.plist").read_bytes())
+          widget=plistlib.loads((app/"PlugIns/MiMapaWidgets.appex/Info.plist").read_bytes())
+          assert main["CFBundleIdentifier"]=="es.mimapadeltiempo.app", main
+          assert main["CFBundleShortVersionString"]=="1.0.18", main
+          assert main["CFBundleVersion"]=="19", main
+          assert "location" in main["UIBackgroundModes"], main
+          assert widget["CFBundleIdentifier"]=="es.mimapadeltiempo.app.widgets", widget
+          assert widget["CFBundleShortVersionString"]=="1.0.18", widget
+          assert widget["CFBundleVersion"]=="19", widget
+          assert widget["NSExtension"]["NSExtensionPointIdentifier"]=="com.apple.widgetkit-extension", widget
+          print("Bundle IDs, builds, modo location y extensión WidgetKit verificados")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-v18-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-v18-unsigned.ipa >/dev/null
+          ls -lh MiMapaDelTiempo-v18-unsigned.ipa
+      - name: Publicar IPA unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-v18-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-v18-unsigned.ipa
+          retention-days: 7
+          if-no-files-found: error
