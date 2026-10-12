@@ -33,3 +33,30 @@ final class TimeDiscoveryTests:XCTestCase {
         XCTAssertTrue(r.contains(where:{$0.title=="10 cuadrículas" && $0.target==10}))
     }
 }
+
+final class TimeWhereWasIChronologyTests:XCTestCase {
+    func testSameZoneMergesConsecutiveSlices() {
+        let t=Date(timeIntervalSince1970:1000)
+        let c=Cell(row:100,column:200)
+        let slices=[
+            TimeFoundSlice(cell:c,start:t,end:t.addingTimeInterval(60),quality:"observado"),
+            TimeFoundSlice(cell:c,start:t.addingTimeInterval(60),
+                end:t.addingTimeInterval(120),quality:"observado")
+        ]
+        let visits=TimeWhereWasIChronology.visits(slices,
+            keyForCell:{ _ in "montevalle" },nameForCell:{ _ in "Montevalle" })
+        XCTAssertEqual(visits.count,1)
+        XCTAssertEqual(visits[0].seconds,120)
+    }
+    func testReturnToSameZoneCreatesSeparateVisit() {
+        let c=Cell(row:100,column:200),date=Date(timeIntervalSince1970:1000)
+        let slices=[
+            TimeFoundSlice(cell:c,start:date,end:date.addingTimeInterval(60),quality:"observado"),
+            TimeFoundSlice(cell:c,start:date.addingTimeInterval(500),
+                end:date.addingTimeInterval(600),quality:"observado")
+        ]
+        let visits=TimeWhereWasIChronology.visits(slices,
+            keyForCell:{ _ in "montevalle" },nameForCell:{ _ in "Montevalle" })
+        XCTAssertEqual(visits.count,2)
+    }
+}

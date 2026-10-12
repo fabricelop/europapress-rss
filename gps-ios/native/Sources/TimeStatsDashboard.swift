@@ -28,8 +28,10 @@ struct TimeStatsDashboard: View {
         let zones=model.visibleZones
         let perCell=values
         if onlyIndividualCells {
+            let assignedToZones=Set(zones.flatMap(\.cellIDs))
             return perCell.compactMap { id,seconds -> TimeRankEntry? in
-                guard seconds>0,let cell=TimeAnalytics.cell(id) else { return nil }
+                guard seconds>0,!assignedToZones.contains(id),
+                      let cell=TimeAnalytics.cell(id) else { return nil }
                 return TimeRankEntry(id:"c"+id,title:model.label(for:cell),
                     seconds:seconds,cellIDs:[id],zoneID:nil)
             }.sorted { $0.seconds>$1.seconds }
@@ -139,7 +141,7 @@ struct TimeStatsDashboard: View {
     private var cellList: some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
-                Text(onlyIndividualCells ? "Todas las cuadrículas" :
+                Text(onlyIndividualCells ? "Cuadrículas sin Zona" :
                      "Zonas y cuadrículas independientes").font(.headline)
                 Spacer()
                 Text("\(displayed.count) de \(ranked.count)")
@@ -147,7 +149,7 @@ struct TimeStatsDashboard: View {
             }
             Picker("Tipo de listado",selection:$onlyIndividualCells) {
                 Text("Todo").tag(false)
-                Text("Solo cuadrículas").tag(true)
+                Text("Cuadrículas sin Zona").tag(true)
             }.pickerStyle(.segmented)
             Picker("Mostrar",selection:$top) {
                 Text("Top 10").tag(10)
@@ -226,7 +228,7 @@ struct TimeStatsDashboard: View {
                             in:RoundedRectangle(cornerRadius:14))
             }
             Text(onlyIndividualCells ?
-                "Cada cuadrícula aparece por separado, aunque pertenezca a una zona." :
+                "Solo se muestran cuadrículas independientes; se excluyen las de cualquier zona." :
                 "Las zonas agrupan cuadrículas completas. Si dos zonas se solapan, pueden compartir tiempo; el total global nunca lo duplica.")
                 .font(.caption2).foregroundStyle(.secondary)
         }

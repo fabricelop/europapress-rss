@@ -1,5 +1,6 @@
 import SwiftUI
 import Foundation
+import MapKit
 
 /// Funciones de consulta: no modifican las posiciones ni los intervalos originales.
 struct TimeDiscoveryHome:View {
@@ -90,13 +91,56 @@ enum TimeWhereWasIIndex {
     }
 }
 
+struct TimeWhereWasIVisit:Identifiable {
+    let key:String
+    let name:String
+    let start:Date
+    let end:Date
+    let seconds:TimeInterval
+    let cell:Cell
+    var id:String { key+"-"+String(start.timeIntervalSince1970) }
+}
+
+enum TimeWhereWasIChronology {
+    // Una nueva visita cuando cambia el lugar o hay un hueco superior a 3 min.
+    static func visits(_ slices:[TimeFoundSlice],
+                       keyForCell:(Cell)->String,
+                       nameForCell:(Cell)->String)->[TimeWhereWasIVisit] {
+        let ordered=slices.sorted { $0.start<$1.start }
+        var result:[TimeWhereWasIVisit]=[]
+        for item in ordered {
+            let key=keyForCell(item.cell)
+            if let last=result.last,last.key==key,
+               item.start.timeIntervalSince(last.end) <= 180 {
+                result[result.count-1]=TimeWhereWasIVisit(
+                    key:key,name:last.name,start:last.start,end:max(last.end,item.end),
+                    seconds:last.seconds+item.seconds,cell:last.cell)
+            } else {
+                result.append(TimeWhereWasIVisit(key:key,name:nameForCell(item.cell),
+                    start:item.start,end:item.end,seconds:item.seconds,cell:item.cell))
+            }
+        }
+        return result
+    }
+}
+
 struct TimeWhereWasIView:View {
     @ObservedObject var model:TimeModel
     @State private var from=Calendar.current.date(byAdding:.day,value:-1,to:.now) ?? .now
     @State private var to=Date()
+    @State private var mapOpen=true
     private var matches:[TimeFoundSlice] {
         TimeWhereWasIIndex.slices(model.data.intervals,from:from,to:to)
     }
+    private var periodTotals:[String:TimeInterval] {
+        TimeWhereWasIIndex.totals(matches).reduce(into:[:]) { $0[$1.0]=$1.1 }
+    }
+    private var visits:[TimeWhereWasIVisit] {
+        TimeWhereWasIChronology.visits(matches,
+            keyForCell:{ cell in model.primaryZone(for:cell)?.id.uuidString ?? cell.id },
+            nameForCell:{ cell in model.primaryZone(for:cell)?.name ?? model.label(for:cell) })
+    }
+
     var body:some View {
         List {
             Section("Período de búsqueda") {
@@ -111,64 +155,103 @@ struct TimeWhereWasIView:View {
             }
             if from<to {
                 let slices=matches
-                let ranks=TimeWhereWasIIndex.totals(slices)
-                let total=slices.reduce(0) { $0+$1.seconds }
-                Section("Resultado") {
-                    LabeledContent("Tiempo localizado",value:DurationFormat.full(total))
-                    LabeledContent("Cuadrículas",value:String(ranks.count))
-                    if total+1<to.timeIntervalSince(from) {
-                        Text("Parte del período no tiene una ubicación atribuible. No se inventan posiciones para rellenar huecos.")
+                let totals=periodTotals
+                let history=visits
+                let confirmed=slices.reduce(0) { $0+$1.seconds }
+                Section("Resultado del período") {
+                    LabeledContent("Tiempo localizado",value:DurationFormat.full(confirmed))
+                    LabeledContent("Cuadrículas",value:String(totals.count))
+                    LabeledContent("Visitas",value:String(history.count))
+                    if confirmed+1<to.timeIntervalSince(from) {
+                        Text("Hay tiempo sin ubicación asignable dentro del intervalo; no se dibujan ubicaciones inventadas.")
                             .font(.caption).foregroundStyle(.secondary)
                     }
-                    if ranks.isEmpty {
-                        ContentUnavailableView("Sin datos en ese período",systemImage:"location.slash",
-                            description:Text("Prueba otro intervalo o consulta el historial GPS."))
-                    }
                 }
-                if !ranks.isEmpty {
-                    Section("Lugares del período · más tiempo primero") {
-                        ForEach(Array(ranks.prefix(100)),id:\.0) { item in
-                            if let cell=TimeAnalytics.cell(item.0) {
-                                NavigationLink {
-                                    CellHistoryView(model:model,cell:cell)
-                                } label: {
-                                    VStack(alignment:.leading,spacing:3) {
-                                        Text(model.primaryZone(for:cell)?.name ?? model.label(for:cell))
-                                            .font(.subheadline.weight(.semibold))
-                                        Text("Cuadrícula \(model.data.shortIDs[cell.id] ?? 0)")
-                                            .font(.caption2).foregroundStyle(.secondary)
-                                        Text(DurationFormat.full(item.1))
-                                            .font(.caption.monospacedDigit()).foregroundStyle(.teal)
-                                    }
-                                }
-                            }
+                if !totals.isEmpty {
+                    Section {
+                        DisclosureGroup("Mapa del período",isExpanded:$mapOpen) {
+                            TimeWhereWasIMap(totals:totals)
+                                .frame(height:285)
+                                .clipShape(RoundedRectangle(cornerRadius:12))
+                            Text("Solo se colorean las cuadrículas con presencia dentro del comienzo y final elegidos.")
+                                .font(.caption2).foregroundStyle(.secondary)
                         }
                     }
-                    Section("Cronología · comienzo a final") {
-                        ForEach(Array(slices.prefix(160))) { item in
-                            VStack(alignment:.leading,spacing:4) {
-                                Text(model.primaryZone(for:item.cell)?.name ?? model.label(for:item.cell))
-                                    .font(.subheadline.weight(.semibold))
-                                Text(item.start.formatted(date:.abbreviated,time:.shortened) + " – " + item.end.formatted(date:.abbreviated,time:.shortened))
-                                    .font(.caption.monospacedDigit())
-                                HStack {
-                                    Text(DurationFormat.full(item.seconds))
-                                    Spacer()
-                                    Text(item.quality == "observado" ? "Entre muestras GPS" : "Trayecto interpolado")
-                                }
-                                .font(.caption2).foregroundStyle(.secondary)
+                    Section("Lugares del período · orden cronológico") {
+                        ForEach(Array(history.prefix(200))) { visit in
+                            NavigationLink {
+                                CellHistoryView(model:model,cell:visit.cell)
+                            } label: {
+                                VStack(alignment:.leading,spacing:5) {
+                                    Text(visit.name).font(.subheadline.weight(.semibold))
+                                    Text(visit.start.formatted(date:.abbreviated,time:.shortened)
+                                         + " → " + visit.end.formatted(date:.abbreviated,time:.shortened))
+                                        .font(.caption.monospacedDigit())
+                                        .foregroundStyle(.secondary)
+                                    Text(DurationFormat.full(visit.seconds))
+                                        .font(.caption.monospacedDigit()).foregroundStyle(.teal)
+                                }.padding(.vertical,2)
                             }
                         }
-                        if slices.count>160 {
-                            Text("Mostrados los primeros 160 tramos de \(slices.count). Reduce el período para ver el resto.")
+                        if history.count>200 {
+                            Text("Mostradas las primeras 200 visitas. Reduce el intervalo para ver más.")
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                     }
+                } else {
+                    ContentUnavailableView("Sin lugares localizados",systemImage:"location.slash",
+                        description:Text("Selecciona un período con posiciones GPS registradas."))
                 }
             }
         }
         .navigationTitle("¿Dónde estaba?")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// El filtro se representa sobre MapKit, sin reutilizar las cuadrículas de otros períodos.
+private struct TimeWhereWasIMap:View {
+    let totals:[String:TimeInterval]
+    @State private var camera:MapCameraPosition = .automatic
+    private var cells:[(Cell,TimeInterval)] {
+        totals.compactMap { id,seconds in
+            guard seconds>0,let cell=TimeAnalytics.cell(id) else { return nil }
+            return (cell,seconds)
+        }
+    }
+    private var maxSeconds:TimeInterval { max(1,totals.values.max() ?? 1) }
+    var body:some View {
+        Map(position:$camera) {
+            ForEach(Array(cells.prefix(1800)),id:\.0.id) { entry in
+                MapPolygon(coordinates:Grid.polygon(entry.0))
+                    .foregroundStyle(Color.teal.opacity(
+                        0.2+0.6*min(1,entry.1/maxSeconds)))
+                    .stroke(Color.teal,lineWidth:0.8)
+            }
+        }
+        .mapStyle(.standard)
+        .onAppear { focus() }
+        .onChange(of:totals) { _,_ in focus() }
+        .overlay(alignment:.bottom) {
+            if cells.count>1800 {
+                Text("Vista limitada a 1.800 cuadrículas; reduce el período para verlas todas.")
+                    .font(.caption2).padding(6)
+                    .background(.regularMaterial,in:RoundedRectangle(cornerRadius:8))
+            }
+        }
+    }
+    private func focus() {
+        let coords=cells.map { Grid.center($0.0) }
+        guard let first=coords.first else { return }
+        let minLat=coords.map(\.latitude).min() ?? first.latitude
+        let maxLat=coords.map(\.latitude).max() ?? first.latitude
+        let minLon=coords.map(\.longitude).min() ?? first.longitude
+        let maxLon=coords.map(\.longitude).max() ?? first.longitude
+        camera = .region(MKCoordinateRegion(
+            center:CLLocationCoordinate2D(latitude:(minLat+maxLat)/2,
+                                           longitude:(minLon+maxLon)/2),
+            span:MKCoordinateSpan(latitudeDelta:max(0.007,(maxLat-minLat)*1.25+0.003),
+                                  longitudeDelta:max(0.007,(maxLon-minLon)*1.25+0.003))))
     }
 }
 
