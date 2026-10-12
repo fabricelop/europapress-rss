@@ -1276,7 +1276,9 @@ def handle_run_command(message):
         if result["status"] == "already_requested":
             note = "TTendencias: ya hay una orden reciente. No la duplico. ID: " + result["command_id"]
         else:
-            note = "TTendencias: solicitud /run guardada. Windows ejecutará la pasada editorial. ID: " + result["command_id"]
+            note = ("TTendencias: solicitud /run guardada (NO es confirmación de ejecución). "
+                    "El editor debe recogerla y confirmar RUNNING; si no aparece, la cola sigue pendiente. ID: "
+                    + result["command_id"])
         call("sendMessage", {"chat_id": chat["id"], "text": note})
         print("TTENDENCIAS_RUN_ACCEPTED " + result["command_id"], flush=True)
     except Exception as exc:
