@@ -52,7 +52,8 @@ jobs:
                  'ttittulares/tremending/items.json',
                  'trends/recent.json','trends/explained.json',
                  'trends/requests.json','trends/telegram-manual-explained.json',
-                 'trends/telegram-image-deliveries.json','trends/mobile-decisions.json']
+                 'trends/telegram-image-deliveries.json','trends/mobile-decisions.json',
+                 'trends/editorial-queue.json','trends/editorial-runtime.json']
           for name in names:
             source=Path(name)
             target=dest/'data'/name
