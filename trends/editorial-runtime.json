@@ -3,13 +3,15 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T13:45:00+02:00",
-  "last_completed_at": "2026-10-12T13:54:20+02:00",
-  "updated_at": "2026-10-12T13:54:20+02:00",
+  "last_started_at": "2026-10-12T14:15:00+02:00",
+  "last_completed_at": "2026-10-12T14:24:00+02:00",
+  "updated_at": "2026-10-12T14:24:00+02:00",
   "status": "success",
   "processed_ids": [
-    "78ff0a6f5044",
-    "c51860b999c9"
+    "e81019a10e03",
+    "6e854627a1c1",
+    "fb729ded8a27",
+    "9832e607c6b1"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -21,8 +23,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T134500+0200-chat",
-    "requested_at": "2026-10-12T13:45:00+02:00",
+    "run_id": "tr-20261012T141500+0200-chat",
+    "requested_at": "2026-10-12T14:15:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -30,25 +32,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T134500+0200-chat",
+    "run_id": "tr-20261012T141500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T13:45:00+02:00",
-    "updated_at": "2026-10-12T13:54:20+02:00",
-    "finished_at": "2026-10-12T13:54:20+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-12T14:15:00+02:00",
+    "updated_at": "2026-10-12T14:24:00+02:00",
+    "finished_at": "2026-10-12T14:24:00+02:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 4,
+      "trends_explained": 4,
+      "explanation_groups": 0,
+      "new_cards": 4,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 1,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -58,11 +60,11 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
       "remates_omitted": 0
     },
-    "message": "Cierre verificado · #NadaQueCelebrar quedó como ficha propia; 12-o quedó enlazada a Fiesta Nacional. Cola final 0, sin reexplicaciones activas y sin ImageGen directo.",
+    "message": "Cierre verificado · 4/4 revisiones explicadas y persistidas en main; cola editorial 0. Reparación visual automática solicitada; sin ImageGen directo ni Vercel.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -70,116 +72,195 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 100
+      "recent_considered": 30
     },
     "remate_selections": [
       {
-        "trend_id": "78ff0a6f5044",
+        "trend_id": "e81019a10e03",
         "revision": 0,
         "candidate_count": 5,
-        "selected_candidate": "c4",
-        "selected_score": 8.4,
+        "selected_candidate": "c3",
+        "selected_score": 8.8,
         "no_remate_reason": null
       },
       {
-        "trend_id": "c51860b999c9",
+        "trend_id": "6e854627a1c1",
         "revision": 0,
         "candidate_count": 5,
         "selected_candidate": "c2",
-        "selected_score": 8.8,
+        "selected_score": 8.5,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "fb729ded8a27",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c4",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "9832e607c6b1",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c5",
+        "selected_score": 8.9,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-12T13:45:00+02:00",
-        "phase": "preparing",
+        "at": "2026-10-12T14:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": "e81019a10e03",
+        "title": "Jagoba",
+        "message": "Releyendo estado autoritativo de Jagoba."
+      },
+      {
+        "at": "2026-10-12T14:18:00+02:00",
+        "phase": "investigating",
+        "trend_id": "e81019a10e03",
+        "title": "Jagoba",
+        "message": "Hecho esencial verificado · Osasuna destituye a Ramis y anuncia el regreso de Jagoba Arrasate hasta 2029."
+      },
+      {
+        "at": "2026-10-12T14:18:20+02:00",
+        "phase": "drafting",
+        "trend_id": "e81019a10e03",
+        "title": "Jagoba",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-12T14:18:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "e81019a10e03",
+        "title": "Jagoba",
+        "message": "Remate seleccionado · referencia específica al regreso de Arrasate y a su primera etapa desde 2018."
+      },
+      {
+        "at": "2026-10-12T14:18:45+02:00",
+        "phase": "persisting",
+        "trend_id": "e81019a10e03",
+        "title": "Jagoba",
+        "message": "Guardando ficha Explicada de Jagoba mediante outbox transaccional de chat."
+      },
+      {
+        "at": "2026-10-12T14:19:00+02:00",
+        "phase": "verifying",
+        "trend_id": "6e854627a1c1",
+        "title": "#Mañaneros12O",
+        "message": "Releyendo estado autoritativo de #Mañaneros12O."
+      },
+      {
+        "at": "2026-10-12T14:19:20+02:00",
+        "phase": "investigating",
+        "trend_id": "6e854627a1c1",
+        "title": "#Mañaneros12O",
+        "message": "Hecho esencial verificado · Mañaneros 360 analiza hoy el 12-O y las reacciones al desfile."
+      },
+      {
+        "at": "2026-10-12T14:19:35+02:00",
+        "phase": "drafting",
+        "trend_id": "6e854627a1c1",
+        "title": "#Mañaneros12O",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-12T14:19:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "6e854627a1c1",
+        "title": "#Mañaneros12O",
+        "message": "Remate seleccionado · juego específico entre paso militar y paso por tertulia."
+      },
+      {
+        "at": "2026-10-12T14:20:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fb729ded8a27",
+        "title": "#2026MAMAVOTE",
+        "message": "Releyendo estado autoritativo de #2026MAMAVOTE."
+      },
+      {
+        "at": "2026-10-12T14:20:20+02:00",
+        "phase": "investigating",
+        "trend_id": "fb729ded8a27",
+        "title": "#2026MAMAVOTE",
+        "message": "Hecho esencial verificado · hoy se anuncian nominaciones MAMA 2026 y arranca la primera votación global."
+      },
+      {
+        "at": "2026-10-12T14:20:35+02:00",
+        "phase": "drafting",
+        "trend_id": "fb729ded8a27",
+        "title": "#2026MAMAVOTE",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-12T14:20:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fb729ded8a27",
+        "title": "#2026MAMAVOTE",
+        "message": "Remate seleccionado · referencia al horario coreano convertido en votación global."
+      },
+      {
+        "at": "2026-10-12T14:21:00+02:00",
+        "phase": "verifying",
+        "trend_id": "9832e607c6b1",
+        "title": "Pedro Sánchez HDP",
+        "message": "Releyendo estado autoritativo de Pedro Sánchez HDP."
+      },
+      {
+        "at": "2026-10-12T14:21:20+02:00",
+        "phase": "investigating",
+        "trend_id": "9832e607c6b1",
+        "title": "Pedro Sánchez HDP",
+        "message": "Hecho esencial verificado · asistentes al desfile del 12-O corearon insultos contra Pedro Sánchez a su llegada."
+      },
+      {
+        "at": "2026-10-12T14:21:35+02:00",
+        "phase": "drafting",
+        "trend_id": "9832e607c6b1",
+        "title": "Pedro Sánchez HDP",
+        "message": "Redactando explicación factual y neutral y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-12T14:21:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9832e607c6b1",
+        "title": "Pedro Sánchez HDP",
+        "message": "Remate seleccionado · sátira neutral sobre protocolo y gradas, sin endorsar el insulto."
+      },
+      {
+        "at": "2026-10-12T14:22:57+02:00",
+        "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 2 revisiones activas; releyendo estado autoritativo."
+        "message": "Releyendo main y verificando id+revision y texto persistido de las cuatro revisiones."
       },
       {
-        "at": "2026-10-12T13:46:35+02:00",
-        "phase": "investigating",
-        "trend_id": "78ff0a6f5044",
-        "title": "#NadaQueCelebrar",
-        "message": "Hecho esencial verificado · el lema identifica la protesta anticolonial de hoy, distinta del uso genérico de 12-O."
-      },
-      {
-        "at": "2026-10-12T13:47:10+02:00",
-        "phase": "persisting",
-        "trend_id": "78ff0a6f5044",
-        "title": "#NadaQueCelebrar",
-        "message": "Guardando ficha Explicada de #NadaQueCelebrar mediante outbox transaccional de chat."
-      },
-      {
-        "at": "2026-10-12T13:50:00+02:00",
+        "at": "2026-10-12T14:23:08+02:00",
         "phase": "verifying",
-        "trend_id": "78ff0a6f5044",
-        "title": "#NadaQueCelebrar",
-        "message": "Persistencia verificada en requests, Explicadas y cola; revisión 0 cerrada."
+        "trend_id": null,
+        "title": null,
+        "message": "Tendencias cerradas y verificadas · requests, Explicadas y cola son consistentes; cola 0."
       },
       {
-        "at": "2026-10-12T13:50:20+02:00",
-        "phase": "verifying",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Releyendo estado autoritativo de 12-o y reconstruyendo el grupo vigente de Fiesta Nacional."
-      },
-      {
-        "at": "2026-10-12T13:51:10+02:00",
-        "phase": "investigating",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Hecho esencial verificado · 12-o es una abreviatura de la conversación de la Fiesta Nacional ya cubierta."
-      },
-      {
-        "at": "2026-10-12T13:51:30+02:00",
-        "phase": "drafting",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Redactando explicación propia, breve y sin reutilizar la muletilla del calendario."
-      },
-      {
-        "at": "2026-10-12T13:51:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Remate seleccionado · juego específico con la abreviatura de tres caracteres."
-      },
-      {
-        "at": "2026-10-12T13:52:15+02:00",
-        "phase": "persisting",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Guardando 12-o como miembro del grupo existente Fiesta Nacional, sin crear tarjeta duplicada."
-      },
-      {
-        "at": "2026-10-12T13:53:58+02:00",
-        "phase": "verifying",
-        "trend_id": "c51860b999c9",
-        "title": "12-o",
-        "message": "Persistencia verificada en main · requests actualizado, grupo ampliado y revisión retirada de la cola."
-      },
-      {
-        "at": "2026-10-12T13:54:20+02:00",
+        "at": "2026-10-12T14:24:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · #NadaQueCelebrar quedó como ficha propia y 12-o enlazada al grupo de Fiesta Nacional. Cola final 0, sin reexplicaciones activas y sin ImageGen directo."
+        "message": "Cierre verificado · 4/4 revisiones explicadas y persistidas en main; cola editorial 0. Reparación visual automática solicitada; sin ImageGen directo ni Vercel."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261012T134500+0200-chat",
+  "run_id": "tr-20261012T141500+0200-chat",
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "trends_processed": 4,
+    "trends_explained": 4,
+    "explanation_groups": 0,
+    "new_cards": 4,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 1,
+    "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -189,8 +270,8 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 4,
+    "remates_selected": 4,
     "remates_omitted": 0
   }
 }
