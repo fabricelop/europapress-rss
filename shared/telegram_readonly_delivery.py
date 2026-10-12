@@ -382,15 +382,22 @@ def trend_cards(now):
         # An old request may retain rank 11-30 after re-entering the Top 10.
         # Current captured rank wins over stale request rank for delivery.
         rank=int((top.get(name.casefold()) or {}).get("rank") or req.get("rank") or 0)
-        if rank>10 and req.get("auto_queued") is True:continue
+        if rank>10 and req.get("auto_queued") is True:
+            if any(str(x.get("id") or "")==tid for x in editorial_queue.get("items",[])):
+                print("TT_TREND_PENDING_DIAG",tid,"outside_top10",rank,flush=True)
+            continue
         start=req.get("requested_at") or req.get("anticipated_at")
         if not fresh(start,now) or not baseline_allows("ttendencias",tid,start):
+            if any(str(x.get("id") or "")==tid for x in editorial_queue.get("items",[])):
+                print("TT_TREND_PENDING_DIAG",tid,"stale_or_baseline",str(start),flush=True)
             continue
         rev=int(req.get("revision") or 0)
         finished=explained.get((tid,rev))
         is_final=bool((finished and str(finished.get("explanation") or "").strip())
                       or (status=="explained" and str(req.get("explanation") or "").strip()))
         if req.get("reexplain") and not is_final:
+            if any(str(x.get("id") or "")==tid for x in editorial_queue.get("items",[])):
+                print("TT_TREND_PENDING_DIAG",tid,"reexplain_without_final",rev,flush=True)
             continue
         # Provisional notices for newly pending TTendencias go out immediately.
         # Unlike TTiTTulares, there is no one-hour delay. A later final card
@@ -402,6 +409,8 @@ def trend_cards(now):
                             "telegram_private_deeplink_native",
                             "telegram_reexplain"})
         if not is_final and not (1<=current_rank<=10 or manual_request or tid in protected):
+            if any(str(x.get("id") or "")==tid for x in editorial_queue.get("items",[])):
+                print("TT_TREND_PENDING_DIAG",tid,"current_rank_not_eligible",current_rank,flush=True)
             continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
