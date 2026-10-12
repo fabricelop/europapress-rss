@@ -1521,6 +1521,37 @@ def selftest():
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
         globals()["archival_image"]=original_archive
+    # An empty-chat checkpoint archives old cards, but keeps four explicitly
+    # awaiting trends, even if their requested_at precedes the reset moment.
+    original_root=ROOT
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            globals()["ROOT"]=Path(tmp)
+            put("telegram/lifecycle-baseline.json",{
+                "activated_at":"2026-10-12T15:25:23Z",
+                "project_state":{
+                    "ttittulares":{"historic_max_message_id":3559,
+                                   "preserve_pending_ids":[]},
+                    "ttendencias":{"historic_max_message_id":717,
+                                   "preserve_pending_ids":["pending-4"]}}})
+            assert not baseline_allows(
+                "ttittulares","historical","2026-10-12T15:00:00Z")
+            assert baseline_allows(
+                "ttittulares","new","2026-10-12T15:26:00Z")
+            assert baseline_allows(
+                "ttendencias","pending-4","2026-10-12T15:22:26Z")
+            assert not baseline_allows(
+                "ttendencias","obsolete","2026-10-12T15:22:26Z")
+            ledger=[{"event_id":"old","telegram_message_id":717,
+                     "status":"sent","final":True},
+                    {"event_id":"new","telegram_message_id":720,
+                     "status":"sent","final":False}]
+            active=active_delivery_rows("ttendencias",ledger)
+            assert len(active)==1 and active[0]["event_id"]=="new"
+            print("TT_LIFECYCLE_RESET_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
     print("TELEGRAM_READONLY_SELFTEST_OK")
 
 if __name__=="__main__":
