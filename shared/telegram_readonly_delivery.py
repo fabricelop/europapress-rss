@@ -318,12 +318,21 @@ def trend_cards(now):
             # verified editorial text if it was committed in the queue.
             if queued.get("editorial_verified") is True and queued.get("explanation"):
                 latest[tid]={**prior,**queued}
-            elif not str(prior.get("status") or "") in {
-                    "explained","deleted","dismissed","published","removed"}:
-                latest[tid]={**queued,**prior}
-                for field in ("rank","name","requested_at","source_url"):
-                    if not latest[tid].get(field):
-                        latest[tid][field]=queued.get(field)
+            elif str(prior.get("status") or "").lower() not in {
+                    "deleted","dismissed","published","removed"}:
+                # The active editorial queue is newer than an already
+                # explained old request ONLY if its requested_at follows the
+                # previous explanation; this must not resurrect user deletes.
+                new_at=date(queued.get("requested_at"))
+                final_at=date(prior.get("explained_at"))
+                if not final_at or (new_at and new_at>=final_at):
+                    latest[tid]={**prior,**queued}
+                    latest[tid]["status"]=queued["status"]
+                    latest[tid]["revision"]=int(queued.get("revision") or 0)
+                    # Old re-explanation flags must not indefinitely suppress
+                    # a fresh automatically selected Top 10 provisional.
+                    if queued.get("reexplain") is False:
+                        latest[tid]["reexplain"]=False
     explained={}
     for row in [*explained_doc.get("items",[]),*manual_doc.get("items",[])]:
         key=str(row.get("id") or "")
