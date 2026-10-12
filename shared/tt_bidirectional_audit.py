@@ -71,6 +71,11 @@ def audit(project,now=None):
     decisions_by_id={str(x.get("event_id") or x.get("id") or ""):
                      str(x.get("status") or "").lower()
                      for x in decisions.get("items",[])}
+    # The user's Telegram delete callback is authoritative. Keep Explicadas
+    # and READY as *history*, not a fresh active APP row after delete.
+    for eid,row in history.items():
+        if str(row.get("status") or "").lower() in CLOSED:
+            decisions_by_id[eid]="deleted"
     app={}
     def add(row,source,stamp):
         eid=str(row.get("event_id") or row.get("id") or "")
@@ -198,6 +203,14 @@ def selftest():
                 {"event_id":"tt","telegram_message_id":720,"status":"sent","final":False}]})
             x=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
             assert x["matched_count"]==1 and x["issues_count"]==0,x
+            put("trends/telegram-manual-explained.json",{"items":[
+                {"id":"closed","name":"Explicación archivada","status":"explained",
+                 "explained_at":"2026-10-12T18:12:00Z","explanation":"Verificada"}]})
+            put("trends/telegram-image-deliveries.json",{"items":[
+                {"event_id":"tt","telegram_message_id":720,"status":"sent","final":False},
+                {"event_id":"closed","telegram_message_id":721,"status":"deleted","final":True}]})
+            closed=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
+            assert closed["issues_count"]==0 and closed["app_open_count"]==1,closed
             print("TT_BIDIRECTIONAL_AUDIT_SELFTEST_OK")
         finally:ROOT=original
 
