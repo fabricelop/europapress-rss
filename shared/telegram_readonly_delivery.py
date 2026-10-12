@@ -616,6 +616,36 @@ def trend_repeat_allowed(card,history,now):
     latest=max((dt for dt in dates if dt is not None),default=None)
     return bool(latest and now-latest>=timedelta(days=7))
 
+
+def finalize_existing_group_message(entry,card,body,leader_id,now,token,chat):
+    """Finish this user's OWN Telegram card. Never delete or replace its ID."""
+    message_id=int(entry.get("telegram_message_id") or 0)
+    if not message_id or str(entry.get("status") or "").lower()!="sent":
+        return False
+    body=trim(body,1000)
+    if not body.strip():
+        return False
+    same_hash=hashlib.sha256((body+"|"+str(entry.get("image_url") or "")).encode("utf-8")).hexdigest()
+    if entry.get("final") is True and entry.get("content_sha256")==same_hash:
+        return False
+    group_card={**card,"id":str(entry.get("event_id") or ""),
+                "rev":int(entry.get("revision") or 0),
+                "image":str(entry.get("image_url") or ""),
+                "final":True,"x_text":body,
+                "search":str(entry.get("title") or entry.get("name") or card.get("title") or "")}
+    method="editMessageCaption" if entry.get("is_photo") else "editMessageText"
+    key="caption" if entry.get("is_photo") else "text"
+    result=send(token,method,{"chat_id":chat,"message_id":message_id,
+               key:body,"reply_markup":keys(group_card,"ttendencias")})
+    if not result:
+        print("TT_GROUP_FINAL_EDIT_RETRY",group_card["id"],message_id,flush=True)
+        return False
+    entry.update(status="sent",final=True,content_sha256=same_hash,
+                 grouped_into=leader_id,group_leader_id=leader_id,
+                 updated_at=now.isoformat())
+    print("TT_GROUP_FINAL_EDIT_OK",group_card["id"],message_id,flush=True)
+    return True
+
 def process(project,now,token,chat):
     path=("telegram/ttittulares-deliveries.json" if project=="ttittulares"
           else "trends/telegram-image-deliveries.json")
@@ -633,28 +663,9 @@ def process(project,now,token,chat):
             print("TT_STORY_DUPLICATE_BLOCKED",project,trim(card.get("title"),120),
                   "new_id="+str(eid),"previous_id="+str(older.get("event_id") or ""),
                   "previous_status="+str(older.get("status") or ""),flush=True)
-            # An old tombstone overrides a newer radar event ID. If a buggy
-            # anonymous provisional was already sent, remove that duplicate.
-            if str(older.get("status") or "").lower() in TERMINAL:
-                # Applies to BOTH products, not just TTiTTulares.
-                for duplicate in linked:
-                    if str(duplicate.get("status") or "").lower()!="sent":
-                        continue
-                    mids={int(duplicate.get(k) or 0) for k in
-                          ("telegram_message_id","archive_telegram_message_id")}
-                    ok=True
-                    for mid in sorted(x for x in mids if x>0):
-                        result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
-                        if result is None:
-                            ok=False
-                            print("TT_DUPLICATE_DELETE_RETRY",project,eid,mid,flush=True)
-                    if ok:
-                        duplicate.update(status="deleted",deleted_at=now.isoformat(),
-                            updated_at=now.isoformat(),duplicate_of=str(older.get("event_id") or ""),
-                            decision_source="duplicate_of_terminal_story")
-                        ledger["updated_at"]=now.isoformat()
-                        put(path,ledger)
-                        updated+=1
+            # A different message ID is NOT covered by the user's deletion
+            # of an older card. Keep it visible until editorial completion
+            # or an explicit failure notice from the post-run auditor.
             skipped+=1
             continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
@@ -844,63 +855,9 @@ def process(project,now,token,chat):
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
         ledger["updated_at"]=now.isoformat()
-    # TTiTTulares: a completed story may be explicitly deleted, while a
-    # differently worded radar headline for the same event remains marked
-    # problematic and its provisional Telegram photo never reaches Listas.
-    # Reconcile ONLY when the editorial problem record identifies the exact
-    # deleted event ID. Similar words or photographs are insufficient.
-    if project=="ttittulares":
-        status_doc=load("ttittulares/status.json",{})
-        problem_items=status_doc.get("problematic_items") or []
-        # The editorial statement, not fuzzy matching, establishes identity.
-        relation=re.compile(
-            r"\bcoincide(?:\s+materialmente)?\s+con\s+el\s+evento\s+([0-9a-f]{12})\b",
-            re.IGNORECASE)
-        deleted_by_id={str(row.get("event_id") or ""):row for row in entries
-                       if (str(row.get("status") or "").lower()=="deleted"
-                           and row.get("final") is True)}
-        for problem in problem_items:
-            if problem.get("user_validated") is True:
-                continue
-            follower_id=str(problem.get("event_id") or "")
-            match=relation.search(str(problem.get("problem_reason") or ""))
-            if not follower_id or not match:
-                continue
-            leader_id=match.group(1).lower()
-            prior=deleted_by_id.get(leader_id)
-            if prior is None or leader_id==follower_id:
-                continue
-            # The incident itself must explain that a previous user deletion
-            # prevents automatically publishing the same event again.
-            reason=str(problem.get("problem_reason") or "").lower()
-            if not ("deleted" in reason or "eliminado" in reason or "borrado" in reason):
-                continue
-            for ghost in entries:
-                if (str(ghost.get("event_id") or "")!=follower_id
-                    or str(ghost.get("status") or "").lower()!="sent"
-                    or ghost.get("final") is not False
-                    or int(ghost.get("revision") or 0)!=int(problem.get("revision") or 0)):
-                    continue
-                mids={int(ghost.get(field) or 0) for field in
-                      ("telegram_message_id","archive_telegram_message_id")
-                      if int(ghost.get(field) or 0)>0}
-                if not mids:
-                    continue
-                succeeded=True
-                for mid in sorted(mids):
-                    if send(token,"deleteMessage",{"chat_id":chat,"message_id":mid}) is None:
-                        succeeded=False
-                        print("TTI_DUPLICATE_PROVISIONAL_RETRY",
-                              follower_id,mid,flush=True)
-                if succeeded:
-                    ghost.update(
-                        status="deleted",final=False,duplicate_of=leader_id,
-                        decision_source="editorial_confirmed_duplicate_of_user_deleted",
-                        deleted_at=now.isoformat(),updated_at=now.isoformat())
-                    ledger["updated_at"]=now.isoformat()
-                    updated+=1
-                    print("TTI_DUPLICATE_PROVISIONAL_CLEANED",
-                          follower_id,"leader="+leader_id,flush=True)
+    # Never silently delete a SECOND card only because a previous related
+    # card was removed by the user. Its own Telegram message must be
+    # completed with verified information or reported as blocked.
     # Consolidate already-posted sibling messages AFTER the leader exists.
     # Never delete a sibling merely for sharing a picture or being in a batch:
     # explicit editor-verified group identity is required.
@@ -927,26 +884,12 @@ def process(project,now,token,chat):
                     continue
                 if str(sibling.get("status") or "").lower()!="sent":
                     continue
-                mids={int(sibling.get(k) or 0)
-                      for k in ("telegram_message_id","archive_telegram_message_id")
-                      if int(sibling.get(k) or 0)>0}
-                if not mids:continue
-                ok=True
-                for mid in sorted(mids):
-                    result=send(token,"deleteMessage",{"chat_id":chat,"message_id":mid})
-                    if result is None:
-                        ok=False
-                        print("TT_GROUP_SIBLING_DELETE_RETRY",sibling_id,mid,flush=True)
-                if ok:
-                    sibling.update(status="grouped",
-                                   group_leader_id=leader_id,
-                                   group_id=group["group_id"],
-                                   grouped_into=leader_id,
-                                   grouped_at=now.isoformat(),
-                                   updated_at=now.isoformat())
+                if finalize_existing_group_message(
+                        sibling,group,group["text"],leader_id,now,token,chat):
+                    sibling.update(group_id=group["group_id"])
                     updated+=1
-                    print("TT_TRENDS_GROUP_DUPLICATE_REMOVED",
-                          sibling_id,"leader="+leader_id,flush=True)
+                    ledger["updated_at"]=now.isoformat()
+    # Explicit group membership is durable in BOTH the requests and the
     # Explicit group membership is durable in BOTH the requests and the
     # leader's explained record. A refresh may mark the follower inactive or
     # deleted after the editor finishes; do not require status=explained here.
@@ -1004,31 +947,26 @@ def process(project,now,token,chat):
                 if (str(current_req.get("status") or "").lower() in {"preparing","update"} and
                     int(current_req.get("revision") or 0)>linked_revision):
                     continue
-                mids={int(ghost.get(key) or 0) for key in
-                      ("telegram_message_id","archive_telegram_message_id")
-                      if int(ghost.get(key) or 0)>0}
-                if not mids:
-                    continue
-                all_deleted=True
-                for mid in sorted(mids):
-                    if send(token,"deleteMessage",{"chat_id":chat,"message_id":mid}) is None:
-                        all_deleted=False
-                        print("TT_GROUP_ORPHAN_PROVISIONAL_RETRY",follower_id,mid,flush=True)
-                if all_deleted:
-                    ghost.update(
-                        status=("deleted" if leader_status in
-                                {"deleted","dismissed","removed","delete_pending","delete_failed"}
-                                else "grouped"),
-                        group_id=group_id,group_leader_id=leader_id,
-                        grouped_into=leader_id,duplicate_of=leader_id,
-                        decision_source="grouped_alias_of_final_or_terminal_card",
-                        grouped_at=now.isoformat(),updated_at=now.isoformat())
-                    if ghost["status"]=="deleted":
-                        ghost["deleted_at"]=now.isoformat()
+                explanation=str(current_req.get("explanation") or "").strip()
+                if not explanation:
+                    explanation=next((str(r.get("explanation") or "").strip()
+                        for r in manual.get("items",[]) if
+                        str(r.get("id") or "")==leader_id and
+                        str(r.get("explanation") or "").strip()),"")
+                if not explanation:
+                    continue # auditor alerts; never delete the pending card.
+                title=str(ghost.get("title") or ghost.get("name") or
+                          current_req.get("name") or follower_id)
+                label=title
+                body=(label+"\n\nExplicación contrastada (compartida con "+
+                      str((leader_req or {}).get("name") or leader_id)+"):\n\n"+
+                      trim(explanation,780))
+                if finalize_existing_group_message(
+                        ghost,{"title":title,"search":title},
+                        body,leader_id,now,token,chat):
+                    ghost.update(group_id=group_id)
                     updated+=1
                     ledger["updated_at"]=now.isoformat()
-                    print("TT_GROUP_ORPHAN_PROVISIONAL_CLEANED",follower_id,
-                          "leader="+leader_id,"leader_status="+leader_status,flush=True)
     if delivered or updated:put(path,ledger)
     print(f"TELEGRAM_READONLY {project} delivered={delivered} updated={updated} skipped={skipped}",flush=True)
     return delivered,updated
@@ -1318,10 +1256,10 @@ def selftest():
                 if url=="https://img.example.org/raba.jpg" else None)
             count=process("ttendencias",now,"mock","chat")
             assert count[0]==0,count
-            assert [mid for method,mid in operations if method=="deleteMessage"]==[688,689,691],operations
+            assert [mid for method,mid in operations if method=="editMessageCaption"]==[688,689,691],operations
             fixed=load("trends/telegram-image-deliveries.json",{"items":[]})
-            assert len([x for x in fixed["items"] if x["status"]=="sent"])==1
-            assert len([x for x in fixed["items"] if x["status"]=="grouped"])==3
+            assert len([x for x in fixed["items"] if x["status"]=="sent"])==4
+            assert len([x for x in fixed["items"] if x.get("final") is True])==4
             assert next(x for x in fixed["items"] if x["status"]=="sent")["telegram_message_id"]==687
             operations.clear()
             process("ttendencias",now,"mock","chat")
@@ -1402,10 +1340,8 @@ def selftest():
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
         globals()["archival_image"]=original_archive
-    # Regression: Jagoba's original editorial card was deleted at 14:45,
-    # but the new alias Jagoba Arrasate got a provisional Telegram at 15:18.
-    # Closing the editorial alias must remove ONLY the orphan provisional,
-    # preserve the user's original deletion, and be idempotent.
+    # Previously deleted *related* cards do not grant permission to
+    # remove the new Telegram message. Finish its own message in place.
     original_root=ROOT
     original_send=send
     original_archive=archival_image
@@ -1420,9 +1356,8 @@ def selftest():
                  "status":"explained","revision":0,
                  "group_id":"grp-jagoba","group_leader_id":"jagoba",
                  "grouped_into_existing_card":True,
-                 "explanation":"Explicación agrupada con Jagoba."}]})
-            put("trends/recent.json",{"items":[
-                {"name":"Jagoba Arrasate","rank":5}]})
+                 "explanation":"El equipo ha anunciado el regreso de Arrasate."}]})
+            put("trends/recent.json",{"items":[{"name":"Jagoba Arrasate","rank":5}]})
             put("trends/telegram-manual-explained.json",{"items":[]})
             put("trends/explained.json",{"items":[]})
             put("trends/telegram-image-deliveries.json",{"items":[
@@ -1434,47 +1369,23 @@ def selftest():
                  "delivered_at":now.isoformat()}]})
             operations=[]
             def fake_sender(token,method,payload,photo=None):
-                operations.append((method,payload.get("message_id")))
-                return True if method=="deleteMessage" else {"message_id":999}
+                operations.append((method,int(payload.get("message_id") or 0)))
+                return {"message_id":int(payload.get("message_id") or 0)}
             globals()["send"]=fake_sender
             globals()["archival_image"]=lambda url:None
             assert process("ttendencias",now,"mock","mockchat")==(0,1)
-            assert operations==[("deleteMessage",714)],operations
+            assert operations==[("editMessageText",714)],operations
             ledger=load("trends/telegram-image-deliveries.json",{"items":[]})
             ghost=next(x for x in ledger["items"] if x["event_id"]=="arrasate")
-            assert ghost["status"]=="deleted"
-            assert ghost["duplicate_of"]=="jagoba"
+            assert ghost["status"]=="sent" and ghost["final"] is True
             assert process("ttendencias",now,"mock","mockchat")==(0,0)
-            assert operations==[("deleteMessage",714)],operations
-            # A later refresh may archive the request and remove its active
-            # grouped flag. The explained group's durable membership still
-            # has to reconcile the provisional without reopening the story.
-            reqs=load("trends/requests.json",{"requests":[]})
-            reqs["requests"][1]["status"]="inactive"
-            reqs["requests"][1].pop("grouped_into_existing_card",None)
-            put("trends/requests.json",reqs)
-            put("trends/telegram-manual-explained.json",{"items":[{
-                "id":"jagoba","group_leader_id":"jagoba",
-                "group_id":"grp-jagoba",
-                "grouped_member_revisions":[
-                    {"id":"jagoba","revision":0},
-                    {"id":"arrasate","revision":0}]}]})
-            ledger["items"][1].update(status="sent",
-                                     telegram_message_id=715,
-                                     final=False)
-            ledger["items"][1].pop("deleted_at",None)
-            put("trends/telegram-image-deliveries.json",ledger)
-            assert process("ttendencias",now,"mock","mockchat")==(0,1)
-            assert operations==[("deleteMessage",714),
-                                ("deleteMessage",715)],operations
-            print("TT_GROUP_ORPHAN_PROVISIONAL_SELFTEST_OK")
+            assert operations==[("editMessageText",714)]
+            print("TT_GROUP_ORPHAN_FINAL_IN_PLACE_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
         globals()["archival_image"]=original_archive
-    # A Sol news item is already verified, delivered and explicitly
-    # deleted; a renamed copy remains problematic with a visible provisional.
-    # Remove ONLY the duplicate, never resuscitate the user's original.
+    # Duplicate problem != user deletion for that exact Telegram message.
     original_root=ROOT
     original_send=send
     original_archive=archival_image
@@ -1487,7 +1398,7 @@ def selftest():
             put("ttittulares/decisions.json",{"items":[]})
             put("ttittulares/status.json",{"problematic_items":[{
                 "event_id":"4a294ec12ff5","revision":1,
-                "problem_reason":"Coincide materialmente con el evento 4e8026a01ba6; ya elaborado y eliminado por el usuario. Estado DELETED.",
+                "problem_reason":"Coincide con evento previamente borrado",
                 "user_validated":False}]})
             put("telegram/ttittulares-deliveries.json",{"items":[
                 {"event_id":"4e8026a01ba6","revision":1,"status":"deleted",
@@ -1498,26 +1409,13 @@ def selftest():
                  "telegram_message_id":3555,
                  "delivered_at":now.isoformat()}]})
             operations=[]
-            def mock_send(token,method,payload,photo=None):
-                operations.append((method,int(payload.get("message_id") or 0)))
-                return True
-            globals()["send"]=mock_send
+            globals()["send"]=lambda token,method,payload,photo=None:operations.append(method)
             globals()["archival_image"]=lambda url:None
-            assert process("ttittulares",now,"token","chat")==(0,1)
-            assert operations==[("deleteMessage",3555)],operations
+            assert process("ttittulares",now,"token","chat")==(0,0)
+            assert operations==[],operations
             ledger=load("telegram/ttittulares-deliveries.json",{})
-            orig,new=ledger["items"]
-            assert orig["status"]=="deleted" and orig["telegram_message_id"]==3550
-            assert new["status"]=="deleted" and new["duplicate_of"]=="4e8026a01ba6"
-            assert process("ttittulares",now,"token","chat")==(0,0)
-            assert operations==[("deleteMessage",3555)],operations
-            # Never interpret a mere title resemblance as authority to delete.
-            ledger["items"][1].update(status="sent")
-            put("telegram/ttittulares-deliveries.json",ledger)
-            put("ttittulares/status.json",{"problematic_items":[]})
-            assert process("ttittulares",now,"token","chat")==(0,0)
-            assert operations==[("deleteMessage",3555)]
-            print("TTI_SOL_DUPLICATE_PROVISIONAL_SELFTEST_OK")
+            assert ledger["items"][1]["status"]=="sent"
+            print("TTI_PROVISIONAL_NEVER_AUTO_DELETE_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
