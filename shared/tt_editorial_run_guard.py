@@ -131,21 +131,30 @@ def pending(project):
     protected={str(x) for x in ps.get("preserve_pending_ids",[])}
     by_id={}
     closed=set()
+    finalized=set()
     for entry in d:
         eid=str(entry.get("event_id") or "")
         mid=int(entry.get("telegram_message_id") or 0)
         if mid<=watermark or not eid:continue
         state=str(entry.get("status") or "").lower()
         if state in TERMINAL:closed.add(eid)
+        if state=="sent" and entry.get("final") is True:finalized.add(eid)
         if state=="sent" and entry.get("final") is False:
             by_id[eid]={"id":eid,
               "start":entry.get("started_at") or entry.get("delivered_at"),
               "title":entry.get("name") or entry.get("title") or eid,
               "reason":"telegram_provisional"}
+    extra=load("ttittulares/status.json",{}) if project=="ttittulares" else load("trends/requests.json",{})
+    if project=="ttittulares":
+        q=list(q)+[dict(x,status="processing") for x in extra.get("processing_items",[])]
+    else:
+        q=list(q)+[x for x in extra.get("requests",[]) if
+                    str(x.get("status") or "").lower() in {"preparing","update","ready"}]
     for row in q:
         eid=str(row.get("id") or row.get("event_id") or "")
         status=str(row.get("status") or "").lower()
-        if not eid or eid in closed or status not in {"processing","preparing","update","ready","in_progress","explained"}:
+        if not eid or eid in closed or eid in finalized or status not in {
+                "processing","preparing","update","ready","in_progress","explained"}:
             continue
         at=row.get("selected_at") or row.get("requested_at")
         started=moment(at)
@@ -155,7 +164,7 @@ def pending(project):
               "title":row.get("name") or row.get("title") or eid,
               "reason":"app_awaiting_editorial"}
     # An empty queue can conceal an unresolved older provisional. No omission.
-    for eid in closed:by_id.pop(eid,None)
+    for eid in closed|finalized:by_id.pop(eid,None)
     return sorted(by_id.values(),key=lambda x:(moment(x.get("start")) or datetime.max.replace(tzinfo=timezone.utc)))
 
 def evaluate(project,now,previous,command=None,run=None):
