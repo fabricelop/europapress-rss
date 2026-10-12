@@ -1414,6 +1414,9 @@ struct TimeMapView: View {
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
     @State private var followLocation = false
+    // Presentación local: nunca se persiste ni altera los intervalos GPS.
+    @State private var cardSize: TimeMapCardSize = .compact
+    @State private var cardBeforeDragging: TimeMapCardSize?
     @State private var restoredCamera = false
     @Environment(\.scenePhase) private var scenePhase
     private var relevant:[MapCellRender] {
@@ -1469,6 +1472,10 @@ struct TimeMapView: View {
                     camera = .region(newRegion)
                 },onSelect:{ cell in
                     selectOnMap(cell)
+                },onInteractionStart:{
+                    beginMapDrag()
+                },onInteractionEnd:{
+                    endMapDrag()
                 })
                 .onAppear { centerOnRequestedCell() }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
@@ -1489,15 +1496,16 @@ struct TimeMapView: View {
                             }
                         }
                     }
-                    if followLocation,let currentCell=model.activeCell {
-                        MapPolygon(coordinates:Grid.polygon(currentCell))
-                            .foregroundStyle(Color.teal.opacity(0.10))
-                            .stroke(Color.orange,lineWidth:4)
-                    }
                     ForEach(visibleZones) { overlay in
                         ForEach(overlay.contours) { line in
                             MapPolyline(coordinates:line.coordinates)
-                                .stroke(.teal,lineWidth:4)
+                                .stroke(overlay.zone.id ==
+                                    (followLocation ? model.activeCell : (model.selected ?? model.activeCell))
+                                        .flatMap { model.primaryZone(for:$0) }?.id
+                                        ? Color.teal : Color.teal.opacity(0.6),
+                                        lineWidth:overlay.zone.id ==
+                                    (followLocation ? model.activeCell : (model.selected ?? model.activeCell))
+                                        .flatMap { model.primaryZone(for:$0) }?.id ? 5 : 2.5)
                         }
                         if region.span.latitudeDelta < 0.07,
                            let center=overlay.center {
@@ -1517,6 +1525,15 @@ struct TimeMapView: View {
                                 }.buttonStyle(.plain)
                             }
                         }
+                    }
+                    // Delimitación de la casilla que muestra la tabla, por encima
+                    // de los perímetros de zona. Naranja = actual, violeta = consultada.
+                    if let focusedCell = followLocation ? model.activeCell :
+                        (model.selected ?? model.activeCell) {
+                        let viewingAnotherCell = focusedCell != model.activeCell
+                        MapPolygon(coordinates:Grid.polygon(focusedCell))
+                            .foregroundStyle((viewingAnotherCell ? Color.indigo : Color.orange).opacity(0.09))
+                            .stroke(viewingAnotherCell ? Color.indigo : Color.orange,lineWidth:4)
                     }
                     if let position = model.current {
                         Annotation("Actual", coordinate: position.coordinate) {
@@ -1538,9 +1555,13 @@ struct TimeMapView: View {
                     }
                 }
                 .mapStyle(model.mapKind == .satellite ? .imagery : model.mapKind == .hybrid ? .hybrid : .standard)
-                .simultaneousGesture(DragGesture(minimumDistance:8).onChanged { _ in
-                    if followLocation { followLocation = false }
-                })
+                .simultaneousGesture(DragGesture(minimumDistance:8)
+                    .onChanged { _ in
+                        if followLocation { followLocation = false }
+                        beginMapDrag()
+                    }
+                    .onEnded { _ in endMapDrag() }
+                )
                 .onTapGesture { point in
                     if let coord = proxy.convert(point, from: .local) {
                         let touched=Grid.cell(latitude:coord.latitude,longitude:coord.longitude)
@@ -1624,26 +1645,53 @@ struct TimeMapView: View {
                         .font(.caption2).padding(.horizontal,16)
                 }
                 Spacer()
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        let picked=followLocation ? model.activeCell : (model.selected ?? model.activeCell)
-                        Text(picked.map { model.label(for:$0) } ?? "Sin cuadrícula actual")
-                            .font(.subheadline.weight(.semibold)).lineLimit(1)
-                        Spacer()
+                VStack(alignment:.leading,spacing:8) {
+                    let picked = followLocation ? model.activeCell :
+                        (model.selected ?? model.activeCell)
+                    let zone = picked.flatMap { model.primaryZone(for:$0) }
+                    let isConsulting = picked != nil && picked != model.activeCell
+                    HStack(alignment:.center,spacing:8) {
+                        VStack(alignment:.leading,spacing:2) {
+                            Text(zone?.name ?? picked.map { model.label(for:$0) } ?? "Sin cuadrícula actual")
+                                .font(.subheadline.weight(.semibold))
+                                .lineLimit(1)
+                            Label(isConsulting ? "Consultando otra cuadrícula" :
+                                    (picked == nil ? "Sin ubicación" : "Ubicación actual"),
+                                  systemImage:isConsulting ? "hand.tap" : "location.fill")
+                                .font(.system(size:10,weight:.medium))
+                                .foregroundStyle(isConsulting ? Color.indigo : Color.secondary)
+                                .lineLimit(1)
+                        }
+                        Spacer(minLength:4)
+                        if cardSize == .minimized {
+                            TimeMapMiniClock(model:model,picked:picked)
+                        }
+                        if cardSize != .minimized {
+                            Button {
+                                withAnimation(.easeOut(duration:0.18)) { cardSize = .minimized }
+                            } label: {
+                                Image(systemName:"minus.circle")
+                                    .font(.system(size:17))
+                            }
+                            .accessibilityLabel("Minimizar tarjeta")
+                        }
                         Button {
-                            model.minimized.toggle()
+                            withAnimation(.easeOut(duration:0.18)) {
+                                cardSize = cardSize == .minimized ? .compact :
+                                    (cardSize == .compact ? .expanded : .compact)
+                            }
                         } label: {
-                            Image(systemName: model.minimized ? "chevron.up" : "chevron.down")
-                        }.accessibilityLabel("Minimizar o expandir la tarjeta")
+                            Image(systemName:cardSize == .minimized ? "chevron.up" :
+                                    (cardSize == .compact ? "arrow.up.left.and.arrow.down.right" : "chevron.down"))
+                                .font(.system(size:16,weight:.semibold))
+                        }
+                        .accessibilityLabel(cardSize == .minimized ? "Mostrar tabla compacta" :
+                            (cardSize == .compact ? "Ampliar detalles" : "Volver a tabla compacta"))
                     }
-                    if !model.minimized {
-                        let picked = followLocation ? model.activeCell :
-                            (model.selected ?? model.activeCell)
-                        TimeLiveCounterNumbers(model:model,picked:picked,
-                                               following:followLocation)
-                        // Acciones juntas, sin un segundo estado GPS que se corte.
-                        if let cell = followLocation ? model.activeCell :
-                            (model.selected ?? model.activeCell) {
+                    .buttonStyle(.plain)
+                    if cardSize != .minimized {
+                        TimeMapCardContents(model:model,picked:picked,mode:cardSize)
+                        if let cell=picked {
                             HStack(spacing:18) {
                                 Button("Histórico") { historyCell=cell }
                                 Button("Nombre") { namingCell=cell }
@@ -1651,13 +1699,14 @@ struct TimeMapView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth:.infinity,alignment:.leading)
-                            .padding(.top,3)
+                            .padding(.top,2)
                         }
                     }
                 }
-                .padding(16)
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 20))
-                .padding(12)
+                .padding(cardSize == .minimized ? 10 : 12)
+                .background(.regularMaterial,in:RoundedRectangle(cornerRadius:16))
+                .padding(.horizontal,12)
+                .padding(.bottom,8)
             }
         }
         .sheet(item:$inspectedZone) { zone in
@@ -1710,7 +1759,20 @@ struct TimeMapView: View {
             if followLocation { model.selected=nil }
         }
     }
+    private func beginMapDrag() {
+        guard cardBeforeDragging == nil else { return }
+        cardBeforeDragging=cardSize
+        if cardSize != .minimized {
+            withAnimation(.easeOut(duration:0.12)) { cardSize = .minimized }
+        }
+    }
+    private func endMapDrag() {
+        guard let previous=cardBeforeDragging else { return }
+        cardBeforeDragging=nil
+        withAnimation(.easeOut(duration:0.22)) { cardSize = previous }
+    }
     private func selectOnMap(_ cell:Cell) {
+        endMapDrag()
         followLocation=false
         model.selected=cell
         if let zone=model.primaryZone(for:cell) {
@@ -1743,104 +1805,6 @@ struct TimeMapView: View {
             camera = .region(model.data.camera.region)
             region = model.data.camera.region
         }
-    }
-}
-/// El reloj de 1Hz actualiza SOLO esta tarjeta y no invalida el mapa
-/// completo, que puede tener cientos de polígonos SwiftUI/MapKit.
-private struct TimeLiveCounterNumbers: View {
-    @ObservedObject var model:TimeModel
-    let picked:Cell?
-    let following:Bool
-
-    var body:some View {
-        TimelineView(.periodic(from:.now,by:1)) { context in
-            let now=context.date
-            let zone=picked.flatMap { model.primaryZone(for:$0) }
-            let isHere=picked != nil && picked == model.activeCell
-            // Zona y cuadrícula: una sola columna, con etiqueta sobre el tiempo.
-            VStack(alignment:.leading,spacing:10) {
-                if let zone {
-                    HStack(spacing:6) {
-                        Label("Zona · \(zone.cellIDs.count) cuadrículas",
-                              systemImage:"square.3.layers.3d")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                        Spacer(minLength:0)
-                        if following {
-                            Image(systemName:"location.fill")
-                                .foregroundStyle(.teal)
-                        }
-                    }
-                    TimeCounterRow(label:"Tiempo total en la zona",
-                                   seconds:model.total(for:zone,now:now),
-                                   emphasized:true)
-                    if isHere {
-                        TimeCounterRow(label:"Estancia actual en la zona",
-                                       seconds:model.zoneStaySeconds(for:zone,now:now))
-                    }
-                }
-                if let picked {
-                    if zone != nil {
-                        Divider().padding(.vertical,2)
-                    }
-                    Label("Cuadrícula actual",systemImage:"square.grid.3x3")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.secondary)
-                    TimeCounterRow(label:"Tiempo total en esta cuadrícula",
-                                   seconds:model.total(for:picked,now:now),
-                                   emphasized:true)
-                    if isHere {
-                        TimeCounterRow(label:"Estancia actual en esta cuadrícula",
-                                       seconds:model.staySeconds(now:now))
-                    }
-                }
-                if model.isResting {
-                    Divider().padding(.vertical,2)
-                    Label("GPS en pausa · tiempo asumido",
-                          systemImage:"moon.zzz.fill")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.orange)
-                    Text("Mientras el GPS está en pausa, el tiempo sigue sumándose en la última ubicación.")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal:false,vertical:true)
-                } else if let age=model.gpsFixAge(now:now),age>30 {
-                    Divider().padding(.vertical,2)
-                    Text(age>120 ?
-                         "Sin GPS reciente (\(Int(age/60)) min); contador provisional detenido." :
-                         "Último GPS hace \(Int(age)) s · tiempo provisional")
-                        .font(.caption2)
-                        .foregroundStyle(.orange)
-                        .fixedSize(horizontal:false,vertical:true)
-                }
-            }
-            .frame(maxWidth:.infinity,alignment:.leading)
-        }
-    }
-}
-
-/// Los tiempos nunca se alinean en una columna opuesta a sus etiquetas.
-private struct TimeCounterRow:View {
-    let label:String
-    let seconds:TimeInterval
-    var emphasized:Bool=false
-
-    var body:some View {
-        VStack(alignment:.leading,spacing:3) {
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal:false,vertical:true)
-            Text(DurationFormat.full(seconds))
-                .font(.system(size:emphasized ? 20 : 18,
-                              weight:emphasized ? .bold : .semibold,
-                              design:.rounded))
-                .monospacedDigit()
-                .lineLimit(1)
-                .minimumScaleFactor(0.6)
-                .frame(maxWidth:.infinity,alignment:.leading)
-        }
-        .frame(maxWidth:.infinity,alignment:.leading)
     }
 }
 struct TimeStatsView: View {

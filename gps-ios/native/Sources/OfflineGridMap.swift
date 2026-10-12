@@ -22,6 +22,8 @@ struct OfflineGridMap: View {
     @Binding var region: MKCoordinateRegion
     var onNavigate:(MKCoordinateRegion)->Void
     var onSelect:((Cell)->Void)? = nil
+    var onInteractionStart:(()->Void)? = nil
+    var onInteractionEnd:(()->Void)? = nil
     @State private var dragOffset: CGSize = .zero
 
     private func screen(_ coordinate: CLLocationCoordinate2D, size: CGSize) -> CGPoint {
@@ -49,6 +51,8 @@ struct OfflineGridMap: View {
             model.provisionalSeconds(for:[$0.id])
         } ?? 0
         let overlays=model.zoneOverlays
+        let focusedCell=model.selected ?? model.activeCell
+        let focusedZoneID=focusedCell.flatMap { model.primaryZone(for:$0) }?.id
         GeometryReader { geo in
             ZStack(alignment: .topLeading) {
                 Canvas { context, size in
@@ -87,16 +91,6 @@ struct OfflineGridMap: View {
                                 .foregroundColor(.black),at:CGPoint(x:rect.midX,y:rect.midY))
                         }
                     }
-                    if let cell=activeCell {
-                        let polygon=Grid.polygon(cell)
-                        let p0=screen(polygon[3],size:size)
-                        let p1=screen(polygon[1],size:size)
-                        let square=CGRect(x:min(p0.x,p1.x),y:min(p0.y,p1.y),
-                                        width:abs(p1.x-p0.x),height:abs(p1.y-p0.y))
-                        if square.intersects(CGRect(origin:.zero,size:size)) {
-                            context.stroke(Path(square),with:.color(.orange),lineWidth:4)
-                        }
-                    }
                     // Misma delimitación visible sin Internet ni mapas descargados.
                     // El perímetro de una zona es más grueso que la rejilla normal.
                     for overlay in overlays {
@@ -105,7 +99,9 @@ struct OfflineGridMap: View {
                             guard points.count>1 else { continue }
                             var path=Path()
                             path.addLines(points)
-                            context.stroke(path,with:.color(.teal),lineWidth:3)
+                            context.stroke(path,with:.color(.teal.opacity(
+                                overlay.zone.id == focusedZoneID ? 1 : 0.65)),
+                                lineWidth:overlay.zone.id == focusedZoneID ? 5 : 2.5)
                         }
                         if let middle=overlay.center {
                             let center=screen(middle,size:size)
@@ -117,6 +113,18 @@ struct OfflineGridMap: View {
                                     .foregroundColor(.teal),
                                     at:center)
                             }
+                        }
+                    }
+                    if let cell=focusedCell {
+                        let polygon=Grid.polygon(cell)
+                        let p0=screen(polygon[3],size:size)
+                        let p1=screen(polygon[1],size:size)
+                        let square=CGRect(x:min(p0.x,p1.x),y:min(p0.y,p1.y),
+                                        width:abs(p1.x-p0.x),height:abs(p1.y-p0.y))
+                        if square.intersects(CGRect(origin:.zero,size:size)) {
+                            context.stroke(Path(square),
+                                with:.color(cell == activeCell ? .orange : .indigo),
+                                lineWidth:4)
                         }
                     }
                     if let current=model.current {
@@ -136,7 +144,10 @@ struct OfflineGridMap: View {
                     onSelect?(Grid.cell(latitude:latitude,longitude:longitude))
                 }
                 .gesture(DragGesture(minimumDistance:5)
-                    .onChanged { dragOffset=$0.translation }
+                    .onChanged {
+                        onInteractionStart?()
+                        dragOffset=$0.translation
+                    }
                     .onEnded { translation in
                         let lat = region.center.latitude +
                             Double(translation.translation.height / max(1,geo.size.height)) * region.span.latitudeDelta
@@ -146,6 +157,7 @@ struct OfflineGridMap: View {
                                                                  longitude:min(179.9,max(-179.9,lon)))
                         onNavigate(region)
                         dragOffset = .zero
+                        onInteractionEnd?()
                     })
                 VStack(alignment:.leading,spacing:9) {
                     Label("Mapa de cuadrículas · sin cartografía",systemImage:"wifi.slash")
