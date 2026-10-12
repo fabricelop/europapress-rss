@@ -10559,27 +10559,33 @@
     {
       "id": "bfdbf85e08c0",
       "name": "Irini",
-      "rank": 9,
-      "status": "explained",
-      "requested_at": "2026-09-29T01:51:05+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-13T01:32:05+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "f5cb52c16c93",
       "requested_together": [
-        "Irini"
+        "IRINI"
       ],
       "captured_with": [
-        "Rubén",
-        "Irini",
-        "Paola"
+        "#LaIslaDeLasTentaciones11",
+        "Isaac",
+        "Paola",
+        "Sevilla",
+        "Ada Colau",
+        "#ChiringuitoPolémica",
+        "IRINI",
+        "Sergio",
+        "Sarah",
+        "Javierito"
       ],
       "auto_queued": true,
       "rank_at_explanation": 1,
       "explanation": "TT#1 #LaIslaDeLasTentaciones7 es tendencia por la segunda hoguera: Kico perdió los nervios, Rubén pidió ver a Gema, Nacho salió huyendo, Juanpi entró en la villa y las citas de Irini y Paola encendieron las alarmas.\nSandra pidió refuerzos al cuerpo de bomberos.",
       "closer_text": "Sandra pidió refuerzos al cuerpo de bomberos.",
-      "explained_at": "2026-09-29T05:10:40.765Z",
       "news_disposition": "ignored",
       "source": "editorial_manual_run",
       "prior_individual_explanation": "TT#9 Irini es tendencia por su acercamiento a Sergio en el jacuzzi de La isla de las tentaciones, que activó una de las alarmas del programa.\nEl jacuzzi pidió ampliar el seguro contra incendios.",
@@ -51774,7 +51780,7 @@
       "id": "502ad110fc35",
       "name": "Alfon",
       "rank": 7,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-13T00:22:53+02:00",
       "revision": 0,
       "reexplain": false,
@@ -51796,7 +51802,9 @@
       "problematic_at": "2026-10-13T01:17:22+02:00",
       "problem_reason": "Nuevo intento 13/10 01:18: Alfon sigue TT#7. Fuentes actuales verifican que entró en el 68 del Levante-Sevilla y vio amarilla en el 84, pero no identifican un detonante independiente y suficientemente fiable para explicar por qué es tendencia. No se atribuye el TT al partido sin corroboración.",
       "problematic_attempts": 2,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "inactive_at": "2026-10-13T01:32:05+02:00",
+      "inactive_reason": "left-top10-radar"
     },
     {
       "id": "f419d9a9e22f",
@@ -51839,8 +51847,74 @@
       "editorial_engine": "chat-direct",
       "rewrite_pending": false,
       "material_novelty_verified": true
+    },
+    {
+      "id": "68723d07b61e",
+      "name": "#ChiringuitoPolémica",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-10-13T01:32:05+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "38389d643072",
+      "requested_together": [
+        "#ChiringuitoPolémica"
+      ],
+      "captured_with": [
+        "#ChiringuitoPolémica",
+        "Sergio",
+        "Javierito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "9bcbdfa04fb5",
+      "name": "Sergio",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-13T01:32:05+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "38389d643072",
+      "requested_together": [
+        "Sergio"
+      ],
+      "captured_with": [
+        "#ChiringuitoPolémica",
+        "Sergio",
+        "Javierito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "dddd935d6ed9",
+      "name": "Javierito",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-13T01:32:05+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "38389d643072",
+      "requested_together": [
+        "Javierito"
+      ],
+      "captured_with": [
+        "#ChiringuitoPolémica",
+        "Sergio",
+        "Javierito"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-13T01:17:22+02:00",
+  "updated_at": "2026-10-13T01:32:05+02:00",
   "count": 883
 }
