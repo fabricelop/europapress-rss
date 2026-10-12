@@ -10,6 +10,7 @@ import hashlib
 import html
 import json
 import os
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError
@@ -33,6 +34,17 @@ PROJECTS={
 }
 
 def read(path,default):
+    # Long-running Telegram listeners hold a stale checkout for 24-25 min.
+    # With REMOTE=1 every input MUST come from one fetched origin/main snapshot.
+    if os.getenv("TT_PINNED_INDEX_REMOTE")=="1":
+        result=subprocess.run(["git","show","origin/main:"+str(path)],
+                              cwd=ROOT,text=True,capture_output=True,timeout=30)
+        if result.returncode:
+            if path.startswith("telegram/pinned-index-") and "does not exist" in result.stderr:
+                return default
+            raise RuntimeError("Cannot read LIVE TT index input "+str(path)+": "+
+                               result.stderr[:250])
+        return json.loads(result.stdout)
     try:return json.loads((ROOT/path).read_text(encoding="utf-8"))
     except (OSError,ValueError):return default
 
@@ -76,7 +88,21 @@ def active_records(project):
         else:
             pending[event_id]=row
     queue=read(conf["queue"],{"items":[]})
-    for entry in queue.get("items",[]):
+    editorial=list(queue.get("items",[]))
+    if project=="ttendencias":
+        # Pending requests can survive queue drainage. Never count old,
+        # auto-selected Top 11-30 or an already delivered/deleted request.
+        for req in read("trends/requests.json",{"requests":[]}).get("requests",[]):
+            status=str(req.get("status") or "").lower()
+            if status not in {"preparing","update","ready"}:
+                continue
+            if int(req.get("rank") or 0)>10 and req.get("auto_queued") is True:
+                continue
+            if (req.get("group_leader_id") and
+                    str(req.get("group_leader_id"))!=str(req.get("id"))):
+                continue
+            editorial.append(req)
+    for entry in editorial:
         status=str(entry.get("status") or "").lower()
         if status not in {"preparing","update","processing","ready","in_progress"}:
             continue
@@ -174,6 +200,12 @@ def telegram(token,method,data):
 
 def update(project,api=telegram):
     conf=PROJECTS[project]
+    if os.getenv("TT_PINNED_INDEX_REMOTE")=="1":
+        result=subprocess.run(["git","fetch","origin","main"],cwd=ROOT,
+                              text=True,capture_output=True,timeout=45)
+        if result.returncode:
+            raise RuntimeError("TT_PINNED_INDEX_FETCH_FAILED: "+
+                               result.stderr[:400])
     token=os.environ.get(conf["bot_token"],"")
     fallback=read("trends/telegram-bot-state.json",{}).get("chat_id") if project=="ttendencias" else None
     chat=os.environ.get(conf["chat"]) or fallback
