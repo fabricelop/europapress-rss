@@ -3,15 +3,15 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T17:45:00+02:00",
-  "last_completed_at": "2026-10-12T17:55:20+02:00",
-  "updated_at": "2026-10-12T17:55:20+02:00",
+  "last_started_at": "2026-10-12T21:23:00+02:00",
+  "last_completed_at": "2026-10-12T21:30:00+02:00",
+  "updated_at": "2026-10-12T21:30:00+02:00",
   "status": "success",
   "processed_ids": [
-    "1a58780acbab",
-    "809578787ffd",
-    "6137377fb82a",
-    "49a799c6beb3"
+    "3308803efaac",
+    "2a319bab5b04",
+    "0151e1be35f5",
+    "ddba7f3b0174"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -23,8 +23,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T174500+0200-chat",
-    "requested_at": "2026-10-12T17:45:00+02:00",
+    "run_id": "tr-1791824763464-00cb5d",
+    "requested_at": "2026-10-12T21:23:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -32,13 +32,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T174500+0200-chat",
+    "run_id": "tr-1791824763464-00cb5d",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T17:45:00+02:00",
-    "updated_at": "2026-10-12T17:55:20+02:00",
-    "finished_at": "2026-10-12T17:55:20+02:00",
+    "started_at": "2026-10-12T21:23:00+02:00",
+    "updated_at": "2026-10-12T21:30:00+02:00",
+    "finished_at": "2026-10-12T21:30:00+02:00",
     "current": 4,
     "total": 4,
     "trend_id": null,
@@ -47,13 +47,13 @@
     "summary": {
       "trends_processed": 4,
       "trends_explained": 4,
-      "explanation_groups": 3,
-      "new_cards": 4,
-      "revisions_updated": 0,
+      "explanation_groups": 4,
+      "new_cards": 3,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -66,15 +66,9 @@
       "telegram_provisionals_finalized": 4,
       "telegram_orphans": 0
     },
-    "message": "Cierre verificado · El Supremo, Banderas, borgoña y Albacete explicadas 4/4; cola editorial 0. Los mensajes Telegram 720–723 fueron finalizados in situ y la auditoría posterior marca 0 huérfanos. Sin ImageGen directo ni Vercel.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-12T17:52:13+02:00",
-        "type": "github_commit_api_error",
-        "message": "Falló un intento de commit atómico de bajo nivel por error interno de GitHub; se recuperó con escrituras secuenciales sobre SHA frescos y verificación exacta posterior."
-      }
-    ],
+    "message": "Cierre verificado · Sofía Puente, Eibar r1, Madrid-Barcelona y El TS explicadas 4/4; cola editorial 0. Telegram 730/732/733/734 finalizado y auditoría 0 huérfanos. Sin ImageGen directo ni Vercel.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -84,179 +78,186 @@
     },
     "remate_selections": [
       {
-        "trend_id": "1a58780acbab",
+        "trend_id": "3308803efaac",
         "revision": 0,
-        "selected_text": "🌶️ La urna ya tiene portero de discoteca.",
+        "selected_text": "🌶️ La letra pequeña de 2022 ha pedido sitio en la urna de 2026.",
         "originality_check": "specific_current_fact"
       },
       {
-        "trend_id": "809578787ffd",
-        "revision": 0,
-        "selected_text": "🌶️ Las banderas acabaron haciendo cola detrás del cordón policial.",
+        "trend_id": "2a319bab5b04",
+        "revision": 1,
+        "selected_text": "🌶️ Siete victorias entraron en el Tartiere; la octava se quedó en la puerta.",
         "originality_check": "specific_current_fact"
       },
       {
-        "trend_id": "6137377fb82a",
+        "trend_id": "0151e1be35f5",
         "revision": 0,
-        "selected_text": "🌶️ El aspa histórica terminó con filtro policial.",
+        "selected_text": "🌶️ La alta velocidad acabó circulando a ritmo de embudo.",
         "originality_check": "specific_current_fact"
       },
       {
-        "trend_id": "49a799c6beb3",
+        "trend_id": "ddba7f3b0174",
         "revision": 0,
-        "selected_text": "🌶️ Etxeberria estrenó banquillo y recibió la factura completa.",
+        "selected_text": "🌶️ El censo ha terminado haciendo escala en la Sala Tercera.",
         "originality_check": "specific_current_fact"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-12T17:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio · 4 revisiones editoriales activas. Preparando saneamiento de Pendientes y validación JIT."
-      },
-      {
-        "at": "2026-10-12T17:46:00+02:00",
-        "phase": "verifying",
-        "trend_id": "1a58780acbab",
-        "title": "El Supremo",
-        "message": "Releyendo estado autoritativo de El Supremo."
-      },
-      {
-        "at": "2026-10-12T17:46:15+02:00",
+        "at": "2026-10-12T21:24:15+02:00",
         "phase": "investigating",
-        "trend_id": "1a58780acbab",
-        "title": "El Supremo",
-        "message": "Buscando detonante actual de El Supremo."
+        "trend_id": "3308803efaac",
+        "title": "Sofía Puente",
+        "message": "Contrastando el fallo de hoy sobre la ley de nietos y el papel de la instrucción de 2022."
       },
       {
-        "at": "2026-10-12T17:48:00+02:00",
+        "at": "2026-10-12T21:24:30+02:00",
+        "phase": "investigating",
+        "trend_id": "3308803efaac",
+        "title": "Sofía Puente",
+        "message": "Hecho esencial verificado · 163.020 nacionalizados siguen cautelarmente fuera del censo y la instrucción de Sofía Puente está en el litigio."
+      },
+      {
+        "at": "2026-10-12T21:24:45+02:00",
         "phase": "drafting",
-        "trend_id": "1a58780acbab",
-        "title": "El Supremo",
-        "message": "Hecho esencial verificado y explicación política redactada bajo 280 caracteres."
+        "trend_id": "3308803efaac",
+        "title": "Sofía Puente",
+        "message": "Redactando explicación factual y comprobando límite de X · 253 caracteres."
       },
       {
-        "at": "2026-10-12T17:48:20+02:00",
+        "at": "2026-10-12T21:25:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "1a58780acbab",
-        "title": "El Supremo",
-        "message": "Remate político neutral seleccionado tras control de originalidad."
+        "trend_id": "3308803efaac",
+        "title": "Sofía Puente",
+        "message": "Remate seleccionado tras control de originalidad · «La letra pequeña de 2022 ha pedido sitio en la urna de 2026.»"
       },
       {
-        "at": "2026-10-12T17:48:40+02:00",
+        "at": "2026-10-12T21:25:10+02:00",
         "phase": "verifying",
-        "trend_id": "809578787ffd",
-        "title": "Banderas",
-        "message": "Releyendo estado autoritativo de Banderas y su provisional Telegram."
+        "trend_id": "2a319bab5b04",
+        "title": "Eibar",
+        "message": "Releyendo estado autoritativo de Eibar r1."
       },
       {
-        "at": "2026-10-12T17:49:00+02:00",
+        "at": "2026-10-12T21:25:20+02:00",
         "phase": "investigating",
-        "trend_id": "809578787ffd",
-        "title": "Banderas",
-        "message": "Hecho esencial verificado · mismo episodio de tensión en Sol, con tarjeta provisional propia que debe conservarse."
+        "trend_id": "2a319bab5b04",
+        "title": "Eibar",
+        "message": "Resultado final verificado · Oviedo 3-1 Eibar; se corta una racha de siete victorias seguidas."
       },
       {
-        "at": "2026-10-12T17:49:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "809578787ffd",
-        "title": "Banderas",
-        "message": "Remate específico seleccionado sin reutilizar fórmulas recientes."
-      },
-      {
-        "at": "2026-10-12T17:49:25+02:00",
-        "phase": "verifying",
-        "trend_id": "6137377fb82a",
-        "title": "borgoña",
-        "message": "Releyendo estado autoritativo de borgoña y su provisional Telegram."
-      },
-      {
-        "at": "2026-10-12T17:49:40+02:00",
-        "phase": "investigating",
-        "trend_id": "6137377fb82a",
-        "title": "borgoña",
-        "message": "Cruces de Borgoña verificadas en el grupo que acudió a Sol tras el desfile."
-      },
-      {
-        "at": "2026-10-12T17:49:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6137377fb82a",
-        "title": "borgoña",
-        "message": "Remate específico seleccionado tras control antimuletillas."
-      },
-      {
-        "at": "2026-10-12T17:50:00+02:00",
-        "phase": "verifying",
-        "trend_id": "49a799c6beb3",
-        "title": "Albacete",
-        "message": "Resultado final 5-0 y contexto del debut de Etxeberria confirmados."
-      },
-      {
-        "at": "2026-10-12T17:50:20+02:00",
+        "at": "2026-10-12T21:25:30+02:00",
         "phase": "drafting",
-        "trend_id": "49a799c6beb3",
-        "title": "Albacete",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "trend_id": "2a319bab5b04",
+        "title": "Eibar",
+        "message": "Redactando reexplicación factual y comprobando límite de X · 237 caracteres."
       },
       {
-        "at": "2026-10-12T17:50:40+02:00",
+        "at": "2026-10-12T21:25:40+02:00",
         "phase": "remate_selection",
-        "trend_id": "49a799c6beb3",
-        "title": "Albacete",
-        "message": "Remate seleccionado · estreno de banquillo y marcador 5-0."
+        "trend_id": "2a319bab5b04",
+        "title": "Eibar",
+        "message": "Remate seleccionado tras control antimuletillas · «Siete victorias entraron en el Tartiere; la octava se quedó en la puerta.»"
       },
       {
-        "at": "2026-10-12T17:53:55+02:00",
+        "at": "2026-10-12T21:25:50+02:00",
+        "phase": "verifying",
+        "trend_id": "0151e1be35f5",
+        "title": "Madrid-Barcelona",
+        "message": "Releyendo estado autoritativo de Madrid-Barcelona."
+      },
+      {
+        "at": "2026-10-12T21:26:00+02:00",
+        "phase": "investigating",
+        "trend_id": "0151e1be35f5",
+        "title": "Madrid-Barcelona",
+        "message": "Hecho esencial verificado · incendio de un AVE en Ricla, miles de viajeros afectados y reapertura parcial por vía única."
+      },
+      {
+        "at": "2026-10-12T21:26:10+02:00",
+        "phase": "drafting",
+        "trend_id": "0151e1be35f5",
+        "title": "Madrid-Barcelona",
+        "message": "Redactando explicación factual y comprobando límite de X · 256 caracteres."
+      },
+      {
+        "at": "2026-10-12T21:26:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "0151e1be35f5",
+        "title": "Madrid-Barcelona",
+        "message": "Remate seleccionado tras control de originalidad · «La alta velocidad acabó circulando a ritmo de embudo.»"
+      },
+      {
+        "at": "2026-10-12T21:26:30+02:00",
+        "phase": "verifying",
+        "trend_id": "ddba7f3b0174",
+        "title": "El TS",
+        "message": "Releyendo estado autoritativo de El TS."
+      },
+      {
+        "at": "2026-10-12T21:26:40+02:00",
+        "phase": "investigating",
+        "trend_id": "ddba7f3b0174",
+        "title": "El TS",
+        "message": "Hecho esencial verificado · el Supremo rechazó el recurso de la Abogacía del Estado y mantiene la suspensión cautelar del voto de 163.020 nacionalizados."
+      },
+      {
+        "at": "2026-10-12T21:26:50+02:00",
+        "phase": "drafting",
+        "trend_id": "ddba7f3b0174",
+        "title": "El TS",
+        "message": "Redactando explicación factual y comprobando límite de X · 267 caracteres."
+      },
+      {
+        "at": "2026-10-12T21:27:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ddba7f3b0174",
+        "title": "El TS",
+        "message": "Remate político neutral seleccionado tras control de originalidad · «El censo ha terminado haciendo escala en la Sala Tercera.»"
+      },
+      {
+        "at": "2026-10-12T21:27:10+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Guardadas las cuatro fichas Explicadas y sincronizadas sus revisiones exactas en requests."
+        "message": "Guardando las cuatro fichas Explicadas mediante el outbox editorial transaccional del chat."
       },
       {
-        "at": "2026-10-12T17:54:44+02:00",
+        "at": "2026-10-12T21:29:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releído main · 4/4 coinciden en id, revision, explanation, closer_text y explained_at; cola 0."
+        "message": "Persistencia verificada en main · 4/4 revisiones exactas están explained en requests y presentes en Explicadas; cola editorial 0."
       },
       {
-        "at": "2026-10-12T17:55:02+02:00",
+        "at": "2026-10-12T21:29:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Entrega Telegram completada con éxito para el commit de cierre editorial."
+        "message": "Telegram verificado · mensajes 730, 732, 733 y 734 están sent/final:true; auditoría de huérfanos 0."
       },
       {
-        "at": "2026-10-12T17:55:10+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Mensajes 720–723 verificados como sent/final:true y auditoría de huérfanos en 0."
-      },
-      {
-        "at": "2026-10-12T17:55:20+02:00",
+        "at": "2026-10-12T21:30:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 4/4 explicadas, cola 0 y Telegram sin huérfanos."
+        "message": "Cierre verificado · 4/4 explicadas, cola 0, ninguna reexplicación pendiente y Telegram sin huérfanos. Sin ImageGen directo ni Vercel."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261012T174500+0200-chat",
+  "run_id": "tr-1791824763464-00cb5d",
   "summary": {
     "trends_processed": 4,
     "trends_explained": 4,
-    "explanation_groups": 3,
-    "new_cards": 4,
-    "revisions_updated": 0,
+    "explanation_groups": 4,
+    "new_cards": 3,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 0,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
