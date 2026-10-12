@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T06:15:00+02:00",
-  "last_completed_at": "2026-10-12T06:16:37+02:00",
-  "updated_at": "2026-10-12T06:16:37+02:00",
+  "last_started_at": "2026-10-12T06:45:00+02:00",
+  "last_completed_at": "2026-10-12T06:46:40+02:00",
+  "updated_at": "2026-10-12T06:46:40+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,37 +18,38 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T061500+0200-chat",
-    "requested_at": "2026-10-12T06:15:00+02:00",
+    "run_id": "tr-20261012T064500+0200-chat",
+    "requested_at": "2026-10-12T06:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-20261012T061500+0200-chat",
+    "run_id": "tr-20261012T064500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T06:15:00+02:00",
-    "updated_at": "2026-10-12T06:16:37+02:00",
-    "finished_at": "2026-10-12T06:16:37+02:00",
+    "started_at": "2026-10-12T06:45:00+02:00",
+    "updated_at": "2026-10-12T06:46:40+02:00",
+    "finished_at": "2026-10-12T06:46:40+02:00",
     "current": 0,
     "total": 0,
     "summary": {
       "processed": 0,
       "closed": 0,
-      "skipped": 0,
+      "skipped": 1,
       "problematic": 0,
       "visual_backlog": 0,
       "pending_repair_requested": 1,
-      "pending_cards_checked": 0,
-      "missing_closer_reviewed": 0,
+      "pending_cards_checked": 9,
+      "missing_closer_reviewed": 2,
+      "stale_requests_reconciled": 1,
       "queue_remaining": 0,
       "new_cards": 0,
       "reused_existing_card": 0,
       "duplicate_cards_created": 0,
       "remaining_active_ids": []
     },
-    "message": "Cierre verificado · cola editorial 0; reparación de Pendientes solicitada",
+    "message": "Cierre verificado · cola 0; request obsoleta reconciliada y saneamiento visual solicitado",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -58,48 +59,96 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "38a1a9c41507",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitivity"
+      },
+      {
+        "trend_id": "3e3d3995fd67",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitivity"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-12T06:15:00+02:00",
+        "at": "2026-10-12T06:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola 0; comprobando reexplicaciones y saneamiento de Pendientes"
+        "message": "Preparando pasada editorial · cola 0; comprobando estado y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-12T06:16:37+02:00",
+        "at": "2026-10-12T06:45:25+02:00",
+        "phase": "verifying",
+        "trend_id": "d81c38bba164",
+        "title": "#TopChefVIP5",
+        "message": "Releyendo estado autoritativo de #TopChefVIP5"
+      },
+      {
+        "at": "2026-10-12T06:45:35+02:00",
+        "phase": "persisting",
+        "trend_id": "d81c38bba164",
+        "title": "#TopChefVIP5",
+        "message": "Reconciliando request automática obsoleta fuera del Top 10"
+      },
+      {
+        "at": "2026-10-12T06:45:55+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releído main · cola 0 y estado editorial sin cambios desde la comprobación inicial"
+        "message": "Releyendo main · cola 0 y sin trabajo editorial activo"
       },
       {
-        "at": "2026-10-12T06:16:37+02:00",
+        "at": "2026-10-12T06:46:05+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual solicitado al reparador de Pendientes · sin ImageGen directo"
+        "message": "Revisando Pendientes · 9 tarjetas activas de menos de 24 h"
       },
       {
-        "at": "2026-10-12T06:16:37+02:00",
+        "at": "2026-10-12T06:46:15+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Dos Pendientes conservan texto factual sin remate por sensibilidad"
+      },
+      {
+        "at": "2026-10-12T06:46:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual solicitado · 9 Pendientes revisadas; sin ImageGen directo"
+      },
+      {
+        "at": "2026-10-12T06:46:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola editorial 0; reparación de Pendientes solicitada"
+        "message": "Cierre verificado · cola 0; request obsoleta reconciliada y saneamiento visual solicitado"
       }
     ]
   },
-  "run_id": "tr-20261012T061500+0200-chat",
+  "run_id": "tr-20261012T064500+0200-chat",
   "summary": {
     "processed": 0,
     "closed": 0,
-    "skipped": 0,
+    "skipped": 1,
     "problematic": 0,
     "visual_backlog": 0,
     "pending_repair_requested": 1,
-    "pending_cards_checked": 0,
-    "missing_closer_reviewed": 0,
+    "pending_cards_checked": 9,
+    "missing_closer_reviewed": 2,
+    "stale_requests_reconciled": 1,
     "queue_remaining": 0,
     "new_cards": 0,
     "reused_existing_card": 0,
