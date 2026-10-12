@@ -14,11 +14,14 @@ on:
     paths:
       - "shared/tt_autoheal.py"
       - "shared/tt_bidirectional_audit.py"
+      - "shared/tt_editorial_run_guard.py"
       - "shared/tt_technical_cleanup.py"
       - ".github/workflows/tt-autorepair.yml"
 permissions:
   contents: write
   actions: write
+  issues: read
+  pull-requests: read
 concurrency:
   group: tt-autorepair-coordinator
   cancel-in-progress: false
@@ -34,6 +37,9 @@ jobs:
           sparse-checkout: |
             /shared/tt_autoheal.py
             /shared/tt_bidirectional_audit.py
+            /shared/tt_editorial_run_guard.py
+            /telegram/editorial-run-guard.json
+            /trends/editorial-runtime.json
             /shared/tt_technical_cleanup.py
             /telegram/tt-mobile-command-queue.json
             /telegram/tt-technical-receipts.json
@@ -62,6 +68,8 @@ jobs:
           python3 shared/tt_autoheal.py selftest
           python3 -m py_compile shared/tt_bidirectional_audit.py
           python3 shared/tt_bidirectional_audit.py selftest
+          python3 -m py_compile shared/tt_editorial_run_guard.py
+          python3 shared/tt_editorial_run_guard.py selftest
           python3 -m py_compile shared/tt_technical_cleanup.py
           python3 shared/tt_technical_cleanup.py selftest
       - name: Comprobar anomalías y activar reparadores seguros
@@ -77,6 +85,8 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           python3 shared/tt_bidirectional_audit.py
+          python3 shared/tt_editorial_run_guard.py
+          cp telegram/editorial-run-guard.json /tmp/editorial-run-guard.json
           for project in ttittulares ttendencias; do
             cp "telegram/bidirectional-audit-$project.json" "/tmp/bidirectional-audit-$project.json"
           done
@@ -97,11 +107,12 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/tt-autoheal-state.json telegram/tt-autoheal-state.json
+            cp /tmp/editorial-run-guard.json telegram/editorial-run-guard.json
             cp /tmp/technical-cleanup-report.json telegram/technical-cleanup-report.json
             for project in ttittulares ttendencias; do
               cp "/tmp/bidirectional-audit-$project.json" "telegram/bidirectional-audit-$project.json"
             done
-            git add --sparse telegram/tt-autoheal-state.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json telegram/technical-cleanup-report.json
+            git add --sparse telegram/tt-autoheal-state.json telegram/editorial-run-guard.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json telegram/technical-cleanup-report.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "TT autoheal: verificar colas y registrar intentos"
             if git push origin HEAD:main; then exit 0; fi
