@@ -50686,11 +50686,11 @@
       "id": "fc4dc0030769",
       "name": "Fofana",
       "rank": 2,
-      "status": "explained",
-      "requested_at": "2026-10-12T22:21:44+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": true,
+      "status": "update",
+      "requested_at": "2026-10-12T23:10:02+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "06df3eac25ce",
       "requested_together": [
@@ -50701,7 +50701,7 @@
         "Robbie Ure",
         "Españoles"
       ],
-      "auto_queued": true,
+      "auto_queued": false,
       "auto_queue_scope": "top10",
       "explained_at": "2026-10-12T22:50:20+02:00",
       "last_attempt_at": "2026-10-12T22:50:20+02:00",
@@ -50770,7 +50770,12 @@
       "editorial_engine": "chat-direct",
       "rewrite_pending": false,
       "material_novelty_verified": true,
-      "grouped_into_existing_card": true
+      "grouped_into_existing_card": true,
+      "request_source": "telegram_reexplain",
+      "reexplain_instructions": "Vuelve a investigar esta tendencia con información ACTUALIZADA. Si se anunciaba un partido o acontecimiento futuro, comprueba si ya terminó y explica el resultado confirmado, no la previa.",
+      "rewrite_instruction": "Vuelve a investigar esta tendencia con información ACTUALIZADA. Si se anunciaba un partido o acontecimiento futuro, comprueba si ya terminó y explica el resultado confirmado, no la previa.",
+      "telegram_reexplain_from_revision": 0,
+      "telegram_reexplain_from_message_id": 735
     },
     {
       "id": "24f5d65202da",
@@ -51010,6 +51015,6 @@
       "material_novelty_verified": true
     }
   ],
-  "updated_at": "2026-10-12T22:42:18+02:00",
+  "updated_at": "2026-10-12T23:10:02+02:00",
   "count": 873
 }
