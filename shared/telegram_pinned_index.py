@@ -173,6 +173,14 @@ def render(project,bot_id):
         count_pending+=1
     if not pending:chunks.append("• Ninguna")
     if count_pending<len(pending):chunks.append(f"… y {len(pending)-count_pending} más")
+    # Bidirectional source of truth. Never turn a discrepancy into a
+    # Telegram delete: the button triggers the existing safe repair workflow.
+    bidir=read("telegram/bidirectional-audit-"+project+".json",{})
+    bidir_at=moment(bidir.get("checked_at"))
+    if (bidir_at and (datetime.now(timezone.utc)-bidir_at).total_seconds()<15*60
+            and int(bidir.get("issues_count") or 0)>0):
+        chunks.append("\n⚠️ <b>App ↔ Telegram: "+
+                      str(bidir["issues_count"])+" discrepancia(s)</b> · Autocorregir.")
     # Persistent diagnostics are shown INSIDE the existing pinned message:
     # no extra Telegram alerts, no flooded widget or new chat cards.
     audit=read("telegram/tt-autoheal-state.json",{})
