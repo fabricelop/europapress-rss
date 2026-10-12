@@ -25,6 +25,18 @@ def norm(value):
     text = "".join(ch for ch in text if unicodedata.category(ch) != "Mn")
     return " ".join(text.casefold().split())
 
+def editorial_topic(value):
+    """Explicit, narrow synonyms for a previously closed story.
+
+    Never fold generic words or manual "Preparar" requests into a closed
+    topic. New genuinely distinct developments remain manually requestable.
+    """
+    term = norm(value).lstrip("#")
+    if term in {"hispanidad", "feliz dia de la hispanidad", "12deoctubre"}:
+        return "fiesta_nacional_12_oct"
+    return ""
+
+
 def parse_timestamp(value):
     """Devuelve una fecha con zona horaria o None si el dato es inválido."""
     if not value:
@@ -116,6 +128,16 @@ deliveries = load("telegram-image-deliveries.json", {"items": []})
 mobile_decisions = load("mobile-decisions.json", {"items": []})
 closed_by_id = {}
 recently_closed_names = set()
+recently_closed_topics = {}
+def remember_closed_topic(value, when, status):
+    group = editorial_topic(value)
+    if not group or status not in CLOSED or not when:
+        return
+    if timedelta(0) <= now_dt - when < timedelta(days=7):
+        previous = recently_closed_topics.get(group)
+        if previous is None or when > previous:
+            recently_closed_topics[group] = when
+
 for event in (deliveries.get("items") or []):
     outcome = str(event.get("status") or "").lower()
     if outcome not in CLOSED:
@@ -130,6 +152,7 @@ for event in (deliveries.get("items") or []):
             key = norm(name)
             if key:
                 recently_closed_names.add(key)
+            remember_closed_topic(name, when, outcome)
 for decision in (mobile_decisions.get("items") or []):
     outcome = str(decision.get("status") or "").lower()
     if outcome in CLOSED and decision.get("id"):
@@ -141,6 +164,33 @@ for request in requests:
         request["telegram_package_status"] = request["status"]
         request["reexplain"] = False
         reconciled = True
+
+# One Telegram-deleted editorial package may have several narrowly known
+# radar labels. An automatically reopened synonym is not a new story.
+# Manual editor commands are deliberately exempt.
+closed_topic_requests = 0
+for request in requests:
+    state = str(request.get("status") or "").lower()
+    if state in CLOSED:
+        when = parse_timestamp(request.get("deleted_at") or request.get("updated_at")
+                               or request.get("explained_at") or request.get("requested_at"))
+        remember_closed_topic(request.get("name"), when, state)
+for request in requests:
+    state = str(request.get("status") or "").lower()
+    group = editorial_topic(request.get("name"))
+    if (group in recently_closed_topics and request.get("auto_queued") is True
+            and state in {"preparing", "update", "problematic", "ready"}
+            and str(request.get("request_source") or "") not in {
+              "github_pages_authorized_issue", "telegram_reexplain",
+              "telegram_private_deeplink_native"}):
+        request["status"] = "inactive"
+        request["inactive_reason"] = "same_subject_closed_in_telegram"
+        request["inactive_at"] = now_dt.isoformat(timespec="seconds")
+        closed_topic_requests += 1
+        reconciled = True
+if closed_topic_requests:
+    print("Temas ya cerrados: retiradas solicitudes automáticas sin publicar duplicados:",
+          closed_topic_requests)
 
 def canonicalize_explained_groups():
     """Mantiene una sola tarjeta visible por grupo editorial.
@@ -407,6 +457,12 @@ for item in current:
     # captures may not resurrect a Telegram-closed subject for seven days.
     if key in recently_closed_names and (not req or req.get("auto_queued") is True
                                          or str(req.get("status") or "").lower() in CLOSED):
+        continue
+    if (editorial_topic(item["name"]) in recently_closed_topics and
+            (req is None or req.get("auto_queued") is True) and
+            str((req or {}).get("request_source") or "") not in {
+              "github_pages_authorized_issue", "telegram_reexplain",
+              "telegram_private_deeplink_native"}):
         continue
     status = str((req or {}).get("status") or "")
     if req:
