@@ -181,6 +181,19 @@ def render(project,bot_id):
             and int(bidir.get("issues_count") or 0)>0):
         chunks.append("\n⚠️ <b>App ↔ Telegram: "+
                       str(bidir["issues_count"])+" discrepancia(s)</b> · Autocorregir.")
+    # Include editor-start watchdog state only when something needs action.
+    # No extra chat messages or repetitive runtime notifications.
+    guard=read("telegram/editorial-run-guard.json",{})
+    guard_at=moment(guard.get("checked_at"))
+    if guard_at and (datetime.now(timezone.utc)-guard_at).total_seconds()<15*60:
+        work=(guard.get("projects") or {}).get(project) or {}
+        status=str(work.get("status") or "")
+        if status=="dispatch_requested_awaiting_run":
+            chunks.append("\n⏳ <b>Elaboración atrasada: relanzamiento solicitado</b> · esperando confirmación.")
+        elif status=="editorial_executor_unresponsive":
+            chunks.append("\n⚠️ <b>Elaboración sin respuesta</b> · requiere intervención.")
+        elif status=="guard_error":
+            chunks.append("\n⚠️ <b>Control de elaboración sin respuesta</b> · Autocorregir.")
     # Persistent diagnostics are shown INSIDE the existing pinned message:
     # no extra Telegram alerts, no flooded widget or new chat cards.
     audit=read("telegram/tt-autoheal-state.json",{})
