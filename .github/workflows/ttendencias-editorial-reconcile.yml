@@ -1,0 +1,15 @@
+name: TTendencias consolidar editorial
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttendencias-editorial-reconcile.yml'
+permissions:
+  contents: write
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 shared/ttendencias_queue_reconcile.py selftest
