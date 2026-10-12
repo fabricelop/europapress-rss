@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-12T14:18:18.855004+00:00",
+  "checked_at": "2026-10-12T19:14:02.280240+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -56,7 +56,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 1.5,
-      "run_id": 38261731977,
+      "run_id": 38296093679,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -66,8 +66,8 @@
       "outcome": "no-aplica"
     },
     "request_queue": {
-      "ok": false,
-      "invalid_count": 115,
+      "ok": true,
+      "invalid_count": 0,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -76,27 +76,58 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 4,
+      "overdue_count": 1,
+      "oldest_age_minutes": 71.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "3308803efaac",
+          "name": "Sofía Puente",
+          "status": "preparing",
+          "age_minutes": 71.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "2a319bab5b04",
+        "3308803efaac",
+        "0151e1be35f5",
+        "ddba7f3b0174"
+      ],
       "contradictory_success": false
+    },
+    "telegram_provisional": {
+      "ok": false,
+      "overdue_count": 1,
+      "actionable_count": 0,
+      "oldest_age_minutes": 70.1,
+      "warning_after_minutes": 30,
+      "overdue_items": [
+        {
+          "id": "3308803efaac",
+          "name": "Sofía Puente",
+          "message_id": 730,
+          "age_minutes": 70.1,
+          "editorial_status": "preparing",
+          "grouped": false
+        }
+      ],
+      "repairable": false
     }
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 115 estado(s) inválido(s)"
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 71.4 min",
+    "Telegram: 1 aviso(s) provisional(es) > 30 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 115 estado(s) inválido(s)"
+  "last_alert_signature": "Telegram: 1 aviso(s) provisional(es) > 30 min | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 71.4 min"
 }
