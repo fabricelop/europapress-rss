@@ -65,7 +65,7 @@ assert.equal(status('Hispanidad'),'BORRADA');
 assert.equal(status('#FelizLunes'),'PUBLICADA');
 assert.equal(status('Hugo Duro'),'BORRADA');
 assert.equal(status('#EstrenoJotalent5'),'BORRADA');
-assert.equal(status('Feliz 12'),'EN ELABORACIÓN');
+assert.equal(status('Feliz 12'),'EN COLA'); // No active editorial run was supplied
 assert.equal(status('Tendencia sin entrega'),'EXPLICACIÓN SIN ENTREGAR');
 assert.equal(status('Tendencia entregada'),'PENDIENTE EN EXPLICADAS');
 assert.equal(status('Tendencia nueva'),'PREPARACIÓN MANUAL');
