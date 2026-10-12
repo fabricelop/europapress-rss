@@ -159,25 +159,7 @@ struct OfflineGridMap: View {
                         dragOffset = .zero
                         onInteractionEnd?()
                     })
-                VStack(alignment:.leading,spacing:9) {
-                    Label("Mapa de cuadrículas · sin cartografía",systemImage:"wifi.slash")
-                        .font(.caption.weight(.semibold))
-                    HStack(spacing:9) {
-                        Button { zoom(0.5) } label: { Image(systemName:"plus.magnifyingglass") }
-                        Button { zoom(2) } label: { Image(systemName:"minus.magnifyingglass") }
-                    }.buttonStyle(.bordered)
-                }
-                .padding(10)
-                .background(.regularMaterial,in:RoundedRectangle(cornerRadius:11))
-                .padding(12)
             }
         }
-    }
-    private func zoom(_ factor: Double) {
-        region.span = MKCoordinateSpan(
-            latitudeDelta:min(120,max(0.0004,region.span.latitudeDelta*factor)),
-            longitudeDelta:min(120,max(0.0004,region.span.longitudeDelta*factor))
-        )
-        onNavigate(region)
     }
 }

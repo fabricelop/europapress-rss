@@ -1571,8 +1571,8 @@ struct TimeMapView: View {
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
             }
-            VStack {
-                HStack {
+            VStack(spacing:4) {
+                HStack(spacing:4) {
                     Menu {
                         Button { model.explore = false } label: {
                             Label("Permanencia · tiempo acumulado", systemImage:"hourglass")
@@ -1583,15 +1583,37 @@ struct TimeMapView: View {
                     } label: {
                         Label(model.explore ? "Exploración" : "Permanencia",
                               systemImage:model.explore ? "figure.walk" : "hourglass")
-                            .font(.subheadline.weight(.semibold))
-                            .padding(.horizontal,12).padding(.vertical,9)
-                            .background(.regularMaterial,in:Capsule())
+                            .font(.caption.weight(.semibold))
+                            .lineLimit(1).minimumScaleFactor(0.85)
+                            .padding(.horizontal,7)
+                            .frame(height:44)
+                            .background(Color(.secondarySystemBackground).opacity(0.9),in:Capsule())
                     }
-                    Spacer()
+                    .accessibilityIdentifier("mapModeMenu")
+                    Spacer(minLength:1)
+                    Button { zoomMap(factor:0.6) } label: {
+                        Image(systemName:"plus").font(.headline)
+                            .frame(width:42,height:44)
+                            .background(Color(.secondarySystemBackground).opacity(0.9),
+                                        in:RoundedRectangle(cornerRadius:10))
+                    }
+                    .accessibilityLabel("Acercar mapa")
+                    .accessibilityIdentifier("mapZoomIn")
+                    Button { zoomMap(factor:1.65) } label: {
+                        Image(systemName:"minus").font(.headline)
+                            .frame(width:42,height:44)
+                            .background(Color(.secondarySystemBackground).opacity(0.9),
+                                        in:RoundedRectangle(cornerRadius:10))
+                    }
+                    .accessibilityLabel("Alejar mapa")
+                    .accessibilityIdentifier("mapZoomOut")
                     Button { searchOpen=true } label: {
-                        Image(systemName:"magnifyingglass").padding(11)
-                            .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
-                    }.accessibilityLabel("Buscar zonas y cuadrículas")
+                        Image(systemName:"magnifyingglass").font(.headline)
+                            .frame(width:42,height:44)
+                            .background(Color(.secondarySystemBackground).opacity(0.9),
+                                        in:RoundedRectangle(cornerRadius:10))
+                    }
+                    .accessibilityLabel("Buscar zonas y cuadrículas")
                     Button {
                         followLocation.toggle()
                         if followLocation {
@@ -1604,88 +1626,74 @@ struct TimeMapView: View {
                     } label: {
                         Image(systemName:followLocation ? "location.north.line.fill" : "location")
                             .foregroundStyle(followLocation ? Color.white : Color.primary)
-                            .padding(11)
-                            .background(followLocation ? Color.teal : Color(.secondarySystemBackground),
-                                        in:RoundedRectangle(cornerRadius:12))
+                            .font(.headline)
+                            .frame(width:42,height:44)
+                            .background(followLocation ? Color.teal : Color(.secondarySystemBackground).opacity(0.9),
+                                        in:RoundedRectangle(cornerRadius:10))
                     }
                     .accessibilityLabel(followLocation ? "Seguimiento activo; pasar a mapa libre" : "Mapa libre; seguir mi posición")
-                }.padding(12)
-                if !model.forceBasicMap && connectivity.connected {
-                    HStack {
-                        Spacer()
-                        VStack(spacing:4) {
-                            Button { zoomMap(factor:0.6) } label: {
-                                Image(systemName:"plus").font(.headline)
-                                    .frame(width:38,height:34)
-                            }
-                            .accessibilityLabel("Acercar mapa")
-                            Divider().frame(width:27)
-                            Button { zoomMap(factor:1.65) } label: {
-                                Image(systemName:"minus").font(.headline)
-                                    .frame(width:38,height:34)
-                            }
-                            .accessibilityLabel("Alejar mapa")
-                        }
-                        .buttonStyle(.plain)
-                        .background(.regularMaterial,in:RoundedRectangle(cornerRadius:12))
-                        .padding(.trailing,12)
-                    }
                 }
+                .buttonStyle(.plain)
+                .padding(.horizontal,7)
+                .padding(.vertical,4)
+                .frame(maxWidth:.infinity)
+                // Toda la franja, incluso los huecos, pertenece a los controles:
+                // los toques y arrastres no pasan al mapa situado debajo.
+                .background {
+                    RoundedRectangle(cornerRadius:13)
+                        .fill(.regularMaterial)
+                        .contentShape(Rectangle())
+                        .onTapGesture { }
+                        .gesture(DragGesture(minimumDistance:0).onChanged { _ in })
+                }
+                .padding(.horizontal,8)
+                .padding(.top,4)
                 TimelineView(.periodic(from:.now,by:20)) { context in
                     let health=GPSHealthAssessment.evaluate(
                         recording:model.recording,
                         resting:model.isResting,
                         lastFix:model.current?.date,
                         now:context.date)
-                    HStack(spacing:7) {
+                    HStack(spacing:6) {
                         Image(systemName:health.symbol)
                             .foregroundStyle(health.needsAttention ? Color.orange : Color.teal)
-                        Text(health.message).lineLimit(1).minimumScaleFactor(0.85)
-                        Spacer(minLength:2)
+                        Text(health.message)
+                            .lineLimit(1).minimumScaleFactor(0.8)
+                        Spacer(minLength:0)
                         if health.needsAttention && model.recording {
-                            Button("Actualizar GPS") {
+                            Button("Actualizar") {
                                 gps.refreshWhenForeground()
-                            }.font(.caption2.weight(.semibold))
+                            }
+                            .font(.system(size:10,weight:.semibold))
+                            .accessibilityLabel("Actualizar posición GPS")
                         }
                     }
-                    .font(.caption2)
-                    .padding(.horizontal,12)
-                    .accessibilityElement(children:.combine)
-                }
-                if model.recording || model.isResting {
-                    HStack(spacing:8) {
-                        Label(model.isResting ? "GPS en pausa · sumando tiempo" : "GPS continuo",
-                              systemImage:model.isResting ? "moon.zzz.fill" : "location.fill")
-                            .font(.caption.weight(.semibold))
-                        Spacer(minLength:2)
-                        Button {
-                            model.reactivateLiveActivity()
-                        } label: {
-                            Label("En vivo",systemImage:"dot.radiowaves.left.and.right")
-                                .font(.caption2.weight(.semibold))
-                        }
-                        .buttonStyle(.bordered).tint(.teal)
-                        .accessibilityLabel("Reactivar la actividad en directo")
-                    }
-                    .padding(.horizontal,12)
+                    .font(.system(size:11,weight:.medium))
+                    .frame(maxWidth:.infinity,alignment:.leading)
+                    .padding(.horizontal,9)
+                    .frame(height:26)
+                    .background(.regularMaterial,in:Capsule())
+                    .padding(.horizontal,8)
                 }
                 // Los lugares se forman exclusivamente nombrando cuadrículas.
                 HStack(spacing:4) {
                     ForEach(TimePeriod.allCases) { p in
                         Button(p.title) { model.period = p }
                             .font(.caption2.weight(model.period == p ? .bold : .medium))
-                            .padding(.horizontal,9).padding(.vertical,7)
+                            .padding(.horizontal,9).padding(.vertical,5)
                             .background(model.period == p ? Color.teal.opacity(0.86) :
                                         Color(.secondarySystemBackground).opacity(0.92),in:Capsule())
                             .foregroundStyle(model.period == p ? Color.white : Color.primary)
                     }
                     Spacer(minLength:0)
-                }.padding(.horizontal,12)
+                }.padding(.horizontal,8)
                 if followLocation {
                     Text("Siguiéndome · toca la flecha para explorar libremente")
-                        .font(.caption2).padding(.horizontal,16)
+                        .font(.system(size:10))
+                        .lineLimit(1)
+                        .padding(.horizontal,10)
                 }
-                Spacer()
+                Spacer(minLength:0)
                 VStack(alignment:.leading,spacing:8) {
                     let picked = followLocation ? model.activeCell :
                         (model.selected ?? model.activeCell)
