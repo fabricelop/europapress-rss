@@ -93,7 +93,10 @@ def audit(project,now=None,root=None):
             manual=(req.get("auto_queued") is False)
             if rank>10 and not manual:continue
             started=when(req.get("requested_at") or req.get("explained_at"))
-            if not started or (now-started).total_seconds()/60<MAX_WAIT_MINUTES:
+            # Work older than 12h is archive, not a fresh Telegram delivery.
+            # The standalone provisional scan above still catches old open cards.
+            age_minutes=(now-started).total_seconds()/60 if started else 0
+            if not started or not (MAX_WAIT_MINUTES <= age_minutes <= 12*60):
                 continue
             row=latest.get(event_id)
             if row and (row.get("status") in terminal or
@@ -108,7 +111,10 @@ def audit(project,now=None,root=None):
     else:
         for event_id,req in requests.items():
             started=when(req.get("selected_at") or req.get("problematic_at"))
-            if not started or (now-started).total_seconds()/60<MAX_WAIT_MINUTES:
+            # Work older than 12h is archive, not a fresh Telegram delivery.
+            # The standalone provisional scan above still catches old open cards.
+            age_minutes=(now-started).total_seconds()/60 if started else 0
+            if not started or not (MAX_WAIT_MINUTES <= age_minutes <= 12*60):
                 continue
             row=latest.get(event_id)
             if row and (row.get("status") in terminal or
