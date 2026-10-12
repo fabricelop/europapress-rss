@@ -2,71 +2,49 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-12T18:28:19.988867+00:00",
-      "issue_count": 5,
+      "checked_at": "2026-10-12T18:30:17.420511+00:00",
+      "issue_count": 2,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "341646431f8d",
           "title": "Ucrania informa de ataque ruso a un objetivo energético tras el anuncio de tregua de Trump - EFE - A",
-          "seconds": 2073,
+          "seconds": 2190,
           "workflow": null
         },
         {
-          "kind": "missing_delivery",
+          "kind": "editorial_overdue",
           "id": "1b13139d24ff",
           "title": "Alineaciones oficiales del Levante - Sevilla de LaLiga EA Sports 2026-2027: Robbie Ure, el delantero",
-          "seconds": 1449,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "081e2e54a88e",
-          "title": "El gesto del rey Felipe VI con Juan Vivas, presidente de Ceuta, un día antes de visitar la ciudad au",
-          "seconds": 891,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "6c4fa0f92a8b",
-          "title": "La UE aprueba el mayor paquete de sanciones selectivas contra Rusia con casi 1.600 nombres - EFE - A",
-          "seconds": 256,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2d5afcfafca2",
-          "title": "Interrumpida la circulación de alta velocidad entre Madrid y Barcelona tras el incendio de un convoy",
-          "seconds": 256,
-          "workflow": "send-ttittulares-ready-telegram.yml"
+          "seconds": 1566,
+          "workflow": null
         }
       ],
       "actions_started": [],
-      "repair_errors": [
-        "send-ttittulares-ready-telegram.yml GitHub dispatch HTTP 401 {\r\n  \"message\": \"Bad credentials\",\r\n  \"documentation_url\": \"https://docs.github.com/rest\",\r\n  \"status\": \"401\"\r\n}",
-        "telegram_alert Telegram sendMessage HTTP 404 {\"ok\":false,\"error_code\":404,\"description\":\"Not Found\"}"
-      ],
-      "open_signature": "2bc6bbc39a58a23208d42e40b321070e690d1e5e75b5c95648e6652245fb9f99"
+      "repair_errors": [],
+      "open_signature": "76335f9fe0b63a8458e65f87c15dff8210b1a8bdb56a2d7ef3fd734a54916a8a",
+      "repair_via_workflow_run": true,
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-12T18:28:19.988867+00:00",
+      "checked_at": "2026-10-12T18:30:17.420511+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "3308803efaac",
           "title": "Sofía Puente",
-          "seconds": 1540,
+          "seconds": 1658,
           "workflow": null
         }
       ],
       "actions_started": [],
-      "repair_errors": [
-        "telegram_alert Telegram sendMessage HTTP 404 {\"ok\":false,\"error_code\":404,\"description\":\"Not Found\"}"
-      ],
-      "open_signature": "83b44700b68e4cc5b253531cf687a4465ae78e0a353af8d6f0c6a61b73d0af28"
+      "repair_errors": [],
+      "open_signature": "83b44700b68e4cc5b253531cf687a4465ae78e0a353af8d6f0c6a61b73d0af28",
+      "repair_via_workflow_run": true,
+      "escalation_required": 1
     }
   },
   "attempts": {},
-  "checked_at": "2026-10-12T18:28:19.988867+00:00"
+  "checked_at": "2026-10-12T18:30:17.420511+00:00"
 }
