@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T05:15:00+02:00",
-  "last_completed_at": "2026-10-12T05:17:00+02:00",
-  "updated_at": "2026-10-12T05:17:00+02:00",
+  "last_started_at": "2026-10-12T05:45:00+02:00",
+  "last_completed_at": "2026-10-12T05:46:00+02:00",
+  "updated_at": "2026-10-12T05:46:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -24,20 +24,15 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261012T051500+0200-chat",
+    "run_id": "tr-20261012T054500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T05:15:00+02:00",
-    "updated_at": "2026-10-12T05:17:00+02:00",
-    "finished_at": "2026-10-12T05:17:00+02:00",
+    "started_at": "2026-10-12T05:45:00+02:00",
+    "updated_at": "2026-10-12T05:46:00+02:00",
+    "finished_at": "2026-10-12T05:46:00+02:00",
     "current": 0,
     "total": 0,
-    "trend_id": null,
-    "title": null,
     "summary": {
       "processed": 0,
       "closed": 0,
@@ -45,15 +40,15 @@
       "problematic": 0,
       "visual_backlog": 0,
       "pending_repair_requested": 1,
-      "pending_cards_checked": 13,
-      "missing_closer_reviewed": 2,
+      "pending_cards_checked": 0,
+      "missing_closer_reviewed": 0,
       "queue_remaining": 0,
       "new_cards": 0,
       "reused_existing_card": 0,
       "duplicate_cards_created": 0,
       "remaining_active_ids": []
     },
-    "message": "Pasada completada · sin trabajo editorial activo; cola final 0; 13 Pendientes revisadas y saneamiento visual solicitado",
+    "message": "Cierre verificado · cola editorial 0; reparación de Pendientes solicitada",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -63,73 +58,37 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "38a1a9c41507",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitivity_migrants_eviction"
-      },
-      {
-        "trend_id": "3e3d3995fd67",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitivity_health"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T05:15:00+02:00",
+        "at": "2026-10-12T05:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola 0; comprobando reexplicaciones y saneamiento de Pendientes"
       },
       {
-        "at": "2026-10-12T05:15:40+02:00",
+        "at": "2026-10-12T05:45:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · cola 0, sin preparing/update ni rewrite_pending"
       },
       {
-        "at": "2026-10-12T05:16:00+02:00",
+        "at": "2026-10-12T05:45:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 13 tarjetas activas"
+        "message": "Saneamiento visual solicitado al reparador de Pendientes · sin ImageGen directo"
       },
       {
-        "at": "2026-10-12T05:16:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Sin remate · Guano y Papa León XIV conservan explicación factual por sensibilidad"
-      },
-      {
-        "at": "2026-10-12T05:16:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual solicitado · 13 Pendientes revisadas; sin ImageGen directo"
-      },
-      {
-        "at": "2026-10-12T05:17:00+02:00",
+        "at": "2026-10-12T05:46:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola 0; saneamiento visual de Pendientes solicitado"
+        "message": "Cierre verificado · cola editorial 0; reparación de Pendientes solicitada"
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": []
+    ]
   },
   "run_id": "tr-20261012T051500+0200-chat",
   "summary": {
