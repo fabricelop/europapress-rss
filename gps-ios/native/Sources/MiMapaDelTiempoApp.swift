@@ -156,6 +156,8 @@ struct SavedState: Codable {
     @Published private(set) var data = SavedState()
     @Published var current: GPSPoint?
     @Published var currentVisitStart: Date?
+    @Published private(set) var currentZoneVisitStart: Date?
+    @Published private(set) var currentZoneVisitID: UUID?
     @Published var selected: Cell?
     @Published var gpsStatus = "Sin iniciar"
     @Published var liveActivityDiagnostic = "Sin comprobar"
@@ -190,6 +192,12 @@ struct SavedState: Codable {
         if date >= latest && date.timeIntervalSince(latest) <= 120 {
             addInterval(start:latest,end:date,cell:cell,
                         quality:"asumido · transición a pausa",source:"descanso")
+        }
+        if let zone=primaryZone(for:cell),currentZoneVisitID != zone.id {
+            currentZoneVisitID=zone.id
+            currentZoneVisitStart=TimeZoneVisit.beginning(
+                in:data.intervals,zoneIDs:zone.cells,recentCell:cell,
+                now:date,fallback:currentVisitStart ?? date)
         }
         data.gpsRest = GPSRestSession(startedAt: date, cell: cell,
                                       latitude: point.latitude, longitude: point.longitude)
@@ -317,6 +325,13 @@ struct SavedState: Codable {
             storeStatus = "JSON de respaldo · revisar SQLite: \(error.localizedDescription)"
         }
         currentVisitStart = data.savedVisitStart
+        if let resting = data.gpsRest,
+           let zone=primaryZone(for:resting.cell) {
+            currentZoneVisitID=zone.id
+            currentZoneVisitStart=TimeZoneVisit.beginning(
+                in:data.intervals,zoneIDs:zone.cells,recentCell:resting.cell,
+                now:resting.startedAt,fallback:data.savedVisitStart ?? resting.startedAt)
+        }
         stableCell = data.fixes.last?.cell
         lastProcessedSample = data.fixes.last
         let previousNames = data.names
@@ -483,6 +498,33 @@ struct SavedState: Codable {
         let totals=periodTotals(now:now)
         return place.normalizedCellIDs.reduce(0){$0+(totals[$1] ?? 0)}
              + provisionalSeconds(for:place.normalizedCellIDs,now:now)
+    }
+    func zoneStaySeconds(for zone:TimeCustomZone,now:Date = .now) -> TimeInterval {
+        guard currentZoneVisitID==zone.id,
+              let cell=activeCell,zone.cellIDs.contains(cell.id) else { return 0 }
+        return TimeZoneVisit.duration(start:currentZoneVisitStart,
+                                     currentFix:current?.date,
+                                     resting:isResting,now:now)
+    }
+    /// Una transición entre casillas de la misma zona NO reinicia su estancia.
+    /// El histórico se consulta solo al entrar/reanudar la zona, nunca en cada
+    /// refresco de los contadores ni al repintar el mapa.
+    private func updateZoneVisit(cell:Cell,at date:Date,
+                                 previousDate:Date?,preserveRest:Bool = false) {
+        guard let zone=primaryZone(for:cell) else {
+            currentZoneVisitID=nil
+            currentZoneVisitStart=nil
+            return
+        }
+        if currentZoneVisitID==zone.id,
+           let previousDate, date.timeIntervalSince(previousDate)<=TimeZoneVisit.continuityGap {
+            return
+        }
+        if currentZoneVisitID==zone.id && preserveRest { return }
+        currentZoneVisitID=zone.id
+        currentZoneVisitStart=TimeZoneVisit.beginning(
+            in:data.intervals,zoneIDs:zone.cells,recentCell:cell,now:date,
+            fallback:currentVisitStart ?? date)
     }
     func staySeconds(now: Date = .now) -> TimeInterval {
         if let rest = data.gpsRest {
@@ -744,9 +786,16 @@ struct SavedState: Codable {
             currentVisitStart = continued ?? sample.date
             data.savedVisitStart = currentVisitStart
         }
+        let sameRestCell = previous == nil && restContinuationCell == stableCell
         restContinuationStart = nil
         restContinuationCell = nil
         current = sample
+        if let cell=stableCell {
+            let continuedFromRest=sameRestCell
+            updateZoneVisit(cell:cell,at:sample.date,
+                             previousDate:previous?.date,
+                             preserveRest:continuedFromRest)
+        }
         if let stableCell,stableCell != beforeStable,
            location.horizontalAccuracy <= 45 {
             territoryAutoClassifier.enqueue(stableCell,model:self)
@@ -929,6 +978,8 @@ struct SavedState: Codable {
             try JSONEncoder().encode(restored).write(to:fileURL,options:.atomic)
         }
         data=restored
+        currentZoneVisitID=nil
+        currentZoneVisitStart=nil
         invalidateZoneCatalog()
         current=nil
         lastProcessedSample=restored.fixes.last
