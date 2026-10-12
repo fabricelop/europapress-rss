@@ -844,6 +844,63 @@ def process(project,now,token,chat):
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
         ledger["updated_at"]=now.isoformat()
+    # TTiTTulares: a completed story may be explicitly deleted, while a
+    # differently worded radar headline for the same event remains marked
+    # problematic and its provisional Telegram photo never reaches Listas.
+    # Reconcile ONLY when the editorial problem record identifies the exact
+    # deleted event ID. Similar words or photographs are insufficient.
+    if project=="ttittulares":
+        status_doc=load("ttittulares/status.json",{})
+        problem_items=status_doc.get("problematic_items") or []
+        # The editorial statement, not fuzzy matching, establishes identity.
+        relation=re.compile(
+            r"\\bcoincide(?:\\s+materialmente)?\\s+con\\s+el\\s+evento\\s+([0-9a-f]{12})\\b",
+            re.IGNORECASE)
+        deleted_by_id={str(row.get("event_id") or ""):row for row in entries
+                       if (str(row.get("status") or "").lower()=="deleted"
+                           and row.get("final") is True)}
+        for problem in problem_items:
+            if problem.get("user_validated") is True:
+                continue
+            follower_id=str(problem.get("event_id") or "")
+            match=relation.search(str(problem.get("problem_reason") or ""))
+            if not follower_id or not match:
+                continue
+            leader_id=match.group(1).lower()
+            prior=deleted_by_id.get(leader_id)
+            if prior is None or leader_id==follower_id:
+                continue
+            # The incident itself must explain that a previous user deletion
+            # prevents automatically publishing the same event again.
+            reason=str(problem.get("problem_reason") or "").lower()
+            if not ("deleted" in reason or "eliminado" in reason or "borrado" in reason):
+                continue
+            for ghost in entries:
+                if (str(ghost.get("event_id") or "")!=follower_id
+                    or str(ghost.get("status") or "").lower()!="sent"
+                    or ghost.get("final") is not False
+                    or int(ghost.get("revision") or 0)!=int(problem.get("revision") or 0)):
+                    continue
+                mids={int(ghost.get(field) or 0) for field in
+                      ("telegram_message_id","archive_telegram_message_id")
+                      if int(ghost.get(field) or 0)>0}
+                if not mids:
+                    continue
+                succeeded=True
+                for mid in sorted(mids):
+                    if send(token,"deleteMessage",{"chat_id":chat,"message_id":mid}) is None:
+                        succeeded=False
+                        print("TTI_DUPLICATE_PROVISIONAL_RETRY",
+                              follower_id,mid,flush=True)
+                if succeeded:
+                    ghost.update(
+                        status="deleted",final=False,duplicate_of=leader_id,
+                        decision_source="editorial_confirmed_duplicate_of_user_deleted",
+                        deleted_at=now.isoformat(),updated_at=now.isoformat())
+                    ledger["updated_at"]=now.isoformat()
+                    updated+=1
+                    print("TTI_DUPLICATE_PROVISIONAL_CLEANED",
+                          follower_id,"leader="+leader_id,flush=True)
     # Consolidate already-posted sibling messages AFTER the leader exists.
     # Never delete a sibling merely for sharing a picture or being in a batch:
     # explicit editor-verified group identity is required.
@@ -1411,6 +1468,56 @@ def selftest():
             assert operations==[("deleteMessage",714),
                                 ("deleteMessage",715)],operations
             print("TT_GROUP_ORPHAN_PROVISIONAL_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
+        globals()["send"]=original_send
+        globals()["archival_image"]=original_archive
+    # A Sol news item is already verified, delivered and explicitly
+    # deleted; a renamed copy remains problematic with a visible provisional.
+    # Remove ONLY the duplicate, never resuscitate the user's original.
+    original_root=ROOT
+    original_send=send
+    original_archive=archival_image
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            put("ttittulares/prepared.json",{"items":[]})
+            put("telegram/editorial-processing.json",{"items":[]})
+            put("ttittulares/decisions.json",{"items":[]})
+            put("ttittulares/status.json",{"problematic_items":[{
+                "event_id":"4a294ec12ff5","revision":1,
+                "problem_reason":"Coincide materialmente con el evento 4e8026a01ba6; ya elaborado y eliminado por el usuario. Estado DELETED.",
+                "user_validated":False}]})
+            put("telegram/ttittulares-deliveries.json",{"items":[
+                {"event_id":"4e8026a01ba6","revision":1,"status":"deleted",
+                 "final":True,"telegram_message_id":3550,
+                 "delivered_at":now.isoformat()},
+                {"event_id":"4a294ec12ff5","revision":1,"status":"sent",
+                 "final":False,"is_photo":True,
+                 "telegram_message_id":3555,
+                 "delivered_at":now.isoformat()}]})
+            operations=[]
+            def mock_send(token,method,payload,photo=None):
+                operations.append((method,int(payload.get("message_id") or 0)))
+                return True
+            globals()["send"]=mock_send
+            globals()["archival_image"]=lambda url:None
+            assert process("ttittulares",now,"token","chat")==(0,1)
+            assert operations==[("deleteMessage",3555)],operations
+            ledger=load("telegram/ttittulares-deliveries.json",{})
+            orig,new=ledger["items"]
+            assert orig["status"]=="deleted" and orig["telegram_message_id"]==3550
+            assert new["status"]=="deleted" and new["duplicate_of"]=="4e8026a01ba6"
+            assert process("ttittulares",now,"token","chat")==(0,0)
+            assert operations==[("deleteMessage",3555)],operations
+            # Never interpret a mere title resemblance as authority to delete.
+            ledger["items"][1].update(status="sent")
+            put("telegram/ttittulares-deliveries.json",ledger)
+            put("ttittulares/status.json",{"problematic_items":[]})
+            assert process("ttittulares",now,"token","chat")==(0,0)
+            assert operations==[("deleteMessage",3555)]
+            print("TTI_SOL_DUPLICATE_PROVISIONAL_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
