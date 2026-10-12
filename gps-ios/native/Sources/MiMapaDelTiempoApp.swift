@@ -538,7 +538,8 @@ struct SavedState: Codable {
         return max(0, provisionalEnd.timeIntervalSince(start))
     }
     var activeCell: Cell? { data.gpsRest?.cell ?? stableCell ?? current?.cell }
-    func testLiveActivity() { activityPublisher.test(from:self) }
+    func reactivateLiveActivity() { activityPublisher.reactivate(from:self) }
+    func restoreLiveActivityIfNeeded() { activityPublisher.restoreIfNeeded(from:self) }
     func checkLockScreen() { activityPublisher.check(from:self) }
     func refreshWidgets() {
         widgetPublisher.publish(from:self,force:true)
@@ -1312,9 +1313,11 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     // Se reactiva al volver a abrir la app, respetando la opción previa.
                     if model.isResting { gps.restoreRest(model) }
                     else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
+                    model.restoreLiveActivityIfNeeded()
                 }
                 .onChange(of: phase) { _, state in
-                    if state != .active { model.save(force: true) }
+                    if state != .active { model.save(force:true) }
+                    if state == .active { model.restoreLiveActivityIfNeeded() }
                 }
         }
     }
@@ -1599,13 +1602,19 @@ struct TimeMapView: View {
                     .accessibilityLabel(followLocation ? "Seguimiento activo; pasar a mapa libre" : "Mapa libre; seguir mi posición")
                 }.padding(12)
                 if model.recording || model.isResting {
-                    HStack {
+                    HStack(spacing:8) {
                         Label(model.isResting ? "GPS en pausa · sumando tiempo" : "GPS continuo",
                               systemImage:model.isResting ? "moon.zzz.fill" : "location.fill")
                             .font(.caption.weight(.semibold))
-                        Spacer()
-                        Text(model.isResting ? "Reanuda en Ajustes" : "Sin reposo automático")
-                            .font(.caption2)
+                        Spacer(minLength:2)
+                        Button {
+                            model.reactivateLiveActivity()
+                        } label: {
+                            Label("En vivo",systemImage:"dot.radiowaves.left.and.right")
+                                .font(.caption2.weight(.semibold))
+                        }
+                        .buttonStyle(.bordered).tint(.teal)
+                        .accessibilityLabel("Reactivar la actividad en directo")
                     }
                     .padding(.horizontal,12)
                 }
@@ -1727,6 +1736,7 @@ struct TimeMapView: View {
 .onChange(of:scenePhase) { _,phase in
             if phase == .active {
                 gps.refreshWhenForeground()
+                model.restoreLiveActivityIfNeeded()
                 if followLocation { focusOnCurrentLocation() }
             }
         }

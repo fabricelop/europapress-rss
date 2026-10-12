@@ -7,7 +7,7 @@ struct TimeLockScreenSettingsView:View {
     @ObservedObject var model:TimeModel
     @AppStorage("miMapaLiveActivity") private var liveActivityEnabled=false
     @AppStorage("timeWidgetShowPlace") private var showPlace=false
-     @State private var extensionDetails="Pendiente"
+    @State private var extensionDetails="Pendiente"
     private var appGroupOK:Bool { TimeWidgetStorage.isAvailable }
 
     var body:some View {
@@ -39,8 +39,14 @@ struct TimeLockScreenSettingsView:View {
                     .onChange(of:liveActivityEnabled) { _,enabled in
                         model.setLockScreenEnabled(enabled)
                     }
-                Button("Crear actividad de prueba") { model.testLiveActivity() }
-                    .buttonStyle(.borderedProminent)
+                Button {
+                    model.reactivateLiveActivity()
+                } label: {
+                    Label("Reactivar En vivo ahora",systemImage:"arrow.clockwise.circle.fill")
+                }
+                .buttonStyle(.borderedProminent)
+                Text("Al volver a abrir el mapa, la app intenta crear otra actividad si iOS ha terminado la anterior. Si no hay GPS reciente, lo hará al recibir la próxima posición.")
+                    .font(.caption).foregroundStyle(.secondary)
                 Button("Comprobar solicitudes ActivityKit") {
                     model.checkLockScreen()
                 }

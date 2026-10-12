@@ -160,60 +160,131 @@ struct MiMapaTiempoWidget: Widget {
     }
 }
 
-/// Alternativa nativa para la pantalla bloqueada: temporizador de iOS,
-/// sin App Group ni actualizaciones GPS cada segundo.
-struct MiMapaRestLiveActivity: Widget {
-    var body: some WidgetConfiguration {
-        ActivityConfiguration(for: TimeMapActivityAttributes.self) { context in
-            VStack(alignment:.leading,spacing:7) {
-                HStack(alignment:.top,spacing:9) {
-                    Image(systemName:context.state.resting ? "moon.zzz.fill" : "location.fill")
-                        .font(.headline).foregroundStyle(.teal)
-                        .frame(width:22)
-                    Text(context.state.cellName)
-                        .font(.system(.subheadline,design:.rounded,weight:.semibold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(2)
-                        .fixedSize(horizontal:false,vertical:true)
+/// Live Activity completa, independiente del App Group.
+private struct MiMapaLivePanel:View {
+    let state:TimeMapActivityAttributes.ContentState
+    let isStale:Bool
+    var body:some View {
+        VStack(alignment:.leading,spacing:10) {
+            HStack(alignment:.top,spacing:10) {
+                Image(systemName:state.resting ? "moon.zzz.fill":"location.fill")
+                    .font(.title3).foregroundStyle(.teal).frame(width:26)
+                VStack(alignment:.leading,spacing:3) {
+                    Text(state.cellName)
+                        .font(.subheadline.weight(.bold)).lineLimit(2)
                         .frame(maxWidth:.infinity,alignment:.leading)
+                    Text(state.cellNumber).font(.caption2).foregroundStyle(.secondary)
                 }
-                HStack(alignment:.firstTextBaseline,spacing:8) {
-                    Text(context.state.resting ? "GPS en pausa · tiempo asumido" :
-                         "GPS activo · estancia")
-                        .font(.caption2).foregroundStyle(.secondary)
-                        .lineLimit(1).minimumScaleFactor(0.75)
-                    Spacer(minLength:0)
-                    Text(context.state.stayStartedAt,style:.timer)
-                        .font(.system(.subheadline,design:.rounded,weight:.semibold))
+                Spacer(minLength:1)
+                VStack(alignment:.trailing,spacing:3) {
+                    Text("ESTANCIA").font(.system(size:9,weight:.semibold))
+                        .foregroundStyle(.secondary)
+                    liveClock.font(.system(.title3,design:.rounded,weight:.bold))
                         .monospacedDigit()
-                        .fixedSize()
+                        .frame(width:110,alignment:.trailing)
                 }
             }
-            .padding(.horizontal,14).padding(.vertical,12)
-            .activityBackgroundTint(Color(.systemBackground))
-            .activitySystemActionForegroundColor(.teal)
+            HStack(spacing:0) {
+                VStack(alignment:.leading,spacing:2) {
+                    Text("Total cuadrícula").font(.caption2).foregroundStyle(.secondary)
+                    Text(TimeWidgetDuration.compact(state.confirmedCellSeconds))
+                        .font(.subheadline.weight(.semibold)).lineLimit(1)
+                }
+                .frame(maxWidth:.infinity,alignment:.leading)
+                if let zoneTotal=state.confirmedZoneSeconds {
+                    VStack(alignment:.leading,spacing:2) {
+                        Text("Total zona").font(.caption2).foregroundStyle(.secondary)
+                        Text(TimeWidgetDuration.compact(zoneTotal))
+                            .font(.subheadline.weight(.semibold)).lineLimit(1)
+                    }
+                    .frame(maxWidth:.infinity,alignment:.leading)
+                }
+            }
+            Divider().opacity(0.5)
+            HStack(spacing:5) {
+                Image(systemName:state.resting ? "moon.zzz.fill" :
+                      isStale ? "exclamationmark.triangle.fill" : "location.circle.fill")
+                    .foregroundStyle(isStale ? .orange : .teal)
+                Text(state.resting ? "GPS en pausa · tiempo asumido" :
+                     isStale ? "Sin GPS reciente · contador limitado" :
+                     "GPS verificado")
+                    .lineLimit(1).minimumScaleFactor(0.8)
+                Spacer(minLength:0)
+                if let last=state.lastGPSAt {
+                    Text(last,style:.relative).lineLimit(1)
+                }
+            }
+            .font(.caption2).foregroundStyle(.secondary)
+        }
+        .padding(.horizontal,14).padding(.vertical,12)
+    }
+    private var liveClock:Text {
+        if state.resting {
+            return Text(state.stayStartedAt,style:.timer)
+        }
+        // pauseTime evita que el cronómetro atribuya horas sin GPS actualizado.
+        return Text(timerInterval:state.stayStartedAt...state.timerValidUntil,
+                    pauseTime:state.timerValidUntil,countsDown:false,showsHours:true)
+    }
+}
+
+struct MiMapaRestLiveActivity:Widget {
+    var body:some WidgetConfiguration {
+        ActivityConfiguration(for:TimeMapActivityAttributes.self) { context in
+            MiMapaLivePanel(state:context.state,isStale:context.isStale)
+                .activityBackgroundTint(Color(.systemBackground))
+                .activitySystemActionForegroundColor(.teal)
         } dynamicIsland: { context in
             DynamicIsland {
-                DynamicIslandExpandedRegion(.center) {
-                    VStack(spacing:4) {
+                DynamicIslandExpandedRegion(.leading) {
+                    VStack(alignment:.leading,spacing:2) {
                         Text(context.state.cellName)
                             .font(.headline).lineLimit(2)
-                            .multilineTextAlignment(.center)
-                            .minimumScaleFactor(0.85)
-                        Text(context.state.resting ? "GPS pausado · sumando tiempo" : "Estancia actual")
-                            .font(.caption2)
-                        Text(context.state.stayStartedAt,style:.timer)
-                            .font(.title3.monospacedDigit())
+                        Text(context.state.cellNumber)
+                            .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
+                DynamicIslandExpandedRegion(.trailing) {
+                    VStack(alignment:.trailing,spacing:2) {
+                        Text("Estancia").font(.caption2)
+                        if context.state.resting {
+                            Text(context.state.stayStartedAt,style:.timer)
+                        } else {
+                            Text(timerInterval:context.state.stayStartedAt...context.state.timerValidUntil,
+                                 pauseTime:context.state.timerValidUntil,countsDown:false,
+                                 showsHours:true)
+                        }
+                    }
+                    .monospacedDigit().font(.caption)
+                }
+                DynamicIslandExpandedRegion(.bottom) {
+                    HStack {
+                        Label(TimeWidgetDuration.compact(context.state.confirmedCellSeconds),
+                              systemImage:"square")
+                        Spacer()
+                        if let zone=context.state.confirmedZoneSeconds {
+                            Label(TimeWidgetDuration.compact(zone),systemImage:"square.3.layers.3d")
+                        }
+                    }
+                    .font(.caption2)
+                    Text(context.isStale ? "GPS sin actualizar" :
+                         context.state.resting ? "GPS pausado" : "GPS activo")
+                        .font(.caption2).foregroundStyle(.secondary)
+                }
             } compactLeading: {
-                Image(systemName:context.state.resting ? "moon.zzz.fill" : "hourglass")
+                Image(systemName:context.isStale ? "exclamationmark.triangle" :
+                      context.state.resting ? "moon.zzz.fill" : "location.fill")
             } compactTrailing: {
-                Text(context.state.stayStartedAt,style:.timer)
-                    .font(.caption2.monospacedDigit())
-                    .frame(maxWidth:52)
+                if context.state.resting {
+                    Text(context.state.stayStartedAt,style:.timer)
+                        .monospacedDigit().frame(maxWidth:52)
+                } else {
+                    Text(timerInterval:context.state.stayStartedAt...context.state.timerValidUntil,
+                         pauseTime:context.state.timerValidUntil,countsDown:false,showsHours:true)
+                        .monospacedDigit().frame(maxWidth:52)
+                }
             } minimal: {
-                Image(systemName:"hourglass")
+                Image(systemName:context.isStale ? "exclamationmark.triangle" : "hourglass")
             }
             .widgetURL(URL(string:"mimapadeltiempoprueba://mapa"))
         }

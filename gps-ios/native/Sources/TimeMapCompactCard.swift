@@ -66,10 +66,10 @@ private struct TimeMapCardLiveRows:View {
         picked.flatMap { model.primaryZone(for:$0) }
     }
     private var isHere:Bool { picked != nil && picked == model.activeCell }
-    private var isEstimated:Bool {
-        guard isHere,let picked else { return false }
-        return model.isResting ||
-            model.provisionalSeconds(for:[picked.id],now:now)>0
+    private var needsGPSAttention:Bool {
+        guard isHere,!model.isResting,model.recording else { return false }
+        guard let age=model.gpsFixAge(now:now) else { return true }
+        return age > 45
     }
 
     var body:some View {
@@ -149,36 +149,31 @@ private struct TimeMapCardLiveRows:View {
     }
 
     @ViewBuilder private var estimateStatus:some View {
-        if isEstimated {
-            Button {
-                showEstimationHelp=true
-            } label: {
-                Label(model.isResting ? "Tiempo estimado · GPS en pausa" :
-                      "Tiempo provisional · pendiente de GPS",
-                      systemImage:"clock.badge.questionmark")
+        // El margen de 1-5 s entre muestras GPS es normal y no debe
+        // aparecer permanentemente como incidencia.
+        if model.isResting && isHere {
+            Button { showEstimationHelp=true } label: {
+                Label("Tiempo estimado · GPS en pausa",
+                      systemImage:"moon.zzz.fill")
                     .font(.system(size:11,weight:.medium))
                     .foregroundStyle(.orange)
-                    .fixedSize(horizontal:false,vertical:true)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Información sobre el tiempo estimado por GPS")
-        } else if model.isResting {
-            Label("GPS en pausa · última ubicación",
-                  systemImage:"moon.zzz.fill")
-                .font(.caption2)
-                .foregroundStyle(.orange)
+        } else if needsGPSAttention {
+            Button { showEstimationHelp=true } label: {
+                Label((model.gpsFixAge(now:now) ?? 999)>120 ?
+                      "Sin GPS reciente · contador detenido" :
+                      "Esperando nueva posición GPS",
+                      systemImage:"exclamationmark.triangle")
+                    .font(.system(size:11,weight:.medium))
+                    .foregroundStyle(.orange)
+            }
+            .buttonStyle(.plain)
         }
-        if mode == .expanded && model.isResting {
-            Text("La ubicación permanece asumida mientras el GPS está en pausa. No es tiempo confirmado por un nuevo punto GPS.")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+        if mode == .expanded && model.isResting && isHere {
+            Text("Durante la pausa se atribuye tiempo a la última cuadrícula; es tiempo asumido.")
+                .font(.caption2).foregroundStyle(.secondary)
                 .fixedSize(horizontal:false,vertical:true)
-        }
-        if let age=model.gpsFixAge(now:now),age>120, !model.isResting, isHere {
-            Label("Sin GPS reciente · contador provisional detenido",
-                  systemImage:"exclamationmark.triangle")
-                .font(.caption2)
-                .foregroundStyle(.orange)
         }
     }
 }

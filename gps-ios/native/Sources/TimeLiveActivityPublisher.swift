@@ -2,126 +2,163 @@ import Foundation
 import ActivityKit
 import WidgetKit
 
-/// Una identidad de estancia incluye ID, nombre, comienzo y tipo de seguimiento.
-/// El nombre por sí solo no detecta la salida y regreso a una misma zona.
-struct TimeActivityFingerprint:Equatable {
-    let cellID:String
-    let visibleName:String
-    let startedAt:Date
-    let resting:Bool
-}
-
-/// Una solicitud ActivityKit aceptada no implica que iOS dibuje la extensión.
+/// Solicita y restaura la Live Activity sin App Group ni permisos de servidor.
+/// iOS puede terminarla por su límite de duración; solo se recupera al abrir la app
+/// o cuando el sistema realmente entrega una posición GPS.
 @MainActor final class TimeLiveActivityPublisher {
-    private var lastUpdated: Date = .distantPast
-    private var lastFingerprint: TimeActivityFingerprint?
-    private var refreshTask: Task<Void,Never>?
+    private var lastUpdated:Date = .distantPast
+    private var lastFingerprint:TimeActivityFingerprint?
+    private var updateTask:Task<Void,Never>?
 
+    private func ongoingActivities()->[Activity<TimeMapActivityAttributes>] {
+        Activity<TimeMapActivityAttributes>.activities.filter {
+            $0.activityState == .active || $0.activityState == .stale
+        }
+    }
 
-    func check(from model: TimeModel) {
+    func check(from model:TimeModel) {
         let enabled=ActivityAuthorizationInfo().areActivitiesEnabled
         let items=Activity<TimeMapActivityAttributes>.activities
         let states=items.map { "\($0.id.prefix(8)): \($0.activityState)" }.joined(separator:", ")
-        model.liveActivityDiagnostic = "Permiso iOS: \(enabled ? "sí" : "no") · Solicitudes visibles a ActivityKit: \(items.count)" +
+        model.liveActivityDiagnostic = "ActivityKit: \(enabled ? "autorizado" : "no permitido") · \(items.count) actividad(es)" +
             (states.isEmpty ? "" : " · "+states)
-        let plugIns=Bundle.main.builtInPlugInsURL
-        let embedded=plugIns.map {
-            FileManager.default.fileExists(atPath:$0.appendingPathComponent("MiMapaWidgets.appex").path)
-        } ?? false
-        let extensionURL=plugIns?.appendingPathComponent("MiMapaWidgets.appex")
+        let extensionURL=Bundle.main.builtInPlugInsURL?.appendingPathComponent("MiMapaWidgets.appex")
+        let embedded=extensionURL.map { FileManager.default.fileExists(atPath:$0.path) } ?? false
         let extensionBundle=extensionURL.flatMap(Bundle.init(url:))
-        let extensionID=extensionBundle?.bundleIdentifier ?? "sin ID"
-        let extensionInfo=extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any]
-        let point=extensionInfo?["NSExtensionPointIdentifier"] as? String ?? "sin NSExtension"
-        let appGroup=TimeWidgetStorage.isAvailable
+        let point=(extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any])?["NSExtensionPointIdentifier"] as? String ?? "no consta"
         model.widgetDiagnostic=embedded ?
-            "Extensión incluida · \(extensionID) · punto \(point). App Group: \(appGroup ? "autorizado" : "no disponible"). El alta en la galería depende de la firma de iOS." :
-            "MiMapaWidgets.appex NO existe en la app instalada: comprobar cómo Sideloadly firma y empaqueta la extensión."
+            "Extensión instalada · \(extensionBundle?.bundleIdentifier ?? "?") · \(point). App Group: \(TimeWidgetStorage.isAvailable ? "autorizado" : "no autorizado")." :
+            "Extensión MiMapaWidgets.appex no incluida: revisar IPA y firma de Impactor."
         WidgetCenter.shared.getCurrentConfigurations { result in
             Task { @MainActor in
                 switch result {
                 case .success(let widgets):
-                    model.widgetDiagnostic += " Widgets añadidos al escritorio: \(widgets.count) (cero no significa que falte de la galería)."
+                    model.widgetDiagnostic += " Widgets añadidos: \(widgets.count)."
                 case .failure(let error):
-                    model.widgetDiagnostic += " WidgetCenter: \(error.localizedDescription)"
+                    model.widgetDiagnostic += " Error WidgetCenter: \(error.localizedDescription)"
                 }
             }
         }
     }
 
-    func test(from model: TimeModel) {
+    func restoreIfNeeded(from model:TimeModel) {
+        guard UserDefaults.standard.bool(forKey:"miMapaLiveActivity") else { return }
+        // Bypass del limitador si iOS ha terminado una actividad de 8 horas.
+        if ongoingActivities().isEmpty {
+            lastUpdated = .distantPast
+            lastFingerprint=nil
+            refresh(from:model,force:true)
+        } else {
+            refresh(from:model)
+        }
+    }
+
+    /// Botón explícito: sustituye la actividad anterior y muestra una nueva.
+    /// Si aún no hay GPS reciente, queda solicitada la reactivación en Ajustes
+    /// y la primera muestra válida iniciará la actividad automáticamente.
+    func reactivate(from model:TimeModel) {
+        UserDefaults.standard.set(true,forKey:"miMapaLiveActivity")
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            model.liveActivityDiagnostic="iOS rechaza Actividades en directo; comprueba permisos y restricciones."
+            model.liveActivityDiagnostic="Actividades en directo desactivadas en Ajustes de iOS."
             return
         }
-        let state=TimeMapActivityAttributes.ContentState(
-            cellName:"Prueba Mi Mapa",stayStartedAt:Date(),resting:false)
-        let content=ActivityContent(state:state,staleDate:nil)
-        model.liveActivityDiagnostic="Solicitando Actividad en directo de prueba…"
-        Task {
-            do {
-                for item in Activity<TimeMapActivityAttributes>.activities {
-                    await item.end(nil,dismissalPolicy:.immediate)
-                }
-                let activity=try Activity<TimeMapActivityAttributes>.request(
-                    attributes:TimeMapActivityAttributes(),content:content,pushType:nil)
-                model.liveActivityDiagnostic="ActivityKit aceptó la solicitud · ID \(activity.id.prefix(12)) · estado \(activity.activityState). Bloquea el iPhone para comprobar el panel; si no aparece, revisa la firma de la extensión."
-            } catch {
-                model.liveActivityDiagnostic="Fallo al crear Actividad en directo: \(String(reflecting:error))"
+        updateTask?.cancel()
+        updateTask=Task {
+            for existing in Activity<TimeMapActivityAttributes>.activities {
+                await existing.end(nil,dismissalPolicy:.immediate)
             }
-        }
-    }
-
-    func refresh(from model: TimeModel, force: Bool = false, now: Date = .now) {
-        let enabled=UserDefaults.standard.bool(forKey:"miMapaLiveActivity")
-        let allowed=ActivityAuthorizationInfo().areActivitiesEnabled
-        let activities=Activity<TimeMapActivityAttributes>.activities
-        guard enabled,allowed,
-              let cell=model.activeCell,
-              let start=model.currentVisitStart ?? model.data.gpsRest?.startedAt,
-              model.recording || model.isResting else {
+            guard !Task.isCancelled else { return }
             lastFingerprint=nil
             lastUpdated = .distantPast
-            refreshTask?.cancel()
-            refreshTask=nil
-            if !activities.isEmpty {
-                Task {
-                    for activity in activities {
-                        await activity.end(nil,dismissalPolicy:.immediate)
-                    }
+            refresh(from:model,force:true)
+        }
+    }
+
+    func refresh(from model:TimeModel,force:Bool=false,now:Date = .now) {
+        let enabled=UserDefaults.standard.bool(forKey:"miMapaLiveActivity")
+        let permitted=ActivityAuthorizationInfo().areActivitiesEnabled
+        guard enabled,permitted else {
+            lastFingerprint=nil
+            lastUpdated = .distantPast
+            updateTask?.cancel()
+            updateTask=Task {
+                for activity in Activity<TimeMapActivityAttributes>.activities {
+                    await activity.end(nil,dismissalPolicy:.immediate)
                 }
             }
             return
         }
-        let fingerprint=TimeActivityFingerprint(
-            cellID:cell.id,visibleName:model.label(for:cell),
-            startedAt:start,resting:model.isResting)
-        guard force || lastFingerprint != fingerprint ||
-              now.timeIntervalSince(lastUpdated) >= 120 else { return }
+        guard let cell=model.activeCell,
+              let start=model.currentVisitStart ?? model.data.gpsRest?.startedAt,
+              model.recording || model.isResting else {
+            model.liveActivityDiagnostic="En vivo preparado · esperando primera posición GPS."
+            return
+        }
+        let resting=model.isResting
+        // Nunca hacemos pasar la última posición histórica por una posición viva.
+        let fix=resting ? nil : model.current?.date
+        guard resting || fix != nil else {
+            model.liveActivityDiagnostic="En vivo activado · esperando nueva posición GPS."
+            return
+        }
+        let name=model.label(for:cell)
+        let fingerprint=TimeActivityFingerprint(cellID:cell.id,
+            visibleName:name,startedAt:start,resting:resting)
+        let active=ongoingActivities()
+        let changed=lastFingerprint != fingerprint
+        guard force || changed || active.isEmpty ||
+              now.timeIntervalSince(lastUpdated)>=45 else { return }
+
+        let zone=model.primaryZone(for:cell)
+        let confirmed=model.confirmedTotals(now:now)
+        let zoneTotal:TimeInterval?=zone.map { zone in
+            zone.cellIDs.reduce(0) { $0+(confirmed[$1] ?? 0) }
+        }
+        let end:Date
+        if resting {
+            // ActivityKit termina las actividades por duración. No se usa este
+            // intervalo para asignar más tiempo al historial.
+            end=max(start.addingTimeInterval(8*3600),now.addingTimeInterval(90))
+        } else {
+            end=max(start.addingTimeInterval(1),
+                    (fix ?? now).addingTimeInterval(120))
+        }
+        let state=TimeMapActivityAttributes.ContentState(
+            cellName:name,
+            cellNumber:model.data.shortIDs[cell.id].map { "Cuadrícula \($0)" } ?? "Cuadrícula actual",
+            zoneName:zone?.name,
+            confirmedCellSeconds:confirmed[cell.id] ?? 0,
+            confirmedZoneSeconds:zoneTotal,
+            stayStartedAt:start,
+            timerValidUntil:end,
+            lastGPSAt:fix,
+            resting:resting)
+        let content=ActivityContent(
+            state:state,
+            staleDate:resting ? nil : fix?.addingTimeInterval(90),
+            relevanceScore:60)
         lastUpdated=now
         lastFingerprint=fingerprint
-        let content=ActivityContent(state:TimeMapActivityAttributes.ContentState(
-            cellName:fingerprint.visibleName,stayStartedAt:fingerprint.startedAt,
-            resting:fingerprint.resting),staleDate:nil)
-        refreshTask?.cancel()
-        refreshTask=Task {
-            if let active=Activity<TimeMapActivityAttributes>.activities.first {
-                await active.update(content)
+        updateTask?.cancel()
+        updateTask=Task {
+            if let item=ongoingActivities().first {
+                await item.update(content)
                 guard !Task.isCancelled else { return }
-                model.liveActivityDiagnostic="Actividad actualizada · \(active.id.prefix(12)) · \(active.activityState)"
+                model.liveActivityDiagnostic="En vivo actualizado · \(item.id.prefix(12)) · \(item.activityState)"
             } else {
                 do {
                     let item=try Activity<TimeMapActivityAttributes>.request(
-                        attributes:TimeMapActivityAttributes(),content:content,pushType:nil)
+                        attributes:TimeMapActivityAttributes(),
+                        content:content,pushType:nil)
                     guard !Task.isCancelled else { return }
-                    model.liveActivityDiagnostic="Actividad creada · \(item.id.prefix(12)) · \(item.activityState)"
+                    model.liveActivityDiagnostic="En vivo iniciado · \(item.id.prefix(12)) · \(item.activityState)"
                 } catch {
                     guard !Task.isCancelled else { return }
-                    lastFingerprint=nil  // permitir reintentar en la siguiente posición GPS
-                    model.liveActivityDiagnostic="Error ActivityKit: \(String(reflecting:error))"
+                    lastUpdated = .distantPast
+                    lastFingerprint=nil
+                    model.liveActivityDiagnostic="No se pudo crear En vivo: \(String(reflecting:error))"
                 }
             }
         }
     }
-
 }
