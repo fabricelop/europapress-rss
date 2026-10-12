@@ -91,8 +91,24 @@ jobs:
             exit 0
           fi
           git commit -m "Actualizar Top 10 TTendencias"
-          git pull --rebase --autostash origin main
-          git push origin HEAD:main
+          # Otras pasadas escriben en main varias veces por minuto. Un
+          # rechazo de push no debe perder las nuevas pendientes.
+          for attempt in 1 2 3 4 5 6; do
+            git pull --rebase --autostash origin main || {
+              git rebase --abort || true
+              echo "TTENDENCIAS_REFRESH_REBASE_FAILED" >&2
+              exit 1
+            }
+            if git push origin HEAD:main; then
+              echo "TTENDENCIAS_REFRESH_PERSISTED"
+              break
+            fi
+            if [ "$attempt" -eq 6 ]; then
+              echo "TTENDENCIAS_REFRESH_PUSH_CONFLICT" >&2
+              exit 1
+            fi
+            sleep "$attempt"
+          done
 
           # Solo Top 10 se encola automáticamente. Puestos 11-30 son
           # visuales y solo entran a Explicadas al pulsar Preparar novedad.
