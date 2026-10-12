@@ -1596,6 +1596,24 @@ def route_package_callback(callback):
     return "legacy_publication_retired" if data.startswith(("tx:p:","tx:d:")) else handle_package_callback(callback)
 
 
+def refresh_live_pinned_index():
+    """Keep the pinned index current without a scheduled GitHub workflow."""
+    script="shared/telegram_pinned_index.py"
+    if not os.path.isfile(script):
+        print("TT_PINNED_INDEX_SCRIPT_MISSING ttendencias",flush=True)
+        return
+    env=dict(os.environ,TT_PINNED_INDEX_REMOTE="1")
+    try:
+        result=subprocess.run([sys.executable,script,"ttendencias"],
+                              env=env,capture_output=True,text=True,timeout=100)
+        print("TT_PINNED_INDEX_LISTENER ttendencias",
+              "OK" if result.returncode==0 else "ERROR",
+              (result.stdout+result.stderr)[-1000:],flush=True)
+    except Exception as exc:
+        print("TT_PINNED_INDEX_LISTENER_FAILED ttendencias",
+              type(exc).__name__,flush=True)
+
+
 def poll_packages(seconds=3300):
     started = time.time()
     package_state = load(PACKAGE_STATE, {"version": 1, "last_update_id": 0})
@@ -1606,9 +1624,13 @@ def poll_packages(seconds=3300):
     ) + 1
     dirty = False
     last_persist = time.time()
+    last_index_refresh = 0.0
 
     while time.time() - started < seconds:
         try:
+            if time.monotonic()-last_index_refresh>=180:
+                last_index_refresh=time.monotonic()
+                refresh_live_pinned_index()
             updates = call("getUpdates", {
                 "offset": offset,
                 "timeout": 25,
