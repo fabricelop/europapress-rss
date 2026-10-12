@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T08:45:00+02:00",
-  "last_completed_at": "2026-10-12T08:51:30+02:00",
-  "updated_at": "2026-10-12T08:51:30+02:00",
+  "last_started_at": "2026-10-12T09:15:00+02:00",
+  "last_completed_at": "2026-10-12T09:18:50+02:00",
+  "updated_at": "2026-10-12T09:18:50+02:00",
   "status": "success",
   "processed_ids": [
     "62c80555d298"
@@ -29,31 +29,33 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791787479008-manual",
+    "run_id": "tr-20261012T091500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T08:45:00+02:00",
-    "updated_at": "2026-10-12T08:51:30+02:00",
-    "finished_at": "2026-10-12T08:51:30+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-12T09:15:00+02:00",
+    "updated_at": "2026-10-12T09:18:50+02:00",
+    "finished_at": "2026-10-12T09:18:50+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
       "processed": 1,
       "closed": 1,
-      "skipped": 2,
+      "skipped": 0,
       "problematic": 0,
       "visual_backlog": 0,
       "pending_repair_requested": 1,
+      "pending_cards_checked": 16,
+      "missing_closer_reviewed": 3,
       "queue_remaining": 0,
-      "new_cards": 0,
-      "reused_existing_card": 1,
+      "new_cards": 1,
+      "reused_existing_card": 0,
       "duplicate_cards_created": 0,
       "remaining_active_ids": []
     },
-    "message": "Cierre verificado · cola editorial 0; una revisión enlazada y dos reconciliadas por mismo asunto",
+    "message": "Cierre verificado · Feliz 12 r1 explicada y cola editorial 0",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -67,154 +69,231 @@
       {
         "trend_id": "62c80555d298",
         "revision": 1,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.7,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 1.8,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c4",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "db8e8811643b",
+        "revision": 0,
         "candidate_count": 0,
         "candidates": [],
-        "selected_candidate": "existing_group_closer",
+        "selected_candidate": null,
         "selected_score": null,
-        "no_remate_reason": null,
-        "closer_text": "🌶️ Hasta el calendario ha salido de gala."
+        "no_remate_reason": "sensitivity"
+      },
+      {
+        "trend_id": "38a1a9c41507",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitivity"
+      },
+      {
+        "trend_id": "3e3d3995fd67",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "sensitivity"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-12T08:46:00+02:00",
-        "phase": "verifying",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Releyendo estado autoritativo de Hispanidad y #12DeOctubre"
-      },
-      {
-        "at": "2026-10-12T08:46:30+02:00",
-        "phase": "investigating",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Buscando detonante actual y relación con #12DeOctubre"
-      },
-      {
-        "at": "2026-10-12T08:47:10+02:00",
-        "phase": "investigating",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Contrastando fuente 1/2 · RTVE confirma Fiesta Nacional y desfile de hoy"
-      },
-      {
-        "at": "2026-10-12T08:47:20+02:00",
-        "phase": "investigating",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Contrastando fuente 2/2 · Defensa confirma acto central a las 11:00"
-      },
-      {
-        "at": "2026-10-12T08:47:30+02:00",
-        "phase": "investigating",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Hecho esencial verificado · mismo episodio que la ficha Feliz Día de la Hispanidad"
-      },
-      {
-        "at": "2026-10-12T08:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Reutilizando explicación factual del mismo episodio ya verificado"
-      },
-      {
-        "at": "2026-10-12T08:48:10+02:00",
-        "phase": "drafting",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Comprobando límite de X · ficha vigente 238 caracteres"
-      },
-      {
-        "at": "2026-10-12T08:48:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Remate existente conservado · no se genera tarjeta duplicada"
-      },
-      {
-        "at": "2026-10-12T08:48:40+02:00",
-        "phase": "persisting",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Guardando enlace de grupo en la ficha Explicada existente"
-      },
-      {
-        "at": "2026-10-12T08:49:10+02:00",
-        "phase": "persisting",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Actualizando requests de las tres revisiones con el grupo existente"
-      },
-      {
-        "at": "2026-10-12T08:49:30+02:00",
-        "phase": "verifying",
-        "trend_id": "69f612f2f564",
-        "title": "Hispanidad",
-        "message": "Hispanidad dejó de estar activa tras reconciliación por mismo asunto; se omite sin duplicar"
-      },
-      {
-        "at": "2026-10-12T08:49:35+02:00",
-        "phase": "verifying",
-        "trend_id": "a1651b732761",
-        "title": "#12DeOctubre",
-        "message": "#12DeOctubre dejó de estar activa tras reconciliación por mismo asunto; se omite sin duplicar"
-      },
-      {
-        "at": "2026-10-12T08:49:40+02:00",
-        "phase": "verifying",
-        "trend_id": "62c80555d298",
-        "title": "Feliz 12",
-        "message": "Releyendo estado autoritativo de Feliz 12 · revisión 1 sigue preparing"
-      },
-      {
-        "at": "2026-10-12T08:49:50+02:00",
+        "at": "2026-10-12T09:16:05+02:00",
         "phase": "investigating",
         "trend_id": "62c80555d298",
         "title": "Feliz 12",
-        "message": "Señal social confirmada · Feliz 12 aparece asociado a saludos del Día de la Hispanidad"
+        "message": "Fuente 1/2 verificada · Feliz 12 figura en tendencias de España hoy"
       },
       {
-        "at": "2026-10-12T08:50:00+02:00",
+        "at": "2026-10-12T09:16:10+02:00",
+        "phase": "investigating",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Contrastando fuente 2/2 · Fiesta Nacional del 12 de octubre"
+      },
+      {
+        "at": "2026-10-12T09:16:20+02:00",
+        "phase": "investigating",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Fuente 2/2 verificada · Defensa confirma la Fiesta Nacional del 12 de octubre y el acto central en Madrid"
+      },
+      {
+        "at": "2026-10-12T09:16:25+02:00",
+        "phase": "investigating",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Hecho esencial verificado · Feliz 12 funciona hoy como saludo del 12 de octubre"
+      },
+      {
+        "at": "2026-10-12T09:16:30+02:00",
         "phase": "drafting",
         "trend_id": "62c80555d298",
         "title": "Feliz 12",
-        "message": "Enlazando al texto factual ya verificado del mismo episodio"
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-12T08:50:10+02:00",
+        "at": "2026-10-12T09:16:35+02:00",
+        "phase": "drafting",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Comprobando límite de X · texto final 235 caracteres"
+      },
+      {
+        "at": "2026-10-12T09:16:40+02:00",
         "phase": "remate_selection",
         "trend_id": "62c80555d298",
         "title": "Feliz 12",
-        "message": "Remate existente conservado · explicación compartida 238 caracteres"
+        "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-12T08:51:00+02:00",
+        "at": "2026-10-12T09:16:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-12T09:16:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Remate seleccionado · Hasta el calendario ha salido de gala"
+      },
+      {
+        "at": "2026-10-12T09:17:00+02:00",
+        "phase": "persisting",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-12T09:17:20+02:00",
+        "phase": "persisting",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-12T09:17:35+02:00",
+        "phase": "persisting",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-12T09:17:50+02:00",
         "phase": "verifying",
         "trend_id": "62c80555d298",
         "title": "Feliz 12",
-        "message": "Releyendo main · Feliz 12 r1 figura explained en el grupo existente"
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-12T08:51:10+02:00",
+        "at": "2026-10-12T09:18:05+02:00",
         "phase": "verifying",
         "trend_id": "62c80555d298",
         "title": "Feliz 12",
-        "message": "Verificando id+revision y texto persistido · explicación y remate coinciden con la ficha de grupo"
+        "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-12T08:51:20+02:00",
+        "at": "2026-10-12T09:18:10+02:00",
+        "phase": "verifying",
+        "trend_id": "62c80555d298",
+        "title": "Feliz 12",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-12T09:18:15+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, sin preparing/update, sin rewrite_pending y sin problematic Top 10"
+        "message": "Revisando Pendientes · 16 tarjetas activas de menos de 24 h"
       },
       {
-        "at": "2026-10-12T08:51:30+02:00",
+        "at": "2026-10-12T09:18:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": null,
+        "title": null,
+        "message": "Tres Pendientes conservan texto factual sin remate por sensibilidad"
+      },
+      {
+        "at": "2026-10-12T09:18:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual solicitado · 16 Pendientes revisadas; sin ImageGen directo"
+      },
+      {
+        "at": "2026-10-12T09:18:40+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0; sin preparing/update, rewrite_pending ni problematic Top 10"
+      },
+      {
+        "at": "2026-10-12T09:18:50+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola editorial 0; una revisión enlazada y dos reconciliadas por mismo asunto"
+        "message": "Cierre verificado · Feliz 12 r1 explicada y cola editorial 0"
       }
     ],
     "queue_complete": true,
