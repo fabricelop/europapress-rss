@@ -296,6 +296,10 @@ def trend_cards(now):
     explained_doc=load("trends/explained.json",{"items":[]})
     recent=load("trends/recent.json",{"items":[]})
     top={str(x.get("name") or "").casefold():x for x in (recent.get("items") or [])[:30]}
+    existing_sent_ids={str(x.get("event_id") or "")
+        for x in load("trends/telegram-image-deliveries.json",{"items":[]}).get("items",[])
+        if str(x.get("status") or "").lower()=="sent" and
+           int(x.get("telegram_message_id") or 0)>0}
     latest={}
     for row in requests_doc.get("requests",[]):
         key=str(row.get("id") or "")
@@ -399,11 +403,12 @@ def trend_cards(now):
                             if str(x.get("id") or "")==tid and
                                int(x.get("revision") or 0)==rev and
                                str(x.get("status") or "").lower() in {"preparing","update","ready"}),None)
-        if req.get("reexplain") and not is_final and not (
-                queued_current and queued_current.get("reexplain") is False):
+        if req.get("reexplain") and not is_final and tid in existing_sent_ids:
             if queued_current:
-                print("TT_TREND_PENDING_DIAG",tid,"reexplain_without_final",rev,flush=True)
+                print("TT_TREND_PENDING_DIAG",tid,"reexplain_existing_card_pending",rev,flush=True)
             continue
+        # An automatically queued TOP 10 item with reexplain=True may never
+        # have received any Telegram card. It still needs its first provisional.
         # Provisional notices for newly pending TTendencias go out immediately.
         # Unlike TTiTTulares, there is no one-hour delay. A later final card
         # edits the ORIGINAL Telegram message (preserving its message_id).
