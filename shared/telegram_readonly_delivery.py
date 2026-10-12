@@ -660,14 +660,23 @@ def process(project,now,token,chat):
         # a second card for seven days, including previously deleted ones.
         older=matching_previous_story(card,entries,now)
         if older:
-            print("TT_STORY_DUPLICATE_BLOCKED",project,trim(card.get("title"),120),
-                  "new_id="+str(eid),"previous_id="+str(older.get("event_id") or ""),
-                  "previous_status="+str(older.get("status") or ""),flush=True)
-            # A different message ID is NOT covered by the user's deletion
-            # of an older card. Keep it visible until editorial completion
-            # or an explicit failure notice from the post-run auditor.
-            skipped+=1
-            continue
+            # A previous deleted card must prevent NEW unsolicited reposts.
+            # But if this distinct ID already has its OWN provisional message
+            # and a verified final explanation exists, finish THAT message,
+            # preserving the original user's separate deletion.
+            own_provisional=next((r for r in linked
+                if str(r.get("status") or "").lower()=="sent" and
+                r.get("final") is False and
+                int(r.get("telegram_message_id") or 0)>0),None)
+            if card.get("final") and own_provisional is not None:
+                print("TT_DUPLICATE_FINISH_EXISTING_PROVISIONAL",project,eid,
+                      "message_id="+str(own_provisional["telegram_message_id"]),flush=True)
+            else:
+                print("TT_STORY_DUPLICATE_AWAIT_EDITORIAL",project,
+                      trim(card.get("title"),120),"new_id="+str(eid),
+                      "previous_id="+str(older.get("event_id") or ""),flush=True)
+                skipped+=1
+                continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A Telegram deletion is permanent for this editorial cycle.
         # Deleting any of the duplicate Telegram cards closes the whole trend.
@@ -1416,6 +1425,49 @@ def selftest():
             ledger=load("telegram/ttittulares-deliveries.json",{})
             assert ledger["items"][1]["status"]=="sent"
             print("TTI_PROVISIONAL_NEVER_AUTO_DELETE_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
+        globals()["send"]=original_send
+        globals()["archival_image"]=original_archive
+    # A newly verified story with an existing provisional can be finished
+    # even if a DIFFERENT earlier ID was deleted by the user. No new send.
+    original_root=ROOT
+    original_send=send
+    original_archive=archival_image
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            put("telegram/editorial-processing.json",{"items":[]})
+            put("ttittulares/decisions.json",{"items":[]})
+            put("ttittulares/prepared.json",{"items":[{
+                "event_id":"fresh-sol","revision":1,
+                "title":"Sol: tensión y cordón policial",
+                "prepared_at":now.isoformat(),
+                "factual_summary":"La Policía separó a los dos grupos.",
+                "tweet":{"text":"La Policía separó a los dos grupos.",
+                         "remate":"🌶️ El cordón tuvo que continuar."}}]})
+            put("telegram/ttittulares-deliveries.json",{"items":[
+                {"event_id":"old-sol","title":"Sol: tensión y cordón policial",
+                 "status":"deleted","final":True,
+                 "telegram_message_id":400,
+                 "delivered_at":now.isoformat()},
+                {"event_id":"fresh-sol","title":"Sol: tensión y cordón policial",
+                 "status":"sent","final":False,
+                 "revision":1,"telegram_message_id":401,
+                 "delivered_at":now.isoformat()}]})
+            operations=[]
+            def mocked_send(token,method,payload,photo=None):
+                operations.append((method,int(payload.get("message_id") or 0)))
+                return {"message_id":int(payload.get("message_id") or 0)}
+            globals()["send"]=mocked_send
+            globals()["archival_image"]=lambda url:None
+            assert process("ttittulares",now,"mock","mockchat")==(0,1)
+            assert operations==[("editMessageText",401)],operations
+            ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            assert ledger["items"][0]["status"]=="deleted"
+            assert ledger["items"][1]["status"]=="sent" and ledger["items"][1]["final"] is True
+            print("TT_DUPLICATE_VERIFIED_FINAL_IN_PLACE_SELFTEST_OK")
     finally:
         globals()["ROOT"]=original_root
         globals()["send"]=original_send
