@@ -96,4 +96,25 @@ with tempfile.TemporaryDirectory() as foldername:
     after=run()
     assert any(x["id"]=="manual-feliz-12" and x["status"]=="preparing"
                for x in after), after
-    print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, closed synonyms suppressed")
+    # Manually requested Feliz 12 (08:44) must not be auto-completed by the
+    # earlier deleted holiday package explained at 07:47.
+    stale_time = "2026-10-12T07:47:45+02:00"
+    later_time = "2026-10-12T08:44:37+02:00"
+    stale_doc={"id":"old-group", "name":"Feliz Día de la Hispanidad",
+               "status":"explained","explained_at":stale_time,
+               "explanation":"Old holiday explanation",
+               "telegram_package_status":"deleted",
+               "grouped_member_revisions":[
+                 {"id":"manual-feliz-12","revision":1}]}
+    put(folder / "telegram-manual-explained.json", {"items":[stale_doc]})
+    for row in after:
+        if row.get("id")=="manual-feliz-12":
+            row.update(status="explained",requested_at=later_time,
+                       explained_at=stale_time,
+                       explanation="Old holiday explanation")
+    put(folder / "requests.json", {"requests":after})
+    fixed=run()
+    manual_fixed=next(x for x in fixed if x.get("id")=="manual-feliz-12")
+    assert manual_fixed["status"]=="preparing",manual_fixed
+    assert not manual_fixed.get("explanation"),manual_fixed
+    print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, stale group ignored")
