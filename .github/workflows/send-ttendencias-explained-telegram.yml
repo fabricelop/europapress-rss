@@ -33,11 +33,17 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /shared/telegram_readonly_delivery.py
+            /shared/tt_bidirectional_audit.py
+            /telegram/bidirectional-audit-ttittulares.json
+            /telegram/bidirectional-audit-ttendencias.json
+            /telegram/lifecycle-baseline.json
+            /trends/mobile-decisions.json
             /shared/telegram_orphan_audit.py
             /shared/ttendencias_queue_reconcile.py
             /telegram/orphan-audit-ttendencias.json
             /telegram/editorial-processing.json
             /telegram/ttittulares-deliveries.json
+            /ttittulares/status.json
             /ttittulares/prepared.json
             /ttittulares/decisions.json
             /trends/requests.json
@@ -121,12 +127,15 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           python3 shared/telegram_orphan_audit.py ttendencias
+          python3 shared/tt_bidirectional_audit.py
+          for side in ttittulares ttendencias; do cp "telegram/bidirectional-audit-$side.json" "/tmp/bidirectional-audit-$side.json"; done
           cp telegram/orphan-audit-ttendencias.json /tmp/orphan-audit-ttendencias.json
           for attempt in 1 2 3 4 5 6; do
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/orphan-audit-ttendencias.json telegram/orphan-audit-ttendencias.json
-            git add --sparse telegram/orphan-audit-ttendencias.json
+            for side in ttittulares ttendencias; do cp "/tmp/bidirectional-audit-$side.json" "telegram/bidirectional-audit-$side.json"; done
+            git add --sparse telegram/orphan-audit-ttendencias.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json
             if git diff --cached --quiet; then
               echo "TT_ORPHAN_AUDIT_NO_CHANGE"
               exit 0
