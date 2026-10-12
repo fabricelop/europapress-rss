@@ -63,7 +63,7 @@ enum TimeWidgetDuration {
 /// El grupo debe estar autorizado por iOS para AMBOS targets, app y widget.
 /// Con firma gratuita Sideloadly puede no existir esta autorización.
 enum TimeWidgetStorage {
-    static let groupID = "group.es.mimapadeltiempo.widgets"
+    static let groupID = "group.es.mimapadeltiempo.appprueba.widgets"
     static let key = "time_widget_snapshot_v1"
 
     static var isAvailable: Bool {

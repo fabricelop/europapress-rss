@@ -60,17 +60,17 @@ private struct GPSWidgetFace: View {
             if entry.value == nil {
                 switch family {
                 case .accessoryInline:
-                    Text("Mi Mapa del Tiempo · Abrir")
+                    Text("Mi Mapa PRUEBA · Abrir")
                 case .accessoryCircular:
                     Image(systemName:"map.fill").font(.title3)
                 case .accessoryRectangular:
                     VStack(alignment:.leading,spacing:2) {
-                        Text("Mi Mapa del Tiempo").font(.headline)
+                        Text("Mi Mapa PRUEBA").font(.headline)
                         Text("Toca para abrir el mapa").font(.caption2)
                     }
                 default:
                     VStack(alignment:.leading,spacing:8) {
-                        Label("Mi Mapa del Tiempo",systemImage:"map.fill")
+                        Label("Mi Mapa PRUEBA",systemImage:"map.fill")
                             .font(.caption.weight(.semibold)).foregroundStyle(.teal)
                         Spacer(minLength:2)
                         Image(systemName:"map.circle.fill")
@@ -117,7 +117,7 @@ private struct GPSWidgetFace: View {
                 }
             default:
                 VStack(alignment:.leading,spacing:6) {
-                    Label("Mi Mapa del Tiempo",systemImage:"map.fill")
+                    Label("Mi Mapa PRUEBA",systemImage:"map.fill")
                         .font(.caption.weight(.semibold)).foregroundStyle(.teal)
                     Spacer(minLength:0)
                     Text(total).font(.system(.title2,design:.rounded,weight:.bold))
@@ -130,7 +130,7 @@ private struct GPSWidgetFace: View {
             }
             }
         }
-        .widgetURL(URL(string: "mimapadeltiempo://mapa"))
+        .widgetURL(URL(string: "mimapadeltiempoprueba://mapa"))
         .containerBackground(for:.widget) {
             Color(red: 0.92, green: 0.96, blue: 0.95)
         }
@@ -146,7 +146,7 @@ struct MiMapaTiempoWidget: Widget {
         StaticConfiguration(kind:kind, provider:GPSWidgetProvider()) { entry in
             GPSWidgetFace(entry:entry)
         }
-        .configurationDisplayName("Mi Mapa del Tiempo")
+        .configurationDisplayName("Mi Mapa Prueba")
         .description("Acceso rápido al mapa. Los tiempos se muestran solo si iOS autoriza compartir datos.")
         .supportedFamilies([
             .systemSmall, .systemMedium,
@@ -195,7 +195,7 @@ struct MiMapaRestLiveActivity: Widget {
             } minimal: {
                 Image(systemName:"hourglass")
             }
-            .widgetURL(URL(string:"mimapadeltiempo://mapa"))
+            .widgetURL(URL(string:"mimapadeltiempoprueba://mapa"))
         }
     }
 }

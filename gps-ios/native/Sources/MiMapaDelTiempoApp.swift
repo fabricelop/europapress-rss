@@ -1343,7 +1343,7 @@ struct RootView: View {
             if faceIDEnabled && !unlocked {
                 VStack(spacing:20) {
                     Image(systemName:"lock.shield.fill").font(.system(size:54)).foregroundStyle(.teal)
-                    Text("Mi Mapa del Tiempo").font(.title2.bold())
+                    Text("Mi Mapa · PRUEBA").font(.title2.bold())
                     Text("El seguimiento GPS continúa aunque la pantalla esté protegida.")
                         .font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
                     Button {
@@ -1863,6 +1863,12 @@ struct TimeSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section("Instalación de prueba") {
+                    Label("Versión independiente · IMPACTOR",systemImage:"checkmark.shield")
+                        .foregroundStyle(.teal)
+                    Text("Esta app conserva sus datos por separado de Mi Mapa del Tiempo original. Para recuperar una copia, detén primero el seguimiento e importa el archivo cifrado .mmapbak. No se sincronizan automáticamente entre ambas instalaciones.")
+                        .font(.caption)
+                }
                 Section("Seguimiento") {
                     LabeledContent("Estado", value: model.gpsStatus)
                     LabeledContent("Modo GPS",value:model.isResting ? "Pausa voluntaria · bajo consumo" :
@@ -1929,7 +1935,7 @@ struct TimeSettingsView: View {
                         GPSDiagnosticsView(model:model,gps:gps)
                     }
                 }
-                Section("Copia segura en iCloud Drive") {
+                Section("Copia cifrada · sin iCloud obligatorio") {
                     SecureField("Contraseña de la copia (mín. 10 caracteres)",text:$backupPassword)
                         .textContentType(.newPassword)
                     Button("Preparar copia cifrada AES-256") {
@@ -1938,10 +1944,10 @@ struct TimeSettingsView: View {
                     }.disabled(backupPassword.count < 10)
                     if let secureExportFile {
                         ShareLink(item:secureExportFile) {
-                            Label("Guardar copia en Archivos → iCloud Drive",systemImage:"icloud.and.arrow.up")
+                            Label("Guardar copia en Archivos",systemImage:"icloud.and.arrow.up")
                         }
                     }
-                    Button("Elegir copia de iCloud Drive para restaurar") {
+                    Button("Elegir copia .mmapbak para restaurar") {
                         importBackup=true
                     }.disabled(backupPassword.count < 10 || model.recording || model.isResting)
                     Text("Guarda la copia y su contraseña por separado. Restaurar reemplaza los datos.")
