@@ -1,6 +1,13 @@
 name: TT Telegram indices fijados
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "TTiTTulares Telegram informativo (sin IA ni publicación)"
+      - "TTendencias Telegram informativo (sin IA ni publicación)"
+      - "TTendencias Telegram continuo"
+      - "TTiTTulares Telegram nativo (migración segura)"
+    types: [completed]
   schedule:
     - cron: "*/5 * * * *"
   push:
