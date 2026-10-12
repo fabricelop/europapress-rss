@@ -202,3 +202,12 @@ Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pa
 Si `rewrite_scope=remate_only` y `reinvestigate` no es true: no investigar ni buscar fuentes. Usa `preserved_editorial` como contenido factual inmutable. Conserva fuentes, hechos, título, resumen y texto anterior al remate. Cambia solo el remate y conserva el fallback existente. La IA se gestiona después de READY mediante el reparador automático de Listas; el check **Gag IA** queda únicamente como override manual.
 
 En una revisión REWRITE, la pasada editorial no llama directamente a ImageGen. Si la revisión nueva no conserva una IA válida, deja `ai_image_status:"none"` o `failed`; el reparador automático de Listas generará o regenerará la IA correspondiente a la revisión vigente.
+
+
+## Norma editorial de originalidad de remates 🌶️ (prioritaria)
+
+Cada remate debe nacer de los detalles específicos y verificados de la noticia y añadir una segunda lectura ingeniosa, no un adorno genérico. Antes de elegir, plantear internamente hasta cinco enfoques humorísticos diferentes: ironía, contradicción, absurdo, doble sentido, metáfora inesperada o humor seco. Valorar sorpresa, mordiente, precisión, brevedad y respeto a los hechos.
+
+**Prohibidas las muletillas y paráfrasis fáciles**: «el calendario se ha vestido/salido de gala», «ha tomado nota», «no estaba en el guion», «ha llegado tarde a la fiesta» y otras plantillas reutilizables. Cuando estén disponibles, revisar los últimos 30 remates recientes del proyecto (y del proyecto hermano si accesibles); rechazar repeticiones de idea, metáfora, construcción o mecanismo cómico, no solo coincidencias literales. Buscar alternativas originales. No inventar hechos, no burlarse de víctimas ni convertir sátira política en propaganda. Si no existe remate digno y seguro, respetar las reglas preexistentes de obligatoriedad/opcionalidad: nunca publicar una frase de relleno.
+
+Esta norma se aplica tanto a elaboración inicial como a reelaboraciones y reparaciones de remate; no modifica los estados, límites de longitud, publicación ni entrega a Telegram.
