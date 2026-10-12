@@ -42,112 +42,143 @@ struct TimeMapCardContents:View {
 
     var body:some View {
         TimelineView(.periodic(from:.now,by:1)) { context in
-            let now=context.date
-            let zone=picked.flatMap { model.primaryZone(for:$0) }
-            let here=picked != nil && picked == model.activeCell
-            let estimated=here && (model.isResting ||
-                (picked.map { model.provisionalSeconds(for:[$0.id],now:now) > 0 } ?? false))
-            VStack(alignment:.leading,spacing:8) {
-                if mode == .compact {
-                    Grid(alignment:.leading,horizontalSpacing:12,verticalSpacing:5) {
-                        GridRow {
-                            Text("").frame(minWidth:64,alignment:.leading)
-                            Text("Total").foregroundStyle(.secondary)
-                            Text("Estancia").foregroundStyle(.secondary)
-                        }
-                        if let zone {
-                            GridRow {
-                                Text("Zona").foregroundStyle(.primary)
-                                Text(TimeMapCardClock.display(model.total(for:zone,now:now)))
-                                    .fontWeight(.semibold)
-                                Text(here ? TimeMapCardClock.display(
-                                    model.zoneStaySeconds(for:zone,now:now)) : "—")
-                                    .fontWeight(.semibold)
-                            }
-                        }
-                        if let picked {
-                            GridRow {
-                                Text("Cuadrícula").foregroundStyle(.primary)
-                                Text(TimeMapCardClock.display(model.total(for:picked,now:now)))
-                                    .fontWeight(.semibold)
-                                Text(here ? TimeMapCardClock.display(
-                                    model.staySeconds(now:now)) : "—")
-                                    .fontWeight(.semibold)
-                            }
-                        }
-                    }
-                    .font(.system(size:12,design:.rounded))
-                    .monospacedDigit()
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.68)
-                } else {
-                    if let zone {
-                        Label("Zona · \(zone.cellIDs.count) cuadrículas",
-                              systemImage:"square.3.layers.3d")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                        TimeMapDetailRow(label:"Tiempo total en la zona",
-                                         seconds:model.total(for:zone,now:now))
-                        if here {
-                            TimeMapDetailRow(label:"Estancia actual en la zona",
-                                             seconds:model.zoneStaySeconds(for:zone,now:now))
-                        }
-                    }
-                    if let picked {
-                        if zone != nil { Divider().padding(.vertical,2) }
-                        Label(here ? "Cuadrícula actual" : "Cuadrícula consultada",
-                              systemImage:"square.grid.3x3")
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                        TimeMapDetailRow(label:"Tiempo total en esta cuadrícula",
-                                         seconds:model.total(for:picked,now:now))
-                        if here {
-                            TimeMapDetailRow(label:"Estancia actual en esta cuadrícula",
-                                             seconds:model.staySeconds(now:now))
-                        }
-                    }
-                }
-                if estimated {
-                    Button {
-                        showEstimationHelp=true
-                    } label: {
-                        Label(model.isResting ? "Tiempo estimado · GPS en pausa" :
-                              "Tiempo provisional · pendiente de GPS",
-                              systemImage:"clock.badge.questionmark")
-                            .font(.system(size:11,weight:.medium))
-                            .foregroundStyle(.orange)
-                            .lineLimit(2)
-                            .fixedSize(horizontal:false,vertical:true)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Información sobre el tiempo estimado por GPS")
-                } else if model.isResting {
-                    Label("GPS en pausa · última ubicación",
-                          systemImage:"moon.zzz.fill")
-                        .font(.caption2)
-                        .foregroundStyle(.orange)
-                }
-                if mode == .expanded,model.isResting {
-                    Text("La ubicación permanece asumida mientras el GPS está en pausa. No es tiempo confirmado por un nuevo punto GPS.")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal:false,vertical:true)
-                }
-                if let age=model.gpsFixAge(now:now),age>120, !model.isResting, here {
-                    Label("Sin GPS reciente · contador provisional detenido",
-                          systemImage:"exclamationmark.triangle")
-                        .font(.caption2)
-                        .foregroundStyle(.orange)
+            TimeMapCardLiveRows(model:model,picked:picked,mode:mode,
+                                now:context.date,showEstimationHelp:$showEstimationHelp)
+        }
+        .alert("Tiempo estimado",isPresented:$showEstimationHelp) {
+            Button("Entendido",role:.cancel) { }
+        } message: {
+            Text(model.isResting ?
+                 "Mientras el GPS está en pausa, se añade tiempo asumido a la última cuadrícula. Se distingue del tiempo confirmado por posiciones GPS." :
+                 "Parte del contador es provisional hasta recibir y comprobar la siguiente posición GPS. No se guarda como tiempo confirmado por adelantado.")
+        }
+    }
+}
+
+private struct TimeMapCardLiveRows:View {
+    @ObservedObject var model:TimeModel
+    let picked:Cell?
+    let mode:TimeMapCardSize
+    let now:Date
+    @Binding var showEstimationHelp:Bool
+
+    private var zone:TimeCustomZone? {
+        picked.flatMap { model.primaryZone(for:$0) }
+    }
+    private var isHere:Bool { picked != nil && picked == model.activeCell }
+    private var isEstimated:Bool {
+        guard isHere,let picked else { return false }
+        return model.isResting ||
+            model.provisionalSeconds(for:[picked.id],now:now)>0
+    }
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:8) {
+            if mode == .compact {
+                table
+            } else {
+                detailed
+            }
+            estimateStatus
+        }
+        .frame(maxWidth:.infinity,alignment:.leading)
+    }
+
+    private var table:some View {
+        Grid(alignment:.leading,horizontalSpacing:12,verticalSpacing:5) {
+            GridRow {
+                Text("").frame(minWidth:64,alignment:.leading)
+                Text("Total").foregroundStyle(.secondary)
+                Text("Estancia").foregroundStyle(.secondary)
+            }
+            if let zone {
+                GridRow {
+                    Text("Zona")
+                    Text(TimeMapCardClock.display(model.total(for:zone,now:now)))
+                        .fontWeight(.semibold)
+                    Text(isHere ? TimeMapCardClock.display(
+                        model.zoneStaySeconds(for:zone,now:now)) : "—")
+                        .fontWeight(.semibold)
                 }
             }
-            .frame(maxWidth:.infinity,alignment:.leading)
-            .alert("Tiempo estimado",isPresented:$showEstimationHelp) {
-                Button("Entendido",role:.cancel) { }
-            } message: {
-                Text(model.isResting ?
-                     "Mientras el GPS está en pausa, se añade tiempo asumido a la última cuadrícula. Se distingue del tiempo confirmado por posiciones GPS." :
-                     "Parte del contador es provisional hasta recibir y comprobar la siguiente posición GPS. No se guarda como tiempo confirmado por adelantado.")
+            if let picked {
+                GridRow {
+                    Text("Cuadrícula")
+                    Text(TimeMapCardClock.display(model.total(for:picked,now:now)))
+                        .fontWeight(.semibold)
+                    Text(isHere ? TimeMapCardClock.display(
+                        model.staySeconds(now:now)) : "—")
+                        .fontWeight(.semibold)
+                }
             }
+        }
+        .font(.system(size:12,weight:.regular,design:.rounded))
+        .monospacedDigit()
+        .lineLimit(1)
+        .minimumScaleFactor(0.68)
+    }
+
+    private var detailed:some View {
+        VStack(alignment:.leading,spacing:8) {
+            if let zone {
+                Label("Zona · \(zone.cellIDs.count) cuadrículas",
+                      systemImage:"square.3.layers.3d")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                TimeMapDetailRow(label:"Tiempo total en la zona",
+                                 seconds:model.total(for:zone,now:now))
+                if isHere {
+                    TimeMapDetailRow(label:"Estancia actual en la zona",
+                                     seconds:model.zoneStaySeconds(for:zone,now:now))
+                }
+            }
+            if let picked {
+                if zone != nil { Divider().padding(.vertical,2) }
+                Label(isHere ? "Cuadrícula actual" : "Cuadrícula consultada",
+                      systemImage:"square.grid.3x3")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                TimeMapDetailRow(label:"Tiempo total en esta cuadrícula",
+                                 seconds:model.total(for:picked,now:now))
+                if isHere {
+                    TimeMapDetailRow(label:"Estancia actual en esta cuadrícula",
+                                     seconds:model.staySeconds(now:now))
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var estimateStatus:some View {
+        if isEstimated {
+            Button {
+                showEstimationHelp=true
+            } label: {
+                Label(model.isResting ? "Tiempo estimado · GPS en pausa" :
+                      "Tiempo provisional · pendiente de GPS",
+                      systemImage:"clock.badge.questionmark")
+                    .font(.system(size:11,weight:.medium))
+                    .foregroundStyle(.orange)
+                    .fixedSize(horizontal:false,vertical:true)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Información sobre el tiempo estimado por GPS")
+        } else if model.isResting {
+            Label("GPS en pausa · última ubicación",
+                  systemImage:"moon.zzz.fill")
+                .font(.caption2)
+                .foregroundStyle(.orange)
+        }
+        if mode == .expanded && model.isResting {
+            Text("La ubicación permanece asumida mientras el GPS está en pausa. No es tiempo confirmado por un nuevo punto GPS.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal:false,vertical:true)
+        }
+        if let age=model.gpsFixAge(now:now),age>120, !model.isResting, isHere {
+            Label("Sin GPS reciente · contador provisional detenido",
+                  systemImage:"exclamationmark.triangle")
+                .font(.caption2)
+                .foregroundStyle(.orange)
         }
     }
 }
