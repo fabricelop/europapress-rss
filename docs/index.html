@@ -141,6 +141,38 @@ function trendRows(){
    const status=String(row.status||row.telegram_package_status||'').toLowerCase();
    registerClosed(row.name||row.title||row.display_name,row.id||row.event_id,status,ts(row));
   }
+  // An editorial group has ONE Telegram card. Its followers inherit the
+  // confirmed closure of that card; they must not be shown as "not sent".
+  // Use explicit group IDs only, never fuzzy text matching.
+  const groupLeaders=new Map();
+  for(const row of requests){
+   const leader=String(row.group_leader_id||'');
+   const group=String(row.explanation_group_id||row.group_id||'');
+   if(leader&&group&&leader===String(row.id||'')){
+    groupLeaders.set(group,leader);
+   }
+  }
+  for(const row of requests){
+   const own=String(row.id||''),group=String(row.explanation_group_id||row.group_id||'');
+   const leader=String(row.group_leader_id||groupLeaders.get(group)||'');
+   if(!own||!group||!leader||leader===own)continue;
+   const closure=closedById.get(leader);
+   if(closure&&!closedById.has(own)){
+    // Keep source identity for diagnostic visibility.
+    closedById.set(own,{...closure,groupLeaderId:leader});
+   }
+  }
+  for(const delivery of ledger){
+   const status=String(delivery.status||'').toLowerCase();
+   if(!closedStatuses.has(status))continue;
+   const base=closedById.get(String(delivery.event_id||''));
+   if(!base)continue;
+   for(const member of delivery.group_member_ids||[]){
+    const id=String(member||'');
+    if(id&&!closedById.has(id))
+      closedById.set(id,{...base,groupLeaderId:String(delivery.event_id||'')});
+   }
+  }
   for(const row of requests){
    const name=normal(row.name);if(!name)continue;
    const existing=requestsByName.get(name);
