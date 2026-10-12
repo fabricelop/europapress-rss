@@ -114,7 +114,7 @@ import ActivityKit
                     (fix ?? now).addingTimeInterval(120))
         }
         let visual=TimeLiveVisualization.neighborhood(center:cell,totals:confirmed)
-        let chartIDs=zone?.cellIDs ?? Set([cell.id])
+        let chartIDs=Set(zone?.cellIDs ?? [cell.id])
         let sixHours=TimeLiveVisualization.hourlyPresence(
             intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
         let state=TimeMapActivityAttributes.ContentState(
