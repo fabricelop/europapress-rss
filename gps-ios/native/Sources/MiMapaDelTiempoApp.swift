@@ -1641,15 +1641,18 @@ struct TimeMapView: View {
                             (model.selected ?? model.activeCell)
                         TimeLiveCounterNumbers(model:model,picked:picked,
                                                following:followLocation)
-                        HStack {
-                            Label(model.gpsStatus, systemImage: "location.circle").font(.caption2)
-                            Spacer()
-                            if let cell = followLocation ? model.activeCell :
-                                (model.selected ?? model.activeCell) {
-                                Button("Histórico") { historyCell=cell }.font(.caption)
-                                Button("Nombre") { namingCell=cell }.font(.caption)
+                        // Acciones juntas, sin un segundo estado GPS que se corte.
+                        if let cell = followLocation ? model.activeCell :
+                            (model.selected ?? model.activeCell) {
+                            HStack(spacing:18) {
+                                Button("Histórico") { historyCell=cell }
+                                Button("Nombre") { namingCell=cell }
                             }
-                        }.foregroundStyle(.secondary)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth:.infinity,alignment:.leading)
+                            .padding(.top,3)
+                        }
                     }
                 }
                 .padding(16)
@@ -1754,65 +1757,90 @@ private struct TimeLiveCounterNumbers: View {
             let now=context.date
             let zone=picked.flatMap { model.primaryZone(for:$0) }
             let isHere=picked != nil && picked == model.activeCell
-            VStack(alignment:.leading,spacing:9) {
+            // Zona y cuadrícula: una sola columna, con etiqueta sobre el tiempo.
+            VStack(alignment:.leading,spacing:10) {
                 if let zone {
-                    HStack {
+                    HStack(spacing:6) {
                         Label("Zona · \(zone.cellIDs.count) cuadrículas",
                               systemImage:"square.3.layers.3d")
-                            .font(.caption2.weight(.semibold))
+                            .font(.caption.weight(.semibold))
                             .foregroundStyle(.secondary)
-                        Spacer()
-                        if following { Image(systemName:"location.fill").foregroundStyle(.teal) }
-                    }
-                    Text(DurationFormat.full(model.total(for:zone,now:now)))
-                        .font(.system(size:20,weight:.bold,design:.rounded))
-                        .monospacedDigit().lineLimit(1).minimumScaleFactor(0.65)
-                    if isHere {
-                        HStack(alignment:.top,spacing:12) {
-                            VStack(alignment:.leading,spacing:3) {
-                                Text("Estancia en zona").font(.caption2).foregroundStyle(.secondary)
-                                Text(DurationFormat.full(model.zoneStaySeconds(for:zone,now:now)))
-                                    .font(.subheadline.weight(.semibold)).monospacedDigit()
-                                    .lineLimit(1).minimumScaleFactor(0.6)
-                            }.frame(maxWidth:.infinity,alignment:.leading)
-                            VStack(alignment:.leading,spacing:3) {
-                                Text("Estancia en cuadrícula").font(.caption2).foregroundStyle(.secondary)
-                                Text(DurationFormat.full(model.staySeconds(now:now)))
-                                    .font(.subheadline.weight(.semibold)).monospacedDigit()
-                                    .lineLimit(1).minimumScaleFactor(0.6)
-                            }.frame(maxWidth:.infinity,alignment:.leading)
+                        Spacer(minLength:0)
+                        if following {
+                            Image(systemName:"location.fill")
+                                .foregroundStyle(.teal)
                         }
+                    }
+                    TimeCounterRow(label:"Tiempo total en la zona",
+                                   seconds:model.total(for:zone,now:now),
+                                   emphasized:true)
+                    if isHere {
+                        TimeCounterRow(label:"Estancia actual en la zona",
+                                       seconds:model.zoneStaySeconds(for:zone,now:now))
                     }
                 }
                 if let picked {
-                    HStack(alignment:.firstTextBaseline) {
-                        Text(zone == nil ? "Tiempo de cuadrícula" : "Acumulado de esta cuadrícula")
-                            .font(.caption2).foregroundStyle(.secondary)
-                        Spacer(minLength:5)
-                        Text(DurationFormat.full(model.total(for:picked,now:now)))
-                            .font(.subheadline.weight(.semibold))
-                            .monospacedDigit().lineLimit(1).minimumScaleFactor(0.6)
+                    if zone != nil {
+                        Divider().padding(.vertical,2)
                     }
-                    if zone == nil && isHere {
-                        HStack {
-                            Text("Estancia actual").font(.caption2).foregroundStyle(.secondary)
-                            Spacer()
-                            Text(DurationFormat.full(model.staySeconds(now:now)))
-                                .font(.subheadline.weight(.semibold)).monospacedDigit()
-                        }
+                    Label("Cuadrícula actual",systemImage:"square.grid.3x3")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    TimeCounterRow(label:"Tiempo total en esta cuadrícula",
+                                   seconds:model.total(for:picked,now:now),
+                                   emphasized:true)
+                    if isHere {
+                        TimeCounterRow(label:"Estancia actual en esta cuadrícula",
+                                       seconds:model.staySeconds(now:now))
                     }
                 }
                 if model.isResting {
-                    Label("GPS en pausa · tiempo asumido",systemImage:"moon.zzz.fill")
-                        .font(.caption2).foregroundStyle(.orange)
+                    Divider().padding(.vertical,2)
+                    Label("GPS en pausa · tiempo asumido",
+                          systemImage:"moon.zzz.fill")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.orange)
+                    Text("Mientras el GPS está en pausa, el tiempo sigue sumándose en la última ubicación.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal:false,vertical:true)
                 } else if let age=model.gpsFixAge(now:now),age>30 {
+                    Divider().padding(.vertical,2)
                     Text(age>120 ?
                          "Sin GPS reciente (\(Int(age/60)) min); contador provisional detenido." :
                          "Último GPS hace \(Int(age)) s · tiempo provisional")
-                        .font(.caption2).foregroundStyle(.orange)
+                        .font(.caption2)
+                        .foregroundStyle(.orange)
+                        .fixedSize(horizontal:false,vertical:true)
                 }
             }
+            .frame(maxWidth:.infinity,alignment:.leading)
         }
+    }
+}
+
+/// Los tiempos nunca se alinean en una columna opuesta a sus etiquetas.
+private struct TimeCounterRow:View {
+    let label:String
+    let seconds:TimeInterval
+    var emphasized:Bool=false
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:3) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal:false,vertical:true)
+            Text(DurationFormat.full(seconds))
+                .font(.system(size:emphasized ? 20 : 18,
+                              weight:emphasized ? .bold : .semibold,
+                              design:.rounded))
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
+                .frame(maxWidth:.infinity,alignment:.leading)
+        }
+        .frame(maxWidth:.infinity,alignment:.leading)
     }
 }
 struct TimeStatsView: View {
