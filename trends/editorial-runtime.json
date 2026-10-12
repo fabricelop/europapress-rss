@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T11:45:00+02:00",
-  "last_completed_at": "2026-10-12T11:45:35+02:00",
-  "updated_at": "2026-10-12T11:45:35+02:00",
+  "last_started_at": "2026-10-12T12:15:00+02:00",
+  "last_completed_at": "2026-10-12T12:18:00+02:00",
+  "updated_at": "2026-10-12T12:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,8 +18,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T111500+0200-chat",
-    "requested_at": "2026-10-12T11:15:05+02:00",
+    "run_id": "tr-20261012T121500+0200-chat",
+    "requested_at": "2026-10-12T12:15:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -27,15 +27,15 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T114500+0200-chat",
+    "run_id": "tr-20261012T121500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T11:45:00+02:00",
-    "updated_at": "2026-10-12T11:45:35+02:00",
-    "finished_at": "2026-10-12T11:45:35+02:00",
+    "started_at": "2026-10-12T12:15:00+02:00",
+    "updated_at": "2026-10-12T12:18:00+02:00",
+    "finished_at": "2026-10-12T12:18:00+02:00",
     "current": 0,
-    "total": 0,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "partial": false,
@@ -57,9 +57,10 @@
       "vercel_deploys": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 0
+      "remates_omitted": 0,
+      "skipped_jit": 2
     },
-    "message": "Cierre verificado · cola 0; sin preparing/update, reexplicaciones ni problematic. Saneamiento visual de Pendientes solicitado.",
+    "message": "Cierre verificado · cola 0; las 2 revisiones activas al inicio fueron cerradas por otra pasada antes de su barrera JIT.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,38 +73,45 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T11:45:00+02:00",
+        "at": "2026-10-12T12:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 0 revisiones activas; iniciando saneamiento visual de Pendientes y validación final."
+        "message": "Preparando pasada editorial · 2 revisiones activas en cola"
       },
       {
-        "at": "2026-10-12T11:45:20+02:00",
+        "at": "2026-10-12T12:16:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola, requests, reexplicaciones y captura reciente."
+        "trend_id": "f4eca47349a7",
+        "title": "Viva la Guardia Civil",
+        "message": "Releyendo estado autoritativo de Viva la Guardia Civil"
       },
       {
-        "at": "2026-10-12T11:45:30+02:00",
+        "at": "2026-10-12T12:17:35+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación autoritativa completada · cola 0 y sin estados editoriales activos."
+        "trend_id": "f4eca47349a7",
+        "title": "Viva la Guardia Civil",
+        "message": "Barrera JIT · revisión ya cerrada por ejecución concurrente; se omite sin duplicar"
       },
       {
-        "at": "2026-10-12T11:45:35+02:00",
+        "at": "2026-10-12T12:17:40+02:00",
+        "phase": "verifying",
+        "trend_id": "03e585c1605f",
+        "title": "patrona",
+        "message": "Barrera JIT · revisión ya cerrada en el mismo grupo; se omite sin duplicar"
+      },
+      {
+        "at": "2026-10-12T12:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola 0; saneamiento visual de Pendientes solicitado."
+        "message": "Cierre verificado · cola 0; las 2 revisiones iniciales quedaron cerradas antes de su tratamiento JIT"
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261012T114500+0200-chat",
+  "run_id": "tr-20261012T121500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -122,6 +130,7 @@
     "vercel_deploys": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 0
+    "remates_omitted": 0,
+    "skipped_jit": 2
   }
 }
