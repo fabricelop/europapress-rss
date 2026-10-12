@@ -257,6 +257,9 @@ def check(now=None,fix=True,trace_fetch=known_run,control_fetch=None,dispatch=re
                 else:
                     check_result["status"]="remote_command_active"
             check_result["attempts"]=old.get("attempts") or 0
+            check_result["last_request_at"]=old.get("last_request_at")
+            if old.get("command_id"):
+                check_result["last_requested_command_id"]=old["command_id"]
             if key:check_result["backlog_signature"]=key
             elif not check_result.get("pending_count"):
                 check_result["attempts"]=0
