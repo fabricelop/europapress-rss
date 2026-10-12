@@ -1,5 +1,15 @@
 # TTendencias · flujo editorial común
 
+## Regla prioritaria: ningún aviso Telegram queda huérfano (12/10/2026)
+
+Prevalece sobre cualquier instrucción heredada de excluir revisiones agrupadas o archivadas de la auditoría. **Ninguna tarjeta de Telegram o app puede borrarse por deduplicación sin una decisión explícita del usuario sobre esa tarjeta.** Una explicación conjunta no autoriza borrar otros avisos existentes: reutiliza el texto factual verificado para cerrar **cada `telegram_message_id` provisional** editando ese mismo mensaje. Conserva el motivo del agrupamiento y evita inventar hechos o remates.
+
+Al abrir CADA pasada, y otra vez antes de cerrar 0/0, consulta `trends/telegram-image-deliveries.json`, `telegram/orphan-audit-ttendencias.json`, `trends/requests.json`, `trends/editorial-queue.json` y las explicaciones. **Todo `status:"sent",final:false` sin borrar expresamente es trabajo de reparación editorial**, incluso si un job anterior marcó `explained`, `inactive` o `grouped` y retiró su ID de la cola. Top 10 sin explicar y peticiones manuales 11–30 siguen el flujo habitual. Elaborar con la información verificable disponible; si falta, buscar fuentes, no inventar ni ocultar la tarjeta.
+
+Tras cada ejecución, despacha/verifica `send-ttendencias-explained-telegram.yml`; coteja identificadores y el estado postenvío con `telegram/orphan-audit-ttendencias.json`. Una cola editorial vacía **no significa** que Telegram esté limpio. Si la actualización no es posible, conserva el provisional y documenta la causa para el aviso Telegram de la auditoría; no cierres en falso. La API Bot Telegram no permite leer retrospectivamente el chat entero, de modo que valida confirmaciones API y ledger, sin afirmar inspección literal del historial.
+
+
+
 Este archivo es la ÚNICA fuente de verdad para la elaboración editorial de TTendencias. Debe ser usado tanto por el botón `Ejecutar ahora` como por las programaciones automáticas. La activación, horarios, anti-solape y telemetría pertenecen al envoltorio que invoque este archivo y no se redefinen aquí.
 
 ## Selección obligatoria para cada pasada (Top 30)
