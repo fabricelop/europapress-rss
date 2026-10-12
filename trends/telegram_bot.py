@@ -1579,9 +1579,49 @@ def notify_reexplain(result, chat_id, callback_id=None):
         pass
 
 
+def handle_index_autoheal(callback):
+    """Only the private owner can request the bounded GitHub autocorrection."""
+    message=callback.get("message") or {}
+    chat_id=int((message.get("chat") or {}).get("id") or 0)
+    sender=int((callback.get("from") or {}).get("id") or 0)
+    state=load_remote_json("trends/telegram-bot-state.json",load(STATE,{}))
+    authorized=int(state.get("chat_id") or 0)
+    if not authorized or chat_id!=authorized or sender!=authorized:
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],
+              "text":"Solo el propietario puede solicitar reparación.",
+              "show_alert":True})
+        return "unauthorized"
+    token=(os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN") or "").strip()
+    if not token:
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],
+              "text":"GitHub no está disponible; reintenta.",
+              "show_alert":True})
+        return "unavailable"
+    url="https://api.github.com/repos/fabricelop/europapress-rss/actions/workflows/tt-autorepair.yml/dispatches"
+    payload=json.dumps({"ref":"main","inputs":{"force":"true"}}).encode()
+    req=urllib.request.Request(url,method="POST",data=payload,headers={
+        "Authorization":"Bearer "+token,"Content-Type":"application/json",
+        "Accept":"application/vnd.github+json","User-Agent":"ttendencias-autoheal"})
+    try:
+        with urllib.request.urlopen(req,timeout=25) as result:
+            if result.status!=204:raise RuntimeError("dispatch_not_accepted")
+    except Exception as exc:
+        print("TT_INDEX_AUTOREPAIR_FAILED",type(exc).__name__,flush=True)
+        call("answerCallbackQuery",{"callback_query_id":callback["id"],
+              "text":"No se pudo solicitar la revisión. Reintenta.",
+              "show_alert":True})
+        return "failed"
+    call("answerCallbackQuery",{"callback_query_id":callback["id"],
+          "text":"Autocorrección solicitada; comprobaré ambos bots."})
+    print("TT_INDEX_AUTOREPAIR_REQUESTED ttendencias",flush=True)
+    return "requested"
+
+
 def route_package_callback(callback):
     """Use the same approved Telegram package routing in web and legacy mode."""
     data = str(callback.get("data") or "")
+    if data == "tx:heal":
+        return handle_index_autoheal(callback)
     if data.startswith("tx:i:"):
         return "instagram_retired"
     if data.startswith("tx:r:"):
