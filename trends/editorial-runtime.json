@@ -3,15 +3,12 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T22:45:00+02:00",
-  "last_completed_at": "2026-10-12T22:52:40+02:00",
-  "updated_at": "2026-10-12T22:52:40+02:00",
+  "last_started_at": "2026-10-12T23:15:00+02:00",
+  "last_completed_at": "2026-10-12T23:23:00+02:00",
+  "updated_at": "2026-10-12T23:23:00+02:00",
   "status": "success",
   "processed_ids": [
-    "fc4dc0030769",
-    "24f5d65202da",
-    "af8e07b1aae9",
-    "9583483a95fa"
+    "fc4dc0030769"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
@@ -23,8 +20,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T224500+0200-chat",
-    "requested_at": "2026-10-12T22:45:00+02:00",
+    "run_id": "tr-20261012T231500+0200-chat",
+    "requested_at": "2026-10-12T23:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "asynchronous"
   },
@@ -32,25 +29,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T224500+0200-chat",
+    "run_id": "tr-20261012T231500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T22:45:00+02:00",
-    "updated_at": "2026-10-12T22:52:40+02:00",
-    "finished_at": "2026-10-12T22:52:40+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-12T23:15:00+02:00",
+    "updated_at": "2026-10-12T23:23:00+02:00",
+    "finished_at": "2026-10-12T23:23:00+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
-      "explanation_groups": 2,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
       "new_cards": 0,
-      "revisions_updated": 4,
-      "grouped_into_existing_card": 2,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 1,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -60,13 +57,14 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 4,
-      "telegram_orphans": 0
+      "telegram_provisionals_finalized": 0,
+      "telegram_orphans": 0,
+      "telegram_group_cards_updated": 1
     },
-    "message": "Cierre verificado · 4/4 revisiones tratadas en 2 grupos; cola 0 y Telegram consistente.",
+    "message": "Cierre verificado · Fofana rev.1 actualizada al 3-3; cola 0 y grupo Telegram actualizado sin triplicar el mensaje.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -74,133 +72,162 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 20
     },
     "remate_selections": [
       {
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "selected": "🌶️ Ure estrenó gol y luego dejó el segundo en bandeja.",
-        "originality": "specific_to_goal_and_assist"
-      },
-      {
-        "trend_id": "af8e07b1aae9",
-        "title": "Españoles",
-        "selected": "🌶️ El gentilicio ha acabado haciendo horas extra en los discursos.",
-        "originality": "specific_to_institutional_12O_messages"
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "selected": "🌶️ El descuento se apuntó un 2-1 por su cuenta.",
+        "originality": "specific_to_three_stoppage_time_goals"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-12T22:45:00+02:00",
+        "at": "2026-10-12T23:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio · 4 revisiones editoriales activas. Validando estado autoritativo y saneamiento de Pendientes."
+        "message": "Inicio · 1 reexplicación activa. Validando cola, Explicadas y correspondencia Telegram."
       },
       {
-        "at": "2026-10-12T22:46:00+02:00",
+        "at": "2026-10-12T23:15:40+02:00",
         "phase": "verifying",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Releyendo estado autoritativo del grupo Levante–Sevilla."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Releyendo estado autoritativo del grupo Fofana · Robbie Ure · #LevanteSevilla."
       },
       {
-        "at": "2026-10-12T22:46:20+02:00",
+        "at": "2026-10-12T23:16:10+02:00",
         "phase": "investigating",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Buscando detonante actual y contrastando el partido en directo."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Buscando resultado final y detonante actualizado del Levante-Sevilla."
       },
       {
-        "at": "2026-10-12T22:47:00+02:00",
+        "at": "2026-10-12T23:16:35+02:00",
         "phase": "investigating",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Hecho esencial verificado · Fofana, Robbie Ure y #LevanteSevilla pertenecen al mismo Levante–Sevilla."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Contrastando fuente 1/2 · resultado final, goles y asistencias."
       },
       {
-        "at": "2026-10-12T22:48:00+02:00",
+        "at": "2026-10-12T23:17:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Contrastando fuente 2/2 · rendimiento de Fofana y desenlace 3-3."
+      },
+      {
+        "at": "2026-10-12T23:17:20+02:00",
+        "phase": "investigating",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Hecho esencial verificado · 3-3; Ure hizo gol+asistencia y Fofana asistió el 2-3."
+      },
+      {
+        "at": "2026-10-12T23:18:00+02:00",
         "phase": "drafting",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Redactando explicación factual agrupada y comprobando límite de X."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Redactando explicación factual actualizada del grupo."
       },
       {
-        "at": "2026-10-12T22:48:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Evaluando candidatos de remate y descartando fórmulas repetidas."
-      },
-      {
-        "at": "2026-10-12T22:49:00+02:00",
+        "at": "2026-10-12T23:18:20+02:00",
         "phase": "drafting",
-        "trend_id": "af8e07b1aae9",
-        "title": "Españoles",
-        "message": "Redactando explicación factual del 12-O y contrastando mensajes institucionales."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Comprobando límite de X · texto final 266 caracteres."
       },
       {
-        "at": "2026-10-12T22:49:20+02:00",
+        "at": "2026-10-12T23:18:40+02:00",
         "phase": "remate_selection",
-        "trend_id": "af8e07b1aae9",
-        "title": "Españoles",
-        "message": "Remate seleccionado · humor sobre la repetición institucional del gentilicio, sin sesgo partidista."
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Generando candidatos de remate específicos del descuento."
       },
       {
-        "at": "2026-10-12T22:49:50+02:00",
+        "at": "2026-10-12T23:19:05+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Evaluando candidatos con ratings y penalizando fórmulas repetidas."
+      },
+      {
+        "at": "2026-10-12T23:19:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Remate seleccionado · «El descuento se apuntó un 2-1 por su cuenta»."
+      },
+      {
+        "at": "2026-10-12T23:19:40+02:00",
         "phase": "persisting",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Guardando ficha Explicada de Fofana rev.1 y sincronizando el grupo Levante-Sevilla."
+      },
+      {
+        "at": "2026-10-12T23:20:30+02:00",
+        "phase": "persisting",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Actualizando requests de Fofana, Robbie Ure y #LevanteSevilla con el resultado final."
+      },
+      {
+        "at": "2026-10-12T23:20:50+02:00",
+        "phase": "verifying",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Verificando id+revision y texto persistido · cinco campos idénticos."
+      },
+      {
+        "at": "2026-10-12T23:21:00+02:00",
+        "phase": "persisting",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Retirando Fofana rev.1 de la cola editorial tras la verificación atómica."
+      },
+      {
+        "at": "2026-10-12T23:21:20+02:00",
+        "phase": "verifying",
+        "trend_id": "fc4dc0030769",
+        "title": "Fofana",
+        "message": "Releyendo main y verificando id+revision, cola y entrega Telegram del grupo actualizado."
+      },
+      {
+        "at": "2026-10-12T23:22:00+02:00",
+        "phase": "verifying",
         "trend_id": "9583483a95fa",
         "title": "#LevanteSevilla",
-        "message": "Guardando fichas Explicadas y sincronizando las cuatro revisiones exactas en requests."
+        "message": "Entrega Telegram verificada · la tarjeta canónica agrupada fue editada una sola vez; sin fan-out a las dos copias finales antiguas."
       },
       {
-        "at": "2026-10-12T22:51:00+02:00",
-        "phase": "verifying",
-        "trend_id": "9583483a95fa",
-        "title": "#LevanteSevilla",
-        "message": "Verificando id+revision y texto persistido antes de retirar la cola."
-      },
-      {
-        "at": "2026-10-12T22:51:30+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Retirando las cuatro revisiones verificadas de la cola editorial."
-      },
-      {
-        "at": "2026-10-12T22:52:05+02:00",
+        "at": "2026-10-12T23:22:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando entrega Telegram y correspondencia app↔Telegram."
+        "message": "Auditoría Telegram verificada · 3/3 correspondencias, 0 huérfanos y 0 incidencias."
       },
       {
-        "at": "2026-10-12T22:52:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Auditoría Telegram verificada · 4 avisos finalizados y 0 huérfanos."
-      },
-      {
-        "at": "2026-10-12T22:52:40+02:00",
+        "at": "2026-10-12T23:23:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 4/4 revisiones tratadas en 2 grupos; cola 0 y Telegram consistente."
+        "message": "Cierre verificado · Fofana rev.1 actualizada al 3-3; cola 0 y grupo Telegram actualizado sin triplicar el mensaje."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261012T224500+0200-chat",
+  "run_id": "tr-20261012T231500+0200-chat",
   "summary": {
-    "trends_processed": 4,
-    "trends_explained": 4,
-    "explanation_groups": 2,
+    "trends_processed": 1,
+    "trends_explained": 1,
+    "explanation_groups": 1,
     "new_cards": 0,
-    "revisions_updated": 4,
-    "grouped_into_existing_card": 2,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 1,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -210,10 +237,11 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
-    "telegram_provisionals_finalized": 4,
-    "telegram_orphans": 0
+    "telegram_provisionals_finalized": 0,
+    "telegram_orphans": 0,
+    "telegram_group_cards_updated": 1
   }
 }
