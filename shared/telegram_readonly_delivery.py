@@ -141,8 +141,23 @@ def recover_news_metadata(eid,*rows):
     return title,url,source,image
 
 def lifecycle_baseline():
-    """Confirmed empty Telegram chats: archive prior deliveries, not editorial history."""
-    return load("telegram/lifecycle-baseline.json",{})
+    """Confirmed empty Telegram chats: archive prior deliveries, not editorial history.
+
+    Both Telegram Actions jobs use sparse-checkout. Read the committed
+    checkpoint directly from the git tree when not mounted locally.
+    """
+    local=load("telegram/lifecycle-baseline.json",None)
+    if isinstance(local,dict):return local
+    if ROOT!=Path(__file__).resolve().parents[1]:return {}
+    try:
+        import subprocess
+        result=subprocess.run(
+            ["git","show","origin/main:telegram/lifecycle-baseline.json"],
+            cwd=str(ROOT),capture_output=True,text=True,timeout=8,check=True)
+        return json.loads(result.stdout)
+    except (OSError,ValueError,subprocess.SubprocessError):
+        print("TT_LIFECYCLE_BASELINE_NOT_READABLE",flush=True)
+        return {}
 
 def baseline_details(project):
     doc=lifecycle_baseline()
