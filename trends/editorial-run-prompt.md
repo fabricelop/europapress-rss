@@ -376,3 +376,12 @@ Solo considera el item completado cuando todo lo anterior esté verificado. Si p
 La ejecución completa NO puede declararse satisfactoria si cualquiera de los items que intentó tratar sigue en `preparing` o `update` por falta de outbox o aplicación editorial. En ese caso el estado operativo debe quedar como pendiente/waiting o failure según corresponda, nunca como success. Las tendencias `problematic` que sigan en Top 10 son la única excepción: pueden permanecer visibles para un nuevo intento posterior sin convertir el ciclo en fallo.
 
 Nunca uses una rama o PR como sustituto silencioso de `main`.
+
+
+## Control de originalidad y variedad de remates (prioridad editorial)
+
+Antes de publicar cualquier línea 🌶️, generar internamente hasta cinco enfoques realmente diferentes (ironía, contraste, absurdo, doble sentido, sátira concreta, humor seco). Elegir por especificidad, sorpresa, claridad y rigor, no por facilidad. El remate debe aportar una segunda lectura del hecho verificado, nunca ser una frase genérica que podría acompañar cualquier noticia.
+
+**Antimuletillas:** rechazar «el calendario se ha vestido/salido de gala», «ha tomado nota», «no estaba en el guion», «ha llegado tarde a la fiesta» y variaciones triviales. Evitar repetir en noticias próximas la misma imagen mental, estructura sintáctica o mecanismo humorístico, aunque cambien las palabras. Contrastar, cuando haya registros disponibles, con los últimos 30 remates publicados/explicados del propio proyecto y, si son accesibles, del proyecto hermano. Si hay coincidencia conceptual, regenerar candidatos distintos. No inventar hechos, no hacer chistes sobre víctimas y mantener neutralidad política. Si ningún remate supera este filtro, aplicar las reglas existentes de remate obligatorio/opcional según categoría; nunca rellenar con un cliché.
+
+En la fase `remate_selection` dejar constancia de la evaluación de originalidad y repetición en la telemetría existente, sin alterar formatos de salida ni flujos de Telegram.
