@@ -101,14 +101,18 @@ assert.equal(stillInExplained._inExplained,true);
 st.data.mobileDecisions.items.push({id:'test-ready',status:'deleted'});
 const closedInExplained=tt.trendRows()[0];
 assert.equal(closedInExplained._status,'BORRADA','Closing Explicadas must show deleted terminal state');
-assert.equal(closedInExplained.explanation,'','Deleted Telegram cards must not expose a copy/publish action');
+assert.equal(closedInExplained.explanation,'Explicación completa de la primera tendencia.',
+  'A closed Explicadas card retains the explanation in Top 30');
+assert.equal(closedInExplained._telegramConfirmed,false,
+  'A closed trend must never recover publishing actions');
 assert.equal(closedInExplained._inExplained,false);
 st.data.deliveries.items.push({event_id:'test-group',revision:0,
     name:'Evento agrupado',status:'sent',final:true,delivered_at:new Date().toISOString()});
 assert.equal(tt.trendRows()[2]._status,'PENDIENTE EN EXPLICADAS','Grouped trend shares the active explanation');
 st.data.mobileDecisions.items.push({id:'test-group',status:'deleted'});
 assert.equal(tt.trendRows()[2]._status,'BORRADA','Grouped deleted card must remain closed in Top 30');
-assert.equal(tt.trendRows()[2].explanation,'','Grouped deleted content is historical, not publishable');
+assert.equal(tt.trendRows()[2].explanation,'Explicación compartida de la tercera tendencia.',
+  'A closed grouped explanation remains visible for consultation');
 st.tab='explicadas';
 const inbox=tt.trendRows();
 assert.equal(inbox.length,1,'Explicadas must include only new active delivered cards');
