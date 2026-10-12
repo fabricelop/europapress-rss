@@ -1,0 +1,96 @@
+name: TT Telegram indices fijados
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "shared/telegram_pinned_index.py"
+      - "telegram/lifecycle-baseline.json"
+      - "telegram/ttittulares-deliveries.json"
+      - "trends/telegram-image-deliveries.json"
+      - "ttittulares/editorial-queue.json"
+      - "trends/editorial-queue.json"
+      - ".github/workflows/telegram-pinned-index.yml"
+permissions:
+  contents: write
+concurrency:
+  group: tt-both-private-chat-pinned-indices
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/telegram_pinned_index.py
+            /telegram/lifecycle-baseline.json
+            /telegram/ttittulares-deliveries.json
+            /trends/telegram-image-deliveries.json
+            /ttittulares/editorial-queue.json
+            /ttittulares/status.json
+            /trends/editorial-queue.json
+            /trends/telegram-bot-state.json
+            /telegram/pinned-index-ttittulares.json
+            /telegram/pinned-index-ttendencias.json
+      - name: Verificar el indice sin escribir en Telegram
+        run: |
+          python3 -m py_compile shared/telegram_pinned_index.py
+          python3 shared/telegram_pinned_index.py selftest
+      - name: Actualizar y fijar un unico mensaje en cada chat
+        id: update
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
+        run: |
+          set -uo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          result=0
+          python3 shared/telegram_pinned_index.py ttittulares || result=1
+          python3 shared/telegram_pinned_index.py ttendencias || result=1
+          echo "result=$result" >> "$GITHUB_OUTPUT"
+          for project in ttittulares ttendencias; do
+            file="telegram/pinned-index-$project.json"
+            if test -f "$file"; then cp "$file" "/tmp/pinned-index-$project.json"; fi
+          done
+      - name: Persistir IDs del índice sin crear duplicados
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main
+            git reset --hard origin/main
+            for project in ttittulares ttendencias; do
+              file="telegram/pinned-index-$project.json"
+              if test -f "/tmp/pinned-index-$project.json"; then
+                cp "/tmp/pinned-index-$project.json" "$file"
+                git add --sparse "$file"
+              fi
+            done
+            if git diff --cached --quiet; then break; fi
+            git commit -m "Actualizar índices fijados de ambos bots Telegram"
+            if git push origin HEAD:main; then break; fi
+            if test "$attempt" -eq 6; then
+              echo "Error: no se pudo persistir el mensaje fijado" >&2
+              exit 1
+            fi
+            sleep "$attempt"
+          done
+      - name: Validar entrega y fijación
+        if: always()
+        env:
+          STEP_RESULT: ${{ steps.update.outputs.result }}
+        run: |
+          if test "$STEP_RESULT" != "0"; then
+            echo "Al menos un bot no ha podido actualizar/fijar su índice; consultar logs" >&2
+            exit 1
+          fi
