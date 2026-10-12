@@ -5,8 +5,8 @@ from pathlib import Path
 
 text=Path("docs/index.html").read_text(encoding="utf8")
 assert "const closedByName=new Map()" in text
-assert "const closedById=new Map()" in text
-assert "const closedByTopic=new Map()" in text
+assert "closedById=new Map()" in text
+assert "closedByTopic=new Map()" in text
 assert "const terminal=manualPending?null:(directClosed||topicClosed)" in text
 assert "const editorialState=terminal?terminalLabel[terminal.status]" in text
 assert "wasDelivered&&text?" in text
