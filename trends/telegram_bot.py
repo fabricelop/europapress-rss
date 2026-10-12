@@ -688,8 +688,6 @@ def cleanup_old_panels(state, keep=None):
     current = state.get("panel_message_id")
     if current:
         ids.add(current)
-    # Paneles creados durante la puesta en marcha antes de guardar historial.
-    ids.update([4, 6, 8, 62])
     for mid in sorted(ids):
         if keep is not None and int(mid) == int(keep):
             continue
@@ -698,55 +696,11 @@ def cleanup_old_panels(state, keep=None):
 
 
 def sync_panel(force_new=False):
-    state = load(STATE, {
-        "chat_id": None,
-        "panel_message_id": None,
-        "panel_message_ids": [],
-        "last_update_id": 0,
-        "pending": {}
-    })
-    chat_id = state.get("chat_id")
-    if not chat_id:
-        return False
+    """Retired: the compact fixed index is the only status panel.
 
-    unpin_panels(chat_id)
-
-    payload = {
-        "chat_id": chat_id,
-        "text": panel_text(),
-        "reply_markup": panel_keyboard(),
-        "disable_web_page_preview": True,
-    }
-
-    mid = state.get("panel_message_id")
-    if mid and not force_new:
-        try:
-            call("editMessageText", {**payload, "message_id": int(mid)})
-            state["panel_message_ids"] = [int(mid)]
-            send_new_status_alerts(state)
-            save(STATE, state)
-            return True
-        except Exception as e:
-            if "message is not modified" in str(e).lower():
-                state["panel_message_ids"] = [int(mid)]
-                send_new_status_alerts(state)
-                save(STATE, state)
-                return True
-            print("No se pudo editar el panel existente:", e, flush=True)
-
-    # Si la referencia guardada ya no se puede editar, intentar borrar ese
-    # mensaje explícitamente antes de crear el sustituto. Así no dejamos
-    # tablas antiguas visibles cuando Telegram devuelve un error de edición.
-    if mid:
-        delete_panel(chat_id, mid)
-    cleanup_old_panels(state)
-    msg = call("sendMessage", payload)
-    new_mid = int(msg["message_id"])
-    state["panel_message_id"] = new_mid
-    state["panel_message_ids"] = [new_mid]
-    send_new_status_alerts(state)
-    save(STATE, state)
-
+    Legacy message IDs stay in the persisted state for safe cleanup.
+    Never guess IDs or publish a replacement panel.
+    """
     return True
 
 
@@ -1308,21 +1262,10 @@ def handle_run_command(message):
         return True
     try:
         result = request_windows_editorial_run()
-        if result["status"] == "already_requested":
-            note = "TTendencias: ya hay una orden reciente. No la duplico. ID: " + result["command_id"]
-        else:
-            note = ("TTendencias: solicitud /run guardada (NO es confirmación de ejecución). "
-                    "El editor debe recogerla y confirmar RUNNING; si no aparece, la cola sigue pendiente. ID: "
-                    + result["command_id"])
-        call("sendMessage", {"chat_id": chat["id"], "text": note})
-        print("TTENDENCIAS_RUN_ACCEPTED " + result["command_id"], flush=True)
+        print("TTENDENCIAS_RUN_ACCEPTED",result.get("command_id"),
+              result.get("status"),flush=True)
     except Exception as exc:
-        print("TTENDENCIAS_RUN_FAILED " + str(exc), flush=True)
-        try:
-            call("sendMessage", {"chat_id": chat["id"],
-                "text": "TTendencias: no se ha podido enviar /run a Windows. Revisa el listener y GitHub."})
-        except Exception as notify_exc:
-            print("TTENDENCIAS_RUN_ACK_FAILED " + type(notify_exc).__name__, flush=True)
+        print("TTENDENCIAS_RUN_FAILED",type(exc).__name__,str(exc)[:200],flush=True)
     return True
 
 

@@ -538,22 +538,10 @@ def handle_live_action(token, chat, act, github, update):
         return
     if kind == "run":
         cmd, duplicate = request_editorial(github)
-        label = "La solicitud ya estaba registrada" if duplicate else "Solicitud /run guardada en GitHub"
-        telegram_call(token, "sendMessage", {"chat_id": chat,
-            "text": "TTiTTulares: " + label + ". Windows la recogerá. ID: " + cmd})
+        print("TTI_NATIVE_RUN_"+("EXISTING" if duplicate else "REQUESTED"),cmd,flush=True)
         return
-    if kind == "help":
-        telegram_call(token, "sendMessage", {"chat_id": chat,
-            "text": "TTiTTulares: /run inicia la pasada editorial. Puedes enviar una noticia "
-                    "o un enlace para proponerla. Responde a una tarjeta para hacer una pregunta."})
-        return
-    if kind == "invalid_mobile":
-        telegram_call(token, "sendMessage", {"chat_id": chat,
-            "text": "El enlace de TT Actualidad ya no es válido. Abre la tarjeta otra vez."})
-        return
-    if kind == "unknown_command":
-        telegram_call(token, "sendMessage", {"chat_id": chat,
-            "text": "Comando no reconocido. Utiliza /run o envía una propuesta de noticia."})
+    if kind in {"help","invalid_mobile","unknown_command"}:
+        print("TTI_NATIVE_SILENT_TECHNICAL_NOTICE",kind,flush=True)
         return
     if kind == "question":
         try:
@@ -651,8 +639,7 @@ def listen():
                 if kind == "mobile" and act["action"] == "rework":
                     kind = "mobile_await"
                 if kind == "mobile_rework_reply":
-                    telegram_call(token, "sendMessage", {"chat_id": chat,
-                        "text": "Instrucciones recibidas. Las he añadido a la cola editorial."})
+                    print("TTI_NATIVE_REWORK_QUEUED",uid,flush=True)
                 persisted = commit_event(update, act)
                 last = uid
                 if kind == "decision":
@@ -670,15 +657,9 @@ def listen():
                             "callback_query_id": act["callback_id"],
                             "text": ack})
                     except (urllib.error.HTTPError, RuntimeError):
-                        telegram_call(token, "sendMessage", {"chat_id": chat,
-                            "text": "La decisión se ha registrado; Telegram no pudo confirmar el botón."})
-                elif kind == "proposal":
-                    telegram_call(token, "sendMessage", {"chat_id": chat,
-                        "text": "Propuesta registrada en la cola editorial."})
-                elif kind == "mobile" and act["action"] != "rework":
-                    telegram_call(token, "sendMessage", {"chat_id": chat,
-                        "text": "Orden registrada. GitHub aplicará " + act["action"] +
-                                " a " + act["project"] + "."})
+                        print("TTI_NATIVE_CALLBACK_ACK_FAILED",uid,flush=True)
+                elif kind in {"proposal","mobile"}:
+                    print("TTI_NATIVE_COMMAND_QUEUED",uid,kind,flush=True)
                 if persisted and kind == "decision":
                     dispatch_workflow(github, "process-ttittulares-telegram-decisions.yml")
                 elif persisted and kind == "proposal":
