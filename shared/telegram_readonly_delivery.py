@@ -761,6 +761,7 @@ def process(project,now,token,chat):
         linked=[r for r in active_entries if str(r.get("event_id") or "")==eid]
         # Cross-event similarity is an editorial concern, not a Telegram
         # deletion rule.  For TTiTTulares every distinct active card must get
+        # its own delivery according to the priority editorial rule (12/10/2026).
         # its own Telegram counterpart; deleting an older related card never
         # authorizes suppressing this one.  TTendencias keeps its separate
         # anti-repeat policy here.
