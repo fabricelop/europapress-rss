@@ -118,7 +118,29 @@ function trendRows(){
   // not by mutable ranking or by Telegram delivery alone.
   const normal=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES').replace(/\s+/g,' ');
   const requestsByName=new Map(),completedByName=new Map();
-  const ts=row=>Date.parse(row.explained_at||row.requested_at||row.updated_at||'')||0;
+  const ts=row=>Date.parse(row.updated_at||row.deleted_at||row.published_at||row.dismissed_at||
+    row.explained_at||row.requested_at||row.delivered_at||'')||0;
+  const closedStatuses=new Set(['deleted','published','dismissed','removed']);
+  const topic=value=>{
+   const name=normal(value).replace(/^#+/,'');
+   return ['hispanidad','feliz dia de la hispanidad','12deoctubre'].includes(name)?'fiesta_nacional_12_oct':'';
+  };
+  const closedByName=new Map(),closedById=new Map(),closedByTopic=new Map();
+  const registerClosed=(name,id,status,at)=>{
+   if(!closedStatuses.has(status))return;
+   const key=normal(name),entry={status,at:Number(at)||0,id:String(id||'')};
+   if(key&&(!closedByName.has(key)||entry.at>=closedByName.get(key).at))
+    closedByName.set(key,entry);
+   if(id&&(!closedById.has(String(id))||entry.at>=closedById.get(String(id)).at))
+    closedById.set(String(id),entry);
+   const group=topic(name);
+   if(group&&(!closedByTopic.has(group)||entry.at>=closedByTopic.get(group).at))
+    closedByTopic.set(group,entry);
+  };
+  for(const row of [...requests,...ledger,...(state.data.mobileDecisions?.items||[])]){
+   const status=String(row.status||row.telegram_package_status||'').toLowerCase();
+   registerClosed(row.name||row.title||row.display_name,row.id||row.event_id,status,ts(row));
+  }
   for(const row of requests){
    const name=normal(row.name);if(!name)continue;
    const existing=requestsByName.get(name);
@@ -182,8 +204,16 @@ function trendRows(){
       Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
    const working=['preparing','update','ready'].includes(status);
    const failure=status==='problematic';
-   const nameKey=normal(x.name),inExplained=activeInExplained.has(nameKey);
+   const nameKey=normal(x.name);
    const currentId=String(req.id||finished.id||'');
+   const manualPending=['preparing','update','ready'].includes(status)&&
+    req.auto_queued===false&&
+    ['github_pages_authorized_issue','telegram_reexplain','telegram_private_deeplink_native'].includes(String(req.request_source||''));
+   const directClosed=closedById.get(currentId)||closedByName.get(nameKey);
+   const groupedClosed=closedByTopic.get(topic(x.name))||null;
+   const topicClosed=groupedClosed&&groupedClosed.at>Date.now()-7*86400000?groupedClosed:null;
+   const terminal=manualPending?null:(directClosed||topicClosed);
+   const inExplained=!terminal&&activeInExplained.has(nameKey);
    const currentRevision=Number(finished.revision??req.revision??0);
    const explainedTime=Date.parse(finished.explained_at||req.explained_at||'')||0;
    const wasDelivered=(confirmedTelegramByName.get(nameKey)||[]).some(delivery=>
@@ -191,16 +221,18 @@ function trendRows(){
      delivery.revision===currentRevision&&
      (!explainedTime||delivery.at+60000>=explainedTime));
    const readyText=String(finished.explanation||req.explanation||'').trim();
-   const text=inExplained?'':wasDelivered?readyText:'';
-   const editorialState=inExplained?'PENDIENTE EN EXPLICADAS':
+   const text=terminal||inExplained?'':wasDelivered?readyText:'';
+   const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
+   const editorialState=terminal?terminalLabel[terminal.status]:
+      inExplained?'PENDIENTE EN EXPLICADAS':
       working?'EN ELABORACIÓN':failure?'REVISIÓN':
       wasDelivered&&text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
       Number(x.rank||i+1)>10&&req.auto_queued===true?
         'NO PUBLICADA · PREPARAR NOVEDAD':
-      readyText?'PENDIENTE DE TELEGRAM':
+      readyText?'EXPLICACIÓN SIN ENTREGAR':
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
-    _status:editorialState,_topOnly:true,_inExplained:inExplained,_telegramConfirmed:wasDelivered,
+    _status:editorialState,_topOnly:true,_inExplained:inExplained,_telegramConfirmed:!!(wasDelivered&&!terminal),
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:inExplained||!wasDelivered?'':finished.closer_text||req.closer_text||'',
     explained_at:latestAt,revision:finished.revision||req.revision||0};
@@ -331,7 +363,7 @@ function rowCard(x,i){
   // NOT currently in Explicadas or under editorial processing. A historical
   // explanation without Telegram delivery is not a completed current card.
   if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
-     !['EN ELABORACIÓN','REVISIÓN','EXPLICADA'].includes(x._status)){
+     !['EN ELABORACIÓN','REVISIÓN','EXPLICADA','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
    command('Preparar novedad','prepare');
   }
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
