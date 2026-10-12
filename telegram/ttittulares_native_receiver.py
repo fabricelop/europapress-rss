@@ -182,6 +182,15 @@ def request_editorial(token):
     raise RuntimeError("No se pudo persistir /run")
 
 
+TECHNICAL_RECEIPTS_PENDING = []
+TECHNICAL_NOTICE_PREFIXES = (
+    "TTiTTulares: Solicitud", "TTiTTulares: La solicitud",
+    "TTiTTulares: /run", "Propuesta registrada en la cola editorial.",
+    "Orden registrada. GitHub aplicará", "Instrucciones recibidas.",
+    "La decisión se ha registrado;", "El enlace de TT Actualidad ya no es válido.",
+    "Comando no reconocido."
+)
+
 def telegram_call(token, method, payload):
     url = "https://api.telegram.org/bot" + token + "/" + method
     req = urllib.request.Request(url, data=json.dumps(payload).encode(),
@@ -190,7 +199,54 @@ def telegram_call(token, method, payload):
         out = json.loads(res.read().decode("utf-8"))
     if not out.get("ok"):
         raise RuntimeError("Telegram " + method + " did not confirm success")
-    return out.get("result")
+    result = out.get("result")
+    if method == "sendMessage" and isinstance(result, dict):
+        body = str((payload or {}).get("text") or "")
+        mid = int(result.get("message_id") or 0)
+        if mid and body.startswith(TECHNICAL_NOTICE_PREFIXES):
+            TECHNICAL_RECEIPTS_PENDING.append({
+                "project":"ttittulares",
+                "kind":"execution_ack" if "solicitud" in body.lower() else "status_notice",
+                "message_id":mid,"created_at":stamp(),"bot_authored":True})
+    return result
+
+
+def persist_technical_receipts():
+    """Record only authenticated bot send acknowledgements, never guesses."""
+    if not TECHNICAL_RECEIPTS_PENDING:
+        return
+    pending=list(TECHNICAL_RECEIPTS_PENDING)
+    path=Path("telegram/tt-technical-receipts.json")
+    for attempt in range(4):
+        subprocess.run(["git","fetch","origin","main"],check=True,
+                       stdout=subprocess.DEVNULL)
+        subprocess.run(["git","reset","--hard","origin/main"],check=True,
+                       stdout=subprocess.DEVNULL)
+        current=read(path,{"version":1,"items":[]})
+        existing={(str(x.get("project")),int(x.get("message_id") or 0))
+                  for x in current.get("items",[])}
+        for row in pending:
+            key=(row["project"],row["message_id"])
+            if key not in existing:
+                current.setdefault("items",[]).append(row)
+                existing.add(key)
+        current["items"]=current["items"][-400:]
+        current["updated_at"]=stamp()
+        save(path,current)
+        subprocess.run(["git","add","--sparse",str(path)],check=True)
+        if subprocess.run(["git","diff","--cached","--quiet"]).returncode==0:
+            TECHNICAL_RECEIPTS_PENDING[:]=[x for x in TECHNICAL_RECEIPTS_PENDING
+                    if x not in pending]
+            return
+        subprocess.run(["git","commit","-m","Registrar avisos técnicos del bot para limpieza"],
+                       check=True,stdout=subprocess.DEVNULL)
+        if subprocess.run(["git","push","origin","HEAD:main"],
+                          stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0:
+            TECHNICAL_RECEIPTS_PENDING[:]=[x for x in TECHNICAL_RECEIPTS_PENDING
+                    if x not in pending]
+            return
+        time.sleep(2*(attempt+1))
+    print("TT_TECHNICAL_RECEIPTS_PERSIST_RETRY",len(pending),flush=True)
 
 
 def commit_event(update, act):
@@ -637,6 +693,10 @@ def listen():
                     except (RuntimeError, urllib.error.HTTPError, urllib.error.URLError) as exc:
                         print("TTI_MOBILE_QUEUE_SCHEDULED_FALLBACK", uid,
                               type(exc).__name__, flush=True)
+                try:
+                    persist_technical_receipts()
+                except Exception as exc:
+                    print("TT_TECHNICAL_NOTICE_REGISTRY_RETRY",type(exc).__name__,flush=True)
                 print("TTI_NATIVE_UPDATE_PROCESSED", uid, kind, flush=True)
             except Exception as exc:
                 # Do not move the update offset on failure. Retrying remains
