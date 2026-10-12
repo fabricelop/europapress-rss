@@ -41,10 +41,14 @@ final class TimeV07Tests: XCTestCase {
     func testOverlapsDoNotMutateOriginalIntervals() {
         let first=Cell(row:101,column:201)
         let original=[item(0,100,first),item(10,50,first)]
-        let encodedBefore=try? JSONEncoder().encode(original)
+        // La codificación JSON de diccionarios no garantiza el orden de las claves.
+        // Ordenarlas evita falsos fallos al verificar que no se mutan los intervalos.
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let encodedBefore = try? encoder.encode(original)
         _ = TimeAttribution.byCell(original)
         _ = TimeAttribution.canonical(original)
-        XCTAssertEqual(try? JSONEncoder().encode(original),encodedBefore)
+        XCTAssertEqual(try? encoder.encode(original), encodedBefore)
     }
 
     func testOnePlaceWithTwoCellsRetainsSeparateVisitHistory() {
