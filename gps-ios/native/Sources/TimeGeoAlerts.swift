@@ -2,6 +2,16 @@ import SwiftUI
 import UserNotifications
 import Foundation
 
+/// iOS suele silenciar las notificaciones en primer plano si falta este delegado.
+final class GPSNotificationPresentationDelegate:NSObject,UNUserNotificationCenterDelegate {
+    static let shared=GPSNotificationPresentationDelegate()
+    func userNotificationCenter(_ center:UNUserNotificationCenter,
+        willPresent notification:UNNotification,
+        withCompletionHandler completionHandler:@escaping (UNNotificationPresentationOptions)->Void) {
+        completionHandler([.banner,.list,.sound])
+    }
+}
+
 /// Se limita a reaccionar a ubicaciones recibidas por el motor existente.
 /// No crea un segundo CLLocationManager ni modifica la política de batería.
 enum GeoAlertRules {
@@ -17,7 +27,10 @@ enum GeoAlertRules {
 @MainActor final class GPSPersonalAlerts {
     static let shared=GPSPersonalAlerts()
     private let center=UNUserNotificationCenter.current()
-    private init() {}
+    private init() { configure() }
+    func configure() {
+        center.delegate=GPSNotificationPresentationDelegate.shared
+    }
 
     func evaluate(model:TimeModel,now:Date = .now) {
         let settings=UserDefaults.standard
@@ -62,9 +75,48 @@ enum GeoAlertRules {
         return selected == "any" || selected == id
     }
 
-    func testNotification() {
-        notify(title:"Prueba de Mi Mapa del Tiempo",
-               body:"Los avisos locales están configurados en esta instalación.")
+    /// Programar con retraso, registrar el error de entrega y consultar iOS después.
+    func testNotification(_ report:@escaping (String)->Void) {
+        configure()
+        center.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized ||
+                  settings.authorizationStatus == .provisional ||
+                  settings.authorizationStatus == .ephemeral else {
+                Task { @MainActor in
+                    report("iOS no ha autorizado las notificaciones: \(settings.authorizationStatus.rawValue).")
+                }
+                return
+            }
+            let identifier="miMapaTest-"+UUID().uuidString
+            let message=UNMutableNotificationContent()
+            message.title="Mi Mapa del Tiempo · prueba"
+            message.body="Prueba local: iOS ha recibido esta notificación."
+            message.sound = .default
+            let request=UNNotificationRequest(identifier:identifier,content:message,
+                trigger:UNTimeIntervalNotificationTrigger(timeInterval:5,repeats:false))
+            self.center.add(request) { error in
+                if let error {
+                    Task { @MainActor in
+                        report("iOS rechazó programar la notificación: \(error.localizedDescription)")
+                    }
+                } else {
+                    Task { @MainActor in
+                        report("Programada correctamente para dentro de 5 segundos. Bloquea el iPhone o revisa el Centro de notificaciones.")
+                    }
+                    Task {
+                        try? await Task.sleep(for:.seconds(8))
+                        self.center.getDeliveredNotifications { delivered in
+                            let matched=delivered.contains { $0.request.identifier == identifier }
+                            Task { @MainActor in
+                                report(matched ?
+                                  "iOS confirmó la notificación como entregada. Comprueba si ves la tira o el Centro de notificaciones." :
+                                  "iOS aceptó la programación pero NO consta aún como entregada. Revisar Resumen programado, Modos de concentración y Ajustes de notificaciones.")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private func notify(title:String,body:String) {
@@ -85,6 +137,7 @@ struct TimeGeoAlertsSettings:View {
     @AppStorage("gpsAlertsZoneID") private var zoneID="any"
     @AppStorage("gpsAlertsStayMinutes") private var stayMinutes=60
     @State private var permission="Pendiente de comprobar"
+    @State private var notificationTestStatus="Sin realizar prueba"
     private var sortedZones:[TimeCustomZone] {
         model.visibleZones.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
@@ -122,16 +175,25 @@ struct TimeGeoAlertsSettings:View {
                 Toggle("Avisar al descubrir una ciudad nueva",isOn:$onCity)
             }.disabled(!enabled)
             Section("Diagnóstico") {
-                Button("Enviar notificación de prueba") {
-                    GPSPersonalAlerts.shared.testNotification()
+                Button("Enviar notificación de prueba (5 segundos)") {
+                    notificationTestStatus="Solicitando programación a iOS…"
+                    GPSPersonalAlerts.shared.testNotification { status in
+                        notificationTestStatus=status
+                    }
                 }
-                Text("Una notificación de prueba confirma la entrega local, no garantiza que todos los cambios de ubicación se detecten cuando iOS suspenda la app.")
+                Text(notificationTestStatus)
+                    .font(.caption).foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+                Text("La prueba informa de la aceptación por iOS y comprueba si consta como entregada. No demuestra que iOS vaya a detectar todas las entradas en segundo plano.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }
         .navigationTitle("Avisos geográficos")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear { checkPermission() }
+        .onAppear {
+            GPSPersonalAlerts.shared.configure()
+            checkPermission()
+        }
     }
 
     private func requestPermission() {
