@@ -48232,11 +48232,26 @@
       "telegram_package_status": "deleted",
       "telegram_deleted_at": "2026-10-12T20:24:28+02:00",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_status": "none",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
-      "image_status": "none",
-      "image_choice": "none",
-      "image_pending": false
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/10/reyes-desfile-fiesta-nacional-5.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/espana/2026-10-12/fiesta-nacional-desfile-reyes/",
+        "alt": "Imagen de archivo relacionada con #Fiesta12O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/10/reyes-desfile-fiesta-nacional-5.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/espana/2026-10-12/fiesta-nacional-desfile-reyes/",
+        "alt": "Imagen de archivo relacionada con #Fiesta12O",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "7b7dff5b205b",
@@ -48312,6 +48327,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-12T21:13:55+02:00",
+  "updated_at": "2026-10-12T19:26:16.924522Z",
   "count": 798
 }
