@@ -201,6 +201,11 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
     for project in CONFIG:
         issues=problems(project,now)
         actions=sorted({x["workflow"] for x in issues if x.get("workflow")})
+        # Workflows on workflow_run are the primary, token-free dispatch.
+        # Leave direct calls opt-in as recovery if an approved token exists.
+        direct=os.getenv("TT_AUTOHEAL_DIRECT_DISPATCH","0")=="1"
+        if not direct:
+            actions=[]
         triggered=[]
         errors=[]
         for wf in actions:
@@ -221,7 +226,8 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
         # Do not spam: ONE editable warning per project, at most one new
         # notification every 60 minutes for the same unresolved signature.
         last=timeof(prev.get("last_alert_at"))
-        eligible=bool(human and (signature!=prev.get("last_alert_signature")
+        eligible=bool(human and os.getenv("TT_AUTOHEAL_SEND_ALERTS","0")=="1"
+            and (signature!=prev.get("last_alert_signature")
             or not last or (now-last).total_seconds()>=3600))
         if eligible:
             try:
@@ -232,6 +238,8 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
             except Exception as e:
                 errors.append("telegram_alert "+str(e)[:300])
         prev.update({"checked_at":now.isoformat(),"issue_count":len(issues),
+                     "repair_via_workflow_run":not direct,
+                     "escalation_required":len(human),
                      "issues":issues[:30],"actions_started":triggered,
                      "repair_errors":errors,"open_signature":signature})
         state["projects"][project]=prev
@@ -260,6 +268,7 @@ def selftest():
                 save(c["index"],{"checked_at":"2026-10-12T17:40:00Z"})
             calls=[]
             def fake(w):calls.append(w)
+            os.environ["TT_AUTOHEAL_DIRECT_DISPATCH"]="1"
             a=run(now,False,dispatch=fake)
             assert len(calls)==4 and a["ttittulares"]["issues"]==2
             assert len(a["ttendencias"]["dispatched"])==2
@@ -268,7 +277,9 @@ def selftest():
             assert calls==[]
             assert read(STATE,{})["projects"]["ttendencias"]["issue_count"]==2
             print("TT_AUTOHEAL_SELFTEST_OK")
-        finally:ROOT=original
+        finally:
+            os.environ.pop("TT_AUTOHEAL_DIRECT_DISPATCH",None)
+            ROOT=original
 
 if __name__=="__main__":
     if "selftest" in sys.argv:selftest()
