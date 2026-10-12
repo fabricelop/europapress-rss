@@ -1,12 +1,26 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-12T21:52:35.538215+00:00",
+  "checked_at": "2026-10-12T22:01:08.836987+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 21,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 719,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:d7b672dc554f:741",
+      "id": "d7b672dc554f",
+      "message_id": 741,
+      "title": "Bale",
+      "age_min": 36.7,
+      "reason": "No consta explicación definitiva"
+    }
+  ],
+  "alerted": {
+    "provisional:d7b672dc554f:741": {
+      "signature": "0353ee25fb63327377",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
