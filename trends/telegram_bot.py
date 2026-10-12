@@ -657,10 +657,18 @@ def send_new_status_alerts(state):
 
 
 def unpin_panels(chat_id):
-    try:
-        call("unpinAllChatMessages", {"chat_id": chat_id})
-    except Exception as e:
-        print("No se pudieron desanclar mensajes:", e, flush=True)
+    """Only unpin the historical trends panel; preserve our pinned INDEX."""
+    state=load(STATE,{})
+    mids={int(v) for v in (state.get("panel_message_ids") or []) if str(v).isdigit()}
+    active=int(state.get("panel_message_id") or 0)
+    if active:mids.add(active)
+    index=load_remote_json("telegram/pinned-index-ttendencias.json",{})
+    protected=int(index.get("message_id") or 0)
+    for mid in sorted(m for m in mids if m>0 and m!=protected):
+        try:
+            call("unpinChatMessage",{"chat_id":chat_id,"message_id":mid})
+        except Exception as e:
+            print("No se pudo desanclar panel",mid,type(e).__name__,flush=True)
 
 
 def delete_panel(chat_id, message_id):
