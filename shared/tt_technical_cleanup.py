@@ -65,6 +65,21 @@ def candidates(now):
         if mid in (tti_reserved if project=="ttittulares" else trends_reserved):continue
         found[(project,mid)]={"project":project,"message_id":mid,
             "kind":row["kind"],"source":"bot_authored_receipt","created_at":at.isoformat()}
+    # Current TTendencias listener records run/refresh acknowledgements with
+    # exact bot API sendMessage result IDs in its persisted package state.
+    trends_state=load("trends/telegram-package-listener-state.json",{})
+    for row in trends_state.get("technical_notices",[]):
+        if row.get("bot_authored") is not True:continue
+        mid=int(row.get("message_id") or 0)
+        at=stamp(row.get("created_at"))
+        if (not mid or mid in trends_reserved or
+                not at or not timedelta(minutes=2)<=now-at<=timedelta(hours=47)):
+            continue
+        found.setdefault(("ttendencias",mid),{
+            "project":"ttendencias","message_id":mid,
+            "kind":str(row.get("kind") or "status_notice"),
+            "source":"verified_trend_bot_sendMessage",
+            "created_at":at.isoformat()})
     # Historical mobile commands have explicit bot-notice message IDs.
     # The user's actual command message is cleanup_command_mid: NEVER delete it.
     for x in load("telegram/tt-mobile-command-queue.json",{"items":[]}).get("items",[]):
