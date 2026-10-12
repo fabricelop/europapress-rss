@@ -120,5 +120,5 @@ const archive=tt.trendRows();
 assert(archive.some(x=>x._id==='old'),'Historical trend not recovered');
 assert(archive.some(x=>x._id==='test-ready'),'Closed Explicadas must also appear in Histórico');
 assert(archive.some(x=>x._id==='test-group'),'Closed grouped Explicadas must remain auditable');
-assert.equal(tt.tabs().length,3,'Only Top 30, Explicadas and Histórico should exist');
+assert.equal(tt.tabs().length,4,'Top 30, Pendientes, Explicadas and Histórico should exist');
 console.log('TT_UNIFIED_MOBILE_UI_OK: counters, Top30, active explanations, history, GAG');
