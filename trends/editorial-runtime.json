@@ -3,9 +3,9 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-12T02:15:00+02:00",
-  "last_completed_at": "2026-10-12T02:15:40+02:00",
-  "updated_at": "2026-10-12T02:15:40+02:00",
+  "last_started_at": "2026-10-12T02:45:00+02:00",
+  "last_completed_at": "2026-10-12T02:47:00+02:00",
+  "updated_at": "2026-10-12T02:47:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,8 +18,8 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261012T021500+0200-chat",
-    "requested_at": "2026-10-12T02:15:00+02:00",
+    "run_id": "tr-20261012T024500+0200-chat",
+    "requested_at": "2026-10-12T02:45:00+02:00",
     "completed_at": null,
     "reason": "execution-start-pending-repair"
   },
@@ -27,13 +27,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261012T021500+0200-chat",
+    "run_id": "tr-20261012T024500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-12T02:15:00+02:00",
-    "updated_at": "2026-10-12T02:15:40+02:00",
-    "finished_at": "2026-10-12T02:15:40+02:00",
+    "started_at": "2026-10-12T02:45:00+02:00",
+    "updated_at": "2026-10-12T02:47:00+02:00",
+    "finished_at": "2026-10-12T02:47:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -43,9 +43,12 @@
       "closed": 0,
       "skipped": 0,
       "problematic": 0,
-      "visual_backlog": 0
+      "visual_backlog": 0,
+      "pending_cards_reviewed": 19,
+      "pending_repair_requested": 1,
+      "queue_remaining": 0
     },
-    "message": "Pasada completada · 0/0 editorial; saneamiento de Pendientes solicitado",
+    "message": "Pasada completada · 0/0 editorial; 19 Pendientes recientes revisados y saneamiento visual solicitado",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -58,28 +61,49 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-12T02:15:00+02:00",
+        "at": "2026-10-12T02:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola 0; comprobando remates recientes y Pendientes"
+        "message": "Preparando pasada editorial · cola 0; comprobando reexplicaciones y Pendientes"
       },
       {
-        "at": "2026-10-12T02:15:25+02:00",
+        "at": "2026-10-12T02:45:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola, requests y reexplicaciones"
+        "message": "Releyendo estado autoritativo · cola, requests y Explicadas"
       },
       {
-        "at": "2026-10-12T02:15:32+02:00",
+        "at": "2026-10-12T02:45:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Sin revisiones preparing/update, problematic ni rewrite_pending"
+        "message": "Sin revisiones preparing/update/problematic ni rewrite_pending"
       },
       {
-        "at": "2026-10-12T02:15:40+02:00",
+        "at": "2026-10-12T02:46:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 19 tarjetas vigentes de menos de 24 h; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-12T02:46:15+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Tres Pendientes sin remate corresponden a salud/migración sensible; se conserva explicación factual sin humor"
+      },
+      {
+        "at": "2026-10-12T02:46:40+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0"
+      },
+      {
+        "at": "2026-10-12T02:47:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -87,7 +111,7 @@
       }
     ]
   },
-  "run_id": "tr-20261012T021500+0200-chat",
+  "run_id": "tr-20261012T024500+0200-chat",
   "summary": {
     "processed": 0,
     "closed": 0,
@@ -97,6 +121,7 @@
     "queue_remaining": 0,
     "remaining_active_ids": [],
     "pending_repair_requested": 1,
+    "pending_cards_reviewed": 19,
     "new_cards": 0,
     "reused_existing_card": 0,
     "duplicate_cards_created": 0
