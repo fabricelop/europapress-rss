@@ -25904,7 +25904,7 @@
       "percentage": 37.5,
       "first_seen": "2026-10-12T05:43:04.825782Z",
       "last_seen": "2026-10-12T19:35:04.661991Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [
@@ -25924,7 +25924,9 @@
       ],
       "outlet_count": 6,
       "sport_source_count": 3,
-      "eligible_at": "2026-10-12T18:03:45.982395Z"
+      "eligible_at": "2026-10-12T18:03:45.982395Z",
+      "deleted_at": "2026-10-12T19:38:22.018550Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "703d16ad7e6f",
@@ -28959,7 +28961,7 @@
       "percentage": 12.5,
       "first_seen": "2026-10-12T19:35:04.661991Z",
       "last_seen": "2026-10-12T19:35:04.661991Z",
-      "status": "WAITING",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -28970,7 +28972,9 @@
         "El Mundo"
       ],
       "outlet_count": 3,
-      "sport_source_count": 0
+      "sport_source_count": 0,
+      "deleted_at": "2026-10-12T19:38:22.018550Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "f7419c514505",
@@ -50178,5 +50182,6 @@
   "active_event_cap": 450,
   "protected_event_count": 159,
   "single_source_event_cap": 450,
-  "pruned_at": "2026-10-12T19:35:27.085121Z"
+  "pruned_at": "2026-10-12T19:35:27.085121Z",
+  "updated_at": "2026-10-12T19:38:22.018550Z"
 }
