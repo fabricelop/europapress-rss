@@ -21,8 +21,8 @@ targets:
       path: Info.plist
       properties:
         CFBundleDisplayName: Mi Mapa del Tiempo
-        CFBundleShortVersionString: "1.0.17"
-        CFBundleVersion: "18"
+        CFBundleShortVersionString: "1.0.18"
+        CFBundleVersion: "19"
         CFBundleURLTypes:
           - CFBundleURLSchemes:
               - mimapadeltiempo
@@ -37,6 +37,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: es.mimapadeltiempo.app
+        CODE_SIGN_ENTITLEMENTS: App.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         OTHER_LDFLAGS: ["-lsqlite3"]
     dependencies:
@@ -52,14 +53,15 @@ targets:
       path: Widgets/Info.plist
       properties:
         CFBundleDisplayName: Mi Mapa del Tiempo
-        CFBundleShortVersionString: "1.0.17"
-        CFBundleVersion: "18"
+        CFBundleShortVersionString: "1.0.18"
+        CFBundleVersion: "19"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
         NSSupportsLiveActivities: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: es.mimapadeltiempo.app.widgets
+        CODE_SIGN_ENTITLEMENTS: Widgets/Widget.entitlements
         APPLICATION_EXTENSION_API_ONLY: YES
         SKIP_INSTALL: YES
   MiMapaDelTiempoTests:

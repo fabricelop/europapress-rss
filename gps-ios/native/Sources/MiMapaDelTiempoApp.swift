@@ -540,31 +540,6 @@ struct SavedState: Codable {
     var activeCell: Cell? { data.gpsRest?.cell ?? stableCell ?? current?.cell }
     func testLiveActivity() { activityPublisher.test(from:self) }
     func checkLockScreen() { activityPublisher.check(from:self) }
-    func exportScriptableSnapshot() throws -> URL {
-        let cell=activeCell
-        let zone=cell.flatMap { primaryZone(for:$0) }
-        let now=Date()
-        let place=zone?.name ?? cell.map { label(for:$0) } ?? "Sin posición"
-        let details:[String:Any] = [
-            "schema":2,
-            "generatedAt":now.timeIntervalSince1970,
-            "place":place,
-            "placeType":zone != nil ? "zona" : "cuadricula",
-            "cellCount":zone?.cells.count ?? (cell == nil ? 0 : 1),
-            "zoneSeconds":zone.map { total(for:$0,now:now) } ?? 0,
-            "cellSeconds":cell.map { total(for:$0,now:now) } ?? 0,
-            "recordedSeconds":totalSeconds,
-            "stayStart":currentVisitStart?.timeIntervalSince1970 ??
-                data.gpsRest?.startedAt.timeIntervalSince1970 ?? 0,
-            "resting":isResting,
-            "tracking":recording,
-            "note":"Resumen exportado manualmente. Su refresco depende de iOS."
-        ]
-        let file=FileManager.default.temporaryDirectory.appendingPathComponent("MiMapaEstado.json")
-        let bytes=try JSONSerialization.data(withJSONObject:details,options:[.prettyPrinted,.sortedKeys])
-        try bytes.write(to:file,options:.atomic)
-        return file
-    }
     func refreshWidgets() {
         widgetPublisher.publish(from:self,force:true)
         activityPublisher.refresh(from:self)
@@ -700,8 +675,13 @@ struct SavedState: Codable {
         data.places.first(where:{$0.cellIDs.contains(cell.id)})
     }
     func saveTerritory(_ value:TerritoryRecord, cellIDs:[String]) {
+        let alreadyKnown=data.territoryCache.values.contains {
+            $0.city?.localizedCaseInsensitiveCompare(value.city ?? "") == .orderedSame &&
+            $0.country?.localizedCaseInsensitiveCompare(value.country ?? "") == .orderedSame
+        }
         for id in cellIDs { data.territoryCache[id] = value }
         save(force:true)
+        GPSPersonalAlerts.shared.discoveredCity(value,seenBefore:alreadyKnown)
     }
     func routePoints(at now:Date = .now) -> [GPSPoint] {
         let lower: Date?
@@ -804,6 +784,7 @@ struct SavedState: Codable {
         save(force: delta > GPSHistoryGrouping.gapLimit)
         widgetPublisher.publish(from:self)
         activityPublisher.refresh(from:self)
+        GPSPersonalAlerts.shared.evaluate(model:self)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
@@ -1354,8 +1335,8 @@ struct RootView: View {
                     .tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }.tag(1)
                 GPSDiaryShell(model: model)
                     .tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }.tag(2)
-                TimeCompareView(model: model)
-                    .tabItem { Label("Comparar", systemImage: "square.split.2x1") }.tag(3)
+                TimeDiscoveryHome(model:model)
+                    .tabItem { Label("Descubrir", systemImage:"globe.europe.africa.fill") }.tag(3)
                 TimeSettingsView(model: model, gps: gps)
                     .tabItem { Label("Ajustes", systemImage: "gearshape") }.tag(4)
             }.tint(.teal)
@@ -1816,7 +1797,6 @@ struct TimeStatsView: View {
                     LabeledContent("Tiempo asignado", value: DurationFormat.full(model.totalSeconds))
                     LabeledContent("Cuadrículas visitadas", value: "\(model.allCells.count)")
                     LabeledContent("Superficie aproximada", value: String(format: "%.2f km²", Double(model.allCells.count) * 0.01))
-                    LabeledContent("Tiempo sin ubicación fiable", value: DurationFormat.full(model.data.missingSeconds))
                 }
                 Section("Cuadrículas con más tiempo") {
                     ForEach(model.allCells.sorted {
@@ -1940,7 +1920,7 @@ struct TimeSettingsView: View {
                         }
                 }
                 Section("Pantalla de bloqueo") {
-                    NavigationLink("Actividad en directo, widgets y Scriptable") {
+                    NavigationLink("Widgets y actividad en directo") {
                         TimeLockScreenSettingsView(model:model)
                     }
                 }

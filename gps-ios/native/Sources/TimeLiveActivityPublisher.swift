@@ -19,9 +19,15 @@ import WidgetKit
         let embedded=plugIns.map {
             FileManager.default.fileExists(atPath:$0.appendingPathComponent("MiMapaWidgets.appex").path)
         } ?? false
-        model.widgetDiagnostic = embedded ?
-            "Extensión incluida en la aplicación instalada; registro en galería pendiente de verificar." :
-            "La extensión MiMapaWidgets.appex no está en el paquete instalado. Revisar Sideloadly."
+        let extensionURL=plugIns?.appendingPathComponent("MiMapaWidgets.appex")
+        let extensionBundle=extensionURL.flatMap(Bundle.init(url:))
+        let extensionID=extensionBundle?.bundleIdentifier ?? "sin ID"
+        let point=(extensionBundle?.infoDictionary?["NSExtension"] as? [String:Any])?
+            ["NSExtensionPointIdentifier"] as? String ?? "sin NSExtension"
+        let appGroup=TimeWidgetStorage.isAvailable
+        model.widgetDiagnostic=embedded ?
+            "Extensión incluida · \(extensionID) · punto \(point). App Group: \(appGroup ? "autorizado" : "no disponible"). El alta en la galería depende de la firma de iOS." :
+            "MiMapaWidgets.appex NO existe en la app instalada: comprobar cómo Sideloadly firma y empaqueta la extensión."
         WidgetCenter.shared.getCurrentConfigurations { result in
             Task { @MainActor in
                 switch result {
