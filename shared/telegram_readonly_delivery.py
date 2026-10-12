@@ -311,7 +311,17 @@ def trend_cards(now):
                       or (status=="explained" and str(req.get("explanation") or "").strip()))
         if req.get("reexplain") and not is_final:
             continue
-        if not is_final and not age_ready(start,now):continue
+        # Provisional notices for newly pending TTendencias go out immediately.
+        # Unlike TTiTTulares, there is no one-hour delay. A later final card
+        # edits the ORIGINAL Telegram message (preserving its message_id).
+        current_rank=int((top.get(name.casefold()) or {}).get("rank") or 0)
+        manual_request=(req.get("auto_queued") is False and
+                        str(req.get("request_source") or "") in {
+                            "github_pages_authorized_issue",
+                            "telegram_private_deeplink_native",
+                            "telegram_reexplain"})
+        if not is_final and not (1<=current_rank<=10 or manual_request):
+            continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
         closer=trim((finished or {}).get("closer_text"),160)
@@ -1190,6 +1200,69 @@ def selftest():
     assert archival_image("") is None
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in news_cards(now))
     assert "#Actualidad" not in "\n\n".join(x["text"] for x in trend_cards(now))
+    # Both pending routes send their first card immediately; the final
+    # explanation edits the same Telegram message rather than duplicating it.
+    original_root=ROOT
+    original_send=send
+    original_archive=archival_image
+    import tempfile
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            globals()["ROOT"]=Path(folder)
+            reqs=[
+                {"id":"pending-top1","name":"Prueba Top 10","rank":1,
+                 "status":"preparing","revision":1,"auto_queued":True,
+                 "requested_at":now.isoformat()},
+                {"id":"pending-manual12","name":"Prueba manual","rank":12,
+                 "status":"preparing","revision":1,"auto_queued":False,
+                 "request_source":"github_pages_authorized_issue",
+                 "requested_at":now.isoformat()},
+                {"id":"ignored-13","name":"No solicitada","rank":13,
+                 "status":"preparing","revision":1,"auto_queued":True,
+                 "requested_at":now.isoformat()}]
+            put("trends/requests.json",{"requests":reqs})
+            put("trends/recent.json",{"items":[
+                {"name":"Prueba Top 10","rank":1},
+                {"name":"Prueba manual","rank":12},
+                {"name":"No solicitada","rank":13}]})
+            put("trends/telegram-manual-explained.json",{"items":[]})
+            put("trends/explained.json",{"items":[]})
+            put("trends/telegram-image-deliveries.json",{"items":[]})
+            cards=list(trend_cards(now))
+            assert len(cards)==2 and all(not c["final"] for c in cards),cards
+            assert all("Pendiente de explicación" in c["text"] for c in cards)
+            calls=[]
+            next_id=[2400]
+            def fake_trend_send(token,method,payload,photo=None):
+                mid=int(payload.get("message_id") or 0)
+                if not mid:
+                    next_id[0]+=1
+                    mid=next_id[0]
+                calls.append((method,mid))
+                return {"message_id":mid}
+            globals()["send"]=fake_trend_send
+            globals()["archival_image"]=lambda url:None
+            assert process("ttendencias",now,"mock","chat")==(2,0)
+            ledger=load("trends/telegram-image-deliveries.json",{"items":[]})
+            assert len(ledger["items"])==2 and all(not x["final"] for x in ledger["items"])
+            first_mid=next(x["telegram_message_id"] for x in ledger["items"]
+                           if x["event_id"]=="pending-manual12")
+            reqs[1].update(status="explained",
+                explanation="TT#12 Prueba manual es tendencia porque se verificó el hecho.",
+                explained_at=now.isoformat())
+            put("trends/requests.json",{"requests":reqs})
+            assert process("ttendencias",now,"mock","chat")==(0,1)
+            assert calls[-1]==("editMessageText",first_mid),calls
+            ledger=load("trends/telegram-image-deliveries.json",{"items":[]})
+            assert len(ledger["items"])==2
+            final=next(x for x in ledger["items"] if x["event_id"]=="pending-manual12")
+            assert final["telegram_message_id"]==first_mid and final["final"]
+            assert process("ttendencias",now,"mock","chat")==(0,0)
+            print("TT_TRENDS_IMMEDIATE_PENDING_EDIT_IN_PLACE_SELFTEST_OK")
+    finally:
+        globals()["ROOT"]=original_root
+        globals()["send"]=original_send
+        globals()["archival_image"]=original_archive
     print("TELEGRAM_READONLY_SELFTEST_OK")
 
 if __name__=="__main__":

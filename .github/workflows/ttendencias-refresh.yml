@@ -100,6 +100,13 @@ jobs:
       # El panel Cloudflare consulta directamente el estado versionado en GitHub.
       # Sin notificaciones push heredadas ni peticiones a Vercel.
 
+      - name: Enviar enseguida a Telegram los avisos de Pendientes
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run send-ttendencias-explained-telegram.yml --repo "$GITHUB_REPOSITORY" --ref main
+
       - name: Comprobar salud TTendencias
         if: always()
         env:
