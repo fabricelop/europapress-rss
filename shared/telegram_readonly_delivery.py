@@ -140,6 +140,32 @@ def recover_news_metadata(eid,*rows):
     image=next((image_url(row) for row in candidates if image_url(row)), "")
     return title,url,source,image
 
+def lifecycle_baseline():
+    """Confirmed empty Telegram chats: archive prior deliveries, not editorial history."""
+    return load("telegram/lifecycle-baseline.json",{})
+
+def baseline_details(project):
+    doc=lifecycle_baseline()
+    project_state=(doc.get("project_state") or {}).get(project) or {}
+    cut=date(doc.get("activated_at"))
+    return cut,int(project_state.get("historic_max_message_id") or 0),{
+        str(x) for x in (project_state.get("preserve_pending_ids") or [])}
+
+def baseline_allows(project,eid,start):
+    cut,_,keep=baseline_details(project)
+    if cut is None or str(eid) in keep:return True
+    moment=date(start)
+    # Unknown/undated old material MUST NOT repopulate an empty chat.
+    return bool(moment and moment>cut)
+
+def active_delivery_rows(project,entries):
+    cut,watermark,_=baseline_details(project)
+    if cut is None:return entries
+    # Message IDs are monotonic per Telegram chat: old ledger records remain
+    # historic, but are NOT live messages and cannot close new entries.
+    return [row for row in entries
+            if int(row.get("telegram_message_id") or 0)>watermark]
+
 def news_cards(now):
     prepared=load("ttittulares/prepared.json",{"items":[]})
     processing=load("telegram/editorial-processing.json",{"items":[]})
@@ -159,7 +185,8 @@ def news_cards(now):
         item=ready.get(eid,{})
         is_final=bool(item and not item.get("rewrite_pending"))
         start=news_delivery_start(job,item)
-        if not fresh(start,now):continue
+        if not fresh(start,now) or not baseline_allows("ttittulares",eid,start):
+            continue
         # New PROCESSING news is sent immediately, with an explicit warning.
         revision=int(item.get("revision") or job.get("revision") or 1)
         title,original_url,original_source,original_image=recover_news_metadata(eid,item,job)
@@ -297,14 +324,18 @@ def trend_cards(now):
         if not name:continue
         group_leader=str(req.get("group_leader_id") or "").strip()
         group_id=str(req.get("explanation_group_id") or req.get("group_id") or "").strip()
-        # A group's followers NEVER produce another message, even if the
-        # grouped explanation text was copied into every request row.
-        if group_id and group_leader and group_leader!=tid:continue
+        # Preserve an explicitly open pending card across the checkpoint.
+        # Old grouped followers remain deduplicated, but a new/open card
+        # must be visible independently until its OWN Telegram delete.
+        _,_,protected=baseline_details("ttendencias")
+        if group_id and group_leader and group_leader!=tid and tid not in protected:
+            continue
 
         rank=int(req.get("rank") or (top.get(name.casefold()) or {}).get("rank") or 0)
         if rank>10 and req.get("auto_queued") is True:continue
         start=req.get("requested_at") or req.get("anticipated_at")
-        if not fresh(start,now):continue
+        if not fresh(start,now) or not baseline_allows("ttendencias",tid,start):
+            continue
         rev=int(req.get("revision") or 0)
         finished=explained.get((tid,rev))
         is_final=bool((finished and str(finished.get("explanation") or "").strip())
@@ -320,7 +351,7 @@ def trend_cards(now):
                             "github_pages_authorized_issue",
                             "telegram_private_deeplink_native",
                             "telegram_reexplain"})
-        if not is_final and not (1<=current_rank<=10 or manual_request):
+        if not is_final and not (1<=current_rank<=10 or manual_request or tid in protected):
             continue
         label=f"TT#{rank} {name}" if 1<=rank<=30 else name
         detail=trim((finished or {}).get("explanation") or req.get("explanation"),820) if is_final else ""
@@ -651,14 +682,17 @@ def process(project,now,token,chat):
           else "trends/telegram-image-deliveries.json")
     ledger=load(path,{"version":3,"items":[]})
     entries=ledger.setdefault("items",[])
+    # Only post-checkpoint telegram messages count as active. The old
+    # transcript is preserved for history, never re-sent or re-edited.
+    active_entries=active_delivery_rows(project,entries)
     cards=list(news_cards(now) if project=="ttittulares" else trend_cards(now))
     delivered=updated=skipped=0
     for card in cards:
         eid=card["id"];rev=card["rev"]
-        linked=[r for r in entries if str(r.get("event_id") or "")==eid]
+        linked=[r for r in active_entries if str(r.get("event_id") or "")==eid]
         # The radar may assign distinct IDs to the same news/trend. Prevent
         # a second card for seven days, including previously deleted ones.
-        older=matching_previous_story(card,entries,now)
+        older=matching_previous_story(card,active_entries,now)
         if older:
             # A previous deleted card must prevent NEW unsolicited reposts.
             # But if this distinct ID already has its OWN provisional message
@@ -876,7 +910,7 @@ def process(project,now,token,chat):
             leader_id=str(group.get("id") or "")
             if not group.get("final") or leader_id not in members or len(members)<2:
                 continue
-            leader=next((row for row in reversed(entries) if
+            leader=next((row for row in reversed(active_entries) if
                 str(row.get("event_id") or "")==leader_id and
                 str(row.get("status") or "").lower()=="sent" and
                 int(row.get("telegram_message_id") or 0)>0),None)
@@ -887,7 +921,7 @@ def process(project,now,token,chat):
                               group_title=group["title"],
                               updated_at=now.isoformat())
                 updated+=1
-            for sibling in entries:
+            for sibling in active_entries:
                 sibling_id=str(sibling.get("event_id") or "")
                 if sibling_id==leader_id or sibling_id not in members:
                     continue
@@ -937,7 +971,7 @@ def process(project,now,token,chat):
                 their_group=str(leader_req.get("explanation_group_id") or leader_req.get("group_id") or "")
                 if their_group and their_group!=group_id:
                     continue
-            leaders=[row for row in entries
+            leaders=[row for row in active_entries
                      if str(row.get("event_id") or "")==leader_id and
                      (str(row.get("status") or "").lower() in TERMINAL or
                       (str(row.get("status") or "").lower()=="sent" and
@@ -946,7 +980,7 @@ def process(project,now,token,chat):
                 continue
             leader_delivery=leaders[-1]
             leader_status=str(leader_delivery.get("status") or "").lower()
-            for ghost in entries:
+            for ghost in active_entries:
                 if (str(ghost.get("event_id") or "")!=follower_id or
                     str(ghost.get("status") or "").lower()!="sent" or
                     ghost.get("final") is True or
