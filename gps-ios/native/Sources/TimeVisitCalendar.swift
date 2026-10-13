@@ -9,6 +9,7 @@ struct TimeVisitCalendar: View {
     @State private var selectedDay: Date?
     @State private var selectedGPSGap:TimeGPSGapCandidate?
     @State private var showGapConfirmation=false
+    @State private var gapOutcome:TimeGPSGapConfirmationOutcome?
 
     private var zoneTimeZone:TimeZone? {
         cellIDs.compactMap { model.data.territoryCache[$0]?.timeZoneIdentifier }
@@ -138,6 +139,20 @@ struct TimeVisitCalendar: View {
                         end:item.end,seconds:item.seconds,
                         timeZone:calendar.timeZone)
                 }
+                if let gapOutcome {
+                    Label(gapOutcome.message,
+                          systemImage:gapOutcome.isSuccess ?
+                            "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                        .font(.caption)
+                        .foregroundStyle(gapOutcome.isSuccess ? Color.teal : Color.orange)
+                        .fixedSize(horizontal:false,vertical:true)
+                        .padding(10)
+                        .frame(maxWidth:.infinity,alignment:.leading)
+                        .background(gapOutcome.isSuccess ? Color.teal.opacity(0.10) :
+                                    Color.orange.opacity(0.10),
+                                    in:RoundedRectangle(cornerRadius:10))
+                        .accessibilityIdentifier("gpsGapSaveOutcome")
+                }
                 ForEach(reviewableGaps) { gap in
                     VStack(alignment:.leading,spacing:5) {
                         HStack(spacing:6) {
@@ -149,6 +164,7 @@ struct TimeVisitCalendar: View {
                         Text("\(DurationFormat.full(gap.seconds)) sin atribuir. Puedes recuperarlo solo si permaneciste aquí todo ese tiempo.")
                             .font(.caption2).foregroundStyle(.secondary)
                         Button("Confirmar que permanecí aquí") {
+                            gapOutcome=nil
                             selectedGPSGap=gap
                             showGapConfirmation=true
                         }
@@ -165,7 +181,12 @@ struct TimeVisitCalendar: View {
         .alert("¿Permaneciste en la cuadrícula?",isPresented:$showGapConfirmation,
                presenting:selectedGPSGap) { gap in
             Button("Añadir como estimado") {
-                _ = model.confirmUnobservedStay(gap)
+                // No ocultar silenciosamente un error de base de datos o un
+                // intervalo que cambió durante la confirmación.
+                let result=model.confirmUnobservedStay(gap)
+                withAnimation(.easeInOut(duration:0.2)) {
+                    gapOutcome=result
+                }
                 selectedGPSGap=nil
             }
             Button("Cancelar",role:.cancel) { selectedGPSGap=nil }
