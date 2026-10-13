@@ -89,7 +89,8 @@ jobs:
                   mid=int(row.get("message_id") or 0)
                   linked=any(str(x.get("event_id") or "")==eid
                              and mid in [int(x.get("telegram_message_id") or 0),
-                                         int(x.get("archive_telegram_message_id", "ai_telegram_message_id") or 0),
+                                         int(x.get("archive_telegram_message_id") or 0),
+                                         int(x.get("ai_telegram_message_id") or 0),
                                          int(x.get("cross_quote_message_id") or 0)]
                              for x in authoritative_deliveries)
                   # ACK is now confirmed synchronously in Cloudflare, before
