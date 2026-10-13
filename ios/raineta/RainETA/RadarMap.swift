@@ -159,8 +159,8 @@ struct RadarMap: UIViewRepresentable {
             return [MKTileOverlayPath(x:Int(point.x/world*scale),
                                       y:Int(point.y/world*scale),z:7,contentScaleFactor:1)]
         }
-        let zoom=max(0,min(16,Int(round(log2(world/extent.size.width*
-                                             Double(map.bounds.width)/256.0)))))
+        let tilesPerScreen = world / extent.size.width * Double(map.bounds.width) / 256.0
+        let zoom=max(0,min(16,Int(round(log2(tilesPerScreen)))))
         let n=1<<zoom
         let minX=max(0,min(n-1,Int(floor(extent.minX/world*Double(n)))))
         let maxX=max(minX,min(n-1,Int(floor(extent.maxX/world*Double(n)))))
