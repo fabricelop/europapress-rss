@@ -1,6 +1,23 @@
-# RainETA para iPhone — v0.3.0
+# RainETA para iPhone — v0.4.0
 
 App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
+
+## v0.4.0 — RainETA Future Rain Model Map
+
+- Future rain is no longer inferred by translating or fading a single RainViewer image. A 9×9 grid of forecast precipitation is fetched for the visible MapKit region using Open-Meteo's **multiple coordinates** Forecast API (three batches of 27 points).
+- Each 15-minute model field is geographically positioned in global Web Mercator. Per-map-tile rendering uses spatial bilinear interpolation and interpolates adjacent **forecast model timestamps**, so future rain may emerge, intensify, move or dissipate. All map zoom levels (0–20) use the same georeferencing. On panning/zooming away from the currently covered area, the model grid is refreshed.
+- The latest observed RainViewer frame remains visible when entering the future; if valid model fields exist, the observed radar transitions to the *separately computed* model field over about 30 minutes. If model data is unavailable, observed radar is maintained rather than displaying a fabricated empty future.
+- Separate source labels: **RADAR OBSERVADO** versus **PREVISIÓN MODELO · NO RADAR**. The forecast model does not claim radar resolution.
+- Animated historical/future timeline in steps of five minutes through +4 hours; interactive playback.
+- Automated GitHub Actions gates: public provider 3-point schema/timestamp smoke test and iOS Simulator XCTest verifying model changes over time, near-future non-empty precipitation and visible tiles at zoom 7/12/16.
+- iOS Live Activity displays the selected saved location, or GPS municipality when available, and keeps a stale-data warning.
+- The previous saved-places tab remains separate from the main radar screen.
+
+### Model / resolution limitations
+
+Open-Meteo may interpolate hourly precipitation into 15-minute steps outside areas with genuinely 15-minute forecast models; these are not independent 15-minute weather forecasts. Geographical resolution is limited to 9×9 sampled model points over the current map view. Zooming in reveals that model interpolation more clearly but does not create new forecast physics; RainETA refreshes a local field when necessary.
+
+**Not yet implemented:** operational high-resolution OPERA composite blending, optical-flow validation of multiple radar sweeps, assimilation into nowcast, precipitation uncertainty cones, archived forecast-vs-observation skill measurements. Those are distinct from the current operational *model forecast raster*. No promise of TV-graphics-grade accuracy or of better-than-official models.
 
 ## Cambios v0.3.0 — lugares y continuidad de radar
 
@@ -34,7 +51,7 @@ App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impacto
 
 Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.3.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.4.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
 ## Instalación y prueba
 
