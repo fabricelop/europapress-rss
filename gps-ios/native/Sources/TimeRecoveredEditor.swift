@@ -18,12 +18,14 @@ struct TimeRecoveredEditor:View {
     private func choices(_ group:TimeRecoveryGroup)->[Cell] {
         let other=TimeRecoveryIndex.without(model.data.intervals,group:group)
             .sorted {$0.start<$1.start}
-        let candidates=[other.last(where:{$0.end<=group.start})?.cell,
-                        other.first(where:{$0.start>=group.end})?.cell]+
-                        group.cells.map(Optional.some)
+        let candidates:[Cell?]=[
+            other.last(where:{$0.end<=group.start})?.cell,
+            other.first(where:{$0.start>=group.end})?.cell
+        ] + group.cells.map { Optional($0) }
         var seen:Set<String>=[]
-        return candidates.compactMap {
-            guard let cell=$0,seen.insert(cell.id).inserted else { return nil }
+        return candidates.compactMap { candidate -> Cell? in
+            guard let cell=candidate else { return nil }
+            guard seen.insert(cell.id).inserted else { return nil }
             return cell
         }
     }
