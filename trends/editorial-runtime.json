@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T00:15:00+02:00",
-  "last_completed_at": "2026-10-14T00:25:00+02:00",
-  "updated_at": "2026-10-14T00:25:00+02:00",
+  "last_started_at": "2026-10-14T00:45:00+02:00",
+  "last_completed_at": "2026-10-14T00:48:30+02:00",
+  "updated_at": "2026-10-14T00:48:30+02:00",
   "status": "success",
   "processed_ids": [
     "c6c98db8f107",
@@ -36,52 +36,40 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261014T001500+0200-chat",
+    "run_id": "tr-20261014T004500+0200-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-14T00:15:00+02:00",
-    "updated_at": "2026-10-14T00:25:00+02:00",
-    "finished_at": "2026-10-14T00:25:00+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-14T00:45:00+02:00",
+    "updated_at": "2026-10-14T00:48:30+02:00",
+    "finished_at": "2026-10-14T00:48:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
-      "images_generated": 0,
-      "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 0,
-      "telegram_provisionals_finalized": 2,
-      "telegram_preserved_deleted": 0,
+      "telegram_provisionals_finalized": 0,
       "telegram_orphans": 0,
       "telegram_delivery_workflow_verified": 1,
-      "archive_images_enriched": 0,
-      "bidirectional_repairs": 0,
-      "telegram_bidirectional_issues": 0,
-      "top10_checked": 10
+      "images_generated": 0,
+      "imagegen_attempts": 0,
+      "vercel_deploys": 0
     },
-    "message": "Pasada directa 3/3 cerrada y verificada · Adeyemi/Fermín agrupados, #TierraDeNadie5 explicada, cola 0 y Telegram sin huérfanos.",
+    "message": "Pasada 0/0 cerrada · cola editorial 0, sin provisionales pendientes y auditoría Telegram con 0 huérfanos; saneamiento de Pendientes disparado y aún en curso.",
     "incident_count": 1,
     "incidents": [
       {
-        "kind": "atomic_persistence_race",
-        "message": "El primer commit de reconciliación actualizó Requests y cola con una ejecución que había cargado la versión anterior del workflow, por lo que Explicadas no entró en ese commit. Se reparó en la misma pasada y se verificó el cierre transaccional posterior."
+        "kind": "pending_repair_workflow_in_progress",
+        "message": "El saneamiento de Pendientes fue disparado correctamente por el commit b75a5b0; el run 38480013209 seguía in_progress en la última comprobación. La cola editorial, el ledger provisional y la auditoría de huérfanos estaban limpios."
       }
     ],
     "ratings_snapshot": {
@@ -91,160 +79,28 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "selected": "🌶️ El marcador terminó pareciendo una lista de asistencia del vestuario.",
-        "originality_check": "pass"
-      },
-      {
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "selected": "🌶️ La Semana Salvaje ha decidido que el martes también venía con trampilla.",
-        "originality_check": "pass"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T00:15:20+02:00",
-        "phase": "verifying",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Releyendo estado autoritativo · Adeyemi r0 y Fermín r1 activos; mismo Galatasaray-Barça."
-      },
-      {
-        "at": "2026-10-14T00:15:40+02:00",
-        "phase": "investigating",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Buscando detonante actual del grupo Adeyemi/Fermín."
-      },
-      {
-        "at": "2026-10-14T00:16:00+02:00",
-        "phase": "investigating",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Contrastando fuente 1/2 · confirmado 1-4, Fermín 1-2 y Adeyemi cuarto gol."
-      },
-      {
-        "at": "2026-10-14T00:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Contrastando fuente 2/2 · marcador y autores confirmados."
-      },
-      {
-        "at": "2026-10-14T00:16:30+02:00",
-        "phase": "investigating",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Hecho esencial verificado · agrupación inequívoca por el mismo partido."
-      },
-      {
-        "at": "2026-10-14T00:17:00+02:00",
-        "phase": "drafting",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Redactando explicación factual conjunta."
-      },
-      {
-        "at": "2026-10-14T00:17:20+02:00",
-        "phase": "drafting",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Comprobando límite de X · 221 caracteres."
-      },
-      {
-        "at": "2026-10-14T00:17:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Evaluando candidatos con ratings y control de repetición."
-      },
-      {
-        "at": "2026-10-14T00:17:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermín",
-        "message": "Remate seleccionado · específico del reparto de goles y sin coincidencia reciente."
-      },
-      {
-        "at": "2026-10-14T00:18:00+02:00",
-        "phase": "verifying",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Releyendo estado autoritativo · r0 sigue activa y Telegram 792 provisional."
-      },
-      {
-        "at": "2026-10-14T00:18:20+02:00",
-        "phase": "investigating",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Buscando detonante actual de #TierraDeNadie5."
-      },
-      {
-        "at": "2026-10-14T00:18:40+02:00",
-        "phase": "investigating",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Contrastando fuentes · expulsión sorpresa entre Chiqui, Omar, Víctor y Yola confirmada."
-      },
-      {
-        "at": "2026-10-14T00:18:50+02:00",
-        "phase": "investigating",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Hecho esencial verificado · gala en emisión; no se anticipa el resultado."
-      },
-      {
-        "at": "2026-10-14T00:19:00+02:00",
-        "phase": "drafting",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-14T00:19:10+02:00",
-        "phase": "drafting",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Comprobando límite de X · 256 caracteres."
-      },
-      {
-        "at": "2026-10-14T00:19:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "5099d7650347",
-        "title": "#TierraDeNadie5",
-        "message": "Remate seleccionado · Semana Salvaje y trampilla, sin muletillas recientes."
-      },
-      {
-        "at": "2026-10-14T00:22:29+02:00",
-        "phase": "persisting",
+        "at": "2026-10-14T00:45:00+02:00",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Requests y cola actualizados; detectada carrera: faltaba incluir Explicadas en el primer commit."
+        "message": "Preparando pasada · cola editorial 0; auditando Telegram, reexplicaciones y Pendientes."
       },
       {
-        "at": "2026-10-14T00:24:13+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación transaccional aplicada · Explicadas y Requests contienen el mismo texto, revisión y explained_at."
-      },
-      {
-        "at": "2026-10-14T00:24:40+02:00",
+        "at": "2026-10-14T00:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0; Telegram 791/792 final:true; auditoría con 0 huérfanos."
+        "message": "Verificando reparación de Pendientes y auditoría Telegram · cola editorial sigue en 0."
       },
       {
-        "at": "2026-10-14T00:25:00+02:00",
+        "at": "2026-10-14T00:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 3/3 cerrada y verificada · 2 grupos, cola 0 y Telegram limpio."
+        "message": "Pasada 0/0 cerrada · estado editorial limpio; saneamiento visual sigue ejecutándose en GitHub Actions."
       }
     ],
     "queue_complete": true,
