@@ -274,10 +274,16 @@ struct RadarMap: UIViewRepresentable {
         if let old = coordinator.center {
             let meters = CLLocation(latitude: old.latitude, longitude: old.longitude)
                 .distance(from: CLLocation(latitude: center.latitude, longitude: center.longitude))
-            if meters > 1500 || coordinator.lastRecenter != recenterRevision {
-                map.setRegion(MKCoordinateRegion(center: center, latitudinalMeters: 240_000, longitudinalMeters: 240_000), animated: true)
-                coordinator.center = center
-                coordinator.lastRecenter = recenterRevision
+            if meters > 1500 {
+                // Switching saved location: reset to a useful regional view.
+                map.setRegion(MKCoordinateRegion(center:center,latitudinalMeters:240_000,
+                                                 longitudinalMeters:240_000),animated:true)
+                coordinator.center=center
+                coordinator.lastRecenter=recenterRevision
+            } else if coordinator.lastRecenter != recenterRevision {
+                // Manual centering keeps the user's selected zoom unchanged.
+                map.setCenter(center,animated:true)
+                coordinator.lastRecenter=recenterRevision
             }
         } else {
             coordinator.center = center
