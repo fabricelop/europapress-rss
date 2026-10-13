@@ -36237,7 +36237,7 @@
       "percentage": 25.0,
       "first_seen": "2026-10-13T20:23:45.283024Z",
       "last_seen": "2026-10-13T20:43:49.998079Z",
-      "status": "WAITING",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -36250,7 +36250,9 @@
         "Servimedia"
       ],
       "outlet_count": 4,
-      "sport_source_count": 0
+      "sport_source_count": 0,
+      "deleted_at": "2026-10-13T20:49:14.104871Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "407da24d585f",
@@ -36904,7 +36906,7 @@
       "percentage": 25.0,
       "first_seen": "2026-10-13T20:04:05.902152Z",
       "last_seen": "2026-10-13T20:14:42.914182Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -36918,7 +36920,9 @@
       ],
       "outlet_count": 4,
       "sport_source_count": 0,
-      "eligible_at": "2026-10-13T20:14:42.914182Z"
+      "eligible_at": "2026-10-13T20:14:42.914182Z",
+      "deleted_at": "2026-10-13T20:49:14.104871Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "d0717243f0a5",
@@ -66872,5 +66876,6 @@
   "active_event_cap": 450,
   "protected_event_count": 358,
   "single_source_event_cap": 450,
-  "pruned_at": "2026-10-13T20:45:16.189053Z"
+  "pruned_at": "2026-10-13T20:45:16.189053Z",
+  "updated_at": "2026-10-13T20:49:14.104871Z"
 }
