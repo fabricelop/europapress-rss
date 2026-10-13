@@ -223,7 +223,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var radar = RadarFeed()
     @Published var projection: RadarProjection?
     @Published var futureField: FutureRainField?
-    @Published var futureFieldStatus = "Preparando mapa de lluvia futura…"
+    @Published var futureFieldStatus = "Previsión DWD ICON-EU por horas. Pulsa +2 h o +4 h para consultar el modelo oficial."
     @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
     @Published var loading = false
     @Published var status = "Consultando datos meteorológicos"
