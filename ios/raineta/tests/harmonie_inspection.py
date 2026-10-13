@@ -28,6 +28,9 @@ with tarfile.open(fileobj=r.raw,mode="r|gz") as arc:
     img=ds.read(1,masked=True).astype(np.float32)
     valid=img.compressed()
     rec={"name":member.name,"bytes":len(data),"width":ds.width,"height":ds.height,
+         "bands":ds.count,"dtype":ds.dtypes,"colorinterp":[str(x) for x in ds.colorinterp],
+         "maskflags":[[str(z) for z in y] for y in ds.mask_flag_enums],
+         "colorTableCount": len(ds.colormap(1)) if ds.colorinterp[0].name=="palette" else 0,
          "crs":str(ds.crs),"bounds":[round(x,3) for x in ds.bounds],
          "nodata":ds.nodata,"validFraction":round(float(np.mean(~np.ma.getmaskarray(img))),4),
          "min":float(np.min(valid)) if len(valid) else None,
