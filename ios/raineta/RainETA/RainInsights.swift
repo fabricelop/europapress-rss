@@ -178,7 +178,9 @@ enum RainInsight {
         let significant=hours.filter{$0.millimeters>=0.1}
         guard !significant.isEmpty else{return false}
         let peakProbability=hours.map(\.probability).max() ?? 0
-        return significant.allSatisfy{$0.probability<=20} && peakProbability>=25
+        let wetPeak=significant.map(\.probability).max() ?? 0
+        return significant.allSatisfy{$0.probability<=20} &&
+               peakProbability>=20 && peakProbability-wetPeak>=10
     }
 
     static func dailyPeriods(_ weather: RainSnapshot, day:Date,
