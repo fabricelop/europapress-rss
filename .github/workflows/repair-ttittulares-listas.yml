@@ -279,7 +279,7 @@ jobs:
               if item.get("disable_ai_image") or str(item.get("image_mode") or "").lower() in {"fallback_only","tweet_capture_only"}:
                   continue
               if any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
-                     for k in ("fallece","muere","muerte","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado")):
+                     for k in ("fallece","muere","muerte","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil")):
                   continue
               # Los bloqueos editoriales heredados (disable/fallback_only/etc.) ya no
               # impiden generar IA. Tremending sigue fuera por su flujo tweet_capture.
