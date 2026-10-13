@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T00:45:00+02:00",
-  "last_completed_at": "2026-10-14T00:48:30+02:00",
-  "updated_at": "2026-10-14T00:48:30+02:00",
+  "last_started_at": "2026-10-14T01:15:00+02:00",
+  "last_completed_at": "2026-10-14T01:18:20+02:00",
+  "updated_at": "2026-10-14T01:18:20+02:00",
   "status": "success",
   "processed_ids": [
     "c6c98db8f107",
@@ -33,16 +33,13 @@
     "verification_note": "Texto y Telegram verificados; la capa visual independiente no bloquea el cierre editorial."
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261014T004500+0200-chat",
+    "run_id": "tr-20261014T011500+0200-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T00:45:00+02:00",
-    "updated_at": "2026-10-14T00:48:30+02:00",
-    "finished_at": "2026-10-14T00:48:30+02:00",
+    "started_at": "2026-10-14T01:15:00+02:00",
+    "updated_at": "2026-10-14T01:18:20+02:00",
+    "finished_at": "2026-10-14T01:18:20+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,16 +59,12 @@
       "telegram_delivery_workflow_verified": 1,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "vercel_deploys": 0
+      "vercel_deploys": 0,
+      "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada · cola editorial 0, sin provisionales pendientes y auditoría Telegram con 0 huérfanos; saneamiento de Pendientes disparado y aún en curso.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "kind": "pending_repair_workflow_in_progress",
-        "message": "El saneamiento de Pendientes fue disparado correctamente por el commit b75a5b0; el run 38480013209 seguía in_progress en la última comprobación. La cola editorial, el ledger provisional y la auditoría de huérfanos estaban limpios."
-      }
-    ],
+    "message": "Pasada 0/0 cerrada y verificada; no queda trabajo editorial activo ni avisos Telegram huérfanos.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -82,25 +75,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T00:45:00+02:00",
+        "at": "2026-10-14T01:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada · cola editorial 0; auditando Telegram, reexplicaciones y Pendientes."
+        "message": "Iniciando pasada editorial · cola textual 0; verificando reexplicaciones, Telegram y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-14T00:47:00+02:00",
+        "at": "2026-10-14T01:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificando reparación de Pendientes y auditoría Telegram · cola editorial sigue en 0."
+        "message": "Releyendo cola, Requests, Explicadas y auditoría Telegram."
       },
       {
-        "at": "2026-10-14T00:48:30+02:00",
+        "at": "2026-10-14T01:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola, Requests, reexplicaciones y auditoría Telegram limpias; saneamiento de Pendientes en ejecución."
+      },
+      {
+        "at": "2026-10-14T01:17:58+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento de Pendientes completado correctamente; entrega Telegram despachada."
+      },
+      {
+        "at": "2026-10-14T01:18:13+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Entrega Telegram completada correctamente; auditoría postenvío sin huérfanos."
+      },
+      {
+        "at": "2026-10-14T01:18:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada · estado editorial limpio; saneamiento visual sigue ejecutándose en GitHub Actions."
+        "message": "Pasada 0/0 cerrada y verificada; no queda trabajo editorial activo ni avisos Telegram huérfanos."
       }
     ],
     "queue_complete": true,
