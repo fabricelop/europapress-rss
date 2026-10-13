@@ -73,7 +73,12 @@ def same_fact(a,b):
             overlap=len(common)/min(len(A),len(B))
             jac=len(common)/len(A|B)
             likeness=SequenceMatcher(None,normalize(a_title),normalize(b_title)).ratio()
+            concrete_actions={"morir","suspension","ciberataque","denuncia","exigir",
+                              "dimision","detenido","policia","disparo","incendio","asalto",
+                              "sentencia","accidente","rescate"}
+            anchored=bool(common & concrete_actions)
             if (A==B or (len(common)>=4 and overlap>=.69 and jac>=.40)
+                    or (anchored and len(common)>=4 and overlap>=.48 and jac>=.28)
                     or (len(common)>=3 and overlap>=.79 and jac>=.52)
                     or (len(common)>=3 and likeness>=.84 and overlap>=.56)):
                 return True
@@ -161,6 +166,15 @@ def selftest():
                      p("Fallece el actor RJ Mitte, hijo de Walter White en Breaking Bad, a los 34 años"))
     assert same_fact(p("Un ciberataque estropea alimentos frescos de supermercados de Francia"),
                      p("Un ciberataque hackea la refrigeración y estropea productos frescos de supermercados de Francia"))
+    assert same_fact(
+        p("Un ciberataque estropea los alimentos frescos y congelados de varios supermercados de Francia y deja pérdidas millonarias"),
+        p("Un ciberataque hackea los sistemas de refrigeración y estropea los productos frescos de cientos de supermercados en Francia"))
+    assert same_fact(
+        p("El PP de Cádiz exige la dimisión del alcalde de Algeciras tras conocer una nueva denuncia de agresión sexual"),
+        p("El PP urge la dimisión del alcalde de Algeciras tras las denuncias de dos afiliadas por supuesta agresión sexual"))
+    assert same_fact(
+        p("El Supremo mantiene la suspensión del derecho a voto de los nacionalizados por la ley de nietos"),
+        p("El Supremo mantiene la suspensión del derecho a voto de los nacionalizados por la ley de nietos"))
     assert not same_fact(p("El Gobierno estudia recurrir al Constitucional el fallo del Supremo por la ley de nietos"),
                          p("El Supremo mantiene suspendido el voto de los nacionalizados por la ley de nietos"))
     assert not same_fact(p("Los reyes visitan Ceuta y Melilla"),
