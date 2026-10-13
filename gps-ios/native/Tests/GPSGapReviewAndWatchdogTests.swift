@@ -90,6 +90,31 @@ final class GPSGapReviewAndWatchdogTests:XCTestCase {
             enabled:true,tracking:true,resting:false,
             fix:now.addingTimeInterval(-500),now:now,lastArmed:nil,intervalMinutes:15))
     }
+    func testNotificationExpiresOnlyOnceAndRequiresSustainedReadingsToRearm() {
+        let armed=Date(timeIntervalSince1970:100)
+        XCTAssertFalse(GPSStaleWatchdogPolicy.deadlinePassed(
+            armedAt:armed,now:Date(timeIntervalSince1970:999),minutes:15))
+        XCTAssertTrue(GPSStaleWatchdogPolicy.deadlinePassed(
+            armedAt:armed,now:Date(timeIntervalSince1970:1000),minutes:15))
+        // Lecturas sueltas cada 20 min NO constituyen una recuperación.
+        XCTAssertFalse(GPSStaleWatchdogPolicy.recoveryConfirmed(
+            first:Date(timeIntervalSince1970:1300),
+            previous:Date(timeIntervalSince1970:1300),
+            latest:Date(timeIntervalSince1970:2500)))
+        // Un flujo sostenido de posiciones sí permite vigilar una nueva avería.
+        XCTAssertTrue(GPSStaleWatchdogPolicy.recoveryConfirmed(
+            first:Date(timeIntervalSince1970:1000),
+            previous:Date(timeIntervalSince1970:1170),
+            latest:Date(timeIntervalSince1970:1180)))
+    }
+    func testMovementIsNotRequiredForAFreshGPSTimestamp() {
+        let now=Date(timeIntervalSince1970:2000)
+        let sameLocationNewTimestamp=now
+        XCTAssertTrue(GPSStaleWatchdogPolicy.isFresh(
+            sameLocationNewTimestamp,at:now))
+        XCTAssertFalse(GPSStaleWatchdogPolicy.isFresh(
+            now.addingTimeInterval(-900),at:now))
+    }
     func testLegacySavedStateStillDecodesWithoutDismissedGapField() throws {
         var state=SavedState()
         state.dismissedGPSGapIDs=["ignored"]
