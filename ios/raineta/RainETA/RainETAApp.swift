@@ -4,12 +4,64 @@ import MapKit
 @main
 struct RainETAApp: App {
     var body: some Scene {
-        WindowGroup { RainHomeView() }
+        WindowGroup { RainTabRoot() }
+    }
+}
+
+struct RainTabRoot: View {
+    @StateObject private var store = RainStore()
+    @State private var selectedTab = 0
+    @Environment(\.scenePhase) private var phase
+
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            RainHomeView(store: store)
+                .tabItem { Label("Inicio", systemImage: "cloud.rain.fill") }
+                .tag(0)
+            NavigationStack {
+                ScrollView {
+                    PlacesOverview(store: store, onSelect: { selectedTab = 0 })
+                        .padding(16)
+                }
+                .background(Color(red: 0.035, green: 0.067, blue: 0.12))
+                .navigationTitle("Mis lugares")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            Task { await store.refreshSummaries(force: true) }
+                        } label: {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                    }
+                }
+            }
+            .tabItem { Label("Mis lugares", systemImage: "mappin.and.ellipse") }
+            .tag(1)
+        }
+        .preferredColorScheme(.dark)
+        .task {
+            store.start()
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 240_000_000_000)
+                if phase == .active {
+                    await store.refresh()
+                    await store.refreshSummaries()
+                }
+            }
+        }
+        .onChange(of: phase) { _, newPhase in
+            if newPhase == .active {
+                Task {
+                    await store.refresh(force: true)
+                    await store.refreshSummaries()
+                }
+            }
+        }
     }
 }
 
 struct RainHomeView: View {
-    @StateObject private var store = RainStore()
+    @ObservedObject var store: RainStore
     @Environment(\.scenePhase) private var phase
     @State private var fullRadar = false
 
@@ -17,7 +69,6 @@ struct RainHomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    PlacesOverview(store: store)
                     hero
                     radarSection
                     MinuteRainGraph(projection: store.projection, weather: store.snapshot)
@@ -40,16 +91,6 @@ struct RainHomeView: View {
             .refreshable {
                 await store.refresh(force: true)
                 await store.refreshSummaries(force: true)
-            }
-            .task {
-                store.start()
-                while !Task.isCancelled {
-                    try? await Task.sleep(nanoseconds: 240_000_000_000)
-                    if phase == .active { await store.refresh() }
-                }
-            }
-            .onChange(of: phase) { _, value in
-                if value == .active { Task { await store.refresh(force: true) } }
             }
             .sheet(isPresented: $fullRadar) {
                 NavigationStack {
