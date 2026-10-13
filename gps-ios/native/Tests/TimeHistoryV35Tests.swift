@@ -85,7 +85,7 @@ final class TimeHistoryV35Tests:XCTestCase {
         let group=TimeRecoveryIndex.groups(original)
         XCTAssertEqual(group.count,1)
         XCTAssertEqual(group[0].seconds,600)
-        let corrected=TimeRecoveryIndex.without(original,group:group[0])+
+        let corrected=TimeRecoveryIndex.without(original,group:group[0]) +
             TimeRecoveryIndex.reassigned(group[0],cell:near)
         XCTAssertEqual(TimeAttribution.totals(corrected,
             cellIDs:[home.id,near.id]),1000)
