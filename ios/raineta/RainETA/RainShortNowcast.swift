@@ -30,10 +30,13 @@ struct RainShortEstimate {
     let windowStart: Date?
     let windowEnd: Date?
     let radarBased: Bool
+    let radarObservedAt: Date?
 
     func isUsable(at date: Date) -> Bool {
         date.timeIntervalSince(issuedAt) >= -60 &&
         date.timeIntervalSince(issuedAt) < (radarBased ? 12*60 : 30*60) &&
+        (!radarBased || (radarObservedAt != nil &&
+          date.timeIntervalSince(radarObservedAt!) < 15*60)) &&
         (change == nil || change! > date.addingTimeInterval(-90))
     }
 }
@@ -57,7 +60,8 @@ enum RainShortFusion {
                                             rainingNow: fallback.raining,
                                             method: "Modelo · intervalos de 15 min",
                                             confidence: "Orientativo", windowStart: nil,
-                                            windowEnd: nil, radarBased: false)
+                                            windowEnd: nil, radarBased: false,
+                                            radarObservedAt: nil)
         guard let radar, radar.movementConfidence >= 0.38,
               radar.movementConfidence.isFinite,
               !radar.points.isEmpty else { return modelResult }
@@ -116,7 +120,7 @@ enum RainShortFusion {
             method: caption, confidence: reliable ? "Confianza media" : "Confianza baja",
             windowStart: change.addingTimeInterval(Double(-uncertainty*60)),
             windowEnd: change.addingTimeInterval(Double(uncertainty*60)),
-            radarBased: true
+            radarBased: true, radarObservedAt: radar.observedAt
         )
     }
 }
