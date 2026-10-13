@@ -115,25 +115,53 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     var onCoordinate: ((CLLocationCoordinate2D) -> Void)?
     var onDenied: (() -> Void)?
+    var onAuthorization: ((CLAuthorizationStatus) -> Void)?
+
     override init() {
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.distanceFilter = 500
     }
+
+    var authorizationStatus: CLAuthorizationStatus { manager.authorizationStatus }
+
     func request() {
-        if manager.authorizationStatus == .notDetermined { manager.requestWhenInUseAuthorization() }
-        else if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
-            manager.requestLocation()
-        } else { onDenied?() }
+        switch manager.authorizationStatus {
+        case .notDetermined: manager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways: locationManagerDidChangeAuthorization(manager)
+        default: onDenied?()
+        }
     }
+
+    func requestAlways() {
+        if manager.authorizationStatus == .notDetermined {
+            manager.requestWhenInUseAuthorization()
+        } else if manager.authorizationStatus == .authorizedWhenInUse {
+            manager.requestAlwaysAuthorization()
+        } else {
+            onAuthorization?(manager.authorizationStatus)
+        }
+    }
+
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        if manager.authorizationStatus == .authorizedWhenInUse || manager.authorizationStatus == .authorizedAlways {
+        onAuthorization?(manager.authorizationStatus)
+        switch manager.authorizationStatus {
+        case .authorizedAlways:
+            manager.allowsBackgroundLocationUpdates = true
+            manager.pausesLocationUpdatesAutomatically = true
+            manager.startMonitoringSignificantLocationChanges()
             manager.requestLocation()
-        } else if manager.authorizationStatus == .denied { onDenied?() }
+        case .authorizedWhenInUse:
+            manager.requestLocation()
+        case .denied, .restricted: onDenied?()
+        default: break
+        }
     }
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        onCoordinate?(location.coordinate)
+        guard let point = locations.last?.coordinate else { return }
+        onCoordinate?(point)
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) { }
 }
@@ -146,15 +174,28 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var loading = false
     @Published var status = "Consultando datos meteorológicos"
     @Published var liveEnabled = false
-    @Published var radarOffset = 0
+    @Published var liveStatus = "En Vivo desactivada"
+    @Published var locationPermission = "Comprobando ubicación"
+    @Published var radarIndex = 0
 
     private let location = RainLocation()
     private var lastCoordinate: CLLocationCoordinate2D?
     private var lastRefresh: Date = .distantPast
 
     init() {
+        liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
+        liveStatus = liveEnabled ? "Actividad En Vivo detectada en iOS" : "En Vivo desactivada"
         location.onDenied = { [weak self] in Task { @MainActor in
+            self?.locationPermission = "Ubicación denegada; revisar Ajustes"
             self?.status = "Ubicación no autorizada: mostrando Madrid como ejemplo"
+        }}
+        location.onAuthorization = { [weak self] permission in Task { @MainActor in
+            switch permission {
+            case .authorizedAlways: self?.locationPermission = "Ubicación: Siempre"
+            case .authorizedWhenInUse: self?.locationPermission = "Ubicación: Mientras se usa · Solicitar Siempre"
+            case .notDetermined: self?.locationPermission = "Ubicación pendiente"
+            default: self?.locationPermission = "Ubicación restringida"
+            }
         }}
         location.onCoordinate = { [weak self] point in Task { @MainActor in
             guard let self else { return }
@@ -167,12 +208,28 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             self.lastCoordinate = point
             if moved { await self.refresh(force: true) }
         }}
-        liveEnabled = UserDefaults.standard.bool(forKey: "raineta.liveRequested")
     }
 
     func start() {
         location.request()
+        syncLive()
         Task { await refresh(force: true) }
+    }
+
+    func requestAlwaysLocation() {
+        location.requestAlways()
+        if location.authorizationStatus == .authorizedWhenInUse {
+            locationPermission = "Solicitud de ubicación Siempre enviada; si no aparece, habilitar en Ajustes"
+        }
+    }
+
+    func syncLive() {
+        liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
+        if liveEnabled {
+            liveStatus = "En Vivo activa · \(Activity<RainETAAttributes>.activities.count) actividad(es) detectada(s)"
+        } else {
+            liveStatus = "En Vivo no iniciada"
+        }
     }
 
     func refresh(force: Bool = false) async {
@@ -190,9 +247,8 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             status = "Error en la previsión. Conservamos los últimos datos."
         }
         do {
-            let loaded = try await rx
-            radar = loaded
-            radarOffset = 0
+            radar = try await rx
+            radarIndex = max(0, radar.frames.count - 1)
         } catch {
             status += " · Radar no disponible"
         }
@@ -200,48 +256,56 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     }
 
     func toggleLive() async {
+        syncLive()
         if liveEnabled {
             for activity in Activity<RainETAAttributes>.activities {
                 await activity.end(nil, dismissalPolicy: .immediate)
             }
-            liveEnabled = false
-        } else {
-            guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-                status = "Activa Actividades en Vivo en Ajustes del iPhone"
-                return
-            }
-            guard snapshot?.nextChange != nil else {
-                status = "Todavía no hay un comienzo o final de lluvia que mostrar en Vivo"
-                return
-            }
-            liveEnabled = true
-            await updateLiveActivity()
+            syncLive()
+            return
         }
-        UserDefaults.standard.set(liveEnabled, forKey: "raineta.liveRequested")
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            liveStatus = "iOS no permite En Vivo: revisar Ajustes > RainETA > Actividades en Vivo"
+            return
+        }
+        guard snapshot != nil else {
+            liveStatus = "Espera a que se descargue la primera previsión"
+            return
+        }
+        await updateLiveActivity()
     }
 
-    private func updateLiveActivity() async {
-        guard let wx = snapshot, let change = wx.nextChange else { return }
+    func updateLiveActivity() async {
+        guard let wx = snapshot else { return }
         let state = RainETAAttributes.ContentState(
-            arrival: change,
+            arrival: wx.nextChange,
             rainingNow: wx.isRaining,
             intensity: wx.intensity,
-            updatedAt: wx.updatedAt
+            updatedAt: wx.updatedAt,
+            summary: wx.isRaining ? "Lluvia actual" : (wx.nextChange == nil ? "Sin lluvia inminente" : "Lluvia prevista")
         )
-        let content = ActivityContent(state: state, staleDate: wx.updatedAt.addingTimeInterval(30 * 60))
-        if let activity = Activity<RainETAAttributes>.activities.first {
-            await activity.update(content)
+        let content = ActivityContent(state: state,
+                                      staleDate: wx.updatedAt.addingTimeInterval(30 * 60),
+                                      relevanceScore: 0.7)
+        if let existing = Activity<RainETAAttributes>.activities.first {
+            await existing.update(content)
+            liveStatus = "En Vivo actualizada: \(existing.id.prefix(8))"
         } else {
+            guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+                liveStatus = "Actividades En Vivo desactivadas en iOS"
+                return
+            }
             do {
-                _ = try Activity<RainETAAttributes>.request(
+                let created = try Activity<RainETAAttributes>.request(
                     attributes: RainETAAttributes(locationName: wx.locationName),
                     content: content,
                     pushType: nil
                 )
+                liveStatus = "En Vivo solicitada a iOS: \(created.id.prefix(8)) · \(created.activityState)"
             } catch {
-                status = "No se pudo iniciar En Vivo: \(error.localizedDescription)"
-                liveEnabled = false
+                liveStatus = "Error de En Vivo: \(error.localizedDescription)"
             }
         }
+        syncLive()
     }
 }
