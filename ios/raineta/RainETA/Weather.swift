@@ -400,24 +400,11 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         } catch {
             status += " · Radar no disponible"
         }
-        // Only compute radar flow when we have two validated observations.
-        let host = radar.host
-        let frames = radar.frames
-        let point = coordinate
-        if frames.count >= 2 {
-            let projected = await RadarNowcaster.forecast(host: host, frames: frames, coordinate: point)
-            if selectedRevision != placeSelectionRevision { pendingRefresh = true; return }
-            if projected != nil { projection = projected }
-            if let p = projected ?? projection {
-                let quality = Int(p.confidence * 100)
-                projectionStatus = "Desplazamiento estimado · Confianza \(quality)% · Fiable orientativamente hasta +\(p.reliableUntil) min"
-            } else {
-                projectionStatus = "Sin vector radar fiable: se muestra orientación del modelo"
-            }
-        } else {
-            projection = nil
-            projectionStatus = "Radar insuficiente para estimar movimiento"
-        }
+        // Legacy translation/fade projection disabled. Its geographic motion
+        // was not verified and disappeared at high zoom. Show observation
+        // honestly until model-grid / radar-blending validation is complete.
+        projection = nil
+        projectionStatus = "Proyección futura suspendida: se integrará radar + modelo meteorológico en una versión validada."
         if liveEnabled { await updateLiveActivity() }
     }
 
