@@ -474,7 +474,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
         $localTxt.Contains('BRIDGE_FEATURES="v54-submit-generating-transition"') -and
         $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
-        $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=')
+        $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=') -and
+        $localTxt.Contains('automaticImageDeadline')
       if($localOk){
         $old=$ErrorActionPreference
         try{
@@ -508,7 +509,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'BRIDGE_FEATURES="v54-submit-generating-transition"',
       'await cdp.call("Input.insertText",{text:message});',
       'ttittulares-run-status?view=image-job&strong=1&id=',
-      'imagesAfterMarker'
+      'imagesAfterMarker',
+      'automaticImageDeadline'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
     }
