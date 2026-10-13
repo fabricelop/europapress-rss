@@ -1047,7 +1047,12 @@ def process(project,now,token,chat):
                 their_group=str(leader_req.get("explanation_group_id") or leader_req.get("group_id") or "")
                 if their_group and their_group!=group_id:
                     continue
-            leaders=[row for row in active_entries
+            # The leader may be historical (<= lifecycle watermark) while the
+            # follower provisional is a new live message. Use the full durable
+            # ledger only as proof of the explicit group's leader state; never
+            # edit that historical leader. The follower loop below remains
+            # restricted to active_entries, so no archived message is revived.
+            leaders=[row for row in entries
                      if str(row.get("event_id") or "")==leader_id and
                      (str(row.get("status") or "").lower() in TERMINAL or
                       (str(row.get("status") or "").lower()=="sent" and
@@ -1468,6 +1473,15 @@ def selftest():
     try:
         with tempfile.TemporaryDirectory() as folder:
             globals()["ROOT"]=Path(folder)
+            # Regression: an explicit group leader can be an archived/old
+            # Telegram message while a newly selected follower has a live
+            # provisional. The historic leader is proof of grouping only;
+            # the live follower must still be finalized in place.
+            put("telegram/lifecycle-baseline.json",{
+                "activated_at":"2026-10-09T15:30:00Z",
+                "project_state":{"ttendencias":{
+                    "historic_max_message_id":712,
+                    "preserve_pending_ids":["arrasate"]}}})
             put("trends/requests.json",{"requests":[
                 {"id":"jagoba","name":"Jagoba","status":"deleted",
                  "group_leader_id":"jagoba","group_id":"grp-jagoba"},
