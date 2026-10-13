@@ -6,6 +6,7 @@ struct PlacesOverview: View {
     @ObservedObject var store: RainStore
     var onSelect: () -> Void = {}
     @State private var showingSearch=false
+    @State private var showingComparison=false
     @State private var showingOrder=false
     @State private var showingGPSName=false
     @State private var enteredGPSName=""
@@ -37,12 +38,18 @@ struct PlacesOverview: View {
                 .buttonStyle(.borderedProminent).tint(.cyan).foregroundStyle(.black)
                 .controlSize(.small)
             }
-            HStack {
-                Label("Comparador en directo",systemImage:"tablecells.fill")
-                    .font(.caption.bold()).foregroundStyle(.cyan)
-                Spacer()
-                Text("Modelo · 15 min").font(.caption2).foregroundStyle(.secondary)
+            Button { showingComparison=true } label:{
+                HStack {
+                    Label("Comparador en directo",systemImage:"tablecells.fill")
+                        .font(.caption.bold())
+                    Spacer()
+                    Text("Ampliar")
+                        .font(.caption2)
+                    Image(systemName:"arrow.up.right")
+                }
+                .foregroundStyle(.cyan)
             }
+            .buttonStyle(.plain)
 
             ScrollView(.horizontal) {
                 VStack(spacing:0) {
@@ -76,6 +83,9 @@ struct PlacesOverview: View {
         }
         .padding(15)
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
+        .sheet(isPresented:$showingComparison) {
+            RainLiveComparison(store:store,onSelect:onSelect)
+        }
         .sheet(isPresented:$showingSearch) {
             PlaceSearchSheet(store:store,onSelect:onSelect)
         }
@@ -227,6 +237,88 @@ struct PlacesOverview: View {
             }
         }
         .padding(.horizontal,6).padding(.vertical,12)
+    }
+}
+
+struct RainLiveComparison: View {
+    @ObservedObject var store:RainStore
+    var onSelect:()->Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body:some View {
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing:11) {
+                    ForEach(store.allPlaceRows) { place in
+                        TimelineView(.periodic(from:.now,by:30)) { clock in
+                            let summary=store.quickSummaries[place.id]
+                            let stale=summary.map {
+                                clock.date.timeIntervalSince($0.checkedAt)>20*60
+                            } ?? true
+                            let next=summary.map { $0.raining ? $0.until : $0.nextRain } ?? nil
+                            Button {
+                                store.selectPlace(place.id)
+                                dismiss()
+                                onSelect()
+                            } label:{
+                                VStack(alignment:.leading,spacing:10) {
+                                    HStack {
+                                        Label(place.name,systemImage:"mappin")
+                                            .font(.headline)
+                                            .lineLimit(1)
+                                        Spacer()
+                                        Text(stale ? "DATOS PENDIENTES":
+                                             summary?.raining == true ? "LLUEVE":"NO LLUEVE")
+                                            .font(.caption.bold())
+                                            .foregroundStyle(stale ? .yellow :
+                                                        summary?.raining == true ? .cyan:.green)
+                                    }
+                                    HStack {
+                                        VStack(alignment:.leading) {
+                                            Text("Próximo cambio").font(.caption2)
+                                                .foregroundStyle(.secondary)
+                                            Text(stale ? "—":RainInsight.countdown(to:next,at:clock.date))
+                                                .font(.title3.bold().monospacedDigit())
+                                        }
+                                        Spacer()
+                                        VStack(alignment:.trailing) {
+                                            Text("Temperatura").font(.caption2)
+                                                .foregroundStyle(.secondary)
+                                            Text(summary?.temperatureLabel ?? "—")
+                                                .font(.title3.bold())
+                                        }
+                                        Image(systemName:"chevron.right")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                }
+                                .foregroundStyle(.primary)
+                                .padding(16)
+                                .background(.white.opacity(0.065),
+                                            in:RoundedRectangle(cornerRadius:16))
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .padding(16)
+            }
+            .background(Color(red:0.035,green:0.067,blue:0.12))
+            .navigationTitle("Comparador en directo")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement:.topBarLeading) {
+                    Button("Actualizar") {
+                        Task {await store.refreshSummaries(force:true)}
+                    }
+                    .disabled(store.summariesLoading)
+                }
+                ToolbarItem(placement:.topBarTrailing) {
+                    Button("Cerrar"){dismiss()}
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
     }
 }
 
