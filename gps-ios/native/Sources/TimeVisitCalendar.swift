@@ -225,7 +225,7 @@ private struct TimeCalendarVisitRow:View {
     let timeZone:TimeZone
     @State private var isExpanded=false
     @State private var breakDate:Date=Date()
-    @State private var confirmBreak=false
+    @State private var showSplitEditor=false
 
     private func localTime(_ date:Date)->String {
         let formatter=DateFormatter()
@@ -249,10 +249,6 @@ private struct TimeCalendarVisitRow:View {
                     Text(DurationFormat.full(seconds))
                         .foregroundStyle(.teal)
                 }
-                if visit.mergedSessions>1 {
-                    Label("\(visit.mergedSessions) tramos reunidos",
-                          systemImage:"square.stack.3d.up")
-                }
                 // Solo advertir por un hueco realmente significativo, no
                 // por segundos perdidos entre lecturas consecutivas.
                 if unconfirmedSeconds>=60 {
@@ -260,39 +256,26 @@ private struct TimeCalendarVisitRow:View {
                           systemImage:"clock.badge.exclamationmark")
                         .foregroundStyle(.orange)
                 }
-                if end.timeIntervalSince(start)>60 {
-                    Divider()
-                    if model.data.manualBreaks.contains(where:{
-                        abs($0.timeIntervalSince(start))<1
-                    }) {
-                        Button("Eliminar separación manual aquí") {
-                            model.removeSplit(at:start)
-                        }.font(.caption2)
-                    } else {
-                        DatePicker("Separar estancia a las",
-                            selection:$breakDate,in:start...end,
-                            displayedComponents:[.hourAndMinute])
-                            .datePickerStyle(.compact)
-                            .font(.caption2)
-                        Button("Separar estancia en esta hora") {
-                            confirmBreak=true
-                        }
-                        .font(.caption2)
+                if end.timeIntervalSince(start)>120 {
+                    Button("Ajustar esta visita") {
+                        breakDate=start.addingTimeInterval(end.timeIntervalSince(start)/2)
+                        showSplitEditor=true
                     }
+                    .font(.caption2)
+                    .buttonStyle(.borderless)
                 }
                 if details.count>1 {
-                    Divider()
-                    Text("Tramos registrados").fontWeight(.medium)
-                    ForEach(Array(details.prefix(12))) { part in
+                    Text("\(details.count) tramos reunidos")
+                    ForEach(Array(details.prefix(3))) { part in
                         HStack {
                             Text("\(localTime(part.start)) – \(localTime(part.end))")
                             Spacer(minLength:5)
-                            Text(DurationFormat.full(part.seconds))
+                            Text(DurationFormat.small(part.seconds))
                                 .foregroundStyle(.teal)
                         }
                     }
-                    if details.count>12 {
-                        Text("\(details.count-12) tramos adicionales")
+                    if details.count>3 {
+                        Text("Y \(details.count-3) tramos más")
                     }
                 }
             }
@@ -317,15 +300,43 @@ private struct TimeCalendarVisitRow:View {
         }
         .tint(.teal)
         .padding(.vertical,3)
-        .onAppear { breakDate=start.addingTimeInterval(end.timeIntervalSince(start)/2) }
-        .confirmationDialog("¿Separar esta estancia?",
-            isPresented:$confirmBreak,titleVisibility:.visible) {
-            Button("Separar sin modificar segundos") {
-                model.splitEpisode(at:breakDate)
+        .sheet(isPresented:$showSplitEditor) {
+            NavigationStack {
+                Form {
+                    Section {
+                        DatePicker("Separar a las",selection:$breakDate,
+                            in:start...end,displayedComponents:[.hourAndMinute])
+                    } footer: {
+                        Text("Solo se cambia cómo aparecen las visitas; no se altera el tiempo registrado.")
+                    }
+                    if model.data.manualBreaks.contains(where:{
+                        abs($0.timeIntervalSince(start))<1
+                    }) {
+                        Section {
+                            Button("Quitar separación anterior") {
+                                model.removeSplit(at:start)
+                                showSplitEditor=false
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Ajustar visita")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement:.cancellationAction) {
+                        Button("Cancelar") { showSplitEditor=false }
+                    }
+                    ToolbarItem(placement:.confirmationAction) {
+                        Button("Guardar") {
+                            if breakDate>start && breakDate<end {
+                                model.splitEpisode(at:breakDate)
+                            }
+                            showSplitEditor=false
+                        }
+                    }
+                }
             }
-            Button("Cancelar",role:.cancel) {}
-        } message: {
-            Text("Se dividirá solo la presentación del historial en esta hora. No se cambiarán los intervalos GPS ni el tiempo total.")
+            .presentationDetents([.medium])
         }
     }
 }
