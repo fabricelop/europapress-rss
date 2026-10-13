@@ -229,6 +229,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var liveStatus = "En Vivo desactivada"
     @Published var locationPermission = "Comprobando ubicación"
     @Published var radarIndex = 0
+    @Published var radarFutureMinutes = 0
 
     private let location = RainLocation()
     private var lastCoordinate: CLLocationCoordinate2D?
@@ -301,6 +302,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         do {
             radar = try await rx
             radarIndex = max(0, radar.frames.count - 1)
+            radarFutureMinutes = 0
         } catch {
             status += " · Radar no disponible"
         }
