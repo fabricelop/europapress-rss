@@ -51328,16 +51328,16 @@
       "last_attempt_at": "2026-10-13T00:53:50+02:00",
       "problematic_at": "2026-10-13T00:18:04+02:00",
       "editorial_engine": "chatgpt-automation-outbox",
-      "problem_reason": "Reintento de reparación del provisional 741: dos búsquedas nuevas no encuentran corroboración independiente en medios españoles; solo reaparece una pieza de talkSPORT que compara el trato a Mbappé con el recibido por Gareth Bale. Bale está ahora TT#11, fuera del Top 10, por lo que no se inventa una explicación ni se reactiva editorialmente.",
+      "problem_reason": "Nuevo intento 13/10 02:29: aparece una pieza de talkSPORT que compara la presión sobre Mbappé con el trato recibido por Gareth Bale, pero no hay corroboración independiente suficiente del detonante del TT en España. Se conserva el provisional 741 sin inventar explicación.",
       "verification_queries": [
-        "\"Bale\" \"Mbappé\" 12 octubre 2026 Real Madrid Gareth Bale",
-        "\"Gareth Bale\" 13 octubre 2026 Real Madrid Mbappé España"
+        "\"Bale\" Real Madrid Mbappé 13 octubre 2026 España",
+        "\"Gareth Bale\" 13 octubre 2026 España tendencia"
       ],
       "material_novelty_verified": false,
-      "problematic_attempts": 2,
+      "problematic_attempts": 3,
       "inactive_at": "2026-10-13T00:22:53+02:00",
       "inactive_reason": "left-top10-radar",
-      "orphan_repair_attempt_at": "2026-10-13T00:53:50+02:00",
+      "orphan_repair_attempt_at": "2026-10-13T02:29:00+02:00",
       "orphan_repair_message_id": 741,
       "orphan_repair_pending": true
     },
@@ -51873,11 +51873,18 @@
       "auto_queued": true,
       "auto_queue_scope": "top10",
       "problematic_at": "2026-10-13T01:17:22+02:00",
-      "problem_reason": "Nuevo intento 13/10 01:18: Alfon sigue TT#7. Fuentes actuales verifican que entró en el 68 del Levante-Sevilla y vio amarilla en el 84, pero no identifican un detonante independiente y suficientemente fiable para explicar por qué es tendencia. No se atribuye el TT al partido sin corroboración.",
-      "problematic_attempts": 2,
+      "problem_reason": "Nuevo intento 13/10 02:30: fuentes del Levante-Sevilla confirman a Alfon en la convocatoria/partido, pero no identifican un detonante independiente y fiable que explique el TT. Se conserva el provisional 749 sin atribuirle el partido por inferencia.",
+      "problematic_attempts": 3,
       "editorial_engine": "chatgpt-automation-outbox",
       "inactive_at": "2026-10-13T01:32:05+02:00",
-      "inactive_reason": "left-top10-radar"
+      "inactive_reason": "left-top10-radar",
+      "orphan_repair_attempt_at": "2026-10-13T02:30:00+02:00",
+      "orphan_repair_message_id": 749,
+      "orphan_repair_pending": true,
+      "verification_queries": [
+        "\"Alfon\" Levante Sevilla 12 octubre 2026",
+        "\"Alfon González\" Levante Sevilla 12 octubre 2026"
+      ]
     },
     {
       "id": "f419d9a9e22f",
@@ -52290,6 +52297,6 @@
       "grouped_into_existing_card": false
     }
   ],
-  "updated_at": "2026-10-13T02:28:00+02:00",
+  "updated_at": "2026-10-13T02:30:00+02:00",
   "count": 893
 }
