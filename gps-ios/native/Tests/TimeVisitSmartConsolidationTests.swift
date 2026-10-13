@@ -85,7 +85,7 @@ final class TimeVisitSmartConsolidationTests:XCTestCase {
     }
     func testDayBasedClock() {
         XCTAssertEqual(TimeMapCardClock.display(32*3600+45*60+56),"1d 8h 45min")
-        XCTAssertEqual(TimeMapCardClock.display(24*3600),"1d 0h 0min")
+        XCTAssertEqual(TimeMapCardClock.display(24*3600),"1d")
         XCTAssertEqual(TimeMapCardClock.display(3599),"00:59:59")
     }
 }
