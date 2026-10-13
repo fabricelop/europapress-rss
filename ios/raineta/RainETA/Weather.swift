@@ -10,12 +10,31 @@ struct RainSample: Identifiable {
     var probability: Int?
 }
 
+struct HourlyRain: Identifiable {
+    var id: Int
+    var time: Date
+    var millimeters: Double
+    var probability: Int
+    var temperature: Double?
+}
+
+struct DailyRain: Identifiable {
+    var id: Int
+    var date: Date
+    var totalMM: Double
+    var probability: Int
+    var minTemperature: Double?
+    var maxTemperature: Double?
+}
+
 struct RainSnapshot {
     var updatedAt: Date
     var locationName: String
     var temperature: Double?
     var currentPrecipitation: Double
     var samples: [RainSample]
+    var hours: [HourlyRain]
+    var days: [DailyRain]
 
     var isRaining: Bool { currentPrecipitation >= 0.1 }
     var upcomingWet: RainSample? {
@@ -54,9 +73,10 @@ enum RainAPI {
             URLQueryItem(name: "longitude", value: String(longitude)),
             URLQueryItem(name: "current", value: "temperature_2m,precipitation"),
             URLQueryItem(name: "minutely_15", value: "precipitation"),
-            URLQueryItem(name: "hourly", value: "precipitation_probability,precipitation"),
+            URLQueryItem(name: "hourly", value: "precipitation_probability,precipitation,temperature_2m"),
+            URLQueryItem(name: "daily", value: "precipitation_sum,precipitation_probability_max,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "timezone", value: "auto"),
-            URLQueryItem(name: "forecast_days", value: "3")
+            URLQueryItem(name: "forecast_days", value: "7")
         ]
         let (data, response) = try await URLSession.shared.data(from: parts.url!)
         guard (response as? HTTPURLResponse)?.statusCode == 200,
@@ -72,6 +92,8 @@ enum RainAPI {
         let hours = root["hourly"] as? [String: Any] ?? [:]
         let hourTimes = (hours["time"] as? [String] ?? []).compactMap(formatter.date(from:))
         let hourlyProb = hours["precipitation_probability"] as? [Double] ?? []
+        let hourlyAmounts = hours["precipitation"] as? [Double] ?? []
+        let hourlyTemps = hours["temperature_2m"] as? [Double] ?? []
         let times = fine["time"] as? [String] ?? []
         let amounts = fine["precipitation"] as? [Double] ?? []
         let now = Date()
@@ -85,13 +107,41 @@ enum RainAPI {
             let chance = closest.flatMap { $0 < hourlyProb.count ? Int(hourlyProb[$0]) : nil }
             samples.append(RainSample(id: idx, time: date, precipitation: max(0, amounts[idx]), probability: chance))
         }
+        let extended = hourTimes.enumerated().compactMap { idx, date -> HourlyRain? in
+            guard idx < hourlyAmounts.count, idx < hourlyProb.count else { return nil }
+            return HourlyRain(id: idx, time: date, millimeters: max(0, hourlyAmounts[idx]),
+                              probability: max(0, min(100, Int(hourlyProb[idx]))),
+                              temperature: idx < hourlyTemps.count ? hourlyTemps[idx] : nil)
+        }
+        let dayData = root["daily"] as? [String: Any] ?? [:]
+        let dayDates = (dayData["time"] as? [String] ?? []).compactMap { raw -> Date? in
+            let df = DateFormatter()
+            df.locale = Locale(identifier: "en_US_POSIX")
+            df.timeZone = formatter.timeZone
+            df.dateFormat = "yyyy-MM-dd"
+            return df.date(from: raw)
+        }
+        let dayAmounts = dayData["precipitation_sum"] as? [Double] ?? []
+        let dayProb = dayData["precipitation_probability_max"] as? [Double] ?? []
+        let dayMin = dayData["temperature_2m_min"] as? [Double] ?? []
+        let dayMax = dayData["temperature_2m_max"] as? [Double] ?? []
+        let daily = dayDates.enumerated().compactMap { index, date -> DailyRain? in
+            guard index < dayAmounts.count else { return nil }
+            return DailyRain(id: index, date: date,
+                             totalMM: max(0, dayAmounts[index]),
+                             probability: index < dayProb.count ? Int(dayProb[index]) : 0,
+                             minTemperature: index < dayMin.count ? dayMin[index] : nil,
+                             maxTemperature: index < dayMax.count ? dayMax[index] : nil)
+        }
         let current = root["current"] as? [String: Any] ?? [:]
         return RainSnapshot(
             updatedAt: Date(),
             locationName: name,
             temperature: current["temperature_2m"] as? Double,
             currentPrecipitation: current["precipitation"] as? Double ?? 0,
-            samples: samples
+            samples: samples,
+            hours: extended,
+            days: daily
         )
     }
 
@@ -171,6 +221,8 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var name = "Madrid · provisional"
     @Published var snapshot: RainSnapshot?
     @Published var radar = RadarFeed()
+    @Published var projection: RadarProjection?
+    @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
     @Published var loading = false
     @Published var status = "Consultando datos meteorológicos"
     @Published var liveEnabled = false
@@ -251,6 +303,23 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             radarIndex = max(0, radar.frames.count - 1)
         } catch {
             status += " · Radar no disponible"
+        }
+        // Only compute radar flow when we have two validated observations.
+        let host = radar.host
+        let frames = radar.frames
+        let point = coordinate
+        if frames.count >= 2 {
+            let projected = await RadarNowcaster.forecast(host: host, frames: frames, coordinate: point)
+            projection = projected
+            if let p = projected {
+                let quality = Int(p.confidence * 100)
+                projectionStatus = "Desplazamiento estimado · Confianza \(quality)% · Fiable orientativamente hasta +\(p.reliableUntil) min"
+            } else {
+                projectionStatus = "Sin vector radar fiable: se muestra orientación del modelo"
+            }
+        } else {
+            projection = nil
+            projectionStatus = "Radar insuficiente para estimar movimiento"
         }
         if liveEnabled { await updateLiveActivity() }
     }
