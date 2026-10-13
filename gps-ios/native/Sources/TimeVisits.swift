@@ -19,7 +19,8 @@ enum TimeVisitIndex {
     static let maximumGap: TimeInterval = 180
     static let shortVisualGap: TimeInterval = 60
     static let maximumReconnectedGap: TimeInterval = 12 * 3600
-    static let maximumIncidentalOutsideSeconds: TimeInterval = 8
+    static let maximumIncidentalOutsideSeconds: TimeInterval = 30
+    static let minimumVisibleSeconds: TimeInterval = 1
 
     static func visits(_ raw:[AssignedInterval],cells:Set<String>,
                        fixes:[GPSPoint] = [],
@@ -130,10 +131,23 @@ enum TimeVisitIndex {
                 if stopped && reason.contains("Inicio GPS continuo") { resumed=true }
                 eventIndex+=1
             }
-            // Un salto GPS de segundos a otra casilla puede ser un artefacto.
-            // Nunca ignoramos una muestra física verificada fuera de la zona.
-            let incidentalOutside=escapedSeconds<=maximumIncidentalOutsideSeconds &&
-                                  gap<=shortVisualGap
+            // Microexcursión en una casilla vecina: puede ser un rebote
+            // de GPS al bordear la línea. Solo la unimos si ninguna muestra
+            // de precisión útil confirma una salida y las casillas vecinas
+            // realmente lindan con el punto anterior y posterior.
+            let sourceCell=current.fragments.last?.cell
+            let targetCell=following.fragments.first?.cell
+            let neighborOnly=sourceCell != nil && targetCell != nil &&
+                outside[outsideCursor..<outsideIndex].allSatisfy { piece in
+                    let cell=piece.cell
+                    return abs(cell.row-sourceCell!.row)<=1 &&
+                           abs(cell.column-sourceCell!.column)<=1 &&
+                           abs(cell.row-targetCell!.row)<=1 &&
+                           abs(cell.column-targetCell!.column)<=1
+                }
+            let incidentalOutside=escapedSeconds>0 &&
+                escapedSeconds<=maximumIncidentalOutsideSeconds &&
+                gap<=shortVisualGap && neighborOnly
             let noExit=escapedSeconds==0 || incidentalOutside
             let shortJoin=gap<=shortVisualGap
             let trackedJoin=gap<=maximumGap && escapedSeconds==0
@@ -155,6 +169,44 @@ enum TimeVisitIndex {
         }
         joined.append(current)
         return joined
+    }
+
+    /// Una muestra inferior a un segundo conserva su tiempo en el historial
+    /// pero no se cuenta ni presenta como una visita de "0s".
+    static func visible(_ visits:[TimeVisit])->[TimeVisit] {
+        visits.filter { $0.confirmedSeconds>=minimumVisibleSeconds }
+    }
+
+    struct DetailPeriod:Identifiable {
+        let start:Date
+        let end:Date
+        let seconds:TimeInterval
+        var id:Double { start.timeIntervalSince1970 }
+    }
+
+    /// Bloques legibles dentro de una visita, sin reescribir intervalos.
+    /// Las interrupciones cortas de 15 s no producen docenas de filas.
+    static func detailPeriods(_ visit:TimeVisit,from dayStart:Date,to dayEnd:Date,
+                              splitAfter:TimeInterval = 15)->[DetailPeriod] {
+        let pieces=visit.fragments.compactMap { piece -> DetailPeriod? in
+            let start=max(dayStart,piece.start)
+            let end=min(dayEnd,piece.end)
+            guard end>start else { return nil }
+            return DetailPeriod(start:start,end:end,
+                                seconds:end.timeIntervalSince(start))
+        }.sorted { $0.start<$1.start }
+        var result:[DetailPeriod]=[]
+        for piece in pieces {
+            if let previous=result.last,
+               piece.start.timeIntervalSince(previous.end)<=splitAfter {
+                result[result.count-1]=DetailPeriod(start:previous.start,
+                    end:max(previous.end,piece.end),
+                    seconds:previous.seconds+piece.seconds)
+            } else {
+                result.append(piece)
+            }
+        }
+        return result
     }
 
     static func portions(_ visits:[TimeVisit],day:Date,
