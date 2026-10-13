@@ -17,6 +17,13 @@ struct GPSDiaryShell: View {
     var body: some View {
         NavigationStack {
             List {
+                Section("Revisión de registros") {
+                    NavigationLink {
+                        GPSGapReviewView(model:model)
+                    } label: {
+                        Label("Revisar huecos sin GPS",systemImage:"location.slash.circle")
+                    }
+                }
                 ForEach(days, id: \.self) { day in
                     NavigationLink {
                         GPSDayView(day: day, fixes: fixes, intervals: model.data.intervals, model: model)
