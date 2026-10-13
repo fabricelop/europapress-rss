@@ -50,38 +50,46 @@ enum RadarNowcaster {
     }
     private static func mosaic(host: String, frame: RadarFrame, tileX: Int, tileY: Int) async throws -> UIImage {
         let worldCount = 1 << zoom
-        let tiles = try await withThrowingTaskGroup(of: Tile.self) { group in
+        // One neighboring tile may be absent from a radar service. Missing
+        // outskirts must not invalidate the whole forecast for a valid center.
+        let tiles = await withTaskGroup(of: Tile?.self) { group in
             for y in 0..<3 {
                 for x in 0..<3 {
                     group.addTask {
                         let xx = (tileX + x - 1 + worldCount) % worldCount
                         let yy = min(worldCount - 1, max(0, tileY + y - 1))
-                        guard let url = URL(string: "\(host)\(frame.path)/256/7/\(xx)/\(yy)/2/1_1.png") else {
-                            throw URLError(.badURL)
-                        }
+                        guard let url = URL(string: "\(host)\(frame.path)/256/7/\(xx)/\(yy)/2/1_1.png") else { return nil }
                         var request = URLRequest(url: url)
                         request.timeoutInterval = 12
-                        let (bytes, response) = try await URLSession.shared.data(for: request)
-                        guard (response as? HTTPURLResponse)?.statusCode == 200,
-                              UIImage(data: bytes) != nil else { throw URLError(.badServerResponse) }
+                        guard let (bytes, response) = try? await URLSession.shared.data(for: request),
+                              (response as? HTTPURLResponse)?.statusCode == 200,
+                              UIImage(data: bytes) != nil else { return nil }
                         return Tile(dx: x, dy: y, data: bytes)
                     }
                 }
             }
-            var result = [Tile]()
-            for try await tile in group { result.append(tile) }
-            return result
-        }
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: side, height: side),
-                                               format: UIGraphicsImageRendererFormat.default())
-        return renderer.image { context in
-            context.cgContext.clear(CGRect(x: 0, y: 0, width: side, height: side))
-            for tile in tiles {
-                UIImage(data: tile.data)?.draw(in: CGRect(x: tile.dx * tileSize,
-                                                          y: tile.dy * tileSize,
-                                                          width: tileSize, height: tileSize))
+            var collected: [Tile] = []
+            for await maybeTile in group {
+                if let tile = maybeTile { collected.append(tile) }
             }
+            return collected
         }
+        // Require actual coverage around the user's point, avoiding a
+        // fabricated fully empty mosaic after a partial network failure.
+        guard tiles.contains(where: { $0.dx == 1 && $0.dy == 1 }),
+              tiles.count >= 3 else { throw URLError(.cannotLoadFromNetwork) }
+        let format = UIGraphicsImageRendererFormat()
+        format.opaque = false
+        format.scale = 1
+        return UIGraphicsImageRenderer(size: CGSize(width: side, height: side), format: format)
+            .image { context in
+                context.cgContext.clear(CGRect(x: 0, y: 0, width: side, height: side))
+                for tile in tiles {
+                    UIImage(data: tile.data)?.draw(in: CGRect(x: tile.dx * tileSize,
+                                                              y: tile.dy * tileSize,
+                                                              width: tileSize, height: tileSize))
+                }
+            }
     }
 
     /// Explicit RGBA bitmap to avoid CoreGraphics alpha-byte-order ambiguity.
