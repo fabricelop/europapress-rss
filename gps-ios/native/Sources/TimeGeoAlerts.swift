@@ -10,6 +10,18 @@ final class GPSNotificationPresentationDelegate:NSObject,UNUserNotificationCente
         withCompletionHandler completionHandler:@escaping (UNNotificationPresentationOptions)->Void) {
         completionHandler([.banner,.list,.sound])
     }
+    func userNotificationCenter(_ center:UNUserNotificationCenter,
+        didReceive response:UNNotificationResponse,
+        withCompletionHandler completionHandler:@escaping ()->Void) {
+        if response.notification.request.identifier==GPSStaleWatchdogPolicy.identifier {
+            UserDefaults.standard.set(true,forKey:"gpsWatchdogOpenHistory")
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name:Notification.Name("gpsWatchdogOpenHistory"),
+                    object:nil)
+            }
+        }
+        completionHandler()
+    }
 }
 
 /// Se limita a reaccionar a ubicaciones recibidas por el motor existente.
