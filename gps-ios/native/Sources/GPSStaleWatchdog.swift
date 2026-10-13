@@ -8,13 +8,31 @@ enum GPSStaleWatchdogPolicy {
     static let identifier = "mimapa-gps-no-updates-v1"
     static let minimumRearmSeconds:TimeInterval = 45
     static let maximumFreshFixAge:TimeInterval = 120
+    static let requiredRecoverySeconds:TimeInterval = 180
+    static let maximumRecoveryFixSpacing:TimeInterval = 120
+
+    static func isFresh(_ fix:Date,at now:Date)->Bool {
+        let age=now.timeIntervalSince(fix)
+        return age>=0 && age<=maximumFreshFixAge
+    }
+    static func deadlinePassed(armedAt:Date?,now:Date,minutes:Int)->Bool {
+        guard let armedAt else { return false }
+        return now.timeIntervalSince(armedAt)>=TimeInterval(minutes*60)
+    }
+    static func recoveryConfirmed(first:Date?,previous:Date?,
+                                  latest:Date)->Bool {
+        guard let first,let previous,
+              latest.timeIntervalSince(previous)>=0,
+              latest.timeIntervalSince(previous)<=maximumRecoveryFixSpacing
+        else { return false }
+        return latest.timeIntervalSince(first)>=requiredRecoverySeconds
+    }
 
     static func shouldRenew(enabled:Bool,tracking:Bool,resting:Bool,
                             fix:Date,now:Date,lastArmed:Date?,
                             intervalMinutes:Int)->Bool {
         guard enabled && tracking && !resting && intervalMinutes>0 else { return false }
-        let age=now.timeIntervalSince(fix)
-        guard age>=0 && age<=maximumFreshFixAge else { return false }
+        guard isFresh(fix,at:now) else { return false }
         return lastArmed.map { now.timeIntervalSince($0)>=minimumRearmSeconds } ?? true
     }
 }
@@ -24,6 +42,12 @@ enum GPSStaleWatchdogPolicy {
     private let center=UNUserNotificationCenter.current()
     private var lastArmed:Date?
     private var active=false
+    // No volver a alertar tras una sola lectura aislada cada 15-30 min.
+    // Exigir 3 minutos de actualizaciones válidas y continuadas.
+    private var awaitingSustainedRecovery=false
+    private var recoveryFirstAt:Date?
+    private var recoveryLastAt:Date?
+    private let savedArmKey="gpsWatchdogLastArmedAt"
     private init() {}
 
     private var enabled:Bool {
@@ -46,37 +70,91 @@ enum GPSStaleWatchdogPolicy {
         active=true
         GPSPersonalAlerts.shared.configure()
         requestPermissionIfNeeded()
-        arm(now:now,force:true)
+        // Al volver del segundo plano o reiniciar la app, recordar si ya
+        // venció un aviso anterior y NO dispararlo repetidamente de noche.
+        if lastArmed==nil {
+            lastArmed=UserDefaults.standard.object(forKey:savedArmKey) as? Date
+        }
+        if GPSStaleWatchdogPolicy.deadlinePassed(
+            armedAt:lastArmed,now:now,minutes:minutes) {
+            startRecoveryWait()
+        } else if lastArmed==nil && !awaitingSustainedRecovery {
+            arm(now:now,force:true)
+        }
     }
 
     func received(_ fixDate:Date,now:Date = .now) {
-        guard GPSStaleWatchdogPolicy.shouldRenew(enabled:enabled,tracking:active,
-            resting:false,fix:fixDate,now:now,lastArmed:lastArmed,
+        guard enabled && active && GPSStaleWatchdogPolicy.isFresh(fixDate,at:now)
+            else { return }
+        if GPSStaleWatchdogPolicy.deadlinePassed(
+            armedAt:lastArmed,now:now,minutes:minutes) {
+            startRecoveryWait()
+        }
+        if awaitingSustainedRecovery {
+            if let previous=recoveryLastAt,
+               now.timeIntervalSince(previous)>
+                GPSStaleWatchdogPolicy.maximumRecoveryFixSpacing {
+                recoveryFirstAt=now
+            }
+            if recoveryFirstAt==nil { recoveryFirstAt=now }
+            let confirmed=GPSStaleWatchdogPolicy.recoveryConfirmed(
+                first:recoveryFirstAt,previous:recoveryLastAt,latest:now)
+            recoveryLastAt=now
+            if confirmed {
+                awaitingSustainedRecovery=false
+                recoveryFirstAt=nil
+                recoveryLastAt=nil
+                arm(now:now,force:true)
+            }
+            return
+        }
+        guard GPSStaleWatchdogPolicy.shouldRenew(
+            enabled:enabled,tracking:active,resting:false,
+            fix:fixDate,now:now,lastArmed:lastArmed,
             intervalMinutes:minutes) else { return }
         arm(now:now,force:true)
     }
 
     func refresh(recording:Bool,resting:Bool,latestFix:Date?,now:Date = .now) {
-        guard recording && !resting && enabled else {
-            cancel()
-            return
-        }
+        guard recording && !resting && enabled else { cancel(); return }
         active=true
         requestPermissionIfNeeded()
-        if let latestFix, GPSStaleWatchdogPolicy.shouldRenew(enabled:enabled,
-            tracking:true,resting:false,fix:latestFix,now:now,lastArmed:lastArmed,
-            intervalMinutes:minutes) {
+        if lastArmed==nil {
+            lastArmed=UserDefaults.standard.object(forKey:savedArmKey) as? Date
+        }
+        if GPSStaleWatchdogPolicy.deadlinePassed(
+            armedAt:lastArmed,now:now,minutes:minutes) {
+            startRecoveryWait()
+        }
+        guard !awaitingSustainedRecovery else { return }
+        if let latestFix, GPSStaleWatchdogPolicy.shouldRenew(
+            enabled:enabled,tracking:true,resting:false,fix:latestFix,
+            now:now,lastArmed:lastArmed,intervalMinutes:minutes) {
             arm(now:now,force:true)
-        } else if lastArmed == nil {
-            // Si la app se reabrió y la última posición es vieja, no marcar
-            // una posición antigua como nueva. Dar tiempo al GPS a recuperarse.
+        } else if lastArmed==nil {
+            // El plazo inicial permite al GPS obtener una nueva lectura.
             arm(now:now,force:true)
         }
+    }
+
+    private func startRecoveryWait() {
+        awaitingSustainedRecovery=true
+        recoveryFirstAt=nil
+        recoveryLastAt=nil
+        lastArmed=nil
+        UserDefaults.standard.removeObject(forKey:savedArmKey)
+        center.removePendingNotificationRequests(
+            withIdentifiers:[GPSStaleWatchdogPolicy.identifier])
+        // No borrar el aviso entregado hasta que el GPS se recupere.
     }
 
     func cancel() {
         active=false
         lastArmed=nil
+        awaitingSustainedRecovery=false
+        recoveryFirstAt=nil
+        recoveryLastAt=nil
+        UserDefaults.standard.removeObject(forKey:savedArmKey)
         center.removePendingNotificationRequests(withIdentifiers:[GPSStaleWatchdogPolicy.identifier])
         center.removeDeliveredNotifications(withIdentifiers:[GPSStaleWatchdogPolicy.identifier])
     }
@@ -93,6 +171,7 @@ enum GPSStaleWatchdogPolicy {
             return
         }
         lastArmed=now
+        UserDefaults.standard.set(now,forKey:savedArmKey)
         center.removePendingNotificationRequests(withIdentifiers:[GPSStaleWatchdogPolicy.identifier])
         center.removeDeliveredNotifications(withIdentifiers:[GPSStaleWatchdogPolicy.identifier])
         let message=UNMutableNotificationContent()
