@@ -65,7 +65,7 @@ struct RainHeroCard: View {
                             .font(.caption2)
                             .foregroundStyle(.white.opacity(0.75))
                             if let low=short.windowStart,let high=short.windowEnd {
-                                Text("Llegada orientativa: " +
+                                Text((raining ? "Final orientativo: " : "Llegada orientativa: ") +
                                      low.formatted(date:.omitted,time:.shortened) + "–" +
                                      high.formatted(date:.omitted,time:.shortened))
                                     .font(.caption2)
@@ -86,7 +86,6 @@ struct RainHeroCard: View {
                     Label("Actualizado \(weather.updatedAt.formatted(date:.omitted,time:.shortened))",
                           systemImage:"clock.arrow.circlepath")
                     Spacer()
-                    Text("Modelo")
                 }
                 .font(.caption2).foregroundStyle(.secondary)
             } else {
