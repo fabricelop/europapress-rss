@@ -65,13 +65,11 @@ struct RainHeroCard: View {
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white.opacity(0.9))
-                Text("Cuentas atrás locales que avanzan cada segundo. Predicción basada en modelo, no en una medición continua de lluvia.")
-                    .font(.caption2).foregroundStyle(.secondary)
                 HStack {
                     Label("Actualizado \(weather.updatedAt.formatted(date:.omitted,time:.shortened))",
                           systemImage:"clock.arrow.circlepath")
                     Spacer()
-                    Text("Pronóstico 15 min")
+                    Text("Modelo")
                 }
                 .font(.caption2).foregroundStyle(.secondary)
             } else {
