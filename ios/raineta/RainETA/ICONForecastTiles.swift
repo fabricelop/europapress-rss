@@ -185,6 +185,26 @@ final class ICONForecastTiles: MKTileOverlay {
         return data
     }
 
+    /// Fetch a screenful of tiles *before* revealing a new forecast frame.
+    /// Old overlays remain visible while either WMS image is loading.
+    func prepare(_ paths:[MKTileOverlayPath]) async -> Bool {
+        guard !paths.isEmpty else{return false}
+        return await withTaskGroup(of:Bool.self) { group in
+            for path in paths {
+                group.addTask {
+                    await withCheckedContinuation { (continuation:CheckedContinuation<Bool,Never>) in
+                        self.loadTile(at:path) { data,error in
+                            continuation.resume(returning:data != nil && error == nil)
+                        }
+                    }
+                }
+            }
+            var success=true
+            for await ready in group {if !ready {success=false}}
+            return success
+        }
+    }
+
     override func loadTile(at path:MKTileOverlayPath,
                            result:@escaping(Data?,Error?)->Void) {
         guard let lower=Self.urlForTile(path,at:validTime),
