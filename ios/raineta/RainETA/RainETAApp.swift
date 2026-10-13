@@ -173,6 +173,8 @@ struct RadarSection: View {
         return max(0,Int(last.date.timeIntervalSince(first.date)/60))
     }
 
+    private var pastSpanMinutes:Int { max(5,((historyMinutes+4)/5)*5) }
+
     private func select(_ index:Int) {
         let next=max(0,min(pastEnd+futureSteps,index))
         if next>pastEnd {
@@ -263,13 +265,13 @@ struct RadarSection: View {
             GeometryReader { proxy in
                 // Distance is proportional to real elapsed minutes,
                 // regardless of whether past observations are 5 or 10 min.
-                let fraction=CGFloat(historyMinutes)/CGFloat(max(1,historyMinutes+240))
+                let fraction=CGFloat(pastSpanMinutes)/CGFloat(pastSpanMinutes+240)
                 let markX=18+(proxy.size.width-36)*fraction
                 ZStack(alignment:.topLeading) {
                     Slider(value:Binding(
                         get:{sliderIndex},
                         set:{selectMinute(Int($0.rounded()))}
-                    ),in:Double(-max(5,historyMinutes))...240,step:5)
+                    ),in:Double(-pastSpanMinutes)...240,step:5)
                         .tint(.cyan)
                         .disabled(frames.isEmpty)
                         .padding(.top,0)
