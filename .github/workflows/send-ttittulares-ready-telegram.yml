@@ -106,19 +106,41 @@ jobs:
           live=json.loads(path.read_text(encoding="utf8"))
           incoming=json.loads(Path("/tmp/telegram-readonly-ledger.json").read_text(encoding="utf8"))
           rows=live.setdefault("items",[])
-          by_id={(str(x.get("event_id") or ""),int(x.get("revision") or 0),
-                  int(x.get("telegram_message_id") or 0)):x for x in rows}
           terminal={"deleted","removed","dismissed","published"}
+          # A TTiTTulares card keeps the same Telegram message across editorial
+          # revisions. Merge by event+message, not by revision, so an edited
+          # final revision replaces its stale provisional row instead of
+          # leaving a false orphan behind.
+          def row_key(x):
+              return (str(x.get("event_id") or ""),int(x.get("telegram_message_id") or 0))
+          def row_time(x):
+              return str(x.get("updated_at") or x.get("delivered_at") or "")
+          by_id={}
+          deduped=[]
+          for row in rows:
+              key=row_key(row)
+              old=by_id.get(key)
+              if old is None:
+                  deduped.append(row)
+                  by_id[key]=row
+                  continue
+              old_terminal=str(old.get("status") or "").lower() in terminal
+              new_terminal=str(row.get("status") or "").lower() in terminal
+              if old_terminal and not new_terminal:
+                  continue
+              if (new_terminal and not old_terminal) or row_time(row)>=row_time(old):
+                  old.clear()
+                  old.update(row)
+          rows[:]=deduped
           for row in incoming.get("items",[]):
-              key=(str(row.get("event_id") or ""),int(row.get("revision") or 0),
-                  int(row.get("telegram_message_id") or 0))
+              key=row_key(row)
               old=by_id.get(key)
               if old is None:
                   rows.append(row)
                   by_id[key]=row
               elif str(old.get("status") or "").lower() not in terminal:
                   # Never overwrite a terminal delete from concurrent callback.
-                  if str(row.get("updated_at") or row.get("delivered_at") or "")>=str(old.get("updated_at") or old.get("delivered_at") or ""):
+                  if row_time(row)>=row_time(old):
                       old.update(row)
           live["updated_at"]=incoming.get("updated_at") or live.get("updated_at")
           path.write_text(json.dumps(live,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
