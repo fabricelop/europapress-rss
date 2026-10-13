@@ -51,7 +51,9 @@ enum TimeVisitIndex {
                 fragments=[]
                 continue
             }
-            if let lastEnd, piece.start.timeIntervalSince(lastEnd)>maximumGap {
+            if let lastEnd,
+               (piece.start.timeIntervalSince(lastEnd)>maximumGap ||
+                manualBreaks.contains(where: { $0>=lastEnd && $0<=piece.start })) {
                 finish()
                 start=nil
                 seconds=0
@@ -110,11 +112,11 @@ enum TimeVisitIndex {
                 }
                 nextFix+=1
             }
-            while breakCursor<breaks.count && breaks[breakCursor]<=current.end {
+            while breakCursor<breaks.count && breaks[breakCursor]<current.end {
                 breakCursor+=1
             }
             let explicitlySplit=breakCursor<breaks.count &&
-                breaks[breakCursor]<following.start
+                breaks[breakCursor]<=following.start
 
             while eventCursor<events.count && events[eventCursor].date<current.end {
                 eventCursor+=1
