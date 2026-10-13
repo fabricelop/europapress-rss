@@ -10,6 +10,7 @@ struct GPSGapReviewView:View {
     @State private var pendingDismissGap:TimeGPSGapReview?
     @State private var showDismissConfirmation=false
     @State private var selectedMapGap:TimeGPSGapReview?
+    @State private var openRouteEditor=false
     @State private var message=""
     @State private var showDismissed=false
 
@@ -74,7 +75,8 @@ struct GPSGapReviewView:View {
         .navigationTitle("Huecos GPS")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item:$selectedMapGap) { gap in
-            GPSGapMapDetail(model:model,gap:gap)
+            GPSGapMapDetail(model:model,gap:gap,
+                            startRouteEditor:openRouteEditor)
         }
         .alert("¿Dónde permaneciste durante el hueco?",
                isPresented:$confirmOpen) {
@@ -118,6 +120,7 @@ struct GPSGapReviewView:View {
             // Button explícito, estilo plain: el resto de los botones no
             // heredan la zona táctil de toda la fila List.
             Button {
+                openRouteEditor=false
                 selectedMapGap=gap
             } label: {
                 VStack(alignment:.leading,spacing:9) {
@@ -197,6 +200,16 @@ struct GPSGapReviewView:View {
                         Button("Repartir mitad en cada cuadrícula") {
                             prepare(gap,.splitEqually)
                         }.font(.caption).buttonStyle(.bordered)
+                        Button {
+                            openRouteEditor=true
+                            selectedMapGap=gap
+                        } label: {
+                            Label("Repartir por recorrido en mapa",
+                                  systemImage:"point.topleft.down.to.point.bottomright.curvepath")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.teal)
+                        .accessibilityIdentifier("gpsGapEditEstimatedRoute")
                     }
                 } else if gap.seconds>86400 {
                     Text("Hueco de más de un día: requiere revisión por periodos más pequeños.")
