@@ -6,7 +6,10 @@ private struct RainLiveSummary: View {
     let state: RainETAAttributes.ContentState
     let isStale: Bool
     var body: some View {
-        if isStale {
+        if state.summary == "Actualizando previsión" {
+            Label("Actualizando previsión…", systemImage: "arrow.clockwise")
+                .foregroundStyle(.cyan)
+        } else if isStale {
             Label("Previsión sin actualizar", systemImage: "exclamationmark.triangle.fill")
                 .foregroundStyle(.yellow)
         } else if let target = state.arrival, target > Date() {
@@ -50,7 +53,7 @@ struct RainETALiveWidget: Widget {
                         .foregroundStyle(.cyan)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text(context.attributes.locationName)
+                    Text(context.state.locationName ?? context.attributes.locationName)
                         .font(.caption)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
@@ -71,7 +74,9 @@ struct RainETALiveWidget: Widget {
                 Image(systemName: "cloud.rain.fill")
                     .foregroundStyle(.cyan)
             } compactTrailing: {
-                if context.isStale {
+                if context.state.summary == "Actualizando previsión" {
+                    Text("...").font(.caption2.bold())
+                } else if context.isStale {
                     Image(systemName: "exclamationmark.triangle.fill")
                 } else if let target = context.state.arrival, target > Date() {
                     Text(timerInterval: Date()...target, countsDown: true, showsHours: false)
