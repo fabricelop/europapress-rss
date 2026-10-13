@@ -44,6 +44,7 @@ enum GPSStaleWatchdogPolicy {
 
     func begin(now:Date = .now) {
         active=true
+        GPSPersonalAlerts.shared.configure()
         requestPermissionIfNeeded()
         arm(now:now,force:true)
     }
