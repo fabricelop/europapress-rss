@@ -968,7 +968,7 @@ def process(project,now,token,chat):
         if project=="ttittulares" and card["final"]:
             note=("🖼️ Imagen IA añadida." if existing and int(existing.get("ai_telegram_message_id") or 0)>0
                   else card.get("ai_note") or "")
-            if note:body=body[:max(0,1024-len(note)-2)]+"\\n\\n"+note
+            if note:body=body[:max(0,1024-len(note)-2)]+"\n\n"+note
         if project=="ttittulares" and not card["final"] and not card["image"]:
             body=body.replace("📷 Fotografía de archivo disponible.",
                               "📷 Fotografía de archivo pendiente.")
@@ -1068,7 +1068,7 @@ def process(project,now,token,chat):
             if project=="ttittulares" and card["final"] and card.get("ai_url"):
                 entry=entries[-1]
                 if attach_news_ai(card,entry,token,chat,path,ledger,now):
-                    new_body=card["text"]+"\\n\\n🖼️ Imagen IA añadida."
+                    new_body=card["text"]+"\n\n🖼️ Imagen IA añadida."
                     meth="editMessageCaption" if entry.get("is_photo") else "editMessageText"
                     field="caption" if entry.get("is_photo") else "text"
                     edited=send(token,meth,{"chat_id":chat,"message_id":int(entry["telegram_message_id"]),
