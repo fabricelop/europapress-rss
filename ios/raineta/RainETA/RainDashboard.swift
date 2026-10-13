@@ -18,26 +18,30 @@ struct RainHeroCard: View {
             if let weather=store.snapshot {
                 TimelineView(.periodic(from:.now,by:1)) { clock in
                     let moment=clock.date
-                    let change=RainInsight.transition(currentIsRaining:weather.isRaining,
-                                                      samples:weather.samples,now:moment)
+                    let fallback=RainInsight.transition(currentIsRaining:weather.isRaining,
+                                                        samples:weather.samples,now:moment)
+                    let short=store.shortEstimate?.isUsable(at:moment)==true
+                        ? store.shortEstimate : nil
+                    let raining=short?.rainingNow ?? fallback.raining
+                    let nextChange=short?.change ?? fallback.change
                     VStack(alignment:.leading,spacing:10) {
                         HStack(alignment:.center) {
                             VStack(alignment:.leading,spacing:5) {
-                                Text(weather.isRaining ? "LLUViA PREVISTA AHORA".uppercased() : "AHORA SIN LLUVIA PREVISTA")
+                                Text(raining ? "LLUVIA ESTIMADA AHORA" : "AHORA SIN LLUVIA PREVISTA")
                                     .font(.system(size:10,weight:.heavy))
-                                    .foregroundStyle(weather.isRaining ? .cyan : .green)
-                                Text(change.raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?")
+                                    .foregroundStyle(raining ? .cyan : .green)
+                                Text(raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?")
                                     .font(.subheadline)
                                     .foregroundStyle(.white.opacity(0.76))
                             }
                             Spacer()
-                            Image(systemName:weather.isRaining ? "cloud.rain.fill" : "cloud.sun.fill")
+                            Image(systemName:raining ? "cloud.rain.fill" : "cloud.sun.fill")
                                 .font(.system(size:40))
-                                .foregroundStyle(weather.isRaining ? .cyan : .yellow)
+                                .foregroundStyle(raining ? .cyan : .yellow)
                                 .symbolRenderingMode(.hierarchical)
                         }
-                        Text(change.change == nil ? "Sin cambio previsto" : RainInsight.countdown(to:change.change,at:moment))
-                            .font(.system(size:change.change == nil ? 29 : 45,
+                        Text(nextChange == nil ? "Sin cambio previsto" : RainInsight.countdown(to:nextChange,at:moment))
+                            .font(.system(size:nextChange == nil ? 29 : 45,
                                           weight:.bold,design:.rounded))
                             .monospacedDigit()
                             .foregroundStyle(.white)
@@ -45,13 +49,28 @@ struct RainHeroCard: View {
                             .minimumScaleFactor(0.65)
                             .lineLimit(1)
                         HStack {
-                            Text(change.change.map {
+                            Text(nextChange.map {
                                 "Cambio estimado: " + $0.formatted(date:.omitted,time:.shortened)
                             } ?? "Sin cambio fiable en 24 horas")
                                 .font(.caption)
                                 .foregroundStyle(.cyan)
                             Spacer()
 
+                        }
+                        if let short {
+                            HStack(spacing:6) {
+                                Text(short.method + " · " + short.confidence)
+                                Spacer(minLength:0)
+                            }
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.75))
+                            if let low=short.windowStart,let high=short.windowEnd {
+                                Text("Llegada orientativa: " +
+                                     low.formatted(date:.omitted,time:.shortened) + "–" +
+                                     high.formatted(date:.omitted,time:.shortened))
+                                    .font(.caption2)
+                                    .foregroundStyle(.yellow)
+                            }
                         }
                     }
                 }
