@@ -69,6 +69,7 @@ def audit(project,now=None,root=None):
         requests.update(jobs)
         requests.update(problems)
     latest={}
+    grouped_final={}
     for row in deliveries:
         key=str(row.get("event_id") or "")
         if key and (key not in latest or when(row.get("updated_at") or row.get("delivered_at"))
@@ -76,6 +77,16 @@ def audit(project,now=None,root=None):
                          or datetime.min.replace(tzinfo=timezone.utc))
                     < when(row.get("updated_at") or row.get("delivered_at"))):
             latest[key]=row
+        # A final group card is the definitive Telegram delivery for members
+        # that never had an individual provisional. Existing individual
+        # provisionals are still audited above and must be edited in place.
+        final_group=(str(row.get("status") or "").lower() in terminal or
+                     (str(row.get("status") or "").lower()=="sent" and row.get("final") is True))
+        if final_group:
+            for member_id in row.get("group_member_ids") or []:
+                member_id=str(member_id or "")
+                if member_id:
+                    grouped_final[member_id]=row
     issues=[]
     for row in deliveries:
         if str(row.get("status") or "").lower()!="sent" or row.get("final") is not False:
@@ -118,6 +129,8 @@ def audit(project,now=None,root=None):
             if not started or not (MAX_WAIT_MINUTES <= age_minutes <= 12*60):
                 continue
             row=latest.get(event_id)
+            if row is None:
+                row=grouped_final.get(event_id)
             if row and (row.get("status") in terminal or
                         (row.get("status")=="sent" and row.get("final") is True)):
                 continue
