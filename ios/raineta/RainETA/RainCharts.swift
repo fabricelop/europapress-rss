@@ -100,9 +100,6 @@ struct MinuteRainGraph: View {
                 .chartXSelection(value:$selectedMinute)
                 .frame(height:172)
                 RainIntensityLegend()
-                Text("Barras cada minuto para visualizar cambios; calculadas por interpolación de datos del modelo de 15 min. No son medidas ni previsiones independientes por minuto.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
                 HStack {
                     Label("Máximo \(String(format:"%.1f",samples.map(\.rateMMH).max() ?? 0)) mm/h",
                           systemImage:"drop.fill")
@@ -182,11 +179,9 @@ struct ThreeHourRainView: View {
                         let wet=slots.filter{$0.rateMMH>=RainInsight.wetRate}.count
                         Label("~\(wet*15) min con lluvia",systemImage:"clock")
                         Spacer()
-                        Text("Misma fuente que Pulso")
+                        Text("Modelo 15 min")
                     }
                     .font(.caption2).foregroundStyle(.secondary)
-                    Text("Escala común con Pulso de lluvia: datos del mismo pronóstico interpolado. 15 min entre barras, sin predicciones independientes por minuto.")
-                        .font(.caption2).foregroundStyle(.secondary)
                 }
             } else {
                 ProgressView("Consultando previsión…")
