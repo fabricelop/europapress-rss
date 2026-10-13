@@ -1,12 +1,26 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-13T03:48:29.799716+00:00",
+  "checked_at": "2026-10-13T03:49:11.999195+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 32,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 719,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:9b3e7fe1145c:756",
+      "id": "9b3e7fe1145c",
+      "message_id": 756,
+      "title": "Colón",
+      "age_min": 21.9,
+      "reason": "Explicación disponible pero Telegram sigue provisional"
+    }
+  ],
+  "alerted": {
+    "provisional:9b3e7fe1145c:756": {
+      "signature": "19df0083201bb2b790",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
