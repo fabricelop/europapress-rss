@@ -1,4 +1,16 @@
-# RainETA para iPhone — v0.8.0
+# RainETA para iPhone — v0.8.1
+
+## v0.8.1 — Cuenta atrás mantenida y estimación de lluvia 0–120 minutos
+
+- Se **conserva el contador principal** de llegada/fin de la lluvia, con actualización local cada segundo y soporte para la Actividad en Vivo.
+- Si hay radar RainViewer reciente, dos barridos válidos y suficiente coherencia del movimiento, se estima un posible cambio local usando proyección de ecos a un minuto. No son observaciones nuevas ni una previsión independiente de precisión de un minuto.
+- Se contrasta la hora aproximada con precipitación **horaria** de ECMWF, ICON y GFS. Los modelos no determinan el minuto exacto: sus acuerdos refuerzan la confianza o amplían la advertencia de incertidumbre.
+- Bajo el contador se muestra el método, el nivel de confianza y, cuando el cambio procede del radar, una **ventana horaria orientativa** para llegada o final.
+- Si el radar es antiguo (>12 min al calcular o >15 min durante el uso), las imágenes son incompletas, el movimiento no alcanza el umbral de confianza, no hay cambio sostenido o discrepan claramente los modelos con radar débil, se mantiene la cuenta atrás tradicional por Open-Meteo.
+- Cálculo asíncrono para no bloquear la pantalla; caché de barridos y modelos, protección frente a resultados antiguos al cambiar de lugar. Sin servidor propio, Vercel ni Cloudflare.
+- Pruebas de entrada/salida, franjas, caducidad, discrepancia y atribución horaria. La precisión física todavía requiere validación en el iPhone ante lluvia real.
+
+
 
 App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
 
@@ -78,7 +90,7 @@ Open-Meteo may interpolate hourly precipitation into 15-minute steps outside are
 
 Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.5.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.8.1-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
 ## Instalación y prueba
 
