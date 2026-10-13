@@ -323,8 +323,16 @@ struct RadarSection: View {
                 let delay=store.radarFutureMinutes>0 ? 2_100_000_000:850_000_000
                 try? await Task.sleep(nanoseconds:UInt64(delay))
                 if Task.isCancelled || !playing {break}
-                if sliderIndex>=Double(pastEnd+futureSteps) {playing=false}
-                else {select(Int(sliderIndex)+1)}
+                if store.radarFutureMinutes>0 {
+                    if store.radarFutureMinutes>=240 {playing=false}
+                    else {selectMinute(store.radarFutureMinutes+5)}
+                } else if store.radarIndex<pastEnd {
+                    select(store.radarIndex+1)
+                } else if futureSteps>0 {
+                    selectMinute(5)
+                } else {
+                    playing=false
+                }
             }
         }
     }
