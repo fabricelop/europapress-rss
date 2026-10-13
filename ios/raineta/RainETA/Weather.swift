@@ -232,6 +232,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var snapshot: RainSnapshot?
     @Published var radar = RadarFeed()
     @Published var projection: RadarProjection?
+    @Published var shortEstimate: RainShortEstimate?
     @Published var futureField: FutureRainField?
     @Published var futureFieldStatus = "Previsión DWD ICON-EU por horas. Pulsa +2 h o +4 h para consultar el modelo oficial."
     @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
@@ -263,6 +264,13 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     private var modelLatSpan = 2.5
     private var modelLonSpan = 2.5
     private var fieldLastLoad: Date = .distantPast
+    private var shortTask: Task<Void, Never>?
+    private var shortLocationKey = ""
+    private var shortModelKey = ""
+    private var shortModelLoadedAt: Date = .distantPast
+    private var shortModels: [RainShortModel] = []
+    private var cachedRadarKey = ""
+    private var cachedRadarEvidence: RainRadarEvidence?
 
     init() {
         liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
@@ -476,8 +484,59 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         // was not verified and disappeared at high zoom. Show observation
         // honestly until model-grid / radar-blending validation is complete.
         projection = nil
-        projectionStatus = "Proyección futura suspendida: se integrará radar + modelo meteorológico en una versión validada."
+        projectionStatus = "Cuenta atrás: estimación local de radar contrastada con modelos cuando hay datos recientes y fiables."
+        refreshShortEstimate()
         if liveEnabled { await updateLiveActivity() }
+    }
+
+    /// Run the expensive radar analysis outside the main refresh path. The
+    /// countdown is always available from the original forecast while the
+    /// new estimate is loading; stale results cannot cross locations.
+    private func refreshShortEstimate() {
+        guard let wx = snapshot else { return }
+        shortTask?.cancel()
+        let coord = coordinate
+        let locationKey = String(format: "%.3f,%.3f", coord.latitude, coord.longitude)
+        if shortLocationKey != locationKey {
+            shortEstimate = nil
+            shortLocationKey = locationKey
+        }
+        let feed = radar
+        let lastPath = feed.latest?.path ?? ""
+        let frameKey = locationKey + "|" + lastPath
+        let knownRadar = frameKey == cachedRadarKey ? cachedRadarEvidence : nil
+        let cachedModels = shortModels
+        let reuseModels = shortModelKey == locationKey &&
+                          Date().timeIntervalSince(shortModelLoadedAt) < 10*60
+        let revision = placeSelectionRevision
+
+        shortTask = Task {
+            async let latestRadar: RadarProjection? = knownRadar != nil ? nil :
+                RadarNowcaster.forecast(host: feed.host, frames: feed.frames, coordinate: coord)
+            async let latestModels: [RainShortModel] = reuseModels ? cachedModels :
+                RainShortModelAPI.compare(latitude: coord.latitude, longitude: coord.longitude)
+            let projection = await latestRadar
+            let models = await latestModels
+            guard !Task.isCancelled, revision == placeSelectionRevision,
+                  locationKey == shortLocationKey else { return }
+            if !reuseModels && !models.isEmpty {
+                shortModels = models
+                shortModelKey = locationKey
+                shortModelLoadedAt = Date()
+            }
+            if knownRadar == nil {
+                cachedRadarKey = frameKey
+                cachedRadarEvidence = projection.map {
+                    RainRadarEvidence(observedAt: $0.observedAt,
+                                      movementConfidence: $0.confidence,
+                                      points: $0.minutePoints)
+                }
+            }
+            shortEstimate = RainShortFusion.estimate(
+                weather: wx, radar: knownRadar ?? cachedRadarEvidence,
+                models: models, now: Date())
+            if liveEnabled { await updateLiveActivity() }
+        }
     }
 
     func toggleLive() async {
@@ -502,12 +561,15 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
 
     func updateLiveActivity() async {
         guard let wx = snapshot else { return }
+        let decision = shortEstimate?.isUsable(at: Date()) == true ? shortEstimate : nil
+        let rainingNow = decision?.rainingNow ?? wx.isRaining
+        let arrival = decision?.change ?? wx.nextChange
         let state = RainETAAttributes.ContentState(
-            arrival: wx.nextChange,
-            rainingNow: wx.isRaining,
+            arrival: arrival,
+            rainingNow: rainingNow,
             intensity: wx.intensity,
             updatedAt: wx.updatedAt,
-            summary: wx.isRaining ? "Lluvia actual" : (wx.nextChange == nil ? "Sin lluvia inminente" : "Lluvia prevista"),
+            summary: rainingNow ? "Lluvia estimada ahora" : (arrival == nil ? "Sin lluvia inminente" : "Lluvia prevista"),
             locationName: name
         )
         let content = ActivityContent(state: state,
