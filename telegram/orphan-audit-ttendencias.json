@@ -1,6 +1,6 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-13T09:06:32.377912+00:00",
+  "checked_at": "2026-10-13T09:05:00Z",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 37,
   "baseline_at": "2026-10-12T15:25:23Z",
@@ -8,12 +8,13 @@
   "unresolved_count": 1,
   "unresolved": [
     {
-      "key": "provisional:f85c9fe36948:760",
-      "id": "f85c9fe36948",
-      "message_id": 760,
-      "title": "España",
-      "age_min": 32.1,
-      "reason": "No consta explicación definitiva"
+      "event_id": "f85c9fe36948",
+      "name": "España",
+      "revision": 0,
+      "telegram_message_id": 760,
+      "status": "sent",
+      "final": false,
+      "reason": "La revisión sigue problematic tras un segundo intento: no se ha aislado con suficiente fiabilidad un detonante único. Se conserva el provisional y no se publica una explicación especulativa."
     }
   ],
   "alerted": {
@@ -22,5 +23,5 @@
       "notified_at": null
     }
   },
-  "last_alert_count": 0
+  "last_alert_count": 1
 }
