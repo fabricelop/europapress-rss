@@ -81,6 +81,7 @@ struct RainHomeView: View {
                     MinuteRainGraph(projection: store.projection, weather: store.snapshot)
                     ThreeHourRainView(weather:store.snapshot)
                     RainWeekForecast(weather: store.snapshot)
+                    RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
                     footer
                 }
                 .padding(16)
