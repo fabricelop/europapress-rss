@@ -102,15 +102,22 @@ struct RadarMap: UIViewRepresentable {
     var host: String
     var framePath: String?
     var projection: RadarProjection?
+    var modelField: FutureRainField?
     var futureMinutes: Int = 0
+    var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
 
     final class Coordinator: NSObject, MKMapViewDelegate {
         var observedKey: String?
         var futureKey: String?
         var center: CLLocationCoordinate2D?
+        var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
+        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            let region = mapView.region
+            onViewport?(region.center,region.span.latitudeDelta,region.span.longitudeDelta)
+        }
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let tile = overlay as? RainRadarTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
-            if let tile = overlay as? RainFutureTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
+            if let tile = overlay as? ModelRainTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
             return MKOverlayRenderer(overlay: overlay)
         }
     }
@@ -127,11 +134,18 @@ struct RadarMap: UIViewRepresentable {
         map.pointOfInterestFilter = .excludingAll
         map.setRegion(MKCoordinateRegion(center: center, latitudinalMeters: 240_000, longitudinalMeters: 240_000), animated: false)
         context.coordinator.center = center
+        context.coordinator.onViewport = onViewport
+        DispatchQueue.main.async { [weak map] in
+            guard let map else { return }
+            let span = map.region.span
+            self.onViewport?(map.region.center,span.latitudeDelta,span.longitudeDelta)
+        }
         return map
     }
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let coordinator = context.coordinator
+        coordinator.onViewport = onViewport
         // Preserve a genuinely observed frame underneath a projected frame.
         // Do not remove the previous historical raster until the new one
         // delivers its first valid tile (avoids an empty map at AHORA).
@@ -149,26 +163,29 @@ struct RadarMap: UIViewRepresentable {
                 map.addOverlay(newest, level: .aboveRoads)
             }
         }
-        let futureKey = futureMinutes > 0 && projection != nil ?
-            "future:\(futureMinutes):\(projection!.observedAt.timeIntervalSince1970)" : "observed"
+        let available = modelField != nil && futureMinutes > 0 &&
+                        modelField!.times.first.map { Date().addingTimeInterval(Double(futureMinutes)*60) >= $0 } == true &&
+                        modelField!.times.last.map { Date().addingTimeInterval(Double(futureMinutes)*60) <= $0 } == true
+        let futureKey = available ?
+            "model:\(futureMinutes):\(modelField!.fetchedAt.timeIntervalSince1970)" : "observed"
         if coordinator.futureKey != futureKey {
             coordinator.futureKey = futureKey
-            let previousFuture = map.overlays.filter { $0 is RainFutureTiles }
-            if futureMinutes > 0, let projection {
-                map.addOverlay(RainFutureTiles(projection: projection, futureMinutes: futureMinutes),
-                               level: .aboveRoads)
+            let previousFuture = map.overlays.filter { $0 is ModelRainTiles || $0 is RainFutureTiles }
+            if available, let modelField {
+                map.addOverlay(ModelRainTiles(field:modelField,leadMinutes:futureMinutes),
+                               level:.aboveRoads)
             }
             for layer in previousFuture { map.removeOverlay(layer) }
         }
-        // Dim—not delete—the latest observed raster as the projected echo
-        // becomes dominant. At +0 it remains identical to the source image.
-        let fade: CGFloat = futureMinutes > 0 && projection != nil
-            ? CGFloat(max(0.15, 0.78 * exp(-Double(futureMinutes) / 18.0)))
-            : 1.0
+        // Blend observational radar into a REAL model precipitation map.
+        // No time-only fade unless the replacement field exists. Model rain
+        // continues independently when the old radar imagery fades out.
+        let radarAlpha:CGFloat = available ?
+            CGFloat(max(0,1-Double(futureMinutes)/30.0)) : 1
         for overlay in map.overlays where overlay is RainRadarTiles {
-            if let renderer = map.renderer(for: overlay),
-               abs(renderer.alpha - fade) > 0.01 {
-                renderer.alpha = fade
+            if let renderer = map.renderer(for:overlay),
+               abs(renderer.alpha-radarAlpha) > 0.01 {
+                renderer.alpha = radarAlpha
                 renderer.setNeedsDisplay()
             }
         }
