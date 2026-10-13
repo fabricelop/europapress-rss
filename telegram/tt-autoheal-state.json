@@ -2,14 +2,49 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-13T15:14:37.048013+00:00",
+      "checked_at": "2026-10-13T16:03:42.809965+00:00",
+      "issue_count": 3,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "38f661882184",
+          "title": "Vivas agradece la visita de los Reyes para \"sembrar confianza\": \"Ceuta ya no es la que era tras la i",
+          "seconds": 599,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "orphan_provisional",
+          "id": "cbd8ddc8bb04",
+          "title": "Almeida busca su primera foto electoral en un “vertedero” de la Operación Campamento y le acusan de ",
+          "seconds": 2906,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 797,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "1f29bdbab921db84ad08c709c7fc14ab4232d4d10338afb9d76e3e248867de81",
+      "repair_via_workflow_run": false,
+      "escalation_required": 1
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-13T16:03:42.809965+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 7038,
+          "seconds": 796,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -20,69 +55,13 @@
       "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
-    },
-    "ttendencias": {
-      "checked_at": "2026-10-13T15:14:37.048013+00:00",
-      "issue_count": 6,
-      "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "d4bbc5043503",
-          "title": "Irene",
-          "seconds": 129,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "a8644022152b",
-          "title": "Pyme",
-          "seconds": 129,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "3521f226a707",
-          "title": "Montse",
-          "seconds": 129,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "dfeacc32cca9",
-          "title": "#TEM13O",
-          "seconds": 129,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "3a0777cdf52d",
-          "title": "sirí",
-          "seconds": 129,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 7038,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
-      "repair_errors": [],
-      "open_signature": "8f8d01802a119cfc1151fde78cf68b7e6f1c27d96b526b4ad0c5c5549ef8dcb6",
-      "repair_via_workflow_run": false,
-      "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T13:04:39.913953+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-13T15:14:37.048013+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-13T15:14:37.048013+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T16:03:42.809965+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-13T16:03:42.809965+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-13T16:03:42.809965+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-13T15:14:37.048013+00:00"
+  "checked_at": "2026-10-13T16:03:42.809965+00:00"
 }
