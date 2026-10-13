@@ -896,6 +896,53 @@ struct SavedState: Codable {
         }
     }
 
+    /// Revierte o recoloca tiempo ESTIMADO, nunca modifica lecturas GPS.
+    /// replaceAll usa una única transacción SQLite y conserva los pendientes.
+    @discardableResult
+    func reviseRecoveredTime(_ group:TimeRecoveryGroup,
+                             newCell:Cell?)->Bool {
+        let existing=Set(data.intervals.map(\.id))
+        guard group.intervals.allSatisfy({
+            existing.contains($0.id) && TimeRecoveryIndex.sources.contains($0.source)
+        }) else {
+            gpsStatus="La recuperación ha cambiado. Vuelve a abrir el historial."
+            return false
+        }
+        var updated=data
+        updated.intervals=TimeRecoveryIndex.without(updated.intervals,group:group)
+        if let newCell {
+            updated.intervals.append(contentsOf:TimeRecoveryIndex.reassigned(group,cell:newCell))
+        }
+        updated.intervals.sort { $0.start<$1.start }
+        updated.totals=TimeAttribution.byCell(updated.intervals)
+        do {
+            if let store {
+                try store.replaceAll(updated)
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            normalizedTotalsCache=[:]
+            normalizedCacheIntervalCount = -1
+            normalizedCacheTime = .distantPast
+            cachedPeriod = nil
+            cachedPeriodCount = -1
+            cachedPeriodSince = .distantPast
+            lastSaved = .now
+            gpsStatus = newCell == nil ? "Recuperación deshecha" :
+                "Recuperación corregida sin cambiar datos GPS"
+            activityPublisher.refresh(from:self,force:true)
+            objectWillChange.send()
+            return true
+        } catch {
+            gpsStatus="No se pudo corregir el historial: \(error.localizedDescription)"
+            return false
+        }
+    }
+
     /// Descarta la sugerencia, sin borrar ningún intervalo ni una posición.
     @discardableResult func dismissReviewedGap(_ gap:TimeGPSGapReview)->Bool {
         var updated=data
@@ -1101,7 +1148,9 @@ struct SavedState: Codable {
         let points = try parse.read(bytes)
         guard !points.isEmpty else { throw ImportFailure.noTimes }
         let previousSnapshot = data
-        let manualRestIntervals = data.intervals.filter { $0.source == "descanso" }
+        let manualRestIntervals = data.intervals.filter {
+            $0.source=="descanso" || TimeRecoveryIndex.sources.contains($0.source)
+        }
         data.importedHashes.append(hash)
         // Rebuild from the combined timeline to avoid double-adding old intervals.
         let combined = (data.fixes + points).sorted { $0.date < $1.date }
