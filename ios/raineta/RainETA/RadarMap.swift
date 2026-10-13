@@ -166,8 +166,8 @@ struct RadarMap: UIViewRepresentable {
             ? CGFloat(max(0.15, 0.78 * exp(-Double(futureMinutes) / 18.0)))
             : 1.0
         for overlay in map.overlays where overlay is RainRadarTiles {
-            let renderer = map.renderer(for: overlay)
-            if abs(renderer.alpha - fade) > 0.01 {
+            if let renderer = map.renderer(for: overlay),
+               abs(renderer.alpha - fade) > 0.01 {
                 renderer.alpha = fade
                 renderer.setNeedsDisplay()
             }
