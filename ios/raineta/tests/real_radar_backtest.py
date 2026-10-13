@@ -31,21 +31,34 @@ params={
 }
 session=requests.Session()
 session.headers.update({"User-Agent":"RainETA 0.6.0 optical-flow validation personal project"})
-resp=session.get(base,params=params,timeout=30)
-resp.raise_for_status()
-metadata=resp.json()
-files=sorted(set(link["href"] for link in metadata.get("links",[])
-         if link.get("title")=="Data download link." and "DBZH.h5" in link["href"]))
-files=files[-11:]
-if len(files)<8:
-    raise RuntimeError(f"Need >=8 consecutive radar frames, found {len(files)}")
-parse=lambda path:dt.datetime.strptime(re.search(r"OPERA@(\d{8}T\d{4})@",path).group(1),"%Y%m%dT%H%M").replace(tzinfo=dt.timezone.utc)
-timepoints=[parse(path) for path in files]
-files=[p for p,t in zip(files,timepoints) if t is not None]
-times=[parse(p) for p in files]
-# Strict continuity ensures lead=5/15 really means the stated time horizon.
-if any((b-a).total_seconds()!=300 for a,b in zip(times,times[1:])):
-    raise RuntimeError("No continuous sequence of radar observations 5 min apart")
+# Direct CC BY 4.0 S3 objects avoid anonymous MeteoGate rate limits.
+# Never require an API token or exhaust an API quota for scientific validation.
+candidates=[]
+for lag in range(20,100,5):
+    at=now-dt.timedelta(minutes=lag)
+    at=at-dt.timedelta(minutes=at.minute%5)
+    path=at.strftime("%Y/%m/%d/OPERA/COMP/OPERA@%Y%m%dT%H%M@0@DBZH.h5")
+    url="https://s3.waw3-1.cloudferro.com/openradar-24h/"+path
+    try:
+        response=session.head(url,timeout=15)
+        if response.status_code==200:
+            candidates.append((at,url))
+    except requests.RequestException:
+        pass
+candidates=sorted(candidates)
+if len(candidates)<8:
+    raise RuntimeError(f"Need >=8 usable S3 composite frames, found {len(candidates)}")
+# Most recent uninterrupted sequence; no interpolation of missing radar scans.
+streak=[candidates[0]]
+for item in candidates[1:]:
+    if (item[0]-streak[-1][0]).total_seconds()==300:streak.append(item)
+    else:streak=[item]
+    if len(streak)>=11: break
+if len(streak)<8:
+    raise RuntimeError(f"No contiguous 5-minute set of 8+ scans (max streak {len(streak)})")
+streak=streak[-11:]
+times=[x[0] for x in streak]
+files=[x[1] for x in streak]
 print("DATA",len(files),times[0].isoformat(),times[-1].isoformat(),flush=True)
 
 # Fixed sampling of Spanish and neighboring European locations avoids cherry picking.
