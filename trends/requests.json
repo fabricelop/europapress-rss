@@ -51325,7 +51325,7 @@
       "id": "d7b672dc554f",
       "name": "Bale",
       "rank": 6,
-      "status": "inactive",
+      "status": "explained",
       "requested_at": "2026-10-12T23:22:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -51345,7 +51345,7 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top10",
-      "last_attempt_at": "2026-10-13T00:53:50+02:00",
+      "last_attempt_at": "2026-10-13T04:48:30+02:00",
       "problematic_at": "2026-10-13T00:18:04+02:00",
       "editorial_engine": "chatgpt-automation-outbox",
       "problem_reason": "Nuevo intento 13/10 02:29: aparece una pieza de talkSPORT que compara la presión sobre Mbappé con el trato recibido por Gareth Bale, pero no hay corroboración independiente suficiente del detonante del TT en España. Se conserva el provisional 741 sin inventar explicación.",
@@ -51359,7 +51359,41 @@
       "inactive_reason": "left-top10-radar",
       "orphan_repair_attempt_at": "2026-10-13T02:29:00+02:00",
       "orphan_repair_message_id": 741,
-      "orphan_repair_pending": true
+      "orphan_repair_pending": true,
+      "explained_at": "2026-10-13T04:48:30+02:00",
+      "explanation": "TT#6 Bale es tendencia tras circular una comparación sobre Mbappé: talkSPORT plantea que, si el Madrid vuelve a quedarse sin títulos, el francés podría acabar recibiendo un trato parecido al que sufrió Gareth Bale.\n🌶️ Bale ya no juega, pero todavía le salen comparaciones.",
+      "closer_text": "🌶️ Bale ya no juega, pero todavía le salen comparaciones.",
+      "rank_at_explanation": 6,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://talksport.com/football/4638677/kylian-mbappe-real-madrid-stats-trophies-sale-gareth-bale/",
+        "https://trends24.in/spain/index.html",
+        "https://yariga.net/286090/"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Reparación del provisional Telegram 741. El histórico de tendencias sitúa «Bale» en TT#6 de España a las 21:08 UTC del 12/10; el mismo día circuló la comparación de talkSPORT sobre Mbappé y el trato recibido por Gareth Bale. La redacción usa «tras circular» para no presentar una causalidad más fuerte que la evidencia disponible.",
+      "group_id": "grp-d7b672dc554f",
+      "explanation_group_id": "grp-d7b672dc554f",
+      "group_title": "Bale",
+      "group_leader_id": "d7b672dc554f",
+      "trend_names": [
+        "Bale"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "d7b672dc554f",
+          "name": "Bale",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "4911f4513c4a",
@@ -52398,6 +52432,6 @@
       "grouped_into_existing_card": false
     }
   ],
-  "updated_at": "2026-10-13T04:22:14+02:00",
+  "updated_at": "2026-10-13T04:48:30+02:00",
   "count": 893
 }
