@@ -23,6 +23,16 @@ struct GPSDiaryShell: View {
                     } label: {
                         Label("Revisar huecos sin GPS",systemImage:"location.slash.circle")
                     }
+                    NavigationLink {
+                        TimeRecoveredEditor(model:model)
+                    } label: {
+                        Label("Deshacer o corregir recuperaciones",systemImage:"arrow.uturn.backward")
+                    }
+                }
+                if let latest=days.first {
+                    Section("Calidad del seguimiento") {
+                        TimeDayTimeline(model:model,day:latest)
+                    }
                 }
                 ForEach(days, id: \.self) { day in
                     NavigationLink {
