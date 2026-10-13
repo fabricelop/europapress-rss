@@ -162,30 +162,55 @@ enum RainInsight {
         return String(format:"%02d:%02d",seconds/60,seconds%60)
     }
 
+    /// Open-Meteo hourly precipitation represents the PRECEDING hour:
+    /// a sample stamped 07:00 belongs to 06:00–07:00.
+    static func hourlyStart(_ timestamp:Date) -> Date {
+        timestamp.addingTimeInterval(-3600)
+    }
+
+    /// A probability is not an amount. Flag possible disagreements without
+    /// hiding or manufacturing a precipitation reading.
+    static func precipitationUncertainty(hours:[HourlyRain],day:Date,
+                                         calendar:Calendar = .current) -> Bool {
+        let start=calendar.startOfDay(for:day)
+        guard let end=calendar.date(byAdding:.day,value:1,to:start) else{return false}
+        let hours=hours.filter{$0.time>start && $0.time<=end}
+        let significant=hours.filter{$0.millimeters>=0.1}
+        guard !significant.isEmpty else{return false}
+        let peakProbability=hours.map(\.probability).max() ?? 0
+        return significant.allSatisfy{$0.probability<=20} && peakProbability>=25
+    }
+
     static func dailyPeriods(_ weather: RainSnapshot, day:Date,
                              calendar:Calendar = .current) -> [RainPeriod] {
-        let start = calendar.startOfDay(for:day)
-        guard let end = calendar.date(byAdding:.day,value:1,to:start) else { return [] }
-        // Hourly data is available for seven days; daily episode times must
-        // come from time-indexed hourly amounts, never be guessed from totals.
-        let buckets = weather.hours.filter { $0.time >= start.addingTimeInterval(-3600) &&
-                                             $0.time < end }
-        var runs:[RainPeriod] = []
+        let start=calendar.startOfDay(for:day)
+        guard let end=calendar.date(byAdding:.day,value:1,to:start) else{return []}
+        // Include the next midnight as the *end* of the preceding day's last
+        // hour. The 00:00 sample belongs to 23:00–00:00, not the new day.
+        let buckets=weather.hours.filter{$0.time>start && $0.time<=end}
+            .sorted{$0.time<$1.time}
+        var runs:[RainPeriod]=[]
         var begins:Date?
         var peak=0.0
         var mm=0.0
+        var lastEnd:Date?
         for item in buckets {
-            if item.millimeters >= 0.1 {
-                if begins == nil { begins=max(start,item.time) }
+            let hourStart=max(start,hourlyStart(item.time))
+            if item.millimeters>=0.1 {
+                if begins==nil{begins=hourStart}
                 peak=max(peak,item.millimeters)
-                mm += item.millimeters
+                mm+=item.millimeters
+                lastEnd=item.time
             } else if let began=begins {
-                runs.append(RainPeriod(start:began,end:item.time,
+                runs.append(RainPeriod(start:began,end:lastEnd ?? hourStart,
                                        peakMMH:peak,accumulationMM:mm))
-                begins=nil;peak=0;mm=0
+                begins=nil;peak=0;mm=0;lastEnd=nil
             }
         }
-        if let began=begins { runs.append(RainPeriod(start:began,end:end,peakMMH:peak,accumulationMM:mm)) }
+        if let began=begins {
+            runs.append(RainPeriod(start:began,end:min(end,lastEnd ?? end),
+                                   peakMMH:peak,accumulationMM:mm))
+        }
         return runs
     }
 }
