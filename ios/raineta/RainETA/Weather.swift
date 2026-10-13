@@ -159,7 +159,10 @@ enum RainAPI {
             guard let time = row["time"] as? Int, let path = row["path"] as? String else { return nil }
             return RadarFrame(timestamp: time, path: path)
         }.sorted { $0.timestamp < $1.timestamp }
-        return RadarFeed(host: host, frames: frames)
+        // RainViewer may supply fewer than two hours; never fabricate earlier
+        // observations or extend its licensed frame history.
+        let cutoff=Date().addingTimeInterval(-2*3600).timeIntervalSince1970
+        return RadarFeed(host: host, frames: frames.filter{Double($0.timestamp)>=cutoff})
     }
 }
 
@@ -449,9 +452,18 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         }
         if selectedRevision != placeSelectionRevision { pendingRefresh = true; return }
         do {
+            let lastSelected = radar.frames.indices.contains(radarIndex) ?
+                               radar.frames[radarIndex].timestamp : nil
+            let atNow = radarFutureMinutes == 0 && radarIndex >= max(0,radar.frames.count-1)
             radar = try await rx
-            radarIndex = max(0, radar.frames.count - 1)
-            radarFutureMinutes = 0
+            if radarFutureMinutes > 0 || atNow {
+                radarIndex = max(0, radar.frames.count-1)
+            } else if let lastSelected {
+                // Preserve the historical timestamp across periodic refresh.
+                radarIndex = radar.frames.enumerated().min(by: {
+                    abs($0.element.timestamp-lastSelected)<abs($1.element.timestamp-lastSelected)
+                })?.offset ?? 0
+            }
         } catch {
             status += " · Radar no disponible"
         }
