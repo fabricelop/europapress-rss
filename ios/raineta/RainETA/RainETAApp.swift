@@ -246,15 +246,6 @@ struct RadarSection: View {
                 let fraction=CGFloat(pastEnd)/CGFloat(max(1,pastEnd+futureSteps))
                 let markX=18+(proxy.size.width-36)*fraction
                 ZStack(alignment:.topLeading) {
-                    Rectangle().fill(.clear)
-                    Rectangle().fill(.cyan.opacity(0.75))
-                        .frame(width:2,height:19)
-                        .position(x:markX,y:10)
-                    Text("AHORA")
-                        .font(.system(size:9,weight:.heavy))
-                        .foregroundStyle(.cyan)
-                        .fixedSize()
-                        .position(x:min(max(26,markX),proxy.size.width-26),y:30)
                     Slider(value:Binding(
                         get:{sliderIndex},
                         set:{select(Int($0.rounded()))}
@@ -262,6 +253,16 @@ struct RadarSection: View {
                         .tint(.cyan)
                         .disabled(frames.isEmpty)
                         .padding(.top,0)
+                    Rectangle().fill(.cyan.opacity(0.8))
+                        .frame(width:2,height:18)
+                        .position(x:markX,y:10)
+                        .allowsHitTesting(false)
+                    Text("AHORA")
+                        .font(.system(size:9,weight:.heavy))
+                        .foregroundStyle(.cyan)
+                        .fixedSize()
+                        .position(x:min(max(28,markX),proxy.size.width-28),y:33)
+                        .allowsHitTesting(false)
                 }
             }
             .frame(height:42)
