@@ -2110,7 +2110,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.24 · datos guardados en este iPhone",
+                    Label("Versión 1.0.32 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
@@ -2179,6 +2179,11 @@ struct TimeSettingsView: View {
                     }
                 }
                 Section("Ayuda y diagnóstico") {
+                    NavigationLink {
+                        GPSGapReviewView(model:model)
+                    } label: {
+                        Label("Revisar todos los huecos GPS",systemImage:"location.slash.circle")
+                    }
                     NavigationLink("Estado técnico del GPS y almacenamiento") {
                         GPSDiagnosticsView(model:model,gps:gps)
                     }
