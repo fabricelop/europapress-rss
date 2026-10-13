@@ -31,7 +31,7 @@ struct RainETALiveWidget: Widget {
                     .font(.title2)
                     .foregroundStyle(.cyan)
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("RainETA · \(context.attributes.locationName)")
+                    Text("RainETA · \(context.state.locationName ?? context.attributes.locationName)")
                         .font(.caption.bold())
                     RainLiveSummary(state: context.state, isStale: context.isStale)
                     Text("Radar/modelo: \(context.state.updatedAt.formatted(date: .omitted, time: .shortened))")
@@ -54,12 +54,17 @@ struct RainETALiveWidget: Widget {
                         .font(.caption)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    HStack {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Ubicación: \(context.state.locationName ?? context.attributes.locationName)")
+                            .font(.caption.bold())
+                            .lineLimit(1)
+                        HStack {
                         RainLiveSummary(state: context.state, isStale: context.isStale)
                         Spacer()
                         Text(context.state.updatedAt, style: .time)
                             .font(.caption2)
                             .foregroundStyle(.secondary)
+                        }
                     }
                 }
             } compactLeading: {
