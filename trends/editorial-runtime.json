@@ -4,14 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T19:45:00+02:00",
-  "last_completed_at": "2026-10-13T19:50:45+02:00",
-  "updated_at": "2026-10-13T19:50:45+02:00",
+  "last_started_at": "2026-10-13T20:15:00+02:00",
+  "last_completed_at": "2026-10-13T20:16:30+02:00",
+  "updated_at": "2026-10-13T20:16:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "7d9ebeb74064",
-    "3db67c85ce1a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -19,236 +16,120 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "telegram_finalized_and_audit_clean",
+    "status": "requested_pending_confirmation",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T194500+0200-chat",
-    "requested_at": "2026-10-13T19:45:00+02:00",
+    "run_id": "tr-20261013T201500+0200-chat",
+    "requested_at": "2026-10-13T20:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
-    "telegram_verified": true,
-    "verified_at": "2026-10-13T19:50:42+02:00",
-    "telegram_final_message_ids": [
-      778,
-      779
-    ]
+    "telegram_verified": false,
+    "verification_note": "Estado vigente limpio; falta observar una auditoría nueva posterior al disparo."
   },
   "last_run": {
-    "run_id": "tr-20261013T194500+0200-chat",
+    "run_id": "tr-20261013T201500+0200-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-13T19:45:00+02:00",
-    "updated_at": "2026-10-13T19:50:45+02:00",
-    "finished_at": "2026-10-13T19:50:45+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-13T20:15:00+02:00",
+    "updated_at": "2026-10-13T20:16:30+02:00",
+    "finished_at": "2026-10-13T20:16:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 2,
+      "telegram_provisionals_finalized": 0,
       "telegram_orphans": 0,
-      "telegram_delivery_workflow_verified": 1,
+      "telegram_delivery_workflow_verified": 0,
       "archive_images_enriched": 0,
       "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0
     },
-    "message": "Pasada directa 2/2 verificada · dos explicaciones cerradas, cola 0 y Telegram saneado.",
-    "incident_count": 0,
-    "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [
+    "message": "Pasada 0/0 cerrada con cola limpia; saneamiento solicitado y verificación post-disparo pendiente.",
+    "incident_count": 1,
+    "incidents": [
       {
-        "id": "7d9ebeb74064",
-        "revision": 0,
-        "selected": "🌶️ El exjuez acabó con cita en el lado de los investigados.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "3db67c85ce1a",
-        "revision": 0,
-        "selected": "🌶️ Estocolmo llamó a Economía y contestó Adam Smith.",
-        "originality_check": "pass"
+        "code": "telegram_postrun_confirmation_pending",
+        "message": "El saneamiento se solicitó y el estado vigente está limpio (0 huérfanos, 0 entregas no finales), pero no apareció aún una auditoría nueva posterior al disparo de las 20:15 durante esta ejecución."
       }
     ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T19:45:00+02:00",
+        "at": "2026-10-13T20:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 2 entradas activas; revisando Pendientes, Telegram y estado autoritativo antes de investigar."
+        "message": "Preparando pasada editorial · cola 0; revisando Pendientes, Telegram y estado autoritativo antes de cerrar."
       },
       {
-        "at": "2026-10-13T19:47:30+02:00",
-        "phase": "verifying",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Releyendo estado autoritativo de Sáenz de Tejada · revisión 0 sigue preparing y TT#4 en la captura actual."
-      },
-      {
-        "at": "2026-10-13T19:47:45+02:00",
-        "phase": "investigating",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Contrastando el detonante actual en varias fuentes: citación de Pedraz como investigado en el caso Leire Díez."
-      },
-      {
-        "at": "2026-10-13T19:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-13T19:48:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Remate seleccionado · sátira procesal neutra, sin humor sobre amenazas ni víctimas y sin repetir fórmulas recientes."
-      },
-      {
-        "at": "2026-10-13T19:48:20+02:00",
-        "phase": "verifying",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Releyendo estado autoritativo de Adam Smith · revisión 0 sigue preparing y TT#10 en la captura actual."
-      },
-      {
-        "at": "2026-10-13T19:48:28+02:00",
-        "phase": "investigating",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Contrastando el detonante actual: entrevista de Nobel Prize Outreach a Michael Woodford con Adam Smith como entrevistador homónimo."
-      },
-      {
-        "at": "2026-10-13T19:48:38+02:00",
-        "phase": "drafting",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-13T19:48:46+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Remate seleccionado · juego específico con Estocolmo/Economía; originalidad contrastada con los últimos 30 ratings."
-      },
-      {
-        "at": "2026-10-13T19:48:55+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando las dos fichas Explicadas mediante el outbox editorial directo del PR #7."
-      },
-      {
-        "at": "2026-10-13T19:50:00+02:00",
-        "phase": "persisting",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Ficha Explicada y request sincronizadas; revisión retirada de la cola."
-      },
-      {
-        "at": "2026-10-13T19:50:10+02:00",
-        "phase": "verifying",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Verificando id+revision y texto persistido · coincidencia exacta confirmada."
-      },
-      {
-        "at": "2026-10-13T19:50:15+02:00",
-        "phase": "verifying",
-        "trend_id": "7d9ebeb74064",
-        "title": "Sáenz de Tejada",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-13T19:50:20+02:00",
-        "phase": "persisting",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Ficha Explicada y request sincronizadas; revisión retirada de la cola."
-      },
-      {
-        "at": "2026-10-13T19:50:25+02:00",
-        "phase": "verifying",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Verificando id+revision y texto persistido · coincidencia exacta confirmada."
-      },
-      {
-        "at": "2026-10-13T19:50:30+02:00",
-        "phase": "verifying",
-        "trend_id": "3db67c85ce1a",
-        "title": "Adam Smith",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-13T19:50:42+02:00",
+        "at": "2026-10-13T20:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final · cola 0, Telegram 778/779 final:true y auditoría con 0 huérfanos."
+        "message": "Saneamiento visual solicitado; comprobando que el workflow de reparación se haya lanzado y que Telegram quede sin huérfanos."
       },
       {
-        "at": "2026-10-13T19:50:45+02:00",
+        "at": "2026-10-13T20:16:10+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final · cola 0, ninguna entrega final:false y auditoría vigente con 0 huérfanos; sin confirmación nueva post-disparo."
+      },
+      {
+        "at": "2026-10-13T20:16:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 2/2 verificada · dos explicaciones cerradas, cola 0 y Telegram saneado."
+        "message": "Pasada 0/0 cerrada con cola limpia; saneamiento solicitado y verificación post-disparo pendiente."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T194500+0200-chat",
+  "run_id": "tr-20261013T201500+0200-chat",
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
-    "telegram_provisionals_finalized": 2,
+    "telegram_provisionals_finalized": 0,
     "telegram_orphans": 0,
-    "telegram_delivery_workflow_verified": 1,
+    "telegram_delivery_workflow_verified": 0,
     "archive_images_enriched": 0,
     "bidirectional_repairs": 0,
     "telegram_bidirectional_issues": 0
