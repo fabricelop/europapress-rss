@@ -2,31 +2,59 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-13T21:06:31.843808+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-13T21:48:23.103740+00:00",
+      "issue_count": 2,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "5f068c2442b7",
+          "title": "El Bara enfra el infierno de Estambul con otra goleada y un Lamine Yamal esplndido",
+          "seconds": 234,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 601,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "952afc333a6d10853b22bcae6f663e1c4587ec570125aac5daf7f8f0d2dbcf68",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-13T21:06:31.843808+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-13T21:48:23.103740+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 601,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T20:57:11.903488+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-13T20:57:11.903488+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-13T20:57:11.903488+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T21:48:23.103740+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-13T21:48:23.103740+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-13T21:48:23.103740+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-13T21:06:31.843808+00:00"
+  "checked_at": "2026-10-13T21:48:23.103740+00:00"
 }
