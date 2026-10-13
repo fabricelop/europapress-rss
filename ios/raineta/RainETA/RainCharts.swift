@@ -121,55 +121,72 @@ struct MinuteRainGraph: View {
 
 struct ThreeHourRainView: View {
     let weather:RainSnapshot?
-    @State private var chosen:Int?
+    @State private var chosen:Int=0
+
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
-            Label("Próximas 3 horas",systemImage:"chart.bar.fill").font(.headline)
+            Label("Próximas 3 horas",systemImage:"chart.bar.fill")
+                .font(.headline)
             if let weather {
                 let slots=RainInsight.moments(samples:weather.samples,from:.now,minutes:180,step:15)
                 if slots.isEmpty {
-                    Text("No hay datos suficientes de 15 minutos")
+                    Text("No hay datos de 15 min para las próximas horas")
                         .foregroundStyle(.secondary)
                 } else {
-                    let current=slots.min(by:{abs($0.minute-(chosen ?? 0))<abs($1.minute-(chosen ?? 0))}) ?? slots[0]
-                    HStack {
-                        Text(current.date.formatted(date:.omitted,time:.shortened))
-                            .foregroundStyle(.secondary)
+                    let selected=slots.min(by:{ abs($0.minute-chosen)<abs($1.minute-chosen) }) ?? slots[0]
+                    HStack(spacing:6) {
+                        Text(selected.date.formatted(date:.omitted,time:.shortened))
+                            .font(.subheadline.bold())
                         Spacer()
-                        Text(String(format:"%.1f mm/h",current.rateMMH))
+                        Text(String(format:"%.1f mm/h",selected.rateMMH))
                             .font(.headline.monospacedDigit())
-                            .foregroundStyle(RainVisual.color(current.rateMMH))
-                        Text(current.probability.map { "\($0)%" } ?? "—")
+                            .foregroundStyle(RainVisual.color(selected.rateMMH))
+                        Text(selected.probability.map{"\($0)%"} ?? "—")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
-                    Chart(slots) { point in
-                        BarMark(x:.value("Momento",point.minute),
-                                y:.value("Intensidad mm/h",point.rateMMH),
-                                width:.ratio(0.86))
-                            .foregroundStyle(RainVisual.color(point.rateMMH))
-                            .cornerRadius(3)
-                    }
-                    .chartXScale(domain:0...180)
-                    .chartYScale(domain:0...max(0.6,(slots.map(\.rateMMH).max() ?? 0)*1.15))
-                    .chartXAxis {
-                        AxisMarks(values:[0,30,60,90,120,150,180]) { mark in
-                            AxisValueLabel {
-                                if let m=mark.as(Int.self) { Text("+\(m)m") }
+                    GeometryReader { geometry in
+                        let barWidth=max(4,(geometry.size.width-CGFloat(slots.count-1)*5)/CGFloat(slots.count))
+                        let peak=max(0.7,slots.map(\.rateMMH).max() ?? 0)
+                        HStack(alignment:.bottom,spacing:5) {
+                            ForEach(slots) { point in
+                                Button {chosen=point.minute} label:{
+                                    VStack(spacing:5) {
+                                        Spacer(minLength:0)
+                                        RoundedRectangle(cornerRadius:3)
+                                            .fill(RainVisual.color(point.rateMMH))
+                                            .frame(height:max(point.rateMMH>0.1 ? 6:2,
+                                                              CGFloat(point.rateMMH/peak)*120))
+                                            .overlay(alignment:.top) {
+                                                if chosen==point.minute {
+                                                    RoundedRectangle(cornerRadius:3)
+                                                        .stroke(.white,lineWidth:1.5)
+                                                }
+                                            }
+                                        Text(point.minute%30==0 ? "+\(point.minute)" : " ")
+                                            .font(.system(size:9))
+                                            .foregroundStyle(.secondary)
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(0.7)
+                                            .frame(height:15)
+                                    }
+                                    .frame(width:barWidth)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("+\(point.minute) min: \(String(format:"%.1f",point.rateMMH)) mm/h")
                             }
                         }
                     }
-                    .chartXSelection(value:$chosen)
-                    .frame(height:160)
+                    .frame(height:155)
                     RainIntensityLegend()
                     HStack {
-                        let rain=slots.filter{$0.rateMMH>=RainInsight.wetRate}
-                        Label("\(rain.count * 15) min con lluvia prevista",
-                              systemImage:"clock")
+                        let wet=slots.filter{$0.rateMMH>=RainInsight.wetRate}.count
+                        Label("~\(wet*15) min con lluvia",systemImage:"clock")
                         Spacer()
-                        Text("Datos modelo 15 min")
+                        Text("Misma fuente que Pulso")
                     }
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .font(.caption2).foregroundStyle(.secondary)
+                    Text("Escala común con Pulso de lluvia: datos del mismo pronóstico interpolado. 15 min entre barras, sin predicciones independientes por minuto.")
+                        .font(.caption2).foregroundStyle(.secondary)
                 }
             } else {
                 ProgressView("Consultando previsión…")
