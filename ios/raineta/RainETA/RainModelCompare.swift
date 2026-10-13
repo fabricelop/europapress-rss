@@ -53,15 +53,27 @@ struct RainMultiModelView: View {
     let primary:RainSnapshot?
     @State private var forecasts:[RainModelDaily]=[]
     @State private var loading=false
+    @State private var expanded=false
 
     private var dataKey:String {String(format:"%.3f,%.3f",coordinate,longitude)}
 
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
-            Label("¿Coinciden los modelos?",systemImage:"square.stack.3d.up")
-                .font(.headline)
-            Text("No existe un pronóstico infalible. Compara la lluvia diaria prevista en exactamente la misma ubicación.")
-                .font(.caption).foregroundStyle(.secondary)
+            Button {
+                expanded.toggle()
+                if expanded {Task {await refresh()}}
+            } label:{
+                HStack {
+                    Label("Comparar modelos",systemImage:"square.stack.3d.up")
+                        .font(.headline)
+                    Spacer()
+                    Text("ECMWF · ICON · GFS")
+                        .font(.caption2)
+                    Image(systemName:expanded ? "chevron.up":"chevron.down")
+                }
+            }
+            .buttonStyle(.plain)
+            if expanded {
             if let main=primary {
                 HStack {
                     Text("Modelo automático")
@@ -97,8 +109,19 @@ struct RainMultiModelView: View {
                     }
                 }
             }
-            Text("Valores en mm por día. Diferencias grandes entre modelos indican incertidumbre. Ninguno es automáticamente mejor y HelloWeather puede usar otra fuente.")
-                .font(.caption2).foregroundStyle(.secondary)
+            if let first=primary, !forecasts.isEmpty {
+                let divergence=(0..<min(7,first.days.count)).contains {index in
+                    let values=forecasts.compactMap{index<$0.totals.count ? $0.totals[index] : nil}
+                    guard let low=values.min(),let high=values.max() else{return false}
+                    return high-low >= 2.0
+                }
+                if divergence {
+                    Label("Diferencias importantes entre modelos · Previsión incierta",
+                          systemImage:"exclamationmark.triangle")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
+                }
+            }
             if forecasts.isEmpty && !loading {
                 Text("Comparación no disponible. La previsión principal continúa funcionando.")
                     .font(.caption2).foregroundStyle(.secondary)
@@ -108,16 +131,22 @@ struct RainMultiModelView: View {
             } label:{ Label("Comparar de nuevo",systemImage:"arrow.clockwise") }
             .font(.caption)
             .disabled(loading)
+            }
         }
         .padding(14)
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
-        .task(id:dataKey) {await refresh()}
+        .onChange(of:dataKey) { _,_ in
+            forecasts=[]
+            if expanded {Task {await refresh()}}
+        }
     }
 
     private func refresh() async {
         guard !loading else{return}
         loading=true
-        forecasts=await RainModelCompareAPI.compare(latitude:coordinate,longitude:longitude)
+        let key=dataKey
+        let results=await RainModelCompareAPI.compare(latitude:coordinate,longitude:longitude)
+        if key==dataKey {forecasts=results}
         loading=false
     }
 }
