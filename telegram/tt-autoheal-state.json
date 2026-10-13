@@ -2,14 +2,49 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-13T20:43:49.107430+00:00",
+      "checked_at": "2026-10-13T20:57:11.903488+00:00",
+      "issue_count": 3,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "aee39a32c4e0",
+          "title": "El Vaticano confirma que el Papa tiene cáncer de pulmón: ya ha sido operado con éxito",
+          "seconds": 133,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "8e3bf48b56c3",
+          "title": "Colau, tras ser propuesta para liderar el Frente Amplio, aprieta a Podemos para la unidad: \"Todas de",
+          "seconds": 133,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 672,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "b548571d33cefcb3a6a00c1343adcaad32eeb4a6c78fb92da30aa69bcb419755",
+      "repair_via_workflow_run": false,
+      "escalation_required": 0
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-13T20:57:11.903488+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 1477,
+          "seconds": 671,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -20,82 +55,13 @@
       "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
-    },
-    "ttendencias": {
-      "checked_at": "2026-10-13T20:43:49.107430+00:00",
-      "issue_count": 8,
-      "issues": [
-        {
-          "kind": "editorial_overdue",
-          "id": "298947e5b1e1",
-          "title": "Galatasaray",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "7f4edc904c59",
-          "title": "Olmo",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "5d5518aea954",
-          "title": "Cardoso",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "fc3e4576c353",
-          "title": "Champions",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "bf9a1fe7a07a",
-          "title": "Barrios",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "9ba06c6f802f",
-          "title": "Leao",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "3c4fe1515d56",
-          "title": "Gerard Martín",
-          "seconds": 1258,
-          "workflow": null
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 1476,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
-      "repair_errors": [],
-      "open_signature": "1c0cdcc2238b1c3e3fd3aecf52e1864b000f4911d2b4f01ebb013e6c209dc640",
-      "repair_via_workflow_run": false,
-      "escalation_required": 7
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T16:03:42.809965+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-13T20:43:49.107430+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-13T20:43:49.107430+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T20:57:11.903488+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-13T20:57:11.903488+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-13T20:57:11.903488+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-13T20:43:49.107430+00:00"
+  "checked_at": "2026-10-13T20:57:11.903488+00:00"
 }
