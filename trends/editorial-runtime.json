@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T21:45:00+02:00",
-  "last_completed_at": "2026-10-13T21:49:05+02:00",
-  "updated_at": "2026-10-13T21:49:05+02:00",
+  "last_started_at": "2026-10-13T22:15:00+02:00",
+  "last_completed_at": "2026-10-13T22:19:05+02:00",
+  "updated_at": "2026-10-13T22:19:05+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,21 +18,21 @@
     "persisted_trigger": true,
     "status": "verified_clean_post_run",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T214500+0200-chat",
-    "requested_at": "2026-10-13T21:45:00+02:00",
+    "run_id": "tr-20261013T221500+0200-chat",
+    "requested_at": "2026-10-13T22:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
     "telegram_verified": true,
-    "verification_note": "Auditoría posterior 2026-10-13T19:48:58.969026+00:00: 0 huérfanos y ningún delivery sent/final:false."
+    "verification_note": "Auditoría posterior 2026-10-13T20:18:56.899044+00:00: 0 huérfanos, 0 incidencias bidireccionales y ningún delivery sent/final:false."
   },
   "last_run": {
-    "run_id": "tr-20261013T214500+0200-chat",
+    "run_id": "tr-20261013T221500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T21:45:00+02:00",
-    "updated_at": "2026-10-13T21:49:05+02:00",
-    "finished_at": "2026-10-13T21:49:05+02:00",
+    "started_at": "2026-10-13T22:15:00+02:00",
+    "updated_at": "2026-10-13T22:19:05+02:00",
+    "finished_at": "2026-10-13T22:19:05+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -65,7 +65,7 @@
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada directa 0/0 verificada · cola 0, Top 10 ya tratado y auditoría Telegram posterior con 0 huérfanos.",
+    "message": "Pasada directa 0/0 verificada · cola 0, Top 10 sin cambios y auditoría Telegram posterior con 0 huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -78,52 +78,52 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T21:45:00+02:00",
+        "at": "2026-10-13T22:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola autoritativa 0; verificando Top 10, Pendientes recientes y avisos Telegram huérfanos."
       },
       {
-        "at": "2026-10-13T21:45:30+02:00",
+        "at": "2026-10-13T22:15:30+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Reparación de Pendientes activada mediante trigger persistido en main."
       },
       {
-        "at": "2026-10-13T21:46:00+02:00",
+        "at": "2026-10-13T22:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, sin preparing/update/rewrite_pending; Top 10 ya tratado o eliminado por decisión previa."
+        "message": "Releyendo main · cola 0; captura 22:11:59 sin entradas nuevas y Top 10 sin cambios."
       },
       {
-        "at": "2026-10-13T21:46:30+02:00",
+        "at": "2026-10-13T22:16:30+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Reconciliando cola vacía en main para disparar la verificación Telegram posterior a la pasada."
       },
       {
-        "at": "2026-10-13T21:48:58+02:00",
+        "at": "2026-10-13T22:18:56+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría Telegram posterior verificada · 0 huérfanos y ningún delivery sent/final:false."
+        "message": "Auditoría Telegram posterior verificada · 0 huérfanos, 0 incidencias bidireccionales y ningún delivery sent/final:false."
       },
       {
-        "at": "2026-10-13T21:49:05+02:00",
+        "at": "2026-10-13T22:19:05+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 0/0 cerrada y verificada · cola 0 y Telegram limpio."
+        "message": "Pasada directa 0/0 cerrada y verificada · cola 0, Top 10 sin cambios y Telegram limpio."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T214500+0200-chat",
+  "run_id": "tr-20261013T221500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -154,7 +154,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-13T21:42:13+02:00",
+    "source_capture_at": "2026-10-13T22:11:59+02:00",
     "status": "fresh_at_start"
   }
 }
