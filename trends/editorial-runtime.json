@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T07:45:00+02:00",
-  "last_completed_at": "2026-10-13T07:49:00+02:00",
-  "updated_at": "2026-10-13T07:49:00+02:00",
+  "last_started_at": "2026-10-13T08:15:00+02:00",
+  "last_completed_at": "2026-10-13T08:18:15+02:00",
+  "updated_at": "2026-10-13T08:18:15+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,19 +18,19 @@
     "persisted_trigger": true,
     "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T074500+0200-chat",
-    "requested_at": "2026-10-13T07:45:00+02:00",
+    "run_id": "tr-20261013T081500+0200-chat",
+    "requested_at": "2026-10-13T08:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow"
   },
   "last_run": {
-    "run_id": "tr-20261013T074500+0200-chat",
+    "run_id": "tr-20261013T081500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T07:45:00+02:00",
-    "updated_at": "2026-10-13T07:49:00+02:00",
-    "finished_at": "2026-10-13T07:49:00+02:00",
+    "started_at": "2026-10-13T08:15:00+02:00",
+    "updated_at": "2026-10-13T08:18:15+02:00",
+    "finished_at": "2026-10-13T08:18:15+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -68,35 +68,35 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T07:45:00+02:00",
+        "at": "2026-10-13T08:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola textual 0; comprobando reexplicaciones, Telegram y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-13T07:46:30+02:00",
+        "at": "2026-10-13T08:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo estado autoritativo · no hay preparing/update/problematic ni rewrite_pending; comprobando saneamiento y auditoría Telegram."
+        "message": "Releyendo main tras el trigger · comprobando cola, reexplicaciones, saneamiento y auditoría Telegram."
       },
       {
-        "at": "2026-10-13T07:48:10+02:00",
+        "at": "2026-10-13T08:18:01+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes completado; entrega informativa enviada y auditoría Telegram en verificación final."
+        "message": "Saneamiento de Pendientes completado correctamente; verificando la entrega informativa Telegram disparada por el reparador."
       },
       {
-        "at": "2026-10-13T07:48:45+02:00",
+        "at": "2026-10-13T08:18:15+02:00",
         "phase": "verifying",
-        "trend_id": "f419d9a9e22f",
-        "title": "RJ Mitte",
-        "message": "Saneamiento de remate · se conserva sin remate por fallecimiento; excepción sensible, sin humor."
+        "trend_id": null,
+        "title": null,
+        "message": "Entrega informativa Telegram y auditoría posterior completadas con éxito; 0 provisionales y 0 huérfanos."
       },
       {
-        "at": "2026-10-13T07:49:00+02:00",
+        "at": "2026-10-13T08:18:15+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -106,7 +106,7 @@
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T074500+0200-chat",
+  "run_id": "tr-20261013T081500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
