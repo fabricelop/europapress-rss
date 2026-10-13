@@ -17,6 +17,7 @@ struct RainHomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
+                    PlacesOverview(store: store)
                     hero
                     radarSection
                     MinuteRainGraph(projection: store.projection, weather: store.snapshot)
@@ -36,7 +37,10 @@ struct RainHomeView: View {
                     }.disabled(store.loading)
                 }
             }
-            .refreshable { await store.refresh(force: true) }
+            .refreshable {
+                await store.refresh(force: true)
+                await store.refreshSummaries(force: true)
+            }
             .task {
                 store.start()
                 while !Task.isCancelled {
@@ -186,9 +190,9 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.2.0 · Radar histórico de RainViewer y extrapolación experimental propia. La lluvia futura del mapa es simulación, no observación.")
+            Text("v0.3.0 · Radar histórico de RainViewer y extrapolación experimental propia. La lluvia futura del mapa es simulación, no observación.")
             Text(store.projectionStatus)
-            Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo")
+            Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
         }
         .font(.caption)
