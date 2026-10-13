@@ -29,6 +29,49 @@ final class TimeLiveMotionTests:XCTestCase {
         XCTAssertNotNil(state.headingDegrees)
         XCTAssertTrue(state.trailIndices.allSatisfy { (0..<9).contains($0) })
     }
+    func testSlowWalkingWithCompactedFixesSwitchesToMoving() {
+        // Registro real: se retiene un fix cada ~16 m con precisión ±10 m.
+        // La antigua condición exigía 24 m en cada par y nunca activaba el modo.
+        let now=Date(timeIntervalSince1970:900)
+        let points=(0..<7).map { i in
+            fix(730+Double(i)*25,40.4+Double(i)*0.00015,-3.7,accuracy:10)
+        }
+        let state=TimeLiveMotion.analyze(points,now:now,center:points.last!.cell)
+        XCTAssertTrue(state.moving)
+        XCTAssertGreaterThanOrEqual(state.recentDistanceMeters,70)
+    }
+    func testWalkingWithTwentyMeterAccuracyGroupsFixes() {
+        // A ±20 m, dos posiciones separadas 16 m son insuficientes por
+        // separado; el ancla permite observar desplazamiento real acumulado.
+        let now=Date(timeIntervalSince1970:900)
+        let points=(0..<8).map { i in
+            fix(730+Double(i)*20,40.4+Double(i)*0.000145,-3.7,accuracy:20)
+        }
+        let state=TimeLiveMotion.analyze(points,now:now,center:points.last!.cell)
+        XCTAssertTrue(state.moving)
+        XCTAssertGreaterThanOrEqual(state.recentDistanceMeters,60)
+    }
+    func testCurrentGPSFixIsUsedBeforeHistoryCompaction() {
+        let now=Date(timeIntervalSince1970:900)
+        let stored=[fix(760,40.4,-3.7,accuracy:8),
+                    fix(800,40.40024,-3.7,accuracy:8)]
+        let current=fix(880,40.40053,-3.7,accuracy:8)
+        let withoutCurrent=TimeLiveMotion.analyze(stored,now:now,
+            center:current.cell)
+        let withCurrent=TimeLiveMotion.analyze(stored,now:now,
+            center:current.cell,latest:current)
+        XCTAssertFalse(withoutCurrent.moving)
+        XCTAssertTrue(withCurrent.moving)
+    }
+    func testInaccurateStationaryJitterStillRejected() {
+        let now=Date(timeIntervalSince1970:900)
+        let points=(0..<8).map { i in
+            fix(730+Double(i)*20,40.4+Double(i%3-1)*0.00004,
+                -3.7+Double(i%2)*0.00003,accuracy:20)
+        }
+        XCTAssertFalse(TimeLiveMotion.analyze(points,now:now,
+            center:points.last!.cell).moving)
+    }
     func testStaleMovementDoesNotShowMoving() {
         let now=Date(timeIntervalSince1970:1800)
         let points=[fix(600,40.4,-3.7),fix(700,40.4,-3.6994),
