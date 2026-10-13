@@ -1,4 +1,4 @@
-name: Ingestar outbox TTiTTulares desde PR
+name: Ingestar outbox TTiTTulares desde transporte
 
 on:
   issue_comment:
@@ -18,8 +18,7 @@ concurrency:
 jobs:
   ingest:
     if: >-
-      github.event.issue.pull_request &&
-      github.event.issue.number == 2 &&
+      ((github.event.issue.pull_request && github.event.issue.number == 2) || github.event.issue.number == 164) &&
       startsWith(github.event.comment.body, 'TTITTULARES_OUTBOX_V1')
     runs-on: ubuntu-latest
     timeout-minutes: 10
