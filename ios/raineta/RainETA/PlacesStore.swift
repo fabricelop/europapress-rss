@@ -1,0 +1,124 @@
+import Foundation
+import CoreLocation
+
+@MainActor extension RainStore {
+    var allPlaceRows: [(id: String, name: String, coordinate: CLLocationCoordinate2D?)] {
+        [("gps", "Mi ubicación · GPS", gpsCoordinate)] +
+        savedPlaces.map { ($0.id, $0.name, $0.coordinate as CLLocationCoordinate2D?) }
+    }
+
+    var isSelectedSaved: Bool { selectedPlaceID != "gps" }
+
+    var currentSelectionSaved: Bool {
+        savedPlaces.contains {
+            abs($0.latitude - coordinate.latitude) < 0.0015 &&
+            abs($0.longitude - coordinate.longitude) < 0.0015
+        }
+    }
+
+    func persistPlaces() {
+        if let data = try? JSONEncoder().encode(savedPlaces) {
+            UserDefaults.standard.set(data, forKey: "raineta.savedPlaces.v1")
+        }
+        UserDefaults.standard.set(selectedPlaceID, forKey: "raineta.selectedPlace.v1")
+    }
+
+    func selectPlace(_ id: String) {
+        guard id != selectedPlaceID || snapshot == nil else { return }
+        if id == "gps" {
+            selectedPlaceID = "gps"
+            coordinate = gpsCoordinate ?? CLLocationCoordinate2D(latitude: 40.4168, longitude: -3.7038)
+            name = gpsCoordinate == nil ? "Madrid · provisional" : "Mi ubicación"
+        } else if let item = savedPlaces.first(where: { $0.id == id }) {
+            selectedPlaceID = item.id
+            coordinate = item.coordinate
+            name = item.name
+        } else { return }
+        persistPlaces()
+        placeSelectionRevision += 1
+        snapshot = nil
+        projection = nil
+        radarFutureMinutes = 0
+        radarIndex = max(0, radar.frames.count-1)
+        Task { await refresh(force: true) }
+    }
+
+    func addPlace(name: String, latitude: Double, longitude: Double, select: Bool = true) {
+        guard latitude.isFinite, longitude.isFinite, (-90...90).contains(latitude),
+              (-180...180).contains(longitude) else { return }
+        let cleaned = String(name.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
+        let existing = savedPlaces.first {
+            abs($0.latitude - latitude) < 0.0015 && abs($0.longitude - longitude) < 0.0015
+        }
+        if let existing {
+            if select { selectPlace(existing.id) }
+            return
+        }
+        let item = SavedRainPlace(name: cleaned.isEmpty ? "Lugar guardado" : cleaned,
+                                  latitude: latitude, longitude: longitude)
+        savedPlaces.append(item)
+        persistPlaces()
+        summariesCheckedAt = .distantPast
+        if select { selectPlace(item.id) }
+        Task { await refreshSummaries(force: true) }
+    }
+
+    func saveGPSPlace() {
+        guard let gps = gpsCoordinate else {
+            status = "Primero debe estar disponible la ubicación GPS."
+            return
+        }
+        addPlace(name: "Mi lugar · \(gps.latitude.formatted(.number.precision(.fractionLength(3)))), \(gps.longitude.formatted(.number.precision(.fractionLength(3))))",
+                 latitude: gps.latitude, longitude: gps.longitude, select: false)
+    }
+
+    func renamePlace(_ id: String, to newName: String) {
+        let clean = String(newName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
+        guard !clean.isEmpty, let index = savedPlaces.firstIndex(where: { $0.id == id }) else { return }
+        savedPlaces[index].name = clean
+        if selectedPlaceID == id { name = clean }
+        persistPlaces()
+    }
+
+    func deletePlace(_ id: String) {
+        savedPlaces.removeAll { $0.id == id }
+        quickSummaries.removeValue(forKey: id)
+        quickFailures.remove(id)
+        if selectedPlaceID == id { selectPlace("gps") }
+        persistPlaces()
+    }
+
+    func refreshSummaries(force: Bool = false) async {
+        if summariesLoading { return }
+        if !force && Date().timeIntervalSince(summariesCheckedAt) < 4*60 { return }
+        let locations = allPlaceRows.compactMap { item -> (String, CLLocationCoordinate2D)? in
+            guard let point = item.coordinate else { return nil }
+            return (item.id, point)
+        }
+        guard !locations.isEmpty else { return }
+        summariesLoading = true
+        defer { summariesLoading = false }
+        // Work in batches to avoid swamping free weather endpoints.
+        for start in stride(from: 0, to: locations.count, by: 4) {
+            let slice = Array(locations[start..<min(start+4, locations.count)])
+            await withTaskGroup(of: (String, QuickRainSummary?).self) { group in
+                for (key, location) in slice {
+                    group.addTask {
+                        let report = try? await RainPlacesAPI.quick(latitude: location.latitude,
+                                                                     longitude: location.longitude)
+                        return (key, report)
+                    }
+                }
+                for await (key, report) in group {
+                    if let report {
+                        quickSummaries[key] = report
+                        quickFailures.remove(key)
+                    } else {
+                        quickFailures.insert(key)
+                    }
+                }
+            }
+        }
+        summariesCheckedAt = Date()
+    }
+}
