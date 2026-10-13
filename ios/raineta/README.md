@@ -1,6 +1,20 @@
-# RainETA para iPhone — v0.4.0
+# RainETA para iPhone — v0.5.0
 
 App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
+
+## v0.5.0 — Sustitución completa de la capa futura anterior
+
+- **Retirado en pantalla el mapa de 9×9 puntos de Open-Meteo**, que mostraba círculos irreales y bordes rectangulares; también sigue deshabilitada la translación/difuminado del radar.
+- **Nuevo origen oficial:** WMS de Deutscher Wetterdienst (DWD), modelo ICON-EU, capa `dwd:Icon-eu_reg00625_fd_sl_TOTPREC01H` de precipitación acumulada en la hora anterior.
+- **Mapas meteorológicos integrales:** MapKit solicita al servidor mapas reales en proyección EPSG:3857 de la región solicitada, en vez de convertir pronósticos puntuales en manchas.
+- **Zoom:** se han verificado llamadas WMS con PNG válido a niveles 6, 9 y 12. El servidor puede atender consultas a distintos niveles pero **no hay más detalle meteorológico real que el del modelo (~6 km)**.
+- **Secuencia futura por horas reales:** la fuente es horaria. RainETA presenta +1h, +2h, +3h, +4h; no finge disponer de campos meteorológicos independientes cada cinco minutos.
+- **Transición protegida:** al pasar de radar a modelo, no se borra la observación hasta recibir una tesela PNG válida de la previsión; si falla el WMS, se conserva el radar y se informa.
+- **Cobertura inicial:** Europa. Fuera de esa región no se muestra una previsión espacial que no existe.
+- **Fuente y atribución:** DWD / ICON-EU enlazado en la app; el radar histórico sigue siendo RainViewer. Live Activities y los lugares guardados no cambian.
+- **Validación:** pruebas de proveedor para Europa e Iberia, prueba de entrega a zoom 6, 9 y 12, además de tests unitarios iOS de construcción geográfica WMS, tiempo y región. Se guardan imágenes de referencia en GitHub Actions.
+
+**Limitaciones conocidas:** este modelo todavía no se fusiona con el radar de los últimos minutos y no es una predicción hiperlocal inmediata. La discontinuidad entre imagen radar y previsión del modelo es una diferencia real entre fuentes, no algo que se deba ocultar con opacidad artificial. Para España, los siguientes candidatos a integrar son los campos HARMONIE-AROME de AEMET; para los primeros minutos, evolución óptica calibrada con varios barridos reales y validación retrospectiva.
 
 ## v0.4.0 — RainETA Future Rain Model Map
 
@@ -51,7 +65,7 @@ Open-Meteo may interpolate hourly precipitation into 15-minute steps outside are
 
 Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.4.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.5.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
 ## Instalación y prueba
 
