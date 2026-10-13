@@ -44,10 +44,13 @@ struct TimeDayCoverage {
 
 enum TimeDayCoverageIndex {
     static func build(_ raw:[AssignedInterval],day:Date,
-                      calendar:Calendar = .current)->TimeDayCoverage {
+                      calendar:Calendar = .current,
+                      now:Date = .now)->TimeDayCoverage {
         let begin=calendar.startOfDay(for:day)
-        let finish=calendar.date(byAdding:.day,value:1,to:begin) ??
+        let nominalFinish=calendar.date(byAdding:.day,value:1,to:begin) ??
             begin.addingTimeInterval(86400)
+        // El día de hoy no tiene 24 horas transcurridas todavía.
+        let finish=max(begin,min(nominalFinish,now))
         // Canonical normaliza los solapamientos sin duplicar segundos.
         let assigned=TimeAttribution.canonical(raw)
             .compactMap { part -> TimeHistorySlice? in
@@ -89,6 +92,23 @@ enum TimeDayCoverageIndex {
         return TimeDayCoverage(observed:observed,estimated:estimated,
             reconstructed:reconstructed,pending:pending,
             slices:slices,dayDuration:finish.timeIntervalSince(begin))
+    }
+
+    /// 96 muestras visuales por día; evita dibujar miles de subtramos SwiftUI.
+    static func visualBuckets(_ summary:TimeDayCoverage,
+                              count:Int=96)->[TimeHistoryKind] {
+        guard summary.dayDuration>0,count>0 else { return [] }
+        let start=summary.slices.first?.start ?? .now
+        return (0..<count).map { index in
+            let begin=start.addingTimeInterval(summary.dayDuration*Double(index)/Double(count))
+            let finish=start.addingTimeInterval(summary.dayDuration*Double(index+1)/Double(count))
+            var shares:[TimeHistoryKind:Double]=[:]
+            for piece in summary.slices where piece.end>begin && piece.start<finish {
+                shares[piece.kind,default:0]+=
+                    max(0,min(piece.end,finish).timeIntervalSince(max(piece.start,begin)))
+            }
+            return shares.max(by: { $0.value<$1.value })?.key ?? .pending
+        }
     }
 }
 
