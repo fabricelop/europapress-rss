@@ -103,8 +103,8 @@ struct RadarMap: UIViewRepresentable {
     var framePath: String?
     var projection: RadarProjection?
     var modelField: FutureRainField?
-    var forecastStatus: ((String) -> Void)?
     var futureMinutes: Int = 0
+    var forecastStatus: ((String) -> Void)?
     var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
 
     final class Coordinator: NSObject, MKMapViewDelegate {
