@@ -769,6 +769,90 @@ struct SavedState: Codable {
             return .storageFailure(message)
         }
     }
+    /// Revisión general: permite recuperar huecos incluso con dos cuadrículas
+    /// diferentes o con pocos anclajes, SIEMPRE como tiempo asumido explícito.
+    /// La presencia GPS observada no se modifica nunca.
+    @discardableResult
+    func confirmReviewedGap(_ gap:TimeGPSGapReview,
+                            choice:TimeGPSGapChoice)->TimeGPSGapConfirmationOutcome {
+        guard gap.canManuallyAssign else { return .noLongerAvailable }
+        guard data.gpsRest.map({gap.end<=$0.startedAt}) ?? true else {
+            return .overlapsCurrentRest
+        }
+        let present=TimeGPSGapReviewIndex.scan(
+            intervals:data.intervals,fixes:data.fixes,
+            events:data.powerEvents,
+            dismissed:Set(data.dismissedGPSGapIDs))
+        guard present.contains(gap) else {
+            return .noLongerAvailable
+        }
+        let pieces=TimeGPSGapReviewIndex.segments(for:gap,choice:choice)
+        guard !pieces.isEmpty else { return .noLongerAvailable }
+        var updated=data
+        updated.intervals.append(contentsOf:pieces)
+        updated.intervals.sort { $0.start<$1.start }
+        var deltas=pendingTotals
+        for piece in pieces {
+            updated.totals[piece.cell.id,default:0]+=piece.seconds
+            deltas[piece.cell.id,default:0]+=piece.seconds
+        }
+        do {
+            if let store {
+                try store.append(fixes:pendingFixes,
+                    intervals:pendingIntervals+pieces,totals:deltas,
+                    header:TimeStoreHeader(updated))
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            normalizedCacheIntervalCount = -1
+            normalizedCacheTime = .distantPast
+            cachedPeriod = nil
+            cachedPeriodCount = -1
+            cachedPeriodSince = .distantPast
+            lastSaved = .now
+            gpsStatus="Recuperados \(DurationFormat.full(gap.seconds)) como estimados"
+            activityPublisher.refresh(from:self,force:true)
+            objectWillChange.send()
+            return .saved(gap.seconds)
+        } catch {
+            gpsStatus="Error de recuperación: \(error.localizedDescription)"
+            return .storageFailure(error.localizedDescription)
+        }
+    }
+
+    /// Descarta la sugerencia, sin borrar ningún intervalo ni una posición.
+    @discardableResult func dismissReviewedGap(_ gap:TimeGPSGapReview)->Bool {
+        var updated=data
+        if !updated.dismissedGPSGapIDs.contains(gap.id) {
+            updated.dismissedGPSGapIDs.append(gap.id)
+        }
+        do {
+            if let store {
+                try store.append(fixes:pendingFixes,intervals:pendingIntervals,
+                    totals:pendingTotals,header:TimeStoreHeader(updated))
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            lastSaved = .now
+            return true
+        } catch {
+            gpsStatus="Error al descartar hueco: \(error.localizedDescription)"
+            return false
+        }
+    }
+    func restoreDismissedGPSGaps() {
+        data.dismissedGPSGapIDs=[]
+        save(force:true)
+    }
+
     func updateCamera(_ region: MKCoordinateRegion) {
         data.camera = CameraSave(region)
         save()
