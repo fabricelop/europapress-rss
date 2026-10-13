@@ -7,6 +7,15 @@ import UIKit
 final class RainRadarTiles: MKTileOverlay {
     let radarHost: String
     let radarPath: String
+    var onFirstTile: (() -> Void)?
+    private var hasReportedTile = false
+    private func reportTileLoaded() {
+        DispatchQueue.main.async {
+            guard !self.hasReportedTile else { return }
+            self.hasReportedTile = true
+            self.onFirstTile?()
+        }
+    }
     private static let sharedTileCache: NSCache<NSString, NSData> = {
         let cache = NSCache<NSString, NSData>()
         cache.countLimit = 180
@@ -40,6 +49,7 @@ final class RainRadarTiles: MKTileOverlay {
         func reply(_ source: Data) {
             guard requested.z > 7 else {
                 result(source, nil)
+                reportTileLoaded()
                 return
             }
             // Crop only the relevant part of the parent tile. Requests always
@@ -68,6 +78,7 @@ final class RainRadarTiles: MKTileOverlay {
                 UIImage(cgImage: clipped).draw(in: CGRect(x: 0, y: 0, width: 256, height: 256))
             }
             result(rendered.pngData(), nil)
+            reportTileLoaded()
         }
 
         if let cached = Self.sharedTileCache.object(forKey: key) {
@@ -94,7 +105,8 @@ struct RadarMap: UIViewRepresentable {
     var futureMinutes: Int = 0
 
     final class Coordinator: NSObject, MKMapViewDelegate {
-        var overlayKey: String?
+        var observedKey: String?
+        var futureKey: String?
         var center: CLLocationCoordinate2D?
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let tile = overlay as? RainRadarTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
@@ -120,19 +132,33 @@ struct RadarMap: UIViewRepresentable {
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let coordinator = context.coordinator
-        let isFuture = futureMinutes > 0
-        let key = (framePath ?? "no-radar") + "|" + host +
-            (isFuture ? "|future:\(futureMinutes):\(projection?.observedAt.timeIntervalSince1970 ?? 0)" : "|historic")
-        if coordinator.overlayKey != key {
-            let previous = map.overlays
-            coordinator.overlayKey = key
-            if isFuture, let projection {
+        // Preserve a genuinely observed frame underneath a projected frame.
+        // Do not remove the previous historical raster until the new one
+        // delivers its first valid tile (avoids an empty map at AHORA).
+        let observationKey = host + "|" + (framePath ?? "")
+        if coordinator.observedKey != observationKey {
+            coordinator.observedKey = observationKey
+            if let framePath, !host.isEmpty {
+                let previous = map.overlays.compactMap { $0 as? RainRadarTiles }
+                let newest = RainRadarTiles(host: host, path: framePath)
+                newest.onFirstTile = { [weak map] in
+                    guard let map, map.overlays.contains(where: { $0 === newest }) else { return }
+                    for layer in previous { map.removeOverlay(layer) }
+                    newest.onFirstTile = nil
+                }
+                map.addOverlay(newest, level: .aboveRoads)
+            }
+        }
+        let futureKey = futureMinutes > 0 && projection != nil ?
+            "future:\(futureMinutes):\(projection!.observedAt.timeIntervalSince1970)" : "observed"
+        if coordinator.futureKey != futureKey {
+            coordinator.futureKey = futureKey
+            let previousFuture = map.overlays.filter { $0 is RainFutureTiles }
+            if futureMinutes > 0, let projection {
                 map.addOverlay(RainFutureTiles(projection: projection, futureMinutes: futureMinutes),
                                level: .aboveRoads)
-            } else if !isFuture, let framePath, !host.isEmpty {
-                map.addOverlay(RainRadarTiles(host: host, path: framePath), level: .aboveRoads)
             }
-            for overlay in previous { map.removeOverlay(overlay) }
+            for layer in previousFuture { map.removeOverlay(layer) }
         }
         if let old = coordinator.center {
             let meters = CLLocation(latitude: old.latitude, longitude: old.longitude)
