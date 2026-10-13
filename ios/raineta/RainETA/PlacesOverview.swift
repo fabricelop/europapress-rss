@@ -6,6 +6,7 @@ struct PlacesOverview: View {
     @ObservedObject var store: RainStore
     var onSelect: () -> Void = {}
     @State private var showingSearch=false
+    @State private var showingOrder=false
     @State private var showingGPSName=false
     @State private var enteredGPSName=""
     @State private var renaming: SavedRainPlace?
@@ -21,6 +22,11 @@ struct PlacesOverview: View {
                 }
                 Spacer()
                 if store.summariesLoading { ProgressView().controlSize(.mini) }
+                Button { showingOrder=true } label: {
+                    Image(systemName:"arrow.up.arrow.down")
+                }
+                .disabled(store.savedPlaces.count<2)
+                .accessibilityLabel("Ordenar lugares")
                 Button {
                     Task { await store.refreshSummaries(force:true) }
                 } label:{ Image(systemName:"arrow.clockwise") }
@@ -72,6 +78,29 @@ struct PlacesOverview: View {
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
         .sheet(isPresented:$showingSearch) {
             PlaceSearchSheet(store:store,onSelect:onSelect)
+        }
+        .sheet(isPresented:$showingOrder) {
+            NavigationStack {
+                List {
+                    Section {
+                        Label("Mi ubicación GPS permanece primera",systemImage:"location.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    Section("Arrastra para ordenar tus lugares") {
+                        ForEach(store.savedPlaces) { place in
+                            Label(place.name,systemImage:"mappin")
+                        }
+                        .onMove(perform:store.moveSavedPlaces)
+                    }
+                }
+                .environment(\.editMode,.constant(.active))
+                .navigationTitle("Ordenar lugares")
+                .toolbar {
+                    ToolbarItem(placement:.topBarTrailing) {
+                        Button("Hecho") {showingOrder=false}
+                    }
+                }
+            }
         }
         .sheet(isPresented:$showingGPSName) {
             NavigationStack {
