@@ -191,9 +191,20 @@ struct RadarMap: UIViewRepresentable {
                 newest.onFirstTile = { [weak map] in
                     guard let map, map.overlays.contains(where: { $0 === newest }) else { return }
                     for layer in previous { map.removeOverlay(layer) }
+                    // New observed frames must remain hidden while a model
+                    // forecast is currently visible above the basemap.
+                    if map.overlays.contains(where:{$0 is ICONForecastTiles}),
+                       let renderer=map.renderer(for:newest) {
+                        renderer.alpha=0
+                        renderer.setNeedsDisplay()
+                    }
                     newest.onFirstTile = nil
                 }
                 map.addOverlay(newest, level: .aboveRoads)
+                if map.overlays.contains(where:{$0 is ICONForecastTiles}),
+                   let renderer=map.renderer(for:newest) {
+                    renderer.alpha=0
+                }
             }
         }
         // A generation token and cancellable preloading task prevent an old
