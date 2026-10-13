@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T12:15:00+02:00",
-  "last_completed_at": "2026-10-13T12:18:40+02:00",
-  "updated_at": "2026-10-13T12:18:40+02:00",
+  "last_started_at": "2026-10-13T15:45:00+02:00",
+  "last_completed_at": "2026-10-13T15:48:10+02:00",
+  "updated_at": "2026-10-13T15:48:10+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,24 +18,24 @@
     "persisted_trigger": true,
     "status": "verified",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T121500+0200-chat",
-    "requested_at": "2026-10-13T12:15:00+02:00",
+    "run_id": "tr-20261013T154500+0200-chat",
+    "requested_at": "2026-10-13T15:45:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
     "repair_workflow_run_id": null,
     "telegram_workflow_run_id": null,
-    "verified_at": "2026-10-13T12:18:40+02:00",
-    "telegram_audit_checked_at": "2026-10-13T10:18:36.541246+00:00",
-    "telegram_audit_sha": "4569a1c03838f763da8b71e15c02818f55e33778"
+    "verified_at": "2026-10-13T15:47:33+02:00",
+    "telegram_audit_checked_at": "2026-10-13T13:47:33.146730+00:00",
+    "telegram_audit_sha": "7f05f5d86de279194f861bc470f4370813f35232"
   },
   "last_run": {
-    "run_id": "tr-20261013T121500+0200-chat",
+    "run_id": "tr-20261013T154500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T12:15:00+02:00",
-    "updated_at": "2026-10-13T12:18:40+02:00",
-    "finished_at": "2026-10-13T12:18:40+02:00",
+    "started_at": "2026-10-13T15:45:00+02:00",
+    "updated_at": "2026-10-13T15:48:10+02:00",
+    "finished_at": "2026-10-13T15:48:10+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -63,7 +63,7 @@
       "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0
     },
-    "message": "Pasada directa 0/0 verificada · cola 0, sin preparing/update ni rewrite_pending detectados, sin deliveries Telegram abiertos y auditoría posterior al saneamiento con 0 huérfanos.",
+    "message": "Pasada directa 0/0 verificada · cola 0 tras radar fresco, sin preparing/update ni rewrite_pending, sin deliveries Telegram abiertos y auditoría posterior al saneamiento con 0 huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -76,52 +76,45 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T12:15:00+02:00",
+        "at": "2026-10-13T15:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola autoritativa 0; comprobando reexplicaciones, Pendientes y avisos Telegram huérfanos."
       },
       {
-        "at": "2026-10-13T12:16:00+02:00",
+        "at": "2026-10-13T15:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reconciliando estado final · cola 0, radar fresco, sin deliveries sent/final:false y auditoría sin huérfanos; comprobando ejecución del reparador y entrega Telegram."
+        "message": "Releyendo main y verificando el saneamiento de Pendientes/Telegram disparado al inicio."
       },
       {
-        "at": "2026-10-13T12:16:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · editorial-queue continúa en 0 y no aparecen preparing/update ni rewrite_pending en la búsqueda de estado."
-      },
-      {
-        "at": "2026-10-13T12:17:00+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre editorial 0/0 preparado · no hay revisiones textuales activas; saneamiento de Pendientes disparado y verificación Telegram continúa por el workflow dedicado."
-      },
-      {
-        "at": "2026-10-13T12:18:36+02:00",
+        "at": "2026-10-13T15:47:33+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Workflow Telegram verificado por auditoría posterior al disparo · 0 huérfanos y ningún delivery sent/final:false."
       },
       {
-        "at": "2026-10-13T12:18:40+02:00",
+        "at": "2026-10-13T15:48:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0 tras la captura de las 15:45:51; 0 preparing/update y 0 rewrite_pending en la búsqueda de estado."
+      },
+      {
+        "at": "2026-10-13T15:48:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 0/0 verificada · cola 0, sin preparing/update ni rewrite_pending detectados, sin deliveries Telegram abiertos y auditoría posterior al saneamiento con 0 huérfanos."
+        "message": "Pasada directa 0/0 verificada · sin trabajo editorial activo y Telegram saneado."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T121500+0200-chat",
+  "run_id": "tr-20261013T154500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
