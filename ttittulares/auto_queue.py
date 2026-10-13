@@ -231,6 +231,15 @@ def selftest():
     assert queue_eligible(r2,{'items':[]},{'items':[{'event_id':'x','status':'PUBLISHED'}]},{'items':[]})==[]
     prepared_same={'items':[{'event_id':'x','title':'Título ya preparado'}]}
     assert queue_eligible(radar,{'items':[]},d,prepared_same)==[], 'un event_id preparado no puede reencolarse'
+    handled_title="El Supremo mantiene la suspensión del voto por la ley de nietos"
+    incoming=dict(radar["events"][0],id="from-another-news-source",
+                  title="El Supremo mantiene la suspensión del derecho a voto por la ley de nietos")
+    references=[{"event_id":"original-handled","title":handled_title,"status":"treated"}]
+    assert queue_eligible({"events":[incoming]},{"items":[]},d,{"items":[]},
+                          treated_refs=references)==[], "Borrar debe impedir reenvío por otra fuente"
+    distinct=dict(incoming,id="new-appeal",title="El Gobierno estudia recurrir al Constitucional el fallo del Supremo sobre la ley de nietos")
+    assert queue_eligible({"events":[distinct]},{"items":[]},d,{"items":[]},
+                          treated_refs=references)==["new-appeal"], "una novedad realmente distinta sigue entrando"
     stale={'events':[dict(a,id='stale',status='ELIGIBLE',last_seen='2026-01-01T00:00:00Z',appearances=radar['events'][0]['appearances'])]}
     assert queue_eligible(stale,{'items':[]},d,{'items':[]})==[], 'un ELIGIBLE caducado no puede reencolarse'
     print('AUTO_QUEUE_SELFTEST_OK')
