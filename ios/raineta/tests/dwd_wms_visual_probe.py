@@ -36,3 +36,25 @@ for name,bbox in boxes.items():
   except Exception as exc:print("WMS_ERROR",name,stamp.isoformat(),repr(exc))
 print("VALID OFFICIAL MAPS",len(results),results)
 if len(results)<2:raise RuntimeError("ICON-EU WMS insufficient to replace current forecast raster")
+
+# Probe Web Mercator tile-aligned WMS requests at practical zooms.
+merc=20037508.342789244
+for z in (6,9,12):
+ n=2**z
+ lat,lon=52.1,5.1
+ import math
+ xx=int((lon+180)/360*n)
+ yy=int((1-math.asinh(math.tan(math.radians(lat)))/math.pi)/2*n)
+ span=2*merc/n
+ bbox=",".join(str(x) for x in (-merc+xx*span,merc-(yy+1)*span,-merc+(xx+1)*span,merc-yy*span))
+ args={**params,"bbox":bbox,"srs":"EPSG:3857","width":"256","height":"256",
+       "time":times[0].isoformat(timespec="seconds").replace("+00:00","Z")}
+ try:
+  with urllib.request.urlopen(WMS+"?"+urllib.parse.urlencode(args),timeout=35) as response:
+   data=response.read(2_000_000)
+   ctype=response.headers.get("Content-Type","")
+  valid=data[:8]==bytes.fromhex("89504e470d0a1a0a")
+  print("TILE3857",z,xx,yy,ctype,len(data),"VALID",valid,
+        "ERRORBODY",data[:240].decode("utf8","replace") if not valid else "")
+  if valid:open(f"official-maps/icon-eu-tile-z{z}.png","wb").write(data)
+ except Exception as exc: print("TILE3857_FAIL",z,repr(exc))
