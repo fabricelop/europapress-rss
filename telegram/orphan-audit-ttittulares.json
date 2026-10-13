@@ -1,23 +1,34 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-13T13:42:55.889794+00:00",
+  "checked_at": "2026-10-13T14:07:05.205954+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
-  "ledger_entries": 112,
+  "ledger_entries": 113,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 1,
+  "unresolved_count": 2,
   "unresolved": [
     {
       "key": "missing:9808584a2fae",
       "id": "9808584a2fae",
       "title": "La reina Sonia de Noruega no figura como parte de la Casa Real y pierde el tratamiento de Majestad - Telecinco",
-      "age_min": 226.6,
+      "age_min": 250.7,
+      "reason": "transport_write_blocked"
+    },
+    {
+      "key": "missing:3331e6b51c73",
+      "id": "3331e6b51c73",
+      "title": "Rufián pide ahora a ERC que “hable”, “escuche” y se “entienda” con los Comuns para “desbloquear la situación”",
+      "age_min": 43.3,
       "reason": "transport_write_blocked"
     }
   ],
   "alerted": {
     "missing:9808584a2fae": {
       "signature": "2bf1a36f9069a982ab",
+      "notified_at": null
+    },
+    "missing:3331e6b51c73": {
+      "signature": "4417a27ef43c1bbe09",
       "notified_at": null
     }
   },
