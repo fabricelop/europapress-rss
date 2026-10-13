@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from telegram.content_filters import content_filter_reason, run_filter_regressions
+from ttittulares.treated_news import references as treated_references, previous_story
 RADAR=ROOT/'telegram'/'events.json'
 QUEUE=ROOT/'telegram'/'editorial-processing.json'
 DECISIONS=ROOT/'ttittulares'/'decisions.json'
@@ -123,10 +124,11 @@ def is_routine_lottery_result(row):
     if any(term in title for term in MATERIAL_LOTTERY): return False
     return any(term in title for term in ROUTINE_DRAW)
 
-def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimum=MIN_SOURCES):
+def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimum=MIN_SOURCES, treated_refs=None):
     prepared=prepared or {'items':[]}
     qitems=queue.get('items') or []
     terminal=terminal_map(decisions)
+    treated_refs=list(treated_refs if treated_refs is not None else treated_references(decisions=decisions))
     active=[x for x in qitems if str(x.get('status') or '') in {'PROCESSING','READY'}]
     history=list(prepared.get('items') or [])
     prepared_ids={str(x.get('event_id') or '') for x in history if x.get('event_id')}
@@ -145,6 +147,10 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
             continue
         if eid in terminal:
             if verbose: print('AUTO_QUEUE_TERMINAL_SKIPPED',eid,terminal[eid].upper())
+            continue
+        prev=previous_story(row,treated_refs)
+        if prev:
+            if verbose: print('AUTO_QUEUE_TREATED_STORY_SKIPPED',eid,'prior',prev.get('event_id'))
             continue
         if eid in prepared_ids:
             if verbose: print('AUTO_QUEUE_PREPARED_SKIPPED',eid)

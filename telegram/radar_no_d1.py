@@ -6,6 +6,8 @@ from datetime import datetime,timezone,timedelta
 from source_telemetry import update_source_telemetry
 from source_publication import feed_publication, enrich_html_rows, latest_official_feed
 from content_filters import content_filter_reason, run_filter_regressions
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from ttittulares.treated_news import references as treated_references, previous_story
 
 SOURCES=[
 ("Europa Press","https://www.europapress.es/noticias/","html"),
@@ -1348,6 +1350,8 @@ for p in processed:
 editorial_doc=load(EDITORIAL_PROCESSING,{"items":[]})
 prepared_doc=load(PREPARED,{"items":[]})
 decisions_doc=load(DECISIONS,{"items":[]})
+treated_refs=list(treated_references(decisions=decisions_doc))
+print('TT_RADAR_TREATED_REFERENCES',len(treated_refs))
 
 def pipeline_snapshot(item,kind):
  title=item.get("title") or item.get("canonical_title") or ""
@@ -1379,6 +1383,10 @@ for kind,items in (
 deduped_waiting=[]
 for e in events:
  if e.get("status")=="WAITING":
+  handled=previous_story(e,treated_refs)
+  if handled:
+   print('WAITING_TREATED_STORY_DROPPED',e.get('id'),'prior',handled.get('event_id'))
+   continue
   pe,_=processed_match(e.get("canonical_title") or "",proc_index)
   if pe:
    print("WAITING_PIPELINE_DUPLICATE_DROPPED",e.get("id"),"duplicate_of",pe.get("id"))
@@ -1388,6 +1396,10 @@ events=deduped_waiting
 
 CLUSTERABLE_STATUSES={"WAITING","UPDATE_WAITING"}
 for row in rows:
+ handled=previous_story(row,treated_refs)
+ if handled:
+  # Same fact in another feed must never seed a fresh event or notification.
+  continue
  # 1) intentar agregar solo a eventos todavía clusterizables.
  # Nunca adjuntar titulares nuevos a PUBLISHED/DISMISSED/SENT_REVIEW históricos:
  # eso contaminaba eventos antiguos y además robaba fuentes a noticias nuevas.

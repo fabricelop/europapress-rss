@@ -10,6 +10,7 @@ import json
 import io
 import os
 import re
+import sys
 import unicodedata
 from html.parser import HTMLParser
 from datetime import datetime, timezone, timedelta
@@ -18,6 +19,7 @@ from urllib.parse import quote, urlparse, urlencode
 import requests
 
 ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
@@ -754,6 +756,10 @@ def process(project,now,token,chat):
     path=("telegram/ttittulares-deliveries.json" if project=="ttittulares"
           else "trends/telegram-image-deliveries.json")
     ledger=load(path,{"version":3,"items":[]})
+    treated_refs=[]
+    if project=="ttittulares":
+        from ttittulares.treated_news import references as treated_references, previous_story
+        treated_refs=list(treated_references(deliveries=ledger))
     entries=ledger.setdefault("items",[])
     # Only post-checkpoint telegram messages count as active. The old
     # transcript is preserved for history, never re-sent or re-edited.
@@ -816,6 +822,12 @@ def process(project,now,token,chat):
             existing=next((r for r in reversed(same_revision)
                            if str(r.get("status") or "").lower()=="sent"
                            and int(r.get("telegram_message_id") or 0)>0),None)
+        if project=="ttittulares" and existing is None:
+            prior=previous_story({"event_id":eid,"title":card["title"],
+                                  "source_url":card.get("source_url")},treated_refs)
+            if prior:
+                print("TTI_TREATED_BEFORE_DELIVERY_SKIPPED",eid,"prior",prior.get("event_id"),flush=True)
+                skipped+=1;continue
         if project=="ttendencias" and not existing:
             previous=[r for r in linked if str(r.get("status") or "").lower()=="sent"]
             if previous and not trend_repeat_allowed(card,previous,now):

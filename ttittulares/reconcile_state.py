@@ -18,7 +18,7 @@ def save(p,obj):
 q=load(QUEUE,{"items":[]})
 p=load(PREP,{"items":[]})
 d=load(DECISIONS,{"items":[]})
-terminal={str(x.get("event_id") or "") for x in d.get("items",[]) if str(x.get("status") or "").lower() in {"published","dismissed"}}
+terminal={str(x.get("event_id") or "") for x in d.get("items",[]) if str(x.get("status") or "").lower() in {"published","dismissed","deleted","treated"}}
 before=len(p.get("items",[]))
 p["items"]=[x for x in p.get("items",[]) if str(x.get("event_id") or "") not in terminal]
 pruned=before-len(p["items"])

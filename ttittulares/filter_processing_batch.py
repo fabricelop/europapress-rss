@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from auto_queue import same_story, evidence_for, terminal_map, base_id, is_material_update, MIN_SOURCES
+from treated_news import references as treated_references, previous_story
 
 ROOT=Path(__file__).resolve().parents[1]
 Q=ROOT/'telegram'/'editorial-processing.json'
@@ -18,6 +19,7 @@ def normrow(x): return {'title':str(x.get('title') or x.get('canonical_title') o
 def main():
  q=load(Q,{'items':[]}); p=load(P,{'items':[]}); d=load(D,{'items':[]})
  prepared=list(p.get('items') or []); terminal=terminal_map(d)
+ treated_refs=list(treated_references(decisions=d))
  changed=[]; kept=[]; active_kept=[]
  # Conserva el orden actual: la primera versión válida gana frente a duplicados posteriores.
  for row in q.get('items') or []:
@@ -26,6 +28,10 @@ def main():
   eid=str(row.get('event_id') or '')
   if eid in terminal:
    row['status']='SKIPPED_DUPLICATE'; row['filter_reason']='terminal_decision_same_event'; changed.append(eid); continue
+  prior=previous_story(row,treated_refs)
+  if prior:
+   row['status']='SKIPPED_DUPLICATE'; row['duplicate_of_event_id']=prior.get('event_id')
+   row['filter_reason']='already_delivered_or_treated_cross_source'; changed.append(eid); continue
   bid=base_id(eid)
   if bid!=eid and bid in terminal and not is_material_update(row):
    row['status']='SKIPPED_DUPLICATE'; row['duplicate_of_event_id']=bid; row['filter_reason']='non_material_revision_of_terminal_story'; changed.append(eid); continue

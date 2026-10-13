@@ -41,6 +41,7 @@ jobs:
           set -euo pipefail
           python3 - <<'PY'
           import json, pathlib, os, urllib.request, urllib.error
+          from ttittulares.treated_news import merge_treated
           from datetime import datetime, timezone
 
           ROOT=pathlib.Path(".")
@@ -130,7 +131,8 @@ jobs:
               drow=next((x for x in decisions["items"] if str(x.get("event_id") or "")==eid),None)
               if drow is None:
                   drow={"event_id":eid}; decisions["items"].append(drow)
-              drow.update({"status":status,"updated_at":now,"decision_source":"telegram_emergency_callback"})
+              drow.update({"status":status,"updated_at":now,"decision_source":"telegram_emergency_callback",
+                        "treatment_status":"treated","disposition":status if status in {"published","dismissed"} else "unspecified"})
 
               prepared["items"]=[x for x in (prepared.get("items") or []) if str(x.get("event_id") or "")!=eid]
 
@@ -180,6 +182,9 @@ jobs:
           for doc in (decisions,prepared,editorial,events,manual,deliveries,deleteq,state):
               doc["updated_at"]=now
 
+          memory=load("ttittulares/treated-stories.json",{"version":1,"items":[]})
+          memory=merge_treated(memory,decisions["items"],deliveries["items"],now)
+          save("ttittulares/treated-stories.json",memory)
           save("ttittulares/decisions.json",decisions)
           save("ttittulares/prepared.json",prepared)
           save("telegram/editorial-processing.json",editorial)
@@ -198,7 +203,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for f in ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json telegram/events.json ttittulares/manual-submissions.json telegram/ttittulares-deliveries.json telegram/delete-message-queue.json telegram/ttittulares-decision-events.json; do
+          for f in ttittulares/decisions.json ttittulares/prepared.json telegram/editorial-processing.json telegram/events.json ttittulares/manual-submissions.json telegram/ttittulares-deliveries.json telegram/delete-message-queue.json telegram/ttittulares-decision-events.json ttittulares/treated-stories.json; do
             [ -e "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
