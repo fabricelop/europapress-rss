@@ -103,6 +103,7 @@ struct RadarMap: UIViewRepresentable {
     var framePath: String?
     var projection: RadarProjection?
     var modelField: FutureRainField?
+    var forecastStatus: ((String) -> Void)?
     var futureMinutes: Int = 0
     var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
 
@@ -117,7 +118,7 @@ struct RadarMap: UIViewRepresentable {
         }
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let tile = overlay as? RainRadarTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
-            if let tile = overlay as? ModelRainTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
+            if let tile = overlay as? ICONForecastTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
             return MKOverlayRenderer(overlay: overlay)
         }
     }
@@ -163,30 +164,49 @@ struct RadarMap: UIViewRepresentable {
                 map.addOverlay(newest, level: .aboveRoads)
             }
         }
-        let available = modelField != nil && futureMinutes > 0 &&
-                        modelField!.times.first.map { Date().addingTimeInterval(Double(futureMinutes)*60) >= $0 } == true &&
-                        modelField!.times.last.map { Date().addingTimeInterval(Double(futureMinutes)*60) <= $0 } == true
-        let futureKey = available ?
-            "model:\(futureMinutes):\(modelField!.fetchedAt.timeIntervalSince1970)" : "observed"
+        // Keep observation visible until the official model's first valid
+        // WMS tile arrives. Do not use the old 9×9 sampled model or alpha
+        // decay. Time-changing precipitation comes directly from ICON-EU.
+        let wantModel = futureMinutes > 0 && ICONForecastTiles.covers(center)
+        let validHour = wantModel ? ICONForecastTiles.forecastTime(leadMinutes: futureMinutes) : nil
+        let futureKey = validHour.map { String(Int($0.timeIntervalSince1970)) } ?? "observed"
         if coordinator.futureKey != futureKey {
             coordinator.futureKey = futureKey
-            let previousFuture = map.overlays.filter { $0 is ModelRainTiles || $0 is RainFutureTiles }
-            if available, let modelField {
-                map.addOverlay(ModelRainTiles(field:modelField,leadMinutes:futureMinutes),
-                               level:.aboveRoads)
-            }
-            for layer in previousFuture { map.removeOverlay(layer) }
-        }
-        // Blend observational radar into a REAL model precipitation map.
-        // No time-only fade unless the replacement field exists. Model rain
-        // continues independently when the old radar imagery fades out.
-        let radarAlpha:CGFloat = available ?
-            CGFloat(max(0,1-Double(futureMinutes)/30.0)) : 1
-        for overlay in map.overlays where overlay is RainRadarTiles {
-            if let renderer = map.renderer(for:overlay),
-               abs(renderer.alpha-radarAlpha) > 0.01 {
-                renderer.alpha = radarAlpha
-                renderer.setNeedsDisplay()
+            let oldForecast = map.overlays.filter { $0 is ICONForecastTiles || $0 is ModelRainTiles || $0 is RainFutureTiles }
+            if let validHour {
+                let tileLayer = ICONForecastTiles(validTime: validHour)
+                tileLayer.onFirstTile = { [weak map] in
+                    guard let map, map.overlays.contains(where: { $0 === tileLayer }) else { return }
+                    for layer in oldForecast { map.removeOverlay(layer) }
+                    for layer in map.overlays where layer is RainRadarTiles {
+                        if let renderer = map.renderer(for: layer) {
+                            renderer.alpha = 0
+                            renderer.setNeedsDisplay()
+                        }
+                    }
+                    tileLayer.onFirstTile = nil
+                    forecastStatus?("ICON-EU oficial · precipitación de la hora anterior · \(validHour.formatted(date: .omitted, time: .shortened))")
+                }
+                tileLayer.onTileError = { [weak map] message in
+                    guard let map, map.overlays.contains(where: { $0 === tileLayer }) else { return }
+                    map.removeOverlay(tileLayer)
+                    for layer in map.overlays where layer is RainRadarTiles {
+                        if let renderer = map.renderer(for: layer) {
+                            renderer.alpha = 1
+                            renderer.setNeedsDisplay()
+                        }
+                    }
+                    forecastStatus?("Previsión oficial no disponible. Se conserva el radar observado. \(message)")
+                }
+                map.addOverlay(tileLayer, level: .aboveRoads)
+            } else {
+                for layer in oldForecast { map.removeOverlay(layer) }
+                for layer in map.overlays where layer is RainRadarTiles {
+                    if let renderer = map.renderer(for: layer) {
+                        renderer.alpha = 1
+                        renderer.setNeedsDisplay()
+                    }
+                }
             }
         }
         if let old = coordinator.center {
