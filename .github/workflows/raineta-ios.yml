@@ -55,9 +55,14 @@ jobs:
             echo "No iPhone simulator available: cannot validate forecast rendering"
             exit 1
           fi
+          echo "Simulator selected: $SIM_ID"
+          xcrun simctl boot "$SIM_ID" || true
+          xcrun simctl bootstatus "$SIM_ID" -b
           xcodebuild -project RainETA.xcodeproj -scheme RainETA \
             -configuration Debug \
             -sdk iphonesimulator \
+            -parallel-testing-enabled NO \
+            -maximum-concurrent-test-simulator-destinations 1 \
             -destination "platform=iOS Simulator,id=$SIM_ID" \
             -derivedDataPath .sim-build \
             CODE_SIGNING_ALLOWED=NO \
