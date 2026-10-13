@@ -53,6 +53,7 @@ jobs:
             /ttittulares/status.json
             /telegram/events.json
             /tests/test_tti_authentic_title.py
+            /tests/test_tti_ai_delivery.py
             /ttittulares/decisions.json
             /ttittulares/treated_news.py
             /ttittulares/auto_queue.py
@@ -79,6 +80,7 @@ jobs:
           python3 shared/telegram_readonly_delivery.py selftest
           python3 shared/telegram_orphan_audit.py selftest
           python3 -m unittest discover -s tests -p "test_tti_authentic_title.py" -v
+          python3 -m unittest discover -s tests -p "test_tti_ai_delivery.py" -v
       - name: Enviar o actualizar mensaje Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
