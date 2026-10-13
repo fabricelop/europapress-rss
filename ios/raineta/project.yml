@@ -1,0 +1,61 @@
+name: RainETA
+options:
+  bundleIdPrefix: es.raineta
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    SUPPORTS_MACCATALYST: "NO"
+    CODE_SIGNING_ALLOWED: "NO"
+targets:
+  RainETA:
+    type: application
+    platform: iOS
+    sources:
+      - path: RainETA
+      - path: Shared
+    dependencies:
+      - target: RainETALive
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: es.raineta.iphone
+        PRODUCT_NAME: RainETA
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_KEY_UIApplicationSupportsDocumentBrowser: "NO"
+    info:
+      path: RainETA/Info.plist
+      properties:
+        CFBundleDisplayName: RainETA
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        NSLocationWhenInUseUsageDescription: "RainETA necesita tu ubicación para calcular cuándo llegará la lluvia."
+        NSSupportsLiveActivities: true
+        UIBackgroundModes: []
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+  RainETALive:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: RainETALive
+      - path: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: es.raineta.iphone.live
+        PRODUCT_NAME: RainETALive
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+    info:
+      path: RainETALive/Info.plist
+      properties:
+        CFBundleDisplayName: RainETA En Vivo
+        CFBundleShortVersionString: "0.1.0"
+        CFBundleVersion: "1"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
