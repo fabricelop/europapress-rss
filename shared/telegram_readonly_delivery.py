@@ -108,8 +108,11 @@ def ai_delivery_info(item,now):
         return {"url":"","note":"🖼️ IA en curso · todavía puede llegar (hasta 5 min desde el lanzamiento)."}
     if status in {"REQUESTED","RUNNING","PERSISTING"}:
         return {"url":"","note":"🖼️ IA pendiente de lanzamiento · sin cuenta atrás todavía."}
-    if valid:
-        return {"url":url,"note":"🖼️ Imagen IA lista · incorporándose a Telegram."}
+    if valid and automatic:
+        return {"url":"","note":"🖼️ IA automática no verificable · no se entregará tarde."}
+    entered=date(item.get("prepared_at") or item.get("ready_at"))
+    if entered and (now-entered).total_seconds()>900:
+        return {"url":"","note":"🖼️ IA automática no disponible · puedes crearla manualmente."}
     return {"url":"","note":"🖼️ IA automática aún no iniciada."}
 
 
