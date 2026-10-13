@@ -1,0 +1,99 @@
+name: Mi Mapa del Tiempo v1.0.36 - compilar y probar
+
+on:
+  push:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v36-simple-history
+    paths:
+      - 'gps-ios/native/**'
+      - '.github/workflows/mi-mapa-del-tiempo-v36-impactor-verify.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gps-ios-v36-parallel
+  cancel-in-progress: true
+
+jobs:
+  validate-live:
+    runs-on: macos-15
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar proyecto nativo
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          test -f Live/TimeLiveActivity.swift
+          ! grep -q 'CODE_SIGN_ENTITLEMENTS = App.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+          ! grep -q 'CODE_SIGN_ENTITLEMENTS = Widgets/Widget.entitlements' MiMapaDelTiempo.xcodeproj/project.pbxproj
+          test -f MiMapaDelTiempo.xcodeproj/project.pbxproj
+      - name: Compilar iPhone y extensión En vivo (sin firma)
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj \
+            -scheme MiMapaDelTiempo -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gps-live-release" \
+            CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/gps-live-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          test -d "$APP"
+          test -d "$APP/PlugIns/MiMapaWidgets.appex"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :NSExtension:NSExtensionPointIdentifier' "$APP/PlugIns/MiMapaWidgets.appex/Info.plist"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          a=Path(os.environ["APP"])
+          app=plistlib.load((a/"Info.plist").open("rb"))
+          ext=plistlib.load((a/"PlugIns/MiMapaWidgets.appex/Info.plist").open("rb"))
+          assert app["CFBundleIdentifier"] == "es.mimapadeltiempo.appprueba", app
+          assert app["CFBundleVersion"] == "37", app
+          assert app["CFBundleShortVersionString"] == "1.0.36", app
+          assert ext["CFBundleIdentifier"] == "es.mimapadeltiempo.appprueba.widgets", ext
+          assert ext["CFBundleVersion"] == "37", ext
+          assert ext["CFBundleShortVersionString"] == "1.0.36", ext
+          assert ext["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension", ext
+          print("App y extensión ActivityKit con identificadores verificados")
+          PY
+      - name: Elegir simulador de iPhone
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess,os
+          devices=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          matches=[d for runtime, group in devices.items() if "iOS" in runtime for d in group if "iPhone" in d["name"] and d["state"] != "Unavailable"]
+          if not matches: raise SystemExit("No hay simulador iPhone")
+          with open(os.environ["GITHUB_ENV"],"a",encoding="utf-8") as f:
+              f.write("SIMULATOR_ID="+matches[0]["udid"]+"\n")
+          print(matches[0]["name"])
+          PY
+      - name: Ejecutar XCTest en simulador iPhone
+        run: |
+          set -euo pipefail
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj \
+            -scheme MiMapaDelTiempo -configuration Debug \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Empaquetar IPA de evaluación (sin firma)
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/gps-live-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-v36-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-v36-unsigned.ipa >/dev/null
+      - name: Guardar IPA de evaluación
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-v36-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-v36-unsigned.ipa
+          retention-days: 5
+          if-no-files-found: error
