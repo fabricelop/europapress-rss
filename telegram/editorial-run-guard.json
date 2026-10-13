@@ -1,14 +1,13 @@
 {
   "version": 1,
-  "checked_at": "2026-10-13T20:59:50.737100+00:00",
+  "checked_at": "2026-10-13T21:04:01.029432+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-13T20:59:50.737100+00:00",
-      "pending_count": 2,
+      "checked_at": "2026-10-13T21:04:01.029432+00:00",
+      "pending_count": 1,
       "pending_ids": [
-        "aee39a32c4e0",
-        "8e3bf48b56c3"
+        "aee39a32c4e0"
       ],
       "oldest_at": "2026-10-13T20:54:58.671494Z",
       "latest_run": {
@@ -21,8 +20,8 @@
       },
       "control_command": "tt-autoguard-1791907419",
       "last_command_at": "2026-10-13T16:03:39.282301Z",
-      "status": "within_start_window",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "aee39a32c4e0",
@@ -30,23 +29,22 @@
           "should_start_by": "2026-10-13T20:59:58.671494+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "8e3bf48b56c3",
-          "entered_at": "2026-10-13T20:54:58.708927Z",
-          "should_start_by": "2026-10-13T20:59:58.708927+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "55904aa5d97de9a4",
+      "backlog_signature": "ff46de77f3737402",
       "expected_start_by": "2026-10-13T20:59:58.671494+00:00",
-      "attempts": 0,
-      "last_request_at": "2026-10-13T16:03:39.282301+00:00"
+      "attempts": 1,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tt-autoguard-1791925441",
+        "requested_at": "2026-10-13T21:04:01.029432Z"
+      },
+      "last_request_at": "2026-10-13T21:04:01.029432+00:00",
+      "last_requested_command_id": "tt-autoguard-1791925441"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-13T20:59:50.737100+00:00",
+      "checked_at": "2026-10-13T21:04:01.029432+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
