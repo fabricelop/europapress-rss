@@ -147,6 +147,12 @@ enum RainAPI {
         )
     }
 
+    static func availableHistory(_ frames:[RadarFrame],now:Date=Date()) -> [RadarFrame] {
+        let cutoff=now.addingTimeInterval(-2*3600).timeIntervalSince1970
+        return frames.filter { Double($0.timestamp)>=cutoff && $0.date<=now }
+            .sorted{$0.timestamp<$1.timestamp}
+    }
+
     static func fetchRadar() async throws -> RadarFeed {
         let url = URL(string: "https://api.rainviewer.com/public/weather-maps.json")!
         let (data, response) = try await URLSession.shared.data(from: url)
@@ -161,8 +167,7 @@ enum RainAPI {
         }.sorted { $0.timestamp < $1.timestamp }
         // RainViewer may supply fewer than two hours; never fabricate earlier
         // observations or extend its licensed frame history.
-        let cutoff=Date().addingTimeInterval(-2*3600).timeIntervalSince1970
-        return RadarFeed(host: host, frames: frames.filter{Double($0.timestamp)>=cutoff})
+        return RadarFeed(host: host, frames: availableHistory(frames))
     }
 }
 
