@@ -4,14 +4,12 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T20:45:00+02:00",
-  "last_completed_at": "2026-10-13T20:55:19+02:00",
-  "updated_at": "2026-10-13T20:55:19+02:00",
+  "last_started_at": "2026-10-13T21:15:00+02:00",
+  "last_completed_at": "2026-10-13T21:24:33+02:00",
+  "updated_at": "2026-10-13T21:24:33+02:00",
   "status": "success",
   "processed_ids": [
-    "4a32e291b828",
-    "100a60621ef0",
-    "906f09c316d3"
+    "ac13ef353f47"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -22,33 +20,33 @@
     "persisted_trigger": true,
     "status": "workflow_in_progress_non_blocking",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T204500+0200-chat",
-    "requested_at": "2026-10-13T20:45:00+02:00",
+    "run_id": "tr-20261013T211500+0200-chat",
+    "requested_at": "2026-10-13T21:20:24+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
     "telegram_verified": true,
-    "verification_note": "La reparación visual fue despachada; el envío informativo terminó con éxito y la auditoría posterior registra 0 huérfanos."
+    "verification_note": "La capa visual se gestiona por el flujo dedicado; la entrega informativa terminó como final:true y la auditoría posterior registra 0 huérfanos."
   },
   "last_run": {
-    "run_id": "tr-20261013T204500+0200-chat",
+    "run_id": "tr-20261013T211500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T20:45:00+02:00",
-    "updated_at": "2026-10-13T20:55:19+02:00",
-    "finished_at": "2026-10-13T20:55:19+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-13T21:15:00+02:00",
+    "updated_at": "2026-10-13T21:24:33+02:00",
+    "finished_at": "2026-10-13T21:24:33+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
+      "trends_processed": 1,
+      "trends_explained": 1,
       "explanation_groups": 1,
       "new_cards": 1,
-      "revisions_updated": 3,
-      "grouped_into_existing_card": 2,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -68,7 +66,7 @@
       "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0
     },
-    "message": "Pasada 3/3 cerrada y verificada · 1 grupo explicado, cola 0 y Telegram sin huérfanos.",
+    "message": "Pasada 1/1 cerrada y verificada · Pubill explicado, cola 0 y Telegram sin huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -80,219 +78,191 @@
     },
     "remate_selections": [
       {
-        "trend_id": "4a32e291b828",
-        "revision": 0,
+        "trend_id": "ac13ef353f47",
+        "revision": 1,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
+            "total": 7.8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
             "originality": 1.5,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c2",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.5,
-            "originality": 1.1,
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c3",
-            "total": 6.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.2,
+            "total": 8.3,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.6,
+            "originality": 1.7,
             "length_fit": 1,
-            "repetition_penalty": -1
+            "repetition_penalty": 0
           },
           {
             "id": "c4",
-            "total": 7.1,
+            "total": 8,
             "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.6,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.3,
-            "originality": 0.9,
+            "total": 9.1,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 2.1,
             "length_fit": 1,
             "repetition_penalty": 0
           }
         ],
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
+        "selected_candidate": "c5",
+        "selected_score": 9.1,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-13T20:45:00+02:00",
+        "at": "2026-10-13T21:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 3 revisiones activas; releyendo estado y agrupación."
+        "message": "Preparando pasada editorial · 1 revisión activa; releyendo estado autoritativo."
       },
       {
-        "at": "2026-10-13T20:47:10+02:00",
+        "at": "2026-10-13T21:20:24+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación de Pendientes activada mediante trigger persistido en main."
+      },
+      {
+        "at": "2026-10-13T21:20:40+02:00",
         "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Releyendo estado autoritativo de las tres revisiones."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Barrera JIT · Pubill r1 sigue preparing y el radar está fresco."
       },
       {
-        "at": "2026-10-13T20:47:25+02:00",
+        "at": "2026-10-13T21:21:00+02:00",
         "phase": "investigating",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Buscando detonante actual de las tres etiquetas."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Buscando detonante actual de Pubill."
       },
       {
-        "at": "2026-10-13T20:47:50+02:00",
+        "at": "2026-10-13T21:21:20+02:00",
         "phase": "investigating",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Contrastando fuente 1/2 · RTVE."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Contrastando fuente 1/2 · Atlético de Madrid: Pubill figura como suplente ante el Manchester United."
       },
       {
-        "at": "2026-10-13T20:48:05+02:00",
+        "at": "2026-10-13T21:21:40+02:00",
         "phase": "investigating",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Contrastando fuente 2/2 · EL PAÍS."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Contrastando fuente 2/2 · ElDesmarque destaca su segunda suplencia consecutiva."
       },
       {
-        "at": "2026-10-13T20:48:20+02:00",
+        "at": "2026-10-13T21:21:55+02:00",
         "phase": "investigating",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Hecho esencial verificado · mismo acontecimiento: visita oficial a Ceuta y discurso de Felipe VI."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Hecho esencial verificado · Simeone mantiene a Llorente en el lateral y deja otra vez a Pubill en el banquillo."
       },
       {
-        "at": "2026-10-13T20:48:45+02:00",
+        "at": "2026-10-13T21:22:05+02:00",
         "phase": "drafting",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Redactando explicación factual conjunta."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Redactando explicación factual."
       },
       {
-        "at": "2026-10-13T20:49:00+02:00",
+        "at": "2026-10-13T21:22:15+02:00",
         "phase": "drafting",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Comprobando límite de X · 251 caracteres."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Comprobando límite de X · 252 caracteres."
       },
       {
-        "at": "2026-10-13T20:49:15+02:00",
+        "at": "2026-10-13T21:22:20+02:00",
         "phase": "remate_selection",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Generando candidatos de remate."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Generando y evaluando candidatos con ratings y control de repetición."
       },
       {
-        "at": "2026-10-13T20:49:35+02:00",
+        "at": "2026-10-13T21:22:30+02:00",
         "phase": "remate_selection",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Evaluando candidatos con ratings y control de repetición."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Remate seleccionado · juego específico con «banda», sin fórmula repetida."
       },
       {
-        "at": "2026-10-13T20:50:02+02:00",
-        "phase": "remate_selection",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Remate seleccionado · específico, neutral y sin muletillas repetidas."
-      },
-      {
-        "at": "2026-10-13T20:50:55+02:00",
+        "at": "2026-10-13T21:22:33+02:00",
         "phase": "persisting",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Guardando ficha Explicada del líder «El Rey» mediante el outbox oficial."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Outbox oficial de chat entregado al aplicador."
       },
       {
-        "at": "2026-10-13T20:51:45+02:00",
+        "at": "2026-10-13T21:24:10+02:00",
         "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Líder persistido y verificado en main; cola reducida de 3 a 2."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Persistencia verificada en main · request explained, ficha Explicada creada y cola 0."
       },
       {
-        "at": "2026-10-13T20:52:07+02:00",
-        "phase": "persisting",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Actualizando requests de «Los Reyes» y «Felipe VI» y enlazándolas al grupo existente."
-      },
-      {
-        "at": "2026-10-13T20:53:51+02:00",
-        "phase": "persisting",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Retirando las dos revisiones enlazadas de la cola tras persistencia atómica."
-      },
-      {
-        "at": "2026-10-13T20:54:05+02:00",
+        "at": "2026-10-13T21:24:28+02:00",
         "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Releyendo main · cola 0 y las tres revisiones en estado explained."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Entrega Telegram verificada · mensaje 783 guardado como sent/final:true."
       },
       {
-        "at": "2026-10-13T20:54:20+02:00",
+        "at": "2026-10-13T21:24:33+02:00",
         "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Verificando id+revision, texto, remate y metadatos de grupo en los commits aplicados."
+        "trend_id": "ac13ef353f47",
+        "title": "Pubill",
+        "message": "Auditoría posterior · 0 huérfanos y 0 incidencias bidireccionales."
       },
       {
-        "at": "2026-10-13T20:54:35+02:00",
-        "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Entrega Telegram verificada: workflow correcto y auditoría posterior con 0 huérfanos."
-      },
-      {
-        "at": "2026-10-13T20:54:50+02:00",
-        "phase": "verifying",
-        "trend_id": "4a32e291b828",
-        "title": "El Rey · Los Reyes · Felipe VI",
-        "message": "Reparación visual automática lanzada en flujo independiente; no bloquea el cierre editorial."
-      },
-      {
-        "at": "2026-10-13T20:55:19+02:00",
+        "at": "2026-10-13T21:24:33+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 3/3 cerrada y verificada · 1 grupo explicado, cola 0 y Telegram sin huérfanos."
+        "message": "Pasada 1/1 cerrada y verificada · cola 0 y Telegram sin huérfanos."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T204500+0200-chat",
+  "run_id": "tr-20261013T211500+0200-chat",
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
+    "trends_processed": 1,
+    "trends_explained": 1,
     "explanation_groups": 1,
     "new_cards": 1,
-    "revisions_updated": 3,
-    "grouped_into_existing_card": 2,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -315,7 +285,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-13T20:42:12+02:00",
+    "source_capture_at": "2026-10-13T21:12:17+02:00",
     "status": "fresh_at_start"
   }
 }
