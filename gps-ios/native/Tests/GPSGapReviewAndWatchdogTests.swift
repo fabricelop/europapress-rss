@@ -67,6 +67,50 @@ final class GPSGapReviewAndWatchdogTests:XCTestCase {
         XCTAssertTrue(gap.contradictoryGPS)
         XCTAssertFalse(gap.canManuallyAssign)
     }
+    func testGapMapRegionContainsBothKnownCellFootprints() throws {
+        let raw=[segment(100,200,home),segment(800,900,away)]
+        let gap=try XCTUnwrap(TimeGPSGapReviewIndex.scan(
+            intervals:raw,fixes:[],events:[]).first)
+        let region=GPSGapMapLayout.region(gap)
+        XCTAssertGreaterThan(region.span.latitudeDelta,0)
+        XCTAssertGreaterThan(region.span.longitudeDelta,0)
+        let vertices=Grid.polygon(home)+Grid.polygon(away)
+        let lowerLatitude=region.center.latitude-region.span.latitudeDelta/2
+        let upperLatitude=region.center.latitude+region.span.latitudeDelta/2
+        let lowerLongitude=region.center.longitude-region.span.longitudeDelta/2
+        let upperLongitude=region.center.longitude+region.span.longitudeDelta/2
+        for vertex in vertices {
+            XCTAssertGreaterThanOrEqual(vertex.latitude,lowerLatitude)
+            XCTAssertLessThanOrEqual(vertex.latitude,upperLatitude)
+            XCTAssertGreaterThanOrEqual(vertex.longitude,lowerLongitude)
+            XCTAssertLessThanOrEqual(vertex.longitude,upperLongitude)
+        }
+        XCTAssertGreaterThan(GPSGapMapLayout.distance(gap),0)
+    }
+    func testSameCellGapHasZeroMapDistance() throws {
+        let raw=[segment(100,200,home),segment(800,900,home)]
+        let gap=try XCTUnwrap(TimeGPSGapReviewIndex.scan(
+            intervals:raw,fixes:[],events:[]).first)
+        XCTAssertTrue(gap.sameCell)
+        XCTAssertEqual(GPSGapMapLayout.distance(gap),0,accuracy:0.001)
+    }
+    func testRestoringOneDismissalDoesNotAffectOtherGapIDs() throws {
+        let observations=[segment(100,200,home),
+                          segment(800,900,away),
+                          segment(1700,1800,away)]
+        let gaps=TimeGPSGapReviewIndex.scan(intervals:observations,
+                                          fixes:[],events:[])
+        XCTAssertEqual(gaps.count,2)
+        let dismissed:Set<String>=Set(gaps.map(\.id))
+        let restoreOnly=gaps[0].id
+        let afterRestore=dismissed.subtracting([restoreOnly])
+        let visible=TimeGPSGapReviewIndex.scan(intervals:observations,
+                            fixes:[],events:[],dismissed:afterRestore)
+        XCTAssertEqual(visible.count,1)
+        XCTAssertEqual(visible[0].id,restoreOnly)
+        XCTAssertEqual(TimeAttribution.totals(observations,
+                            cellIDs:[home.id,away.id]),300)
+    }
     func testStaleGPSAlarmRenewsOnlyOnFreshFixes() {
         let now=Date(timeIntervalSince1970:1000)
         XCTAssertTrue(GPSStaleWatchdogPolicy.shouldRenew(
