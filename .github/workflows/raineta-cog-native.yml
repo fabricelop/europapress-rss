@@ -14,10 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install geo-validation tools
-        run: python3 -m pip install --quiet requests numpy rasterio pyproj pillow
+        run: |
+          python3 -m venv /tmp/raineta-cog-venv
+          /tmp/raineta-cog-venv/bin/pip install --quiet requests numpy rasterio pyproj pillow
       - name: Download and inspect real OPERA COG (1 km)
         working-directory: ios/raineta
-        run: python3 tests/cog_native_probe.py
+        run: /tmp/raineta-cog-venv/bin/python tests/cog_native_probe.py
       - name: Decode radar TIFF on Apple's native ImageIO
         working-directory: ios/raineta
         run: |
