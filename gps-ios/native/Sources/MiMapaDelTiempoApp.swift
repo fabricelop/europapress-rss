@@ -700,14 +700,19 @@ struct SavedState: Codable {
         save(force: true)
         activityPublisher.refresh(from:self,force:true)
     }
-    /// Solo tras una confirmación explícita. Guarda un intervalo identificado
-    /// como asumido, separado de las observaciones GPS reales.
-    @discardableResult func confirmUnobservedStay(_ gap:TimeGPSGapCandidate)->Bool {
+    /// La confirmación siempre devuelve el resultado real de la persistencia.
+    /// Se hace INSERT transaccional del intervalo estimado, no replaceAll del
+    /// histórico entero, para evitar bloqueos y preservar el GPS en marcha.
+    @discardableResult
+    func confirmUnobservedStay(_ gap:TimeGPSGapCandidate)->TimeGPSGapConfirmationOutcome {
         guard !isResting,
               TimeGPSGapRecovery.candidates(
                   intervals:data.intervals,fixes:data.fixes,
                   manualBreaks:data.manualBreaks,events:data.powerEvents,
-                  cells:[gap.cell.id]).contains(gap) else { return false }
+                  cells:[gap.cell.id]).contains(gap) else {
+            gpsStatus="Confirmación no aplicada · hueco GPS cambiado"
+            return .noLongerAvailable
+        }
         var updated=data
         let recovery=AssignedInterval(start:gap.start,end:gap.end,
             cell:gap.cell,quality:"asumido · confirmado por usuario",
@@ -716,10 +721,14 @@ struct SavedState: Codable {
         updated.intervals.sort { $0.start<$1.start }
         updated.totals[gap.cell.id,default:0]+=recovery.seconds
         do {
-            // Transacción íntegra: solo cambia el estado visible al terminar.
-            // También conserva los datos GPS que aún no se han volcado.
             if let store {
-                try store.replaceAll(updated)
+                // Incluimos posiciones e intervalos pendientes sin perderlos
+                // y escribimos todo en una única transacción SQLite.
+                var deltas=pendingTotals
+                deltas[gap.cell.id,default:0]+=recovery.seconds
+                try store.append(fixes:pendingFixes,
+                    intervals:pendingIntervals+[recovery],
+                    totals:deltas,header:TimeStoreHeader(updated))
             } else {
                 try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
             }
@@ -728,14 +737,20 @@ struct SavedState: Codable {
             pendingIntervals.removeAll(keepingCapacity:true)
             pendingTotals.removeAll(keepingCapacity:true)
             normalizedCacheIntervalCount = -1
+            normalizedCacheTime = .distantPast
+            cachedPeriod = nil
             cachedPeriodCount = -1
+            cachedPeriodSince = .distantPast
             lastSaved = .now
-            gpsStatus="Hueco de \(Int(gap.seconds/60)) min añadido como tiempo estimado"
+            gpsStatus="Recuperados \(DurationFormat.full(recovery.seconds)) como tiempo estimado"
+            activityPublisher.refresh(from:self,force:true)
             objectWillChange.send()
-            return true
+            return .saved(recovery.seconds)
         } catch {
-            gpsStatus="No se pudo guardar la confirmación: \(error.localizedDescription)"
-            return false
+            // El modelo visible NO se modifica al fallar el guardado.
+            let message=error.localizedDescription
+            gpsStatus="No se pudo guardar la confirmación: \(message)"
+            return .storageFailure(message)
         }
     }
     func updateCamera(_ region: MKCoordinateRegion) {
