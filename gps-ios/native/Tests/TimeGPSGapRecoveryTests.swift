@@ -56,6 +56,53 @@ final class TimeGPSGapRecoveryTests:XCTestCase {
             fix(200,home,accuracy:80),fix(3380,home)]).isEmpty)
         XCTAssertTrue(candidates(raw,fixes:[fix(3380,home)]).isEmpty)
     }
+    func testIncrementalSQLiteConfirmationPersistsWithoutRewritingHistory() throws {
+        let folder=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at:folder,withIntermediateDirectories:true)
+        defer { try? FileManager.default.removeItem(at:folder) }
+        let db=try TimeSQLiteStore(url:folder.appendingPathComponent("gps.sqlite"))
+        var initial=SavedState()
+        let pre=interval(100,200,home)
+        let post=interval(3380,3500,home)
+        let a=fix(200,home),b=fix(3380,home)
+        initial.intervals=[pre,post]
+        initial.fixes=[a,b]
+        initial.totals[home.id]=220
+        initial.trackingEnabled=true
+        try db.replaceAll(initial)
+        let detected=TimeGPSGapRecovery.candidates(
+            intervals:initial.intervals,fixes:initial.fixes,
+            manualBreaks:[],events:[],cells:[home.id])
+        let gap=try XCTUnwrap(detected.first)
+        let repair=AssignedInterval(start:gap.start,end:gap.end,cell:gap.cell,
+            quality:"asumido · confirmado por usuario",source:"confirmacion_usuario")
+        var snapshot=initial
+        snapshot.intervals.append(repair)
+        snapshot.totals[home.id,default:0]+=gap.seconds
+        try db.append(fixes:[],intervals:[repair],totals:[home.id:gap.seconds],
+            header:TimeStoreHeader(snapshot))
+        let restored=try db.load()
+        XCTAssertEqual(restored.intervals.count,3)
+        XCTAssertEqual(restored.fixes.count,2)
+        XCTAssertEqual(restored.totals[home.id],3400)
+        XCTAssertTrue(restored.trackingEnabled)
+        XCTAssertEqual(TimeAttribution.totals(restored.intervals,cellIDs:[home.id]),3400)
+        XCTAssertTrue(TimeGPSGapRecovery.candidates(
+            intervals:restored.intervals,fixes:restored.fixes,
+            manualBreaks:[],events:[],cells:[home.id]).isEmpty)
+    }
+
+    func testFeedbackOutcomeExplainsSuccessAndRefusal() {
+        let saved=TimeGPSGapConfirmationOutcome.saved(3180)
+        XCTAssertTrue(saved.isSuccess)
+        XCTAssertTrue(saved.message.contains("53 min"))
+        let stale=TimeGPSGapConfirmationOutcome.noLongerAvailable
+        XCTAssertFalse(stale.isSuccess)
+        XCTAssertTrue(stale.message.contains("No se ha añadido"))
+        let failed=TimeGPSGapConfirmationOutcome.storageFailure("disco lleno")
+        XCTAssertFalse(failed.isSuccess)
+        XCTAssertTrue(failed.message.contains("disco lleno"))
+    }
     func testConfirmedGapIsNoLongerOffered() {
         let raw=[interval(100,200,home),
             AssignedInterval(start:Date(timeIntervalSince1970:200),
