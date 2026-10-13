@@ -8,16 +8,17 @@ struct CellHistoryView: View {
     @State private var goToMapAfterDismiss = false
 
     private var visits:[TimeVisit] {
-        TimeVisitIndex.visits(model.data.intervals,cells:[cell.id],
+        TimeVisitIndex.visible(TimeVisitIndex.visits(model.data.intervals,cells:[cell.id],
             fixes:model.data.fixes,powerEvents:model.data.powerEvents,
-            manualBreaks:model.data.manualBreaks)
+            manualBreaks:model.data.manualBreaks))
     }
     var body: some View {
         List {
             Section("Cuadrícula") {
                 LabeledContent("Nombre",value:model.label(for:cell))
                 LabeledContent("Tiempo confirmado",
-                    value:DurationFormat.full(visits.reduce(0) { $0+$1.confirmedSeconds }))
+                    value:DurationFormat.full(TimeAttribution.totals(model.data.intervals,
+                        cellIDs:[cell.id])))
                 LabeledContent("Visitas",value:String(visits.count))
                 LabeledContent("Días con presencia",
                     value:String(TimeVisitIndex.daily(visits).count))
@@ -122,9 +123,9 @@ struct UserPlaceDetailView: View {
     @State private var editingCell:Cell?
     private var place:UserPlace? { model.data.places.first(where:{$0.id==placeID}) }
     private var visits:[TimeVisit] {
-        TimeVisitIndex.visits(model.data.intervals,cells:place?.normalizedCellIDs ?? [],
+        TimeVisitIndex.visible(TimeVisitIndex.visits(model.data.intervals,cells:place?.normalizedCellIDs ?? [],
             fixes:model.data.fixes,powerEvents:model.data.powerEvents,
-            manualBreaks:model.data.manualBreaks)
+            manualBreaks:model.data.manualBreaks))
     }
 
     var body: some View {
@@ -133,7 +134,8 @@ struct UserPlaceDetailView: View {
                 Section("Zona") {
                     LabeledContent("Nombre",value:place.name)
                     LabeledContent("Tiempo confirmado",
-                        value:DurationFormat.full(visits.reduce(0) {$0+$1.confirmedSeconds}))
+                        value:DurationFormat.full(TimeAttribution.totals(model.data.intervals,
+                            cellIDs:place.normalizedCellIDs)))
                     LabeledContent("Visitas",value:String(visits.count))
                     LabeledContent("Días con presencia",
                         value:String(TimeVisitIndex.daily(visits).count))
