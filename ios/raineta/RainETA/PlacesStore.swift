@@ -34,7 +34,7 @@ struct PlaceListRow: Identifiable {
         if id == "gps" {
             selectedPlaceID = "gps"
             coordinate = gpsCoordinate ?? CLLocationCoordinate2D(latitude: 40.4168, longitude: -3.7038)
-            name = gpsCoordinate == nil ? "Madrid · provisional" : "Mi ubicación"
+            name = gpsCoordinate == nil ? "Madrid · provisional" : gpsPlaceName
         } else if let item = savedPlaces.first(where: { $0.id == id }) {
             selectedPlaceID = item.id
             coordinate = item.coordinate
@@ -46,7 +46,10 @@ struct PlaceListRow: Identifiable {
         projection = nil
         radarFutureMinutes = 0
         radarIndex = max(0, radar.frames.count-1)
-        Task { await refresh(force: true) }
+        Task {
+            await updateLivePlaceWhileLoading()
+            await refresh(force: true)
+        }
     }
 
     func addPlace(name: String, latitude: Double, longitude: Double, select: Bool = true) {
@@ -82,7 +85,13 @@ struct PlaceListRow: Identifiable {
         let clean = String(newName.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
         guard !clean.isEmpty, let index = savedPlaces.firstIndex(where: { $0.id == id }) else { return }
         savedPlaces[index].name = clean
-        if selectedPlaceID == id { name = clean }
+        if selectedPlaceID == id {
+            name = clean
+            Task {
+                if snapshot != nil { await updateLiveActivity() }
+                else { await updateLivePlaceWhileLoading() }
+            }
+        }
         persistPlaces()
     }
 
