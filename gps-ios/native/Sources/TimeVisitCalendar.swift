@@ -30,13 +30,15 @@ struct TimeVisitCalendar: View {
         // El total incluye incluso fracciones de segundo que se ocultan
         // como fila independiente. El recuento incluye solo visitas visibles.
         let totals=TimeVisitIndex.daily(allVisits,calendar:calendar)
-        let shown=Dictionary(uniqueKeysWithValues:
+        let shown:[Date:Int]=Dictionary(uniqueKeysWithValues:
             TimeVisitIndex.daily(visibleVisits,calendar:calendar)
                 .map { ($0.date,$0.visits) })
-        return Dictionary(uniqueKeysWithValues:totals.compactMap { entry in
-            let count=shown[entry.date] ?? 0
-            return count>0 ? (entry.date,(entry.seconds,count)) : nil
-        })
+        var result:[Date:(seconds:TimeInterval,visits:Int)]=[:]
+        for entry in totals {
+            let count:Int=shown[entry.date] ?? 0
+            if count>0 { result[entry.date]=(seconds:entry.seconds,visits:count) }
+        }
+        return result
     }
     private var monthDays:[Date?] {
         guard let range=calendar.range(of:.day,in:.month,for:month),
