@@ -1,113 +1,124 @@
 import SwiftUI
 
-/// Edición destructiva solo de minutos recuperados manualmente. Recalcula
-/// los totales desde intervalos y no toca ni una muestra GPS observada.
+/// Pantalla de corrección opcional, con UNA acción por recuperación.
+/// Las elecciones y su confirmación se muestran solo cuando se necesitan.
 struct TimeRecoveredEditor:View {
     @ObservedObject var model:TimeModel
-    @State private var selected:TimeRecoveryGroup?
-    @State private var destination:Cell?
-    @State private var undoConfirmation=false
-    @State private var moveConfirmation=false
-    @State private var feedback=""
+    @State private var active:TimeRecoveryGroup?
+    @State private var target:Cell?
+    @State private var showActions=false
+    @State private var showCells=false
+    @State private var confirmUndo=false
+    @State private var confirmMove=false
+    @State private var message=""
 
     private var groups:[TimeRecoveryGroup] {
         TimeRecoveryIndex.groups(model.data.intervals)
     }
-    private func neighboring(_ group:TimeRecoveryGroup)->[Cell] {
-        let original=TimeRecoveryIndex.without(model.data.intervals,group:group)
+    private func choices(_ group:TimeRecoveryGroup)->[Cell] {
+        let other=TimeRecoveryIndex.without(model.data.intervals,group:group)
             .sorted {$0.start<$1.start}
-        let before=original.last(where: {$0.end<=group.start})?.cell
-        let after=original.first(where: {$0.start>=group.end})?.cell
+        let candidates=[other.last(where:{$0.end<=group.start})?.cell,
+                        other.first(where:{$0.start>=group.end})?.cell]+
+                        group.cells.map(Optional.some)
         var seen:Set<String>=[]
-        return ([before,after]+group.cells.map(Optional.some)).compactMap { cell in
-            guard let cell,seen.insert(cell.id).inserted else { return nil }
+        return candidates.compactMap {
+            guard let cell=$0,seen.insert(cell.id).inserted else { return nil }
             return cell
         }
     }
     var body:some View {
         List {
-            Section {
-                Text("Aquí aparecen las recuperaciones confirmadas anteriormente, incluyendo los recorridos estimados. Puedes deshacerlas o cambiar su asignación. Las muestras GPS reales permanecen intactas.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-            if !feedback.isEmpty {
-                Section { Text(feedback).font(.caption).foregroundStyle(.teal) }
+            if !message.isEmpty {
+                Section { Text(message).font(.caption).foregroundStyle(.teal) }
             }
             if groups.isEmpty {
-                ContentUnavailableView("Sin recuperaciones editables",
-                   systemImage:"checkmark.shield",
-                   description:Text("No hay tiempo manual recuperado que corregir."))
+                ContentUnavailableView("No hay tiempos por corregir",
+                    systemImage:"checkmark.circle",
+                    description:Text("Las recuperaciones que confirmes aparecerán aquí."))
             } else {
-                Section("Tiempo recuperado") {
+                Section {
                     ForEach(groups) { group in
-                        VStack(alignment:.leading,spacing:8) {
-                            Text(group.start.formatted(.dateTime.day().month().year()))
-                                .font(.headline)
-                            Text("\(group.start.formatted(.dateTime.hour().minute())) – \(group.end.formatted(.dateTime.hour().minute()))")
-                                .font(.subheadline)
-                            Text("\(DurationFormat.full(group.seconds)) · \(group.cells.count) cuadrícula(s)")
-                                .foregroundStyle(.orange).font(.subheadline)
-                            Text(group.cells.prefix(3).map { model.label(for:$0) }
-                                .joined(separator:" · "))
-                                .font(.caption).foregroundStyle(.secondary)
-                            Menu {
-                                ForEach(neighboring(group),id:\.id) { cell in
-                                    Button(model.label(for:cell)) {
-                                        selected=group
-                                        destination=cell
-                                        moveConfirmation=true
-                                    }
-                                }
-                            } label: {
-                                Label("Corregir cuadrícula",systemImage:"pencil.and.outline")
+                        HStack(spacing:10) {
+                            VStack(alignment:.leading,spacing:3) {
+                                Text(group.start.formatted(.dateTime.day().month().year()))
+                                    .font(.subheadline.weight(.medium))
+                                Text("\(group.start.formatted(.dateTime.hour().minute())) – \(group.end.formatted(.dateTime.hour().minute())) · \(DurationFormat.small(group.seconds))")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                Text(group.cells.prefix(2).map{model.label(for:$0)}
+                                    .joined(separator:" · "))
+                                    .font(.caption2).foregroundStyle(.secondary)
+                                    .lineLimit(1)
                             }
-                            .buttonStyle(.bordered)
-                            Button("Deshacer esta recuperación",role:.destructive) {
-                                selected=group
-                                undoConfirmation=true
+                            Spacer(minLength:3)
+                            Button("Corregir") {
+                                active=group
+                                showActions=true
                             }
                             .font(.caption)
                             .buttonStyle(.bordered)
                         }
-                        .padding(.vertical,5)
+                        .padding(.vertical,3)
+                    }
+                } header: {
+                    Text("Tiempo añadido manualmente")
+                } footer: {
+                    Text("Solo se modifica el tiempo estimado. Las posiciones GPS permanecen intactas.")
+                }
+            }
+        }
+        .navigationTitle("Corregir tiempo")
+        .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog("Corregir recuperación",isPresented:$showActions,
+            titleVisibility:.visible) {
+            Button("Cambiar cuadrícula") { showCells=true }
+            Button("Deshacer tiempo añadido",role:.destructive) {
+                confirmUndo=true
+            }
+            Button("Cancelar",role:.cancel) { active=nil }
+        }
+        .confirmationDialog("Elegir cuadrícula",isPresented:$showCells,
+            titleVisibility:.visible) {
+            if let active {
+                ForEach(choices(active),id:\.id) { cell in
+                    Button(model.label(for:cell)) {
+                        target=cell
+                        confirmMove=true
                     }
                 }
             }
-        }
-        .navigationTitle("Corregir recuperaciones")
-        .navigationBarTitleDisplayMode(.inline)
-        .confirmationDialog("¿Deshacer esta recuperación?",
-            isPresented:$undoConfirmation,titleVisibility:.visible) {
-            Button("Quitar tiempo estimado",role:.destructive) {
-                if let selected {
-                    feedback=model.reviseRecoveredTime(selected,newCell:nil) ?
-                        "Tiempo estimado retirado. Los datos GPS se conservan." :
-                        "No se pudo guardar la corrección."
-                }
-                selected=nil
+            Button("Cancelar",role:.cancel) {
+                active=nil
             }
-            Button("Cancelar",role:.cancel) { selected=nil }
-        } message: {
-            Text("Se quitarán solo los segundos de esta recuperación y se actualizarán los totales. No se borrarán posiciones GPS.")
         }
-        .confirmationDialog("¿Reasignar esta recuperación?",
-            isPresented:$moveConfirmation,titleVisibility:.visible) {
-            Button("Guardar cuadrícula corregida") {
-                if let selected,let destination {
-                    feedback=model.reviseRecoveredTime(selected,newCell:destination) ?
-                        "Recuperación reasignada; totales actualizados." :
-                        "No se pudo guardar la corrección."
+        .alert("¿Deshacer este tiempo?",isPresented:$confirmUndo) {
+            Button("Deshacer",role:.destructive) {
+                if let active {
+                    message=model.reviseRecoveredTime(active,newCell:nil) ?
+                        "Recuperación deshecha." : "No se pudo guardar el cambio."
                 }
-                selected=nil
-                destination=nil
+                active=nil
+            }
+            Button("Cancelar",role:.cancel) { active=nil }
+        } message: {
+            Text("Solo se quitará el tiempo que añadiste manualmente. No se borrará ninguna posición GPS.")
+        }
+        .alert("¿Cambiar la cuadrícula?",isPresented:$confirmMove) {
+            Button("Guardar") {
+                if let active,let target {
+                    message=model.reviseRecoveredTime(active,newCell:target) ?
+                        "Cuadrícula corregida." : "No se pudo guardar el cambio."
+                }
+                active=nil
+                target=nil
             }
             Button("Cancelar",role:.cancel) {
-                selected=nil
-                destination=nil
+                active=nil
+                target=nil
             }
         } message: {
-            if let selected,let destination {
-                Text("Asignar \(DurationFormat.full(selected.seconds)) a \(model.label(for:destination)). Si había varias cuadrículas estimadas, se concentrarán en esta única cuadrícula.")
+            if let active,let target {
+                Text("Se asignará \(DurationFormat.small(active.seconds)) a \(model.label(for:target)).")
             }
         }
     }
