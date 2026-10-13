@@ -1,0 +1,177 @@
+import SwiftUI
+
+/// Dynamic time display: SwiftUI TimelineView recomputes elapsed time
+/// locally, without claiming that weather observations refresh every second.
+struct RainHeroCard: View {
+    @ObservedObject var store:RainStore
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:13) {
+            HStack {
+                Label(store.name,systemImage:"location.fill")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.cyan)
+                    .lineLimit(1)
+                Spacer()
+                if store.loading { ProgressView().controlSize(.small) }
+            }
+            if let weather=store.snapshot {
+                TimelineView(.periodic(from:.now,by:1)) { clock in
+                    let moment=clock.date
+                    let change=RainInsight.transition(currentIsRaining:weather.isRaining,
+                                                      samples:weather.samples,now:moment)
+                    VStack(alignment:.leading,spacing:10) {
+                        HStack(alignment:.center) {
+                            VStack(alignment:.leading,spacing:5) {
+                                Text(weather.isRaining ? "LLUViA PREVISTA AHORA".uppercased() : "AHORA SIN LLUVIA PREVISTA")
+                                    .font(.system(size:10,weight:.heavy))
+                                    .foregroundStyle(weather.isRaining ? .cyan : .green)
+                                Text(change.raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.white.opacity(0.76))
+                            }
+                            Spacer()
+                            Image(systemName:weather.isRaining ? "cloud.rain.fill" : "cloud.sun.fill")
+                                .font(.system(size:40))
+                                .foregroundStyle(weather.isRaining ? .cyan : .yellow)
+                                .symbolRenderingMode(.hierarchical)
+                        }
+                        Text(change.change == nil ? "Sin cambio previsto" : RainInsight.countdown(to:change.change,at:moment))
+                            .font(.system(size:change.change == nil ? 29 : 45,
+                                          weight:.bold,design:.rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                            .contentTransition(.numericText())
+                            .minimumScaleFactor(0.65)
+                            .lineLimit(1)
+                        HStack {
+                            Text(change.change.map {
+                                "Cambio estimado: " + $0.formatted(date:.omitted,time:.shortened)
+                            } ?? "Sin cambio fiable en 24 horas")
+                                .font(.caption)
+                                .foregroundStyle(.cyan)
+                            Spacer()
+                            Text("Modelo")
+                                .font(.caption2.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                HStack(spacing:10) {
+                    if let temperature=weather.temperature {
+                        Label(String(format:"%.0f °C",temperature),systemImage:"thermometer.medium")
+                    }
+                    Label(weather.intensity,systemImage:"drop.fill")
+                }
+                .font(.subheadline.bold())
+                .foregroundStyle(.white.opacity(0.9))
+                Text("Cuentas atrás locales que avanzan cada segundo. Predicción basada en modelo, no en una medición continua de lluvia.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                HStack {
+                    Label("Actualizado \(weather.updatedAt.formatted(date:.omitted,time:.shortened))",
+                          systemImage:"clock.arrow.circlepath")
+                    Spacer()
+                    Text("Pronóstico 15 min")
+                }
+                .font(.caption2).foregroundStyle(.secondary)
+            } else {
+                ProgressView("Calculando el próximo cambio…")
+                    .padding(.vertical,30)
+            }
+        }
+        .padding(18)
+        .frame(maxWidth:.infinity,alignment:.leading)
+        .background(
+            LinearGradient(colors:[Color(red:0.02,green:0.22,blue:0.35),
+                                   Color(red:0.07,green:0.08,blue:0.23)],
+                           startPoint:.topLeading,endPoint:.bottomTrailing),
+            in:RoundedRectangle(cornerRadius:24)
+        )
+        .overlay(RoundedRectangle(cornerRadius:24).stroke(.cyan.opacity(0.24),lineWidth:1))
+    }
+}
+
+struct RainSettingsView: View {
+    @ObservedObject var store:RainStore
+    @AppStorage("raineta.settings.refresh") private var refreshSeconds=240
+    @AppStorage("raineta.settings.defaultHorizon") private var defaultHorizon=60
+    @State private var explicitLiveConfirmation=false
+
+    var body:some View {
+        Form {
+            Section {
+                HStack {
+                    Image(systemName:"livephoto").foregroundStyle(.cyan)
+                    VStack(alignment:.leading) {
+                        Text("Actividad En Vivo")
+                            .font(.headline)
+                        Text(store.liveEnabled ? "Activa en la pantalla bloqueada" : "Desactivada")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Toggle("",isOn:Binding(
+                        get:{store.liveEnabled},
+                        set:{ next in
+                            if next { explicitLiveConfirmation=true }
+                            else { Task { await store.toggleLive() } }
+                        }
+                    ))
+                    .labelsHidden()
+                }
+                Text(store.liveStatus)
+                    .font(.caption).foregroundStyle(.secondary)
+                Text("La actividad muestra la localidad y la cuenta atrás. iOS puede suspender consultas con la app cerrada; el contador no garantiza datos nuevos.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            } header:{Label("Pantalla bloqueada",systemImage:"lock.iphone")}
+
+            Section {
+                LabeledContent("Permiso actual",value:store.locationPermission)
+                Button("Solicitar localización «Siempre»") {store.requestAlwaysLocation()}
+                Text("La ubicación puede actualizarse al desplazarte si has concedido permiso; esto no garantiza consultas meteorológicas constantes en segundo plano.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            } header:{Label("Ubicación",systemImage:"location.fill")}
+
+            Section("Actualización") {
+                Picker("Con la app abierta",selection:$refreshSeconds) {
+                    Text("2 minutos").tag(120)
+                    Text("4 minutos").tag(240)
+                    Text("10 minutos").tag(600)
+                }
+                Button("Actualizar ahora") {
+                    Task {
+                        await store.refresh(force:true)
+                        await store.refreshSummaries(force:true)
+                    }
+                }
+                if store.loading {ProgressView("Consultando…")}
+            }
+
+            Section("Visualización") {
+                Picker("Gráfica inicial",selection:$defaultHorizon) {
+                    Text("30 minutos").tag(30)
+                    Text("60 minutos").tag(60)
+                    Text("120 minutos").tag(120)
+                }
+                Text("Las barras de un minuto son interpolaciones de pronósticos de 15 minutos, no observaciones independientes.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+
+            Section("Datos y fiabilidad") {
+                LabeledContent("Observación radar","RainViewer")
+                LabeledContent("Modelo por horas","Open-Meteo")
+                LabeledContent("Radar avanzado OPERA","En validación")
+                LabeledContent("Modelo de mapas futuros","DWD ICON-EU")
+                Text("La extrapolación OPERA a +5 y +15 min ha mostrado resultados positivos en casos europeos. No se activará como predicción fiable para España o +120 min hasta superar sus pruebas.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+        }
+        .navigationTitle("Ajustes")
+        .preferredColorScheme(.dark)
+        .confirmationDialog("Activar En Vivo",isPresented:$explicitLiveConfirmation) {
+            Button("Activar") { Task { await store.toggleLive() } }
+            Button("Cancelar",role:.cancel) {}
+        } message:{
+            Text("La actividad utilizará el lugar seleccionado y mostrará el estado hasta la siguiente actualización posible.")
+        }
+    }
+}
