@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T18:45:00+02:00",
-  "last_completed_at": "2026-10-13T18:53:20+02:00",
-  "updated_at": "2026-10-13T18:53:20+02:00",
+  "last_started_at": "2026-10-13T19:15:00+02:00",
+  "last_completed_at": "2026-10-13T19:20:45+02:00",
+  "updated_at": "2026-10-13T19:20:45+02:00",
   "status": "success",
-  "processed_ids": [
-    "be491e1af752"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,37 +16,36 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "text_and_telegram_complete_archive_repair_attempted",
+    "status": "verified_no_editorial_or_telegram_repairs_needed",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T184500+0200-chat",
-    "requested_at": "2026-10-13T18:45:00+02:00",
+    "run_id": "tr-20261013T191500+0200-chat",
+    "requested_at": "2026-10-13T19:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
-    "archive_repair_commit": "2a7e8a08d8fd3e40101bce5f1a04d35f52103e0b",
-    "archive_result": "no_verified_raster_non_blocking",
-    "telegram_finalized": true,
-    "telegram_message_id": 777,
-    "verified_at": "2026-10-13T18:52:20+02:00"
+    "telegram_delivery_workflow_run_id": 38437797224,
+    "telegram_delivery_workflow_conclusion": "success",
+    "telegram_verified": true,
+    "verified_at": "2026-10-13T19:20:45+02:00"
   },
   "last_run": {
-    "run_id": "tr-20261013T184500+0200-chat",
+    "run_id": "tr-20261013T191500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T18:45:00+02:00",
-    "updated_at": "2026-10-13T18:53:20+02:00",
-    "finished_at": "2026-10-13T18:53:20+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-13T19:15:00+02:00",
+    "updated_at": "2026-10-13T19:20:45+02:00",
+    "finished_at": "2026-10-13T19:20:45+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -59,16 +56,17 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 1,
+      "telegram_provisionals_finalized": 0,
       "telegram_orphans": 0,
+      "telegram_delivery_workflow_verified": 1,
       "archive_images_enriched": 0,
       "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0
     },
-    "message": "Pasada directa 1/1 verificada · revisión cerrada, Telegram 777 finalizado, cola 0 y auditoría con 0 huérfanos.",
+    "message": "Pasada directa 0/0 verificada · no había trabajo editorial nuevo y Telegram queda limpio.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -78,166 +76,75 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "id": "be491e1af752",
-        "revision": 0,
-        "selected": "🌶️ La ley puso a la Inspección a mirar las aulas y la Inspección miró la ley.",
-        "reason": "Específico del hecho, políticamente neutral y sin coincidencia conceptual en los últimos 30 remates."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T18:45:00+02:00",
+        "at": "2026-10-13T19:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 1 revisión activa; comprobando JIT, Pendientes y Telegram."
+        "message": "Preparando pasada editorial · cola 0; revisando Pendientes, Telegram y reparaciones obligatorias."
       },
       {
-        "at": "2026-10-13T18:46:00+02:00",
-        "phase": "verifying",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Releyendo estado autoritativo de la revisión 0."
-      },
-      {
-        "at": "2026-10-13T18:46:10+02:00",
-        "phase": "investigating",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Buscando detonante actual."
-      },
-      {
-        "at": "2026-10-13T18:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Contrastando fuente 1/2."
-      },
-      {
-        "at": "2026-10-13T18:47:20+02:00",
-        "phase": "investigating",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Contrastando fuente 2/2."
-      },
-      {
-        "at": "2026-10-13T18:47:30+02:00",
-        "phase": "investigating",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Hecho esencial verificado."
-      },
-      {
-        "at": "2026-10-13T18:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-13T18:48:20+02:00",
-        "phase": "drafting",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Comprobando límite de X · 271 caracteres."
-      },
-      {
-        "at": "2026-10-13T18:48:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-13T18:48:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates."
-      },
-      {
-        "at": "2026-10-13T18:48:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Remate seleccionado · giro específico, neutral y sin coincidencia reciente."
-      },
-      {
-        "at": "2026-10-13T18:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-13T18:50:32+02:00",
-        "phase": "persisting",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-13T18:50:51+02:00",
-        "phase": "persisting",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-13T18:51:05+02:00",
-        "phase": "verifying",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-13T18:51:20+02:00",
-        "phase": "verifying",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-13T18:51:30+02:00",
-        "phase": "verifying",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Telegram verificado · mensaje 777 finalizado."
-      },
-      {
-        "at": "2026-10-13T18:52:00+02:00",
-        "phase": "verifying",
-        "trend_id": "be491e1af752",
-        "title": "Entrada TT#6",
-        "message": "Reparación de imagen de archivo ejecutada; sin raster verificable, no bloqueante."
-      },
-      {
-        "at": "2026-10-13T18:52:20+02:00",
+        "at": "2026-10-13T19:18:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final · cola 0, 0 requests activas, 0 rewrite_pending, 0 entregas abiertas y 0 huérfanos."
+        "message": "Revisando Pendientes · 1 tarjeta vigente en las últimas 24 h."
       },
       {
-        "at": "2026-10-13T18:53:20+02:00",
+        "at": "2026-10-13T19:18:20+02:00",
+        "phase": "verifying",
+        "trend_id": "be491e1af752",
+        "title": "ADOCTRINAMIENTO",
+        "message": "Pendiente 1/1 · paquete ya completo; Telegram 777 consta final:true."
+      },
+      {
+        "at": "2026-10-13T19:19:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, 0 requests activas, 0 rewrite_pending, 0 entregas abiertas y 0 huérfanos."
+      },
+      {
+        "at": "2026-10-13T19:20:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Despachando verificación Telegram mediante el workflow de entrega sobre estado vacío verificado."
+      },
+      {
+        "at": "2026-10-13T19:20:19+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Workflow Telegram completado con éxito; entrega y auditoría finalizadas."
+      },
+      {
+        "at": "2026-10-13T19:20:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final · cola 0, 0 activas, 0 rewrite_pending, 0 sent/final:false y auditoría con 0 huérfanos."
+      },
+      {
+        "at": "2026-10-13T19:20:45+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 1/1 verificada · texto y Telegram cerrados; cola editorial limpia."
+        "message": "Pasada directa 0/0 verificada · no había trabajo editorial nuevo y Telegram queda limpio."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T184500+0200-chat",
+  "run_id": "tr-20261013T191500+0200-chat",
   "summary": {
-    "trends_processed": 1,
-    "trends_explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
@@ -248,11 +155,12 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
-    "telegram_provisionals_finalized": 1,
+    "telegram_provisionals_finalized": 0,
     "telegram_orphans": 0,
+    "telegram_delivery_workflow_verified": 1,
     "archive_images_enriched": 0,
     "bidirectional_repairs": 0,
     "telegram_bidirectional_issues": 0
@@ -260,7 +168,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-13T18:32:50+02:00",
+    "source_capture_at": "2026-10-13T19:12:01+02:00",
     "status": "fresh_at_start"
   }
 }
