@@ -48,7 +48,7 @@ final class RainFutureTests: XCTestCase {
     func testNowToFutureRemainsWetWhenModelShowsRain() {
         let field = fixture()
         let point = FutureRainField.worldPoint(madrid)
-        let scale = pow(2.0,12)
+        let scale = pow(2.0,12.0)
         let tile = MKTileOverlayPath(x:Int(point.x*scale),y:Int(point.y*scale),
                                      z:12,contentScaleFactor:1)
         for lead in [5,10,15,30,60,120] {
