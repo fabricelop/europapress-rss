@@ -68,19 +68,36 @@ def reconcile():
             "verification_sources":queue_row.get("verification_sources") or [],
             "telegram_message_id":finals[(tid,rev)]["telegram_message_id"]
         }
+        # Preserve the current explanation_only metadata from the compact queue.
+        # This is important when requests.json/manual-explained are too large for
+        # the editor connector and the queue is the verified hand-off.
+        for key in (
+            "category","group_id","explanation_group_id","group_leader_id",
+            "group_title","trend_names","trend_context","grouped_member_revisions",
+            "with_image","disable_ai_image","image_strategy","news_note"
+        ):
+            if key in queue_row:
+                fields[key]=queue_row.get(key)
+        leader_id=str(queue_row.get("group_leader_id") or tid)
+        group_id=str(queue_row.get("explanation_group_id") or queue_row.get("group_id") or "")
+        grouped_follower=bool(group_id and leader_id and leader_id!=tid)
+        fields["grouped_into_existing_card"]=grouped_follower
         if existing is None:
             request={**queue_row,**fields}
             reqs["requests"].append(request)
             byreq[tid]=request
         else:
             existing.update({k:v for k,v in fields.items() if v is not None})
-        k=(tid,rev)
-        if k in bymanual:
-            bymanual[k].update({key:value for key,value in fields.items() if value is not None})
-        else:
-            final={**fields}
-            manual["items"].append(final)
-            bymanual[k]=final
+        # A grouped event has one canonical explanation row (the leader), while
+        # every member request and every Telegram message is still closed.
+        if not grouped_follower:
+            k=(tid,rev)
+            if k in bymanual:
+                bymanual[k].update({key:value for key,value in fields.items() if value is not None})
+            else:
+                final={**fields}
+                manual["items"].append(final)
+                bymanual[k]=final
         promoted.append(tid)
     if promoted:
         q["items"]=remain
