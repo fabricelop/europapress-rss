@@ -1,104 +1,65 @@
 import SwiftUI
 
+/// Resumen compacto. El detalle por segundos sigue existiendo en el motor
+/// del historial, pero no ocupa el calendario con controles de análisis.
 struct TimeDayTimeline:View {
     @ObservedObject var model:TimeModel
     let day:Date
     var calendar:Calendar = .current
-    @State private var selectedFraction=0.5
 
     private var quality:TimeDayCoverage {
         TimeDayCoverageIndex.build(model.data.intervals,day:day,calendar:calendar)
     }
     private var buckets:[TimeHistoryKind] {
-        TimeDayCoverageIndex.visualBuckets(quality)
+        TimeDayCoverageIndex.visualBuckets(quality,count:48)
     }
-    private var selectedPoint:TimeHistorySlice? {
-        guard let first=quality.slices.first else { return nil }
-        let moment=first.start.addingTimeInterval(quality.dayDuration*selectedFraction)
-        return quality.slices.first { $0.start<=moment && moment<$0.end }
+    private var gpsSeconds:TimeInterval {
+        quality.observed+quality.reconstructed
     }
     var body:some View {
-        VStack(alignment:.leading,spacing:9) {
+        VStack(alignment:.leading,spacing:6) {
             HStack {
-                Label("Línea temporal de 24 h",systemImage:"clock.arrow.circlepath")
-                    .font(.subheadline.weight(.semibold))
+                Text("Registro del día").font(.caption.weight(.medium))
                 Spacer()
                 Text("\(quality.coveragePercent)% cubierto")
-                    .font(.subheadline.weight(.bold))
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(.teal)
             }
             HStack(spacing:1) {
-                ForEach(Array(buckets.enumerated()),id:\.offset) { _,type in
+                ForEach(Array(buckets.enumerated()),id:\.offset) { _,kind in
                     RoundedRectangle(cornerRadius:1)
-                        .fill(tint(type))
+                        .fill(tint(kind))
                         .frame(maxWidth:.infinity)
                 }
             }
-            .frame(height:18)
-            HStack {
-                Text("00:00")
-                Spacer()
-                Text("06:00")
-                Spacer()
-                Text("12:00")
-                Spacer()
-                Text("18:00")
-                Spacer()
-                Text("24:00")
+            .frame(height:12)
+            .accessibilityElement(children:.ignore)
+            .accessibilityLabel("Cobertura del día \(quality.coveragePercent) por ciento")
+            HStack(spacing:9) {
+                legend("GPS",value:gpsSeconds,color:.teal)
+                legend("Estimado",value:quality.estimated,color:.orange)
+                legend("Sin datos",value:quality.pending,color:.gray)
             }
-            .font(.caption2.monospacedDigit())
-            .foregroundStyle(.secondary)
-            Slider(value:$selectedFraction,in:0...0.999,step:0.002)
-                .tint(.teal)
-                .accessibilityIdentifier("gpsDayTimelineSlider")
-            if let piece=selectedPoint {
-                HStack(alignment:.firstTextBaseline) {
-                    Text(piece.start.formatted(.dateTime.hour().minute()))
-                    Image(systemName:"arrow.right")
-                    Text(piece.end.formatted(.dateTime.hour().minute()))
-                    Spacer(minLength:4)
-                    Text(piece.cell.map { model.label(for:$0) } ?? "Sin GPS")
-                        .lineLimit(1)
-                }
-                .font(.caption.monospacedDigit())
-                Text(piece.kind.rawValue)
-                    .font(.caption2)
-                    .foregroundStyle(tint(piece.kind))
-            }
-            Divider()
-            HStack(alignment:.top,spacing:6) {
-                qualityItem("Observado",seconds:quality.observed,color:.teal)
-                qualityItem("Estimado",seconds:quality.estimated,color:.orange)
-                qualityItem("Reconstruido",seconds:quality.reconstructed,color:.blue)
-                qualityItem("Pendiente",seconds:quality.pending,color:.gray)
-            }
-            Text("Los segmentos estimados se muestran separados de los GPS observados. La cobertura del día actual se calcula solo hasta este momento.")
-                .font(.caption2).foregroundStyle(.secondary)
         }
-        .padding(12)
+        .padding(9)
         .background(Color(.secondarySystemGroupedBackground),
-                    in:RoundedRectangle(cornerRadius:12))
+                    in:RoundedRectangle(cornerRadius:10))
+        .accessibilityIdentifier("gpsDayCompactTimeline")
     }
     private func tint(_ kind:TimeHistoryKind)->Color {
         switch kind {
-        case .observed:return .teal
+        case .observed,.reconstructed:return .teal
         case .estimated:return .orange
-        case .reconstructed:return .blue
-        case .pending:return .gray.opacity(0.4)
+        case .pending:return .gray.opacity(0.35)
         }
     }
-    private func qualityItem(_ label:String,seconds:TimeInterval,color:Color)->some View {
-        VStack(alignment:.leading,spacing:3) {
-            HStack(spacing:3) {
-                Circle().fill(color).frame(width:6,height:6)
-                Text(label).lineLimit(1).minimumScaleFactor(0.65)
-            }
-            Text(DurationFormat.small(seconds))
-                .font(.caption2.monospacedDigit())
-                .lineLimit(1)
-                .minimumScaleFactor(0.65)
+    private func legend(_ name:String,value:TimeInterval,color:Color)->some View {
+        HStack(spacing:3) {
+            Circle().fill(color).frame(width:6,height:6)
+            Text("\(name) \(DurationFormat.small(value))")
+                .lineLimit(1).minimumScaleFactor(0.65)
         }
         .font(.system(size:10))
-        .frame(maxWidth:.infinity,alignment:.leading)
+        .foregroundStyle(.secondary)
     }
 }
