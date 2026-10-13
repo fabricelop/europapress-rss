@@ -2,30 +2,93 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-13T07:30:10.914770+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-13T08:06:24.440553+00:00",
+      "issue_count": 7,
+      "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "a3e4c273bdf7",
+          "title": "El voto discrepante a la decisión del Supremo sobre la ley de nietos: “La eventual lesión al derecho",
+          "seconds": 1950,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "3ae649dc65ac",
+          "title": "Muere a los 100 años Juan Rodríguez García-Lozano, padre del expresidente del Gobierno José Luis Rod",
+          "seconds": 1950,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "3d75ca81f335",
+          "title": "La Casa Blanca lanza una web para homenajear a Cristóbal Colón, \"el héroe americano original\"",
+          "seconds": 703,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9f7bd8cd48c6",
+          "title": "Arranca la primera visita de Felipe VI y Letizia a Ceuta y Melilla desde que son reyes: su agenda y ",
+          "seconds": 703,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e84677426979",
+          "title": "12 de octubre en La Rioja: Arraiz destaca la cercanía, profesionalidad y entrega de la Guardia Civil",
+          "seconds": 122,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "88143c2fb343",
+          "title": "Muerto a los 34 años Bryan Cranston homenajea al actor RJ Mitte: \"Me siento profundamente dolido. Mi",
+          "seconds": 122,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1051,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "92e4b603b86fd4672661a3eb391ee836a870a29c19570ba1adbfcd3b7ead2526",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-13T07:30:10.914770+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-13T08:06:24.440553+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1050,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-12T21:58:47.138228+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-13T00:55:25.960695+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-13T00:55:25.960695+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T08:06:24.440553+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-13T08:06:24.440553+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-13T08:06:24.440553+00:00"
   },
-  "checked_at": "2026-10-13T07:30:10.914770+00:00"
+  "checked_at": "2026-10-13T08:06:24.440553+00:00"
 }

@@ -1,13 +1,20 @@
 {
   "version": 1,
-  "checked_at": "2026-10-13T07:30:08.827439+00:00",
+  "checked_at": "2026-10-13T08:06:20.751636+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-13T07:30:08.827439+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-10-13T08:06:20.751636+00:00",
+      "pending_count": 6,
+      "pending_ids": [
+        "a3e4c273bdf7",
+        "3ae649dc65ac",
+        "3d75ca81f335",
+        "9f7bd8cd48c6",
+        "e84677426979",
+        "88143c2fb343"
+      ],
+      "oldest_at": "2026-10-13T07:33:54.058054Z",
       "latest_run": {
         "id": "tt-chat-20261013-0800",
         "status": "DONE",
@@ -18,23 +25,75 @@
       },
       "control_command": "tt-1791842272045-tg-native",
       "last_command_at": "2026-10-12T21:57:52.045287Z",
-      "status": "no_work",
-      "should_dispatch": false,
-      "attempts": 0,
-      "last_request_at": "2026-10-12T19:40:49.979916+00:00"
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
+      "item_execution": [
+        {
+          "id": "a3e4c273bdf7",
+          "entered_at": "2026-10-13T07:33:54.058054Z",
+          "should_start_by": "2026-10-13T07:38:54.058054+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "3ae649dc65ac",
+          "entered_at": "2026-10-13T07:33:54.071594Z",
+          "should_start_by": "2026-10-13T07:38:54.071594+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "3d75ca81f335",
+          "entered_at": "2026-10-13T07:54:40.915788Z",
+          "should_start_by": "2026-10-13T07:59:40.915788+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9f7bd8cd48c6",
+          "entered_at": "2026-10-13T07:54:40.949400Z",
+          "should_start_by": "2026-10-13T07:59:40.949400+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "e84677426979",
+          "entered_at": "2026-10-13T08:04:21.769299Z",
+          "should_start_by": "2026-10-13T08:09:21.769299+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "88143c2fb343",
+          "entered_at": "2026-10-13T08:04:21.802306Z",
+          "should_start_by": "2026-10-13T08:09:21.802306+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "76d7064143704827",
+      "expected_start_by": "2026-10-13T07:38:54.058054+00:00",
+      "attempts": 1,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tt-autoguard-1791878780",
+        "requested_at": "2026-10-13T08:06:20.751636Z"
+      },
+      "last_request_at": "2026-10-13T08:06:20.751636+00:00",
+      "last_requested_command_id": "tt-autoguard-1791878780"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-13T07:30:08.827439+00:00",
+      "checked_at": "2026-10-13T08:06:20.751636+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tr-20261013T091500+0200-chat",
-        "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-10-13T09:15:00+02:00",
-        "updated_at": "2026-10-13T07:22:15+00:00",
-        "finished_at": "2026-10-13T09:22:15+02:00",
+        "id": "tr-20261013T094500+0200-chat",
+        "status": "DONE",
+        "started_at": "2026-10-13T09:45:00+02:00",
+        "updated_at": "2026-10-13T07:50:56+00:00",
+        "finished_at": "2026-10-13T09:50:56+02:00",
         "source": "editorial_runtime"
       },
       "control_command": "tr-1791842287195-tg-12180e",
