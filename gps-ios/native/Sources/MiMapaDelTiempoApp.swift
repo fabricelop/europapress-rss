@@ -824,6 +824,78 @@ struct SavedState: Codable {
         }
     }
 
+    /// Guarda exclusivamente tramos estimados, por todas las cuadrículas
+    /// cruzadas en el mapa editado. Mismo contrato atómico que los otros
+    /// métodos de recuperación y sin tocar puntos GPS observados.
+    @discardableResult
+    func confirmEstimatedRoute(_ gap:TimeGPSGapReview,
+                               plan:GPSGapRoutePlan)->TimeGPSGapConfirmationOutcome {
+        guard gap.id==plan.gapID, gap.seconds<=GPSGapRoutePlanner.maxSeconds,
+              !gap.contradictoryGPS,
+              data.gpsRest.map({ gap.end<=$0.startedAt }) ?? true else {
+            return .noLongerAvailable
+        }
+        let stillPresent=TimeGPSGapReviewIndex.scan(
+            intervals:data.intervals,fixes:data.fixes,events:data.powerEvents,
+            dismissed:Set(data.dismissedGPSGapIDs)).contains(gap)
+        guard stillPresent else { return .noLongerAvailable }
+        let segments=plan.intervals()
+        guard !segments.isEmpty,
+              segments.first?.start==gap.start,
+              segments.last?.end==gap.end,
+              abs(plan.seconds-gap.seconds)<0.001,
+              segments.count<=GPSGapRoutePlanner.maxCells,
+              segments.allSatisfy({
+                  $0.source=="recorrido_estimado" &&
+                  $0.seconds>0 &&
+                  $0.start>=gap.start && $0.end<=gap.end
+              }) else { return .noLongerAvailable }
+        for i in 1..<segments.count {
+            guard abs(segments[i].start.timeIntervalSince(segments[i-1].end))<0.001
+            else { return .noLongerAvailable }
+        }
+        // Evita superponer otros intervalos, incluso si se añadieron
+        // mientras el usuario estaba inspeccionando el mapa.
+        guard !data.intervals.contains(where:{
+            $0.end>gap.start && $0.start<gap.end
+        }) else { return .noLongerAvailable }
+
+        var updated=data
+        updated.intervals.append(contentsOf:segments)
+        updated.intervals.sort { $0.start<$1.start }
+        var deltas=pendingTotals
+        for part in segments {
+            updated.totals[part.cell.id,default:0]+=part.seconds
+            deltas[part.cell.id,default:0]+=part.seconds
+        }
+        do {
+            if let store {
+                try store.append(fixes:pendingFixes,
+                    intervals:pendingIntervals+segments,
+                    totals:deltas,header:TimeStoreHeader(updated))
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            normalizedCacheIntervalCount = -1
+            normalizedCacheTime = .distantPast
+            cachedPeriod = nil
+            cachedPeriodCount = -1
+            cachedPeriodSince = .distantPast
+            lastSaved = .now
+            gpsStatus="Reparto estimado confirmado en \(plan.cells.count) cuadrículas"
+            activityPublisher.refresh(from:self,force:true)
+            objectWillChange.send()
+            return .saved(gap.seconds)
+        } catch {
+            gpsStatus="No se pudo guardar el reparto: \(error.localizedDescription)"
+            return .storageFailure(error.localizedDescription)
+        }
+    }
+
     /// Descarta la sugerencia, sin borrar ningún intervalo ni una posición.
     @discardableResult func dismissReviewedGap(_ gap:TimeGPSGapReview)->Bool {
         var updated=data
