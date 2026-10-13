@@ -179,7 +179,7 @@ struct RainHomeView: View {
     private var radarSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Radar observado", systemImage: "dot.radiowaves.left.and.right")
+                Label("Radar y previsión", systemImage: "dot.radiowaves.left.and.right")
                     .font(.headline)
                 Spacer()
                 Button { fullRadar = true } label: {
@@ -231,7 +231,7 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.4.0 · Radar observado RainViewer + mapas futuros espaciales Open-Meteo. Resuelve el movimiento con predicciones reales de precipitación.")
+            Text("v0.5.0 · Observación RainViewer y previsión oficial ICON-EU (DWD), con mapas completos en vez de interpolación de 9×9 puntos.")
             Text(store.futureFieldStatus)
             Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
@@ -269,11 +269,11 @@ struct RadarSection: View {
     }
     private var finalPastIndex: Int { max(0, store.radar.frames.count - 1) }
     private var lastSliderIndex: Int {
-        finalPastIndex + (store.futureField == nil ? 0 : 48)
+        finalPastIndex + (ICONForecastTiles.covers(store.coordinate) ? 4 : 0)
     }
     private var sliderSelection: Double {
         Double(store.radarFutureMinutes > 0 ?
-               finalPastIndex + store.radarFutureMinutes / 5 : store.radarIndex)
+               finalPastIndex + store.radarFutureMinutes / 60 : store.radarIndex)
     }
 
     var body: some View {
@@ -281,15 +281,15 @@ struct RadarSection: View {
             RadarMap(center: store.coordinate, host: store.radar.host,
                      framePath: selected?.path,
                      projection: nil,
-                     modelField: store.futureField,
+                     modelField: nil,
                      futureMinutes: store.radarFutureMinutes,
-                     onViewport: { center, latSpan, lonSpan in
-                         store.requestFutureField(center:center,latSpan:latSpan,lonSpan:lonSpan)
+                     forecastStatus: { status in
+                         store.futureFieldStatus = status
                      })
                 .frame(height: expanded ? 540 : 325)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(alignment: .topTrailing) {
-                    Text(store.radarFutureMinutes > 0 ? "PREVISIÓN MODELO · NO RADAR" : "RADAR OBSERVADO")
+                    Text(store.radarFutureMinutes > 0 ? "ICON-EU · PREVISIÓN 1 H" : "RADAR OBSERVADO")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(store.radarFutureMinutes > 0 ? .yellow : .white)
                         .padding(8)
@@ -298,11 +298,10 @@ struct RadarSection: View {
                 }
             HStack {
                 if store.radarFutureMinutes > 0 {
-                    Text("Futuro +\(store.radarFutureMinutes) min")
+                    Text("Modelo +\(store.radarFutureMinutes / 60) h")
                         .foregroundStyle(.yellow)
                     Spacer()
-                    Text(Date()
-                        .addingTimeInterval(Double(store.radarFutureMinutes * 60))
+                    Text(ICONForecastTiles.forecastTime(leadMinutes: store.radarFutureMinutes)
                         .formatted(date: .omitted, time: .shortened))
                 } else {
                     Text(selected.map { "Observado " + $0.date.formatted(date: .omitted, time: .shortened) } ?? "Sin radar")
@@ -314,8 +313,8 @@ struct RadarSection: View {
 
             Slider(value: Binding(get: { sliderSelection }, set: { value in
                 let index = Int(value.rounded())
-                if index > finalPastIndex, store.futureField != nil {
-                    store.radarFutureMinutes = (index-finalPastIndex) * 5
+                if index > finalPastIndex, ICONForecastTiles.covers(store.coordinate) {
+                    store.radarFutureMinutes = (index-finalPastIndex) * 60
                     store.radarIndex = finalPastIndex
                 } else {
                     store.radarFutureMinutes = 0
@@ -340,7 +339,7 @@ struct RadarSection: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
-                if store.futureField != nil {
+                if ICONForecastTiles.covers(store.coordinate) {
                     Button("+2 h") {
                         store.radarIndex = finalPastIndex
                         store.radarFutureMinutes = 120
@@ -357,16 +356,18 @@ struct RadarSection: View {
             }
             .font(.caption)
             Text(store.radarFutureMinutes > 0
-                 ? "Precipitación espacial de modelos meteorológicos (mm/h), interpolación entre campos. No son observaciones del radar."
-                 : "Radar observado hasta Ahora. A continuación, imágenes de precipitación previstas por modelos, no ecos desplazados ni difuminados.")
+                 ? "Previsión oficial DWD ICON-EU: precipitación acumulada en una hora. No son ecos de radar ni una previsión minuto a minuto."
+                 : "Hasta Ahora: radar observado. A partir de Ahora: mapas de previsión ICON-EU por horas para Europa.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Text(store.futureFieldStatus)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
-            Text("Mapa futuro: colores según lluvia prevista, resolución limitada por el modelo; el zoom no crea datos meteorológicos más finos.")
+            Text("ICON-EU: resolución meteorológica aproximada de 6 km. Ampliar el mapa no genera detalle atmosférico adicional.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+            Link("Fuente del modelo: Deutscher Wetterdienst (DWD)", destination: URL(string: "https://www.dwd.de/")!)
+                .font(.caption2)
             Link("Datos radar: RainViewer", destination: URL(string: "https://www.rainviewer.com/")!)
                 .font(.caption2)
             .task(id: playing) {
@@ -376,11 +377,11 @@ struct RadarSection: View {
                     let n = finalPastIndex
                     if store.radarFutureMinutes > 0 {
                         if store.radarFutureMinutes >= 240 { playing = false }
-                        else { store.radarFutureMinutes += 5 }
+                        else { store.radarFutureMinutes += 60 }
                     } else if store.radarIndex < n {
                         store.radarIndex += 1
-                    } else if store.futureField != nil {
-                        store.radarFutureMinutes = 5
+                    } else if ICONForecastTiles.covers(store.coordinate) {
+                        store.radarFutureMinutes = 60
                     } else { playing = false }
                 }
             }
