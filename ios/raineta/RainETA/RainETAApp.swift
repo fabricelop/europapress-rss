@@ -101,13 +101,17 @@ struct RainHomeView: View {
             }
             .sheet(isPresented: $fullRadar) {
                 NavigationStack {
-                    RadarSection(store: store, expanded: true)
-                        .padding()
-                        .background(Color(red: 0.035, green: 0.067, blue: 0.12))
-                        .navigationTitle("Radar de lluvia")
-                        .toolbar { ToolbarItem(placement: .topBarTrailing) {
-                            Button("Cerrar") { fullRadar = false }
-                        }}
+                    ScrollView {
+                        RadarSection(store: store, expanded: true)
+                            .padding(.horizontal,16)
+                            .padding(.top,12)
+                    }
+                    .background(Color(red: 0.035, green: 0.067, blue: 0.12))
+                    .navigationTitle("Radar de lluvia")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar { ToolbarItem(placement: .topBarTrailing) {
+                        Button("Cerrar") { fullRadar = false }
+                    }}
                 }
                 .preferredColorScheme(.dark)
             }
@@ -170,11 +174,11 @@ struct RadarSection: View {
     }
     private var finalPastIndex: Int { max(0, store.radar.frames.count - 1) }
     private var lastSliderIndex: Int {
-        finalPastIndex + (ICONForecastTiles.covers(store.coordinate) ? 4 : 0)
+        finalPastIndex + (ICONForecastTiles.covers(store.coordinate) ? 16 : 0)
     }
     private var sliderSelection: Double {
         Double(store.radarFutureMinutes > 0 ?
-               finalPastIndex + store.radarFutureMinutes / 60 : store.radarIndex)
+               finalPastIndex + store.radarFutureMinutes / 15 : store.radarIndex)
     }
 
     var body: some View {
@@ -190,7 +194,7 @@ struct RadarSection: View {
                 .frame(height: expanded ? 540 : 325)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(alignment: .topTrailing) {
-                    Text(store.radarFutureMinutes > 0 ? "ICON-EU · PREVISIÓN 1 H" : "RADAR OBSERVADO")
+                    Text(store.radarFutureMinutes > 0 ? "ICON-EU · INTERPOLADO" : "RADAR OBSERVADO")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(store.radarFutureMinutes > 0 ? .yellow : .white)
                         .padding(8)
@@ -199,10 +203,10 @@ struct RadarSection: View {
                 }
             HStack {
                 if store.radarFutureMinutes > 0 {
-                    Text("Modelo +\(store.radarFutureMinutes / 60) h")
+                    Text("Futuro +\(store.radarFutureMinutes) min")
                         .foregroundStyle(.yellow)
                     Spacer()
-                    Text(ICONForecastTiles.forecastTime(leadMinutes: store.radarFutureMinutes)
+                    Text(Date().addingTimeInterval(Double(store.radarFutureMinutes*60))
                         .formatted(date: .omitted, time: .shortened))
                 } else {
                     Text(selected.map { "Observado " + $0.date.formatted(date: .omitted, time: .shortened) } ?? "Sin radar")
@@ -215,7 +219,7 @@ struct RadarSection: View {
             Slider(value: Binding(get: { sliderSelection }, set: { value in
                 let index = Int(value.rounded())
                 if index > finalPastIndex, ICONForecastTiles.covers(store.coordinate) {
-                    store.radarFutureMinutes = (index-finalPastIndex) * 60
+                    store.radarFutureMinutes = (index-finalPastIndex) * 15
                     store.radarIndex = finalPastIndex
                 } else {
                     store.radarFutureMinutes = 0
@@ -241,15 +245,15 @@ struct RadarSection: View {
                 .buttonStyle(.bordered)
                 .controlSize(.small)
                 if ICONForecastTiles.covers(store.coordinate) {
-                    Button("+2 h") {
+                    Button("+15 m") {
                         store.radarIndex = finalPastIndex
-                        store.radarFutureMinutes = 120
+                        store.radarFutureMinutes = min(240,store.radarFutureMinutes + 15)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
-                    Button("+4 h") {
+                    Button("−15 m") {
                         store.radarIndex = finalPastIndex
-                        store.radarFutureMinutes = 240
+                        store.radarFutureMinutes = max(0,store.radarFutureMinutes - 15)
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
@@ -257,14 +261,14 @@ struct RadarSection: View {
             }
             .font(.caption)
             Text(store.radarFutureMinutes > 0
-                 ? "Previsión oficial DWD ICON-EU: precipitación acumulada en una hora. No son ecos de radar ni una previsión minuto a minuto."
-                 : "Hasta Ahora: radar observado. A partir de Ahora: mapas de previsión ICON-EU por horas para Europa.")
+                 ? "Transición visual cada 15 min entre campos horarios ICON-EU: no son predicciones independientes de 15 min."
+                 : "Radar observado hasta Ahora. Después, campos horarios ICON-EU con pasos visuales de 15 min hasta +4 h.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Text(store.futureFieldStatus)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
-            Text("ICON-EU: resolución meteorológica aproximada de 6 km. Ampliar el mapa no genera detalle atmosférico adicional.")
+            Text("Colores homogéneos; resolución real del modelo ~6 km. Ampliar no crea más detalle.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Link("Fuente del modelo: Deutscher Wetterdienst (DWD)", destination: URL(string: "https://www.dwd.de/")!)
@@ -278,11 +282,11 @@ struct RadarSection: View {
                     let n = finalPastIndex
                     if store.radarFutureMinutes > 0 {
                         if store.radarFutureMinutes >= 240 { playing = false }
-                        else { store.radarFutureMinutes += 60 }
+                        else { store.radarFutureMinutes += 15 }
                     } else if store.radarIndex < n {
                         store.radarIndex += 1
                     } else if ICONForecastTiles.covers(store.coordinate) {
-                        store.radarFutureMinutes = 60
+                        store.radarFutureMinutes = 15
                     } else { playing = false }
                 }
             }
