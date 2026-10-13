@@ -157,10 +157,10 @@ struct RainSettingsView: View {
             }
 
             Section("Datos y fiabilidad") {
-                LabeledContent("Observación radar","RainViewer")
-                LabeledContent("Modelo por horas","Open-Meteo")
-                LabeledContent("Radar avanzado OPERA","En validación")
-                LabeledContent("Modelo de mapas futuros","DWD ICON-EU")
+                LabeledContent("Observación radar",value:"RainViewer")
+                LabeledContent("Modelo por horas",value:"Open-Meteo")
+                LabeledContent("Radar avanzado OPERA",value:"En validación")
+                LabeledContent("Modelo de mapas futuros",value:"DWD ICON-EU")
                 Text("La extrapolación OPERA a +5 y +15 min ha mostrado resultados positivos en casos europeos. No se activará como predicción fiable para España o +120 min hasta superar sus pruebas.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
