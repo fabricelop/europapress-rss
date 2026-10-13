@@ -1,149 +1,203 @@
 import SwiftUI
 
+/// Horizontal comparison is deliberately tabular: one row per saved location,
+/// with the same current-status and time-to-change columns.
 struct PlacesOverview: View {
     @ObservedObject var store: RainStore
     var onSelect: () -> Void = {}
-    @State private var showingSearch = false
+    @State private var showingSearch=false
+    @State private var showingGPSName=false
+    @State private var enteredGPSName=""
     @State private var renaming: SavedRainPlace?
-    @State private var editedName = ""
+    @State private var editedName=""
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 8) {
-                Label("Mis lugares", systemImage: "mappin.and.ellipse")
-                    .font(.headline)
+        VStack(alignment:.leading,spacing:13) {
+            HStack {
+                VStack(alignment:.leading,spacing:3) {
+                    Text("Mis lugares").font(.title3.bold())
+                    Text("\(store.allPlaceRows.count) ubicaciones")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 Spacer()
                 if store.summariesLoading { ProgressView().controlSize(.mini) }
                 Button {
-                    Task { await store.refreshSummaries(force: true) }
-                } label: { Image(systemName: "arrow.clockwise") }
-                    .accessibilityLabel("Actualizar todas las ubicaciones")
-                Button { showingSearch = true } label: {
-                    Label("Añadir", systemImage: "plus")
+                    Task { await store.refreshSummaries(force:true) }
+                } label:{ Image(systemName:"arrow.clockwise") }
+                .accessibilityLabel("Actualizar todas las ubicaciones")
+                Button { showingSearch=true } label:{
+                    Label("Añadir",systemImage:"plus")
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.cyan)
-                .foregroundStyle(.black)
+                .buttonStyle(.borderedProminent).tint(.cyan).foregroundStyle(.black)
                 .controlSize(.small)
             }
-            Text("Ahora · Próxima lluvia · Hasta cuándo · Según modelo Open-Meteo")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            ForEach(store.allPlaceRows) { place in
-                HStack(spacing: 6) {
-                    Button {
-                        store.selectPlace(place.id)
-                        onSelect()
-                    } label: {
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack(spacing: 5) {
-                                Image(systemName: place.id == "gps" ? "location.fill" : "mappin.circle.fill")
-                                    .foregroundStyle(.cyan)
-                                Text(place.name)
-                                    .font(.subheadline.bold())
-                                    .lineLimit(1)
-                                Spacer()
-                                if store.selectedPlaceID == place.id {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundStyle(.cyan)
-                                }
-                                Text(store.quickSummaries[place.id]?.temperatureLabel ?? "—")
-                                    .font(.subheadline.monospacedDigit())
-                                    .foregroundStyle(.secondary)
-                            }
-                            HStack(spacing: 6) {
-                                metric("Ahora", nowText(place.id),
-                                       store.quickSummaries[place.id]?.raining == true ? .cyan : .white)
-                                metric("Próxima lluvia",
-                                       store.quickSummaries[place.id]?.nextLabel ?? "—", .white)
-                                metric("Hasta cuándo",
-                                       store.quickSummaries[place.id]?.untilLabel ?? "—", .white)
-                            }
-                        }
-                        .padding(10)
-                        .frame(maxWidth: .infinity)
-                        .background(store.selectedPlaceID == place.id ?
-                                    Color.cyan.opacity(0.14) : Color.white.opacity(0.055),
-                                    in: RoundedRectangle(cornerRadius: 13))
-                    }
-                    .buttonStyle(.plain)
+            HStack {
+                Label("Comparador en directo",systemImage:"tablecells.fill")
+                    .font(.caption.bold()).foregroundStyle(.cyan)
+                Spacer()
+                Text("Modelo · 15 min").font(.caption2).foregroundStyle(.secondary)
+            }
 
-                    if place.id == "gps" {
-                        Button {
-                            store.saveGPSPlace()
-                        } label: { Image(systemName: "star.badge.plus").frame(width: 25) }
-                            .disabled(store.gpsCoordinate == nil)
-                            .accessibilityLabel("Guardar posición GPS como lugar fijo")
-                    } else {
-                        Menu {
-                            Button("Abrir", systemImage: "arrow.up.forward") {
-                                store.selectPlace(place.id)
-                                onSelect()
-                            }
-                            Button("Renombrar", systemImage: "pencil") {
-                                renaming = store.savedPlaces.first(where: { $0.id == place.id })
-                                editedName = place.name
-                            }
-                            Button("Eliminar", systemImage: "trash", role: .destructive) {
-                                store.deletePlace(place.id)
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis.circle").frame(width: 25)
+            ScrollView(.horizontal) {
+                VStack(spacing:0) {
+                    header
+                    ForEach(store.allPlaceRows) { place in
+                        TimelineView(.periodic(from:.now,by:30)) { timer in
+                            row(place,now:timer.date)
                         }
-                        .accessibilityLabel("Opciones de \(place.name)")
+                        Divider().overlay(.white.opacity(0.08))
+                    }
+                }
+                .frame(minWidth:550)
+            }
+            .scrollIndicators(.visible)
+            .padding(8)
+            .background(Color(red:0.03,green:0.12,blue:0.22),in:RoundedRectangle(cornerRadius:15))
+
+            if store.gpsCoordinate != nil {
+                Button { enteredGPSName = "";showingGPSName=true } label:{
+                    Label("Guardar mi posición con un nombre propio",systemImage:"mappin.and.ellipse")
+                        .font(.subheadline.weight(.medium))
+                }
+                .buttonStyle(.bordered)
+                .tint(.cyan)
+            } else {
+                Text("Esperando coordenadas GPS para guardar un punto fijo.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Text("SÍ/NO es la estimación actual del modelo, no una comprobación física de lluvia. El contador se actualiza localmente; los datos meteorológicos se renuevan al consultar.")
+                .font(.caption2).foregroundStyle(.secondary)
+        }
+        .padding(15)
+        .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
+        .sheet(isPresented:$showingSearch) {
+            PlaceSearchSheet(store:store,onSelect:onSelect)
+        }
+        .sheet(isPresented:$showingGPSName) {
+            NavigationStack {
+                Form {
+                    TextField("Ej.: Casa, Oficina, Colegio…",text:$enteredGPSName)
+                        .textInputAutocapitalization(.words)
+                    if let coord=store.gpsCoordinate {
+                        Text(String(format:"Coordenadas fijas: %.4f, %.4f",coord.latitude,coord.longitude))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Text("El lugar guardado conserva estas coordenadas aunque te desplaces.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                .navigationTitle("Guardar lugar GPS")
+                .toolbar {
+                    ToolbarItem(placement:.cancellationAction) {
+                        Button("Cancelar"){showingGPSName=false}
+                    }
+                    ToolbarItem(placement:.confirmationAction) {
+                        Button("Guardar") {
+                            store.saveGPSPlace(named:enteredGPSName)
+                            showingGPSName=false
+                        }
+                        .disabled(enteredGPSName.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
                     }
                 }
             }
-            HStack(spacing: 4) {
-                Image(systemName: "info.circle")
-                Text("El estado «LLUEVE» se basa en el modelo: puede diferir de la lluvia observada en la calle.")
-            }
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+            .presentationDetents([.medium])
         }
-        .padding(14)
-        .background(.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
-        .sheet(isPresented: $showingSearch) {
-            PlaceSearchSheet(store: store, onSelect: onSelect)
-        }
-        .alert("Renombrar lugar", isPresented: Binding(
-            get: { renaming != nil },
-            set: { if !$0 { renaming = nil } }
+        .alert("Renombrar lugar",isPresented:Binding(
+            get:{renaming != nil},
+            set:{if !$0 {renaming=nil}}
         )) {
-            TextField("Nombre", text: $editedName)
-            Button("Cancelar", role: .cancel) { renaming = nil }
+            TextField("Nombre",text:$editedName)
+            Button("Cancelar",role:.cancel) {renaming=nil}
             Button("Guardar") {
-                if let item = renaming { store.renamePlace(item.id, to: editedName) }
-                renaming = nil
+                if let place=renaming {store.renamePlace(place.id,to:editedName)}
+                renaming=nil
             }
-        } message: {
-            Text("El nombre se conservará en este iPhone.")
+        } message:{
+            Text("El alias queda guardado únicamente en este iPhone.")
         }
     }
 
-    private func nowText(_ id: String) -> String {
-        guard let state = store.quickSummaries[id] else {
-            if id == "gps" && store.gpsCoordinate == nil { return "Esperando GPS" }
-            return store.quickFailures.contains(id) ? "Sin datos" : "Cargando…"
+    private var header:some View {
+        HStack(spacing:7) {
+            heading("LOCALIZACIÓN",width:170)
+            heading("LLUEVE",width:75)
+            heading("CAMBIO EN",width:105)
+            heading("TEMP.",width:62)
+            heading("ESTADO",width:65)
         }
-        return state.nowLabel
+        .padding(.horizontal,6).padding(.vertical,9)
+        .background(.cyan.opacity(0.10),in:RoundedRectangle(cornerRadius:8))
     }
 
-    private func metric(_ title: String, _ value: String, _ color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.system(size: 10))
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.75)
-            Text(value)
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(color)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+    private func heading(_ text:String,width:CGFloat)->some View {
+        Text(text).font(.system(size:10,weight:.bold))
+            .foregroundStyle(.cyan)
+            .frame(width:width,alignment:.leading)
+    }
+
+    private func row(_ place:PlaceListRow,now:Date)->some View {
+        let summary=store.quickSummaries[place.id]
+        let stale=summary.map { now.timeIntervalSince($0.checkedAt)>20*60 } ?? true
+        let target=summary.map{$0.raining ? $0.until : $0.nextRain} ?? nil
+        return HStack(spacing:7) {
+            Button {
+                store.selectPlace(place.id)
+                onSelect()
+            } label:{
+                HStack(spacing:4) {
+                    Image(systemName:place.id=="gps" ? "location.fill":"mappin")
+                        .foregroundStyle(.cyan)
+                    Text(place.name).font(.system(size:12,weight:.semibold))
+                        .lineLimit(2).multilineTextAlignment(.leading)
+                        .foregroundStyle(.white)
+                    if store.selectedPlaceID==place.id {
+                        Image(systemName:"checkmark.circle.fill")
+                            .foregroundStyle(.cyan)
+                    }
+                }
+                .frame(width:170,alignment:.leading)
+            }
+            .buttonStyle(.plain)
+            Group {
+                if stale { Text("—").foregroundStyle(.secondary) }
+                else {
+                    Text(summary?.raining == true ? "SÍ" : "NO")
+                        .foregroundStyle(summary?.raining == true ? .cyan : .green)
+                }
+            }
+            .font(.system(size:15,weight:.heavy))
+            .frame(width:75,alignment:.leading)
+            Text(stale ? "Sin datos" : RainInsight.countdown(to:target,at:now))
+                .font(.system(size:12,weight:.bold,design:.rounded))
                 .monospacedDigit()
+                .foregroundStyle(.white)
+                .frame(width:105,alignment:.leading)
+            Text(summary?.temperatureLabel ?? "—")
+                .font(.subheadline.bold())
+                .frame(width:62,alignment:.leading)
+            Menu {
+                Button("Abrir",systemImage:"arrow.up.forward") {
+                    store.selectPlace(place.id);onSelect()
+                }
+                if place.id=="gps" {
+                    Button("Guardar GPS con nombre",systemImage:"star") {
+                        enteredGPSName="";showingGPSName=true
+                    }
+                } else {
+                    Button("Renombrar",systemImage:"pencil") {
+                        renaming=store.savedPlaces.first(where:{$0.id==place.id})
+                        editedName=place.name
+                    }
+                    Button("Eliminar",systemImage:"trash",role:.destructive) {
+                        store.deletePlace(place.id)
+                    }
+                }
+            } label:{
+                Image(systemName:stale ? "exclamationmark.circle":"ellipsis.circle")
+                    .foregroundStyle(stale ? .yellow : .cyan)
+                    .frame(width:65)
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal,6).padding(.vertical,12)
     }
 }
 
