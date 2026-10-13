@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: macos-15
-    timeout-minutes: 40
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,6 +34,15 @@ jobs:
       - name: Verify multi-location forecast provider
         working-directory: ios/raineta
         run: python3 tests/provider_smoke.py
+      - name: Verify genuine ICON-EU model maps and zoom
+        working-directory: ios/raineta
+        run: python3 tests/dwd_wms_visual_probe.py
+      - name: Upload provider visual proofs
+        uses: actions/upload-artifact@v4
+        with:
+          name: RainETA-ICON-EU-model-previews
+          path: ios/raineta/official-maps/*.png
+          retention-days: 7
       - name: Build iPhone application and Live Activity
         working-directory: ios/raineta
         run: |
@@ -79,12 +88,12 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr RainETA-0.4.0-unsigned.ipa Payload
-          unzip -l RainETA-0.4.0-unsigned.ipa | grep 'RainETALive.appex'
+          zip -qr RainETA-0.5.0-unsigned.ipa Payload
+          unzip -l RainETA-0.5.0-unsigned.ipa | grep 'RainETALive.appex'
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: RainETA-0.4.0-IPA
-          path: ios/raineta/dist/RainETA-0.4.0-unsigned.ipa
+          name: RainETA-0.5.0-IPA
+          path: ios/raineta/dist/RainETA-0.5.0-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
