@@ -15,7 +15,10 @@ enum TimeMapCardClock {
             let hours=(total%86_400)/3600
             let minutes=(total%3600)/60
             // No mostrar 32:45:56 cuando han pasado varios días.
-            return "\(days)d \(hours)h \(minutes)min"
+            var parts=["\(days)d"]
+            if hours>0 { parts.append("\(hours)h") }
+            if minutes>0 { parts.append("\(minutes)min") }
+            return parts.joined(separator:" ")
         }
         return String(format:"%02d:%02d:%02d",total/3600,(total/60)%60,total%60)
     }
