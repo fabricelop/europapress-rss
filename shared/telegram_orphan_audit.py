@@ -70,6 +70,10 @@ def audit(project,now=None,root=None):
         requests.update(problems)
     latest={}
     grouped_final={}
+    # If a later revision finalizes the exact same Telegram message, the
+    # earlier provisional ledger row is superseded. A final on a different
+    # message must NOT hide an orphaned provisional.
+    final_message_keys=set()
     for row in deliveries:
         key=str(row.get("event_id") or "")
         if key and (key not in latest or when(row.get("updated_at") or row.get("delivered_at"))
@@ -83,6 +87,9 @@ def audit(project,now=None,root=None):
         final_group=(str(row.get("status") or "").lower() in terminal or
                      (str(row.get("status") or "").lower()=="sent" and row.get("final") is True))
         if final_group:
+            message_id=int(row.get("telegram_message_id") or 0)
+            if key and message_id:
+                final_message_keys.add((key,message_id))
             for member_id in row.get("group_member_ids") or []:
                 member_id=str(member_id or "")
                 if member_id:
@@ -95,6 +102,9 @@ def audit(project,now=None,root=None):
         if not start:continue
         elapsed=(now-start).total_seconds()/60
         event_id=str(row.get("event_id") or "")
+        message_id=int(row.get("telegram_message_id") or 0)
+        if event_id and message_id and (event_id,message_id) in final_message_keys:
+            continue
         req=requests.get(event_id,{})
         editorial_state=str(req.get("status") or "").lower()
         ready=bool(editorial_state in {"explained","ready","grouped"})
@@ -240,6 +250,15 @@ def selftest():
         report=audit("ttittulares",now,root)
         assert report["unresolved_count"]==1,report
         assert report["unresolved"][0]["message_id"]==3555
+        # A new revision that finalizes the very same Telegram message
+        # closes the older provisional row without masking other messages.
+        (root/"telegram/ttittulares-deliveries.json").write_text(json.dumps({"items":[
+            {"event_id":"sol","revision":1,"title":"Tensión en Sol","status":"sent","final":False,
+             "telegram_message_id":3555,"delivered_at":"2026-10-12T14:11:00Z"},
+            {"event_id":"sol","revision":2,"title":"Tensión en Sol","status":"sent","final":True,
+             "telegram_message_id":3555,"delivered_at":"2026-10-12T14:11:00Z",
+             "updated_at":"2026-10-12T16:30:00Z"}]}))
+        assert audit("ttittulares",now,root)["unresolved_count"]==0
         (root/"trends/telegram-image-deliveries.json").write_text(json.dumps({"items":[
             {"event_id":"j","status":"sent","final":False,"telegram_message_id":714,
              "delivered_at":"2026-10-12T14:18:00Z"}]}))
