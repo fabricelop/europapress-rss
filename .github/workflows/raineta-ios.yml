@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: macos-15
-    timeout-minutes: 25
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,6 +31,9 @@ jobs:
       - name: Generate Xcode project
         working-directory: ios/raineta
         run: xcodegen generate
+      - name: Verify multi-location forecast provider
+        working-directory: ios/raineta
+        run: python3 tests/provider_smoke.py
       - name: Build iPhone application and Live Activity
         working-directory: ios/raineta
         run: |
@@ -43,6 +46,22 @@ jobs:
             -derivedDataPath .build \
             CODE_SIGNING_ALLOWED=NO \
             build | tee /tmp/raineta-build.log
+      - name: Test model field, future continuity and zoom (iPhone simulator)
+        working-directory: ios/raineta
+        run: |
+          set -o pipefail
+          SIM_ID=$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next((x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if x.get("isAvailable") and "iPhone" in x.get("name","")), ""))')
+          if [ -z "$SIM_ID" ]; then
+            echo "No iPhone simulator available: cannot validate forecast rendering"
+            exit 1
+          fi
+          xcodebuild -project RainETA.xcodeproj -scheme RainETA \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination "platform=iOS Simulator,id=$SIM_ID" \
+            -derivedDataPath .sim-build \
+            CODE_SIGNING_ALLOWED=NO \
+            -only-testing:RainETATests test | tee /tmp/raineta-tests.log
       - name: Create unsigned IPA for Impactor
         working-directory: ios/raineta
         run: |
@@ -55,12 +74,12 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr RainETA-0.3.1-unsigned.ipa Payload
-          unzip -l RainETA-0.3.1-unsigned.ipa | grep 'RainETALive.appex'
+          zip -qr RainETA-0.4.0-unsigned.ipa Payload
+          unzip -l RainETA-0.4.0-unsigned.ipa | grep 'RainETALive.appex'
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: RainETA-0.3.1-IPA
-          path: ios/raineta/dist/RainETA-0.3.1-unsigned.ipa
+          name: RainETA-0.4.0-IPA
+          path: ios/raineta/dist/RainETA-0.4.0-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
