@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-10-13T00:55:24.192144+00:00",
+  "checked_at": "2026-10-13T07:30:08.827439+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-13T00:55:24.192144+00:00",
+      "checked_at": "2026-10-13T07:30:08.827439+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tt-chat-20261013-0230",
+        "id": "tt-chat-20261013-0800",
         "status": "DONE",
-        "started_at": "2026-10-13T00:30:00Z",
-        "updated_at": "2026-10-13T00:39:00+00:00",
-        "finished_at": "2026-10-13T00:39:00Z",
+        "started_at": "2026-10-13T06:00:00Z",
+        "updated_at": "2026-10-13T06:06:47+00:00",
+        "finished_at": "2026-10-13T06:06:47Z",
         "source": "github_pr_trace"
       },
       "control_command": "tt-1791842272045-tg-native",
@@ -25,38 +25,23 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-13T00:55:24.192144+00:00",
-      "pending_count": 1,
-      "pending_ids": [
-        "d7b672dc554f"
-      ],
-      "oldest_at": "2026-10-12T23:22:29+02:00",
+      "checked_at": "2026-10-13T07:30:08.827439+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
       "latest_run": {
-        "id": "tr-20261013T024500+0200-chat",
+        "id": "tr-20261013T091500+0200-chat",
         "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-10-13T02:45:00+02:00",
-        "updated_at": "2026-10-13T00:54:00+00:00",
-        "finished_at": "2026-10-13T02:54:00+02:00",
+        "started_at": "2026-10-13T09:15:00+02:00",
+        "updated_at": "2026-10-13T07:22:15+00:00",
+        "finished_at": "2026-10-13T09:22:15+02:00",
         "source": "editorial_runtime"
       },
       "control_command": "tr-1791842287195-tg-12180e",
       "last_command_at": "2026-10-12T21:58:07.195Z",
-      "status": "editorial_run_finished_delivery_unverified",
+      "status": "no_work",
       "should_dispatch": false,
-      "item_execution": [
-        {
-          "id": "d7b672dc554f",
-          "entered_at": "2026-10-12T23:22:29+02:00",
-          "should_start_by": "2026-10-12T21:27:29+00:00",
-          "global_run_after_entry": true,
-          "final_telegram_delivery_confirmed": false
-        }
-      ],
-      "backlog_signature": "38526872081bcbfc",
-      "expected_start_by": "2026-10-12T21:27:29+00:00",
-      "attempts": 1,
-      "actual_start_at": "2026-10-13T00:45:00+00:00",
-      "start_delay_seconds": 12151,
+      "attempts": 0,
       "last_request_at": "2026-10-12T21:45:13.146012+00:00"
     }
   },
