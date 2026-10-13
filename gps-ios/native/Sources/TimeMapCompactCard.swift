@@ -10,6 +10,13 @@ enum TimeMapCardClock {
     static func display(_ seconds:TimeInterval)->String {
         guard seconds.isFinite else { return "—" }
         let total=Int(max(0,seconds).rounded(.down))
+        if total>=86_400 {
+            let days=total/86_400
+            let hours=(total%86_400)/3600
+            let minutes=(total%3600)/60
+            // No mostrar 32:45:56 cuando han pasado varios días.
+            return "\(days)d \(hours)h \(minutes)min"
+        }
         return String(format:"%02d:%02d:%02d",total/3600,(total/60)%60,total%60)
     }
 }
