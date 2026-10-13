@@ -1,6 +1,19 @@
-# RainETA para iPhone — v0.5.0
+# RainETA para iPhone — v0.8.0
 
 App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
+
+## v0.8.0 — Pantalla compacta, histórico real y navegación fina
+
+- Inicio: contador, pulso, próximas 3 horas, semana, radar al final y comparador de modelos contraído debajo. Se eliminan los textos técnicos repetidos.
+- Radar: imágenes observadas de RainViewer dentro de las últimas 2 horas **solo cuando el proveedor las entrega**; barra con marca de AHORA, flechas de cinco minutos en futuro, botones para volver a ahora y centrar en la localidad; los barridos pasados avanzan exclusivamente de una observación real a la siguiente.
+- MapKit: mantiene el último campo completo hasta cargar las teselas visibles del siguiente; precarga alrededor del viewport; cancela peticiones obsoletas al deslizar rápido o cambiar de hora; evita que un resultado tardío sustituya una selección reciente.
+- Detalles diarios: los acumulados horarios de Open-Meteo corresponden a la hora **precedente**, por lo que el sello 07:00 representa 06:00–07:00. El de 00:00 se atribuye al día anterior, incluyendo los episodios que terminan a medianoche.
+- La probabilidad y la cantidad son variables distintas: cuando los horarios que muestran lluvia y los máximos de probabilidad difieren significativamente, se informa en el detalle diario.
+- Semana: temperaturas mínimas y máximas en una sola línea; filas pulsables para ver cada día y sin duplicación de fichas en Inicio.
+- Mis lugares: el título Comparador en directo ahora abre una vista interactiva de localidades; mantiene la ordenación manual guardada y la posibilidad de seleccionar un lugar.
+- Modelos ECMWF/ICON/GFS: panel al final, contraído por defecto, consultas bajo demanda y aviso cuando los modelos divergen.
+- La extrapolación de 5 minutos en futuro inmediato **no equivale a predicciones independientes**: se interpola visualmente entre dos campos ICON-EU horarios. No se oculta esa distinción en los ajustes.
+- La historia de radar no se simula ni completa artificialmente.
 
 ## v0.5.0 — Sustitución completa de la capa futura anterior
 
