@@ -1,24 +1,36 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-13T03:40:52.154456+00:00",
+  "checked_at": "2026-10-13T03:42:45.718682+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 36,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 1,
+  "unresolved_count": 2,
   "unresolved": [
     {
       "key": "provisional:12c46f6e4f2f:3617",
       "id": "12c46f6e4f2f",
       "message_id": 3617,
       "title": "El Gobierno estudiará si puede recurrir al Constitucional el fallo del Supremo sobre la 'ley de nietos'",
-      "age_min": 22.5,
+      "age_min": 24.4,
+      "reason": "Bloqueo editorial: transport_write_blocked"
+    },
+    {
+      "key": "provisional:b0d0f54ebef3:3618",
+      "id": "b0d0f54ebef3",
+      "message_id": 3618,
+      "title": "Ignacio González se estrena en el banquillo por amañar adjudicaciones del campo de golf del Canal en beneficio de su familia",
+      "age_min": 2.6,
       "reason": "Bloqueo editorial: transport_write_blocked"
     }
   ],
   "alerted": {
     "provisional:12c46f6e4f2f:3617": {
       "signature": "ea778a7720a8f0c6c4",
+      "notified_at": null
+    },
+    "provisional:b0d0f54ebef3:3618": {
+      "signature": "40859fc038f8d9a441",
       "notified_at": null
     }
   },
