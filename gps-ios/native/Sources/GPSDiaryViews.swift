@@ -17,21 +17,16 @@ struct GPSDiaryShell: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Revisión de registros") {
+                Section("Revisar") {
                     NavigationLink {
                         GPSGapReviewView(model:model)
                     } label: {
-                        Label("Revisar huecos sin GPS",systemImage:"location.slash.circle")
+                        Label("Huecos GPS",systemImage:"location.slash.circle")
                     }
                     NavigationLink {
                         TimeRecoveredEditor(model:model)
                     } label: {
-                        Label("Deshacer o corregir recuperaciones",systemImage:"arrow.uturn.backward")
-                    }
-                }
-                if let latest=days.first {
-                    Section("Calidad del seguimiento") {
-                        TimeDayTimeline(model:model,day:latest)
+                        Label("Corregir tiempo añadido",systemImage:"arrow.uturn.backward")
                     }
                 }
                 ForEach(days, id: \.self) { day in
