@@ -160,8 +160,9 @@ struct RadarSection: View {
     private var pastEnd:Int {max(0,frames.count-1)}
     private var futureSteps:Int {ICONForecastTiles.covers(store.coordinate) ? 48 : 0}
     private var sliderIndex:Double {
-        Double(store.radarFutureMinutes>0 ?
-               pastEnd + store.radarFutureMinutes/5 : store.radarIndex)
+        if store.radarFutureMinutes>0 {return Double(store.radarFutureMinutes)}
+        guard let last=frames.last,let current=observed else{return 0}
+        return min(0,Double(current.timestamp-last.timestamp)/60)
     }
     private var observed:RadarFrame? {
         guard !frames.isEmpty else{return nil}
@@ -179,6 +180,23 @@ struct RadarSection: View {
             store.radarFutureMinutes=min(240,(next-pastEnd)*5)
         } else {
             store.radarIndex=next
+            store.radarFutureMinutes=0
+        }
+    }
+    private func selectMinute(_ minutes:Int) {
+        if minutes>0 {
+            store.radarIndex=pastEnd
+            store.radarFutureMinutes=min(240,max(5,minutes))
+        } else if minutes==0 {
+            store.radarIndex=pastEnd
+            store.radarFutureMinutes=0
+        } else if let last=frames.last {
+            let target=last.date.addingTimeInterval(Double(minutes*60))
+            let nearest=frames.enumerated().min(by:{
+                abs($0.element.date.timeIntervalSince(target)) <
+                abs($1.element.date.timeIntervalSince(target))
+            })?.offset ?? 0
+            store.radarIndex=nearest
             store.radarFutureMinutes=0
         }
     }
@@ -243,13 +261,15 @@ struct RadarSection: View {
             .font(.caption.monospacedDigit())
 
             GeometryReader { proxy in
-                let fraction=CGFloat(pastEnd)/CGFloat(max(1,pastEnd+futureSteps))
+                // Distance is proportional to real elapsed minutes,
+                // regardless of whether past observations are 5 or 10 min.
+                let fraction=CGFloat(historyMinutes)/CGFloat(max(1,historyMinutes+240))
                 let markX=18+(proxy.size.width-36)*fraction
                 ZStack(alignment:.topLeading) {
                     Slider(value:Binding(
                         get:{sliderIndex},
-                        set:{select(Int($0.rounded()))}
-                    ),in:0...Double(max(1,pastEnd+futureSteps)),step:1)
+                        set:{selectMinute(Int($0.rounded()))}
+                    ),in:Double(-max(5,historyMinutes))...240,step:5)
                         .tint(.cyan)
                         .disabled(frames.isEmpty)
                         .padding(.top,0)
