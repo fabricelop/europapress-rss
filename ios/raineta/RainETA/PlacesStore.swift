@@ -73,13 +73,24 @@ struct PlaceListRow: Identifiable {
         Task { await refreshSummaries(force: true) }
     }
 
-    func saveGPSPlace() {
-        guard let gps = gpsCoordinate else {
-            status = "Primero debe estar disponible la ubicación GPS."
+    func saveGPSPlace(named customName:String? = nil) {
+        guard let gps=gpsCoordinate else {
+            status="Primero debe estar disponible la ubicación GPS."
             return
         }
-        addPlace(name: "Mi lugar · \(gps.latitude.formatted(.number.precision(.fractionLength(3)))), \(gps.longitude.formatted(.number.precision(.fractionLength(3))))",
-                 latitude: gps.latitude, longitude: gps.longitude, select: false)
+        let name=String((customName ?? "").trimmingCharacters(in:.whitespacesAndNewlines).prefix(60))
+        let text=name.isEmpty ?
+            "Mi lugar · \(gps.latitude.formatted(.number.precision(.fractionLength(3)))), \(gps.longitude.formatted(.number.precision(.fractionLength(3))))" :
+            name
+        // Duplicate coordinates represent the same place, never a new phantom row.
+        if let existing=savedPlaces.first(where:{
+            abs($0.latitude-gps.latitude)<0.0015 &&
+            abs($0.longitude-gps.longitude)<0.0015
+        }) {
+            if !name.isEmpty {renamePlace(existing.id,to:text)}
+            return
+        }
+        addPlace(name:text,latitude:gps.latitude,longitude:gps.longitude,select:false)
     }
 
     func renamePlace(_ id: String, to newName: String) {
