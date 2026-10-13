@@ -96,9 +96,9 @@ final class ICONForecastTiles: MKTileOverlay {
 
     private func didLoadValidPNG() {
         DispatchQueue.main.async {
-            guard !self.reported else { return }
+            guard !self.reported, let onFirstTile=self.onFirstTile else { return }
             self.reported = true
-            self.onFirstTile?()
+            onFirstTile()
         }
     }
 
