@@ -15,6 +15,7 @@ STATUS=TT/"status.json"
 EVENTS=TG/"events.json"
 ERRORS=TT/"execution-errors.json"
 DECISIONS=TT/"decisions.json"
+DELIVERIES=TG/"ttittulares-deliveries.json"
 
 def record_error(errors, event_id, phase, reason, now):
     errors.append({"at":now,"event_id":event_id,"phase":phase,"reason":str(reason)[:1000],
@@ -494,6 +495,24 @@ def resolve_duplicate(payload, eid, previous, queue, decisions, status=None):
     return ("SKIPPED_DUPLICATE" if state=="PUBLISHED" else "DISMISSED"),original_id,reason
 
 
+def has_open_telegram_provisional(eid, rev):
+    """True only for this event/revision's own already-sent unfinished Telegram card."""
+    ledger=load(DELIVERIES,{"items":[]})
+    for item in ledger.get("items",[]) or []:
+        if str(item.get("event_id") or "")!=str(eid):
+            continue
+        if int(item.get("revision") or 1)!=int(rev):
+            continue
+        if str(item.get("status") or "").lower()!="sent":
+            continue
+        if item.get("final") is not False:
+            continue
+        if int(item.get("telegram_message_id") or 0)<=0:
+            continue
+        return True
+    return False
+
+
 def selftest_duplicate():
     queue={"items":[{"event_id":"old","status":"PUBLISHED"},{"event_id":"dismissed","status":"DISMISSED"}]}
     decisions={"items":[{"event_id":"old","status":"published"},{"event_id":"dismissed","status":"dismissed"},{"event_id":"deleted","status":"deleted"}]}
@@ -534,15 +553,27 @@ def main():
                 path.unlink(); continue
             previous=next((x for x in p.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
             image_retry=row.get("status")=="READY" and previous is not None
-            if str(row.get("status") or "") not in {"PROCESSING","PROBLEMATIC"} and not image_retry:
-                path.unlink(); continue
             st=str(payload.get("status") or "")
+            row_status=str(row.get("status") or "")
+            provisional_repair=(
+                st=="ready"
+                and payload.get("repair_existing_provisional") is True
+                and previous is None
+                and row_status in {"DISMISSED","SKIPPED_DUPLICATE"}
+                and has_open_telegram_provisional(eid,rev)
+            )
+            if row_status not in {"PROCESSING","PROBLEMATIC"} and not image_retry and not provisional_repair:
+                path.unlink(); continue
             if image_retry:
                 processed.append(eid+":legacy-editorial-image-retry-rejected")
                 path.unlink()
                 continue
             if st=="ready":
                 item=preserve_rework(validate_ready(payload), row)
+                if provisional_repair:
+                    item["telegram_provisional_repair"]=True
+                    item["repaired_from_status"]=row_status
+                    item["repaired_at"]=now
                 # READY se materializa sin búsquedas de red. IA y fallback
                 # continúan por Actions independientes.
                 _initialize_parallel_images(item)
@@ -553,6 +584,9 @@ def main():
                 previous_attempts=int(row.get("problematic_attempts") or (1 if str(row.get("status") or "")=="PROBLEMATIC" else 0))
                 if previous_attempts:
                     item.setdefault("problematic_attempts_before_ready",previous_attempts)
+                if provisional_repair:
+                    row["telegram_provisional_repaired_from_status"]=row_status
+                    row["telegram_provisional_repaired_at"]=now
                 row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
                 row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None);row.pop("user_validated",None);row.pop("user_validated_at",None);row.pop("user_validation_source",None);row.pop("user_validation_version",None)
             elif st=="duplicate":
