@@ -64,4 +64,16 @@ for mins in (20,25,30):
         res=session.head(url,timeout=(8,12),allow_redirects=True)
         record("OPERA-S3",timestamp=at.isoformat(),status=res.status_code,size=res.headers.get("Content-Length"),type=res.headers.get("content-type"))
     except Exception as e:record("OPERA-S3",timestamp=at.isoformat(),error=repr(e))
+# Try native map-friendly COG/GeoTIFF files without API tokens.
+for mins in (25,30):
+    at=now-dt.timedelta(minutes=mins)
+    for ext in ("tiff","tif","cog.tif"):
+        url=f"{s3}/"+at.strftime("%Y/%m/%d/OPERA/COMP/OPERA@%Y%m%dT%H%M@0@DBZH.")+ext
+        try:
+            res=session.head(url,timeout=(8,12))
+            record("OPERA-COG",time=at.isoformat(),extension=ext,
+                   status=res.status_code,size=res.headers.get("content-length"),
+                   acceptRange=res.headers.get("accept-ranges"))
+        except Exception as e:record("OPERA-COG",time=at.isoformat(),extension=ext,error=repr(e))
+
 with open("research-probe/probe.json","w") as out:json.dump(results,out,ensure_ascii=False,indent=2)
