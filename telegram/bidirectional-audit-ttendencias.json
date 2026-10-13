@@ -1,12 +1,22 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-13T06:20:22.234600+00:00",
+  "checked_at": "2026-10-13T06:23:01.060695+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 2,
+  "app_open_count": 3,
   "telegram_live_count": 0,
   "matched_count": 0,
-  "issues_count": 2,
+  "issues_count": 3,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "3034b5653d15",
+      "title": "Martes 13",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
     {
       "kind": "app_without_telegram",
       "id": "66baf38b979a",
@@ -28,6 +38,7 @@
   ],
   "untracked_top10": [],
   "app_ids": [
+    "3034b5653d15",
     "66baf38b979a",
     "bfdbf85e08c0"
   ],
