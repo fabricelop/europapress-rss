@@ -29,6 +29,31 @@ final class TimeGPSGapRecoveryTests:XCTestCase {
         // Solo detectar el hueco no modifica las sumas GPS.
         XCTAssertEqual(TimeAttribution.totals(raw,cellIDs:[home.id]),220)
     }
+    func testPastConfirmedGapIsAllowedWhileCurrentGPSIsInRestMode() throws {
+        let raw=[interval(100,200,home),interval(3380,3500,home)]
+        let gap=try XCTUnwrap(candidates(raw,fixes:[
+            fix(200,home),fix(3380,home)]).first)
+        // El usuario puede iniciar el modo pausa a las 15:30 y confirmar
+        // una pérdida de GPS terminada a las 15:24.
+        let rest=GPSRestSession(startedAt:Date(timeIntervalSince1970:3600),
+            cell:home,latitude:Grid.center(home).latitude,
+            longitude:Grid.center(home).longitude)
+        XCTAssertTrue(TimeGPSGapRecovery.compatibleWithRest(gap,rest:rest))
+        XCTAssertTrue(TimeGPSGapRecovery.compatibleWithRest(gap,rest:nil))
+        XCTAssertTrue(candidates(raw,fixes:[
+            fix(200,home),fix(3380,home)]).contains(gap))
+    }
+    func testCurrentRestOverlapIsNotCreditedTwice() throws {
+        let raw=[interval(100,200,home),interval(3380,3500,home)]
+        let gap=try XCTUnwrap(candidates(raw,fixes:[
+            fix(200,home),fix(3380,home)]).first)
+        let overlappingRest=GPSRestSession(startedAt:Date(timeIntervalSince1970:2500),
+            cell:home,latitude:Grid.center(home).latitude,
+            longitude:Grid.center(home).longitude)
+        XCTAssertFalse(TimeGPSGapRecovery.compatibleWithRest(gap,rest:overlappingRest))
+        XCTAssertFalse(TimeGPSGapConfirmationOutcome.overlapsCurrentRest.isSuccess)
+        XCTAssertTrue(TimeGPSGapConfirmationOutcome.overlapsCurrentRest.message.contains("solapa"))
+    }
     func testDifferentCellCannotBeAttributedWithoutLocationProof() {
         let raw=[interval(100,200,home),interval(3380,3500,other)]
         XCTAssertTrue(candidates(raw,fixes:[fix(200,home),fix(3380,other)]).isEmpty)
