@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T23:15:00+02:00",
-  "last_completed_at": "2026-10-13T23:20:00+02:00",
-  "updated_at": "2026-10-13T23:20:00+02:00",
+  "last_started_at": "2026-10-13T23:45:00+02:00",
+  "last_completed_at": "2026-10-13T23:48:36+02:00",
+  "updated_at": "2026-10-13T23:48:36+02:00",
   "status": "success",
   "processed_ids": [
     "7f4edc904c59",
@@ -39,49 +39,56 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261013T231500+0200-chat",
+    "run_id": "tr-20261013T234500+0200-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-13T23:15:00+02:00",
-    "updated_at": "2026-10-13T23:20:00+02:00",
-    "finished_at": "2026-10-13T23:20:00+02:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-13T23:45:00+02:00",
+    "updated_at": "2026-10-13T23:48:36+02:00",
+    "finished_at": "2026-10-13T23:48:36+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 6,
-      "trends_explained": 6,
-      "explanation_groups": 6,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
-      "revisions_updated": 6,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
+      "refresh_requested": 1,
+      "refresh_materialized_during_run": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 6,
-      "remates_selected": 6,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 4,
-      "telegram_preserved_deleted": 2,
+      "telegram_provisionals_finalized": 0,
+      "telegram_preserved_deleted": 0,
       "telegram_orphans": 0,
-      "telegram_delivery_workflow_verified": 1,
+      "telegram_delivery_workflow_verified": 0,
       "archive_images_enriched": 0,
       "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada directa 6/6 verificada · seis reexplicaciones actualizadas, cola 0 y Telegram saneado.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada directa 0/0 cerrada · cola y reexplicaciones vacías, Telegram sin huérfanos; captura fresca solicitada pero aún no materializada durante la ejecución.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "kind": "recent_refresh_pending",
+        "message": "trends/recent.json seguía en captured_at 2026-10-13T23:12:29+02:00 tras solicitar refresco; la cola autoritativa permaneció en 0 y el autoheal confirmó TTendencias sin pendientes."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -89,184 +96,42 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "id": "7f4edc904c59",
-        "revision": 1,
-        "selected": "🌶️ Olmo fue falso nueve, pero la recuperación del empate fue muy de ocho.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "5d5518aea954",
-        "revision": 1,
-        "selected": "🌶️ Cardoso puso el 2-0 en la red; el VAR lo mandó a borradores.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "fc3e4576c353",
-        "revision": 1,
-        "selected": "🌶️ La noche española cerró dos marcadores y dejó los puntos sin propina.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "bf9a1fe7a07a",
-        "revision": 1,
-        "selected": "🌶️ Barrios tardó menos en marcar que muchos en desbloquear el móvil.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "9ba06c6f802f",
-        "revision": 1,
-        "selected": "🌶️ Leao abrió la puerta del marcador; el Barça acabó entrando con mudanza.",
-        "originality_check": "pass"
-      },
-      {
-        "id": "3c4fe1515d56",
-        "revision": 1,
-        "selected": "🌶️ El balón le pidió una pared y se tomó demasiadas confianzas.",
-        "originality_check": "pass"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T23:15:00+02:00",
+        "at": "2026-10-13T23:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 6 reexplicaciones activas; saneando Pendientes y verificando estado autoritativo."
+        "message": "Iniciando pasada editorial · cola textual 0; verificando saneamiento y solicitando captura fresca."
       },
       {
-        "at": "2026-10-13T23:15:20+02:00",
-        "phase": "verifying",
-        "trend_id": "7f4edc904c59",
-        "title": "Olmo",
-        "message": "Releyendo estado autoritativo de Olmo."
-      },
-      {
-        "at": "2026-10-13T23:15:30+02:00",
-        "phase": "investigating",
-        "trend_id": "7f4edc904c59",
-        "title": "Olmo",
-        "message": "Hecho esencial verificado: 1-4 final y recuperación de Olmo previa al 1-1."
-      },
-      {
-        "at": "2026-10-13T23:15:40+02:00",
-        "phase": "verifying",
-        "trend_id": "5d5518aea954",
-        "title": "Cardoso",
-        "message": "Releyendo estado autoritativo de Cardoso."
-      },
-      {
-        "at": "2026-10-13T23:15:50+02:00",
-        "phase": "investigating",
-        "trend_id": "5d5518aea954",
-        "title": "Cardoso",
-        "message": "Hecho esencial verificado: Atlético 2-0; gol de Cardoso anulado por VAR antes del descanso."
-      },
-      {
-        "at": "2026-10-13T23:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "fc3e4576c353",
-        "title": "Champions",
-        "message": "Releyendo estado autoritativo de Champions."
-      },
-      {
-        "at": "2026-10-13T23:16:10+02:00",
-        "phase": "investigating",
-        "trend_id": "fc3e4576c353",
-        "title": "Champions",
-        "message": "Resultados confirmados: Galatasaray 1-4 Barcelona y Atlético 2-0 Manchester United."
-      },
-      {
-        "at": "2026-10-13T23:16:20+02:00",
-        "phase": "verifying",
-        "trend_id": "bf9a1fe7a07a",
-        "title": "Barrios",
-        "message": "Releyendo estado autoritativo de Barrios."
-      },
-      {
-        "at": "2026-10-13T23:16:30+02:00",
-        "phase": "investigating",
-        "trend_id": "bf9a1fe7a07a",
-        "title": "Barrios",
-        "message": "Hecho esencial verificado: gol de Barrios a los 53 segundos y 2-0 final."
-      },
-      {
-        "at": "2026-10-13T23:16:40+02:00",
-        "phase": "verifying",
-        "trend_id": "9ba06c6f802f",
-        "title": "Leao",
-        "message": "Releyendo estado autoritativo de Leao."
-      },
-      {
-        "at": "2026-10-13T23:16:50+02:00",
-        "phase": "investigating",
-        "trend_id": "9ba06c6f802f",
-        "title": "Leao",
-        "message": "Hecho esencial verificado: asistencia de Leao a Batrakov y 1-4 final."
-      },
-      {
-        "at": "2026-10-13T23:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": "3c4fe1515d56",
-        "title": "Gerard Martín",
-        "message": "Releyendo estado autoritativo de Gerard Martín."
-      },
-      {
-        "at": "2026-10-13T23:17:10+02:00",
-        "phase": "investigating",
-        "trend_id": "3c4fe1515d56",
-        "title": "Gerard Martín",
-        "message": "Hecho esencial verificado: desvío en el 1-0 de Batrakov y remontada final 1-4."
-      },
-      {
-        "at": "2026-10-13T23:17:20+02:00",
-        "phase": "drafting",
-        "trend_id": null,
-        "title": null,
-        "message": "Redactando seis explicaciones factuales y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-13T23:17:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "Remates seleccionados tras control de originalidad; sin muletillas detectadas en el lote reciente."
-      },
-      {
-        "at": "2026-10-13T23:18:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Lote de seis revisiones enviado al aplicador transaccional de TTendencias."
-      },
-      {
-        "at": "2026-10-13T23:19:35+02:00",
+        "at": "2026-10-13T23:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Main verificado: seis revisiones r1 persistidas en Requests y Explicadas; cola retirada."
+        "message": "Releyendo cola, Requests, Explicadas y auditoría Telegram."
       },
       {
-        "at": "2026-10-13T23:19:49+02:00",
+        "at": "2026-10-13T23:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Entrega Telegram verificada; cuatro avisos vivos actualizados y dos borrados previamente preservados."
+        "message": "Top 10 comprobado: sin revisiones activas ni rewrite_pending; 0 avisos Telegram huérfanos."
       },
       {
-        "at": "2026-10-13T23:19:53+02:00",
+        "at": "2026-10-13T23:48:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditorías verificadas: 0 huérfanos y 0 incidencias bidireccionales."
+        "message": "Autoheal confirma TTendencias con 0 pendientes y sin incidencias bidireccionales."
       },
       {
-        "at": "2026-10-13T23:20:00+02:00",
+        "at": "2026-10-13T23:48:36+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 6/6 cerrada y verificada · cola 0 y Telegram limpio."
+        "message": "Pasada 0/0 cerrada con refresco de captura aún pendiente de materializar."
       }
     ],
     "queue_complete": true,
