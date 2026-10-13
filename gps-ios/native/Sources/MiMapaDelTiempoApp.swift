@@ -848,6 +848,29 @@ struct SavedState: Codable {
             return false
         }
     }
+    /// Restaura SOLO la sugerencia seleccionada. No cambia los intervalos.
+    @discardableResult func restoreReviewedGap(_ gap:TimeGPSGapReview)->Bool {
+        guard data.dismissedGPSGapIDs.contains(gap.id) else { return true }
+        var updated=data
+        updated.dismissedGPSGapIDs.removeAll { $0==gap.id }
+        do {
+            if let store {
+                try store.append(fixes:pendingFixes,intervals:pendingIntervals,
+                    totals:pendingTotals,header:TimeStoreHeader(updated))
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            lastSaved = .now
+            return true
+        } catch {
+            gpsStatus="No se pudo restaurar la sugerencia: \(error.localizedDescription)"
+            return false
+        }
+    }
     func restoreDismissedGPSGaps() {
         data.dismissedGPSGapIDs=[]
         save(force:true)
