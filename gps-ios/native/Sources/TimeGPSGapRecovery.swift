@@ -64,3 +64,26 @@ enum TimeGPSGapRecovery {
         return result
     }
 }
+
+/// Resultado real de la confirmación; la interfaz nunca debe asumir éxito
+/// simplemente porque el usuario pulsó el botón de confirmación.
+enum TimeGPSGapConfirmationOutcome:Equatable {
+    case saved(TimeInterval)
+    case noLongerAvailable
+    case storageFailure(String)
+
+    var isSuccess:Bool {
+        if case .saved = self { return true }
+        return false
+    }
+    var message:String {
+        switch self {
+        case .saved(let seconds):
+            return "\(DurationFormat.full(seconds)) añadidos a la estancia como tiempo estimado (no GPS observado)."
+        case .noLongerAvailable:
+            return "El intervalo ha cambiado desde que abriste la confirmación. No se ha añadido ningún tiempo. Revisa de nuevo el hueco."
+        case .storageFailure(let explanation):
+            return "No se pudo guardar el tiempo recuperado: \(explanation)"
+        }
+    }
+}
