@@ -48,7 +48,7 @@ struct PlacesOverview: View {
                         Divider().overlay(.white.opacity(0.08))
                     }
                 }
-                .frame(minWidth:550)
+                .frame(minWidth:355)
             }
             .scrollIndicators(.visible)
             .padding(8)
@@ -118,11 +118,11 @@ struct PlacesOverview: View {
 
     private var header:some View {
         HStack(spacing:7) {
-            heading("LOCALIZACIÓN",width:170)
-            heading("LLUEVE",width:75)
-            heading("CAMBIO EN",width:105)
-            heading("TEMP.",width:62)
-            heading("ESTADO",width:65)
+            heading("LUGAR",width:110)
+            heading("LLUEVE",width:50)
+            heading("CAMBIO",width:87)
+            heading("°C",width:43)
+            heading("OPC.",width:37)
         }
         .padding(.horizontal,6).padding(.vertical,9)
         .background(.cyan.opacity(0.10),in:RoundedRectangle(cornerRadius:8))
@@ -154,7 +154,7 @@ struct PlacesOverview: View {
                             .foregroundStyle(.cyan)
                     }
                 }
-                .frame(width:170,alignment:.leading)
+                .frame(width:110,alignment:.leading)
             }
             .buttonStyle(.plain)
             Group {
@@ -165,15 +165,15 @@ struct PlacesOverview: View {
                 }
             }
             .font(.system(size:15,weight:.heavy))
-            .frame(width:75,alignment:.leading)
+            .frame(width:50,alignment:.leading)
             Text(stale ? "Sin datos" : RainInsight.countdown(to:target,at:now))
                 .font(.system(size:12,weight:.bold,design:.rounded))
                 .monospacedDigit()
                 .foregroundStyle(.white)
-                .frame(width:105,alignment:.leading)
+                .frame(width:87,alignment:.leading)
             Text(summary?.temperatureLabel ?? "—")
                 .font(.subheadline.bold())
-                .frame(width:62,alignment:.leading)
+                .frame(width:43,alignment:.leading)
             Menu {
                 Button("Abrir",systemImage:"arrow.up.forward") {
                     store.selectPlace(place.id);onSelect()
@@ -194,7 +194,7 @@ struct PlacesOverview: View {
             } label:{
                 Image(systemName:stale ? "exclamationmark.circle":"ellipsis.circle")
                     .foregroundStyle(stale ? .yellow : .cyan)
-                    .frame(width:65)
+                    .frame(width:37)
             }
         }
         .padding(.horizontal,6).padding(.vertical,12)
