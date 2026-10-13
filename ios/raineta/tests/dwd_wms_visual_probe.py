@@ -38,6 +38,7 @@ print("VALID OFFICIAL MAPS",len(results),results)
 if len(results)<2:raise RuntimeError("ICON-EU WMS insufficient to replace current forecast raster")
 
 # Probe Web Mercator tile-aligned WMS requests at practical zooms.
+good_zoom=set()
 merc=20037508.342789244
 for z in (6,9,12):
  n=2**z
@@ -56,5 +57,10 @@ for z in (6,9,12):
   valid=data[:8]==bytes.fromhex("89504e470d0a1a0a")
   print("TILE3857",z,xx,yy,ctype,len(data),"VALID",valid,
         "ERRORBODY",data[:240].decode("utf8","replace") if not valid else "")
-  if valid:open(f"official-maps/icon-eu-tile-z{z}.png","wb").write(data)
+  if valid:
+   good_zoom.add(z)
+   open(f"official-maps/icon-eu-tile-z{z}.png","wb").write(data)
  except Exception as exc: print("TILE3857_FAIL",z,repr(exc))
+
+if not {6,9,12}.issubset(good_zoom):
+ raise RuntimeError(f"WMS tiles are not available at required zooms: {good_zoom}")
