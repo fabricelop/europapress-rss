@@ -1,6 +1,18 @@
-# RainETA para iPhone — v0.2.0
+# RainETA para iPhone — v0.3.0
 
 App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
+
+## Cambios v0.3.0 — lugares y continuidad de radar
+
+- **«Mis lugares» en la pantalla principal**: una tarjeta por ubicación, empezando por GPS. Cada una muestra «Ahora», «Próxima lluvia», «Hasta cuándo» y temperatura. Estado actual provisional basado en la salida de Open-Meteo; no se presenta como lluvia observada físicamente.
+- **Buscar lugares**: búsqueda geográfica gratuita de Open-Meteo (ciudades/localidades) con selección del resultado.
+- **Gestionar favoritos**: guardar coordenada GPS como lugar fijo (no sigue al GPS después), renombrar y borrar. Datos persistidos localmente mediante `UserDefaults`; no se importan automáticamente los favoritos guardados por la PWA web.
+- **Seleccionar ubicación**: al tocar una tarjeta, radar, gráfica minuto a minuto, 7 días y Live Activity se refieren a ese lugar (la actividad existente conserva su título hasta que sea recreada).
+- **Transición del radar a AHORA**: se conserva el último raster observado hasta que llegue el primer tile nuevo y se mezcla con la proyección futura progresivamente; fuera de la zona de proyección se mantiene un respaldo observado tenue para no vaciar el mapa.
+- **Mayor resiliencia**: una tesela periférica del radar que falla no invalida el mosaico entero si la cobertura central está disponible; las teselas transparentes futuras se devuelven como PNG válidos.
+- Sin widgets tradicionales, sin App Group, sin despliegue Vercel/Cloudflare. El pipeline genera una IPA para firmar con Impactor.
+
+**Pendiente de paridad completa con la PWA v0.17.18:** consensos multifuente/ensembles, OPERA, rayos, autoevaluación/calibración avanzada de radar, feedback manual «Sí llueve/No llueve», episodios semánticos y búsqueda hasta próxima lluvia. El nuevo resumen rápido usa solo modelos; no debe confundirse con el motor canónico de decisión meteorológica de la web.
 
 ## Cambios de v0.2.0
 
@@ -22,7 +34,7 @@ App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impacto
 
 Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.2.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.3.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
 ## Instalación y prueba
 
