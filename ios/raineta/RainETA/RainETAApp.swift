@@ -19,7 +19,9 @@ struct RainHomeView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     hero
                     radarSection
+                    MinuteRainGraph(projection: store.projection, weather: store.snapshot)
                     forecastSection
+                    LongRainForecast(weather: store.snapshot)
                     footer
                 }
                 .padding(16)
@@ -132,7 +134,7 @@ struct RainHomeView: View {
     private var radarSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Radar observado", systemImage: "dot.radiowaves.left.and.right")
+                Label("Radar y proyección de lluvia", systemImage: "dot.radiowaves.left.and.right")
                     .font(.headline)
                 Spacer()
                 Button { fullRadar = true } label: {
@@ -184,7 +186,9 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.1.1 · Previsión Open-Meteo y radar RainViewer. El radar solo muestra observaciones; ninguna imagen futura se presenta como real.")
+            Text("v0.2.0 · Radar histórico de RainViewer y extrapolación experimental propia. La lluvia futura del mapa es simulación, no observación.")
+            Text(store.projectionStatus)
+            Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
         }
         .font(.caption)
@@ -217,39 +221,94 @@ struct RadarSection: View {
         guard !frames.isEmpty else { return nil }
         return frames[min(frames.count - 1, max(0, store.radarIndex))]
     }
+    private var finalPastIndex: Int { max(0, store.radar.frames.count - 1) }
+    private var lastSliderIndex: Int {
+        finalPastIndex + (store.projection == nil ? 0 : 48)
+    }
+    private var sliderSelection: Double {
+        Double(store.radarFutureMinutes > 0 ?
+               finalPastIndex + store.radarFutureMinutes / 5 : store.radarIndex)
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            RadarMap(center: store.coordinate, host: store.radar.host, framePath: selected?.path)
-                .frame(height: expanded ? 530 : 310)
+        VStack(alignment: .leading, spacing: 9) {
+            RadarMap(center: store.coordinate, host: store.radar.host,
+                     framePath: selected?.path,
+                     projection: store.projection,
+                     futureMinutes: store.radarFutureMinutes)
+                .frame(height: expanded ? 540 : 325)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(alignment: .topTrailing) {
-                    Text("RADAR HISTÓRICO")
+                    Text(store.radarFutureMinutes > 0 ? "PROYECCIÓN · NO OBSERVADO" : "RADAR OBSERVADO")
                         .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(store.radarFutureMinutes > 0 ? .yellow : .white)
                         .padding(8)
-                        .background(.black.opacity(0.7), in: Capsule())
+                        .background(.black.opacity(0.77), in: Capsule())
                         .padding(8)
                 }
             HStack {
-                Text(selected.map { "Observado: " + $0.date.formatted(date: .omitted, time: .shortened) + " (hace " + String(max(0, Int(Date().timeIntervalSince($0.date) / 60))) + " min)" } ?? "Sin radar")
-                    .font(.caption.monospacedDigit())
-                Spacer()
-                Button("Ahora") { store.radarIndex = max(0, store.radar.frames.count - 1) }
-                    .font(.caption.bold())
+                if store.radarFutureMinutes > 0 {
+                    Text("Futuro +\(store.radarFutureMinutes) min")
+                        .foregroundStyle(.yellow)
+                    Spacer()
+                    Text((store.projection?.observedAt ?? .now)
+                        .addingTimeInterval(Double(store.radarFutureMinutes * 60))
+                        .formatted(date: .omitted, time: .shortened))
+                } else {
+                    Text(selected.map { "Observado " + $0.date.formatted(date: .omitted, time: .shortened) } ?? "Sin radar")
+                    Spacer()
+                    Text(selected.map { "hace " + String(max(0, Int(Date().timeIntervalSince($0.date) / 60))) + " min" } ?? "")
+                }
             }
-            Slider(value: Binding(
-                get: { Double(store.radarIndex) },
-                set: { store.radarIndex = Int($0) }
-            ), in: 0...Double(max(1, store.radar.frames.count - 1)), step: 1)
+            .font(.caption.monospacedDigit())
+
+            Slider(value: Binding(get: { sliderSelection }, set: { value in
+                let index = Int(value.rounded())
+                if index > finalPastIndex, store.projection != nil {
+                    store.radarFutureMinutes = (index-finalPastIndex) * 5
+                    store.radarIndex = finalPastIndex
+                } else {
+                    store.radarFutureMinutes = 0
+                    store.radarIndex = max(0, min(finalPastIndex, index))
+                }
+            }), in: 0...Double(max(1, lastSliderIndex)), step: 1)
                 .disabled(store.radar.frames.count < 2)
                 .tint(.cyan)
-            HStack {
-                Text("← Más antiguo")
+
+            HStack(spacing: 10) {
+                Text("Pasado")
                 Spacer()
-                Text("Ahora →")
+                Button("Ahora") {
+                    store.radarIndex = finalPastIndex
+                    store.radarFutureMinutes = 0
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                if store.projection != nil {
+                    Button("+2 h") {
+                        store.radarIndex = finalPastIndex
+                        store.radarFutureMinutes = 120
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    Button("+4 h") {
+                        store.radarIndex = finalPastIndex
+                        store.radarFutureMinutes = 240
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
             }
-            .font(.caption2)
-            .foregroundStyle(.secondary)
+            .font(.caption)
+            Text(store.radarFutureMinutes > 0
+                 ? (store.projection.map {
+                    "Extrapolación del desplazamiento observado · confianza \(Int($0.confidence*100)) % · horizonte orientativo +\($0.reliableUntil) min"
+                   } ?? "Proyección no disponible")
+                 : "Imágenes radar reales · mueve la barra hacia la derecha para avanzar hasta el futuro")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Link("Datos radar: RainViewer", destination: URL(string: "https://www.rainviewer.com/")!)
+                .font(.caption2)
         }
     }
 }
