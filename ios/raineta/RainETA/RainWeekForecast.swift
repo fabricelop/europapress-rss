@@ -33,15 +33,13 @@ struct RainWeekForecast: View {
                 Text("7 días").font(.caption.bold()).foregroundStyle(.cyan)
             }
             if let weather {
-                Text("Temperaturas, probabilidad y lluvia prevista en un vistazo. Pulsa un día para ver las horas.")
-                    .font(.caption).foregroundStyle(.secondary)
                 VStack(spacing:8) {
                     ForEach(weather.days) { day in
                         Button {selectedDay=day.date} label:{
                             HStack(spacing:8) {
                                 Text(RainSpanishDates.day(day.date))
                                     .font(.system(size:11,weight:.bold))
-                                    .frame(width:70,alignment:.leading)
+                                    .frame(width:66,alignment:.leading)
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.72)
                                 Image(systemName:day.totalMM>=0.1 ? "cloud.rain.fill":"sun.max.fill")
@@ -78,12 +76,16 @@ struct RainWeekForecast: View {
                                     .frame(height:12)
                                 }
                                 Text(day.minTemperature.map{"\(Int($0.rounded()))°"} ?? "—")
-                                    .font(.caption.monospacedDigit())
+                                    .font(.system(size:13,weight:.regular,design:.rounded))
                                     .foregroundStyle(.secondary)
-                                    .frame(width:26,alignment:.trailing)
+                                    .fixedSize(horizontal:true,vertical:false)
+                                    .lineLimit(1)
+                                    .frame(width:36,alignment:.trailing)
                                 Text(day.maxTemperature.map{"\(Int($0.rounded()))°"} ?? "—")
-                                    .font(.caption.bold().monospacedDigit())
-                                    .frame(width:26,alignment:.trailing)
+                                    .font(.system(size:13,weight:.bold,design:.rounded))
+                                    .fixedSize(horizontal:true,vertical:false)
+                                    .lineLimit(1)
+                                    .frame(width:36,alignment:.trailing)
                             }
                             .frame(minHeight:52)
                             .contentShape(Rectangle())
@@ -94,42 +96,8 @@ struct RainWeekForecast: View {
                         }
                     }
                 }
-                Text("Las barras horizontales muestran mínimas y máximas con una escala común. Lluvia en mm y posibilidad máxima diaria (%); no son medidas equivalentes.")
+                Text("Toca un día para ver horas, lluvia y probabilidad.")
                     .font(.caption2).foregroundStyle(.secondary)
-                Divider()
-                ForEach(weather.days) { day in
-                    let isToday=Calendar.current.isDateInToday(day.date)
-                    let episodes=RainInsight.dailyPeriods(weather,day:day.date)
-                        .filter { !isToday || $0.end > Date() }
-                    VStack(alignment:.leading,spacing:6) {
-                        HStack {
-                            Text(RainSpanishDates.day(day.date))
-                                .font(.subheadline.bold())
-                            Spacer()
-                            Text(String(format:"%.1f mm · %d%%",day.totalMM,day.probability))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        if episodes.isEmpty {
-                            Text("Sin franjas de lluvia previstas \(isToday ? "para lo que queda del día" : "para este día")")
-                                .font(.caption).foregroundStyle(.secondary)
-                        } else {
-                            ForEach(Array(episodes.prefix(5))) { period in
-                                HStack {
-                                    Circle().fill(RainVisual.color(period.peakMMH))
-                                        .frame(width:7,height:7)
-                                    Text(period.label)
-                                        .font(.caption.monospacedDigit())
-                                    Spacer()
-                                    Text(String(format:"%.1f mm",period.accumulationMM))
-                                        .font(.caption).foregroundStyle(.cyan)
-                                }
-                            }
-                        }
-                    }
-                    .padding(10)
-                    .background(.white.opacity(0.045),in:RoundedRectangle(cornerRadius:12))
-                }
             } else {
                 ProgressView("Consultando la previsión semanal…")
             }
@@ -158,7 +126,10 @@ struct RainDayDetail:View {
     let day:DailyRain
     @Environment(\.dismiss) private var dismiss
     private var rows:[HourlyRain] {
-        weather.hours.filter{Calendar.current.isDate($0.time,inSameDayAs:day.date)}
+        let start=Calendar.current.startOfDay(for:day.date)
+        let end=Calendar.current.date(byAdding:.day,value:1,to:start) ?? start.addingTimeInterval(86400)
+        return weather.hours.filter{$0.time>start && $0.time<=end}
+            .sorted{$0.time<$1.time}
     }
     var body:some View {
         NavigationStack {
@@ -186,7 +157,7 @@ struct RainDayDetail:View {
                     if !rows.isEmpty {
                         Text("Cantidad de lluvia por hora").font(.headline)
                         Chart(rows) { row in
-                            BarMark(x:.value("Hora",row.time),
+                            BarMark(x:.value("Hora",RainInsight.hourlyStart(row.time)),
                                     y:.value("mm/hora",row.millimeters))
                                 .foregroundStyle(RainVisual.color(row.millimeters))
                         }
@@ -198,11 +169,11 @@ struct RainDayDetail:View {
                         .frame(height:180)
                         Text("Probabilidad prevista por hora").font(.headline)
                         Chart(rows) { row in
-                            LineMark(x:.value("Hora",row.time),
+                            LineMark(x:.value("Hora",RainInsight.hourlyStart(row.time)),
                                      y:.value("Porcentaje",row.probability))
                                 .interpolationMethod(.catmullRom)
                                 .foregroundStyle(.cyan)
-                            AreaMark(x:.value("Hora",row.time),
+                            AreaMark(x:.value("Hora",RainInsight.hourlyStart(row.time)),
                                      y:.value("Porcentaje",row.probability))
                                 .foregroundStyle(.cyan.opacity(0.13))
                         }
@@ -224,8 +195,13 @@ struct RainDayDetail:View {
                             }
                             .font(.subheadline)
                         }
-                        Text("Fuente: Open-Meteo, selección automática de modelos. Valores horarios previstos y sujetos a cambios; probabilidad y cantidad no son lo mismo.")
-                            .font(.caption).foregroundStyle(.secondary)
+                        if RainInsight.precipitationUncertainty(hours:weather.hours,day:day.date) {
+                            Label("Probabilidad y cantidad discrepan: previsión incierta",
+                                  systemImage:"exclamationmark.triangle")
+                                .font(.caption).foregroundStyle(.orange)
+                        }
+                        Text("Precipitación: hora anterior · Open-Meteo")
+                            .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
                 .padding(16)
