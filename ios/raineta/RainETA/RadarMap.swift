@@ -90,12 +90,15 @@ struct RadarMap: UIViewRepresentable {
     var center: CLLocationCoordinate2D
     var host: String
     var framePath: String?
+    var projection: RadarProjection?
+    var futureMinutes: Int = 0
 
     final class Coordinator: NSObject, MKMapViewDelegate {
         var overlayKey: String?
         var center: CLLocationCoordinate2D?
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let tile = overlay as? RainRadarTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
+            if let tile = overlay as? RainFutureTiles { return MKTileOverlayRenderer(tileOverlay: tile) }
             return MKOverlayRenderer(overlay: overlay)
         }
     }
@@ -117,13 +120,19 @@ struct RadarMap: UIViewRepresentable {
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let coordinator = context.coordinator
-        let key = (framePath ?? "no-radar") + "|" + host
+        let isFuture = futureMinutes > 0
+        let key = (framePath ?? "no-radar") + "|" + host +
+            (isFuture ? "|future:\(futureMinutes):\(projection?.observedAt.timeIntervalSince1970 ?? 0)" : "|historic")
         if coordinator.overlayKey != key {
-            for overlay in map.overlays { map.removeOverlay(overlay) }
+            let previous = map.overlays
             coordinator.overlayKey = key
-            if let framePath, !host.isEmpty {
+            if isFuture, let projection {
+                map.addOverlay(RainFutureTiles(projection: projection, futureMinutes: futureMinutes),
+                               level: .aboveRoads)
+            } else if !isFuture, let framePath, !host.isEmpty {
                 map.addOverlay(RainRadarTiles(host: host, path: framePath), level: .aboveRoads)
             }
+            for overlay in previous { map.removeOverlay(overlay) }
         }
         if let old = coordinator.center {
             let meters = CLLocation(latitude: old.latitude, longitude: old.longitude)
