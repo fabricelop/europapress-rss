@@ -18,6 +18,15 @@ enum TimeGPSGapRecovery {
     static let maximumAnchorAge:TimeInterval=180
     static let maximumAnchorAccuracy=45.0
 
+    /// Puede confirmarse una estancia pasada aunque el GPS esté AHORA en
+    /// pausa. Solo se rechaza cuando el hueco invade la pausa actual, porque
+    /// esa sesión se consolida por otro procedimiento y duplicaría tiempo.
+    static func compatibleWithRest(_ gap:TimeGPSGapCandidate,
+                                   rest:GPSRestSession?)->Bool {
+        guard let rest else { return true }
+        return gap.end<=rest.startedAt
+    }
+
     static func candidates(intervals:[AssignedInterval],fixes:[GPSPoint],
                            manualBreaks:[Date],events:[GPSPowerEvent],
                            cells:Set<String>)->[TimeGPSGapCandidate] {
@@ -70,6 +79,8 @@ enum TimeGPSGapRecovery {
 enum TimeGPSGapConfirmationOutcome:Equatable {
     case saved(TimeInterval)
     case noLongerAvailable
+    case overlapsCurrentRest
+    case alreadySaved
     case storageFailure(String)
 
     var isSuccess:Bool {
@@ -81,7 +92,11 @@ enum TimeGPSGapConfirmationOutcome:Equatable {
         case .saved(let seconds):
             return "\(DurationFormat.full(seconds)) añadidos a la estancia como tiempo estimado (no GPS observado)."
         case .noLongerAvailable:
-            return "El intervalo ha cambiado desde que abriste la confirmación. No se ha añadido ningún tiempo. Revisa de nuevo el hueco."
+            return "Este hueco ya no coincide con los datos GPS actuales. No se ha añadido ningún tiempo."
+        case .overlapsCurrentRest:
+            return "Este hueco se solapa con una pausa GPS todavía activa. Finaliza esa pausa antes de confirmarlo para evitar duplicar tiempo."
+        case .alreadySaved:
+            return "Este hueco ya se recuperó anteriormente. No se ha añadido tiempo por segunda vez."
         case .storageFailure(let explanation):
             return "No se pudo guardar el tiempo recuperado: \(explanation)"
         }
