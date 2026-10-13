@@ -80,7 +80,7 @@ actor OperaCOGSource {
         self.session=session
         let base=FileManager.default.urls(for:.cachesDirectory,in:.userDomainMask).first!
         directory=base.appendingPathComponent("RainETA/OPERA",isDirectory:true)
-        try? FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true)
+        try? FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true,attributes:nil)
     }
 
     static func URLForFrame(at time: Date) -> URL {
