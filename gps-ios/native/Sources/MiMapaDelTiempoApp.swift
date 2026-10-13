@@ -128,6 +128,7 @@ struct SavedState: Codable {
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
     var trackingEnabled = false
     var gpsRest: GPSRestSession?
+    var dismissedGPSGapIDs:[String] = []
 
     init() {}
     // El JSON v1 carece de manualBreaks y de otras propiedades posteriores.
@@ -150,6 +151,7 @@ struct SavedState: Codable {
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
         powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
         shortIDs = try box.decodeIfPresent([String:Int].self,forKey:.shortIDs) ?? [:]
+        dismissedGPSGapIDs = try box.decodeIfPresent([String].self,forKey:.dismissedGPSGapIDs) ?? []
     }
 }
 @MainActor final class TimeModel: ObservableObject {
