@@ -46,7 +46,13 @@ final class RainFutureTiles: MKTileOverlay {
                               height: Double(p.image.size.height)/unit)
             // Offscreen tiles are transparent. The base map stays visible.
             guard rect.intersects(CGRect(x: 0, y: 0, width: 256, height: 256)) else {
-                result(Data(), nil)
+                // MapKit expects an actual decodable PNG, not an empty Data.
+                let format = UIGraphicsImageRendererFormat()
+                format.scale = 1
+                format.opaque = false
+                let blank = UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256),
+                                                    format: format).image { _ in }
+                result(blank.pngData(), nil)
                 return
             }
             let format = UIGraphicsImageRendererFormat()
