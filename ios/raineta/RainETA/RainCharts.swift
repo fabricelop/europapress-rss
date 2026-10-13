@@ -1,168 +1,265 @@
 import SwiftUI
 import Charts
 
+struct RainIntensityLegend: View {
+    private let levels:[(String,Double)] = [
+        ("Seco",0),("Fina",0.3),("Débil",1.2),
+        ("Media",4),("Fuerte",10),("Muy fuerte",18)
+    ]
+    var body: some View {
+        HStack(spacing:5) {
+            ForEach(levels,id:\.0) { level in
+                VStack(spacing:4) {
+                    RoundedRectangle(cornerRadius:3)
+                        .fill(RainVisual.color(level.1))
+                        .frame(height:7)
+                    Text(level.0)
+                        .font(.system(size:9))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                }
+                .frame(maxWidth:.infinity)
+            }
+        }
+        .foregroundStyle(.secondary)
+        .accessibilityElement(children:.combine)
+    }
+}
+
 struct MinuteRainGraph: View {
     let projection: RadarProjection?
     let weather: RainSnapshot?
     @State private var horizon = 60
-
-    private var radarRows: [RadarMinute] {
-        projection?.minutePoints.filter { $0.minute <= horizon } ?? []
-    }
-    private var modelRows: [RadarMinute] {
-        guard let wx = weather else { return [] }
-        let now = Date()
-        let source = wx.samples.sorted { $0.time < $1.time }
-        if source.isEmpty { return [] }
-        return (0...horizon).map { minute in
-            let target = now.addingTimeInterval(Double(minute * 60))
-            let lower = source.last { $0.time <= target } ?? source[0]
-            let upper = source.first { $0.time >= target } ?? source[source.count - 1]
-            let range = upper.time.timeIntervalSince(lower.time)
-            let blend = range > 0 ? min(1, max(0, target.timeIntervalSince(lower.time) / range)) : 0
-            let mm15 = lower.precipitation * (1-blend) + upper.precipitation * blend
-            // Relative intensity for a chart, not independent minute observations.
-            return RadarMinute(minute: minute, signal: min(1, max(0, mm15 / 2.0)), confidence: 0)
-        }
+    @State private var selectedMinute: Int?
+    private var rows:[RainMoment] {
+        guard let weather else { return [] }
+        return RainInsight.moments(samples:weather.samples,from:.now,minutes:horizon,step:1)
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Lluvia minuto a minuto", systemImage: "chart.xyaxis.line")
-                .font(.headline)
-            Picker("Horizonte", selection: $horizon) {
+        VStack(alignment:.leading,spacing:13) {
+            HStack {
+                Label("Pulso de lluvia",systemImage:"waveform.path")
+                    .font(.headline)
+                Spacer()
+                Text("MINUTO A MINUTO")
+                    .font(.system(size:9,weight:.bold))
+                    .foregroundStyle(.cyan)
+            }
+            Picker("Horizonte",selection:$horizon) {
                 Text("30 min").tag(30)
                 Text("60 min").tag(60)
                 Text("120 min").tag(120)
             }
             .pickerStyle(.segmented)
-
-            let rows = projection == nil ? modelRows : radarRows
-            if rows.isEmpty {
-                ContentUnavailableView("Sin datos de corto plazo",
-                                       systemImage: "cloud.slash",
-                                       description: Text("Actualiza para obtener radar o pronóstico."))
-                    .frame(height: 180)
+            let samples=rows
+            if samples.isEmpty {
+                ContentUnavailableView("Sin datos suficientes",systemImage:"cloud.slash",
+                    description:Text("Actualiza la previsión o cambia de localidad."))
+                    .frame(height:160)
             } else {
-                Chart(rows) { point in
-                    BarMark(x: .value("Minuto", point.minute),
-                            y: .value("Señal", max(0, point.signal * 100)), width: .fixed(2))
-                        .foregroundStyle(point.signal > 0.65 ? Color.indigo :
-                                         point.signal > 0.25 ? Color.blue : Color.cyan)
+                let current=samples.min(by:{ abs($0.minute-(selectedMinute ?? 0)) <
+                                               abs($1.minute-(selectedMinute ?? 0)) }) ?? samples[0]
+                HStack(alignment:.firstTextBaseline) {
+                    VStack(alignment:.leading,spacing:4) {
+                        Text(selectedMinute == nil ? "En este momento" : "Dentro de \(current.minute) min")
+                            .font(.caption).foregroundStyle(.secondary)
+                        Text(RainVisual.intensity(current.rateMMH))
+                            .font(.title3.bold())
+                            .foregroundStyle(RainVisual.color(current.rateMMH))
+                    }
+                    Spacer()
+                    VStack(alignment:.trailing,spacing:4) {
+                        Text(String(format:"%.1f mm/h",current.rateMMH))
+                            .font(.headline.monospacedDigit())
+                        Text(current.probability.map { "\($0)% prob." } ?? "Prob. no disponible")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
-                .chartXScale(domain: 0...horizon)
-                .chartYScale(domain: 0...100)
+                Chart(samples) { point in
+                    BarMark(x:.value("Minuto",point.minute),
+                            y:.value("mm/h",point.rateMMH),
+                            width:.fixed(horizon == 30 ? 7 : horizon == 60 ? 4 : 2))
+                        .foregroundStyle(RainVisual.color(point.rateMMH))
+                        .cornerRadius(2)
+                }
+                .chartXScale(domain:0...horizon)
+                .chartYScale(domain:0...max(0.6,(samples.map(\.rateMMH).max() ?? 0) * 1.15))
                 .chartXAxis {
-                    AxisMarks(values: stride(from: 0, through: horizon, by: horizon >= 120 ? 30 : 15).map { $0 }) { axis in
+                    AxisMarks(values:stride(from:0,through:horizon,by:horizon == 30 ? 5 : horizon == 60 ? 10 : 20).map{$0}) { axis in
                         AxisValueLabel {
-                            if let minute = axis.as(Int.self) { Text("+\(minute)m") }
+                            if let minute=axis.as(Int.self) { Text("+\(minute)") }
                         }
                         AxisTick()
                     }
                 }
                 .chartYAxis {
-                    AxisMarks(position: .leading, values: [0, 25, 50, 75, 100])
+                    AxisMarks(position:.leading)
                 }
-                .frame(height: 160)
-                Text(projection == nil
-                     ? "Modelo interpolado cada minuto desde intervalos de 15 min. No son observaciones ni predicciones independientes por minuto."
-                     : "Extrapolación del radar: una muestra visual cada minuto. Altura = señal de eco, no mm/h. La incertidumbre crece con el horizonte.")
+                .chartXSelection(value:$selectedMinute)
+                .frame(height:172)
+                RainIntensityLegend()
+                Text("Barras cada minuto para visualizar cambios; calculadas por interpolación de datos del modelo de 15 min. No son medidas ni previsiones independientes por minuto.")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
-                if let p = projection {
-                    HStack {
-                        Label("Confianza \(Int(p.confidence * 100)) %", systemImage: "scope")
-                        Spacer()
-                        Text("Orientativa hasta +\(p.reliableUntil) min")
-                    }
-                    .font(.caption)
-                    .foregroundStyle(.cyan)
+                HStack {
+                    Label("Máximo \(String(format:"%.1f",samples.map(\.rateMMH).max() ?? 0)) mm/h",
+                          systemImage:"drop.fill")
+                    Spacer()
+                    let wet=samples.filter{$0.rateMMH >= RainInsight.wetRate}.count
+                    Text("\(wet) min con señal de lluvia")
                 }
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.cyan)
             }
         }
-        .padding(14)
-        .background(.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
+        .padding(15)
+        .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
+    }
+}
+
+struct ThreeHourRainView: View {
+    let weather:RainSnapshot?
+    @State private var chosen:Int?
+    var body:some View {
+        VStack(alignment:.leading,spacing:12) {
+            Label("Próximas 3 horas",systemImage:"chart.bar.fill").font(.headline)
+            if let weather {
+                let slots=RainInsight.moments(samples:weather.samples,from:.now,minutes:180,step:15)
+                if slots.isEmpty {
+                    Text("No hay datos suficientes de 15 minutos")
+                        .foregroundStyle(.secondary)
+                } else {
+                    let current=slots.min(by:{abs($0.minute-(chosen ?? 0))<abs($1.minute-(chosen ?? 0))}) ?? slots[0]
+                    HStack {
+                        Text(current.date.formatted(date:.omitted,time:.shortened))
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Text(String(format:"%.1f mm/h",current.rateMMH))
+                            .font(.headline.monospacedDigit())
+                            .foregroundStyle(RainVisual.color(current.rateMMH))
+                        Text(current.probability.map { "\($0)%" } ?? "—")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
+                    Chart(slots) { point in
+                        BarMark(x:.value("Momento",point.minute),
+                                y:.value("Intensidad mm/h",point.rateMMH),
+                                width:.ratio(0.86))
+                            .foregroundStyle(RainVisual.color(point.rateMMH))
+                            .cornerRadius(3)
+                    }
+                    .chartXScale(domain:0...180)
+                    .chartYScale(domain:0...max(0.6,(slots.map(\.rateMMH).max() ?? 0)*1.15))
+                    .chartXAxis {
+                        AxisMarks(values:[0,30,60,90,120,150,180]) { mark in
+                            AxisValueLabel {
+                                if let m=mark.as(Int.self) { Text("+\(m)m") }
+                            }
+                        }
+                    }
+                    .chartXSelection(value:$chosen)
+                    .frame(height:160)
+                    RainIntensityLegend()
+                    HStack {
+                        let rain=slots.filter{$0.rateMMH>=RainInsight.wetRate}
+                        Label("\(rain.count * 15) min con lluvia prevista",
+                              systemImage:"clock")
+                        Spacer()
+                        Text("Datos modelo 15 min")
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                }
+            } else {
+                ProgressView("Consultando previsión…")
+            }
+        }
+        .padding(15)
+        .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
     }
 }
 
 struct LongRainForecast: View {
-    let weather: RainSnapshot?
-    @State private var hours = 72
-    private var shown: [HourlyRain] {
-        guard let wx = weather else { return [] }
-        return Array(wx.hours.filter { $0.time >= Date().addingTimeInterval(-3600) }.prefix(hours))
+    let weather:RainSnapshot?
+    @State private var hours=72
+
+    private var shown:[HourlyRain] {
+        guard let weather else { return [] }
+        return Array(weather.hours.filter{$0.time>=Date().addingTimeInterval(-3600)}.prefix(hours))
     }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label("Previsión de varios días", systemImage: "calendar")
+    var body:some View {
+        VStack(alignment:.leading,spacing:13) {
+            Label("Previsión por horas y días",systemImage:"calendar")
                 .font(.headline)
-            Picker("Horizonte", selection: $hours) {
-                Text("24 h").tag(24)
-                Text("72 h").tag(72)
+            Picker("Horizonte",selection:$hours) {
+                Text("24 horas").tag(24)
+                Text("72 horas").tag(72)
                 Text("7 días").tag(168)
-            }
-            .pickerStyle(.segmented)
-
-            if !shown.isEmpty {
-                Chart(shown) { item in
-                    BarMark(x: .value("Hora", item.time),
-                            y: .value("mm/h", item.millimeters))
-                        .foregroundStyle(item.probability >= 70 ? Color.indigo :
-                                         item.probability >= 40 ? Color.blue : Color.cyan.opacity(0.6))
+            }.pickerStyle(.segmented)
+            let data=shown
+            if !data.isEmpty {
+                Chart(data) { item in
+                    BarMark(x:.value("Hora",item.time),
+                            y:.value("mm",item.millimeters))
+                        .foregroundStyle(RainVisual.color(item.millimeters))
                 }
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: hours == 168 ? .day : .hour,
-                                              count: hours == 24 ? 4 : hours == 72 ? 12 : 1)) { _ in
-                        AxisValueLabel(format: hours == 168 ? .dateTime.weekday(.abbreviated) :
-                                                       .dateTime.day().hour())
-                        AxisTick()
+                    AxisMarks(values:.stride(by:hours == 168 ? .day : .hour,
+                                              count:hours == 24 ? 4 : hours == 72 ? 12 : 1)) { _ in
+                        AxisValueLabel(format:hours == 168 ? .dateTime.weekday(.abbreviated) :
+                                                          .dateTime.day().hour())
                     }
                 }
-                .chartYAxis {
-                    AxisMarks(position: .leading)
-                }
-                .frame(height: 180)
-                Text("Precipitación por hora en mm · Azul más intenso = mayor probabilidad. El gráfico usa predicción meteorológica, no radar futuro.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                .frame(height:155)
+                Text("Barras: acumulación prevista por hora (mm). El detalle y la incertidumbre dependen del plazo.")
+                    .font(.caption2).foregroundStyle(.secondary)
             }
-
-            if let days = weather?.days, !days.isEmpty {
-                ForEach(days) { day in
-                    HStack(spacing: 10) {
-                        Text(day.date.formatted(.dateTime.weekday(.wide).day()))
-                            .font(.subheadline.weight(.medium))
-                            .frame(width: 116, alignment: .leading)
-                        Image(systemName: day.probability >= 50 ? "cloud.rain.fill" : "cloud.sun.fill")
-                            .foregroundStyle(day.probability >= 50 ? .cyan : .yellow)
-                        Spacer(minLength: 0)
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text(String(format: "%.1f mm", day.totalMM))
+            if let weather {
+                ForEach(weather.days) { day in
+                    VStack(alignment:.leading,spacing:8) {
+                        HStack {
+                            Text(day.date.formatted(.dateTime.weekday(.wide).day().month(.abbreviated)))
                                 .font(.subheadline.bold())
-                            Text("\(day.probability)% · \(temperatures(day))")
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Text(String(format:"%.1f mm",day.totalMM))
+                                .font(.subheadline.bold())
+                                .foregroundStyle(RainVisual.color(day.totalMM))
+                            Text("\(day.probability)%")
+                                .font(.caption).foregroundStyle(.secondary)
+                            if let low=day.minTemperature,let high=day.maxTemperature {
+                                Text("\(Int(low.rounded()))–\(Int(high.rounded()))°")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                        let spans=RainInsight.dailyPeriods(weather,day:day.date)
+                        if spans.isEmpty {
+                            Text("No se esperan franjas con lluvia apreciable")
+                                .font(.caption).foregroundStyle(.secondary)
+                        } else {
+                            ForEach(Array(spans.prefix(4))) { period in
+                                HStack(spacing:8) {
+                                    Circle().fill(RainVisual.color(period.peakMMH))
+                                        .frame(width:7,height:7)
+                                    Text(period.label)
+                                        .font(.subheadline.monospacedDigit())
+                                    Spacer()
+                                    Text(RainVisual.intensity(period.peakMMH))
+                                        .font(.caption).foregroundStyle(.secondary)
+                                    Text(String(format:"%.1f mm",period.accumulationMM))
+                                        .font(.caption.bold())
+                                }
+                            }
                         }
                     }
-                    .padding(.vertical, 7)
-                    Divider().overlay(.white.opacity(0.04))
+                    .padding(11)
+                    .background(.white.opacity(0.055),in:RoundedRectangle(cornerRadius:12))
                 }
-                Text("Siete días · Fuente Open-Meteo. Las probabilidades y acumulaciones son estimaciones de modelos; su fiabilidad disminuye con el plazo.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            } else {
-                Text("Sin previsión de varios días. Desliza hacia abajo para actualizar.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Text("Franjas horarias calculadas con el modelo horario de Open-Meteo. Son orientativas, especialmente después del segundo día.")
+                    .font(.caption2).foregroundStyle(.secondary)
             }
         }
-        .padding(14)
-        .background(.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
-    }
-
-    private func temperatures(_ day: DailyRain) -> String {
-        guard let min = day.minTemperature, let max = day.maxTemperature else { return "–" }
-        return "\(Int(min.rounded()))°/\(Int(max.rounded()))°"
+        .padding(15)
+        .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
     }
 }
