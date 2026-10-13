@@ -28,7 +28,8 @@ def main():
   eid=str(row.get('event_id') or '')
   if eid in terminal:
    row['status']='SKIPPED_DUPLICATE'; row['filter_reason']='terminal_decision_same_event'; changed.append(eid); continue
-  prior=previous_story(row,treated_refs)
+  # A provisional message with the SAME ID is not a prior distinct story.
+  prior=previous_story(row,treated_refs,ignore_id=eid)
   if prior:
    row['status']='SKIPPED_DUPLICATE'; row['duplicate_of_event_id']=prior.get('event_id')
    row['filter_reason']='already_delivered_or_treated_cross_source'; changed.append(eid); continue
