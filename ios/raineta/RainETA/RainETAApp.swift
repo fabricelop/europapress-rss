@@ -231,8 +231,8 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.3.1 · Radar observado RainViewer; la proyección incorrecta se ha desactivado. Previsión horaria de Open-Meteo.")
-            Text(store.projectionStatus)
+            Text("v0.4.0 · Radar observado RainViewer + mapas futuros espaciales Open-Meteo. Resuelve el movimiento con predicciones reales de precipitación.")
+            Text(store.futureFieldStatus)
             Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
         }
@@ -260,6 +260,7 @@ struct RainHomeView: View {
 struct RadarSection: View {
     @ObservedObject var store: RainStore
     var expanded: Bool
+    @State private var playing = false
 
     private var selected: RadarFrame? {
         let frames = store.radar.frames
@@ -268,7 +269,7 @@ struct RadarSection: View {
     }
     private var finalPastIndex: Int { max(0, store.radar.frames.count - 1) }
     private var lastSliderIndex: Int {
-        finalPastIndex + (store.projection == nil ? 0 : 48)
+        finalPastIndex + (store.futureField == nil ? 0 : 48)
     }
     private var sliderSelection: Double {
         Double(store.radarFutureMinutes > 0 ?
@@ -279,12 +280,16 @@ struct RadarSection: View {
         VStack(alignment: .leading, spacing: 9) {
             RadarMap(center: store.coordinate, host: store.radar.host,
                      framePath: selected?.path,
-                     projection: store.projection,
-                     futureMinutes: store.radarFutureMinutes)
+                     projection: nil,
+                     modelField: store.futureField,
+                     futureMinutes: store.radarFutureMinutes,
+                     onViewport: { center, latSpan, lonSpan in
+                         store.requestFutureField(center:center,latSpan:latSpan,lonSpan:lonSpan)
+                     })
                 .frame(height: expanded ? 540 : 325)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(alignment: .topTrailing) {
-                    Text(store.radarFutureMinutes > 0 ? "PROYECCIÓN · NO OBSERVADO" : "RADAR OBSERVADO")
+                    Text(store.radarFutureMinutes > 0 ? "PREVISIÓN MODELO · NO RADAR" : "RADAR OBSERVADO")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(store.radarFutureMinutes > 0 ? .yellow : .white)
                         .padding(8)
@@ -296,7 +301,7 @@ struct RadarSection: View {
                     Text("Futuro +\(store.radarFutureMinutes) min")
                         .foregroundStyle(.yellow)
                     Spacer()
-                    Text((store.projection?.observedAt ?? .now)
+                    Text(Date()
                         .addingTimeInterval(Double(store.radarFutureMinutes * 60))
                         .formatted(date: .omitted, time: .shortened))
                 } else {
@@ -309,7 +314,7 @@ struct RadarSection: View {
 
             Slider(value: Binding(get: { sliderSelection }, set: { value in
                 let index = Int(value.rounded())
-                if index > finalPastIndex, store.projection != nil {
+                if index > finalPastIndex, store.futureField != nil {
                     store.radarFutureMinutes = (index-finalPastIndex) * 5
                     store.radarIndex = finalPastIndex
                 } else {
@@ -321,6 +326,12 @@ struct RadarSection: View {
                 .tint(.cyan)
 
             HStack(spacing: 10) {
+                Button { playing.toggle() } label: {
+                    Image(systemName: playing ? "pause.fill" : "play.fill")
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(store.radar.frames.count < 2)
                 Text("Pasado")
                 Spacer()
                 Button("Ahora") {
@@ -329,7 +340,7 @@ struct RadarSection: View {
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
-                if store.projection != nil {
+                if store.futureField != nil {
                     Button("+2 h") {
                         store.radarIndex = finalPastIndex
                         store.radarFutureMinutes = 120
@@ -346,14 +357,33 @@ struct RadarSection: View {
             }
             .font(.caption)
             Text(store.radarFutureMinutes > 0
-                 ? (store.projection.map {
-                    "Extrapolación del desplazamiento observado · confianza \(Int($0.confidence*100)) % · horizonte orientativo +\($0.reliableUntil) min"
-                   } ?? "Proyección no disponible")
-                 : "Radar observado; futuro desactivado mientras se valida el nuevo modelo")
+                 ? "Precipitación espacial de modelos meteorológicos (mm/h), interpolación entre campos. No son observaciones del radar."
+                 : "Radar observado hasta Ahora. A continuación, imágenes de precipitación previstas por modelos, no ecos desplazados ni difuminados.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text(store.futureFieldStatus)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            Text("Mapa futuro: colores según lluvia prevista, resolución limitada por el modelo; el zoom no crea datos meteorológicos más finos.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Link("Datos radar: RainViewer", destination: URL(string: "https://www.rainviewer.com/")!)
                 .font(.caption2)
+            .task(id: playing) {
+                while playing && !Task.isCancelled {
+                    try? await Task.sleep(nanoseconds: 650_000_000)
+                    if Task.isCancelled || !playing { break }
+                    let n = finalPastIndex
+                    if store.radarFutureMinutes > 0 {
+                        if store.radarFutureMinutes >= 240 { playing = false }
+                        else { store.radarFutureMinutes += 5 }
+                    } else if store.radarIndex < n {
+                        store.radarIndex += 1
+                    } else if store.futureField != nil {
+                        store.radarFutureMinutes = 5
+                    } else { playing = false }
+                }
+            }
         }
     }
 }
