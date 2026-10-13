@@ -705,12 +705,26 @@ struct SavedState: Codable {
     /// histórico entero, para evitar bloqueos y preservar el GPS en marcha.
     @discardableResult
     func confirmUnobservedStay(_ gap:TimeGPSGapCandidate)->TimeGPSGapConfirmationOutcome {
-        guard !isResting,
-              TimeGPSGapRecovery.candidates(
-                  intervals:data.intervals,fixes:data.fixes,
-                  manualBreaks:data.manualBreaks,events:data.powerEvents,
-                  cells:[gap.cell.id]).contains(gap) else {
-            gpsStatus="Confirmación no aplicada · hueco GPS cambiado"
+        // La sesión actual puede estar en pausa. Eso NO invalida los huecos
+        // históricos que terminaron ANTES de comenzar esa pausa.
+        guard TimeGPSGapRecovery.compatibleWithRest(gap,rest:data.gpsRest) else {
+            gpsStatus="El hueco se solapa con la pausa GPS actual"
+            return .overlapsCurrentRest
+        }
+        let stillAvailable=TimeGPSGapRecovery.candidates(
+            intervals:data.intervals,fixes:data.fixes,
+            manualBreaks:data.manualBreaks,events:data.powerEvents,
+            cells:[gap.cell.id]).contains(gap)
+        guard stillAvailable else {
+            if data.intervals.contains(where: {
+                $0.source=="confirmacion_usuario" &&
+                $0.cell==gap.cell &&
+                $0.start<gap.end && $0.end>gap.start
+            }) {
+                gpsStatus="Este hueco ya fue recuperado"
+                return .alreadySaved
+            }
+            gpsStatus="Confirmación no aplicada · intervalo cambiado"
             return .noLongerAvailable
         }
         var updated=data
