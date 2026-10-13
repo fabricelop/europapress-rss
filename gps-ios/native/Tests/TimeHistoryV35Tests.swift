@@ -64,6 +64,25 @@ final class TimeHistoryV35Tests:XCTestCase {
         XCTAssertEqual(quality.coveragePercent,8)
         XCTAssertEqual(TimeDayCoverageIndex.visualBuckets(quality).count,96)
     }
+    func testCompactTimelinePreservesQualityWithoutExtraInteractions() {
+        var calendar=Calendar(identifier:.gregorian)
+        calendar.timeZone=TimeZone(secondsFromGMT:0)!
+        let day=Date(timeIntervalSince1970:0)
+        let pieces=[
+            interval(0,3600,home),
+            interval(3600,5400,home,quality:"asumido",source:"revision_huecos")
+        ]
+        let summary=TimeDayCoverageIndex.build(pieces,day:day,
+            calendar:calendar,now:Date(timeIntervalSince1970:7200))
+        let bars=TimeDayCoverageIndex.visualBuckets(summary,count:48)
+        XCTAssertEqual(bars.count,48)
+        XCTAssertTrue(bars.contains(.observed))
+        XCTAssertTrue(bars.contains(.estimated))
+        XCTAssertTrue(bars.contains(.pending))
+        XCTAssertEqual(summary.covered+summary.pending,summary.dayDuration,
+            accuracy:0.0001)
+        XCTAssertEqual(summary.coveragePercent,75)
+    }
     func testCurrentDayDoesNotCountFutureAsGPSError() {
         var calendar=Calendar(identifier:.gregorian)
         calendar.timeZone=TimeZone(secondsFromGMT:0)!
