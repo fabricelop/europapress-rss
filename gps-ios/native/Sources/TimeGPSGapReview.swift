@@ -57,11 +57,13 @@ enum TimeGPSGapReviewIndex {
             while fixIndex<reliable.count && reliable[fixIndex].date<before.end.addingTimeInterval(-180) {
                 fixIndex+=1
             }
-            let pre=reliable[fixIndex...].first(where:{
-                $0.date<=before.end && before.end.timeIntervalSince($0.date)<=180 &&
-                $0.cell==before.cell
-            }) != nil
             var index=fixIndex
+            var pre=false
+            while index<reliable.count && reliable[index].date<=before.end {
+                if before.end.timeIntervalSince(reliable[index].date)<=180 &&
+                   reliable[index].cell==before.cell { pre=true }
+                index+=1
+            }
             var contradictory=false
             while index<reliable.count && reliable[index].date<after.start {
                 let point=reliable[index]
@@ -71,10 +73,14 @@ enum TimeGPSGapReviewIndex {
                 }
                 index+=1
             }
-            let post=reliable[index...].first(where:{
-                $0.date>=after.start && $0.date.timeIntervalSince(after.start)<=180 &&
-                $0.cell==after.cell
-            }) != nil
+            var post=false
+            var cursor=index
+            while cursor<reliable.count &&
+                  reliable[cursor].date<=after.start.addingTimeInterval(180) {
+                if reliable[cursor].date>=after.start &&
+                   reliable[cursor].cell==after.cell { post=true }
+                cursor+=1
+            }
             while eventIndex<sortedEvents.count && sortedEvents[eventIndex].date<before.end {
                 eventIndex+=1
             }
