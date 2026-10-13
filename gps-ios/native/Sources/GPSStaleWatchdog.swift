@@ -92,8 +92,7 @@ enum GPSStaleWatchdogPolicy {
         }
         if awaitingSustainedRecovery {
             if let previous=recoveryLastAt,
-               now.timeIntervalSince(previous)>
-                GPSStaleWatchdogPolicy.maximumRecoveryFixSpacing {
+               now.timeIntervalSince(previous) > GPSStaleWatchdogPolicy.maximumRecoveryFixSpacing {
                 recoveryFirstAt=now
             }
             if recoveryFirstAt==nil { recoveryFirstAt=now }
