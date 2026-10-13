@@ -44,6 +44,7 @@ struct PlaceListRow: Identifiable {
         placeSelectionRevision += 1
         snapshot = nil
         projection = nil
+        futureField = nil
         radarFutureMinutes = 0
         radarIndex = max(0, radar.frames.count-1)
         Task {
