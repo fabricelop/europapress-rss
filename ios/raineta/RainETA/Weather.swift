@@ -233,6 +233,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var gpsCoordinate: CLLocationCoordinate2D?
     @Published var savedPlaces: [SavedRainPlace] = []
     @Published var selectedPlaceID = "gps"
+    @Published var gpsPlaceName = "Ubicación GPS"
     @Published var quickSummaries: [String: QuickRainSummary] = [:]
     @Published var quickFailures: Set<String> = []
     @Published var summariesLoading = false
@@ -281,14 +282,60 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             self.lastCoordinate = point
             if self.selectedPlaceID == "gps" {
                 self.coordinate = point
-                self.name = "Mi ubicación"
+                self.name = self.gpsPlaceName
                 if moved { self.placeSelectionRevision += 1; await self.refresh(force: true) }
             }
             if moved {
+                Task { await self.resolveGPSPlaceName(point) }
                 self.summariesCheckedAt = .distantPast
                 await self.refreshSummaries(force: true)
             }
         }}
+    }
+
+    private func resolveGPSPlaceName(_ point: CLLocationCoordinate2D) async {
+        // Locality from Apple's reverse-geocoder, not a guess based on
+        // the nearest previously selected saved location.
+        let fallback = String(format: "GPS %.3f, %.3f", point.latitude, point.longitude)
+        let resolved: String
+        do {
+            let geocoder = CLGeocoder()
+            let marks = try await geocoder.reverseGeocodeLocation(
+                CLLocation(latitude: point.latitude, longitude: point.longitude),
+                preferredLocale: Locale(identifier: "es_ES")
+            )
+            let place = marks.first
+            let city = [place?.locality, place?.subAdministrativeArea, place?.administrativeArea]
+                .compactMap { $0 }.first { !$0.isEmpty }
+            resolved = city.map { "\($0) · GPS" } ?? fallback
+        } catch {
+            resolved = fallback
+        }
+        guard let latest = gpsCoordinate,
+              abs(latest.latitude-point.latitude) < 0.015,
+              abs(latest.longitude-point.longitude) < 0.015 else { return }
+        gpsPlaceName = resolved
+        if selectedPlaceID == "gps" {
+            name = resolved
+            if liveEnabled, snapshot != nil { await updateLiveActivity() }
+        }
+    }
+
+    func updateLivePlaceWhileLoading() async {
+        guard !Activity<RainETAAttributes>.activities.isEmpty else { return }
+        let pending = RainETAAttributes.ContentState(
+            arrival: nil,
+            rainingNow: false,
+            intensity: "Pendiente",
+            updatedAt: Date(),
+            summary: "Actualizando previsión",
+            locationName: name
+        )
+        for activity in Activity<RainETAAttributes>.activities {
+            await activity.update(ActivityContent(state: pending,
+                                                  staleDate: Date().addingTimeInterval(90)))
+        }
+        liveStatus = "En Vivo: \(name) · actualizando"
     }
 
     func start() {
@@ -401,14 +448,15 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             rainingNow: wx.isRaining,
             intensity: wx.intensity,
             updatedAt: wx.updatedAt,
-            summary: wx.isRaining ? "Lluvia actual" : (wx.nextChange == nil ? "Sin lluvia inminente" : "Lluvia prevista")
+            summary: wx.isRaining ? "Lluvia actual" : (wx.nextChange == nil ? "Sin lluvia inminente" : "Lluvia prevista"),
+            locationName: name
         )
         let content = ActivityContent(state: state,
                                       staleDate: wx.updatedAt.addingTimeInterval(30 * 60),
                                       relevanceScore: 0.7)
         if let existing = Activity<RainETAAttributes>.activities.first {
             await existing.update(content)
-            liveStatus = "En Vivo actualizada: \(existing.id.prefix(8))"
+            liveStatus = "En Vivo: \(name) · actualizada"
         } else {
             guard ActivityAuthorizationInfo().areActivitiesEnabled else {
                 liveStatus = "Actividades En Vivo desactivadas en iOS"
@@ -416,7 +464,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             }
             do {
                 let created = try Activity<RainETAAttributes>.request(
-                    attributes: RainETAAttributes(locationName: wx.locationName),
+                    attributes: RainETAAttributes(locationName: name),
                     content: content,
                     pushType: nil
                 )
