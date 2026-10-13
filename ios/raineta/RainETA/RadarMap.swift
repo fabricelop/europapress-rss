@@ -160,6 +160,18 @@ struct RadarMap: UIViewRepresentable {
             }
             for layer in previousFuture { map.removeOverlay(layer) }
         }
+        // Dim—not delete—the latest observed raster as the projected echo
+        // becomes dominant. At +0 it remains identical to the source image.
+        let fade: CGFloat = futureMinutes > 0 && projection != nil
+            ? CGFloat(max(0.15, 0.78 * exp(-Double(futureMinutes) / 18.0)))
+            : 1.0
+        for overlay in map.overlays where overlay is RainRadarTiles {
+            let renderer = map.renderer(for: overlay)
+            if abs(renderer.alpha - fade) > 0.01 {
+                renderer.alpha = fade
+                renderer.setNeedsDisplay()
+            }
+        }
         if let old = coordinator.center {
             let meters = CLLocation(latitude: old.latitude, longitude: old.longitude)
                 .distance(from: CLLocation(latitude: center.latitude, longitude: center.longitude))
