@@ -43,7 +43,9 @@ struct RainSnapshot {
     var firstDry: RainSample? {
         samples.first { $0.time > Date().addingTimeInterval(-300) && $0.precipitation < 0.08 }
     }
-    var nextChange: Date? { isRaining ? firstDry?.time : upcomingWet?.time }
+    var nextChange: Date? {
+        RainInsight.transition(currentIsRaining:isRaining,samples:samples,now:Date()).change
+    }
     var intensity: String {
         let mm = isRaining ? currentPrecipitation : (upcomingWet?.precipitation ?? 0) * 4
         if mm < 0.3 { return "Llovizna" }
