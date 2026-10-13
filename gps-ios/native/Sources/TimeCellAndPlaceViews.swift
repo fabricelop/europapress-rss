@@ -8,7 +8,9 @@ struct CellHistoryView: View {
     @State private var goToMapAfterDismiss = false
 
     private var visits:[TimeVisit] {
-        TimeVisitIndex.visits(model.data.intervals,cells:[cell.id])
+        TimeVisitIndex.visits(model.data.intervals,cells:[cell.id],
+            fixes:model.data.fixes,powerEvents:model.data.powerEvents,
+            manualBreaks:model.data.manualBreaks)
     }
     var body: some View {
         List {
