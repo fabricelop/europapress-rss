@@ -24,7 +24,9 @@ struct TimeVisitCalendar: View {
         return formatter.string(from:date)
     }
     private var allVisits:[TimeVisit] {
-        TimeVisitIndex.visits(model.data.intervals,cells:cellIDs)
+        TimeVisitIndex.visits(model.data.intervals,cells:cellIDs,
+            fixes:model.data.fixes,powerEvents:model.data.powerEvents,
+            manualBreaks:model.data.manualBreaks)
     }
     private var days:[Date:(seconds:TimeInterval,visits:Int)] {
         Dictionary(uniqueKeysWithValues:TimeVisitIndex.daily(allVisits,calendar:calendar)
@@ -111,8 +113,15 @@ struct TimeVisitCalendar: View {
                         VStack(alignment:.leading,spacing:3) {
                             Text("\(localTime(item.start)) – \(localTime(item.end))")
                                 .font(.subheadline)
-                            if item.visit.duration-item.visit.confirmedSeconds>1 {
-                                Text("Incluye un hueco GPS breve no atribuido")
+                            if item.visit.mergedSessions>1 {
+                                Text("\(item.visit.mergedSessions) tramos reunidos · tiempo confirmado")
+                                    .font(.caption2).foregroundStyle(.secondary)
+                            }
+                            if item.visit.hasTrackingPause {
+                                Text("Seguimiento interrumpido · hueco sin GPS no contabilizado")
+                                    .font(.caption2).foregroundStyle(.orange)
+                            } else if item.visit.unconfirmedSeconds>1 {
+                                Text("Intervalos sin ubicación: no se suman")
                                     .font(.caption2).foregroundStyle(.secondary)
                             }
                         }
