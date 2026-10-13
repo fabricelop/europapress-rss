@@ -4,6 +4,7 @@ import XCTest
 
 final class TimeVisitSmartConsolidationTests:XCTestCase {
     private let home=Cell(row:150000,column:149000)
+    private let neighbor=Cell(row:150000,column:149001)
     private let away=Cell(row:150000,column:149002)
     private func slice(_ start:Double,_ end:Double,_ cell:Cell)->AssignedInterval {
         AssignedInterval(start:Date(timeIntervalSince1970:start),
@@ -21,12 +22,47 @@ final class TimeVisitSmartConsolidationTests:XCTestCase {
             accuracy:8,source:"gps")
     }
     func testMinuteFragmentsAppearAsOneVisitWithoutInventingSeconds() {
-        let raw=[slice(100,120,home),slice(130,135,away),slice(135,190,home)]
+        let raw=[slice(100,120,home),slice(130,135,neighbor),slice(135,190,home)]
         let merged=TimeVisitIndex.visits(raw,cells:[home.id])
         XCTAssertEqual(merged.count,1)
         XCTAssertEqual(merged[0].confirmedSeconds,75)
         XCTAssertEqual(merged[0].mergedSessions,2)
         XCTAssertEqual(merged[0].unconfirmedSeconds,15)
+    }
+    func testAdjacentCellJitterOfTwentyFiveSecondsJoinsWithoutAddingTime() {
+        let raw=[slice(100,170,home),slice(170,195,neighbor),
+                 slice(195,295,home)]
+        let visits=TimeVisitIndex.visits(raw,cells:[home.id])
+        XCTAssertEqual(visits.count,1)
+        XCTAssertEqual(visits[0].confirmedSeconds,170)
+        XCTAssertEqual(visits[0].unconfirmedSeconds,25)
+    }
+    func testOutsideNonAdjacentCellPreventsEvenShortJoin() {
+        let raw=[slice(100,120,home),slice(130,135,away),
+                 slice(135,190,home)]
+        XCTAssertEqual(TimeVisitIndex.visits(raw,cells:[home.id]).count,2)
+    }
+    func testVisibleVisitsExcludeSubSecondButHistoryKeepsFraction() {
+        let tiny=slice(100,100.45,home)
+        let regular=slice(400,430,home)
+        let visits=TimeVisitIndex.visits([tiny,regular],cells:[home.id])
+        XCTAssertEqual(visits.count,2)
+        let visible=TimeVisitIndex.visible(visits)
+        XCTAssertEqual(visible.count,1)
+        XCTAssertEqual(visible[0].confirmedSeconds,30)
+        let full=TimeVisitIndex.daily(visits)
+        XCTAssertEqual(full.reduce(0) { $0+$1.seconds },30.45,accuracy:0.001)
+    }
+    func testDetailPeriodsKeepConfirmedSecondsAndSplitOnlyRealBreaks() {
+        let raw=[slice(100,120,home),slice(120,150,home),
+                 slice(180,210,home)]
+        let visits=TimeVisitIndex.visits(raw,cells:[home.id])
+        XCTAssertEqual(visits.count,1)
+        let details=TimeVisitIndex.detailPeriods(visits[0],
+            from:Date(timeIntervalSince1970:90),
+            to:Date(timeIntervalSince1970:220))
+        XCTAssertEqual(details.count,2)
+        XCTAssertEqual(details.reduce(0) { $0+$1.seconds },80)
     }
     func testKnownExitNeverGetsMergedEvenWhenItTakesSeconds() {
         let raw=[slice(100,120,home),slice(130,135,away),slice(135,190,home)]
