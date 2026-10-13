@@ -29,8 +29,11 @@ def main() -> int:
     comment = event.get("comment") or {}
     repo = event.get("repository") or {}
 
-    if int(issue.get("number") or 0) != 2 or not issue.get("pull_request"):
-        print("IGNORED: no es PR #2")
+    issue_number = int(issue.get("number") or 0)
+    is_pr2 = issue_number == 2 and bool(issue.get("pull_request"))
+    is_transport_issue = issue_number == 164
+    if not (is_pr2 or is_transport_issue):
+        print("IGNORED: no es PR #2 ni issue de transporte #164")
         return 0
     if str(repo.get("full_name") or "") != "fabricelop/europapress-rss":
         return fail("repositorio inesperado")
