@@ -1508,6 +1508,11 @@ struct RootView: View {
     @Environment(\.scenePhase) private var phase
     @State private var unlocked = false
     @State private var checking = false
+    private func openGPSGapHistoryIfRequested() {
+        guard UserDefaults.standard.bool(forKey:"gpsWatchdogOpenHistory") else { return }
+        UserDefaults.standard.removeObject(forKey:"gpsWatchdogOpenHistory")
+        model.selectedTab=2
+    }
     var body: some View {
         ZStack {
             TabView(selection:$model.selectedTab) {
@@ -1521,7 +1526,13 @@ struct RootView: View {
                     .tabItem { Label("Descubrir", systemImage:"globe.europe.africa.fill") }.tag(3)
                 TimeSettingsView(model: model, gps: gps)
                     .tabItem { Label("Ajustes", systemImage: "gearshape") }.tag(4)
-            }.tint(.teal)
+            }
+            .tint(.teal)
+            .onAppear { openGPSGapHistoryIfRequested() }
+            .onReceive(NotificationCenter.default.publisher(
+                for:Notification.Name("gpsWatchdogOpenHistory"))) { _ in
+                openGPSGapHistoryIfRequested()
+            }
             if faceIDEnabled && !unlocked {
                 VStack(spacing:20) {
                     Image(systemName:"lock.shield.fill").font(.system(size:54)).foregroundStyle(.teal)
