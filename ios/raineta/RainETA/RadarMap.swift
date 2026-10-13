@@ -168,13 +168,16 @@ struct RadarMap: UIViewRepresentable {
         // WMS tile arrives. Do not use the old 9×9 sampled model or alpha
         // decay. Time-changing precipitation comes directly from ICON-EU.
         let wantModel = futureMinutes > 0 && ICONForecastTiles.covers(center)
-        let validHour = wantModel ? ICONForecastTiles.forecastTime(leadMinutes: futureMinutes) : nil
-        let futureKey = validHour.map { String(Int($0.timeIntervalSince1970)) } ?? "observed"
+        let window = wantModel ? ICONForecastTiles.period(leadMinutes:futureMinutes) : nil
+        let futureKey = window.map {
+            "\(Int($0.lower.timeIntervalSince1970)):\(Int($0.fraction*100))"
+        } ?? "observed"
         if coordinator.futureKey != futureKey {
             coordinator.futureKey = futureKey
             let oldForecast = map.overlays.filter { $0 is ICONForecastTiles || $0 is ModelRainTiles || $0 is RainFutureTiles }
-            if let validHour {
-                let tileLayer = ICONForecastTiles(validTime: validHour)
+            if let window {
+                let tileLayer = ICONForecastTiles(validTime:window.lower, upperTime:window.upper,
+                                                  fraction:window.fraction, requestedTime:window.target)
                 tileLayer.onFirstTile = { [weak map] in
                     guard let map, map.overlays.contains(where: { $0 === tileLayer }) else { return }
                     for layer in oldForecast { map.removeOverlay(layer) }
@@ -185,7 +188,7 @@ struct RadarMap: UIViewRepresentable {
                         }
                     }
                     tileLayer.onFirstTile = nil
-                    forecastStatus?("ICON-EU oficial · precipitación de la hora anterior · \(validHour.formatted(date: .omitted, time: .shortened))")
+                    forecastStatus?("ICON-EU · transición visual 15 min entre campos horarios reales · \(window.target.formatted(date: .omitted, time: .shortened))")
                 }
                 tileLayer.onTileError = { [weak map] message in
                     guard let map, map.overlays.contains(where: { $0 === tileLayer }) else { return }
