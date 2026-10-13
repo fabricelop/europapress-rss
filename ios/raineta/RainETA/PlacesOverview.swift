@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PlacesOverview: View {
     @ObservedObject var store: RainStore
+    var onSelect: () -> Void = {}
     @State private var showingSearch = false
     @State private var renaming: SavedRainPlace?
     @State private var editedName = ""
@@ -30,7 +31,10 @@ struct PlacesOverview: View {
                 .foregroundStyle(.secondary)
             ForEach(store.allPlaceRows) { place in
                 HStack(spacing: 6) {
-                    Button { store.selectPlace(place.id) } label: {
+                    Button {
+                        store.selectPlace(place.id)
+                        onSelect()
+                    } label: {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack(spacing: 5) {
                                 Image(systemName: place.id == "gps" ? "location.fill" : "mappin.circle.fill")
@@ -72,7 +76,10 @@ struct PlacesOverview: View {
                             .accessibilityLabel("Guardar posición GPS como lugar fijo")
                     } else {
                         Menu {
-                            Button("Abrir", systemImage: "arrow.up.forward") { store.selectPlace(place.id) }
+                            Button("Abrir", systemImage: "arrow.up.forward") {
+                                store.selectPlace(place.id)
+                                onSelect()
+                            }
                             Button("Renombrar", systemImage: "pencil") {
                                 renaming = store.savedPlaces.first(where: { $0.id == place.id })
                                 editedName = place.name
@@ -97,7 +104,7 @@ struct PlacesOverview: View {
         .padding(14)
         .background(.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
         .sheet(isPresented: $showingSearch) {
-            PlaceSearchSheet(store: store)
+            PlaceSearchSheet(store: store, onSelect: onSelect)
         }
         .alert("Renombrar lugar", isPresented: Binding(
             get: { renaming != nil },
@@ -142,6 +149,7 @@ struct PlacesOverview: View {
 
 struct PlaceSearchSheet: View {
     @ObservedObject var store: RainStore
+    var onSelect: () -> Void = {}
     @Environment(\.dismiss) private var dismiss
     @State private var query = ""
     @State private var matches: [FoundRainPlace] = []
@@ -173,6 +181,7 @@ struct PlaceSearchSheet: View {
                         Button {
                             store.selectPlace("gps")
                             dismiss()
+                            onSelect()
                         } label: {
                             Label("Usar mi ubicación GPS", systemImage: "location.fill")
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -183,6 +192,7 @@ struct PlaceSearchSheet: View {
                                 store.addPlace(name: found.name, latitude: found.latitude,
                                                longitude: found.longitude, select: true)
                                 dismiss()
+                                onSelect()
                             } label: {
                                 HStack {
                                     Image(systemName: "mappin")
