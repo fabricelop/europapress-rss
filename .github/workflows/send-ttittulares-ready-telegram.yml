@@ -16,6 +16,8 @@ on:
       - "telegram/editorial-processing.json"
       - "ttittulares/decisions.json"
       - "shared/telegram_readonly_delivery.py"
+      - "ttittulares/treated_news.py"
+      - "ttittulares/treated-stories.json"
       - ".github/workflows/send-ttittulares-ready-telegram.yml"
 permissions:
   contents: write
@@ -49,6 +51,12 @@ jobs:
             /tests/test_tti_authentic_title.py
             /ttittulares/decisions.json
             /ttittulares/treated_news.py
+            /ttittulares/auto_queue.py
+            /ttittulares/filter_processing_batch.py
+            /telegram/content_filters.py
+            /telegram/radar_no_d1.py
+            /telegram/source_publication.py
+            /telegram/source_telemetry.py
             /ttittulares/treated-stories.json
             /trends/requests.json
             /trends/editorial-queue.json
@@ -61,7 +69,9 @@ jobs:
         run: |
           python3 -m pip install -q requests pillow
           python3 -m py_compile shared/telegram_readonly_delivery.py
+          python3 -m py_compile telegram/radar_no_d1.py ttittulares/auto_queue.py ttittulares/filter_processing_batch.py
           python3 ttittulares/treated_news.py
+          python3 ttittulares/auto_queue.py --selftest
           python3 shared/telegram_readonly_delivery.py selftest
           python3 shared/telegram_orphan_audit.py selftest
           python3 -m unittest discover -s tests -p "test_tti_authentic_title.py" -v
