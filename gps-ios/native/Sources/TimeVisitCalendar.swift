@@ -7,6 +7,8 @@ struct TimeVisitCalendar: View {
     let cellIDs: Set<String>
     @State private var month: Date = Calendar.current.dateInterval(of:.month,for:.now)?.start ?? .now
     @State private var selectedDay: Date?
+    @State private var selectedGPSGap:TimeGPSGapCandidate?
+    @State private var showGapConfirmation=false
 
     private var zoneTimeZone:TimeZone? {
         cellIDs.compactMap { model.data.territoryCache[$0]?.timeZoneIdentifier }
@@ -56,6 +58,16 @@ struct TimeVisitCalendar: View {
     private var focusVisits:[(visit:TimeVisit,start:Date,end:Date,seconds:TimeInterval)] {
         TimeVisitIndex.portions(visibleVisits,day:calendar.startOfDay(for:focus),
                                 calendar:calendar)
+    }
+    private var reviewableGaps:[TimeGPSGapCandidate] {
+        TimeGPSGapRecovery.candidates(
+            intervals:model.data.intervals,fixes:model.data.fixes,
+            manualBreaks:model.data.manualBreaks,
+            events:model.data.powerEvents,cells:cellIDs)
+        .filter { gap in
+            calendar.isDate(gap.start,inSameDayAs:focus) &&
+            calendar.isDate(gap.end,inSameDayAs:gap.start)
+        }
     }
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
@@ -126,7 +138,39 @@ struct TimeVisitCalendar: View {
                         end:item.end,seconds:item.seconds,
                         timeZone:calendar.timeZone)
                 }
+                ForEach(reviewableGaps) { gap in
+                    VStack(alignment:.leading,spacing:5) {
+                        HStack(spacing:6) {
+                            Image(systemName:"location.slash.circle")
+                                .foregroundStyle(.orange)
+                            Text("GPS sin datos: \(localGapTime(gap.start)) – \(localGapTime(gap.end))")
+                                .font(.caption.weight(.semibold))
+                        }
+                        Text("\(DurationFormat.full(gap.seconds)) sin atribuir. Puedes recuperarlo solo si permaneciste aquí todo ese tiempo.")
+                            .font(.caption2).foregroundStyle(.secondary)
+                        Button("Confirmar que permanecí aquí") {
+                            selectedGPSGap=gap
+                            showGapConfirmation=true
+                        }
+                        .font(.caption.weight(.medium))
+                        .buttonStyle(.bordered)
+                        .tint(.teal)
+                    }
+                    .padding(9)
+                    .background(Color.orange.opacity(0.07),
+                                in:RoundedRectangle(cornerRadius:10))
+                }
             }
+        }
+        .alert("¿Permaneciste en la cuadrícula?",isPresented:$showGapConfirmation,
+               presenting:selectedGPSGap) { gap in
+            Button("Añadir como estimado") {
+                _ = model.confirmUnobservedStay(gap)
+                selectedGPSGap=nil
+            }
+            Button("Cancelar",role:.cancel) { selectedGPSGap=nil }
+        } message: { gap in
+            Text("Entre \(localGapTime(gap.start)) y \(localGapTime(gap.end)) no hubo GPS suficiente. Si confirmas que no saliste de esta cuadrícula, se añadirán \(DurationFormat.full(gap.seconds)) como tiempo ASUMIDO, no observado. El historial GPS original se conservará.")
         }
         .onAppear {
             if let last=TimeVisitIndex.daily(visibleVisits,calendar:calendar).first {
@@ -134,6 +178,13 @@ struct TimeVisitCalendar: View {
                 selectedDay=last.date
             }
         }
+    }
+    private func localGapTime(_ value:Date)->String {
+        let formatter=DateFormatter()
+        formatter.locale=Locale(identifier:"es_ES")
+        formatter.timeZone=calendar.timeZone
+        formatter.timeStyle = .short
+        return formatter.string(from:value)
     }
     private func shift(_ months:Int) {
         if let next=calendar.date(byAdding:.month,value:months,to:month) {
