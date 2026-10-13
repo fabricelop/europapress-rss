@@ -65,9 +65,11 @@ final class TimeLiveMotionTests:XCTestCase {
     }
     func testInaccurateStationaryJitterStillRejected() {
         let now=Date(timeIntervalSince1970:900)
-        let points=(0..<8).map { i in
-            fix(730+Double(i)*20,40.4+Double(i%3-1)*0.00004,
-                -3.7+Double(i%2)*0.00003,accuracy:20)
+        let points:[GPSPoint]=(0..<8).map { i -> GPSPoint in
+            let seconds:Double=730.0+Double(i)*20.0
+            let latitude:Double=40.4+(Double(i%3)-1.0)*0.00004
+            let longitude:Double = -3.7+Double(i%2)*0.00003
+            return fix(seconds,latitude,longitude,accuracy:20)
         }
         XCTAssertFalse(TimeLiveMotion.analyze(points,now:now,
             center:points.last!.cell).moving)
