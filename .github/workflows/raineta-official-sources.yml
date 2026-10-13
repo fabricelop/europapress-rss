@@ -1,0 +1,18 @@
+name: RainETA Official Forecast Sources Probe
+on:
+  push:
+    paths:
+      - 'ios/raineta/tests/official_forecast_probe.py'
+      - '.github/workflows/raineta-official-sources.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect AEMET high-resolution source and DWD WMS capabilities
+        working-directory: ios/raineta
+        run: python3 tests/official_forecast_probe.py
