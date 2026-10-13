@@ -80,7 +80,7 @@ struct RainHomeView: View {
                     radarSection
                     MinuteRainGraph(projection: store.projection, weather: store.snapshot)
                     ThreeHourRainView(weather:store.snapshot)
-                    LongRainForecast(weather: store.snapshot)
+                    RainWeekForecast(weather: store.snapshot)
                     footer
                 }
                 .padding(16)
