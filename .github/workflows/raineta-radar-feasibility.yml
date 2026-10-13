@@ -1,0 +1,26 @@
+name: RainETA Radar Source Feasibility
+on:
+  push:
+    paths:
+      - 'ios/raineta/tests/source_feasibility.py'
+      - '.github/workflows/raineta-radar-feasibility.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe no-key live radar and NWP sources
+        working-directory: ios/raineta
+        run: |
+          python3 -m pip install requests
+          python3 tests/source_feasibility.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: raineta-radar-feasibility
+          path: ios/raineta/research-probe/probe.json
+          retention-days: 14
