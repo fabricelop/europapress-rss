@@ -8,7 +8,7 @@ on:
       - "ttittulares/prepared.json"
       - ".github/workflows/repair-ttittulares-listas.yml"
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
@@ -192,8 +192,7 @@ jobs:
           gh workflow run send-ttittulares-ready-telegram.yml --repo "$REPO" --ref main
           echo "TTITTULARES_TELEGRAM_DISPATCH_REQUESTED"
 
-      - name: Encolar IA ausente o inválida
-        if: ${{ false }}
+      - name: Encolar IA automática no bloqueante (un trabajo a la vez)
         shell: bash
         run: |
           set -euo pipefail
@@ -253,6 +252,11 @@ jobs:
               except Exception: return {}
 
           active={"REQUESTED","RUNNING","PERSISTING"}
+          # En curso: no abrir otro trabajo automático hasta terminar el anterior.
+          active_elsewhere=any(
+              str(load_old(CTRL/str(x.get("status_path") or "")).get("status") or "").upper() in active
+              for x in index.get("jobs",[]) if str(x.get("status_path") or "").startswith("ttittulares/image-runs/jobs/")
+          )
           queued=[]
           wanted_ids=set()
 
@@ -263,6 +267,19 @@ jobs:
               text=str(tweet.get("text") or "").strip()
               remate=str(tweet.get("remate") or "").strip()
               if not eid or not text or not remate:
+                  continue
+              # No procesar retrospectivamente noticias antiguas.
+              entered=str(item.get("prepared_at") or item.get("ready_at") or "")
+              try:
+                  entered_dt=datetime.fromisoformat(entered.replace("Z","+00:00"))
+              except (ValueError,TypeError):
+                  continue
+              if (now-entered_dt).total_seconds()>900:
+                  continue
+              if item.get("disable_ai_image") or str(item.get("image_mode") or "").lower() in {"fallback_only","tweet_capture_only"}:
+                  continue
+              if any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
+                     for k in ("fallece","muere","muerte","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado")):
                   continue
               # Los bloqueos editoriales heredados (disable/fallback_only/etc.) ya no
               # impiden generar IA. Tremending sigue fuera por su flujo tweet_capture.
@@ -282,6 +299,12 @@ jobs:
               force_retry=manual_retry_version>consumed_retry_version
               attempt=int(old.get("auto_repair_attempt") or 0)
               old_status=str(old.get("status") or "").upper()
+              # Automático: una sola generación por identidad y revisión.
+              # Las regeneraciones siguen disponibles mediante el mecanismo manual.
+              if old and int(old.get("revision") or rev)==rev and not force_retry:
+                  continue
+              if active_elsewhere or queued:
+                  continue
               finished=str(old.get("finished_at") or old.get("updated_at") or old.get("requested_at") or "")
               age=999999
               if finished:
