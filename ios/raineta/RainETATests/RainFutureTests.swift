@@ -12,7 +12,7 @@ final class RainFutureTests: XCTestCase {
         return FutureRainField(columns:source.columns, rows:source.rows,
                                westX:source.westX,northY:source.northY,
                                eastX:source.eastX,southY:source.southY,
-                               times:[now.addingTimeInterval(-900),now.addingTimeInterval(7200)],
+                               times:[now.addingTimeInterval(-900),now.addingTimeInterval(4*3600)],
                                values:source.values,fetchedAt:now,completeness:1)
     }
 
