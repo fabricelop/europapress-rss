@@ -230,6 +230,16 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var locationPermission = "Comprobando ubicación"
     @Published var radarIndex = 0
     @Published var radarFutureMinutes = 0
+    @Published var gpsCoordinate: CLLocationCoordinate2D?
+    @Published var savedPlaces: [SavedRainPlace] = []
+    @Published var selectedPlaceID = "gps"
+    @Published var quickSummaries: [String: QuickRainSummary] = [:]
+    @Published var quickFailures: Set<String> = []
+    @Published var summariesLoading = false
+
+    var pendingRefresh = false
+    var summariesCheckedAt = Date.distantPast
+    var placeSelectionRevision = 0
 
     private let location = RainLocation()
     private var lastCoordinate: CLLocationCoordinate2D?
@@ -238,6 +248,17 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     init() {
         liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
         liveStatus = liveEnabled ? "Actividad En Vivo detectada en iOS" : "En Vivo desactivada"
+        if let data = UserDefaults.standard.data(forKey: "raineta.savedPlaces.v1"),
+           let found = try? JSONDecoder().decode([SavedRainPlace].self, from: data) {
+            savedPlaces = found
+        }
+        selectedPlaceID = UserDefaults.standard.string(forKey: "raineta.selectedPlace.v1") ?? "gps"
+        if let selected = savedPlaces.first(where: { $0.id == selectedPlaceID }) {
+            coordinate = selected.coordinate
+            name = selected.name
+        } else {
+            selectedPlaceID = "gps"
+        }
         location.onDenied = { [weak self] in Task { @MainActor in
             self?.locationPermission = "Ubicación denegada; revisar Ajustes"
             self?.status = "Ubicación no autorizada: mostrando Madrid como ejemplo"
@@ -256,17 +277,27 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
                 CLLocation(latitude: $0.latitude, longitude: $0.longitude)
                     .distance(from: CLLocation(latitude: point.latitude, longitude: point.longitude)) > 1000
             } ?? true
-            self.coordinate = point
-            self.name = "Mi ubicación"
+            self.gpsCoordinate = point
             self.lastCoordinate = point
-            if moved { await self.refresh(force: true) }
+            if self.selectedPlaceID == "gps" {
+                self.coordinate = point
+                self.name = "Mi ubicación"
+                if moved { self.placeSelectionRevision += 1; await self.refresh(force: true) }
+            }
+            if moved {
+                self.summariesCheckedAt = .distantPast
+                await self.refreshSummaries(force: true)
+            }
         }}
     }
 
     func start() {
         location.request()
         syncLive()
-        Task { await refresh(force: true) }
+        Task {
+            await refresh(force: true)
+            await refreshSummaries(force: true)
+        }
     }
 
     func requestAlwaysLocation() {
@@ -286,19 +317,35 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     }
 
     func refresh(force: Bool = false) async {
-        if loading { return }
+        if loading {
+            if force { pendingRefresh = true }
+            return
+        }
         if !force && Date().timeIntervalSince(lastRefresh) < 120 { return }
         loading = true
-        defer { loading = false }
+        defer {
+            loading = false
+            if pendingRefresh {
+                pendingRefresh = false
+                Task { await self.refresh(force: true) }
+            }
+        }
+        let selectedRevision = placeSelectionRevision
         async let wx = RainAPI.fetchForecast(latitude: coordinate.latitude, longitude: coordinate.longitude, name: name)
         async let rx = RainAPI.fetchRadar()
         do {
-            snapshot = try await wx
+            let updated = try await wx
+            if selectedRevision != placeSelectionRevision {
+                pendingRefresh = true
+                return
+            }
+            snapshot = updated
             lastRefresh = Date()
             status = "Previsión de Open-Meteo · orientativa"
         } catch {
             status = "Error en la previsión. Conservamos los últimos datos."
         }
+        if selectedRevision != placeSelectionRevision { pendingRefresh = true; return }
         do {
             radar = try await rx
             radarIndex = max(0, radar.frames.count - 1)
@@ -312,8 +359,9 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         let point = coordinate
         if frames.count >= 2 {
             let projected = await RadarNowcaster.forecast(host: host, frames: frames, coordinate: point)
-            projection = projected
-            if let p = projected {
+            if selectedRevision != placeSelectionRevision { pendingRefresh = true; return }
+            if projected != nil { projection = projected }
+            if let p = projected ?? projection {
                 let quality = Int(p.confidence * 100)
                 projectionStatus = "Desplazamiento estimado · Confianza \(quality)% · Fiable orientativamente hasta +\(p.reliableUntil) min"
             } else {
