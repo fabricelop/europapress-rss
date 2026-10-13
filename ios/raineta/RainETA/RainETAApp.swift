@@ -37,12 +37,19 @@ struct RainTabRoot: View {
             }
             .tabItem { Label("Mis lugares", systemImage: "mappin.and.ellipse") }
             .tag(1)
+            NavigationStack {
+                RainSettingsView(store:store)
+            }
+            .tabItem { Label("Ajustes", systemImage:"gearshape.fill") }
+            .tag(2)
         }
         .preferredColorScheme(.dark)
         .task {
             store.start()
             while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: 240_000_000_000)
+                let interval = UserDefaults.standard.integer(forKey: "raineta.settings.refresh")
+                let seconds = interval == 120 || interval == 600 ? interval : 240
+                try? await Task.sleep(nanoseconds: UInt64(seconds) * 1_000_000_000)
                 if phase == .active {
                     await store.refresh()
                     await store.refreshSummaries()
@@ -69,10 +76,10 @@ struct RainHomeView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    hero
+                    RainHeroCard(store:store)
                     radarSection
                     MinuteRainGraph(projection: store.projection, weather: store.snapshot)
-                    forecastSection
+                    ThreeHourRainView(weather:store.snapshot)
                     LongRainForecast(weather: store.snapshot)
                     footer
                 }
@@ -107,75 +114,6 @@ struct RainHomeView: View {
         }
     }
 
-    private var hero: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Label(store.name, systemImage: "location.fill")
-                    .font(.subheadline)
-                    .foregroundStyle(.cyan)
-                Spacer()
-                if store.loading { ProgressView().controlSize(.small) }
-            }
-            if let weather = store.snapshot {
-                TimelineView(.periodic(from: .now, by: 30)) { timeline in
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(headline(weather, now: timeline.date))
-                            .font(.system(size: 34, weight: .bold, design: .rounded))
-                            .contentTransition(.numericText())
-                        Text(weather.isRaining ? "Lluvia detectada por el modelo actual" : "Inicio estimado por modelo")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                HStack(spacing: 14) {
-                    if let t = weather.temperature {
-                        Label(String(format: "%.0f °C", t), systemImage: "thermometer.medium")
-                    }
-                    Label(weather.isRaining ? "Lloviendo" : "Ahora sin lluvia", systemImage: "cloud.drizzle")
-                }
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.85))
-
-                HStack(spacing: 8) {
-                    Image(systemName: "clock.arrow.circlepath")
-                    Text("Actualizado \(weather.updatedAt.formatted(date: .omitted, time: .shortened))")
-                    Spacer()
-                    Text("Modelo 15 min")
-                }
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                Button {
-                    Task { await store.toggleLive() }
-                } label: {
-                    Label(store.liveEnabled ? "Desactivar En Vivo" : "Mostrar En Vivo",
-                          systemImage: store.liveEnabled ? "checkmark.circle.fill" : "livephoto")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.cyan)
-                .foregroundStyle(.black)
-                Text(store.liveStatus)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                HStack(spacing: 8) {
-                    Image(systemName: "location.circle")
-                    Text(store.locationPermission)
-                        .font(.caption)
-                    Spacer()
-                    Button("Solicitar Siempre") { store.requestAlwaysLocation() }
-                        .font(.caption.bold())
-                }
-                .foregroundStyle(.cyan)
-            } else {
-                ProgressView("Obteniendo predicción")
-                    .padding(.vertical, 25)
-            }
-        }
-        .padding(18)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 20))
-    }
-
     private var radarSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -191,47 +129,10 @@ struct RainHomeView: View {
         }
     }
 
-    private var forecastSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Próximas 3 horas", systemImage: "chart.bar.xaxis")
-                .font(.headline)
-            if let weather = store.snapshot {
-                let soon = Array(weather.samples.prefix(12))
-                if soon.isEmpty {
-                    Text("No hay datos de precipitación de 15 minutos para este lugar.")
-                        .foregroundStyle(.secondary)
-                } else {
-                    HStack(alignment: .bottom, spacing: 6) {
-                        ForEach(soon) { point in
-                            VStack(spacing: 4) {
-                                Spacer(minLength: 0)
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(barColor(point.precipitation))
-                                    .frame(height: max(5, min(90, CGFloat(point.precipitation * 46))))
-                                Text(point.time.formatted(.dateTime.hour().minute()))
-                                    .font(.system(size: 9))
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.65)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
-                    .frame(height: 125)
-                    Text("Altura = precipitación prevista · Intervalos de 15 min · Modelo, no radar")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-        .padding(14)
-        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
-    }
-
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.5.0 · Observación RainViewer y previsión oficial ICON-EU (DWD), con mapas completos en vez de interpolación de 9×9 puntos.")
+            Text("v0.6.0 · Observación RainViewer y previsión oficial ICON-EU (DWD), con mapas completos en vez de interpolación de 9×9 puntos.")
             Text(store.futureFieldStatus)
             Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
