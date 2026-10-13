@@ -55,6 +55,23 @@ Causas del diseño:
 - Verificar información para todas las ciudades guardadas y etiqueta clara de la localidad en En Vivo.
 - NO considerar test «HTTP 200 devuelve PNG» ni «XCTest sin errores» evidencia suficiente de calidad meteorológica o visual.
 
+## Investigación experimental ejecutada el 13/10 — resultados verificados
+
+- **OPERA directo sin clave:** desde `https://s3.waw3-1.cloudferro.com/openradar-24h/YYYY/MM/DD/OPERA/COMP/OPERA@YYYYMMDDThhmm@0@DBZH.h5`, archivos actuales cada 5 minutos de ~2,3 MB con `dataset1/data1/data` de 4.400 × 3.800 píxeles, reflectividad con `nodata=-9999000` y `undetect=-8888000`. Proyección Lambert Equal Area `+proj=laea +lat_0=55 +lon_0=10 +x_0=1950000 +y_0=-2100000`; resolución de 1 km. Se comprobaron 4 barridos seguidos con datos reales y metadatos de licencia CC BY 4.0.
+- **Formato iPhone más prometedor:** `OPERA@YYYYMMDDThhmm@0@DBZH.tiff` existe y fue confirmado con HEAD 200, longitud aproximada de 3,6 MB y `Accept-Ranges: bytes`. Es una GeoTIFF optimizada y evitaría descargar/decomprimir HDF5. Queda probar sus bandas y la capacidad de decodificación de Apple; no asumir que equivale a PNG.
+- **Límite API:** MeteoGate respondió HTTP **429** en una repetición; no se debe depender de solicitudes intensivas al catálogo desde cada iPhone. Los nombres S3 deterministas permiten acceso público directo, con estrategia de reintento y caducidad.
+- **AEMET HARMONIE archivo oficial:** GET 200 a `https://www.aemet.es/es/api-eltiempo/modelos/download/harmonie/PB`; tar+gzip en streaming, secuencia GeoTIFF por horas de Península/Baleares con bounds `[-11.012,34.488,4.988,44.488]` en EPSG:4326 y 640×400 px. Algunos archivos tienen nombre `down_<fecha-hora>_61_1HH.tif`. Son mapas coloreados / raster con máscaras; **NO** debe interpretarse su banda RGB como mm/h sin confirmar sus metadatos y escala. 10 fotogramas accesibles consecutivos.
+- **Primer backtest real** sobre 11 barridos OPERA consecutivos en 16 ciudades europeas prefijadas, 5 y 15 min de horizonte: 12 casos realmente lluviosos, todos en Ámsterdam, Hamburgo y Estocolmo; **ningún caso lluvioso suficiente en las 6 ciudades españolas del test**. El optical flow denso sobre tres barridos ganó F1 a persistencia en 12/12 casos. Mediana F1 +0,0741; mediana de MAE de reflectividad mejora ~1,254 dBZ. Frente a control de suavizado espacial, mediana F1 +0,07315; frente al promedio temporal +0,09935. **No extrapolar a toda España ni a más de 15 minutos**: falta validación de episodios españoles, varias fechas y extrapolaciones más largas.
+- **CI reproducible:** `.github/workflows/raineta-radar-feasibility.yml` (formatos/latencia S3), `raineta-radar-science.yml` (HDF y AEMET), `raineta-backtest.yml` (prueba retrospectiva con foto y métricas), `raineta-harmonie-check.yml` (máscaras/GeoTIFF), `raineta-cog-native.yml` (COG directo Apple ImageIO).
+
+### Criterios adicionales antes de la IPA
+
+1. Obtener ≥3 episodios lluviosos distintos en España y ≥2 ciudades de costa/interior, no solo zonas de Europa central.
+2. Superar a persistencia **y** suavizado sin movimiento para al menos 5 y 15 minutos en lluvia real española; informar F1, CSI, sesgo y error de llegada.
+3. Validar COG Apple ImageIO en una compilación macOS y decodificación/mapa en simulador iOS, además de georreferenciación.
+4. Garantizar fuentes/fotogramas explícitos, sin pintar como lluvia zonas sin observación y sin utilizar extrapolaciones más allá del horizonte respaldado.
+5. Perfilar batería y consumo de datos de tres barridos COG por ubicación antes de activar descargas en producción.
+
 ## Fuentes públicas
 - https://weatheriberia.blogspot.com/
 - https://meteo.cat/wpweb/divulgacio/equipaments-meteorologics/adveccio-radar/
