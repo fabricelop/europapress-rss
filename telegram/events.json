@@ -31422,7 +31422,7 @@
       "percentage": 25.0,
       "first_seen": "2026-10-13T07:33:07.638443Z",
       "last_seen": "2026-10-13T08:03:19.865367Z",
-      "status": "ELIGIBLE",
+      "status": "DELETED",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -31436,7 +31436,9 @@
       ],
       "outlet_count": 4,
       "sport_source_count": 0,
-      "eligible_at": "2026-10-13T08:03:19.865367Z"
+      "eligible_at": "2026-10-13T08:03:19.865367Z",
+      "deleted_at": "2026-10-13T08:32:09.120419Z",
+      "decision_source": "telegram_emergency_callback"
     },
     {
       "id": "7f0bd973a10f",
@@ -56080,5 +56082,6 @@
   "active_event_cap": 450,
   "protected_event_count": 215,
   "single_source_event_cap": 450,
-  "pruned_at": "2026-10-13T08:28:22.220881Z"
+  "pruned_at": "2026-10-13T08:28:22.220881Z",
+  "updated_at": "2026-10-13T08:32:09.120419Z"
 }
