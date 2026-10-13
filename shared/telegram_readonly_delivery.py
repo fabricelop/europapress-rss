@@ -66,6 +66,78 @@ def image_url(row):
             return url
     return ""
 
+def ai_delivery_info(item,now):
+    """Solo lectura: el plazo comienza con pc_launched_at, nunca con REQUESTED."""
+    eid=str(item.get("event_id") or "")
+    rev=int(item.get("revision") or 1)
+    ai=item.get("ai_image") or {}
+    job={}
+    if eid and os.environ.get("TELEGRAM_BOT_TOKEN"):
+        try:
+            url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
+                 "control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/"
+                 +quote(eid,safe="")+".json?at="+str(int(now.timestamp())))
+            response=requests.get(url,timeout=(1.0,1.5),headers={"Cache-Control":"no-cache"})
+            if response.ok:
+                found=response.json()
+                if (str(found.get("target_id") or found.get("event_id") or "")==eid
+                        and int(found.get("revision") or 0)==rev):
+                    job=found
+        except (requests.RequestException,ValueError,TypeError,AttributeError):
+            pass
+    launch=date(job.get("pc_launched_at"))
+    expired=bool(launch and (now-launch).total_seconds()>=300)
+    status=str(job.get("status") or "").upper()
+    url=str(ai.get("url") or "")
+    valid=bool(item.get("ai_image_status")=="ready" and ai.get("generated") is True
+        and ai.get("provider")=="chat-imagegen" and ai.get("origin")=="executing_chat"
+        and url.startswith("https://") and str(ai.get("sha256") or "")
+        and int(ai.get("width") or 0)>=1024 and int(ai.get("height") or 0)>=576
+        and str((ai.get("context_guard") or {}).get("event_id") or eid)==eid
+        and int((ai.get("context_guard") or {}).get("revision") or rev)==rev)
+    # La creación manual no expira: solo bloqueamos la automática de ESTE command_id.
+    automatic=bool(job.get("auto_repair") and
+       str((ai.get("context_guard") or {}).get("command_id") or "")==str(job.get("command_id") or ""))
+    if valid and not (automatic and expired):
+        return {"url":url,"note":"🖼️ Imagen IA lista · incorporándose a Telegram."}
+    if expired or status in {"ERROR","CANCELLED","SUPERSEDED"}:
+        return {"url":"","note":"🖼️ IA no disponible · puedes crearla manualmente."}
+    if launch:
+        return {"url":"","note":"🖼️ IA en curso · todavía puede llegar (hasta 5 min desde el lanzamiento)."}
+    if status in {"REQUESTED","RUNNING","PERSISTING"}:
+        return {"url":"","note":"🖼️ IA pendiente de lanzamiento · sin cuenta atrás todavía."}
+    if valid:
+        return {"url":url,"note":"🖼️ Imagen IA lista · incorporándose a Telegram."}
+    return {"url":"","note":"🖼️ IA automática aún no iniciada."}
+
+
+def attach_news_ai(card,entry,token,chat,ledger_path,ledger,now):
+    """Entrega como respuesta una única imagen IA; nunca modifica botones ni reenvía noticias."""
+    if not entry or str(entry.get("status") or "").lower()!="sent":
+        return False
+    if int(entry.get("ai_telegram_message_id") or 0)>0:
+        return False
+    url=str(card.get("ai_url") or "")
+    mid=int(entry.get("telegram_message_id") or 0)
+    if not url or mid<=0:
+        return False
+    photo=archival_image(url)
+    if not photo:
+        return False
+    result=send(token,"sendPhoto",{"chat_id":chat,
+         "caption":"🖼️ Imagen IA · "+trim(card.get("title"),150),
+         "reply_to_message_id":mid},photo)
+    if not result or not result.get("message_id"):
+        return False
+    entry["ai_telegram_message_id"]=int(result["message_id"])
+    entry["ai_image_url"]=url
+    entry["ai_attached_at"]=now.isoformat()
+    entry["updated_at"]=now.isoformat()
+    ledger["updated_at"]=now.isoformat()
+    put(ledger_path,ledger)  # Guardar ID antes de editar: reintento idempotente.
+    return True
+
+
 def trim(value,maxlen=900):
     return str(value or "").strip()[:maxlen]
 
@@ -221,7 +293,7 @@ def news_cards(now):
             # Telegram photo captions must stay <=1024 chars including the punchline.
             head=title+"\n\n"
             tail="\n\n"+remate if remate else ""
-            room=max(0,1000-len(head)-len(tail))
+            room=max(0,900-len(head)-len(tail))
             body=head+detail[:room]+tail
         else:
             try:verified=int(job.get("verified_source_count") or 0)>=2
@@ -240,12 +312,14 @@ def news_cards(now):
                   +("📷 Fotografía de archivo disponible.\n" if available_photo else
                     "📷 Fotografía de archivo pendiente.\n")
                   +"↻ Se actualizará ESTA MISMA tarjeta al finalizar.")[:1000]
+        ai_info=ai_delivery_info(item,now) if is_final else {"url":"","note":""}
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
                "image":original_image,
                "search":search,"final":is_final,"start":start,"title":title,
-               "source_url":original_url,"source":original_source}
+               "source_url":original_url,"source":original_source,
+               "ai_url":ai_info["url"],"ai_note":ai_info["note"]}
 
 def verified_article_urls(*rows):
     """Prefer a checked news article, not a homepage or a generated image."""
@@ -888,7 +962,13 @@ def process(project,now,token,chat):
             card["image"]=photo_url
         else:
             card["image"]=""
+        if project=="ttittulares" and card["final"] and existing:
+            attach_news_ai(card,existing,token,chat,path,ledger,now)
         body=card["text"]
+        if project=="ttittulares" and card["final"]:
+            note=("🖼️ Imagen IA añadida." if existing and int(existing.get("ai_telegram_message_id") or 0)>0
+                  else card.get("ai_note") or "")
+            if note:body=body[:max(0,1024-len(note)-2)]+"\\n\\n"+note
         if project=="ttittulares" and not card["final"] and not card["image"]:
             body=body.replace("📷 Fotografía de archivo disponible.",
                               "📷 Fotografía de archivo pendiente.")
@@ -985,6 +1065,17 @@ def process(project,now,token,chat):
                 "started_at":str(card["start"]),"delivered_at":now.isoformat(),
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
+            if project=="ttittulares" and card["final"] and card.get("ai_url"):
+                entry=entries[-1]
+                if attach_news_ai(card,entry,token,chat,path,ledger,now):
+                    new_body=card["text"]+"\\n\\n🖼️ Imagen IA añadida."
+                    meth="editMessageCaption" if entry.get("is_photo") else "editMessageText"
+                    field="caption" if entry.get("is_photo") else "text"
+                    edited=send(token,meth,{"chat_id":chat,"message_id":int(entry["telegram_message_id"]),
+                                  field:new_body[:1024],"reply_markup":kb})
+                    if edited:
+                        entry["content_sha256"]=hashlib.sha256((new_body[:1024]+"|"+card["image"]).encode("utf-8")).hexdigest()
+                        updated+=1
         ledger["updated_at"]=now.isoformat()
     # Never silently delete a SECOND card only because a previous related
     # card was removed by the user. Its own Telegram message must be
