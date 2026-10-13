@@ -27,7 +27,19 @@ enum TimeVisitIndex {
                        powerEvents:[GPSPowerEvent] = [],
                        manualBreaks:[Date] = []) -> [TimeVisit] {
         guard !cells.isEmpty else { return [] }
-        let ordered=TimeAttribution.canonical(raw)
+        let canonical=TimeAttribution.canonical(raw)
+        // Una separación manual debe funcionar incluso en medio de un tramo
+        // continuo de horas; solo se fragmenta la VISTA, nunca el historial.
+        let splits=manualBreaks.sorted()
+        let ordered:[AssignedInterval]=canonical.flatMap { piece in
+            let dates=splits.filter { $0>piece.start && $0<piece.end }
+            guard !dates.isEmpty else { return [piece] }
+            let borders=[piece.start]+dates+[piece.end]
+            return (0..<(borders.count-1)).map { i in
+                AssignedInterval(start:borders[i],end:borders[i+1],
+                    cell:piece.cell,quality:piece.quality,source:piece.source)
+            }
+        }
         var result:[TimeVisit]=[]
         var start:Date?
         var lastEnd:Date?
@@ -152,8 +164,33 @@ enum TimeVisitIndex {
             let shortJoin=gap<=shortVisualGap
             let trackedJoin=gap<=maximumGap && escapedSeconds==0
             let pausedJoin=gap>maximumGap && stopped && resumed && escapedSeconds==0
+            // Hasta 30 min sin asignar puede ser la misma estancia si hay
+            // GPS de precisión en AMBOS lados de la misma casilla.
+            // Nunca se convierte el vacío en segundos contabilizados.
+            var anchoredStay=false
+            if gap>maximumGap && gap<=1800 && escapedSeconds==0,
+               let oldCell=current.fragments.last?.cell,
+               let newCell=following.fragments.first?.cell,
+               oldCell==newCell {
+                let before=reliableFixes.last(where:{
+                    $0.date<=current.end &&
+                    current.end.timeIntervalSince($0.date)<=180 &&
+                    $0.cell==oldCell
+                })
+                let after=reliableFixes.first(where:{
+                    $0.date>=following.start &&
+                    $0.date.timeIntervalSince(following.start)<=180 &&
+                    $0.cell==newCell
+                })
+                if let before,let after {
+                    let lat=before.latitude-after.latitude
+                    let lon=(before.longitude-after.longitude) *
+                        cos(before.latitude * .pi/180)
+                    anchoredStay=hypot(lat,lon)*111_200<=max(35,before.accuracy+after.accuracy)
+                }
+            }
             if !explicitlySplit && !hasOutsideFix && noExit &&
-               (shortJoin || trackedJoin || pausedJoin) {
+               (shortJoin || trackedJoin || pausedJoin || anchoredStay) {
                 let interrupted=current.hasTrackingPause || following.hasTrackingPause ||
                     pausedJoin
                 current=TimeVisit(id:"\(current.start.timeIntervalSince1970)-\(following.end.timeIntervalSince1970)",
