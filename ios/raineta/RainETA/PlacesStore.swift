@@ -1,10 +1,16 @@
 import Foundation
 import CoreLocation
 
+struct PlaceListRow: Identifiable {
+    let id: String
+    let name: String
+    let coordinate: CLLocationCoordinate2D?
+}
+
 @MainActor extension RainStore {
-    var allPlaceRows: [(id: String, name: String, coordinate: CLLocationCoordinate2D?)] {
-        [("gps", "Mi ubicación · GPS", gpsCoordinate)] +
-        savedPlaces.map { ($0.id, $0.name, $0.coordinate as CLLocationCoordinate2D?) }
+    var allPlaceRows: [PlaceListRow] {
+        [PlaceListRow(id: "gps", name: "Mi ubicación · GPS", coordinate: gpsCoordinate)] +
+        savedPlaces.map { PlaceListRow(id: $0.id, name: $0.name, coordinate: $0.coordinate) }
     }
 
     var isSelectedSaved: Bool { selectedPlaceID != "gps" }
