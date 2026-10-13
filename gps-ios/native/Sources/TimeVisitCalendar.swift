@@ -134,9 +134,10 @@ struct TimeVisitCalendar: View {
                     Text("Sin visitas de al menos 1 segundo ese día")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+                TimeDayTimeline(model:model,day:focus,calendar:calendar)
                 ForEach(focusVisits,id:\.visit.id) { item in
-                    TimeCalendarVisitRow(visit:item.visit,start:item.start,
-                        end:item.end,seconds:item.seconds,
+                    TimeCalendarVisitRow(model:model,visit:item.visit,
+                        start:item.start,end:item.end,seconds:item.seconds,
                         timeZone:calendar.timeZone)
                 }
                 if let gapOutcome {
@@ -216,12 +217,15 @@ struct TimeVisitCalendar: View {
 }
 
 private struct TimeCalendarVisitRow:View {
+    @ObservedObject var model:TimeModel
     let visit:TimeVisit
     let start:Date
     let end:Date
     let seconds:TimeInterval
     let timeZone:TimeZone
     @State private var isExpanded=false
+    @State private var breakDate:Date=Date()
+    @State private var confirmBreak=false
 
     private func localTime(_ date:Date)->String {
         let formatter=DateFormatter()
@@ -255,6 +259,26 @@ private struct TimeCalendarVisitRow:View {
                     Label("\(DurationFormat.full(unconfirmedSeconds)) sin GPS; no sumados",
                           systemImage:"clock.badge.exclamationmark")
                         .foregroundStyle(.orange)
+                }
+                if end.timeIntervalSince(start)>60 {
+                    Divider()
+                    if model.data.manualBreaks.contains(where:{
+                        abs($0.timeIntervalSince(start))<1
+                    }) {
+                        Button("Eliminar separación manual aquí") {
+                            model.removeSplit(at:start)
+                        }.font(.caption2)
+                    } else {
+                        DatePicker("Separar estancia a las",
+                            selection:$breakDate,in:start...end,
+                            displayedComponents:[.hourAndMinute])
+                            .datePickerStyle(.compact)
+                            .font(.caption2)
+                        Button("Separar estancia en esta hora") {
+                            confirmBreak=true
+                        }
+                        .font(.caption2)
+                    }
                 }
                 if details.count>1 {
                     Divider()
@@ -293,5 +317,15 @@ private struct TimeCalendarVisitRow:View {
         }
         .tint(.teal)
         .padding(.vertical,3)
+        .onAppear { breakDate=start.addingTimeInterval(end.timeIntervalSince(start)/2) }
+        .confirmationDialog("¿Separar esta estancia?",
+            isPresented:$confirmBreak,titleVisibility:.visible) {
+            Button("Separar sin modificar segundos") {
+                model.splitEpisode(at:breakDate)
+            }
+            Button("Cancelar",role:.cancel) {}
+        } message: {
+            Text("Se dividirá solo la presentación del historial en esta hora. No se cambiarán los intervalos GPS ni el tiempo total.")
+        }
     }
 }
