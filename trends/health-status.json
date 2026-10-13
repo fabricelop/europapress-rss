@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-12T19:14:02.280240+00:00",
+  "checked_at": "2026-10-13T01:23:21.152088+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -43,7 +43,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 7,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.5,
-      "run_id": 38296093679,
+      "age_minutes": 1.7,
+      "run_id": 38331750998,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,46 +76,34 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 4,
-      "overdue_count": 1,
-      "oldest_age_minutes": 71.4,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "3308803efaac",
-          "name": "Sofía Puente",
-          "status": "preparing",
-          "age_minutes": 71.4
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "2a319bab5b04",
-        "3308803efaac",
-        "0151e1be35f5",
-        "ddba7f3b0174"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
       "ok": false,
       "overdue_count": 1,
       "actionable_count": 0,
-      "oldest_age_minutes": 70.1,
+      "oldest_age_minutes": 238.9,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "3308803efaac",
-          "name": "Sofía Puente",
-          "message_id": 730,
-          "age_minutes": 70.1,
-          "editorial_status": "preparing",
+          "id": "d7b672dc554f",
+          "name": "Bale",
+          "message_id": 741,
+          "age_minutes": 238.9,
+          "editorial_status": "inactive",
           "grouped": false
         }
       ],
@@ -124,10 +112,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 71.4 min",
     "Telegram: 1 aviso(s) provisional(es) > 30 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Telegram: 1 aviso(s) provisional(es) > 30 min | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 71.4 min"
+  "last_alert_signature": "Telegram: 1 aviso(s) provisional(es) > 30 min"
 }
