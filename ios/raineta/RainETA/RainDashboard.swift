@@ -147,12 +147,12 @@ struct RainSettingsView: View {
             }
 
             Section("Visualización") {
-                Picker("Gráfica inicial",selection:$defaultHorizon) {
+                Picker("Mostrar al abrir Pulso",selection:$defaultHorizon) {
                     Text("30 minutos").tag(30)
                     Text("60 minutos").tag(60)
                     Text("120 minutos").tag(120)
                 }
-                Text("Las barras de un minuto son interpolaciones de pronósticos de 15 minutos, no observaciones independientes.")
+                Text("Esta preferencia selecciona si la gráfica Pulso muestra 30, 60 o 120 minutos al entrar. No limita la duración de la previsión. Las barras de un minuto son interpoladas.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
 
