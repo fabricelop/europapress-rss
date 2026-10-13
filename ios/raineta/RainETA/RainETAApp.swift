@@ -100,13 +100,25 @@ struct RainHomeView: View {
                 Button {
                     Task { await store.toggleLive() }
                 } label: {
-                    Label(store.liveEnabled ? "Desactivar En Vivo" : "Activar En Vivo",
+                    Label(store.liveEnabled ? "Desactivar En Vivo" : "Mostrar En Vivo",
                           systemImage: store.liveEnabled ? "checkmark.circle.fill" : "livephoto")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.cyan)
                 .foregroundStyle(.black)
+                Text(store.liveStatus)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    Image(systemName: "location.circle")
+                    Text(store.locationPermission)
+                        .font(.caption)
+                    Spacer()
+                    Button("Solicitar Siempre") { store.requestAlwaysLocation() }
+                        .font(.caption.bold())
+                }
+                .foregroundStyle(.cyan)
             } else {
                 ProgressView("Obteniendo predicción")
                     .padding(.vertical, 25)
@@ -172,7 +184,7 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.1.0 · Previsión Open-Meteo y radar RainViewer. El radar solo muestra observaciones; ninguna imagen futura se presenta como real.")
+            Text("v0.1.1 · Previsión Open-Meteo y radar RainViewer. El radar solo muestra observaciones; ninguna imagen futura se presenta como real.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
         }
         .font(.caption)
@@ -203,7 +215,7 @@ struct RadarSection: View {
     private var selected: RadarFrame? {
         let frames = store.radar.frames
         guard !frames.isEmpty else { return nil }
-        return frames[max(0, frames.count - 1 - store.radarOffset)]
+        return frames[min(frames.count - 1, max(0, store.radarIndex))]
     }
 
     var body: some View {
@@ -219,22 +231,22 @@ struct RadarSection: View {
                         .padding(8)
                 }
             HStack {
-                Text(selected?.date.formatted(date: .omitted, time: .shortened) ?? "Sin radar")
+                Text(selected.map { "Observado: " + $0.date.formatted(date: .omitted, time: .shortened) + " (hace " + String(max(0, Int(Date().timeIntervalSince($0.date) / 60))) + " min)" } ?? "Sin radar")
                     .font(.caption.monospacedDigit())
                 Spacer()
-                Button("Ahora") { store.radarOffset = 0 }
+                Button("Ahora") { store.radarIndex = max(0, store.radar.frames.count - 1) }
                     .font(.caption.bold())
             }
             Slider(value: Binding(
-                get: { Double(store.radarOffset) },
-                set: { store.radarOffset = Int($0) }
+                get: { Double(store.radarIndex) },
+                set: { store.radarIndex = Int($0) }
             ), in: 0...Double(max(1, store.radar.frames.count - 1)), step: 1)
                 .disabled(store.radar.frames.count < 2)
                 .tint(.cyan)
             HStack {
-                Text("Más reciente")
+                Text("← Más antiguo")
                 Spacer()
-                Text("Retroceder en el tiempo →")
+                Text("Ahora →")
             }
             .font(.caption2)
             .foregroundStyle(.secondary)
