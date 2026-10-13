@@ -25,6 +25,11 @@ function isPostLaunchTarget(t){
   return String(before.url||"")!==url || (!!String(before.title||"") && String(before.title||"")!==title)
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+// El límite empieza al confirmar el envío al generador, no al encolar.
+let automaticImageDeadline=0;
+function remainingAutomaticMs(){return automaticImageDeadline?automaticImageDeadline-Date.now():Number.POSITIVE_INFINITY}
+function assertAutomaticInTime(){if(remainingAutomaticMs()<=0)throw Error("automatic_image_five_minute_deadline")}
+
 if(!commandId||!targetId||secret.length<32)throw Error("Argumentos incompletos");
 if(typeof WebSocket==="undefined")throw Error("Node sin WebSocket global");
 
@@ -605,7 +610,7 @@ async function captureDomImage(cdp,candidate){
 }
 
 async function capture(cdp,job){
-  const deadline=Date.now()+3*60*1000;
+  const deadline=Math.min(Date.now()+3*60*1000,automaticImageDeadline||Infinity);
   let lastDiag=null,lastEvalError=null,baselineSet=false,baselineSrc="",deadSince=0;
   const acceptInitialRaster=Boolean(cdp&&cdp.acceptInitialRaster);
   let domBaseline=(cdp&&cdp.preSubmitImageSrcs instanceof Set)?new Set(cdp.preSubmitImageSrcs):new Set();
@@ -684,6 +689,7 @@ async function fail(reason){
 async function uploadImage(image){
   let result;
   for(let attempt=1;attempt<=3;attempt++){
+    assertAutomaticInTime();
     result=await post({task:"image_upload",target_id:targetId,command_id:commandId,upload_secret:secret,image_data_url:image.dataUrl,capture:{method:image.capture,width:image.width,height:image.height}});
     if(result.ok)return result;
     const detail=String(result.data&&result.data.error||"");
@@ -699,6 +705,7 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
+    const isAutomatic=String(job.mode||"")==="automatic_ready_repair";
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
@@ -711,6 +718,8 @@ async function uploadImage(image){
       }
       cdp=await injectPromptIntoChat(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
+      if(isAutomatic && !automaticImageDeadline)automaticImageDeadline=Date.now()+4*60*1000; // Reserva un minuto para Telegram.
+      assertAutomaticInTime();
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
@@ -728,10 +737,12 @@ async function uploadImage(image){
       }
     }
     if(!image)throw Error("ImageGen no produjo raster tras reintento interno");
+    assertAutomaticInTime();
     await progress("raster_captured","Raster ImageGen capturado; validando y materializando.");
     if(image.width<1024||image.height<576)throw Error("Raster capturado inferior a 1024x576");
     if(!/^(original-fetch-img|canvas-from-img-)/.test(String(image.capture||"")))throw Error("Método de captura no permitido: "+String(image.capture||""));
     console.log("BRIDGE CLEAN IMAGE "+image.capture+" "+image.width+"x"+image.height);
+    assertAutomaticInTime();
     const up=await uploadImage(image);
     if(!up.ok)throw Error("Upload "+up.status+": "+(up.data&&up.data.error||"sin detalle"));
     console.log("BRIDGE UPLOADED "+up.data.sha256);
