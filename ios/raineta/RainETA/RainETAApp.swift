@@ -179,7 +179,7 @@ struct RainHomeView: View {
     private var radarSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Radar y proyección de lluvia", systemImage: "dot.radiowaves.left.and.right")
+                Label("Radar observado", systemImage: "dot.radiowaves.left.and.right")
                     .font(.headline)
                 Spacer()
                 Button { fullRadar = true } label: {
@@ -231,7 +231,7 @@ struct RainHomeView: View {
     private var footer: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(store.status)
-            Text("v0.3.0 · Radar histórico de RainViewer y extrapolación experimental propia. La lluvia futura del mapa es simulación, no observación.")
+            Text("v0.3.1 · Radar observado RainViewer; la proyección incorrecta se ha desactivado. Previsión horaria de Open-Meteo.")
             Text(store.projectionStatus)
             Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
             Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
@@ -349,7 +349,7 @@ struct RadarSection: View {
                  ? (store.projection.map {
                     "Extrapolación del desplazamiento observado · confianza \(Int($0.confidence*100)) % · horizonte orientativo +\($0.reliableUntil) min"
                    } ?? "Proyección no disponible")
-                 : "Imágenes radar reales · mueve la barra hacia la derecha para avanzar hasta el futuro")
+                 : "Radar observado; futuro desactivado mientras se valida el nuevo modelo")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             Link("Datos radar: RainViewer", destination: URL(string: "https://www.rainviewer.com/")!)
