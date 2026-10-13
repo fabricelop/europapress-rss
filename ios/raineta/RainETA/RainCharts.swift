@@ -8,7 +8,8 @@ struct RainIntensityLegend: View {
     ]
     var body: some View {
         HStack(spacing:5) {
-            ForEach(levels,id:\.0) { level in
+            ForEach(0..<levels.count,id:\.self) { index in
+                let level=levels[index]
                 VStack(spacing:4) {
                     RoundedRectangle(cornerRadius:3)
                         .fill(RainVisual.color(level.1))
@@ -29,7 +30,7 @@ struct RainIntensityLegend: View {
 struct MinuteRainGraph: View {
     let projection: RadarProjection?
     let weather: RainSnapshot?
-    @State private var horizon = 60
+    @AppStorage("raineta.settings.defaultHorizon") private var horizon = 60
     @State private var selectedMinute: Int?
     private var rows:[RainMoment] {
         guard let weather else { return [] }
