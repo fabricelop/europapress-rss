@@ -77,12 +77,11 @@ struct RainHomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     RainHeroCard(store:store)
-                    radarSection
-                    MinuteRainGraph(projection: store.projection, weather: store.snapshot)
+                    MinuteRainGraph(projection:store.projection,weather:store.snapshot)
                     ThreeHourRainView(weather:store.snapshot)
-                    RainWeekForecast(weather: store.snapshot)
+                    RainWeekForecast(weather:store.snapshot)
+                    radarSection
                     RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
-                    footer
                 }
                 .padding(16)
             }
@@ -134,18 +133,6 @@ struct RainHomeView: View {
         }
     }
 
-    private var footer: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(store.status)
-            Text("v0.6.0 · Observación RainViewer y previsión oficial ICON-EU (DWD), con mapas completos en vez de interpolación de 9×9 puntos.")
-            Text(store.futureFieldStatus)
-            Text("Radar: RainViewer (rainviewer.com) · Modelo: Open-Meteo. Favoritos guardados únicamente en este iPhone.")
-            Text("En Vivo mantiene el contador con la pantalla bloqueada, pero iOS puede suspender las actualizaciones meteorológicas en segundo plano.")
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-    }
-
     private func headline(_ wx: RainSnapshot, now: Date) -> String {
         guard let target = wx.nextChange else {
             return wx.isRaining ? "Está lloviendo" : "Sin lluvia próxima"
@@ -164,132 +151,159 @@ struct RainHomeView: View {
 }
 
 struct RadarSection: View {
-    @ObservedObject var store: RainStore
-    var expanded: Bool
-    @State private var playing = false
+    @ObservedObject var store:RainStore
+    let expanded:Bool
+    @State private var playing=false
+    @State private var recenterRevision=0
 
-    private var selected: RadarFrame? {
-        let frames = store.radar.frames
-        guard !frames.isEmpty else { return nil }
-        return frames[min(frames.count - 1, max(0, store.radarIndex))]
+    private var frames:[RadarFrame] { store.radar.frames }
+    private var pastEnd:Int {max(0,frames.count-1)}
+    private var futureSteps:Int {ICONForecastTiles.covers(store.coordinate) ? 48 : 0}
+    private var sliderIndex:Double {
+        Double(store.radarFutureMinutes>0 ?
+               pastEnd + store.radarFutureMinutes/5 : store.radarIndex)
     }
-    private var finalPastIndex: Int { max(0, store.radar.frames.count - 1) }
-    private var lastSliderIndex: Int {
-        finalPastIndex + (ICONForecastTiles.covers(store.coordinate) ? 16 : 0)
+    private var observed:RadarFrame? {
+        guard !frames.isEmpty else{return nil}
+        return frames[max(0,min(pastEnd,store.radarIndex))]
     }
-    private var sliderSelection: Double {
-        Double(store.radarFutureMinutes > 0 ?
-               finalPastIndex + store.radarFutureMinutes / 15 : store.radarIndex)
+    private var historyMinutes:Int {
+        guard let first=frames.first,let last=frames.last else{return 0}
+        return max(0,Int(last.date.timeIntervalSince(first.date)/60))
     }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 9) {
-            RadarMap(center: store.coordinate, host: store.radar.host,
-                     framePath: selected?.path,
-                     projection: nil,
-                     modelField: nil,
-                     futureMinutes: store.radarFutureMinutes,
-                     forecastStatus: { status in
-                         store.futureFieldStatus = status
-                     })
-                .frame(height: expanded ? 540 : 325)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(alignment: .topTrailing) {
-                    Text(store.radarFutureMinutes > 0 ? "ICON-EU · INTERPOLADO" : "RADAR OBSERVADO")
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundStyle(store.radarFutureMinutes > 0 ? .yellow : .white)
-                        .padding(8)
-                        .background(.black.opacity(0.77), in: Capsule())
-                        .padding(8)
+    private func select(_ index:Int) {
+        let next=max(0,min(pastEnd+futureSteps,index))
+        if next>pastEnd {
+            store.radarIndex=pastEnd
+            store.radarFutureMinutes=min(240,(next-pastEnd)*5)
+        } else {
+            store.radarIndex=next
+            store.radarFutureMinutes=0
+        }
+    }
+    private func step(_ direction:Int) {
+        if store.radarFutureMinutes>0 {
+            let offset=store.radarFutureMinutes+direction*5
+            if offset<=0 {select(pastEnd)}
+            else {select(pastEnd+offset/5)}
+        } else {
+            // Real past frames can be 5 or 10 minutes apart, depending on
+            // what RainViewer delivered. Never invent a past observation.
+            select(store.radarIndex+direction)
+        }
+    }
+    private func now() {playing=false;select(pastEnd)}
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:9) {
+            RadarMap(center:store.coordinate,host:store.radar.host,
+                     framePath:observed?.path,projection:nil,modelField:nil,
+                     futureMinutes:store.radarFutureMinutes,
+                     recenterRevision:recenterRevision,
+                     forecastStatus:{store.futureFieldStatus=$0})
+                .frame(height:expanded ? 540 : 325)
+                .clipShape(RoundedRectangle(cornerRadius:16))
+                .overlay(alignment:.topTrailing) {
+                    Text(store.radarFutureMinutes>0 ? "ICON-EU · MODELO" : "RADAR OBSERVADO")
+                        .font(.system(size:10,weight:.bold))
+                        .foregroundStyle(store.radarFutureMinutes>0 ? .yellow:.white)
+                        .padding(9)
+                        .background(.black.opacity(0.78),in:Capsule())
+                        .padding(9)
                 }
+                .overlay(alignment:.bottomTrailing) {
+                    Button {
+                        recenterRevision += 1
+                    } label:{
+                        Image(systemName:"location.north.line.fill")
+                            .font(.title3)
+                            .foregroundStyle(.cyan)
+                            .frame(width:41,height:41)
+                            .background(.black.opacity(0.80),in:Circle())
+                    }
+                    .accessibilityLabel("Centrar mapa en la localidad seleccionada")
+                    .padding(10)
+                }
+
             HStack {
-                if store.radarFutureMinutes > 0 {
+                if store.radarFutureMinutes>0 {
                     Text("Futuro +\(store.radarFutureMinutes) min")
                         .foregroundStyle(.yellow)
                     Spacer()
                     Text(Date().addingTimeInterval(Double(store.radarFutureMinutes*60))
-                        .formatted(date: .omitted, time: .shortened))
+                        .formatted(date:.omitted,time:.shortened))
                 } else {
-                    Text(selected.map { "Observado " + $0.date.formatted(date: .omitted, time: .shortened) } ?? "Sin radar")
+                    Text(observed.map{"Observado "+$0.date.formatted(date:.omitted,time:.shortened)}
+                         ?? "Radar pendiente")
                     Spacer()
-                    Text(selected.map { "hace " + String(max(0, Int(Date().timeIntervalSince($0.date) / 60))) + " min" } ?? "")
+                    Text(observed.map{"hace \(max(0,Int(Date().timeIntervalSince($0.date)/60))) min"} ?? "")
                 }
             }
             .font(.caption.monospacedDigit())
 
-            Slider(value: Binding(get: { sliderSelection }, set: { value in
-                let index = Int(value.rounded())
-                if index > finalPastIndex, ICONForecastTiles.covers(store.coordinate) {
-                    store.radarFutureMinutes = (index-finalPastIndex) * 15
-                    store.radarIndex = finalPastIndex
-                } else {
-                    store.radarFutureMinutes = 0
-                    store.radarIndex = max(0, min(finalPastIndex, index))
-                }
-            }), in: 0...Double(max(1, lastSliderIndex)), step: 1)
-                .disabled(store.radar.frames.count < 2)
-                .tint(.cyan)
-
-            HStack(spacing: 10) {
-                Button { playing.toggle() } label: {
-                    Image(systemName: playing ? "pause.fill" : "play.fill")
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .disabled(store.radar.frames.count < 2)
-                Text("Pasado")
-                Spacer()
-                Button("Ahora") {
-                    store.radarIndex = finalPastIndex
-                    store.radarFutureMinutes = 0
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                if ICONForecastTiles.covers(store.coordinate) {
-                    Button("+15 m") {
-                        store.radarIndex = finalPastIndex
-                        store.radarFutureMinutes = min(240,store.radarFutureMinutes + 15)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                    Button("−15 m") {
-                        store.radarIndex = finalPastIndex
-                        store.radarFutureMinutes = max(0,store.radarFutureMinutes - 15)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
+            GeometryReader { proxy in
+                let fraction=CGFloat(pastEnd)/CGFloat(max(1,pastEnd+futureSteps))
+                let markX=18+(proxy.size.width-36)*fraction
+                ZStack(alignment:.topLeading) {
+                    Rectangle().fill(.clear)
+                    Rectangle().fill(.cyan.opacity(0.75))
+                        .frame(width:2,height:19)
+                        .position(x:markX,y:10)
+                    Text("AHORA")
+                        .font(.system(size:9,weight:.heavy))
+                        .foregroundStyle(.cyan)
+                        .fixedSize()
+                        .position(x:min(max(26,markX),proxy.size.width-26),y:30)
+                    Slider(value:Binding(
+                        get:{sliderIndex},
+                        set:{select(Int($0.rounded()))}
+                    ),in:0...Double(max(1,pastEnd+futureSteps)),step:1)
+                        .tint(.cyan)
+                        .disabled(frames.isEmpty)
+                        .padding(.top,0)
                 }
             }
-            .font(.caption)
-            Text(store.radarFutureMinutes > 0
-                 ? "Transición visual cada 15 min entre campos horarios ICON-EU: no son predicciones independientes de 15 min."
-                 : "Radar observado hasta Ahora. Después, campos horarios ICON-EU con pasos visuales de 15 min hasta +4 h.")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Text(store.futureFieldStatus)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Text("Colores homogéneos; resolución real del modelo ~6 km. Ampliar no crea más detalle.")
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            Link("Fuente del modelo: Deutscher Wetterdienst (DWD)", destination: URL(string: "https://www.dwd.de/")!)
-                .font(.caption2)
-            Link("Datos radar: RainViewer", destination: URL(string: "https://www.rainviewer.com/")!)
-                .font(.caption2)
-            .task(id: playing) {
-                while playing && !Task.isCancelled {
-                    try? await Task.sleep(nanoseconds: 650_000_000)
-                    if Task.isCancelled || !playing { break }
-                    let n = finalPastIndex
-                    if store.radarFutureMinutes > 0 {
-                        if store.radarFutureMinutes >= 240 { playing = false }
-                        else { store.radarFutureMinutes += 15 }
-                    } else if store.radarIndex < n {
-                        store.radarIndex += 1
-                    } else if ICONForecastTiles.covers(store.coordinate) {
-                        store.radarFutureMinutes = 15
-                    } else { playing = false }
+            .frame(height:42)
+
+            HStack(spacing:10) {
+                Button {playing.toggle()} label:{
+                    Image(systemName:playing ? "pause.fill":"play.fill")
                 }
+                .accessibilityLabel(playing ? "Pausar radar":"Reproducir radar")
+                Button {step(-1)} label:{
+                    Image(systemName:"chevron.left")
+                }
+                .accessibilityLabel("Retroceder cinco minutos, o al radar anterior")
+                .disabled(store.radarFutureMinutes==0 && store.radarIndex<=0)
+                Button("Ahora"){now()}
+                    .font(.caption.bold())
+                Button {step(1)} label:{
+                    Image(systemName:"chevron.right")
+                }
+                .accessibilityLabel("Avanzar cinco minutos, o al radar siguiente")
+                .disabled(store.radarFutureMinutes>=240 ||
+                          (store.radarFutureMinutes==0 &&
+                           store.radarIndex>=pastEnd && futureSteps==0))
+                Spacer(minLength:0)
+                Text("−\(historyMinutes)m / +4h")
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            if store.futureFieldStatus.contains("no disponible") {
+                Text("Previsión temporalmente no disponible")
+                    .font(.caption2).foregroundStyle(.yellow)
+            }
+        }
+        .task(id:playing) {
+            while playing && !Task.isCancelled {
+                let delay=store.radarFutureMinutes>0 ? 2_100_000_000:850_000_000
+                try? await Task.sleep(nanoseconds:UInt64(delay))
+                if Task.isCancelled || !playing {break}
+                if sliderIndex>=Double(pastEnd+futureSteps) {playing=false}
+                else {select(Int(sliderIndex)+1)}
             }
         }
     }
