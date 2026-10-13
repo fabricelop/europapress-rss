@@ -22,6 +22,11 @@ struct PlaceListRow: Identifiable {
         }
     }
 
+    func moveSavedPlaces(from offsets:IndexSet,to destination:Int) {
+        savedPlaces.move(fromOffsets:offsets,toOffset:destination)
+        persistPlaces()
+    }
+
     func persistPlaces() {
         if let data = try? JSONEncoder().encode(savedPlaces) {
             UserDefaults.standard.set(data, forKey: "raineta.savedPlaces.v1")
