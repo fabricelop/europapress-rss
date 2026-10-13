@@ -51,9 +51,7 @@ struct RainHeroCard: View {
                                 .font(.caption)
                                 .foregroundStyle(.cyan)
                             Spacer()
-                            Text("Modelo")
-                                .font(.caption2.weight(.semibold))
-                                .foregroundStyle(.secondary)
+
                         }
                     }
                 }
