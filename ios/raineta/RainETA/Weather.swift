@@ -222,6 +222,8 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var snapshot: RainSnapshot?
     @Published var radar = RadarFeed()
     @Published var projection: RadarProjection?
+    @Published var futureField: FutureRainField?
+    @Published var futureFieldStatus = "Preparando mapa de lluvia futura…"
     @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
     @Published var loading = false
     @Published var status = "Consultando datos meteorológicos"
@@ -245,6 +247,12 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     private let location = RainLocation()
     private var lastCoordinate: CLLocationCoordinate2D?
     private var lastRefresh: Date = .distantPast
+    private var modelTask: Task<Void, Never>?
+    private var modelSerial = 0
+    private var modelCenter = CLLocationCoordinate2D(latitude: 40.4168, longitude: -3.7038)
+    private var modelLatSpan = 2.5
+    private var modelLonSpan = 2.5
+    private var fieldLastLoad: Date = .distantPast
 
     init() {
         liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
@@ -344,6 +352,51 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         Task {
             await refresh(force: true)
             await refreshSummaries(force: true)
+        }
+    }
+
+    func requestFutureField(center:CLLocationCoordinate2D,latSpan:Double,lonSpan:Double,
+                            force:Bool = false) {
+        guard center.latitude.isFinite,center.longitude.isFinite,
+              latSpan.isFinite,lonSpan.isFinite,
+              abs(center.latitude) < 84,abs(center.longitude) < 178 else { return }
+        let la = min(20,max(0.03,abs(latSpan)))
+        let lo = min(35,max(0.03,abs(lonSpan)))
+        if !force,let existing = futureField,
+           Date().timeIntervalSince(fieldLastLoad) < 10*60,
+           existing.covers(center:center,latSpan:la,lonSpan:lo) { return }
+        let old = FutureRainField.worldPoint(modelCenter)
+        let new = FutureRainField.worldPoint(center)
+        let sameTarget = abs(old.x-new.x) < modelLonSpan/720*0.1 &&
+                         abs(old.y-new.y) < modelLatSpan/360*0.1 &&
+                         abs(lo-modelLonSpan) < modelLonSpan*0.12 &&
+                         abs(la-modelLatSpan) < modelLatSpan*0.12
+        if !force,sameTarget,modelTask != nil { return }
+        modelTask?.cancel()
+        modelSerial += 1
+        let serial = modelSerial
+        let revision = placeSelectionRevision
+        modelCenter = center
+        modelLatSpan = la
+        modelLonSpan = lo
+        futureFieldStatus = "Consultando precipitación espacial de modelos…"
+        modelTask = Task {
+            if !force {
+                try? await Task.sleep(nanoseconds: 850_000_000)
+            }
+            guard !Task.isCancelled else { return }
+            do {
+                let grid = try await FutureRainAPI.fetch(center:center,latSpan:la,lonSpan:lo)
+                guard !Task.isCancelled,serial == modelSerial,
+                      revision == placeSelectionRevision else { return }
+                futureField = grid
+                fieldLastLoad = Date()
+                futureFieldStatus = "Modelo espacial Open-Meteo · \(Int(grid.completeness*100))% de puntos disponibles · nuevos datos por cada consulta"
+            } catch {
+                guard !Task.isCancelled,serial == modelSerial else { return }
+                futureFieldStatus = "Modelo espacial no disponible: \(error.localizedDescription). Radar observado conservado."
+            }
+            if serial == modelSerial { modelTask = nil }
         }
     }
 
