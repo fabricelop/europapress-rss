@@ -2000,12 +2000,12 @@
     {
       "id": "d4bbc5043503",
       "name": "Irene",
-      "rank": 6,
-      "status": "explained",
-      "requested_at": "2026-09-23T15:39:34+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-13T17:12:28+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "da29c8d3b0be",
       "requested_together": [
@@ -2014,7 +2014,18 @@
       "auto_queued": true,
       "ready_at": "2026-09-23T16:08:37+02:00",
       "delivery_confirmation": "prepared_web",
-      "explained_at": "2026-09-23T14:11:43.079Z"
+      "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "Irene",
+        "Reyes",
+        "Koke",
+        "Silvia",
+        "Mundial 2030",
+        "sirí",
+        "Chicote",
+        "PYME"
+      ]
     },
     {
       "id": "2711c5bbbccd",
@@ -12941,11 +12952,11 @@
     {
       "id": "a8644022152b",
       "name": "Pyme",
-      "revision": 0,
-      "status": "explained",
-      "requested_at": "2026-09-29T18:40:31.021Z",
-      "rank": 15,
-      "with_image": false,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-13T17:12:28+02:00",
+      "rank": 10,
+      "with_image": true,
       "alternatives_target": 0,
       "anticipated": true,
       "anticipated_at": "2026-09-29T20:01:26+02:00",
@@ -12954,10 +12965,9 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "requested_together": [
-        "Pyme"
+        "PYME"
       ],
       "auto_queued": false,
-      "explained_at": "2026-09-29T19:45:48.591Z",
       "explanation": "TT#12 Pyme es tendencia porque Isabel Rodríguez llamó «pyme buitre» a Urbagestión tras el caso Maricarmen. La afectada ha aceptado un acuerdo para volver a su casa cuando reciba el alta.\n🌶️ La ministra le ha cambiado el CNAE a la inmobiliaria.",
       "closer_text": "🌶️ La ministra le ha cambiado el CNAE a la inmobiliaria.",
       "rank_at_explanation": 12,
@@ -13003,6 +13013,19 @@
           "source": "Antena 3",
           "url": "https://amp.antena3.com/noticias/sociedad/noticias-hoy-martes-29-septiembre-2026_202609296abb6bf382932a3cf91cbecb.html"
         }
+      ],
+      "reexplain": true,
+      "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "Irene",
+        "Reyes",
+        "Koke",
+        "Silvia",
+        "Mundial 2030",
+        "sirí",
+        "Chicote",
+        "PYME"
       ]
     },
     {
@@ -53483,8 +53506,74 @@
       "image_pending": false,
       "telegram_package_status": "deleted",
       "telegram_closed_at": "2026-10-13T16:55:19+02:00"
+    },
+    {
+      "id": "3521f226a707",
+      "name": "Montse",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-13T17:12:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "55312f7ecf7f",
+      "requested_together": [
+        "Montse"
+      ],
+      "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "sirí"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "dfeacc32cca9",
+      "name": "#TEM13O",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-13T17:12:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "55312f7ecf7f",
+      "requested_together": [
+        "#TEM13O"
+      ],
+      "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "sirí"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "3a0777cdf52d",
+      "name": "sirí",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-13T17:12:28+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "55312f7ecf7f",
+      "requested_together": [
+        "sirí"
+      ],
+      "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "sirí"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-13T16:55:20+02:00",
+  "updated_at": "2026-10-13T17:12:28+02:00",
   "count": 908
 }
