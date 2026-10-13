@@ -103,7 +103,7 @@ def classify(update, chat_id, ledger, state=None):
         linked = any(str(x.get("event_id") or "") == eid and
                      str(x.get("status") or "").lower() == "sent" and mid > 0 and
                      mid in (int(x.get("telegram_message_id") or 0),
-                             int(x.get("archive_telegram_message_id") or 0),
+                             int(x.get("archive_telegram_message_id", "ai_telegram_message_id") or 0),
                              int(x.get("cross_quote_message_id") or 0))
                      for x in ledger.get("items", []))
         if not linked:
@@ -365,7 +365,7 @@ def selftest():
     assert classify(message, "456", ledger, pending)["kind"] == "mobile_rework_reply"
     ledger_fast = {"items": [{"event_id": "abc123xyz", "status": "sent",
                              "telegram_message_id": 95,
-                             "archive_telegram_message_id": 96},
+                             "archive_telegram_message_id", "ai_telegram_message_id": 96},
                             {"event_id": "another", "status": "sent",
                              "telegram_message_id": 100}]}
     clicked = classify(base, "456", ledger_fast)
@@ -460,12 +460,12 @@ def deletion_message_ids(act, ledger):
             str(row.get("event_id") or "") == eid and
             str(row.get("status") or "").lower() == "sent"]
     if not any(clicked in [int(row.get(k) or 0) for k in
-                           ("telegram_message_id", "archive_telegram_message_id",
+                           ("telegram_message_id", "archive_telegram_message_id", "ai_telegram_message_id",
                             "cross_quote_message_id")] for row in rows):
         return []
     mids = {clicked}
     for row in rows:
-        for key in ("telegram_message_id", "archive_telegram_message_id",
+        for key in ("telegram_message_id", "archive_telegram_message_id", "ai_telegram_message_id",
                     "cross_quote_message_id"):
             mid = int(row.get(key) or 0)
             if mid > 0:
