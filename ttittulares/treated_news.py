@@ -29,6 +29,9 @@ ALIAS={
  "mantiene":"mantener","mantenido":"mantener",
  "marroquies":"marroqui","buques":"buque",
  "reyes":"rey","actores":"actor",
+ "hungaro":"hungria","hungara":"hungria","hungaros":"hungria","hungaras":"hungria",
+ "relaciona":"vincular","relacionaba":"vincular","relaciono":"vincular",
+ "vincula":"vincular","vinculaba":"vincular","vinculo":"vincular",
 }
 def load(path,default):
     try:
@@ -75,7 +78,7 @@ def same_fact(a,b):
             likeness=SequenceMatcher(None,normalize(a_title),normalize(b_title)).ratio()
             concrete_actions={"morir","suspension","ciberataque","denuncia","exigir",
                               "dimision","detenido","policia","disparo","incendio","asalto",
-                              "sentencia","accidente","rescate"}
+                              "sentencia","accidente","rescate","vincular"}
             anchored=bool(common & concrete_actions)
             if (A==B or (len(common)>=4 and overlap>=.69 and jac>=.40)
                     or (anchored and len(common)>=4 and overlap>=.48 and jac>=.28)
@@ -175,6 +178,15 @@ def selftest():
     assert same_fact(
         p("El Supremo mantiene la suspensión del derecho a voto de los nacionalizados por la ley de nietos"),
         p("El Supremo mantiene la suspensión del derecho a voto de los nacionalizados por la ley de nietos"))
+    assert same_fact(
+        p("El Parlamento húngaro enmienda la ley de 2021 que vinculaba la homosexualidad con la pederastia"),
+        p("Hungría deroga la ley de Orbán que vinculaba pederastia y homosexualidad e impedía hablar de LGTBIQ+ en las escuelas"))
+    assert same_fact(
+        p("Hungría anula la ley de Orbán que relacionaba la homosexualidad con la pederastia"),
+        p("Hungría deroga la ley de Orbán que vinculaba pederastia y homosexualidad e impedía hablar de LGTBIQ+ en las escuelas"))
+    assert not same_fact(
+        p("Hungría deroga la ley de Orbán que vinculaba pederastia y homosexualidad"),
+        p("El Parlamento húngaro aprueba una ley de vivienda para familias"))
     assert not same_fact(p("El Gobierno estudia recurrir al Constitucional el fallo del Supremo por la ley de nietos"),
                          p("El Supremo mantiene suspendido el voto de los nacionalizados por la ley de nietos"))
     assert not same_fact(p("Los reyes visitan Ceuta y Melilla"),
