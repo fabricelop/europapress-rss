@@ -149,12 +149,22 @@ for name,sequence in radars.items():
         forecast,flow=optical_flow_persist(old,prev,cur,step)
         m=metrics(forecast,target,overlap)
         baseline=metrics(cur,target,overlap)
+        # A falsification control: could apparent skill just be spatial
+        # smoothing, rather than correct motion? Compare identical
+        # Gaussian smoothing without any flow field.
+        smooth=cv2.GaussianBlur(cur,(0,0),sigmaX=0.85)
+        smoothing=metrics(smooth,target,overlap)
+        temporal=metrics(0.6*cur+0.3*prev+0.1*old,target,overlap)
+        flow_mag=np.linalg.norm(flow,axis=2)
+        active=cur>=10
         row={"city":name,"location":crop[name][2:],"base":times[index].isoformat(),
              "lead_min":step*5,"wet_fraction":round(wet_frac,4),
-             "flow":m,"persistence":baseline,
+             "flow":m,"persistence":baseline,"smooth_only":smoothing,"temporal_only":temporal,
              "f1_gain":round(m["f1"]-baseline["f1"],4),
              "mae_gain":round(baseline["mae_dbz"]-m["mae_dbz"],3),
-             "displacement_px_p50":round(float(np.median(np.linalg.norm(flow,axis=2))),3)}
+             "gain_vs_smoothing":round(m["f1"]-smoothing["f1"],4),
+             "gain_vs_temporal":round(m["f1"]-temporal["f1"],4),
+             "displacement_px_p50_wet":round(float(np.median(flow_mag[active])),3) if active.any() else 0}
         scores.append(row)
         if len(visuals)<5 and step==3:
             visuals.append((name,row,cur,forecast,target))
@@ -173,6 +183,9 @@ summary={"time":now.isoformat(),"frames":len(files),"tested_regions":len(crop),
          "cases":len(scores),"cases_in_spain":sum(x["city"] in {p[0] for p in cities[:6]} for x in scores),
          "median_f1_gain":float(np.median([x["f1_gain"] for x in scores])) if scores else None,
          "median_mae_gain":float(np.median([x["mae_gain"] for x in scores])) if scores else None,
+         "median_gain_vs_smoothing":float(np.median([x["gain_vs_smoothing"] for x in scores])) if scores else None,
+         "median_gain_vs_temporal":float(np.median([x["gain_vs_temporal"] for x in scores])) if scores else None,
+         "wins_over_smoothing":sum(x["gain_vs_smoothing"]>0 for x in scores),
          "f1_wins":sum(x["f1_gain"]>0 for x in scores),
          "f1_losses":sum(x["f1_gain"]<0 for x in scores),
          "results":scores}
