@@ -1,51 +1,42 @@
-# RainETA para iPhone — v0.1.0
+# RainETA para iPhone — v0.2.0
 
-Primera versión nativa en **SwiftUI / MapKit**. Se encuentra aislada en `ios/raineta/` dentro del repositorio de RainETA y **no modifica ni despliega** la PWA existente. No utiliza Vercel ni Cloudflare.
+App **nativa SwiftUI / MapKit / ActivityKit** para instalación mediante Impactor en iPhone. Carpeta aislada: `ios/raineta/`. No se modifica la PWA existente y **no utiliza Vercel ni Cloudflare**.
 
-## Funciones incorporadas
+## Cambios de v0.2.0
 
-- GPS con permiso solo durante el uso y localización provisional de Madrid mientras se concede.
-- Consulta directa a Open-Meteo para precipitación de 15 minutos, temperatura actual y probabilidad horaria.
-- Cuenta atrás hasta el siguiente inicio o final de lluvia *según los datos del modelo*. No se presenta como medida radar.
-- Radar RainViewer **observado** en mapa MapKit, desplazamiento por los barridos históricos y hora de la imagen.
-- Visualización de las próximas tres horas, con barras de intensidad por intervalo de 15 minutos.
-- Live Activity sin App Group ni widgets tradicionales: pantalla bloqueada y Dynamic Island, con actualización de contador por iOS.
-- Datos caducados: transcurridos 30 minutos desde la última actualización, En Vivo muestra advertencia de previsión desactualizada.
-- Actualización manual y mientras la aplicación está activa. iOS puede suspender la app en segundo plano.
+- **Radar observado + proyección futura 0–240 minutos**: línea temporal cronológica con botón Ahora y saltos +2h/+4h. La pantalla marca expresamente **PROYECCIÓN · NO OBSERVADO**.
+- **Motor nativo de desplazamiento** (`RainETA/RadarNowcast.swift`): descarga una cuadrícula geográfica de nueve mosaicos por barrido histórico, compara los dos últimos barridos, estima movimiento con coincidencia de zonas de precipitación y calcula fiabilidad. La proyección (`RainETA/RadarFutureTiles.swift`) desplaza el campo radar en MapKit y reduce gradualmente su opacidad. La zona cargada es limitada; fuera de ella o si faltan datos se conserva el mapa base.
+- **Gráfica de 30/60/120 minutos, con una muestra cada minuto.** Son muestras derivadas de advección de radar, NO observaciones ni predicciones independientes por minuto, y la altura representa señal de eco relativa (no mm/h). Si no se puede calcular la proyección, aparece una curva modelizada con interpolación de datos cada 15 min, identificada explícitamente.
+- **Previsión 7 días**: 24 h / 72 h / 7 días con precipitación prevista horaria, probabilidad estimada, acumulación diaria y temperaturas mín./máx. via Open-Meteo.
+- Mantiene GPS con opción **Siempre**, Live Activity sin widget ni App Group, icono personalizado, e indicación de desactualización.
 
-## Lo que NO hace todavía
+## Advertencias importantes
 
-- No dibuja la extrapolación futura radar en el mapa. El motor de movimiento de la PWA en `vercel-webhook/rain/radar-core.js` se incorporará en fase posterior, tras pruebas y validación en iOS.
-- No realiza consultas meteorológicas garantizadas cada cinco minutos con la app bloqueada. Una Live Activity no es un servicio de segundo plano.
-- No incluye widget de pantalla de inicio, App Group, notificaciones push, animación de rayos, vista siete días ni predicciones detalladas del consenso de 15 modelos.
-- La instalación y la compatibilidad de Live Activities dependen de cómo Impactor firme la app y su extensión.
+- **Proyección experimental**: trasladar ecos no predice su crecimiento/disipación ni garantiza lluvia en tu punto. La fiabilidad decrece con el horizonte, especialmente más allá de 60–90 minutos. La vista hasta 4 h es orientativa y debe compararse con los modelos.
+- La gráfica minuto a minuto **no** equivale a un modelo meteorológico con precisión de 1 minuto; no se debe interpretar así.
+- RainViewer API: teselas de radar histórico, *máximo nivel zoom 7*. El zoom superior del mapa amplía la rasterización local, sin inventar detalle radar. Se incluye atribución visible y la licencia de uso personal/educativo.
+- Live Activities funciona con el iPhone bloqueado, pero iOS no garantiza reconsultas periódicas si la aplicación está suspendida. El estado puede caducar.
+- Esta versión NO incluye todavía los 15 modelos/familias del motor web, rayos, detección de evolución física de las nubes ni notificaciones push.
 
-## Compilar IPA sin firma
+## Compilar IPA
 
-GitHub Actions: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
+Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-En un Mac con Xcode y XcodeGen:
-```sh
-cd ios/raineta
-xcodegen generate
-xcodebuild -project RainETA.xcodeproj -scheme RainETA -sdk iphoneos -configuration Release -destination 'generic/platform=iOS' -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build
-```
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.2.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
-El workflow genera `RainETA-0.1.0-unsigned.ipa` con el paquete `RainETALive.appex` embebido. Impactor debe volver a firmar ambos paquetes para el iPhone.
+## Instalación y prueba
 
-## Instalación
+1. Descargar y extraer el artefacto de la acción o descargar la IPA desde el chat.
+2. Instalar mediante Impactor sobre la versión anterior, sin modificar el identificador.
+3. Abrir RainETA, comprobar GPS, seleccionar opción **Siempre** si lo deseas.
+4. Abrir radar y arrastrar el control hasta +30/+60/+120/+240 min. Comprobar que el mapa marca proyección.
+5. Consultar las gráficas de 30/60/120 min y la vista de 7 días.
+6. Activar **En Vivo** y verificar que se sigue mostrando tras bloquear el iPhone.
 
-1. Descargar el artefacto `RainETA-0.1.0-IPA` de GitHub Actions y extraer la IPA.
-2. Abrir Impactor, seleccionar el iPhone conectado, pulsar el botón de elegir IPA y cargar `RainETA-0.1.0-unsigned.ipa`.
-3. Mantener activada **Actualización automática [BETA]** si quieres que Impactor intente renovar la firma. La renovación no se da por comprobada hasta verificarla.
-4. Instalar con Apple ID y confiar en el perfil si iOS lo solicita.
-5. Autorizar la ubicación cuando la app lo pida.
-6. Abrir RainETA y pulsar **Activar En Vivo** cuando exista una ETA de comienzo o final de lluvia. Si iOS no permite Live Activities, revisar los ajustes de la app.
+## Fuentes y atribución
 
-## Fuentes
+- [RainViewer](https://www.rainviewer.com/) — radar histórico observado, API gratuita para uso personal/educativo.
+- [Open-Meteo](https://open-meteo.com/) — modelo 15 min, datos horarios y previsión diaria.
+- Apple MapKit y ActivityKit.
 
-- [Open-Meteo](https://open-meteo.com/) para predicción, no para observación radar.
-- [RainViewer](https://www.rainviewer.com/api.html) para las teselas de radar pasadas, no futuro.
-- MapKit y ActivityKit de Apple.
-
-No hay cuenta de usuario, telemetría propia ni backend de pago. Los datos se descargan directamente de los proveedores; se aplican sus límites y condiciones de servicio.
+Las credenciales y los datos no se envían a servidores propios. Los proveedores remotos pueden imponer límites y condiciones.
