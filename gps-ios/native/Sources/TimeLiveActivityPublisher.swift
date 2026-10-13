@@ -7,6 +7,7 @@ import ActivityKit
 @MainActor final class TimeLiveActivityPublisher {
     private var lastUpdated:Date = .distantPast
     private var lastFingerprint:TimeActivityFingerprint?
+    private var lastMoving:Bool?
     private var updateTask:Task<Void,Never>?
     private var previousZoneVisitSeconds:TimeInterval?
     private var previousZoneID:UUID?
@@ -41,6 +42,7 @@ import ActivityKit
         if ongoingActivities().isEmpty {
             lastUpdated = .distantPast
             lastFingerprint=nil
+            lastMoving=nil
             refresh(from:model,force:true)
         } else {
             refresh(from:model)
@@ -63,6 +65,7 @@ import ActivityKit
             }
             guard !Task.isCancelled else { return }
             lastFingerprint=nil
+            lastMoving=nil
             lastUpdated = .distantPast
             refresh(from:model,force:true)
         }
@@ -73,6 +76,7 @@ import ActivityKit
         let permitted=ActivityAuthorizationInfo().areActivitiesEnabled
         guard enabled,permitted else {
             lastFingerprint=nil
+            lastMoving=nil
             lastUpdated = .distantPast
             updateTask?.cancel()
             updateTask=Task {
@@ -100,7 +104,12 @@ import ActivityKit
             visibleName:name,startedAt:start,resting:resting)
         let active=ongoingActivities()
         let changed=lastFingerprint != fingerprint
-        guard force || changed || active.isEmpty ||
+        // Evaluar movimiento ANTES del limitador: una transición de modo
+        // necesita actualizar la pantalla aunque siga en la misma casilla.
+        let motion=TimeLiveMotion.analyze(model.data.fixes,now:now,center:cell,
+            latest:resting ? nil : model.current)
+        let motionChanged=lastMoving != (motion.moving && !resting)
+        guard force || changed || motionChanged || active.isEmpty ||
               now.timeIntervalSince(lastUpdated)>=45 else { return }
 
         let zone=model.primaryZone(for:cell)
@@ -123,7 +132,6 @@ import ActivityKit
             intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
         let sixMinutes=TimeLiveVisualization.hourlyMinutes(
             intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
-        let motion=TimeLiveMotion.analyze(model.data.fixes,now:now,center:cell)
         let zoneStay=zone.map { model.zoneStaySeconds(for:$0,now:now) }
         // Anunciar un hito únicamente al cruzarlo durante esta sesión; no
         // repetir las horas acumuladas anteriores cuando se abre la app.
@@ -179,6 +187,7 @@ import ActivityKit
             relevanceScore:60)
         lastUpdated=now
         lastFingerprint=fingerprint
+        lastMoving=motion.moving && !resting
         updateTask?.cancel()
         updateTask=Task {
             if let item=ongoingActivities().first {
