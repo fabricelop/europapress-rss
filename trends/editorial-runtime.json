@@ -4,8 +4,8 @@
   "version": 1,
   "canonical": true,
   "last_started_at": "2026-10-13T02:15:00+02:00",
-  "last_completed_at": "2026-10-13T02:36:00+02:00",
-  "updated_at": "2026-10-13T02:36:00+02:00",
+  "last_completed_at": "2026-10-13T02:38:00+02:00",
+  "updated_at": "2026-10-13T02:38:00+02:00",
   "status": "success",
   "processed_ids": [
     "66baf38b979a",
@@ -36,8 +36,8 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-13T02:15:00+02:00",
-    "updated_at": "2026-10-13T02:36:00+02:00",
-    "finished_at": "2026-10-13T02:36:00+02:00",
+    "updated_at": "2026-10-13T02:38:00+02:00",
+    "finished_at": "2026-10-13T02:38:00+02:00",
     "current": 5,
     "total": 5,
     "summary": {
@@ -64,7 +64,7 @@
       "telegram_orphans": 2,
       "orphan_audit_group_fix": 1
     },
-    "message": "Cierre verificado · 3/3 revisiones editoriales cerradas y cola 0; Miguel/Levante finalizados y la tarjeta agrupada cubre Juanpi/Irini. Bale y Alfon siguen abiertos por falta de detonante fiable.",
+    "message": "Cierre verificado · 3/3 revisiones editoriales cerradas, cola 0 y auditoría Telegram reconciliada a 2 incidencias reales: Bale 741 y Alfon 749.",
     "incident_count": 2,
     "incidents": [
       {
@@ -236,6 +236,13 @@
         "trend_id": null,
         "title": null,
         "message": "Cierre: cola editorial 0; Miguel y Levante finalizados en Telegram; Bale y Alfon permanecen como incidencias documentadas."
+      },
+      {
+        "at": "2026-10-13T02:38:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría final reconciliada: Irini está cubierta por la tarjeta agrupada 746; solo Bale 741 y Alfon 749 siguen abiertos."
       }
     ],
     "queue_complete": true,
