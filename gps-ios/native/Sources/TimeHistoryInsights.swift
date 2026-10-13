@@ -104,8 +104,8 @@ enum TimeDayCoverageIndex {
             let finish=start.addingTimeInterval(summary.dayDuration*Double(index+1)/Double(count))
             var shares:[TimeHistoryKind:Double]=[:]
             for piece in summary.slices where piece.end>begin && piece.start<finish {
-                shares[piece.kind,default:0]+=
-                    max(0,min(piece.end,finish).timeIntervalSince(max(piece.start,begin)))
+                shares[piece.kind,default:0] += max(0,
+                    min(piece.end,finish).timeIntervalSince(max(piece.start,begin)))
             }
             return shares.max(by: { $0.value<$1.value })?.key ?? .pending
         }
