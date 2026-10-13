@@ -1155,6 +1155,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         configureContinuous()
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
+        GPSStaleWatchdog.shared.begin()
         if manager.authorizationStatus == .authorizedAlways {
             manager.startMonitoringSignificantLocationChanges()
         }
@@ -1188,6 +1189,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
             return
         }
         manager.stopUpdatingLocation()
+        GPSStaleWatchdog.shared.cancel()
         motion.end()
         automaticMonitoringStart()
         lastPauseTransition = "Pausa activada y guardada · \(Date().formatted(date:.omitted,time:.shortened))"
@@ -1203,6 +1205,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         guard model.isResting else { return }
         self.model = model
         manager.stopUpdatingLocation()
+        GPSStaleWatchdog.shared.cancel()
         motion.end()
         model.recording = false
         model.gpsStatus = "GPS en pausa · tiempo acumulándose en \(model.restingCellName ?? "cuadrícula")"
@@ -1239,6 +1242,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     @MainActor func end(_ model: TimeModel) {
         if model.isResting { model.finishRest() }
         manager.stopUpdatingLocation()
+        GPSStaleWatchdog.shared.cancel()
         automaticMonitoringStop()
         manager.stopMonitoringSignificantLocationChanges()
         motion.end()
@@ -1261,6 +1265,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         configureContinuous()
         manager.startUpdatingLocation()
         manager.requestLocation()
+        GPSStaleWatchdog.shared.refresh(recording:model.recording,
+            resting:model.isResting,latestFix:model.current?.date)
     }
 
     @MainActor func setAnticipation(_ enabled: Bool) {
@@ -1313,6 +1319,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 lastReceivedAt = location.timestamp
                 lastCallbackAt = Date()
                 model?.record(location)
+                if model?.recording == true, model?.isResting == false {
+                    GPSStaleWatchdog.shared.received(location.timestamp)
+                }
                 observe(location)
             }
         }
@@ -1395,6 +1404,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 .onChange(of: phase) { _, state in
                     if state != .active { model.save(force:true) }
                     if state == .active {
+                        GPSStaleWatchdog.shared.refresh(recording:model.recording,
+                            resting:model.isResting,latestFix:model.current?.date)
                         // Restauración global, también cuando el usuario abrió
                         // directamente el historial o una hoja de detalle.
                         gps.refreshWhenForeground()
@@ -2039,6 +2050,7 @@ struct TimeSettingsView: View {
                         }
                     }
                 }
+                GPSStaleWatchdogSettings(model:model)
                 Section("Privacidad") {
                     Toggle("Solicitar Face ID o código", isOn:$faceIDEnabled)
                 }
