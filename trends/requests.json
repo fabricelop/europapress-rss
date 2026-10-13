@@ -15457,11 +15457,11 @@
     {
       "id": "100a60621ef0",
       "name": "Los Reyes",
-      "rank": 9,
-      "status": "explained",
-      "requested_at": "2026-10-01T10:42:26+02:00",
-      "revision": 0,
-      "reexplain": false,
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-10-13T20:31:59+02:00",
+      "revision": 1,
+      "reexplain": true,
       "with_image": true,
       "alternatives_target": 0,
       "batch_id": "4ac1f391b0a4",
@@ -15469,11 +15469,18 @@
         "Los Reyes"
       ],
       "captured_with": [
+        "Montse",
+        "#TEM13O",
+        "Irene",
+        "El Rey",
+        "Sáenz de Tejada",
+        "Sarah",
+        "Miguel Sierra",
         "Los Reyes",
-        "ES-Alert"
+        "Felipe VI",
+        "Silvia"
       ],
       "auto_queued": true,
-      "explained_at": "2026-10-01T10:53:30+02:00",
       "explanation": "TT#9 Los Reyes es tendencia porque Felipe VI y Letizia visitarán Ceuta y Melilla los días 13 y 14 de octubre, en su primer viaje a ambas ciudades autónomas desde que Felipe VI llegó al trono en 2014.\n🌶️ Octubre les ha reservado dos casillas seguidas en la agenda.",
       "closer_text": "🌶️ Octubre les ha reservado dos casillas seguidas en la agenda.",
       "rank_at_explanation": 9,
@@ -53903,8 +53910,50 @@
       "image_pending": false,
       "telegram_package_status": "deleted",
       "telegram_closed_at": "2026-10-13T19:52:37+02:00"
+    },
+    {
+      "id": "4a32e291b828",
+      "name": "El Rey",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-13T20:31:59+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9e787e78c75a",
+      "requested_together": [
+        "El Rey"
+      ],
+      "captured_with": [
+        "El Rey",
+        "Felipe VI"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "906f09c316d3",
+      "name": "Felipe VI",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-13T20:31:59+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9e787e78c75a",
+      "requested_together": [
+        "Felipe VI"
+      ],
+      "captured_with": [
+        "El Rey",
+        "Felipe VI"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-13T19:56:04+02:00",
+  "updated_at": "2026-10-13T20:31:59+02:00",
   "count": 914
 }
