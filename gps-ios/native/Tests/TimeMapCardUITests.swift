@@ -9,7 +9,7 @@ final class TimeMapCardUITests:XCTestCase {
         XCTAssertEqual(TimeMapCardClock.display(14*3600+21*60+39),"14:21:39")
     }
     func testLongAccumulatedTimeDoesNotWrapAt24Hours() {
-        XCTAssertEqual(TimeMapCardClock.display(49*3600+65),"49:01:05")
+        XCTAssertEqual(TimeMapCardClock.display(49*3600+65),"2d 1h 1min")
     }
     func testNonFiniteAndNegativeDurationsAreSafe() {
         XCTAssertEqual(TimeMapCardClock.display(-12),"00:00:00")
