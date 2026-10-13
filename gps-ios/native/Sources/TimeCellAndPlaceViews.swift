@@ -122,7 +122,9 @@ struct UserPlaceDetailView: View {
     @State private var editingCell:Cell?
     private var place:UserPlace? { model.data.places.first(where:{$0.id==placeID}) }
     private var visits:[TimeVisit] {
-        TimeVisitIndex.visits(model.data.intervals,cells:place?.normalizedCellIDs ?? [])
+        TimeVisitIndex.visits(model.data.intervals,cells:place?.normalizedCellIDs ?? [],
+            fixes:model.data.fixes,powerEvents:model.data.powerEvents,
+            manualBreaks:model.data.manualBreaks)
     }
 
     var body: some View {
