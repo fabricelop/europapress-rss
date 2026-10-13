@@ -3,49 +3,49 @@
   "engine": "chat-direct",
   "version": 1,
   "canonical": true,
-  "last_started_at": "2026-10-13T01:45:00+02:00",
-  "last_completed_at": "2026-10-13T01:58:00+02:00",
-  "updated_at": "2026-10-13T01:58:00+02:00",
+  "last_started_at": "2026-10-13T02:15:00+02:00",
+  "last_completed_at": "2026-10-13T02:36:00+02:00",
+  "updated_at": "2026-10-13T02:36:00+02:00",
   "status": "success",
   "processed_ids": [
-    "bfdbf85e08c0",
-    "68723d07b61e",
-    "9bcbdfa04fb5",
-    "dddd935d6ed9"
+    "66baf38b979a",
+    "977af1277234",
+    "8e78ca332a37"
   ],
   "remaining_ids": [],
   "api_failover_enabled": false,
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "d7b672dc554f",
+    "502ad110fc35"
+  ],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "running",
+    "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T011500+0200-chat",
-    "requested_at": "2026-10-13T01:15:00+02:00",
+    "run_id": "tr-20261013T021500+0200-chat",
+    "requested_at": "2026-10-13T02:15:00+02:00",
     "reason": "execution-start-pending-repair",
-    "ai_enqueue": "dedicated-workflow",
-    "workflow_run_id": 38321252303,
-    "conclusion": null
+    "ai_enqueue": "dedicated-workflow"
   },
   "last_run": {
-    "run_id": "tr-20261013T014500+0200-chat",
+    "run_id": "tr-20261013T021500+0200-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-13T01:45:00+02:00",
-    "updated_at": "2026-10-13T01:58:00+02:00",
-    "finished_at": "2026-10-13T01:58:00+02:00",
-    "current": 6,
-    "total": 6,
+    "started_at": "2026-10-13T02:15:00+02:00",
+    "updated_at": "2026-10-13T02:36:00+02:00",
+    "finished_at": "2026-10-13T02:36:00+02:00",
+    "current": 5,
+    "total": 5,
     "summary": {
-      "trends_processed": 4,
-      "trends_explained": 4,
-      "explanation_groups": 3,
-      "new_cards": 0,
-      "revisions_updated": 4,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 2,
+      "new_cards": 1,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 2,
       "trends_problematic": 2,
       "trends_dismissed": 0,
@@ -56,13 +56,15 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 3,
+      "explanations_verified_under_280": 2,
       "remates_selected": 2,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 3,
-      "telegram_orphans": 2
+      "telegram_provisionals_finalized": 2,
+      "telegram_group_cards_verified": 1,
+      "telegram_orphans": 2,
+      "orphan_audit_group_fix": 1
     },
-    "message": "Cierre verificado · 4/4 revisiones editoriales cerradas, cola 0 y 3 provisionales actuales finalizados; Bale y Alfon permanecen abiertos por falta de corroboración suficiente.",
+    "message": "Cierre verificado · 3/3 revisiones editoriales cerradas y cola 0; Miguel/Levante finalizados y la tarjeta agrupada cubre Juanpi/Irini. Bale y Alfon siguen abiertos por falta de detonante fiable.",
     "incident_count": 2,
     "incidents": [
       {
@@ -70,14 +72,14 @@
         "name": "Bale",
         "telegram_message_id": 741,
         "type": "unresolved_provisional",
-        "reason": "No hay corroboración independiente suficiente del detonante actual; el término salió del Top 10. Se conserva el provisional sin inventar explicación."
+        "reason": "No hay corroboración independiente suficiente del detonante actual; se conserva el provisional sin inventar explicación."
       },
       {
         "id": "502ad110fc35",
         "name": "Alfon",
         "telegram_message_id": 749,
         "type": "unresolved_provisional",
-        "reason": "Se verifica su participación en Levante-Sevilla, pero no un detonante independiente suficientemente fiable para explicar el TT; salió del Top 10. Se conserva el provisional."
+        "reason": "El partido está verificado, pero no un detonante independiente fiable para explicar el TT de Alfon; se conserva el provisional."
       }
     ],
     "ratings_snapshot": {
@@ -89,149 +91,163 @@
     },
     "remate_selections": [
       {
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "selected": "🌶️ La moviola pidió una silla fija en el plató.",
-        "originality": "specific_to_var_debate_no_recent_duplicate"
+        "trend_id": "b2d77d356f75",
+        "title": "#LaIslaDeLasTentaciones11",
+        "selected": "🌶️ Dos villas y cero respeto por las puertas.",
+        "originality": "existing_same_episode_closer_retained_no_duplicate_variant"
       },
       {
-        "trend_id": "dddd935d6ed9",
-        "title": "Javierito",
-        "selected": "🌶️ Un préstamo de 2017 sigue pidiendo prórroga en 2026.",
-        "originality": "specific_to_2017_loan_reactivated_in_2026"
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "selected": "🌶️ El descuento le salió con renovación automática.",
+        "originality": "specific_to_two_stoppage_time_equalizers"
       }
     ],
     "activity": [
       {
-        "at": "2026-10-13T01:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio · 4 revisiones editoriales activas y 2 reparaciones Telegram pendientes. Validando estado autoritativo."
+        "at": "2026-10-13T02:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": "66baf38b979a",
+        "title": "Juanpi",
+        "message": "Releyendo estado autoritativo de Juanpi antes de investigar su posible agrupación con el episodio actual."
       },
       {
-        "at": "2026-10-13T01:46:00+02:00",
+        "at": "2026-10-13T02:18:00+02:00",
+        "phase": "investigating",
+        "trend_id": "66baf38b979a",
+        "title": "Juanpi + Miguel",
+        "message": "Contrastando fuentes del episodio actual: Miguel reacciona al acercamiento entre Mara y Juanpi; ambos términos pertenecen al mismo programa del 12 de octubre."
+      },
+      {
+        "at": "2026-10-13T02:19:00+02:00",
+        "phase": "investigating",
+        "trend_id": "66baf38b979a",
+        "title": "Juanpi + Miguel",
+        "message": "Hecho esencial verificado: Juanpi y Miguel se incorporarán al grupo vigente de #LaIslaDeLasTentaciones11, sin crear tarjetas duplicadas."
+      },
+      {
+        "at": "2026-10-13T02:20:00+02:00",
+        "phase": "drafting",
+        "trend_id": "66baf38b979a",
+        "title": "Juanpi + Miguel",
+        "message": "Redactando explicación factual del grupo e incorporando el detonante de Miguel y Juanpi."
+      },
+      {
+        "at": "2026-10-13T02:20:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "66baf38b979a",
+        "title": "Juanpi + Miguel",
+        "message": "Remate vigente conservado: sigue siendo específico del mismo episodio y evita crear una variante redundante."
+      },
+      {
+        "at": "2026-10-13T02:21:00+02:00",
         "phase": "verifying",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Releyendo estado autoritativo de Levante r0 antes de confirmar el resultado final del partido."
+      },
+      {
+        "at": "2026-10-13T02:22:00+02:00",
+        "phase": "investigating",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Hecho esencial verificado: Levante-Sevilla terminó 3-3, con empates locales en el descuento."
+      },
+      {
+        "at": "2026-10-13T02:22:30+02:00",
+        "phase": "drafting",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-13T02:23:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Remate seleccionado tras descartar fórmulas genéricas: referencia específica a la prolongación del descuento."
+      },
+      {
+        "at": "2026-10-13T02:24:00+02:00",
+        "phase": "persisting",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Guardando ficha Explicada y sincronizando Juanpi, Miguel y Levante en requests."
+      },
+      {
+        "at": "2026-10-13T02:25:00+02:00",
+        "phase": "persisting",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Retirando las tres revisiones cerradas de la cola editorial."
+      },
+      {
+        "at": "2026-10-13T02:28:00+02:00",
+        "phase": "verifying",
+        "trend_id": "8e78ca332a37",
+        "title": "Levante",
+        "message": "Corregido con fuente oficial: el 3-3 de Ndukwe fue en el 100'. Texto sincronizado en Explicadas y requests."
+      },
+      {
+        "at": "2026-10-13T02:29:00+02:00",
+        "phase": "investigating",
         "trend_id": "d7b672dc554f",
         "title": "Bale",
-        "message": "Releyendo estado autoritativo de Bale y su provisional Telegram 741."
+        "message": "Tercer intento de reparación: no hay corroboración independiente suficiente del detonante del TT. Se conserva provisional 741."
       },
       {
-        "at": "2026-10-13T01:48:00+02:00",
-        "phase": "verifying",
+        "at": "2026-10-13T02:30:00+02:00",
+        "phase": "investigating",
         "trend_id": "502ad110fc35",
         "title": "Alfon",
-        "message": "Releyendo estado autoritativo de Alfon y su provisional Telegram 749."
+        "message": "Tercer intento de reparación: participación en Levante-Sevilla confirmada, pero sin detonante independiente fiable. Se conserva provisional 749."
       },
       {
-        "at": "2026-10-13T01:50:00+02:00",
+        "at": "2026-10-13T02:32:00+02:00",
         "phase": "verifying",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Releyendo estado autoritativo de #ChiringuitoPolémica, Sergio y Javierito antes de investigar posible agrupación."
+        "trend_id": null,
+        "title": null,
+        "message": "Telegram verificado: Miguel 754 y Levante 755 están finalizados; la tarjeta agrupada 746 incluye a Juanpi, Miguel e Irini."
       },
       {
-        "at": "2026-10-13T01:52:00+02:00",
-        "phase": "investigating",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Hecho esencial verificado · emisión nocturna y debate de jugadas polémicas; Sergio pertenece al episodio de La Isla, no a este hashtag."
-      },
-      {
-        "at": "2026-10-13T01:53:00+02:00",
-        "phase": "drafting",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-13T01:53:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Remate seleccionado tras descartar fórmulas repetidas · gag específico sobre la moviola."
-      },
-      {
-        "at": "2026-10-13T01:54:00+02:00",
-        "phase": "investigating",
-        "trend_id": "dddd935d6ed9",
-        "title": "Javierito",
-        "message": "Hecho esencial verificado · el término se usa como apodo de Javier Tebas en la polémica del préstamo de 4,5 millones y su respuesta al Real Madrid."
-      },
-      {
-        "at": "2026-10-13T01:54:30+02:00",
-        "phase": "drafting",
-        "trend_id": "dddd935d6ed9",
-        "title": "Javierito",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-13T01:55:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "dddd935d6ed9",
-        "title": "Javierito",
-        "message": "Remate seleccionado · enfoque temporal del préstamo, sin repetir muletillas recientes."
-      },
-      {
-        "at": "2026-10-13T01:55:20+02:00",
+        "at": "2026-10-13T02:33:00+02:00",
         "phase": "persisting",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Guardando fichas Explicadas y enlazando Irini y Sergio a la tarjeta ya existente de #LaIslaDeLasTentaciones11."
+        "trend_id": null,
+        "title": null,
+        "message": "Sincronizando todos los miembros del grupo La Isla con el mismo texto y metadatos autoritativos."
       },
       {
-        "at": "2026-10-13T01:56:20+02:00",
+        "at": "2026-10-13T02:34:00+02:00",
         "phase": "verifying",
         "trend_id": "bfdbf85e08c0",
         "title": "Irini",
-        "message": "Verificado · Irini r1 y Sergio r0 enlazados a la explicación vigente de #LaIslaDeLasTentaciones11 sin crear otra ficha."
+        "message": "Detectado falso huérfano: la auditoría ignoraba group_member_ids aunque Irini ya figura en la tarjeta final 746."
       },
       {
-        "at": "2026-10-13T01:56:40+02:00",
-        "phase": "verifying",
-        "trend_id": "68723d07b61e",
-        "title": "#ChiringuitoPolémica",
-        "message": "Verificado id+revision y texto persistido; provisional Telegram 751 actualizado a final."
+        "at": "2026-10-13T02:35:00+02:00",
+        "phase": "persisting",
+        "trend_id": "bfdbf85e08c0",
+        "title": "Irini",
+        "message": "Corregida la auditoría para reconocer miembros entregados mediante una tarjeta agrupada final, sin ocultar provisionales individuales."
       },
       {
-        "at": "2026-10-13T01:57:00+02:00",
-        "phase": "verifying",
-        "trend_id": "dddd935d6ed9",
-        "title": "Javierito",
-        "message": "Verificado id+revision y texto persistido; provisional Telegram 753 actualizado a final."
-      },
-      {
-        "at": "2026-10-13T01:57:20+02:00",
-        "phase": "verifying",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio",
-        "message": "Provisional Telegram 752 actualizado a final con la explicación agrupada de La Isla."
-      },
-      {
-        "at": "2026-10-13T01:57:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola editorial 0; auditoría Telegram mantiene solo Bale 741 y Alfon 749 como incidencias no resueltas."
-      },
-      {
-        "at": "2026-10-13T01:58:00+02:00",
+        "at": "2026-10-13T02:36:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · cola 0; Telegram finalizó #ChiringuitoPolémica, Sergio y Javierito. Bale y Alfon quedan como incidencias documentadas."
+        "message": "Cierre: cola editorial 0; Miguel y Levante finalizados en Telegram; Bale y Alfon permanecen como incidencias documentadas."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T014500+0200-chat",
+  "run_id": "tr-20261013T021500+0200-chat",
   "summary": {
-    "trends_processed": 4,
-    "trends_explained": 4,
-    "explanation_groups": 3,
-    "new_cards": 0,
-    "revisions_updated": 4,
+    "trends_processed": 3,
+    "trends_explained": 3,
+    "explanation_groups": 2,
+    "new_cards": 1,
+    "revisions_updated": 3,
     "grouped_into_existing_card": 2,
     "trends_problematic": 2,
     "trends_dismissed": 0,
@@ -242,11 +258,13 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 3,
+    "explanations_verified_under_280": 2,
     "remates_selected": 2,
     "remates_omitted": 0,
-    "telegram_provisionals_finalized": 3,
-    "telegram_orphans": 2
+    "telegram_provisionals_finalized": 2,
+    "telegram_group_cards_verified": 1,
+    "telegram_orphans": 2,
+    "orphan_audit_group_fix": 1
   },
   "unresolved_orphan_ids": [
     "d7b672dc554f",
