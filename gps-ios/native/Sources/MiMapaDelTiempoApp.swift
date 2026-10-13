@@ -700,6 +700,44 @@ struct SavedState: Codable {
         save(force: true)
         activityPublisher.refresh(from:self,force:true)
     }
+    /// Solo tras una confirmación explícita. Guarda un intervalo identificado
+    /// como asumido, separado de las observaciones GPS reales.
+    @discardableResult func confirmUnobservedStay(_ gap:TimeGPSGapCandidate)->Bool {
+        guard !isResting,
+              TimeGPSGapRecovery.candidates(
+                  intervals:data.intervals,fixes:data.fixes,
+                  manualBreaks:data.manualBreaks,events:data.powerEvents,
+                  cells:[gap.cell.id]).contains(gap) else { return false }
+        var updated=data
+        let recovery=AssignedInterval(start:gap.start,end:gap.end,
+            cell:gap.cell,quality:"asumido · confirmado por usuario",
+            source:"confirmacion_usuario")
+        updated.intervals.append(recovery)
+        updated.intervals.sort { $0.start<$1.start }
+        updated.totals[gap.cell.id,default:0]+=recovery.seconds
+        do {
+            // Transacción íntegra: solo cambia el estado visible al terminar.
+            // También conserva los datos GPS que aún no se han volcado.
+            if let store {
+                try store.replaceAll(updated)
+            } else {
+                try JSONEncoder().encode(updated).write(to:fileURL,options:.atomic)
+            }
+            data=updated
+            pendingFixes.removeAll(keepingCapacity:true)
+            pendingIntervals.removeAll(keepingCapacity:true)
+            pendingTotals.removeAll(keepingCapacity:true)
+            normalizedCacheIntervalCount = -1
+            cachedPeriodCount = -1
+            lastSaved = .now
+            gpsStatus="Hueco de \(Int(gap.seconds/60)) min añadido como tiempo estimado"
+            objectWillChange.send()
+            return true
+        } catch {
+            gpsStatus="No se pudo guardar la confirmación: \(error.localizedDescription)"
+            return false
+        }
+    }
     func updateCamera(_ region: MKCoordinateRegion) {
         data.camera = CameraSave(region)
         save()
@@ -1235,7 +1273,8 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 // No registrar de nuevo muestras antiguas tras un despertar.
                 guard lastReceivedAt.map({ location.timestamp > $0 }) ?? true else { continue }
                 if let gap = GPSContinuityPolicy.observedGap(
-                    after:lastReceivedAt, at:location.timestamp) {
+                    after:lastReceivedAt ?? model?.lastGPSFix,
+                    at:location.timestamp) {
                     lastGapSeconds = gap
                     if gap >= 60 {
                         model?.recordPowerEvent(mode: .precision,
@@ -1326,7 +1365,12 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                 }
                 .onChange(of: phase) { _, state in
                     if state != .active { model.save(force:true) }
-                    if state == .active { model.restoreLiveActivityIfNeeded() }
+                    if state == .active {
+                        // Restauración global, también cuando el usuario abrió
+                        // directamente el historial o una hoja de detalle.
+                        gps.refreshWhenForeground()
+                        model.restoreLiveActivityIfNeeded()
+                    }
                 }
         }
     }
