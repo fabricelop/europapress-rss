@@ -96,9 +96,11 @@ def ai_delivery_info(item,now):
         and str((ai.get("context_guard") or {}).get("event_id") or eid)==eid
         and int((ai.get("context_guard") or {}).get("revision") or rev)==rev)
     # La creación manual no expira: solo bloqueamos la automática de ESTE command_id.
-    automatic=bool(job.get("auto_repair") and
-       str((ai.get("context_guard") or {}).get("command_id") or "")==str(job.get("command_id") or ""))
-    if valid and not (automatic and expired):
+    image_command=str((ai.get("context_guard") or {}).get("command_id") or "")
+    automatic=image_command.startswith("tt-img-auto-")
+    confirmed_automatic=bool(job and image_command==str(job.get("command_id") or "")
+                             and launch and not expired)
+    if valid and not automatic or (valid and automatic and confirmed_automatic):
         return {"url":url,"note":"🖼️ Imagen IA lista · incorporándose a Telegram."}
     if expired or status in {"ERROR","CANCELLED","SUPERSEDED"}:
         return {"url":"","note":"🖼️ IA no disponible · puedes crearla manualmente."}
