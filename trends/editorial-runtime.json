@@ -4,11 +4,19 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T22:15:00+02:00",
-  "last_completed_at": "2026-10-13T22:19:05+02:00",
-  "updated_at": "2026-10-13T22:19:05+02:00",
+  "last_started_at": "2026-10-13T22:45:00+02:00",
+  "last_completed_at": "2026-10-13T22:56:10+02:00",
+  "updated_at": "2026-10-13T22:56:10+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "298947e5b1e1",
+    "7f4edc904c59",
+    "5d5518aea954",
+    "fc3e4576c353",
+    "bf9a1fe7a07a",
+    "9ba06c6f802f",
+    "3c4fe1515d56"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -16,33 +24,39 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "verified_clean_post_run",
+    "status": "success_text_and_telegram_visual_workflow_complete",
     "direct_imagegen": false,
-    "run_id": "tr-20261013T221500+0200-chat",
-    "requested_at": "2026-10-13T22:15:00+02:00",
+    "run_id": "tr-20261013T224500+0200-chat",
+    "requested_at": "2026-10-13T22:45:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
+    "repair_workflow_run_id": 38466321400,
+    "telegram_workflow_run_id": 38466324488,
     "telegram_verified": true,
-    "verification_note": "Auditoría posterior 2026-10-13T20:18:56.899044+00:00: 0 huérfanos, 0 incidencias bidireccionales y ningún delivery sent/final:false."
+    "verified_at": "2026-10-13T22:54:07+02:00",
+    "verification_note": "0 huérfanos, 0 incidencias bidireccionales y ningún delivery sent/final:false; no se invocó ImageGen."
   },
   "last_run": {
-    "run_id": "tr-20261013T221500+0200-chat",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-20261013T224500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-13T22:15:00+02:00",
-    "updated_at": "2026-10-13T22:19:05+02:00",
-    "finished_at": "2026-10-13T22:19:05+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-13T22:45:00+02:00",
+    "updated_at": "2026-10-13T22:56:10+02:00",
+    "finished_at": "2026-10-13T22:56:10+02:00",
+    "current": 7,
+    "total": 7,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 7,
+      "trends_explained": 7,
+      "explanation_groups": 7,
+      "new_cards": 7,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -54,10 +68,10 @@
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 7,
+      "remates_selected": 7,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 0,
+      "telegram_provisionals_finalized": 7,
       "telegram_orphans": 0,
       "telegram_delivery_workflow_verified": 1,
       "archive_images_enriched": 0,
@@ -65,7 +79,7 @@
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada directa 0/0 verificada · cola 0, Top 10 sin cambios y auditoría Telegram posterior con 0 huérfanos.",
+    "message": "Pasada directa 7/7 verificada · siete explicaciones cerradas, cola 0 y Telegram saneado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,60 +89,145 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "298947e5b1e1",
+        "revision": 0,
+        "selected": "🌶️ El Rams Park pasó de rugir a buscar el botón de silencio.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "7f4edc904c59",
+        "revision": 0,
+        "selected": "🌶️ Olmo salió de nueve y acabó fichando también de recuperador.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "5d5518aea954",
+        "revision": 0,
+        "selected": "🌶️ Cardoso celebró un gol que el VAR devolvió al remitente.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "fc3e4576c353",
+        "revision": 0,
+        "selected": "🌶️ Europa puso el martes en modo marcador múltiple.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "bf9a1fe7a07a",
+        "revision": 0,
+        "selected": "🌶️ Barrios marcó antes de que algunos hubieran encontrado el mando.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "9ba06c6f802f",
+        "revision": 0,
+        "selected": "🌶️ Leao abrió la autopista; el Barça terminó cobrando el peaje.",
+        "originality_check": "pass"
+      },
+      {
+        "id": "3c4fe1515d56",
+        "revision": 0,
+        "selected": "🌶️ El rebote le escribió una estadística que nadie había pedido.",
+        "originality_check": "pass"
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-13T22:15:00+02:00",
+        "at": "2026-10-13T22:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola autoritativa 0; verificando Top 10, Pendientes recientes y avisos Telegram huérfanos."
+        "message": "Preparando pasada editorial · 7 revisiones activas; reconciliando solicitudes, Explicadas y Telegram."
       },
       {
-        "at": "2026-10-13T22:15:30+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación de Pendientes activada mediante trigger persistido en main."
+        "at": "2026-10-13T22:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "298947e5b1e1",
+        "title": "Galatasaray",
+        "message": "Detonante verificado: Galatasaray-Barça y remontada azulgrana hasta 1-4."
       },
       {
-        "at": "2026-10-13T22:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0; captura 22:11:59 sin entradas nuevas y Top 10 sin cambios."
+        "at": "2026-10-13T22:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "7f4edc904c59",
+        "title": "Olmo",
+        "message": "Actuación de Olmo verificada: falso 9, ocasiones y recuperación previa al 1-1."
       },
       {
-        "at": "2026-10-13T22:16:30+02:00",
+        "at": "2026-10-13T22:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "5d5518aea954",
+        "title": "Cardoso",
+        "message": "Gol anulado de Cardoso y decisión VAR contrastados en varias fuentes."
+      },
+      {
+        "at": "2026-10-13T22:50:00+02:00",
+        "phase": "investigating",
+        "trend_id": "fc3e4576c353",
+        "title": "Champions",
+        "message": "Jornada de Champions verificada con los partidos españoles en curso/finalizados."
+      },
+      {
+        "at": "2026-10-13T22:51:00+02:00",
+        "phase": "investigating",
+        "trend_id": "bf9a1fe7a07a",
+        "title": "Barrios",
+        "message": "Gol de Barrios a los 53 segundos y 2-0 final del Atlético verificados."
+      },
+      {
+        "at": "2026-10-13T22:52:00+02:00",
+        "phase": "investigating",
+        "trend_id": "9ba06c6f802f",
+        "title": "Leao",
+        "message": "Carrera y pase de Leao en el 1-0 de Batrakov y amarilla posterior verificados."
+      },
+      {
+        "at": "2026-10-13T22:53:00+02:00",
+        "phase": "investigating",
+        "trend_id": "3c4fe1515d56",
+        "title": "Gerard Martín",
+        "message": "Titularidad y desvío de Gerard Martín en el 1-0 de Batrakov verificados."
+      },
+      {
+        "at": "2026-10-13T22:53:10+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Reconciliando cola vacía en main para disparar la verificación Telegram posterior a la pasada."
+        "message": "Lote 7/7 persistido en main; Requests y Explicadas sincronizados y cola retirada."
       },
       {
-        "at": "2026-10-13T22:18:56+02:00",
+        "at": "2026-10-13T22:53:49+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría Telegram posterior verificada · 0 huérfanos, 0 incidencias bidireccionales y ningún delivery sent/final:false."
+        "message": "Telegram informativo verificado: mensajes 784–790 final=true y workflow success."
       },
       {
-        "at": "2026-10-13T22:19:05+02:00",
+        "at": "2026-10-13T22:54:07+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Auditorías verificadas: 0 huérfanos, 0 incidencias bidireccionales y 0 provisionales abiertos."
+      },
+      {
+        "at": "2026-10-13T22:56:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada directa 0/0 cerrada y verificada · cola 0, Top 10 sin cambios y Telegram limpio."
+        "message": "Pasada directa 7/7 cerrada y verificada · cola 0 y Telegram limpio."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261013T221500+0200-chat",
+  "run_id": "tr-20261013T224500+0200-chat",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 7,
+    "trends_explained": 7,
+    "explanation_groups": 7,
+    "new_cards": 7,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -140,10 +239,10 @@
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
     "vercel_deploys": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 7,
+    "remates_selected": 7,
     "remates_omitted": 0,
-    "telegram_provisionals_finalized": 0,
+    "telegram_provisionals_finalized": 7,
     "telegram_orphans": 0,
     "telegram_delivery_workflow_verified": 1,
     "archive_images_enriched": 0,
@@ -154,7 +253,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-13T22:11:59+02:00",
+    "source_capture_at": "2026-10-13T22:45:44+02:00",
     "status": "fresh_at_start"
   }
 }
