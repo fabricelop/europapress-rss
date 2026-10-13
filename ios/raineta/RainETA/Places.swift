@@ -72,8 +72,9 @@ enum RainPlacesAPI {
         let decoded = try JSONDecoder().decode(SearchResponse.self, from: data)
         let results = decoded.results ?? []
         return results.sorted { a,b in
-            if a.country == "España" { return true }
-            if b.country == "España" { return false }
+            let aSpain = a.country == "España" || a.country == "Spain"
+            let bSpain = b.country == "España" || b.country == "Spain"
+            if aSpain != bSpain { return aSpain }
             return a.caption < b.caption
         }
     }
