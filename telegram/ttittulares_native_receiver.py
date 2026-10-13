@@ -370,7 +370,7 @@ def selftest():
                             {"event_id": "another", "status": "sent",
                              "telegram_message_id": 100}]}
     clicked = classify(base, "456", ledger_fast)
-    assert deletion_message_ids(clicked, ledger_fast) == [95, 96]
+    assert deletion_message_ids(clicked, ledger_fast) == [95, 96, 97]
     assert deletion_message_ids({**clicked, "message_id": 100}, ledger_fast) == []
     assert deletion_message_ids({**clicked, "action": "p"}, ledger_fast) == []
     print("TTI_NATIVE_FAST_DELETE_SELFTEST_OK")
