@@ -43,7 +43,10 @@ final class ICONForecastTiles: MKTileOverlay {
     /// The displayed 15-minute transition is interpolation between two
     /// actual hourly WMS images, NOT an independent 15-minute forecast.
     static func period(leadMinutes: Int, now:Date=Date()) -> (lower:Date,upper:Date,fraction:Double,target:Date) {
-        let target=now.addingTimeInterval(Double(leadMinutes)*60)
+        // Stable minute anchor: re-rendering a SwiftUI view must not start a
+        // new WMS request merely because the wall clock advanced one second.
+        let minuteAnchor=Date(timeIntervalSince1970:floor(now.timeIntervalSince1970/60)*60)
+        let target=minuteAnchor.addingTimeInterval(Double(leadMinutes)*60)
         let base=floor(target.timeIntervalSince1970/3600)*3600
         let lower=Date(timeIntervalSince1970:base)
         return (lower,Date(timeIntervalSince1970:base+3600),
