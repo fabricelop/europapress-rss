@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-13T11:06:46+02:00",
-  "last_completed_at": "2026-10-13T11:06:46+02:00",
-  "updated_at": "2026-10-13T11:06:46+02:00",
+  "last_started_at": "2026-10-13T11:03:00+02:00",
+  "last_completed_at": "2026-10-13T11:07:05+02:00",
+  "updated_at": "2026-10-13T11:07:05+02:00",
   "status": "success",
   "processed_ids": [
     "f85c9fe36948"
@@ -14,8 +14,10 @@
   "remaining_ids": [
     "f85c9fe36948"
   ],
-  "queue_complete": true,
-  "remaining_active_ids": [],
+  "queue_complete": false,
+  "remaining_active_ids": [
+    "f85c9fe36948"
+  ],
   "remaining_problematic_ids": [
     "f85c9fe36948"
   ],
@@ -32,27 +34,21 @@
     "telegram_workflow_run_id": 38372503852
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261013T104600+0200-chat",
+    "run_id": "tr-20261013T110300+0200-chat",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-13T10:46:00+02:00",
-    "updated_at": "2026-10-13T10:55:47+02:00",
-    "finished_at": "2026-10-13T10:55:47+02:00",
-    "current": 2,
-    "total": 2,
-    "trend_id": null,
-    "title": null,
-    "partial": false,
+    "started_at": "2026-10-13T11:03:00+02:00",
+    "updated_at": "2026-10-13T11:07:05+02:00",
+    "finished_at": "2026-10-13T11:07:05+02:00",
+    "current": 1,
+    "total": 1,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 1,
-      "explanation_groups": 1,
+      "trends_processed": 1,
+      "trends_explained": 0,
+      "explanation_groups": 0,
       "new_cards": 0,
-      "revisions_updated": 1,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 1,
       "trends_dismissed": 0,
@@ -62,191 +58,109 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "archive_images_enriched": 0,
       "vercel_deploys": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "telegram_provisionals_finalized": 1,
-      "telegram_orphans": 0,
-      "bidirectional_repairs": 0,
-      "telegram_bidirectional_issues": 0
+      "telegram_provisionals_finalized": 0,
+      "telegram_orphans": 1
     },
-    "message": "Cierre verificado · Ignacio González explicado y provisional finalizado; España queda problematic por detonante ambiguo; 0 huérfanos.",
+    "message": "Cierre con incidencia · sin trabajo preparing/update ni reexplicaciones; España r0 reintentada y mantenida problematic, Telegram 760 pendiente.",
     "incident_count": 1,
     "incidents": [
       {
+        "type": "problematic_with_provisional",
         "trend_id": "f85c9fe36948",
-        "title": "España",
         "revision": 0,
-        "type": "detonante_ambiguo",
-        "message": "Tras dos búsquedas distintas no se pudo aislar un único detonante fiable entre la visita real a Ceuta y el arrastre del 12-O/Hispanidad; se conserva como problematic sin inventar explicación."
+        "telegram_message_id": 760,
+        "message": "No se ha aislado con suficiente fiabilidad un detonante único para «España» tras el segundo intento; se conserva provisional final:false."
       }
     ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [
-      {
-        "trend_id": "8557338a7127",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.7,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c2",
-            "total": 7.5,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c3",
-            "total": 7.3,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c4",
-            "total": 6.8,
-            "ratings_affinity": 1.5,
-            "trend_specificity": 1.6,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c5",
-            "total": 8.6,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          }
-        ],
-        "selected_candidate": "c5",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-13T10:46:00+02:00",
+        "at": "2026-10-13T11:03:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 2 tendencias activas; saneamiento de Pendientes solicitado."
+        "message": "Preparando pasada editorial · sin preparing/update ni reexplicaciones; queda reintento de España r0 como problematic Top 10."
       },
       {
-        "at": "2026-10-13T10:50:29+02:00",
+        "at": "2026-10-13T11:03:30+02:00",
         "phase": "verifying",
         "trend_id": "f85c9fe36948",
         "title": "España",
-        "message": "Releyendo estado autoritativo de España · revisión 0 sigue activa en preparing."
+        "message": "Releyendo estado autoritativo de España · r0 sigue problematic en TT#6; no hay preparing/update ni rewrite_pending."
       },
       {
-        "at": "2026-10-13T10:50:40+02:00",
+        "at": "2026-10-13T11:03:40+02:00",
         "phase": "investigating",
         "trend_id": "f85c9fe36948",
         "title": "España",
-        "message": "Dos búsquedas distintas no aíslan con fiabilidad el detonante de «España»: coinciden la visita real a Ceuta y el arrastre del 12-O/Hispanidad."
+        "message": "Buscando detonante actual de España con consultas nuevas respecto al intento anterior."
       },
       {
-        "at": "2026-10-13T10:51:49+02:00",
-        "phase": "verifying",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Releyendo estado autoritativo de Ignacio González · revisión 0 sigue activa en preparing."
-      },
-      {
-        "at": "2026-10-13T10:51:58+02:00",
+        "at": "2026-10-13T11:04:10+02:00",
         "phase": "investigating",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Buscando y contrastando el detonante actual de Ignacio González en fuentes de hoy."
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "Contrastando fuente 1/2 · la visita de Felipe VI y Letizia a Ceuta concentra hoy cobertura y simbolismo territorial."
       },
       {
-        "at": "2026-10-13T10:52:11+02:00",
+        "at": "2026-10-13T11:04:25+02:00",
         "phase": "investigating",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Hecho esencial verificado en dos fuentes: comienza hoy su primer juicio del caso Lezo por los contratos del golf del Canal; Anticorrupción pide 6 años."
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "Contrastando fuente 2/2 · persiste cobertura del 12-O/Fiesta Nacional inmediatamente anterior."
       },
       {
-        "at": "2026-10-13T10:52:14+02:00",
-        "phase": "drafting",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Redactando explicación factual y comprobando el límite de X."
+        "at": "2026-10-13T11:04:35+02:00",
+        "phase": "investigating",
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "No se verifica un detonante único para «España»; mantener problematic evita atribuir causalidad especulativa."
       },
       {
-        "at": "2026-10-13T10:52:16+02:00",
-        "phase": "remate_selection",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Evaluando cinco remates específicos con el snapshot de 154 valoraciones; descartando fórmulas repetidas."
-      },
-      {
-        "at": "2026-10-13T10:52:41+02:00",
-        "phase": "remate_selection",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Remate seleccionado · específico del campo de golf y del juicio, sin atribuir culpabilidad."
-      },
-      {
-        "at": "2026-10-13T10:52:43+02:00",
+        "at": "2026-10-13T11:04:45+02:00",
         "phase": "persisting",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Guardando ficha Explicada de Ignacio González mediante el aplicador transaccional del chat."
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "Registrando segundo intento problematic de España r0 en el outbox editorial."
       },
       {
-        "at": "2026-10-13T10:55:47+02:00",
-        "phase": "verifying",
-        "trend_id": "8557338a7127",
-        "title": "Ignacio González",
-        "message": "Persistencia verificada en requests + Explicadas; revisión retirada de la cola y provisional Telegram finalizado."
+        "at": "2026-10-13T11:06:46+02:00",
+        "phase": "persisting",
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "Outbox problematic aplicado · requests registra el segundo intento y España r0 permanece correctamente en cola."
       },
       {
-        "at": "2026-10-13T10:55:47+02:00",
+        "at": "2026-10-13T11:06:55+02:00",
         "phase": "verifying",
         "trend_id": "f85c9fe36948",
         "title": "España",
-        "message": "Estado problematic aplicado y conservado para nuevo intento; provisional no se borra ni se falsifica."
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending; España r0 sigue problematic en TT#6."
       },
       {
-        "at": "2026-10-13T10:55:47+02:00",
+        "at": "2026-10-13T11:07:00+02:00",
+        "phase": "verifying",
+        "trend_id": "f85c9fe36948",
+        "title": "España",
+        "message": "Telegram 760 continúa provisional final:false y queda documentado como huérfano pendiente; no se cierra sin explicación verificada."
+      },
+      {
+        "at": "2026-10-13T11:07:05+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado · 1 explicada, 1 problematic, 0 huérfanos; capa visual independiente."
+        "message": "Cierre con incidencia · sin trabajo preparing/update ni reexplicaciones; España r0 reintentada y mantenida problematic, Telegram 760 pendiente."
       }
     ],
-    "queue_complete": true,
-    "remaining_active_ids": []
+    "queue_complete": false,
+    "remaining_active_ids": [
+      "f85c9fe36948"
+    ]
   },
   "run_id": "tr-20261013T104600+0200-chat",
   "summary": {
@@ -274,6 +188,5 @@
     "bidirectional_repairs": 0,
     "telegram_bidirectional_issues": 0
   },
-  "unresolved_orphan_ids": [],
-  "error": null
+  "unresolved_orphan_ids": []
 }
