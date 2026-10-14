@@ -2,49 +2,35 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T20:22:19.062457+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-10-14T22:12:00.785830+00:00",
+      "issue_count": 4,
       "issues": [
         {
-          "kind": "editorial_overdue",
-          "id": "efc592969b17",
-          "title": "El Comité de Disciplina sanciona al Rayo con un cierre parcial de Vallecas por el lanzamiento de obj",
-          "seconds": 1844,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "1f8481d76930",
-          "title": "La Fiscalía rectifica y avala ante el juez que la Audiencia Nacional es competente para investigar l",
-          "seconds": 1844,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "38658356db0c",
-          "title": "Trump dice que EEUU hará \"operaciones masivas\" para extraer recursos naturales de Groenlandia: \"Su v",
-          "seconds": 1396,
-          "workflow": null
-        },
-        {
           "kind": "missing_delivery",
-          "id": "a3cf1cd3ed9f",
-          "title": "Trump presiona a Zelenski para que no dañe las refinerías rusas bajo la amenaza de bloquear la llega",
-          "seconds": 411,
+          "id": "telegram-218638732",
+          "title": "resultado del Betis en Champions",
+          "seconds": 1509,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "6d3220927bf1",
-          "title": "Roma - Real Madrid: gol de Mbappé, resultado en directo del partido de la Champions League",
-          "seconds": 411,
+          "id": "79ac45104ae8",
+          "title": "Roma - Real Madrid en directo | Fede Valverde: “Como jugador estoy orgulloso de que el equipo tenga ",
+          "seconds": 1509,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4780857e95da",
+          "title": "Miles de profesores tiñen de verde el centro de Madrid en su primer día de huelga para defender la e",
+          "seconds": 1509,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 580,
+          "seconds": 695,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -53,19 +39,26 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "52eb7caa8540ceb38b7afd10698d58f98ce03fbd4ceccee6bfa9f4d7e4e2e19e",
+      "open_signature": "458a7a28d99e329c04fa5e500d182637cb4249e3af1e1015c202866a6e5c7a40",
       "repair_via_workflow_run": false,
       "escalation_required": 3
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T20:22:19.062457+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-14T22:12:00.785830+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "orphan_provisional",
+          "id": "96c57ccbf332",
+          "title": "Florentino",
+          "seconds": 2383,
+          "workflow": null
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 579,
+          "seconds": 694,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -73,16 +66,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "27c27704910544e162578ef8185bcc236d75ed2c1c3897890a5d5faad0d79fec",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T20:22:19.062457+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T20:22:19.062457+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T20:22:19.062457+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T22:12:00.785830+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T22:12:00.785830+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T22:12:00.785830+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T20:22:19.062457+00:00"
+  "checked_at": "2026-10-14T22:12:00.785830+00:00"
 }
