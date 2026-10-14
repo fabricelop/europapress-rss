@@ -570,6 +570,28 @@ function Test-ImageBridgeBusy {
     if ($pidValue -gt 0) {
       $p = Get-Process -Id $pidValue -ErrorAction SilentlyContinue
       if ($p) {
+        $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
+        $isBridge=($proc -and [string]$proc.CommandLine -like "*TTendenciasImageBridge.js*")
+        if(-not $isBridge) {
+          Write-Log "IMAGE LOCAL LOCK RECYCLED pid=$pidValue"
+          Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+          return $false
+        }
+        $tooOld=$false
+        try{$tooOld=(([DateTimeOffset]::UtcNow-[DateTimeOffset]::Parse([string]$lock.started_at)).TotalMinutes -gt 12)}catch{}
+        $terminal=$false
+        if([string]$lock.target_id){
+          $job=Read-ImageJob ([string]$lock.target_id) ([string]$lock.command_id)
+          $terminal=($job -and [string]$job.command_id -eq [string]$lock.command_id -and
+            ((Is-TerminalImageStatus ([string]$job.status)) -or
+             ([string]$job.delivery_mode -eq "launch_only" -and $job.pc_launched_at)))
+        }
+        if($tooOld -or $terminal) {
+          Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue terminal=$terminal too_old=$tooOld"
+          try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}
+          Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+          return $false
+        }
         Write-Log "IMAGE LOCAL LOCK ACTIVE pid=$pidValue command=$($lock.command_id) target=$($lock.target_id)"
         return $true
       }
