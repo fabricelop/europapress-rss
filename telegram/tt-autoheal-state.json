@@ -2,31 +2,73 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T17:19:40.167143+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T17:48:38.844040+00:00",
+      "issue_count": 4,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "9bc3670ae30b",
+          "title": "19:23 Vinicius se pierde el Clásico: cuatro partidos de sanción",
+          "seconds": 179,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "19b062b70d09",
+          "title": "ante la crisis migratoria Felipe VI exige \"cooperación\" y \"responsabilidad\" a Marruecos desde Melill",
+          "seconds": 179,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "5a34b96c58e9",
+          "title": "El Rey promete más cercanía de la Corona a Ceuta y Melilla",
+          "seconds": 179,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1529,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "83c57b1282c5fd8bd043d7bbf78a3c6f02c1c181c02593eb907e883cb1fbfbcd",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T17:19:40.167143+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T17:48:38.844040+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1528,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T17:03:23.482288+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T17:48:38.844040+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T17:48:38.844040+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T17:48:38.844040+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T17:19:40.167143+00:00"
+  "checked_at": "2026-10-14T17:48:38.844040+00:00"
 }
