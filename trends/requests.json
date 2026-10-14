@@ -56971,7 +56971,7 @@
       "id": "96c57ccbf332",
       "name": "Florentino",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-14T23:32:17+02:00",
       "revision": 0,
       "reexplain": false,
@@ -56987,7 +56987,11 @@
         "Abde"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-14T23:57:27+02:00",
+      "problem_reason": "Tras dos búsquedas distintas con fuentes actuales no se ha podido verificar un detonante único que explique por qué «Florentino» es tendencia ahora en España; hay referencias recientes al Real Madrid y a Florentino Pérez, pero ninguna vincula inequívocamente el pico actual con un hecho concreto.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "da91074de0ab",
@@ -57012,6 +57016,6 @@
       "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-14T23:53:39+02:00",
+  "updated_at": "2026-10-14T23:57:27+02:00",
   "count": 963
 }
