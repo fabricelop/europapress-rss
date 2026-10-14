@@ -256,6 +256,13 @@ function buildMessage(job){
   const sources=Array.isArray(ctx.verification_sources)?ctx.verification_sources.map(x=>String(x&&x.source||"")).filter(Boolean).join(", "):"";
   const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
   const styleName=String(ctx.image_style_name||"variable").trim();
+  if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
+    return ["TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
+      "CONTEXTO FACTUAL:",explanation,
+      "DIRECCIÓN VISUAL:",style,
+      "No hagas humor ni sátira. No trivialices víctimas o sufrimiento, no inventes escenas documentales ni personas identificables. Imagen editorial sobria, no gráfica. Ignora el remate humorístico."]
+      .join("\\n");
+  }
   return [
     "TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '"+name+"'.",
     "",
@@ -633,6 +640,7 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
+    const launchOnly=Boolean(job.auto_repair && job.delivery_mode==="launch_only");
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
@@ -651,6 +659,10 @@ async function uploadImage(image){
         await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
         const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v29-raw-job-recovery"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+      }
+      if(launchOnly){
+        console.log("TTENDENCIAS LAUNCH_ONLY prompt enviado; sin capturar ni adjuntar imagen");
+        return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
       try{
