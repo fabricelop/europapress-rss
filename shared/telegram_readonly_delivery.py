@@ -106,8 +106,13 @@ def ai_delivery_info(item,now):
         return {"url":"","note":"🖼️ IA no disponible · puedes crearla manualmente."}
     if launch:
         return {"url":"","note":"🖼️ IA en curso · todavía puede llegar (hasta 5 min desde el lanzamiento)."}
+    # Si el PC nunca recoge la orden, no mostrar "pendiente" durante horas.
+    # Esta espera de recogida NO forma parte de los cinco minutos de generación.
+    requested=date(job.get("requested_at"))
     if status in {"REQUESTED","RUNNING","PERSISTING"}:
-        return {"url":"","note":"🖼️ IA pendiente de lanzamiento · sin cuenta atrás todavía."}
+        if requested and (now-requested).total_seconds()>=120:
+            return {"url":"","note":"🖼️ IA no disponible · el PC no inició la generación. Puedes crearla manualmente."}
+        return {"url":"","note":"🖼️ IA pendiente de lanzamiento · esperando al PC (máximo 2 min)."}
     if valid and automatic:
         return {"url":"","note":"🖼️ IA automática no verificable · no se entregará tarde."}
     entered=date(item.get("prepared_at") or item.get("ready_at"))
