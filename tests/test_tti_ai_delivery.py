@@ -46,40 +46,27 @@ class AiDeliveryTests(TestCase):
             },
         }
 
-    def test_five_minutes_only_after_real_launch(self):
-        queued = self.job("REQUESTED")
-        queued.pop("pc_launched_at")
-        state = self.fake_info(self.item, queued)
-        self.assertIn("pendiente de lanzamiento", state["note"])
-        state = self.fake_info(self.item, self.job(seconds=60))
-        self.assertIn("en curso", state["note"])
-        state = self.fake_info(self.item, self.job(seconds=301))
-        self.assertIn("no disponible", state["note"])
+    def test_waiting_then_sent(self):
+        pending=self.job("REQUESTED")
+        pending.pop("pc_launched_at")
+        self.assertIn("Pendiente",self.fake_info(self.item,pending)["note"])
+        self.assertIn("Enviada a ChatGPT Images",self.fake_info(self.item,self.job(seconds=60))["note"])
 
     def test_unlaunched_pc_job_expires_after_two_minutes(self):
         queued=self.job("REQUESTED")
         queued.pop("pc_launched_at")
-        queued["requested_at"]=(self.now-timedelta(seconds=119)).isoformat()
-        self.assertIn("pendiente de lanzamiento", self.fake_info(self.item,queued)["note"])
         queued["requested_at"]=(self.now-timedelta(seconds=121)).isoformat()
-        expired=self.fake_info(self.item,queued)
-        self.assertIn("no disponible",expired["note"])
-        self.assertFalse(expired["url"])
+        self.assertIn("Sin imagen IA",self.fake_info(self.item,queued)["note"])
 
-    def test_automatic_image_must_reach_telegram_before_deadline(self):
-        ready = self.generated()
-        self.assertTrue(self.fake_info(ready, self.job(seconds=40))["url"])
-        self.assertFalse(self.fake_info(ready, self.job("DONE", seconds=301))["url"])
+    def test_launched_remains_sent_even_if_generation_not_recovered(self):
+        state=self.fake_info(self.item,self.job("RUNNING",seconds=601))
+        self.assertEqual(state["url"],"")
+        self.assertIn("Enviada a ChatGPT Images",state["note"])
 
-    def test_manual_generation_is_never_cancelled_by_automatic_deadline(self):
-        ready = self.generated("tt-img-manual-123")
-        self.assertTrue(self.fake_info(ready, self.job("ERROR", seconds=400))["url"])
-
-    def test_automatic_not_delivered_without_confirmed_launch(self):
-        ready = self.generated()
-        pending = self.job("REQUESTED")
-        pending.pop("pc_launched_at")
-        self.assertFalse(self.fake_info(ready, pending)["url"])
+    def test_failed_unlaunched_is_not_marked_sent(self):
+        job=self.job("ERROR")
+        job.pop("pc_launched_at")
+        self.assertIn("Sin imagen IA",self.fake_info(self.item,job)["note"])
 
     def test_ai_companion_is_one_reply_per_original_and_ledger_saved(self):
         with TemporaryDirectory() as folder:
