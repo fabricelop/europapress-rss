@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-14T08:35:00Z",
+  "updated_at": "2026-10-14T08:38:17.636Z",
   "items": [
     {
       "event_id": "24225d96f4b5",
@@ -248,7 +248,7 @@
       "with_image": true,
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
@@ -280,7 +280,10 @@
       "sensitive_editorial": false,
       "image_status": "ready",
       "image_app_available": true,
-      "image_delivery": "app"
+      "image_delivery": "app",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-14T08:38:17.636Z",
+      "ai_image_failure_reason": "CDP timeout Page.navigate"
     },
     {
       "event_id": "0e684008eeae",
