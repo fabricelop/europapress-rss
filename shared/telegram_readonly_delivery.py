@@ -650,6 +650,11 @@ def keys(card,project):
     return {"inline_keyboard":rows}
 
 def send(token,method,payload,photo=None):
+    # Original editorial cards and archive replies remain visible but silent.
+    # Only a confirmed-green ImageGen launch triggers a push notification in
+    # the separate pinned-index notifier. Editing existing cards stays quiet.
+    if method in {"sendMessage","sendPhoto"}:
+        payload={**payload,"disable_notification":True}
     base="https://api.telegram.org/bot"+token+"/"+method
     try:
         if photo is not None:
