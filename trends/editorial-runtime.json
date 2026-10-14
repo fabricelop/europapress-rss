@@ -4,11 +4,17 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T19:45:00+02:00",
-  "last_completed_at": "2026-10-14T19:50:00+02:00",
-  "updated_at": "2026-10-14T19:50:00+02:00",
+  "last_started_at": "2026-10-14T20:17:00+02:00",
+  "last_completed_at": "2026-10-14T20:25:00+02:00",
+  "updated_at": "2026-10-14T20:25:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "df849d9ec300",
+    "72fd3f14c5a1",
+    "f7f929a40e2c",
+    "f9f61ab0dda4",
+    "688e3bbc5a81"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,35 +24,35 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-20261014T194500+0200-chat",
-    "requested_at": "2026-10-14T19:45:00+02:00",
+    "run_id": "tr-1792001790623-chatgpt",
+    "requested_at": "2026-10-14T20:17:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261014T194500+0200-chat",
+    "run_id": "tr-1792001790623-chatgpt",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T19:45:00+02:00",
-    "updated_at": "2026-10-14T19:50:00+02:00",
-    "finished_at": "2026-10-14T19:50:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-14T20:17:00+02:00",
+    "updated_at": "2026-10-14T20:25:00+02:00",
+    "finished_at": "2026-10-14T20:25:00+02:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
-    "message": "Pasada 0/0 cerrada y verificada: no había revisiones preparing/update ni rewrite_pending; cola 0 y Telegram sin huérfanos.",
+    "message": "Pasada 5/5 cerrada y verificada: 2 grupos editoriales, cola 0, sin rewrite_pending; Telegram 818–822 final y sin huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 2,
       "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "revisions_updated": 5,
+      "grouped_into_existing_card": 3,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -58,39 +64,150 @@
       "telegram_delivery_triggered": 1,
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
-      "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0
     },
     "activity": [
       {
-        "at": "2026-10-14T19:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial · cola autoritativa 0; auditando revisiones, Pendientes y Telegram antes del cierre."
+        "at": "2026-10-14T20:18:20+02:00",
+        "phase": "investigating",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Contrastando destitución de Galbiati y regreso de Perasovic"
       },
       {
-        "at": "2026-10-14T19:48:00+02:00",
+        "at": "2026-10-14T20:18:40+02:00",
+        "phase": "investigating",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Hecho esencial verificado en dos fuentes actuales"
+      },
+      {
+        "at": "2026-10-14T20:19:00+02:00",
+        "phase": "verifying",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Releyendo estado autoritativo de Baskonia"
+      },
+      {
+        "at": "2026-10-14T20:19:10+02:00",
+        "phase": "verifying",
+        "trend_id": "72fd3f14c5a1",
+        "title": "Galbiati",
+        "message": "Releyendo estado autoritativo de Galbiati"
+      },
+      {
+        "at": "2026-10-14T20:19:20+02:00",
+        "phase": "verifying",
+        "trend_id": "f7f929a40e2c",
+        "title": "Paolo",
+        "message": "Releyendo estado autoritativo de Paolo"
+      },
+      {
+        "at": "2026-10-14T20:19:30+02:00",
+        "phase": "verifying",
+        "trend_id": "f9f61ab0dda4",
+        "title": "Peras",
+        "message": "Releyendo estado autoritativo de Peras"
+      },
+      {
+        "at": "2026-10-14T20:20:00+02:00",
+        "phase": "verifying",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Releyendo estado autoritativo de Ayudas"
+      },
+      {
+        "at": "2026-10-14T20:20:10+02:00",
+        "phase": "investigating",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Contrastando fuente 1/2 sobre la convocatoria aragonesa"
+      },
+      {
+        "at": "2026-10-14T20:20:20+02:00",
+        "phase": "investigating",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Contrastando fuente 2/2 y cifras de 161.000 € y 516.000 €"
+      },
+      {
+        "at": "2026-10-14T20:20:30+02:00",
+        "phase": "investigating",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-14T20:20:40+02:00",
+        "phase": "drafting",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Redactando explicación factual del grupo Baskonia/Galbiati/Paolo/Peras"
+      },
+      {
+        "at": "2026-10-14T20:20:50+02:00",
+        "phase": "drafting",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Comprobando límite de X · 225 caracteres"
+      },
+      {
+        "at": "2026-10-14T20:21:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Evaluando candidatos de remate con ratings y originalidad"
+      },
+      {
+        "at": "2026-10-14T20:21:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "message": "Remate seleccionado · cuarta vuelta con Perasovic"
+      },
+      {
+        "at": "2026-10-14T20:21:20+02:00",
+        "phase": "drafting",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Redactando explicación factual neutral"
+      },
+      {
+        "at": "2026-10-14T20:21:30+02:00",
+        "phase": "drafting",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Comprobando límite de X · 260 caracteres"
+      },
+      {
+        "at": "2026-10-14T20:21:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "message": "Evaluando candidatos de remate político neutral y originalidad"
+      },
+      {
+        "at": "2026-10-14T20:23:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Explicadas y Requests sincronizados; retirando cinco revisiones de la cola"
+      },
+      {
+        "at": "2026-10-14T20:24:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes y reparación visual; saneamiento solicitado en main."
+        "message": "Telegram 818–822 finalizado y auditoría sin huérfanos"
       },
       {
-        "at": "2026-10-14T19:49:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Workflow Telegram informativo verificado en success; ledger y auditoría completados correctamente."
-      },
-      {
-        "at": "2026-10-14T19:50:00+02:00",
+        "at": "2026-10-14T20:25:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola 0, sin rewrite_pending detectado, Telegram sin huérfanos."
+        "message": "Pasada 5/5 cerrada y verificada: 2 grupos, cola 0 y sin rewrite_pending"
       }
     ],
     "queue_complete": true,
@@ -102,16 +219,30 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "df849d9ec300",
+        "title": "Baskonia",
+        "selected": "🌶️ El banquillo de Vitoria ya va por su cuarta vuelta con Perasovic.",
+        "originality_check": "ok"
+      },
+      {
+        "trend_id": "688e3bbc5a81",
+        "title": "Ayudas",
+        "selected": "🌶️ La subvención ha cambiado de destinatario sin cambiar de BOA.",
+        "originality_check": "ok",
+        "political_neutrality": "ok"
+      }
+    ]
   },
-  "run_id": "tr-20261014T194500+0200-chat",
+  "run_id": "tr-1792001790623-chatgpt",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
+    "trends_processed": 5,
+    "trends_explained": 5,
+    "explanation_groups": 2,
     "new_cards": 0,
-    "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "revisions_updated": 5,
+    "grouped_into_existing_card": 3,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -123,48 +254,153 @@
     "telegram_delivery_triggered": 1,
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
-    "bidirectional_issues": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
-  "radar_refresh": {
-    "requested": false,
-    "source_capture_at": "2026-10-14T19:42:21+02:00",
-    "status": "fresh_at_start"
-  },
   "activity": [
     {
-      "at": "2026-10-14T19:45:00+02:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada editorial · cola autoritativa 0; auditando revisiones, Pendientes y Telegram antes del cierre."
+      "at": "2026-10-14T20:18:20+02:00",
+      "phase": "investigating",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Contrastando destitución de Galbiati y regreso de Perasovic"
     },
     {
-      "at": "2026-10-14T19:48:00+02:00",
+      "at": "2026-10-14T20:18:40+02:00",
+      "phase": "investigating",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Hecho esencial verificado en dos fuentes actuales"
+    },
+    {
+      "at": "2026-10-14T20:19:00+02:00",
+      "phase": "verifying",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Releyendo estado autoritativo de Baskonia"
+    },
+    {
+      "at": "2026-10-14T20:19:10+02:00",
+      "phase": "verifying",
+      "trend_id": "72fd3f14c5a1",
+      "title": "Galbiati",
+      "message": "Releyendo estado autoritativo de Galbiati"
+    },
+    {
+      "at": "2026-10-14T20:19:20+02:00",
+      "phase": "verifying",
+      "trend_id": "f7f929a40e2c",
+      "title": "Paolo",
+      "message": "Releyendo estado autoritativo de Paolo"
+    },
+    {
+      "at": "2026-10-14T20:19:30+02:00",
+      "phase": "verifying",
+      "trend_id": "f9f61ab0dda4",
+      "title": "Peras",
+      "message": "Releyendo estado autoritativo de Peras"
+    },
+    {
+      "at": "2026-10-14T20:20:00+02:00",
+      "phase": "verifying",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Releyendo estado autoritativo de Ayudas"
+    },
+    {
+      "at": "2026-10-14T20:20:10+02:00",
+      "phase": "investigating",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Contrastando fuente 1/2 sobre la convocatoria aragonesa"
+    },
+    {
+      "at": "2026-10-14T20:20:20+02:00",
+      "phase": "investigating",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Contrastando fuente 2/2 y cifras de 161.000 € y 516.000 €"
+    },
+    {
+      "at": "2026-10-14T20:20:30+02:00",
+      "phase": "investigating",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-14T20:20:40+02:00",
+      "phase": "drafting",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Redactando explicación factual del grupo Baskonia/Galbiati/Paolo/Peras"
+    },
+    {
+      "at": "2026-10-14T20:20:50+02:00",
+      "phase": "drafting",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Comprobando límite de X · 225 caracteres"
+    },
+    {
+      "at": "2026-10-14T20:21:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Evaluando candidatos de remate con ratings y originalidad"
+    },
+    {
+      "at": "2026-10-14T20:21:10+02:00",
+      "phase": "remate_selection",
+      "trend_id": "df849d9ec300",
+      "title": "Baskonia",
+      "message": "Remate seleccionado · cuarta vuelta con Perasovic"
+    },
+    {
+      "at": "2026-10-14T20:21:20+02:00",
+      "phase": "drafting",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Redactando explicación factual neutral"
+    },
+    {
+      "at": "2026-10-14T20:21:30+02:00",
+      "phase": "drafting",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Comprobando límite de X · 260 caracteres"
+    },
+    {
+      "at": "2026-10-14T20:21:40+02:00",
+      "phase": "remate_selection",
+      "trend_id": "688e3bbc5a81",
+      "title": "Ayudas",
+      "message": "Evaluando candidatos de remate político neutral y originalidad"
+    },
+    {
+      "at": "2026-10-14T20:23:00+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Explicadas y Requests sincronizados; retirando cinco revisiones de la cola"
+    },
+    {
+      "at": "2026-10-14T20:24:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes y reparación visual; saneamiento solicitado en main."
+      "message": "Telegram 818–822 finalizado y auditoría sin huérfanos"
     },
     {
-      "at": "2026-10-14T19:49:30+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Workflow Telegram informativo verificado en success; ledger y auditoría completados correctamente."
-    },
-    {
-      "at": "2026-10-14T19:50:00+02:00",
+      "at": "2026-10-14T20:25:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada; cola 0, sin rewrite_pending detectado, Telegram sin huérfanos."
+      "message": "Pasada 5/5 cerrada y verificada: 2 grupos, cola 0 y sin rewrite_pending"
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "trigger_job_id": null
+  "telegram_orphan_ids": []
 }
