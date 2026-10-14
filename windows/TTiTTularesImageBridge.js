@@ -760,6 +760,7 @@ async function uploadImage(image){
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
     const isAutomatic=String(job.mode||"")==="automatic_ready_repair";
+    const launchOnly=String(job.delivery_mode||"")==="launch_only";
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
@@ -777,7 +778,6 @@ async function uploadImage(image){
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
-        const launchOnly=String(job.delivery_mode||"")==="launch_only";
         if(!launchOnly)await progress("prompt_sent","Prompt GAG IA enviado y verificado.");
         await confirmPromptLaunched();
       }
