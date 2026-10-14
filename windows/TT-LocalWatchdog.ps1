@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-reconnect-v11-safe-online-resync-no-image-bridge-restart
+# watchdog-v12-telegram-safe-heal-chat-recovery
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -201,6 +201,96 @@ function EnsureInternetRecovery{
   Recover-ListenersAfterReconnect
 }
 
+
+# El boton privado Autocorregir deposita una marca en GitHub. La orden
+# no contiene scripts ni comandos: la accion local es fija y segura.
+$script:RemoteHealStatePath=Join-Path $BaseDir "tt-remote-heal-last.json"
+$script:RemoteHealSeenId=""
+$script:RemoteHealLastPoll=[DateTimeOffset]::MinValue
+$script:RemoteHealLastTabOpen=[DateTimeOffset]::MinValue
+try{
+  if(Test-Path -LiteralPath $script:RemoteHealStatePath){
+    $previous=Get-Content -LiteralPath $script:RemoteHealStatePath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $script:RemoteHealSeenId=[string]$previous.request_id
+  }
+}catch{ Log "REMOTE HEAL STATE READ WARNING" }
+
+function Get-ChatCdpTabCount{
+  try{
+    $targets=@(Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 4 -Headers @{"Cache-Control"="no-cache"})
+    return @($targets | Where-Object {
+      [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
+      [string]$_.url -like "https://chatgpt.com/*"
+    }).Count
+  }catch{return -1}
+}
+function EnsureRemoteTelegramHeal{
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
+  $script:RemoteHealLastPoll=$now
+  try{
+    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/telegram/tt-local-recovery-request.json"
+    $signal=Invoke-RestMethod -Uri ($url+"?t="+$now.ToUnixTimeMilliseconds()) -TimeoutSec 10 -Headers @{"Cache-Control"="no-cache, no-store"}
+  }catch{return}
+  if([string]$signal.action -ne "recover_chat_tab_if_missing"){return}
+  $request=[string]$signal.request_id
+  if($request -notmatch '^[a-f0-9]{32}$' -or $request -eq $script:RemoteHealSeenId){return}
+  try{
+    $when=[DateTimeOffset]::Parse([string]$signal.requested_at)
+    $age=($now-$when).TotalHours
+    if($age -lt -0.1 -or $age -gt 24){return}
+  }catch{return}
+  if(Test-ChatOperationBusy){
+    Log "REMOTE HEAL DEFERRED request=$request reason=image-or-chat-operation-active"
+    return
+  }
+
+  $count=Get-ChatCdpTabCount
+  if($count -lt 0){
+    EnsureChrome
+    Log "REMOTE HEAL DEFERRED request=$request reason=chrome-cdp-not-ready"
+    return
+  }
+  if($count -eq 0){
+    if(($now-$script:RemoteHealLastTabOpen).TotalSeconds -lt 60){return}
+    $script:RemoteHealLastTabOpen=$now
+    try{
+      $tab=Invoke-RestMethod -Method Put -Uri ("http://127.0.0.1:9223/json/new?"+[uri]::EscapeDataString("https://chatgpt.com/")) -TimeoutSec 8
+      Log "REMOTE HEAL CHAT TAB REQUESTED request=$request target=$([string]$tab.id)"
+    }catch{
+      Log "REMOTE HEAL CHAT TAB ERROR request=$request :: $($_.Exception.Message)"
+      return
+    }
+    $deadline=(Get-Date).AddSeconds(12)
+    do{
+      Start-Sleep -Seconds 2
+      $count=Get-ChatCdpTabCount
+    }while($count -eq 0 -and (Get-Date) -lt $deadline)
+    if($count -lt 1){
+      Log "REMOTE HEAL CHAT TAB PENDING request=$request"
+      return
+    }
+  }
+
+  # Recuperar listeners sin interrumpir un bridge de imagen activo.
+  $script:ReconnectPending=$true
+  $script:ReconnectCause="telegram-autocorregir"
+  Recover-ListenersAfterReconnect
+  if($script:ReconnectPending){
+    Log "REMOTE HEAL LISTENER RECOVERY DEFERRED request=$request"
+    return
+  }
+  try{
+    @{request_id=$request;completed_at=$now.ToString("o")} |
+      ConvertTo-Json -Compress |
+      Set-Content -LiteralPath $script:RemoteHealStatePath -Encoding UTF8 -ErrorAction Stop
+    $script:RemoteHealSeenId=$request
+    Log "REMOTE HEAL COMPLETE request=$request chat_tabs=$count"
+  }catch{
+    Log "REMOTE HEAL STATE ERROR request=$request :: $($_.Exception.Message)"
+  }
+}
+
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -244,6 +334,7 @@ try{
     EnsureScheduledTasks
     EnsureChrome
     EnsureInternetRecovery
+    EnsureRemoteTelegramHeal
     # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
     # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
     Start-Sleep -Seconds $IntervalSeconds
