@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T08:51:12+02:00",
-  "last_completed_at": "2026-10-14T08:51:12+02:00",
-  "updated_at": "2026-10-14T08:51:12+02:00",
+  "last_started_at": "2026-10-14T08:45:00+02:00",
+  "last_completed_at": "2026-10-14T08:53:30+02:00",
+  "updated_at": "2026-10-14T08:53:30+02:00",
   "status": "success",
   "processed_ids": [
     "ea9256e5e1fd"
@@ -22,33 +22,38 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "verified_success",
+    "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-20261014T081500+0200-chat",
-    "requested_at": "2026-10-14T08:15:00+02:00",
+    "run_id": "tr-20261014T084500+0200-chat",
+    "requested_at": "2026-10-14T08:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-20261014T081500+0200-chat",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-20261014T084500+0200-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-14T08:15:00+02:00",
-    "updated_at": "2026-10-14T08:19:10+02:00",
-    "finished_at": "2026-10-14T08:19:10+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-14T08:45:00+02:00",
+    "updated_at": "2026-10-14T08:53:30+02:00",
+    "current": 1,
+    "total": 1,
+    "trend_id": null,
+    "title": null,
+    "partial": false,
     "summary": {
-      "trends_processed": 0,
+      "trends_processed": 1,
       "trends_explained": 0,
       "explanation_groups": 0,
       "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
-      "queue_remaining": 0,
+      "incidents": 1,
+      "queue_remaining": 1,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
@@ -67,9 +72,105 @@
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada y verificada; cola editorial y auditorías Telegram limpias.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada 1/1 completada con incidencia editorial: 1742 X queda problematic para reintento; no se publicó una explicación especulativa.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "reason": "Confirmada como TT#10 en España, pero tras dos búsquedas distintas no se identifica un detonante concreto y actual con fiabilidad suficiente. Se conserva como problematic para reintento automático mientras siga en Top 10."
+      }
+    ],
+    "remate_selections": [],
+    "activity": [
+      {
+        "at": "2026-10-14T08:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Iniciando pasada editorial · 1 tendencia activa; reconciliando revisión, Telegram y saneamiento de Pendientes."
+      },
+      {
+        "at": "2026-10-14T08:47:00+02:00",
+        "phase": "verifying",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Releyendo estado autoritativo de 1742 X antes de investigarla."
+      },
+      {
+        "at": "2026-10-14T08:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Buscando detonante actual de 1742 X."
+      },
+      {
+        "at": "2026-10-14T08:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Contrastando fuente 1/2 · la señal figura como TT#10 en España."
+      },
+      {
+        "at": "2026-10-14T08:50:00+02:00",
+        "phase": "investigating",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Contrastando fuente 2/2 · no aparece un acontecimiento actual identificable y verificable."
+      },
+      {
+        "at": "2026-10-14T08:50:30+02:00",
+        "phase": "investigating",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Detonante no verificado tras dos búsquedas; se evita una explicación especulativa."
+      },
+      {
+        "at": "2026-10-14T08:51:00+02:00",
+        "phase": "persisting",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Guardando resultado problematic en el outbox editorial."
+      },
+      {
+        "at": "2026-10-14T08:51:12+02:00",
+        "phase": "persisting",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Aplicador oficial consumió el outbox y registró status problematic."
+      },
+      {
+        "at": "2026-10-14T08:52:00+02:00",
+        "phase": "verifying",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Releyendo main y verificando id+revision+problem_reason persistidos."
+      },
+      {
+        "at": "2026-10-14T08:52:20+02:00",
+        "phase": "verifying",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Revisión 0 verificada como problematic; queda visible para reintento mientras siga en Top 10."
+      },
+      {
+        "at": "2026-10-14T08:53:15+02:00",
+        "phase": "verifying",
+        "trend_id": "ea9256e5e1fd",
+        "title": "1742 X",
+        "message": "Entrega/auditoría Telegram posterior ejecutada; 0 huérfanos en el control actual y el provisional se conserva."
+      },
+      {
+        "at": "2026-10-14T08:53:30+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 1/1 completada con incidencia editorial: 1742 X queda problematic para reintento; no se publicó una explicación especulativa."
+      }
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "finished_at": "2026-10-14T08:53:30+02:00",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -77,57 +178,22 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "activity": [
-      {
-        "at": "2026-10-14T08:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial · cola textual 0; revisando reexplicaciones, Telegram y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-14T08:17:10+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main; workflow de reparación en ejecución."
-      },
-      {
-        "at": "2026-10-14T08:18:53+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento completado correctamente; sin reconciliación editorial pendiente y archivo visual al día."
-      },
-      {
-        "at": "2026-10-14T08:19:07+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Entrega y auditoría Telegram completadas correctamente; 0 huérfanos y 0 incidencias bidireccionales."
-      },
-      {
-        "at": "2026-10-14T08:19:10+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola editorial y auditorías Telegram limpias."
-      }
+    "remaining_problematic_ids": [
+      "ea9256e5e1fd"
     ]
   },
-  "run_id": "tr-20261014T081500+0200-chat",
+  "run_id": "tr-20261014T084500+0200-chat",
   "summary": {
-    "trends_processed": 0,
+    "trends_processed": 1,
     "trends_explained": 0,
     "explanation_groups": 0,
     "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 0,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
-    "incidents": 0,
-    "queue_remaining": 0,
+    "incidents": 1,
+    "queue_remaining": 1,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
@@ -149,7 +215,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-14T08:11:44+02:00",
+    "source_capture_at": "2026-10-14T08:42:05+02:00",
     "status": "fresh_at_start"
   },
   "error": null
