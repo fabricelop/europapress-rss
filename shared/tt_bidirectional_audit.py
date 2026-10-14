@@ -69,13 +69,25 @@ def audit(project,now=None):
             if eid not in active or mid>=int(active[eid].get("telegram_message_id") or 0):
                 active[eid]=row
     # Telegram delete tombstones override any earlier sent acknowledgement.
-    terminal_ids={str(x.get("event_id") or "") for x in rows
+    terminal_rows=[x for x in rows
         if int(x.get("telegram_message_id") or 0)>watermark
-        and str(x.get("status") or "").lower() in CLOSED}
+        and str(x.get("status") or "").lower() in CLOSED]
+    terminal_ids={str(x.get("event_id") or "") for x in terminal_rows}
     active={eid:row for eid,row in active.items() if eid not in terminal_ids}
     decisions_by_id={str(x.get("event_id") or x.get("id") or ""):
                      str(x.get("status") or "").lower()
                      for x in decisions.get("items",[])}
+    # A terminal decision on a grouped leader applies to the explicit members
+    # of that SAME persisted group. This prevents a deleted/published group
+    # card from resurfacing as "app_without_telegram" for a follower.
+    terminal_groups={}
+    for row in terminal_rows:
+        leader_id=str(row.get("event_id") or "")
+        if not leader_id:continue
+        terminal_groups[leader_id]={
+            "group_id":str(row.get("group_id") or ""),
+            "members":{str(x) for x in (row.get("group_member_ids") or []) if str(x)}
+        }
     # The user's Telegram delete callback is authoritative. Keep Explicadas
     # and READY as *history*, not a fresh active APP row after delete.
     for eid in terminal_ids:
@@ -85,6 +97,15 @@ def audit(project,now=None):
         eid=str(row.get("event_id") or row.get("id") or "")
         if not eid:return
         if decisions_by_id.get(eid) in CLOSED:return
+        if not is_tti:
+            leader_id=str(row.get("group_leader_id") or "")
+            row_group=str(row.get("group_id") or row.get("explanation_group_id") or "")
+            terminal_leader=terminal_groups.get(leader_id) if leader_id and leader_id!=eid else None
+            if terminal_leader:
+                members=terminal_leader["members"]
+                leader_group=terminal_leader["group_id"]
+                if eid in members or (row_group and leader_group and row_group==leader_group):
+                    return
         start=when(stamp)
         if cutoff and eid not in protected and (start is None or start<=cutoff):
             return
@@ -236,6 +257,13 @@ def selftest():
                  "group_id":"grp"}]})
             grouped=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
             assert grouped["matched_count"]==2 and grouped["issues_count"]==0,grouped
+            # Deleting the one Telegram package for an explicit group closes
+            # the leader AND its follower from the live-app audit surface.
+            put("trends/telegram-image-deliveries.json",{"items":[
+                {"event_id":"tt","telegram_message_id":720,"status":"deleted","final":True,
+                 "group_id":"grp","group_member_ids":["tt","member"]}]})
+            grouped_deleted=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
+            assert grouped_deleted["app_open_count"]==0 and grouped_deleted["issues_count"]==0,grouped_deleted
             put("trends/requests.json",{"requests":[]})
             put("trends/telegram-manual-explained.json",{"items":[
                 {"id":"closed","name":"Explicación archivada","status":"explained",
