@@ -275,6 +275,9 @@ function Read-ImageIndex {
   # Vercel obsoleto deje la cola invisible, contrastamos con GitHub como máximo
   # una vez por minuto (<=60 lecturas/h, muy lejos del límite de 5.000/h).
   $direct=Read-ImageIndexDirect
+  # La rama de control es autoritativa, incluso si el índice está vacío.
+  # No utilizar un snapshot atrasado del Worker para elegir otra orden.
+  if($direct -and $null -ne $direct.jobs){ return $direct }
   if($direct -and $direct.jobs){
     if(-not $snapshot -or -not $snapshot.jobs){return $direct}
     try{
