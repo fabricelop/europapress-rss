@@ -12,7 +12,7 @@ on:
       - "trends/apply_direct_reconcile.py"
       - ".github/workflows/repair-ttendencias-explicadas.yml"
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
