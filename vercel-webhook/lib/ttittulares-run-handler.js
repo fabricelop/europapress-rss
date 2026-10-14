@@ -674,7 +674,7 @@ async function requestImageRun(req,res){
   const requested_at=new Date().toISOString(),command_id="tt-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
-    mode:"manual_pc_chat_image",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",
+    mode:"manual_pc_chat_image",delivery_mode:"launch_only",executor:"pc_chat_ttittulares_dedicated",project:"ttittulares",launcher_arg:"titulares",
     task:"image",target_id,event_id:target_id,target_name,revision,regenerate:Boolean(eligible.hasAi),chat_command_version:5,
     instruction_profile:"ttittulares_gag_v9_varied_style_single_gag",context_snapshot,
     instructions:{
@@ -683,7 +683,7 @@ async function requestImageRun(req,res){
       visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso, menores en contexto sensible o sufrimiento humano en objeto del gag.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-      lifecycle:"El listener envía el mensaje y el bridge capture-only persiste exactamente el raster generado."
+      lifecycle:"Enviar una sola orden a ChatGPT Images, confirmar el prompt y cerrar LAUNCHED. Nunca descargar, capturar, subir ni entregar el raster."
     },
     message:"Solicitud registrada; esperando al PC."
   };
