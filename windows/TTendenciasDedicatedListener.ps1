@@ -41,8 +41,8 @@ $LaunchConfirmSeconds = 30
 $EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 86400
-# Imágenes solo bajo solicitud manual en ChatGPT Images; no lanzar puentes IA desde Windows.
-$MaxParallelImageChats = 0
+# Un prompt a la vez; no recuperar imágenes al terminar el bridge launch_only.
+$MaxParallelImageChats = 1
 $MaxImageJobProbesPerCycle = 3
 $DirectImageRefreshSeconds = 60
 $script:DirectImageIndexCache = $null
@@ -907,7 +907,7 @@ function Launch-ProjectChat([string]$Reason,[string]$Message = "",[string]$Expec
 }
 
 function Is-TerminalImageStatus([string]$Status) {
-  return @("DONE","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
+  return @("DONE","LAUNCHED","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
 }
 
 function Seen-ImageCommand($State,[string]$CommandId) {
@@ -1181,6 +1181,13 @@ while ($true) {
           continue
         }
         if (Is-TerminalImageStatus ([string]$statusDoc.status)) {
+          Mark-ImageCommand $state $commandId $false
+          Save-State $state
+          continue
+        }
+        # El prompt ya enviado no debe relanzarse aunque el backend legado
+        # conserve status=RUNNING mientras espera un raster que ya no se captura.
+        if([string]$statusDoc.delivery_mode -eq "launch_only" -and $statusDoc.pc_launched_at){
           Mark-ImageCommand $state $commandId $false
           Save-State $state
           continue
