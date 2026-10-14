@@ -1,12 +1,50 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-14T20:23:45.895002+00:00",
+  "checked_at": "2026-10-14T20:55:24.464825+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
-  "ledger_entries": 255,
+  "ledger_entries": 257,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 3,
+  "unresolved": [
+    {
+      "key": "provisional:a92b13a767f5:3931",
+      "id": "a92b13a767f5",
+      "message_id": 3931,
+      "title": "Los profesores en huelga pintan de verde el centro de Madrid: “Los gobiernos están abandonando la educación pública”",
+      "age_min": 46.9,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:efc592969b17:3928",
+      "id": "efc592969b17",
+      "message_id": 3928,
+      "title": "El Comité de Disciplina sanciona al Rayo con un cierre parcial de Vallecas por el lanzamiento de objetos en el partido contra el Athletic",
+      "age_min": 46.9,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:a3cf1cd3ed9f:3933",
+      "id": "a3cf1cd3ed9f",
+      "message_id": 3933,
+      "title": "Trump presiona a Zelenski para que no dañe las refinerías rusas bajo la amenaza de bloquear la llegada de armas a Ucrania",
+      "age_min": 32.9,
+      "reason": "No consta explicación definitiva"
+    }
+  ],
+  "alerted": {
+    "provisional:a92b13a767f5:3931": {
+      "signature": "f3754ef4c6246bafe9",
+      "notified_at": null
+    },
+    "provisional:efc592969b17:3928": {
+      "signature": "d40d3278af0be1aef8",
+      "notified_at": null
+    },
+    "provisional:a3cf1cd3ed9f:3933": {
+      "signature": "45adf2c9b608ac9419",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
