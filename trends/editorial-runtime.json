@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T02:45:00+02:00",
-  "last_completed_at": "2026-10-14T02:48:30+02:00",
-  "updated_at": "2026-10-14T02:48:30+02:00",
+  "last_started_at": "2026-10-14T03:15:00+02:00",
+  "last_completed_at": "2026-10-14T03:19:00+02:00",
+  "updated_at": "2026-10-14T03:19:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,27 +18,27 @@
     "persisted_trigger": true,
     "status": "verified_success",
     "direct_imagegen": false,
-    "run_id": "tr-20261014T024500+0200-chat",
-    "requested_at": "2026-10-14T02:45:00+02:00",
+    "run_id": "tr-20261014T031500+0200-chat",
+    "requested_at": "2026-10-14T03:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "ai_enqueue": "dedicated-workflow",
-    "repair_workflow_run_id": 38492092832,
-    "telegram_workflow_run_id": 38492200065,
+    "repair_workflow_run_id": 38494880348,
+    "telegram_workflow_run_id": 38494935466,
     "telegram_verified": true,
-    "verified_at": "2026-10-14T02:48:25+02:00",
+    "verified_at": "2026-10-14T03:18:45+02:00",
     "verification_note": "Saneamiento y entrega/auditoría Telegram completados con success; sin huérfanos."
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261014T024500+0200-chat",
+    "run_id": "tr-20261014T031500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T02:45:00+02:00",
-    "updated_at": "2026-10-14T02:48:30+02:00",
-    "finished_at": "2026-10-14T02:48:30+02:00",
+    "started_at": "2026-10-14T03:15:00+02:00",
+    "updated_at": "2026-10-14T03:19:00+02:00",
+    "finished_at": "2026-10-14T03:19:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -86,35 +86,49 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T02:45:00+02:00",
+        "at": "2026-10-14T03:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial · cola 0; revisando Pendientes, reexplicaciones y auditoría Telegram."
       },
       {
-        "at": "2026-10-14T02:46:57+02:00",
+        "at": "2026-10-14T03:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main."
+        "message": "Saneamiento de Pendientes solicitado en main; verificando el workflow automático."
       },
       {
-        "at": "2026-10-14T02:48:10+02:00",
+        "at": "2026-10-14T03:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Solicitando entrega/auditoría Telegram y verificando el saneamiento automático."
+      },
+      {
+        "at": "2026-10-14T03:18:15+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Entrega y auditoría Telegram completadas correctamente; comprobando el saneamiento visual."
+      },
+      {
+        "at": "2026-10-14T03:18:29+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento automático completado correctamente."
       },
       {
-        "at": "2026-10-14T02:48:25+02:00",
+        "at": "2026-10-14T03:18:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Entrega y auditoría Telegram completadas correctamente."
+        "message": "Releyendo main: cola, reexplicaciones, provisionales y auditoría Telegram están limpios."
       },
       {
-        "at": "2026-10-14T02:48:30+02:00",
+        "at": "2026-10-14T03:19:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -124,7 +138,7 @@
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261014T024500+0200-chat",
+  "run_id": "tr-20261014T031500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -157,7 +171,7 @@
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-14T02:43:14+02:00",
+    "source_capture_at": "2026-10-14T03:12:10+02:00",
     "status": "fresh_at_start"
   }
 }
