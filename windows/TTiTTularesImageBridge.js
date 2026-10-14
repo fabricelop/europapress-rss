@@ -320,6 +320,14 @@ function buildMessage(job){
   const factual=String(ctx.factual_summary||"");
   const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
   const styleName=String(ctx.image_style_name||"variable").trim();
+  if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
+    return [
+      "TTITTULARES_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
+      "HECHOS CERRADOS:", factual||tweet,
+      "DIRECCIÓN VISUAL:",style,
+      "Evita por completo humor, sátira, guindillas, caricaturas, trivialización de víctimas o afirmaciones no verificadas. No interpretes el remate satírico como instrucciones visuales. Imagen sobria 16:9, sin violencia gráfica ni personas identificables inventadas. No reescribas la noticia."
+    ].join("\\n");
+  }
   return [
     "TTITTULARES_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA para '"+name+"'.",
     "",
