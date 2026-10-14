@@ -116,9 +116,54 @@ def problems(project,now):
             result.append({"kind":"editorial_overdue","id":eid,
                            "title":str(x.get("name") or x.get("title") or eid)[:100],
                            "seconds":int(age_s),"workflow":None})
+    # TTendencias also persists current jobs in requests.json (2 MB+).
+    # The short editorial queue can be EMPTY while a current manual/top-10
+    # request or the ORIGINAL Telegram provisional remains unfinished.
+    # Check these independently before claiming "0 incidents".
+    if project=="ttendencias":
+        request_doc=read("trends/requests.json",{"requests":[]})
+        if not isinstance(request_doc.get("requests"),list):
+            raise RuntimeError("TTendencias requests catalog invalid")
+        latest_req={}
+        for req in request_doc["requests"]:
+            rid=str(req.get("id") or "")
+            if rid and str(req.get("status") or "").lower() not in TERMINAL:
+                latest_req[rid]=req
+        for eid,req in latest_req.items():
+            if eid in q or eid in closed:continue
+            status=str(req.get("status") or "").lower()
+            if status not in {"preparing","update","ready","explained"}:continue
+            if req.get("auto_queued") is True and int(req.get("rank") or 0)>10:
+                continue
+            began=req.get("requested_at") or req.get("anticipated_at")
+            secs=age(now,began)
+            # Prevent old historic requests from becoming an infinite backlog.
+            if not began or not 120<=secs<=24*3600:continue
+            if cut and eid not in keep:
+                t=timeof(began)
+                if not t or t<=cut:continue
+            row=live.get(eid)
+            if row and row.get("final") is True:continue
+            title=str(req.get("name") or eid)[:100]
+            verified=bool(str(req.get("explanation") or "").strip() and
+                          (status=="explained" or req.get("editorial_verified") is True))
+            if row is None:
+                result.append({"kind":"missing_delivery","id":eid,
+                               "title":title,"seconds":int(secs),
+                               "workflow":conf["send"]})
+            elif verified:
+                result.append({"kind":"unfinished_ready","id":eid,
+                               "title":title,"seconds":int(secs),
+                               "workflow":conf["send"]})
+            elif secs>=ESCALATE:
+                # No fake editorial completion: ChatGPT must verify the news.
+                result.append({"kind":"editorial_overdue","id":eid,
+                               "title":title,"seconds":int(secs),"workflow":None})
     # A provisional row might have disappeared from the queue; preserve it.
+    already={r["id"] for r in result if r["kind"] in {
+        "unfinished_ready","editorial_overdue","missing_delivery","orphan_provisional"}}
     for eid,row in live.items():
-        if eid in q or row.get("final") is True:continue
+        if eid in q or eid in closed or eid in already or row.get("final") is True:continue
         entered=row.get("started_at") or row.get("delivered_at")
         if age(now,entered)<ESCALATE:continue
         result.append({"kind":"orphan_provisional","id":eid,
@@ -318,6 +363,32 @@ def selftest():
                 "green_notifications_initialized":True,
                 "green_notifier_checked_at":"2026-10-12T17:30:00Z"})
             assert not any(x["kind"]=="stale_green_notifier" for x in problems("ttendencias",now))
+            # A cleared compact editorial queue must not hide a stalled
+            # TTendencias request or an existing provisional Telegram card.
+            save("trends/editorial-queue.json",{"items":[]})
+            save("trends/requests.json",{"requests":[
+                {"id":"stalled-trend","name":"Tendencia pendiente",
+                 "status":"preparing","rank":3,"auto_queued":True,
+                 "requested_at":"2026-10-12T17:30:00Z"}]})
+            save("trends/telegram-image-deliveries.json",{"items":[{
+                "event_id":"stalled-trend","telegram_message_id":721,
+                "status":"sent","final":False,"started_at":"2026-10-12T17:30:00Z"}]})
+            issue=problems("ttendencias",now)
+            assert sum(x["id"]=="stalled-trend" for x in issue)==1,issue
+            assert next(x for x in issue if x["id"]=="stalled-trend")["kind"]=="editorial_overdue"
+            # Verified copy changes the repair into a delivery retry, without
+            # inventing an explanation or replacing the original Telegram ID.
+            doc=read("trends/requests.json",{})
+            doc["requests"][0].update(status="explained",
+                explanation="Hecho comprobado en fuentes.",editorial_verified=True)
+            save("trends/requests.json",doc)
+            issue=problems("ttendencias",now)
+            assert next(x for x in issue if x["id"]=="stalled-trend")["workflow"]==CONFIG["ttendencias"]["send"]
+            # User deletion is terminal even when requests.json is stale.
+            delivery=read("trends/telegram-image-deliveries.json",{})
+            delivery["items"][0]["status"]="deleted"
+            save("trends/telegram-image-deliveries.json",delivery)
+            assert not any(x["id"]=="stalled-trend" for x in problems("ttendencias",now))
             assert not (ROOT/PC_RECOVERY).exists(), "scheduled autoheal must not signal PC"
             assert request_safe_pc_recovery(now+timedelta(minutes=6))
             first=read(PC_RECOVERY,{})
