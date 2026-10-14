@@ -146,96 +146,169 @@ def active_records(project):
     pending.sort(key=lambda x:(str(x["at"]),x["title"]))
     return final,pending
 
-def tti_image_launch_status(row):
-    """Read only the job ACK. Never infer that ImageGen has finished."""
+def image_launch_details(project,row):
+    """Only inspect a verified job and its existing editorial snapshot.
+
+    No generated image is downloaded or inspected; launched means that the
+    browser confirmed submitting its prompt, not that ImageGen is finished.
+    """
     event_id=str(row.get("id") or "")
-    if not event_id:return "unknown"
+    if not event_id:return {"status":"unknown"}
+    branch=("control/ttittulares-run-trigger-v2" if project=="ttittulares"
+            else "control/ttendencias-run-trigger")
+    folder=("ttittulares" if project=="ttittulares" else "trends")
     url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
-         "control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/"
+         +branch+"/"+folder+"/image-runs/jobs/"
          +quote(event_id,safe="")+".json")
-    from urllib.request import Request
     import time
     url+="?index_check="+str(int(time.time()))
-    req=Request(url,headers={"User-Agent":"TT-private-pinned-index-image-status",
-                             "Cache-Control":"no-cache, no-store"})
+    request=Request(url,headers={"User-Agent":"TT-private-pinned-index-image-status",
+                                 "Cache-Control":"no-cache, no-store"})
     try:
-        with urlopen(req,timeout=3) as resp:
-            job=json.load(resp)
+        with urlopen(request,timeout=3) as response:
+            job=json.load(response)
     except HTTPError as exc:
-        return "queued" if exc.code==404 else "unknown"
+        return {"status":"pending" if exc.code==404 else "unknown"}
     except (OSError,URLError,TimeoutError,ValueError,TypeError):
-        return "unknown"
-    # An old revision may have a different generated image.
+        return {"status":"unknown"}
     if (str(job.get("target_id") or job.get("event_id") or "")!=event_id
-        or int(job.get("revision") or 0)!=int(row.get("rev") or 1)):
-        return "unknown"
-    if job.get("pc_launched_at"):
-        return "launched"
+        or int(job.get("revision") or 0)!=int(row.get("rev") or 0)):
+        return {"status":"unknown"}
     status=str(job.get("status") or "").upper()
-    if status in {"ERROR","CANCELLED","SUPERSEDED"}:return "failed"
-    if status in {"REQUESTED","RUNNING","PERSISTING"}:return "queued"
-    return "unknown"
+    if job.get("pc_launched_at"):
+        state="launched"
+    elif status in {"ERROR","CANCELLED","SUPERSEDED"}:
+        state="failed"
+    elif status in {"REQUESTED","RUNNING","PERSISTING"}:
+        state="queued"
+    else:
+        state="pending"
+    snapshot=job.get("context_snapshot") or {}
+    if project=="ttittulares":
+        sentence=str(snapshot.get("tweet_text") or "")
+        remate=str(snapshot.get("remate") or "")
+    else:
+        sentence=str(snapshot.get("explanation") or "")
+        remate=str(snapshot.get("closer_text") or "")
+    return {"status":state,"sentence":sentence,"remate":remate}
 
 
-def tti_image_statuses(rows):
-    # Several short independent reads; one unresponsive GitHub request cannot
-    # delay the index more than a few seconds. No image generation or download.
+def image_statuses_for_panel(project,rows):
+    """Concurrent bounded reads so a slow remote job cannot stall Telegram."""
     if not rows:return {}
     limited=rows[:30]
     with ThreadPoolExecutor(max_workers=6) as pool:
-        result=list(pool.map(tti_image_launch_status,limited))
-    return {r["id"]:status for r,status in zip(limited,result)}
+        result=list(pool.map(lambda row:image_launch_details(project,row),limited))
+    return {row["id"]:detail for row,detail in zip(limited,result)}
+
+
+def editorial_snippets(project):
+    """Use committed editorial copy as a fallback, never invent a punchline."""
+    result={}
+    if project=="ttittulares":
+        doc=read("ttittulares/prepared.json",{"items":[]})
+        items=doc.get("items",[])
+        for item in items:
+            eid=str(item.get("event_id") or "")
+            if eid:
+                tweet=item.get("tweet") or {}
+                result[eid]={"rev":int(item.get("revision") or 1),
+                             "sentence":str(tweet.get("text") or ""),
+                             "remate":str(tweet.get("remate") or "")}
+    else:
+        doc=read("trends/editorial-queue.json",{"items":[]})
+        for item in doc.get("items",[]):
+            eid=str(item.get("id") or item.get("event_id") or "")
+            if eid:
+                result[eid]={"rev":int(item.get("revision") or 0),
+                             "sentence":str(item.get("explanation") or ""),
+                             "remate":str(item.get("closer_text") or "")}
+    return result
+
+
+def extract_remate(value):
+    """Extract the existing guindilla, not an inferred or generated closer."""
+    lines=[line.strip() for line in str(value or "").splitlines()]
+    return next((line for line in reversed(lines) if line.startswith("🌶️")), "")
+
+
+def one_line_sentence(project,title,copy,limit=47):
+    """At most one compact factual line, then the intact separate punchline."""
+    text=str(copy or "").strip()
+    text=text.split("🌶️",1)[0].strip()
+    line=next((x.strip() for x in text.splitlines() if x.strip()),"")
+    if project=="ttendencias" and line:
+        # Keep recognizable subject AND a short explanation, rather than
+        # repeating only the generic 'es tendencia porque' introduction.
+        import re
+        factual=re.sub(r"^TT#\\d+\\s+.+?\\s+es tendencia porque\\s+",
+                       "",line,count=1,flags=re.I)
+        if factual!=line:
+            line=str(title or "")+": "+factual
+    if not line:line=str(title or "")
+    import re
+    line=re.split(r"(?<=[.!?])\\s+",line,maxsplit=1)[0]
+    return shorten(line,limit)
 
 
 def render(project,bot_id,image_statuses=None):
-    conf=PROJECTS[project]
     ready,pending=active_records(project)
-    first=f"LISTAS: {len(ready)} | EN ELABORACIÓN: {len(pending)}"
-    chunks=[first]
-    if project=="ttittulares":
-        if image_statuses is None:
-            # Production uses Telegram's authenticated updater; offline selftests
-            # can inject a fixed snapshot without touching the network.
-            image_statuses=tti_image_statuses(ready) if os.getenv("TELEGRAM_BOT_TOKEN") else {}
-        status_of=lambda r:image_statuses.get(r["id"],"unknown")
-        sent=sum(status_of(r)=="launched" for r in ready)
-        other=sum(status_of(r)=="unknown" for r in ready)
-        chunks.append(f"\n🟢 <b>IA ENVIADA A CHATGPT: {sent} de {len(ready)}</b>")
-        if other:chunks.append(f"⚪ Estado no comprobado: {other}")
-        chunks.append("<i>Enviada = solicitud confirmada, no imagen terminada.</i>")
-        # Only reorder references INSIDE the pinned panel. Original Telegram
-        # cards stay where they are, with all existing buttons untouched.
-        order={"launched":0,"queued":1,"failed":2,"unknown":3}
-        shown=sorted(ready,key=lambda r:(order.get(status_of(r),3),-r["mid"]))
-        icons={"launched":"🟢","queued":"🟠","failed":"🔴","unknown":"⚪"}
-        labels={"launched":"enviada","queued":"en cola","failed":"falló envío",
-                "unknown":"sin verificar"}
-        ready_lines=[
-            icons[status_of(r)]+" "+html.escape(shorten(r["title"],58))+
-            " — "+labels[status_of(r)] for r in shown]
-    else:
-        ready_lines=["• "+html.escape(shorten(x["title"],65)) for x in ready]
-    pending_lines=["• "+html.escape(shorten(x["title"],65)) for x in pending]
-    chunks.append("\n<b>LISTAS</b>")
-    room=MAX_TEXT-100
+    chunks=['<a href="https://chatgpt.com/images">🎨 Abrir ChatGPT Images ↗</a>',
+            f"LISTAS: {len(ready)} | EN ELABORACIÓN: {len(pending)}"]
+
+    if image_statuses is None:
+        # Production uses existing remote job ACKs; selftests inject a frozen
+        # snapshot to avoid any network access.
+        image_statuses=(image_statuses_for_panel(project,ready)
+                        if os.getenv(PROJECTS[project]["bot_token"]) else {})
+    snippets=editorial_snippets(project)
+    def info(row):
+        value=image_statuses.get(row["id"],{})
+        if isinstance(value,str):return {"status":value}
+        return value if isinstance(value,dict) else {}
+    def status(row):return info(row).get("status","unknown")
+
+    sent=sum(status(row)=="launched" for row in ready)
+    chunks.append(f"🟢 <b>IA ENVIADA A CHATGPT: {sent} de {len(ready)}</b>")
+    order={"launched":0,"queued":1,"pending":2,"failed":3,"unknown":4}
+    icons={"launched":"🟢","queued":"🟠","pending":"🟠",
+           "failed":"🔴","unknown":"⚪"}
+    shown=sorted(ready,key=lambda row:(order.get(status(row),4),-row["mid"]))
+    chunks.append("\\n<b>LISTAS</b>")
     count_shown=0
-    for x in ready_lines:
-        if len("\n".join(chunks+[x]))>=room:break
-        chunks.append(x)
+    room=MAX_TEXT-100
+    for row in shown:
+        data=info(row)
+        fallback=snippets.get(row["id"],{})
+        if int(fallback.get("rev",-1))!=int(row.get("rev",0)):
+            fallback={}
+        copy=data.get("sentence") or fallback.get("sentence") or ""
+        punch=data.get("remate") or fallback.get("remate") or extract_remate(copy)
+        headline=(icons.get(status(row),"⚪")+" "+
+                  html.escape(one_line_sentence(project,row["title"],copy)))
+        if punch:
+            punch_line="    "+html.escape(punch)
+        else:
+            punch_line="    ⏳ Remate pendiente" if status(row) in {"pending","queued"} else ""
+        section="\\n".join([headline,punch_line] if punch_line else [headline])
+        if len("\\n".join(chunks+[section]))>=room:break
+        chunks.append(section)
         count_shown+=1
     if not ready:chunks.append("• Ninguna")
     if count_shown<len(ready):chunks.append(f"… y {len(ready)-count_shown} más")
-    chunks.append("\n<b>EN ELABORACIÓN</b>")
+    chunks.append("\\n<b>EN ELABORACIÓN</b>")
     count_pending=0
-    for x in pending_lines:
-        if len("\n".join(chunks+[x]))>=room:break
-        chunks.append(x)
+    for row in pending:
+        line="• "+html.escape(one_line_sentence(project,row["title"],"",47))
+        if len("\\n".join(chunks+[line]))>=room:break
+        chunks.append(line)
         count_pending+=1
     if not pending:chunks.append("• Ninguna")
-    if count_pending<len(pending):chunks.append(f"… y {len(pending)-count_pending} más")
-    text="\n".join(chunks)
-    assert len(text)<=MAX_TEXT
-    return text,ready,pending
+    if count_pending<len(pending):
+        chunks.append(f"… y {len(pending)-count_pending} más")
+    body="\\n".join(chunks)
+    assert len(body)<=MAX_TEXT
+    return body,ready,pending
 
 class TelegramError(RuntimeError):
     def __init__(self,method,description):
@@ -443,12 +516,31 @@ def selftest():
             write("ttittulares/status.json",{"processing_items":[]})
             fixed={"sent-1":"launched","waiting":"queued","removed":"launched"}
             body,ready,pending=render("ttittulares",123456,fixed)
+            assert body.startswith('<a href="https://chatgpt.com/images">')
             assert "IA ENVIADA A CHATGPT: 1 de 2" in body
-            assert "no imagen terminada" in body
+            assert "Enviada = solicitud" not in body
             assert "🟢 Imagen confirmada" in body and "🟠 En cola" in body
             assert body.index("🟢 Imagen confirmada")<body.index("🟠 En cola")
             assert "Ya borrada" not in body
             assert len(ready)==2 and len(pending)==0
+            # Exact factual sentence + original remate for both pipelines.
+            news={"sent-1":{"status":"launched","sentence":
+                "El Museo Sorolla amplía sus salas. Se mantiene en obras.",
+                "remate":"🌶️ Sorolla gana metros sin mover un caballete."}}
+            body,_,_=render("ttittulares",123456,news)
+            assert "El Museo Sorolla amplía sus salas." in body
+            assert "Se mantiene en obras" not in body
+            assert "🌶️ Sorolla gana metros sin mover un caballete." in body
+            assert body.index("🟢 El Museo")<body.index("🟠 En cola")
+            trend_info={"ready":{"status":"launched",
+                "sentence":"TT#2 Ejemplo explicado es tendencia porque hoy se ha confirmado una medida. Sigue la polémica.",
+                "remate":"🌶️ El expediente ya pide la palabra."}}
+            body,_,_=render("ttendencias",123456,trend_info)
+            assert body.startswith('<a href="https://chatgpt.com/images">')
+            assert "IA ENVIADA A CHATGPT: 1 de 2" in body
+            assert "🌶️ El expediente ya pide la palabra." in body
+            assert "Sigue la polémica" not in body
+            assert "⏳ Remate pendiente" in body
             print("TT_PINNED_INDEX_SELFTEST_OK")
         finally:
             ROOT=old_root
