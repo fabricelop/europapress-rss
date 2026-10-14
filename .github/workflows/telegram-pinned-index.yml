@@ -17,6 +17,7 @@ on:
     branches: [main]
     paths:
       - "shared/telegram_pinned_index.py"
+      - "shared/tt_green_notifications.py"
       - "telegram/lifecycle-baseline.json"
       - "telegram/ttittulares-deliveries.json"
       - "trends/telegram-image-deliveries.json"
@@ -39,6 +40,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /shared/telegram_pinned_index.py
+            /shared/tt_green_notifications.py
             /telegram/lifecycle-baseline.json
             /telegram/editorial-run-guard.json
             /telegram/bidirectional-audit-ttittulares.json
@@ -56,8 +58,9 @@ jobs:
             /telegram/pinned-index-ttendencias.json
       - name: Verificar el indice sin escribir en Telegram
         run: |
-          python3 -m py_compile shared/telegram_pinned_index.py
+          python3 -m py_compile shared/telegram_pinned_index.py shared/tt_green_notifications.py
           python3 shared/telegram_pinned_index.py selftest
+          python3 shared/tt_green_notifications.py selftest
       - name: Actualizar y fijar un unico mensaje en cada chat
         id: update
         env:
@@ -73,6 +76,11 @@ jobs:
           result=0
           python3 shared/telegram_pinned_index.py ttittulares || result=1
           python3 shared/telegram_pinned_index.py ttendencias || result=1
+          if test "$result" = "0"; then
+            # Only notify when the authenticated job shows green; one digest
+            # per pass, deduped by event+revision+Telegram ID.
+            python3 shared/tt_green_notifications.py || result=1
+          fi
           echo "result=$result" >> "$GITHUB_OUTPUT"
           for project in ttittulares ttendencias; do
             file="telegram/pinned-index-$project.json"
