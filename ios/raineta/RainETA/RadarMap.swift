@@ -107,6 +107,7 @@ struct RadarMap: UIViewRepresentable {
     var recenterRevision: Int = 0
     var forecastStatus: ((String) -> Void)?
     var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
+    var onForecastReady: ((Int,Bool)->Void)?
 
     final class Coordinator: NSObject, MKMapViewDelegate {
         var observedKey: String?
@@ -115,6 +116,8 @@ struct RadarMap: UIViewRepresentable {
         var lastRecenter = 0
         var center: CLLocationCoordinate2D?
         var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
+        var onForecastReady: ((Int,Bool)->Void)?
+        var selectedLeadMinutes = 0
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
             let region = mapView.region
             onViewport?(region.center,region.span.latitudeDelta,region.span.longitudeDelta)
@@ -140,6 +143,17 @@ struct RadarMap: UIViewRepresentable {
         context.coordinator.center = center
         context.coordinator.lastRecenter = recenterRevision
         context.coordinator.onViewport = onViewport
+        context.coordinator.onForecastReady = onForecastReady
+        // Warm up the central WMS tile while the user is viewing the real
+        // radar; never display it until a future time is selected.
+        if ICONForecastTiles.covers(center) {
+            let warmWindow=ICONForecastTiles.period(leadMinutes:5)
+            let warmLayer=ICONForecastTiles(validTime:warmWindow.lower,
+                                            upperTime:warmWindow.upper,
+                                            fraction:warmWindow.fraction)
+            let warmPaths=Self.requiredPaths(map)
+            Task(priority:.utility) { _ = await warmLayer.prepare(warmPaths) }
+        }
         DispatchQueue.main.async { [weak map] in
             guard let map else { return }
             let span = map.region.span
@@ -167,18 +181,27 @@ struct RadarMap: UIViewRepresentable {
         let minY=max(0,min(n-1,Int(floor(extent.minY/world*Double(n)))))
         let maxY=max(minY,min(n-1,Int(floor(extent.maxY/world*Double(n)))))
         // Preloading is bounded; MapKit fetches further tiles normally on pan.
-        let xEnd=min(maxX,minX+5)
-        let yEnd=min(maxY,minY+5)
-        return (minY...yEnd).flatMap { y in
-            (minX...xEnd).map { x in
-                MKTileOverlayPath(x:x,y:y,z:zoom,contentScaleFactor:1)
-            }
+        // Request centre-first and no more than nine cells. Previously a
+        // 6x6 warm-up delayed every +5-minute step until 36 WMS renders
+        // finished even when the screen only needed a few tiles.
+        let midX=(minX+maxX)/2, midY=(minY+maxY)/2
+        let all=(minY...maxY).flatMap { y in
+            (minX...maxX).map { x in (x:x,y:y) }
+        }
+        return all.sorted {
+            let a=abs($0.x-midX)+abs($0.y-midY)
+            let b=abs($1.x-midX)+abs($1.y-midY)
+            return a<b
+        }.prefix(9).map {
+            MKTileOverlayPath(x:$0.x,y:$0.y,z:zoom,contentScaleFactor:1)
         }
     }
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let coordinator = context.coordinator
         coordinator.onViewport = onViewport
+        coordinator.onForecastReady = onForecastReady
+        coordinator.selectedLeadMinutes = futureMinutes
         // Preserve a genuinely observed frame underneath a projected frame.
         // Do not remove the previous historical raster until the new one
         // delivers its first valid tile (avoids an empty map at AHORA).
@@ -188,22 +211,26 @@ struct RadarMap: UIViewRepresentable {
             if let framePath, !host.isEmpty {
                 let previous = map.overlays.compactMap { $0 as? RainRadarTiles }
                 let newest = RainRadarTiles(host: host, path: framePath)
-                newest.onFirstTile = { [weak map] in
+                newest.onFirstTile = { [weak map,weak coordinator] in
                     guard let map, map.overlays.contains(where: { $0 === newest }) else { return }
                     for layer in previous { map.removeOverlay(layer) }
                     // New observed frames must remain hidden while a model
                     // forecast is currently visible above the basemap.
-                    if map.overlays.contains(where:{$0 is ICONForecastTiles}),
-                       let renderer=map.renderer(for:newest) {
-                        renderer.alpha=0
+                    if let renderer=map.renderer(for:newest) {
+                        renderer.alpha=(coordinator?.selectedLeadMinutes ?? 0)>30 ? 0:1
                         renderer.setNeedsDisplay()
                     }
                     newest.onFirstTile = nil
                 }
-                map.addOverlay(newest, level: .aboveRoads)
-                if map.overlays.contains(where:{$0 is ICONForecastTiles}),
-                   let renderer=map.renderer(for:newest) {
-                    renderer.alpha=0
+                // Radar stays BELOW the forecast on crossfade, even if
+                // observation data refresh while viewing a future model.
+                if let existing=map.overlays.first(where:{$0 is ICONForecastTiles}) {
+                    map.insertOverlay(newest,below:existing)
+                } else {
+                    map.addOverlay(newest,level:.aboveRoads)
+                }
+                if let renderer=map.renderer(for:newest) {
+                    renderer.alpha=futureMinutes>30 ? 0:1
                 }
             }
         }
@@ -242,19 +269,29 @@ struct RadarMap: UIViewRepresentable {
                                   coordinator.futureKey==desiredKey,
                                   map.overlays.contains(where:{$0===tileLayer}) else{return}
                             for overlay in previous { map.removeOverlay(overlay) }
+                            let weight=ICONForecastTiles.transitionWeight(leadMinutes:futureMinutes)
+                            if let renderer=map.renderer(for:tileLayer) {
+                                renderer.alpha=weight
+                                renderer.setNeedsDisplay()
+                            }
                             for overlay in map.overlays where overlay is RainRadarTiles {
                                 if let renderer=map.renderer(for:overlay) {
-                                    renderer.alpha=0
+                                    renderer.alpha=weight>=1 ? 0:1
                                     renderer.setNeedsDisplay()
                                 }
                             }
+                            coordinator.onForecastReady?(futureMinutes,true)
                             tileLayer.onFirstTile=nil
                         }
                         map.addOverlay(tileLayer,level:.aboveRoads)
+                        if let renderer=map.renderer(for:tileLayer) {
+                            renderer.alpha=ICONForecastTiles.transitionWeight(leadMinutes:futureMinutes)
+                        }
                         forecastStatus?("ICON-EU · \(window.target.formatted(date:.omitted,time:.shortened))")
                     } else {
                         // Keep the last complete displayed overlay on error,
                         // rather than flashing a blank or only one tile.
+                        coordinator.onForecastReady?(futureMinutes,false)
                         forecastStatus?("Previsión temporalmente no disponible")
                     }
                 }
