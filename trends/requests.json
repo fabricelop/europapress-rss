@@ -56558,11 +56558,11 @@
       "id": "7e325f21b5b5",
       "name": "Roma",
       "rank": 2,
-      "status": "explained",
-      "requested_at": "2026-10-14T22:22:12+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": true,
+      "status": "update",
+      "requested_at": "2026-10-14T23:10:38+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "6b8f0a96fd0c",
       "requested_together": [
@@ -56575,7 +56575,7 @@
         "Mario Hermoso",
         "De Roon"
       ],
-      "auto_queued": true,
+      "auto_queued": false,
       "auto_queue_scope": "top10",
       "explained_at": "2026-10-14T21:02:32.928Z",
       "last_attempt_at": "2026-10-14T21:02:32.928Z",
@@ -56616,7 +56616,12 @@
       "fallback_image_status": "none",
       "image_choice": null,
       "image_status": "none",
-      "image_pending": false
+      "image_pending": false,
+      "request_source": "telegram_reexplain",
+      "reexplain_instructions": "El partido ha acabado 3-4. Actualiza.",
+      "rewrite_instruction": "El partido ha acabado 3-4. Actualiza.",
+      "telegram_reexplain_from_revision": 0,
+      "telegram_reexplain_from_message_id": 825
     },
     {
       "id": "7144cc3c72e8",
@@ -56875,6 +56880,6 @@
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-14T23:04:00+02:00",
+  "updated_at": "2026-10-14T23:10:39+02:00",
   "count": 960
 }
