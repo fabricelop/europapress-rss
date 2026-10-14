@@ -28,17 +28,13 @@ struct RainIntensityLegend: View {
 }
 
 struct MinuteRainGraph: View {
-    let projection: RadarProjection?
-    let weather: RainSnapshot?
+    @ObservedObject var store: RainStore
     @AppStorage("raineta.settings.defaultHorizon") private var horizon = 60
     @State private var selectedMinute: Int?
-    private var rows:[RainMoment] {
-        guard let weather else { return [] }
-        return RainInsight.moments(samples:weather.samples,from:.now,minutes:horizon,step:1)
-    }
+    @State private var compareExpanded = false
 
     var body: some View {
-        VStack(alignment:.leading,spacing:13) {
+        VStack(alignment:.leading,spacing:12) {
             HStack {
                 Label("Pulso de lluvia",systemImage:"waveform.path")
                     .font(.headline)
@@ -53,62 +49,123 @@ struct MinuteRainGraph: View {
                 Text("120 min").tag(120)
             }
             .pickerStyle(.segmented)
-            let samples=rows
+            let now=Date()
+            let samples=RainPulseFusion.points(
+                samples:store.snapshot?.samples ?? [],
+                models:store.shortModels,now:now,horizon:horizon)
             if samples.isEmpty {
                 ContentUnavailableView("Sin datos suficientes",systemImage:"cloud.slash",
                     description:Text("Actualiza la previsión o cambia de localidad."))
-                    .frame(height:160)
+                    .frame(height:145)
             } else {
-                let current=samples.min(by:{ abs($0.minute-(selectedMinute ?? 0)) <
-                                               abs($1.minute-(selectedMinute ?? 0)) }) ?? samples[0]
+                let selected=samples.min(by:{
+                    abs($0.minute-(selectedMinute ?? 0)) <
+                    abs($1.minute-(selectedMinute ?? 0))
+                }) ?? samples[0]
                 HStack(alignment:.firstTextBaseline) {
-                    VStack(alignment:.leading,spacing:4) {
-                        Text(selectedMinute == nil ? "En este momento" : "Dentro de \(current.minute) min")
+                    VStack(alignment:.leading,spacing:3) {
+                        Text(selectedMinute == nil ? "Ahora" : "Dentro de \(selected.minute) min")
                             .font(.caption).foregroundStyle(.secondary)
-                        Text(RainVisual.intensity(current.rateMMH))
+                        Text(RainVisual.intensity(selected.rateMMH))
                             .font(.title3.bold())
-                            .foregroundStyle(RainVisual.color(current.rateMMH))
+                            .foregroundStyle(RainVisual.color(selected.rateMMH))
                     }
                     Spacer()
-                    VStack(alignment:.trailing,spacing:4) {
-                        Text(String(format:"%.1f mm/h",current.rateMMH))
+                    VStack(alignment:.trailing,spacing:3) {
+                        Text(String(format:"%.1f mm/h",selected.rateMMH))
                             .font(.headline.monospacedDigit())
-                        Text(current.probability.map { "\($0)% prob." } ?? "Prob. no disponible")
+                        Text(selected.usesModelMedian ?
+                             "\(selected.rainyModels)/\(selected.availableModels) modelos prevén lluvia" :
+                             "Previsión automática")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                 }
                 Chart(samples) { point in
-                    BarMark(x:.value("Minuto",point.minute),
-                            y:.value("mm/h",point.rateMMH),
-                            width:.fixed(horizon == 30 ? 7 : horizon == 60 ? 4 : 2))
-                        .foregroundStyle(RainVisual.color(point.rateMMH))
-                        .cornerRadius(2)
+                    if point.usesModelMedian {
+                        AreaMark(x:.value("Minuto",point.minute),
+                                 yStart:.value("Mínimo",point.lowMMH),
+                                 yEnd:.value("Máximo",point.highMMH))
+                            .foregroundStyle(.cyan.opacity(0.17))
+                            .interpolationMethod(.stepEnd)
+                    }
+                    LineMark(x:.value("Minuto",point.minute),
+                             y:.value("mm/h",point.rateMMH))
+                        .foregroundStyle(.cyan)
+                        .lineStyle(StrokeStyle(lineWidth:2.6))
+                        .interpolationMethod(point.usesModelMedian ? .stepEnd : .linear)
                 }
                 .chartXScale(domain:0...horizon)
-                .chartYScale(domain:0...max(0.6,(samples.map(\.rateMMH).max() ?? 0) * 1.15))
+                .chartYScale(domain:0...max(0.6,(samples.map(\.highMMH).max() ?? 0)*1.1))
                 .chartXAxis {
-                    AxisMarks(values:stride(from:0,through:horizon,by:horizon == 30 ? 5 : horizon == 60 ? 10 : 20).map{$0}) { axis in
+                    AxisMarks(values:stride(from:0,through:horizon,
+                                            by:horizon==30 ? 5 : horizon==60 ? 10 : 20).map{$0}) { axis in
                         AxisValueLabel {
                             if let minute=axis.as(Int.self) { Text("+\(minute)") }
                         }
                         AxisTick()
                     }
                 }
-                .chartYAxis {
-                    AxisMarks(position:.leading)
-                }
+                .chartYSelection(value:.constant(nil as Double?))
                 .chartXSelection(value:$selectedMinute)
                 .frame(height:172)
                 RainIntensityLegend()
-                HStack {
-                    Label("Máximo \(String(format:"%.1f",samples.map(\.rateMMH).max() ?? 0)) mm/h",
-                          systemImage:"drop.fill")
-                    Spacer()
-                    let wet=samples.filter{$0.rateMMH >= RainInsight.wetRate}.count
-                    Text("\(wet) min con señal de lluvia")
+                if selected.usesModelMedian {
+                    HStack {
+                        Text("Consenso de \(selected.availableModels) modelos · franja: " +
+                             String(format:"%.1f–%.1f mm/h",selected.lowMMH,selected.highMMH))
+                        Spacer(minLength:0)
+                    }
+                    .font(.caption2).foregroundStyle(.secondary)
                 }
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.cyan)
+                if let estimate=store.shortEstimate,estimate.isUsable(at:now),
+                   estimate.radarBased {
+                    Label("Radar de llegada activo · " + estimate.confidence,
+                          systemImage:"dot.radiowaves.left.and.right")
+                        .font(.caption2).foregroundStyle(.cyan)
+                }
+                Button {
+                    withAnimation {compareExpanded.toggle()}
+                } label:{
+                    HStack {
+                        Label(compareExpanded ? "Ocultar modelos" : "Ver modelos individuales",
+                              systemImage:"square.stack.3d.up")
+                        Spacer()
+                        Text("\(store.shortModels.count) disponibles")
+                            .font(.caption2).foregroundStyle(.secondary)
+                        Image(systemName:compareExpanded ? "chevron.up":"chevron.down")
+                    }
+                    .font(.subheadline)
+                }
+                .buttonStyle(.plain)
+                if compareExpanded {
+                    let curves=RainPulseFusion.individual(models:store.shortModels,
+                                                         now:now,horizon:horizon)
+                    if !curves.isEmpty {
+                        Chart(curves) { item in
+                            LineMark(x:.value("Minuto",item.minute),
+                                     y:.value("mm/h",item.mmh))
+                                .foregroundStyle(by:.value("Modelo",item.name))
+                                .interpolationMethod(.stepEnd)
+                        }
+                        .chartXScale(domain:0...horizon)
+                        .chartYAxis { AxisMarks(position:.leading) }
+                        .chartLegend(.visible)
+                        .frame(height:220)
+                        if let note=RainPulseFusion.summary(samples) {
+                            Text(note)
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                    } else if store.shortModelsLoading {
+                        ProgressView("Consultando modelos…")
+                    } else {
+                        Text("No hay modelos suficientes. Continúa el Pulso automático.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                Text("Paso visual: 1 min. Los modelos usan acumulados horarios; " +
+                     "la curva por minuto NO es una previsión nativa por minuto. " +
+                     "La estimación del radar se calcula por separado.")
+                    .font(.caption2).foregroundStyle(.secondary)
             }
         }
         .padding(15)
@@ -118,6 +175,7 @@ struct MinuteRainGraph: View {
 
 struct ThreeHourRainView: View {
     let weather:RainSnapshot?
+    let models:[RainShortModel]
     @State private var chosen:Int=0
 
     var body:some View {
@@ -125,6 +183,13 @@ struct ThreeHourRainView: View {
             Label("Próximas 3 horas",systemImage:"chart.bar.fill")
                 .font(.headline)
             if let weather {
+                let overview=RainPulseFusion.points(samples:weather.samples,
+                                    models:models,now:Date(),horizon:120,step:15)
+                if let note=RainPulseFusion.summary(overview) {
+                    Text("Primeras 2 h · " + note)
+                        .font(.caption2).foregroundStyle(.cyan)
+                }
+
                 let slots=RainInsight.moments(samples:weather.samples,from:.now,minutes:180,step:15)
                 if slots.isEmpty {
                     Text("No hay datos de 15 min para las próximas horas")
