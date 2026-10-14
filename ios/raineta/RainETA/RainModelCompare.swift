@@ -77,89 +77,8 @@ struct RainMultiModelView: View {
 
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
-            Button {
-                withAnimation {expanded.toggle()}
-                if expanded && forecasts.isEmpty {Task {await refresh()}}
-            } label:{
-                HStack(alignment:.center) {
-                    VStack(alignment:.leading,spacing:3) {
-                        Label("Comparar modelos",systemImage:"square.stack.3d.up")
-                            .font(.headline)
-                        Text("Precipitación total por día · mm")
-                            .font(.caption2).foregroundStyle(.secondary)
-                    }
-                    Spacer(minLength:10)
-                    Text("\(forecasts.count)/5")
-                        .font(.caption.monospacedDigit())
-                        .foregroundStyle(.secondary)
-                    Image(systemName:expanded ? "chevron.up":"chevron.down")
-                }
-            }
-            .buttonStyle(.plain)
-            if expanded {
-                ScrollView(.horizontal,showsIndicators:false) {
-                    HStack(spacing:7) {
-                        ForEach(0..<7,id:\.self) { day in
-                            Button {
-                                selectedDay=day
-                            } label:{
-                                Text(day==0 ? "Hoy" : day==1 ? "Mañana" : "+\(day)d")
-                                    .font(.caption.bold())
-                                    .padding(.horizontal,11)
-                                    .padding(.vertical,8)
-                                    .foregroundStyle(selectedDay==day ? .black:.white)
-                                    .background(selectedDay==day ? Color.cyan:
-                                                Color.white.opacity(0.10),
-                                                in:Capsule())
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-                Text(dayLabel + " · lluvia acumulada estimada")
-                    .font(.subheadline.bold())
-                if loading {ProgressView("Consultando centros…").font(.caption)}
-                let rows=selectedRows
-                let maximum=max(0.5,rows.compactMap{$0.1}.max() ?? 0)
-                ForEach(Array(rows.enumerated()),id:\.offset) { row in
-                    let entry=row.element
-                    VStack(alignment:.leading,spacing:5) {
-                        HStack {
-                            Text(entry.0).font(.subheadline)
-                            Spacer()
-                            Text(entry.1.map{String(format:"%.1f mm",$0)} ?? "Sin datos")
-                                .font(.subheadline.monospacedDigit().bold())
-                                .foregroundStyle(entry.1 == nil ? .secondary:.cyan)
-                        }
-                        GeometryReader { geo in
-                            Capsule().fill(.white.opacity(0.07))
-                                .overlay(alignment:.leading) {
-                                    Capsule()
-                                        .fill(entry.0=="Automático" ? .mint:.cyan)
-                                        .frame(width:geo.size.width *
-                                               CGFloat(max(0,entry.1 ?? 0)/maximum))
-                                }
-                        }
-                        .frame(height:7)
-                    }
-                    .padding(.vertical,2)
-                }
-                if forecasts.isEmpty && !loading {
-                    Text("La previsión automática sigue disponible; los centros no han respondido.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-                if selectedDay>3 && forecasts.contains(where:{$0.id=="ARPEGE"}) {
-                    Text("Météo-France puede no proporcionar datos más allá de 4 días.")
-                        .font(.caption2).foregroundStyle(.secondary)
-                }
-                Text("Cada fila representa un centro meteorológico distinto. Una cifra alta significa más lluvia total en ese día; no es probabilidad de lluvia.")
-                    .font(.caption2).foregroundStyle(.secondary)
-                Button {
-                    Task {await refresh()}
-                } label:{ Label("Actualizar comparación",systemImage:"arrow.clockwise") }
-                    .font(.caption)
-                    .disabled(loading)
-            }
+            header
+            if expanded { comparisonDetails }
         }
         .padding(14)
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
@@ -170,6 +89,83 @@ struct RainMultiModelView: View {
         }
     }
 
+    private var header:some View {
+        Button {
+            withAnimation {expanded.toggle()}
+            if expanded && forecasts.isEmpty {Task {await refresh()}}
+        } label:{
+            HStack(alignment:.center) {
+                VStack(alignment:.leading,spacing:3) {
+                    Label("Comparar modelos",systemImage:"square.stack.3d.up")
+                        .font(.headline)
+                    Text("Precipitación total por día · mm")
+                        .font(.caption2).foregroundStyle(.secondary)
+                }
+                Spacer(minLength:10)
+                Text("\(forecasts.count)/5")
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                Image(systemName:expanded ? "chevron.up":"chevron.down")
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var dayPicker:some View {
+        ScrollView(.horizontal,showsIndicators:false) {
+            HStack(spacing:7) {
+                ForEach(0..<7,id:\.self) { day in
+                    Button {selectedDay=day} label:{
+                        Text(day==0 ? "Hoy" : day==1 ? "Mañana" : "+\(day)d")
+                            .font(.caption.bold())
+                            .padding(.horizontal,11)
+                            .padding(.vertical,8)
+                            .foregroundStyle(selectedDay==day ? Color.black:Color.white)
+                            .background(selectedDay==day ? Color.cyan:
+                                        Color.white.opacity(0.10),in:Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private var comparisonDetails:some View {
+        VStack(alignment:.leading,spacing:12) {
+            dayPicker
+            Text(dayLabel + " · lluvia acumulada estimada")
+                .font(.subheadline.bold())
+            if loading {ProgressView("Consultando centros…").font(.caption)}
+            modelRows
+            if forecasts.isEmpty && !loading {
+                Text("La previsión automática sigue disponible; los centros no han respondido.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if selectedDay>3 && forecasts.contains(where:{$0.id=="ARPEGE"}) {
+                Text("Météo-France puede no proporcionar datos más allá de 4 días.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+            Text("Cada fila es un centro meteorológico. Se indican milímetros acumulados, no probabilidad de lluvia.")
+                .font(.caption2).foregroundStyle(.secondary)
+            Button {Task {await refresh()}} label:{
+                Label("Actualizar comparación",systemImage:"arrow.clockwise")
+            }
+            .font(.caption)
+            .disabled(loading)
+        }
+    }
+
+    private var modelRows:some View {
+        let rows=selectedRows
+        let peak=max(0.5,rows.compactMap{$0.1}.max() ?? 0)
+        return VStack(alignment:.leading,spacing:10) {
+            ForEach(Array(rows.enumerated()),id:\.offset) { row in
+                RainModelCompareRow(name:row.element.0,
+                                    amount:row.element.1,maximum:peak)
+            }
+        }
+    }
+
     private func refresh() async {
         guard !loading else{return}
         loading=true
@@ -177,5 +173,34 @@ struct RainMultiModelView: View {
         let results=await RainModelCompareAPI.compare(latitude:coordinate,longitude:longitude)
         if key==dataKey {forecasts=results}
         loading=false
+    }
+}
+
+private struct RainModelCompareRow:View {
+    let name:String
+    let amount:Double?
+    let maximum:Double
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:5) {
+            HStack {
+                Text(name).font(.subheadline)
+                Spacer()
+                Text(amount.map{String(format:"%.1f mm",$0)} ?? "Sin datos")
+                    .font(.subheadline.monospacedDigit().bold())
+                    .foregroundStyle(amount == nil ? Color.secondary : Color.cyan)
+            }
+            GeometryReader { geometry in
+                Capsule().fill(Color.white.opacity(0.07))
+                    .overlay(alignment:.leading) {
+                        Capsule()
+                            .fill(name=="Automático" ? Color.mint : Color.cyan)
+                            .frame(width:geometry.size.width *
+                                   CGFloat(max(0,amount ?? 0)/max(0.5,maximum)))
+                    }
+            }
+            .frame(height:7)
+        }
+        .padding(.vertical,2)
     }
 }
