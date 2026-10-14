@@ -155,6 +155,8 @@ struct RadarSection: View {
     let expanded:Bool
     @State private var playing=false
     @State private var recenterRevision=0
+    @State private var loadingFuture=false
+    @State private var renderedFuture=0
 
     private var frames:[RadarFrame] { store.radar.frames }
     private var pastEnd:Int {max(0,frames.count-1)}
@@ -221,11 +223,18 @@ struct RadarSection: View {
                      framePath:observed?.path,projection:nil,modelField:nil,
                      futureMinutes:store.radarFutureMinutes,
                      recenterRevision:recenterRevision,
-                     forecastStatus:{store.futureFieldStatus=$0})
+                     forecastStatus:{store.futureFieldStatus=$0},
+                     onForecastReady: { lead,success in
+                         if lead==store.radarFutureMinutes {
+                             loadingFuture=false
+                             if success {renderedFuture=lead}
+                             else {playing=false}
+                         }
+                     })
                 .frame(height:expanded ? 540 : 325)
                 .clipShape(RoundedRectangle(cornerRadius:16))
                 .overlay(alignment:.topTrailing) {
-                    Text(store.radarFutureMinutes>0 ? "ICON-EU · MODELO" : "RADAR OBSERVADO")
+                    Text(store.radarFutureMinutes>0 ? (loadingFuture ? "CARGANDO MODELO…" : (store.radarFutureMinutes<=30 ? "RADAR + ICON · TRANSICIÓN":"ICON-EU · MODELO")) : "RADAR OBSERVADO")
                         .font(.system(size:10,weight:.bold))
                         .foregroundStyle(store.radarFutureMinutes>0 ? .yellow:.white)
                         .padding(9)
@@ -248,7 +257,7 @@ struct RadarSection: View {
 
             HStack {
                 if store.radarFutureMinutes>0 {
-                    Text("Futuro +\(store.radarFutureMinutes) min")
+                    Text(loadingFuture ? "Preparando +\(store.radarFutureMinutes) min…" : "Futuro +\(store.radarFutureMinutes) min")
                         .foregroundStyle(.yellow)
                     Spacer()
                     Text(Date().addingTimeInterval(Double(store.radarFutureMinutes*60))
@@ -315,17 +324,32 @@ struct RadarSection: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
+            if store.radarFutureMinutes > 0 && store.radarFutureMinutes <= 30 {
+                Text("Transición visual: radar observado + mapa horario ICON-EU. No es un radar futuro medido.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
             if store.futureFieldStatus.contains("no disponible") {
                 Text("Previsión temporalmente no disponible")
                     .font(.caption2).foregroundStyle(.yellow)
             }
         }
+        .onChange(of:store.radarFutureMinutes) { _,lead in
+            loadingFuture=lead>0 && lead != renderedFuture
+            if lead==0 {renderedFuture=0}
+        }
         .task(id:playing) {
             while playing && !Task.isCancelled {
-                let delay=store.radarFutureMinutes>0 ? 2_100_000_000:850_000_000
+                // Never advance the playback clock while WMS still draws
+                // the previous frame. This prevents irregular skipped tiles.
+                if store.radarFutureMinutes>0 && loadingFuture {
+                    try? await Task.sleep(nanoseconds:180_000_000)
+                    continue
+                }
+                let delay=store.radarFutureMinutes>0 ? 1_350_000_000:850_000_000
                 try? await Task.sleep(nanoseconds:UInt64(delay))
                 if Task.isCancelled || !playing {break}
                 if store.radarFutureMinutes>0 {
+                    if loadingFuture {continue}
                     if store.radarFutureMinutes>=240 {playing=false}
                     else {selectMinute(store.radarFutureMinutes+5)}
                 } else if store.radarIndex<pastEnd {
