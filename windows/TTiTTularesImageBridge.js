@@ -727,6 +727,12 @@ async function uploadImage(image){
         const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery"});
         if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
       }
+      if(isAutomatic && String(job.delivery_mode||"")==="launch_only"){
+        // El usuario recogerá la imagen de ChatGPT Images. No capturar ni subir raster.
+        // La confirmación del servidor es la única base del estado Telegram.
+        console.log("BRIDGE LAUNCH ONLY :: imagen solicitada, sin recuperación");
+        return;
+      }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
       try{
         image=await capture(cdp,job);
