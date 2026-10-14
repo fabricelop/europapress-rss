@@ -249,8 +249,6 @@ jobs:
               old_status=str(old.get("status") or "").upper()
               if old and int(old.get("revision") or revision)==revision and not force_retry:
                   continue
-              if queued:
-                  continue
               old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
               old_age=(now-old_updated).total_seconds() if old_updated else None
               # Un job activo solo bloquea la reparación mientras tenga actividad reciente.
@@ -347,12 +345,39 @@ jobs:
               })
               queued.append((tid,row.get("name"),command,auto_attempt))
 
-          if queued:
+          # Only live, unlaunched work belongs in the PC discovery index.
+          # Historical jobs forced the three-probe scanner to waste minutes
+          # circling old entries while fresh Listas images remained REQUESTED.
+          leaders_by_id={str(row.get("id") or ""):int(row.get("revision") or 0) for row in leaders}
+          before=list(index.get("jobs",[]))
+          filtered=[]
+          seen=set()
+          for x in reversed(before):
+              tid=str(x.get("target_id") or "")
+              path=str(x.get("status_path") or "")
+              if not tid or tid in seen or not path.startswith("trends/image-runs/jobs/"):
+                  continue
+              job=load(CTRL/path)
+              if str(job.get("command_id") or "")!=str(x.get("command_id") or ""):
+                  continue
+              status=str(job.get("status") or "").upper()
+              if status not in ACTIVE or job.get("pc_launched_at"):
+                  continue
+              if parse_dt(job.get("requested_at")) and (now-parse_dt(job.get("requested_at"))).total_seconds()>12*3600:
+                  continue
+              auto=bool(job.get("auto_repair") or x.get("auto_repair"))
+              if auto and (tid not in leaders_by_id or int(job.get("revision") or 0)!=leaders_by_id[tid]):
+                  continue
+              seen.add(tid)
+              filtered.append(x)
+          filtered.reverse()
+          index["jobs"]=filtered
+          if queued or filtered!=before:
               index["version"]=1
               index["updated_at"]=nowz
-              index["jobs"]=index.get("jobs",[])[-100:]
               index_path.parent.mkdir(parents=True,exist_ok=True)
               index_path.write_text(json.dumps(index,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              print("TTENDENCIAS_AI_INDEX_PRUNED",len(before),"->",len(filtered))
 
           for q in queued:print("TTENDENCIAS_AI_REPAIR_QUEUED",*q)
           print("TTENDENCIAS_AI_REPAIR_COUNT="+str(len(queued)))
