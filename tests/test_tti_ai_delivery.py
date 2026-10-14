@@ -52,11 +52,11 @@ class AiDeliveryTests(TestCase):
         self.assertIn("En cola",self.fake_info(self.item,pending)["note"])
         self.assertIn("Enviada a ChatGPT Images",self.fake_info(self.item,self.job(seconds=60))["note"])
 
-    def test_unlaunched_pc_job_expires_after_thirty_minutes(self):
+    def test_unlaunched_pc_job_remains_queued_after_thirty_minutes(self):
         queued=self.job("REQUESTED")
         queued.pop("pc_launched_at")
         queued["requested_at"]=(self.now-timedelta(seconds=1801)).isoformat()
-        self.assertIn("Sin imagen IA",self.fake_info(self.item,queued)["note"])
+        self.assertIn("se conserva la solicitud",self.fake_info(self.item,queued)["note"])
 
     def test_launched_remains_sent_even_if_generation_not_recovered(self):
         state=self.fake_info(self.item,self.job("RUNNING",seconds=601))
