@@ -580,7 +580,7 @@ async function requestImageRun(req,res){
   const command_id="tr-img-"+Date.now()+"-"+crypto.randomBytes(3).toString("hex");
   const doc={
     version:1,command_id,requested_at,updated_at:requested_at,status:"REQUESTED",phase:"queued",
-    mode:"manual_pc_chat_image",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
+    mode:"manual_pc_chat_image",delivery_mode:"launch_only",executor:"pc_chat_ttendencias_dedicated",project:"ttendencias",launcher_arg:"tendencias",
     task:"image",target_id,trend_id:target_id,target_name,revision,attempt,
     chat_command_version:5,
     instruction_profile:"ttendencias_gag_v5_varied_style_single_gag",
@@ -591,7 +591,7 @@ async function requestImageRun(req,res){
       visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
       sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-      lifecycle:"Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+      lifecycle:"Una sola orden en ChatGPT Images; confirmar envío, cerrar LAUNCHED y nunca capturar ni persistir raster."
     },
     message:"Solicitud registrada; esperando al PC para abrir un chat de imagen."
   };
