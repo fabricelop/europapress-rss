@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T01:15:00+02:00",
-  "last_completed_at": "2026-10-15T01:18:00+02:00",
-  "updated_at": "2026-10-15T01:18:00+02:00",
+  "last_started_at": "2026-10-15T01:45:00+02:00",
+  "last_completed_at": "2026-10-15T01:48:20+02:00",
+  "updated_at": "2026-10-15T01:48:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -20,18 +20,18 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261015T0115+0200",
-    "requested_at": "2026-10-15T01:15:00+02:00",
+    "run_id": "tr-chat-20261015T0145+0200",
+    "requested_at": "2026-10-15T01:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-chat-20261015T0115+0200",
+    "run_id": "tr-chat-20261015T0145+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T01:15:00+02:00",
-    "updated_at": "2026-10-15T01:18:00+02:00",
-    "finished_at": "2026-10-15T01:18:00+02:00",
+    "started_at": "2026-10-15T01:45:00+02:00",
+    "updated_at": "2026-10-15T01:48:20+02:00",
+    "finished_at": "2026-10-15T01:48:20+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -43,7 +43,7 @@
       "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 1,
       "queue_remaining": 0,
@@ -59,88 +59,95 @@
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada 0/0: cola editorial limpia. Se solicitó el saneamiento visual; permanece 1 huérfano previo, Florentino (Telegram 835), porque no hay un detonante único verificable y no se ha inventado una explicación.",
+    "message": "Pasada 0/0: cola editorial limpia y 0 rewrite_pending. Se solicitó el saneamiento visual; permanece 1 huérfano previo, Florentino (Telegram 835), sin causa única verificable.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-15T01:17:20+02:00",
+        "at": "2026-10-15T01:47:20+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "reason": "Telegram 835 sigue sent/final:false. No se ha podido verificar un detonante único y actual con suficiente certeza editorial; se conserva el provisional para no inventar una causa."
+        "reason": "Telegram 835 sigue sent/final:false. La request r0 está inactive por salida del Top 10 y, tras dos líneas de búsqueda actuales, no hay un detonante único verificable para el pico de las 23:32; se conserva el provisional para no inventar una causa."
       }
     ],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T01:15:00+02:00",
+        "at": "2026-10-15T01:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; cola nueva 0 y 1 aviso Telegram huérfano previo (Florentino, 835)."
+        "message": "Preparando pasada editorial; cola nueva 0. Verificando reexplicaciones, Pendientes y 1 aviso Telegram huérfano previo (Florentino, 835)."
       },
       {
-        "at": "2026-10-15T01:15:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo editorial-queue.json: 0 preparing/update y 0 entradas activas."
-      },
-      {
-        "at": "2026-10-15T01:15:35+02:00",
+        "at": "2026-10-15T01:45:20+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Releyendo auditoría y ledger: Telegram 835 continúa sent/final:false."
+        "message": "Releyendo estado autoritativo de Florentino y los registros de Explicadas/requests."
       },
       {
-        "at": "2026-10-15T01:15:50+02:00",
+        "at": "2026-10-15T01:45:50+02:00",
         "phase": "investigating",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Buscando detonante actual de Florentino en el contexto posterior a la jornada de Champions."
+        "message": "Buscando un detonante actual y verificable de «Florentino» antes de decidir si puede cerrarse el provisional 835."
       },
       {
-        "at": "2026-10-15T01:16:35+02:00",
+        "at": "2026-10-15T01:46:30+02:00",
         "phase": "investigating",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Fuentes recientes confirman debate y críticas sobre Florentino y el Real Madrid, pero no establecen de forma inequívoca el origen del pico."
+        "message": "Primer contraste: la cobertura actual gira en torno al Roma‑Real Madrid, Vinícius y Mourinho, pero no atribuye el pico de «Florentino» a un hecho concreto. Probando una segunda línea de búsqueda."
       },
       {
-        "at": "2026-10-15T01:17:05+02:00",
+        "at": "2026-10-15T01:47:05+02:00",
         "phase": "drafting",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "No se redacta explicación: atribuir una causa concreta sería especulativo."
+        "message": "No se redacta explicación para Florentino: ninguna fuente vincula de forma inequívoca el pico de las 23:32 con un detonante concreto."
       },
       {
-        "at": "2026-10-15T01:17:20+02:00",
+        "at": "2026-10-15T01:47:20+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Incidencia conservada: Telegram 835 seguirá provisional hasta disponer de un detonante verificable o decisión explícita del usuario."
+        "message": "Conservando el provisional 835 como incidencia: cerrarlo ahora exigiría atribuir una causa especulativa."
       },
       {
-        "at": "2026-10-15T01:17:35+02:00",
+        "at": "2026-10-15T01:47:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: la cola editorial sigue en 0 y el trigger de saneamiento visual de esta pasada quedó persistido."
+        "message": "Releyendo main: cola, requests, auditoría Telegram y trigger de saneamiento antes del cierre."
       },
       {
-        "at": "2026-10-15T01:18:00+02:00",
+        "at": "2026-10-15T01:48:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Persistiendo editorial-runtime.json con cola 0, saneamiento solicitado y 1 huérfano previo no resuelto."
+      },
+      {
+        "at": "2026-10-15T01:48:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada con 1 incidencia previa no resuelta: Florentino (Telegram 835)."
+        "message": "Pasada 0/0: cola editorial limpia y 0 rewrite_pending. Se solicitó el saneamiento visual; permanece 1 huérfano previo, Florentino (Telegram 835), sin causa única verificable."
       }
     ],
     "queue_complete": true,
-    "remaining_active_ids": []
+    "remaining_active_ids": [],
+    "partial": false
   },
-  "run_id": "tr-chat-20261015T0115+0200",
+  "run_id": "tr-chat-20261015T0145+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -148,7 +155,7 @@
     "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
+    "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 1,
     "queue_remaining": 0,
@@ -169,67 +176,67 @@
   ],
   "activity": [
     {
-      "at": "2026-10-15T01:15:00+02:00",
+      "at": "2026-10-15T01:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; cola nueva 0 y 1 aviso Telegram huérfano previo (Florentino, 835)."
+      "message": "Preparando pasada editorial; cola nueva 0. Verificando reexplicaciones, Pendientes y 1 aviso Telegram huérfano previo (Florentino, 835)."
     },
     {
-      "at": "2026-10-15T01:15:20+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo editorial-queue.json: 0 preparing/update y 0 entradas activas."
-    },
-    {
-      "at": "2026-10-15T01:15:35+02:00",
+      "at": "2026-10-15T01:45:20+02:00",
       "phase": "verifying",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Releyendo auditoría y ledger: Telegram 835 continúa sent/final:false."
+      "message": "Releyendo estado autoritativo de Florentino y los registros de Explicadas/requests."
     },
     {
-      "at": "2026-10-15T01:15:50+02:00",
+      "at": "2026-10-15T01:45:50+02:00",
       "phase": "investigating",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Buscando detonante actual de Florentino en el contexto posterior a la jornada de Champions."
+      "message": "Buscando un detonante actual y verificable de «Florentino» antes de decidir si puede cerrarse el provisional 835."
     },
     {
-      "at": "2026-10-15T01:16:35+02:00",
+      "at": "2026-10-15T01:46:30+02:00",
       "phase": "investigating",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Fuentes recientes confirman debate y críticas sobre Florentino y el Real Madrid, pero no establecen de forma inequívoca el origen del pico."
+      "message": "Primer contraste: la cobertura actual gira en torno al Roma‑Real Madrid, Vinícius y Mourinho, pero no atribuye el pico de «Florentino» a un hecho concreto. Probando una segunda línea de búsqueda."
     },
     {
-      "at": "2026-10-15T01:17:05+02:00",
+      "at": "2026-10-15T01:47:05+02:00",
       "phase": "drafting",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "No se redacta explicación: atribuir una causa concreta sería especulativo."
+      "message": "No se redacta explicación para Florentino: ninguna fuente vincula de forma inequívoca el pico de las 23:32 con un detonante concreto."
     },
     {
-      "at": "2026-10-15T01:17:20+02:00",
+      "at": "2026-10-15T01:47:20+02:00",
       "phase": "verifying",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Incidencia conservada: Telegram 835 seguirá provisional hasta disponer de un detonante verificable o decisión explícita del usuario."
+      "message": "Conservando el provisional 835 como incidencia: cerrarlo ahora exigiría atribuir una causa especulativa."
     },
     {
-      "at": "2026-10-15T01:17:35+02:00",
+      "at": "2026-10-15T01:47:35+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: la cola editorial sigue en 0 y el trigger de saneamiento visual de esta pasada quedó persistido."
+      "message": "Releyendo main: cola, requests, auditoría Telegram y trigger de saneamiento antes del cierre."
     },
     {
-      "at": "2026-10-15T01:18:00+02:00",
+      "at": "2026-10-15T01:48:00+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Persistiendo editorial-runtime.json con cola 0, saneamiento solicitado y 1 huérfano previo no resuelto."
+    },
+    {
+      "at": "2026-10-15T01:48:20+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada con 1 incidencia previa no resuelta: Florentino (Telegram 835)."
+      "message": "Pasada 0/0: cola editorial limpia y 0 rewrite_pending. Se solicitó el saneamiento visual; permanece 1 huérfano previo, Florentino (Telegram 835), sin causa única verificable."
     }
   ],
   "telegram_orphans": 1,
