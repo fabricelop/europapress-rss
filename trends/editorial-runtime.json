@@ -5,13 +5,14 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-14T13:45:00+02:00",
-  "last_completed_at": "2026-10-14T13:51:30+02:00",
-  "updated_at": "2026-10-14T13:51:30+02:00",
+  "last_completed_at": "2026-10-14T13:56:30+02:00",
+  "updated_at": "2026-10-14T13:56:30+02:00",
   "status": "success",
   "processed_ids": [
     "ff942c05391c",
     "f857bbb84279",
-    "a9b2afa3ac90"
+    "a9b2afa3ac90",
+    "13c9e184e0fe"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -20,7 +21,7 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "triggered",
     "direct_imagegen": false,
     "run_id": "tr-chat-20261014T1345+0200",
     "requested_at": "2026-10-14T13:45:00+02:00",
@@ -35,19 +36,19 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-14T13:45:00+02:00",
-    "updated_at": "2026-10-14T13:51:30+02:00",
-    "finished_at": "2026-10-14T13:51:30+02:00",
-    "current": 3,
-    "total": 3,
+    "updated_at": "2026-10-14T13:56:30+02:00",
+    "finished_at": "2026-10-14T13:56:30+02:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 0,
+      "trends_processed": 5,
+      "trends_explained": 4,
+      "explanation_groups": 4,
+      "new_cards": 4,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -61,11 +62,11 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 5,
       "remates_omitted": 0
     },
-    "message": "Pasada 3/3 cerrada y verificada: Tezanos, #Mañaneros14O y LGTBI explicadas; cola 0; Telegram sin huérfanos.",
+    "message": "Pasada 5/5 cerrada y verificada: Tezanos r0→r1, #Mañaneros14O, LGTBI y El CIS; cola 0; 4 tarjetas Telegram emparejadas y 0 huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -102,6 +103,24 @@
         "selected_score": null,
         "selected_text": "🌶️ El mapa legislativo acaba de perder otro hueco en blanco.",
         "no_remate_reason": null
+      },
+      {
+        "trend_id": "13c9e184e0fe",
+        "revision": 0,
+        "candidate_count": 1,
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "selected_text": "🌶️ El sondeo ya ha colocado la cinta métrica en plena campaña.",
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ff942c05391c",
+        "revision": 1,
+        "candidate_count": 1,
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "selected_text": "🌶️ El CIS ha sacado la calculadora antes que las urnas.",
+        "no_remate_reason": null
       }
     ],
     "activity": [
@@ -110,140 +129,140 @@
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · 3 tendencias activas; validando cola, reexplicaciones, Telegram y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial · 3 tendencias activas."
       },
       {
         "at": "2026-10-14T13:46:25+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main; reparación visual automática activada."
-      },
-      {
-        "at": "2026-10-14T13:46:40+02:00",
-        "phase": "verifying",
-        "trend_id": "ff942c05391c",
-        "title": "Tezanos",
-        "message": "Releyendo estado autoritativo de Tezanos · r0 sigue preparing y #1."
+        "message": "Saneamiento de Pendientes solicitado en main y reparación visual activada."
       },
       {
         "at": "2026-10-14T13:46:50+02:00",
         "phase": "investigating",
         "trend_id": "ff942c05391c",
         "title": "Tezanos",
-        "message": "Contrastando el CIS de octubre en dos fuentes actuales."
-      },
-      {
-        "at": "2026-10-14T13:47:10+02:00",
-        "phase": "drafting",
-        "trend_id": "ff942c05391c",
-        "title": "Tezanos",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "message": "CIS de octubre contrastado en dos fuentes actuales."
       },
       {
         "at": "2026-10-14T13:47:20+02:00",
         "phase": "remate_selection",
         "trend_id": "ff942c05391c",
         "title": "Tezanos",
-        "message": "Remate político neutral seleccionado."
-      },
-      {
-        "at": "2026-10-14T13:47:30+02:00",
-        "phase": "verifying",
-        "trend_id": "f857bbb84279",
-        "title": "#Mañaneros14O",
-        "message": "Releyendo estado autoritativo de #Mañaneros14O · r0 sigue preparing y #4."
+        "message": "Explicación r0 y remate político neutral preparados."
       },
       {
         "at": "2026-10-14T13:47:40+02:00",
         "phase": "investigating",
         "trend_id": "f857bbb84279",
         "title": "#Mañaneros14O",
-        "message": "Contrastando programación de RTVE y uso de la etiqueta fechada."
-      },
-      {
-        "at": "2026-10-14T13:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "f857bbb84279",
-        "title": "#Mañaneros14O",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "message": "Programación de RTVE y uso de la etiqueta fechada contrastados."
       },
       {
         "at": "2026-10-14T13:48:10+02:00",
         "phase": "remate_selection",
         "trend_id": "f857bbb84279",
         "title": "#Mañaneros14O",
-        "message": "Remate seleccionado para la emisión del día."
-      },
-      {
-        "at": "2026-10-14T13:48:20+02:00",
-        "phase": "verifying",
-        "trend_id": "a9b2afa3ac90",
-        "title": "LGTBI",
-        "message": "Releyendo estado autoritativo de LGTBI · r0 sigue preparing y #5."
+        "message": "Explicación y remate preparados."
       },
       {
         "at": "2026-10-14T13:48:30+02:00",
         "phase": "investigating",
         "trend_id": "a9b2afa3ac90",
         "title": "LGTBI",
-        "message": "Contrastando la aprobación de la ley LGTBI de Asturias y su contexto autonómico."
-      },
-      {
-        "at": "2026-10-14T13:48:50+02:00",
-        "phase": "drafting",
-        "trend_id": "a9b2afa3ac90",
-        "title": "LGTBI",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "message": "Aprobación de la ley LGTBI de Asturias y contexto autonómico contrastados."
       },
       {
         "at": "2026-10-14T13:49:00+02:00",
         "phase": "remate_selection",
         "trend_id": "a9b2afa3ac90",
         "title": "LGTBI",
-        "message": "Remate seleccionado sobre el mapa legislativo."
-      },
-      {
-        "at": "2026-10-14T13:50:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando las 3 fichas Explicadas y sincronizando sus revisiones exactas en requests."
+        "message": "Explicación y remate preparados."
       },
       {
         "at": "2026-10-14T13:50:43+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Retirando de la cola las 3 revisiones ya persistidas; cola final 0."
-      },
-      {
-        "at": "2026-10-14T13:51:08+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual automática completada correctamente; IA queda en su ciclo independiente."
-      },
-      {
-        "at": "2026-10-14T13:51:15+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: id+revision+texto coinciden en Explicadas y requests; cola 0."
+        "message": "Primer lote 3/3 persistido y retirado de la cola."
       },
       {
         "at": "2026-10-14T13:51:29+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Flujo Telegram completado con éxito; 3 tarjetas vivas emparejadas, 0 huérfanos y 0 incidencias bidireccionales."
+        "message": "Primer lote verificado: Telegram limpio y sin incidencias bidireccionales."
       },
       {
-        "at": "2026-10-14T13:51:30+02:00",
+        "at": "2026-10-14T13:52:40+02:00",
+        "phase": "verifying",
+        "trend_id": "13c9e184e0fe",
+        "title": "El CIS",
+        "message": "Nueva cola detectada tras la relectura final: El CIS r0 y Tezanos r1."
+      },
+      {
+        "at": "2026-10-14T13:53:00+02:00",
+        "phase": "investigating",
+        "trend_id": "13c9e184e0fe",
+        "title": "El CIS",
+        "message": "Reutilizando las fuentes actuales ya contrastadas del mismo barómetro; hecho esencial verificado."
+      },
+      {
+        "at": "2026-10-14T13:53:20+02:00",
+        "phase": "drafting",
+        "trend_id": "13c9e184e0fe",
+        "title": "El CIS",
+        "message": "Redactando explicación #4 y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-14T13:53:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "13c9e184e0fe",
+        "title": "El CIS",
+        "message": "Remate político neutral seleccionado."
+      },
+      {
+        "at": "2026-10-14T13:53:45+02:00",
+        "phase": "verifying",
+        "trend_id": "ff942c05391c",
+        "title": "Tezanos",
+        "message": "Revalidando Tezanos r1 · petición «Cambia el chiste» y rango actual #5."
+      },
+      {
+        "at": "2026-10-14T13:54:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ff942c05391c",
+        "title": "Tezanos",
+        "message": "Hecho conservado y remate sustituido por uno nuevo."
+      },
+      {
+        "at": "2026-10-14T13:54:30+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "El CIS r0 y Tezanos r1 persistidos en Explicadas y requests; retirados de la cola."
+      },
+      {
+        "at": "2026-10-14T13:56:19+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura transaccional correcta: cola 0; 4 tarjetas vivas emparejadas; 0 huérfanos y 0 incidencias bidireccionales."
+      },
+      {
+        "at": "2026-10-14T13:56:27+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Flujo Telegram verificado con ejecución exitosa; reparación visual de El CIS sigue su ciclo independiente."
+      },
+      {
+        "at": "2026-10-14T13:56:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 3/3 cerrada y verificada · cola 0, Telegram limpio y tramo visual delegado."
+        "message": "Pasada 5/5 cerrada y verificada · 4 tendencias vigentes, una revisión de Tezanos y cola 0."
       }
     ],
     "queue_complete": true,
@@ -251,11 +270,11 @@
   },
   "run_id": "tr-chat-20261014T1345+0200",
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
-    "revisions_updated": 0,
+    "trends_processed": 5,
+    "trends_explained": 4,
+    "explanation_groups": 4,
+    "new_cards": 4,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
@@ -269,8 +288,8 @@
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 5,
+    "remates_selected": 5,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
@@ -285,140 +304,140 @@
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial · 3 tendencias activas; validando cola, reexplicaciones, Telegram y saneamiento de Pendientes."
+      "message": "Iniciando pasada editorial · 3 tendencias activas."
     },
     {
       "at": "2026-10-14T13:46:25+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Saneamiento de Pendientes solicitado en main; reparación visual automática activada."
-    },
-    {
-      "at": "2026-10-14T13:46:40+02:00",
-      "phase": "verifying",
-      "trend_id": "ff942c05391c",
-      "title": "Tezanos",
-      "message": "Releyendo estado autoritativo de Tezanos · r0 sigue preparing y #1."
+      "message": "Saneamiento de Pendientes solicitado en main y reparación visual activada."
     },
     {
       "at": "2026-10-14T13:46:50+02:00",
       "phase": "investigating",
       "trend_id": "ff942c05391c",
       "title": "Tezanos",
-      "message": "Contrastando el CIS de octubre en dos fuentes actuales."
-    },
-    {
-      "at": "2026-10-14T13:47:10+02:00",
-      "phase": "drafting",
-      "trend_id": "ff942c05391c",
-      "title": "Tezanos",
-      "message": "Redactando explicación factual y comprobando límite de X."
+      "message": "CIS de octubre contrastado en dos fuentes actuales."
     },
     {
       "at": "2026-10-14T13:47:20+02:00",
       "phase": "remate_selection",
       "trend_id": "ff942c05391c",
       "title": "Tezanos",
-      "message": "Remate político neutral seleccionado."
-    },
-    {
-      "at": "2026-10-14T13:47:30+02:00",
-      "phase": "verifying",
-      "trend_id": "f857bbb84279",
-      "title": "#Mañaneros14O",
-      "message": "Releyendo estado autoritativo de #Mañaneros14O · r0 sigue preparing y #4."
+      "message": "Explicación r0 y remate político neutral preparados."
     },
     {
       "at": "2026-10-14T13:47:40+02:00",
       "phase": "investigating",
       "trend_id": "f857bbb84279",
       "title": "#Mañaneros14O",
-      "message": "Contrastando programación de RTVE y uso de la etiqueta fechada."
-    },
-    {
-      "at": "2026-10-14T13:48:00+02:00",
-      "phase": "drafting",
-      "trend_id": "f857bbb84279",
-      "title": "#Mañaneros14O",
-      "message": "Redactando explicación factual y comprobando límite de X."
+      "message": "Programación de RTVE y uso de la etiqueta fechada contrastados."
     },
     {
       "at": "2026-10-14T13:48:10+02:00",
       "phase": "remate_selection",
       "trend_id": "f857bbb84279",
       "title": "#Mañaneros14O",
-      "message": "Remate seleccionado para la emisión del día."
-    },
-    {
-      "at": "2026-10-14T13:48:20+02:00",
-      "phase": "verifying",
-      "trend_id": "a9b2afa3ac90",
-      "title": "LGTBI",
-      "message": "Releyendo estado autoritativo de LGTBI · r0 sigue preparing y #5."
+      "message": "Explicación y remate preparados."
     },
     {
       "at": "2026-10-14T13:48:30+02:00",
       "phase": "investigating",
       "trend_id": "a9b2afa3ac90",
       "title": "LGTBI",
-      "message": "Contrastando la aprobación de la ley LGTBI de Asturias y su contexto autonómico."
-    },
-    {
-      "at": "2026-10-14T13:48:50+02:00",
-      "phase": "drafting",
-      "trend_id": "a9b2afa3ac90",
-      "title": "LGTBI",
-      "message": "Redactando explicación factual y comprobando límite de X."
+      "message": "Aprobación de la ley LGTBI de Asturias y contexto autonómico contrastados."
     },
     {
       "at": "2026-10-14T13:49:00+02:00",
       "phase": "remate_selection",
       "trend_id": "a9b2afa3ac90",
       "title": "LGTBI",
-      "message": "Remate seleccionado sobre el mapa legislativo."
-    },
-    {
-      "at": "2026-10-14T13:50:00+02:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Guardando las 3 fichas Explicadas y sincronizando sus revisiones exactas en requests."
+      "message": "Explicación y remate preparados."
     },
     {
       "at": "2026-10-14T13:50:43+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
-      "message": "Retirando de la cola las 3 revisiones ya persistidas; cola final 0."
-    },
-    {
-      "at": "2026-10-14T13:51:08+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Reparación visual automática completada correctamente; IA queda en su ciclo independiente."
-    },
-    {
-      "at": "2026-10-14T13:51:15+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: id+revision+texto coinciden en Explicadas y requests; cola 0."
+      "message": "Primer lote 3/3 persistido y retirado de la cola."
     },
     {
       "at": "2026-10-14T13:51:29+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Flujo Telegram completado con éxito; 3 tarjetas vivas emparejadas, 0 huérfanos y 0 incidencias bidireccionales."
+      "message": "Primer lote verificado: Telegram limpio y sin incidencias bidireccionales."
     },
     {
-      "at": "2026-10-14T13:51:30+02:00",
+      "at": "2026-10-14T13:52:40+02:00",
+      "phase": "verifying",
+      "trend_id": "13c9e184e0fe",
+      "title": "El CIS",
+      "message": "Nueva cola detectada tras la relectura final: El CIS r0 y Tezanos r1."
+    },
+    {
+      "at": "2026-10-14T13:53:00+02:00",
+      "phase": "investigating",
+      "trend_id": "13c9e184e0fe",
+      "title": "El CIS",
+      "message": "Reutilizando las fuentes actuales ya contrastadas del mismo barómetro; hecho esencial verificado."
+    },
+    {
+      "at": "2026-10-14T13:53:20+02:00",
+      "phase": "drafting",
+      "trend_id": "13c9e184e0fe",
+      "title": "El CIS",
+      "message": "Redactando explicación #4 y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-14T13:53:35+02:00",
+      "phase": "remate_selection",
+      "trend_id": "13c9e184e0fe",
+      "title": "El CIS",
+      "message": "Remate político neutral seleccionado."
+    },
+    {
+      "at": "2026-10-14T13:53:45+02:00",
+      "phase": "verifying",
+      "trend_id": "ff942c05391c",
+      "title": "Tezanos",
+      "message": "Revalidando Tezanos r1 · petición «Cambia el chiste» y rango actual #5."
+    },
+    {
+      "at": "2026-10-14T13:54:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "ff942c05391c",
+      "title": "Tezanos",
+      "message": "Hecho conservado y remate sustituido por uno nuevo."
+    },
+    {
+      "at": "2026-10-14T13:54:30+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "El CIS r0 y Tezanos r1 persistidos en Explicadas y requests; retirados de la cola."
+    },
+    {
+      "at": "2026-10-14T13:56:19+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura transaccional correcta: cola 0; 4 tarjetas vivas emparejadas; 0 huérfanos y 0 incidencias bidireccionales."
+    },
+    {
+      "at": "2026-10-14T13:56:27+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Flujo Telegram verificado con ejecución exitosa; reparación visual de El CIS sigue su ciclo independiente."
+    },
+    {
+      "at": "2026-10-14T13:56:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 3/3 cerrada y verificada · cola 0, Telegram limpio y tramo visual delegado."
+      "message": "Pasada 5/5 cerrada y verificada · 4 tendencias vigentes, una revisión de Tezanos y cola 0."
     }
   ],
   "telegram_orphans": 0,
