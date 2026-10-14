@@ -1,13 +1,16 @@
 {
   "version": 2,
-  "command_id": "tt-20261014T163000Z-chatgpt",
-  "requested_at": "2026-10-14T16:30:00Z",
+  "command_id": "tt-autoguard-1791997399",
+  "requested_at": "2026-10-14T17:03:19.039514Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
   "launcher_arg": "titulares",
   "task": "editorial",
   "auto_image_followup": false,
-  "source": "chatgpt_manual",
-  "reason": "user_requested"
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "587127c70abd"
+  ]
 }
