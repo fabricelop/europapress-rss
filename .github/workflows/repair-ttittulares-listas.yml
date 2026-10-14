@@ -208,7 +208,14 @@ jobs:
           CTRL=pathlib.Path("/tmp/tt-control-branch")
           prepared=json.loads((MAIN/"ttittulares/prepared.json").read_text(encoding="utf-8"))
           deliveries=json.loads((MAIN/"telegram/ttittulares-deliveries.json").read_text(encoding="utf-8"))
-          delivered_ids={str(row.get("event_id") or "") for row in deliveries.get("items",[])
+          # Usar el estado MÁS RECIENTE de Telegram por noticia: un borrado posterior
+          # anula cualquier envío previo y nunca debe reabrir una orden de imagen.
+          last_delivery_by_id={}
+          for row in deliveries.get("items",[]):
+              eid=str(row.get("event_id") or "").strip()
+              if eid:
+                  last_delivery_by_id[eid]=row
+          delivered_ids={eid for eid,row in last_delivery_by_id.items()
                          if str(row.get("status") or "").lower()=="sent" and row.get("telegram_message_id")}
           index_path=CTRL/"ttittulares/image-runs/index.json"
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
@@ -307,7 +314,11 @@ jobs:
               if not eid or not text or not remate or eid in closed_ids or eid not in delivered_ids:
                   continue
               # No procesar retrospectivamente noticias antiguas.
-              entered=str(item.get("prepared_at") or item.get("ready_at") or "")
+              # prepared.json de Listas puede omitir prepared_at/ready_at aunque
+              # Telegram ya haya entregado la noticia; usar su recibo confirmado.
+              delivery=last_delivery_by_id.get(eid) or {}
+              entered=str(item.get("prepared_at") or item.get("ready_at") or
+                          delivery.get("delivered_at") or delivery.get("updated_at") or "")
               try:
                   entered_dt=datetime.fromisoformat(entered.replace("Z","+00:00"))
               except (ValueError,TypeError):
@@ -315,6 +326,8 @@ jobs:
               # No reactivar noticias de antes de la simplificación; conservar
               # 24 h de cola para no perder noticias si otra imagen tarda.
               launch_only_start=datetime.fromisoformat("2026-10-14T06:20:00+00:00")
+              if entered_dt < launch_only_start or (now-entered_dt).total_seconds()>24*3600:
+                  continue
               # Una noticia sigue siendo elegible mientras continúe en Listas y Telegram.
               # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
               is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
