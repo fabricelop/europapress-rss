@@ -465,7 +465,7 @@ jobs:
               reason=None
               if status in active:
                   if tid not in eligible_ids:reason="not_eligible_or_deleted"
-                  elif job.get("pc_launched_at") and elapsed_seconds(job.get("pc_launched_at"))>=300:
+                  elif job.get("pc_launched_at") and job.get("delivery_mode")!="launch_only" and elapsed_seconds(job.get("pc_launched_at"))>=300:
                       reason="five_minute_generation_deadline"
                   elif not job.get("pc_launched_at") and elapsed_seconds(job.get("requested_at"))>=1800:
                       reason="pc_did_not_launch_within_two_minutes"
