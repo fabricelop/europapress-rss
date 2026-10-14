@@ -209,6 +209,23 @@ jobs:
               try:return json.loads(path.read_text(encoding="utf-8"))
               except Exception:return {}
 
+          # Reconcile legacy RUNNING/ERROR jobs with a verified prompt receipt.
+          # No CDP call, image download, or new GitHub Actions workflow needed.
+          for job_file in (CTRL/"trends/image-runs/jobs").glob("*.json"):
+              old_job=load(job_file)
+              if (str(old_job.get("delivery_mode") or "")!="launch_only"
+                  or not old_job.get("pc_launched_at")
+                  or str(old_job.get("status") or "").upper()=="LAUNCHED"):
+                  continue
+              launched=parse_dt(old_job.get("pc_launched_at"))
+              if not launched or (now-launched).total_seconds()>48*3600:
+                  continue
+              old_job.update(status="LAUNCHED",phase="pc_launched",
+                             finished_at=str(old_job["pc_launched_at"]),
+                             updated_at=nowz,
+                             message="Prompt confirmado en ChatGPT Images; sin recuperar raster.")
+              job_file.write_text(json.dumps(old_job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              print("TTENDENCIAS_AI_ACK_RECONCILED",str(old_job.get("target_id") or ""),str(old_job.get("command_id") or ""))
           leaders=[]
           for row in explained.get("items",[]):
               if str(row.get("status") or "").lower()!="explained":
