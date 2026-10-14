@@ -1,13 +1,48 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-14T14:20:46.898661+00:00",
+  "checked_at": "2026-10-14T14:22:13.413310+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 3,
   "telegram_live_count": 0,
   "matched_count": 0,
-  "issues_count": 0,
-  "issues": [],
+  "issues_count": 3,
+  "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "6412cd25e0a3",
+      "title": "Marlaska",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "ad6e747862d5",
+      "title": "CGPJ",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "543942a86f40",
+      "title": "Narciso",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    }
+  ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "543942a86f40",
+    "6412cd25e0a3",
+    "ad6e747862d5"
+  ],
   "telegram_ids": []
 }
