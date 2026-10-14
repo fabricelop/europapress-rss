@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:15:59.095126Z",
-      "event_id": "5d1e980f4304-r1",
-      "phase": "outbox",
-      "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5d1e980f4304-r1: 5d1e980f4304-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:15:59.095126Z",
       "event_id": "8fd0789c3798-r1",
       "phase": "outbox",
       "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "f30c062d0484-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento f30c062d0484-r1: f30c062d0484-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-14T22:15:52.702827Z",
+      "event_id": "telegram-218638732-r1",
+      "phase": "outbox",
+      "reason": "telegram-218638732-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento telegram-218638732-r1: telegram-218638732-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
