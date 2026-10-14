@@ -176,7 +176,8 @@ private struct RainPulsePlot: View {
     var body:some View {
         Canvas { context,canvas in
             guard !points.isEmpty, canvas.width>1,canvas.height>1 else {return}
-            let top=12.0, bottom=canvas.height-8
+            let top:CGFloat=12
+            let bottom:CGFloat=canvas.height-8
             let maxRain=max(0.6,(points.map(\.highMMH).max() ?? 0)*1.1,
                             (points.compactMap(\.automaticMMH).max() ?? 0)*1.1)
             func pos(_ minute:Int,_ rain:Double) -> CGPoint {
