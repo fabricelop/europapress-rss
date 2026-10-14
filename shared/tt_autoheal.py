@@ -125,9 +125,21 @@ def problems(project,now):
                        "title":str(row.get("title") or eid)[:100],
                        "seconds":int(age(now,entered)),"workflow":None})
     checked=idx.get("checked_at")
-    if checked and age(now,checked)>8*60:
+    index_age=age(now,checked)
+    if checked and index_age>8*60:
         result.append({"kind":"stale_index","id":"pinned-index","title":"Índice fijado sin actualizar",
-                       "seconds":int(age(now,checked)),"workflow":"telegram-pinned-index.yml"})
+                       "seconds":int(index_age),"workflow":"telegram-pinned-index.yml"})
+    # Green-only push alerts have a separate success heartbeat. If the pinned
+    # panel still updates but its notifier stopped, repair the same workflow.
+    # Ignore old index states from before green notifications were installed.
+    green_checked=idx.get("green_notifier_checked_at")
+    if (idx.get("green_notifications_initialized") is True and
+            checked and index_age<=8*60 and
+            (not green_checked or age(now,green_checked)>8*60)):
+        result.append({"kind":"stale_green_notifier","id":"green-notifier",
+                       "title":"Avisos de imágenes verdes sin actualizar",
+                       "seconds":int(age(now,green_checked)) if green_checked else 480,
+                       "workflow":"telegram-pinned-index.yml"})
     return result
 
 def prompt(project,issues):
@@ -299,6 +311,14 @@ def selftest():
             run(now+timedelta(minutes=4),False,dispatch=fake)
             assert calls==[]
             assert read(STATE,{})["projects"]["ttendencias"]["issue_count"]==2
+            statefile=CONFIG["ttendencias"]["index"]
+            save(statefile,{"checked_at":"2026-10-12T17:58:00Z",
+                            "green_notifications_initialized":True,
+                            "green_notifier_checked_at":"2026-10-12T17:30:00Z"})
+            green_issues=problems("ttendencias",now)
+            assert any(x["kind"]=="stale_green_notifier" for x in green_issues)
+            assert all(x["workflow"]=="telegram-pinned-index.yml" for x in green_issues
+                       if x["kind"]=="stale_green_notifier")
             assert not (ROOT/PC_RECOVERY).exists(), "scheduled autoheal must not signal PC"
             assert request_safe_pc_recovery(now+timedelta(minutes=6))
             first=read(PC_RECOVERY,{})
