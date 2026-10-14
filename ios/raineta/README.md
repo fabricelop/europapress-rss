@@ -1,4 +1,16 @@
-# RainETA para iPhone — v0.8.1
+# RainETA para iPhone — v0.9.0
+
+## v0.9.0 — Pulso de lluvia comparado entre centros meteorológicos
+
+- **Cuenta atrás principal conservada**, junto con la Actividad en Vivo: prioriza el movimiento del radar solo con evidencia fresca y suficiente confianza; mantiene la previsión principal si falla el radar o los modelos.
+- Pulso de lluvia 30/60/120 minutos: curva central = **mediana de las intensidades de los modelos disponibles**; banda sombreada = rango mínimo–máximo. Si hay menos de dos modelos, se conserva la serie automática de 15 minutos.
+- Botón **Ver modelos individuales**: ECMWF IFS, DWD ICON, NOAA GFS, Météo-France (principalmente ARPEGE en España) y UK Met Office. Cada trazo muestra las acumulaciones de precipitación correspondientes a la **hora precedente**, expresadas como intensidad horaria media. Un minuto en la pantalla no significa que el modelo haya calculado una nueva previsión en ese minuto.
+- Próximas 3 horas: indicador de acuerdo/desacuerdo durante las primeras dos horas. Comparador diario: cinco centros, con límite de cuatro días para Météo-France.
+- Series calculadas sobre la localización seleccionada. La caché es local y limitada; los fallos parciales no se contabilizan como pronósticos secos y no bloquean la cuenta atrás.
+- El radar utilizado para estimar cuándo entra o sale la lluvia **no se representa como mm/h físico** en el Pulso: la señal de reflectividad/eco no proporciona por sí sola una tasa de precipitación calibrada. No se finge la precisión de un minuto.
+- **AEMET HARMONIE-AROME no se integra aún**: los productos públicos no ofrecen actualmente en este código una ruta simple y validada de consulta puntual/minutal sin configuración adicional. No se le atribuyen datos no descargados.
+- Créditos y licencias: ECMWF, Deutscher Wetterdienst, NOAA/NCEP, Météo-France, UK Met Office. La fuente UKMO se publica a través de Open-Meteo bajo condiciones **CC BY-SA 4.0** que deben respetarse al redistribuir productos derivados; ver https://open-meteo.com/en/docs/ukmo-api. Se mantiene explícita la identificación de fuentes.
+- Añadidas pruebas de mediana, dispersión, faltantes, cadencia horaria y conversión UTC. Pendiente la validación real de precisión en iPhone ante lluvia local.
 
 ## v0.8.1 — Cuenta atrás mantenida y estimación de lluvia 0–120 minutos
 
