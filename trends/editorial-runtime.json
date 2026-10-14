@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T05:15:00+02:00",
-  "last_completed_at": "2026-10-14T05:19:30+02:00",
-  "updated_at": "2026-10-14T05:19:30+02:00",
+  "last_started_at": "2026-10-14T05:45:00+02:00",
+  "last_completed_at": "2026-10-14T05:48:35+02:00",
+  "updated_at": "2026-10-14T05:48:35+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -28,13 +28,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261014T051500+0200-chat",
+    "run_id": "tr-20261014T054500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T05:15:00+02:00",
-    "updated_at": "2026-10-14T05:19:30+02:00",
-    "finished_at": "2026-10-14T05:19:30+02:00",
+    "started_at": "2026-10-14T05:45:00+02:00",
+    "updated_at": "2026-10-14T05:48:35+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -69,7 +68,7 @@
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada y verificada; no queda trabajo editorial activo ni avisos Telegram huérfanos.",
+    "message": "Pasada 0/0 cerrada y verificada; cola, reexplicaciones y auditoría Telegram están limpias.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -82,43 +81,51 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T05:15:00+02:00",
+        "at": "2026-10-14T05:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · cola textual 0; verificando reexplicaciones, Telegram y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial · cola 0; revisando Pendientes, reexplicaciones y auditoría Telegram."
       },
       {
-        "at": "2026-10-14T05:17:00+02:00",
+        "at": "2026-10-14T05:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main; workflow de reparación en ejecución y auditoría Telegram pendiente de verificación."
+        "message": "Saneamiento de Pendientes solicitado en main; verificando reparación automática y entrega Telegram."
       },
       {
-        "at": "2026-10-14T05:18:40+02:00",
+        "at": "2026-10-14T05:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación completada correctamente; entrega Telegram despachada."
+        "message": "Top 10 reconciliado: sin requests activas ni reexplicaciones; esperando confirmación del saneamiento y Telegram."
       },
       {
-        "at": "2026-10-14T05:18:52+02:00",
+        "at": "2026-10-14T05:48:18+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Entrega y auditoría Telegram completadas con éxito; 0 avisos huérfanos."
+        "message": "Saneamiento automático completado correctamente."
       },
       {
-        "at": "2026-10-14T05:19:30+02:00",
+        "at": "2026-10-14T05:48:33+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Entrega y auditoría Telegram completadas correctamente; 0 huérfanos."
+      },
+      {
+        "at": "2026-10-14T05:48:35+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; no queda trabajo editorial activo ni avisos Telegram huérfanos."
+        "message": "Cola, reexplicaciones y auditoría Telegram limpias; pasada 0/0 cerrada."
       }
     ],
     "queue_complete": true,
-    "remaining_active_ids": []
+    "remaining_active_ids": [],
+    "finished_at": "2026-10-14T05:48:35+02:00"
   },
   "run_id": "tr-20261014T051500+0200-chat",
   "summary": {
