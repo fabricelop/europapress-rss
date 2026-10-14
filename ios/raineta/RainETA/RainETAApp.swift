@@ -151,90 +151,97 @@ struct RainHomeView: View {
 }
 
 struct RadarSection: View {
-    @ObservedObject var store:RainStore
-    let expanded:Bool
+    @ObservedObject var store: RainStore
+    let expanded: Bool
     @State private var playing=false
     @State private var recenterRevision=0
     @State private var loadingFuture=false
     @State private var renderedFuture=0
 
-    private var frames:[RadarFrame] { store.radar.frames }
+    private var frames:[RadarFrame] {store.radar.frames}
     private var pastEnd:Int {max(0,frames.count-1)}
-    private var futureSteps:Int {ICONForecastTiles.covers(store.coordinate) ? 48 : 0}
-    private var sliderIndex:Double {
-        if store.radarFutureMinutes>0 {return Double(store.radarFutureMinutes)}
-        guard let last=frames.last,let current=observed else{return 0}
-        return min(0,Double(current.timestamp-last.timestamp)/60)
-    }
-    private var observed:RadarFrame? {
-        guard !frames.isEmpty else{return nil}
-        return frames[max(0,min(pastEnd,store.radarIndex))]
+    private var newest:RadarFrame? {frames.last}
+    private var nowcast:[RadarFrame] {store.radar.future}
+    private var futureLimit:Int {
+        guard let last=newest,let end=nowcast.last else {return 0}
+        return min(60,max(0,(end.timestamp-last.timestamp)/60))
     }
     private var historyMinutes:Int {
-        guard let first=frames.first,let last=frames.last else{return 0}
-        return max(0,Int(last.date.timeIntervalSince(first.date)/60))
+        guard let first=frames.first,let last=newest else{return 0}
+        return max(0,(last.timestamp-first.timestamp)/60)
+    }
+    private var selection:RadarFrame? {
+        guard !frames.isEmpty else{return nil}
+        if store.radarFutureMinutes > 0,let last=newest {
+            let target=last.timestamp+store.radarFutureMinutes*60
+            return nowcast.min(by:{abs($0.timestamp-target)<abs($1.timestamp-target)})
+        }
+        return frames[max(0,min(pastEnd,store.radarIndex))]
+    }
+    private var sliderMinute:Double {
+        guard let now=newest,let selection else{return 0}
+        return Double(selection.timestamp-now.timestamp)/60
     }
 
-    private var pastSpanMinutes:Int { max(5,((historyMinutes+4)/5)*5) }
+    private func choose(_ minutes:Int) {
+        guard let last=newest else {return}
+        if minutes>0 {
+            guard !nowcast.isEmpty else{return}
+            let target=last.timestamp+min(futureLimit,minutes)*60
+            if let next=nowcast.min(by:{abs($0.timestamp-target)<abs($1.timestamp-target)}) {
+                store.radarIndex=pastEnd
+                store.radarFutureMinutes=max(1,(next.timestamp-last.timestamp)/60)
+            }
+        } else {
+            let target=last.timestamp+minutes*60
+            let closest=frames.enumerated().min(by:{
+                abs($0.element.timestamp-target)<abs($1.element.timestamp-target)
+            })?.offset ?? pastEnd
+            store.radarIndex=closest
+            store.radarFutureMinutes=0
+            if minutes==0 {loadingFuture=false}
+        }
+    }
 
-    private func select(_ index:Int) {
-        let next=max(0,min(pastEnd+futureSteps,index))
-        if next>pastEnd {
-            store.radarIndex=pastEnd
-            store.radarFutureMinutes=min(240,(next-pastEnd)*5)
+    private func step(_ direction:Int) {
+        guard let selected=selection else{return}
+        let entries=frames+nowcast
+        guard let current=entries.firstIndex(where:{$0.timestamp==selected.timestamp}) else{return}
+        let next=current+direction
+        guard entries.indices.contains(next),let last=newest else{return}
+        let target=entries[next]
+        if target.timestamp>last.timestamp {
+            choose((target.timestamp-last.timestamp)/60)
         } else {
             store.radarIndex=next
             store.radarFutureMinutes=0
         }
     }
-    private func selectMinute(_ minutes:Int) {
-        if minutes>0 {
-            store.radarIndex=pastEnd
-            store.radarFutureMinutes=min(240,max(5,minutes))
-        } else if minutes==0 {
-            store.radarIndex=pastEnd
-            store.radarFutureMinutes=0
-        } else if let last=frames.last {
-            let target=last.date.addingTimeInterval(Double(minutes*60))
-            let nearest=frames.enumerated().min(by:{
-                abs($0.element.date.timeIntervalSince(target)) <
-                abs($1.element.date.timeIntervalSince(target))
-            })?.offset ?? 0
-            store.radarIndex=nearest
-            store.radarFutureMinutes=0
-        }
-    }
-    private func step(_ direction:Int) {
-        if store.radarFutureMinutes>0 {
-            let offset=store.radarFutureMinutes+direction*5
-            if offset<=0 {select(pastEnd)}
-            else {select(pastEnd+offset/5)}
-        } else {
-            // Real past frames can be 5 or 10 minutes apart, depending on
-            // what RainViewer delivered. Never invent a past observation.
-            select(store.radarIndex+direction)
-        }
-    }
-    private func now() {playing=false;select(pastEnd)}
+    private func returnToNow() {playing=false;choose(0)}
 
     var body:some View {
         VStack(alignment:.leading,spacing:9) {
             RadarMap(center:store.coordinate,host:store.radar.host,
-                     framePath:observed?.path,projection:nil,modelField:nil,
+                     framePath:frames.indices.contains(store.radarIndex)
+                        ? frames[store.radarIndex].path : newest?.path,
+                     projection:nil,modelField:nil,
                      futureMinutes:store.radarFutureMinutes,
+                     nowcastPath:store.radarFutureMinutes>0 ? selection?.path : nil,
                      recenterRevision:recenterRevision,
                      forecastStatus:{store.futureFieldStatus=$0},
-                     onForecastReady: { lead,success in
-                         if lead==store.radarFutureMinutes {
+                     onForecastReady:{ minute,success in
+                         if minute==store.radarFutureMinutes {
                              loadingFuture=false
-                             if success {renderedFuture=lead}
+                             if success {renderedFuture=minute}
                              else {playing=false}
                          }
                      })
-                .frame(height:expanded ? 540 : 325)
+                .frame(height:expanded ? 540:325)
                 .clipShape(RoundedRectangle(cornerRadius:16))
                 .overlay(alignment:.topTrailing) {
-                    Text(store.radarFutureMinutes>0 ? (loadingFuture ? "CARGANDO MODELO…" : (store.radarFutureMinutes<=30 ? "RADAR + ICON · TRANSICIÓN":"ICON-EU · MODELO")) : "RADAR OBSERVADO")
+                    Text(store.radarFutureMinutes>0 ?
+                         (loadingFuture ? "PREPARANDO PRONÓSTICO…" : "NOWCAST · LIBREWXR") :
+                         "RADAR OBSERVADO")
                         .font(.system(size:10,weight:.bold))
                         .foregroundStyle(store.radarFutureMinutes>0 ? .yellow:.white)
                         .padding(9)
@@ -242,123 +249,100 @@ struct RadarSection: View {
                         .padding(9)
                 }
                 .overlay(alignment:.bottomTrailing) {
-                    Button {
-                        recenterRevision += 1
-                    } label:{
+                    Button {recenterRevision+=1} label:{
                         Image(systemName:"location.north.line.fill")
-                            .font(.title3)
-                            .foregroundStyle(.cyan)
+                            .font(.title3).foregroundStyle(.cyan)
                             .frame(width:41,height:41)
                             .background(.black.opacity(0.80),in:Circle())
                     }
-                    .accessibilityLabel("Centrar mapa en la localidad seleccionada")
+                    .accessibilityLabel("Centrar mapa")
                     .padding(10)
                 }
 
             HStack {
                 if store.radarFutureMinutes>0 {
-                    Text(loadingFuture ? "Preparando +\(store.radarFutureMinutes) min…" : "Futuro +\(store.radarFutureMinutes) min")
+                    Text("Pronóstico +\(store.radarFutureMinutes) min")
                         .foregroundStyle(.yellow)
-                    Spacer()
-                    Text(Date().addingTimeInterval(Double(store.radarFutureMinutes*60))
-                        .formatted(date:.omitted,time:.shortened))
                 } else {
-                    Text(observed.map{"Observado "+$0.date.formatted(date:.omitted,time:.shortened)}
+                    Text(selection.map{"Observado "+$0.date.formatted(date:.omitted,time:.shortened)}
                          ?? "Radar pendiente")
-                    Spacer()
-                    Text(observed.map{"hace \(max(0,Int(Date().timeIntervalSince($0.date)/60))) min"} ?? "")
                 }
+                Spacer()
+                Text(selection?.date.formatted(date:.omitted,time:.shortened) ?? "")
             }
             .font(.caption.monospacedDigit())
 
-            GeometryReader { proxy in
-                // Distance is proportional to real elapsed minutes,
-                // regardless of whether past observations are 5 or 10 min.
-                let fraction=CGFloat(pastSpanMinutes)/CGFloat(pastSpanMinutes+240)
-                let markX=18+(proxy.size.width-36)*fraction
+            GeometryReader { geometry in
+                let width=geometry.size.width
+                let span=max(10,historyMinutes)
+                let range=Double(-span)...Double(max(0,futureLimit))
+                let total=Double(span+max(0,futureLimit))
+                let markerX=18+(width-36)*CGFloat(Double(span)/total)
                 ZStack(alignment:.topLeading) {
                     Slider(value:Binding(
-                        get:{sliderIndex},
-                        set:{selectMinute(Int($0.rounded()))}
-                    ),in:Double(-pastSpanMinutes)...240,step:5)
+                        get:{sliderMinute},
+                        set:{choose(Int($0.rounded()))}
+                    ),in:range,step:5)
                         .tint(.cyan)
                         .disabled(frames.isEmpty)
-                        .padding(.top,0)
-                    Rectangle().fill(.cyan.opacity(0.8))
+                    Rectangle().fill(.cyan)
                         .frame(width:2,height:18)
-                        .position(x:markX,y:10)
+                        .position(x:markerX,y:10)
                         .allowsHitTesting(false)
                     Text("AHORA")
                         .font(.system(size:9,weight:.heavy))
                         .foregroundStyle(.cyan)
-                        .fixedSize()
-                        .position(x:min(max(28,markX),proxy.size.width-28),y:33)
+                        .position(x:min(max(28,markerX),width-28),y:32)
                         .allowsHitTesting(false)
                 }
             }
-            .frame(height:42)
+            .frame(height:43)
 
             HStack(spacing:10) {
                 Button {playing.toggle()} label:{
                     Image(systemName:playing ? "pause.fill":"play.fill")
                 }
-                .accessibilityLabel(playing ? "Pausar radar":"Reproducir radar")
-                Button {step(-1)} label:{
-                    Image(systemName:"chevron.left")
-                }
-                .accessibilityLabel("Retroceder cinco minutos, o al radar anterior")
-                .disabled(store.radarFutureMinutes==0 && store.radarIndex<=0)
-                Button("Ahora"){now()}
+                Button {step(-1)} label:{Image(systemName:"chevron.left")}
+                    .disabled(selection?.timestamp == frames.first?.timestamp)
+                Button("Ahora"){returnToNow()}
                     .font(.caption.bold())
-                Button {step(1)} label:{
-                    Image(systemName:"chevron.right")
-                }
-                .accessibilityLabel("Avanzar cinco minutos, o al radar siguiente")
-                .disabled(store.radarFutureMinutes>=240 ||
-                          (store.radarFutureMinutes==0 &&
-                           store.radarIndex>=pastEnd && futureSteps==0))
-                Spacer(minLength:0)
-                Text("−\(historyMinutes)m / +4h")
+                Button {step(1)} label:{Image(systemName:"chevron.right")}
+                    .disabled(selection?.timestamp == (nowcast.last ?? newest)?.timestamp)
+                Spacer()
+                Text("−\(historyMinutes)m / +\(futureLimit)m")
                     .font(.caption2.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
             .buttonStyle(.bordered)
             .controlSize(.small)
-            if store.radarFutureMinutes > 0 && store.radarFutureMinutes <= 30 {
-                Text("Transición visual: radar observado + mapa horario ICON-EU. No es un radar futuro medido.")
-                    .font(.caption2).foregroundStyle(.secondary)
-            }
+
+            Text(futureLimit>0 ?
+                 "Observado y previsión 0–60 min: misma fuente. Pronóstico experimental cada 10 min; hasta +120 min, consulta Pulso de lluvia." :
+                 "Solo radar observado disponible. No se inventan fotogramas futuros.")
+                .font(.caption2).foregroundStyle(.secondary)
             if store.futureFieldStatus.contains("no disponible") {
-                Text("Previsión temporalmente no disponible")
-                    .font(.caption2).foregroundStyle(.yellow)
+                Text(store.futureFieldStatus).font(.caption2).foregroundStyle(.yellow)
             }
+            Text("Radar: \(store.radar.source) · datos por \(store.radar.source == "LibreWXR" ? "LibreWXR":"RainViewer")")
+                .font(.caption2).foregroundStyle(.secondary)
         }
-        .onChange(of:store.radarFutureMinutes) { _,lead in
+        .onChange(of:store.radarFutureMinutes) {_,lead in
             loadingFuture=lead>0 && lead != renderedFuture
-            if lead==0 {renderedFuture=0}
+            if lead==0 {renderedFuture=0;loadingFuture=false}
         }
         .task(id:playing) {
             while playing && !Task.isCancelled {
-                // Never advance the playback clock while WMS still draws
-                // the previous frame. This prevents irregular skipped tiles.
-                if store.radarFutureMinutes>0 && loadingFuture {
-                    try? await Task.sleep(nanoseconds:180_000_000)
+                if loadingFuture {
+                    try? await Task.sleep(nanoseconds:160_000_000)
                     continue
                 }
-                let delay=store.radarFutureMinutes>0 ? 1_350_000_000:850_000_000
-                try? await Task.sleep(nanoseconds:UInt64(delay))
+                try? await Task.sleep(nanoseconds:1_050_000_000)
                 if Task.isCancelled || !playing {break}
-                if store.radarFutureMinutes>0 {
-                    if loadingFuture {continue}
-                    if store.radarFutureMinutes>=240 {playing=false}
-                    else {selectMinute(store.radarFutureMinutes+5)}
-                } else if store.radarIndex<pastEnd {
-                    select(store.radarIndex+1)
-                } else if futureSteps>0 {
-                    selectMinute(5)
-                } else {
-                    playing=false
-                }
+                if loadingFuture {continue}
+                guard let selected=selection else{playing=false;break}
+                let end=(nowcast.last ?? newest)?.timestamp
+                if selected.timestamp==end {playing=false}
+                else {step(1)}
             }
         }
     }
