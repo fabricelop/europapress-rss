@@ -88,8 +88,13 @@ def active_records(project):
         event_id=str(entry.get("event_id") or "")
         if event_id in closed_ids:continue
         title=shorten(entry.get("title") or entry.get("name") or event_id)
+        # Revision 0 is meaningful in TTendencias. Never replace it with 1
+        # using `or 1`, otherwise a confirmed image is shown as unknown.
+        revision=entry.get("revision")
+        revision=int(revision) if revision is not None else (
+            1 if project=="ttittulares" else 0)
         row={"id":event_id,"title":title,"mid":mid,
-             "rev":int(entry.get("revision") or 1),
+             "rev":revision,
              "at":entry.get("delivered_at") or entry.get("updated_at") or ""}
         if entry.get("final") is True:
             final.append(row)
@@ -512,6 +517,7 @@ def selftest():
             body,ready,pending=render("ttendencias",123456)
             assert 'LISTAS: 1 | EN ELABORACIÓN: 2' in body,body
             assert len(ready)==1 and len(pending)==2
+            assert ready[0]["rev"]==0, "TTendencias revision zero must survive the ledger"
             assert "tg://openmessage" not in body and "message_id=" not in body
             assert "message_id=723" not in body
             calls=[]
