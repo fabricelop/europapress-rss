@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T07:15:00+02:00",
-  "last_completed_at": "2026-10-14T07:27:00+02:00",
-  "updated_at": "2026-10-14T07:27:00+02:00",
+  "last_started_at": "2026-10-14T08:15:00+02:00",
+  "last_completed_at": "2026-10-14T08:19:10+02:00",
+  "updated_at": "2026-10-14T08:19:10+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,18 +18,18 @@
     "persisted_trigger": true,
     "status": "verified_success",
     "direct_imagegen": false,
-    "run_id": "tr-20261014T071500+0200-chat",
-    "requested_at": "2026-10-14T07:15:00+02:00",
+    "run_id": "tr-20261014T081500+0200-chat",
+    "requested_at": "2026-10-14T08:15:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-20261014T071500+0200-chat",
+    "run_id": "tr-20261014T081500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T07:15:00+02:00",
-    "updated_at": "2026-10-14T07:27:00+02:00",
-    "finished_at": "2026-10-14T07:27:00+02:00",
+    "started_at": "2026-10-14T08:15:00+02:00",
+    "updated_at": "2026-10-14T08:19:10+02:00",
+    "finished_at": "2026-10-14T08:19:10+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -53,15 +53,15 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "telegram_provisionals_finalized": 0,
-      "telegram_preserved_deleted": 1,
+      "telegram_preserved_deleted": 0,
       "telegram_orphans": 0,
       "telegram_delivery_workflow_verified": 1,
       "archive_images_enriched": 0,
-      "bidirectional_repairs": 1,
+      "bidirectional_repairs": 0,
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada y verificada; borrado agrupado preservado y reconciliación corregida.",
+    "message": "Pasada 0/0 cerrada y verificada; cola editorial y auditorías Telegram limpias.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -74,57 +74,43 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T07:15:00+02:00",
+        "at": "2026-10-14T08:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · cola textual 0; verificando reexplicaciones, Telegram y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial · cola textual 0; revisando reexplicaciones, Telegram y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-14T07:17:00+02:00",
+        "at": "2026-10-14T08:17:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main; reparación visual en ejecución y cola editorial sigue en 0."
+        "message": "Saneamiento de Pendientes solicitado en main; workflow de reparación en ejecución."
       },
       {
-        "at": "2026-10-14T07:18:46+02:00",
+        "at": "2026-10-14T08:18:53+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación y entrega Telegram completadas correctamente; auditoría inicial limpia."
+        "message": "Saneamiento completado correctamente; sin reconciliación editorial pendiente y archivo visual al día."
       },
       {
-        "at": "2026-10-14T07:19:34+02:00",
+        "at": "2026-10-14T08:19:07+02:00",
         "phase": "verifying",
-        "trend_id": "c6c98db8f107",
-        "title": "Adeyemi / Fermin",
-        "message": "Detectado borrado explícito del paquete agrupado en Telegram; preservando la decisión del usuario."
+        "trend_id": null,
+        "title": null,
+        "message": "Entrega y auditoría Telegram completadas correctamente; 0 huérfanos y 0 incidencias bidireccionales."
       },
       {
-        "at": "2026-10-14T07:24:00+02:00",
-        "phase": "persisting",
-        "trend_id": "0aacc78d92bf",
-        "title": "Fermin",
-        "message": "Propagando el borrado del líder al miembro agrupado persistido, sin recrear tarjeta Telegram."
-      },
-      {
-        "at": "2026-10-14T07:26:23+02:00",
-        "phase": "verifying",
-        "trend_id": "0aacc78d92bf",
-        "title": "Fermin",
-        "message": "Reauditoría completada: grupo cerrado, cola 0, huérfanos 0 e incidencias bidireccionales 0."
-      },
-      {
-        "at": "2026-10-14T07:27:00+02:00",
+        "at": "2026-10-14T08:19:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; borrado agrupado preservado y reconciliación corregida."
+        "message": "Pasada 0/0 cerrada y verificada; cola editorial y auditorías Telegram limpias."
       }
     ]
   },
-  "run_id": "tr-20261014T064500+0200-chat",
+  "run_id": "tr-20261014T081500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -150,14 +136,14 @@
     "telegram_orphans": 0,
     "telegram_delivery_workflow_verified": 1,
     "archive_images_enriched": 0,
-    "bidirectional_repairs": 1,
+    "bidirectional_repairs": 0,
     "telegram_bidirectional_issues": 0,
     "top10_checked": 10
   },
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-14T06:11:32+02:00",
+    "source_capture_at": "2026-10-14T08:11:44+02:00",
     "status": "fresh_at_start"
   }
 }
