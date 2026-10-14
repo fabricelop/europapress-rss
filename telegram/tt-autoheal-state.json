@@ -2,49 +2,94 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T07:03:40.262021+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-14T09:09:36.095874+00:00",
+      "issue_count": 6,
       "issues": [
         {
+          "kind": "editorial_overdue",
+          "id": "60d9df335e9c",
+          "title": "Matan a tiros a un hombre junto a una planta de basuras en Almería",
+          "seconds": 1384,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "cebd715c5fed",
+          "title": "La educación pública en Madrid arranca la huelga indefinida para exigir mejoras laborales y el gobie",
+          "seconds": 1384,
+          "workflow": null
+        },
+        {
           "kind": "missing_delivery",
-          "id": "ae873db1bf43",
-          "title": "Alineación probable del Real Madrid contra la Roma en la Champions League",
-          "seconds": 447,
+          "id": "2924aee211bf",
+          "title": "Piedad Bonnett gana el premio Internacional de Poesía Federico García Lorca",
+          "seconds": 782,
           "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "2b4af998ecf3",
+          "title": "Tana Rivera y el torero Roca Rey rompen tras seis meses de relación y recientes rumores de boda: los",
+          "seconds": 264,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f9ef00f529d1",
+          "title": "Cargas policiales contra los piquetes estudiantiles en la Complutense en la primera jornada de huelg",
+          "seconds": 264,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1841,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml"
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "ac340df69fd59ef7f6afc7dce86ba0a2f5046c2ab388b6fbdc88bed5e56b1abc",
+      "open_signature": "03884345245d77a97e1edee5821e72a7bb51dd325b2cc250c348adf1bb3fd536",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T07:03:40.262021+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-14T09:09:36.095874+00:00",
+      "issue_count": 2,
       "issues": [
         {
           "kind": "orphan_provisional",
           "id": "ea9256e5e1fd",
           "title": "1742 X",
-          "seconds": 2443,
+          "seconds": 9999,
           "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1841,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "35cf0f777c82ee190a0a785c722e792c35a8274b8754266879ef86435fdeb28a",
+      "open_signature": "52b4752f7005303194ade2be392c9b51ddedc956650661a34dea258c452a79db",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T07:03:40.262021+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T07:03:23.334439+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T07:03:23.334439+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T09:09:36.095874+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T09:09:36.095874+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T09:09:36.095874+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T07:03:40.262021+00:00"
+  "checked_at": "2026-10-14T09:09:36.095874+00:00"
 }
