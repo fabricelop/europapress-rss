@@ -313,27 +313,15 @@ def news_cards(now):
             room=max(0,900-len(head)-len(tail))
             body=head+detail[:room]+tail
         else:
-            try:verified=int(job.get("verified_source_count") or 0)>=2
-            except (ValueError,TypeError):verified=False
-            preview=trim(job.get("factual_summary"),350) if verified else ""
-            available_photo=bool(original_image)
-            body=("🟠 EN ELABORACIÓN · NOTICIA PROVISIONAL\n\n"
-                  +trim(title,400)+"\n\n"
-                  +("Fuente: "+trim(original_source,100)+"\n" if original_source else "")
-                  +("Artículo: "+trim(original_url,280)+"\n\n" if original_url else "\n")
-                  +(preview+"\n\n" if preview and preview not in title else "")
-                  +("📌 Datos iniciales de al menos dos fuentes; falta revisión editorial.\n"
-                    if verified else
-                    "⚠️ Titular detectado; hechos todavía sin verificar editorialmente.\n")
-                  +"⏳ Falta explicación y remate.\n"
-                  +("📷 Fotografía de archivo disponible.\n" if available_photo else
-                    "📷 Fotografía de archivo pendiente.\n")
-                  +"↻ Se actualizará ESTA MISMA tarjeta al finalizar.")[:1000]
+            # En Elaboración: únicamente el aviso y el titular auténtico.
+            # Ni fuentes, enlaces, avances, avisos extra ni estado de imágenes.
+            # El mismo mensaje se completará en Listas, conservando sus botones.
+            body="🟠 EN ELABORACIÓN\n\n"+trim(title,400)
         ai_info=ai_delivery_info(item,now) if is_final else {"url":"","note":""}
         # Search is read-only; it never opens a composer.
         search=title
         yield {"id":eid,"rev":revision,"text":body,"x_text":(item.get("tweet") or {}).get("text") if is_final else provisional_news_copy(job,title),
-               "image":original_image,
+               "image":original_image if is_final else "",
                "search":search,"final":is_final,"start":start,"title":title,
                "source_url":original_url,"source":original_source,
                "ai_url":ai_info["url"],"ai_note":ai_info["note"]}
@@ -958,7 +946,7 @@ def process(project,now,token,chat):
         # First provisional delivery tries the same fast archive lookup as a
         # completed news story. The lookup is bounded; it must never block
         # urgent text delivery.
-        if not photo_url and project=="ttittulares" and (not existing or is_late_photo):
+        if not photo_url and project=="ttittulares" and card["final"] and (not existing or is_late_photo):
             last=date(existing.get("archive_checked_at")) if existing else None
             if last is None or now-last>=timedelta(minutes=20):
                 photo_url=fast_archive_from_article(card.get("source_url",""))
@@ -1283,7 +1271,7 @@ def selftest():
     original_fast=fast_archive_from_article
     original_archive=archival_image
     methods=[]
-    message_sequence=[991,992,993]
+    message_sequence=[991,992,993,994]
     def synthetic_send(token,method,payload,photo=None):
         methods.append((method,int(payload.get("message_id") or 0),
                         int(payload.get("reply_to_message_id") or 0),bool(photo)))
@@ -1306,8 +1294,10 @@ def selftest():
             put("ttittulares/decisions.json",{"items":[]})
             provisional_rows=list(news_cards(now))
             assert len(provisional_rows)==1 and not provisional_rows[0]["final"]
-            assert "Falta explicación" in provisional_rows[0]["text"]
-            assert "Fotografía de archivo pendiente" in provisional_rows[0]["text"]
+            assert provisional_rows[0]["text"]=="🟠 EN ELABORACIÓN\n\nUrgencia aún en elaboración"
+            assert "Fuente:" not in provisional_rows[0]["text"]
+            assert "confirmó" not in provisional_rows[0]["text"]
+            assert not provisional_rows[0]["image"]
             assert "confirmó" in provisional_rows[0]["x_text"]
             globals()["send"]=synthetic_send
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
@@ -1317,25 +1307,18 @@ def selftest():
             assert len(pending_ledger["items"])==1
             assert not pending_ledger["items"][0]["final"]
             assert pending_ledger["items"][0]["telegram_message_id"]==991
-            # Later an archive photo appears: attach once AS A REPLY to 991,
-            # keep the editorial controls and explanation on 991.
+            # En Elaboración NO enviar fotos ni siquiera si el archivo ya aparece.
+            # La imagen de archivo se adjuntará únicamente cuando pase a Listas.
             job=load("telegram/editorial-processing.json",{"items":[]})
             job["items"][0]["archive_image"]={"url":"https://img.example.org/late.jpg",
                 "generated":False}
             put("telegram/editorial-processing.json",job)
-            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
-            assert (n_sent,n_updated)==(0,1)
-            assert methods[-2:]==[("sendPhoto",0,991,True),
-                                  ("editMessageText",991,0,False)]
-            updated_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
-            assert updated_ledger["items"][0]["archive_telegram_message_id"]==992
-            assert updated_ledger["items"][0]["archive_image_url"].endswith("/late.jpg")
-            assert len(updated_ledger["items"])==1
             before=len(methods)
-            process("ttittulares",now,"mock","mockchat")
-            assert len(methods)==before, ("Do not duplicate a companion photo: "+str(methods[before:])+
-                " ledger="+str(load("telegram/ttittulares-deliveries.json",{"items":[]})["items"][0].get("content_sha256"))+
-                " body="+str(list(news_cards(now))[0]["text"][-180:]))
+            n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
+            assert (n_sent,n_updated)==(0,0)
+            assert len(methods)==before
+            updated_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
+            assert not updated_ledger["items"][0].get("archive_telegram_message_id")
             final={"event_id":"urgent123","title":"Urgencia aún en elaboración",
                 "revision":2,"prepared_at":"2026-10-09T16:00:00Z",
                 "tweet":{"text":"Un organismo confirmó la medida.",
@@ -1347,7 +1330,8 @@ def selftest():
             assert "Remate exacto" in finished[0]["text"]
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(0,1), "A final item must EDIT the first message"
-            assert methods[-1]==("editMessageText",991,0,False)
+            assert methods[-2:]==[("sendPhoto",0,991,True),
+                                   ("editMessageText",991,0,False)]
             assert sum(method=="sendPhoto" for method,*_ in methods)==1
             final_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             assert len(final_ledger["items"])==1, "Never send a duplicate Telegram card"
@@ -1355,8 +1339,8 @@ def selftest():
             assert final_ledger["items"][0]["final"]
             assert final_ledger["items"][0]["revision"]==2
             assert final_ledger["items"][0]["archive_telegram_message_id"]==992
-            # Photo already present at first arrival: a SINGLE photo/card,
-            # not an extra notification.
+            # Foto disponible desde el principio: solo titular en Elaboración.
+            # Al pasar a Listas, se añade una única fotografía como respuesta.
             put("telegram/editorial-processing.json",{"items":[{
                 "event_id":"photo123","status":"PROCESSING","title":"Urgencia con foto inicial",
                 "selected_at":"2026-10-09T15:59:00Z","archive_image":{
@@ -1364,10 +1348,10 @@ def selftest():
             }]})
             put("ttittulares/prepared.json",{"items":[]})
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
-            assert n_sent==1 and methods[-1]==("sendPhoto",0,0,True)
+            assert n_sent==1 and methods[-1]==("sendMessage",0,0,False)
             ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             new=next(x for x in ledger["items"] if x["event_id"]=="photo123")
-            assert new["is_photo"] and new["telegram_message_id"]==993
+            assert not new["is_photo"] and new["telegram_message_id"]==993
             assert len(ledger["items"])==2
             put("ttittulares/prepared.json",{"items":[{
                 "event_id":"photo123","revision":2,
@@ -1382,10 +1366,12 @@ def selftest():
             before=len(methods)
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(0,1)
-            assert methods[before:]==[("editMessageMedia",993,0,True)]
+            assert methods[before:]==[("sendPhoto",0,993,True),
+                                       ("editMessageText",993,0,False)]
             ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             updated_photo=next(x for x in ledger["items"] if x["event_id"]=="photo123")
             assert updated_photo["telegram_message_id"]==993 and updated_photo["final"]
+            assert updated_photo["archive_telegram_message_id"]==994
             assert len(ledger["items"])==2,"Final photo must edit the first card"
     finally:
         globals()["ROOT"]=original_root
