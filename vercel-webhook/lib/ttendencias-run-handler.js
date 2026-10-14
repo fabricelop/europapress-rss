@@ -146,6 +146,10 @@ async function imageEligibility(targetId){
   const row=rows[0]||null;
   if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return {eligible:false,reason:"not_pending_explained",row};
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
+  const telegram=await readMainJson("trends/telegram-image-deliveries.json");
+  const latestDelivery=(telegram.items||[]).filter(x=>String(x.event_id||"")===String(targetId)&&Number(x.revision||0)===rev).at(-1);
+  if(latestDelivery&&["deleted","dismissed","published","removed","delete_pending"].includes(String(latestDelivery.status||"").toLowerCase()))
+    return {eligible:false,reason:"telegram_card_closed",row};
   const rowId=String(row.id||"").trim();
   const archived=(copyState.items||[]).some(x=>{
     if(Number(x.revision||0)!==rev)return false;
