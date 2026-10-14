@@ -92,7 +92,7 @@ def ai_delivery_info(item,now):
         return {"url":"","note":"🖼️ Sin imagen IA · fallo de lanzamiento."}
     if status in {"REQUESTED","RUNNING","PERSISTING"}:
         if requested and (now-requested).total_seconds()>=1800:
-            return {"url":"","note":"🖼️ Sin imagen IA · el PC no lanzó la orden."}
+            return {"url":"","note":"🖼️ En cola · el PC no ha confirmado recepción; se conserva la solicitud."}
         return {"url":"","note":"🖼️ En cola para ChatGPT Images."}
     entered=date(item.get("prepared_at") or item.get("ready_at"))
     if entered and (now-entered).total_seconds()>900:
