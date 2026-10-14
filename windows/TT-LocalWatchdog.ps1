@@ -224,6 +224,51 @@ function Get-ChatCdpTabCount{
     }).Count
   }catch{return -1}
 }
+function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
+  # Only existing local TTendencias scheduled tasks can be started.
+  # No commands from GitHub execute on this PC; only IDs are considered.
+  $wanted=@($Signal.editorial_retry.ttendencias)
+  if($wanted.Count -eq 0){return $true}
+  $now=[DateTimeOffset]::UtcNow
+  try{
+    $uri="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/editorial-queue.json"
+    $q=Invoke-RestMethod -Uri ($uri+"?t="+$now.ToUnixTimeMilliseconds()) -TimeoutSec 10 -Headers @{"Cache-Control"="no-cache, no-store"}
+  }catch{
+    Log "REMOTE EDITORIAL DEFERRED request=$Request queue-not-reachable"
+    return $false
+  }
+  $due=@()
+  foreach($item in @($q.items)){
+    if(-not ($wanted -contains ([string]$item.id))){continue}
+    if(@("preparing","update") -notcontains ([string]$item.status)){continue}
+    try{
+      $stamp=[DateTimeOffset]::Parse([string]$item.requested_at)
+      if(($now-$stamp).TotalMinutes -ge 20){$due+=([string]$item.id)}
+    }catch{}
+  }
+  if($due.Count -eq 0){return $true}
+  $task=$null
+  foreach($name in @("TTendencias Local Ready","TTendencias Local")){
+    try{$t=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue; if($t){$task=$t;break}}catch{}
+  }
+  if(-not $task -or ([string]$task.State -ne "Ready")){
+    Log "REMOTE EDITORIAL DEFERRED request=$Request local-task-busy-or-missing"
+    return $false
+  }
+  try{
+    $info=Get-ScheduledTaskInfo -TaskName $task.TaskName -ErrorAction Stop
+    if($info.LastRunTime -gt [datetime]::MinValue -and ((Get-Date)-$info.LastRunTime).TotalMinutes -lt 4){return $false}
+  }catch{}
+  try{
+    Start-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop
+    Log "REMOTE EDITORIAL TRIGGERED request=$Request task=$($task.TaskName) count=$($due.Count)"
+    return $true
+  }catch{
+    Log "REMOTE EDITORIAL DEFERRED request=$Request local-task-error"
+    return $false
+  }
+}
+
 function EnsureRemoteTelegramHeal{
   $now=[DateTimeOffset]::UtcNow
   if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
@@ -280,6 +325,8 @@ function EnsureRemoteTelegramHeal{
     Log "REMOTE HEAL LISTENER RECOVERY DEFERRED request=$request"
     return
   }
+  # Recheck main before waking the existing TTendencias local editorial job.
+  if(-not (EnsureOverdueTrendsEditorialRetry $signal $request)){return}
   try{
     @{request_id=$request;completed_at=$now.ToString("o")} |
       ConvertTo-Json -Compress |
