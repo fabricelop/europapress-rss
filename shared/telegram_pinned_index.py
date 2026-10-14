@@ -526,7 +526,8 @@ def selftest():
             # Exact factual sentence + original remate for both pipelines.
             news={"sent-1":{"status":"launched","sentence":
                 "El Museo Sorolla amplía sus salas. Se mantiene en obras.",
-                "remate":"🌶️ Sorolla gana metros sin mover un caballete."}}
+                "remate":"🌶️ Sorolla gana metros sin mover un caballete."},
+                "waiting":{"status":"queued"}}
             body,_,_=render("ttittulares",123456,news)
             assert "El Museo Sorolla amplía sus salas." in body
             assert "Se mantiene en obras" not in body
@@ -534,7 +535,8 @@ def selftest():
             assert body.index("🟢 El Museo")<body.index("🟠 En cola")
             trend_info={"ready":{"status":"launched",
                 "sentence":"TT#2 Ejemplo explicado es tendencia porque hoy se ha confirmado una medida. Sigue la polémica.",
-                "remate":"🌶️ El expediente ya pide la palabra."}}
+                "remate":"🌶️ El expediente ya pide la palabra."},
+                "new-pending":{"status":"queued"}}
             body,_,_=render("ttendencias",123456,trend_info)
             assert body.startswith('<a href="https://chatgpt.com/images">')
             assert "IA ENVIADA A CHATGPT: 1 de 2" in body
