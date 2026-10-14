@@ -55034,11 +55034,11 @@
       "id": "ff942c05391c",
       "name": "Tezanos",
       "rank": 1,
-      "status": "explained",
-      "requested_at": "2026-10-14T13:42:19+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": true,
+      "status": "update",
+      "requested_at": "2026-10-14T13:52:31+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "0f90391db41d",
       "requested_together": [
@@ -55049,7 +55049,7 @@
         "#Mañaneros14O",
         "LGTBI"
       ],
-      "auto_queued": true,
+      "auto_queued": false,
       "auto_queue_scope": "top10",
       "explained_at": "2026-10-14T13:50:00+02:00",
       "last_attempt_at": "2026-10-14T13:50:00+02:00",
@@ -55095,7 +55095,12 @@
       "image_pending": true,
       "rewrite_pending": false,
       "grouped_into_existing_card": false,
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "request_source": "telegram_reexplain",
+      "reexplain_instructions": "Cambia el chiste",
+      "rewrite_instruction": "Cambia el chiste",
+      "telegram_reexplain_from_revision": 0,
+      "telegram_reexplain_from_message_id": 801
     },
     {
       "id": "f857bbb84279",
@@ -55252,6 +55257,6 @@
       "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-14T13:52:29+02:00",
+  "updated_at": "2026-10-14T13:52:32+02:00",
   "count": 933
 }
