@@ -319,7 +319,13 @@ jobs:
               old_status=str(old.get("status") or "").upper()
               # Automático: una sola generación por identidad y revisión.
               # Las regeneraciones siguen disponibles mediante el mecanismo manual.
-              if old and int(old.get("revision") or rev)==rev and not force_retry:
+              # Un único reintento si la orden anterior NUNCA salió del PC.
+              # No reintentar imágenes ya lanzadas ni repetir indefinidamente.
+              stale_unlaunched=(old.get("auto_repair") and old_status in {"REQUESTED","CANCELLED","ERROR"}
+                  and not old.get("pc_launched_at")
+                  and elapsed_seconds(old.get("requested_at"))>=120
+                  and attempt<2)
+              if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
                   continue
               if active_elsewhere or queued:
                   continue
@@ -333,7 +339,7 @@ jobs:
 
               # Un job REQUESTED/RUNNING puede quedar muerto si el bridge o Chat
               # no devuelve raster. No debe bloquear la reparación para siempre.
-              if (not force_retry) and int(old.get("revision") or rev)==rev and old_status in active:
+              if (not force_retry and not stale_unlaunched) and int(old.get("revision") or rev)==rev and old_status in active:
                   active_ttl=45*60 if old_status=="REQUESTED" else 12*60
                   if age<active_ttl:
                       continue
@@ -363,7 +369,7 @@ jobs:
                   "imagegen no produjo raster",
               ))
               cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
-              if (not force_retry) and old and old_status not in active and age<cooldown:
+              if (not force_retry and not stale_unlaunched) and old and old_status not in active and age<cooldown:
                   continue
 
               attempt+=1
