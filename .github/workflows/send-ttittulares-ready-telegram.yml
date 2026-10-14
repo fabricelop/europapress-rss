@@ -96,8 +96,24 @@ jobs:
           # entre ejecuciones consecutivas y protege las decisiones de borrado.
           git fetch origin main
           git reset --hard origin/main
+          cp telegram/ttittulares-deliveries.json /tmp/tti-ledger-before-send.json
           python3 shared/telegram_readonly_delivery.py ttittulares
           cp telegram/ttittulares-deliveries.json /tmp/telegram-readonly-ledger.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          before=json.loads(Path("/tmp/tti-ledger-before-send.json").read_text(encoding="utf8"))
+          after=json.loads(Path("/tmp/telegram-readonly-ledger.json").read_text(encoding="utf8"))
+          def completed(doc):
+              return {(str(x.get("event_id") or ""),int(x.get("revision") or 1),
+                       int(x.get("telegram_message_id") or 0))
+                      for x in doc.get("items",[])
+                      if str(x.get("status") or "").lower()=="sent"
+                      and x.get("final") is True and x.get("telegram_message_id")}
+          fresh=completed(after)-completed(before)
+          Path("/tmp/tti-new-ready-delivered.txt").write_text(str(len(fresh)),encoding="utf8")
+          print("TTI_NEW_READY_DELIVERED_FOR_IMAGE",len(fresh))
+          PY
       - name: Guardar ledger sin perder borrados
         run: |
           set -euo pipefail
@@ -160,6 +176,23 @@ jobs:
           done
           echo "No se pudo guardar ledger Telegram" >&2
           exit 1
+
+      - name: Encolar IA inmediatamente tras nueva entrega final en Telegram
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          count="$(cat /tmp/tti-new-ready-delivered.txt 2>/dev/null || echo 0)"
+          if [ "$count" -eq 0 ]; then
+            echo "TTI_IMAGE_REPAIR_ALREADY_UP_TO_DATE"
+            exit 0
+          fi
+          # Una entrega final nueva (o una nueva revision) merece su imagen.
+          # El reparador tiene idempotencia por event_id+revision y encola antes
+          # de buscar fotos. No relanzar si no hubo un cambio real.
+          gh workflow run repair-ttittulares-listas.yml --repo "$GITHUB_REPOSITORY" --ref main
+          echo "TTI_IMAGE_REPAIR_DISPATCHED finalized=$count"
 
       - name: Auditar los avisos de Telegram después de la ejecución
         if: always()
