@@ -2,46 +2,73 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T13:30:58.600860+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-14T14:06:39.043706+00:00",
+      "issue_count": 4,
       "issues": [
         {
-          "kind": "editorial_overdue",
-          "id": "ccc2b9ff5f30",
-          "title": "Ciudadanos y UCIN irán a las elecciones en el nuevo partido Democracia 21 de Miriam González",
-          "seconds": 2734,
-          "workflow": null
+          "kind": "missing_delivery",
+          "id": "f65fcce97c8f",
+          "title": "La Comunidad de Madrid denuncia ante la Fiscalía posibles delitos de odio contra Ayuso en la acampad",
+          "seconds": 1266,
+          "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
-          "kind": "orphan_provisional",
-          "id": "ecdb7239c533",
-          "title": "\"Felipe VI en la Ceuta ocupada\", \"no borra la ocupación\"... así trata la prensa marroquí la visita d",
-          "seconds": 3830,
-          "workflow": null
+          "kind": "missing_delivery",
+          "id": "c47dd807a423",
+          "title": "Lufthansa, principal candidato para hacerse con la aerolínea lusa TAP, por delante de Air France-KLM",
+          "seconds": 1265,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e47a695a29b4",
+          "title": "Detenidas dos mujeres acusadas de sustraer una bebé de apenas un mes a su madre en Andújar, Jaén - T",
+          "seconds": 688,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1360,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "67b045e6bad68ffb9ab286486f44cd257f6122dc26e05fce67376c4b2b8966d3",
+      "open_signature": "5da4a3ca7222b08a488f7045b3cf956fee719875883de573f91a85846f05a4ab",
       "repair_via_workflow_run": false,
       "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T13:30:58.600860+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T14:06:39.043706+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1360,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T13:25:30.975635+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T13:25:30.975635+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T13:25:30.975635+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T14:06:39.043706+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T14:06:39.043706+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T14:06:39.043706+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T13:30:58.600860+00:00"
+  "checked_at": "2026-10-14T14:06:39.043706+00:00"
 }
