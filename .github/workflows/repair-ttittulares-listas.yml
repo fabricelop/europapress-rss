@@ -276,7 +276,8 @@ jobs:
               started=job.get("pc_launched_at")
               return (elapsed_seconds(started)<300 if started
                       else elapsed_seconds(job.get("requested_at"))<120)
-          active_elsewhere=any(is_active_job(x) for x in index.get("jobs",[]))
+          # Encolar todas las noticias independientemente; el listener consume secuencialmente.
+          # Ningún REQUESTED de otra noticia impide crear el siguiente trabajo.
           queued=[]
           wanted_ids=set()
 
@@ -297,7 +298,7 @@ jobs:
               # No reactivar noticias de antes de la simplificación; conservar
               # 24 h de cola para no perder noticias si otra imagen tarda.
               launch_only_start=datetime.fromisoformat("2026-10-14T06:20:00+00:00")
-              if entered_dt<launch_only_start or (now-entered_dt).total_seconds()>86400:
+              if (now-entered_dt).total_seconds()>86400:
                   continue
               # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
               is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
@@ -327,8 +328,7 @@ jobs:
                   and attempt<2)
               if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
                   continue
-              if active_elsewhere or queued:
-                  continue
+              # Sin bloqueo global ni límite artificial de un job por pasada.
               finished=str(old.get("finished_at") or old.get("updated_at") or old.get("requested_at") or "")
               age=999999
               if finished:
