@@ -241,13 +241,13 @@ def one_line_sentence(project,title,copy,limit=47):
         # Keep recognizable subject AND a short explanation, rather than
         # repeating only the generic 'es tendencia porque' introduction.
         import re
-        factual=re.sub(r"^TT#\\d+\\s+.+?\\s+es tendencia porque\\s+",
+        factual=re.sub(r"^TT#\d+\s+.+?\s+es tendencia porque\s+",
                        "",line,count=1,flags=re.I)
         if factual!=line:
             line=str(title or "")+": "+factual
     if not line:line=str(title or "")
     import re
-    line=re.split(r"(?<=[.!?])\\s+",line,maxsplit=1)[0]
+    line=re.split(r"(?<=[.!?])\s+",line,maxsplit=1)[0]
     return shorten(line,limit)
 
 
@@ -274,7 +274,7 @@ def render(project,bot_id,image_statuses=None):
     icons={"launched":"🟢","queued":"🟠","pending":"🟠",
            "failed":"🔴","unknown":"⚪"}
     shown=sorted(ready,key=lambda row:(order.get(status(row),4),-row["mid"]))
-    chunks.append("\\n<b>LISTAS</b>")
+    chunks.append("\n<b>LISTAS</b>")
     count_shown=0
     room=MAX_TEXT-100
     for row in shown:
@@ -290,23 +290,23 @@ def render(project,bot_id,image_statuses=None):
             punch_line="    "+html.escape(punch)
         else:
             punch_line="    ⏳ Remate pendiente" if status(row) in {"pending","queued"} else ""
-        section="\\n".join([headline,punch_line] if punch_line else [headline])
-        if len("\\n".join(chunks+[section]))>=room:break
+        section="\n".join([headline,punch_line] if punch_line else [headline])
+        if len("\n".join(chunks+[section]))>=room:break
         chunks.append(section)
         count_shown+=1
     if not ready:chunks.append("• Ninguna")
     if count_shown<len(ready):chunks.append(f"… y {len(ready)-count_shown} más")
-    chunks.append("\\n<b>EN ELABORACIÓN</b>")
+    chunks.append("\n<b>EN ELABORACIÓN</b>")
     count_pending=0
     for row in pending:
         line="• "+html.escape(one_line_sentence(project,row["title"],"",47))
-        if len("\\n".join(chunks+[line]))>=room:break
+        if len("\n".join(chunks+[line]))>=room:break
         chunks.append(line)
         count_pending+=1
     if not pending:chunks.append("• Ninguna")
     if count_pending<len(pending):
         chunks.append(f"… y {len(pending)-count_pending} más")
-    body="\\n".join(chunks)
+    body="\n".join(chunks)
     assert len(body)<=MAX_TEXT
     return body,ready,pending
 
