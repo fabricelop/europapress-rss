@@ -2,17 +2,62 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T17:57:00.505518+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T18:55:40.931579+00:00",
+      "issue_count": 6,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "75eaf3677ff8",
+          "title": "EE.UU. propone multas de 200.000 dólares por viaje a todos los buques españoles y sanciones a las ex",
+          "seconds": 2347,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "37821140cd15",
+          "title": "Real Betis - Porto, el partido de la Champions League en directo|El Betis con Parrott y Abde en ataq",
+          "seconds": 1224,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "150551e0284d",
+          "title": "Puigdemont insta al Supremo a amnistiarle \"sin más demora\" porque contribuye a la \"normalización\" de",
+          "seconds": 1224,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a6ba91647e66",
+          "title": "Video Tensión entre Moncloa y la Casa Blanca EEUU acusa a España de dañar su comercio marítimo y pro",
+          "seconds": 1224,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d6283e32665d",
+          "title": "La Aemet avisa de un \"cambio brusco de tiempo\": alerta de la llegada de una DANA y de un desplome de",
+          "seconds": 613,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4363ca3ebc2e",
+          "title": "Sánchez carga contra Feijóo por las pensiones: “Si PP y Vox llegan al Gobierno firman la carta de de",
+          "seconds": 613,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "ab7e625a35ef3a840598484ce41ab7175709ce001192b1d9e0ec5f719aaeccfd",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 4
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T17:57:00.505518+00:00",
+      "checked_at": "2026-10-14T18:55:40.931579+00:00",
       "issue_count": 0,
       "issues": [],
       "actions_started": [],
@@ -23,10 +68,10 @@
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T17:48:38.844040+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T18:55:40.931579+00:00",
     "ttittulares:telegram-pinned-index.yml": "2026-10-14T17:48:38.844040+00:00",
     "ttendencias:telegram-pinned-index.yml": "2026-10-14T17:48:38.844040+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T17:57:00.505518+00:00"
+  "checked_at": "2026-10-14T18:55:40.931579+00:00"
 }
