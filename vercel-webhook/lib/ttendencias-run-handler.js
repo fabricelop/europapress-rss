@@ -398,9 +398,9 @@ async function requestImagePcAck(req,res){
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
-  const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase());
+  const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"].includes(String(job.status||"").toUpperCase());
   if(terminal){
-    if(stage==="done"&&String(job.status||"").toUpperCase()==="DONE")return res.status(200).json({ok:true,...job});
+    if((stage==="done"&&String(job.status||"").toUpperCase()==="DONE")||(stage==="launched"&&String(job.status||"").toUpperCase()==="LAUNCHED"))return res.status(200).json({ok:true,...job});
     return res.status(409).json({ok:false,error:"job ya terminal",status:job.status})
   }
   if(stage==="picked_up"){
@@ -468,14 +468,16 @@ async function requestImagePcAck(req,res){
     next.finished_at=now;
     next.message=String(req.body?.reason||"El puente de imagen no pudo completar el trabajo.").slice(0,240);
   }else{
-    next.status="RUNNING";
-    next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
+    const launchOnly=String(job.delivery_mode||"")==="launch_only";
+    next.status=(stage==="launched"&&launchOnly)?"LAUNCHED":"RUNNING";
+    next.phase=stage==="picked_up"?"pc_pickup":(launchOnly?"pc_launched":"pc_launch");
     if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
     if(stage==="launched"){
       next.pc_picked_up_at=job.pc_picked_up_at||now;
-      next.pc_launched_at=now;
+      next.pc_launched_at=job.pc_launched_at||now;
+      if(launchOnly)next.finished_at=now;
     }
-    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"PC ha abierto el chat de imagen; esperando inicio de generación.";
+    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":(launchOnly?"Prompt confirmado en ChatGPT Images; sin recuperación de imagen.":"Prompt enviado; esperando ImageGen.");
   }
   await writeControlJson(path,next,existing.sha,"PC Chat imagen ack TTendencias "+stage+" "+target_id+" "+command_id);
   return res.status(200).json({ok:true,...next})
