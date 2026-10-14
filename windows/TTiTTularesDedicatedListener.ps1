@@ -479,7 +479,9 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
         $localTxt.Contains('BRIDGE_FEATURES="v54-submit-generating-transition"') -and
         $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=') -and
-        $localTxt.Contains('automaticImageDeadline')
+        $localTxt.Contains('automaticImageDeadline') -and
+        $localTxt.Contains('BRIDGE LAUNCH ONLY CONFIRMED') -and
+        $localTxt.Contains('await confirmPromptLaunched()')
       if($localOk){
         $old=$ErrorActionPreference
         try{
@@ -488,7 +490,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
           $code=$LASTEXITCODE
         }finally{$ErrorActionPreference=$old}
         if($code -eq 0){
-          Write-Log "IMAGE BRIDGE LOCAL VALID v54 submit-generating-transition"
+          Write-Log "IMAGE BRIDGE LOCAL VALID launch-only ACK verified"
           return $true
         }
       }
@@ -514,7 +516,9 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'await cdp.call("Input.insertText",{text:message});',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker',
-      'automaticImageDeadline'
+      'automaticImageDeadline',
+      'BRIDGE LAUNCH ONLY CONFIRMED',
+      'await confirmPromptLaunched()'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
     }
@@ -526,7 +530,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
     }finally{$ErrorActionPreference=$old}
     if ($code -ne 0) { throw "node --check falló en bridge remoto" }
     Move-Item -LiteralPath $tmp -Destination $ImageBridge -Force
-    Write-Log "IMAGE BRIDGE REFRESHED source=raw-v54"
+    Write-Log "IMAGE BRIDGE REFRESHED launch-only ACK verified"
     return $true
   } catch {
     Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
