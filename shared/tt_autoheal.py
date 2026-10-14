@@ -104,9 +104,14 @@ def problems(project,now):
         st=str(x.get("status") or "").lower()
         is_final=st=="explained" or bool(x.get("editorial_verified") and x.get("explanation"))
         if row is None and age_s>=120:
-            result.append({"kind":"missing_delivery","id":eid,
+            # A stalled editorial request is NOT fixed by dispatching Telegram.
+            editorial_stuck=(project=="ttendencias" and
+                             st in {"preparing","update"} and age_s>=ESCALATE)
+            result.append({"kind":"editorial_overdue" if editorial_stuck else "missing_delivery",
+                           "id":eid,
                            "title":str(x.get("name") or x.get("title") or eid)[:100],
-                           "seconds":int(age_s),"workflow":conf["send"]})
+                           "seconds":int(age_s),
+                           "workflow":None if editorial_stuck else conf["send"]})
         elif row and row.get("final") is not True and is_final and age_s>=120:
             result.append({"kind":"unfinished_ready","id":eid,
                            "title":str(x.get("name") or x.get("title") or eid)[:100],
@@ -122,13 +127,24 @@ def problems(project,now):
     # Check these independently before claiming "0 incidents".
     if project=="ttendencias":
         request_doc=read("trends/requests.json",{"requests":[]})
-        if not isinstance(request_doc.get("requests"),list):
-            raise RuntimeError("TTendencias requests catalog invalid")
+        explained_doc=read("trends/telegram-manual-explained.json",{"items":[]})
+        if (not isinstance(request_doc.get("requests"),list) or
+                not isinstance(explained_doc.get("items"),list)):
+            raise RuntimeError("TTendencias request/explained catalog invalid")
+        # Include terminal revisions when selecting the latest request: an older
+        # preparing revision must never override a later user deletion.
         latest_req={}
         for req in request_doc["requests"]:
             rid=str(req.get("id") or "")
-            if rid and str(req.get("status") or "").lower() not in TERMINAL:
+            if not rid:continue
+            prev=latest_req.get(rid)
+            if prev is None or int(req.get("revision") or 0)>=int(prev.get("revision") or 0):
                 latest_req[rid]=req
+        explained_by_revision={}
+        for item in explained_doc["items"]:
+            if str(item.get("status") or "").lower()=="explained":
+                key=(str(item.get("id") or ""),int(item.get("revision") or 0))
+                explained_by_revision[key]=item
         for eid,req in latest_req.items():
             if eid in q or eid in closed:continue
             status=str(req.get("status") or "").lower()
@@ -137,28 +153,39 @@ def problems(project,now):
                 continue
             began=req.get("requested_at") or req.get("anticipated_at")
             secs=age(now,began)
-            # Prevent old historic requests from becoming an infinite backlog.
-            if not began or not 120<=secs<=24*3600:continue
+            # Keep post-baseline editorial jobs pending beyond 24h. Only
+            # completed delivery repairs have a 24h safety window.
+            if not began or secs<120:continue
+            if status in {"ready","explained"} and secs>24*3600:continue
             if cut and eid not in keep:
                 t=timeof(began)
                 if not t or t<=cut:continue
             row=live.get(eid)
-            if row and row.get("final") is True:continue
             title=str(req.get("name") or eid)[:100]
-            verified=bool(str(req.get("explanation") or "").strip() and
-                          (status=="explained" or req.get("editorial_verified") is True))
-            if row is None:
-                result.append({"kind":"missing_delivery","id":eid,
-                               "title":title,"seconds":int(secs),
-                               "workflow":conf["send"]})
-            elif verified:
-                result.append({"kind":"unfinished_ready","id":eid,
+            revision=int(req.get("revision") or 0)
+            verified_row=explained_by_revision.get((eid,revision))
+            verified=bool(status=="explained" and verified_row and
+                          all(req.get(field)==verified_row.get(field)
+                              for field in ("id","revision","explanation",
+                                            "closer_text","explained_at")) and
+                          str(req.get("explanation") or "").strip())
+            if verified and row and row.get("final") is True:
+                continue
+            if verified:
+                kind="unfinished_ready" if row else "missing_delivery"
+                result.append({"kind":kind,"id":eid,
                                "title":title,"seconds":int(secs),
                                "workflow":conf["send"]})
             elif secs>=ESCALATE:
-                # No fake editorial completion: ChatGPT must verify the news.
+                # No verified matched text: never close editorial work through
+                # a Telegram delivery (even when the ledger says final:true).
                 result.append({"kind":"editorial_overdue","id":eid,
                                "title":title,"seconds":int(secs),"workflow":None})
+            elif row is None:
+                # A provisional card is harmless before the editorial deadline.
+                result.append({"kind":"missing_delivery","id":eid,
+                               "title":title,"seconds":int(secs),
+                               "workflow":conf["send"]})
     # A provisional row might have disappeared from the queue; preserve it.
     already={r["id"] for r in result if r["kind"] in {
         "unfinished_ready","editorial_overdue","missing_delivery","orphan_provisional"}}
@@ -380,10 +407,50 @@ def selftest():
             # inventing an explanation or replacing the original Telegram ID.
             doc=read("trends/requests.json",{})
             doc["requests"][0].update(status="explained",
-                explanation="Hecho comprobado en fuentes.",editorial_verified=True)
+                explanation="Hecho comprobado en fuentes.",closer_text="",
+                revision=0,explained_at="2026-10-12T17:40:00Z",
+                editorial_verified=True)
             save("trends/requests.json",doc)
+            save("trends/telegram-manual-explained.json",{"items":[{
+                "id":"stalled-trend","revision":0,"status":"explained",
+                "explanation":"Hecho comprobado en fuentes.","closer_text":"",
+                "explained_at":"2026-10-12T17:40:00Z"}]})
             issue=problems("ttendencias",now)
-            assert next(x for x in issue if x["id"]=="stalled-trend")["workflow"]==CONFIG["ttendencias"]["send"]
+            assert next(x for x in issue if x["id"]=="stalled-trend")["kind"]=="unfinished_ready"
+            # A status flag alone cannot certify a missing or mismatched text.
+            save("trends/telegram-manual-explained.json",{"items":[]})
+            issue=problems("ttendencias",now)
+            assert next(x for x in issue if x["id"]=="stalled-trend")["kind"]=="editorial_overdue"
+            save("trends/telegram-manual-explained.json",{"items":[{
+                "id":"stalled-trend","revision":0,"status":"explained",
+                "explanation":"Hecho comprobado en fuentes.","closer_text":"",
+                "explained_at":"2026-10-12T17:40:00Z"}]})
+            # A completed Telegram ack with an unverified request is still blocked.
+            doc["requests"][0]["status"]="preparing"
+            save("trends/requests.json",doc)
+            delivery=read("trends/telegram-image-deliveries.json",{})
+            delivery["items"][0]["final"]=True
+            save("trends/telegram-image-deliveries.json",delivery)
+            assert next(x for x in problems("ttendencias",now)
+                        if x["id"]=="stalled-trend")["kind"]=="editorial_overdue"
+            doc["requests"][0]["status"]="explained"
+            save("trends/requests.json",doc)
+            assert not any(x["id"]=="stalled-trend" for x in problems("ttendencias",now))
+            delivery["items"][0]["final"]=False
+            save("trends/telegram-image-deliveries.json",delivery)
+            # Pending editorial work cannot expire after the old 24h window.
+            old={"id":"very-old-pending","name":"Pendiente desde hace dos días",
+                 "revision":0,"rank":2,"status":"preparing",
+                 "requested_at":"2026-10-12T17:30:00Z"}
+            save("trends/requests.json",{"requests":[old]})
+            aged=problems("ttendencias",now+timedelta(days=2))
+            assert next(x for x in aged if x["id"]=="very-old-pending")["kind"]=="editorial_overdue"
+            # A later terminal request does not resurrect the prior revision.
+            save("trends/requests.json",{"requests":[old,{
+                **old,"revision":1,"status":"deleted"}]})
+            assert not any(x["id"]=="very-old-pending"
+                           for x in problems("ttendencias",now+timedelta(days=2)))
+            save("trends/requests.json",doc)
             # User deletion is terminal even when requests.json is stale.
             delivery=read("trends/telegram-image-deliveries.json",{})
             delivery["items"][0]["status"]="deleted"
