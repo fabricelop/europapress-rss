@@ -64,7 +64,10 @@ struct RadarFrame: Identifiable {
 struct RadarFeed {
     var host: String = ""
     var frames: [RadarFrame] = []
+    var future: [RadarFrame] = []
+    var source = "RainViewer"
     var latest: RadarFrame? { frames.last }
+    var hasNowcast: Bool { !future.isEmpty }
 }
 
 enum RainAPI {
@@ -154,6 +157,55 @@ enum RainAPI {
     }
 
     static func fetchRadar() async throws -> RadarFeed {
+        // A coherent radar/nowcast tile set is preferable to switching to
+        // unrelated hourly WMS raster fields at +5 minutes. LibreWXR supplies
+        // an experimental 60-minute nowcast in the same tile style. Its
+        // metadata must be genuinely fresh; otherwise use RainViewer observed
+        // history with no invented future.
+        if let live = try? await fetchLibreNowcast() { return live }
+        return try await fetchObservedRadar()
+    }
+
+    static func fetchLibreNowcast(now:Date=Date()) async throws -> RadarFeed {
+        let url=URL(string:"https://api.librewxr.net/public/weather-maps.json")!
+        var request=URLRequest(url:url)
+        request.timeoutInterval=8
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        let (data,response)=try await URLSession.shared.data(for:request)
+        guard (response as? HTTPURLResponse)?.statusCode==200,
+              let root=try JSONSerialization.jsonObject(with:data) as? [String:Any],
+              let host=root["host"] as? String,
+              host=="https://api.librewxr.net",
+              let generated=root["generated"] as? Int,
+              abs(now.timeIntervalSince1970-Double(generated))<15*60,
+              let radar=root["radar"] as? [String:Any],
+              let past=radar["past"] as? [[String:Any]],
+              let future=radar["nowcast"] as? [[String:Any]] else {
+            throw URLError(.badServerResponse)
+        }
+        func read(_ rows:[[String:Any]]) -> [RadarFrame] {
+            rows.compactMap { row -> RadarFrame? in
+                guard let time=row["time"] as? Int,
+                      let path=row["path"] as? String,
+                      path.hasPrefix("/v2/radar/") else {return nil}
+                return RadarFrame(timestamp:time,path:path)
+            }.sorted {$0.timestamp<$1.timestamp}
+        }
+        let observations=availableHistory(read(past),now:now)
+        let newFrames=read(future)
+        guard let last=observations.last,
+              now.timeIntervalSince(last.date)>=0,
+              now.timeIntervalSince(last.date)<20*60 else {
+            throw URLError(.cannotParseResponse)
+        }
+        let steps=newFrames.filter {$0.timestamp>last.timestamp &&
+                                    $0.timestamp<=last.timestamp+3600}
+        guard steps.count>=3 else { throw URLError(.cannotParseResponse) }
+        return RadarFeed(host:host,frames:observations,future:steps,
+                         source:"LibreWXR")
+    }
+
+    static func fetchObservedRadar() async throws -> RadarFeed {
         let url = URL(string: "https://api.rainviewer.com/public/weather-maps.json")!
         let (data, response) = try await URLSession.shared.data(from: url)
         guard (response as? HTTPURLResponse)?.statusCode == 200,
@@ -167,7 +219,8 @@ enum RainAPI {
         }.sorted { $0.timestamp < $1.timestamp }
         // RainViewer may supply fewer than two hours; never fabricate earlier
         // observations or extend its licensed frame history.
-        return RadarFeed(host: host, frames: availableHistory(frames))
+        return RadarFeed(host: host, frames: availableHistory(frames),
+                         future:[],source:"RainViewer")
     }
 }
 
