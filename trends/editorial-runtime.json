@@ -4,11 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T20:45:00+02:00",
-  "last_completed_at": "2026-10-14T20:49:10+02:00",
-  "updated_at": "2026-10-14T20:49:10+02:00",
+  "last_started_at": "2026-10-14T21:45:00+02:00",
+  "last_completed_at": "2026-10-14T22:04:00+02:00",
+  "updated_at": "2026-10-14T22:04:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "2aa3246ef4fd",
+    "9eacfd9c1d46"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,27 +21,27 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-1792001790623-chatgpt",
-    "requested_at": "2026-10-14T20:17:00+02:00",
+    "run_id": "tr-20261014T214500+0200-chat",
+    "requested_at": "2026-10-14T21:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-20261014T204500+0200-chat",
+    "run_id": "tr-20261014T214500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T20:45:00+02:00",
-    "updated_at": "2026-10-14T20:49:10+02:00",
-    "finished_at": "2026-10-14T20:49:10+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-14T21:45:00+02:00",
+    "updated_at": "2026-10-14T22:04:00+02:00",
+    "finished_at": "2026-10-14T22:04:00+02:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -53,11 +56,11 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0
     },
-    "message": "Pasada 0/0 cerrada y verificada: cola 0, 0 preparing/update, 0 rewrite_pending, 0 huérfanos y 0 incidencias bidireccionales.",
+    "message": "Pasada 2/2 cerrada y verificada: Feyenoord y Mestalla explicadas; cola 0; Telegram final en 823/824; 0 huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -67,44 +70,92 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "2aa3246ef4fd",
+        "title": "Feyenoord",
+        "closer_text": "🌶️ El 0-1 salió de De Kuip con un rebote de recuerdo."
+      },
+      {
+        "trend_id": "9eacfd9c1d46",
+        "title": "Mestalla",
+        "closer_text": "🌶️ Mestalla ya necesita agenda y paraguas en la misma puerta."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-14T20:45:00+02:00",
+        "at": "2026-10-14T21:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · cola textual 0; reconciliando reexplicaciones, Pendientes y Telegram."
+        "message": "Iniciando pasada editorial · 2 tendencias activas."
       },
       {
-        "at": "2026-10-14T20:46:00+02:00",
+        "at": "2026-10-14T21:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola 0 y sin rewrite_pending; revisando Pendientes recientes y confirmando saneamiento visual/Telegram."
+        "trend_id": "2aa3246ef4fd",
+        "title": "Feyenoord",
+        "message": "Releyendo estado autoritativo de Feyenoord."
       },
       {
-        "at": "2026-10-14T20:48:00+02:00",
+        "at": "2026-10-14T21:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "2aa3246ef4fd",
+        "title": "Feyenoord",
+        "message": "Hecho esencial verificado · Feyenoord 3-2 Como."
+      },
+      {
+        "at": "2026-10-14T21:50:30+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final: cola 0, 0 preparing/update, 0 rewrite_pending y 0 huérfanos; solicitando verificación Telegram."
+        "trend_id": "2aa3246ef4fd",
+        "title": "Feyenoord",
+        "message": "Feyenoord r0 cerrada y verificada."
       },
       {
-        "at": "2026-10-14T20:49:10+02:00",
+        "at": "2026-10-14T21:51:00+02:00",
+        "phase": "verifying",
+        "trend_id": "9eacfd9c1d46",
+        "title": "Mestalla",
+        "message": "Releyendo estado autoritativo de Mestalla."
+      },
+      {
+        "at": "2026-10-14T21:52:00+02:00",
+        "phase": "investigating",
+        "trend_id": "9eacfd9c1d46",
+        "title": "Mestalla",
+        "message": "Contrastando Copa y riesgo meteorológico en Mestalla."
+      },
+      {
+        "at": "2026-10-14T22:01:00+02:00",
+        "phase": "persisting",
+        "trend_id": "9eacfd9c1d46",
+        "title": "Mestalla",
+        "message": "Mestalla r0 enviada al chat outbox transaccional."
+      },
+      {
+        "at": "2026-10-14T22:02:30+02:00",
+        "phase": "verifying",
+        "trend_id": "9eacfd9c1d46",
+        "title": "Mestalla",
+        "message": "Aplicador y entrega Telegram completados con éxito."
+      },
+      {
+        "at": "2026-10-14T22:04:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada: cola 0, sin reexplicaciones y auditorías Telegram limpias."
+        "message": "Pasada 2/2 cerrada y verificada: cola 0 y Telegram sin huérfanos."
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": []
   },
-  "run_id": "tr-20261014T204500+0200-chat",
+  "run_id": "tr-20261014T214500+0200-chat",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 2,
+    "trends_explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -119,39 +170,74 @@
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-14T20:45:00+02:00",
+      "at": "2026-10-14T21:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial · cola textual 0; reconciliando reexplicaciones, Pendientes y Telegram."
+      "message": "Iniciando pasada editorial · 2 tendencias activas."
     },
     {
-      "at": "2026-10-14T20:46:00+02:00",
+      "at": "2026-10-14T21:46:00+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola 0 y sin rewrite_pending; revisando Pendientes recientes y confirmando saneamiento visual/Telegram."
+      "trend_id": "2aa3246ef4fd",
+      "title": "Feyenoord",
+      "message": "Releyendo estado autoritativo de Feyenoord."
     },
     {
-      "at": "2026-10-14T20:48:00+02:00",
+      "at": "2026-10-14T21:48:00+02:00",
+      "phase": "investigating",
+      "trend_id": "2aa3246ef4fd",
+      "title": "Feyenoord",
+      "message": "Hecho esencial verificado · Feyenoord 3-2 Como."
+    },
+    {
+      "at": "2026-10-14T21:50:30+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final: cola 0, 0 preparing/update, 0 rewrite_pending y 0 huérfanos; solicitando verificación Telegram."
+      "trend_id": "2aa3246ef4fd",
+      "title": "Feyenoord",
+      "message": "Feyenoord r0 cerrada y verificada."
     },
     {
-      "at": "2026-10-14T20:49:10+02:00",
+      "at": "2026-10-14T21:51:00+02:00",
+      "phase": "verifying",
+      "trend_id": "9eacfd9c1d46",
+      "title": "Mestalla",
+      "message": "Releyendo estado autoritativo de Mestalla."
+    },
+    {
+      "at": "2026-10-14T21:52:00+02:00",
+      "phase": "investigating",
+      "trend_id": "9eacfd9c1d46",
+      "title": "Mestalla",
+      "message": "Contrastando Copa y riesgo meteorológico en Mestalla."
+    },
+    {
+      "at": "2026-10-14T22:01:00+02:00",
+      "phase": "persisting",
+      "trend_id": "9eacfd9c1d46",
+      "title": "Mestalla",
+      "message": "Mestalla r0 enviada al chat outbox transaccional."
+    },
+    {
+      "at": "2026-10-14T22:02:30+02:00",
+      "phase": "verifying",
+      "trend_id": "9eacfd9c1d46",
+      "title": "Mestalla",
+      "message": "Aplicador y entrega Telegram completados con éxito."
+    },
+    {
+      "at": "2026-10-14T22:04:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada: cola 0, sin reexplicaciones y auditorías Telegram limpias."
+      "message": "Pasada 2/2 cerrada y verificada: cola 0 y Telegram sin huérfanos."
     }
   ],
   "telegram_orphans": 0,
