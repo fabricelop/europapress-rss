@@ -5,12 +5,11 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-14T12:15:00+02:00",
-  "last_completed_at": "2026-10-14T12:31:20+02:00",
-  "updated_at": "2026-10-14T12:31:20+02:00",
+  "last_completed_at": "2026-10-14T12:33:54+02:00",
+  "updated_at": "2026-10-14T12:33:54+02:00",
   "status": "success",
   "processed_ids": [
-    "68e3a66c2821",
-    "Colau"
+    "68e3a66c2821"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -34,19 +33,21 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-14T12:15:00+02:00",
-    "updated_at": "2026-10-14T12:31:20+02:00",
-    "finished_at": "2026-10-14T12:31:20+02:00",
+    "updated_at": "2026-10-14T12:33:54+02:00",
+    "finished_at": "2026-10-14T12:33:54+02:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 2,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "concurrent_explained": 1,
+      "jit_skipped": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -55,15 +56,10 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_repair_triggered": 1,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 0,
-      "telegram_provisionals_finalized": 2,
       "telegram_orphans": 0,
-      "telegram_bidirectional_issues": 0
+      "bidirectional_issues": 0
     },
-    "message": "Pasada verificada: 2/2 explicadas, cola 0, sin reexplicaciones pendientes y Telegram 799/800 finalizados sin huérfanos.",
+    "message": "Pasada cerrada: Tribunal de Cuentas verificado; Colau r1 ya cerrada concurrentemente; cola y auditorías limpias.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -132,66 +128,6 @@
         ],
         "selected_candidate": "tcu-b",
         "selected_score": 8.8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "Colau",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "col-a",
-            "total": 7.6,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "col-b",
-            "total": 8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "col-c",
-            "total": 8.9,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "col-d",
-            "total": 7.7,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "col-e",
-            "total": 7.9,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          }
-        ],
-        "selected_candidate": "col-c",
-        "selected_score": 8.9,
         "no_remate_reason": null
       }
     ],
@@ -268,64 +204,36 @@
       },
       {
         "at": "2026-10-14T12:30:10+02:00",
-        "phase": "drafting",
-        "trend_id": "Colau",
-        "title": "Colau",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-14T12:30:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "Colau",
-        "title": "Colau",
-        "message": "Remate político seleccionado y texto comprobado bajo 280 caracteres"
-      },
-      {
-        "at": "2026-10-14T12:30:40+02:00",
         "phase": "verifying",
         "trend_id": "Colau",
         "title": "Colau",
-        "message": "Releyendo main"
+        "message": "La revisión quedó explicada concurrentemente; se omite sin sobrescribir"
       },
       {
-        "at": "2026-10-14T12:30:45+02:00",
+        "at": "2026-10-14T12:32:36+02:00",
         "phase": "verifying",
         "trend_id": "Colau",
         "title": "Colau",
-        "message": "Verificando id+revision y texto persistido"
+        "message": "Comando obsoleto retirado; cola y estado reconciliados"
       },
       {
-        "at": "2026-10-14T12:31:00+02:00",
-        "phase": "verifying",
-        "trend_id": "Colau",
-        "title": "Colau",
-        "message": "Telegram 800 final; Telegram 799 final; auditoría sin huérfanos"
-      },
-      {
-        "at": "2026-10-14T12:31:05+02:00",
-        "phase": "verifying",
-        "trend_id": "Colau",
-        "title": "Colau",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-14T12:31:20+02:00",
+        "at": "2026-10-14T12:33:54+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 2/2 cerrada · cola 0, sin reexplicaciones ni Telegram provisionales pendientes"
+        "message": "Cola 0; sin reexplicaciones, huérfanos ni incidencias bidireccionales"
       }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": []
+    ]
   },
   "run_id": "tr-chat-20261014T1215+0200",
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 2,
+    "trends_processed": 1,
+    "trends_explained": 1,
+    "concurrent_explained": 1,
+    "jit_skipped": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
@@ -334,13 +242,8 @@
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "pending_repair_triggered": 1,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
-    "remates_omitted": 0,
-    "telegram_provisionals_finalized": 2,
     "telegram_orphans": 0,
-    "telegram_bidirectional_issues": 0
+    "bidirectional_issues": 0
   },
   "unresolved_orphan_ids": [],
   "radar_refresh": {
@@ -471,6 +374,5 @@
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "error": null,
   "trigger_job_id": "tr-1791973389592-manual"
 }
