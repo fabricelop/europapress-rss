@@ -224,12 +224,7 @@ function Get-ChatCdpTabCount{
     }).Count
   }catch{return -1}
 }
-function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
-  # The Autocorregir GitHub runner cannot itself research or explain trends.
-  # Only wake the EXISTING Windows editorial task after verifying main again.
-  # The marker contains IDs, never shell commands, scripts or free-form tasks.
-  $requested=@($Signal.editorial_retry.ttendencias | ForEach-Object{[string]$_} |
-    Where-Object{$_ -match '^[a-zA-Z0-9]{8,64}
+function EnsureRemoteTelegramHeal{
   $now=[DateTimeOffset]::UtcNow
   if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
   $script:RemoteHealLastPoll=$now
@@ -285,9 +280,6 @@ function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
     Log "REMOTE HEAL LISTENER RECOVERY DEFERRED request=$request"
     return
   }
-  # Only a real, still-overdue editorial revision can restart the existing
-  # launcher. When the editorial run already closed, this is a no-op.
-  if(-not (EnsureOverdueTrendsEditorialRetry $signal $request)){return}
   try{
     @{request_id=$request;completed_at=$now.ToString("o")} |
       ConvertTo-Json -Compress |
