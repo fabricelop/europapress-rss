@@ -694,6 +694,36 @@ async function progress(phase,detail){
 async function fail(reason){
   try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
+// Nunca reenviar el prompt para reparar un ACK: confirmar sólo su registro remoto.
+async function confirmPromptLaunched(){
+  let last="sin ACK";
+  for(let attempt=1;attempt<=5;attempt++){
+    try{
+      const r=await post({task:"image_pc_ack",target_id:targetId,
+        command_id:commandId,stage:"launched",
+        worker_id:"ttittulares-image-bridge-v29-raw-job-recovery"});
+      if(r.ok&&r.data&&r.data.pc_launched_at&&!r.data.deferred){
+        console.log("BRIDGE IMAGE LAUNCH CONFIRMED "+r.data.pc_launched_at);
+        return true;
+      }
+      last="HTTP "+r.status+" deferred="+Boolean(r.data&&r.data.deferred)+" error="+String(r.data&&r.data.error||"");
+      if(r.status===409&&String(r.data&&r.data.error||"").includes("command_id"))throw Error("job_superado");
+    }catch(e){
+      last=String(e&&e.message||e);
+      if(last==="job_superado")throw e;
+    }
+    await sleep(attempt*1200);
+    // La respuesta pudo perderse después de guardar pc_launched_at.
+    try{
+      const job=await fetchJob();
+      if(job.pc_launched_at&&String(job.command_id)===commandId){
+        console.log("BRIDGE IMAGE LAUNCH CONFIRMED VIA JOB "+job.pc_launched_at);
+        return true;
+      }
+    }catch{}
+  }
+  throw Error("image_launch_ack_not_persisted "+last);
+}
 async function uploadImage(image){
   let result;
   for(let attempt=1;attempt<=3;attempt++){
@@ -731,14 +761,14 @@ async function uploadImage(image){
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
-        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttittulares-image-bridge-v29-raw-job-recovery"});
-        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+        const launchOnly=isAutomatic && String(job.delivery_mode||"")==="launch_only";
+        if(!launchOnly)await progress("prompt_sent","Prompt GAG IA enviado y verificado.");
+        await confirmPromptLaunched();
       }
       if(isAutomatic && String(job.delivery_mode||"")==="launch_only"){
-        // El usuario recogerá la imagen de ChatGPT Images. No capturar ni subir raster.
-        // La confirmación del servidor es la única base del estado Telegram.
-        console.log("BRIDGE LAUNCH ONLY :: imagen solicitada, sin recuperación");
+        // Éxito: el prompt existe en ChatGPT Images y quedó registrado en GitHub.
+        // No descargar imágenes, esperar raster, ni enviar nada a Telegram.
+        console.log("BRIDGE LAUNCH ONLY CONFIRMED :: ChatGPT Images, sin recuperación");
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
