@@ -24,7 +24,7 @@ final class RainPulseFusionTests: XCTestCase {
         let points=RainPulseFusion.points(samples:fineSamples(),models:models,
                                           now:start,horizon:120,step:1)
         XCTAssertEqual(points.count,121)
-        XCTAssertEqual(points[0].rateMMH,1.5,accuracy:0.0001)
+        XCTAssertEqual(points[0].rateMMH,1,accuracy:0.0001)
         XCTAssertEqual(points[0].automaticMMH ?? -1,1,accuracy:0.0001)
         XCTAssertEqual(points[0].lowMMH,0,accuracy:0.0001)
         XCTAssertEqual(points[0].highMMH,3,accuracy:0.0001)
@@ -32,7 +32,7 @@ final class RainPulseFusionTests: XCTestCase {
         XCTAssertEqual(points[0].rainyModels,3)
         XCTAssertTrue(points[0].usesModelMedian)
         XCTAssertTrue(points[0].disagreement)
-        XCTAssertEqual(points[61].rateMMH,3,accuracy:0.0001)
+        XCTAssertEqual(points[61].rateMMH,1,accuracy:0.0001)
     }
 
     func testMinuteGridIsRepeatedHourlyMeanNotInventedIndependentMinuteValues() {
@@ -45,6 +45,26 @@ final class RainPulseFusionTests: XCTestCase {
         XCTAssertEqual(ecmwf[60].mmh,2)
         XCTAssertEqual(ecmwf[61].mmh,2)
         XCTAssertEqual(ecmwf[120].mmh,2)
+    }
+
+    func testMinutePulseUsesPreceding15MinuteBucketsWithoutMakingUpIntermediateRain() {
+        let samples=[
+            RainSample(id:0,time:start.addingTimeInterval(15*60),
+                       precipitation:0,probability:15),
+            RainSample(id:1,time:start.addingTimeInterval(30*60),
+                       precipitation:0.5,probability:70),
+            RainSample(id:2,time:start.addingTimeInterval(45*60),
+                       precipitation:0,probability:20)
+        ]
+        let rows=RainPulseFusion.points(samples:samples,models:[
+            model("ECMWF",2,2),model("ICON",2,2)],now:start,horizon:45)
+        XCTAssertEqual(rows[0].rateMMH,0,accuracy:0.0001)
+        XCTAssertEqual(rows[14].rateMMH,0,accuracy:0.0001)
+        XCTAssertEqual(rows[15].rateMMH,2,accuracy:0.0001)
+        XCTAssertEqual(rows[29].rateMMH,2,accuracy:0.0001)
+        XCTAssertEqual(rows[30].rateMMH,0,accuracy:0.0001)
+        // Without a 15-minute slot, use the hourly ensemble only.
+        XCTAssertEqual(rows[45].rateMMH,2,accuracy:0.0001)
     }
 
     func testSingleModelDoesNotOverrideExistingFineForecast() {
