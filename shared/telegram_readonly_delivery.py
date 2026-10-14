@@ -915,11 +915,13 @@ def process(project,now,token,chat):
                            if str(r.get("status") or "").lower()=="sent"
                            and int(r.get("telegram_message_id") or 0)>0),None)
         if project=="ttittulares" and existing is None:
+            # A related story treated earlier must not suppress a distinct card
+            # that is already present in Listas. Each app card gets its own
+            # Telegram lifecycle unless the user explicitly deletes/closes it.
             prior=previous_story({"event_id":eid,"title":card["title"],
                                   "source_url":card.get("source_url")},treated_refs)
             if prior:
-                print("TTI_TREATED_BEFORE_DELIVERY_SKIPPED",eid,"prior",prior.get("event_id"),flush=True)
-                skipped+=1;continue
+                print("TTI_TREATED_BEFORE_DELIVERY_ALLOWED",eid,"prior",prior.get("event_id"),flush=True)
         if project=="ttendencias" and not existing:
             previous=[r for r in linked if str(r.get("status") or "").lower()=="sent"]
             if previous and not trend_repeat_allowed(card,previous,now):
