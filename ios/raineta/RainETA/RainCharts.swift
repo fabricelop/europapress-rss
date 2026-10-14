@@ -27,139 +27,195 @@ struct RainIntensityLegend: View {
     }
 }
 
-struct MinuteRainGraph: View {
-    @ObservedObject var store: RainStore
-    @AppStorage("raineta.settings.defaultHorizon") private var horizon = 60
-    @State private var selectedMinute: Int?
-    @State private var compareExpanded = false
+// The short-range pulse shows actual separate minute slots on a scrollable
+// scale. Each slot inherits the temporal resolution of its source (typically
+// 15 minutes for Best Match, 60 minutes for individual NWP providers).
+private struct RainMinuteBar:Identifiable {
+    let minute:Int
+    let mmh:Double?
+    var id:Int {minute}
+    var wet:Bool { (mmh ?? 0) >= 0.15 }
+}
 
-    var body: some View {
+private enum RainBarDisplay {
+    static func summary(_ points:[RainMinuteBar],rainingNow:Bool) -> String {
+        guard !points.isEmpty else{return "Sin datos"}
+        if rainingNow {
+            if let dry=points.first(where:{$0.minute>=1 && !$0.wet && $0.mmh != nil}) {
+                return "Lluvia ahora · podría parar en +\(dry.minute) min"
+            }
+            return "Está lloviendo · sin final claro en este intervalo"
+        }
+        if let wet=points.first(where:{$0.wet}) {
+            return "Seco ahora · posible lluvia en +\(wet.minute) min"
+        }
+        return "Sin lluvia apreciable en el intervalo"
+    }
+}
+
+private struct RainMinuteBars:View {
+    let data:[RainMinuteBar]
+    let horizon:Int
+    @Binding var selectedMinute:Int?
+    @State private var scrollID=0
+
+    private let barWidth:CGFloat=7
+    private let spacing:CGFloat=2
+    private var maxRate:Double {
+        max(0.6,(data.compactMap(\.mmh).max() ?? 0)*1.10)
+    }
+
+    var body:some View {
+        ScrollViewReader { reader in
+            ScrollView(.horizontal,showsIndicators:true) {
+                VStack(alignment:.leading,spacing:6) {
+                    HStack(alignment:.bottom,spacing:spacing) {
+                        ForEach(data) { point in
+                            Button {
+                                selectedMinute=point.minute
+                            } label:{
+                                RoundedRectangle(cornerRadius:1.5)
+                                    .fill(point.mmh == nil ? Color.gray.opacity(0.22) :
+                                          point.wet ? RainVisual.color(point.mmh ?? 0) :
+                                          Color.gray.opacity(0.25))
+                                    .frame(width:barWidth,height:barHeight(point))
+                                    .overlay(alignment:.top) {
+                                        if selectedMinute==point.minute {
+                                            Rectangle().stroke(.white,lineWidth:1.5)
+                                        }
+                                    }
+                                    .frame(width:barWidth,height:105,alignment:.bottom)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("Minuto \(point.minute), " +
+                                (point.mmh.map{String(format:"%.1f milímetros por hora",$0)}
+                                  ?? "sin dato"))
+                            .id(point.minute)
+                        }
+                    }
+                    HStack(spacing:0) {
+                        ForEach(0...horizon/10,id:\.self) { i in
+                            Text(i == 0 ? "Ahora" : "+\(i*10)")
+                                .font(.system(size:10,weight:.medium,design:.rounded))
+                                .foregroundStyle(.secondary)
+                                .frame(width:CGFloat(i==0 ? 10 : 10)*(barWidth+spacing),
+                                       alignment:.leading)
+                        }
+                    }
+                }
+                .padding(.vertical,5)
+            }
+            .onChange(of:horizon) {_,_ in
+                selectedMinute=nil
+                withAnimation {reader.scrollTo(0,anchor:.leading)}
+            }
+        }
+        .frame(height:145)
+        .accessibilityLabel("Barras de precipitación, una por cada minuto. Deslizar horizontalmente.")
+    }
+
+    private func barHeight(_ value:RainMinuteBar)->CGFloat {
+        guard let mm=value.mmh else{return 3}
+        if !value.wet {return 4}
+        return max(12,CGFloat(min(1,max(0,mm)/maxRate))*97)
+    }
+}
+
+struct MinuteRainGraph:View {
+    @ObservedObject var store:RainStore
+    @AppStorage("raineta.settings.defaultHorizon") private var horizon=60
+    @State private var selectedMinute:Int?
+    @State private var showModels=false
+
+    var body:some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
                 Label("Pulso de lluvia",systemImage:"waveform.path")
                     .font(.headline)
                 Spacer()
-                Text("MINUTO A MINUTO")
-                    .font(.system(size:9,weight:.bold))
+                Text("1 BARRA / MIN")
+                    .font(.system(size:10,weight:.bold))
                     .foregroundStyle(.cyan)
             }
-            Picker("Horizonte",selection:$horizon) {
+            Picker("Tiempo",selection:$horizon) {
                 Text("30 min").tag(30)
                 Text("60 min").tag(60)
                 Text("120 min").tag(120)
             }
             .pickerStyle(.segmented)
             let now=Date()
-            let samples=RainPulseFusion.points(
-                samples:store.snapshot?.samples ?? [],
-                models:store.shortModels,now:now,horizon:horizon)
-            if samples.isEmpty {
-                ContentUnavailableView("Sin datos suficientes",systemImage:"cloud.slash",
-                    description:Text("Actualiza la previsión o cambia de localidad."))
-                    .frame(height:145)
+            let rows=RainPulseFusion.points(samples:store.snapshot?.samples ?? [],
+                                        models:store.shortModels,now:now,horizon:horizon)
+            let bars=rows.map { RainMinuteBar(minute:$0.minute,mmh:$0.rateMMH) }
+            if bars.isEmpty {
+                ContentUnavailableView("Sin previsión local",systemImage:"cloud.slash",
+                    description:Text("Actualiza la previsión de este lugar."))
+                    .frame(height:125)
             } else {
-                let selected=samples.min(by:{
+                let selected=rows.min(by:{
                     abs($0.minute-(selectedMinute ?? 0)) <
                     abs($1.minute-(selectedMinute ?? 0))
-                }) ?? samples[0]
+                }) ?? rows[0]
+                let isRaining=store.snapshot?.isRaining ?? false
+                Text(RainBarDisplay.summary(bars,rainingNow:isRaining))
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.cyan)
+                    .fixedSize(horizontal:false,vertical:true)
                 HStack(alignment:.firstTextBaseline) {
-                    VStack(alignment:.leading,spacing:3) {
-                        Text(selectedMinute == nil ? "Ahora" : "Dentro de \(selected.minute) min")
+                    VStack(alignment:.leading,spacing:2) {
+                        Text(selectedMinute == nil ? "Ahora" : "En +\(selected.minute) min")
                             .font(.caption).foregroundStyle(.secondary)
                         Text(RainVisual.intensity(selected.rateMMH))
                             .font(.title3.bold())
                             .foregroundStyle(RainVisual.color(selected.rateMMH))
                     }
                     Spacer()
-                    VStack(alignment:.trailing,spacing:3) {
-                        Text(String(format:"%.1f mm/h",selected.rateMMH))
-                            .font(.headline.monospacedDigit())
-                        Text(selected.usesModelMedian ?
-                             "\(selected.rainyModels)/\(selected.availableModels) modelos prevén lluvia" :
-                             "Previsión automática")
-                            .font(.caption).foregroundStyle(.secondary)
-                    }
+                    Text(String(format:"%.1f mm/h",selected.rateMMH))
+                        .font(.title3.bold().monospacedDigit())
                 }
-                RainPulsePlot(points:samples,horizon:horizon,selectedMinute:$selectedMinute)
-                    .frame(height:188)
-                    .clipped()
-                HStack {
-                    Text("Ahora")
+                RainMinuteBars(data:bars,horizon:horizon,
+                               selectedMinute:$selectedMinute)
+                HStack(spacing:6) {
+                    Text("Gris: sin lluvia")
                     Spacer()
-                    Text("+\(horizon/2) min")
+                    Text("Color: intensidad")
                     Spacer()
-                    Text("+\(horizon) min")
+                    Image(systemName:"hand.draw").foregroundStyle(.secondary)
                 }
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(.secondary)
-                RainIntensityLegend()
-                if selected.usesModelMedian {
-                    HStack(spacing:12) {
-                        Label("Mediana modelos",systemImage:"line.diagonal")
-                            .foregroundStyle(.cyan)
-                        Label("Modelo automático 15 min",systemImage:"line.diagonal")
-                            .foregroundStyle(.mint)
-                    }
-                    .font(.caption2)
-                    HStack {
-                        Text("Consenso de \(selected.availableModels) modelos · franja: " +
-                             String(format:"%.1f–%.1f mm/h",selected.lowMMH,selected.highMMH))
-                        Spacer(minLength:0)
-                    }
+                .font(.caption2).foregroundStyle(.secondary)
+                Text("Desliza las barras para ver los \(horizon) minutos. " +
+                     "Cada minuto es una posición visual derivada de los intervalos de la fuente.")
                     .font(.caption2).foregroundStyle(.secondary)
-                }
-                if let estimate=store.shortEstimate,estimate.isUsable(at:now),
-                   estimate.radarBased {
-                    Label("Radar de llegada activo · " + estimate.confidence,
-                          systemImage:"dot.radiowaves.left.and.right")
-                        .font(.caption2).foregroundStyle(.cyan)
-                }
+
                 Button {
-                    withAnimation {compareExpanded.toggle()}
+                    withAnimation {showModels.toggle()}
                 } label:{
                     HStack {
-                        Label(compareExpanded ? "Ocultar modelos" : "Ver modelos individuales",
+                        Label(showModels ? "Ocultar comparación" : "Comparar cada modelo",
                               systemImage:"square.stack.3d.up")
-                        Spacer()
-                        Text("\(store.shortModels.count) disponibles")
+                        Spacer(minLength:4)
+                        Text("\(store.shortModels.count) fuentes")
                             .font(.caption2).foregroundStyle(.secondary)
-                        Image(systemName:compareExpanded ? "chevron.up":"chevron.down")
+                        Image(systemName:showModels ? "chevron.up":"chevron.down")
                     }
-                    .font(.subheadline)
+                    .font(.subheadline.bold())
                 }
                 .buttonStyle(.plain)
-                if compareExpanded {
-                    if !store.shortModels.isEmpty {
-                        VStack(alignment:.leading,spacing:12) {
-                            HStack {
-                                Text("Precipitación por modelo")
-                                    .font(.caption.bold())
-                                Spacer()
-                                Text("mm/h · valor horario")
-                                    .font(.caption2).foregroundStyle(.secondary)
-                            }
-                            ForEach(Array(store.shortModels.enumerated()),id:\.offset) { i,model in
-                                RainPulseModelRow(model:model,now:now,horizon:horizon,
-                                    color:[Color.cyan,.mint,.orange,.purple,.pink][i % 5])
-                            }
-                            if let note=RainPulseFusion.summary(samples) {
-                                Label(note,systemImage:"info.circle")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                if showModels {
+                    VStack(alignment:.leading,spacing:9) {
+                        Text("Cada modelo tiene sus propias barras. Sus datos son horarios; " +
+                             "las barras intermedias repiten la estimación de esa hora.")
+                            .font(.caption2).foregroundStyle(.secondary)
+                        ForEach(store.shortModels,id:\.name) { model in
+                            RainModelBarDisclosure(model:model,now:now,horizon:horizon)
                         }
-                        .padding(.top,4)
-                    } else if store.shortModelsLoading {
-                        ProgressView("Consultando modelos…")
-                    } else {
-                        Text("No hay modelos suficientes. Continúa el Pulso automático.")
-                            .font(.caption).foregroundStyle(.secondary)
+                        if store.shortModels.isEmpty {
+                            Text(store.shortModelsLoading ? "Consultando modelos…" :
+                                 "Ahora solo está disponible la previsión principal.")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
                     }
                 }
-                Text("Paso visual: 1 min. Los modelos usan acumulados horarios; " +
-                     "las curvas por minuto NO son predicciones meteorológicas independientes cada minuto. " +
-                     "La estimación del radar se calcula por separado.")
-                    .font(.caption2).foregroundStyle(.secondary)
             }
         }
         .padding(15)
@@ -167,145 +223,55 @@ struct MinuteRainGraph: View {
     }
 }
 
-
-private struct RainPulsePlot: View {
-    let points:[RainPulseMinute]
-    let horizon:Int
-    @Binding var selectedMinute:Int?
-
-    var body:some View {
-        Canvas { context,canvas in
-            guard !points.isEmpty, canvas.width>1,canvas.height>1 else {return}
-            let top:CGFloat=12
-            let bottom:CGFloat=canvas.height-8
-            let maxRain=max(0.6,(points.map(\.highMMH).max() ?? 0)*1.1,
-                            (points.compactMap(\.automaticMMH).max() ?? 0)*1.1)
-            func pos(_ minute:Int,_ rain:Double) -> CGPoint {
-                CGPoint(x:canvas.width*CGFloat(minute)/CGFloat(max(1,horizon)),
-                        y:bottom-(bottom-top)*CGFloat(max(0,rain)/maxRain))
-            }
-            for i in 0...3 {
-                let y=top+(bottom-top)*CGFloat(i)/3
-                var grid=Path()
-                grid.move(to:CGPoint(x:0,y:y))
-                grid.addLine(to:CGPoint(x:canvas.width,y:y))
-                context.stroke(grid,with:.color(.white.opacity(0.10)),lineWidth:1)
-            }
-            let envelope=points.filter(\.usesModelMedian)
-            if envelope.count>1 {
-                var area=Path()
-                area.move(to:pos(envelope[0].minute,envelope[0].highMMH))
-                for p in envelope.dropFirst() {
-                    area.addLine(to:pos(p.minute,p.highMMH))
-                }
-                for p in envelope.reversed() {
-                    area.addLine(to:pos(p.minute,p.lowMMH))
-                }
-                area.closeSubpath()
-                context.fill(area,with:.color(.cyan.opacity(0.15)))
-            }
-            var consensus=Path()
-            var hasFirst=false
-            for p in points {
-                if !hasFirst {
-                    consensus.move(to:pos(p.minute,p.rateMMH))
-                    hasFirst=true
-                } else {
-                    consensus.addLine(to:pos(p.minute,p.rateMMH))
-                }
-            }
-            context.stroke(consensus,with:.color(.cyan),
-                           style:StrokeStyle(lineWidth:2.5,lineCap:.round,lineJoin:.round))
-            var original=Path()
-            var started=false
-            for p in points {
-                if let value=p.automaticMMH {
-                    if !started {
-                        original.move(to:pos(p.minute,value))
-                        started=true
-                    } else {
-                        original.addLine(to:pos(p.minute,value))
-                    }
-                } else {started=false}
-            }
-            if envelope.count>1 {
-                context.stroke(original,with:.color(.mint),
-                               style:StrokeStyle(lineWidth:1.7,dash:[4,4]))
-            }
-            if let selectedMinute,let point=points.min(by:{
-                abs($0.minute-selectedMinute)<abs($1.minute-selectedMinute)
-            }) {
-                let x=pos(point.minute,point.rateMMH).x
-                var cursor=Path()
-                cursor.move(to:CGPoint(x:x,y:0))
-                cursor.addLine(to:CGPoint(x:x,y:canvas.height))
-                context.stroke(cursor,with:.color(.white.opacity(0.7)),
-                               style:StrokeStyle(lineWidth:1,dash:[3,4]))
-                let center=pos(point.minute,point.rateMMH)
-                context.fill(Path(ellipseIn:CGRect(x:center.x-3,y:center.y-3,
-                                                   width:6,height:6)),
-                             with:.color(.white))
-            }
-        }
-        .contentShape(Rectangle())
-        .overlay {
-            GeometryReader { geometry in
-                Color.clear
-                    .contentShape(Rectangle())
-                    .gesture(DragGesture(minimumDistance:0).onChanged { value in
-                        selectedMinute = max(0,min(horizon,
-                            Int((value.location.x/max(1,geometry.size.width) *
-                                 CGFloat(horizon)).rounded())))
-                    })
-            }
-        }
-        .accessibilityLabel("Previsión de lluvia de los próximos \(horizon) minutos")
-    }
-}
-
-private struct RainPulseModelRow:View {
+private struct RainModelBarDisclosure:View {
     let model:RainShortModel
     let now:Date
     let horizon:Int
-    let color:Color
-    private var steps:[RainPulseModelMinute] {
-        RainPulseFusion.individual(models:[model],now:now,horizon:horizon,step:5)
+    @State private var open=false
+    @State private var selectedMinute:Int?
+
+    private var bars:[RainMinuteBar] {
+        (0...horizon).map { minute in
+            RainMinuteBar(minute:minute,
+              mmh:model.rateMMH(at:now.addingTimeInterval(Double(minute*60))))
+        }
     }
     var body:some View {
-        let points=steps
-        VStack(alignment:.leading,spacing:5) {
-            HStack {
-                Text(model.name).font(.subheadline.bold())
-                Spacer()
-                Text(model.rateMMH(at:now).map {String(format:"Ahora %.1f mm/h",$0)}
-                     ?? "Sin dato actual")
-                    .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
-            }
-            Canvas {context,size in
-                let ymax=max(0.4,(points.map(\.mmh).max() ?? 0)*1.15)
-                var path=Path()
-                for (i,p) in points.enumerated() {
-                    let xy=CGPoint(x:size.width*CGFloat(p.minute)/CGFloat(max(1,horizon)),
-                                   y:size.height-3-(size.height-8)*CGFloat(p.mmh/ymax))
-                    if i==0 {path.move(to:xy)}
-                    else {path.addLine(to:xy)}
+        VStack(alignment:.leading,spacing:8) {
+            Button {
+                withAnimation {open.toggle()}
+            } label:{
+                HStack(spacing:7) {
+                    Image(systemName:open ? "chevron.down":"chevron.right")
+                        .foregroundStyle(.cyan)
+                    VStack(alignment:.leading,spacing:3) {
+                        Text(model.name).font(.subheadline.bold())
+                        Text(RainBarDisplay.summary(bars,rainingNow:bars.first?.wet ?? false))
+                            .font(.caption2).foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                    Spacer(minLength:8)
+                    Text(model.rateMMH(at:now).map {String(format:"%.1f",$0)}
+                         ?? "—")
+                        .font(.subheadline.monospacedDigit().bold())
+                    Text("mm/h").font(.caption2).foregroundStyle(.secondary)
                 }
-                context.stroke(path,with:.color(color),
-                               style:StrokeStyle(lineWidth:2.2,lineCap:.round,lineJoin:.round))
             }
-            .frame(height:36)
-            .clipped()
-            HStack {
-                Text("Ahora")
-                Spacer()
-                Text("+\(horizon) min")
-                Spacer()
-                Text("Pico \(String(format:"%.1f",points.map(\.mmh).max() ?? 0))")
+            .buttonStyle(.plain)
+            if open {
+                let selected=bars.first(where:{$0.minute==selectedMinute}) ?? bars[0]
+                HStack {
+                    Text(selectedMinute == nil ? "Ahora" : "+\(selected.minute) min")
+                    Spacer()
+                    Text(selected.mmh.map{String(format:"%.1f mm/h",$0)} ?? "Sin dato")
+                }
+                .font(.caption).foregroundStyle(.secondary)
+                RainMinuteBars(data:bars,horizon:horizon,
+                               selectedMinute:$selectedMinute)
             }
-            .font(.system(size:10,design:.rounded)).foregroundStyle(.secondary)
         }
         .padding(10)
-        .background(.white.opacity(0.055),in:RoundedRectangle(cornerRadius:11))
+        .background(.white.opacity(0.055),in:RoundedRectangle(cornerRadius:12))
     }
 }
 
