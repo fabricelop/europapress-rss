@@ -196,20 +196,27 @@ def notice(project,issues,prev,now,send=telegram):
                  "reply_markup":markup,"disable_notification":True})
     return int(result.get("message_id") or 0)
 
-def request_safe_pc_recovery(now):
+def request_safe_pc_recovery(now,editorial_ids=None):
     """Durable signal for the local watchdog, never a remote shell command.
 
     A private Telegram button triggers a workflow. The PC checks this marker
     only when connected and performs safe Chrome/ChatGPT tab recovery locally.
     """
-    save(PC_RECOVERY,{
+    signal={
         "version":1,
         "request_id":uuid.uuid4().hex,
         "requested_at":now.isoformat(),
         "projects":["ttittulares","ttendencias"],
         "action":"recover_chat_tab_if_missing",
         "reason":"telegram_manual_autoheal"
-    })
+    }
+    ids=[str(x) for x in (editorial_ids or []) if str(x)]
+    if ids:
+        # Data only: the Windows watchdog may invoke the existing local
+        # editorial task, after checking these revisions are still pending.
+        # No arbitrary shell command or generated explanation is transported.
+        signal["editorial_retry"]={"ttendencias":list(dict.fromkeys(ids))[:25]}
+    save(PC_RECOVERY,signal)
     return True
 
 def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
@@ -218,7 +225,12 @@ def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
     attempts=state.setdefault("attempts",{})
     outcomes={}
     if force:
-        request_safe_pc_recovery(now)
+        # Both private Autocorregir buttons request safe Chrome recovery.
+        # For stuck TTendencias text, ask the LOCAL scheduled ChatGPT editorial
+        # launcher to run once; GitHub image repair cannot write explanations.
+        overdue=[x["id"] for x in problems("ttendencias",now)
+                 if x["kind"]=="editorial_overdue"]
+        request_safe_pc_recovery(now,overdue)
     for project in CONFIG:
         issues=problems(project,now)
         actions=sorted({x["workflow"] for x in issues if x.get("workflow")})
@@ -312,8 +324,11 @@ def selftest():
             assert first["action"]=="recover_chat_tab_if_missing"
             assert first["projects"]==["ttittulares","ttendencias"]
             assert first["request_id"] and first["requested_at"]
-            request_safe_pc_recovery(now+timedelta(minutes=7))
-            assert read(PC_RECOVERY,{})["request_id"]!=first["request_id"], "each manual press needs a distinct request"
+            request_safe_pc_recovery(now+timedelta(minutes=7),["trend001","trend002"])
+            second=read(PC_RECOVERY,{})
+            assert second["request_id"]!=first["request_id"], "each manual press needs a distinct request"
+            assert second["editorial_retry"]["ttendencias"]==["trend001","trend002"]
+            assert "editorial_retry" not in first
             print("TT_AUTOHEAL_SELFTEST_OK")
         finally:
             os.environ.pop("TT_AUTOHEAL_DIRECT_DISPATCH",None)
