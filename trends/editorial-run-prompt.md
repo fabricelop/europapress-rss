@@ -2,7 +2,7 @@
 
 ## Regla prioritaria de hashtags para los tuits de TTendencias (14/10/2026)
 
-**Petición expresa del usuario; prevalece sobre el formato histórico de solo dos líneas.** En CADA nueva explicación de una tendencia, incluyendo revisiones y Tremending, añade **dos hashtags** formados por palabras clave del acontecimiento verificado, o **tres** cuando aporten precisión y quepan en el tuit. Prioriza protagonista, evento, institución, equipo o lugar directamente ligados al motivo actual. Evita etiquetas genéricas (#Actualidad, #Noticias, #Viral, #España), repetidas, especulativas o propagandísticas. Escribe grafías legibles sin espacios (#BenidormFest2027, #LadillaRusa, #MargaritaRobles), sin alterar el nombre literal que acompaña a `TT#N`.
+**Petición expresa del usuario; prevalece sobre el formato histórico de solo dos líneas.** En CADA nueva explicación de una tendencia, incluyendo revisiones y Tremending, añade **dos hashtags** formados por palabras clave del acontecimiento verificado, o **tres** cuando aporten precisión y quepan en el tuit. Prioriza protagonista, evento, institución, equipo o lugar directamente ligados al motivo actual. Evita etiquetas genéricas (#Actualidad, #Noticias, #Viral, #España), repetidas, especulativas o propagandísticas. Si el nombre literal de la cabecera ya es un hashtag (p. ej. `#BenidormFest2027`), **no lo repitas** en la línea de etiquetas: selecciona otras dos palabras clave comprobadas, o tres si aportan precisión y caben. Escribe grafías legibles sin espacios (#BenidormFest2027, #LadillaRusa, #MargaritaRobles), sin alterar el nombre literal que acompaña a `TT#N`.
 
 **Formato del campo `explanation` / tuit copiable:**
 ```text
