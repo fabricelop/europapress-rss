@@ -4,74 +4,70 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T00:13:50+02:00",
-  "last_completed_at": "2026-10-15T00:17:01+02:00",
-  "updated_at": "2026-10-15T00:17:01+02:00",
+  "last_started_at": "2026-10-15T00:45:00+02:00",
+  "last_completed_at": "2026-10-15T00:50:00+02:00",
+  "updated_at": "2026-10-15T00:50:00+02:00",
   "status": "success",
   "processed_ids": [
-    "96c57ccbf332"
+    "b2ecf5aca4d7"
   ],
-  "remaining_ids": [
-    "96c57ccbf332"
-  ],
+  "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "96c57ccbf332"
-  ],
+  "remaining_problematic_ids": [],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-autoguard-1792015915",
-    "requested_at": "2026-10-15T00:13:50+02:00",
+    "run_id": "tr-chat-20261015T0045+0200",
+    "requested_at": "2026-10-15T00:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-autoguard-1792015915",
+    "run_id": "tr-chat-20261015T0045+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T00:13:50+02:00",
-    "updated_at": "2026-10-15T00:17:01+02:00",
-    "finished_at": "2026-10-15T00:17:01+02:00",
+    "started_at": "2026-10-15T00:45:00+02:00",
+    "updated_at": "2026-10-15T00:50:00+02:00",
+    "finished_at": "2026-10-15T00:50:00+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
       "trends_processed": 1,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 1,
-      "queue_remaining": 1,
+      "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "telegram_delivery_triggered": 0,
-      "telegram_delivery_workflow_verified": 0,
+      "telegram_delivery_triggered": 1,
+      "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 1,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada 1/1: Florentino r0 reintentada y sigue problematic tras 2 intentos; 0 preparing/update, 0 rewrite_pending; Telegram 835 permanece provisional por falta de explicación verificable.",
+    "message": "Pasada 1/1: #LaIslaDelastentaciones12 r0 explicada y verificada; cola editorial 0, 0 rewrite_pending y Telegram 837 final. La auditoría mantiene 1 huérfano previo de Florentino (835).",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-15T00:16:55+02:00",
+        "at": "2026-10-15T00:49:41+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "reason": "No se ha verificado un detonante único tras el segundo intento; la tarjeta Telegram 835 permanece provisional y la auditoría registra 1 huérfano hasta que exista una explicación definitiva fiable."
+        "reason": "Aviso Telegram previo aún no resuelto: mensaje 835; No consta explicación definitiva."
       }
     ],
     "ratings_snapshot": {
@@ -81,132 +77,175 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "b2ecf5aca4d7",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c3",
+        "selected_score": 8.4
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-15T00:13:50+02:00",
+        "at": "2026-10-15T00:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial; 0 preparing/update y 1 problematic Top 10 pendiente de reintento."
+        "message": "Preparando pasada editorial; 1 preparing/update activa (#LaIslaDelastentaciones12 r0)."
       },
       {
-        "at": "2026-10-15T00:14:30+02:00",
+        "at": "2026-10-15T00:45:25+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Releyendo estado autoritativo de Florentino."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Releyendo estado autoritativo de #LaIslaDelastentaciones12."
       },
       {
-        "at": "2026-10-15T00:14:40+02:00",
+        "at": "2026-10-15T00:45:35+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "JIT confirmado: r0 sigue problematic y activa en Top 10; sin revisión posterior."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "JIT confirmado: r0 sigue preparing, TT#7 y sin revisión posterior."
       },
       {
-        "at": "2026-10-15T00:14:45+02:00",
+        "at": "2026-10-15T00:45:45+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Buscando detonante actual con consultas nuevas."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Buscando detonante actual de la etiqueta durante la emisión."
       },
       {
-        "at": "2026-10-15T00:15:00+02:00",
+        "at": "2026-10-15T00:46:20+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Contrastando fuente 1/2: cobertura actual de la remontada Roma-Real Madrid no atribuye un hecho concreto a Florentino."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Contrastando fuente 1/2: Mediaset confirma el episodio del 14-O con Rubén y Gema ante el espejo y la salida de Nataly."
       },
       {
-        "at": "2026-10-15T00:15:15+02:00",
+        "at": "2026-10-15T00:46:35+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Contrastando fuente 2/2: noticias sobre el próximo Clásico y Bernabéu son actuales, pero no explican inequívocamente el pico de las 23:32."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Contrastando fuente 2/2: FormulaTV confirma los mismos ejes de la entrega."
       },
       {
-        "at": "2026-10-15T00:15:25+02:00",
+        "at": "2026-10-15T00:46:45+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "No se verifica un detonante único con fiabilidad suficiente; no se redacta explicación."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Hecho esencial verificado: la etiqueta acompaña la emisión del episodio 12 de La isla de las tentaciones 11."
       },
       {
-        "at": "2026-10-15T00:15:29+02:00",
+        "at": "2026-10-15T00:46:50+02:00",
+        "phase": "drafting",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Redactando explicación factual con tres hashtags específicos."
+      },
+      {
+        "at": "2026-10-15T00:47:00+02:00",
+        "phase": "drafting",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Comprobando límite de X: 229 caracteres."
+      },
+      {
+        "at": "2026-10-15T00:47:05+02:00",
+        "phase": "remate_selection",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Evaluando cinco enfoques de remate y comparando con los últimos 30 publicados."
+      },
+      {
+        "at": "2026-10-15T00:47:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Remate seleccionado: «El espejo hizo de hoguera sin necesitar cerillas.»"
+      },
+      {
+        "at": "2026-10-15T00:47:30+02:00",
         "phase": "persisting",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Persistiendo segundo intento problematic: detonante actual no verificable con suficiente fiabilidad."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Guardando ficha Explicada r0."
       },
       {
-        "at": "2026-10-15T00:16:14+02:00",
+        "at": "2026-10-15T00:47:45+02:00",
         "phase": "persisting",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Outbox aplicado: problematic_attempts=2 y r0 permanece en cola."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Conflicto concurrente detectado al sincronizar requests; releyendo SHA sin duplicar la ficha."
       },
       {
-        "at": "2026-10-15T00:16:35+02:00",
+        "at": "2026-10-15T00:48:05+02:00",
+        "phase": "persisting",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Actualizando requests r0 con el mismo texto y remate."
+      },
+      {
+        "at": "2026-10-15T00:48:10+02:00",
+        "phase": "persisting",
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Retirando r0 de la cola tras confirmar request explained."
+      },
+      {
+        "at": "2026-10-15T00:49:10+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Releyendo main."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-15T00:16:45+02:00",
+        "at": "2026-10-15T00:49:25+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Verificando id+revision y estado persistido: r0 problematic, intento 2."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Telegram 837 confirmado sent/final; la auditoría posterior no registra huérfano para esta revisión."
       },
       {
-        "at": "2026-10-15T00:16:50+02:00",
+        "at": "2026-10-15T00:49:40+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending; Florentino sigue problematic en Top 10."
+        "trend_id": "b2ecf5aca4d7",
+        "title": "#LaIslaDelastentaciones12",
+        "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-15T00:16:55+02:00",
-        "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Telegram 835 sigue provisional; auditoría registra 1 huérfano porque no existe explicación definitiva verificable."
-      },
-      {
-        "at": "2026-10-15T00:17:01+02:00",
+        "at": "2026-10-15T00:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 1/1 cerrada con incidencia no global: Florentino r0 sigue problematic tras 2 intentos; sin preparing/update ni reelaboraciones pendientes."
+        "message": "Pasada 1/1 cerrada; queda 1 huérfano previo de Florentino (mensaje 835), ajeno a esta revisión."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-autoguard-1792015915",
+  "run_id": "tr-chat-20261015T0045+0200",
   "summary": {
     "trends_processed": 1,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 1,
+    "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 1,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
-    "telegram_delivery_triggered": 0,
-    "telegram_delivery_workflow_verified": 0,
+    "telegram_delivery_triggered": 1,
+    "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 1,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [
@@ -214,107 +253,141 @@
   ],
   "activity": [
     {
-      "at": "2026-10-15T00:13:50+02:00",
+      "at": "2026-10-15T00:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial; 0 preparing/update y 1 problematic Top 10 pendiente de reintento."
+      "message": "Preparando pasada editorial; 1 preparing/update activa (#LaIslaDelastentaciones12 r0)."
     },
     {
-      "at": "2026-10-15T00:14:30+02:00",
+      "at": "2026-10-15T00:45:25+02:00",
       "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Releyendo estado autoritativo de Florentino."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Releyendo estado autoritativo de #LaIslaDelastentaciones12."
     },
     {
-      "at": "2026-10-15T00:14:40+02:00",
+      "at": "2026-10-15T00:45:35+02:00",
       "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "JIT confirmado: r0 sigue problematic y activa en Top 10; sin revisión posterior."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "JIT confirmado: r0 sigue preparing, TT#7 y sin revisión posterior."
     },
     {
-      "at": "2026-10-15T00:14:45+02:00",
+      "at": "2026-10-15T00:45:45+02:00",
       "phase": "investigating",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Buscando detonante actual con consultas nuevas."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Buscando detonante actual de la etiqueta durante la emisión."
     },
     {
-      "at": "2026-10-15T00:15:00+02:00",
+      "at": "2026-10-15T00:46:20+02:00",
       "phase": "investigating",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Contrastando fuente 1/2: cobertura actual de la remontada Roma-Real Madrid no atribuye un hecho concreto a Florentino."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Contrastando fuente 1/2: Mediaset confirma el episodio del 14-O con Rubén y Gema ante el espejo y la salida de Nataly."
     },
     {
-      "at": "2026-10-15T00:15:15+02:00",
+      "at": "2026-10-15T00:46:35+02:00",
       "phase": "investigating",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Contrastando fuente 2/2: noticias sobre el próximo Clásico y Bernabéu son actuales, pero no explican inequívocamente el pico de las 23:32."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Contrastando fuente 2/2: FormulaTV confirma los mismos ejes de la entrega."
     },
     {
-      "at": "2026-10-15T00:15:25+02:00",
+      "at": "2026-10-15T00:46:45+02:00",
       "phase": "investigating",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "No se verifica un detonante único con fiabilidad suficiente; no se redacta explicación."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Hecho esencial verificado: la etiqueta acompaña la emisión del episodio 12 de La isla de las tentaciones 11."
     },
     {
-      "at": "2026-10-15T00:15:29+02:00",
+      "at": "2026-10-15T00:46:50+02:00",
+      "phase": "drafting",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Redactando explicación factual con tres hashtags específicos."
+    },
+    {
+      "at": "2026-10-15T00:47:00+02:00",
+      "phase": "drafting",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Comprobando límite de X: 229 caracteres."
+    },
+    {
+      "at": "2026-10-15T00:47:05+02:00",
+      "phase": "remate_selection",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Evaluando cinco enfoques de remate y comparando con los últimos 30 publicados."
+    },
+    {
+      "at": "2026-10-15T00:47:10+02:00",
+      "phase": "remate_selection",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Remate seleccionado: «El espejo hizo de hoguera sin necesitar cerillas.»"
+    },
+    {
+      "at": "2026-10-15T00:47:30+02:00",
       "phase": "persisting",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Persistiendo segundo intento problematic: detonante actual no verificable con suficiente fiabilidad."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Guardando ficha Explicada r0."
     },
     {
-      "at": "2026-10-15T00:16:14+02:00",
+      "at": "2026-10-15T00:47:45+02:00",
       "phase": "persisting",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Outbox aplicado: problematic_attempts=2 y r0 permanece en cola."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Conflicto concurrente detectado al sincronizar requests; releyendo SHA sin duplicar la ficha."
     },
     {
-      "at": "2026-10-15T00:16:35+02:00",
+      "at": "2026-10-15T00:48:05+02:00",
+      "phase": "persisting",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Actualizando requests r0 con el mismo texto y remate."
+    },
+    {
+      "at": "2026-10-15T00:48:10+02:00",
+      "phase": "persisting",
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Retirando r0 de la cola tras confirmar request explained."
+    },
+    {
+      "at": "2026-10-15T00:49:10+02:00",
       "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Releyendo main."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-15T00:16:45+02:00",
+      "at": "2026-10-15T00:49:25+02:00",
       "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Verificando id+revision y estado persistido: r0 problematic, intento 2."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Telegram 837 confirmado sent/final; la auditoría posterior no registra huérfano para esta revisión."
     },
     {
-      "at": "2026-10-15T00:16:50+02:00",
+      "at": "2026-10-15T00:49:40+02:00",
       "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending; Florentino sigue problematic en Top 10."
+      "trend_id": "b2ecf5aca4d7",
+      "title": "#LaIslaDelastentaciones12",
+      "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending."
     },
     {
-      "at": "2026-10-15T00:16:55+02:00",
-      "phase": "verifying",
-      "trend_id": "96c57ccbf332",
-      "title": "Florentino",
-      "message": "Telegram 835 sigue provisional; auditoría registra 1 huérfano porque no existe explicación definitiva verificable."
-    },
-    {
-      "at": "2026-10-15T00:17:01+02:00",
+      "at": "2026-10-15T00:50:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 1/1 cerrada con incidencia no global: Florentino r0 sigue problematic tras 2 intentos; sin preparing/update ni reelaboraciones pendientes."
+      "message": "Pasada 1/1 cerrada; queda 1 huérfano previo de Florentino (mensaje 835), ajeno a esta revisión."
     }
   ],
   "telegram_orphans": 1,
   "telegram_orphan_ids": [
     "96c57ccbf332"
-  ],
-  "error": null
+  ]
 }
