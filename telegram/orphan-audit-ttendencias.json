@@ -1,12 +1,74 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-14T20:36:04.032398+00:00",
+  "checked_at": "2026-10-14T20:54:08.311400+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 108,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 719,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 5,
+  "unresolved": [
+    {
+      "key": "provisional:6f731c9a7bd9:828",
+      "id": "6f731c9a7bd9",
+      "message_id": 828,
+      "title": "Mario Hermoso",
+      "age_min": 30.5,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:7144cc3c72e8:826",
+      "id": "7144cc3c72e8",
+      "message_id": 826,
+      "title": "Courtois",
+      "age_min": 30.5,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:7e325f21b5b5:825",
+      "id": "7e325f21b5b5",
+      "message_id": 825,
+      "title": "Roma",
+      "age_min": 30.5,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:b9257c2f4735:829",
+      "id": "b9257c2f4735",
+      "message_id": 829,
+      "title": "De Roon",
+      "age_min": 30.5,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:cd7275e8b277:827",
+      "id": "cd7275e8b277",
+      "message_id": 827,
+      "title": "El PSG",
+      "age_min": 30.5,
+      "reason": "No consta explicación definitiva"
+    }
+  ],
+  "alerted": {
+    "provisional:6f731c9a7bd9:828": {
+      "signature": "0a8d20987f79ac171d",
+      "notified_at": null
+    },
+    "provisional:7144cc3c72e8:826": {
+      "signature": "38a4e64e4a33705d6e",
+      "notified_at": null
+    },
+    "provisional:7e325f21b5b5:825": {
+      "signature": "8ce50240a6d052fff3",
+      "notified_at": null
+    },
+    "provisional:b9257c2f4735:829": {
+      "signature": "ac2aac40f862187e10",
+      "notified_at": null
+    },
+    "provisional:cd7275e8b277:827": {
+      "signature": "6701b85eb550575f63",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
