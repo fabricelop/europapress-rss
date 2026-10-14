@@ -293,15 +293,10 @@ jobs:
                   continue
               if (now-entered_dt).total_seconds()>900:
                   continue
-              if item.get("disable_ai_image") or str(item.get("image_mode") or "").lower() in {"fallback_only","tweet_capture_only"}:
-                  continue
-              if any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
-                     for k in ("fallece","muere","muerte","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil","misiles balísticos","bombardeo")):
-                  continue
-              # Los bloqueos editoriales heredados (disable/fallback_only/etc.) ya no
-              # impiden generar IA. Tremending sigue fuera por su flujo tweet_capture.
-              if item.get("tremending_origin") or str(item.get("image_mode") or item.get("image_strategy") or "").lower()=="tweet_capture_only":
-                  continue
+              # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
+              is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
+                     for k in ("fallece","muere","muerte","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil","misiles balísticos","bombardeo"))
+              # No detener imágenes automáticas por flags de las antiguas fotografías de archivo.
               if ai_valid(item):
                   continue
               # El índice operativo solo debe contener noticias ACTUALES de Listas
@@ -368,6 +363,9 @@ jobs:
               attempt+=1
               command=f"tt-img-auto-{eid}-r{rev}-a{attempt}-{int(time.time()*1000)}"
               style_index,style_name,style=pick_style(f"ttittulares|{eid}|r{rev}|a{attempt}|{command}")
+              if is_sensitive:
+                  style_index,style_name,style=(-1,"rigor_y_respeto",
+                      "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.")
               factual=str(item.get("factual_summary") or "")
               title=str(item.get("title") or eid)
               prompt=(style+"\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\n"+text+
@@ -384,6 +382,8 @@ jobs:
                   "status":"REQUESTED",
                   "phase":"queued",
                   "mode":"automatic_ready_repair",
+                  "delivery_mode":"launch_only",
+                  "editorial_image_mode":"rigor" if is_sensitive else "humor",
                   "executor":"pc_chat_ttittulares_dedicated",
                   "project":"ttittulares",
                   "task":"image",
@@ -404,6 +404,7 @@ jobs:
                       "tweet_text":text,
                       "remate":remate,
                       "image_style":style,
+                      "editorial_image_mode":"rigor" if is_sensitive else "humor",
                       "image_style_name":style_name,
                       "image_style_index":style_index,
                       "image_prompt":prompt,
@@ -413,9 +414,9 @@ jobs:
                   "instructions":{
                       "scope":"Una sola noticia y una sola imagen.",
                       "exact_input":"Usa literalmente tweet_text y remate.",
-                      "visual":"Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+                      "visual":("Imagen sobria y rigurosa, sin humor ni banalización." if is_sensitive else "Una sola idea visual fuerte; más gag y menos barroquismo.")+" Respeta image_style del context_snapshot.",
                       "prohibitions":"No infografía, no interfaz, no diagrama, no collage, no screenshot.",
-                      "lifecycle":"Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+                      "lifecycle":"Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
                   },
                   "message":"Reintento manual de imagen IA desde Telegram." if force_retry else "Reparación automática de imagen IA para noticia en Listas."
               }
