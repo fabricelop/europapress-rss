@@ -6,6 +6,7 @@ struct RainPulseMinute: Identifiable {
     let minute: Int
     let date: Date
     let rateMMH: Double
+    let automaticMMH: Double?
     let lowMMH: Double
     let highMMH: Double
     let availableModels: Int
@@ -46,7 +47,7 @@ enum RainPulseFusion {
                 return nil
             }
             return RainPulseMinute(
-                minute:minute,date:date,rateMMH:selected,
+                minute:minute,date:date,rateMMH:selected,automaticMMH:fine,
                 lowMMH:observations.min() ?? selected,
                 highMMH:observations.max() ?? selected,
                 availableModels:observations.count,
@@ -69,8 +70,7 @@ enum RainPulseFusion {
     }
 
     static func summary(_ rows:[RainPulseMinute]) -> String? {
-        guard let sample=rows.first(where:{$0.availableModels >= 2}) else{return nil}
-        let size=sample.availableModels
+        guard rows.contains(where:{$0.availableModels >= 2}) else{return nil}
         let divergent=rows.contains{$0.disagreement}
         if divergent {return "Modelos discrepan en el inicio o intensidad"}
         let wet=rows.contains{$0.rainyModels >= max(2,($0.availableModels+1)/2)}
