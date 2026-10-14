@@ -1,4 +1,16 @@
-# RainETA para iPhone — v0.9.1
+# RainETA para iPhone — v0.9.2
+
+## v0.9.2 — Pulso minuteado legible y ahora radar futuro coherente
+
+- **Pulso 30/60/120 min:** una barra por minuto, colores por intensidad, seco claramente gris, desplazamiento horizontal sin amontonar 120 barras en el ancho del iPhone y pulsación para consultar minuto e intensidad.
+- La curva de consenso que aplanaba la alternancia seco/lluvia deja de prevalecer sobre el dato de 15 minutos: las barras principales usan el **acumulado del intervalo de 15 minutos anterior** (mm/h promedio), sin difuminarlo hacia intervalos donde el proveedor no predijo lluvia. Solo si falta ese dato se usa la mediana horaria de los modelos. Esto mantiene la duración e inicio visual de los episodios, pero **no convierte un dato de 15 minutos en un cálculo meteorológico de un minuto**.
+- Comparación opcional: filas individuales ECMWF, ICON, GFS, ARPEGE y UKMO; al pulsar cada fila se despliegan **sus propias barras de un minuto**. Como la predicción de esos centros es horaria, las barras de una misma hora repiten la intensidad media de dicha hora, sin simular resolución temporal adicional.
+- La cabecera indica seco/lluvia actuales y un posible comienzo o final, solo si al menos 5 minutos consecutivos de la serie respaldan ese cambio. Se conservan el contador grande y Live Activity.
+- **Radar y predicción espacial:** nueva fuente coherente **LibreWXR** (EUMETNET OPERA + predicción experimental por flujo óptico y modelos). Ofrece históricos y seis imágenes **reales del proveedor** de +10 a +60 minutos. Ya no se mezclan los campos ICON-EU horarios enormes con el radar a +5 min. Mismo mapa, colores, teselas y servicio en ambos lados de AHORA.
+- Si LibreWXR está caído o sus datos caducan, se muestra exclusivamente el radar **observado** de RainViewer: nunca se fabrican fotogramas futuros. Se ha retirado la precarga costosa de mapas WMS de DWD en el mapa inicial, manteniendo MapKit y zoom.
+- Las predicciones experimentales de LibreWXR son fotogramas cada diez minutos, **no radar medido futuro**. Las **dos horas** completas corresponden al Pulso local: la animación geográfica solo llega a **60 minutos** mientras el proveedor no publique un nowcast espacial fiable mayor.
+- Sin Vercel, Cloudflare, despliegue ni cuota adicional. LibreWXR publica la API sin claves y datos bajo CC BY 4.0 (crédito visible en mapa), sujeto a su disponibilidad.
+- La exactitud de las barras y el comportamiento real del radar se deben verificar en iPhone durante episodios reales de precipitación; los tests comprueban lógica, construcción y fuentes pero no calidad meteorológica observacional.
 
 ## v0.9.1 — Correcciones de legibilidad y continuidad del radar
 
