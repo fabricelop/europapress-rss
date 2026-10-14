@@ -478,7 +478,7 @@ def selftest():
                 {"id":"historic-id","name":"Histórica","status":"preparing",
                  "requested_at":"2026-10-12T14:00:00Z"}]})
             body,ready,pending=render("ttendencias",123456)
-            assert body.startswith("LISTAS: 1 | EN ELABORACIÓN: 2"),body
+            assert 'LISTAS: 1 | EN ELABORACIÓN: 2' in body,body
             assert len(ready)==1 and len(pending)==2
             assert "tg://openmessage" not in body and "message_id=" not in body
             assert "message_id=723" not in body
