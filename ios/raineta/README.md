@@ -3,7 +3,7 @@
 ## v0.9.0 — Pulso de lluvia comparado entre centros meteorológicos
 
 - **Cuenta atrás principal conservada**, junto con la Actividad en Vivo: prioriza el movimiento del radar solo con evidencia fresca y suficiente confianza; mantiene la previsión principal si falla el radar o los modelos.
-- Pulso de lluvia 30/60/120 minutos: curva central = **mediana de las intensidades de los modelos disponibles**; banda sombreada = rango mínimo–máximo. Si hay menos de dos modelos, se conserva la serie automática de 15 minutos.
+- Pulso de lluvia 30/60/120 minutos: curva central = **mediana de las intensidades de los modelos disponibles**; banda sombreada = rango mínimo–máximo; curva verde discontinua = **Pulso automático original de 15 minutos**. Si hay menos de dos modelos, permanece únicamente la serie automática de 15 minutos.
 - Botón **Ver modelos individuales**: ECMWF IFS, DWD ICON, NOAA GFS, Météo-France (principalmente ARPEGE en España) y UK Met Office. Cada trazo muestra las acumulaciones de precipitación correspondientes a la **hora precedente**, expresadas como intensidad horaria media. Un minuto en la pantalla no significa que el modelo haya calculado una nueva previsión en ese minuto.
 - Próximas 3 horas: indicador de acuerdo/desacuerdo durante las primeras dos horas. Comparador diario: cinco centros, con límite de cuatro días para Météo-France.
 - Series calculadas sobre la localización seleccionada. La caché es local y limitada; los fallos parciales no se contabilizan como pronósticos secos y no bloquean la cuenta atrás.
