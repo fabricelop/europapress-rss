@@ -1,12 +1,22 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-14T07:03:40.091385+00:00",
+  "checked_at": "2026-10-14T07:03:37.391789+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
   "app_open_count": 2,
-  "telegram_live_count": 1,
-  "matched_count": 1,
-  "issues_count": 1,
+  "telegram_live_count": 0,
+  "matched_count": 0,
+  "issues_count": 2,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "ae873db1bf43",
+      "title": "Alineación probable del Real Madrid contra la Roma en la Champions League",
+      "source": [
+        "app_processing",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
     {
       "kind": "app_without_telegram",
       "id": "24225d96f4b5",
@@ -22,7 +32,5 @@
     "24225d96f4b5",
     "ae873db1bf43"
   ],
-  "telegram_ids": [
-    "ae873db1bf43"
-  ]
+  "telegram_ids": []
 }
