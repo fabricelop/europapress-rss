@@ -212,6 +212,16 @@ jobs:
           now=datetime.now(timezone.utc)
           nowz=now.isoformat().replace("+00:00","Z")
           changed=False
+          # Borrar de Telegram es terminal: nunca crear una nueva orden IA.
+          decisions=json.loads((MAIN/"ttittulares/decisions.json").read_text(encoding="utf-8"))
+          closed_ids={str(row.get("event_id") or "") for row in decisions.get("items",[])
+                      if str(row.get("status") or "").lower() in {"deleted","dismissed","published","treated"}}
+          eligible_ids={str(row.get("event_id") or "") for row in prepared.get("items",[])
+                        if str(row.get("event_id") or "") and str(row.get("event_id") or "") not in closed_ids}
+          def elapsed_seconds(when):
+              if not when:return 999999
+              try:return (now-datetime.fromisoformat(str(when).replace("Z","+00:00"))).total_seconds()
+              except (ValueError,TypeError):return 999999
 
           STYLE_BASE=("PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, "
                       "uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. "
@@ -252,11 +262,18 @@ jobs:
               except Exception: return {}
 
           active={"REQUESTED","RUNNING","PERSISTING"}
-          # En curso: no abrir otro trabajo automático hasta terminar el anterior.
-          active_elsewhere=any(
-              str(load_old(CTRL/str(x.get("status_path") or "")).get("status") or "").upper() in active
-              for x in index.get("jobs",[]) if str(x.get("status_path") or "").startswith("ttittulares/image-runs/jobs/")
-          )
+          # Una orden automática sin respuesta del PC no bloquea la cola eternamente.
+          def is_active_job(ref):
+              path=str(ref.get("status_path") or "")
+              if not path.startswith("ttittulares/image-runs/jobs/"):return False
+              job=load_old(CTRL/path)
+              if str(job.get("status") or "").upper() not in active:return False
+              if not job.get("auto_repair"):return True  # No alterar el modo manual.
+              if str(job.get("target_id") or "") not in eligible_ids:return False
+              started=job.get("pc_launched_at")
+              return (elapsed_seconds(started)<300 if started
+                      else elapsed_seconds(job.get("requested_at"))<120)
+          active_elsewhere=any(is_active_job(x) for x in index.get("jobs",[]))
           queued=[]
           wanted_ids=set()
 
@@ -266,7 +283,7 @@ jobs:
               tweet=item.get("tweet") or {}
               text=str(tweet.get("text") or "").strip()
               remate=str(tweet.get("remate") or "").strip()
-              if not eid or not text or not remate:
+              if not eid or not text or not remate or eid in closed_ids:
                   continue
               # No procesar retrospectivamente noticias antiguas.
               entered=str(item.get("prepared_at") or item.get("ready_at") or "")
@@ -279,7 +296,7 @@ jobs:
               if item.get("disable_ai_image") or str(item.get("image_mode") or "").lower() in {"fallback_only","tweet_capture_only"}:
                   continue
               if any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
-                     for k in ("fallece","muere","muerte","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil")):
+                     for k in ("fallece","muere","muerte","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil","misiles balísticos","bombardeo")):
                   continue
               # Los bloqueos editoriales heredados (disable/fallback_only/etc.) ya no
               # impiden generar IA. Tremending sigue fuera por su flujo tweet_capture.
@@ -414,17 +431,42 @@ jobs:
               queued.append((eid,attempt,command))
               changed=True
 
-          # Purgar del índice jobs históricos o de noticias que ya no están
-          # en Listas. Los JSON de job se conservan como historial; solo reducimos
-          # el índice que escanea el listener.
+          # Resolver atascos y borrados antes de que el listener de Windows
+          # pueda recuperar órdenes automáticas caducadas después de horas.
           before_jobs=list(index.get("jobs",[]))
           filtered=[]
           seen=set()
           for x in reversed(before_jobs):
               tid=str(x.get("target_id") or "")
-              if tid not in wanted_ids or tid in seen:
+              path=str(x.get("status_path") or "")
+              if tid in seen or not path.startswith("ttittulares/image-runs/jobs/"):
                   continue
-              seen.add(tid); filtered.append(x)
+              job_path=CTRL/path
+              job=load_old(job_path)
+              automated=bool(job.get("auto_repair") or x.get("auto_repair"))
+              if not automated:
+                  # NO cancelar ni podar generación manual por el filtro automático.
+                  if str(job.get("status") or "").upper() in active:
+                      seen.add(tid);filtered.append(x)
+                  continue
+              status=str(job.get("status") or "").upper()
+              reason=None
+              if status in active:
+                  if tid not in eligible_ids:reason="not_eligible_or_deleted"
+                  elif job.get("pc_launched_at") and elapsed_seconds(job.get("pc_launched_at"))>=300:
+                      reason="five_minute_generation_deadline"
+                  elif not job.get("pc_launched_at") and elapsed_seconds(job.get("requested_at"))>=120:
+                      reason="pc_did_not_launch_within_two_minutes"
+              if reason:
+                  job.update(status="CANCELLED",phase="expired",finished_at=nowz,
+                             updated_at=nowz,message=reason)
+                  job_path.write_text(json.dumps(job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+                  changed=True
+                  print("TTITTULARES_AI_AUTO_CANCELLED",tid,reason)
+              # Jobs automáticos terminados/expirados fuera del índice;
+              # sólo conservar el actual si sigue dentro de la ventana viva.
+              if tid in wanted_ids and is_active_job(x) and not reason:
+                  seen.add(tid);filtered.append(x)
           filtered.reverse()
           if filtered != before_jobs:
               index["jobs"]=filtered
