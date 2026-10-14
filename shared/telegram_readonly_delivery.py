@@ -21,7 +21,7 @@ import requests
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 TIMEOUT_MINUTES=60
-MAX_AGE=timedelta(days=7)  # Only for editing existing provisional cards; new sends <=12h
+MAX_AGE=timedelta(days=7)  # Existing cards and repairable final Listas entries; provisional first sends stay <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
 BUTTONS_VERSION=15  # TTendencias: re-explain inline
@@ -933,11 +933,14 @@ def process(project,now,token,chat):
         # Never resurrect a deleted item; respect historical terminal decisions.
         if any(str(r.get("status") or "").lower() in TERMINAL for r in same_revision):
             skipped+=1;continue
-        # An empty ledger on deployment must NEVER backfill days of history.
-        # Existing provisional messages are still editable regardless of age.
+        # An empty ledger on deployment must NEVER backfill old provisional cards.
+        # A FINAL TTiTTulares row already visible in current Listas is different:
+        # the bidirectional audit treats a missing Telegram counterpart as a
+        # repairable incident, so allow that first send within MAX_AGE.
         started=date(card.get("start"))
         if existing is None and (not started or now-started>timedelta(hours=12)):
-            skipped+=1;continue
+            if not (project=="ttittulares" and card.get("final") and started):
+                skipped+=1;continue
         button_version=TTI_BUTTONS_VERSION if project=="ttittulares" else BUTTONS_VERSION
         # Existing archive photographs and already-posted replies survive
         # editorial updates even when the new READY row omits the URL.
