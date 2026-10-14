@@ -241,6 +241,17 @@ function validChatAi(image){
 }
 async function imageEligibility(targetId){
   const prepared=await readMainJson(PREPARED_PATH);
+  // A deleted/dismissed Telegram card must never create or resume an image run.
+  const [decisions,deliveries]=await Promise.all([
+    readMainJson("ttittulares/decisions.json"),
+    readMainJson("telegram/ttittulares-deliveries.json")
+  ]);
+  const closed=new Set(["deleted","dismissed","removed","delete_pending","delete_failed","published","treated"]);
+  const latestDecision=(decisions.items||[]).filter(x=>String(x.event_id||"")===String(targetId)).at(-1);
+  const latestDelivery=(deliveries.items||[]).filter(x=>String(x.event_id||"")===String(targetId)).at(-1);
+  if((latestDecision&&closed.has(String(latestDecision.status||"").toLowerCase()))||
+     (latestDelivery&&closed.has(String(latestDelivery.status||"").toLowerCase())))
+    return {eligible:false,reason:"telegram_card_closed",row:null};
   const rows=(prepared.items||[]).filter(x=>String(x.event_id||"")===String(targetId));
   rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.prepared_at||"").localeCompare(String(a.prepared_at||"")));
   const row=rows[0]||null;
@@ -471,8 +482,10 @@ async function requestImagePcAck(req,res){
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJsonAuthoritative(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
-  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase())){
-    return res.status(200).json({ok:true,idempotent:true,target_id,command_id,status:job.status,phase:job.phase||null});
+  if(["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"].includes(String(job.status||"").toUpperCase())){
+    // LAUNCHED is terminal for launch_only; preserve a verifiable receipt.
+    return res.status(200).json({ok:true,idempotent:true,target_id,command_id,
+      status:job.status,phase:job.phase||null,pc_launched_at:job.pc_launched_at||null});
   }
 
   if(stage==="picked_up"){
@@ -511,10 +524,16 @@ async function requestImagePcAck(req,res){
     next.status="RUNNING";next.phase=phase;next.pc_picked_up_at=job.pc_picked_up_at||now;
     next.message=detail||("Progreso de imagen: "+phase);
   }else{
-    next.status="RUNNING";next.phase=stage==="picked_up"?"pc_pickup":"pc_launch";
+    const launchOnly=String(job.delivery_mode||"")==="launch_only";
+    next.status=(stage==="launched"&&launchOnly)?"LAUNCHED":"RUNNING";
+    next.phase=stage==="picked_up"?"pc_pickup":(launchOnly?"pc_launched":"pc_launch");
     if(stage==="picked_up")next.pc_picked_up_at=job.pc_picked_up_at||now;
-    if(stage==="launched"){next.pc_picked_up_at=job.pc_picked_up_at||now;next.pc_launched_at=now}
-    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":"Prompt enviado en la pestaña fija; esperando ImageGen.";
+    if(stage==="launched"){
+      next.pc_picked_up_at=job.pc_picked_up_at||now;
+      next.pc_launched_at=job.pc_launched_at||now;
+      if(launchOnly)next.finished_at=now;
+    }
+    next.message=stage==="picked_up"?"PC ha recogido la solicitud de imagen.":(launchOnly?"Prompt confirmado en ChatGPT Images; imagen no recuperada.":"Prompt enviado; esperando ImageGen.");
   }
   // ACKs del bridge pueden solaparse (picked_up/progress/launched). Un 409 de SHA
   // no debe convertir un avance válido en ERROR ni provocar una tormenta de reintentos.
@@ -561,7 +580,7 @@ async function requestImageUpload(req,res){
   const existing=await readControlJsonAuthoritative(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id ya no es actual"});
   if(!validUploadSecret(job,upload_secret))return res.status(401).json({ok:false,error:"Secreto de imagen no válido"});
-  if(["DONE","ERROR","CANCELLED","SUPERSEDED"].includes(String(job.status||"").toUpperCase()))return res.status(409).json({ok:false,error:"job terminal",status:job.status});
+  if(["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"].includes(String(job.status||"").toUpperCase())||job.pc_launched_at&&job.delivery_mode==="launch_only")return res.status(409).json({ok:false,error:"job terminal",status:job.status});
   const eligible=await imageEligibility(target_id);
   const revisionChanged=Boolean(eligible.row)&&Number(eligible.row.revision||0)!==Number(job.revision||0);
   if(!eligible.eligible||revisionChanged)return res.status(409).json({ok:false,error:"target_no_elegible",reason:revisionChanged?"revision_changed":eligible.reason});
