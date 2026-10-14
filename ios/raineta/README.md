@@ -1,4 +1,16 @@
-# RainETA para iPhone — v0.9.0
+# RainETA para iPhone — v0.9.1
+
+## v0.9.1 — Correcciones de legibilidad y continuidad del radar
+
+- **Pulso:** se sustituye el gráfico superpuesto Swift Charts de alta densidad por dibujo Canvas de tamaño limitado. La curva central, la franja de discrepancia y la serie automática quedan dentro de los límites del gráfico, sin cubrir texto ni controles.
+- **Modelos del Pulso:** despliegue en filas legibles con nombre, precipitación horaria actual, máximo y evolución temporal; mejor comparación que superponer cinco líneas sin explicación suficiente.
+- **Comparación diaria:** selector horizontal de Hoy/Mañana/+Nd y una fila por centro con cantidad en mm y barra comparativa, evitando siete columnas minúsculas en el iPhone.
+- **Mapa futuro:** precarga central de ICON-EU al abrir el mapa, reduce la espera de hasta 36 teselas a un máximo de nueve centrales por avance y aumenta caché WMS.
+- **Reproducción:** espera a que un fotograma esté realmente preparado y visible antes de avanzar; no indica como dibujado un nuevo instante si el servidor WMS todavía está calculándolo.
+- **Transición visual radar→ICON-EU:** se conserva el radar observado y se superpone gradualmente el modelo en los primeros 30 minutos. La mezcla es solamente visual y se etiqueta como tal: **no es radar futuro ni una evolución física calculada**. A los +30 minutos el mapa es completamente ICON-EU.
+- Se mantiene el **contador de lluvia** del inicio y la Actividad en Vivo, y también el funcionamiento de las previsiones y ubicaciones.
+- Pruebas nuevas de cotas de precarga y transición, además de la suite de regresión existente.
+- Pendiente validar en iPhone real la suavidad y rapidez del WMS en redes lentas; sigue dependiendo de la latencia del proveedor DWD.
 
 ## v0.9.0 — Pulso de lluvia comparado entre centros meteorológicos
 
