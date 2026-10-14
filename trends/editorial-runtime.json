@@ -4,15 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T19:09:00+02:00",
-  "last_completed_at": "2026-10-14T19:20:00+02:00",
-  "updated_at": "2026-10-14T19:20:00+02:00",
+  "last_started_at": "2026-10-14T19:45:00+02:00",
+  "last_completed_at": "2026-10-14T19:50:00+02:00",
+  "updated_at": "2026-10-14T19:50:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "a1eb3a9dea5c",
-    "c2c556c4d357",
-    "d6093547e2f0"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -22,40 +18,38 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-1791997078074-eec605",
-    "requested_at": "2026-10-14T19:09:00+02:00",
+    "run_id": "tr-20261014T194500+0200-chat",
+    "requested_at": "2026-10-14T19:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1791997078074-eec605",
+    "run_id": "tr-20261014T194500+0200-chat",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T19:09:00+02:00",
-    "updated_at": "2026-10-14T19:20:00+02:00",
-    "finished_at": "2026-10-14T19:20:00+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-14T19:45:00+02:00",
+    "updated_at": "2026-10-14T19:50:00+02:00",
+    "finished_at": "2026-10-14T19:50:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada 3/3 cerrada: 3 tendencias explicadas, cola 0, rewrite_pending 0 y Telegram sin huérfanos.",
-    "incident_count": 1,
-    "incidents": [
-      "Conflicto SHA al persistir Ladilla Rusa por escritura concurrente del reparador visual; resuelto tras releer main y reintentar idempotentemente."
-    ],
+    "message": "Pasada 0/0 cerrada y verificada: no había revisiones preparing/update ni rewrite_pending; cola 0 y Telegram sin huérfanos.",
+    "incident_count": 0,
+    "incidents": [],
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -65,136 +59,38 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
     "activity": [
       {
-        "at": "2026-10-14T19:11:45+02:00",
+        "at": "2026-10-14T19:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial · cola autoritativa 0; auditando revisiones, Pendientes y Telegram antes del cierre."
+      },
+      {
+        "at": "2026-10-14T19:48:00+02:00",
         "phase": "verifying",
-        "trend_id": "a1eb3a9dea5c",
-        "title": "#BenidormFest2027",
-        "message": "Tendencia cerrada y verificada en main."
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes y reparación visual; saneamiento solicitado en main."
       },
       {
-        "at": "2026-10-14T19:11:50+02:00",
+        "at": "2026-10-14T19:49:30+02:00",
         "phase": "verifying",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Releyendo estado autoritativo de Ladilla Rusa r0."
+        "trend_id": null,
+        "title": null,
+        "message": "Workflow Telegram informativo verificado en success; ledger y auditoría completados correctamente."
       },
       {
-        "at": "2026-10-14T19:12:00+02:00",
-        "phase": "investigating",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Contrastando la ficha oficial de RTVE y su inclusión entre los 18 participantes."
-      },
-      {
-        "at": "2026-10-14T19:12:15+02:00",
-        "phase": "drafting",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Redactando explicación factual y comprobando límite de X: 204 caracteres."
-      },
-      {
-        "at": "2026-10-14T19:12:25+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Remate seleccionado: tecnorumba y Benidorm, sin repetir mecanismos recientes."
-      },
-      {
-        "at": "2026-10-14T19:12:35+02:00",
-        "phase": "persisting",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Guardando ficha Explicada y sincronizando request r0."
-      },
-      {
-        "at": "2026-10-14T19:13:50+02:00",
-        "phase": "verifying",
-        "trend_id": "c2c556c4d357",
-        "title": "Ladilla Rusa",
-        "message": "Tendencia cerrada y verificada en main tras resolver conflicto concurrente."
-      },
-      {
-        "at": "2026-10-14T19:13:55+02:00",
-        "phase": "verifying",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Releyendo estado autoritativo de Margarita Robles r0; sigue TT#10."
-      },
-      {
-        "at": "2026-10-14T19:14:05+02:00",
-        "phase": "investigating",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Contrastando RTVE y EL PAÍS: Robles será la nº2 de Sánchez por Madrid; Bolaños, nº3."
-      },
-      {
-        "at": "2026-10-14T19:14:20+02:00",
-        "phase": "drafting",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Redactando explicación política factual y comprobando límite de X: 238 caracteres."
-      },
-      {
-        "at": "2026-10-14T19:14:35+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Remate político neutral seleccionado tras contraste de originalidad: posiciones en la lista y cartera de Defensa."
-      },
-      {
-        "at": "2026-10-14T19:14:45+02:00",
-        "phase": "persisting",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Guardando ficha Explicada y sincronizando request r0."
-      },
-      {
-        "at": "2026-10-14T19:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Releyendo estado autoritativo de Margarita Robles r0."
-      },
-      {
-        "at": "2026-10-14T19:16:20+02:00",
-        "phase": "persisting",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Actualizando requests para Margarita Robles r0."
-      },
-      {
-        "at": "2026-10-14T19:16:40+02:00",
-        "phase": "persisting",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Retirando revisión de la cola tras verificar request y ficha Explicada."
-      },
-      {
-        "at": "2026-10-14T19:19:20+02:00",
-        "phase": "verifying",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-14T19:19:35+02:00",
-        "phase": "verifying",
-        "trend_id": "d6093547e2f0",
-        "title": "Margarita Robles",
-        "message": "Tendencia cerrada y verificada; Telegram final y auditoría sin huérfanos."
-      },
-      {
-        "at": "2026-10-14T19:20:00+02:00",
+        "at": "2026-10-14T19:50:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 3/3 cerrada: 3 tendencias explicadas, cola 0, rewrite_pending 0 y Telegram sin huérfanos."
+        "message": "Pasada 0/0 cerrada y verificada; cola 0, sin rewrite_pending detectado, Telegram sin huérfanos."
       }
     ],
     "queue_complete": true,
@@ -206,38 +102,19 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "id": "a1eb3a9dea5c",
-        "name": "#BenidormFest2027",
-        "revision": 0,
-        "closer_text": "🌶️ La lista de artistas ha salido antes que las canciones."
-      },
-      {
-        "id": "c2c556c4d357",
-        "name": "Ladilla Rusa",
-        "revision": 0,
-        "closer_text": "🌶️ La tecnorumba ya tiene parada en Benidorm."
-      },
-      {
-        "id": "d6093547e2f0",
-        "name": "Margarita Robles",
-        "revision": 0,
-        "closer_text": "🌶️ En la lista, Defensa también ha ganado posiciones."
-      }
-    ]
+    "remate_selections": []
   },
-  "run_id": "tr-1791997078074-eec605",
+  "run_id": "tr-20261014T194500+0200-chat",
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
-    "revisions_updated": 3,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 0,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
@@ -247,142 +124,44 @@
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-14T19:12:21+02:00",
+    "source_capture_at": "2026-10-14T19:42:21+02:00",
     "status": "fresh_at_start"
   },
   "activity": [
     {
-      "at": "2026-10-14T19:11:45+02:00",
+      "at": "2026-10-14T19:45:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Iniciando pasada editorial · cola autoritativa 0; auditando revisiones, Pendientes y Telegram antes del cierre."
+    },
+    {
+      "at": "2026-10-14T19:48:00+02:00",
       "phase": "verifying",
-      "trend_id": "a1eb3a9dea5c",
-      "title": "#BenidormFest2027",
-      "message": "Tendencia cerrada y verificada en main."
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes y reparación visual; saneamiento solicitado en main."
     },
     {
-      "at": "2026-10-14T19:11:50+02:00",
+      "at": "2026-10-14T19:49:30+02:00",
       "phase": "verifying",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Releyendo estado autoritativo de Ladilla Rusa r0."
+      "trend_id": null,
+      "title": null,
+      "message": "Workflow Telegram informativo verificado en success; ledger y auditoría completados correctamente."
     },
     {
-      "at": "2026-10-14T19:12:00+02:00",
-      "phase": "investigating",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Contrastando la ficha oficial de RTVE y su inclusión entre los 18 participantes."
-    },
-    {
-      "at": "2026-10-14T19:12:15+02:00",
-      "phase": "drafting",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Redactando explicación factual y comprobando límite de X: 204 caracteres."
-    },
-    {
-      "at": "2026-10-14T19:12:25+02:00",
-      "phase": "remate_selection",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Remate seleccionado: tecnorumba y Benidorm, sin repetir mecanismos recientes."
-    },
-    {
-      "at": "2026-10-14T19:12:35+02:00",
-      "phase": "persisting",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Guardando ficha Explicada y sincronizando request r0."
-    },
-    {
-      "at": "2026-10-14T19:13:50+02:00",
-      "phase": "verifying",
-      "trend_id": "c2c556c4d357",
-      "title": "Ladilla Rusa",
-      "message": "Tendencia cerrada y verificada en main tras resolver conflicto concurrente."
-    },
-    {
-      "at": "2026-10-14T19:13:55+02:00",
-      "phase": "verifying",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Releyendo estado autoritativo de Margarita Robles r0; sigue TT#10."
-    },
-    {
-      "at": "2026-10-14T19:14:05+02:00",
-      "phase": "investigating",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Contrastando RTVE y EL PAÍS: Robles será la nº2 de Sánchez por Madrid; Bolaños, nº3."
-    },
-    {
-      "at": "2026-10-14T19:14:20+02:00",
-      "phase": "drafting",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Redactando explicación política factual y comprobando límite de X: 238 caracteres."
-    },
-    {
-      "at": "2026-10-14T19:14:35+02:00",
-      "phase": "remate_selection",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Remate político neutral seleccionado tras contraste de originalidad: posiciones en la lista y cartera de Defensa."
-    },
-    {
-      "at": "2026-10-14T19:14:45+02:00",
-      "phase": "persisting",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Guardando ficha Explicada y sincronizando request r0."
-    },
-    {
-      "at": "2026-10-14T19:16:00+02:00",
-      "phase": "verifying",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Releyendo estado autoritativo de Margarita Robles r0."
-    },
-    {
-      "at": "2026-10-14T19:16:20+02:00",
-      "phase": "persisting",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Actualizando requests para Margarita Robles r0."
-    },
-    {
-      "at": "2026-10-14T19:16:40+02:00",
-      "phase": "persisting",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Retirando revisión de la cola tras verificar request y ficha Explicada."
-    },
-    {
-      "at": "2026-10-14T19:19:20+02:00",
-      "phase": "verifying",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
-    },
-    {
-      "at": "2026-10-14T19:19:35+02:00",
-      "phase": "verifying",
-      "trend_id": "d6093547e2f0",
-      "title": "Margarita Robles",
-      "message": "Tendencia cerrada y verificada; Telegram final y auditoría sin huérfanos."
-    },
-    {
-      "at": "2026-10-14T19:20:00+02:00",
+      "at": "2026-10-14T19:50:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 3/3 cerrada: 3 tendencias explicadas, cola 0, rewrite_pending 0 y Telegram sin huérfanos."
+      "message": "Pasada 0/0 cerrada y verificada; cola 0, sin rewrite_pending detectado, Telegram sin huérfanos."
     }
   ],
   "telegram_orphans": 0,
