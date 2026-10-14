@@ -275,7 +275,7 @@ jobs:
               if str(job.get("target_id") or "") not in eligible_ids:return False
               started=job.get("pc_launched_at")
               return (elapsed_seconds(started)<300 if started
-                      else elapsed_seconds(job.get("requested_at"))<120)
+                      else elapsed_seconds(job.get("requested_at"))<1800)
           # Encolar todas las noticias independientemente; el listener consume secuencialmente.
           # Ningún REQUESTED de otra noticia impide crear el siguiente trabajo.
           queued=[]
@@ -298,8 +298,7 @@ jobs:
               # No reactivar noticias de antes de la simplificación; conservar
               # 24 h de cola para no perder noticias si otra imagen tarda.
               launch_only_start=datetime.fromisoformat("2026-10-14T06:20:00+00:00")
-              if (now-entered_dt).total_seconds()>86400:
-                  continue
+              # Una noticia sigue siendo elegible mientras continúe en Listas y Telegram.
               # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
               is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
                      for k in ("fallece","muere","muerte","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil","misiles balísticos","bombardeo"))
@@ -324,8 +323,8 @@ jobs:
               # No reintentar imágenes ya lanzadas ni repetir indefinidamente.
               stale_unlaunched=(old.get("auto_repair") and old_status in {"REQUESTED","CANCELLED","ERROR"}
                   and not old.get("pc_launched_at")
-                  and elapsed_seconds(old.get("requested_at"))>=120
-                  and attempt<2)
+                  and elapsed_seconds(old.get("requested_at"))>=1800
+                  and attempt<3)
               if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
                   continue
               # Sin bloqueo global ni límite artificial de un job por pasada.
@@ -468,7 +467,7 @@ jobs:
                   if tid not in eligible_ids:reason="not_eligible_or_deleted"
                   elif job.get("pc_launched_at") and elapsed_seconds(job.get("pc_launched_at"))>=300:
                       reason="five_minute_generation_deadline"
-                  elif not job.get("pc_launched_at") and elapsed_seconds(job.get("requested_at"))>=120:
+                  elif not job.get("pc_launched_at") and elapsed_seconds(job.get("requested_at"))>=1800:
                       reason="pc_did_not_launch_within_two_minutes"
               if reason:
                   job.update(status="CANCELLED",phase="expired",finished_at=nowz,
