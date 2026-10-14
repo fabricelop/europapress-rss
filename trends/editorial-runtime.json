@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T11:10:00+02:00",
-  "last_completed_at": "2026-10-14T11:13:46+02:00",
-  "updated_at": "2026-10-14T11:13:46+02:00",
+  "last_started_at": "2026-10-14T11:15:00+02:00",
+  "last_completed_at": "2026-10-14T11:17:50.930+02:00",
+  "updated_at": "2026-10-14T11:17:50.930+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,22 +18,26 @@
     "persisted_trigger": true,
     "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261014T1110+0200",
-    "requested_at": "2026-10-14T11:10:00+02:00",
+    "run_id": "tr-chat-20261014T1115+0200",
+    "requested_at": "2026-10-14T11:15:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-chat-20261014T1110+0200",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-chat-20261014T1115+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-14T11:10:00+02:00",
-    "updated_at": "2026-10-14T11:13:46+02:00",
-    "finished_at": "2026-10-14T11:13:46+02:00",
+    "started_at": "2026-10-14T11:15:00+02:00",
+    "updated_at": "2026-10-14T11:17:50.930+02:00",
+    "finished_at": "2026-10-14T11:17:50.930+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
+    "partial": false,
     "summary": {
       "trends_processed": 0,
       "trends_explained": 0,
@@ -58,57 +62,52 @@
       "telegram_preserved_deleted": 0,
       "telegram_orphans": 1,
       "telegram_delivery_workflow_verified": 0,
-      "telegram_bidirectional_issues": 1
+      "telegram_bidirectional_issues": 1,
+      "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada: no hay preparing/update ni rewrite_pending en main. Persiste la incidencia heredada 1742 X, conservada provisionalmente por falta de detonante verificable.",
+    "message": "Pasada 0/0 cerrada: no hay preparing/update ni rewrite_pending en main. Persiste 1742 X como único provisional Telegram sin detonante verificable.",
     "incident_count": 1,
     "incidents": [
       {
         "id": "ea9256e5e1fd",
         "title": "1742 X",
         "type": "telegram_orphan_unresolved",
-        "message": "El provisional Telegram 794 sigue sin explicación definitiva. Nuevas búsquedas exactas no identifican un detonante verificable; se conserva sin borrarlo ni inventar una causa."
+        "message": "El provisional Telegram 794 sigue sin explicación definitiva. La señal aparece en listados actuales de tendencias de España, pero las búsquedas exactas no identifican un detonante verificable; se conserva sin borrarlo ni inventar una causa."
       }
     ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
+    "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T11:10:00+02:00",
+        "at": "2026-10-14T11:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial · cola 0; revisando reexplicaciones, Pendientes y el provisional Telegram huérfano 1742 X."
       },
       {
-        "at": "2026-10-14T11:11:20+02:00",
+        "at": "2026-10-14T11:16:00+02:00",
         "phase": "investigating",
         "trend_id": "ea9256e5e1fd",
         "title": "1742 X",
-        "message": "Buscando detonante actual del provisional Telegram 794 con consultas exactas y contexto de tendencia."
+        "message": "Buscando detonante actual con consultas exactas y comprobando la señal en el radar público de España."
       },
       {
-        "at": "2026-10-14T11:12:20+02:00",
+        "at": "2026-10-14T11:16:50+02:00",
         "phase": "investigating",
         "trend_id": "ea9256e5e1fd",
         "title": "1742 X",
-        "message": "Sin detonante verificable: los resultados disponibles son coincidencias numéricas irrelevantes; se conserva el provisional sin inventar explicación."
+        "message": "La señal existe, pero no aparece una causa verificable; se conserva el provisional sin inventar explicación."
       },
       {
-        "at": "2026-10-14T11:13:20+02:00",
+        "at": "2026-10-14T11:17:26.933+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0 y sin coincidencias preparing/update/rewrite_pending."
+        "message": "Releyendo main: cola 0; 1742 X sigue como único provisional Telegram y continúa sin detonante verificable."
       },
       {
-        "at": "2026-10-14T11:13:46+02:00",
+        "at": "2026-10-14T11:17:50.930+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -118,7 +117,7 @@
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261014T1110+0200",
+  "run_id": "tr-chat-20261014T1115+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -143,7 +142,8 @@
     "telegram_preserved_deleted": 0,
     "telegram_orphans": 1,
     "telegram_delivery_workflow_verified": 0,
-    "telegram_bidirectional_issues": 1
+    "telegram_bidirectional_issues": 1,
+    "top10_checked": 10
   },
   "unresolved_orphan_ids": [
     "ea9256e5e1fd"
@@ -155,35 +155,35 @@
   },
   "activity": [
     {
-      "at": "2026-10-14T11:10:00+02:00",
+      "at": "2026-10-14T11:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Iniciando pasada editorial · cola 0; revisando reexplicaciones, Pendientes y el provisional Telegram huérfano 1742 X."
     },
     {
-      "at": "2026-10-14T11:11:20+02:00",
+      "at": "2026-10-14T11:16:00+02:00",
       "phase": "investigating",
       "trend_id": "ea9256e5e1fd",
       "title": "1742 X",
-      "message": "Buscando detonante actual del provisional Telegram 794 con consultas exactas y contexto de tendencia."
+      "message": "Buscando detonante actual con consultas exactas y comprobando la señal en el radar público de España."
     },
     {
-      "at": "2026-10-14T11:12:20+02:00",
+      "at": "2026-10-14T11:16:50+02:00",
       "phase": "investigating",
       "trend_id": "ea9256e5e1fd",
       "title": "1742 X",
-      "message": "Sin detonante verificable: los resultados disponibles son coincidencias numéricas irrelevantes; se conserva el provisional sin inventar explicación."
+      "message": "La señal existe, pero no aparece una causa verificable; se conserva el provisional sin inventar explicación."
     },
     {
-      "at": "2026-10-14T11:13:20+02:00",
+      "at": "2026-10-14T11:17:26.933+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola 0 y sin coincidencias preparing/update/rewrite_pending."
+      "message": "Releyendo main: cola 0; 1742 X sigue como único provisional Telegram y continúa sin detonante verificable."
     },
     {
-      "at": "2026-10-14T11:13:46+02:00",
+      "at": "2026-10-14T11:17:50.930+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
