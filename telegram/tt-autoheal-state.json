@@ -2,72 +2,63 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T16:53:54.274993+00:00",
+      "checked_at": "2026-10-14T17:03:23.482288+00:00",
       "issue_count": 1,
       "issues": [
         {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 1153,
-          "workflow": "telegram-pinned-index.yml"
+          "kind": "missing_delivery",
+          "id": "587127c70abd",
+          "title": "La explicación de Pablo Simón a los resultados \"desviados\" del CIS que sitúan al PSOE a 11,8 puntos ",
+          "seconds": 442,
+          "workflow": "send-ttittulares-ready-telegram.yml"
         }
       ],
       "actions_started": [
-        "telegram-pinned-index.yml"
+        "send-ttittulares-ready-telegram.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "645a7a025793fa810553a49ef7f026a5f09329a987fb6587fc0ba3c0201b9893",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T16:53:54.274993+00:00",
-      "issue_count": 4,
+      "checked_at": "2026-10-14T17:03:23.482288+00:00",
+      "issue_count": 3,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "a1eb3a9dea5c",
           "title": "#BenidormFest2027",
-          "seconds": 1664,
+          "seconds": 2233,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "c2c556c4d357",
           "title": "Ladilla Rusa",
-          "seconds": 1664,
+          "seconds": 2233,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "d6093547e2f0",
           "title": "Margarita Robles",
-          "seconds": 1664,
+          "seconds": 2233,
           "workflow": null
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 1152,
-          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "8b1a0318bfc31ba0e46f6d76bddf188fce6261e99dff9099181b760692210f00",
+      "open_signature": "bba5395bedc263ce67e5ea29e03946a6fe008d4755b007a64d414dafc4a865dc",
       "repair_via_workflow_run": false,
       "escalation_required": 3
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T14:06:39.043706+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T17:03:23.482288+00:00",
     "ttittulares:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
     "ttendencias:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T16:53:54.274993+00:00"
+  "checked_at": "2026-10-14T17:03:23.482288+00:00"
 }
