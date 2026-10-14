@@ -4,50 +4,58 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T17:17:18+02:00",
-  "last_completed_at": "2026-10-14T17:20:27+02:00",
-  "updated_at": "2026-10-14T17:20:27+02:00",
+  "last_started_at": "2026-10-14T17:47:30+02:00",
+  "last_completed_at": "2026-10-14T17:56:20+02:00",
+  "updated_at": "2026-10-14T17:56:20+02:00",
   "status": "success",
-  "processed_ids": [],
-  "remaining_ids": [],
+  "processed_ids": [
+    "73e9b70bd7ef",
+    "88267aeadd51",
+    "6106415081f7",
+    "a6a282da4efc"
+  ],
+  "remaining_ids": [
+    "88267aeadd51"
+  ],
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "88267aeadd51"
+  ],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "completed",
+    "status": "triggered",
     "direct_imagegen": false,
-    "run_id": "tr-manual-20261014T171718+0200",
-    "requested_at": "2026-10-14T17:17:18+02:00",
+    "run_id": "tr-autoguard-1791992783",
+    "requested_at": "2026-10-14T17:47:30+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-manual-20261014T171718+0200",
+    "run_id": "tr-autoguard-1791992783",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-14T17:17:18+02:00",
-    "updated_at": "2026-10-14T17:20:27+02:00",
-    "finished_at": "2026-10-14T17:20:27+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-14T17:47:30+02:00",
+    "updated_at": "2026-10-14T17:56:20+02:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 4,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -55,67 +63,195 @@
       "pending_repair_triggered": 1,
       "telegram_delivery_triggered": 1,
       "telegram_delivery_workflow_verified": 1,
-      "telegram_orphans": 0,
+      "telegram_orphans": 1,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
+      "remates_omitted": 1
     },
-    "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada 4/4 cerrada con incidencia: Celebrarlo sigue problematic y su provisional Telegram permanece sin borrar",
+    "incident_count": 1,
+    "incidents": [
+      "Celebrarlo r0: no se ha podido verificar un detonante actual tras búsquedas distintas; se conserva como problematic y el telegram_message_id 812 permanece provisional final:false, sin borrar, con auditoría de huérfano abierta."
+    ],
+    "remate_selections": [
+      {
+        "trend_id": "73e9b70bd7ef",
+        "title": "#TEM14O",
+        "closer_text": "🌶️ La sobremesa ha convertido el hashtag en segunda pantalla.",
+        "originality_checked": true
+      },
+      {
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "closer_text": "🌶️ Los currículums también cogieron el tren de la política.",
+        "originality_checked": true
+      }
+    ],
+    "activity": [
+      {
+        "at": "2026-10-14T17:52:30+02:00",
+        "phase": "drafting",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-14T17:52:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Sin remate por tratarse de un incidente con heridos."
+      },
+      {
+        "at": "2026-10-14T17:52:05+02:00",
+        "phase": "investigating",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-14T17:52:15+02:00",
+        "phase": "investigating",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-14T17:52:25+02:00",
+        "phase": "investigating",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-14T17:52:35+02:00",
+        "phase": "investigating",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-14T17:52:45+02:00",
+        "phase": "drafting",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-14T17:52:55+02:00",
+        "phase": "drafting",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-14T17:53:05+02:00",
+        "phase": "remate_selection",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Sin remate · suceso con heridos y detenidos"
+      },
+      {
+        "at": "2026-10-14T17:53:15+02:00",
+        "phase": "persisting",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-14T17:53:10+02:00",
+        "phase": "verifying",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-14T17:53:20+02:00",
+        "phase": "verifying",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Tendencia Policía Nacional cerrada y verificada."
+      },
+      {
+        "at": "2026-10-14T17:53:30+02:00",
+        "phase": "verifying",
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "message": "Releyendo estado autoritativo de Pardo de Vera r0."
+      },
+      {
+        "at": "2026-10-14T17:53:45+02:00",
+        "phase": "investigating",
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "message": "Contrastando las declaraciones actuales de Pardo de Vera sobre propuestas de nombramientos en Adif."
+      },
+      {
+        "at": "2026-10-14T17:54:00+02:00",
+        "phase": "drafting",
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "message": "Redactando explicación política factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-14T17:54:15+02:00",
+        "phase": "remate_selection",
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "message": "Seleccionando un único remate político neutral y específico."
+      },
+      {
+        "at": "2026-10-14T17:55:40+02:00",
+        "phase": "verifying",
+        "trend_id": "6106415081f7",
+        "title": "Policía Nacional",
+        "message": "Tendencia cerrada por consumidor concurrente y verificada en main"
+      },
+      {
+        "at": "2026-10-14T17:55:50+02:00",
+        "phase": "verifying",
+        "trend_id": "a6a282da4efc",
+        "title": "Pardo de Vera",
+        "message": "Tendencia cerrada por consumidor concurrente y verificada en main"
+      },
+      {
+        "at": "2026-10-14T17:56:10+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final: 0 preparing/update, 0 rewrite_pending; 3 explicaciones consistentes y 1 problematic"
+      },
+      {
+        "at": "2026-10-14T17:56:20+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 4/4 cerrada con incidencia: Celebrarlo sigue problematic y su provisional Telegram permanece sin borrar"
+      }
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "finished_at": "2026-10-14T17:56:20+02:00",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 30
-    },
-    "remate_selections": [],
-    "activity": [
-      {
-        "at": "2026-10-14T17:17:18+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial · cola textual 0; revisando saneamiento, reexplicaciones y Telegram antes de cerrar."
-      },
-      {
-        "at": "2026-10-14T17:19:26+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura de main: cola 0; saneamiento visual completado correctamente; verificando entrega Telegram y auditoría de huérfanos."
-      },
-      {
-        "at": "2026-10-14T17:20:27+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final: cola 0, sin sent final:false y auditoría Telegram con 0 huérfanos."
-      },
-      {
-        "at": "2026-10-14T17:20:27+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes."
-      }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": []
+    }
   },
-  "run_id": "tr-manual-20261014T171718+0200",
+  "run_id": "tr-autoguard-1791992783",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 4,
+    "trends_explained": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 0,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
-    "incidents": 0,
+    "incidents": 1,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
@@ -123,13 +259,15 @@
     "pending_repair_triggered": 1,
     "telegram_delivery_triggered": 1,
     "telegram_delivery_workflow_verified": 1,
-    "telegram_orphans": 0,
+    "telegram_orphans": 1,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0
+    "explanations_verified_under_280": 3,
+    "remates_selected": 2,
+    "remates_omitted": 1
   },
-  "unresolved_orphan_ids": [],
+  "unresolved_orphan_ids": [
+    "88267aeadd51"
+  ],
   "radar_refresh": {
     "requested": false,
     "source_capture_at": "2026-10-14T17:12:11+02:00",
@@ -137,35 +275,149 @@
   },
   "activity": [
     {
-      "at": "2026-10-14T17:17:18+02:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada editorial · cola textual 0; revisando saneamiento, reexplicaciones y Telegram antes de cerrar."
+      "at": "2026-10-14T17:52:30+02:00",
+      "phase": "drafting",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Redactando explicación factual y comprobando límite de X."
     },
     {
-      "at": "2026-10-14T17:19:26+02:00",
+      "at": "2026-10-14T17:52:40+02:00",
+      "phase": "remate_selection",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Sin remate por tratarse de un incidente con heridos."
+    },
+    {
+      "at": "2026-10-14T17:52:05+02:00",
+      "phase": "investigating",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-14T17:52:15+02:00",
+      "phase": "investigating",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-14T17:52:25+02:00",
+      "phase": "investigating",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-14T17:52:35+02:00",
+      "phase": "investigating",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-14T17:52:45+02:00",
+      "phase": "drafting",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-14T17:52:55+02:00",
+      "phase": "drafting",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-14T17:53:05+02:00",
+      "phase": "remate_selection",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Sin remate · suceso con heridos y detenidos"
+    },
+    {
+      "at": "2026-10-14T17:53:15+02:00",
+      "phase": "persisting",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-14T17:53:10+02:00",
+      "phase": "verifying",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-14T17:53:20+02:00",
+      "phase": "verifying",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Tendencia Policía Nacional cerrada y verificada."
+    },
+    {
+      "at": "2026-10-14T17:53:30+02:00",
+      "phase": "verifying",
+      "trend_id": "a6a282da4efc",
+      "title": "Pardo de Vera",
+      "message": "Releyendo estado autoritativo de Pardo de Vera r0."
+    },
+    {
+      "at": "2026-10-14T17:53:45+02:00",
+      "phase": "investigating",
+      "trend_id": "a6a282da4efc",
+      "title": "Pardo de Vera",
+      "message": "Contrastando las declaraciones actuales de Pardo de Vera sobre propuestas de nombramientos en Adif."
+    },
+    {
+      "at": "2026-10-14T17:54:00+02:00",
+      "phase": "drafting",
+      "trend_id": "a6a282da4efc",
+      "title": "Pardo de Vera",
+      "message": "Redactando explicación política factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-14T17:54:15+02:00",
+      "phase": "remate_selection",
+      "trend_id": "a6a282da4efc",
+      "title": "Pardo de Vera",
+      "message": "Seleccionando un único remate político neutral y específico."
+    },
+    {
+      "at": "2026-10-14T17:55:40+02:00",
+      "phase": "verifying",
+      "trend_id": "6106415081f7",
+      "title": "Policía Nacional",
+      "message": "Tendencia cerrada por consumidor concurrente y verificada en main"
+    },
+    {
+      "at": "2026-10-14T17:55:50+02:00",
+      "phase": "verifying",
+      "trend_id": "a6a282da4efc",
+      "title": "Pardo de Vera",
+      "message": "Tendencia cerrada por consumidor concurrente y verificada en main"
+    },
+    {
+      "at": "2026-10-14T17:56:10+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura de main: cola 0; saneamiento visual completado correctamente; verificando entrega Telegram y auditoría de huérfanos."
+      "message": "Relectura final: 0 preparing/update, 0 rewrite_pending; 3 explicaciones consistentes y 1 problematic"
     },
     {
-      "at": "2026-10-14T17:20:27+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0, sin sent final:false y auditoría Telegram con 0 huérfanos."
-    },
-    {
-      "at": "2026-10-14T17:20:27+02:00",
+      "at": "2026-10-14T17:56:20+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes."
+      "message": "Pasada 4/4 cerrada con incidencia: Celebrarlo sigue problematic y su provisional Telegram permanece sin borrar"
     }
   ],
-  "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
+  "telegram_orphans": 1,
+  "telegram_orphan_ids": [
+    "88267aeadd51"
+  ],
   "trigger_job_id": null
 }
