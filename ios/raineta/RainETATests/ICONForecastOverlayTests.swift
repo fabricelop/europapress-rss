@@ -12,6 +12,28 @@ final class ICONForecastOverlayTests: XCTestCase {
         XCTAssertLessThan(oneHour.timeIntervalSince(stamp), 7200)
     }
 
+    func testVisualHandoverIsMonotonicAndFullyModelAt30Minutes() {
+        let steps=[0,5,10,15,20,25,30,45,120]
+            .map {ICONForecastTiles.transitionWeight(leadMinutes:$0)}
+        XCTAssertEqual(steps.first,0,accuracy:0.0001)
+        XCTAssertEqual(steps[1],1.0/6.0,accuracy:0.0001)
+        XCTAssertEqual(steps[3],0.5,accuracy:0.0001)
+        XCTAssertEqual(steps[6],1,accuracy:0.0001)
+        XCTAssertEqual(steps.last,1,accuracy:0.0001)
+        XCTAssertEqual(steps,steps.sorted())
+    }
+
+    func testForecastPreloadOnlyNeedsAtMostNineVisibleTiles() {
+        let map=MKMapView(frame:CGRect(x:0,y:0,width:390,height:325))
+        map.setRegion(MKCoordinateRegion(
+            center:CLLocationCoordinate2D(latitude:49.8,longitude:18.3),
+            latitudinalMeters:240_000,longitudinalMeters:240_000),animated:false)
+        let paths=RadarMap.requiredPaths(map)
+        XCTAssertFalse(paths.isEmpty)
+        XCTAssertLessThanOrEqual(paths.count,9)
+        XCTAssertTrue(paths.allSatisfy{(0...16).contains($0.z)})
+    }
+
     func testOfficialWMSRequestsValidMercatorTilesAtHighZoom() {
         let hour = Date(timeIntervalSince1970: 1_800_000_000)
         for z in [6,9,12,16] {
