@@ -15,11 +15,11 @@ final class ICONForecastOverlayTests: XCTestCase {
     func testVisualHandoverIsMonotonicAndFullyModelAt30Minutes() {
         let steps=[0,5,10,15,20,25,30,45,120]
             .map {ICONForecastTiles.transitionWeight(leadMinutes:$0)}
-        XCTAssertEqual(steps.first,0,accuracy:0.0001)
+        XCTAssertEqual(steps[0],0,accuracy:0.0001)
         XCTAssertEqual(steps[1],1.0/6.0,accuracy:0.0001)
         XCTAssertEqual(steps[3],0.5,accuracy:0.0001)
         XCTAssertEqual(steps[6],1,accuracy:0.0001)
-        XCTAssertEqual(steps.last,1,accuracy:0.0001)
+        XCTAssertEqual(steps[8],1,accuracy:0.0001)
         XCTAssertEqual(steps,steps.sorted())
     }
 
