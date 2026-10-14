@@ -105,7 +105,6 @@ struct MinuteRainGraph: View {
                         AxisTick()
                     }
                 }
-                .chartYSelection(value:.constant(nil as Double?))
                 .chartXSelection(value:$selectedMinute)
                 .frame(height:172)
                 RainIntensityLegend()
