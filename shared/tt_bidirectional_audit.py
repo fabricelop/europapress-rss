@@ -93,11 +93,17 @@ def audit(project,now=None):
         if eid in app:
             app[eid]["sources"].add(source)
             app[eid]["has_final_copy"]=app[eid]["has_final_copy"] or bool(row.get("explanation") or row.get("editorial_verified"))
+            if not app[eid].get("group_leader_id") and row.get("group_leader_id"):
+                app[eid]["group_leader_id"]=str(row.get("group_leader_id") or "")
+            if not app[eid].get("group_id") and (row.get("group_id") or row.get("explanation_group_id")):
+                app[eid]["group_id"]=str(row.get("group_id") or row.get("explanation_group_id") or "")
             return
         app[eid]={"id":eid,"title":str(row.get("name") or row.get("title") or eid),
                   "status":status,"sources":{source},
                   "created":start.isoformat() if start else None,
                   "revision":int(row.get("revision") or 0),
+                  "group_leader_id":str(row.get("group_leader_id") or ""),
+                  "group_id":str(row.get("group_id") or row.get("explanation_group_id") or ""),
                   "has_final_copy":bool(row.get("explanation") or row.get("editorial_verified") or source=="app_listas")}
     for x in app_queue:
         add(x,"editorial_queue",x.get("requested_at") or x.get("selected_at"))
@@ -124,6 +130,18 @@ def audit(project,now=None):
     for eid,x in app.items():
         delivery=active.get(eid)
         if not delivery:
+            # A grouped member may intentionally share the leader's single Telegram
+            # package. Only accept that exception when the member explicitly persists
+            # a different group_leader_id and that leader has a live delivery.
+            leader_id=str(x.get("group_leader_id") or "")
+            if not is_tti and leader_id and leader_id!=eid:
+                leader_delivery=active.get(leader_id)
+                if leader_delivery:
+                    member_group=str(x.get("group_id") or "")
+                    leader_group=str(leader_delivery.get("group_id") or "")
+                    if not member_group or not leader_group or member_group==leader_group:
+                        matched+=1
+                        continue
             old=history.get(eid)
             kind="app_open_after_telegram_delete" if old and str(old.get("status") or "").lower() in CLOSED else "app_without_telegram"
             issues.append({"kind":kind,"id":eid,"title":x["title"],
@@ -209,6 +227,16 @@ def selftest():
                 {"event_id":"tt","telegram_message_id":720,"status":"sent","final":False}]})
             x=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
             assert x["matched_count"]==1 and x["issues_count"]==0,x
+            put("trends/requests.json",{"requests":[
+                {"id":"member","name":"Miembro","status":"explained",
+                 "requested_at":"2026-10-12T18:11:00Z","explanation":"Compartida",
+                 "group_id":"grp","group_leader_id":"tt"}]})
+            put("trends/telegram-image-deliveries.json",{"items":[
+                {"event_id":"tt","telegram_message_id":720,"status":"sent","final":True,
+                 "group_id":"grp"}]})
+            grouped=audit("ttendencias",datetime(2026,10,12,19,tzinfo=timezone.utc))
+            assert grouped["matched_count"]==2 and grouped["issues_count"]==0,grouped
+            put("trends/requests.json",{"requests":[]})
             put("trends/telegram-manual-explained.json",{"items":[
                 {"id":"closed","name":"Explicación archivada","status":"explained",
                  "explained_at":"2026-10-12T18:12:00Z","explanation":"Verificada"}]})
