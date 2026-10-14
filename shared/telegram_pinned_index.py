@@ -6,6 +6,7 @@ sources are its own delivery ledger and the editorial queue. An existing
 index is edited in place; never spam the chat with repeated index copies.
 """
 import argparse
+import base64
 import hashlib
 import html
 import json
@@ -157,20 +158,46 @@ def image_launch_details(project,row):
     branch=("control/ttittulares-run-trigger-v2" if project=="ttittulares"
             else "control/ttendencias-run-trigger")
     folder=("ttittulares" if project=="ttittulares" else "trends")
-    url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
-         +branch+"/"+folder+"/image-runs/jobs/"
-         +quote(event_id,safe="")+".json")
-    import time
-    url+="?index_check="+str(int(time.time()))
-    request=Request(url,headers={"User-Agent":"TT-private-pinned-index-image-status",
-                                 "Cache-Control":"no-cache, no-store"})
-    try:
-        with urlopen(request,timeout=3) as response:
-            job=json.load(response)
-    except HTTPError as exc:
-        return {"status":"pending" if exc.code==404 else "unknown"}
-    except (OSError,URLError,TimeoutError,ValueError,TypeError):
-        return {"status":"unknown"}
+    # Image jobs live on a different Git branch from the pinned index.
+    # Use GitHub's authenticated contents API, not anonymous RAW: Actions
+    # runners share a quota and can silently show white for valid launches.
+    from urllib.parse import urlencode
+    from urllib.request import Request
+    path=folder+"/image-runs/jobs/"+quote(event_id,safe="")+".json"
+    token=str(os.getenv("GH_TOKEN") or os.getenv("GITHUB_TOKEN") or "").strip()
+    job=None
+    if token:
+        url=("https://api.github.com/repos/fabricelop/europapress-rss/contents/"
+             +path+"?"+urlencode({"ref":branch}))
+        request=Request(url,headers={
+            "Authorization":"Bearer "+token,
+            "Accept":"application/vnd.github+json",
+            "User-Agent":"TT-private-pinned-image-check"})
+        try:
+            with urlopen(request,timeout=6) as response:
+                envelope=json.load(response)
+            job=json.loads(base64.b64decode(envelope["content"]).decode("utf-8"))
+        except (HTTPError,URLError,OSError,TimeoutError,ValueError,KeyError,TypeError) as exc:
+            print("TT_PINNED_IMAGE_AUTH_FETCH_FAILED",project,event_id,
+                  type(exc).__name__,flush=True)
+    if job is None:
+        # Fallback retains support for local/unauthenticated test runs.
+        import time
+        url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
+             +branch+"/"+path+"?index_check="+str(int(time.time())))
+        request=Request(url,headers={"User-Agent":"TT-private-pinned-index-image-status",
+                                     "Cache-Control":"no-cache, no-store"})
+        try:
+            with urlopen(request,timeout=4) as response:
+                job=json.load(response)
+        except HTTPError as exc:
+            print("TT_PINNED_IMAGE_RAW_HTTP",project,event_id,exc.code,flush=True)
+            return {"status":"pending" if exc.code==404 else "unknown"}
+        except (OSError,URLError,TimeoutError,ValueError,TypeError) as exc:
+            print("TT_PINNED_IMAGE_RAW_ERROR",project,event_id,
+                  type(exc).__name__,flush=True)
+            return {"status":"unknown"}
+    if not isinstance(job,dict):return {"status":"unknown"}
     if (str(job.get("target_id") or job.get("event_id") or "")!=event_id
         or int(job.get("revision") or 0)!=int(row.get("rev") or 0)):
         return {"status":"unknown"}
@@ -199,7 +226,12 @@ def image_statuses_for_panel(project,rows):
     limited=rows[:30]
     with ThreadPoolExecutor(max_workers=6) as pool:
         result=list(pool.map(lambda row:image_launch_details(project,row),limited))
-    return {row["id"]:detail for row,detail in zip(limited,result)}
+    report={row["id"]:detail for row,detail in zip(limited,result)}
+    print("TT_PINNED_IMAGE_STATUSES",project,
+          ",".join(str(row["id"])+":"+
+                   str(report[row["id"]].get("status","unknown")) for row in limited),
+          flush=True)
+    return report
 
 
 def editorial_snippets(project):
