@@ -207,6 +207,9 @@ jobs:
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/tt-control-branch")
           prepared=json.loads((MAIN/"ttittulares/prepared.json").read_text(encoding="utf-8"))
+          deliveries=json.loads((MAIN/"telegram/ttittulares-deliveries.json").read_text(encoding="utf-8"))
+          delivered_ids={str(row.get("event_id") or "") for row in deliveries.get("items",[])
+                         if str(row.get("status") or "").lower()=="sent" and row.get("telegram_message_id")}
           index_path=CTRL/"ttittulares/image-runs/index.json"
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
@@ -283,7 +286,7 @@ jobs:
               tweet=item.get("tweet") or {}
               text=str(tweet.get("text") or "").strip()
               remate=str(tweet.get("remate") or "").strip()
-              if not eid or not text or not remate or eid in closed_ids:
+              if not eid or not text or not remate or eid in closed_ids or eid not in delivered_ids:
                   continue
               # No procesar retrospectivamente noticias antiguas.
               entered=str(item.get("prepared_at") or item.get("ready_at") or "")
