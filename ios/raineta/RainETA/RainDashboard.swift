@@ -178,10 +178,13 @@ struct RainSettingsView: View {
                     .font(.caption2).foregroundStyle(.secondary)
                 Link("Fuentes y licencia UKMO (CC BY-SA 4.0)",destination:URL(string:"https://open-meteo.com/en/docs/ukmo-api")!)
                     .font(.caption2)
-                LabeledContent("Radar avanzado OPERA",value:"En validación")
-                LabeledContent("Modelo de mapas futuros",value:"DWD ICON-EU")
-                Text("La extrapolación OPERA a +5 y +15 min ha mostrado resultados positivos en casos europeos. No se activará como predicción fiable para España o +120 min hasta superar sus pruebas.")
+                LabeledContent("Radar observado",value:store.radar.source)
+                LabeledContent("Predicción del mapa",value:store.radar.hasNowcast ? "LibreWXR · +60 min":"No disponible")
+                LabeledContent("Pulso local",value:"Hasta +120 min")
+                Text("El nowcast LibreWXR es experimental y combina radar europeo y modelos. Solo se dibujan tiempos proporcionados por la API; después de +60 min consulta el Pulso local.")
                     .font(.caption2).foregroundStyle(.secondary)
+                Link("Crédito y licencia de LibreWXR",destination:URL(string:"https://librewxr.net/")!)
+                    .font(.caption)
             }
         }
         .navigationTitle("Ajustes")
