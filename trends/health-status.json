@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-14T09:00:29.560188+00:00",
-  "ok": false,
+  "checked_at": "2026-10-14T12:19:05.768361+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.4,
-      "run_id": 38539019662,
+      "age_minutes": 1.9,
+      "run_id": 38562651687,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -92,29 +92,18 @@
       "contradictory_success": false
     },
     "telegram_provisional": {
-      "ok": false,
-      "overdue_count": 1,
+      "ok": true,
+      "overdue_count": 0,
       "actionable_count": 0,
-      "oldest_age_minutes": 155.4,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "ea9256e5e1fd",
-          "name": "1742 X",
-          "message_id": 794,
-          "age_minutes": 155.4,
-          "editorial_status": "inactive",
-          "grouped": false
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "Telegram: 1 aviso(s) provisional(es) > 30 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Telegram: 1 aviso(s) provisional(es) > 30 min"
+  "last_alert_signature": ""
 }
