@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T06:15:00+02:00",
-  "last_completed_at": "2026-10-14T06:18:30+02:00",
-  "updated_at": "2026-10-14T06:18:30+02:00",
+  "last_started_at": "2026-10-14T06:45:00+02:00",
+  "last_completed_at": "2026-10-14T06:51:30+02:00",
+  "updated_at": "2026-10-14T06:51:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -28,13 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261014T061500+0200-chat",
+    "run_id": "tr-20261014T064500+0200-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T06:15:00+02:00",
-    "updated_at": "2026-10-14T06:18:30+02:00",
-    "finished_at": "2026-10-14T06:18:30+02:00",
+    "started_at": "2026-10-14T06:45:00+02:00",
+    "updated_at": "2026-10-14T06:51:30+02:00",
+    "finished_at": "2026-10-14T06:51:30+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -65,11 +65,11 @@
       "telegram_orphans": 0,
       "telegram_delivery_workflow_verified": 1,
       "archive_images_enriched": 0,
-      "bidirectional_repairs": 0,
+      "bidirectional_repairs": 1,
       "telegram_bidirectional_issues": 0,
       "top10_checked": 10
     },
-    "message": "Pasada 0/0 cerrada y verificada; cola, reexplicaciones y auditoría Telegram están limpias.",
+    "message": "Pasada 0/0 cerrada y verificada; cola, reexplicaciones y auditorías Telegram están limpias.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -82,45 +82,59 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T06:15:00+02:00",
+        "at": "2026-10-14T06:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada editorial · cola textual 0; verificando reexplicaciones, Telegram y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-14T06:16:30+02:00",
+        "at": "2026-10-14T06:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento de Pendientes solicitado en main; verificando workflow de reparación y auditoría Telegram."
+        "message": "Saneamiento de Pendientes solicitado en main; despachando entrega/auditoría Telegram y releyendo estado autoritativo."
       },
       {
-        "at": "2026-10-14T06:18:20+02:00",
+        "at": "2026-10-14T06:48:15+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparación completada correctamente; entrega Telegram disparada y pendiente de verificación."
+        "message": "Reparación de Explicadas completada correctamente; entrega Telegram completada con éxito."
       },
       {
-        "at": "2026-10-14T06:18:12+02:00",
+        "at": "2026-10-14T06:48:22+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Entrega y auditoría Telegram completadas correctamente; 0 huérfanos y 0 incidencias bidireccionales."
+        "message": "Auditoría detecta 1 discrepancia agrupada en Fermin; verificando relación con la tarjeta líder Adeyemi."
       },
       {
-        "at": "2026-10-14T06:18:30+02:00",
+        "at": "2026-10-14T06:50:40+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Corregida la auditoría para reconocer miembros agrupados con líder Telegram persistido; reauditoría despachada."
+      },
+      {
+        "at": "2026-10-14T06:51:17+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Reauditoría completada: 0 huérfanos y 0 incidencias bidireccionales."
+      },
+      {
+        "at": "2026-10-14T06:51:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola, reexplicaciones y auditoría Telegram están limpias."
+        "message": "Pasada 0/0 cerrada y verificada; cola, reexplicaciones y auditorías Telegram están limpias."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-20261014T061500+0200-chat",
+  "run_id": "tr-20261014T064500+0200-chat",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -146,7 +160,7 @@
     "telegram_orphans": 0,
     "telegram_delivery_workflow_verified": 1,
     "archive_images_enriched": 0,
-    "bidirectional_repairs": 0,
+    "bidirectional_repairs": 1,
     "telegram_bidirectional_issues": 0,
     "top10_checked": 10
   },
