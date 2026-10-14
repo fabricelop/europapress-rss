@@ -104,6 +104,7 @@ struct RadarMap: UIViewRepresentable {
     var projection: RadarProjection?
     var modelField: FutureRainField?
     var futureMinutes: Int = 0
+    var nowcastPath: String? = nil
     var recenterRevision: Int = 0
     var forecastStatus: ((String) -> Void)?
     var onViewport: ((CLLocationCoordinate2D,Double,Double)->Void)?
@@ -197,114 +198,60 @@ struct RadarMap: UIViewRepresentable {
         }
     }
 
+    /// When a future frame exists, it belongs to the SAME precipitation
+    /// compositor and colour palette as the observed frames. This eliminates
+    /// the misleading WMS radar/ICON switch and WMS tile stalls.
     func updateUIView(_ map: MKMapView, context: Context) {
-        let coordinator = context.coordinator
-        coordinator.onViewport = onViewport
-        coordinator.onForecastReady = onForecastReady
-        coordinator.selectedLeadMinutes = futureMinutes
-        // Preserve a genuinely observed frame underneath a projected frame.
-        // Do not remove the previous historical raster until the new one
-        // delivers its first valid tile (avoids an empty map at AHORA).
-        let observationKey = host + "|" + (framePath ?? "")
-        if coordinator.observedKey != observationKey {
-            coordinator.observedKey = observationKey
-            if let framePath, !host.isEmpty {
-                let previous = map.overlays.compactMap { $0 as? RainRadarTiles }
-                let newest = RainRadarTiles(host: host, path: framePath)
-                newest.onFirstTile = { [weak map,weak coordinator] in
-                    guard let map, map.overlays.contains(where: { $0 === newest }) else { return }
-                    for layer in previous { map.removeOverlay(layer) }
-                    // New observed frames must remain hidden while a model
-                    // forecast is currently visible above the basemap.
-                    if let renderer=map.renderer(for:newest) {
-                        renderer.alpha=(coordinator?.selectedLeadMinutes ?? 0)>30 ? 0:1
-                        renderer.setNeedsDisplay()
-                    }
-                    newest.onFirstTile = nil
-                }
-                // Radar stays BELOW the forecast on crossfade, even if
-                // observation data refresh while viewing a future model.
-                if let existing=map.overlays.first(where:{$0 is ICONForecastTiles}) {
-                    map.insertOverlay(newest,below:existing)
-                } else {
-                    map.addOverlay(newest,level:.aboveRoads)
-                }
-                if let renderer=map.renderer(for:newest) {
-                    renderer.alpha=futureMinutes>30 ? 0:1
-                }
-            }
-        }
-        // A generation token and cancellable preloading task prevent an old
-        // async response from replacing the user's latest selected frame.
-        let wantModel = futureMinutes > 0 && ICONForecastTiles.covers(center)
-        let window = wantModel ? ICONForecastTiles.period(leadMinutes:futureMinutes) : nil
-        let futureKey = window.map {
-            "\(Int($0.lower.timeIntervalSince1970)):\(Int($0.fraction*1000))"
-        } ?? "observed"
-        if coordinator.futureKey != futureKey {
-            coordinator.futureKey=futureKey
+        let coordinator=context.coordinator
+        coordinator.onViewport=onViewport
+        coordinator.onForecastReady=onForecastReady
+        coordinator.selectedLeadMinutes=futureMinutes
+
+        let selectedPath = futureMinutes>0 ? nowcastPath : framePath
+        let key=host+"|"+(selectedPath ?? "")
+        if coordinator.observedKey != key {
+            coordinator.observedKey=key
             coordinator.forecastTask?.cancel()
             coordinator.forecastTask=nil
-            if let window {
-                let tileLayer=ICONForecastTiles(validTime:window.lower,
-                                                upperTime:window.upper,
-                                                fraction:window.fraction,
-                                                requestedTime:window.target)
-                let paths=Self.requiredPaths(map)
-                let desiredKey=futureKey
-                coordinator.forecastTask=Task { @MainActor [weak map,weak coordinator] in
-                    // Debounce rapid five-minute scrubbing without removing the
-                    // currently displayed field.
-                    try? await Task.sleep(nanoseconds:120_000_000)
-                    guard !Task.isCancelled else{return}
-                    let success=await tileLayer.prepare(paths)
-                    guard !Task.isCancelled,let map,let coordinator,
-                          coordinator.futureKey==desiredKey else{return}
-                    if success {
-                        let previous=map.overlays.filter {
-                            $0 is ICONForecastTiles || $0 is ModelRainTiles || $0 is RainFutureTiles
-                        }
-                        tileLayer.onFirstTile={ [weak map,weak coordinator] in
-                            guard let map,let coordinator,
-                                  coordinator.futureKey==desiredKey,
-                                  map.overlays.contains(where:{$0===tileLayer}) else{return}
-                            for overlay in previous { map.removeOverlay(overlay) }
-                            let weight=ICONForecastTiles.transitionWeight(leadMinutes:futureMinutes)
-                            if let renderer=map.renderer(for:tileLayer) {
-                                renderer.alpha=weight
-                                renderer.setNeedsDisplay()
-                            }
-                            for overlay in map.overlays where overlay is RainRadarTiles {
-                                if let renderer=map.renderer(for:overlay) {
-                                    renderer.alpha=weight>=1 ? 0:1
-                                    renderer.setNeedsDisplay()
-                                }
-                            }
-                            coordinator.onForecastReady?(futureMinutes,true)
-                            tileLayer.onFirstTile=nil
-                        }
-                        map.addOverlay(tileLayer,level:.aboveRoads)
-                        if let renderer=map.renderer(for:tileLayer) {
-                            renderer.alpha=ICONForecastTiles.transitionWeight(leadMinutes:futureMinutes)
-                        }
-                        forecastStatus?("ICON-EU · \(window.target.formatted(date:.omitted,time:.shortened))")
-                    } else {
-                        // Keep the last complete displayed overlay on error,
-                        // rather than flashing a blank or only one tile.
-                        coordinator.onForecastReady?(futureMinutes,false)
-                        forecastStatus?("Previsión temporalmente no disponible")
-                    }
-                }
-            } else {
-                for layer in map.overlays where layer is ICONForecastTiles ||
-                          layer is ModelRainTiles || layer is RainFutureTiles {
+            guard let selectedPath, !host.isEmpty else {
+                if futureMinutes>0 {forecastStatus?("Nowcast no disponible")}
+                coordinator.onForecastReady?(futureMinutes,false)
+                return
+            }
+            let oldLayers=map.overlays.compactMap {$0 as? RainRadarTiles}
+            let incoming=RainRadarTiles(host:host,path:selectedPath)
+            incoming.onFirstTile={ [weak map,weak coordinator] in
+                guard let map,let coordinator,
+                      coordinator.observedKey==key,
+                      map.overlays.contains(where:{$0===incoming}) else{return}
+                let newRenderer=map.renderer(for:incoming)
+                newRenderer?.alpha=1
+                newRenderer?.setNeedsDisplay()
+                for layer in oldLayers {
                     map.removeOverlay(layer)
                 }
-                for layer in map.overlays where layer is RainRadarTiles {
-                    if let renderer=map.renderer(for:layer) {
-                        renderer.alpha=1
-                        renderer.setNeedsDisplay()
-                    }
+                incoming.onFirstTile=nil
+                if futureMinutes>0 {
+                    coordinator.onForecastReady?(futureMinutes,true)
+                }
+            }
+            map.addOverlay(incoming,level:.aboveRoads)
+            // Retain the complete old precipitation map while the first tile
+            // of the next actual/nowcast frame loads.
+            if let renderer=map.renderer(for:incoming) {
+                renderer.alpha=0
+                renderer.setNeedsDisplay()
+            }
+            // A tile-server outage must not leave the playback spinner active.
+            if futureMinutes>0 {
+                coordinator.forecastTask=Task { @MainActor [weak map,weak coordinator] in
+                    try? await Task.sleep(nanoseconds:6_000_000_000)
+                    guard !Task.isCancelled,let map,let coordinator,
+                          coordinator.observedKey==key,
+                          incoming.onFirstTile != nil else{return}
+                    map.removeOverlay(incoming)
+                    coordinator.onForecastReady?(futureMinutes,false)
+                    forecastStatus?("Nowcast temporalmente no disponible")
                 }
             }
         }
