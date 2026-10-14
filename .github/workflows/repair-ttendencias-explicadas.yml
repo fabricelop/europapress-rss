@@ -264,7 +264,7 @@ jobs:
               consumed_retry_version=int(old.get("manual_retry_version") or 0)
               force_retry=manual_retry_version>consumed_retry_version
               old_status=str(old.get("status") or "").upper()
-              if old and int(old.get("revision") or revision)==revision and not force_retry:
+              if old and int(old.get("revision") or revision)==revision and not force_retry and (old.get("pc_launched_at") or old_status=="LAUNCHED" or (old_status in {"ERROR","CANCELLED"} and int(old.get("auto_repair_attempt") or 0)>=3)):
                   continue
               old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
               old_age=(now-old_updated).total_seconds() if old_updated else None
