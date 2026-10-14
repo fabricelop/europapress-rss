@@ -233,6 +233,9 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var radar = RadarFeed()
     @Published var projection: RadarProjection?
     @Published var shortEstimate: RainShortEstimate?
+    @Published private(set) var shortModels: [RainShortModel] = []
+    @Published private(set) var shortModelsUpdatedAt: Date?
+    @Published private(set) var shortModelsLoading = false
     @Published var futureField: FutureRainField?
     @Published var futureFieldStatus = "Previsión DWD ICON-EU por horas. Pulsa +2 h o +4 h para consultar el modelo oficial."
     @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
@@ -268,7 +271,6 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     private var shortLocationKey = ""
     private var shortModelKey = ""
     private var shortModelLoadedAt: Date = .distantPast
-    private var shortModels: [RainShortModel] = []
     private var cachedRadarKey = ""
     private var cachedRadarEvidence: RainRadarEvidence?
 
@@ -499,15 +501,19 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         let locationKey = String(format: "%.3f,%.3f", coord.latitude, coord.longitude)
         if shortLocationKey != locationKey {
             shortEstimate = nil
+            shortModels = []
+            shortModelsUpdatedAt = nil
+            shortModelsLoading = true
             shortLocationKey = locationKey
         }
         let feed = radar
         let lastPath = feed.latest?.path ?? ""
         let frameKey = locationKey + "|" + lastPath
         let knownRadar = frameKey == cachedRadarKey ? cachedRadarEvidence : nil
-        let cachedModels = shortModels
-        let reuseModels = shortModelKey == locationKey &&
+        let cachedModels = shortModelKey == locationKey ? shortModels : []
+        let reuseModels = shortModelKey == locationKey && !cachedModels.isEmpty &&
                           Date().timeIntervalSince(shortModelLoadedAt) < 10*60
+        shortModelsLoading = !reuseModels
         let revision = placeSelectionRevision
 
         shortTask = Task {
@@ -516,14 +522,21 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             async let latestModels: [RainShortModel] = reuseModels ? cachedModels :
                 RainShortModelAPI.compare(latitude: coord.latitude, longitude: coord.longitude)
             let projection = await latestRadar
-            let models = await latestModels
+            let fetchedModels = await latestModels
             guard !Task.isCancelled, revision == placeSelectionRevision,
                   locationKey == shortLocationKey else { return }
-            if !reuseModels && !models.isEmpty {
-                shortModels = models
+            // Keep last same-place observations for a brief outage, never
+            // silently transplant another town's model forecast.
+            let models = !fetchedModels.isEmpty ? fetchedModels :
+                (shortModelKey == locationKey &&
+                 Date().timeIntervalSince(shortModelLoadedAt) < 30*60 ? cachedModels : [])
+            if !reuseModels && !fetchedModels.isEmpty {
+                shortModels = fetchedModels
                 shortModelKey = locationKey
                 shortModelLoadedAt = Date()
+                shortModelsUpdatedAt = Date()
             }
+            shortModelsLoading = false
             if knownRadar == nil {
                 cachedRadarKey = frameKey
                 cachedRadarEvidence = projection.map {
@@ -532,8 +545,9 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
                                       points: $0.minutePoints)
                 }
             }
+            let evidence = frameKey == cachedRadarKey ? cachedRadarEvidence : nil
             shortEstimate = RainShortFusion.estimate(
-                weather: wx, radar: knownRadar ?? cachedRadarEvidence,
+                weather: wx, radar: knownRadar ?? evidence,
                 models: models, now: Date())
             if liveEnabled { await updateLiveActivity() }
         }
