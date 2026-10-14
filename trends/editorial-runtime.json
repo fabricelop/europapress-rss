@@ -4,15 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-14T16:43:30+02:00",
-  "last_completed_at": "2026-10-14T16:51:00+02:00",
-  "updated_at": "2026-10-14T16:51:00+02:00",
+  "last_started_at": "2026-10-14T17:17:18+02:00",
+  "last_completed_at": "2026-10-14T17:20:27+02:00",
+  "updated_at": "2026-10-14T17:20:27+02:00",
   "status": "success",
-  "processed_ids": [
-    "6412cd25e0a3",
-    "ad6e747862d5",
-    "543942a86f40"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -20,33 +16,33 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered",
+    "status": "completed",
     "direct_imagegen": false,
-    "run_id": "tr-autoguard-1791988937",
-    "requested_at": "2026-10-14T16:43:30+02:00",
+    "run_id": "tr-manual-20261014T171718+0200",
+    "requested_at": "2026-10-14T17:17:18+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1791988937",
+    "run_id": "tr-manual-20261014T171718+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-14T16:43:30+02:00",
-    "updated_at": "2026-10-14T16:51:00+02:00",
-    "finished_at": "2026-10-14T16:51:00+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-14T17:17:18+02:00",
+    "updated_at": "2026-10-14T17:20:27+02:00",
+    "finished_at": "2026-10-14T17:20:27+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "partial": false,
     "summary": {
-      "trends_processed": 3,
-      "trends_explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -61,11 +57,11 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada 3/3 cerrada y verificada: Marlaska, CGPJ y Narciso explicadas; cola 0; Telegram 3/3 emparejado y 0 huérfanos.",
+    "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,179 +71,46 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "6412cd25e0a3",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "selected_text": "🌶️ La seguridad ha pasado del papel al dispositivo.",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ad6e747862d5",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "selected_text": "🌶️ La declaración institucional se quedó en borrador.",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "543942a86f40",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "selected_text": "🌶️ El margen de error ya ocupa primera fila.",
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-14T16:43:30+02:00",
+        "at": "2026-10-14T17:17:18+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial · 3 tendencias activas; reconciliando estado y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial · cola textual 0; revisando saneamiento, reexplicaciones y Telegram antes de cerrar."
       },
       {
-        "at": "2026-10-14T16:44:10+02:00",
-        "phase": "verifying",
-        "trend_id": "6412cd25e0a3",
-        "title": "Marlaska",
-        "message": "Releyendo estado autoritativo de Marlaska r0."
-      },
-      {
-        "at": "2026-10-14T16:45:00+02:00",
-        "phase": "investigating",
-        "trend_id": "6412cd25e0a3",
-        "title": "Marlaska",
-        "message": "Detonante actual contrastado en fuentes recientes."
-      },
-      {
-        "at": "2026-10-14T16:46:00+02:00",
-        "phase": "drafting",
-        "trend_id": "6412cd25e0a3",
-        "title": "Marlaska",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-14T16:46:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6412cd25e0a3",
-        "title": "Marlaska",
-        "message": "Remate político neutral seleccionado."
-      },
-      {
-        "at": "2026-10-14T16:46:40+02:00",
-        "phase": "verifying",
-        "trend_id": "ad6e747862d5",
-        "title": "CGPJ",
-        "message": "Releyendo estado autoritativo de CGPJ r0."
-      },
-      {
-        "at": "2026-10-14T16:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "ad6e747862d5",
-        "title": "CGPJ",
-        "message": "Detonante actual del Pleno del CGPJ contrastado en dos fuentes."
-      },
-      {
-        "at": "2026-10-14T16:47:30+02:00",
-        "phase": "drafting",
-        "trend_id": "ad6e747862d5",
-        "title": "CGPJ",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-14T16:47:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "ad6e747862d5",
-        "title": "CGPJ",
-        "message": "Remate específico seleccionado tras comprobar originalidad."
-      },
-      {
-        "at": "2026-10-14T16:48:00+02:00",
-        "phase": "verifying",
-        "trend_id": "543942a86f40",
-        "title": "Narciso",
-        "message": "Releyendo estado autoritativo de Narciso r0."
-      },
-      {
-        "at": "2026-10-14T16:48:15+02:00",
-        "phase": "investigating",
-        "trend_id": "543942a86f40",
-        "title": "Narciso",
-        "message": "Identificado Narciso Michavila; barómetro GAD3 y valoración actual contrastados."
-      },
-      {
-        "at": "2026-10-14T16:48:35+02:00",
-        "phase": "drafting",
-        "trend_id": "543942a86f40",
-        "title": "Narciso",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-14T16:48:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "543942a86f40",
-        "title": "Narciso",
-        "message": "Remate político neutral seleccionado tras comprobar originalidad."
-      },
-      {
-        "at": "2026-10-14T16:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando las 3 fichas Explicadas, actualizando requests y retirando las revisiones de la cola."
-      },
-      {
-        "at": "2026-10-14T16:50:13+02:00",
+        "at": "2026-10-14T17:19:26+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Persistencia transaccional confirmada en main para las 3 revisiones."
+        "message": "Relectura de main: cola 0; saneamiento visual completado correctamente; verificando entrega Telegram y auditoría de huérfanos."
       },
       {
-        "at": "2026-10-14T16:50:30+02:00",
+        "at": "2026-10-14T17:20:27+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Las 3 tarjetas Telegram quedaron final:true."
+        "message": "Verificación final: cola 0, sin sent final:false y auditoría Telegram con 0 huérfanos."
       },
       {
-        "at": "2026-10-14T16:50:36+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Auditoría Telegram: 3/3 emparejadas, 0 incidencias y 0 huérfanos."
-      },
-      {
-        "at": "2026-10-14T16:50:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: cola 0 y sin reexplicaciones rewrite_pending detectadas."
-      },
-      {
-        "at": "2026-10-14T16:51:00+02:00",
+        "at": "2026-10-14T17:20:27+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 3/3 cerrada y verificada; cola 0, Telegram 3/3 y sin incidencias."
+        "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-autoguard-1791988937",
+  "run_id": "tr-manual-20261014T171718+0200",
   "summary": {
-    "trends_processed": 3,
-    "trends_explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -262,149 +125,44 @@
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "radar_refresh": {
     "requested": false,
-    "source_capture_at": "2026-10-14T15:32:38+02:00",
+    "source_capture_at": "2026-10-14T17:12:11+02:00",
     "status": "fresh_at_start"
   },
   "activity": [
     {
-      "at": "2026-10-14T16:43:30+02:00",
+      "at": "2026-10-14T17:17:18+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial · 3 tendencias activas; reconciliando estado y saneamiento de Pendientes."
+      "message": "Iniciando pasada editorial · cola textual 0; revisando saneamiento, reexplicaciones y Telegram antes de cerrar."
     },
     {
-      "at": "2026-10-14T16:44:10+02:00",
-      "phase": "verifying",
-      "trend_id": "6412cd25e0a3",
-      "title": "Marlaska",
-      "message": "Releyendo estado autoritativo de Marlaska r0."
-    },
-    {
-      "at": "2026-10-14T16:45:00+02:00",
-      "phase": "investigating",
-      "trend_id": "6412cd25e0a3",
-      "title": "Marlaska",
-      "message": "Detonante actual contrastado en fuentes recientes."
-    },
-    {
-      "at": "2026-10-14T16:46:00+02:00",
-      "phase": "drafting",
-      "trend_id": "6412cd25e0a3",
-      "title": "Marlaska",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-14T16:46:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "6412cd25e0a3",
-      "title": "Marlaska",
-      "message": "Remate político neutral seleccionado."
-    },
-    {
-      "at": "2026-10-14T16:46:40+02:00",
-      "phase": "verifying",
-      "trend_id": "ad6e747862d5",
-      "title": "CGPJ",
-      "message": "Releyendo estado autoritativo de CGPJ r0."
-    },
-    {
-      "at": "2026-10-14T16:47:00+02:00",
-      "phase": "investigating",
-      "trend_id": "ad6e747862d5",
-      "title": "CGPJ",
-      "message": "Detonante actual del Pleno del CGPJ contrastado en dos fuentes."
-    },
-    {
-      "at": "2026-10-14T16:47:30+02:00",
-      "phase": "drafting",
-      "trend_id": "ad6e747862d5",
-      "title": "CGPJ",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-14T16:47:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "ad6e747862d5",
-      "title": "CGPJ",
-      "message": "Remate específico seleccionado tras comprobar originalidad."
-    },
-    {
-      "at": "2026-10-14T16:48:00+02:00",
-      "phase": "verifying",
-      "trend_id": "543942a86f40",
-      "title": "Narciso",
-      "message": "Releyendo estado autoritativo de Narciso r0."
-    },
-    {
-      "at": "2026-10-14T16:48:15+02:00",
-      "phase": "investigating",
-      "trend_id": "543942a86f40",
-      "title": "Narciso",
-      "message": "Identificado Narciso Michavila; barómetro GAD3 y valoración actual contrastados."
-    },
-    {
-      "at": "2026-10-14T16:48:35+02:00",
-      "phase": "drafting",
-      "trend_id": "543942a86f40",
-      "title": "Narciso",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-14T16:48:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "543942a86f40",
-      "title": "Narciso",
-      "message": "Remate político neutral seleccionado tras comprobar originalidad."
-    },
-    {
-      "at": "2026-10-14T16:49:00+02:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Guardando las 3 fichas Explicadas, actualizando requests y retirando las revisiones de la cola."
-    },
-    {
-      "at": "2026-10-14T16:50:13+02:00",
+      "at": "2026-10-14T17:19:26+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Persistencia transaccional confirmada en main para las 3 revisiones."
+      "message": "Relectura de main: cola 0; saneamiento visual completado correctamente; verificando entrega Telegram y auditoría de huérfanos."
     },
     {
-      "at": "2026-10-14T16:50:30+02:00",
+      "at": "2026-10-14T17:20:27+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Las 3 tarjetas Telegram quedaron final:true."
+      "message": "Verificación final: cola 0, sin sent final:false y auditoría Telegram con 0 huérfanos."
     },
     {
-      "at": "2026-10-14T16:50:36+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Auditoría Telegram: 3/3 emparejadas, 0 incidencias y 0 huérfanos."
-    },
-    {
-      "at": "2026-10-14T16:50:50+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola 0 y sin reexplicaciones rewrite_pending detectadas."
-    },
-    {
-      "at": "2026-10-14T16:51:00+02:00",
+      "at": "2026-10-14T17:20:27+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 3/3 cerrada y verificada; cola 0, Telegram 3/3 y sin incidencias."
+      "message": "Pasada 0/0 cerrada y verificada; no había trabajo editorial nuevo ni reexplicaciones pendientes."
     }
   ],
   "telegram_orphans": 0,
