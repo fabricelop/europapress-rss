@@ -67,10 +67,9 @@ def image_url(row):
     return ""
 
 def ai_delivery_info(item,now):
-    """Solo lectura: el plazo comienza con pc_launched_at, nunca con REQUESTED."""
+    """Sólo informar si el prompt fue enviado a ChatGPT Images; nunca recuperar imagen."""
     eid=str(item.get("event_id") or "")
     rev=int(item.get("revision") or 1)
-    ai=item.get("ai_image") or {}
     job={}
     if eid and os.environ.get("TELEGRAM_BOT_TOKEN"):
         try:
@@ -85,40 +84,20 @@ def ai_delivery_info(item,now):
                     job=found
         except (requests.RequestException,ValueError,TypeError,AttributeError):
             pass
-    launch=date(job.get("pc_launched_at"))
-    expired=bool(launch and (now-launch).total_seconds()>=300)
-    status=str(job.get("status") or "").upper()
-    url=str(ai.get("url") or "")
-    valid=bool(item.get("ai_image_status")=="ready" and ai.get("generated") is True
-        and ai.get("provider")=="chat-imagegen" and ai.get("origin")=="executing_chat"
-        and url.startswith("https://") and str(ai.get("sha256") or "")
-        and int(ai.get("width") or 0)>=1024 and int(ai.get("height") or 0)>=576
-        and str((ai.get("context_guard") or {}).get("event_id") or eid)==eid
-        and int((ai.get("context_guard") or {}).get("revision") or rev)==rev)
-    # La creación manual no expira: solo bloqueamos la automática de ESTE command_id.
-    image_command=str((ai.get("context_guard") or {}).get("command_id") or "")
-    automatic=image_command.startswith("tt-img-auto-")
-    confirmed_automatic=bool(job and image_command==str(job.get("command_id") or "")
-                             and launch and not expired)
-    if valid and not automatic or (valid and automatic and confirmed_automatic):
-        return {"url":url,"note":"🖼️ Imagen IA lista · incorporándose a Telegram."}
-    if expired or status in {"ERROR","CANCELLED","SUPERSEDED"}:
-        return {"url":"","note":"🖼️ IA no disponible · puedes crearla manualmente."}
-    if launch:
-        return {"url":"","note":"🖼️ IA en curso · todavía puede llegar (hasta 5 min desde el lanzamiento)."}
-    # Si el PC nunca recoge la orden, no mostrar "pendiente" durante horas.
-    # Esta espera de recogida NO forma parte de los cinco minutos de generación.
+    if job.get("pc_launched_at"):
+        return {"url":"","note":"🖼️ Enviada a ChatGPT Images."}
     requested=date(job.get("requested_at"))
+    status=str(job.get("status") or "").upper()
+    if status in {"ERROR","CANCELLED","SUPERSEDED"}:
+        return {"url":"","note":"🖼️ Sin imagen IA · fallo de lanzamiento."}
     if status in {"REQUESTED","RUNNING","PERSISTING"}:
         if requested and (now-requested).total_seconds()>=120:
-            return {"url":"","note":"🖼️ IA no disponible · el PC no inició la generación. Puedes crearla manualmente."}
-        return {"url":"","note":"🖼️ IA pendiente de lanzamiento · esperando al PC (máximo 2 min)."}
-    if valid and automatic:
-        return {"url":"","note":"🖼️ IA automática no verificable · no se entregará tarde."}
+            return {"url":"","note":"🖼️ Sin imagen IA · el PC no lanzó la orden."}
+        return {"url":"","note":"🖼️ Pendiente de enviar a ChatGPT Images."}
     entered=date(item.get("prepared_at") or item.get("ready_at"))
     if entered and (now-entered).total_seconds()>900:
-        return {"url":"","note":"🖼️ IA automática no disponible · puedes crearla manualmente."}
-    return {"url":"","note":"🖼️ IA automática aún no iniciada."}
+        return {"url":"","note":"🖼️ Sin imagen IA · no se lanzó."}
+    return {"url":"","note":"🖼️ Pendiente de enviar a ChatGPT Images."}
 
 
 def attach_news_ai(card,entry,token,chat,ledger_path,ledger,now):
@@ -973,11 +952,10 @@ def process(project,now,token,chat):
         else:
             card["image"]=""
         if project=="ttittulares" and card["final"] and existing:
-            attach_news_ai(card,existing,token,chat,path,ledger,now)
+            pass  # launch-only: no se recuperan imágenes automáticas
         body=card["text"]
         if project=="ttittulares" and card["final"]:
-            note=("🖼️ Imagen IA añadida." if existing and int(existing.get("ai_telegram_message_id") or 0)>0
-                  else card.get("ai_note") or "")
+            note=card.get("ai_note") or ""
             if note:body=body[:max(0,1024-len(note)-2)]+"\n\n"+note
         if project=="ttittulares" and not card["final"] and not card["image"]:
             body=body.replace("📷 Fotografía de archivo disponible.",
@@ -1075,17 +1053,6 @@ def process(project,now,token,chat):
                 "started_at":str(card["start"]),"delivered_at":now.isoformat(),
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
-            if project=="ttittulares" and card["final"] and card.get("ai_url"):
-                entry=entries[-1]
-                if attach_news_ai(card,entry,token,chat,path,ledger,now):
-                    new_body=card["text"]+"\n\n🖼️ Imagen IA añadida."
-                    meth="editMessageCaption" if entry.get("is_photo") else "editMessageText"
-                    field="caption" if entry.get("is_photo") else "text"
-                    edited=send(token,meth,{"chat_id":chat,"message_id":int(entry["telegram_message_id"]),
-                                  field:new_body[:1024],"reply_markup":kb})
-                    if edited:
-                        entry["content_sha256"]=hashlib.sha256((new_body[:1024]+"|"+card["image"]).encode("utf-8")).hexdigest()
-                        updated+=1
         ledger["updated_at"]=now.isoformat()
     # Never silently delete a SECOND card only because a previous related
     # card was removed by the user. Its own Telegram message must be
