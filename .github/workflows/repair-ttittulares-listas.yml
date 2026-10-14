@@ -291,7 +291,10 @@ jobs:
                   entered_dt=datetime.fromisoformat(entered.replace("Z","+00:00"))
               except (ValueError,TypeError):
                   continue
-              if (now-entered_dt).total_seconds()>900:
+              # No reactivar noticias de antes de la simplificación; conservar
+              # 24 h de cola para no perder noticias si otra imagen tarda.
+              launch_only_start=datetime.fromisoformat("2026-10-14T06:20:00+00:00")
+              if entered_dt<launch_only_start or (now-entered_dt).total_seconds()>86400:
                   continue
               # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
               is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
