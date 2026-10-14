@@ -232,7 +232,7 @@ def extract_remate(value):
     return next((line for line in reversed(lines) if line.startswith("🌶️")), "")
 
 
-def one_line_sentence(project,title,copy,limit=47):
+def one_line_sentence(project,title,copy,limit=40):
     """At most one compact factual line, then the intact separate punchline."""
     text=str(copy or "").strip()
     text=text.split("🌶️",1)[0].strip()
@@ -299,7 +299,7 @@ def render(project,bot_id,image_statuses=None):
     chunks.append("\n<b>EN ELABORACIÓN</b>")
     count_pending=0
     for row in pending:
-        line="• "+html.escape(one_line_sentence(project,row["title"],"",47))
+        line="• "+html.escape(one_line_sentence(project,row["title"],"",40))
         if len("\n".join(chunks+[line]))>=room:break
         chunks.append(line)
         count_pending+=1
