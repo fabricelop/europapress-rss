@@ -43,9 +43,11 @@ enum RainPulseFusion {
             let date = now.addingTimeInterval(TimeInterval(minute*60))
             let observations = models.compactMap { $0.rateMMH(at:date) }
             let fine = RainInsight.interpolatedRate(at:date,samples:samples)
-            guard let selected = observations.count >= 2 ? median(observations) : fine else {
-                return nil
-            }
+            // Keep the finer 15-minute temporal shape as the primary pulse.
+            // Hourly ensemble medians are only a fallback if that source lacks
+            // data; averaging hourly values into minute bars would otherwise
+            // erase dry gaps and manufacture rain all afternoon.
+            guard let selected = fine ?? median(observations) else { return nil }
             return RainPulseMinute(
                 minute:minute,date:date,rateMMH:selected,automaticMMH:fine,
                 lowMMH:observations.min() ?? selected,
