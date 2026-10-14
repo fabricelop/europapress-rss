@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:15:44.455587Z",
-      "event_id": "3e4fa144266f-r1",
-      "phase": "outbox",
-      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:15:44.455587Z",
       "event_id": "4da79a83822c-r1",
       "phase": "outbox",
       "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "5009415c8f4c-r1.json: ValueError: saltos visibles prohibidos",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 5009415c8f4c-r1: 5009415c8f4c-r1.json: ValueError: saltos visibles prohibidos. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-14T12:14:06.031497Z",
+      "event_id": "284229157b0d-r1",
+      "phase": "outbox",
+      "reason": "284229157b0d-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 284229157b0d-r1: 284229157b0d-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
