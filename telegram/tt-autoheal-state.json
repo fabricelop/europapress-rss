@@ -2,78 +2,37 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T13:25:30.975635+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-10-14T13:30:58.600860+00:00",
+      "issue_count": 2,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "ecdb7239c533",
-          "title": "\"Felipe VI en la Ceuta ocupada\", \"no borra la ocupación\"... así trata la prensa marroquí la visita d",
-          "seconds": 3503,
+          "id": "ccc2b9ff5f30",
+          "title": "Ciudadanos y UCIN irán a las elecciones en el nuevo partido Democracia 21 de Miriam González",
+          "seconds": 2734,
           "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "56035306fb8b",
-          "title": "Roberto Saviano, veinte años amenazado por la mafia: «Me han dejado a medio camino: ni vivo ni muert",
-          "seconds": 2406,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "ccc2b9ff5f30",
-          "title": "Ciudadanos y UCIN irán a las elecciones en el nuevo partido Democracia 21 de Miriam González",
-          "seconds": 2406,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2b7e8ac7551d",
-          "title": "14:20 Diego González, cirujano, explica la intervención pionera en España con la que se le ha extirp",
-          "seconds": 2406,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "a0f88e5994ee",
-          "title": "Se cumple un año del suicidio de Sandra Peña, la menor cuya muerte \"despertó\" el grito contra el aco",
-          "seconds": 1143,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 4027,
-          "workflow": "telegram-pinned-index.yml"
+          "kind": "orphan_provisional",
+          "id": "ecdb7239c533",
+          "title": "\"Felipe VI en la Ceuta ocupada\", \"no borra la ocupación\"... así trata la prensa marroquí la visita d",
+          "seconds": 3830,
+          "workflow": null
         }
       ],
-      "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "738b5e136915547fd2a53172c23a923ffa4a7e2cc7187e1c457abca83c366d74",
+      "open_signature": "67b045e6bad68ffb9ab286486f44cd257f6122dc26e05fce67376c4b2b8966d3",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T13:25:30.975635+00:00",
-      "issue_count": 1,
-      "issues": [
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 4027,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
+      "checked_at": "2026-10-14T13:30:58.600860+00:00",
+      "issue_count": 0,
+      "issues": [],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
@@ -84,5 +43,5 @@
     "ttendencias:telegram-pinned-index.yml": "2026-10-14T13:25:30.975635+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T13:25:30.975635+00:00"
+  "checked_at": "2026-10-14T13:30:58.600860+00:00"
 }
