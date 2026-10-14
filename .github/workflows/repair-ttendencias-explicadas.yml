@@ -238,7 +238,7 @@ jobs:
               if not str(row.get("explanation") or "").strip():
                   continue
               # También se permite la imagen de tendencias sensibles con enfoque sobrio.
-              if str(row.get("telegram_package_status") or "").lower() in {"published","dismissed"}:
+              if str(row.get("telegram_package_status") or "").lower() in {"published","dismissed","deleted","removed","delete_pending","delete_failed"}:
                   continue
               # La sensibilidad editorial no bloquea ImageGen. Solo Tremending queda fuera
               # porque usa su flujo específico de captura real del tuit.
