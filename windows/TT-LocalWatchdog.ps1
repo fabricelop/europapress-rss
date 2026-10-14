@@ -224,6 +224,193 @@ function Get-ChatCdpTabCount{
     }).Count
   }catch{return -1}
 }
+function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
+  # The Autocorregir GitHub runner cannot itself research or explain trends.
+  # Only wake the EXISTING Windows editorial task after verifying main again.
+  # The marker contains IDs, never shell commands, scripts or free-form tasks.
+  $requested=@($Signal.editorial_retry.ttendencias | ForEach-Object{[string]$_} |
+    Where-Object{$_ -match '^[a-zA-Z0-9]{8,64}
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
+  $script:RemoteHealLastPoll=$now
+  try{
+    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/telegram/tt-local-recovery-request.json"
+    $signal=Invoke-RestMethod -Uri ($url+"?t="+$now.ToUnixTimeMilliseconds()) -TimeoutSec 10 -Headers @{"Cache-Control"="no-cache, no-store"}
+  }catch{return}
+  if([string]$signal.action -ne "recover_chat_tab_if_missing"){return}
+  $request=[string]$signal.request_id
+  if($request -notmatch '^[a-f0-9]{32}$' -or $request -eq $script:RemoteHealSeenId){return}
+  try{
+    $when=[DateTimeOffset]::Parse([string]$signal.requested_at)
+    $age=($now-$when).TotalHours
+    if($age -lt -0.1 -or $age -gt 24){return}
+  }catch{return}
+  if(Test-ChatOperationBusy){
+    Log "REMOTE HEAL DEFERRED request=$request reason=image-or-chat-operation-active"
+    return
+  }
+
+  $count=Get-ChatCdpTabCount
+  if($count -lt 0){
+    EnsureChrome
+    Log "REMOTE HEAL DEFERRED request=$request reason=chrome-cdp-not-ready"
+    return
+  }
+  if($count -eq 0){
+    if(($now-$script:RemoteHealLastTabOpen).TotalSeconds -lt 60){return}
+    $script:RemoteHealLastTabOpen=$now
+    try{
+      $tab=Invoke-RestMethod -Method Put -Uri ("http://127.0.0.1:9223/json/new?"+[uri]::EscapeDataString("https://chatgpt.com/")) -TimeoutSec 8
+      Log "REMOTE HEAL CHAT TAB REQUESTED request=$request target=$([string]$tab.id)"
+    }catch{
+      Log "REMOTE HEAL CHAT TAB ERROR request=$request :: $($_.Exception.Message)"
+      return
+    }
+    $deadline=(Get-Date).AddSeconds(12)
+    do{
+      Start-Sleep -Seconds 2
+      $count=Get-ChatCdpTabCount
+    }while($count -eq 0 -and (Get-Date) -lt $deadline)
+    if($count -lt 1){
+      Log "REMOTE HEAL CHAT TAB PENDING request=$request"
+      return
+    }
+  }
+
+  # Recuperar listeners sin interrumpir un bridge de imagen activo.
+  $script:ReconnectPending=$true
+  $script:ReconnectCause="telegram-autocorregir"
+  Recover-ListenersAfterReconnect
+  if($script:ReconnectPending){
+    Log "REMOTE HEAL LISTENER RECOVERY DEFERRED request=$request"
+    return
+  }
+  # Only a real, still-overdue editorial revision can restart the existing
+  # launcher. When the editorial run already closed, this is a no-op.
+  if(-not (EnsureOverdueTrendsEditorialRetry $signal $request)){return}
+  try{
+    @{request_id=$request;completed_at=$now.ToString("o")} |
+      ConvertTo-Json -Compress |
+      Set-Content -LiteralPath $script:RemoteHealStatePath -Encoding UTF8 -ErrorAction Stop
+    $script:RemoteHealSeenId=$request
+    Log "REMOTE HEAL COMPLETE request=$request chat_tabs=$count"
+  }catch{
+    Log "REMOTE HEAL STATE ERROR request=$request :: $($_.Exception.Message)"
+  }
+}
+
+function EnsureScheduledTasks{
+  foreach($name in @(
+    "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
+    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
+  )){
+    try{
+      $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
+      if($task -and $task.State -eq "Disabled"){
+        Enable-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue|Out-Null
+        Log "TASK ENABLED $name"
+      }
+    }catch{}
+  }
+  try{
+    $slr=Get-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
+    if($slr -and $slr.State -ne "Running"){
+      Start-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
+      Log "SLR TELEGRAM LISTENER REQUESTED"
+    }
+  }catch{}
+}
+
+New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
+if (-not (Enter-ProcessInstance (Join-Path $BaseDir "tt-watchdog.instance.lock"))) { exit 0 }
+
+$tt=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
+$tr=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
+$up=Join-Path $BaseDir "TT-AutoUpdater.ps1"
+$self=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
+EnsureStartup "TT Automation Watchdog.cmd" $self
+EnsureStartup "TTiTTulares Mobile Trigger Listener.cmd" $tt
+EnsureStartup "TTendencias Mobile Trigger Listener.cmd" $tr
+EnsureStartup "TT Auto Updater.cmd" $up
+
+Log "WATCHDOG START pid=$PID interval=$IntervalSeconds"
+try{
+  while($true){
+    EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
+    EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
+    EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
+    EnsureScheduledTasks
+    EnsureChrome
+    EnsureInternetRecovery
+    EnsureRemoteTelegramHeal
+    # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
+    # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
+    Start-Sleep -Seconds $IntervalSeconds
+  }
+}finally{
+  try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
+  try{if($script:InstanceHandle){$script:InstanceHandle.Dispose()}}catch{}
+}
+})
+  if($requested.Count -eq 0){return $true}
+  $now=[DateTimeOffset]::UtcNow
+  try{
+    $url="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/editorial-queue.json"
+    $queue=Invoke-RestMethod -Uri ($url+"?t="+$now.ToUnixTimeMilliseconds()) -TimeoutSec 10 -Headers @{"Cache-Control"="no-cache, no-store"}
+  }catch{
+    Log "REMOTE EDITORIAL DEFERRED request=$Request reason=queue-fetch-error"
+    return $false
+  }
+  $overdue=@()
+  foreach($item in @($queue.items)){
+    $eid=[string]$item.id
+    $status=[string]$item.status
+    if($requested -notcontains $eid -or $status -notin @("preparing","update")){continue}
+    try{
+      $since=[DateTimeOffset]::Parse([string]$item.requested_at)
+      if(($now-$since).TotalMinutes -lt 20){continue}
+    }catch{continue}
+    $overdue+= $eid
+  }
+  if($overdue.Count -eq 0){
+    Log "REMOTE EDITORIAL ALREADY RESOLVED request=$Request"
+    return $true
+  }
+  $task=$null
+  foreach($name in @("TTendencias Local Ready","TTendencias Local")){
+    try{
+      $candidate=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
+      if($candidate){$task=$candidate;break}
+    }catch{}
+  }
+  if(-not $task){
+    Log "REMOTE EDITORIAL DEFERRED request=$Request reason=scheduled-task-missing"
+    return $false
+  }
+  if([string]$task.State -ne "Ready"){
+    Log "REMOTE EDITORIAL DEFERRED request=$Request reason=task-$([string]$task.State)"
+    return $false
+  }
+  try{
+    # If the ordinary timer just started the editorial task, let that pass
+    # finish before considering a duplicate Autocorregir wakeup.
+    $details=Get-ScheduledTaskInfo -TaskName $task.TaskName -ErrorAction Stop
+    if($details.LastRunTime -gt [datetime]::MinValue -and
+       ((Get-Date)-$details.LastRunTime).TotalMinutes -lt 4){
+      Log "REMOTE EDITORIAL DEFERRED request=$Request reason=recent-scheduled-run"
+      return $false
+    }
+  }catch{}
+  try{
+    Start-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop
+    Log "REMOTE EDITORIAL TRIGGERED request=$Request task=$($task.TaskName) ids=$($overdue -join ',')"
+    return $true
+  }catch{
+    Log "REMOTE EDITORIAL DEFERRED request=$Request reason=task-start-failed"
+    return $false
+  }
+}
+
 function EnsureRemoteTelegramHeal{
   $now=[DateTimeOffset]::UtcNow
   if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
