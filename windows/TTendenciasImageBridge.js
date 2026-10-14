@@ -671,6 +671,9 @@ async function uploadImage(image){
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
+    // Safety invariant: this bridge may submit prompts only, never capture,
+    // download, rasterize, upload, or forward generated images.
+    if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
