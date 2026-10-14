@@ -360,7 +360,7 @@ function buildMessage(job){
     style,
     "",
     "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe traducir la guindilla; evita añadir símbolos, carteles u objetos que no refuercen directamente ese único chiste.",
-    "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen. No proceses otra noticia ni persistas la imagen: el puente local recoge el raster."
+    "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen. No proceses otra noticia ni descargues, captures, subas ni persistas la imagen. Solo ChatGPT Images."
   ].join("\n")
 }
 
@@ -761,6 +761,9 @@ async function uploadImage(image){
     const job=await fetchJob();
     const isAutomatic=String(job.mode||"")==="automatic_ready_repair";
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
+    // Safety invariant: this bridge may submit prompts only, never capture,
+    // download, rasterize, upload, or forward generated images.
+    if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
