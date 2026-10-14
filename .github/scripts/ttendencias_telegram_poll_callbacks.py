@@ -141,15 +141,37 @@ def process(updates, allowed_chat, ledger, decisions, offset, requests=None):
             changed = True
         # A Telegram decision closes the editorial request as well as the
         # delivery ledger; otherwise auto-queue may resurrect old revisions.
+        # For an explicit grouped package, the single Telegram decision also
+        # closes only those follower requests that persist the same leader/group.
+        group_member_ids = {event_id}
+        group_ids = set()
+        for row in matched:
+            group_id = str(row.get("group_id") or "")
+            if group_id:
+                group_ids.add(group_id)
+            for member_id in row.get("group_member_ids") or []:
+                member_id = str(member_id or "")
+                if member_id:
+                    group_member_ids.add(member_id)
         for req in requests.get("requests", []):
-            if str(req.get("id") or "") != event_id:
+            req_id = str(req.get("id") or "")
+            if req_id not in group_member_ids:
                 continue
+            if req_id != event_id:
+                req_leader = str(req.get("group_leader_id") or "")
+                req_group = str(req.get("explanation_group_id") or req.get("group_id") or "")
+                if req_leader != event_id or (group_ids and req_group not in group_ids):
+                    continue
             if (str(req.get("status") or "").lower() != status
                     or str(req.get("telegram_package_status") or "").lower() != status):
                 req["status"] = status
                 req["telegram_package_status"] = status
                 req["telegram_closed_at"] = stamp()
-                req["telegram_closed_revision"] = rev
+                req["telegram_closed_revision"] = int(req.get("revision") or rev)
+                req["telegram_decision_source"] = (
+                    "telegram_bot_native_poll_group"
+                    if req_id != event_id else "telegram_bot_native_poll"
+                )
                 req["reexplain"] = False
                 requests["updated_at"] = stamp()
                 changed = True
@@ -263,6 +285,31 @@ def selftest():
         "message":{"message_id":1234,"chat":{"id":999,"type":"private"}}}}
     process([bad], "456", ledger, decisions, state)
     assert ledger["items"][0]["status"] == "delete_pending"
+    # A delete on one explicit grouped Telegram package closes the leader
+    # and only its persisted follower requests, preserving each own revision.
+    group_ledger={"items":[{"event_id":"leader123","revision":0,
+        "telegram_message_id":2234,"status":"sent","group_id":"grp-1",
+        "group_member_ids":["leader123","member456"]}]}
+    group_reqs={"requests":[
+        {"id":"leader123","revision":0,"name":"Líder","status":"explained",
+         "group_id":"grp-1","group_leader_id":"leader123"},
+        {"id":"member456","revision":1,"name":"Miembro","status":"explained",
+         "group_id":"grp-1","group_leader_id":"leader123",
+         "grouped_into_existing_card":True},
+        {"id":"other789","revision":0,"name":"Otro","status":"explained",
+         "group_id":"grp-2","group_leader_id":"other789"}]}
+    group_state={"last_update_id":0}
+    group_update={"update_id":9,"callback_query":{"id":"groupdelete123",
+        "data":"tx:b:leader123:0","from":{"id":456},
+        "message":{"message_id":2234,"chat":{"id":456,"type":"private"}}}}
+    group_changed,_=process([group_update],"456",group_ledger,{"items":[]},group_state,group_reqs)
+    assert group_changed
+    by_group_id={x["id"]:x for x in group_reqs["requests"]}
+    assert by_group_id["leader123"]["status"]=="deleted"
+    assert by_group_id["member456"]["status"]=="deleted"
+    assert by_group_id["member456"]["telegram_closed_revision"]==1
+    assert by_group_id["other789"]["status"]=="explained"
+
     # A request from a verified message schedules ONE new editorial revision.
     reqs={"requests":[{"id":"abc123xyz","revision":2,"name":"Elche",
                          "status":"explained","explanation":"Previa de las 14:00."}]}
