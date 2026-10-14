@@ -564,9 +564,9 @@ function Test-ImageBridgeBusy {
       $terminal = $false
       if($targetId){
         $remote = Read-ImageJob $targetId
+        $remoteTerminal=if($remote){Is-TerminalImageStatus ([string]$remote.status)}else{$false}
         if($remote -and [string]$remote.command_id -eq $commandId -and
-           ((Is-TerminalImageStatus ([string]$remote.status)) -or
-            ([string]$remote.delivery_mode -eq "launch_only" -and $remote.pc_launched_at))){
+           ($remoteTerminal -or ([string]$remote.delivery_mode -eq "launch_only" -and $remote.pc_launched_at))){
           $terminal = $true
         }
       }
@@ -902,7 +902,8 @@ function Refresh-ActiveImages($State,$Index) {
     if(-not $job){continue}
     $statusDoc=Read-ImageJob ([string]$job.target_id)
     if(-not $statusDoc){$active += [string]$cmd;continue}
-    if(Is-TerminalImageStatus ([string]$statusDoc.status) -or
+    $terminalStatus=Is-TerminalImageStatus ([string]$statusDoc.status)
+    if($terminalStatus -or
        ([string]$statusDoc.delivery_mode -eq "launch_only" -and $statusDoc.pc_launched_at)){
       Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$($statusDoc.status) pc_launched_at=$($statusDoc.pc_launched_at)"
       continue
