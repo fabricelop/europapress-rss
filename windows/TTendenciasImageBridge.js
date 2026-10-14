@@ -640,7 +640,7 @@ async function uploadImage(image){
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
-    const launchOnly=Boolean(job.auto_repair && job.delivery_mode==="launch_only");
+    const launchOnly=String(job.delivery_mode||"")==="launch_only";
     cdp=await openFreshDedicatedConversation();
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
