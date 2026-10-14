@@ -93,6 +93,13 @@ struct MinuteRainGraph: View {
                         .foregroundStyle(.cyan)
                         .lineStyle(StrokeStyle(lineWidth:2.6))
                         .interpolationMethod(point.usesModelMedian ? .stepEnd : .linear)
+                    if point.usesModelMedian, let automatic=point.automaticMMH {
+                        LineMark(x:.value("Minuto",point.minute),
+                                 y:.value("Automático mm/h",automatic))
+                            .foregroundStyle(.mint)
+                            .lineStyle(StrokeStyle(lineWidth:1.5,dash:[3,3]))
+                            .interpolationMethod(.linear)
+                    }
                 }
                 .chartXScale(domain:0...horizon)
                 .chartYScale(domain:0...max(0.6,(samples.map(\.highMMH).max() ?? 0)*1.1))
@@ -109,6 +116,13 @@ struct MinuteRainGraph: View {
                 .frame(height:172)
                 RainIntensityLegend()
                 if selected.usesModelMedian {
+                    HStack(spacing:12) {
+                        Label("Mediana modelos",systemImage:"line.diagonal")
+                            .foregroundStyle(.cyan)
+                        Label("Modelo automático 15 min",systemImage:"line.diagonal")
+                            .foregroundStyle(.mint)
+                    }
+                    .font(.caption2)
                     HStack {
                         Text("Consenso de \(selected.availableModels) modelos · franja: " +
                              String(format:"%.1f–%.1f mm/h",selected.lowMMH,selected.highMMH))
@@ -162,7 +176,7 @@ struct MinuteRainGraph: View {
                     }
                 }
                 Text("Paso visual: 1 min. Los modelos usan acumulados horarios; " +
-                     "la curva por minuto NO es una previsión nativa por minuto. " +
+                     "las curvas por minuto NO son predicciones meteorológicas independientes cada minuto. " +
                      "La estimación del radar se calcula por separado.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
