@@ -10,14 +10,19 @@ struct RainRadarEvidence {
 
 struct RainShortModel {
     let name: String
-    /// The precipitation value is the accumulation for the preceding hour.
+    /// Native or API-resampled preceding-hour precipitation sums (mm).
+    /// Each bucket is averaged over the hour, never a measured minute value.
     let hours: [(end: Date, mm: Double)]
 
-    func predictsRain(at date: Date) -> Bool? {
+    func rateMMH(at date: Date) -> Double? {
         guard let bucket = hours.first(where: {
             $0.end.addingTimeInterval(-3600) <= date && date < $0.end
-        }) else { return nil }
-        return bucket.mm >= 0.1
+        }), bucket.mm.isFinite else { return nil }
+        return max(0, bucket.mm) // a 1h sum is numerically the hourly mean mm/h
+    }
+
+    func predictsRain(at date: Date) -> Bool? {
+        rateMMH(at: date).map { $0 >= 0.1 }
     }
 }
 
@@ -129,28 +134,40 @@ enum RainShortFusion {
 /// independent one-minute rainfall forecasts. Failed calls never block the
 /// existing Open-Meteo countdown.
 enum RainShortModelAPI {
+    /// Sources are from distinct forecast centres, not duplicate Open-Meteo
+    /// 'best match' responses. All endpoints provide hourly rain amounts.
     static let endpoints: [(name: String, url: String)] = [
         ("ECMWF", "https://api.open-meteo.com/v1/ecmwf"),
         ("ICON", "https://api.open-meteo.com/v1/dwd-icon"),
-        ("GFS", "https://api.open-meteo.com/v1/gfs")
+        ("GFS", "https://api.open-meteo.com/v1/gfs"),
+        ("ARPEGE", "https://api.open-meteo.com/v1/meteofrance"),
+        ("UKMO", "https://api.open-meteo.com/v1/ukmo")
     ]
 
     static func parse(name: String, data: Data) -> RainShortModel? {
         guard let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let hourly = root["hourly"] as? [String: Any],
-              let times = hourly["time"] as? [String],
+              let times = hourly["time"] as? [Any],
               let amounts = hourly["precipitation"] as? [Any] else { return nil }
-        let df = DateFormatter()
-        df.locale = Locale(identifier: "en_US_POSIX")
-        df.timeZone = TimeZone(secondsFromGMT: 0)
-        df.dateFormat = "yyyy-MM-dd'T'HH:mm"
-        let values: [(end: Date, mm: Double)] = zip(times, amounts).compactMap { value in
-            guard let date = df.date(from: value.0),
-                  let number = value.1 as? NSNumber else { return nil }
-            return (end: date, mm: max(0, number.doubleValue))
+        let parser = DateFormatter()
+        parser.locale = Locale(identifier: "en_US_POSIX")
+        parser.timeZone = TimeZone(secondsFromGMT: 0)
+        parser.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        let values: [(end: Date, mm: Double)] = zip(times, amounts).compactMap { rawTime, amount in
+            let time: Date?
+            if let unix = rawTime as? NSNumber {
+                time = Date(timeIntervalSince1970: unix.doubleValue)
+            } else if let text = rawTime as? String {
+                time = parser.date(from: text)
+            } else {
+                time = nil
+            }
+            guard let date = time, let number = amount as? NSNumber,
+                  number.doubleValue.isFinite, number.doubleValue >= 0 else { return nil }
+            return (end: date, mm: number.doubleValue)
         }
         guard values.count >= 2 else { return nil }
-        return RainShortModel(name: name, hours: values)
+        return RainShortModel(name: name, hours: values.sorted { $0.end < $1.end })
     }
 
     static func compare(latitude: Double, longitude: Double) async -> [RainShortModel] {
@@ -162,12 +179,15 @@ enum RainShortModelAPI {
                         URLQueryItem(name: "latitude", value: String(latitude)),
                         URLQueryItem(name: "longitude", value: String(longitude)),
                         URLQueryItem(name: "hourly", value: "precipitation"),
-                        URLQueryItem(name: "forecast_hours", value: "6"),
-                        URLQueryItem(name: "timezone", value: "GMT")
+                        URLQueryItem(name: "past_hours", value: "2"),
+                        URLQueryItem(name: "forecast_hours", value: "8"),
+                        URLQueryItem(name: "timezone", value: "GMT"),
+                        // Unix timestamps avoid DST and timezone mismatch.
+                        URLQueryItem(name: "timeformat", value: "unixtime")
                     ]
                     guard let url = query.url else { return nil }
                     var request = URLRequest(url: url)
-                    request.timeoutInterval = 9
+                    request.timeoutInterval = 12
                     guard let (data, response) = try? await URLSession.shared.data(for: request),
                           (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
                     return parse(name: source.name, data: data)
