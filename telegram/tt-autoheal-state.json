@@ -2,71 +2,30 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T22:12:00.785830+00:00",
-      "issue_count": 4,
-      "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "telegram-218638732",
-          "title": "resultado del Betis en Champions",
-          "seconds": 1509,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "79ac45104ae8",
-          "title": "Roma - Real Madrid en directo | Fede Valverde: “Como jugador estoy orgulloso de que el equipo tenga ",
-          "seconds": 1509,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4780857e95da",
-          "title": "Miles de profesores tiñen de verde el centro de Madrid en su primer día de huelga para defender la e",
-          "seconds": 1509,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 695,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
+      "checked_at": "2026-10-14T22:53:16.113533+00:00",
+      "issue_count": 0,
+      "issues": [],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "458a7a28d99e329c04fa5e500d182637cb4249e3af1e1015c202866a6e5c7a40",
+      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repair_via_workflow_run": false,
-      "escalation_required": 3
+      "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T22:12:00.785830+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-14T22:53:16.113533+00:00",
+      "issue_count": 1,
       "issues": [
         {
           "kind": "orphan_provisional",
           "id": "96c57ccbf332",
           "title": "Florentino",
-          "seconds": 2383,
+          "seconds": 4859,
           "workflow": null
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 694,
-          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [
-        "telegram-pinned-index.yml"
-      ],
+      "actions_started": [],
       "repair_errors": [],
-      "open_signature": "27c27704910544e162578ef8185bcc236d75ed2c1c3897890a5d5faad0d79fec",
+      "open_signature": "2faa24fd9f0027a012a58d03e901fb7602cbdac0b779c46ab12cedf3c9bdc0c7",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     }
@@ -77,5 +36,5 @@
     "ttendencias:telegram-pinned-index.yml": "2026-10-14T22:12:00.785830+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T22:12:00.785830+00:00"
+  "checked_at": "2026-10-14T22:53:16.113533+00:00"
 }
