@@ -61,6 +61,7 @@ jobs:
       - name: Actualizar y fijar un unico mensaje en cada chat
         id: update
         env:
+          GH_TOKEN: ${{ github.token }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
