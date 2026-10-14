@@ -874,12 +874,14 @@ def process(project,now,token,chat):
             print("TTI_RELATED_STORY_SEPARATE_CARD",eid,
                   "previous_id="+str(older.get("event_id") or ""),flush=True)
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
-        # A Telegram deletion is permanent for this editorial cycle.
-        # Deleting any of the duplicate Telegram cards closes the whole trend.
-        # Never try to edit or resurrect another copy after a user deletion.
-        if any(str(r.get("status") or "").lower() in TERMINAL|{"delete_pending","delete_failed"} for r in linked):
+        # A terminal row only closes the revision it belongs to. This matters
+        # for TTiTTulares manual reopens: an older revision may have been
+        # deleted automatically after a transport_write_blocked fallback, and
+        # that cleanup must not suppress a later explicit revision. Real user
+        # closures remain protected by decisions.json before cards are built.
+        if any(str(r.get("status") or "").lower() in TERMINAL|{"delete_pending","delete_failed"} for r in same_revision):
             print("TT_STORY_CLOSED_BLOCKED",project,trim(card.get("title"),120),
-                  "event_id="+str(eid),flush=True)
+                  "event_id="+str(eid),"revision="+str(rev),flush=True)
             skipped+=1;continue
         # If a provisional message exists, keep editing that same Telegram message,
         # even when ChatGPT saved the explanation under a newer revision.
