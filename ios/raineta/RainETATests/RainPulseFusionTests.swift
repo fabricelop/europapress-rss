@@ -25,7 +25,7 @@ final class RainPulseFusionTests: XCTestCase {
                                           now:start,horizon:120,step:1)
         XCTAssertEqual(points.count,121)
         XCTAssertEqual(points[0].rateMMH,1.5,accuracy:0.0001)
-        XCTAssertEqual(points[0].automaticMMH,1,accuracy:0.0001)
+        XCTAssertEqual(points[0].automaticMMH ?? -1,1,accuracy:0.0001)
         XCTAssertEqual(points[0].lowMMH,0,accuracy:0.0001)
         XCTAssertEqual(points[0].highMMH,3,accuracy:0.0001)
         XCTAssertEqual(points[0].availableModels,4)
