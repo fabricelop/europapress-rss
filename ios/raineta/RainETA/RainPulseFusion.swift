@@ -36,13 +36,23 @@ enum RainPulseFusion {
             ? (sorted[mid-1] + sorted[mid])/2 : sorted[mid]
     }
 
+    /// 15-minute precipitation belongs to the PRECEDING 15 minutes.
+    /// For a minute inside that window, use its rate unchanged. It is a
+    /// faithful per-minute DISPLAY, not a physical one-minute prediction.
+    static func fineRate(at date:Date,samples:[RainSample]) -> Double? {
+        guard let item=samples.first(where:{
+            $0.time.addingTimeInterval(-900) <= date && date < $0.time
+        }) else{return nil}
+        return RainInsight.rateFrom15(item.precipitation)
+    }
+
     static func points(samples: [RainSample], models: [RainShortModel],
                        now: Date, horizon: Int, step: Int = 1) -> [RainPulseMinute] {
         guard horizon >= 0, step > 0 else { return [] }
         return stride(from:0,through:horizon,by:step).compactMap { minute in
             let date = now.addingTimeInterval(TimeInterval(minute*60))
             let observations = models.compactMap { $0.rateMMH(at:date) }
-            let fine = RainInsight.interpolatedRate(at:date,samples:samples)
+            let fine = fineRate(at:date,samples:samples)
             // Keep the finer 15-minute temporal shape as the primary pulse.
             // Hourly ensemble medians are only a fallback if that source lacks
             // data; averaging hourly values into minute bars would otherwise
