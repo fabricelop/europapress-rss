@@ -398,6 +398,16 @@ async function requestImagePcAck(req,res){
   const path=IMAGE_RUN_DIR+"/"+target_id+".json";
   const existing=await readControlJson(path),job=existing.doc||{};
   if(String(job.command_id||"")!==command_id)return res.status(409).json({ok:false,error:"command_id de imagen ya no es actual"});
+  // Once the chat accepted the prompt, no later error can undo that launch.
+  if(String(job.delivery_mode||"")==="launch_only"&&job.pc_launched_at){
+    if(String(job.status||"").toUpperCase()==="LAUNCHED")
+      return res.status(200).json({ok:true,idempotent:true,...job});
+    const healed={...job,status:"LAUNCHED",phase:"pc_launched",
+      finished_at:job.finished_at||job.pc_launched_at,updated_at:new Date().toISOString(),
+      message:"Prompt confirmado en ChatGPT Images; sin descargar imagen."};
+    await writeControlJson(path,healed,existing.sha,"Recuperar tendencia lanzada sin duplicar "+target_id+" "+command_id);
+    return res.status(200).json({ok:true,reconciled:true,...healed});
+  }
   const terminal=["DONE","ERROR","CANCELLED","SUPERSEDED","LAUNCHED"].includes(String(job.status||"").toUpperCase());
   if(terminal){
     if((stage==="done"&&String(job.status||"").toUpperCase()==="DONE")||(stage==="launched"&&String(job.status||"").toUpperCase()==="LAUNCHED"))return res.status(200).json({ok:true,...job});
