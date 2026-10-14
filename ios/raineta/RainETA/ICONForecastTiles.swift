@@ -16,8 +16,8 @@ final class ICONForecastTiles: MKTileOverlay {
     private var reportedError = false
     private static let cache: NSCache<NSString, NSData> = {
         let value = NSCache<NSString, NSData>()
-        value.countLimit = 250
-        value.totalCostLimit = 20 * 1024 * 1024
+        value.countLimit = 420
+        value.totalCostLimit = 48 * 1024 * 1024
         return value
     }()
 
@@ -51,6 +51,14 @@ final class ICONForecastTiles: MKTileOverlay {
         let lower=Date(timeIntervalSince1970:base)
         return (lower,Date(timeIntervalSince1970:base+3600),
                 (target.timeIntervalSince1970-base)/3600,target)
+    }
+
+    /// This is a DISPLAY handover, not a forecast of radar echo motion.
+    /// Preserve observed radar at the first projected steps so the transition
+    /// does not jump instantly to an unrelated hourly NWP field.
+    static func transitionWeight(leadMinutes:Int) -> Double {
+        let t=Double(max(0,leadMinutes))
+        return min(1,max(0,t/30))
     }
 
     static func covers(_ coordinate: CLLocationCoordinate2D) -> Bool {
