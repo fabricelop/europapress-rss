@@ -39,17 +39,27 @@ private struct RainMinuteBar:Identifiable {
 
 private enum RainBarDisplay {
     static func summary(_ points:[RainMinuteBar],rainingNow:Bool) -> String {
-        guard !points.isEmpty else{return "Sin datos"}
-        if rainingNow {
-            if let dry=points.first(where:{$0.minute>=1 && !$0.wet && $0.mmh != nil}) {
-                return "Lluvia ahora · podría parar en +\(dry.minute) min"
+        guard !points.isEmpty, points.contains(where:{$0.mmh != nil})
+        else {return "Sin datos suficientes"}
+        // A model refresh can disagree with a current observation; avoid
+        // claiming that the rain stops in a single interpolated minute.
+        func sustained(_ start:Int,expectRain:Bool)->Bool {
+            guard start>=0,start+5<=points.count else{return false}
+            return points[start..<(start+5)].allSatisfy {
+                $0.mmh != nil && $0.wet==expectRain
             }
-            return "Está lloviendo · sin final claro en este intervalo"
         }
-        if let wet=points.first(where:{$0.wet}) {
-            return "Seco ahora · posible lluvia en +\(wet.minute) min"
+        if rainingNow {
+            if let stop=points.first(where:{$0.minute>=5 &&
+                    sustained($0.minute,expectRain:false)}) {
+                return "Llueve ahora · posible final en +\(stop.minute) min"
+            }
+            return "Llueve ahora · sin final claro en este intervalo"
         }
-        return "Sin lluvia apreciable en el intervalo"
+        if let start=points.first(where:{sustained($0.minute,expectRain:true)}) {
+            return "Seco ahora · posible lluvia en +\(start.minute) min"
+        }
+        return "Sin lluvia apreciable en este intervalo"
     }
 }
 
