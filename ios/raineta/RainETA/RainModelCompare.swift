@@ -9,11 +9,7 @@ struct RainModelDaily:Identifiable {
 }
 
 enum RainModelCompareAPI {
-    static let choices:[(String,String)]=[
-        ("ECMWF","https://api.open-meteo.com/v1/ecmwf"),
-        ("ICON","https://api.open-meteo.com/v1/dwd-icon"),
-        ("GFS","https://api.open-meteo.com/v1/gfs")
-    ]
+    static let choices:[(String,String)]=RainShortModelAPI.endpoints.map{($0.name,$0.url)}
 
     static func compare(latitude:Double,longitude:Double) async -> [RainModelDaily] {
         await withTaskGroup(of:RainModelDaily?.self) { group in
@@ -25,7 +21,7 @@ enum RainModelCompareAPI {
                         URLQueryItem(name:"longitude",value:String(longitude)),
                         URLQueryItem(name:"daily",value:"precipitation_sum"),
                         URLQueryItem(name:"timezone",value:"auto"),
-                        URLQueryItem(name:"forecast_days",value:"7")
+                        URLQueryItem(name:"forecast_days",value:name=="ARPEGE" ? "4":"7")
                     ]
                     guard let endpoint=url.url else {return nil}
                     var req=URLRequest(url:endpoint)
@@ -37,7 +33,7 @@ enum RainModelCompareAPI {
                           let raw=daily["precipitation_sum"] as? [Any],
                           !raw.isEmpty else {return nil}
                     let values=raw.map {($0 as? NSNumber)?.doubleValue}
-                    return RainModelDaily(id:name,title:name,totals:values,checkedAt:Date())
+                    return RainModelDaily(id:name,title:name,totals:Array(values.prefix(7)) + Array(repeating:nil,count:max(0,7-values.count)),checkedAt:Date())
                 }
             }
             var list:[RainModelDaily]=[]
@@ -67,7 +63,7 @@ struct RainMultiModelView: View {
                     Label("Comparar modelos",systemImage:"square.stack.3d.up")
                         .font(.headline)
                     Spacer()
-                    Text("ECMWF · ICON · GFS")
+                    Text("5 centros meteorológicos")
                         .font(.caption2)
                     Image(systemName:expanded ? "chevron.up":"chevron.down")
                 }
