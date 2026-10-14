@@ -323,7 +323,7 @@ jobs:
               # No reintentar imágenes ya lanzadas ni repetir indefinidamente.
               stale_unlaunched=(old.get("auto_repair") and old_status in {"REQUESTED","CANCELLED","ERROR"}
                   and not old.get("pc_launched_at")
-                  and elapsed_seconds(old.get("requested_at"))>=1800
+                  and (old_status in {"CANCELLED","ERROR"} or elapsed_seconds(old.get("requested_at"))>=1800)
                   and attempt<3)
               if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
                   continue
