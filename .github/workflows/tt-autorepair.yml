@@ -106,7 +106,7 @@ jobs:
           python3 shared/tt_technical_cleanup.py
           cp telegram/technical-cleanup-report.json /tmp/technical-cleanup-report.json
           # Both private Telegram buttons use force=true. Repair BOTH image
-          # queues and refresh the green-image index/notifier right away.
+          # queues and refresh the pinned image-status panel without alerts.
           # No image is generated twice: repairs are idempotent per revision.
           if test "$FORCE" = "true"; then
             gh workflow run repair-ttittulares-listas.yml --repo "$GITHUB_REPOSITORY" --ref main
@@ -114,7 +114,7 @@ jobs:
             gh workflow run repair-ttendencias-explicadas.yml --repo "$GITHUB_REPOSITORY" --ref main
             echo "TT_MANUAL_HEAL_TTENDENCIAS_IMAGE_REPAIR_DISPATCHED"
             gh workflow run telegram-pinned-index.yml --repo "$GITHUB_REPOSITORY" --ref main
-            echo "TT_MANUAL_HEAL_GREEN_INDEX_DISPATCHED"
+            echo "TT_MANUAL_HEAL_IMAGE_STATUS_INDEX_DISPATCHED"
           fi
       - name: Registrar diagnósticos y enfriar reintentos
         run: |
