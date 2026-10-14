@@ -43,8 +43,9 @@ $WorkerId = "ttittulares-dedicated-v57"
 $PollSeconds = 15
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 604800
-# Imágenes solo bajo solicitud manual en ChatGPT Images; no lanzar puentes IA desde Windows.
-$MaxParallelImageChats = 0
+# Generar una sola imagen a la vez por PC; la cola mantiene todos los jobs independientes.
+# El puente launch_only sale tras confirmar el prompt y no descarga imágenes.
+$MaxParallelImageChats = 1
 $MaxImageJobProbesPerCycle = 3
 $ImageStaleMinutes = 45
 $SnapshotStrongSeconds = 60
@@ -868,7 +869,7 @@ function Launch-ImageChat([string]$Reason,[string]$Message,[string]$ExpectedMark
 }
 
 function Is-TerminalImageStatus([string]$Status) {
-  return @("DONE","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
+  return @("DONE","LAUNCHED","ERROR","CANCELLED","SUPERSEDED") -contains ([string]$Status).ToUpperInvariant()
 }
 function Seen-ImageCommand($State,[string]$CommandId) {
   return @($State.image_commands) -contains $CommandId
@@ -1352,6 +1353,13 @@ while ($true) {
         $statusDoc=Read-ImageJob $targetId $commandId
         if(-not $statusDoc -or [string]$statusDoc.command_id -ne $commandId){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
         if(Is-TerminalImageStatus ([string]$statusDoc.status)){Mark-ImageCommand $state $commandId $false;Save-State $state;continue}
+        # Para launch_only, el ACK enviado a ChatGPT Images es el éxito terminal.
+        # Nunca volver a enviar un prompt que ya tiene pc_launched_at, aunque
+        # el Worker legado aún presente status=RUNNING por no existir raster.
+        if([string]$statusDoc.delivery_mode -eq "launch_only" -and $statusDoc.pc_launched_at){
+          Mark-ImageCommand $state $commandId $false;Save-State $state
+          continue
+        }
         # Un REQUESTED es autoritativamente pendiente aunque un intento anterior
         # de picked_up lo haya dejado por error en image_commands. Esto permite
         # recuperarse de 409/5xx transitorios sin reemitir el job.
