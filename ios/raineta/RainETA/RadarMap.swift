@@ -145,16 +145,6 @@ struct RadarMap: UIViewRepresentable {
         context.coordinator.lastRecenter = recenterRevision
         context.coordinator.onViewport = onViewport
         context.coordinator.onForecastReady = onForecastReady
-        // Warm up the central WMS tile while the user is viewing the real
-        // radar; never display it until a future time is selected.
-        if ICONForecastTiles.covers(center) {
-            let warmWindow=ICONForecastTiles.period(leadMinutes:5)
-            let warmLayer=ICONForecastTiles(validTime:warmWindow.lower,
-                                            upperTime:warmWindow.upper,
-                                            fraction:warmWindow.fraction)
-            let warmPaths=Self.requiredPaths(map)
-            Task(priority:.utility) { _ = await warmLayer.prepare(warmPaths) }
-        }
         DispatchQueue.main.async { [weak map] in
             guard let map else { return }
             let span = map.region.span
