@@ -524,6 +524,11 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
                                radar.frames[radarIndex].timestamp : nil
             let atNow = radarFutureMinutes == 0 && radarIndex >= max(0,radar.frames.count-1)
             radar = try await rx
+            if radar.future.isEmpty && radarFutureMinutes>0 {
+                // Weather source went offline: never keep a future position
+                // whose tile was not actually published by the replacement.
+                radarFutureMinutes=0
+            }
             if radarFutureMinutes > 0 || atNow {
                 radarIndex = max(0, radar.frames.count-1)
             } else if let lastSelected {
