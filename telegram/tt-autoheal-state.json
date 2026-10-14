@@ -2,60 +2,72 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T15:46:52.785059+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T16:53:54.274993+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1153,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T15:46:52.785059+00:00",
+      "checked_at": "2026-10-14T16:53:54.274993+00:00",
       "issue_count": 4,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "73e9b70bd7ef",
-          "title": "#TEM14O",
-          "seconds": 1459,
+          "id": "a1eb3a9dea5c",
+          "title": "#BenidormFest2027",
+          "seconds": 1664,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
-          "id": "88267aeadd51",
-          "title": "Celebrarlo",
-          "seconds": 1459,
+          "id": "c2c556c4d357",
+          "title": "Ladilla Rusa",
+          "seconds": 1664,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
-          "id": "6106415081f7",
-          "title": "Policía Nacional",
-          "seconds": 1459,
+          "id": "d6093547e2f0",
+          "title": "Margarita Robles",
+          "seconds": 1664,
           "workflow": null
         },
         {
-          "kind": "editorial_overdue",
-          "id": "a6a282da4efc",
-          "title": "Pardo de Vera",
-          "seconds": 1459,
-          "workflow": null
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1152,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "ad59c1119ab280634d39a2d95bf3656073494538a5ddffed0f882554348cc62e",
+      "open_signature": "8b1a0318bfc31ba0e46f6d76bddf188fce6261e99dff9099181b760692210f00",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 3
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T14:06:39.043706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T14:42:21.825965+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T14:42:21.825965+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T16:53:54.274993+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T15:46:52.785059+00:00"
+  "checked_at": "2026-10-14T16:53:54.274993+00:00"
 }
