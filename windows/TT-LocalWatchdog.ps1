@@ -117,7 +117,7 @@ function Has-PendingImageQueue{
     try{
       $separator=if($url.Contains("?")){"&"}else{"?"}
       $doc=Invoke-RestMethod -Uri ($url+$separator+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 7 -Headers @{"Cache-Control"="no-cache"}
-      if(@($doc.jobs).Count -gt 0){return $true}
+      if($doc -and $doc.jobs -and @($doc.jobs).Count -gt 0){return $true}
     }catch{Log ("RECONNECT QUEUE CHECK ERROR :: "+$_.Exception.Message)}
   }
   return $false
@@ -126,7 +126,7 @@ function Test-ChatOperationBusy{
   try{
     $busy=@(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object{
       $_.Name -in @("node.exe","powershell.exe","pwsh.exe") -and
-      [string]$_.CommandLine -match '(TTiTTulares|TTendencias)ImageBridge\\.js|Ejecutar\\.js'
+      [string]$_.CommandLine -match '(TTiTTulares|TTendencias)ImageBridge\.js|Ejecutar\.js'
     })
     return ($busy.Count -gt 0)
   }catch{
@@ -189,7 +189,7 @@ function EnsureInternetRecovery{
       $existing=@(PsProcs "*TTiTTularesDedicatedListener.ps1*")+
                 @(PsProcs "*TTendenciasDedicatedListener.ps1*")
       $old=@($existing | Where-Object{
-        try{([datetime]::UtcNow-[Management.ManagementDateTimeConverter]::ToDateTime($_.CreationDate).ToUniversalTime()).TotalMinutes -gt 4}catch{$false}
+        try{([datetime]::UtcNow-([datetime]$_.CreationDate).ToUniversalTime()).TotalMinutes -gt 4}catch{$false}
       })
       if($old.Count -gt 0){
         $script:ReconnectPending=$true
