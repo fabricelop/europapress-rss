@@ -63,7 +63,7 @@ def normalize_tweet(item):
         remate="🌶️ "+text.rsplit("\n\n🌶️ ",1)[1].strip()
     if legacy and remate and not remate.startswith("🌶️ "):
         remate="🌶️ "+remate.lstrip()
-    if not text or len(text)>280: raise ValueError("tweet vacío o >280")
+    if not text or len(text)>256: raise ValueError("tweet vacío o >256")
     if "\\n" in text or "\\n" in remate: raise ValueError("saltos visibles prohibidos")
     if not remate.startswith("🌶️ ") or len(remate)<=3:
         raise ValueError("el remate único debe empezar por 🌶️ ")
@@ -71,8 +71,22 @@ def normalize_tweet(item):
         principal=str((next((v for v in variants if str(v.get("label") or "").lower()=="principal"),{}) or {}).get("text") or "").strip()
         if text==remate and principal: text=principal+"\n\n"+remate
         elif principal and not text.startswith(principal+"\n\n"): text=principal+"\n\n"+remate
-    if not text.endswith("\n\n"+remate):
-        raise ValueError("el tweet debe terminar con dos saltos y su remate 🌶️")
+
+    # Formato vigente: bloque factual, línea en blanco, 2-3 hashtags específicos
+    # y remate en la línea inmediatamente siguiente. Se conserva el formato
+    # histórico factual + línea en blanco + remate para outboxes antiguos.
+    legacy_ending=text.endswith("\n\n"+remate)
+    hashtag_ending=False
+    if text.endswith("\n"+remate):
+        before_remate=text[:-(len(remate)+1)]
+        if "\n\n" in before_remate:
+            hashtag_line=before_remate.rsplit("\n",1)[-1].strip()
+            tags=hashtag_line.split()
+            hashtag_ending=(2 <= len(tags) <= 3 and all(
+                tag.startswith("#") and len(tag)>1 and "#" not in tag[1:] for tag in tags
+            ))
+    if not (legacy_ending or hashtag_ending):
+        raise ValueError("el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico")
     tweet={"text":text,"remate":remate,"url":"https://twitter.com/intent/tweet?text="+urllib.parse.quote(text,safe="")}
     return tweet
 
@@ -84,11 +98,23 @@ def preserve_rework(item, row):
         raise ValueError("Revisión sin contenido factual conservado")
     remate = item["tweet"]["remate"]
     original_tweet = normalize_tweet(original)
-    factual = original_tweet["text"].rsplit("\n\n", 1)[0]
+    original_text = original_tweet["text"]
+    original_remate = original_tweet["remate"]
+    if original_text.endswith("\n"+original_remate):
+        prefix = original_text[:-(len(original_remate)+1)].rstrip()
+    else:
+        prefix = original_text.rsplit("\n\n", 1)[0].rstrip()
+    # Si la versión preservada ya llevaba hashtags, mantenerlos y sustituir
+    # exclusivamente el remate; en formato histórico conservar la separación.
+    last_line = prefix.rsplit("\n",1)[-1].strip()
+    tags = last_line.split()
+    has_hashtags = 2 <= len(tags) <= 3 and all(
+        tag.startswith("#") and len(tag)>1 and "#" not in tag[1:] for tag in tags
+    )
     for key in ("title", "url", "factual_summary", "explanation", "sources_at_draft", "source_evidence", "drafted_source_count", "source_count", "fallback_image", "fallback_image_status", "disable_ai_image", "image_mode", "image_strategy", "sensitive_image_reason"):
         if key in original:
             item[key] = original[key]
-    text = factual + "\n\n" + remate
+    text = prefix + ("\n" if has_hashtags else "\n\n") + remate
     item["tweet"] = {"text": text, "remate": remate, "url": "https://twitter.com/intent/tweet?text=" + urllib.parse.quote(text, safe="")}
     return item
 
@@ -649,6 +675,11 @@ def selftest_images():
     }}}
     normalized=validate_ready(current)
     assert normalized["tweet"]["text"]=="Titular de prueba\n\n🌶️ Remate único."
+    hashtags={"prepared_item":{"event_id":"hashtags","revision":1,"tweet":{
+        "text":"Titular de prueba\n\n#Prueba #Actualidad\n🌶️ Remate único.","remate":"🌶️ Remate único."
+    }}}
+    normalized_hashtags=validate_ready(hashtags)
+    assert normalized_hashtags["tweet"]["text"].endswith("#Prueba #Actualidad\n🌶️ Remate único.")
     assert "variants" not in normalized
     legacy={"prepared_item":{"event_id":"legacy","revision":1,"variants":[
         {"label":"Principal","text":"Titular antiguo","remate":""},
