@@ -122,7 +122,10 @@ jobs:
             for project in ttittulares ttendencias; do
               cp "/tmp/bidirectional-audit-$project.json" "telegram/bidirectional-audit-$project.json"
             done
-            git add --sparse telegram/tt-autoheal-state.json telegram/tt-local-recovery-request.json telegram/editorial-run-guard.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json telegram/technical-cleanup-report.json
+            git add --sparse telegram/tt-autoheal-state.json telegram/editorial-run-guard.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json telegram/technical-cleanup-report.json
+            if test -f /tmp/tt-local-recovery-request.json; then
+              git add --sparse telegram/tt-local-recovery-request.json
+            fi
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "TT autoheal: verificar colas y registrar intentos"
             if git push origin HEAD:main; then exit 0; fi
