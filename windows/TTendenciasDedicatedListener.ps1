@@ -918,6 +918,8 @@ function Mark-ImageCommand($State,[string]$CommandId,[bool]$Active) {
   $State.image_commands = @((@($State.image_commands) + $CommandId) | Select-Object -Unique | Select-Object -Last 120)
   if ($Active) {
     $State.active_image_commands = @((@($State.active_image_commands) + $CommandId) | Select-Object -Unique)
+  } else {
+    $State.active_image_commands = @(@($State.active_image_commands) | Where-Object { [string]$_ -ne [string]$CommandId } | Select-Object -Unique)
   }
 }
 
@@ -934,8 +936,9 @@ function Refresh-ActiveImages($State,$Index) {
     if (-not $statusDoc) { $active += [string]$cmd; continue }
 
     $status = [string]$statusDoc.status
-    if (Is-TerminalImageStatus $status) {
-      Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$status"
+    if ((Is-TerminalImageStatus $status) -or
+        ([string]$statusDoc.delivery_mode -eq "launch_only" -and $statusDoc.pc_launched_at)) {
+      Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$status pc_launched_at=$($statusDoc.pc_launched_at)"
       continue
     }
 
@@ -948,7 +951,19 @@ function Refresh-ActiveImages($State,$Index) {
       }
     } catch {}
 
-    $active += [string]$cmd
+    # A stale RUNNING record does not hold a slot after the bridge process exits.
+    $liveBridge=$false
+    try {
+      if(Test-Path -LiteralPath $ImageBridgeLockPath) {
+        $lock=Get-Content -LiteralPath $ImageBridgeLockPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        if([string]$lock.command_id -eq [string]$cmd) {
+          $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+[int]$lock.pid) -ErrorAction SilentlyContinue
+          $liveBridge=($proc -and [string]$proc.CommandLine -like "*TTendenciasImageBridge.js*")
+        }
+      }
+    } catch {}
+    if($liveBridge){$active += [string]$cmd}
+    else{Write-Log "IMAGE ORPHAN CLEARED command=$cmd target=$($job.target_id) status=$status"}
   }
 
   $State.active_image_commands = @($active | Select-Object -Unique)
@@ -981,7 +996,7 @@ TTENDENCIAS_IMAGE_JOB_V4 $commandId $targetId | Usa ImageGen AHORA y genera UNA 
 CONTEXTO FACTUAL AUTORITATIVO (úsalo DIRECTAMENTE; no necesitas abrir GitHub ni reinvestigar):
 $contextJson
 
-Respeta OBLIGATORIAMENTE image_style e image_style_name de context_snapshot. Principio fijo: más gag, menos barroquismo; UNA sola idea visual fuerte, lectura inmediata, pocos elementos protagonistas y acabado cuidado sin recargar. No ilustres literalmente el titular ni mezcles varias metáforas. Una sola escena coherente, sin infografía, collage, interfaz ni captura de pantalla. No inventes hechos externos. No proceses otra entrada ni persistas la imagen: el puente local recoge el raster.
+Respeta OBLIGATORIAMENTE image_style e image_style_name de context_snapshot. Principio fijo: más gag, menos barroquismo; UNA sola idea visual fuerte, lectura inmediata, pocos elementos protagonistas y acabado cuidado sin recargar. No ilustres literalmente el titular ni mezcles varias metáforas. Una sola escena coherente, sin infografía, collage, interfaz ni captura de pantalla. No inventes hechos externos. No proceses otra entrada. La imagen queda en ChatGPT Images; no la descargues, captures ni persistas.
 "@
 }
 
