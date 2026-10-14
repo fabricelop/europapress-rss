@@ -80,9 +80,15 @@ class AuthenticTitleTests(unittest.TestCase):
                 self.assertEqual(module.process("ttittulares",now,"fake","fake"),(0,1))
                 self.assertEqual(send.call_args.args[1],"editMessageText")
                 self.assertEqual(send.call_args.args[2]["message_id"],3466)
-                self.assertIn("Titular RSS de Ceuta",send.call_args.args[2]["text"])
-                self.assertIn("Fuente: laSexta",send.call_args.args[2]["text"])
-                self.assertIn("https://example.org/ceuta",send.call_args.args[2]["text"])
+                self.assertEqual(
+                    send.call_args.args[2]["text"],
+                    "🟠 EN ELABORACIÓN\n\nTitular RSS de Ceuta")
+                self.assertNotIn("Fuente:",send.call_args.args[2]["text"])
+                self.assertNotIn("https://example.org/ceuta",send.call_args.args[2]["text"])
+                self.assertTrue(send.call_args.args[2]["reply_markup"]["inline_keyboard"])
+                self.assertEqual(
+                    send.call_args.args[2]["reply_markup"]["inline_keyboard"][-1][0]["text"],
+                    "🗑️ Borrar")
                 rows=module.load("telegram/ttittulares-deliveries.json",{})["items"]
                 self.assertEqual(len(rows),1)
                 self.assertEqual(rows[0]["title"],"Titular RSS de Ceuta")
