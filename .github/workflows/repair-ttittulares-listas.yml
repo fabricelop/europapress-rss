@@ -264,6 +264,23 @@ jobs:
               try: return json.loads(path.read_text(encoding="utf-8"))
               except Exception: return {}
 
+          # Fallback until the live Cloudflare Worker receives the ACK handler update:
+          # the already-scheduled repair pass closes ACK-proven launches without
+          # opening chats or changing the image itself.
+          for job_file in (CTRL/"ttittulares/image-runs/jobs").glob("*.json"):
+              old_job=load_old(job_file)
+              if (str(old_job.get("delivery_mode") or "")!="launch_only"
+                  or not old_job.get("pc_launched_at")
+                  or str(old_job.get("status") or "").upper()=="LAUNCHED"
+                  or elapsed_seconds(old_job.get("pc_launched_at"))>48*3600):
+                  continue
+              old_job.update(status="LAUNCHED",phase="pc_launched",
+                             finished_at=str(old_job["pc_launched_at"]),
+                             updated_at=nowz,
+                             message="Prompt confirmado en ChatGPT Images; sin recuperar raster.")
+              job_file.write_text(json.dumps(old_job,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              changed=True
+              print("TTITTULARES_AI_ACK_RECONCILED",str(old_job.get("target_id") or ""),str(old_job.get("command_id") or ""))
           active={"REQUESTED","RUNNING","PERSISTING"}
           # Una orden automática sin respuesta del PC no bloquea la cola eternamente.
           def is_active_job(ref):
