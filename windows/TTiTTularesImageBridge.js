@@ -237,6 +237,22 @@ async function resetToFreshConversation(cdp){
     await waitComposer(cdp,30000)
   }
 }
+// Chrome a veces navega aunque CDP no devuelva el ACK de Page.navigate.
+async function navigateChatBestEffort(cdp){
+  try{
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+  }catch(e){
+    console.log("BRIDGE NAVIGATE ACK TIMEOUT :: "+String(e&&e.message||e));
+    let url="";
+    try{
+      const state=await cdp.eval("(()=>({url:location.href,ready:document.readyState}))()");
+      url=String(state&&state.url||"");
+    }catch{}
+    if(!url.startsWith("https://chatgpt.com/")){
+      try{cdp.fire("Page.navigate",{url:CHAT_ROOT})}catch{}
+    }
+  }
+}
 async function openFreshDedicatedConversation(){
   let t=await fixedTarget(true);
   await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
@@ -245,7 +261,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await navigateChatBestEffort(cdp);
     await waitComposer(cdp,60000);
     await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
     // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
@@ -269,7 +285,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await navigateChatBestEffort(cdp);
     await waitComposer(cdp,60000);
     await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
