@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/TTendenciasImageBridge.js"
       - ".github/workflows/validate-image-bridges.yml"
 
@@ -23,6 +24,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /windows/TTiTTularesImageBridge.js
+            /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasImageBridge.js
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasDedicatedListener.ps1
@@ -37,6 +39,7 @@ jobs:
         run: |
           $files=@(
             "windows/TTiTTularesDedicatedListener.ps1",
+            "windows/TTiTTularesDedicatedListener.ps1",
             "windows/TTendenciasDedicatedListener.ps1",
             "windows/Install-ImageBridge-Hotfix.ps1",
             "windows/TT-LocalWatchdog.ps1"
@@ -48,4 +51,11 @@ jobs:
               $errors | ForEach-Object { Write-Error ($file+": "+$_.Message) }
               exit 1
             }
+          }
+          $source=Get-Content windows/TTiTTularesDedicatedListener.ps1 -Raw -Encoding UTF8
+          if($source -notmatch '(?m)^\$MaxParallelImageChats\s*=\s*1\s*$'){
+            throw 'REGRESSION: el listener TTiTTulares tiene que permitir una imagen activa (slot=1)'
+          }
+          if($source -notmatch 'delivery_mode.*launch_only'){
+            throw 'REGRESSION: no se bloquean prompts ya lanzados en modo launch_only'
           }
