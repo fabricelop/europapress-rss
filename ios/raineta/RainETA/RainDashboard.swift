@@ -166,13 +166,18 @@ struct RainSettingsView: View {
                     Text("60 minutos").tag(60)
                     Text("120 minutos").tag(120)
                 }
-                Text("Esta preferencia selecciona si la gráfica Pulso muestra 30, 60 o 120 minutos al entrar. No limita la duración de la previsión. Las barras de un minuto son interpoladas.")
+                Text("El Pulso muestra 30, 60 o 120 minutos. El detalle de un minuto es visual: cada curva conserva la resolución real de su proveedor.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
 
             Section("Datos y fiabilidad") {
                 LabeledContent("Observación radar",value:"RainViewer")
                 LabeledContent("Modelo por horas",value:"Open-Meteo")
+                LabeledContent("Modelos en Pulso",value:"\(store.shortModels.count) de 5")
+                Text("ECMWF IFS · DWD ICON · NOAA GFS · Météo-France · UKMO")
+                    .font(.caption2).foregroundStyle(.secondary)
+                Link("Fuentes y licencia UKMO (CC BY-SA 4.0)",destination:URL(string:"https://open-meteo.com/en/docs/ukmo-api")!)
+                    .font(.caption2)
                 LabeledContent("Radar avanzado OPERA",value:"En validación")
                 LabeledContent("Modelo de mapas futuros",value:"DWD ICON-EU")
                 Text("La extrapolación OPERA a +5 y +15 min ha mostrado resultados positivos en casos europeos. No se activará como predicción fiable para España o +120 min hasta superar sus pruebas.")
