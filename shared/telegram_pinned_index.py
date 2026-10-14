@@ -88,6 +88,7 @@ def active_records(project):
         if event_id in closed_ids:continue
         title=shorten(entry.get("title") or entry.get("name") or event_id)
         row={"id":event_id,"title":title,"mid":mid,
+             "rev":int(entry.get("revision") or 1),
              "at":entry.get("delivered_at") or entry.get("updated_at") or ""}
         if entry.get("final") is True:
             final.append(row)
