@@ -54697,7 +54697,7 @@
       "id": "ea9256e5e1fd",
       "name": "1742 X",
       "rank": 10,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-14T08:22:57+02:00",
       "revision": 0,
       "reexplain": false,
@@ -54715,9 +54715,31 @@
       "problematic_at": "2026-10-14T09:18:51+02:00",
       "problem_reason": "La señal «1742 X» continúa en el Top 10 del radar español, pero un tercer intento editorial con consultas exactas y búsquedas externas distintas no identifica un hecho, persona o evento actual verificable que explique el término con fiabilidad suficiente. Los resultados exactos recuperados son históricos o ajenos a una tendencia actual; se mantiene como problematic para no atribuir una causa especulativa.",
       "problematic_attempts": 3,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "editorial_engine": "chatgpt-automation-outbox",
+      "inactive_at": "2026-10-14T09:32:31+02:00",
+      "inactive_reason": "left-top10-radar"
+    },
+    {
+      "id": "e2609f0a371a",
+      "name": "Marruecos",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-14T09:32:31+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "c3477ed73359",
+      "requested_together": [
+        "Marruecos"
+      ],
+      "captured_with": [
+        "Marruecos"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-14T09:18:51+02:00",
+  "updated_at": "2026-10-14T09:32:31+02:00",
   "count": 926
 }
