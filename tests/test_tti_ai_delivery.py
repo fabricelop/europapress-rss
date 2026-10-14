@@ -30,6 +30,7 @@ class AiDeliveryTests(TestCase):
         return {
             "target_id": "abc", "revision": 1, "command_id": self.command,
             "status": status, "auto_repair": True,
+            "requested_at": (self.now-timedelta(seconds=30)).isoformat(),
             "pc_launched_at": (self.now-timedelta(seconds=seconds)).isoformat(),
         }
 
@@ -54,6 +55,16 @@ class AiDeliveryTests(TestCase):
         self.assertIn("en curso", state["note"])
         state = self.fake_info(self.item, self.job(seconds=301))
         self.assertIn("no disponible", state["note"])
+
+    def test_unlaunched_pc_job_expires_after_two_minutes(self):
+        queued=self.job("REQUESTED")
+        queued.pop("pc_launched_at")
+        queued["requested_at"]=(self.now-timedelta(seconds=119)).isoformat()
+        self.assertIn("pendiente de lanzamiento", self.fake_info(self.item,queued)["note"])
+        queued["requested_at"]=(self.now-timedelta(seconds=121)).isoformat()
+        expired=self.fake_info(self.item,queued)
+        self.assertIn("no disponible",expired["note"])
+        self.assertFalse(expired["url"])
 
     def test_automatic_image_must_reach_telegram_before_deadline(self):
         ready = self.generated()
