@@ -2,39 +2,72 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T14:20:28.460194+00:00",
+      "checked_at": "2026-10-14T14:42:21.825965+00:00",
       "issue_count": 1,
       "issues": [
         {
-          "kind": "orphan_provisional",
-          "id": "e47a695a29b4",
-          "title": "Detenidas dos mujeres acusadas de sustraer una bebé de apenas un mes a su madre en Andújar, Jaén - T",
-          "seconds": 1518,
-          "workflow": null
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 488,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "c72247a2f8afeecb7519b1f0970effed7c334bfdf9f3a39242d324f06bb30d52",
-      "repair_via_workflow_run": false,
-      "escalation_required": 1
-    },
-    "ttendencias": {
-      "checked_at": "2026-10-14T14:20:28.460194+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
-      "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-14T14:42:21.825965+00:00",
+      "issue_count": 4,
+      "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "6412cd25e0a3",
+          "title": "Marlaska",
+          "seconds": 1211,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ad6e747862d5",
+          "title": "CGPJ",
+          "seconds": 1211,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "543942a86f40",
+          "title": "Narciso",
+          "seconds": 1211,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 488,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "a784f7f1775125b06f54bc464aeaf7ba7f59899fcba0da311f4c021c5aa6e789",
+      "repair_via_workflow_run": false,
+      "escalation_required": 3
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T14:06:39.043706+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T14:06:39.043706+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T14:06:39.043706+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T14:42:21.825965+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T14:42:21.825965+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T14:20:28.460194+00:00"
+  "checked_at": "2026-10-14T14:42:21.825965+00:00"
 }
