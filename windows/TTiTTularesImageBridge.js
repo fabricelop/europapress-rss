@@ -777,11 +777,11 @@ async function uploadImage(image){
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
-        const launchOnly=isAutomatic && String(job.delivery_mode||"")==="launch_only";
+        const launchOnly=String(job.delivery_mode||"")==="launch_only";
         if(!launchOnly)await progress("prompt_sent","Prompt GAG IA enviado y verificado.");
         await confirmPromptLaunched();
       }
-      if(isAutomatic && String(job.delivery_mode||"")==="launch_only"){
+      if(launchOnly){
         // Éxito: el prompt existe en ChatGPT Images y quedó registrado en GitHub.
         // No descargar imágenes, esperar raster, ni enviar nada a Telegram.
         console.log("BRIDGE LAUNCH ONLY CONFIRMED :: ChatGPT Images, sin recuperación");
