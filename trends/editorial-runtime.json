@@ -5,8 +5,8 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-15T00:13:50+02:00",
-  "last_completed_at": "2026-10-15T00:18:00+02:00",
-  "updated_at": "2026-10-15T00:18:00+02:00",
+  "last_completed_at": "2026-10-15T00:17:01+02:00",
+  "updated_at": "2026-10-15T00:17:01+02:00",
   "status": "success",
   "processed_ids": [
     "96c57ccbf332"
@@ -29,16 +29,13 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
     "run_id": "tr-autoguard-1792015915",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-15T00:13:50+02:00",
-    "updated_at": "2026-10-15T00:18:00+02:00",
-    "finished_at": "2026-10-15T00:18:00+02:00",
+    "updated_at": "2026-10-15T00:17:01+02:00",
+    "finished_at": "2026-10-15T00:17:01+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -53,7 +50,7 @@
       "trends_problematic": 1,
       "trends_dismissed": 0,
       "incidents": 1,
-      "queue_remaining": 0,
+      "queue_remaining": 1,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
@@ -66,18 +63,24 @@
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "Pasada 1/1 cerrada: Florentino sigue problematic tras un segundo intento sin detonante verificable; Telegram 835 se conserva provisional. No quedan preparing/update.",
+    "message": "Pasada 1/1: Florentino r0 reintentada y sigue problematic tras 2 intentos; 0 preparing/update, 0 rewrite_pending; Telegram 835 permanece provisional por falta de explicación verificable.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-15T00:18:00+02:00",
-        "phase": "closing",
+        "at": "2026-10-15T00:16:55+02:00",
+        "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "reason": "Telegram 835 permanece provisional porque no se pudo verificar un detonante único para Florentino; se conserva sin inventar explicación."
+        "reason": "No se ha verificado un detonante único tras el segundo intento; la tarjeta Telegram 835 permanece provisional y la auditoría registra 1 huérfano hasta que exista una explicación definitiva fiable."
       }
     ],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
     "remate_selections": [],
     "activity": [
       {
@@ -138,31 +141,45 @@
       },
       {
         "at": "2026-10-15T00:16:14+02:00",
+        "phase": "persisting",
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Outbox aplicado: problematic_attempts=2 y r0 permanece en cola."
+      },
+      {
+        "at": "2026-10-15T00:16:35+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Releyendo main tras aplicar el segundo intento problematic."
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-15T00:17:00+02:00",
+        "at": "2026-10-15T00:16:45+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Verificado: no quedan preparing/update; Florentino permanece problematic en Top 10."
+        "message": "Verificando id+revision y estado persistido: r0 problematic, intento 2."
       },
       {
-        "at": "2026-10-15T00:17:30+02:00",
+        "at": "2026-10-15T00:16:50+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "message": "Auditoría Telegram: provisional 835 sigue sin explicación definitiva y se conserva."
+        "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending; Florentino sigue problematic en Top 10."
       },
       {
-        "at": "2026-10-15T00:18:00+02:00",
+        "at": "2026-10-15T00:16:55+02:00",
+        "phase": "verifying",
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Telegram 835 sigue provisional; auditoría registra 1 huérfano porque no existe explicación definitiva verificable."
+      },
+      {
+        "at": "2026-10-15T00:17:01+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada con incidencia: Florentino sigue problematic y Telegram 835 queda provisional."
+        "message": "Pasada 1/1 cerrada con incidencia no global: Florentino r0 sigue problematic tras 2 intentos; sin preparing/update ni reelaboraciones pendientes."
       }
     ],
     "queue_complete": true,
@@ -179,7 +196,7 @@
     "trends_problematic": 1,
     "trends_dismissed": 0,
     "incidents": 1,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
@@ -193,7 +210,7 @@
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [
-    "provisional:96c57ccbf332:835"
+    "96c57ccbf332"
   ],
   "activity": [
     {
@@ -254,36 +271,50 @@
     },
     {
       "at": "2026-10-15T00:16:14+02:00",
+      "phase": "persisting",
+      "trend_id": "96c57ccbf332",
+      "title": "Florentino",
+      "message": "Outbox aplicado: problematic_attempts=2 y r0 permanece en cola."
+    },
+    {
+      "at": "2026-10-15T00:16:35+02:00",
       "phase": "verifying",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Releyendo main tras aplicar el segundo intento problematic."
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-15T00:17:00+02:00",
+      "at": "2026-10-15T00:16:45+02:00",
       "phase": "verifying",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Verificado: no quedan preparing/update; Florentino permanece problematic en Top 10."
+      "message": "Verificando id+revision y estado persistido: r0 problematic, intento 2."
     },
     {
-      "at": "2026-10-15T00:17:30+02:00",
+      "at": "2026-10-15T00:16:50+02:00",
       "phase": "verifying",
       "trend_id": "96c57ccbf332",
       "title": "Florentino",
-      "message": "Auditoría Telegram: provisional 835 sigue sin explicación definitiva y se conserva."
+      "message": "Cierre editorial limpio: 0 preparing/update y 0 rewrite_pending; Florentino sigue problematic en Top 10."
     },
     {
-      "at": "2026-10-15T00:18:00+02:00",
+      "at": "2026-10-15T00:16:55+02:00",
+      "phase": "verifying",
+      "trend_id": "96c57ccbf332",
+      "title": "Florentino",
+      "message": "Telegram 835 sigue provisional; auditoría registra 1 huérfano porque no existe explicación definitiva verificable."
+    },
+    {
+      "at": "2026-10-15T00:17:01+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada con incidencia: Florentino sigue problematic y Telegram 835 queda provisional."
+      "message": "Pasada 1/1 cerrada con incidencia no global: Florentino r0 sigue problematic tras 2 intentos; sin preparing/update ni reelaboraciones pendientes."
     }
   ],
   "telegram_orphans": 1,
   "telegram_orphan_ids": [
-    "provisional:96c57ccbf332:835"
+    "96c57ccbf332"
   ],
   "error": null
 }
