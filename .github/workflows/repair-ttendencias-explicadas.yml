@@ -104,8 +104,7 @@ jobs:
         run: |
           gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
 
-      - name: Encolar Gag IA ausente o inválido
-        if: ${{ false }}
+      - name: Encolar imágenes en ChatGPT Images (solo lanzamiento)
         shell: bash
         run: |
           set -euo pipefail
@@ -123,6 +122,8 @@ jobs:
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/ttendencias-control")
           explained=json.loads((MAIN/"trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
+          deliveries=json.loads((MAIN/"trends/telegram-image-deliveries.json").read_text(encoding="utf-8"))
+          sent_ids={str(x.get("event_id") or "") for x in deliveries.get("items",[]) if str(x.get("status") or "").lower()=="sent" and x.get("telegram_message_id")}
           try:
               copy_state=json.loads((MAIN/"trends/explained-copy-state.json").read_text(encoding="utf-8"))
           except Exception:
@@ -141,7 +142,7 @@ jobs:
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
           nowz=now.isoformat().replace("+00:00","Z")
-          CUTOFF=now.timestamp()-24*3600
+          CUTOFF=datetime.fromisoformat("2026-10-14T06:20:00+00:00").timestamp()
           ACTIVE={"REQUESTED","RUNNING","PERSISTING","GENERATING"}
 
           STYLE_BASE=("PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, "
@@ -219,18 +220,20 @@ jobs:
                   continue
               if not str(row.get("explanation") or "").strip():
                   continue
-              if row.get("tremending_origin"):
-                  continue
+              # También se permite la imagen de tendencias sensibles con enfoque sobrio.
               if str(row.get("telegram_package_status") or "").lower() in {"published","dismissed"}:
                   continue
               # La sensibilidad editorial no bloquea ImageGen. Solo Tremending queda fuera
               # porque usa su flujo específico de captura real del tuit.
               at=parse_dt(row.get("explained_at"))
-              if not at or at.timestamp() < CUTOFF:
+              if not at or at.timestamp() < CUTOFF or (now-at).total_seconds()>86400:
+                  continue
+              if row_id not in sent_ids:
                   continue
               leaders.append(row)
 
           queued=[]
+          sensitive_words=("fallece","muere","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","cáncer","atentado","bombardeo","víctimas","misiles","muerte","accidente mortal")
           for row in leaders:
               if valid_ai(row):
                   continue
@@ -244,6 +247,10 @@ jobs:
               consumed_retry_version=int(old.get("manual_retry_version") or 0)
               force_retry=manual_retry_version>consumed_retry_version
               old_status=str(old.get("status") or "").upper()
+              if old and int(old.get("revision") or revision)==revision and not force_retry:
+                  continue
+              if queued:
+                  continue
               old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
               old_age=(now-old_updated).total_seconds() if old_updated else None
               # Un job activo solo bloquea la reparación mientras tenga actividad reciente.
@@ -269,6 +276,9 @@ jobs:
               attempt=max(1,previous_attempt+1)
               command=f"tr-img-auto-{tid}-r{revision}-a{auto_attempt}-{int(time.time()*1000)}"
               style_index,style_name,style=pick_style(f"ttendencias|{tid}|r{revision}|a{attempt}|{command}")
+              sensitive=any(x in (str(row.get("name") or "")+" "+str(row.get("explanation") or "")).casefold() for x in sensitive_words)
+              if sensitive:
+                  style_index,style_name,style=(-1,"rigor_y_respeto","Imagen editorial periodística sobria y rigurosa, sin humor ni caricaturas, sin banalizar sufrimiento, sin escenas gráficas o hechos inventados.")
               explanation=str(row.get("explanation") or "")
               closer=str(row.get("closer_text") or "")
               context={
@@ -282,6 +292,7 @@ jobs:
                   "explained_at":row.get("explained_at"),
                   "verification_sources":row.get("verification_sources") or [],
                   "image_style":style,
+                  "editorial_image_mode":"rigor" if sensitive else "humor",
                   "image_style_name":style_name,
                   "image_style_index":style_index
               }
@@ -293,6 +304,8 @@ jobs:
                   "status":"REQUESTED",
                   "phase":"queued",
                   "mode":"automatic_explained_repair",
+                  "delivery_mode":"launch_only",
+                  "editorial_image_mode":"rigor" if sensitive else "humor",
                   "executor":"pc_chat_ttendencias_dedicated",
                   "project":"ttendencias",
                   "launcher_arg":"tendencias",
@@ -311,7 +324,7 @@ jobs:
                   "instructions":{
                       "scope":"Una sola tendencia y una sola imagen.",
                       "exact_input":"Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-                      "visual":"Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+                      "visual":"Ilustración sobria sin humor" if sensitive else "Una sola idea visual fuerte con humor editorial.",
                       "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot.",
                       "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
                   },
