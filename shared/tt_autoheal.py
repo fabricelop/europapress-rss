@@ -8,6 +8,7 @@ and escalates genuinely unfixable editorial work with a copyable prompt.
 import json
 import os
 import hashlib
+import uuid
 import sys
 import urllib.request
 import urllib.error
@@ -18,6 +19,7 @@ from urllib.parse import quote
 ROOT=Path(__file__).resolve().parents[1]
 REPO="fabricelop/europapress-rss"
 STATE="telegram/tt-autoheal-state.json"
+PC_RECOVERY="telegram/tt-local-recovery-request.json"
 CONFIG={
     "ttittulares":{
         "queue":"ttittulares/editorial-queue.json",
@@ -193,11 +195,29 @@ def notice(project,issues,prev,now,send=telegram):
                  "reply_markup":markup,"disable_notification":True})
     return int(result.get("message_id") or 0)
 
+def request_safe_pc_recovery(now):
+    """Durable signal for the local watchdog, never a remote shell command.
+
+    A private Telegram button triggers a workflow. The PC checks this marker
+    only when connected and performs safe Chrome/ChatGPT tab recovery locally.
+    """
+    save(PC_RECOVERY,{
+        "version":1,
+        "request_id":uuid.uuid4().hex,
+        "requested_at":now.isoformat(),
+        "projects":["ttittulares","ttendencias"],
+        "action":"recover_chat_tab_if_missing",
+        "reason":"telegram_manual_autoheal"
+    })
+    return True
+
 def run(now=None,force=False,dispatch=github_dispatch,send=telegram):
     now=now or datetime.now(timezone.utc)
     state=read(STATE,{"version":1,"projects":{},"attempts":{}})
     attempts=state.setdefault("attempts",{})
     outcomes={}
+    if force:
+        request_safe_pc_recovery(now)
     for project in CONFIG:
         issues=problems(project,now)
         actions=sorted({x["workflow"] for x in issues if x.get("workflow")})
@@ -279,6 +299,14 @@ def selftest():
             run(now+timedelta(minutes=4),False,dispatch=fake)
             assert calls==[]
             assert read(STATE,{})["projects"]["ttendencias"]["issue_count"]==2
+            assert not (ROOT/PC_RECOVERY).exists(), "scheduled autoheal must not signal PC"
+            assert request_safe_pc_recovery(now+timedelta(minutes=6))
+            first=read(PC_RECOVERY,{})
+            assert first["action"]=="recover_chat_tab_if_missing"
+            assert first["projects"]==["ttittulares","ttendencias"]
+            assert first["request_id"] and first["requested_at"]
+            request_safe_pc_recovery(now+timedelta(minutes=7))
+            assert read(PC_RECOVERY,{})["request_id"]!=first["request_id"], "each manual press needs a distinct request"
             print("TT_AUTOHEAL_SELFTEST_OK")
         finally:
             os.environ.pop("TT_AUTOHEAL_DIRECT_DISPATCH",None)
