@@ -121,7 +121,8 @@ struct RainMultiModelView: View {
                 if loading {ProgressView("Consultando centros…").font(.caption)}
                 let rows=selectedRows
                 let maximum=max(0.5,rows.compactMap{$0.1}.max() ?? 0)
-                ForEach(Array(rows.enumerated()),id:\.offset) { _,entry in
+                ForEach(Array(rows.enumerated()),id:\.offset) { row in
+                    let entry=row.element
                     VStack(alignment:.leading,spacing:5) {
                         HStack {
                             Text(entry.0).font(.subheadline)
