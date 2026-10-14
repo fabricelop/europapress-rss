@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-restart-refresh-v10-process-lock-no-queue-restart
+# watchdog-reconnect-v11-safe-online-resync-no-image-bridge-restart
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -92,6 +92,115 @@ function EnsureChrome{
     }else{Log "CHROME TASK MISSING"}
   }catch{Log "CHROME AUTO ERROR :: $($_.Exception.Message)"}
 }
+# Recuperación segura tras caída de Internet: un proceso vivo puede conservar
+# conexiones/snapshots obsoletos y no volver a consumir imágenes REQUESTED.
+# Reiniciar SOLAMENTE los listeners, y nunca durante un bridge o envío en curso.
+$script:NetworkWasOnline=$null
+$script:NetworkOkCount=0
+$script:NetworkFailCount=0
+$script:ReconnectPending=$false
+$script:ReconnectCause=""
+$script:StartupQueueChecked=$false
+$script:LastReconnectAt=[DateTimeOffset]::MinValue
+
+function Test-ControlNetwork{
+  try{
+    $response=Invoke-WebRequest -UseBasicParsing -Method Head -Uri "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/README.md" -TimeoutSec 7
+    return ([int]$response.StatusCode -ge 200 -and [int]$response.StatusCode -lt 400)
+  }catch{return $false}
+}
+function Has-PendingImageQueue{
+  foreach($url in @(
+    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/index.json",
+    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/index.json"
+  )){
+    try{
+      $separator=if($url.Contains("?")){"&"}else{"?"}
+      $doc=Invoke-RestMethod -Uri ($url+$separator+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 7 -Headers @{"Cache-Control"="no-cache"}
+      if(@($doc.jobs).Count -gt 0){return $true}
+    }catch{Log ("RECONNECT QUEUE CHECK ERROR :: "+$_.Exception.Message)}
+  }
+  return $false
+}
+function Test-ChatOperationBusy{
+  try{
+    $busy=@(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object{
+      $_.Name -in @("node.exe","powershell.exe","pwsh.exe") -and
+      [string]$_.CommandLine -match '(TTiTTulares|TTendencias)ImageBridge\\.js|Ejecutar\\.js'
+    })
+    return ($busy.Count -gt 0)
+  }catch{
+    # No matar procesos si no conseguimos comprobar operaciones activas.
+    return $true
+  }
+}
+function Recover-ListenersAfterReconnect{
+  if(-not $script:ReconnectPending){return}
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:LastReconnectAt).TotalMinutes -lt 10){return}
+  if(Test-ChatOperationBusy){
+    Log "RECONNECT DEFERRED reason=chat-or-image-bridge-active"
+    return
+  }
+  # Puede existir una orden aceptada pero todavía sin lanzar: limitar la
+  # intervención a procesos PowerShell; nunca tocar Chrome, Node ni los locks.
+  $targets=@(
+    @{Name="TTiTTularesDedicatedListener.ps1";Tag="ttittulares-listener"},
+    @{Name="TTendenciasDedicatedListener.ps1";Tag="ttendencias-listener"}
+  )
+  foreach($target in $targets){
+    $path=Join-Path $BaseDir $target.Name
+    $found=@(PsProcs ("*"+$target.Name+"*"))
+    foreach($proc in $found){
+      try{Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue}catch{}
+    }
+    Start-Sleep -Milliseconds 700
+    [void](StartHiddenPs $path $target.Tag)
+  }
+  $script:LastReconnectAt=$now
+  $script:ReconnectPending=$false
+  Log ("RECONNECT RECOVERY DONE cause="+$script:ReconnectCause+" listeners=2")
+}
+function EnsureInternetRecovery{
+  $online=Test-ControlNetwork
+  if(-not $online){
+    $script:NetworkOkCount=0
+    $script:NetworkFailCount++
+    if($script:NetworkFailCount -ge 2 -and $script:NetworkWasOnline -ne $false){
+      $script:NetworkWasOnline=$false
+      Log "NETWORK OFFLINE detected; queues remain untouched"
+    }
+    return
+  }
+  $script:NetworkFailCount=0
+  $script:NetworkOkCount++
+  if($script:NetworkOkCount -lt 2){return}
+  if($script:NetworkWasOnline -eq $false){
+    $script:ReconnectPending=$true
+    $script:ReconnectCause="network-reconnected"
+    Log "NETWORK ONLINE again; safe listener resynchronization requested"
+  }
+  $script:NetworkWasOnline=$true
+  # Si el watchdog acaba de reinstalarse/despertar online y había listeners
+  # anteriores atascados, una cola real pendiente permite recuperarlos.
+  if(-not $script:StartupQueueChecked){
+    $script:StartupQueueChecked=$true
+    if(-not $script:ReconnectPending -and (Has-PendingImageQueue)){
+      $existing=@(PsProcs "*TTiTTularesDedicatedListener.ps1*")+
+                @(PsProcs "*TTendenciasDedicatedListener.ps1*")
+      $old=@($existing | Where-Object{
+        try{([datetime]::UtcNow-[Management.ManagementDateTimeConverter]::ToDateTime($_.CreationDate).ToUniversalTime()).TotalMinutes -gt 4}catch{$false}
+      })
+      if($old.Count -gt 0){
+        $script:ReconnectPending=$true
+        $script:ReconnectCause="startup-pending-queue"
+        Log "RECONNECT startup: pending images with old listeners"
+      }
+    }
+  }
+  Recover-ListenersAfterReconnect
+}
+
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -134,8 +243,9 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
-    # La cola REQUESTED puede esperar un job anterior o el slot del otro proyecto.
-    # Solo relanzar procesos ausentes; AutoUpdater es el unico actualizador.
+    EnsureInternetRecovery
+    # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
+    # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
     Start-Sleep -Seconds $IntervalSeconds
   }
 }finally{
