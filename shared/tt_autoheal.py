@@ -116,7 +116,10 @@ def problems(project,now):
             result.append({"kind":"unfinished_ready","id":eid,
                            "title":str(x.get("name") or x.get("title") or eid)[:100],
                            "seconds":int(age_s),"workflow":conf["send"]})
-        elif row and row.get("final") is not True and age_s>=ESCALATE:
+        elif row and age_s>=ESCALATE and (
+                row.get("final") is not True or
+                (project=="ttendencias" and st in {"preparing","update"})):
+            # A final Telegram ack cannot complete a pending editorial queue.
             # No background LLM/editorial inference. Escalate for research.
             result.append({"kind":"editorial_overdue","id":eid,
                            "title":str(x.get("name") or x.get("title") or eid)[:100],
@@ -390,6 +393,15 @@ def selftest():
                 "green_notifications_initialized":True,
                 "green_notifier_checked_at":"2026-10-12T17:30:00Z"})
             assert not any(x["kind"]=="stale_green_notifier" for x in problems("ttendencias",now))
+            # Final Telegram acknowledgement must not mask a stalled queue.
+            save("trends/editorial-queue.json",{"items":[{
+                "id":"still-in-queue","name":"Investigación sin cerrar",
+                "status":"preparing","requested_at":"2026-10-12T17:30:00Z"}]})
+            save("trends/telegram-image-deliveries.json",{"items":[{
+                "event_id":"still-in-queue","telegram_message_id":722,
+                "status":"sent","final":True,"started_at":"2026-10-12T17:30:00Z"}]})
+            assert next(x for x in problems("ttendencias",now)
+                        if x["id"]=="still-in-queue")["kind"]=="editorial_overdue"
             # A cleared compact editorial queue must not hide a stalled
             # TTendencias request or an existing provisional Telegram card.
             save("trends/editorial-queue.json",{"items":[]})
