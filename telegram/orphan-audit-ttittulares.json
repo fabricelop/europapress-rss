@@ -1,12 +1,26 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-14T14:16:11.465994+00:00",
+  "checked_at": "2026-10-14T14:17:41.689352+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 213,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:e47a695a29b4:3855",
+      "id": "e47a695a29b4",
+      "message_id": 3855,
+      "title": "Detenidas dos mujeres acusadas de sustraer una bebé de apenas un mes a su madre en Andújar, Jaén - Telecinco",
+      "age_min": 10.8,
+      "reason": "Bloqueo editorial: transport_write_blocked"
+    }
+  ],
+  "alerted": {
+    "provisional:e47a695a29b4:3855": {
+      "signature": "49c545c8aa04a3814a",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
