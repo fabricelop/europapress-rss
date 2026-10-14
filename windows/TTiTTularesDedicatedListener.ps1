@@ -550,10 +550,23 @@ function Test-ImageBridgeBusy {
     $commandId = [string]$lock.command_id
     $p = if($pidValue -gt 0){Get-Process -Id $pidValue -ErrorAction SilentlyContinue}else{$null}
     if ($p) {
+      # A recycled PID must never hold the ChatGPT image slot.
+      $isBridge=$false
+      try {
+        $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
+        $isBridge=($proc -and [string]$proc.CommandLine -like "*TTiTTularesImageBridge.js*")
+      } catch {}
+      if(-not $isBridge) {
+        Write-Log "IMAGE LOCAL LOCK RECYCLED pid=$pidValue target=$targetId"
+        Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
+        return $false
+      }
       $terminal = $false
       if($targetId){
         $remote = Read-ImageJob $targetId
-        if($remote -and [string]$remote.command_id -eq $commandId -and (Is-TerminalImageStatus ([string]$remote.status))){
+        if($remote -and [string]$remote.command_id -eq $commandId -and
+           ((Is-TerminalImageStatus ([string]$remote.status)) -or
+            ([string]$remote.delivery_mode -eq "launch_only" -and $remote.pc_launched_at))){
           $terminal = $true
         }
       }
@@ -563,11 +576,6 @@ function Test-ImageBridgeBusy {
         $tooOld=(([DateTimeOffset]::UtcNow-$started).TotalMinutes -gt 12)
       } catch {}
       if($terminal -or $tooOld){
-        $isBridge=$false
-        try{
-          $proc=Get-CimInstance Win32_Process -Filter ("ProcessId="+$pidValue) -ErrorAction SilentlyContinue
-          $isBridge=($proc -and [string]$proc.CommandLine -like "*TTiTTularesImageBridge.js*")
-        }catch{}
         Write-Log "IMAGE LOCAL LOCK STALE pid=$pidValue command=$commandId target=$targetId terminal=$terminal too_old=$tooOld bridge_pid=$isBridge"
         if($isBridge){try{Stop-Process -Id $pidValue -Force -ErrorAction SilentlyContinue}catch{}}
         Remove-Item -LiteralPath $ImageBridgeLockPath -Force -ErrorAction SilentlyContinue
@@ -894,7 +902,11 @@ function Refresh-ActiveImages($State,$Index) {
     if(-not $job){continue}
     $statusDoc=Read-ImageJob ([string]$job.target_id)
     if(-not $statusDoc){$active += [string]$cmd;continue}
-    if(Is-TerminalImageStatus ([string]$statusDoc.status)){Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$($statusDoc.status)";continue}
+    if(Is-TerminalImageStatus ([string]$statusDoc.status) -or
+       ([string]$statusDoc.delivery_mode -eq "launch_only" -and $statusDoc.pc_launched_at)){
+      Write-Log "IMAGE TERMINAL command=$cmd target=$($job.target_id) status=$($statusDoc.status) pc_launched_at=$($statusDoc.pc_launched_at)"
+      continue
+    }
     try {
       $atText=if($statusDoc.updated_at){[string]$statusDoc.updated_at}else{[string]$statusDoc.requested_at}
       $at=[DateTimeOffset]::Parse($atText)
@@ -992,7 +1004,7 @@ REGLAS:
 - No escribas el tuit dentro de la imagen.
 - No proceses otra noticia.
 - Genera exactamente UNA imagen.
-- No persistas la imagen: el puente local recoge el raster.
+- No descargues, captures ni persistas ninguna imagen: se quedará en ChatGPT Images.
 "@
 }
 
