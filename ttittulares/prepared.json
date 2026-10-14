@@ -131,13 +131,30 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "archive_image_status": "pending",
-      "fallback_image_status": "pending",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
-      "image_status": "none",
-      "image_app_available": false,
-      "image_delivery": "none"
+      "image_status": "ready",
+      "image_app_available": true,
+      "image_delivery": "app",
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/FV5543XUTFJOXJGO4XFZBQALIM.jpg?auth=39eeda328fa9504d0ee62df6069311f714c236dd54f3ec600ad94d027368865e&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-14/roma-real-madrid-en-directo-el-partido-de-la-champions-league-en-vivo.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Roma - Real Madrid en directo | Fede Valverde: “Como jugador estoy orgulloso de que el equipo tenga rebeldía”"
+      },
+      "fallback_image_search_attempted_at": "2026-10-14T22:21:09.984539Z",
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/FV5543XUTFJOXJGO4XFZBQALIM.jpg?auth=39eeda328fa9504d0ee62df6069311f714c236dd54f3ec600ad94d027368865e&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/deportes/futbol/2026-10-14/roma-real-madrid-en-directo-el-partido-de-la-champions-league-en-vivo.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Roma - Real Madrid en directo | Fede Valverde: “Como jugador estoy orgulloso de que el equipo tenga rebeldía”"
+      }
     },
     {
       "event_id": "telegram-218638732",
