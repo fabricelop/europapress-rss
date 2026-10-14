@@ -48,6 +48,8 @@ $MaxTriggerAgeSeconds = 604800
 $MaxParallelImageChats = 1
 $MaxImageJobProbesPerCycle = 3
 $ImageStaleMinutes = 45
+$script:NextChatTabOpenAt = [DateTimeOffset]::MinValue
+$script:NextChromeRestartAt = [DateTimeOffset]::MinValue
 $SnapshotStrongSeconds = 60
 $SnapshotCacheSeconds = 12
 $script:ListenerSnapshotCache = $null
@@ -624,27 +626,74 @@ function Test-OtherImageBridgeBusy {
 }
 
 function Test-DedicatedChromeCdpHealthy {
+  # Chrome 9223 puede seguir vivo despues de perder Internet, pero sin una
+  # pestaña ChatGPT. Eso NO requiere matar Chrome: abrir un target nuevo.
   try {
     $v=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/version?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
     if(-not $v -or -not $v.webSocketDebuggerUrl){ return $false }
     $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 4
-    $pages=@($targets | Where-Object { [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl })
-    if($pages.Count -eq 0){ return $false }
-    $chatPages=@($pages | Where-Object {
-      $u=[string]$_.url
-      $u -like "https://chatgpt.com/*" -or $u -eq "https://chatgpt.com/"
+    $chatPages=@($targets | Where-Object {
+      [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
+      [string]$_.url -like "https://chatgpt.com/*"
     })
-    return ($chatPages.Count -gt 0)
-  } catch {
+    if($chatPages.Count -gt 0){ return $true }
+
+    # Evitar crear multiples pestañas cuando ChatGPT tarda en cargar.
+    $now=[DateTimeOffset]::UtcNow
+    if($now -lt $script:NextChatTabOpenAt){ return $false }
+    $script:NextChatTabOpenAt=$now.AddSeconds(60)
+    Write-Log "IMAGE CHROME CDP ONLINE NO CHAT TAB; opening ChatGPT without restart"
+    try{
+      $new=Invoke-RestMethod -Method Put -Uri ("http://127.0.0.1:9223/json/new?"+[uri]::EscapeDataString("https://chatgpt.com/")) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 7
+      Write-Log "IMAGE CHROME CHAT TAB REQUESTED id=$([string]$new.id)"
+    }catch{
+      Write-Log "IMAGE CHROME CHAT TAB OPEN WARNING :: $($_.Exception.Message)"
+      return $false
+    }
+    # Page target URL is available before the web composer is ready.
+    $deadline=(Get-Date).AddSeconds(8)
+    while((Get-Date) -lt $deadline){
+      Start-Sleep -Milliseconds 800
+      try{
+        $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
+        $chat=@($targets | Where-Object {
+          [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
+          [string]$_.url -like "https://chatgpt.com/*"
+        })
+        if($chat.Count -gt 0){
+          Write-Log "IMAGE CHROME CHAT TAB RECOVERED count=$($chat.Count)"
+          return $true
+        }
+      }catch{}
+    }
+    Write-Log "IMAGE CHROME CHAT TAB PENDING; retry after cooldown, do not restart browser"
+    return $false
+  }catch{
+    Write-Log "IMAGE CHROME CDP ENDPOINT ERROR :: $($_.Exception.Message)"
     return $false
   }
 }
-
 function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
   if(Test-OtherImageBridgeBusy){
     Write-Log "CHROME CDP RECOVERY DEFERRED command=$CommandId reason=ttendencias-image-active"
     return $false
   }
+  # El endpoint vivo con 0 pestanas ChatGPT NO esta roto: crear la
+  # pestana es lo correcto. Nunca matar Chrome por este caso.
+  try{
+    $v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 3
+    if($v -and $v.webSocketDebuggerUrl){
+      Write-Log "CHROME CDP BROWSER ALIVE command=$CommandId; recovering chat tab instead of restart"
+      return (Test-DedicatedChromeCdpHealthy)
+    }
+  }catch{}
+  # Si el endpoint REALMENTE esta caido, limitar reinicios a uno por 5 minutos.
+  $now=[DateTimeOffset]::UtcNow
+  if($now -lt $script:NextChromeRestartAt){
+    Write-Log "CHROME CDP RESTART COOLDOWN command=$CommandId next=$($script:NextChromeRestartAt.ToString('o'))"
+    return $false
+  }
+  $script:NextChromeRestartAt=$now.AddMinutes(5)
   Write-Log "CHROME CDP RECOVERY START command=$CommandId reason=$Reason"
   try {
     $roots=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
