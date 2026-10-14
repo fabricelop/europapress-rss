@@ -11,9 +11,11 @@ import html
 import json
 import os
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+from urllib.parse import quote
 from pathlib import Path
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -143,15 +145,77 @@ def active_records(project):
     pending.sort(key=lambda x:(str(x["at"]),x["title"]))
     return final,pending
 
-def render(project,bot_id):
+def tti_image_launch_status(row):
+    """Read only the job ACK. Never infer that ImageGen has finished."""
+    event_id=str(row.get("id") or "")
+    if not event_id:return "unknown"
+    url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
+         "control/ttittulares-run-trigger-v2/ttittulares/image-runs/jobs/"
+         +quote(event_id,safe="")+".json")
+    from urllib.request import Request
+    import time
+    url+="?index_check="+str(int(time.time()))
+    req=Request(url,headers={"User-Agent":"TT-private-pinned-index-image-status",
+                             "Cache-Control":"no-cache, no-store"})
+    try:
+        with urlopen(req,timeout=3) as resp:
+            job=json.load(resp)
+    except HTTPError as exc:
+        return "queued" if exc.code==404 else "unknown"
+    except (OSError,URLError,TimeoutError,ValueError,TypeError):
+        return "unknown"
+    # An old revision may have a different generated image.
+    if (str(job.get("target_id") or job.get("event_id") or "")!=event_id
+        or int(job.get("revision") or 0)!=int(row.get("rev") or 1)):
+        return "unknown"
+    if job.get("pc_launched_at"):
+        return "launched"
+    status=str(job.get("status") or "").upper()
+    if status in {"ERROR","CANCELLED","SUPERSEDED"}:return "failed"
+    if status in {"REQUESTED","RUNNING","PERSISTING"}:return "queued"
+    return "unknown"
+
+
+def tti_image_statuses(rows):
+    # Several short independent reads; one unresponsive GitHub request cannot
+    # delay the index more than a few seconds. No image generation or download.
+    if not rows:return {}
+    limited=rows[:30]
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        result=list(pool.map(tti_image_launch_status,limited))
+    return {r["id"]:status for r,status in zip(limited,result)}
+
+
+def render(project,bot_id,image_statuses=None):
     conf=PROJECTS[project]
     ready,pending=active_records(project)
     first=f"LISTAS: {len(ready)} | EN ELABORACIÓN: {len(pending)}"
-    header=first
-    # One short plain-text line per entry, never a deep link or message ID.
-    ready_lines=["• "+html.escape(shorten(x["title"],65)) for x in ready]
+    chunks=[first]
+    if project=="ttittulares":
+        if image_statuses is None:
+            # Production uses Telegram's authenticated updater; offline selftests
+            # can inject a fixed snapshot without touching the network.
+            image_statuses=tti_image_statuses(ready) if os.getenv("TELEGRAM_BOT_TOKEN") else {}
+        status_of=lambda r:image_statuses.get(r["id"],"unknown")
+        sent=sum(status_of(r)=="launched" for r in ready)
+        other=sum(status_of(r)=="unknown" for r in ready)
+        chunks.append(f"\n🟢 <b>IA ENVIADA A CHATGPT: {sent} de {len(ready)}</b>")
+        if other:chunks.append(f"⚪ Estado no comprobado: {other}")
+        chunks.append("<i>Enviada = solicitud confirmada, no imagen terminada.</i>")
+        # Only reorder references INSIDE the pinned panel. Original Telegram
+        # cards stay where they are, with all existing buttons untouched.
+        order={"launched":0,"queued":1,"failed":2,"unknown":3}
+        shown=sorted(ready,key=lambda r:(order.get(status_of(r),3),-r["mid"]))
+        icons={"launched":"🟢","queued":"🟠","failed":"🔴","unknown":"⚪"}
+        labels={"launched":"enviada","queued":"en cola","failed":"falló envío",
+                "unknown":"sin verificar"}
+        ready_lines=[
+            icons[status_of(r)]+" "+html.escape(shorten(r["title"],58))+
+            " — "+labels[status_of(r)] for r in shown]
+    else:
+        ready_lines=["• "+html.escape(shorten(x["title"],65)) for x in ready]
     pending_lines=["• "+html.escape(shorten(x["title"],65)) for x in pending]
-    chunks=[header,"\n<b>LISTAS</b>"]
+    chunks.append("\n<b>LISTAS</b>")
     room=MAX_TEXT-100
     count_shown=0
     for x in ready_lines:
@@ -365,6 +429,25 @@ def selftest():
             update("ttendencias",mock)
             assert [x[0] for x in calls]==["getMe","editMessageText"]
             assert calls[1][1]["message_id"]==900
+            # The TTiTTulares overview must not claim a finished image.
+            write("telegram/ttittulares-deliveries.json",{"items":[
+                {"event_id":"sent-1","title":"Imagen confirmada","telegram_message_id":3861,
+                 "status":"sent","final":True,"revision":1},
+                {"event_id":"waiting","title":"En cola","telegram_message_id":3862,
+                 "status":"sent","final":True,"revision":1},
+                {"event_id":"removed","title":"Ya borrada","telegram_message_id":3863,
+                 "status":"deleted","final":True,"revision":1}
+            ]})
+            write("ttittulares/editorial-queue.json",{"items":[]})
+            write("ttittulares/status.json",{"processing_items":[]})
+            fixed={"sent-1":"launched","waiting":"queued","removed":"launched"}
+            body,ready,pending=render("ttittulares",123456,fixed)
+            assert "IA ENVIADA A CHATGPT: 1 de 2" in body
+            assert "no imagen terminada" in body
+            assert "🟢 Imagen confirmada" in body and "🟠 En cola" in body
+            assert body.index("🟢 Imagen confirmada")<body.index("🟠 En cola")
+            assert "Ya borrada" not in body
+            assert len(ready)==2 and len(pending)==0
             print("TT_PINNED_INDEX_SELFTEST_OK")
         finally:
             ROOT=old_root
