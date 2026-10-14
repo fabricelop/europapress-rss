@@ -273,9 +273,9 @@ jobs:
               if str(job.get("status") or "").upper() not in active:return False
               if not job.get("auto_repair"):return True  # No alterar el modo manual.
               if str(job.get("target_id") or "") not in eligible_ids:return False
-              started=job.get("pc_launched_at")
-              return (elapsed_seconds(started)<300 if started
-                      else elapsed_seconds(job.get("requested_at"))<1800)
+              # No caducar una espera en cola: el PC puede estar apagado.
+              # Al lanzarse el prompt, sale del índice pero conserva el recibo.
+              return not bool(job.get("pc_launched_at"))
           # Encolar todas las noticias independientemente; el listener consume secuencialmente.
           # Ningún REQUESTED de otra noticia impide crear el siguiente trabajo.
           queued=[]
@@ -321,10 +321,8 @@ jobs:
               # Las regeneraciones siguen disponibles mediante el mecanismo manual.
               # Un único reintento si la orden anterior NUNCA salió del PC.
               # No reintentar imágenes ya lanzadas ni repetir indefinidamente.
-              stale_unlaunched=(old.get("auto_repair") and old_status in {"REQUESTED","CANCELLED","ERROR"}
-                  and not old.get("pc_launched_at")
-                  and (old_status in {"CANCELLED","ERROR"} or elapsed_seconds(old.get("requested_at"))>=1800)
-                  and attempt<3)
+              stale_unlaunched=(old.get("auto_repair") and old_status in {"CANCELLED","ERROR"}
+                  and not old.get("pc_launched_at") and attempt<3)
               if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
                   continue
               # Sin bloqueo global ni límite artificial de un job por pasada.
@@ -467,8 +465,9 @@ jobs:
                   if tid not in eligible_ids:reason="not_eligible_or_deleted"
                   elif job.get("pc_launched_at") and job.get("delivery_mode")!="launch_only" and elapsed_seconds(job.get("pc_launched_at"))>=300:
                       reason="five_minute_generation_deadline"
-                  elif not job.get("pc_launched_at") and elapsed_seconds(job.get("requested_at"))>=1800:
-                      reason="pc_did_not_launch_within_two_minutes"
+                  elif (status!="REQUESTED" and not job.get("pc_launched_at")
+                        and elapsed_seconds(job.get("updated_at"))>=900):
+                      reason="bridge_stalled_before_launch"
               if reason:
                   job.update(status="CANCELLED",phase="expired",finished_at=nowz,
                              updated_at=nowz,message=reason)
