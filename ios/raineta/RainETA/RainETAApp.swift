@@ -77,8 +77,8 @@ struct RainHomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     RainHeroCard(store:store)
-                    MinuteRainGraph(projection:store.projection,weather:store.snapshot)
-                    ThreeHourRainView(weather:store.snapshot)
+                    MinuteRainGraph(store:store)
+                    ThreeHourRainView(weather:store.snapshot,models:store.shortModels)
                     RainWeekForecast(weather:store.snapshot)
                     radarSection
                     RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
