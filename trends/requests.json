@@ -55033,11 +55033,11 @@
     {
       "id": "ff942c05391c",
       "name": "Tezanos",
-      "rank": 1,
-      "status": "update",
+      "rank": 5,
+      "status": "explained",
       "requested_at": "2026-10-14T13:52:31+02:00",
       "revision": 1,
-      "reexplain": true,
+      "reexplain": false,
       "with_image": false,
       "alternatives_target": 0,
       "batch_id": "0f90391db41d",
@@ -55051,11 +55051,11 @@
       ],
       "auto_queued": false,
       "auto_queue_scope": "top10",
-      "explained_at": "2026-10-14T13:50:00+02:00",
-      "last_attempt_at": "2026-10-14T13:50:00+02:00",
-      "explanation": "TT#1 Tezanos es tendencia porque el CIS de octubre, que preside José Félix Tezanos, sitúa al PSOE en el 34% y al PP en el 22,2%, una ventaja de 11,8 puntos tras la convocatoria electoral.\n🌶️ El barómetro ha estrenado campaña antes que las papeletas.",
-      "closer_text": "🌶️ El barómetro ha estrenado campaña antes que las papeletas.",
-      "rank_at_explanation": 1,
+      "explained_at": "2026-10-14T13:54:00+02:00",
+      "last_attempt_at": "2026-10-14T13:54:00+02:00",
+      "explanation": "TT#5 Tezanos es tendencia porque el CIS de octubre, que preside José Félix Tezanos, sitúa al PSOE en el 34% y al PP en el 22,2%, una ventaja de 11,8 puntos tras la convocatoria electoral.\n🌶️ El CIS ha sacado la calculadora antes que las urnas.",
+      "closer_text": "🌶️ El CIS ha sacado la calculadora antes que las urnas.",
+      "rank_at_explanation": 5,
       "category": "Política",
       "source": "editorial_chat_direct",
       "editorial_engine": "chat-direct",
@@ -55064,7 +55064,7 @@
         "https://cadenaser.com/nacional/2026/10/14/el-cis-coloca-al-psoe-118-puntos-por-encima-del-pp-en-la-primera-encuesta-tras-la-convocatoria-de-elecciones-cadena-ser/"
       ],
       "news_disposition": "ignored",
-      "news_note": "El barómetro de octubre del CIS sitúa al PSOE en el 34% y al PP en el 22,2%, 11,8 puntos de diferencia.",
+      "news_note": "Revisión solicitada desde Telegram: se conserva el hecho verificado y se cambia únicamente el remate.",
       "group_id": "grp-tezanos-cis-octubre-20261014",
       "explanation_group_id": "grp-tezanos-cis-octubre-20261014",
       "group_title": "Tezanos · CIS de octubre",
@@ -55076,23 +55076,23 @@
         {
           "id": "ff942c05391c",
           "name": "Tezanos",
-          "rank": 1,
-          "revision": 0
+          "rank": 5,
+          "revision": 1
         }
       ],
       "grouped_member_revisions": [
         {
           "id": "ff942c05391c",
           "name": "Tezanos",
-          "revision": 0
+          "revision": 1
         }
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "not_requested",
       "fallback_image_status": "pending",
       "image_status": "pending",
-      "image_pending": true,
+      "image_pending": false,
       "rewrite_pending": false,
       "grouped_into_existing_card": false,
       "telegram_package_status": "pending",
@@ -55240,7 +55240,7 @@
       "id": "13c9e184e0fe",
       "name": "El CIS",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-14T13:52:29+02:00",
       "revision": 0,
       "reexplain": false,
@@ -55254,9 +55254,54 @@
         "El CIS"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-14T13:54:00+02:00",
+      "last_attempt_at": "2026-10-14T13:54:00+02:00",
+      "explanation": "TT#4 El CIS es tendencia porque su barómetro de octubre estima un 34% para el PSOE y un 22,2% para el PP, 11,8 puntos de diferencia tras la convocatoria electoral.\n🌶️ El sondeo ya ha colocado la cinta métrica en plena campaña.",
+      "closer_text": "🌶️ El sondeo ya ha colocado la cinta métrica en plena campaña.",
+      "rank_at_explanation": 4,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://elpais.com/espana/elecciones-generales/2026-10-14/el-psoe-aumenta-la-distancia-sobre-el-pp-hasta-los-118-puntos-tras-la-convocatoria-electoral-segun-el-cis.html",
+        "https://cadenaser.com/nacional/2026/10/14/el-cis-coloca-al-psoe-118-puntos-por-encima-del-pp-en-la-primera-encuesta-tras-la-convocatoria-de-elecciones-cadena-ser/"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "El barómetro de octubre del CIS estima un 34% para el PSOE y un 22,2% para el PP, 11,8 puntos de diferencia.",
+      "group_id": "grp-el-cis-octubre-20261014",
+      "explanation_group_id": "grp-el-cis-octubre-20261014",
+      "group_title": "El CIS · barómetro de octubre",
+      "group_leader_id": "13c9e184e0fe",
+      "trend_names": [
+        "El CIS"
+      ],
+      "trend_context": [
+        {
+          "id": "13c9e184e0fe",
+          "name": "El CIS",
+          "rank": 4,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "13c9e184e0fe",
+          "name": "El CIS",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_status": "pending",
+      "image_pending": true,
+      "rewrite_pending": false,
+      "grouped_into_existing_card": false,
+      "telegram_package_status": "pending"
     }
   ],
-  "updated_at": "2026-10-14T13:52:32+02:00",
+  "updated_at": "2026-10-14T13:54:00+02:00",
   "count": 933
 }
