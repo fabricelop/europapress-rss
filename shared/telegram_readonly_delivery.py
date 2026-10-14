@@ -100,6 +100,34 @@ def ai_delivery_info(item,now):
     return {"url":"","note":"🖼️ Pendiente de enviar a ChatGPT Images."}
 
 
+def trend_image_launch_info(tid,revision,now):
+    """Estado exclusivo del lanzamiento; la imagen se recoge en ChatGPT Images."""
+    job={}
+    if tid and os.environ.get("TELEGRAM_BOT_TOKEN"):
+        try:
+            url=("https://raw.githubusercontent.com/fabricelop/europapress-rss/"
+                 "control/ttendencias-run-trigger/trends/image-runs/jobs/"
+                 +quote(tid,safe="")+".json?at="+str(int(now.timestamp())))
+            response=requests.get(url,timeout=(1.0,1.5),headers={"Cache-Control":"no-cache"})
+            if response.ok:
+                found=response.json()
+                if (str(found.get("target_id") or "")==str(tid)
+                        and int(found.get("revision") or 0)==int(revision)):
+                    job=found
+        except (requests.RequestException,ValueError,TypeError,AttributeError):
+            pass
+    if job.get("pc_launched_at"):
+        return "🖼️ Enviada a ChatGPT Images."
+    status=str(job.get("status") or "").upper()
+    if status in {"ERROR","CANCELLED","SUPERSEDED"}:
+        return "🖼️ Sin imagen IA · fallo de lanzamiento."
+    requested=date(job.get("requested_at"))
+    if status in {"REQUESTED","RUNNING","PERSISTING"}:
+        if requested and (now-requested).total_seconds()>=120:
+            return "🖼️ Sin imagen IA · el PC no lanzó la orden."
+        return "🖼️ Pendiente de enviar a ChatGPT Images."
+    return "🖼️ Pendiente de enviar a ChatGPT Images."
+
 def attach_news_ai(card,entry,token,chat,ledger_path,ledger,now):
     """Entrega como respuesta una única imagen IA; nunca modifica botones ni reenvía noticias."""
     if not entry or str(entry.get("status") or "").lower()!="sent":
@@ -544,7 +572,8 @@ def trend_cards(now):
                "editorial_rework":bool(req.get("reexplain") or req.get("request_source")=="telegram_reexplain"),
                "entered_top_at":top_row.get("entered_top10_at"),
                "novelty_verified":req.get("material_novelty_verified") is True,
-               "is_in_top":bool(top_row and 1<=int(top_row.get("rank") or 0)<=10)}
+               "is_in_top":bool(top_row and 1<=int(top_row.get("rank") or 0)<=10),
+               "ai_note":trend_image_launch_info(tid,rev,now) if is_final else ""}
 
 def mobile_gag_prompt(card,project):
     """Telegram-native copy_text <=256 chars; never relies on a web browser."""
@@ -954,7 +983,7 @@ def process(project,now,token,chat):
         if project=="ttittulares" and card["final"] and existing:
             pass  # launch-only: no se recuperan imágenes automáticas
         body=card["text"]
-        if project=="ttittulares" and card["final"]:
+        if project in {"ttittulares","ttendencias"} and card["final"]:
             note=card.get("ai_note") or ""
             if note:body=body[:max(0,1024-len(note)-2)]+"\n\n"+note
         if project=="ttittulares" and not card["final"] and not card["image"]:
