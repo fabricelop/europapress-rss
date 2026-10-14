@@ -2,31 +2,66 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T05:24:09.792770+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T07:03:23.334439+00:00",
+      "issue_count": 2,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ae873db1bf43",
+          "title": "Alineación probable del Real Madrid contra la Roma en la Champions League",
+          "seconds": 430,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1780,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "e1f2f3bb0c7c5d8a0229a39710f9fe6b4c58d9bccd82b4f032f622465309db7f",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T05:24:09.792770+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-14T07:03:23.334439+00:00",
+      "issue_count": 2,
+      "issues": [
+        {
+          "kind": "orphan_provisional",
+          "id": "ea9256e5e1fd",
+          "title": "1742 X",
+          "seconds": 2426,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 1779,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "52b4752f7005303194ade2be392c9b51ddedc956650661a34dea258c452a79db",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-13T21:48:23.103740+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T04:41:38.489711+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T04:41:38.489711+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T07:03:23.334439+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-14T07:03:23.334439+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-14T07:03:23.334439+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T05:24:09.792770+00:00"
+  "checked_at": "2026-10-14T07:03:23.334439+00:00"
 }
