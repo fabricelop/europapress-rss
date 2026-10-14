@@ -651,8 +651,8 @@ def keys(card,project):
 
 def send(token,method,payload,photo=None):
     # Original editorial cards and archive replies remain visible but silent.
-    # Only a confirmed-green ImageGen launch triggers a push notification in
-    # the separate pinned-index notifier. Editing existing cards stays quiet.
+    # No green-image alerts: the user chose no Telegram notifications.
+    # The image status remains visible in each card and the pinned index.
     if method in {"sendMessage","sendPhoto"}:
         payload={**payload,"disable_notification":True}
     base="https://api.telegram.org/bot"+token+"/"+method
