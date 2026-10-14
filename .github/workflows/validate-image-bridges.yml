@@ -59,8 +59,7 @@ jobs:
             throw 'REGRESSION: no se bloquean prompts ya lanzados en modo launch_only'
           }
           $trends=Get-Content windows/TTendenciasDedicatedListener.ps1 -Raw -Encoding UTF8
-          if($trends -notmatch '(?m)^\$MaxParallelImageChats\s*=\s*1\s*
-){
+          if($trends -notmatch '(?m)^\$MaxParallelImageChats\s*=\s*1\s*$'){
             throw 'REGRESSION: listener TTendencias debe permitir un prompt IA activo'
           }
           if($trends -notmatch 'delivery_mode.*launch_only'){
