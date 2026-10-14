@@ -622,6 +622,36 @@ async function progress(phase,detail){
 async function fail(reason){
   try{await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"failed",worker_id:"ttendencias-image-bridge-v29-raw-job-recovery",upload_secret:secret,reason:String(reason||"").slice(0,220)})}catch{}
 }
+// The prompt must be confirmed in GitHub before claiming launch success.
+// Retrying an ACK never resubmits the prompt or opens a second chat.
+async function confirmPromptLaunched(){
+  let last="sin ACK";
+  for(let attempt=1;attempt<=5;attempt++){
+    try{
+      const r=await post({task:"image_pc_ack",target_id:targetId,
+        command_id:commandId,stage:"launched",
+        worker_id:"ttendencias-image-bridge-v30-launch-only"});
+      if(r.ok&&r.data&&r.data.pc_launched_at&&!r.data.deferred){
+        console.log("BRIDGE IMAGE LAUNCH CONFIRMED "+r.data.pc_launched_at);
+        return true;
+      }
+      last="HTTP "+r.status+" deferred="+Boolean(r.data&&r.data.deferred)+" error="+String(r.data&&r.data.error||"");
+      if(r.status===409&&String(r.data&&r.data.error||"").includes("command_id"))throw Error("job_superado");
+    }catch(e){
+      last=String(e&&e.message||e);
+      if(last==="job_superado")throw e;
+    }
+    await sleep(attempt*1200);
+    try{
+      const job=await fetchJob();
+      if(job.pc_launched_at&&String(job.command_id)===commandId){
+        console.log("BRIDGE IMAGE LAUNCH CONFIRMED VIA JOB "+job.pc_launched_at);
+        return true;
+      }
+    }catch{}
+  }
+  throw Error("image_launch_ack_not_persisted "+last)
+}
 async function uploadImage(image){
   let result;
   for(let attempt=1;attempt<=3;attempt++){
@@ -656,12 +686,11 @@ async function uploadImage(image){
       cdp.acceptInitialRaster=true;
       console.log("BRIDGE FIXED PROMPT SUBMITTED/VERIFIED attempt="+generationAttempt);
       if(generationAttempt===1){
-        await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
-        const launched=await post({task:"image_pc_ack",target_id:targetId,command_id:commandId,stage:"launched",worker_id:"ttendencias-image-bridge-v29-raw-job-recovery"});
-        if(!launched.ok)console.log("BRIDGE LAUNCHED ACK WARNING "+launched.status+" "+String(launched.data&&launched.data.error||""));
+        if(!launchOnly)await progress("prompt_sent","Prompt GAG IA enviado y verificado en conversación nueva de la pestaña fija.");
+        await confirmPromptLaunched();
       }
       if(launchOnly){
-        console.log("TTENDENCIAS LAUNCH_ONLY prompt enviado; sin capturar ni adjuntar imagen");
+        console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED; ChatGPT Images, sin captura ni subida");
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
