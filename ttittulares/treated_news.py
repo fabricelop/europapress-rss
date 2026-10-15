@@ -32,6 +32,17 @@ ALIAS={
  "hungaro":"hungria","hungara":"hungria","hungaros":"hungria","hungaras":"hungria",
  "relaciona":"vincular","relacionaba":"vincular","relaciono":"vincular",
  "vincula":"vincular","vinculaba":"vincular","vinculo":"vincular",
+ # Variantes reales del mismo hecho publicadas por distintas fuentes.
+ "roban":"robo","robado":"robo","robada":"robo","robar":"robo",
+ "filtraciones":"filtracion","filtrados":"filtracion","filtrada":"filtracion",
+ "investiga":"investigar","investigan":"investigar","investigacion":"investigar",
+ "reabre":"reabrir","reabren":"reabrir","reapertura":"reabrir",
+ "sancionador":"sancion","sancionadora":"sancion",
+ "retransmision":"emision","transmision":"emision",
+ "transmitida":"emision","transmitido":"emision","retransmitida":"emision",
+ "retransmitido":"emision","retransmitir":"emision","transmitir":"emision",
+ "streaming":"emision","fusilamiento":"ejecucion",
+ "conversaciones":"mensaje","mensajes":"mensaje",
 }
 def load(path,default):
     try:
@@ -44,6 +55,8 @@ def normalize(text):
     v="".join(c for c in v if not unicodedata.combining(c))
     # Strip common feed prefixes and dates from publisher descriptions.
     v=re.sub(r"\b(?:en directo|ultima hora|video|actualizado)\b"," ",v)
+    # El condenado de Fort Hood y Nidal Hasan identifican el mismo suceso.
+    v=re.sub(r"\\b(?:fort hood|nidal hasan)\\b"," nidal hasan fort hood ",v)
     return " ".join(re.findall(r"[a-z0-9]+",v))
 
 def tokens(title):
@@ -73,15 +86,24 @@ def same_fact(a,b):
             if len(B)<3:continue
             common=A&B
             if len(common)<3:continue
+            # Rechazar/archivar frente a abrir/incoar son decisiones opuestas,
+            # no meras paráfrasis: no bloquear una novedad contradictoria.
+            opposite={"rechaza","desestima","archiva","cierra","revoca"}
+            opening={"abre","abrir","incoa","iniciar"}
+            if ((A & opposite and B & opening) or
+                    (B & opposite and A & opening)):
+                continue
             overlap=len(common)/min(len(A),len(B))
             jac=len(common)/len(A|B)
             likeness=SequenceMatcher(None,normalize(a_title),normalize(b_title)).ratio()
             concrete_actions={"morir","suspension","ciberataque","denuncia","exigir",
                               "dimision","detenido","policia","disparo","incendio","asalto",
-                              "sentencia","accidente","rescate","vincular"}
+                              "sentencia","accidente","rescate","vincular",
+                              "robo","investigar","filtracion","reabrir","ejecucion",
+                              "emision","sancion"}
             anchored=bool(common & concrete_actions)
             if (A==B or (len(common)>=4 and overlap>=.69 and jac>=.40)
-                    or (anchored and len(common)>=4 and overlap>=.48 and jac>=.28)
+                    or (anchored and len(common)>=5 and overlap>=.48 and jac>=.28)
                     or (len(common)>=3 and overlap>=.79 and jac>=.52)
                     or (len(common)>=3 and likeness>=.84 and overlap>=.56)):
                 return True
@@ -191,6 +213,30 @@ def selftest():
                          p("El Supremo mantiene suspendido el voto de los nacionalizados por la ley de nietos"))
     assert not same_fact(p("Los reyes visitan Ceuta y Melilla"),
                          p("Marruecos critica la visita de los reyes a Ceuta y Melilla"))
+    # Paráfrasis reales del 15/10: una sola noticia pese a IDs diferentes.
+    duplicate_pairs=[
+        ("Trump cambia de opinión y dice que el fusilamiento del condenado por el ataque de Fort Hood no será retransmitido en streaming",
+         "Trump dice que la ejecución de Nidal Hasan no será transmitida en directo"),
+        ("Trump cambia de opinión y dice que el fusilamiento del condenado por el ataque de Fort Hood no será retransmitido en streaming",
+         "Trump cancela la transmisión en directo de la ejecución de Nidal Hasan"),
+        ("Roban en la casa de Antony durante el Betis-Oporto",
+         "Antony, víctima de un robo en su casa durante el Betis - Oporto"),
+        ("El Supremo ordena reabrir la causa contra Natividad Jáuregui por un atentado",
+         "El Supremo ordena reabrir una causa contra Natividad Jáuregui, la etarra de las mariscadas"),
+        ("La Junta Electoral abre expediente sancionador a Sánchez por una rueda de prensa en La Moncloa",
+         "La Junta Electoral abre expediente sancionador a Pedro Sánchez por la rueda de prensa en La Moncloa"),
+        ("Un juzgado de Madrid investiga las filtraciones de conversaciones personales de Zapatero",
+         "Un juzgado de Madrid investiga la filtración de mensajes personales de Zapatero"),
+    ]
+    for first,second in duplicate_pairs:
+        assert same_fact(p(first),p(second)),(first,second)
+    # No fusionar nueva decisión, persona distinta ni un paso judicial nuevo.
+    assert not same_fact(p("La Junta Electoral abre expediente sancionador a Sánchez por la rueda de prensa en La Moncloa"),
+                         p("La Junta Electoral rechaza investigar a Sánchez por la rueda de prensa en La Moncloa"))
+    assert not same_fact(p("Trump dice que la ejecución de Nidal Hasan no será retransmitida en directo"),
+                         p("Trump dice que la ejecución de otro condenado no será retransmitida en directo"))
+    assert not same_fact(p("Militares de Ceuta aparecen en audios sobre agresiones a migrantes"),
+                         p("Defensa envía a la Justicia los audios de militares de Ceuta sobre agresiones a migrantes"))
     refs=[{"event_id":"old","title":"El Supremo mantiene la suspensión del voto por la ley de nietos","status":"treated"}]
     assert previous_story({"event_id":"new","title":"El Supremo mantiene la suspensión del derecho a voto por la ley de nietos"},refs)["event_id"]=="old"
     h=merge_treated({"items":[]},[{"event_id":"x","status":"deleted"}],
