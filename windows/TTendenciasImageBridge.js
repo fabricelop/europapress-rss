@@ -216,7 +216,22 @@ async function openFreshDedicatedConversation(){
     return cdp
   }catch(e){
     try{cdp.close()}catch{}
-    // El target persistido pudo morir entre /json/list y la conexión. Crear uno nuevo una sola vez.
+    // A slow ChatGPT composer must NOT create another tab if the pinned
+    // target still exists. Keep the same tab for a later retry.
+    let stillPresent=false;
+    try{
+      const live=await targets();
+      stillPresent=live.some(x=>x.type==="page"&&String(x.id||"")===String(t.id||"")&&x.webSocketDebuggerUrl)
+    }catch{
+      // If CDP is unreachable, creating another target would make things worse.
+      console.log("BRIDGE FIXED TAB CHECK FAILED; not opening an additional tab");
+      throw e
+    }
+    if(stillPresent){
+      console.log("BRIDGE FIXED TAB RETAINED AFTER ERROR target="+String(t.id)+" reason="+String(e&&e.message||e).slice(0,180));
+      throw e
+    }
+    // Only create a replacement when Chrome confirms the target disappeared.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
