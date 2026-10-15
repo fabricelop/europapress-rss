@@ -648,8 +648,13 @@ def send(token,method,payload,photo=None):
             response=requests.post(base,json=payload,timeout=35)
         data=response.json()
         if not response.ok or not data.get("ok"):
+            description=str(data.get("description") or "")
             print("TELEGRAM_DELIVERY_RETRY",method,response.status_code,
-                  str(data.get("description") or "")[:100],flush=True)
+                  description[:100],flush=True)
+            if (response.status_code==400 and
+                    "message to edit not found" in description.casefold() and
+                    method in {"editMessageText","editMessageCaption","editMessageMedia","editMessageReplyMarkup"}):
+                return {"_telegram_message_gone":True}
             return None
         return data.get("result") or {}
     except (requests.RequestException,ValueError) as exc:
@@ -970,6 +975,31 @@ def process(project,now,token,chat):
             else:
                 result=send(token,"editMessageText",{"chat_id":chat,"message_id":mid,
                     "text":body,"reply_markup":kb})
+            if result and result.get("_telegram_message_gone"):
+                # Telegram confirms that the provisional card no longer exists.
+                # Keep the stale ledger row only as superseded history and create
+                # exactly one replacement card for the same event/revision.
+                replacement=send(token,"sendMessage",{"chat_id":chat,"text":body,
+                    "reply_markup":kb})
+                if not replacement or not replacement.get("message_id"):
+                    continue
+                existing.update({"status":"superseded","final":True,
+                                 "superseded_at":now.isoformat(),
+                                 "updated_at":now.isoformat()})
+                entries.append({"delivery_key":f"{eid}:r{rev}:readonly-recovered",
+                    "event_id":eid,"revision":rev,"title":card["title"],"name":card["title"],
+                    "telegram_message_id":int(replacement["message_id"]),"status":"sent",
+                    "is_photo":False,"image_url":"",
+                    "content_sha256":new_hash,"final":card["final"],
+                    "buttons_version":button_version,
+                    "started_at":str(card["start"]),"delivered_at":now.isoformat(),
+                    "source_url":str(card.get("source_url") or "")})
+                delivered+=1
+                ledger["updated_at"]=now.isoformat()
+                print("TTI_MISSING_CARD_RECREATED",eid,
+                      "old_message_id="+str(mid),
+                      "new_message_id="+str(replacement["message_id"]),flush=True)
+                continue
             if not result:continue
             existing.update({"title":card["title"],"name":card["title"],
                              "source_url":str(card.get("source_url") or existing.get("source_url") or ""),
