@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T09:15:00+02:00",
-  "last_completed_at": "2026-10-15T09:19:30+02:00",
-  "updated_at": "2026-10-15T09:19:30+02:00",
+  "last_started_at": "2026-10-15T09:45:00+02:00",
+  "last_completed_at": "2026-10-15T09:50:30+02:00",
+  "updated_at": "2026-10-15T09:50:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -25,25 +25,25 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-chat-20261015T0915+0200",
+    "run_id": "tr-chat-20261015T0945+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-15T09:15:00+02:00",
-    "updated_at": "2026-10-15T09:19:30+02:00",
-    "finished_at": "2026-10-15T09:19:30+02:00",
+    "started_at": "2026-10-15T09:45:00+02:00",
+    "updated_at": "2026-10-15T09:50:30+02:00",
+    "finished_at": "2026-10-15T09:50:30+02:00",
     "current": 1,
     "total": 1,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 1,
+      "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 1,
+      "incidents": 0,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -51,24 +51,17 @@
       "pending_repair_triggered": 1,
       "telegram_delivery_triggered": 1,
       "telegram_delivery_workflow_verified": 1,
-      "telegram_orphans": 1,
+      "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 2,
-      "pending_cards_reviewed": 2
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "remates_omitted": 0,
+      "pending_cards_reviewed": 0,
+      "fallback_images_ready": 1
     },
-    "message": "Pasada sin nuevas explicaciones: cola 0 y rewrite_pending 0. La auditoría Telegram se reejecutó y confirmó 1 huérfano heredado, Florentino (835), sin detonante único verificable.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-15T09:19:20+02:00",
-        "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "reason": "Telegram 835 sigue sent/final:false. Dos búsquedas actuales no permiten aislar un detonante único y verificable; se conserva el provisional para no inventar una causa."
-      }
-    ],
+    "message": "Pasada completada 1/1: Santa Teresa de Jesús explicada y verificada; Telegram final y auditoría limpia.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -76,70 +69,136 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "c31fb25c9d4b",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c5",
+        "selected_score": 8.8,
+        "selected_text": "🌶️ Escribió un castillo interior y Ávila hoy le pone las calles por fuera.",
+        "originality_note": "Se descartó repetir el recurso del algoritmo usado en San Francisco de Asís."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-15T09:15:00+02:00",
+        "at": "2026-10-15T09:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Preparando pasada editorial · cola nueva 0; se reabre la reparación del huérfano Florentino (Telegram 835)."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Preparando pasada editorial · 1 tendencia activa: Santa Teresa de Jesús (TT#8)."
       },
       {
-        "at": "2026-10-15T09:16:00+02:00",
+        "at": "2026-10-15T09:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Releyendo estado autoritativo de Florentino y su Telegram provisional 835."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Releyendo estado autoritativo de Santa Teresa de Jesús antes de investigar."
       },
       {
-        "at": "2026-10-15T09:16:20+02:00",
+        "at": "2026-10-15T09:46:20+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Buscando detonante actual con consultas independientes sobre Florentino y el contexto del Roma–Real Madrid."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Buscando detonante actual y contrastando la festividad del 15 de octubre con fuentes actuales."
       },
       {
-        "at": "2026-10-15T09:17:00+02:00",
+        "at": "2026-10-15T09:46:45+02:00",
         "phase": "investigating",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "Dos búsquedas distintas no aíslan un hecho único: hay debate sobre Mourinho y el Real Madrid, pero no una causa verificable del pico «Florentino»."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Hecho esencial verificado: hoy es su festividad y Ávila celebra a su patrona con misa solemne y procesión."
       },
       {
-        "at": "2026-10-15T09:17:20+02:00",
+        "at": "2026-10-15T09:47:00+02:00",
         "phase": "drafting",
-        "trend_id": "96c57ccbf332",
-        "title": "Florentino",
-        "message": "No se redacta explicación: atribuir un detonante concreto a Florentino sería especulativo."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Redactando explicación factual con dos o tres hashtags específicos."
       },
       {
-        "at": "2026-10-15T09:17:35+02:00",
+        "at": "2026-10-15T09:47:15+02:00",
+        "phase": "drafting",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Comprobando límite de X: borrador completo por debajo del límite."
+      },
+      {
+        "at": "2026-10-15T09:47:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Generando y evaluando candidatos de remate frente a los últimos ratings y evitando repetir el gag del algoritmo."
+      },
+      {
+        "at": "2026-10-15T09:47:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Remate seleccionado: referencia a «El castillo interior» y a la procesión, específica y no repetitiva."
+      },
+      {
+        "at": "2026-10-15T09:48:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes recientes: Complutense y Policía Nacional siguen sin remate por tratarse de cargas con detenidos y heridos; se conserva texto factual."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Barrera JIT superada: revisión 0 sigue activa y Santa Teresa de Jesús continúa en TT#8."
       },
       {
-        "at": "2026-10-15T09:18:05+02:00",
+        "at": "2026-10-15T09:48:10+02:00",
+        "phase": "persisting",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-15T09:48:30+02:00",
+        "phase": "persisting",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Ficha Explicada guardada; actualizando requests con la misma revisión y el mismo texto."
+      },
+      {
+        "at": "2026-10-15T09:49:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0 y rewrite_pending 0; se ha disparado la verificación Telegram mediante el push de la cola vacía."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Ficha Explicada y request coinciden exactamente en id, revisión, texto, remate y fecha."
       },
       {
-        "at": "2026-10-15T09:19:17+02:00",
+        "at": "2026-10-15T09:49:10+02:00",
+        "phase": "persisting",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Retirando revisión 0 de la cola editorial."
+      },
+      {
+        "at": "2026-10-15T09:49:40+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Auditoría Telegram reejecutada: 1 huérfano confirmado, Florentino (835); cola editorial continúa en 0."
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-15T09:19:30+02:00",
+        "at": "2026-10-15T09:50:00+02:00",
+        "phase": "verifying",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Telegram 840 actualizado a final:true; el reparador añadió fallback de archivo válido."
+      },
+      {
+        "at": "2026-10-15T09:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": "c31fb25c9d4b",
+        "title": "Santa Teresa de Jesús",
+        "message": "Tendencia cerrada y verificada; cola, rewrite_pending y huérfanos Telegram quedan en 0."
+      },
+      {
+        "at": "2026-10-15T09:50:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada con 0 nuevas explicaciones y 1 incidencia heredada no resuelta; sin ImageGen directo."
+        "message": "Pasada completada 1/1: Santa Teresa de Jesús explicada y verificada; sin incidencias."
       }
     ],
     "queue_complete": true,
