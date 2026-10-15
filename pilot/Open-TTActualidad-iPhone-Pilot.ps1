@@ -32,7 +32,7 @@ Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
 if(!$html.Contains('async function pilotPairFromUrl()') -or !$html.Contains('ttactualidad-pair') -or !$html.Contains('pilotSend(item,decision)')){
  throw 'Version inesperada del piloto, no se despliega.'
 }
-$siteBackup=$site+'.before-iphone-pair.bak'
+$siteBackup=Join-Path $root 'index.before-iphone-pair.bak'
 if(!(Test-Path -LiteralPath $siteBackup)){Copy-Item -LiteralPath $site -Destination $siteBackup}
 [IO.File]::WriteAllText($site,$html,([Text.UTF8Encoding]::new($false)))
 Push-Location $root
