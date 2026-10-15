@@ -1,0 +1,52 @@
+name: TT · retirar fotos de archivo de Telegram
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "shared/telegram_archive_cleanup.py"
+permissions:
+  contents: write
+concurrency:
+  group: tt-cleanup-archive-photos
+  cancel-in-progress: false
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Dependencias y validacion
+        run: |
+          python3 -m pip install --disable-pip-version-check -q requests pillow
+          python3 -m py_compile shared/telegram_archive_cleanup.py shared/telegram_readonly_delivery.py
+      - name: Retirar multimedia y botones de TTendencias y TTiTTulares
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
+        run: |
+          set -euo pipefail
+          git fetch origin main && git reset --hard origin/main
+          python3 shared/telegram_archive_cleanup.py ttittulares --execute --patch /tmp/tti-archive-cleanup.json
+          python3 shared/telegram_archive_cleanup.py ttendencias --execute --patch /tmp/trends-archive-cleanup.json
+      - name: Guardar cambios confirmados sin repetir envios
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6; do
+            git fetch origin main && git reset --hard origin/main
+            python3 shared/telegram_archive_cleanup.py ttittulares --apply --patch /tmp/tti-archive-cleanup.json
+            python3 shared/telegram_archive_cleanup.py ttendencias --apply --patch /tmp/trends-archive-cleanup.json
+            git add telegram/ttittulares-deliveries.json trends/telegram-image-deliveries.json telegram/cleanup-archive-media-ttittulares.json telegram/cleanup-archive-media-ttendencias.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Registrar retirada de fotografias de archivo en Telegram"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$((attempt * 2))"
+          done
+          echo "No se pudo guardar la auditoria de la limpieza" >&2
+          exit 1
