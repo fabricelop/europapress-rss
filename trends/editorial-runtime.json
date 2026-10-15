@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T13:15:30+02:00",
-  "last_completed_at": "2026-10-15T13:19:00+02:00",
-  "updated_at": "2026-10-15T13:19:00+02:00",
+  "last_started_at": "2026-10-15T15:16:00+02:00",
+  "last_completed_at": "2026-10-15T15:21:00+02:00",
+  "updated_at": "2026-10-15T15:21:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "83bede769c7e"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,23 +16,24 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "running",
+    "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261015T1245+0200",
-    "requested_at": "2026-10-15T12:45:00+02:00",
-    "reason": "execution-start-pending-repair"
+    "run_id": "tr-chat-20261015T1516+0200",
+    "requested_at": "2026-10-15T15:16:00+02:00",
+    "reason": "execution-start-pending-repair",
+    "workflow_run_id": 38741563546
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261015T1315+0200",
+    "run_id": "tr-chat-20261015T1516+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T13:15:30+02:00",
-    "updated_at": "2026-10-15T13:19:00+02:00",
-    "finished_at": "2026-10-15T13:19:00+02:00",
+    "started_at": "2026-10-15T15:16:00+02:00",
+    "updated_at": "2026-10-15T15:21:00+02:00",
+    "finished_at": "2026-10-15T15:21:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -48,7 +47,7 @@
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 1,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -56,21 +55,27 @@
       "pending_repair_triggered": 1,
       "visual_repair_workflow_started": 1,
       "visual_repair_workflow_verified": 1,
-      "telegram_delivery_triggered": 0,
-      "telegram_delivery_workflow_verified": 0,
+      "telegram_delivery_triggered": 1,
+      "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_reviewed": 0,
-      "recent_closer_reviews": 31,
+      "recent_closer_reviews": 28,
       "recent_no_closer_excluded": 2,
       "fallback_images_ready": 0
     },
-    "message": "Pasada 0/0 cerrada y verificada; saneamiento visual completado correctamente.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada 0/0 cerrada y verificada; cola y Telegram limpios. Queda una incidencia no bloqueante: el reparador conserva un paso legacy de fotos de archivo.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "code": "legacy_archive_step_still_enabled",
+        "severity": "warning",
+        "message": "El workflow repair-ttendencias-explicadas.yml aún contiene el paso «Recuperar imágenes de archivo», contrario a la política vigente de no usar fotos de archivo. En esta pasada no modificó telegram-manual-explained.json."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -81,65 +86,65 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T13:15:30+02:00",
+        "at": "2026-10-15T15:16:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola autoritativa inicial 0."
       },
       {
-        "at": "2026-10-15T13:16:20+02:00",
+        "at": "2026-10-15T15:17:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-15T13:16:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Explicadas recientes: 31 fichas; 2 sin remate están borradas y no requieren reparación."
-      },
-      {
-        "at": "2026-10-15T13:17:05+02:00",
+        "at": "2026-10-15T15:17:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Auditoría Telegram verificada: 0 huérfanos sin resolver."
       },
       {
-        "at": "2026-10-15T13:17:20+02:00",
+        "at": "2026-10-15T15:18:21+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reparador visual de Pendientes iniciado por el trigger de esta pasada."
+        "message": "Reparador visual de Explicadas iniciado por el trigger de esta pasada."
       },
       {
-        "at": "2026-10-15T13:18:20+02:00",
+        "at": "2026-10-15T15:20:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: la cola sigue en 0 y no hay reexplicaciones activas."
+        "message": "Reparador visual finalizado correctamente; Explicadas no cambió en esta ejecución."
       },
       {
-        "at": "2026-10-15T13:19:00+02:00",
+        "at": "2026-10-15T15:20:24+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Workflow informativo de Telegram completado correctamente; auditoría sigue en 0 huérfanos."
+      },
+      {
+        "at": "2026-10-15T15:21:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; saneamiento visual completado correctamente."
+        "message": "Pasada 0/0 cerrada y verificada con una incidencia no bloqueante de configuración legacy de fotos de archivo."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false
   },
-  "run_id": "tr-chat-20261015T1245+0200",
+  "run_id": "tr-chat-20261015T1516+0200",
   "summary": {
-    "trends_processed": 1,
-    "trends_explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -150,110 +155,70 @@
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
+    "visual_repair_workflow_started": 1,
     "visual_repair_workflow_verified": 1,
     "telegram_delivery_triggered": 1,
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
-    "pending_cards_reviewed": 3,
-    "recent_closer_reviews": 3,
+    "pending_cards_reviewed": 0,
+    "recent_closer_reviews": 28,
+    "recent_no_closer_excluded": 2,
     "fallback_images_ready": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-15T12:45:00+02:00",
+      "at": "2026-10-15T15:16:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · cola autoritativa inicial 1."
+      "message": "Preparando pasada editorial · cola autoritativa inicial 0."
     },
     {
-      "at": "2026-10-15T12:46:00+02:00",
+      "at": "2026-10-15T15:17:10+02:00",
       "phase": "verifying",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Releyendo estado autoritativo de #VuelveSwitchSports."
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
     },
     {
-      "at": "2026-10-15T12:46:20+02:00",
-      "phase": "investigating",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Buscando detonante actual y contrastando fuentes."
-    },
-    {
-      "at": "2026-10-15T12:47:00+02:00",
-      "phase": "investigating",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Hecho esencial verificado: sorteo de NextN con etiqueta obligatoria."
-    },
-    {
-      "at": "2026-10-15T12:47:20+02:00",
-      "phase": "drafting",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-15T12:47:40+02:00",
-      "phase": "remate_selection",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Evaluando candidatos con ratings y control de repetición."
-    },
-    {
-      "at": "2026-10-15T12:48:00+02:00",
-      "phase": "remate_selection",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Remate seleccionado; texto completo queda dentro del límite."
-    },
-    {
-      "at": "2026-10-15T12:48:10+02:00",
-      "phase": "persisting",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Guardando ficha Explicada y sincronizando la revisión 0."
-    },
-    {
-      "at": "2026-10-15T12:49:10+02:00",
+      "at": "2026-10-15T15:17:40+02:00",
       "phase": "verifying",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Conflicto GitHub 409 detectado; releyendo y reconciliando sin duplicar."
+      "trend_id": null,
+      "title": null,
+      "message": "Auditoría Telegram verificada: 0 huérfanos sin resolver."
     },
     {
-      "at": "2026-10-15T12:49:40+02:00",
+      "at": "2026-10-15T15:18:21+02:00",
       "phase": "verifying",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Requests y Explicadas coinciden; retirando la revisión exacta de la cola."
+      "trend_id": null,
+      "title": null,
+      "message": "Reparador visual de Explicadas iniciado por el trigger de esta pasada."
     },
     {
-      "at": "2026-10-15T12:50:40+02:00",
+      "at": "2026-10-15T15:20:10+02:00",
       "phase": "verifying",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
+      "trend_id": null,
+      "title": null,
+      "message": "Reparador visual finalizado correctamente; Explicadas no cambió en esta ejecución."
     },
     {
-      "at": "2026-10-15T12:51:00+02:00",
+      "at": "2026-10-15T15:20:24+02:00",
       "phase": "verifying",
-      "trend_id": "83bede769c7e",
-      "title": "#VuelveSwitchSports",
-      "message": "Telegram final confirmado en message_id 843; auditoría sin huérfanos."
+      "trend_id": null,
+      "title": null,
+      "message": "Workflow informativo de Telegram completado correctamente; auditoría sigue en 0 huérfanos."
     },
     {
-      "at": "2026-10-15T12:51:30+02:00",
+      "at": "2026-10-15T15:21:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 1/1 cerrada y verificada; reparación visual independiente en curso."
+      "message": "Pasada 0/0 cerrada y verificada con una incidencia no bloqueante de configuración legacy de fotos de archivo."
     }
   ],
   "telegram_orphans": 0,
