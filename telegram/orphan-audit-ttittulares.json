@@ -1,24 +1,36 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-15T00:50:32.097593+00:00",
+  "checked_at": "2026-10-15T01:30:01.643776+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 265,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 1,
+  "unresolved_count": 2,
   "unresolved": [
     {
       "key": "provisional:acd8b9c1cdec:3951",
       "id": "acd8b9c1cdec",
       "message_id": 3951,
       "title": "Muere una anciana de 82 años al desplomarse el ascensor de una residencia en Vélez-Málaga - Telecinco",
-      "age_min": 55.2,
+      "age_min": 94.7,
+      "reason": "No consta explicación definitiva"
+    },
+    {
+      "key": "provisional:b31ceec2a07a:3952",
+      "id": "b31ceec2a07a",
+      "message_id": 3952,
+      "title": "Un juez de Nueva York cita a declarar este jueves a Nicolás Maduro y a su esposa, Cilia Flores",
+      "age_min": 48.5,
       "reason": "No consta explicación definitiva"
     }
   ],
   "alerted": {
     "provisional:acd8b9c1cdec:3951": {
       "signature": "c227db99ff1c3ac246",
+      "notified_at": null
+    },
+    "provisional:b31ceec2a07a:3952": {
+      "signature": "bed173309e81ad4b08",
       "notified_at": null
     }
   },
