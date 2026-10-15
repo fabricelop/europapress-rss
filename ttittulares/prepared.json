@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-15T23:37:29.469276Z",
+  "updated_at": "2026-10-15T23:40:21.718Z",
   "items": [
     {
       "event_id": "dc73fea88eb1",
@@ -350,7 +350,7 @@
       "with_image": true,
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
@@ -383,7 +383,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Al menos cuatro muertos, entre ellos tres menores, en un tiroteo en una escuela de primaria de Oregón"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-15T23:40:21.718Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 0,
