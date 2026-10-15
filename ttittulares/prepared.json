@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-15T05:30:19.403Z",
+  "updated_at": "2026-10-15T05:33:39.624Z",
   "items": [
     {
       "event_id": "b7985077b625",
@@ -363,7 +363,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "disabled",
+      "ai_image_status": "failed",
       "disable_ai_image": true,
       "sensitive_image_reason": "Fallecimiento: evitar caricaturizar a víctimas o fallecidos",
       "image_choice": "fallback",
@@ -388,7 +388,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Muere una anciana de 82 años al desplomarse el ascensor de una residencia en Vélez-Málaga - Telecinco"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-15T05:33:39.624Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     },
     {
       "event_id": "4324e84abd54",
