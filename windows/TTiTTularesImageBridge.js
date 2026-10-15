@@ -111,6 +111,9 @@ async function writeFixedTabState(t){
   }catch(e){console.log("BRIDGE FIXED TAB STATE WARNING :: "+String(e&&e.message||e))}
 }
 async function createFixedTarget(){
+  // Snapshot targets first: a timed-out Target.createTarget may still have
+  // created a tab. Never blindly fall back to /json/new in that case.
+  const existingIds=new Set((await targets()).map(x=>String(x&&x.id||"")));
   // Vía preferida: Browser CDP -> Target.createTarget. Es estable y mantiene
   // exactamente la misma sesión/perfil de Chrome que ya está autenticada.
   try{
@@ -142,6 +145,20 @@ async function createFixedTarget(){
     console.log("BRIDGE FIXED TAB CREATE PRIMARY WARNING :: "+String(e&&e.message||e))
   }
 
+  // If Chrome created the target but its CDP acknowledgement was lost,
+  // adopt that target rather than opening a duplicate.
+  let appeared;
+  try{
+    appeared=(await targets()).filter(x=>x.type==="page"&&x.webSocketDebuggerUrl&&!existingIds.has(String(x.id||"")))
+  }catch(e){
+    throw Error("CDP no disponible tras createTarget; no se abrirá otra pestaña: "+String(e&&e.message||e))
+  }
+  if(appeared.length===1){
+    await writeFixedTabState(appeared[0]);
+    console.log("BRIDGE FIXED TAB RECOVERED LOST ACK target="+String(appeared[0].id));
+    return appeared[0]
+  }
+  if(appeared.length>1)throw Error("Nuevos targets ambiguos tras timeout; no duplicar pestañas");
   // Compatibilidad para Chromes que no permitan Target.createTarget en el
   // browser websocket.
   const url=BASE_CDP+"/json/new?"+encodeURIComponent(CHAT_ROOT);
