@@ -63,7 +63,20 @@ $health = [ordered]@{
 
 $health | ConvertTo-Json -Depth 8 | Set-Content -Path $healthPath -Encoding UTF8
 
+$gitLock = Join-Path $runtime 'git-publish.lock'
+$lockAcquired = $false
 try {
+    # The search/report and published importer use the same lock file.
+    # If either is publishing, defer this optional health upload instead.
+    $lockStream = [System.IO.File]::Open($gitLock, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+    try {
+        $lockJson = '{"pid":' + $PID + ',"started":"' + (Get-Date).ToUniversalTime().ToString('o') + '"}'
+        $lockBytes = [System.Text.Encoding]::UTF8.GetBytes($lockJson)
+        $lockStream.Write($lockBytes, 0, $lockBytes.Length)
+    } finally {
+        $lockStream.Dispose()
+    }
+    $lockAcquired = $true
     & git add -- $healthRepoPath
     & git diff --cached --quiet -- $healthRepoPath
     if ($LASTEXITCODE -ne 0) {
@@ -72,15 +85,26 @@ try {
 
         & git push origin main
         if ($LASTEXITCODE -ne 0) {
-            & git pull --rebase --autostash origin main
-            if ($LASTEXITCODE -ne 0) { throw "git pull --rebase fallo con codigo $LASTEXITCODE" }
+            & git fetch origin main
+            if ($LASTEXITCODE -ne 0) { throw "git fetch fallo con codigo $LASTEXITCODE" }
+            & git rebase --autostash refs/remotes/origin/main
+            if ($LASTEXITCODE -ne 0) { throw "git rebase fallo con codigo $LASTEXITCODE" }
             & git push origin main
             if ($LASTEXITCODE -ne 0) { throw "git push fallo con codigo $LASTEXITCODE" }
         }
     }
     Write-Host 'Estado local SeLoRecordamos publicado en GitHub.' -ForegroundColor Green
 } catch {
-    Write-Warning ("No se pudo publicar local-health.json: " + $_.Exception.Message)
+    Write-Warning ("Estado Git ocupado o error al publicar local-health.json: " + $_.Exception.Message)
+} finally {
+    if ($lockAcquired) {
+        try {
+            $lockOwner = Get-Content -Raw $gitLock | ConvertFrom-Json
+            if ([int]$lockOwner.pid -eq $PID) {
+                Remove-Item -LiteralPath $gitLock -Force -ErrorAction SilentlyContinue
+            }
+        } catch {}
+    }
 }
 
 Write-Host ''
