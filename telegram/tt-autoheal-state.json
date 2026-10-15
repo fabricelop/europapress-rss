@@ -2,39 +2,65 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-14T22:53:16.113533+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-15T00:33:58.394297+00:00",
+      "issue_count": 2,
+      "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "acd8b9c1cdec",
+          "title": "Muere una anciana de 82 años al desplomarse el ascensor de una residencia en Vélez-Málaga - Telecinc",
+          "seconds": 2335,
+          "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 4166,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "cea3c372fc521f6ba88a6a521dd1e262873b0945ae8f863c43a020d3c6e48e66",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-14T22:53:16.113533+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-15T00:33:58.394297+00:00",
+      "issue_count": 2,
       "issues": [
         {
           "kind": "orphan_provisional",
           "id": "96c57ccbf332",
           "title": "Florentino",
-          "seconds": 4859,
+          "seconds": 10901,
           "workflow": null
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 4166,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "2faa24fd9f0027a012a58d03e901fb7602cbdac0b779c46ab12cedf3c9bdc0c7",
+      "open_signature": "27c27704910544e162578ef8185bcc236d75ed2c1c3897890a5d5faad0d79fec",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-14T22:12:00.785830+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-14T22:12:00.785830+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-14T22:12:00.785830+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-14T22:53:16.113533+00:00"
+  "checked_at": "2026-10-15T00:33:58.394297+00:00"
 }
