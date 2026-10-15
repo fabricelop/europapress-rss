@@ -24,8 +24,8 @@ TIMEOUT_MINUTES=60
 MAX_AGE=timedelta(days=7)  # Existing cards and repairable final Listas entries; provisional first sends stay <=12h
 PHOTO_TIMEOUT=(2.5,3.0)
 PHOTO_MAX_BYTES=7_000_000
-BUTTONS_VERSION=15  # TTendencias: re-explain inline
-TTI_BUTTONS_VERSION=17  # Provisional: full native controls and archive image
+BUTTONS_VERSION=16  # TTendencias: no archive media
+TTI_BUTTONS_VERSION=18  # TTiTTulares: no archive media
 IMAGE_APP="https://chatgpt.com/images"
 TTI_ORIGIN="https://tt-control.fabricelop.workers.dev"
 TTEND_ORIGIN="https://tt-control.fabricelop.workers.dev"
@@ -606,17 +606,7 @@ def keys(card,project):
             copy_x,
             {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
         ])
-        # Never copy a generated AI image as if it were an archival photograph.
-        if str(card.get("image") or "").startswith("https://"):
-            photo_args={"id":str(card["id"]),"rev":str(card["rev"])}
-            if project=="ttendencias":photo_args["app"]="ttendencias"
-            photo="https://fabricelop.github.io/europapress-rss/photo.html?"+urlencode(photo_args)
-            rows.append([
-                {"text":"📷 Copiar foto de archivo","url":photo},
-                {"text":"🔎 Buscar en X","url":search}
-            ])
-        else:
-            rows.append([{"text":"🔎 Buscar en X","url":search}])
+        rows.append([{"text":"🔎 Buscar en X","url":search}])
     elif project=="ttittulares" and x_text:
         # Provisional does not mean unusable: copy/compose X is available
         # immediately, with a visible verification warning in the draft.
@@ -630,15 +620,7 @@ def keys(card,project):
             {"text":"📋 Copiar borrador para X","copy_text":{"text":x_text[:256]}},
             {"text":"↗ Abrir en X","url":"https://twitter.com/intent/tweet?text="+quote(x_text,safe="")}
         ])
-        if str(card.get("image") or "").startswith("https://"):
-            photo="https://fabricelop.github.io/europapress-rss/photo.html?"+urlencode(
-                {"id":str(card["id"]),"rev":str(card["rev"])})
-            rows.append([
-                {"text":"📷 Copiar foto de archivo","url":photo},
-                {"text":"🔎 Buscar en X","url":search}
-            ])
-        else:
-            rows.append([{"text":"🔎 Buscar en X","url":search}])
+        rows.append([{"text":"🔎 Buscar en X","url":search}])
         source_url=str(card.get("source_url") or "")
         if source_url.startswith("https://"):
             rows.append([{"text":"🔗 Fuente original","url":source_url}])
@@ -937,66 +919,22 @@ def process(project,now,token,chat):
             if not (project=="ttittulares" and card.get("final") and started):
                 skipped+=1;continue
         button_version=TTI_BUTTONS_VERSION if project=="ttittulares" else BUTTONS_VERSION
-        # Existing archive photographs and already-posted replies survive
-        # editorial updates even when the new READY row omits the URL.
-        if existing and not card["image"]:
-            for field in ("image_url","archive_image_url"):
-                retained=str(existing.get(field) or "")
-                if retained.startswith("https://"):
-                    card["image"]=retained
-                    break
-        photo_url=card["image"]
+        # Archive-photo delivery is disabled for both editorial projects.
+        # Keep old media identity only until it is cleaned from Telegram.
+        card["image"]=""
+        photo_url=""
         image_data=None
         old_photo=bool(existing and (existing.get("is_photo") or existing.get("image_sha256")))
-        is_late_photo=bool(project=="ttittulares" and existing and not old_photo
-                           and not int(existing.get("archive_telegram_message_id") or 0))
-        # First provisional delivery tries the same fast archive lookup as a
-        # completed news story. The lookup is bounded; it must never block
-        # urgent text delivery.
-        if not photo_url and project=="ttittulares" and card["final"] and (not existing or is_late_photo):
-            last=date(existing.get("archive_checked_at")) if existing else None
-            if last is None or now-last>=timedelta(minutes=20):
-                photo_url=fast_archive_from_article(card.get("source_url",""))
-                if existing:
-                    existing["archive_checked_at"]=now.isoformat()
-                    ledger["updated_at"]=now.isoformat()
-                    # Persist the throttle even if neither text nor photo
-                    # changes; otherwise a busy radar can refetch the same
-                    # unreachable article every ten minutes.
-                    put(path,ledger)
-        if not existing or old_photo or is_late_photo:
-            image_data=archival_image(photo_url) if photo_url else None
-            if not image_data and project=="ttendencias" and not existing:
-                for article in card.get("archive_articles",[])[:2]:
-                    candidate=fast_archive_from_article(article)
-                    image_data=archival_image(candidate) if candidate else None
-                    if image_data:
-                        photo_url=candidate
-                        break
-        # Offer "copy archive photo" only for a photo actually sent to
-        # Telegram, or the verified original already recorded in the ledger.
-        if photo_url and (image_data or (existing and
-                (existing.get("is_photo") or existing.get("archive_telegram_message_id")))):
-            card["image"]=photo_url
-        else:
-            card["image"]=""
-        if project=="ttittulares" and card["final"] and existing:
-            pass  # launch-only: no se recuperan imágenes automáticas
+        is_late_photo=False
         body=card["text"]
         if project in {"ttittulares","ttendencias"} and card["final"]:
             note=card.get("ai_note") or ""
             if note:body=body[:max(0,1024-len(note)-2)]+"\n\n"+note
-        if project=="ttittulares" and not card["final"] and not card["image"]:
-            body=body.replace("📷 Fotografía de archivo disponible.",
-                              "📷 Fotografía de archivo pendiente.")
-        if project=="ttittulares" and not card["final"]:
-            if image_data or (existing and (existing.get("is_photo") or
-                    existing.get("archive_telegram_message_id"))):
-                note=("📷 Fotografía de archivo añadida como respuesta."
-                      if existing and not old_photo else
-                      "📷 Fotografía de archivo disponible.")
-                body=(body.replace("📷 Fotografía de archivo pendiente.",note)
-                          .replace("📷 Fotografía de archivo disponible.",note))
+        for obsolete_note in ("📷 Fotografía de archivo pendiente.",
+                              "📷 Fotografía de archivo disponible.",
+                              "📷 Fotografía de archivo añadida como respuesta."):
+            body=body.replace(obsolete_note,"")
+        body=body.strip()
         kb=keys(card,project)
         # The digest includes the actual displayed text, not an image URL that
         # was fetched but could not be sent. Preserve the same Telegram card ID.
@@ -1022,33 +960,6 @@ def process(project,now,token,chat):
                     continue
         if existing:
             mid=int(existing["telegram_message_id"])
-            # Telegram cannot turn a text message into a photo in place.
-            # Attach ONE photo as a reply and keep editing the ORIGINAL text
-            # message. Persist its ID before trying to edit the original, so
-            # a failed edit cannot create another identical photo.
-            if is_late_photo and image_data:
-                caption="📷 Foto de archivo · "+trim(card["title"],180)
-                companion=send(token,"sendPhoto",{
-                    "chat_id":chat,"caption":caption,
-                    "reply_to_message_id":mid},image_data)
-                if companion and companion.get("message_id"):
-                    existing["archive_telegram_message_id"]=int(companion["message_id"])
-                    existing["archive_image_url"]=photo_url
-                    existing["archive_attached_at"]=now.isoformat()
-                    existing["updated_at"]=now.isoformat()
-                    ledger["updated_at"]=now.isoformat()
-                    put(path,ledger)  # crash-safe auxiliary message identity
-                    card["image"]=photo_url
-                    kb=keys(card,project)
-                    if not card["final"]:
-                        body=body.replace("📷 Fotografía de archivo disponible.",
-                                          "📷 Fotografía de archivo añadida como respuesta.")
-                    new_hash=hashlib.sha256((body+"|"+card["image"]).encode("utf-8")).hexdigest()
-                else:
-                    card["image"]=""
-                    kb=keys(card,project)
-                    body=card["text"]
-                    new_hash=hashlib.sha256((body+"|").encode("utf-8")).hexdigest()
             if old_photo and image_data:
                 result=send(token,"editMessageMedia",{"chat_id":chat,"message_id":mid,
                     "media":{"type":"photo","media":"attach://photo","caption":body},
@@ -1223,8 +1134,7 @@ def selftest():
     assert [b["text"] for row in kb for b in row].count("🎨 Chat Images")==1
     assert not any("GAG rápido" in b["text"] for row in kb for b in row)
     assert [b["text"] for b in kb[1]]==["📋 Copiar en X","↗ Abrir en X"]
-    assert [b["text"] for b in kb[2]]==["📷 Copiar foto de archivo","🔎 Buscar en X"]
-    assert kb[2][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/photo.html?id=abc123&rev=1")
+    assert [b["text"] for b in kb[2]]==["🔎 Buscar en X"]
     assert kb[0][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/gag.html")
     assert kb[-1][0]["callback_data"]=="tt:b:abc123"
     no_photo=keys(card,"ttittulares")["inline_keyboard"]
@@ -1235,9 +1145,7 @@ def selftest():
     assert not any("GAG rápido" in b["text"] for row in trends_kb for b in row)
     assert [b["text"] for b in trends_kb[1]]==["📋 Copiar en X","↗ Abrir en X"]
     assert trends_kb[1][0]["copy_text"]["text"]==card["x_text"]
-    assert [b["text"] for b in trends_kb[2]]==["📷 Copiar foto de archivo","🔎 Buscar en X"]
-    assert "app=ttendencias" in trends_kb[2][0]["url"]
-    assert trends_kb[2][0]["url"].startswith("https://fabricelop.github.io/europapress-rss/photo.html?")
+    assert [b["text"] for b in trends_kb[2]]==["🔎 Buscar en X"]
     assert trends_kb[-2][0]["callback_data"]=="tx:r:abc123:1"
     assert trends_kb[-1][0]["callback_data"]=="tx:b:abc123:1"
     trends_no_photo=keys(card,"ttendencias")["inline_keyboard"]
@@ -1267,9 +1175,7 @@ def selftest():
         "📄 GAG completo (copiar)","📋 Copiar borrador para X",
         "🔎 Buscar en X","🗑️ Borrar"]
     photo_pending=keys({**provisional,"image":"https://img.example.org/news.jpg"},"ttittulares")["inline_keyboard"]
-    assert photo_pending[2][0]["text"]=="📷 Copiar foto de archivo"
-    assert photo_pending[2][0]["url"].startswith(
-        "https://fabricelop.github.io/europapress-rss/photo.html?")
+    assert photo_pending[2][0]["text"]=="🔎 Buscar en X"
     pending_trends=keys({**card,"final":False,"x_text":""},"ttendencias")["inline_keyboard"]
     assert [row[0]["text"] for row in pending_trends]==["🔎 Buscar en X","🗑️ Borrar"]
     import tempfile
@@ -1337,15 +1243,14 @@ def selftest():
             assert "Remate exacto" in finished[0]["text"]
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(0,1), "A final item must EDIT the first message"
-            assert methods[-2:]==[("sendPhoto",0,991,True),
-                                   ("editMessageText",991,0,False)]
-            assert sum(method=="sendPhoto" for method,*_ in methods)==1
+            assert methods[-1:]==[("editMessageText",991,0,False)]
+            assert not any(method=="sendPhoto" for method,*_ in methods)
             final_ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             assert len(final_ledger["items"])==1, "Never send a duplicate Telegram card"
             assert final_ledger["items"][0]["telegram_message_id"]==991
             assert final_ledger["items"][0]["final"]
             assert final_ledger["items"][0]["revision"]==2
-            assert final_ledger["items"][0]["archive_telegram_message_id"]==992
+            assert not final_ledger["items"][0].get("archive_telegram_message_id")
             # Foto disponible desde el principio: solo titular en Elaboración.
             # Al pasar a Listas, se añade una única fotografía como respuesta.
             put("telegram/editorial-processing.json",{"items":[{
@@ -1358,7 +1263,7 @@ def selftest():
             assert n_sent==1 and methods[-1]==("sendMessage",0,0,False)
             ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             new=next(x for x in ledger["items"] if x["event_id"]=="photo123")
-            assert not new["is_photo"] and new["telegram_message_id"]==993
+            assert not new["is_photo"] and new["telegram_message_id"]==992
             assert len(ledger["items"])==2
             put("ttittulares/prepared.json",{"items":[{
                 "event_id":"photo123","revision":2,
@@ -1373,12 +1278,11 @@ def selftest():
             before=len(methods)
             n_sent,n_updated=process("ttittulares",now,"mock","mockchat")
             assert (n_sent,n_updated)==(0,1)
-            assert methods[before:]==[("sendPhoto",0,993,True),
-                                       ("editMessageText",993,0,False)]
+            assert methods[before:]==[("editMessageText",992,0,False)]
             ledger=load("telegram/ttittulares-deliveries.json",{"items":[]})
             updated_photo=next(x for x in ledger["items"] if x["event_id"]=="photo123")
-            assert updated_photo["telegram_message_id"]==993 and updated_photo["final"]
-            assert updated_photo["archive_telegram_message_id"]==994
+            assert updated_photo["telegram_message_id"]==992 and updated_photo["final"]
+            assert not updated_photo.get("archive_telegram_message_id")
             assert len(ledger["items"])==2,"Final photo must edit the first card"
     finally:
         globals()["ROOT"]=original_root
