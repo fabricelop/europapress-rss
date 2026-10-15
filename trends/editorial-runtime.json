@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T08:53:00+02:00",
-  "last_completed_at": "2026-10-15T08:59:40+02:00",
-  "updated_at": "2026-10-15T08:59:40+02:00",
+  "last_started_at": "2026-10-15T09:15:00+02:00",
+  "last_completed_at": "2026-10-15T09:19:30+02:00",
+  "updated_at": "2026-10-15T09:19:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -25,23 +25,23 @@
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-autoguard-1792042694",
+    "run_id": "tr-chat-20261015T0915+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T08:53:00+02:00",
-    "updated_at": "2026-10-15T08:59:40+02:00",
-    "finished_at": "2026-10-15T08:59:40+02:00",
+    "started_at": "2026-10-15T09:15:00+02:00",
+    "updated_at": "2026-10-15T09:19:30+02:00",
+    "finished_at": "2026-10-15T09:19:30+02:00",
     "current": 1,
     "total": 1,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
       "incidents": 1,
       "queue_remaining": 0,
@@ -53,20 +53,20 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 1,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 2,
       "pending_cards_reviewed": 2
     },
-    "message": "Pasada 1/1: Óscar López r0 explicado y verificado; cola 0 y rewrite_pending 0. Telegram informativo OK. La reparación visual automática quedó iniciada. Persiste el huérfano previo Florentino (835).",
+    "message": "Pasada sin nuevas explicaciones: cola 0 y rewrite_pending 0. La auditoría Telegram se reejecutó y confirmó 1 huérfano heredado, Florentino (835), sin detonante único verificable.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-15T08:59:25+02:00",
+        "at": "2026-10-15T09:19:20+02:00",
         "phase": "verifying",
         "trend_id": "96c57ccbf332",
         "title": "Florentino",
-        "reason": "Telegram 835 sigue como huérfano previo sin explicación definitiva. La request r0 está inactiva por salida del Top 10 y no se atribuye un detonante no verificado."
+        "reason": "Telegram 835 sigue sent/final:false. Dos búsquedas actuales no permiten aislar un detonante único y verificable; se conserva el provisional para no inventar una causa."
       }
     ],
     "ratings_snapshot": {
@@ -76,167 +76,75 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "d66d35a478be",
-        "name": "Óscar López",
-        "closer_text": "🌶️ El recurso de alzada no consiguió subir ni una planta.",
-        "candidates_count": 5,
-        "ratings_used": true,
-        "originality_check": "passed",
-        "selected_score": 5
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T08:53:20+02:00",
+        "at": "2026-10-15T09:15:00+02:00",
         "phase": "preparing",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Preparando pasada editorial · 1 entrada activa; saneamiento visual solicitado."
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Preparando pasada editorial · cola nueva 0; se reabre la reparación del huérfano Florentino (Telegram 835)."
       },
       {
-        "at": "2026-10-15T08:54:00+02:00",
+        "at": "2026-10-15T09:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Releyendo estado autoritativo de Óscar López."
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Releyendo estado autoritativo de Florentino y su Telegram provisional 835."
       },
       {
-        "at": "2026-10-15T08:54:05+02:00",
-        "phase": "verifying",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "JIT confirmado: d66d35a478be r0 sigue preparing y no existe revisión explicada posterior."
-      },
-      {
-        "at": "2026-10-15T08:54:10+02:00",
+        "at": "2026-10-15T09:16:20+02:00",
         "phase": "investigating",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Buscando detonante actual."
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Buscando detonante actual con consultas independientes sobre Florentino y el contexto del Roma–Real Madrid."
       },
       {
-        "at": "2026-10-15T08:55:00+02:00",
+        "at": "2026-10-15T09:17:00+02:00",
         "phase": "investigating",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Contrastando fuente 2/2 y el alcance exacto de la resolución de Muface."
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "Dos búsquedas distintas no aíslan un hecho único: hay debate sobre Mourinho y el Real Madrid, pero no una causa verificable del pico «Florentino»."
       },
       {
-        "at": "2026-10-15T08:55:35+02:00",
-        "phase": "investigating",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Hecho esencial verificado: una resolución vinculada al ministerio desestimó el recurso de un inquilino de Muface y confirmó la extinción del contrato."
-      },
-      {
-        "at": "2026-10-15T08:55:45+02:00",
+        "at": "2026-10-15T09:17:20+02:00",
         "phase": "drafting",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Redactando explicación factual con tres hashtags específicos."
+        "trend_id": "96c57ccbf332",
+        "title": "Florentino",
+        "message": "No se redacta explicación: atribuir un detonante concreto a Florentino sería especulativo."
       },
       {
-        "at": "2026-10-15T08:55:55+02:00",
-        "phase": "drafting",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Comprobando límite de X: texto final 248 caracteres Unicode, por debajo del máximo editorial."
-      },
-      {
-        "at": "2026-10-15T08:56:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-15T08:56:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Evaluando candidatos con ratings y las últimas 30 explicaciones para evitar repeticiones."
-      },
-      {
-        "at": "2026-10-15T08:56:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Remate seleccionado: juego burocrático con «recurso de alzada», sin dirigir la sátira al inquilino."
-      },
-      {
-        "at": "2026-10-15T08:56:25+02:00",
-        "phase": "persisting",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Guardando ficha Explicada y sincronizando la revisión exacta en requests."
-      },
-      {
-        "at": "2026-10-15T08:56:55+02:00",
-        "phase": "verifying",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Releyendo main y verificando id+revision, explanation, closer_text y explained_at."
-      },
-      {
-        "at": "2026-10-15T08:57:10+02:00",
-        "phase": "persisting",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Retirando revisión de la cola tras validar la persistencia atómica."
-      },
-      {
-        "at": "2026-10-15T08:59:05+02:00",
-        "phase": "verifying",
-        "trend_id": "d66d35a478be",
-        "title": "Óscar López",
-        "message": "Tendencia cerrada y verificada; Telegram informativo completado con éxito."
-      },
-      {
-        "at": "2026-10-15T08:59:15+02:00",
+        "at": "2026-10-15T09:17:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes recientes: dos explicaciones sin remate corresponden a cargas policiales con detenidos/heridos; se conserva texto factual sin sátira."
+        "message": "Revisando Pendientes recientes: Complutense y Policía Nacional siguen sin remate por tratarse de cargas con detenidos y heridos; se conserva texto factual."
       },
       {
-        "at": "2026-10-15T08:59:25+02:00",
+        "at": "2026-10-15T09:18:05+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, rewrite_pending 0 y 1 huérfano heredado no resuelto (Florentino, Telegram 835)."
+        "message": "Releyendo main: cola 0 y rewrite_pending 0; se ha disparado la verificación Telegram mediante el push de la cola vacía."
       },
       {
-        "at": "2026-10-15T08:59:35+02:00",
-        "phase": "persisting",
+        "at": "2026-10-15T09:19:17+02:00",
+        "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Persistiendo editorial-runtime.json con el resultado terminal de la pasada."
+        "message": "Auditoría Telegram reejecutada: 1 huérfano confirmado, Florentino (835); cola editorial continúa en 0."
       },
       {
-        "at": "2026-10-15T08:59:40+02:00",
+        "at": "2026-10-15T09:19:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 1/1 cerrada; cola editorial limpia y 0 rewrite_pending. Sin ImageGen directo."
+        "message": "Pasada cerrada con 0 nuevas explicaciones y 1 incidencia heredada no resuelta; sin ImageGen directo."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "partial": false,
-    "pending_repair_workflow": {
-      "run_id": 38695701185,
-      "status": "in_progress",
-      "conclusion": null,
-      "head_sha": "c3dcaa7f83e32f9f23519d69d2b72c4d974e8ce8"
-    },
-    "telegram_delivery_workflow": {
-      "run_id": 38695759253,
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "9b2dec9c1b40168b28888f606d0b1777b506d747"
-    }
+    "partial": false
   },
   "run_id": "tr-autoguard-1792042694",
   "summary": {
