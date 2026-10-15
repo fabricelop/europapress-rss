@@ -1,23 +1,35 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-15T22:40:41.217364+00:00",
+  "checked_at": "2026-10-15T22:43:23.812008+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 371,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 1,
+  "unresolved_count": 2,
   "unresolved": [
     {
       "key": "missing:84f4f9e999ef",
       "id": "84f4f9e999ef",
       "title": "Un terremoto de magnitud 4,2 se registra en El Bierzo (León)",
-      "age_min": 41.9,
+      "age_min": 44.6,
       "reason": "transport_write_blocked"
+    },
+    {
+      "key": "provisional:c2c43d5d0990:4100",
+      "id": "c2c43d5d0990",
+      "message_id": 4100,
+      "title": "Madrid se suma a Santander y Zaragoza bajando el recibo IBI para 2027 al mínimo legal del 0,4%; reduce un 50% la carga fiscal respecto a la media española",
+      "age_min": 4.7,
+      "reason": "Bloqueo editorial: transport_write_blocked"
     }
   ],
   "alerted": {
     "missing:84f4f9e999ef": {
       "signature": "eb14e50c06be9ed357",
+      "notified_at": null
+    },
+    "provisional:c2c43d5d0990:4100": {
+      "signature": "2ebd8bc5d5b2cf5e3e",
       "notified_at": null
     }
   },
