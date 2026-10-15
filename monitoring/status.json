@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-15T12:51:52.794333Z",
+  "generated_at": "2026-10-15T17:46:02.998933Z",
   "repository": "fabricelop/europapress-rss",
   "projects": {
     "TTiTTulares": {
       "status": "orange",
       "anomalies": [
-        "Sin ejecución correcta desde hace 232.7 min",
-        "Sin ejecución correcta desde hace 232.7 min"
+        "Sin ejecución correcta desde hace 218.5 min",
+        "Sin ejecución correcta desde hace 218.5 min"
       ],
       "modules": {
         "radar_noticias": {
@@ -14,28 +14,28 @@
           "kind": "workflow",
           "workflow": "telegram-listener.yml",
           "status": "orange",
-          "last_run": "2026-10-15T08:59:10Z",
-          "last_ok": "2026-10-15T08:59:10Z",
+          "last_run": "2026-10-15T14:07:33Z",
+          "last_ok": "2026-10-15T14:07:33Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 232.7,
+          "age_minutes": 218.5,
           "expected_minutes": 60,
-          "anomaly": "Sin ejecución correcta desde hace 232.7 min",
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38709362169"
+          "anomaly": "Sin ejecución correcta desde hace 218.5 min",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38748340178"
         },
         "radar_manual": {
           "label": "Barrido manual de radar",
           "kind": "workflow",
           "workflow": "radar-no-d1.yml",
           "status": "green",
-          "last_run": "2026-10-15T07:39:55Z",
-          "last_ok": "2026-10-15T07:39:55Z",
+          "last_run": "2026-10-15T17:29:26Z",
+          "last_ok": "2026-10-15T17:29:26Z",
           "last_error": "2026-10-13T07:07:17Z",
           "last_conclusion": "success",
-          "age_minutes": 312.0,
+          "age_minutes": 16.6,
           "expected_minutes": null,
           "anomaly": null,
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38699690490",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38777106390",
           "affects_project": false
         },
         "entrada_telegram": {
@@ -43,14 +43,14 @@
           "kind": "workflow",
           "workflow": "telegram-listener.yml",
           "status": "orange",
-          "last_run": "2026-10-15T08:59:10Z",
-          "last_ok": "2026-10-15T08:59:10Z",
+          "last_run": "2026-10-15T14:07:33Z",
+          "last_ok": "2026-10-15T14:07:33Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 232.7,
+          "age_minutes": 218.5,
           "expected_minutes": 60,
-          "anomaly": "Sin ejecución correcta desde hace 232.7 min",
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38709362169"
+          "anomaly": "Sin ejecución correcta desde hace 218.5 min",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38748340178"
         },
         "envio_candidatos": {
           "label": "Envío de candidatos a Telegram",
@@ -61,7 +61,7 @@
           "last_ok": "2026-09-22T07:06:47Z",
           "last_error": "2026-09-22T07:06:21Z",
           "last_conclusion": "success",
-          "age_minutes": 33465.1,
+          "age_minutes": 33759.3,
           "expected_minutes": null,
           "anomaly": null,
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35697961112"
@@ -74,7 +74,7 @@
           "last_run": "2026-09-22T07:06:27Z",
           "last_ok": "2026-09-22T07:06:27Z",
           "last_error": null,
-          "age_minutes": 33465.4,
+          "age_minutes": 33759.6,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -87,7 +87,7 @@
           "last_ok": "2026-09-22T20:17:22Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 32674.5,
+          "age_minutes": 32968.7,
           "expected_minutes": null,
           "anomaly": null,
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35779276120"
@@ -97,7 +97,7 @@
     "TTendencias": {
       "status": "red",
       "anomalies": [
-        "Sin ejecución correcta desde hace 131.7 min",
+        "Sin ejecución correcta desde hace 425.8 min",
         "Última ejecución terminó en failure"
       ],
       "modules": {
@@ -106,10 +106,10 @@
           "kind": "activity",
           "path": "trends/recent.json",
           "status": "green",
-          "last_run": "2026-10-15T12:42:34Z",
-          "last_ok": "2026-10-15T12:42:34Z",
+          "last_run": "2026-10-15T17:33:06Z",
+          "last_ok": "2026-10-15T17:33:06Z",
           "last_error": null,
-          "age_minutes": 9.3,
+          "age_minutes": 12.9,
           "expected_minutes": 15,
           "anomaly": null
         },
@@ -117,15 +117,15 @@
           "label": "Listener / panel Telegram",
           "kind": "workflow",
           "workflow": "ttendencias-listener.yml",
-          "status": "orange",
-          "last_run": "2026-10-15T12:47:14Z",
+          "status": "red",
+          "last_run": "2026-10-15T17:44:28Z",
           "last_ok": "2026-10-15T10:40:12Z",
           "last_error": null,
           "last_conclusion": "cancelled",
-          "age_minutes": 131.7,
+          "age_minutes": 425.8,
           "expected_minutes": 30,
-          "anomaly": "Sin ejecución correcta desde hace 131.7 min",
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38734049903"
+          "anomaly": "Sin ejecución correcta desde hace 425.8 min",
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38776275939"
         },
         "redactor": {
           "label": "Redactor de tendencias",
@@ -135,7 +135,7 @@
           "last_run": "2026-09-23T10:45:22Z",
           "last_ok": "2026-09-23T10:45:22Z",
           "last_error": null,
-          "age_minutes": 31806.5,
+          "age_minutes": 32100.7,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -164,10 +164,10 @@
           "kind": "file",
           "path": "selorecordamos/search-report.json",
           "status": "green",
-          "last_run": "2026-10-15T12:05:39.394000Z",
-          "last_ok": "2026-10-15T12:05:39.394000Z",
+          "last_run": "2026-10-15T17:07:02.299000Z",
+          "last_ok": "2026-10-15T17:07:02.299000Z",
           "last_error": null,
-          "age_minutes": 46.2,
+          "age_minutes": 39.0,
           "expected_minutes": 60,
           "anomaly": null
         },
@@ -176,10 +176,10 @@
           "kind": "file",
           "path": "selorecordamos/search-report.json",
           "status": "green",
-          "last_run": "2026-10-15T12:05:39.394000Z",
-          "last_ok": "2026-10-15T12:05:39.394000Z",
+          "last_run": "2026-10-15T17:07:02.299000Z",
+          "last_ok": "2026-10-15T17:07:02.299000Z",
           "last_error": null,
-          "age_minutes": 46.2,
+          "age_minutes": 39.0,
           "expected_minutes": 60,
           "anomaly": null
         },
@@ -188,10 +188,10 @@
           "kind": "activity",
           "path": "selorecordamos/assistant-output.json",
           "status": "green",
-          "last_run": "2026-10-15T07:32:29Z",
-          "last_ok": "2026-10-15T07:32:29Z",
+          "last_run": "2026-10-15T16:03:30Z",
+          "last_ok": "2026-10-15T16:03:30Z",
           "last_error": null,
-          "age_minutes": 319.4,
+          "age_minutes": 102.5,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -200,10 +200,10 @@
           "kind": "activity",
           "path": "selorecordamos/requests.json",
           "status": "green",
-          "last_run": "2026-10-15T12:32:46Z",
-          "last_ok": "2026-10-15T12:32:46Z",
+          "last_run": "2026-10-15T15:34:52Z",
+          "last_ok": "2026-10-15T15:34:52Z",
           "last_error": null,
-          "age_minutes": 19.1,
+          "age_minutes": 131.2,
           "expected_minutes": null,
           "anomaly": null
         }
