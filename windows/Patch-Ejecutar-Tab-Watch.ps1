@@ -24,7 +24,10 @@ $text=[IO.File]::ReadAllText($target,[Text.Encoding]::UTF8)
 if(-not $text.Contains('TT_PROJECT_LANDING_COMPOSER_V2') -or -not $text.Contains('TT_RESPONSE_CONFIRM_V2')){
     throw 'Version no reconocida de Ejecutar.js: no se modifica.'
 }
-$rx=[regex]'(?s)([ \t]*console\.log\(\s*"EJECUCION LANZADA\. La pestaña se deja abierta para que ChatGPT termine\."\s*\);)'
+# Match the stable ASCII launch marker, regardless of whether the local file
+# stores accented characters as UTF-8, ANSI or already-misdecoded text.
+# Do not match other console.log calls, and require exactly one occurrence.
+$rx=[regex]'(?m)([ \t]*console\.log\(\s*"EJECUCION LANZADA\.[^"\r\n]*"\s*\);)'
 if(-not $text.Contains($marker)){
     $hits=$rx.Matches($text)
     if($hits.Count -ne 1){throw "Marcador de lanzamiento inesperado (coincidencias=$($hits.Count)); no se modifica."}
