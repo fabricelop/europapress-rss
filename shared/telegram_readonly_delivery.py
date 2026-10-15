@@ -1391,7 +1391,7 @@ def selftest():
                 if url=="https://img.example.org/raba.jpg" else None)
             count=process("ttendencias",now,"mock","chat")
             assert count[0]==0,count
-            assert [mid for method,mid in operations if method=="editMessageCaption"]==[688,689,691],operations
+            assert [mid for method,mid in operations if method=="editMessageCaption"]==[687,688,689,691],operations
             fixed=load("trends/telegram-image-deliveries.json",{"items":[]})
             assert len([x for x in fixed["items"] if x["status"]=="sent"])==4
             assert len([x for x in fixed["items"] if x.get("final") is True])==4
