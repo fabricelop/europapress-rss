@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-b06db83f5b6f-r0-a1-1792099369934",
-  "requested_at": "2026-10-15T21:22:49.920960Z",
-  "updated_at": "2026-10-15T21:27:11.532Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tr-img-auto-b06db83f5b6f-r0-a2-1792100867973",
+  "requested_at": "2026-10-15T21:47:47.951980Z",
+  "updated_at": "2026-10-15T21:47:47.951980Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "delivery_mode": "launch_only",
   "editorial_image_mode": "humor",
@@ -16,9 +16,9 @@
   "trend_id": "b06db83f5b6f",
   "target_name": "Navarra",
   "revision": 0,
-  "attempt": 1,
+  "attempt": 2,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "manual_retry_version": 0,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
@@ -43,10 +43,10 @@
         "url": "https://www.diariodenavarra.es/noticias/navarra/2026/10/15/cientos-jovenes-inician-marcha-casco-antiguo-acto-vito-quiles-838881-15.html"
       }
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
     "editorial_image_mode": "humor",
-    "image_style_name": "stop_motion",
-    "image_style_index": 4
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -55,9 +55,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
   },
-  "message": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}",
-  "pc_upload_secret_hash": "2873677c2ee1550e0a79f07b474446744630ce25f6f3ddec79b8f53eb7025106",
-  "pc_worker_id": "ttendencias-image-bridge-v29-raw-job-recovery",
-  "pc_picked_up_at": "2026-10-15T21:25:41.617Z",
-  "finished_at": "2026-10-15T21:27:11.532Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
