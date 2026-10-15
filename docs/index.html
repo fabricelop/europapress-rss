@@ -354,6 +354,27 @@ async function copyText(value,label){
 function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
 
 const directPilot={url:'',key:''};
+async function pilotPairFromUrl(){
+ if(location.hostname!=='ttactualidad-decisions-pilot.fabricelop.workers.dev')return;
+ const pair=new URLSearchParams(location.hash.slice(1)).get('ttactualidad-pair');
+ if(!pair)return;
+ // Remove the sensitive fragment immediately; never put it in history, logs or storage.
+ history.replaceState(null,'',location.pathname+location.search);
+ if(!/^[A-Za-z0-9_-]{32,100}$/.test(pair)){
+  $('pilot-status').textContent='QR inválido';return;
+ }
+ directPilot.url=location.origin;directPilot.key=pair;
+ $('pilot-status').textContent='Comprobando acceso del iPhone…';
+ try{
+  const r=await fetch(directPilot.url+'/api/decisions',{headers:{Authorization:'Bearer '+pair},cache:'no-store',signal:AbortSignal.timeout(12000)});
+  const data=await r.json();
+  if(!r.ok||!data.ok||data.mode!=='pilot_only')throw Error('No autorizado');
+  $('pilot-status').textContent='iPhone vinculado al piloto ✓';
+ }catch{
+  directPilot.key='';
+  $('pilot-status').textContent='QR no autorizado; vuelve a vincular';
+ }
+}
 function pilotConfig(){
  const suggested=location.hostname.endsWith('.workers.dev')?location.origin:'';
  const e=prompt('URL HTTPS del Worker de prueba',directPilot.url||suggested);if(e===null)return;
@@ -536,6 +557,7 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
+void pilotPairFromUrl();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
 
