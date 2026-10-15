@@ -2,7 +2,48 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-15T05:38:17.151971+00:00",
+      "checked_at": "2026-10-15T09:54:21.834461+00:00",
+      "issue_count": 4,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "adf0ceb38448",
+          "title": "La actriz Mónica Cervera sale de prisión tras 11 meses por intento de robo con violencia: “Ha sido d",
+          "seconds": 2328,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "fe027eae6acb",
+          "title": "El Gobierno sale en defensa de Montse Mínguez tras la polémica por los negocios inmobiliarios de su ",
+          "seconds": 1705,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f1ea47559a72",
+          "title": "Hallan frente a las costas de Turquía “el naufragio más antiguo del mundo”",
+          "seconds": 1705,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "eef25668da86",
+          "title": "OpenAI, la impulsora de ChatGPT, demandada por ocho estados de EEUU por \"causar daños a niños\" e inf",
+          "seconds": 1122,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "9226fb9d765a3af9a999320d9a2be380d646a2a8d106c8eeb116bd93e56742c3",
+      "repair_via_workflow_run": false,
+      "escalation_required": 3
+    },
+    "ttendencias": {
+      "checked_at": "2026-10-15T09:54:21.834461+00:00",
       "issue_count": 0,
       "issues": [],
       "actions_started": [],
@@ -10,31 +51,13 @@
       "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "repair_via_workflow_run": false,
       "escalation_required": 0
-    },
-    "ttendencias": {
-      "checked_at": "2026-10-15T05:38:17.151971+00:00",
-      "issue_count": 1,
-      "issues": [
-        {
-          "kind": "orphan_provisional",
-          "id": "96c57ccbf332",
-          "title": "Florentino",
-          "seconds": 29160,
-          "workflow": null
-        }
-      ],
-      "actions_started": [],
-      "repair_errors": [],
-      "open_signature": "2faa24fd9f0027a012a58d03e901fb7602cbdac0b779c46ab12cedf3c9bdc0c7",
-      "repair_via_workflow_run": false,
-      "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-15T05:08:22.043858+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-15T09:54:21.834461+00:00",
     "ttittulares:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
     "ttendencias:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-15T05:38:17.151971+00:00"
+  "checked_at": "2026-10-15T09:54:21.834461+00:00"
 }
