@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-15T05:33:39.624Z",
+  "updated_at": "2026-10-15T05:36:59.694Z",
   "items": [
     {
       "event_id": "b7985077b625",
@@ -490,7 +490,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "disabled",
+      "ai_image_status": "failed",
       "disable_ai_image": true,
       "sensitive_image_reason": "Fallecimiento: evitar caricaturizar a víctimas o fallecidos",
       "image_choice": "fallback",
@@ -515,7 +515,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "IU y CCOO lamentan la muerte del histórico dirigente cordobés Ernesto Caballero a los 91 años"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-15T05:36:59.694Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 0,
