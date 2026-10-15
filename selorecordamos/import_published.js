@@ -4,6 +4,44 @@ const cp = require('child_process');
 const { chromium } = require('playwright');
 
 (async()=>{
+
+  // Evitar instancias superpuestas de Playwright.
+  const singleInstanceLock = path.join(__dirname, 'runtime', path.basename(__filename) + '.lock');
+  fs.mkdirSync(path.dirname(singleInstanceLock), { recursive: true });
+  function processAlive(pid) {
+    if (!Number.isInteger(pid) || pid <= 0) return false;
+    try { process.kill(pid, 0); return true; }
+    catch (e) { return e && e.code === 'EPERM'; }
+  }
+  function acquireLock() {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const fd = fs.openSync(singleInstanceLock, 'wx');
+        try { fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, started: new Date().toISOString() })); }
+        finally { fs.closeSync(fd); }
+        process.on('exit', () => {
+          try {
+            const current = JSON.parse(fs.readFileSync(singleInstanceLock, 'utf8'));
+            if (current.pid === process.pid) fs.unlinkSync(singleInstanceLock);
+          } catch (_) {}
+        });
+        return true;
+      } catch (e) {
+        if (e.code !== 'EEXIST') throw e;
+        let owner = null;
+        try { owner = JSON.parse(fs.readFileSync(singleInstanceLock, 'utf8')); } catch (_) {}
+        if (owner && processAlive(owner.pid)) {
+          console.log('SR_ALREADY_RUNNING ' + path.basename(__filename) + ' pid=' + owner.pid);
+          return false;
+        }
+        // Un proceso terminado puede dejar un candado obsoleto.
+        try { fs.unlinkSync(singleInstanceLock); } catch (_) {}
+      }
+    }
+    return false;
+  }
+  if (!acquireLock()) return;
+
   const baseDir=__dirname;
   const repoDir=path.join(baseDir,'..');
 
