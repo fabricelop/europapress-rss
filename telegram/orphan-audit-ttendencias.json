@@ -1,12 +1,26 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-15T14:43:08.775322+00:00",
+  "checked_at": "2026-10-15T14:47:15.157300+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 120,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 719,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:75e950a406ee:844",
+      "id": "75e950a406ee",
+      "message_id": 844,
+      "title": "Inda",
+      "age_min": 32.8,
+      "reason": "No consta explicación definitiva"
+    }
+  ],
+  "alerted": {
+    "provisional:75e950a406ee:844": {
+      "signature": "0e2a8d49706aa643ab",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
