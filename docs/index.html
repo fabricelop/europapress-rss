@@ -26,7 +26,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
 /* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
 @media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
-</style></head>
+.pilot-swipe{touch-action:pan-y;transition:transform .2s}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}</style></head>
 <body>
 <header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Una sola aplicación · GAG IA manual</p></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
@@ -36,7 +36,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Por qué Borrar abre Telegram?</summary><p>GitHub Pages no puede autenticar por sí sola una orden privada. Telegram actúa como intermediario seguro, sin almacenar claves en el iPhone. El borrado de mensajes auxiliares se intenta tras completar la orden, pero depende de que se registren sus identificadores y de los límites de Telegram.</p></details>
-<div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>PILOTO TTActualidad · No conectado a producción</strong><p>Deslizar a la izquierda: desestimar. Derecha: elaborar.</p><button type="button" id="pilot-config">Configurar Worker de prueba</button> <span id="pilot-status">Sin configurar</span></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -352,6 +352,33 @@ async function copyText(value,label){
  showToast(label+' copiado')
 }
 function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
+
+const directPilot={url:'',key:''};
+function pilotConfig(){
+ const e=prompt('URL del Worker de prueba HTTPS',directPilot.url);if(e===null)return;
+ if(!e.trim()){directPilot.url='';directPilot.key='';$('pilot-status').textContent='Sin configurar';return}
+ let u;try{u=new URL(e.trim());if(u.protocol!=='https:')throw Error('HTTP')}catch{showToast('URL HTTPS requerida');return}
+ const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return;
+ directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;$('pilot-status').textContent='Configurado solo para prueba';
+}
+async function pilotSend(item,decision){
+ if(!directPilot.url||!directPilot.key){showToast('Configura primero el Worker piloto');return}
+ const project=item._kind==='tr'?'ttendencias':'ttittulares',event_id=String(item._id||'');
+ if(!event_id||event_id.length>128){showToast('ID inválido');return}
+ if(!confirm((decision==='prepare'?'Elaborar':'Desestimar')+' en PRUEBAS, sin tocar producción?'))return;
+ try{
+  const r=await fetch(directPilot.url+'/api/decision',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+directPilot.key},body:JSON.stringify({project,event_id,decision,request_id:crypto.randomUUID()}),signal:AbortSignal.timeout(9000)});
+  const a=await r.json().catch(()=>({}));if(!r.ok||a.ok!==true)throw Error(a.error||'HTTP '+r.status);
+  showToast('Decisión registrada SOLO en pruebas');
+ }catch(e){showToast('No registrada: '+String(e.message||e).slice(0,80))}
+}
+function pilotSwipes(card,item){
+ if(item._kind!=='tti'||!['EN ELABORACIÓN','CRECIENDO','PROBLEMÁTICA'].includes(item._status))return;
+ card.classList.add('pilot-swipe');let down=null;
+ card.addEventListener('touchstart',e=>{if(e.touches.length===1&&!e.target.closest('a,button'))down={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true});
+ card.addEventListener('touchend',e=>{if(!down||e.changedTouches.length!==1)return;const dx=e.changedTouches[0].clientX-down.x,dy=e.changedTouches[0].clientY-down.y;down=null;if(Math.abs(dx)<90||Math.abs(dx)<Math.abs(dy)*1.6)return;card.style.transform='translateX('+(dx<0?-35:35)+'px)';setTimeout(()=>card.style.transform='',250);pilotSend(item,dx<0?'discard':'prepare')},{passive:true})
+}
+
 function telegramActionUrl(project,id,action){
  // Telegram deep links accept <=64 URL-safe characters. No browser token needed.
  const app=project==='ttittulares'?'n':'t',kind=({published:'p',deleted:'d',rework:'r',prepare:'e'})[action];
@@ -378,18 +405,12 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  const url=telegramActionUrl(x._kind==='tr'?'ttendencias':'ttittulares',x._id,action);
-  if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
-  const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
-  b.textContent=label;b.addEventListener('click',event=>{
-   if(action==='deleted'&&!confirm(x._kind==='tremending'?'¿Borrar esta entrada de Tremending del panel?':('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?'))){
-     event.preventDefault();return;
-   }
-   showToast('La orden se enviará al bot de Telegram. Recibirás allí el resultado.');
-  });
-  a.append(b);return b
- $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
+  if(action==='prepare'||action==='deleted')return btn(label,()=>pilotSend(x,action==='deleted'?'discard':'prepare'),action==='prepare');
+  return btn(label+' (no disponible)',()=>showToast('Fuera del piloto'));
  }
+ pilotSwipes(out,x);
+ $('warning').style.display=state.lastError?'block':'none';
+ $('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
  if(x._topOnly){
   out.classList.add('trend-top');
   if(x._queuedAt&&['EN COLA','EN ELABORACIÓN'].includes(x._status)){
@@ -513,6 +534,7 @@ function openPhoto(url,title){
  link.href=url;sheet.hidden=false;
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
+$('pilot-config').onclick=pilotConfig;
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
 
