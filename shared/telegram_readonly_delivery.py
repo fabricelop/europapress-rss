@@ -841,12 +841,9 @@ def process(project,now,token,chat):
     for card in cards:
         eid=card["id"];rev=card["rev"]
         linked=[r for r in active_entries if str(r.get("event_id") or "")==eid]
-        # Cross-event similarity is an editorial concern, not a Telegram
-        # deletion rule.  For TTiTTulares every distinct active card must get
-        # its own delivery according to the priority editorial rule (12/10/2026).
-        # its own Telegram counterpart; deleting an older related card never
-        # authorizes suppressing this one.  TTendencias keeps its separate
-        # anti-repeat policy here.
+        # Si ya existe un mensaje de OTRO ID sobre el mismo hecho, no
+        # enviar una segunda tarjeta. Conservar y finalizar cualquier
+        # tarjeta propia preexistente; no borrar mensajes automáticamente.
         older=matching_previous_story(card,active_entries,now)
         if older and project=="ttendencias":
             own_provisional=next((r for r in linked
@@ -862,9 +859,12 @@ def process(project,now,token,chat):
                       "previous_id="+str(older.get("event_id") or ""),flush=True)
                 skipped+=1
                 continue
-        elif older and project=="ttittulares":
-            print("TTI_RELATED_STORY_SEPARATE_CARD",eid,
-                  "previous_id="+str(older.get("event_id") or ""),flush=True)
+        elif older and project=="ttittulares" and not linked:
+            print("TTI_STORY_DUPLICATE_BLOCKED",eid,
+                  "previous_id="+str(older.get("event_id") or ""),
+                  "reason=prior-delivery",flush=True)
+            skipped+=1
+            continue
         same_revision=[r for r in linked if int(r.get("revision") or 0)==rev]
         # A terminal row only closes the revision it belongs to. This matters
         # for TTiTTulares manual reopens: an older revision may have been
@@ -897,13 +897,15 @@ def process(project,now,token,chat):
                            if str(r.get("status") or "").lower()=="sent"
                            and int(r.get("telegram_message_id") or 0)>0),None)
         if project=="ttittulares" and existing is None:
-            # A related story treated earlier must not suppress a distinct card
-            # that is already present in Listas. Each app card gets its own
-            # Telegram lifecycle unless the user explicitly deletes/closes it.
+            # Segunda barrera: titulos muy reformulados de otros periodicos,
+            # incluso si la noticia anterior ya se borro en Telegram.
             prior=previous_story({"event_id":eid,"title":card["title"],
                                   "source_url":card.get("source_url")},treated_refs)
             if prior:
-                print("TTI_TREATED_BEFORE_DELIVERY_ALLOWED",eid,"prior",prior.get("event_id"),flush=True)
+                print("TTI_TREATED_STORY_BLOCKED",eid,
+                      "previous_id="+str(prior.get("event_id") or ""),flush=True)
+                skipped+=1
+                continue
         if project=="ttendencias" and not existing:
             previous=[r for r in linked if str(r.get("status") or "").lower()=="sent"]
             if previous and not trend_repeat_allowed(card,previous,now):
@@ -995,6 +997,9 @@ def process(project,now,token,chat):
                     "started_at":str(card["start"]),"delivered_at":now.isoformat(),
                     "source_url":str(card.get("source_url") or "")})
                 delivered+=1
+                if project=="ttittulares":
+                    treated_refs.append(entries[-1])
+                    if active_entries is not entries:active_entries.append(entries[-1])
                 ledger["updated_at"]=now.isoformat()
                 print("TTI_MISSING_CARD_RECREATED",eid,
                       "old_message_id="+str(mid),
@@ -1023,6 +1028,11 @@ def process(project,now,token,chat):
                 "started_at":str(card["start"]),"delivered_at":now.isoformat(),
                 "source_url":str(card.get("source_url") or "")})
             delivered+=1
+            # Los dos ids pueden aparecer en el MISMO lote; incorporar
+            # cada mensaje nuevo a ambos indices sin esperar otra ejecucion.
+            if project=="ttittulares":
+                treated_refs.append(entries[-1])
+                if active_entries is not entries:active_entries.append(entries[-1])
         ledger["updated_at"]=now.isoformat()
     # Never silently delete a SECOND card only because a previous related
     # card was removed by the user. Its own Telegram message must be
