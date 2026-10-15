@@ -56,7 +56,7 @@ def normalize(text):
     # Strip common feed prefixes and dates from publisher descriptions.
     v=re.sub(r"\b(?:en directo|ultima hora|video|actualizado)\b"," ",v)
     # El condenado de Fort Hood y Nidal Hasan identifican el mismo suceso.
-    v=re.sub(r"\\b(?:fort hood|nidal hasan)\\b"," nidal hasan fort hood ",v)
+    v=re.sub(r"\b(?:fort hood|nidal hasan)\b"," nidal hasan fort hood ",v)
     return " ".join(re.findall(r"[a-z0-9]+",v))
 
 def tokens(title):
