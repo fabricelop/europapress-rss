@@ -52985,7 +52985,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
@@ -53050,13 +53049,31 @@
         }
       ],
       "ai_image_status": "not_requested",
-      "fallback_image_status": "missing",
-      "image_status": "pending",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_pending": false,
       "rewrite_pending": false,
-      "grouped_into_existing_card": false
+      "grouped_into_existing_card": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://nintenduo.com/wp-content/uploads/2026/10/Sorteo-Nintendo-Switch-Sports-nth-hero-og-jpg.jpg",
+        "source": "Nintendúo · 15/10/2026",
+        "source_url": "https://nintenduo.com/sorteo-nintendo-switch-2-switch-sports-resort-gratis/",
+        "alt": "Imagen de archivo relacionada con #VuelveSportsResort",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://nintenduo.com/wp-content/uploads/2026/10/Sorteo-Nintendo-Switch-Sports-nth-hero-og-jpg.jpg",
+        "source": "Nintendúo · 15/10/2026",
+        "source_url": "https://nintenduo.com/sorteo-nintendo-switch-2-switch-sports-resort-gratis/",
+        "alt": "Imagen de archivo relacionada con #VuelveSportsResort",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_choice": "fallback"
     }
   ],
-  "updated_at": "2026-10-15T11:20:00+02:00",
+  "updated_at": "2026-10-15T09:22:21.304751Z",
   "count": 892
 }
