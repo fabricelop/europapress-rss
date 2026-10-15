@@ -96,6 +96,25 @@ def execute(project,filename):
             if not is_recent(row):
                 skipped.append({"event_id":eid,"message_id":mid,
                                 "reason":"Foto original anterior a 48h, borrado no permitido por Bot API"})
+                # Aunque la foto no se pueda borrar, retirar al menos su boton de copia.
+                new_version=(delivery.TTI_BUTTONS_VERSION if project=="ttittulares"
+                             else delivery.BUTTONS_VERSION)
+                if int(row.get("buttons_version") or 0)<new_version:
+                    fallback={"id":eid,"rev":int(row.get("revision") or 0),
+                              "search":str(row.get("title") or row.get("name") or ""),
+                              "title":str(row.get("title") or ""),
+                              "final":False,"x_text":""}
+                    try:
+                        api(token,"editMessageReplyMarkup",{
+                            "chat_id":chat,"message_id":mid,
+                            "reply_markup":delivery.keys(card or fallback,project)})
+                        op["buttons_replaced"]=True
+                    except Exception as exc:
+                        if "message is not modified" in str(exc).lower():
+                            op["buttons_replaced"]=True
+                        else:
+                            errors.append({"event_id":eid,"message_id":mid,
+                                           "reason":"No se pudo retirar boton antiguo: "+str(exc)})
             else:
                 replacement=0
                 try:
