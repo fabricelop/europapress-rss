@@ -1,12 +1,25 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-15T22:12:46.508306+00:00",
+  "checked_at": "2026-10-15T22:38:44.256380+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
-  "ledger_entries": 370,
+  "ledger_entries": 371,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "missing:84f4f9e999ef",
+      "id": "84f4f9e999ef",
+      "title": "Un terremoto de magnitud 4,2 se registra en El Bierzo (León)",
+      "age_min": 40.0,
+      "reason": "transport_write_blocked"
+    }
+  ],
+  "alerted": {
+    "missing:84f4f9e999ef": {
+      "signature": "eb14e50c06be9ed357",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
