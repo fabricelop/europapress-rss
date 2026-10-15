@@ -1,12 +1,26 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-15T18:19:11.398954+00:00",
+  "checked_at": "2026-10-15T18:20:51.450734+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 122,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 719,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:9d50d7492657:846",
+      "id": "9d50d7492657",
+      "message_id": 846,
+      "title": "La Junta Electoral",
+      "age_min": 30.9,
+      "reason": "No consta explicación definitiva"
+    }
+  ],
+  "alerted": {
+    "provisional:9d50d7492657:846": {
+      "signature": "8de22ae469d4c351ad",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
