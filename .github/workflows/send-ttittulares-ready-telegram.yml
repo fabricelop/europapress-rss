@@ -1,5 +1,5 @@
 name: TTiTTulares Telegram informativo (sin IA ni publicación)
-# manual-run-trigger: tt-chat-20261015-0100
+# manual-run-trigger: tt-autoguard-1792040897
 on:
   workflow_dispatch:
   workflow_run:
@@ -27,6 +27,7 @@ on:
       - ".github/workflows/send-ttittulares-ready-telegram.yml"
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: ttittulares-telegram-readonly
   cancel-in-progress: false
