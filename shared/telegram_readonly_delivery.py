@@ -831,7 +831,10 @@ def process(project,now,token,chat):
     treated_refs=[]
     if project=="ttittulares":
         from ttittulares.treated_news import references as treated_references, previous_story
-        treated_refs=list(treated_references(deliveries=ledger))
+        treated_refs=list(treated_references(
+            deliveries=ledger,
+            treated=load("ttittulares/treated-stories.json",{"items":[]}),
+            decisions=load("ttittulares/decisions.json",{"items":[]})))
     entries=ledger.setdefault("items",[])
     # Only post-checkpoint telegram messages count as active. The old
     # transcript is preserved for history, never re-sent or re-edited.
