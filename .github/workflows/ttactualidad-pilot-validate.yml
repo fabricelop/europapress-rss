@@ -19,7 +19,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1')) {
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1')) {
             $tok = $null
             $errorsList = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -36,3 +36,8 @@ jobs:
         run: |
           Copy-Item pilot/ttactualidad-worker.js pilot/ttactualidad-worker.mjs
           node --check pilot/ttactualidad-worker.mjs
+      - name: Check PC pilot simulator syntax and ten-minute state machine
+        shell: pwsh
+        run: |
+          node --check pilot/ttactualidad-pc-dryrun.mjs
+          node pilot/ttactualidad-pc-dryrun.mjs --self-test
