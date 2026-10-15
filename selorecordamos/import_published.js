@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
 const { chromium } = require('playwright');
+const withGitPublishLock = require('./git_publish_lock');
 
 (async()=>{
 
@@ -169,16 +170,28 @@ const { chromium } = require('playwright');
   console.log(JSON.stringify({since:new Date(since).toISOString(),source:url,query,final_url:diagnostics.final_url,title:diagnostics.title,articles_seen:diagnostics.articles_seen,diagnostic_file:diagnosticFile,found_now:posts.length,total_history:all.length,posts},null,2));
 
   if(process.env.SR_PUBLISHED_PUSH==='1'){
-    cleanInterruptedGitOperation();
-    resolveGeneratedStateConflicts();
-    cp.execFileSync('git',['add','selorecordamos/published-replies.json'],{cwd:repoDir,stdio:'inherit'});
-    const d=cp.spawnSync('git',['diff','--cached','--quiet'],{cwd:repoDir});
-    if(d.status!==0){
-      cp.execFileSync('git',['commit','-m','Update SeLoRecordamos published history'],{cwd:repoDir,stdio:'inherit'});
-      try{cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});}catch(_){
-        cp.execFileSync('git',['pull','--rebase','--autostash','origin','main'],{cwd:repoDir,stdio:'inherit'});
-        cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});
+    withGitPublishLock(()=>{
+      cleanInterruptedGitOperation();
+      resolveGeneratedStateConflicts();
+      const trackedFile='selorecordamos/published-replies.json';
+      cp.execFileSync('git',['add','--',trackedFile],{cwd:repoDir,stdio:'inherit'});
+      const d=cp.spawnSync('git',['diff','--cached','--quiet','--',trackedFile],{cwd:repoDir});
+      if(d.status===0) return;
+      if(d.status!==1) throw new Error('No se pudo comprobar el diff Git del historico.');
+      // Commit only the history, never unrelated staged changes.
+      cp.execFileSync('git',['commit','-m','Update SeLoRecordamos published history','--',trackedFile],{cwd:repoDir,stdio:'inherit'});
+      for(let attempt=1;attempt<=3;attempt++){
+        try{
+          cp.execFileSync('git',['push','origin','main'],{cwd:repoDir,stdio:'inherit'});
+          return;
+        }catch(e){
+          if(attempt===3)throw e;
+          // Fetch one ref, then rebase explicitly: git pull --rebase is
+          // ambiguous on some shared Git configurations.
+          cp.execFileSync('git',['fetch','origin','main'],{cwd:repoDir,stdio:'inherit'});
+          cp.execFileSync('git',['rebase','--autostash','refs/remotes/origin/main'],{cwd:repoDir,stdio:'inherit'});
+        }
       }
-    }
+    });
   }
 })().catch(e=>{console.error(e.stack||e);process.exit(1);});
