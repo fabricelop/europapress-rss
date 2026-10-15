@@ -1,0 +1,38 @@
+name: TTActualidad pilot - syntax-only checks
+on:
+  push:
+    branches:
+      - pilot/ttactualidad-direct-decisions-20261015
+    paths:
+      - 'pilot/**'
+      - '.github/workflows/ttactualidad-pilot-validate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  parse:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate scripts with Windows PowerShell 5.1 parser
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1')) {
+            $tok = $null
+            $errorsList = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $f), [ref]$tok, [ref]$errorsList
+            ) | Out-Null
+            if ($errorsList.Count) {
+              foreach ($e in $errorsList) { Write-Host "$f : $($e.Message)" }
+              throw "PowerShell parsing failed: $f"
+            }
+            Write-Host "PowerShell parse OK: $f"
+          }
+      - name: Validate pilot Worker JavaScript
+        shell: pwsh
+        run: |
+          Copy-Item pilot/ttactualidad-worker.js pilot/ttactualidad-worker.mjs
+          node --check pilot/ttactualidad-worker.mjs
