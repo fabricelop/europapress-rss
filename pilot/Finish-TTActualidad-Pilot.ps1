@@ -77,17 +77,19 @@ try {
     [IO.File]::WriteAllText($keyFile, $cipher, ([Text.UTF8Encoding]::new($false)))
   }
   if (!$token -or $token.Length -lt 32) { throw 'La clave del piloto es invalida' }
-  $env:TT_ACTUALIDAD_PILOT_TOKEN = $token
+  $secretFile=Join-Path $root ('pilot-secret-'+[guid]::NewGuid().ToString('N')+'.json')
   try {
-    $previous = $ErrorActionPreference
+    [IO.File]::WriteAllText($secretFile,(@{PILOT_TOKEN=$token}|ConvertTo-Json -Compress),([Text.UTF8Encoding]::new($false)))
+    $previous=$ErrorActionPreference
     try {
-      $ErrorActionPreference = 'Continue'
-      & node.exe -e 'process.stdout.write(process.env.TT_ACTUALIDAD_PILOT_TOKEN)' |
-        & $wrangler secret put PILOT_TOKEN --config $config
-      $secretCode = $LASTEXITCODE
-    } finally { $ErrorActionPreference = $previous }
-    if ($secretCode -ne 0) { throw 'No se pudo configurar la clave privada de Cloudflare' }
-  } finally { Remove-Item Env:TT_ACTUALIDAD_PILOT_TOKEN -ErrorAction SilentlyContinue }
+      $ErrorActionPreference='Continue'
+      & $wrangler secret bulk $secretFile --config $config
+      $secretCode=$LASTEXITCODE
+    } finally { $ErrorActionPreference=$previous }
+    if($secretCode -ne 0){throw 'No se pudo configurar la clave privada de Cloudflare'}
+  } finally {
+    Remove-Item -LiteralPath $secretFile -Force -ErrorAction SilentlyContinue
+  }
 
   Step 'PRUEBA REAL: ENVIO Y CONSULTA SOLO EN KV PILOTO'
   $auth = @{ Authorization = ('Bearer ' + $token) }
