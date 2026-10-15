@@ -171,6 +171,25 @@ async function waitComposer(cdp,timeoutMs=60000){
   }
   throw Error("La pestaña dedicada no mostró compositor en "+timeoutMs+" ms; "+JSON.stringify(last||{}).slice(0,400))
 }
+// Chrome puede navegar aunque CDP pierda el ACK de Page.navigate.
+// No declarar fallida una imagen solo por un timeout de confirmacion;
+// verificar a continuacion que ChatGPT haya cargado el compositor.
+async function navigateChatBestEffort(cdp){
+  try{
+    await navigateChatBestEffort(cdp);
+  }catch(e){
+    console.log("BRIDGE NAVIGATE ACK TIMEOUT :: "+String(e&&e.message||e));
+    let url="";
+    try{
+      const st=await cdp.eval("(()=>({url:location.href,ready:document.readyState}))()");
+      url=String(st&&st.url||"");
+    }catch{}
+    if(!url.startsWith("https://chatgpt.com/")){
+      try{cdp.fire("Page.navigate",{url:CHAT_ROOT})}catch{}
+    }
+  }
+}
+
 async function openFreshDedicatedConversation(){
   let t=await fixedTarget(true);
   await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
@@ -179,7 +198,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await navigateChatBestEffort(cdp);
     await waitComposer(cdp,60000);
     await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
     // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
@@ -203,7 +222,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
+    await navigateChatBestEffort(cdp);
     await waitComposer(cdp,60000);
     await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
