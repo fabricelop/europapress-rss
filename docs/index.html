@@ -355,7 +355,8 @@ function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show')
 
 const directPilot={url:'',key:''};
 function pilotConfig(){
- const e=prompt('URL del Worker de prueba HTTPS',directPilot.url);if(e===null)return;
+ const suggested=location.hostname.endsWith('.workers.dev')?location.origin:'';
+ const e=prompt('URL HTTPS del Worker de prueba',directPilot.url||suggested);if(e===null)return;
  if(!e.trim()){directPilot.url='';directPilot.key='';$('pilot-status').textContent='Sin configurar';return}
  let u;try{u=new URL(e.trim());if(u.protocol!=='https:')throw Error('HTTP')}catch{showToast('URL HTTPS requerida');return}
  const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return;
