@@ -4,16 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T22:15:00+02:00",
-  "last_completed_at": "2026-10-15T22:18:05+02:00",
-  "updated_at": "2026-10-15T22:18:05+02:00",
+  "last_started_at": "2026-10-15T23:15:00+02:00",
+  "last_completed_at": "2026-10-15T23:23:14+02:00",
+  "updated_at": "2026-10-15T23:23:14+02:00",
   "status": "success",
   "processed_ids": [
-    "3f727fb86568",
-    "120476851821",
-    "5e9350983b4f",
-    "2bd4a7b77d33",
-    "a391748a8ab9"
+    "520c53b2b409",
+    "b06db83f5b6f",
+    "0565ca4fe021"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -22,66 +20,57 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "workflow_complete_jobs_in_progress",
+    "status": "workflow_complete_jobs_queued",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261015T2145+0200",
-    "requested_at": "2026-10-15T21:45:00+02:00",
+    "run_id": "tr-chat-20261015T2315+0200",
+    "requested_at": "2026-10-15T23:15:00+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_ids": [
-      38796986730
-    ],
-    "workflow_conclusions": [
-      "success"
-    ],
     "image_jobs": [
       {
-        "id": "3f727fb86568",
-        "revision": 1,
-        "status": "RUNNING",
-        "phase": "pc_launch"
-      },
-      {
-        "id": "120476851821",
-        "revision": 0,
-        "status": "RUNNING",
-        "phase": "pc_launch"
-      },
-      {
-        "id": "5e9350983b4f",
-        "revision": 0,
-        "status": "RUNNING",
-        "phase": "pc_launch"
-      },
-      {
-        "id": "a391748a8ab9",
+        "id": "520c53b2b409",
         "revision": 0,
         "status": "REQUESTED",
-        "phase": "queued"
+        "phase": "queued",
+        "command_id": "tr-img-auto-520c53b2b409-r0-a1-1792099369933"
+      },
+      {
+        "id": "b06db83f5b6f",
+        "revision": 0,
+        "status": "REQUESTED",
+        "phase": "queued",
+        "command_id": "tr-img-auto-b06db83f5b6f-r0-a1-1792099369934"
+      },
+      {
+        "id": "0565ca4fe021",
+        "revision": 0,
+        "status": "REQUESTED",
+        "phase": "queued",
+        "command_id": "tr-img-auto-0565ca4fe021-r0-a1-1792099369934"
       }
     ]
   },
   "last_run": {
-    "run_id": "tr-chat-20261015T2215+0200",
+    "run_id": "tr-chat-20261015T2315+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-15T22:15:00+02:00",
-    "updated_at": "2026-10-15T22:18:05+02:00",
-    "finished_at": "2026-10-15T22:18:05+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-15T23:15:00+02:00",
+    "updated_at": "2026-10-15T23:23:14+02:00",
+    "finished_at": "2026-10-15T23:23:14+02:00",
+    "current": 3,
+    "total": 3,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "trends_processed": 3,
+      "trends_explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
       "queue_remaining": 0,
-      "visual_backlog": 0,
+      "visual_backlog": 3,
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
@@ -91,12 +80,13 @@
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0,
-      "pending_cards_reviewed": 0
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
+      "remates_omitted": 1,
+      "pending_cards_reviewed": 3,
+      "image_jobs_queued": 3
     },
-    "message": "Pasada 0/0 cerrada y verificada: sin preparing/update ni rewrite_pending; saneamiento visual y Telegram completados; 0 huérfanos.",
+    "message": "Pasada cerrada y verificada: reparadas 3 tendencias que habían quedado fuera de cola; Telegram finalizado; 0 huérfanos; 3 imágenes IA encoladas en el pipeline separado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -106,65 +96,121 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "520c53b2b409",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          "🌶️ La unificación llega con más trámites que una mudanza."
+        ],
+        "selected_candidate": "🌶️ La unificación llega con más trámites que una mudanza.",
+        "selected_score": null
+      },
+      {
+        "trend_id": "0565ca4fe021",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [
+          "🌶️ La victoria se bajó del autobús en la última parada."
+        ],
+        "selected_candidate": "🌶️ La victoria se bajó del autobús en la última parada.",
+        "selected_score": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-15T22:15:00+02:00",
+        "at": "2026-10-15T23:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola principal 0; revisando reexplicaciones, Pendientes y huérfanos Telegram."
+        "message": "Cola principal 0; detectados 3 avisos Telegram sent/final:false que requieren reparación editorial."
       },
       {
-        "at": "2026-10-15T22:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Sin preparing/update, sin rewrite_pending y auditoría Telegram con 0 huérfanos."
-      },
-      {
-        "at": "2026-10-15T22:16:20+02:00",
+        "at": "2026-10-15T23:16:00+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Solicitando saneamiento visual de Pendientes mediante pending-repair-trigger."
+        "message": "Solicitado saneamiento visual de Pendientes mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-15T22:17:35+02:00",
+        "at": "2026-10-15T23:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": "520c53b2b409",
+        "title": "#SVGala6",
+        "message": "Reconstruida revisión r0 y rango histórico TT#6 desde la entrada Top 10 de las 22:21."
+      },
+      {
+        "at": "2026-10-15T23:18:00+02:00",
+        "phase": "investigating",
+        "trend_id": "520c53b2b409",
+        "title": "#SVGala6",
+        "message": "Detonante verificado: gala del jueves con unificación, repesca, expulsión definitiva y despedida de capitanes."
+      },
+      {
+        "at": "2026-10-15T23:18:30+02:00",
+        "phase": "investigating",
+        "trend_id": "b06db83f5b6f",
+        "title": "Navarra",
+        "message": "Detonante verificado: protestas e incidentes en Pamplona durante el acto de Vito Quiles; sin remate por riesgo físico."
+      },
+      {
+        "at": "2026-10-15T23:19:00+02:00",
+        "phase": "investigating",
+        "trend_id": "0565ca4fe021",
+        "title": "Europa League",
+        "message": "Resultado verificado: Union Saint-Gilloise 1-1 Real Sociedad; Turrientes adelantó y Keita igualó en el 88."
+      },
+      {
+        "at": "2026-10-15T23:20:43+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Comando direct-reconcile persistido para las tres revisiones exactas r0."
+      },
+      {
+        "at": "2026-10-15T23:22:32+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Workflow de reparación visual completado correctamente."
+        "message": "Reconciliación directa aplicada: 3 requests en explained, 3 tarjetas persistidas y cola 0."
       },
       {
-        "at": "2026-10-15T22:17:58+02:00",
+        "at": "2026-10-15T23:22:58+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría postenvío: 0 huérfanos y 0 incidencias bidireccionales."
+        "message": "Telegram actualizado: mensajes 853, 854 y 855 en final:true."
       },
       {
-        "at": "2026-10-15T22:18:05+02:00",
+        "at": "2026-10-15T23:23:03+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría postenvío: 0 huérfanos y 0 incidencias bidireccionales; 3/3 mensajes emparejados."
+      },
+      {
+        "at": "2026-10-15T23:23:14+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0 y pasada verificada."
+        "message": "Relectura final: cola 0; 3 trabajos de imagen IA en REQUESTED/queued por el pipeline separado."
       }
     ]
   },
-  "run_id": "tr-chat-20261015T2215+0200",
+  "run_id": "tr-chat-20261015T2315+0200",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "trends_processed": 3,
+    "trends_explained": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
+    "revisions_updated": 3,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
     "queue_remaining": 0,
-    "visual_backlog": 0,
+    "visual_backlog": 3,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
@@ -174,54 +220,90 @@
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0,
-    "pending_cards_reviewed": 0
+    "explanations_verified_under_280": 3,
+    "remates_selected": 2,
+    "remates_omitted": 1,
+    "pending_cards_reviewed": 3,
+    "image_jobs_queued": 3
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-15T22:15:00+02:00",
+      "at": "2026-10-15T23:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola principal 0; revisando reexplicaciones, Pendientes y huérfanos Telegram."
+      "message": "Cola principal 0; detectados 3 avisos Telegram sent/final:false que requieren reparación editorial."
     },
     {
-      "at": "2026-10-15T22:16:00+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Sin preparing/update, sin rewrite_pending y auditoría Telegram con 0 huérfanos."
-    },
-    {
-      "at": "2026-10-15T22:16:20+02:00",
+      "at": "2026-10-15T23:16:00+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
-      "message": "Solicitando saneamiento visual de Pendientes mediante pending-repair-trigger."
+      "message": "Solicitado saneamiento visual de Pendientes mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-15T22:17:35+02:00",
+      "at": "2026-10-15T23:17:00+02:00",
+      "phase": "verifying",
+      "trend_id": "520c53b2b409",
+      "title": "#SVGala6",
+      "message": "Reconstruida revisión r0 y rango histórico TT#6 desde la entrada Top 10 de las 22:21."
+    },
+    {
+      "at": "2026-10-15T23:18:00+02:00",
+      "phase": "investigating",
+      "trend_id": "520c53b2b409",
+      "title": "#SVGala6",
+      "message": "Detonante verificado: gala del jueves con unificación, repesca, expulsión definitiva y despedida de capitanes."
+    },
+    {
+      "at": "2026-10-15T23:18:30+02:00",
+      "phase": "investigating",
+      "trend_id": "b06db83f5b6f",
+      "title": "Navarra",
+      "message": "Detonante verificado: protestas e incidentes en Pamplona durante el acto de Vito Quiles; sin remate por riesgo físico."
+    },
+    {
+      "at": "2026-10-15T23:19:00+02:00",
+      "phase": "investigating",
+      "trend_id": "0565ca4fe021",
+      "title": "Europa League",
+      "message": "Resultado verificado: Union Saint-Gilloise 1-1 Real Sociedad; Turrientes adelantó y Keita igualó en el 88."
+    },
+    {
+      "at": "2026-10-15T23:20:43+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Comando direct-reconcile persistido para las tres revisiones exactas r0."
+    },
+    {
+      "at": "2026-10-15T23:22:32+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Workflow de reparación visual completado correctamente."
+      "message": "Reconciliación directa aplicada: 3 requests en explained, 3 tarjetas persistidas y cola 0."
     },
     {
-      "at": "2026-10-15T22:17:58+02:00",
+      "at": "2026-10-15T23:22:58+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Auditoría postenvío: 0 huérfanos y 0 incidencias bidireccionales."
+      "message": "Telegram actualizado: mensajes 853, 854 y 855 en final:true."
     },
     {
-      "at": "2026-10-15T22:18:05+02:00",
+      "at": "2026-10-15T23:23:03+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Auditoría postenvío: 0 huérfanos y 0 incidencias bidireccionales; 3/3 mensajes emparejados."
+    },
+    {
+      "at": "2026-10-15T23:23:14+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola 0 y pasada verificada."
+      "message": "Relectura final: cola 0; 3 trabajos de imagen IA en REQUESTED/queued por el pipeline separado."
     }
   ],
   "telegram_orphans": 0,
