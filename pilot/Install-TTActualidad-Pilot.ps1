@@ -32,8 +32,12 @@ Download 'docs/manifest.webmanifest' (Join-Path $site 'manifest.webmanifest')
 $html=[IO.File]::ReadAllText((Join-Path $site 'index.html'),[Text.Encoding]::UTF8)
 $worker=[IO.File]::ReadAllText((Join-Path $root 'ttactualidad-worker.js'),[Text.Encoding]::UTF8)
 if(!$html.Contains('const directPilot=') -or !$worker.Contains('isolated-ttactualidad-pilot')){throw 'Los marcadores de codigo piloto no coinciden'}
-& node.exe --check (Join-Path $root 'ttactualidad-worker.js')
-if($LASTEXITCODE -ne 0){throw 'El Worker tiene un error de sintaxis'}
+$parseFile=Join-Path $root 'pilot-worker-parsecheck.mjs'
+Copy-Item -LiteralPath (Join-Path $root 'ttactualidad-worker.js') -Destination $parseFile -Force
+try{
+  & node.exe --check $parseFile
+  if($LASTEXITCODE -ne 0){throw 'El Worker tiene un error de sintaxis'}
+}finally{Remove-Item -LiteralPath $parseFile -ErrorAction SilentlyContinue}
 
 Step 'WRANGLER LOCAL AL PILOTO'
 $script:wrangler=Join-Path $root 'node_modules\.bin\wrangler.cmd'
