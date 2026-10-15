@@ -176,7 +176,7 @@ async function waitComposer(cdp,timeoutMs=60000){
 // verificar a continuacion que ChatGPT haya cargado el compositor.
 async function navigateChatBestEffort(cdp){
   try{
-    await navigateChatBestEffort(cdp);
+    await cdp.call("Page.navigate",{url:CHAT_ROOT},10000);
   }catch(e){
     console.log("BRIDGE NAVIGATE ACK TIMEOUT :: "+String(e&&e.message||e));
     let url="";
