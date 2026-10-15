@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T10:15:00+02:00",
-  "last_completed_at": "2026-10-15T10:21:40+02:00",
-  "updated_at": "2026-10-15T10:21:40+02:00",
+  "last_started_at": "2026-10-15T10:45:00+02:00",
+  "last_completed_at": "2026-10-15T10:48:30+02:00",
+  "updated_at": "2026-10-15T10:48:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "c1e04b336b7e"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,27 +16,34 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "triggered",
+    "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261015T0145+0200",
-    "requested_at": "2026-10-15T01:45:00+02:00",
-    "reason": "execution-start-pending-repair"
+    "run_id": "tr-chat-20261015T1045+0200",
+    "requested_at": "2026-10-15T10:45:00+02:00",
+    "reason": "execution-start-pending-repair",
+    "workflow_run_id": 38708121758,
+    "workflow_conclusion": "success"
   },
   "last_run": {
-    "run_id": "tr-chat-20261015T1015+0200",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-chat-20261015T1045+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-15T10:15:00+02:00",
-    "updated_at": "2026-10-15T10:21:40+02:00",
-    "finished_at": "2026-10-15T10:21:40+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-15T10:45:00+02:00",
+    "updated_at": "2026-10-15T10:48:30+02:00",
+    "finished_at": "2026-10-15T10:48:30+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -49,19 +54,19 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "telegram_delivery_triggered": 1,
+      "visual_repair_workflow_verified": 1,
+      "telegram_delivery_triggered": 0,
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_reviewed": 0,
-      "recent_closer_reviews": 2,
-      "recent_closers_omitted_sensitive": 2,
+      "recent_closer_reviews": 0,
       "fallback_images_ready": 0
     },
-    "message": "Pasada completada 1/1: #LaHora15O explicada y verificada; Telegram final y auditorías limpias.",
+    "message": "Pasada 0/0 completada: cola editorial limpia, sin reexplicaciones ni huérfanos; saneamiento visual verificado correctamente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -71,162 +76,68 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "c1e04b336b7e",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c4",
-        "selected_score": 8.7,
-        "selected_text": "🌶️ La actualidad de hoy ha llegado al plató con el 15-O en la solapa.",
-        "originality_note": "Descartadas fórmulas recientes de hashtag entrando/fichando por fecha; se eligió una imagen distinta ligada al 15-O."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T10:15:00+02:00",
+        "at": "2026-10-15T10:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Preparando pasada editorial · 1 tendencia activa: #LaHora15O (TT#7)."
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · cola autoritativa inicial 0."
       },
       {
-        "at": "2026-10-15T10:15:40+02:00",
+        "at": "2026-10-15T10:45:20+02:00",
         "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Releyendo estado autoritativo de #LaHora15O antes de investigar."
+        "trend_id": null,
+        "title": null,
+        "message": "Reconciliando requests, rewrite_pending, Pendientes recientes y auditoría Telegram."
       },
       {
-        "at": "2026-10-15T10:16:00+02:00",
-        "phase": "investigating",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Buscando detonante actual de #LaHora15O y contrastando la emisión de esta mañana."
-      },
-      {
-        "at": "2026-10-15T10:17:00+02:00",
-        "phase": "investigating",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Hecho esencial verificado: es la etiqueta de la emisión del 15 de octubre de La Hora de La 1, en antena de 07:50 a 10:35."
-      },
-      {
-        "at": "2026-10-15T10:17:20+02:00",
-        "phase": "drafting",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Redactando explicación factual con #RTVE y #SilviaIntxaurrondo."
-      },
-      {
-        "at": "2026-10-15T10:17:35+02:00",
-        "phase": "drafting",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Comprobando límite de X: texto completo de 262 caracteres."
-      },
-      {
-        "at": "2026-10-15T10:17:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Generando candidatos de remate y comparándolos con los últimos 30 cierres."
-      },
-      {
-        "at": "2026-10-15T10:18:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Evaluando candidatos: descartadas fórmulas recientes de «hashtag + fecha» usadas en #14OctubrESP y #Mañaneros14O."
-      },
-      {
-        "at": "2026-10-15T10:18:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Remate seleccionado: metáfora del 15-O en la solapa, específica del hashtag diario y sin repetir la plantilla reciente."
-      },
-      {
-        "at": "2026-10-15T10:18:30+02:00",
-        "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Barrera JIT superada: revisión 0 sigue activa antes de persistir."
-      },
-      {
-        "at": "2026-10-15T10:18:45+02:00",
+        "at": "2026-10-15T10:46:51+02:00",
         "phase": "persisting",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Guardando ficha Explicada."
+        "trend_id": null,
+        "title": null,
+        "message": "Persistido pending-repair-trigger de esta ejecución."
       },
       {
-        "at": "2026-10-15T10:19:05+02:00",
-        "phase": "persisting",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Ficha Explicada guardada; actualizando requests con la misma revisión y el mismo texto."
-      },
-      {
-        "at": "2026-10-15T10:19:30+02:00",
+        "at": "2026-10-15T10:47:10+02:00",
         "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Ficha Explicada y request coinciden exactamente en id, revisión, texto, remate y fecha."
+        "trend_id": null,
+        "title": null,
+        "message": "Workflow de reparación de Explicadas iniciado; verificando resultado y estado final."
       },
       {
-        "at": "2026-10-15T10:19:40+02:00",
-        "phase": "persisting",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Retirando revisión 0 de la cola editorial."
-      },
-      {
-        "at": "2026-10-15T10:20:20+02:00",
+        "at": "2026-10-15T10:48:21+02:00",
         "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Releyendo main: cola editorial vacía y revisión 0 permanece explicada."
+        "trend_id": null,
+        "title": null,
+        "message": "Reparación visual completada correctamente; cola editorial sigue 0 y Telegram no tiene huérfanos."
       },
       {
-        "at": "2026-10-15T10:20:40+02:00",
+        "at": "2026-10-15T10:48:25+02:00",
         "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Telegram 841 actualizado a final:true; auditoría de huérfanos queda en 0."
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría bidireccional sin incidencias; no aparecen preparing, update ni rewrite_pending activos."
       },
       {
-        "at": "2026-10-15T10:21:00+02:00",
-        "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Revisadas Complutense y Policía Nacional sin remate: se mantiene texto factual por detenidos y heridos."
-      },
-      {
-        "at": "2026-10-15T10:21:20+02:00",
-        "phase": "verifying",
-        "trend_id": "c1e04b336b7e",
-        "title": "#LaHora15O",
-        "message": "Auditoría bidireccional sin incidencias; no quedan rewrite_pending activos."
-      },
-      {
-        "at": "2026-10-15T10:21:40+02:00",
+        "at": "2026-10-15T10:48:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 1/1: #LaHora15O explicada y verificada; Telegram final y auditorías limpias."
+        "message": "Pasada 0/0 completada y verificada; no había trabajo editorial nuevo."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false
   },
-  "run_id": "tr-chat-20261015T1015+0200",
+  "run_id": "tr-chat-20261015T1045+0200",
   "summary": {
-    "trends_processed": 1,
-    "trends_explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -237,152 +148,68 @@
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
-    "telegram_delivery_triggered": 1,
+    "visual_repair_workflow_verified": 1,
+    "telegram_delivery_triggered": 0,
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "pending_cards_reviewed": 0,
-    "recent_closer_reviews": 2,
-    "recent_closers_omitted_sensitive": 2,
+    "recent_closer_reviews": 0,
     "fallback_images_ready": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-15T10:15:00+02:00",
+      "at": "2026-10-15T10:45:00+02:00",
       "phase": "preparing",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Preparando pasada editorial · 1 tendencia activa: #LaHora15O (TT#7)."
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial · cola autoritativa inicial 0."
     },
     {
-      "at": "2026-10-15T10:15:40+02:00",
+      "at": "2026-10-15T10:45:20+02:00",
       "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Releyendo estado autoritativo de #LaHora15O antes de investigar."
+      "trend_id": null,
+      "title": null,
+      "message": "Reconciliando requests, rewrite_pending, Pendientes recientes y auditoría Telegram."
     },
     {
-      "at": "2026-10-15T10:16:00+02:00",
-      "phase": "investigating",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Buscando detonante actual de #LaHora15O y contrastando la emisión de esta mañana."
-    },
-    {
-      "at": "2026-10-15T10:17:00+02:00",
-      "phase": "investigating",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Hecho esencial verificado: es la etiqueta de la emisión del 15 de octubre de La Hora de La 1, en antena de 07:50 a 10:35."
-    },
-    {
-      "at": "2026-10-15T10:17:20+02:00",
-      "phase": "drafting",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Redactando explicación factual con #RTVE y #SilviaIntxaurrondo."
-    },
-    {
-      "at": "2026-10-15T10:17:35+02:00",
-      "phase": "drafting",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Comprobando límite de X: texto completo de 262 caracteres."
-    },
-    {
-      "at": "2026-10-15T10:17:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Generando candidatos de remate y comparándolos con los últimos 30 cierres."
-    },
-    {
-      "at": "2026-10-15T10:18:05+02:00",
-      "phase": "remate_selection",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Evaluando candidatos: descartadas fórmulas recientes de «hashtag + fecha» usadas en #14OctubrESP y #Mañaneros14O."
-    },
-    {
-      "at": "2026-10-15T10:18:20+02:00",
-      "phase": "remate_selection",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Remate seleccionado: metáfora del 15-O en la solapa, específica del hashtag diario y sin repetir la plantilla reciente."
-    },
-    {
-      "at": "2026-10-15T10:18:30+02:00",
-      "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Barrera JIT superada: revisión 0 sigue activa antes de persistir."
-    },
-    {
-      "at": "2026-10-15T10:18:45+02:00",
+      "at": "2026-10-15T10:46:51+02:00",
       "phase": "persisting",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Guardando ficha Explicada."
+      "trend_id": null,
+      "title": null,
+      "message": "Persistido pending-repair-trigger de esta ejecución."
     },
     {
-      "at": "2026-10-15T10:19:05+02:00",
-      "phase": "persisting",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Ficha Explicada guardada; actualizando requests con la misma revisión y el mismo texto."
-    },
-    {
-      "at": "2026-10-15T10:19:30+02:00",
+      "at": "2026-10-15T10:47:10+02:00",
       "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Ficha Explicada y request coinciden exactamente en id, revisión, texto, remate y fecha."
+      "trend_id": null,
+      "title": null,
+      "message": "Workflow de reparación de Explicadas iniciado; verificando resultado y estado final."
     },
     {
-      "at": "2026-10-15T10:19:40+02:00",
-      "phase": "persisting",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Retirando revisión 0 de la cola editorial."
-    },
-    {
-      "at": "2026-10-15T10:20:20+02:00",
+      "at": "2026-10-15T10:48:21+02:00",
       "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Releyendo main: cola editorial vacía y revisión 0 permanece explicada."
+      "trend_id": null,
+      "title": null,
+      "message": "Reparación visual completada correctamente; cola editorial sigue 0 y Telegram no tiene huérfanos."
     },
     {
-      "at": "2026-10-15T10:20:40+02:00",
+      "at": "2026-10-15T10:48:25+02:00",
       "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Telegram 841 actualizado a final:true; auditoría de huérfanos queda en 0."
+      "trend_id": null,
+      "title": null,
+      "message": "Auditoría bidireccional sin incidencias; no aparecen preparing, update ni rewrite_pending activos."
     },
     {
-      "at": "2026-10-15T10:21:00+02:00",
-      "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Revisadas Complutense y Policía Nacional sin remate: se mantiene texto factual por detenidos y heridos."
-    },
-    {
-      "at": "2026-10-15T10:21:20+02:00",
-      "phase": "verifying",
-      "trend_id": "c1e04b336b7e",
-      "title": "#LaHora15O",
-      "message": "Auditoría bidireccional sin incidencias; no quedan rewrite_pending activos."
-    },
-    {
-      "at": "2026-10-15T10:21:40+02:00",
+      "at": "2026-10-15T10:48:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada 1/1: #LaHora15O explicada y verificada; Telegram final y auditorías limpias."
+      "message": "Pasada 0/0 completada y verificada; no había trabajo editorial nuevo."
     }
   ],
   "telegram_orphans": 0,
