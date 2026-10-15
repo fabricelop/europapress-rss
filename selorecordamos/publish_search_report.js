@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
+const withGitPublishLock = require('./git_publish_lock');
 
 const baseDir = __dirname;
 const repoDir = path.join(baseDir, '..');
@@ -130,32 +131,37 @@ const report = {
 fs.writeFileSync(reportFile, JSON.stringify(report, null, 2) + '\n', 'utf8');
 
 try {
-  // Robustez: un rebase antiguo o detached HEAD no debe bloquear para siempre
-  // las ejecuciones horarias de SeLoRecordamos.
-  ensureCleanRebaseState();
-  ensureCleanMergeState();
-  resolveGeneratedStateConflicts();
-  ensureMainBranch();
+  withGitPublishLock(() => {
+    // Do not modify another publisher's active Git transaction.
+    ensureCleanRebaseState();
+    ensureCleanMergeState();
+    resolveGeneratedStateConflicts();
+    ensureMainBranch();
 
-  runGit(['add', reportRepoPath]);
-  const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet', '--', reportRepoPath], { cwd: repoDir });
-  if (diff.status === 0) {
-    console.log('Informe de búsqueda sin cambios.');
-    process.exit(0);
-  }
+    runGit(['add', reportRepoPath]);
+    const diff = cp.spawnSync('git', ['diff', '--cached', '--quiet', '--', reportRepoPath], { cwd: repoDir });
+    if (diff.status === 0) {
+      console.log('Informe de búsqueda sin cambios.');
+      return;
+    }
+    if (diff.status !== 1) throw new Error('No se pudo comprobar el diff Git del informe.');
 
-  runGit(['commit', '-m', 'Update SeLoRecordamos search report', '--', reportRepoPath]);
+    runGit(['commit', '-m', 'Update SeLoRecordamos search report', '--', reportRepoPath]);
 
-  try {
-    runGit(['push', 'origin', 'main']);
-  } catch (_) {
-    // Si main avanzo en remoto, sincronizamos y reintentamos. Si hubiera
-    // quedado otro rebase residual, la siguiente ejecucion lo limpiara.
-    runGit(['pull', '--rebase', '--autostash', 'origin', 'main']);
-    runGit(['push', 'origin', 'main']);
-  }
-
-  console.log('Informe de búsqueda SeLoRecordamos subido a GitHub.');
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        runGit(['push', 'origin', 'main']);
+        console.log('Informe de búsqueda SeLoRecordamos subido a GitHub.');
+        return;
+      } catch (error) {
+        if (attempt === 3) throw error;
+        // Avoid "Cannot rebase onto multiple branches" from git pull --rebase.
+        // Explicitly fetch exactly one remote ref and rebase onto it.
+        runGit(['fetch', 'origin', 'main']);
+        runGit(['rebase', '--autostash', 'refs/remotes/origin/main']);
+      }
+    }
+  });
 } catch (e) {
   console.error('No se pudo publicar el informe de búsqueda:', String(e.stderr || e.message || e).trim());
   process.exit(1);
