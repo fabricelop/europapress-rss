@@ -70,6 +70,18 @@ def comparable_url(url):
     except ValueError:
         return ""
 
+def event_stage(title):
+    """A later *action* is not the same fact just because names/topic coincide.
+
+    Only distinguish explicit, verifiable proceedings here. Mere reports about
+    an incident do not inherit the subsequent act of sending it to the court.
+    """
+    t=tokens(title)
+    if ({"justicia","fiscalia","juzgado","tribunal"} & t and
+            {"envia","remite","remiten","traslada","trasladan","entrega","entregan"} & t):
+        return "remitido_justicia"
+    return ""
+
 def same_fact(a,b):
     """Conservative concrete-fact similarity, never topic-only similarity."""
     left,right=(a or {}),(b or {})
@@ -82,6 +94,8 @@ def same_fact(a,b):
         A=tokens(a_title)
         if len(A)<3:continue
         for b_title in names_b[:12]:
+            # A documented later referral is a distinct editorial development.
+            if event_stage(a_title)!=event_stage(b_title):continue
             B=tokens(b_title)
             if len(B)<3:continue
             common=A&B
