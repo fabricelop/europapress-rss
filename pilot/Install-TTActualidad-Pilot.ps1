@@ -13,9 +13,19 @@ function Download([string]$file,[string]$destination){
   Invoke-WebRequest -Uri ($source+'/'+$file) -OutFile $destination -UseBasicParsing -TimeoutSec 60
   if(!(Test-Path $destination) -or (Get-Item $destination).Length -lt 30){throw ('Failed to download '+$file)}
 }
+# Windows PowerShell 5.1 can turn harmless native stderr warnings into
+# terminating NativeCommandError when ErrorActionPreference is Stop.
+# Native commands are checked strictly via their actual process exit codes.
 function Run-Wrangler([string[]]$parameters){
-  & $script:wrangler @parameters
-  if($LASTEXITCODE -ne 0){throw ('Wrangler exited '+$LASTEXITCODE+': '+($parameters -join ' '))}
+  $previous=$ErrorActionPreference
+  try {
+    $ErrorActionPreference='Continue'
+    & $script:wrangler @parameters
+    $exitCode=$LASTEXITCODE
+  } finally {
+    $ErrorActionPreference=$previous
+  }
+  if($exitCode -ne 0){throw ('Wrangler exited '+$exitCode+': '+($parameters -join ' '))}
 }
 Step 'COMPROBACIONES: SOLO PILOTO'
 if(!(Get-Command node.exe -ErrorAction SilentlyContinue)){throw 'Node.js 20+ no encontrado'}
@@ -42,8 +52,15 @@ try{
 Step 'WRANGLER LOCAL AL PILOTO'
 $script:wrangler=Join-Path $root 'node_modules\.bin\wrangler.cmd'
 if(!(Test-Path $script:wrangler)){
-  & npm.cmd --prefix $root install --no-audit --no-fund --save-exact 'wrangler@latest'
-  if($LASTEXITCODE -ne 0){throw 'No se pudo instalar Wrangler'}
+  $previous=$ErrorActionPreference
+  try {
+    $ErrorActionPreference='Continue'
+    & npm.cmd --prefix $root install --no-audit --no-fund --save-exact 'wrangler@latest'
+    $npmExit=$LASTEXITCODE
+  } finally {
+    $ErrorActionPreference=$previous
+  }
+  if($npmExit -ne 0){throw ('npm fallo con codigo '+$npmExit)}
 }
 if(!(Test-Path $script:wrangler)){throw 'No se encontro wrangler.cmd'}
 
@@ -67,8 +84,15 @@ Push-Location $root
 try{
   Step 'AUTORIZACION DE CLOUDFLARE'
   Write-Host 'Si es necesario, Wrangler abrira el navegador para autorizar el acceso.'
-  & $script:wrangler whoami --config $config
-  if($LASTEXITCODE -ne 0){
+  $previous=$ErrorActionPreference
+  try {
+    $ErrorActionPreference='Continue'
+    & $script:wrangler whoami --config $config
+    $whoamiExit=$LASTEXITCODE
+  } finally {
+    $ErrorActionPreference=$previous
+  }
+  if($whoamiExit -ne 0){
     Run-Wrangler -parameters @('login','--config',$config)
     Run-Wrangler -parameters @('whoami','--config',$config)
   }
@@ -99,9 +123,16 @@ try{
   if(!$token -or $token.Length -lt 32){throw 'Token piloto invalido'}
   $env:TT_ACTUALIDAD_PILOT_TOKEN=$token
   try{
-    & node.exe -e 'process.stdout.write(process.env.TT_ACTUALIDAD_PILOT_TOKEN)' |
-      & $script:wrangler secret put PILOT_TOKEN --config $config
-    if($LASTEXITCODE -ne 0){throw 'No se ha configurado el secreto PILOT_TOKEN'}
+    $previous=$ErrorActionPreference
+    try {
+      $ErrorActionPreference='Continue'
+      & node.exe -e 'process.stdout.write(process.env.TT_ACTUALIDAD_PILOT_TOKEN)' |
+        & $script:wrangler secret put PILOT_TOKEN --config $config
+      $secretExit=$LASTEXITCODE
+    } finally {
+      $ErrorActionPreference=$previous
+    }
+    if($secretExit -ne 0){throw ('No se ha configurado el secreto PILOT_TOKEN (codigo '+$secretExit+')')}
   }finally{Remove-Item Env:TT_ACTUALIDAD_PILOT_TOKEN -ErrorAction SilentlyContinue}
 
   Step 'PRUEBA DE SALUD, AISLAMIENTO Y AUTENTICACION'
