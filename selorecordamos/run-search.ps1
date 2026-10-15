@@ -65,8 +65,19 @@ function Run-NodeToLog([string[]]$arguments, [int]$timeoutSeconds = 0) {
     if ($timeoutSeconds -gt 0) {
         $finished = $p.WaitForExit($timeoutSeconds * 1000)
         if (-not $finished) {
-            try { $p.Kill() } catch {}
-            $p.WaitForExit()
+            # taskkill /T termina tambien Chrome y los demas descendientes de Playwright.
+            # Kill() solo terminaba Node y podia dejar navegadores huerfanos.
+            try {
+                & "$env:SystemRoot\System32\taskkill.exe" /PID $p.Id /T /F 2>&1 | Out-Null
+            } catch {
+                try { $p.Kill() } catch {}
+            }
+            [void]$p.WaitForExit(15000)
+            if (-not $p.HasExited) {
+                Add-LogLine "[$(Get-Date -Format s)] ERROR: no se pudo detener el arbol Node PID=$($p.Id)"
+                $p.Dispose()
+                return 124
+            }
             $stdout = $stdoutTask.Result
             $stderr = $stderrTask.Result
             if ($stdout) { [System.IO.File]::AppendAllText($log, $stdout, $utf8) }
