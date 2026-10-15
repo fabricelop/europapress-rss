@@ -19,6 +19,16 @@ export default {
   if(!authorized(request,env))return reply({ok:false,error:'unauthorized'},401,request);
   if(!env.PILOT_DECISIONS)return reply({ok:false,error:'pilot_KV_not_bound'},503,request);
   const route=new URL(request.url).pathname;
+  // Targeted lookup for a recently written decision. KV list() can be stale.
+  if(route==='/api/decision'&&request.method==='GET'){
+   const u=new URL(request.url);
+   const project=u.searchParams.get('project')||'';
+   const id=u.searchParams.get('event_id')||'';
+   if(!['ttittulares','ttendencias'].includes(project)||!(/^[A-Za-z0-9:_-]{3,128}$/.test(id)))
+     return reply({ok:false,error:'invalid_lookup'},400,request);
+   const item=await env.PILOT_DECISIONS.get(project+':'+id,'json');
+   return reply({ok:true,found:!!item,item:item||null,production_connected:false},200,request);
+  }
   if(route==='/api/decision'&&request.method==='POST'){
    let b;try{b=await request.json()}catch{return reply({ok:false,error:'bad_json'},400,request)}
    if(!['ttittulares','ttendencias'].includes(b.project)||!['prepare','discard'].includes(b.decision)||!(/^[A-Za-z0-9:_-]{3,128}$/.test(String(b.event_id||'')))||!(/^[A-Za-z0-9-]{12,80}$/.test(String(b.request_id||''))))return reply({ok:false,error:'invalid_decision'},400,request);
