@@ -65,12 +65,12 @@ try{
   Write-Host 'Si es necesario, Wrangler abrira el navegador para autorizar el acceso.'
   & $script:wrangler whoami --config $config
   if($LASTEXITCODE -ne 0){
-    Run-Wrangler @('login','--config',$config)
-    Run-Wrangler @('whoami','--config',$config)
+    Run-Wrangler -parameters @('login','--config',$config)
+    Run-Wrangler -parameters @('whoami','--config',$config)
   }
   Step 'DESPLIEGUE DEL WORKER Y KV EXCLUSIVOS'
   Write-Host ('Solo se desplegara '+$name)
-  Run-Wrangler @('deploy','--config',$config)
+  Run-Wrangler -parameters @('deploy','--config',$config)
   $saved=Get-Content -LiteralPath $config -Raw -Encoding UTF8|ConvertFrom-Json
   $kv=@($saved.kv_namespaces|Where-Object {$_.binding -eq 'PILOT_DECISIONS'})
   if($kv.Count -ne 1 -or [string]::IsNullOrWhiteSpace([string]$kv[0].id)){
