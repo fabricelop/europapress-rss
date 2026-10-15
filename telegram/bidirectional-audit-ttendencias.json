@@ -1,13 +1,37 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-15T17:42:12.317594+00:00",
+  "checked_at": "2026-10-15T17:47:18.363712+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 2,
   "telegram_live_count": 0,
   "matched_count": 0,
-  "issues_count": 0,
-  "issues": [],
+  "issues_count": 2,
+  "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "9d50d7492657",
+      "title": "La Junta Electoral",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    }
+  ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "9d50d7492657",
+    "f2f937f52c31"
+  ],
   "telegram_ids": []
 }
