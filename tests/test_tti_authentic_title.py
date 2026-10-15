@@ -136,4 +136,73 @@ class AuthenticTitleTests(unittest.TestCase):
         self.assertIn("VERIFICACIÓN",copy)
         self.assertNotIn("Detalles no comprobados",copy)
 
+
+    def test_other_source_cannot_resend_robbery_after_delete(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            now=self._fixture(root,"antony-second",
+                title="Antony, víctima de un robo en su casa durante el Betis - Oporto",
+                with_radar=False)
+            self._write(root,"telegram/ttittulares-deliveries.json",{"items":[{
+                "event_id":"antony-first","revision":1,"status":"deleted",
+                "title":"Roban en la casa de Antony durante el Betis-Oporto",
+                "telegram_message_id":4200,"delivered_at":now.isoformat()}]})
+            with patch.object(module,"ROOT",root), patch.object(module,"send") as sender:
+                self.assertEqual(module.process("ttittulares",now,"token","chat"),(0,0))
+                sender.assert_not_called()
+                rows=module.load("telegram/ttittulares-deliveries.json",{})["items"]
+                self.assertEqual(len(rows),1)
+                self.assertEqual(rows[0]["status"],"deleted")
+
+    def test_two_ids_same_fact_in_one_batch_send_once(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            (root/"telegram").mkdir()
+            (root/"ttittulares").mkdir()
+            now=datetime.now(timezone.utc)
+            start=now.isoformat()
+            self._write(root,"telegram/editorial-processing.json",{"items":[
+                {"event_id":"fort-hood","status":"PROCESSING","revision":1,
+                 "title":"Trump dice que el fusilamiento del condenado de Fort Hood no será retransmitido en streaming",
+                 "selected_at":start},
+                {"event_id":"nidal-hasan","status":"PROCESSING","revision":1,
+                 "title":"Trump dice que la ejecución de Nidal Hasan no será transmitida en directo",
+                 "selected_at":start}]})
+            self._write(root,"ttittulares/prepared.json",{"items":[]})
+            self._write(root,"ttittulares/decisions.json",{"items":[]})
+            self._write(root,"telegram/ttittulares-deliveries.json",{"items":[]})
+            # In production active_entries is a separate list after baseline.
+            self._write(root,"telegram/lifecycle-baseline.json",{
+                "activated_at":"2026-10-12T15:25:23Z",
+                "project_state":{"ttittulares":{"historic_max_message_id":3559}}})
+            mids=iter((5001,5002))
+            with patch.object(module,"ROOT",root), patch.object(module,"send",
+                              side_effect=lambda *args,**kwargs:{"message_id":next(mids)}) as sender:
+                self.assertEqual(module.process("ttittulares",now,"token","chat"),(1,0))
+                self.assertEqual(sender.call_count,1)
+                rows=module.load("telegram/ttittulares-deliveries.json",{})["items"]
+                self.assertEqual(len(rows),1)
+                self.assertEqual(rows[0]["telegram_message_id"],5001)
+                self.assertEqual(module.process("ttittulares",now,"token","chat"),(0,0))
+                self.assertEqual(sender.call_count,1)
+
+    def test_new_contradictory_decision_is_not_a_duplicate(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            now=self._fixture(root,"new-junta",
+                title="La Junta Electoral rechaza investigar a Sánchez por la rueda de prensa en La Moncloa",
+                with_radar=False)
+            self._write(root,"telegram/ttittulares-deliveries.json",{"items":[{
+                "event_id":"old-junta","revision":1,"status":"deleted",
+                "title":"La Junta Electoral abre expediente sancionador a Sánchez por la rueda de prensa en La Moncloa",
+                "telegram_message_id":4202,"delivered_at":now.isoformat()}]})
+            with patch.object(module,"ROOT",root), patch.object(module,"send",
+                              return_value={"message_id":4203}) as sender:
+                self.assertEqual(module.process("ttittulares",now,"token","chat"),(1,0))
+                self.assertEqual(sender.call_count,1)
+                rows=module.load("telegram/ttittulares-deliveries.json",{})["items"]
+                self.assertEqual(len(rows),2)
+                self.assertEqual(rows[0]["status"],"deleted")
+                self.assertEqual(rows[1]["event_id"],"new-junta")
+
 if __name__=="__main__":unittest.main()
