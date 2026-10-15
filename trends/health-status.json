@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-15T05:00:14.201432+00:00",
-  "ok": false,
+  "checked_at": "2026-10-15T09:47:26.231647+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,8 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
-      "captured_age_minutes": 0.3,
+      "non_stale_sources": 6,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.9,
-      "run_id": 38684259044,
+      "age_minutes": 1.4,
+      "run_id": 38715349709,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -76,63 +76,34 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 1,
-      "overdue_count": 1,
-      "oldest_age_minutes": 157.8,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "d183843fa18b",
-          "name": "ESPI",
-          "status": "preparing",
-          "age_minutes": 157.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "d183843fa18b"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
-      "ok": false,
-      "overdue_count": 2,
+      "ok": true,
+      "overdue_count": 0,
       "actionable_count": 0,
-      "oldest_age_minutes": 444.7,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "96c57ccbf332",
-          "name": "Florentino",
-          "message_id": 835,
-          "age_minutes": 444.7,
-          "editorial_status": "inactive",
-          "grouped": false
-        },
-        {
-          "id": "d183843fa18b",
-          "name": "ESPI",
-          "message_id": 838,
-          "age_minutes": 157.2,
-          "editorial_status": "preparing",
-          "grouped": false
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 157.8 min",
-    "Telegram: 2 aviso(s) provisional(es) > 30 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Telegram: 2 aviso(s) provisional(es) > 30 min | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 157.8 min"
+  "last_alert_signature": ""
 }
