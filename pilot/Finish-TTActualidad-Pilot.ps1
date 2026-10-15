@@ -93,8 +93,17 @@ try {
 
   Step 'PRUEBA REAL: ENVIO Y CONSULTA SOLO EN KV PILOTO'
   $auth = @{ Authorization = ('Bearer ' + $token) }
-  $check = Invoke-RestMethod -Uri ($url + '/api/decisions') -Headers $auth -TimeoutSec 30
-  if (!$check.ok -or $check.mode -ne 'pilot_only') { throw 'La lectura privada del piloto ha fallado' }
+  $authorized=$false
+  for($attempt=1;$attempt -le 8;$attempt++){
+    try {
+      $check=Invoke-RestMethod -Uri ($url+'/api/decisions') -Headers $auth -TimeoutSec 25
+      if($check.ok -and $check.mode -eq 'pilot_only'){$authorized=$true;break}
+    } catch {
+      if($attempt -eq 8){Write-Warning ('Ultimo intento: '+$_.Exception.Message)}
+    }
+    Start-Sleep -Seconds 3
+  }
+  if(!$authorized){throw 'La clave sigue sin autenticar tras 8 intentos; no se enviaran decisiones de prueba'}
   $eid = 'pilot-install-' + [guid]::NewGuid().ToString('N')
   $requestId = [guid]::NewGuid().ToString()
   $payload = @{project='ttittulares';event_id=$eid;decision='prepare';request_id=$requestId} | ConvertTo-Json
