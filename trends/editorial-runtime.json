@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T16:43:00+02:00",
-  "last_completed_at": "2026-10-15T16:51:00+02:00",
-  "updated_at": "2026-10-15T16:51:00+02:00",
+  "last_started_at": "2026-10-15T17:54:00+02:00",
+  "last_completed_at": "2026-10-15T17:58:00+02:00",
+  "updated_at": "2026-10-15T17:58:00+02:00",
   "status": "success",
   "processed_ids": [
     "75e950a406ee"
@@ -29,27 +29,27 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1792075363",
+    "run_id": "tr-chat-20261015T1754+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T16:43:00+02:00",
-    "updated_at": "2026-10-15T16:51:00+02:00",
-    "finished_at": "2026-10-15T16:51:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-15T17:54:00+02:00",
+    "updated_at": "2026-10-15T17:58:00+02:00",
+    "finished_at": "2026-10-15T17:58:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
-      "incidents": 0,
+      "incidents": 2,
       "queue_remaining": 0,
       "visual_backlog": 0,
       "images_generated": 0,
@@ -57,19 +57,29 @@
       "pending_repair_triggered": 1,
       "visual_repair_workflow_started": 1,
       "visual_repair_workflow_verified": 0,
-      "telegram_delivery_triggered": 1,
-      "telegram_delivery_workflow_verified": 1,
+      "telegram_delivery_triggered": 0,
+      "telegram_delivery_workflow_verified": 0,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_reviewed": 0,
-      "fallback_images_ready": 0
+      "pending_cards_reviewed": 0
     },
-    "message": "Pasada 1/1 cerrada y verificada: Inda r0 quedó explicada, salió de la cola y Telegram 844 está final:true. Sin ImageGen en esta conversación.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El saneamiento visual quedó iniciado y aún seguía ejecutándose al cierre.",
+    "incident_count": 2,
+    "incidents": [
+      {
+        "code": "visual_repair_still_running_at_close",
+        "severity": "warning",
+        "message": "El workflow Reparar imágenes TTendencias Explicadas fue lanzado correctamente pero seguía in_progress al cerrar la pasada editorial."
+      },
+      {
+        "code": "legacy_archive_step_still_enabled",
+        "severity": "warning",
+        "message": "El workflow repair-ttendencias-explicadas.yml aún contiene el paso «Recuperar imágenes de archivo»."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -77,149 +87,42 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "75e950a406ee",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": 8.7,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T16:43:00+02:00",
+        "at": "2026-10-15T17:54:00+02:00",
         "phase": "preparing",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Preparando pasada editorial · 1 entrada activa; Inda r0, puesto 7."
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · cola autoritativa inicial 0; comprobando reparaciones y reexplicaciones."
       },
       {
-        "at": "2026-10-15T16:44:00+02:00",
+        "at": "2026-10-15T17:55:00+02:00",
         "phase": "verifying",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Releyendo estado autoritativo de Inda r0; sigue preparing y sin explicación persistida."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, requests, Explicadas y auditoría Telegram antes de cerrar."
       },
       {
-        "at": "2026-10-15T16:44:20+02:00",
-        "phase": "investigating",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Buscando detonante actual de Inda."
-      },
-      {
-        "at": "2026-10-15T16:44:50+02:00",
-        "phase": "investigating",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Contrastando fuente 1/2: cobertura de la intervención de Inda en Horizonte sobre pensiones."
-      },
-      {
-        "at": "2026-10-15T16:45:10+02:00",
-        "phase": "investigating",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Contrastando fuente 2/2: reacción de Sánchez y respuesta pública posterior."
-      },
-      {
-        "at": "2026-10-15T16:45:25+02:00",
-        "phase": "investigating",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Hecho esencial verificado: el pico se vincula al debate sobre callar las pensiones hasta después del 29-N."
-      },
-      {
-        "at": "2026-10-15T16:45:35+02:00",
-        "phase": "drafting",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Redactando explicación factual y neutral."
-      },
-      {
-        "at": "2026-10-15T16:45:45+02:00",
-        "phase": "drafting",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Comprobando límite de X: texto completo válido por debajo de 280 caracteres."
-      },
-      {
-        "at": "2026-10-15T16:45:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Generando candidatos de remate político neutral."
-      },
-      {
-        "at": "2026-10-15T16:45:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Evaluando candidatos con ratings y originalidad; sin repetición de «jornada de reflexión» en el histórico valorado."
-      },
-      {
-        "at": "2026-10-15T16:46:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Remate seleccionado: sátira sobre el calendario electoral, sin atribuir intenciones no verificadas."
-      },
-      {
-        "at": "2026-10-15T16:46:40+02:00",
+        "at": "2026-10-15T17:56:28+02:00",
         "phase": "verifying",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Barrera JIT repetida: Inda r0 continúa preparing; no hay revisión posterior ni ficha Explicada."
+        "trend_id": null,
+        "title": null,
+        "message": "Trigger de saneamiento visual confirmado: workflow Reparar imágenes TTendencias Explicadas iniciado."
       },
       {
-        "at": "2026-10-15T16:47:00+02:00",
-        "phase": "persisting",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Guardando ficha Explicada de Inda r0."
-      },
-      {
-        "at": "2026-10-15T16:48:00+02:00",
-        "phase": "persisting",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Actualizando requests con la misma revisión, explicación y remate."
-      },
-      {
-        "at": "2026-10-15T16:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Retirando Inda r0 de la cola tras persistir ficha y request."
-      },
-      {
-        "at": "2026-10-15T16:49:30+02:00",
+        "at": "2026-10-15T17:57:30+02:00",
         "phase": "verifying",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Releyendo main: Explicadas y requests coinciden exactamente en id, revision, explicación, remate y explained_at."
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación final: 0 preparing/update/problematic, 0 rewrite_pending y 0 huérfanos Telegram."
       },
       {
-        "at": "2026-10-15T16:50:00+02:00",
-        "phase": "verifying",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Workflow Telegram de la revisión completado correctamente; mensaje 844 actualizado a final:true."
-      },
-      {
-        "at": "2026-10-15T16:50:30+02:00",
-        "phase": "verifying",
-        "trend_id": "75e950a406ee",
-        "title": "Inda",
-        "message": "Tendencia cerrada y verificada; cola 0, sin preparing/update ni rewrite_pending y sin huérfanos Telegram."
-      },
-      {
-        "at": "2026-10-15T16:51:00+02:00",
+        "at": "2026-10-15T17:58:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 1/1 cerrada y verificada; la reparación visual continúa por su flujo independiente sin ImageGen en esta conversación."
+        "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El saneamiento visual quedó iniciado y aún seguía ejecutándose al cierre."
       }
     ],
     "queue_complete": true,
