@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-15T05:50:16.918Z",
+  "updated_at": "2026-10-15T05:53:36.430Z",
   "items": [
     {
       "event_id": "b7985077b625",
@@ -304,7 +304,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "disable_ai_image": false,
       "sensitive_image_reason": null,
       "image_choice": "fallback",
@@ -329,7 +329,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El Tribunal de Cuentas se ve obligado a aplicar la ley de amnista y perdona ms de 4 millones a los independentistas por el procs"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-15T05:53:36.430Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     },
     {
       "event_id": "4324e84abd54",
