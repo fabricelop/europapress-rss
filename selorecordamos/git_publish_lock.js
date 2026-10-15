@@ -25,9 +25,15 @@ module.exports = function withGitPublishLock(work) {
       if (e.code !== 'EEXIST') throw e;
       let owner = null;
       try { owner = JSON.parse(fs.readFileSync(lockFile, 'utf8')); } catch (_) {}
-      if (!owner || !alive(owner.pid)) {
+      if (owner && !alive(owner.pid)) {
         try { fs.unlinkSync(lockFile); } catch (_) {}
         continue;
+      }
+      if (!owner) {
+        // Another process may have created the lock but not written its PID yet.
+        try {
+          if (Date.now() - fs.statSync(lockFile).mtimeMs > 5000) fs.unlinkSync(lockFile);
+        } catch (_) {}
       }
       Atomics.wait(sleepCell, 0, 0, 250);
     }
