@@ -1,0 +1,13 @@
+name = "ttactualidad-decisions-pilot"
+main = "ttactualidad-worker.js"
+compatibility_date = "2026-10-15"
+workers_dev = true
+
+# Pilot ONLY: configure a newly created KV namespace, not one used by production.
+# Uncomment after creating the dedicated KV namespace:
+# [[kv_namespaces]]
+# binding = "PILOT_DECISIONS"
+# id = "REPLACE_WITH_NEW_PILOT_KV_NAMESPACE_ID"
+
+# Add PILOT_TOKEN via `npx wrangler secret put PILOT_TOKEN --config pilot/wrangler.toml`.
+# Never commit passwords, API tokens or production bindings.
