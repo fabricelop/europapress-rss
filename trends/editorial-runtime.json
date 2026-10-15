@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T23:49:45+02:00",
-  "last_completed_at": "2026-10-15T23:52:25+02:00",
-  "updated_at": "2026-10-15T23:52:25+02:00",
+  "last_started_at": "2026-10-16T00:15:00+02:00",
+  "last_completed_at": "2026-10-16T00:18:32+02:00",
+  "updated_at": "2026-10-16T00:18:32+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,43 +16,23 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "idempotent-existing-jobs-preserved",
+    "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-autoguard-1792100985",
-    "requested_at": "2026-10-15T23:52:10+02:00",
+    "run_id": "tr-chat-20261016T0015+0200",
+    "requested_at": "2026-10-16T00:15:00+02:00",
     "reason": "execution-start-pending-repair",
-    "image_jobs": [
-      {
-        "id": "83edbdc83514",
-        "revision": 0,
-        "status": "REQUESTED",
-        "phase": "queued",
-        "command_id": "tr-img-auto-83edbdc83514-r0-a1-1792101049327"
-      },
-      {
-        "id": "02447ffa8bb9",
-        "revision": 0,
-        "status": "REQUESTED",
-        "phase": "queued",
-        "command_id": "tr-img-auto-02447ffa8bb9-r0-a1-1792101049328"
-      },
-      {
-        "id": "6259d572eae1",
-        "revision": 0,
-        "status": "REQUESTED",
-        "phase": "queued",
-        "command_id": "tr-img-auto-6259d572eae1-r0-a1-1792101049328"
-      }
-    ]
+    "workflow_run_id": 38815989146,
+    "workflow_conclusion": "success",
+    "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-autoguard-1792100985",
+    "run_id": "tr-chat-20261016T0015+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-15T23:49:45+02:00",
-    "updated_at": "2026-10-15T23:52:25+02:00",
-    "finished_at": "2026-10-15T23:52:25+02:00",
+    "started_at": "2026-10-16T00:15:00+02:00",
+    "updated_at": "2026-10-16T00:18:32+02:00",
+    "finished_at": "2026-10-16T00:18:32+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -70,15 +50,15 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "telegram_delivery_triggered": 0,
+      "visual_repair_workflow_started": 1,
+      "visual_repair_workflow_verified": 1,
+      "telegram_delivery_triggered": 1,
       "telegram_delivery_workflow_verified": 1,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
-      "overlap_reconciled_revisions": 4,
-      "overlap_reconciled_groups": 3,
-      "final_deliveries_verified": 4
+      "provisional_telegram": 0
     },
-    "message": "Pasada idempotente cerrada: la ejecución solapada anterior ya había cerrado 4 revisiones en 3 explicaciones; relectura final confirma cola 0, Telegram 856–859 final:true y 0 huérfanos.",
+    "message": "Pasada 0/0 cerrada y verificada: cola 0, sin preparing/update ni rewrite_pending; reparación visual y Telegram completados; 0 provisionales y 0 huérfanos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -91,53 +71,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T23:49:45+02:00",
+        "at": "2026-10-16T00:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Detectada ejecución directa solapada que ya estaba tratando las 4 revisiones activas."
+        "message": "Cola principal 0; revisando reexplicaciones, Pendientes y huérfanos Telegram."
       },
       {
-        "at": "2026-10-15T23:50:17+02:00",
+        "at": "2026-10-16T00:16:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura de main: 4 revisiones explained y editorial-queue en 0."
+        "message": "Sin preparing/update, sin rewrite_pending y auditoría Telegram sin huérfanos; saneamiento visual iniciado."
       },
       {
-        "at": "2026-10-15T23:51:05+02:00",
+        "at": "2026-10-16T00:18:22+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Telegram 856–859 confirmado en final:true."
+        "message": "Workflow de reparación visual completado correctamente."
       },
       {
-        "at": "2026-10-15T23:51:09+02:00",
+        "at": "2026-10-16T00:18:31+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría postenvío confirmada con 0 huérfanos."
+        "message": "Entrega y auditoría Telegram completadas: 0 provisionales, 0 huérfanos y 0 incidencias bidireccionales."
       },
       {
-        "at": "2026-10-15T23:52:10+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Sin entradas preparing/update tras releer main y sin rewrite_pending:true localizado en la comprobación adicional."
-      },
-      {
-        "at": "2026-10-15T23:52:25+02:00",
+        "at": "2026-10-16T00:18:32+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada idempotente cerrada: no quedaba trabajo editorial nuevo; el solape previo dejó 4 revisiones cerradas en 3 fichas."
+        "message": "Relectura final de main: cola 0; sin preparing/update ni rewrite_pending; cierre durable verificado."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false
   },
-  "run_id": "tr-autoguard-1792100985",
+  "run_id": "tr-chat-20261016T0015+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -153,57 +126,50 @@
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
-    "telegram_delivery_triggered": 0,
+    "visual_repair_workflow_started": 1,
+    "visual_repair_workflow_verified": 1,
+    "telegram_delivery_triggered": 1,
     "telegram_delivery_workflow_verified": 1,
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
-    "overlap_reconciled_revisions": 4,
-    "overlap_reconciled_groups": 3,
-    "final_deliveries_verified": 4
+    "provisional_telegram": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-15T23:49:45+02:00",
+      "at": "2026-10-16T00:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Detectada ejecución directa solapada que ya estaba tratando las 4 revisiones activas."
+      "message": "Cola principal 0; revisando reexplicaciones, Pendientes y huérfanos Telegram."
     },
     {
-      "at": "2026-10-15T23:50:17+02:00",
+      "at": "2026-10-16T00:16:40+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura de main: 4 revisiones explained y editorial-queue en 0."
+      "message": "Sin preparing/update, sin rewrite_pending y auditoría Telegram sin huérfanos; saneamiento visual iniciado."
     },
     {
-      "at": "2026-10-15T23:51:05+02:00",
+      "at": "2026-10-16T00:18:22+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Telegram 856–859 confirmado en final:true."
+      "message": "Workflow de reparación visual completado correctamente."
     },
     {
-      "at": "2026-10-15T23:51:09+02:00",
+      "at": "2026-10-16T00:18:31+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Auditoría postenvío confirmada con 0 huérfanos."
+      "message": "Entrega y auditoría Telegram completadas: 0 provisionales, 0 huérfanos y 0 incidencias bidireccionales."
     },
     {
-      "at": "2026-10-15T23:52:10+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Sin entradas preparing/update tras releer main y sin rewrite_pending:true localizado en la comprobación adicional."
-    },
-    {
-      "at": "2026-10-15T23:52:25+02:00",
+      "at": "2026-10-16T00:18:32+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada idempotente cerrada: no quedaba trabajo editorial nuevo; el solape previo dejó 4 revisiones cerradas en 3 fichas."
+      "message": "Relectura final de main: cola 0; sin preparing/update ni rewrite_pending; cierre durable verificado."
     }
   ],
   "telegram_orphans": 0,
