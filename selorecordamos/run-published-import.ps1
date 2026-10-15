@@ -14,7 +14,15 @@ try {
   $outFile = Join-Path $logDir 'published-import-stdout.log'
   $errFile = Join-Path $logDir 'published-import-stderr.log'
   Remove-Item $outFile,$errFile -Force -ErrorAction SilentlyContinue
-  $p = Start-Process -FilePath 'node.exe' -ArgumentList (Join-Path $PSScriptRoot 'import_published.js') -WorkingDirectory $repo -NoNewWindow -Wait -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
+  $p = Start-Process -FilePath 'node.exe' -ArgumentList (Join-Path $PSScriptRoot 'import_published.js') -WorkingDirectory $repo -NoNewWindow -PassThru -RedirectStandardOutput $outFile -RedirectStandardError $errFile
+  # La importacion podia bloquearse indefinidamente y acumular Chrome.
+  # El limite de 15 minutos incluye navegacion, recopilacion y Git.
+  if (-not $p.WaitForExit(900000)) {
+    try { & "$env:SystemRoot\System32\taskkill.exe" /PID $p.Id /T /F 2>&1 | Out-Null }
+    catch { try { $p.Kill() } catch {} }
+    [void]$p.WaitForExit(15000)
+    throw "TIMEOUT import_published.js tras 900 segundos; detenido el arbol de procesos PID=$($p.Id)"
+  }
   if (Test-Path $outFile) { Get-Content $outFile | Add-Content $log }
   if (Test-Path $errFile) {
     $stderr = Get-Content $errFile
