@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-15T18:15:00+02:00",
-  "last_completed_at": "2026-10-15T18:18:54.340+02:00",
-  "updated_at": "2026-10-15T18:18:54.340+02:00",
+  "last_started_at": "2026-10-15T18:45:00+02:00",
+  "last_completed_at": "2026-10-15T18:49:30+02:00",
+  "updated_at": "2026-10-15T18:49:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,23 +16,23 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "requested_unverified",
+    "status": "started_unverified",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261015T1815+0200",
-    "requested_at": "2026-10-15T18:15:00+02:00",
+    "run_id": "tr-chat-20261015T1845+0200",
+    "requested_at": "2026-10-15T18:45:00+02:00",
     "reason": "execution-start-pending-repair"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261015T1815+0200",
+    "run_id": "tr-chat-20261015T1845+0200",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-15T18:15:00+02:00",
-    "updated_at": "2026-10-15T18:18:54.340+02:00",
-    "finished_at": "2026-10-15T18:18:54.340+02:00",
+    "started_at": "2026-10-15T18:45:00+02:00",
+    "updated_at": "2026-10-15T18:49:30+02:00",
+    "finished_at": "2026-10-15T18:49:30+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -52,7 +52,7 @@
       "images_generated": 0,
       "imagegen_attempts": 0,
       "pending_repair_triggered": 1,
-      "visual_repair_workflow_started": 0,
+      "visual_repair_workflow_started": 1,
       "visual_repair_workflow_verified": 0,
       "telegram_delivery_triggered": 0,
       "telegram_delivery_workflow_verified": 0,
@@ -63,13 +63,13 @@
       "remates_omitted": 0,
       "pending_cards_reviewed": 0
     },
-    "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El trigger visual quedó persistido, pero su run de Actions no pudo verificarse desde esta conexión.",
+    "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El saneamiento visual arrancó, pero al cierre seguía sin confirmación de éxito.",
     "incident_count": 1,
     "incidents": [
       {
         "code": "visual_repair_run_unverified",
         "severity": "warning",
-        "message": "El trigger de reparación visual quedó persistido y el workflow está configurado para ese path, pero el conector GitHub disponible no expone el listado de runs push para confirmar esta ejecución concreta."
+        "message": "El workflow Reparar imágenes TTendencias Explicadas arrancó para el commit de esta ejecución, pero al cierre aún no constaba completado con éxito."
       }
     ],
     "ratings_snapshot": {
@@ -82,46 +82,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-15T18:15:00+02:00",
+        "at": "2026-10-15T18:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial · cola autoritativa inicial 0; comprobando reexplicaciones, Telegram y saneamiento visual."
       },
       {
-        "at": "2026-10-15T18:16:00+02:00",
+        "at": "2026-10-15T18:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: 0 preparing/update, 0 rewrite_pending y ninguna entrega Telegram sent/final:false."
+        "message": "Relectura autoritativa: no aparecen status preparing/update, rewrite_pending ni entregas sent/final:false."
       },
       {
-        "at": "2026-10-15T18:17:00+02:00",
+        "at": "2026-10-15T18:46:47+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual solicitado mediante pending-repair-trigger; el workflow está configurado para dispararse con ese cambio."
+        "message": "Saneamiento visual solicitado; workflow Reparar imágenes TTendencias Explicadas iniciado para el commit de esta ejecución."
       },
       {
-        "at": "2026-10-15T18:18:11+02:00",
+        "at": "2026-10-15T18:48:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final: cola 0 y auditoría Telegram con 0 huérfanos; no hay texto editorial nuevo que procesar."
+        "message": "Verificación final: cola 0, auditoría Telegram con 0 huérfanos y captura reciente todavía dentro del umbral de 20 minutos."
       },
       {
-        "at": "2026-10-15T18:18:54.340+02:00",
+        "at": "2026-10-15T18:49:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El trigger visual quedó persistido, pero esta conexión no permite confirmar el run de Actions asociado."
+        "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El saneamiento visual arrancó, pero al cierre seguía sin confirmación de éxito."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false
   },
-  "run_id": "tr-chat-20261015T1815+0200",
+  "run_id": "tr-chat-20261015T1845+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -137,7 +137,7 @@
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
-    "visual_repair_workflow_started": 0,
+    "visual_repair_workflow_started": 1,
     "visual_repair_workflow_verified": 0,
     "telegram_delivery_triggered": 0,
     "telegram_delivery_workflow_verified": 0,
@@ -151,39 +151,39 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-15T18:15:00+02:00",
+      "at": "2026-10-15T18:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial · cola autoritativa inicial 0; comprobando reexplicaciones, Telegram y saneamiento visual."
     },
     {
-      "at": "2026-10-15T18:16:00+02:00",
+      "at": "2026-10-15T18:46:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: 0 preparing/update, 0 rewrite_pending y ninguna entrega Telegram sent/final:false."
+      "message": "Relectura autoritativa: no aparecen status preparing/update, rewrite_pending ni entregas sent/final:false."
     },
     {
-      "at": "2026-10-15T18:17:00+02:00",
+      "at": "2026-10-15T18:46:47+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Saneamiento visual solicitado mediante pending-repair-trigger; el workflow está configurado para dispararse con ese cambio."
+      "message": "Saneamiento visual solicitado; workflow Reparar imágenes TTendencias Explicadas iniciado para el commit de esta ejecución."
     },
     {
-      "at": "2026-10-15T18:18:11+02:00",
+      "at": "2026-10-15T18:48:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación final: cola 0 y auditoría Telegram con 0 huérfanos; no hay texto editorial nuevo que procesar."
+      "message": "Verificación final: cola 0, auditoría Telegram con 0 huérfanos y captura reciente todavía dentro del umbral de 20 minutos."
     },
     {
-      "at": "2026-10-15T18:18:54.340+02:00",
+      "at": "2026-10-15T18:49:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El trigger visual quedó persistido, pero esta conexión no permite confirmar el run de Actions asociado."
+      "message": "Pasada 0/0 cerrada; cola y Telegram limpios. El saneamiento visual arrancó, pero al cierre seguía sin confirmación de éxito."
     }
   ],
   "telegram_orphans": 0,
