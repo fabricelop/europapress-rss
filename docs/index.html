@@ -36,7 +36,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Por qué Borrar abre Telegram?</summary><p>GitHub Pages no puede autenticar por sí sola una orden privada. Telegram actúa como intermediario seguro, sin almacenar claves en el iPhone. El borrado de mensajes auxiliares se intenta tras completar la orden, pero depende de que se registren sus identificadores y de los límites de Telegram.</p></details>
-<div class="pilot-settings"><strong>PILOTO TTActualidad · No conectado a producción</strong><p>Deslizar a la izquierda: desestimar. Derecha: elaborar.</p><button type="button" id="pilot-config">Configurar Worker de prueba</button> <span id="pilot-status">Sin configurar</span></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>PILOTO TTActualidad · No conectado a producción</strong><p>Deslizar a la izquierda: desestimar. Derecha: elaborar.</p><button type="button" id="pilot-config">Configurar Worker de prueba</button> <span id="pilot-status">Sin configurar</span><p>Prueba sin noticias reales:</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -557,6 +557,8 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
+$('pilot-prepare').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'prepare');
+$('pilot-discard').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'discard');
 void pilotPairFromUrl();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
