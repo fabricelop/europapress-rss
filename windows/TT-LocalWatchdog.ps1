@@ -92,8 +92,8 @@ function EnsureChrome{
   $browserRoots=@()
   try{
     $browserRoots=@(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" -ErrorAction Stop | Where-Object {
-      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\\s+)9223(?:\\s|$)' -and
-      [string]$_.CommandLine -notmatch '(?:^|\\s)--type='
+      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\s+)9223(?:\s|$)' -and
+      [string]$_.CommandLine -notmatch '(?:^|\s)--type='
     })
   }catch{
     Log ("CHROME PROCESS CHECK FAILED; relaunch blocked :: "+$_.Exception.Message)
