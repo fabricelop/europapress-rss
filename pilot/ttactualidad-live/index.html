@@ -34,7 +34,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .actions.ready-actions .action.remove{border-color:#98616e;color:#ffd8e1}
 @media(max-width:365px){.actions.ready-actions{gap:6px}.actions.ready-actions .action{font-size:12px;padding:8px 5px}}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}</style></head>
 <body>
-<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Una sola aplicación · GAG IA manual</p></header>
+<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
 <button id="tab-tti" role="tab" aria-selected="true" type="button">TT<span>i</span>TTulares</button>
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
@@ -757,6 +757,7 @@ $('tab-tti').addEventListener('click',()=>setApp('tti'));
 $('tab-tr').addEventListener('click',()=>setApp('tr'));
 $('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()});
 $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkPendingDeletes()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
