@@ -159,7 +159,7 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
             req["decision_source"] = "ttactualidad_direct"
             changed[requests_path] = requests
 
-        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent":
+        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent" and (not target or int(legacy_delivery.get("revision") or 0) == revision):
             check_revision(legacy_delivery, revision)
             legacy_delivery["status"] = "deleted"
             legacy_delivery["updated_at"] = now
@@ -176,6 +176,115 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
     fail("Proyecto no reconocido")
 
 
+
+def apply_live(project: str, event_id: str, decision: str, revision: int):
+    """Live editorial decisions. Never call legacy Telegram callbacks."""
+    if decision == "deleted":
+        return apply(project, event_id, decision, revision)
+    now = datetime.now(timezone.utc).isoformat()
+    if project == "ttittulares":
+        queue_path = "ttittulares/editorial-queue.json"
+        state_path = "ttittulares/decisions.json"
+        prepared_path = "ttittulares/prepared.json"
+        status_path = "ttittulares/status.json"
+        queue = load(queue_path, {"items": []})
+        decisions = load(state_path, {"items": []})
+        prepared = load(prepared_path, {"items": []})
+        status_doc = load(status_path, {})
+        active = find(queue.get("items", []), "event_id", event_id)
+        existing = find(decisions.get("items", []), "event_id", event_id)
+        ready = find(prepared.get("items", []), "event_id", event_id)
+        source = next((row for section in ("processing_items", "problematic_items", "three_source_items")
+                       for row in status_doc.get(section, [])
+                       if str(row.get("event_id") or "") == event_id), None)
+        if decision == "discard":
+            if existing and str(existing.get("status") or "").lower() in TERMINAL:
+                return ({}, "already_applied") if existing["status"] in {"published", "dismissed"} else fail("La noticia ya tiene otra decision terminal")
+            if not (source or active or ready):
+                fail("La noticia ya no figura en el radar ni en elaboracion")
+            observed = active or source or ready
+            if "revision" in observed:
+                check_revision(observed, revision)
+            if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
+                active["status"] = "PUBLISHED"
+                active["published_at"] = now
+                active["decision_source"] = "ttactualidad_direct"
+            queue["count"] = sum(str(row.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"} for row in queue.get("items", []))
+            prepared["items"] = [row for row in prepared.get("items", []) if str(row.get("event_id") or "") != event_id]
+            prepared["count"] = len(prepared["items"])
+            if not existing:
+                existing = {"event_id": event_id}
+                decisions.setdefault("items", []).append(existing)
+            existing.update(status="published", revision=revision, updated_at=now, decision_source="ttactualidad_direct")
+            decisions["updated_at"] = now
+            queue["updated_at"] = now
+            return {queue_path: queue, prepared_path: prepared, state_path: decisions}, "applied"
+        if decision == "prepare":
+            if not source or not any(str(row.get("event_id") or "") == event_id for row in status_doc.get("problematic_items", [])):
+                fail("Esta noticia ya no esta en Revision")
+            if "revision" in source:
+                check_revision(source, revision)
+            if existing and str(existing.get("status") or "").lower() in TERMINAL:
+                fail("La noticia tiene una decision final; no se reabre automaticamente")
+            if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
+                return {}, "already_applied"
+            fields = dict(source)
+            fields.update(status="PROCESSING", selection_mode="MANUAL_REOPEN_OUTCOME",
+                          force_user_elaborate=True, user_validated=True, user_validated_at=now,
+                          revision=revision, requested_at=now, selected_at=source.get("selected_at") or now)
+            if active:
+                active.update(fields)
+            else:
+                queue.setdefault("items", []).append(fields)
+            queue["count"] = sum(str(row.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"} for row in queue["items"])
+            queue["updated_at"] = now
+            return {queue_path: queue}, "applied"
+    if project == "ttendencias":
+        queue_path, req_path, mobile_path = "trends/editorial-queue.json", "trends/requests.json", "trends/mobile-decisions.json"
+        queue = load(queue_path, {"items": []})
+        requests = load(req_path, {"requests": []})
+        mobile = load(mobile_path, {"items": []})
+        working = find(queue.get("items", []), "id", event_id)
+        request = find(requests.get("requests", []), "id", event_id)
+        existing = find(mobile.get("items", []), "id", event_id)
+        if decision == "discard":
+            if existing and str(existing.get("status") or "").lower() in TERMINAL:
+                return ({}, "already_applied") if existing["status"] in {"published", "dismissed"} else fail("Tendencia ya cerrada")
+            if not working or str(working.get("status") or "").lower() not in {"preparing", "update", "ready", "problematic"}:
+                fail("Esta tendencia ya no esta en elaboracion")
+            check_revision(working, revision)
+            working.update(status="published", published_at=now, decision_source="ttactualidad_direct")
+            if request and int(request.get("revision") or 0) <= revision:
+                request.update(status="published", published_at=now, decision_source="ttactualidad_direct")
+            if not existing:
+                existing = {"id": event_id}
+                mobile.setdefault("items", []).append(existing)
+            existing.update(status="published", revision=revision, updated_at=now, source="ttactualidad_direct")
+            queue["count"] = sum(str(row.get("status") or "").lower() in {"preparing", "update"} for row in queue["items"])
+            queue["updated_at"] = requests["updated_at"] = mobile["updated_at"] = now
+            return {queue_path: queue, req_path: requests, mobile_path: mobile}, "applied"
+        if decision == "prepare":
+            if not request:
+                fail("La tendencia necesita una solicitud editorial identificada")
+            check_revision(request, revision)
+            if existing and str(existing.get("status") or "").lower() in TERMINAL:
+                fail("Tendencia cerrada; nueva revision editorial necesaria")
+            if working and str(working.get("status") or "").lower() in {"preparing", "update"}:
+                return {}, "already_applied"
+            fields = dict(request)
+            fields.update(status="preparing", revision=revision, requested_at=now,
+                          request_source="ttactualidad_direct", auto_queued=False)
+            if working:
+                working.update(fields)
+            else:
+                queue.setdefault("items", []).append(fields)
+            request.update(status="preparing", request_source="ttactualidad_direct",
+                           auto_queued=False, requested_at=now)
+            queue["count"] = sum(str(row.get("status") or "").lower() in {"preparing", "update"} for row in queue["items"])
+            queue["updated_at"] = requests["updated_at"] = now
+            return {queue_path: queue, req_path: requests}, "applied"
+    fail("Accion no admitida para el proyecto")
+
 def main():
     cmd = json.loads(os.environ["TT_ACTUALIDAD_EVENT_JSON"])
     project = str(cmd.get("project") or "")
@@ -185,8 +294,8 @@ def main():
     revision = cmd.get("revision")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision != "deleted":
-        fail("Solo se admite Quitar de Listas. No modificar la elaboracion")
+    if decision not in {"deleted", "discard", "prepare"}:
+        fail("Decision no admitida")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
     if type(revision) is not int or revision < 0:
@@ -196,7 +305,7 @@ def main():
     if previous:
         print("IDEMPOTENT: recibida anteriormente", previous.get("status"))
         return
-    changes, status = apply(project, event_id, decision, revision)
+    changes, status = apply_live(project, event_id, decision, revision)
     stamp = datetime.now(timezone.utc).isoformat()
     history["items"].append({"request_id": request_id, "project": project,
                              "event_id": event_id, "revision": revision,
