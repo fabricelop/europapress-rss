@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feature/mi-mapa-del-tiempo-ios-v36-simple-history
+      - fix/mi-mapa-v37-storage-safety
     paths:
       - 'gps-ios/native/**'
       - '.github/workflows/mi-mapa-del-tiempo-v36-impactor-verify.yml'
