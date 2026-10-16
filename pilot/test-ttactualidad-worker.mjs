@@ -34,6 +34,12 @@ assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,0,'static public routes must
 r=await request('/api/decisions',{headers:{Authorization:'Bearer wrong'}});
 assert.equal(r.status,401);
 assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,0,'unauthorized must not touch KV');
+const authBefore=kv.getCalls+kv.writeCalls+kv.listCalls;
+const authCheck=await request('/api/auth');
+assert.equal(authCheck.status,200);
+assert.equal(authCheck.json.ok,true);
+assert.equal(authCheck.json.production_connected,false);
+assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,authBefore,'auth checks cannot spend KV quota');
 let body={project:'ttittulares',event_id:'abcdef123456',decision:'deleted',request_id:'11111111-2222-3333-4444-555555555555'};
 r=await request('/api/decision',{method:'POST',body:JSON.stringify(body)});
 assert.equal(r.status,201);assert.equal(r.json.routed,false);assert.equal(r.json.state,'pilot_only');
