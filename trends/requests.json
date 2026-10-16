@@ -840,20 +840,29 @@
     {
       "id": "3658e974d137",
       "name": "Tebas",
-      "rank": 6,
-      "status": "explained",
-      "requested_at": "2026-09-22T17:19:01.915Z",
-      "revision": 1,
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-16T16:31:33+02:00",
+      "revision": 2,
       "reexplain": true,
-      "with_image": false,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "e08aefb71506",
       "requested_together": [
-        "taehyun",
-        "#ElSótano22S",
         "Tebas"
       ],
-      "explained_at": "2026-09-22T18:29:18.209Z"
+      "captured_with": [
+        "Tebas",
+        "Tesla",
+        "#TEM16O",
+        "#Mañaneros16O",
+        "Metro",
+        "Más Madrid",
+        "Pablo Fernández",
+        "Nico",
+        "Goebbels",
+        "Marta Nebot"
+      ]
     },
     {
       "id": "f53a4483df56",
@@ -59120,7 +59129,7 @@
     {
       "id": "630457a6a384",
       "name": "Marta Nebot",
-      "rank": 6,
+      "rank": 10,
       "status": "problematic",
       "requested_at": "2026-10-16T15:02:52+02:00",
       "revision": 0,
@@ -59329,8 +59338,50 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top10"
+    },
+    {
+      "id": "72936d2d448c",
+      "name": "#TEM16O",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-16T16:31:33+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "2f9bd9fea6aa",
+      "requested_together": [
+        "#TEM16O"
+      ],
+      "captured_with": [
+        "#TEM16O",
+        "Metro"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "be618b93a8fe",
+      "name": "Metro",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-10-16T16:31:33+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "2f9bd9fea6aa",
+      "requested_together": [
+        "Metro"
+      ],
+      "captured_with": [
+        "#TEM16O",
+        "Metro"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-16T16:08:00+02:00",
+  "updated_at": "2026-10-16T16:31:33+02:00",
   "count": 988
 }
