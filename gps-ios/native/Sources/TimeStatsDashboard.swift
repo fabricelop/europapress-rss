@@ -24,8 +24,9 @@ struct TimeStatsDashboard: View {
     private var values: [String:TimeInterval] {
         model.periodTotals()
     }
-    private func rank(using perCell: [String:TimeInterval]) -> [TimeRankEntry] {
+    private var ranked:[TimeRankEntry] {
         let zones=model.visibleZones
+        let perCell=values
         if onlyIndividualCells {
             let assignedToZones=Set(zones.flatMap(\.cellIDs))
             return perCell.compactMap { id,seconds -> TimeRankEntry? in
@@ -50,15 +51,18 @@ struct TimeStatsDashboard: View {
         }
         return (named+independent).sorted { $0.seconds>$1.seconds }
     }
+    private var displayed:[TimeRankEntry] {
+        top>0 ? Array(ranked.prefix(top)) : ranked
+    }
+
     var body: some View {
-        let perCell = values
         NavigationStack {
             ScrollView {
                 VStack(alignment:.leading,spacing:16) {
                     VStack(alignment:.leading,spacing:7) {
                         Label("Tu tiempo en el mapa",systemImage:"hourglass")
                             .font(.subheadline.weight(.semibold)).foregroundStyle(.teal)
-                        Text(DurationFormat.full(TimeAnalytics.sum(perCell)))
+                        Text(DurationFormat.full(TimeAnalytics.sum(values)))
                             .font(.system(size:29,weight:.bold,design:.rounded))
                             .minimumScaleFactor(0.6).lineLimit(2)
                         Text("Tiempo atribuido sin solapamientos · \(model.period.title)")
@@ -79,13 +83,13 @@ struct TimeStatsDashboard: View {
                         }
                     }
                     HStack(spacing:9) {
-                        tile("Cuadrículas",value:String(perCell.count),icon:"square.grid.3x3.fill")
-                        tile("Superficie aprox.",value:String(format:"%.2f km²",Double(perCell.count)*0.01),
+                        tile("Cuadrículas",value:String(values.count),icon:"square.grid.3x3.fill")
+                        tile("Superficie aprox.",value:String(format:"%.2f km²",Double(values.count)*0.01),
                              icon:"map")
                     }
                     HStack(spacing:9) {
                         tile("Mis zonas",value:String(model.visibleZones.count),icon:"mappin.and.ellipse")
-                        tile("Tiempo asignado",value:DurationFormat.full(TimeAnalytics.sum(perCell)),icon:"clock")
+                        tile("Tiempo asignado",value:DurationFormat.full(TimeAnalytics.sum(values)),icon:"clock")
                     }
 
                     Picker("Vista de estadísticas",selection:$page) {
@@ -94,7 +98,7 @@ struct TimeStatsDashboard: View {
 
                     switch page {
                     case .cells:
-                        cellList(perCell: perCell)
+                        cellList
                     case .zones:
                         TimeZonesPanel(model:model)
                     case .territories:
@@ -134,15 +138,13 @@ struct TimeStatsDashboard: View {
         }
     }
 
-    private func cellList(perCell: [String:TimeInterval]) -> some View {
-        let rankedEntries = rank(using: perCell)
-        let displayed = top > 0 ? Array(rankedEntries.prefix(top)) : rankedEntries
-        return LazyVStack(alignment:.leading,spacing:12) {
+    private var cellList: some View {
+        VStack(alignment:.leading,spacing:12) {
             HStack {
                 Text(onlyIndividualCells ? "Cuadrículas sin Zona" :
                      "Zonas y cuadrículas independientes").font(.headline)
                 Spacer()
-                Text("\(displayed.count) de \(rankedEntries.count)")
+                Text("\(displayed.count) de \(ranked.count)")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             Picker("Tipo de listado",selection:$onlyIndividualCells) {
@@ -195,7 +197,7 @@ struct TimeStatsDashboard: View {
                     GeometryReader { geo in
                         Capsule().fill(Color.teal.opacity(0.12)).overlay(alignment:.leading) {
                             Capsule().fill(.teal.gradient).frame(width:
-                                geo.size.width*item.seconds/max(1,rankedEntries.first?.seconds ?? 1))
+                                geo.size.width*item.seconds/max(1,ranked.first?.seconds ?? 1))
                         }
                     }.frame(height:5)
                     if let zoneID=item.zoneID,expandedZones.contains(zoneID) {
@@ -209,7 +211,7 @@ struct TimeStatsDashboard: View {
                                         Text("Cuadrícula \(model.data.shortIDs[id] ?? 0)")
                                             .foregroundStyle(.primary)
                                         Spacer()
-                                        Text(DurationFormat.full(perCell[id] ?? 0))
+                                        Text(DurationFormat.full(values[id] ?? 0))
                                             .monospacedDigit().foregroundStyle(.teal)
                                     }.font(.caption)
                                 }
