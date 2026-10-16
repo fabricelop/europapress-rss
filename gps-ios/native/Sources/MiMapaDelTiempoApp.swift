@@ -326,6 +326,12 @@ struct SavedState: Codable {
             try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
             store = db
+            // Preserve the six-hour backup interval across app relaunches.
+            // Previously every launch could trigger another full SQLite copy.
+            if let latestCopy = TimeSQLiteStore.safetyCopyURLs(in: dir).first,
+               let modification = try? latestCopy.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+                lastSafetyCopyAttempt = modification
+            }
             storeStatus = "SQLite · protegido localmente"
         } catch {
             // Si falla una migración, los datos anteriores siguen en el JSON original.
@@ -1783,8 +1789,10 @@ struct TimeMapView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
     @StateObject private var connectivity = MapConnectivity()
-    @State private var camera: MapCameraPosition = .automatic
-    @State private var region: MKCoordinateRegion = CameraSave().region
+    // Start at the saved viewport; avoid MapKit's automatic camera followed
+    // by an immediate recenter, which can flash empty map tiles on launch.
+    @State private var camera: MapCameraPosition
+    @State private var region: MKCoordinateRegion
     @State private var namingCell: Cell?
     @State private var historyCell: Cell?
     @State private var inspectedZone: TimeCustomZone?
@@ -1795,7 +1803,21 @@ struct TimeMapView: View {
     @State private var cardSize: TimeMapCardSize = .compact
     @State private var cardBeforeDragging: TimeMapCardSize?
     @State private var restoredCamera = false
+    // Drawing snapshot only; full GPS history remains stored unmodified.
+    @State private var renderedRouteSegments: [[CLLocationCoordinate2D]] = []
+    @State private var renderedRouteFixCount = -1
+    @State private var renderedRoutePeriod = ""
+    @State private var lastRouteDraw = Date.distantPast
     @Environment(\.scenePhase) private var scenePhase
+
+    init(model: TimeModel, gps: GPSService) {
+        self.model = model
+        self.gps = gps
+        let saved = model.data.camera.region
+        _camera = State(initialValue: .region(saved))
+        _region = State(initialValue: saved)
+    }
+
     private var relevant:[MapCellRender] {
         let now=Date()
         let totals=model.periodTotals(now:now)
@@ -1907,15 +1929,9 @@ struct TimeMapView: View {
                         }
                     }
                     if model.showRoutes {
-                        let recent = model.routePoints()
-                        let groups = GPSRouteSegments.split(recent.map {
-                            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
-                        })
-                        ForEach(groups.indices, id: \.self) { index in
-                            MapPolyline(coordinates: groups[index].map {
-                                CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                            })
-                            .stroke(.blue, lineWidth: 3)
+                        ForEach(renderedRouteSegments.indices, id: \.self) { index in
+                            MapPolyline(coordinates: renderedRouteSegments[index])
+                                .stroke(.blue, lineWidth: 3)
                         }
                     }
                 }
@@ -1934,8 +1950,10 @@ struct TimeMapView: View {
                     }
                 }
                 .onMapCameraChange(frequency: .onEnd) { ctx in
-                    // Hidden MapKit can still report its old camera while offline.
-                    guard !useBasicMap else { return }
+                    // Suppress MapKit's own tiny startup/camera corrections:
+                    // they are not user moves and must not rewrite the viewport.
+                    guard !useBasicMap,
+                          MapViewportPolicy.meaningfulChange(from: region, to: ctx.region) else { return }
                     region = ctx.region
                     model.updateCamera(ctx.region)
                     // Solo un gesto manual desactiva Seguirme; un cambio de
@@ -2189,7 +2207,14 @@ struct TimeMapView: View {
                 if followLocation { focusOnCurrentLocation() }
             }
         }
+        .onAppear { refreshRenderedRoutes() }
+        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.selectedTab) { _,tab in
+            if tab == 0 { refreshRenderedRoutes() }
+        }
         .onChange(of:model.current?.date) { _,_ in
+            refreshRenderedRoutes()
             if followLocation {
                 model.selected=nil
                 focusOnCurrentLocation()
@@ -2199,6 +2224,36 @@ struct TimeMapView: View {
             if followLocation { model.selected=nil }
         }
     }
+    /// Rebuild path geometry only for new fixes or an explicit route selection,
+    /// never on every UI refresh, zoom gesture, or clock tick.
+    private func refreshRenderedRoutes(force: Bool = false) {
+        guard model.showRoutes else {
+            if !renderedRouteSegments.isEmpty { renderedRouteSegments = [] }
+            renderedRouteFixCount = -1
+            return
+        }
+        let now = Date()
+        let count = model.data.fixes.count
+        let period = model.routePeriod.rawValue
+        if !force {
+            guard model.selectedTab == 0 else { return }
+            guard count != renderedRouteFixCount ||
+                  period != renderedRoutePeriod ||
+                  now.timeIntervalSince(lastRouteDraw) >= 60 else { return }
+            guard now.timeIntervalSince(lastRouteDraw) >= 5 else { return }
+        }
+        let points = model.routePoints(at: now)
+        renderedRouteSegments = GPSRouteSegments.split(points.map {
+            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
+        }).map { segment in
+            segment.map { CLLocationCoordinate2D(latitude: $0.latitude,
+                                                 longitude: $0.longitude) }
+        }
+        renderedRouteFixCount = count
+        renderedRoutePeriod = period
+        lastRouteDraw = now
+    }
+
     private func beginMapDrag() {
         guard cardBeforeDragging == nil else { return }
         cardBeforeDragging=cardSize
@@ -2246,11 +2301,8 @@ struct TimeMapView: View {
             model.selected=c
             model.updateCamera(target)
         } else if !restoredCamera {
-            // Solo en la primera aparición: nunca rehacer el centrado
-            // al cambiar de pestaña o alternar el mapa offline.
+            // Initialized directly from the saved region; do not recenter again.
             restoredCamera = true
-            camera = .region(model.data.camera.region)
-            region = model.data.camera.region
         }
     }
 }
@@ -2330,7 +2382,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.38 · datos guardados en este iPhone",
+                    Label("Versión 1.0.39 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
