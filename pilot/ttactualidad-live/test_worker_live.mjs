@@ -39,7 +39,7 @@ try{
  const retry=await app.fetch(request('abc123','discard','11111111-1111-1111-1111-111111111111'),env);
  assert.equal((await retry.json()).routed,true);
  assert.equal(calls.length,3);
- const blocked=await app.fetch(request('pilot-test1234','discard','33333333-3333-3333-3333-333333333333'),env);
+ const blocked=await app.fetch(request('pilot-mobile-test1234','discard','33333333-3333-3333-3333-333333333333'),env);
  assert.equal((await blocked.json()).routed,false);
  assert.equal(calls.length,3);
 }finally{globalThis.fetch=original}
