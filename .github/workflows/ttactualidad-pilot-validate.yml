@@ -20,7 +20,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1')) {
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1','pilot/Enable-TTActualidad-Direct-V4.ps1')) {
             $tok = $null
             $errorsList = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -96,3 +96,16 @@ jobs:
           if ($html.Contains("btn('Dejar elaborar'")) { throw 'V4 inert button must be removed' }
           if ($html.Contains("command('Ya publicada'")) { throw 'V4 duplicate button must be removed' }
           Write-Host 'V4 exact actions grid validated'
+      - name: Validate exact V4 release inputs
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $pin = '80b7232d2d38292fb415038e5280629adc250c91'
+          $base = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $pin + '/'
+          $html = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'docs/index.html?commit=' + $pin)).Content
+          $worker = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'pilot/ttactualidad-worker.js?commit=' + $pin)).Content
+          if (-not $html.Contains('function refreshPilotConnection()')) { throw 'Release UI missing auth check' }
+          if (-not $html.Contains('https://t.me/TTImages_bot')) { throw 'Release UI missing TTImages' }
+          if (-not $worker.Contains("route==='/api/auth'")) { throw 'Worker missing zero-KV authentication route' }
+          if (-not $worker.Contains('revision_required')) { throw 'Worker missing revision gate' }
+          Write-Host 'Pinned V4 release assets verified'
