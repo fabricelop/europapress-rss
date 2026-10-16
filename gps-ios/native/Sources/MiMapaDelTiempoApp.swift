@@ -1919,7 +1919,8 @@ struct TimeMapView: View {
         .onChange(of:model.activeCell?.id) { _,_ in
             refreshMapSnapshot(force: true)
             if followLocation { model.selected=nil }
-        }    }
+        }
+    }
 
     private var mapLifecycle: some View {
         mapRouteEvents
