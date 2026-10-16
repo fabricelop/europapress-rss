@@ -1,108 +1,14 @@
-name: TTendencias Telegram continuo
-
+name: "TTendencias listener Telegram - retirado TTActualidad"
+# Retirado: TTActualidad es la interfaz; la elaboración, el radar y las imágenes
+# funcionan mediante workflows independientes. Restaurable desde git history.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *"
-  push:
-    branches: [main]
-    paths:
-      - "trends/telegram_bot.py"
-      - "shared/telegram_pinned_index.py"
-      - ".github/workflows/ttendencias-listener.yml"
-
 permissions:
-  contents: write
-  actions: write
-
-concurrency:
-  group: ttendencias-telegram-continuo
-  # Reemplazar la instancia antigua al desplegar correcciones del callback.
-  # Un único consumidor de getUpdates: nunca lanzar dos a la vez.
-  cancel-in-progress: true
-
+  contents: read
 jobs:
-  listener:
+  retired:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v4
-        with:
-          # Evitar clonar años de imágenes/artefactos en cada nuevo listener.
-          fetch-depth: 1
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /trends/*.py
-            /trends/*.json
-            /trends/*.md
-            /trends/*.txt
-            /shared/
-            /shared/telegram_pinned_index.py
-            /tests/test_trends_telegram_reexplain.py
-
-      - name: Instalar dependencias de actualización
-        run: python3 -m pip install -q requests beautifulsoup4
-
-      - name: Verificar reexplicación Telegram
-        run: |
-          python3 -m py_compile trends/telegram_bot.py
-          python3 -m unittest discover -s tests -p 'test_trends_telegram_reexplain.py' -v
-
-      - name: Detectar modo de control
-        id: control_mode
-        run: |
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          p=Path("trends/control-mode.json")
-          mode="telegram"
-          if p.exists():
-              try:
-                  mode=str(json.loads(p.read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower()
-              except Exception:
-                  pass
-          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as fh:
-              fh.write(f"mode={mode}\n")
-          print(f"Modo TTendencias: {mode}")
-          PY
-
-      - name: Sincronizar panel sin persistir
-        if: steps.control_mode.outputs.mode != 'web'
-        env:
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-        run: python3 trends/telegram_bot.py sync
-
-      - name: Escuchar bot TTendencias
-        if: steps.control_mode.outputs.mode != 'web'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          INSTAGRAM_PUBLISHER_URL: https://tt-actualidad-instagram-pilot.fabricelop.workers.dev
-          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
-          TTENDENCIAS_LISTEN_SECONDS: "1500"
-          # Fallback de frescura: el cron de GitHub puede retrasarse. Mientras
-          # siga activo el modo Telegram, el listener garantiza otra captura
-          # al arrancar y cada 15 minutos.
-          TTENDENCIAS_REFRESH_SECONDS: "900"
-        run: python3 trends/telegram_bot.py listen
-
-      - name: Escuchar solo paquetes visuales en modo web
-        if: steps.control_mode.outputs.mode == 'web'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-          INSTAGRAM_PUBLISHER_URL: https://tt-actualidad-instagram-pilot.fabricelop.workers.dev
-          INSTAGRAM_INTERNAL_SECRET: ${{ secrets.INSTAGRAM_INTERNAL_SECRET }}
-          TTENDENCIAS_LISTEN_SECONDS: "1500"
-        run: python3 trends/telegram_bot.py package-listen
-
-      - name: Encadenar siguiente listener
-        # Evitar que una ejecución cancelada relance otra y forme un bucle.
-        if: ${{ !cancelled() }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          sleep 2
-          gh workflow run ttendencias-listener.yml --repo "$REPO" --ref main
+      - name: Sin consumidor Telegram
+        run: echo "Retirado; sin llamadas a Telegram ni relanzamientos"
