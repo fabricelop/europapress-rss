@@ -56,7 +56,7 @@ jobs:
       - name: Validate direct non-Telegram GitHub applicator
         shell: pwsh
         run: |
-          python -m unittest discover -s pilot -p 'test-ttactualidad-direct-actions.py' -v
+          python -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
           python -m py_compile pilot/apply-ttactualidad-action.py
       - name: Check v2 installer pinned artifacts remotely
         shell: powershell
