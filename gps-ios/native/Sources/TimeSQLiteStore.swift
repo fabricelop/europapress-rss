@@ -39,6 +39,7 @@ struct TimeStoreHeader: Codable {
 
 enum TimeStoreError: Error {
     case sql(String)
+    case missingHeaderWithData
 }
 
 final class TimeSQLiteStore {
@@ -127,6 +128,22 @@ final class TimeSQLiteStore {
         try done(stmt)
     }
 
+    private func countRows(_ table: String) throws -> Int {
+        let stmt = try prepared("SELECT COUNT(*) FROM \(table)")
+        defer { sqlite3_finalize(stmt) }
+        guard sqlite3_step(stmt) == SQLITE_ROW else { throw TimeStoreError.sql(message()) }
+        return Int(sqlite3_column_int64(stmt, 0))
+    }
+
+    /// Never initialize an empty header over orphaned records.
+    func initializeIfTrulyEmpty(_ initial: SavedState) throws {
+        if hasExistingState { return }
+        if try countRows("fixes") > 0 || countRows("intervals") > 0 || countRows("totals") > 0 {
+            throw TimeStoreError.missingHeaderWithData
+        }
+        try replaceAll(initial)
+    }
+
     var hasExistingState: Bool {
         guard let stmt = try? prepared("SELECT 1 FROM meta WHERE key='header' LIMIT 1") else { return false }
         defer { sqlite3_finalize(stmt) }
@@ -195,29 +212,38 @@ final class TimeSQLiteStore {
         }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
         defer { sqlite3_finalize(fixes) }
-        while sqlite3_step(fixes) == SQLITE_ROW {
+        var fixResult = sqlite3_step(fixes)
+        while fixResult == SQLITE_ROW {
             data.fixes.append(GPSPoint(id: uuid(fixes, 0),
                 date: Date(timeIntervalSince1970: sqlite3_column_double(fixes, 1)),
                 latitude: sqlite3_column_double(fixes, 2),
                 longitude: sqlite3_column_double(fixes, 3),
                 accuracy: sqlite3_column_double(fixes, 4),
                 source: string(fixes, 5)))
+            fixResult = sqlite3_step(fixes)
         }
+        guard fixResult == SQLITE_DONE else { throw TimeStoreError.sql(message()) }
         let intervals = try prepared("SELECT id,start,end,cell_row,cell_col,quality,source FROM intervals ORDER BY start")
         defer { sqlite3_finalize(intervals) }
-        while sqlite3_step(intervals) == SQLITE_ROW {
+        var intervalResult = sqlite3_step(intervals)
+        while intervalResult == SQLITE_ROW {
             data.intervals.append(AssignedInterval(id: uuid(intervals, 0),
                 start: Date(timeIntervalSince1970: sqlite3_column_double(intervals, 1)),
                 end: Date(timeIntervalSince1970: sqlite3_column_double(intervals, 2)),
                 cell: Cell(row: Int(sqlite3_column_int64(intervals, 3)),
                            column: Int(sqlite3_column_int64(intervals, 4))),
                 quality: string(intervals, 5), source: string(intervals, 6)))
+            intervalResult = sqlite3_step(intervals)
         }
+        guard intervalResult == SQLITE_DONE else { throw TimeStoreError.sql(message()) }
         let totals = try prepared("SELECT cell,seconds FROM totals")
         defer { sqlite3_finalize(totals) }
-        while sqlite3_step(totals) == SQLITE_ROW {
+        var totalResult = sqlite3_step(totals)
+        while totalResult == SQLITE_ROW {
             data.totals[string(totals, 0)] = sqlite3_column_double(totals, 1)
+            totalResult = sqlite3_step(totals)
         }
+        guard totalResult == SQLITE_DONE else { throw TimeStoreError.sql(message()) }
         return data
     }
     private func string(_ stmt: OpaquePointer, _ col: Int32) -> String {
