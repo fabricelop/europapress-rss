@@ -2253,18 +2253,25 @@ struct TimeMapView: View {
         var candidateCells: [Cell] = []
         // At high zoom, enumerate only screen-adjacent 100 m squares.
         // At broad zoom, prefer confirmed stored cells over a giant empty grid.
+        var gridIndexComplete = false
         if first <= last && last - first < 120 && region.span.longitudeDelta < 0.12 {
+            gridIndexComplete = true
             for row in first...last {
                 let latitude = -90 + (Double(row) + 0.5) * Grid.latitudeStep
                 let minColumn = Grid.cell(latitude: latitude, longitude: west).column
                 let maxColumn = Grid.cell(latitude: latitude, longitude: east).column
-                if minColumn <= maxColumn && maxColumn - minColumn <= 120 {
-                    for column in minColumn...maxColumn {
-                        candidateCells.append(Cell(row: row, column: column))
-                    }
+                guard minColumn <= maxColumn && maxColumn - minColumn <= 120 else {
+                    gridIndexComplete = false
+                    break
+                }
+                for column in minColumn...maxColumn {
+                    candidateCells.append(Cell(row: row, column: column))
                 }
             }
-        } else {
+        }
+        if !gridIndexComplete {
+            // Never show only some visited cells when the viewport crosses
+            // the indexing limit: scan saved cells instead, without truncation.
             candidateCells = model.allCells
         }
         if let active, !candidateCells.contains(active) {
