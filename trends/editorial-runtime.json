@@ -1,37 +1,25 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T16:19:41+02:00",
-  "last_completed_at": "2026-10-16T13:51:00+02:00",
-  "updated_at": "2026-10-16T16:19:41+02:00",
-  "status": "waiting",
+  "last_started_at": "2026-10-16T15:38:49.691Z",
+  "last_completed_at": "2026-10-16T15:44:13.993Z",
+  "updated_at": "2026-10-16T15:44:13.993Z",
+  "status": "success",
   "processed_ids": [
-    "630457a6a384"
-  ],
-  "remaining_ids": [
-    "1781e388eb4e",
-    "ab56c8fcd556",
-    "6f9d2bd92779",
-    "6bc2bf78bed7",
-    "54ae780111d5",
     "421d4097fd38",
-    "630457a6a384"
+    "3658e974d137",
+    "72936d2d448c",
+    "be618b93a8fe",
+    "a04af111227a",
+    "0a13d9520697"
   ],
-  "queue_complete": false,
-  "remaining_active_ids": [
-    "1781e388eb4e",
-    "ab56c8fcd556",
-    "6f9d2bd92779",
-    "6bc2bf78bed7",
-    "54ae780111d5",
-    "421d4097fd38"
-  ],
-  "remaining_problematic_ids": [
-    "630457a6a384"
-  ],
+  "remaining_ids": [],
+  "queue_complete": true,
+  "remaining_active_ids": [],
+  "remaining_problematic_ids": [],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
@@ -45,24 +33,24 @@
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T134500+0200",
+    "run_id": "tr-backlog-20261016-1736-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T13:45:30+02:00",
-    "updated_at": "2026-10-16T13:51:00+02:00",
-    "finished_at": "2026-10-16T13:51:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-16T15:38:49.691Z",
+    "updated_at": "2026-10-16T15:44:13.993Z",
+    "finished_at": "2026-10-16T15:44:13.993Z",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "trends_processed": 6,
+      "trends_explained": 4,
+      "explanation_groups": 4,
+      "new_cards": 4,
+      "revisions_updated": 1,
+      "grouped_into_existing_card": 2,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -70,71 +58,60 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "pending_repair_triggered": 1,
-      "visual_repair_workflow_started": 1,
-      "visual_repair_workflow_verified": 1,
-      "telegram_delivery_triggered": 0,
-      "telegram_delivery_workflow_verified": 0,
-      "telegram_orphans": 0,
-      "bidirectional_issues": 0,
-      "provisional_telegram": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0,
-      "pending_cards_reviewed": 0
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4
     },
-    "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto.",
+    "message": "Recuperadas seis tendencias: cuatro fichas explicadas, Goebbels y Real Madrid TV vinculadas a Tebas. Cola autoritativa 0. La fiabilidad de la próxima programación sigue pendiente de revisión.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 0
-    },
-    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T13:45:30+02:00",
+        "at": "2026-10-16T15:38:49.691Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial; cola textual 0. Revisando estado autoritativo, huérfanos y saneamiento de Pendientes."
+        "message": "Detectadas seis tendencias atascadas en Elaboración; revisión de cola y fuentes actuales."
       },
       {
-        "at": "2026-10-16T13:49:00+02:00",
+        "at": "2026-10-16T15:39:13.051Z",
+        "phase": "persisting",
+        "trend_id": "3658e974d137",
+        "title": "Tebas / Metro / #TEM16O / Patxi",
+        "message": "Enviado primer outbox oficial de cuatro tendencias verificadas."
+      },
+      {
+        "at": "2026-10-16T15:41:02Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Radar fresco y cola 0; requests, Explicadas y entregas no han cambiado desde la pasada verificada de las 13:18. Auditoría Telegram permanece en 0 huérfanos."
+        "message": "Primer lote confirmado en main: cuatro explicaciones y cuatro revisiones retiradas."
       },
       {
-        "at": "2026-10-16T13:49:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual automático verificado: workflow 1672 completado con éxito, sin jobs IA nuevos."
+        "at": "2026-10-16T15:41:34.579Z",
+        "phase": "persisting",
+        "trend_id": "421d4097fd38",
+        "title": "Goebbels / Real Madrid TV",
+        "message": "Enviado segundo outbox de enlace al grupo Tebas; se evitan duplicados."
       },
       {
-        "at": "2026-10-16T13:51:00+02:00",
+        "at": "2026-10-16T15:44:13.993Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto."
+        "message": "Segundo lote GitHub confirmado; cola editorial cero en main."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261016T134500+0200",
+  "run_id": "tr-backlog-20261016-1736-chat",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "trends_processed": 6,
+    "trends_explained": 4,
+    "explanation_groups": 4,
+    "new_cards": 4,
+    "revisions_updated": 1,
+    "grouped_into_existing_card": 2,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -142,48 +119,45 @@
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "pending_repair_triggered": 1,
-    "visual_repair_workflow_started": 1,
-    "visual_repair_workflow_verified": 1,
-    "telegram_delivery_triggered": 0,
-    "telegram_delivery_workflow_verified": 0,
-    "telegram_orphans": 0,
-    "bidirectional_issues": 0,
-    "provisional_telegram": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0,
-    "pending_cards_reviewed": 0
+    "explanations_verified_under_280": 4,
+    "remates_selected": 4
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T13:45:30+02:00",
+      "at": "2026-10-16T15:38:49.691Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial; cola textual 0. Revisando estado autoritativo, huérfanos y saneamiento de Pendientes."
+      "message": "Detectadas seis tendencias atascadas en Elaboración; revisión de cola y fuentes actuales."
     },
     {
-      "at": "2026-10-16T13:49:00+02:00",
+      "at": "2026-10-16T15:39:13.051Z",
+      "phase": "persisting",
+      "trend_id": "3658e974d137",
+      "title": "Tebas / Metro / #TEM16O / Patxi",
+      "message": "Enviado primer outbox oficial de cuatro tendencias verificadas."
+    },
+    {
+      "at": "2026-10-16T15:41:02Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Radar fresco y cola 0; requests, Explicadas y entregas no han cambiado desde la pasada verificada de las 13:18. Auditoría Telegram permanece en 0 huérfanos."
+      "message": "Primer lote confirmado en main: cuatro explicaciones y cuatro revisiones retiradas."
     },
     {
-      "at": "2026-10-16T13:49:30+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual automático verificado: workflow 1672 completado con éxito, sin jobs IA nuevos."
+      "at": "2026-10-16T15:41:34.579Z",
+      "phase": "persisting",
+      "trend_id": "421d4097fd38",
+      "title": "Goebbels / Real Madrid TV",
+      "message": "Enviado segundo outbox de enlace al grupo Tebas; se evitan duplicados."
     },
     {
-      "at": "2026-10-16T13:51:00+02:00",
+      "at": "2026-10-16T15:44:13.993Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto."
+      "message": "Segundo lote GitHub confirmado; cola editorial cero en main."
     }
   ],
   "telegram_orphans": 0,
