@@ -1,0 +1,37 @@
+name: TTActualidad V8 - Windows PowerShell 5.1 encoding regression
+on:
+  push:
+    branches: ['fix/ttactualidad-v8-ps51-encoding-20261016']
+    paths:
+      - 'pilot/ttactualidad-live/Update-TTActualidad-V8-EnVivo.ps1'
+      - '.github/workflows/ttactualidad-v8-ps51-smoketest.yml'
+permissions:
+  contents: read
+jobs:
+  ps51:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reproduce Windows PowerShell 5.1 script loading
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          if ($PSVersionTable.PSVersion.Major -ne 5) { throw 'Expected Windows PowerShell 5.1' }
+          $path='pilot/ttactualidad-live/Update-TTActualidad-V8-EnVivo.ps1'
+          $bytes=[IO.File]::ReadAllBytes((Resolve-Path $path))
+          if (@($bytes | Where-Object { $_ -gt 127 }).Count -ne 0) { throw 'Non-ASCII source would fail in PS 5.1' }
+          $t=$null;$errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$t,[ref]$errors) | Out-Null
+          if($errors.Count) { throw ($errors | Out-String) }
+          $script=Get-Content -LiteralPath $path -Raw
+          if(!$script.Contains("'Pasar a En Elaboraci'")){throw 'Safe preflight marker absent'}
+          if(!$script.Contains("$"+"page.Content.Contains('Pasar a En Elaboraci')")){throw 'Safe deployed HTML marker absent'}
+          if(!$script.Contains('signed_cookie_v1')){throw 'Session regression'}
+          if(!$script.Contains('Copy-Item -LiteralPath $site')){throw 'Backup absent'}
+          $ui=[IO.File]::ReadAllText((Resolve-Path 'pilot/ttactualidad-live/index.html'),[Text.Encoding]::UTF8)
+          $worker=[IO.File]::ReadAllText((Resolve-Path 'pilot/ttactualidad-live/worker.js'),[Text.Encoding]::UTF8)
+          if(!$ui.Contains('Pasar a En Elaboraci')){throw 'UI marker not found'}
+          if(!$ui.Contains('current-explained>48*3600000')){throw 'Old trends filter missing'}
+          if(!$worker.Contains('ttactualidad-direct-live')){throw 'Worker version mismatch'}
+          Write-Host 'WINDOWS_PS51_SOURCE_AND_UI_OK'
