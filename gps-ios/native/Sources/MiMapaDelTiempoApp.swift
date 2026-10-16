@@ -1844,7 +1844,9 @@ struct TimeMapView: View {
         if sec > 3600 { return .teal }
         return .cyan
     }
-    var body: some View {
+    var body: some View { mapLifecycle }
+
+    private var mapSheets: some View {
         ZStack(alignment: .bottom) {
             mapLayers
             mapControls
@@ -1879,24 +1881,15 @@ struct TimeMapView: View {
                 searchOpen=false
             }
         }
+    }
+
+    private var mapDataEvents: some View {
+        mapSheets
         .onChange(of:searchOpen) { _,open in
             if !open,let cell=queuedCellForMap {
                 queuedCellForMap=nil
                 model.navigate(to:cell)
             }
-        }
-.onChange(of:scenePhase) { _,phase in
-            if phase == .active {
-                gps.refreshWhenForeground()
-                model.restoreLiveActivityIfNeeded()
-                if followLocation { focusOnCurrentLocation() }
-            }
-        }
-        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
-        .onDisappear {
-            deferredCameraSave?.cancel()
-            // Preserve the user's last viewpoint when leaving the map.
-            model.updateCamera(region)
         }
         .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
@@ -1906,6 +1899,10 @@ struct TimeMapView: View {
         .onChange(of:namingCell) { _,newValue in
             if newValue == nil { refreshMapSnapshot(force: true) }
         }
+    }
+
+    private var mapRouteEvents: some View {
+        mapDataEvents
         .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.selectedTab) { _,tab in
@@ -1922,9 +1919,24 @@ struct TimeMapView: View {
         .onChange(of:model.activeCell?.id) { _,_ in
             refreshMapSnapshot(force: true)
             if followLocation { model.selected=nil }
+        }    }
+
+    private var mapLifecycle: some View {
+        mapRouteEvents
+        .onChange(of:scenePhase) { _,phase in
+            if phase == .active {
+                gps.refreshWhenForeground()
+                model.restoreLiveActivityIfNeeded()
+                if followLocation { focusOnCurrentLocation() }
+            }
+        }
+        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
+        .onDisappear {
+            deferredCameraSave?.cancel()
+            // Preserve the user's last viewpoint when leaving the map.
+            model.updateCamera(region)
         }
     }
-
 
     /// Map rendering is isolated from overlay buttons and the 1-second clock.
     private var mapLayers: some View {
