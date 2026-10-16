@@ -1,26 +1,43 @@
 {
   "project": "TTendencias",
-  "engine": "chat-direct",
+  "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T20:07:00+02:00",
+  "last_started_at": "2026-10-16T22:49:10+02:00",
   "last_completed_at": "2026-10-16T20:20:00+02:00",
-  "updated_at": "2026-10-16T20:20:00+02:00",
-  "status": "success",
+  "updated_at": "2026-10-16T22:49:11+02:00",
+  "status": "waiting",
   "processed_ids": [
-    "59525798f3f6",
-    "5169841e6f57",
-    "effdbf84545e",
-    "390953f44e08",
-    "c73c9d03530d",
-    "aae166854230",
-    "6ced0406ed4d"
+    "aaba41f2ac1f"
   ],
-  "remaining_ids": [],
-  "queue_complete": true,
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_ids": [
+    "1781e388eb4e",
+    "ab56c8fcd556",
+    "6f9d2bd92779",
+    "54ae780111d5",
+    "208f2e50743c",
+    "630457a6a384",
+    "9adf708e44e5",
+    "e6697b8d115d",
+    "3d2bfcd082db",
+    "aaba41f2ac1f"
+  ],
+  "queue_complete": false,
+  "remaining_active_ids": [
+    "1781e388eb4e",
+    "ab56c8fcd556",
+    "6f9d2bd92779",
+    "54ae780111d5",
+    "208f2e50743c",
+    "630457a6a384",
+    "9adf708e44e5",
+    "e6697b8d115d",
+    "3d2bfcd082db"
+  ],
+  "remaining_problematic_ids": [
+    "aaba41f2ac1f"
+  ],
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
