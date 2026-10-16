@@ -247,6 +247,7 @@ struct SavedState: Codable {
     private let territoryAutoClassifier = TerritoryAutoClassifier()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
+    private var storageLoadFailed = false
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
@@ -314,14 +315,15 @@ struct SavedState: Codable {
             .flatMap { try? JSONDecoder().decode(SavedState.self, from: $0) }
         do {
             let db = try TimeSQLiteStore(url: dir.appendingPathComponent("time-map-v3.sqlite"))
-            if !db.hasExistingState { try db.replaceAll(legacy ?? SavedState()) }
+            try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
             store = db
             storeStatus = "SQLite · protegido localmente"
         } catch {
             // Si falla una migración, los datos anteriores siguen en el JSON original.
             data = legacy ?? SavedState()
-            storeStatus = "JSON de respaldo · revisar SQLite: \(error.localizedDescription)"
+            storageLoadFailed = true
+            storeStatus = "ERROR DE ALMACENAMIENTO · no se guardarán cambios: \(error.localizedDescription)"
         }
         currentVisitStart = data.savedVisitStart
         if let resting = data.gpsRest,
@@ -1269,6 +1271,10 @@ struct SavedState: Codable {
         return url
     }
     func save(force: Bool = false) {
+        guard !storageLoadFailed else {
+            gpsStatus = "Almacenamiento sin cargar · datos protegidos · no guardar"
+            return
+        }
         guard force || Date().timeIntervalSince(lastSaved) > 20 else { return }
         do {
             if let store {
