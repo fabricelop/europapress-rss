@@ -1,12 +1,26 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-16T08:15:03.372356+00:00",
+  "checked_at": "2026-10-16T08:37:01.480037+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
-  "ledger_entries": 393,
+  "ledger_entries": 400,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:e35ea39aac3a:4129",
+      "id": "e35ea39aac3a",
+      "message_id": 4129,
+      "title": "Dos jóvenes mueren en una pelea entre familias en Valdeolea (Cantabria), la Guardia Civil busca al presunto responsable",
+      "age_min": 0.2,
+      "reason": "Bloqueo editorial: transport_write_blocked"
+    }
+  ],
+  "alerted": {
+    "provisional:e35ea39aac3a:4129": {
+      "signature": "c3be568102eaf16964",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
