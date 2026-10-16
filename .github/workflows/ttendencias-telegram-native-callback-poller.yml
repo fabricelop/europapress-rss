@@ -1,89 +1,14 @@
-name: TTendencias native Telegram buttons without webhook
-# Only the continuous TTendencias package-listen may poll Telegram updates
-# automatically. Two getUpdates consumers compete and can lose callbacks.
-# Manual fallback remains available for an explicitly diagnosed outage.
+name: "TTendencias Telegram callback poller - disabled TTActualidad"
+# Disabled by request: TTActualidad direct app replaces TTendencias Telegram.
+# Safe rollback: restore this file from git history.
+# Editorial, image jobs, SeLoRecordamos and TTImages continue separately.
 on:
   workflow_dispatch:
 permissions:
-  contents: write
-concurrency:
-  group: ttendencias-native-telegram-callbacks
-  cancel-in-progress: false
+  contents: read
 jobs:
-  receive:
+  disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
-    env:
-      GH_TOKEN: ${{ github.token }}
-      TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
-      TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Verify callback processor with synthetic data
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 -m py_compile .github/scripts/ttendencias_telegram_poll_callbacks.py trends/telegram_bot.py
-          python3 .github/scripts/ttendencias_telegram_poll_callbacks.py selftest
-          python3 .github/scripts/test_telegram_run.py
-          node --check selorecordamos/telegram_local.js
-          node --input-type=module --check < api/telegram-webhook.js
-          node --input-type=module --check < vercel-webhook/api/telegram-webhook.js
-          node .github/scripts/test_tti_telegram_run.mjs
-      - name: Fetch Telegram callbacks and atomically persist editor decisions
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for attempt in 1 2 3 4 5 6; do
-            git fetch origin main
-            git checkout -B main origin/main
-            python3 .github/scripts/ttendencias_telegram_poll_callbacks.py
-            git add trends/telegram-image-deliveries.json trends/mobile-decisions.json trends/requests.json
-            if test -f trends/telegram-native-callback-offset.json; then git add trends/telegram-native-callback-offset.json; fi
-            if git diff --cached --quiet; then
-              echo TTENDENCIAS_CALLBACKS_NO_CHANGE
-              break
-            fi
-            git commit -m "TTendencias: registrar botones nativos Telegram recibidos"
-            if git push origin HEAD:main; then
-              echo TTENDENCIAS_CALLBACKS_SAVED
-              break
-            fi
-            if [[ "$attempt" == 6 ]]; then exit 1; fi
-            sleep "$attempt"
-          done
-      - name: Confirm registered commands via Telegram, even if callback popup expired
-        if: success()
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import os,json,urllib.request,urllib.error
-          token=os.environ.get('TTENDENCIAS_BOT_TOKEN','').strip()
-          chat=os.environ.get('TTENDENCIAS_CHAT_ID','').strip()
-          if not token:raise SystemExit(0)
-          try:items=json.load(open('/tmp/tt-tr-telegram-callback-acks.json',encoding='utf8'))
-          except (OSError,ValueError):raise SystemExit(0)
-          if not chat:
-              try:chat=str(json.load(open('trends/telegram-bot-state.json',encoding='utf8')).get('chat_id') or '')
-              except (OSError,ValueError):pass
-          for item in items:
-              payload={'callback_query_id':item['callback_id'],'text':item['text'],'show_alert':bool(item.get('alert'))}
-              url='https://api.telegram.org/bot'+token+'/answerCallbackQuery'
-              def send(endpoint,body):
-                  request=urllib.request.Request(endpoint,data=json.dumps(body).encode(),
-                      headers={'content-type':'application/json'})
-                  try:
-                      with urllib.request.urlopen(request,timeout=20) as response:
-                          return json.load(response).get('ok') is True
-                  except Exception:return False
-              answered=send(url,payload) if item.get('callback_id') else False
-              if not answered and chat:
-                  notified=send('https://api.telegram.org/bot'+token+'/sendMessage',
-                                {'chat_id':chat,'text':item['text']})
-                  print('TTENDENCIAS_CALLBACK_NOTIFICATION',notified)
-              else:print('TTENDENCIAS_CALLBACK_ANSWERED',answered)
-          PY
+      - name: Legacy TTendencias Telegram disabled
+        run: echo "Disabled - TTActualidad manages editorial decisions without Telegram"
