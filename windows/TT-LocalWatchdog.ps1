@@ -165,6 +165,44 @@ function Test-ChatOperationBusy{
     return $true
   }
 }
+# Chrome 9223 housekeeping: only empty root tabs, never conversations.
+# The pruning helper is installed separately and is dry-run by default.
+$script:LastChromeTabHousekeepingAt=[DateTimeOffset]::MinValue
+function EnsureChromeTabHousekeeping{
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:LastChromeTabHousekeepingAt).TotalMinutes -lt 20){return}
+  $script:LastChromeTabHousekeepingAt=$now
+  $helper=Join-Path $BaseDir "TT-Chrome9223-Safe-Prune.js"
+  if(-not (Test-Path -LiteralPath $helper)){return}
+  if(Test-ChatOperationBusy){return}
+
+  $targets=$null
+  foreach($endpoint in @("http://127.0.0.1:9223","http://[::1]:9223")){
+    try{
+      $targets=@(Invoke-RestMethod -Uri ($endpoint+"/json/list") -TimeoutSec 5)
+      break
+    }catch{}
+  }
+  if($null -eq $targets){return}
+  $homes=@($targets | Where-Object {
+    [string]$_.type -eq "page" -and [string]$_.url -eq "https://chatgpt.com/"
+  })
+  if($homes.Count -lt 15){return}
+
+  try{
+    $already=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction Stop |
+      Where-Object { [string]$_.CommandLine -like "*TT-Chrome9223-Safe-Prune.js*" })
+    if($already.Count -gt 0){return}
+    $node=Get-Command node.exe -ErrorAction Stop
+    $stdout=Join-Path $BaseDir "tt-chrome-tab-housekeeping.log"
+    $stderr=Join-Path $BaseDir "tt-chrome-tab-housekeeping.err.log"
+    $p=Start-Process -FilePath $node.Source -ArgumentList @($helper,"--apply") -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru -ErrorAction Stop
+    Log ("CHROME TAB HOUSEKEEPING START pid="+$p.Id+" idle_home_candidates="+$homes.Count)
+  }catch{
+    Log ("CHROME TAB HOUSEKEEPING DEFERRED :: "+$_.Exception.Message)
+  }
+}
+
 function Recover-ListenersAfterReconnect{
   if(-not $script:ReconnectPending){return}
   $now=[DateTimeOffset]::UtcNow
@@ -411,6 +449,7 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
+    EnsureChromeTabHousekeeping
     EnsureInternetRecovery
     EnsureRemoteTelegramHeal
     # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
