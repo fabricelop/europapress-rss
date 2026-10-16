@@ -326,6 +326,12 @@ struct SavedState: Codable {
             try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
             store = db
+            // Preserve the six-hour backup interval across app relaunches.
+            // Previously every launch could trigger another full SQLite copy.
+            if let latestCopy = TimeSQLiteStore.safetyCopyURLs(in: dir).first,
+               let modification = try? latestCopy.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+                lastSafetyCopyAttempt = modification
+            }
             storeStatus = "SQLite · protegido localmente"
         } catch {
             // Si falla una migración, los datos anteriores siguen en el JSON original.
