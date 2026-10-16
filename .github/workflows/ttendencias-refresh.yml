@@ -68,23 +68,7 @@ jobs:
           PY
 
 
-          MODE="$(python3 - <<'PY'
-          import json
-          from pathlib import Path
-          try:
-              print(str(json.loads(Path("trends/control-mode.json").read_text(encoding="utf-8")).get("mode") or "telegram").strip().lower())
-          except Exception:
-              print("telegram")
-          PY
-          )"
-          echo "Modo TTendencias: $MODE"
-
-          if [ "$MODE" != "web" ]; then
-            python3 trends/telegram_bot.py sync
-            git add trends/telegram-bot-state.json
-          else
-            echo "Control web activo: no se sincroniza el panel Telegram"
-          fi
+          echo "TTActualidad: actualización editorial web, sin sincronización Telegram"
 
           git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json trends/telegram-manual-explained.json
           if git diff --cached --quiet; then
@@ -116,18 +100,10 @@ jobs:
       # El panel Cloudflare consulta directamente el estado versionado en GitHub.
       # Sin notificaciones push heredadas ni peticiones a Vercel.
 
-      - name: Enviar enseguida a Telegram los avisos de Pendientes
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh workflow run send-ttendencias-explained-telegram.yml --repo "$GITHUB_REPOSITORY" --ref main
-
       - name: Comprobar salud TTendencias
         if: always()
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
         run: python3 trends/healthcheck.py
 
       - name: Guardar estado de salud
