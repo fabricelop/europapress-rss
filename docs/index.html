@@ -42,14 +42,14 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Cómo funciona este piloto?</summary><p>Las noticias siguen elaborándose con sus sistemas actuales. Las acciones del iPhone van directamente al Worker de prueba, sin Telegram. Mientras la integración GitHub no esté activada, las órdenes se registran solo como simulación y no modifican noticias reales.</p></details>
-<div class="pilot-settings"><strong>TTActualidad · Gestión directa</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>TTActualidad · Gestión directa</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Vincular iPhone</button> <span id="pilot-status">Comprobando sesión…</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
 <div id="cards" class="cards"></div>
 <div class="footer">Origen: datos editoriales de GitHub. La lectura no usa Cloudflare. Cloudflare solo recibe las pulsaciones; cuando la conexión está activa, GitHub retira las noticias de Listas. El resto de procesos editoriales continúa igual.</div>
-<details><summary>Acerca de los datos y la conexión</summary><p>La app oficial sigue sirviéndose desde GitHub Pages. El piloto puede abrirse también desde workers.dev. Lee archivos JSON públicos de GitHub sin consultas en segundo plano. Cloudflare solo recibe acciones explícitas y protegidas por clave; sin Telegram. La clave se mantiene en memoria hasta cerrar o recargar.</p></details>
+<details><summary>Acerca de los datos y la conexión</summary><p>La app oficial permanece en GitHub Pages; esta versión funciona desde Cloudflare. Lee los JSON editoriales de GitHub, sin consultar Cloudflare continuamente. El iPhone conserva una sesión segura durante 30 días; la clave no se guarda en el navegador. «Quitar de Listas» oculta la tarjeta inmediatamente y después confirma el estado en GitHub.</p></details>
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
 (()=>{'use strict';
@@ -89,7 +89,7 @@ async function load(force=false){
  state.data=Object.fromEntries(output);state.updated=Date.now();state.lastError=errors.join(' · ');
  state.busy=false;$('refresh').disabled=false;
  try{sessionStorage.setItem('tt-web-snapshot-'+state.app,JSON.stringify(state.data))}catch{}
- render()
+ render();if(pendingDeletes.size)void checkPendingDeletes()
 }
 function setApp(app){
  state.app=app;state.tab='listas';state.q='';
@@ -327,7 +327,7 @@ function trendRows(){
  });
  return out.sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,history?150:100);
 }
-function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q)))}
+function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!isTemporarilyRemoved(x)&&(!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q))))}
 function itemData(x){
  const tweet=String(x.tweet?.text||'').trim();
  const expl=String(x.explanation||x.factual_summary||x.description||x.detail||'').trim();
@@ -365,71 +365,151 @@ async function copyText(value,label){
 }
 function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
 
-const directPilot={url:'',key:''};
-async function pilotPairFromUrl(){
- if(location.hostname!=='ttactualidad-decisions-pilot.fabricelop.workers.dev')return;
- const pair=new URLSearchParams(location.hash.slice(1)).get('ttactualidad-pair');
- if(!pair)return;
- // Remove the sensitive fragment immediately; never put it in history, logs or storage.
- history.replaceState(null,'',location.pathname+location.search);
- if(!/^[A-Za-z0-9_-]{32,100}$/.test(pair)){
-  $('pilot-status').textContent='QR inválido';return;
- }
- directPilot.url=location.origin;directPilot.key=pair;
- $('pilot-status').textContent='Comprobando acceso del iPhone…';
- try{
-  const r=await fetch(directPilot.url+'/api/auth',{headers:{Authorization:'Bearer '+pair},cache:'no-store',signal:AbortSignal.timeout(12000)});
-  const data=await r.json();
-  if(!r.ok||!data.ok)throw Error('No autorizado');
-  $('pilot-status').textContent=data.production_connected?'Conectado · Quitar de Listas REAL':'Conectado · Solo pruebas';
- }catch{
-  directPilot.key='';
-  $('pilot-status').textContent='QR no autorizado; vuelve a vincular';
- }
+const directPilot={connected:false,real:false};
+const PENDING_KEY='ttactualidad-pending-removals-v5';
+function restorePending(){
+ let rows=[];try{rows=JSON.parse(localStorage.getItem(PENDING_KEY)||'[]')}catch{}
+ if(!Array.isArray(rows))return new Map();
+ return new Map(rows.filter(x=>x&&typeof x.key==='string'&&
+   (x.status==='confirmed'?Date.now()-x.at<24*3600000:Date.now()-x.at<5*60000))
+   .map(x=>[x.key,x]));
+}
+const pendingDeletes=restorePending();
+function savePending(){
+ try{localStorage.setItem(PENDING_KEY,JSON.stringify([...pendingDeletes.values()].slice(-100)))}catch{}
+}
+function removeKey(project,id){return project+':'+id}
+function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
+function isTemporarilyRemoved(item){
+ if(!['LISTA','EXPLICADA'].includes(String(item._status)))return false;
+ return pendingDeletes.has(removeKey(itemProject(item),String(item._id)));
 }
 async function refreshPilotConnection(){
- if(!directPilot.url||!directPilot.key)return;
- $('pilot-status').textContent='Verificando conexión…';
  try{
-  const r=await fetch(directPilot.url+'/api/auth',{headers:{Authorization:'Bearer '+directPilot.key},
-   cache:'no-store',signal:AbortSignal.timeout(12000)});
-  const a=await r.json().catch(()=>({}));
-  if(!r.ok||!a.ok)throw Error('Clave no autorizada');
-  $('pilot-status').textContent=a.production_connected?'Conectado · Quitar de Listas REAL':'Conectado · Solo pruebas';
- }catch(e){$('pilot-status').textContent='No autorizado: revisa clave'}
+  const r=await fetch('/api/auth',{credentials:'same-origin',cache:'no-store',
+   signal:AbortSignal.timeout(10000)});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok||!data.ok)throw Error('No hay sesión');
+  directPilot.connected=true;directPilot.real=data.production_connected===true;
+  $('pilot-status').textContent=directPilot.real?'Conectado · Retirada real':'Conectado · Modo pruebas';
+  $('pilot-config').textContent='Renovar vinculación';
+  return true;
+ }catch{
+  directPilot.connected=false;directPilot.real=false;
+  $('pilot-status').textContent='Vincular una vez para retirar noticias';
+  $('pilot-config').textContent='Vincular iPhone';
+  return false;
+ }
 }
-function pilotConfig(){
- const suggested=location.hostname.endsWith('.workers.dev')?location.origin:'';
- const e=prompt('URL HTTPS del Worker de prueba',directPilot.url||suggested);if(e===null)return;
- if(!e.trim()){directPilot.url='';directPilot.key='';$('pilot-status').textContent='Sin configurar';return}
- let u;try{u=new URL(e.trim());if(u.protocol!=='https:')throw Error('HTTP')}catch{showToast('URL HTTPS requerida');return}
- const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return false;
- directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;void refreshPilotConnection();return true;
+async function pairPilot(secret){
+ if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
+  showToast('Abre la versión TTActualidad del Worker');return false;
+ }
+ const token=secret||prompt('Solo una vez: clave privada de TTActualidad (no el token GitHub). No se guardará en el navegador.');
+ if(!token)return false;
+ try{
+  const r=await fetch('/api/session',{method:'POST',
+   credentials:'same-origin',
+   headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},
+   body:'{}',signal:AbortSignal.timeout(12000)});
+  if(!r.ok)throw Error('Clave no autorizada');
+  showToast('iPhone vinculado durante 30 días');
+  return await refreshPilotConnection();
+ }catch(e){showToast('No se ha vinculado: '+String(e.message||e).slice(0,90));return false}
+}
+async function pilotPairFromUrl(){
+ const pair=new URLSearchParams(location.hash.slice(1)).get('ttactualidad-pair');
+ if(!pair)return;
+ history.replaceState(null,'',location.pathname+location.search);
+ if(!/^[A-Za-z0-9_-]{32,100}$/.test(pair)){showToast('Enlace de vinculación inválido');return}
+ await pairPilot(pair);
+}
+async function ensurePilotConnection(){
+ if(directPilot.connected)return true;
+ if(await refreshPilotConnection())return true;
+ return await pairPilot();
+}
+function pilotConfig(){void pairPilot()}
+function hideOptimistically(item){
+ const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
+ pendingDeletes.set(key,{key,project,id,revision:Number(item.revision||0),
+  at:Date.now(),status:'sending'});
+ savePending();render();
+ return key;
+}
+function restoreOptimistic(key,message){
+ pendingDeletes.delete(key);savePending();render();showToast(message);
+}
+async function checkPendingDeletes(){
+ const pending=[...pendingDeletes.values()].filter(x=>x.status==='submitted'||x.status==='sending');
+ if(!pending.length)return;
+ const projects=[...new Set(pending.map(x=>x.project))];
+ for(const project of projects){
+  const targets=project==='ttittulares'
+   ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions']]
+   :[['trends/telegram-image-deliveries.json','deliveries'],['trends/mobile-decisions.json','mobileDecisions']];
+  let documents;
+  try{
+   documents=await Promise.all(targets.map(async([path])=>{
+    const res=await fetch(RAW+path+'?direct_confirm='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw Error('No se pudo comprobar GitHub');
+    return res.json();
+   }));
+  }catch{continue}
+  let changed=false,failed=false;
+  const group=pending.filter(x=>x.project===project);
+  for(const op of group){
+   const id=op.id;
+   const confirmed=project==='ttittulares'
+    ? !(documents[0].items||[]).some(x=>String(x.event_id)===id)
+       &&(documents[1].items||[]).some(x=>String(x.event_id)===id&&x.status==='deleted')
+    : (documents[1].items||[]).some(x=>String(x.id||x.event_id)===id&&x.status==='deleted')
+       &&(documents[0].items||[]).some(x=>String(x.event_id)===id&&x.status==='deleted');
+   if(confirmed){
+    op.status='confirmed';changed=true;
+   }else if(Date.now()-op.at>4*60000){
+    pendingDeletes.delete(op.key);failed=true;changed=true;
+   }
+  }
+  if(changed){
+   if(state.app===(project==='ttittulares'?'tti':'tr')){
+    state.data[targets[0][1]]=documents[0];state.data[targets[1][1]]=documents[1];
+   }
+   savePending();render();
+   if(failed)showToast('GitHub no confirmó una retirada. Tarjeta restaurada: revisa y reintenta.');
+  }
+ }
+}
+function schedulePendingChecks(){
+ [14000,35000,75000,150000,245000].forEach(ms=>
+  setTimeout(()=>{if(!document.hidden)void checkPendingDeletes()},ms));
 }
 async function pilotSend(item,decision){
- if(!directPilot.url||!directPilot.key){if(!pilotConfig())return}
- const project=item._kind==='tr'?'ttendencias':'ttittulares',event_id=String(item._id||'');
- if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Esta tarjeta todavía no tiene un ID válido');return}
- const label={prepare:'Elaborar',discard:'Desestimar',deleted:'Quitar de Listas',published:'Quitar de Listas'}[decision]||decision;
- const confirmation=decision==='deleted'?('¿'+label+'? Se retirará realmente de GitHub si aparece la conexión REAL.'):(label+' esta tarjeta? La elaboración no se modificará: solo pruebas.');
- if(!confirm(confirmation))return;
+ if(!await ensurePilotConnection())return;
+ const project=itemProject(item),event_id=String(item._id||'');
+ if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador no válido');return}
+ const removing=decision==='deleted';
+ if(!confirm(removing?'¿Quitar esta tarjeta de Listas?':'¿Desestimar? Se registrará solo como prueba.'))return;
+ const key=removing?hideOptimistically(item):null;
  try{
-  const r=await fetch(directPilot.url+'/api/decision',{method:'POST',
-   headers:{'Content-Type':'application/json','Authorization':'Bearer '+directPilot.key},
-   body:JSON.stringify({project,event_id,decision,revision:Number(item.revision||0),request_id:crypto.randomUUID()}),
-   signal:AbortSignal.timeout(12000)});
-  const a=await r.json().catch(()=>({}));
-  if(!r.ok||a.ok!==true)throw Error(a.error==='already_decided'?'Ya existe una decisión distinta para esta tarjeta':a.error||'HTTP '+r.status);
-  const note=a.routed?'Enviada a GitHub; se quitará al confirmar el cambio':'Solo prueba; la tarjeta permanece igual';
-  showToast(note);
-  if(a.routed&&decision==='deleted'){
-   // Read authoritative GitHub JSON twice, never poll Cloudflare KV.
-   setTimeout(()=>{if(!document.hidden)load(true)},18000);
-   setTimeout(()=>{if(!document.hidden)load(true)},65000);
-  }
- }catch(e){showToast('No registrada: '+String(e.message||e).slice(0,110))}
+  const res=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({project,event_id,decision,revision:Number(item.revision||0),
+    request_id:crypto.randomUUID()}),signal:AbortSignal.timeout(15000)});
+  const result=await res.json().catch(()=>({}));
+  if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
+  if(removing){
+   if(!result.routed){restoreOptimistic(key,'No se ha enviado a GitHub. Tarjeta restaurada.');return}
+   const op=pendingDeletes.get(key);
+   if(op){op.status='submitted';savePending()}
+   showToast('Quitada de la vista; GitHub confirma en segundo plano');
+   schedulePendingChecks();
+  }else showToast('Desestimación registrada en pruebas, sin modificar elaboración');
+ }catch(e){
+  if(key)restoreOptimistic(key,'GitHub no aceptó la orden. Tarjeta restaurada.');
+  else showToast('No registrada: '+String(e.message||e).slice(0,80));
+ }
 }
-
 function pilotSwipes(card,item){
  const ready=item._status==='LISTA'||item._status==='EXPLICADA';
  const working=item._status==='EN ELABORACIÓN'||item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
@@ -548,7 +628,7 @@ function render(){
  $('chips').style.display=state.app==='tti'?'none':'flex';
  $('chips').replaceChildren(...tabsList.map(([key,name])=>{
   const b=document.createElement('button');b.type='button';
-  const count=key==='top'?(state.data.recent?.items||[]).slice(0,30).length:trendRowsFor(key).length;
+  const count=key==='top'?(state.data.recent?.items||[]).slice(0,30).length:trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
   b.textContent=name+' · '+count;b.setAttribute('aria-pressed',String(state.tab===key));
   b.onclick=()=>{state.tab=key;render()};return b
  }));
@@ -558,7 +638,7 @@ function render(){
   const sections=[['listas','Listas'],['elaboracion','En elaboración'],['problematicas','Revisión'],['creciendo','Creciendo'],['tremending','Tremending']];
    $('stats').classList.add('five');
   $('stats').replaceChildren(...sections.map(([section,label])=>{
-   const count=ttiRowsFor(section).length;
+   const count=ttiRowsFor(section).filter(x=>!isTemporarilyRemoved(x)).length;
    const b=document.createElement('button');b.className='stat';b.type='button';
    b.setAttribute('aria-pressed',String(state.tab===section));
    b.innerHTML='<b>'+count+'</b><small>'+label+'</small>';
@@ -616,14 +696,14 @@ function openPhoto(url,title){
 $('pilot-config').onclick=pilotConfig;
 $('pilot-prepare').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'prepare');
 $('pilot-discard').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'discard');
-void pilotPairFromUrl();
+void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes()}})();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
 
 $('tab-tti').addEventListener('click',()=>setApp('tti'));
 $('tab-tr').addEventListener('click',()=>setApp('tr'));
 $('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()});
-$('refresh').addEventListener('click',()=>load(true));
+$('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
