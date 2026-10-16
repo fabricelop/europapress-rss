@@ -1,32 +1,14 @@
-name: Reparar callbacks Telegram TTendencias
-
+name: "TTendencias Telegram callback patcher - disabled TTActualidad"
+# Disabled by request: TTActualidad direct app replaces TTendencias Telegram.
+# Safe rollback: restore this file from git history.
+# Editorial, image jobs, SeLoRecordamos and TTImages continue separately.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/scripts/fix_ttendencias_telegram_callbacks.py"
-      - "vercel-webhook/api/telegram-webhook.js"
-      - ".github/workflows/ttendencias-telegram-bot.yml"
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  patch:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Aplicar parche
-        run: |
-          python3 .github/scripts/fix_ttendencias_telegram_callbacks.py
-          node --check vercel-webhook/api/telegram-webhook.js
-          git config user.name "ttendencias-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add vercel-webhook/api/telegram-webhook.js
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Corregir borrado Publicado/Desestimar en Telegram TTendencias"
-          git pull --rebase origin main
-          git push origin HEAD:main
+      - name: Legacy TTendencias Telegram disabled
+        run: echo "Disabled - TTActualidad manages editorial decisions without Telegram"
