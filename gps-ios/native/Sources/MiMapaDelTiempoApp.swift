@@ -1805,6 +1805,17 @@ struct TimeMapView: View {
     @State private var restoredCamera = false
     // Drawing snapshot only; full GPS history remains stored unmodified.
     @State private var renderedRouteSegments: [[CLLocationCoordinate2D]] = []
+    // Keep drawing geometry stable while MapKit handles pinch and pan gestures.
+    // Rebuild the viewport snapshot only after a camera movement settles.
+    @State private var renderedCells: [MapCellRender] = []
+    @State private var renderedZones: [TimeZoneOverlay] = []
+    @State private var renderedMaximumTime: TimeInterval = 1
+    @State private var renderedRegion: MKCoordinateRegion?
+    @State private var renderedPeriod: TimePeriod?
+    @State private var renderedIntervalCount = -1
+    @State private var renderedGridCount = -1
+    @State private var renderedAt = Date.distantPast
+    @State private var deferredCameraSave: Task<Void, Never>?
     @State private var renderedRouteFixCount = -1
     @State private var renderedRoutePeriod = ""
     @State private var lastRouteDraw = Date.distantPast
@@ -1818,32 +1829,6 @@ struct TimeMapView: View {
         _region = State(initialValue: saved)
     }
 
-    private var relevant:[MapCellRender] {
-        let now=Date()
-        let totals=model.periodTotals(now:now)
-        let active=model.activeCell
-        let activeExtra=active.map {
-            model.provisionalSeconds(for:[$0.id],now:now)
-        } ?? 0
-        var result:[MapCellRender]=[]
-        for c in model.allCells {
-            let sec=(totals[c.id] ?? 0)+(c == active ? activeExtra : 0)
-            guard sec>0 else { continue }
-            let point=Grid.center(c)
-            guard abs(point.latitude-region.center.latitude) < region.span.latitudeDelta*1.1 &&
-                  abs(point.longitude-region.center.longitude) < region.span.longitudeDelta*1.1 else { continue }
-            result.append(MapCellRender(cell:c,seconds:sec))
-            if result.count >= 2000 { break }
-        }
-        return result
-    }
-    private var zoneHighlights:[TimeZoneOverlay] {
-        model.zoneOverlays.filter { overlay in
-            guard let center=overlay.center else { return false }
-            return abs(center.latitude-region.center.latitude) < region.span.latitudeDelta*1.8 &&
-                   abs(center.longitude-region.center.longitude) < region.span.longitudeDelta*1.8
-        }
-    }
     func paint(_ sec: TimeInterval, maximum: TimeInterval) -> Color {
         if model.explore { return .cyan }
         if model.adaptive {
@@ -1859,21 +1844,119 @@ struct TimeMapView: View {
         if sec > 3600 { return .teal }
         return .cyan
     }
-    var body: some View {
-        let visibleCells = relevant
-        let visibleZones = zoneHighlights
-        let maximumVisibleTime = max(1,visibleCells.map(\.seconds).max() ?? 1)
-        let useBasicMap = model.forceBasicMap || !connectivity.connected
+    var body: some View { mapLifecycle }
+
+    private var mapSheets: some View {
         ZStack(alignment: .bottom) {
-            // Keep the same MapKit instance alive across network interruptions:
-            // only its visibility changes, never its identity or camera state.
+            mapLayers
+            mapControls
+        }
+        .sheet(item:$inspectedZone) { zone in
+            TimeMapZoneSummary(model:model,zone:zone) { cell in
+                followLocation=false
+                model.selected=cell
+                let target=MKCoordinateRegion(center:Grid.center(cell),span:region.span)
+                region=target
+                refreshMapSnapshot(force: true)
+                camera = .region(target)
+                queueCameraSave(target)
+            }
+        }
+        .sheet(item:$historyCell) { cell in
+            NavigationStack {
+                CellHistoryView(model:model,cell:cell)
+                    .toolbar {
+                        ToolbarItem(placement:.cancellationAction) {
+                            Button("Cerrar") { historyCell=nil }
+                        }
+                    }
+            }
+        }
+        .sheet(item:$namingCell) { cell in
+            TimeNameEditor(model:model,cell:cell)
+        }
+        .sheet(isPresented:$searchOpen) {
+            TimeUniversalSearch(model:model) { cell in
+                queuedCellForMap=cell
+                searchOpen=false
+            }
+        }
+    }
+
+    private var mapDataEvents: some View {
+        mapSheets
+        .onChange(of:searchOpen) { _,open in
+            if !open,let cell=queuedCellForMap {
+                queuedCellForMap=nil
+                model.navigate(to:cell)
+            }
+        }
+        .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
+        .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
+        .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:model.data.places.count) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:namingCell) { _,newValue in
+            if newValue == nil { refreshMapSnapshot(force: true) }
+        }
+    }
+
+    private var mapRouteEvents: some View {
+        mapDataEvents
+        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.selectedTab) { _,tab in
+            if tab == 0 { refreshRenderedRoutes() }
+        }
+        .onChange(of:model.current?.date) { _,_ in
+            refreshRenderedRoutes()
+            refreshMapSnapshot()
+            if followLocation {
+                model.selected=nil
+                focusOnCurrentLocation()
+            }
+        }
+        .onChange(of:model.activeCell?.id) { _,_ in
+            refreshMapSnapshot(force: true)
+            if followLocation { model.selected=nil }
+        }
+    }
+
+    private var mapLifecycle: some View {
+        mapRouteEvents
+        .onChange(of:scenePhase) { _,phase in
+            if phase == .active {
+                gps.refreshWhenForeground()
+                model.restoreLiveActivityIfNeeded()
+                if followLocation { focusOnCurrentLocation() }
+            }
+        }
+        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
+        .onDisappear {
+            deferredCameraSave?.cancel()
+            // Preserve the user's last viewpoint when leaving the map.
+            model.updateCamera(region)
+        }
+    }
+
+    /// Map rendering is isolated from overlay buttons and the 1-second clock.
+    private var mapLayers: some View {
+        let visibleCells = renderedCells
+        let visibleZones = renderedZones
+        let maximumVisibleTime = renderedMaximumTime
+        let useBasicMap = model.forceBasicMap || !connectivity.connected
+        return ZStack {
             MapReader { proxy in
                 Map(position: $camera) {
                     ForEach(visibleCells) { item in
                         MapPolygon(coordinates: Grid.polygon(item.cell))
                             .foregroundStyle(paint(item.seconds,maximum:maximumVisibleTime).opacity(model.cellFillOpacity))
                             .stroke(.white.opacity(0.85), lineWidth: 1)
-                        if region.span.latitudeDelta < 0.015 {
+                    }
+                    // Limit only the text overlays, never the visited coloured squares.
+                    // Large quantities of text annotations severely slow MapKit gestures.
+                    if region.span.latitudeDelta < 0.010 {
+                        ForEach(visibleCells.prefix(80)) { item in
                             Annotation("", coordinate: Grid.center(item.cell), anchor: .center) {
                                 Text(DurationFormat.small(item.seconds))
                                     .font(.system(size: 10, weight: .bold))
@@ -1936,13 +2019,6 @@ struct TimeMapView: View {
                     }
                 }
                 .mapStyle(model.mapKind == .satellite ? .imagery : model.mapKind == .hybrid ? .hybrid : .standard)
-                .simultaneousGesture(DragGesture(minimumDistance:24)
-                    .onChanged { _ in
-                        if followLocation { followLocation = false }
-                        beginMapDrag()
-                    }
-                    .onEnded { _ in endMapDrag() }
-                )
                 .onTapGesture { point in
                     if let coord = proxy.convert(point, from: .local) {
                         let touched=Grid.cell(latitude:coord.latitude,longitude:coord.longitude)
@@ -1955,11 +2031,13 @@ struct TimeMapView: View {
                     guard !useBasicMap,
                           MapViewportPolicy.meaningfulChange(from: region, to: ctx.region) else { return }
                     region = ctx.region
-                    model.updateCamera(ctx.region)
-                    // Solo un gesto manual desactiva Seguirme; un cambio de
-                    // cámara programático no debe hacerlo.
+                    if followLocation { followLocation = false }
+                    refreshMapSnapshot(force: true)
+                    queueCameraSave(ctx.region)
+                    // Camera events no longer serialize the full GPS history
+                    // while the user is still manipulating MapKit.
                 }
-                .onAppear { centerOnRequestedCell() }
+                .onAppear { centerOnRequestedCell(); refreshMapSnapshot(force: true) }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
             .opacity(useBasicMap ? 0 : 1)
@@ -1976,9 +2054,13 @@ struct TimeMapView: View {
                 },onInteractionEnd:{
                     endMapDrag()
                 })
-                .onAppear { centerOnRequestedCell() }
+                .onAppear { centerOnRequestedCell(); refreshMapSnapshot(force: true) }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
+        }
+    }
+
+    private var mapControls: some View {
             VStack(spacing:4) {
                 HStack(spacing:4) {
                     Menu {
@@ -2165,65 +2247,95 @@ struct TimeMapView: View {
                 .padding(.horizontal,12)
                 .padding(.bottom,8)
             }
-        }
-        .sheet(item:$inspectedZone) { zone in
-            TimeMapZoneSummary(model:model,zone:zone) { cell in
-                followLocation=false
-                model.selected=cell
-                let target=MKCoordinateRegion(center:Grid.center(cell),span:region.span)
-                region=target
-                camera = .region(target)
+    }
+    /// A viewport-indexed snapshot avoids scanning and rebuilding thousands
+    /// of map overlays every time the GPS or the card clock publishes a change.
+    private func refreshMapSnapshot(force: Bool = false) {
+        let now = Date()
+        let intervalCount = model.data.intervals.count
+        let gridCount = model.data.totals.count
+        let samePeriod = renderedPeriod == model.period
+        let sameData = renderedIntervalCount == intervalCount &&
+                       renderedGridCount == gridCount
+        let sameViewport = renderedRegion.map {
+            !MapViewportPolicy.meaningfulChange(from: $0, to: region)
+        } ?? false
+        if !force && samePeriod && sameData && sameViewport &&
+           now.timeIntervalSince(renderedAt) < 20 { return }
+
+        let totals = model.periodTotals(now: now)
+        let active = model.activeCell
+        let activeExtra = active.map { model.provisionalSeconds(for: [$0.id], now: now) } ?? 0
+        let north = min(85, region.center.latitude + region.span.latitudeDelta * 1.15)
+        let south = max(-85, region.center.latitude - region.span.latitudeDelta * 1.15)
+        let west = max(-179.999, region.center.longitude - region.span.longitudeDelta * 1.15)
+        let east = min(179.999, region.center.longitude + region.span.longitudeDelta * 1.15)
+        let first = Grid.cell(latitude: south, longitude: west).row
+        let last = Grid.cell(latitude: north, longitude: east).row
+        var candidateCells: [Cell] = []
+        // At high zoom, enumerate only screen-adjacent 100 m squares.
+        // At broad zoom, prefer confirmed stored cells over a giant empty grid.
+        var gridIndexComplete = false
+        if first <= last && last - first < 120 && region.span.longitudeDelta < 0.12 {
+            gridIndexComplete = true
+            for row in first...last {
+                let latitude = -90 + (Double(row) + 0.5) * Grid.latitudeStep
+                let minColumn = Grid.cell(latitude: latitude, longitude: west).column
+                let maxColumn = Grid.cell(latitude: latitude, longitude: east).column
+                guard minColumn <= maxColumn && maxColumn - minColumn <= 120 else {
+                    gridIndexComplete = false
+                    break
+                }
+                for column in minColumn...maxColumn {
+                    candidateCells.append(Cell(row: row, column: column))
+                }
             }
         }
-        .sheet(item:$historyCell) { cell in
-            NavigationStack {
-                CellHistoryView(model:model,cell:cell)
-                    .toolbar {
-                        ToolbarItem(placement:.cancellationAction) {
-                            Button("Cerrar") { historyCell=nil }
-                        }
-                    }
-            }
+        if !gridIndexComplete {
+            // Never show only some visited cells when the viewport crosses
+            // the indexing limit: scan saved cells instead, without truncation.
+            candidateCells = model.allCells
         }
-        .sheet(item:$namingCell) { cell in
-            TimeNameEditor(model:model,cell:cell)
+        if let active, !candidateCells.contains(active) {
+            candidateCells.append(active)
         }
-        .sheet(isPresented:$searchOpen) {
-            TimeUniversalSearch(model:model) { cell in
-                queuedCellForMap=cell
-                searchOpen=false
-            }
+        var items: [MapCellRender] = []
+        for cell in candidateCells {
+            let secs = (totals[cell.id] ?? 0) + (cell == active ? activeExtra : 0)
+            guard secs > 0 else { continue }
+            let point = Grid.center(cell)
+            guard abs(point.latitude - region.center.latitude) < region.span.latitudeDelta * 1.1 &&
+                  abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.1 else { continue }
+            items.append(MapCellRender(cell: cell, seconds: secs))
+            if items.count >= 2000 { break }
         }
-        .onChange(of:searchOpen) { _,open in
-            if !open,let cell=queuedCellForMap {
-                queuedCellForMap=nil
-                model.navigate(to:cell)
-            }
+        // Assign stable arrays only at the end of computation.
+        renderedMaximumTime = max(1, items.map(\.seconds).max() ?? 1)
+        renderedCells = items
+        renderedZones = model.zoneOverlays.filter { overlay in
+            guard let point = overlay.center else { return false }
+            return abs(point.latitude - region.center.latitude) < region.span.latitudeDelta * 1.8 &&
+                   abs(point.longitude - region.center.longitude) < region.span.longitudeDelta * 1.8
         }
-.onChange(of:scenePhase) { _,phase in
-            if phase == .active {
-                gps.refreshWhenForeground()
-                model.restoreLiveActivityIfNeeded()
-                if followLocation { focusOnCurrentLocation() }
-            }
-        }
-        .onAppear { refreshRenderedRoutes() }
-        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
-        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
-        .onChange(of:model.selectedTab) { _,tab in
-            if tab == 0 { refreshRenderedRoutes() }
-        }
-        .onChange(of:model.current?.date) { _,_ in
-            refreshRenderedRoutes()
-            if followLocation {
-                model.selected=nil
-                focusOnCurrentLocation()
-            }
-        }
-        .onChange(of:model.activeCell?.id) { _,_ in
-            if followLocation { model.selected=nil }
+        renderedRegion = region
+        renderedPeriod = model.period
+        renderedIntervalCount = intervalCount
+        renderedGridCount = gridCount
+        renderedAt = now
+    }
+
+    /// Debounce viewport persistence: save() serializes the GPS history.
+    /// Saving synchronously on every pinch/pan completion stalls the map.
+    private func queueCameraSave(_ target: MKCoordinateRegion) {
+        deferredCameraSave?.cancel()
+        deferredCameraSave = Task { @MainActor in
+            do { try await Task.sleep(nanoseconds: 900_000_000) }
+            catch { return }
+            guard !Task.isCancelled else { return }
+            model.updateCamera(target)
         }
     }
+
     /// Rebuild path geometry only for new fixes or an explicit route selection,
     /// never on every UI refresh, zoom gesture, or clock tick.
     private func refreshRenderedRoutes(force: Bool = false) {
@@ -2278,13 +2390,15 @@ struct TimeMapView: View {
         let center=followLocation ? (model.current?.coordinate ?? region.center) : region.center
         let target=MapZoomPolicy.scaled(region,factor:factor,center:center)
         region=target
+        refreshMapSnapshot(force: true)
         withAnimation(.easeOut(duration:0.18)) { camera = .region(target) }
-        model.updateCamera(target)
+        queueCameraSave(target)
     }
     private func focusOnCurrentLocation() {
         guard let position=model.current else { return }
         let target=MKCoordinateRegion(center:position.coordinate,span:region.span)
         region=target
+        refreshMapSnapshot(force: true)
         withAnimation(.easeInOut(duration:0.24)) {
             camera = .region(target)
         }
@@ -2297,9 +2411,10 @@ struct TimeMapView: View {
             let target=MKCoordinateRegion(center:center,
                    span:MKCoordinateSpan(latitudeDelta:0.003,longitudeDelta:0.003))
             region=target
+            refreshMapSnapshot(force: true)
             camera = .region(target)
             model.selected=c
-            model.updateCamera(target)
+            queueCameraSave(target)
         } else if !restoredCamera {
             // Initialized directly from the saved region; do not recenter again.
             restoredCamera = true
@@ -2382,7 +2497,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.40 · datos guardados en este iPhone",
+                    Label("Versión 1.0.41 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
