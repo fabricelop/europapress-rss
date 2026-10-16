@@ -58,3 +58,14 @@ jobs:
         run: |
           python -m unittest discover -s pilot -p 'test-ttactualidad-direct-actions.py' -v
           python -m py_compile pilot/apply-ttactualidad-action.py
+      - name: Check v2 installer pinned artifacts remotely
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = '2f494846223dd983a79538c8fc59b122ad50c35d'
+          $base = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $version + '/'
+          $w = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'pilot/ttactualidad-worker.js?source=' + $version)).Content
+          $h = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'docs/index.html?source=' + $version)).Content
+          if (-not $w.Contains('on_demand_no_polling') -or -not $w.Contains('env.ASSETS.fetch(req)')) { throw 'Pinned worker artifact mismatch' }
+          if (-not $h.Contains('Conectar acciones directas') -or -not $h.Contains('pilotSwipes(card,item)')) { throw 'Pinned UI artifact mismatch' }
+          Write-Host 'V2 pinned Worker and UI download validated'
