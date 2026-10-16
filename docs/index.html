@@ -427,17 +427,6 @@ function pilotSwipes(card,item){
  },{passive:true});
 }
 
-function telegramActionUrl(project,id,action){
- // Telegram deep links accept <=64 URL-safe characters. No browser token needed.
- const app=project==='ttittulares'?'n':'t',kind=({published:'p',deleted:'d',rework:'r',prepare:'e'})[action];
- if(!kind)return '';
- const bytes=new TextEncoder().encode(String(id||''));
- if(!bytes.length||bytes.length>39)return '';
- let raw='';for(const byte of bytes)raw+=String.fromCharCode(byte);
- const payload='ttm_'+app+'_'+kind+'_'+btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
- if(payload.length>64)return '';
- return 'https://t.me/TTiTTulares_bot?start='+payload;
-}
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
