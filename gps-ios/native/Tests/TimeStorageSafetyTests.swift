@@ -36,6 +36,7 @@ final class TimeStorageSafetyTests: XCTestCase {
         XCTAssertEqual(sqlite3_exec(raw, "DELETE FROM meta WHERE key='header'", nil, nil, nil), SQLITE_OK)
         XCTAssertThrowsError(try store.initializeIfTrulyEmpty(SavedState()))
         XCTAssertThrowsError(try store.load())
+        XCTAssertThrowsError(try store.append(fixes: [], intervals: [], totals: [:], header: TimeStoreHeader(state)))
         var count: Int32 = 0
         var stmt: OpaquePointer?
         XCTAssertEqual(sqlite3_prepare_v2(raw, "SELECT COUNT(*) FROM fixes", -1, &stmt, nil), SQLITE_OK)
