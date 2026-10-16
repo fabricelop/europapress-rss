@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T09:45:00+02:00",
-  "last_completed_at": "2026-10-16T09:51:00+02:00",
-  "updated_at": "2026-10-16T09:51:00+02:00",
+  "last_started_at": "2026-10-16T10:15:00+02:00",
+  "last_completed_at": "2026-10-16T10:18:10+02:00",
+  "updated_at": "2026-10-16T10:18:10+02:00",
   "status": "success",
   "processed_ids": [
     "14353e8db0df"
@@ -28,20 +28,22 @@
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T0945+0200",
+    "run_id": "tr-chat-20261016T1015+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T09:45:00+02:00",
-    "updated_at": "2026-10-16T09:51:00+02:00",
-    "finished_at": "2026-10-16T09:51:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-16T10:15:00+02:00",
+    "updated_at": "2026-10-16T10:18:10+02:00",
+    "finished_at": "2026-10-16T10:18:10+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -54,17 +56,17 @@
       "pending_repair_triggered": 1,
       "visual_repair_workflow_started": 1,
       "visual_repair_workflow_verified": 0,
-      "telegram_delivery_triggered": 1,
-      "telegram_delivery_workflow_verified": 1,
+      "telegram_delivery_triggered": 0,
+      "telegram_delivery_workflow_verified": 0,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
       "provisional_telegram": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_reviewed": 0
+      "pending_cards_reviewed": 1
     },
-    "message": "Pasada 1/1 cerrada: #LaHora16O explicada y verificada; cola final 0 y Telegram con 0 huérfanos. Reparación visual separada en ejecución.",
+    "message": "Pasada editorial 0/0 cerrada y verificada; cola final 0, sin reexplicaciones ni huérfanos. Saneamiento visual de 1 Pendiente iniciado aparte.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,109 +74,58 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 100
+      "recent_considered": 0
     },
-    "remate_selections": [
-      {
-        "trend_id": "14353e8db0df",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "closer_text": "🌶️ La actualidad cambia de tema; el hashtag solo cambia de fecha."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T09:45:00+02:00",
+        "at": "2026-10-16T10:15:00+02:00",
         "phase": "preparing",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Iniciando pasada editorial: 1 tendencia activa; preparando verificación JIT, investigación y auditoría Telegram."
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial; cola textual 0."
       },
       {
-        "at": "2026-10-16T09:46:00+02:00",
+        "at": "2026-10-16T10:15:10+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando reexplicaciones y estado autoritativo."
+      },
+      {
+        "at": "2026-10-16T10:15:20+02:00",
         "phase": "verifying",
         "trend_id": "14353e8db0df",
         "title": "#LaHora16O",
-        "message": "Releyendo estado autoritativo de #LaHora16O."
+        "message": "Revisando Pendientes · 1 tarjeta vigente."
       },
       {
-        "at": "2026-10-16T09:46:30+02:00",
-        "phase": "investigating",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Buscando detonante actual y comprobando la emisión de hoy."
-      },
-      {
-        "at": "2026-10-16T09:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Contrastando parrilla de hoy y ficha oficial de La hora de La 1."
-      },
-      {
-        "at": "2026-10-16T09:47:30+02:00",
-        "phase": "investigating",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Hecho esencial verificado: hashtag diario ligado a la emisión matinal de La hora de La 1 con Silvia Intxaurrondo."
-      },
-      {
-        "at": "2026-10-16T09:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Redactando explicación factual sin atribuir un detonante específico no verificado."
-      },
-      {
-        "at": "2026-10-16T09:48:20+02:00",
-        "phase": "drafting",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Comprobando límite de X: texto final de 249 caracteres."
-      },
-      {
-        "at": "2026-10-16T09:48:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Evaluando candidatos de remate por especificidad y repetición."
-      },
-      {
-        "at": "2026-10-16T09:49:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Remate seleccionado: juego con el hashtag diario y el cambio de fecha."
-      },
-      {
-        "at": "2026-10-16T09:49:30+02:00",
-        "phase": "persisting",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola mediante el outbox directo."
-      },
-      {
-        "at": "2026-10-16T09:50:18+02:00",
+        "at": "2026-10-16T10:17:07+02:00",
         "phase": "verifying",
         "trend_id": "14353e8db0df",
         "title": "#LaHora16O",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
+        "message": "Reparación visual solicitada para la tarjeta pendiente."
       },
       {
-        "at": "2026-10-16T09:50:41+02:00",
+        "at": "2026-10-16T10:17:15+02:00",
         "phase": "verifying",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Telegram informativo verificado: workflow correcto y auditoría con 0 huérfanos."
+        "trend_id": null,
+        "title": null,
+        "message": "Workflow de saneamiento visual iniciado."
       },
       {
-        "at": "2026-10-16T09:51:00+02:00",
+        "at": "2026-10-16T10:18:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola 0, sin reexplicaciones y sin huérfanos Telegram."
+      },
+      {
+        "at": "2026-10-16T10:18:10+02:00",
         "phase": "closing",
-        "trend_id": "14353e8db0df",
-        "title": "#LaHora16O",
-        "message": "Tendencia cerrada y verificada; cola final 0. La reparación visual continúa en su workflow independiente."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada editorial 0/0 cerrada; saneamiento visual continúa separado."
       }
     ]
   },
