@@ -25,7 +25,7 @@ jobs:
         run: |
           set -euo pipefail
           command -v xcodegen >/dev/null || brew install xcodegen
-          swiftc -frontend -parse Sources/*.swift Shared/*.swift Widgets/*.swift Tests/*.swift
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
           python3 tools/make_icon.py
           xcodegen generate --spec project.yml
       - name: Ejecutar pruebas en simulador iPhone
