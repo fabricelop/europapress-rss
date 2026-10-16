@@ -14,9 +14,9 @@ const env={
  }
 };
 const root='https://ttactualidad-decisions-pilot.fabricelop.workers.dev';
-const request=(id,decision,request_id)=>new Request(root+'/api/decision',{method:'POST',
+const request=(id,decision,request_id,revision=1)=>new Request(root+'/api/decision',{method:'POST',
  headers:{'Authorization':'Bearer unit-test-secret','Origin':root,'Content-Type':'application/json'},
- body:JSON.stringify({project:'ttittulares',event_id:id,decision,revision:1,request_id})});
+ body:JSON.stringify({project:'ttittulares',event_id:id,decision,revision,request_id})});
 const original=globalThis.fetch;
 globalThis.fetch=async(url,opts)=>{
  calls.push(JSON.parse(opts.body));
@@ -42,5 +42,38 @@ try{
  const blocked=await app.fetch(request('pilot-mobile-test1234','discard','33333333-3333-3333-3333-333333333333'),env);
  assert.equal((await blocked.json()).routed,false);
  assert.equal(calls.length,3);
+ // Arde Bogota was still in GitHub prepared.json but KV held an older,
+ // incompatible action; a new explicit live removal must reach GitHub.
+ memory.set('action:ttittulares:fe4651ef7e8a',JSON.stringify({
+   project:'ttittulares',event_id:'fe4651ef7e8a',decision:'discard',
+   mode:'pilot_only',state:'pilot_only',routed:false,revision:1
+ }));
+ const arde=await app.fetch(request('fe4651ef7e8a','deleted',
+   '44444444-4444-4444-4444-444444444444'),env);
+ assert.equal(arde.status,201,'Old KV state must not block a real removal');
+ assert.equal((await arde.json()).routed,true);
+ assert.equal(calls.at(-1).client_payload.event_id,'fe4651ef7e8a');
+ assert.equal(calls.at(-1).client_payload.decision,'deleted');
+ assert.equal(JSON.parse(memory.get('action:ttittulares:fe4651ef7e8a')).decision,'deleted');
+ // An earlier live request may also be obsolete: GitHub, not KV, makes
+ // the final decision. Explicit new user intent must be sent.
+ const override=await app.fetch(request('abc123','deleted',
+   '55555555-5555-5555-5555-555555555555'),env);
+ assert.equal(override.status,201);
+ assert.equal((await override.json()).routed,true);
+ assert.equal(calls.at(-1).client_payload.decision,'deleted');
+ // A new editorial revision must not be treated as a duplicate submission.
+ const updatedRevision=await app.fetch(request('fe4651ef7e8a','deleted',
+   '66666666-6666-6666-6666-666666666666',2),env);
+ assert.equal(updatedRevision.status,201);
+ assert.equal((await updatedRevision.json()).routed,true);
+ assert.equal(calls.at(-1).client_payload.revision,2);
+ // Synthetic trial records remain isolated, even with a conflicting intent.
+ const blockedConflict=await app.fetch(request('pilot-mobile-test1234','deleted',
+   '77777777-7777-7777-7777-777777777777'),env);
+ assert.equal(blockedConflict.status,409);
+ assert.equal((await blockedConflict.json()).error,'already_decided');
+ const health=await app.fetch(new Request(root+'/health'),env);
+ assert.equal((await health.json()).version,'v8.1-kv-conflict-fix');
 }finally{globalThis.fetch=original}
-console.log('TTActualidad V8 Worker: live dispatch, no synthetic side effects, safe retry OK');
+console.log('TTActualidad V8.1 Worker: old KV conflicts do not block GitHub, revisions and synthetic safety OK');
