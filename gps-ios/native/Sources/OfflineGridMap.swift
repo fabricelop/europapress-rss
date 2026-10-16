@@ -10,23 +10,32 @@ import CoreLocation
     private let monitor = NWPathMonitor()
     private var pendingChange: Task<Void, Never>?
     private var latestAvailable = true
+    private let outageDelay: UInt64
+    private let restoreDelay: UInt64
 
-    init() {
-        monitor.pathUpdateHandler = { [weak self] path in
-            let available = path.status == .satisfied
-            Task { @MainActor [weak self] in self?.networkChanged(available) }
+    init(startMonitoring: Bool = true,
+         outageDelay: UInt64 = 12_000_000_000,
+         restoreDelay: UInt64 = 8_000_000_000) {
+        self.outageDelay = outageDelay
+        self.restoreDelay = restoreDelay
+        if startMonitoring {
+            monitor.pathUpdateHandler = { [weak self] path in
+                let available = path.status == .satisfied
+                Task { @MainActor [weak self] in self?.networkChanged(available) }
+            }
+            monitor.start(queue: DispatchQueue(label: "gps.map.network"))
         }
-        monitor.start(queue: DispatchQueue(label: "gps.map.network"))
     }
 
-    private func networkChanged(_ available: Bool) {
+    // Internal for deterministic regression tests without actual network switching.
+    func networkChanged(_ available: Bool) {
         latestAvailable = available
         pendingChange?.cancel()
         pendingChange = nil
         guard available != connected else { return }
         // Wait for a sustained outage before falling back; wait for a sustained
         // restoration before rebuilding visible map tiles.
-        let wait: UInt64 = available ? 8_000_000_000 : 12_000_000_000
+        let wait = available ? restoreDelay : outageDelay
         pendingChange = Task { [weak self] in
             do { try await Task.sleep(nanoseconds: wait) }
             catch { return }
