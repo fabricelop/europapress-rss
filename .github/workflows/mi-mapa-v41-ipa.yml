@@ -37,9 +37,10 @@ jobs:
           phones=[x for runtime,group in devices.items() if "iOS" in runtime for x in group if "iPhone" in x["name"] and x["state"] != "Unavailable"]
           if not phones:
               raise SystemExit("No available iPhone simulator")
-          with open(os.environ["GITHUB_ENV"],"a",encoding="utf8") as f:
-              f.write("SIMULATOR_ID="+phones[0]["udid"]+"\n")
+          with open("/tmp/mi-mapa-v41-simulator-id","w",encoding="utf8") as f:
+              f.write(phones[0]["udid"])
           PY
+          SIMULATOR_ID="$(cat /tmp/mi-mapa-v41-simulator-id)"
           xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
             -configuration Debug -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
             -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
