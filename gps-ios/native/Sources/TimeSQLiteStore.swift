@@ -202,8 +202,7 @@ final class TimeSQLiteStore {
         let headerResult = sqlite3_step(s)
         if headerResult == SQLITE_ROW {
             guard let bytes = sqlite3_column_blob(s, 0) else { throw TimeStoreError.missingHeader }
-            do {
-                let blob = Data(bytes: bytes, count: Int(sqlite3_column_bytes(s, 0)))
+            let blob = Data(bytes: bytes, count: Int(sqlite3_column_bytes(s, 0)))
                 let header = try JSONDecoder().decode(TimeStoreHeader.self, from: blob)
                 data.names = header.names
                 data.importedHashes = header.importedHashes
