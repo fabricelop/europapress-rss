@@ -1934,6 +1934,8 @@ struct TimeMapView: View {
                     }
                 }
                 .onMapCameraChange(frequency: .onEnd) { ctx in
+                    // Hidden MapKit can still report its old camera while offline.
+                    guard !useBasicMap else { return }
                     region = ctx.region
                     model.updateCamera(ctx.region)
                     // Solo un gesto manual desactiva Seguirme; un cambio de
@@ -2328,7 +2330,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.37 · datos guardados en este iPhone",
+                    Label("Versión 1.0.38 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
