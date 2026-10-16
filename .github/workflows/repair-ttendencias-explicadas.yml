@@ -96,14 +96,6 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
-      - name: Entregar explicación por Telegram sin esperar imágenes
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        run: |
-          gh workflow run send-ttendencias-explained-telegram.yml --repo "$REPO" --ref main
-
       - name: Encolar imágenes en ChatGPT Images (solo lanzamiento)
         shell: bash
         run: |
@@ -122,8 +114,6 @@ jobs:
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/ttendencias-control")
           explained=json.loads((MAIN/"trends/telegram-manual-explained.json").read_text(encoding="utf-8"))
-          deliveries=json.loads((MAIN/"trends/telegram-image-deliveries.json").read_text(encoding="utf-8"))
-          sent_ids={str(x.get("event_id") or "") for x in deliveries.get("items",[]) if str(x.get("status") or "").lower()=="sent" and x.get("telegram_message_id")}
           try:
               copy_state=json.loads((MAIN/"trends/explained-copy-state.json").read_text(encoding="utf-8"))
           except Exception:
@@ -245,8 +235,7 @@ jobs:
               at=parse_dt(row.get("explained_at"))
               if not at or at.timestamp() < CUTOFF or (now-at).total_seconds()>86400:
                   continue
-              if row_id not in sent_ids:
-                  continue
+              # TTActualidad: editorial "explained" is sufficient; no Telegram delivery required.
               leaders.append(row)
 
           queued=[]
@@ -341,7 +330,7 @@ jobs:
                       "exact_input":"Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
                       "visual":"Ilustración sobria sin humor" if sensitive else "Una sola idea visual fuerte con humor editorial.",
                       "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot.",
-                      "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+                      "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
                   },
                   "message":"Reintento manual de imagen IA desde Telegram." if force_retry else "Reparación automática de imagen IA para tendencia Explicada."
               }
