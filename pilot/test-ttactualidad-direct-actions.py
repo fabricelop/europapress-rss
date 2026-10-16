@@ -19,6 +19,15 @@ class ActionTests(unittest.TestCase):
         self.original = mod.ROOT
         mod.ROOT = self.root
         self.addCleanup(lambda: setattr(mod, "ROOT", self.original))
+        for file, default in {
+            "ttittulares/prepared.json": {"items": [], "count": 0},
+            "ttittulares/editorial-queue.json": {"items": [], "count": 0},
+            "ttittulares/decisions.json": {"items": []},
+            "trends/telegram-image-deliveries.json": {"items": []},
+            "trends/editorial-queue.json": {"items": [], "count": 0},
+            "trends/mobile-decisions.json": {"items": []},
+        }.items():
+            self.write(file, default)
 
     def write(self, name, doc):
         p = self.root / name
@@ -38,7 +47,7 @@ class ActionTests(unittest.TestCase):
         self.write("ttittulares/prepared.json", {"items": [{"event_id": "abc123", "revision": 3}]})
         with self.assertRaises(mod.InvalidAction):
             mod.apply("ttittulares", "abc123", "published", 2)
-        self.assertFalse((self.root / "ttittulares/decisions.json").exists())
+        self.assertEqual(mod.load("ttittulares/decisions.json", {})["items"], [])
 
     def test_tt_discard_in_progress(self):
         self.write("ttittulares/editorial-queue.json", {
@@ -92,7 +101,47 @@ class ActionTests(unittest.TestCase):
                 "request_id": request_id, "revision": 1}
         with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
             mod.main()
-        self.assertFalse((self.root / "ttittulares/prepared.json").exists())
+        self.assertEqual(mod.load("ttittulares/prepared.json", {})["items"], [])
+
+    def test_live_rejects_discard_and_published(self):
+        for decision in ("discard", "published", "prepare"):
+            data = {"project": "ttittulares", "event_id": "abcdef123456",
+                    "decision": decision, "request_id": "12345678-1111-1111-1111-123456789012",
+                    "revision": 1}
+            with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
+                with self.assertRaises(mod.InvalidAction):
+                    mod.main()
+
+    def test_live_rejects_missing_revision(self):
+        data = {"project": "ttittulares", "event_id": "abcdef123456",
+                "decision": "deleted", "request_id": "12345678-1111-1111-1111-123456789012"}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
+            with self.assertRaises(mod.InvalidAction):
+                mod.main()
+
+    def test_missing_authoritative_doc_fails_closed(self):
+        (self.root / "ttittulares/prepared.json").unlink()
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttittulares", "abc123", "deleted", 1)
+
+    def test_tr_ready_deleted(self):
+        self.write("trends/telegram-image-deliveries.json", {"items": [
+            {"event_id": "tr123", "revision": 4, "status": "sent"},
+            {"event_id": "tr123", "revision": 2, "status": "deleted"}]})
+        changed, status = mod.apply("ttendencias", "tr123", "deleted", 4)
+        self.assertEqual(status, "applied")
+        self.assertEqual(changed["trends/telegram-image-deliveries.json"]["items"][0]["status"], "deleted")
+        self.assertEqual(changed["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
+
+    def test_live_tt_ready_delete_and_replay(self):
+        self.write("ttittulares/prepared.json", {"items": [{"event_id": "abc123", "revision": 2}], "count": 1})
+        data = {"project": "ttittulares", "event_id": "abc123", "decision": "deleted",
+                "request_id": "12345678-1111-1111-1111-123456789012", "revision": 2}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(data)}):
+            mod.main()
+            mod.main()
+        self.assertEqual(mod.load("ttittulares/prepared.json", {})["count"], 0)
+        self.assertEqual(len(mod.load(mod.LEDGER, {"items":[]})["items"]), 1)
 
 
 if __name__ == "__main__":
