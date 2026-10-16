@@ -1,4 +1,4 @@
-name: TTActualidad - quitar de Listas sin Telegram
+name: TTActualidad - decisiones editoriales reales sin Telegram
 on:
   repository_dispatch:
     types: [ttactualidad_action_v1]
@@ -17,7 +17,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
-      - name: Apply only validated delete, retry on competing editorial commits
+      - name: Aplicar eliminacion, desestimar o preparar con revision
         env:
           TT_ACTUALIDAD_EVENT_JSON: ${{ toJSON(github.event.client_payload) }}
         shell: bash
@@ -30,12 +30,12 @@ jobs:
             git fetch --depth=1 origin main
             git reset --hard origin/main
             python3 pilot/apply-ttactualidad-action.py
-            git add -- ttittulares/prepared.json ttittulares/decisions.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/requests.json pilot/ttactualidad-action-receipts.json
+            git add -- ttittulares/prepared.json ttittulares/decisions.json ttittulares/editorial-queue.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/requests.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then
               echo "Already processed; no changes to push."
               exit 0
             fi
-            git commit -m "TTActualidad: quitar elemento de Listas"
+            git commit -m "TTActualidad: aplicar decision editorial"
             if git push origin HEAD:main; then
               echo "Authoritative GitHub state updated."
               exit 0
