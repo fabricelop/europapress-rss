@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Direct TTActualidad state changes, no Telegram. STAGED, not enabled on main.
-Requires a verified repository_dispatch event, and fails closed on stale IDs.
+"""Direct TTActualidad action, without Telegram callbacks or PC listeners.
+A GitHub repository_dispatch event is authenticated by GitHub before the workflow.
+It is deliberately restricted to removing a currently ready item from Listas.
 """
 from __future__ import annotations
 import json
@@ -22,6 +23,8 @@ class InvalidAction(Exception):
 
 def load(relative: str, default):
     p = ROOT / relative
+    if relative != LEDGER and not p.is_file():
+        fail("Falta el estado editorial obligatorio: " + relative)
     if not p.exists():
         return json.loads(json.dumps(default))
     return json.loads(p.read_text(encoding="utf-8"))
@@ -147,12 +150,12 @@ def main():
     revision = cmd.get("revision")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision not in {"discard", "deleted", "published", "prepare"}:
-        fail("Decision no permitida")
+    if decision != "deleted":
+        fail("Solo se admite Quitar de Listas. No modificar la elaboracion")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
-    if revision is not None and (type(revision) is not int or revision < 0):
-        fail("Revision invalida")
+    if type(revision) is not int or revision < 0:
+        fail("Revision obligatoria, entera y no negativa")
     history = load(LEDGER, {"version": 1, "items": []})
     previous = find(history["items"], "request_id", request_id)
     if previous:
@@ -161,7 +164,8 @@ def main():
     changes, status = apply(project, event_id, decision, revision)
     stamp = datetime.now(timezone.utc).isoformat()
     history["items"].append({"request_id": request_id, "project": project,
-                             "event_id": event_id, "decision": decision, "status": status, "at": stamp})
+                             "event_id": event_id, "revision": revision,
+                             "decision": decision, "status": status, "at": stamp})
     history["items"] = history["items"][-2000:]
     for location, document in changes.items():
         save(location, document)
