@@ -493,7 +493,7 @@ async function checkPendingDeletes(){
  for(const project of projects){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions']]
-   :[['trends/telegram-image-deliveries.json','deliveries'],['trends/mobile-decisions.json','mobileDecisions']];
+   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions']];
   let documents;
   try{
    documents=await Promise.all(targets.map(async([path])=>{
@@ -510,7 +510,7 @@ async function checkPendingDeletes(){
     ? !(documents[0].items||[]).some(x=>String(x.event_id)===id)
        &&(documents[1].items||[]).some(x=>String(x.event_id)===id&&x.status==='deleted')
     : (documents[1].items||[]).some(x=>String(x.id||x.event_id)===id&&x.status==='deleted')
-       &&(documents[0].items||[]).some(x=>String(x.event_id)===id&&x.status==='deleted');
+       &&(documents[0].items||[]).some(x=>String(x.id||x.event_id)===id&&x.status==='deleted');
    if(confirmed){
     op.status='confirmed';changed=true;
    }else if(Date.now()-op.at>4*60000){
