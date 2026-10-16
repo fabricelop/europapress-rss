@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-16T07:14:00Z",
+  "updated_at": "2026-10-16T07:14:15.119Z",
   "items": [
     {
       "event_id": "2c6dd4606522",
@@ -222,7 +222,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
@@ -253,7 +253,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Vicente Vallés sobre las fragatas marroquíes en aguas de Ceuta"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-16T07:14:15.119Z",
+      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
     },
     {
       "event_id": "63ffb38594f8",
