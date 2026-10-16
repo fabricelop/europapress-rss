@@ -135,9 +135,10 @@ jobs:
           CUTOFF=datetime.fromisoformat("2026-10-14T06:20:00+00:00").timestamp()
           ACTIVE={"REQUESTED","RUNNING","PERSISTING","GENERATING"}
 
+          NO_PEPPER="REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. "
           STYLE_BASE=("PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, "
                       "uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. "
-                      "El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ")
+                      "El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. "+NO_PEPPER)
           STYLE_BANK=[
               ("tinta_acuarela","Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero."),
               ("comic_europeo","Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada."),
@@ -283,6 +284,7 @@ jobs:
               sensitive=any(x in (str(row.get("name") or "")+" "+str(row.get("explanation") or "")).casefold() for x in sensitive_words)
               if sensitive:
                   style_index,style_name,style=(-1,"rigor_y_respeto","Imagen editorial periodística sobria y rigurosa, sin humor ni caricaturas, sin banalizar sufrimiento, sin escenas gráficas o hechos inventados.")
+              style=style+" "+NO_PEPPER
               explanation=str(row.get("explanation") or "")
               closer=str(row.get("closer_text") or "")
               context={
@@ -329,7 +331,7 @@ jobs:
                       "scope":"Una sola tendencia y una sola imagen.",
                       "exact_input":"Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
                       "visual":"Ilustración sobria sin humor" if sensitive else "Una sola idea visual fuerte con humor editorial.",
-                      "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot.",
+                      "prohibitions":"No infografía, interfaz, diagrama, collage ni screenshot. "+NO_PEPPER,
                       "lifecycle":"Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
                   },
                   "message":"Reintento manual de imagen IA desde Telegram." if force_retry else "Reparación automática de imagen IA para tendencia Explicada."
