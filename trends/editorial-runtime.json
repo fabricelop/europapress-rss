@@ -4,16 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T01:15:00+02:00",
-  "last_completed_at": "2026-10-17T01:19:30+02:00",
-  "updated_at": "2026-10-17T01:19:30+02:00",
+  "last_started_at": "2026-10-17T01:45:00+02:00",
+  "last_completed_at": "2026-10-17T01:49:00+02:00",
+  "updated_at": "2026-10-17T01:49:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "f273c1b56f63",
-    "5327ef703129",
-    "80bdd4d8965a",
-    "7893603ba39b"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -21,28 +16,28 @@
     "aaba41f2ac1f"
   ],
   "visual_repair": {
-    "run_id": 38978049752,
+    "run_id": 38983147714,
     "status": "in_progress",
     "workflow": "repair-ttendencias-explicadas.yml",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261017T0115+0200",
+    "run_id": "tr-chat-20261017T0145+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-17T01:15:00+02:00",
-    "updated_at": "2026-10-17T01:19:30+02:00",
-    "finished_at": "2026-10-17T01:19:30+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-17T01:45:00+02:00",
+    "updated_at": "2026-10-17T01:49:00+02:00",
+    "finished_at": "2026-10-17T01:49:00+02:00",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 1,
+      "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -50,16 +45,16 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "remates_reused": 1,
+      "remates_reused": 0,
       "telegram_orphans": 0,
       "provisional_telegram": 0,
       "pending_repair_triggered": 1,
       "trends_inactive": 0
     },
-    "message": "Pasada completada y verificada: Senado explicado; Defensor del Pueblo enlazado al grupo Gabilondo; cola editorial 0. La reparación visual continúa de forma independiente.",
+    "message": "Pasada completada y verificada: 0/0 revisiones editoriales; cola 0, sin reexplicaciones ni huérfanos Telegram. La reparación visual continúa de forma independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -69,136 +64,55 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "93021157930c",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "La Cámara Alta metió muchas siglas en una sola papeleta.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "5d36de24ff2c",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": "El recurso llegó con la urna mirando el reloj.",
-        "selected_score": null,
-        "no_remate_reason": null,
-        "selection_mode": "reused_existing_group"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-17T01:15:00+02:00",
+        "at": "2026-10-17T01:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial y saneamiento de Pendientes."
+        "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
       },
       {
-        "at": "2026-10-17T01:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": "93021157930c",
-        "title": "Senado",
-        "message": "Releyendo estado autoritativo de Senado; revisión 0 sigue activa en TT#1."
-      },
-      {
-        "at": "2026-10-17T01:16:20+02:00",
-        "phase": "investigating",
-        "trend_id": "93021157930c",
-        "title": "Senado",
-        "message": "Contrastando el pacto PSOE–Frente Amplio para la candidatura Senado de Progreso."
-      },
-      {
-        "at": "2026-10-17T01:16:40+02:00",
-        "phase": "drafting",
-        "trend_id": "93021157930c",
-        "title": "Senado",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-17T01:16:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "93021157930c",
-        "title": "Senado",
-        "message": "Evaluando cinco remates políticos neutrales; seleccionado el más específico y no repetitivo."
-      },
-      {
-        "at": "2026-10-17T01:17:00+02:00",
-        "phase": "persisting",
-        "trend_id": "93021157930c",
-        "title": "Senado",
-        "message": "Guardando ficha Explicada de Senado y sincronizando su request."
-      },
-      {
-        "at": "2026-10-17T01:17:20+02:00",
-        "phase": "verifying",
-        "trend_id": "5d36de24ff2c",
-        "title": "Defensor del Pueblo",
-        "message": "Releyendo estado autoritativo; revisión 0 sigue activa y coincide con el episodio ya explicado como Gabilondo."
-      },
-      {
-        "at": "2026-10-17T01:17:35+02:00",
-        "phase": "investigating",
-        "trend_id": "5d36de24ff2c",
-        "title": "Defensor del Pueblo",
-        "message": "Contrastando que el detonante es el mismo recurso de amparo al Constitucional y la petición de cautelarísimas."
-      },
-      {
-        "at": "2026-10-17T01:17:45+02:00",
-        "phase": "drafting",
-        "trend_id": "5d36de24ff2c",
-        "title": "Defensor del Pueblo",
-        "message": "Sin tarjeta nueva: reutilizando la explicación vigente del grupo Gabilondo para evitar duplicidad."
-      },
-      {
-        "at": "2026-10-17T01:17:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "5d36de24ff2c",
-        "title": "Defensor del Pueblo",
-        "message": "Conservando el remate ya verificado del mismo episodio; no se genera una variante duplicada."
-      },
-      {
-        "at": "2026-10-17T01:18:00+02:00",
-        "phase": "persisting",
-        "trend_id": "5d36de24ff2c",
-        "title": "Defensor del Pueblo",
-        "message": "Vinculando la revisión al grupo existente de Gabilondo y retirando ambas revisiones de la cola."
-      },
-      {
-        "at": "2026-10-17T01:18:45+02:00",
+        "at": "2026-10-17T01:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y verificando id+revision, textos persistidos y cola editorial."
+        "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-17T01:19:10+02:00",
+        "at": "2026-10-17T01:47:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación completada: cola 0, Senado consistente y Defensor del Pueblo enlazado a Gabilondo; sin provisionales Telegram."
+        "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos Telegram. Reparación visual solicitada."
       },
       {
-        "at": "2026-10-17T01:19:30+02:00",
+        "at": "2026-10-17T01:48:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Reconciliando telemetría durable tras una carrera de commits en main."
+      },
+      {
+        "at": "2026-10-17T01:49:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada y verificada: 2/2 revisiones cerradas; cola editorial 0."
+        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía y saneamiento visual delegado al workflow independiente."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261017T0115+0200",
+  "run_id": "tr-chat-20261017T0145+0200",
   "summary": {
-    "trends_processed": 2,
-    "trends_explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 1,
+    "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -206,10 +120,10 @@
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
-    "remates_reused": 1,
+    "remates_reused": 0,
     "telegram_orphans": 0,
     "provisional_telegram": 0,
     "pending_repair_triggered": 1,
@@ -218,102 +132,39 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-17T01:15:00+02:00",
+      "at": "2026-10-17T01:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial y saneamiento de Pendientes."
+      "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
     },
     {
-      "at": "2026-10-17T01:16:00+02:00",
-      "phase": "verifying",
-      "trend_id": "93021157930c",
-      "title": "Senado",
-      "message": "Releyendo estado autoritativo de Senado; revisión 0 sigue activa en TT#1."
-    },
-    {
-      "at": "2026-10-17T01:16:20+02:00",
-      "phase": "investigating",
-      "trend_id": "93021157930c",
-      "title": "Senado",
-      "message": "Contrastando el pacto PSOE–Frente Amplio para la candidatura Senado de Progreso."
-    },
-    {
-      "at": "2026-10-17T01:16:40+02:00",
-      "phase": "drafting",
-      "trend_id": "93021157930c",
-      "title": "Senado",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-17T01:16:55+02:00",
-      "phase": "remate_selection",
-      "trend_id": "93021157930c",
-      "title": "Senado",
-      "message": "Evaluando cinco remates políticos neutrales; seleccionado el más específico y no repetitivo."
-    },
-    {
-      "at": "2026-10-17T01:17:00+02:00",
-      "phase": "persisting",
-      "trend_id": "93021157930c",
-      "title": "Senado",
-      "message": "Guardando ficha Explicada de Senado y sincronizando su request."
-    },
-    {
-      "at": "2026-10-17T01:17:20+02:00",
-      "phase": "verifying",
-      "trend_id": "5d36de24ff2c",
-      "title": "Defensor del Pueblo",
-      "message": "Releyendo estado autoritativo; revisión 0 sigue activa y coincide con el episodio ya explicado como Gabilondo."
-    },
-    {
-      "at": "2026-10-17T01:17:35+02:00",
-      "phase": "investigating",
-      "trend_id": "5d36de24ff2c",
-      "title": "Defensor del Pueblo",
-      "message": "Contrastando que el detonante es el mismo recurso de amparo al Constitucional y la petición de cautelarísimas."
-    },
-    {
-      "at": "2026-10-17T01:17:45+02:00",
-      "phase": "drafting",
-      "trend_id": "5d36de24ff2c",
-      "title": "Defensor del Pueblo",
-      "message": "Sin tarjeta nueva: reutilizando la explicación vigente del grupo Gabilondo para evitar duplicidad."
-    },
-    {
-      "at": "2026-10-17T01:17:55+02:00",
-      "phase": "remate_selection",
-      "trend_id": "5d36de24ff2c",
-      "title": "Defensor del Pueblo",
-      "message": "Conservando el remate ya verificado del mismo episodio; no se genera una variante duplicada."
-    },
-    {
-      "at": "2026-10-17T01:18:00+02:00",
-      "phase": "persisting",
-      "trend_id": "5d36de24ff2c",
-      "title": "Defensor del Pueblo",
-      "message": "Vinculando la revisión al grupo existente de Gabilondo y retirando ambas revisiones de la cola."
-    },
-    {
-      "at": "2026-10-17T01:18:45+02:00",
+      "at": "2026-10-17T01:46:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y verificando id+revision, textos persistidos y cola editorial."
+      "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-17T01:19:10+02:00",
+      "at": "2026-10-17T01:47:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación completada: cola 0, Senado consistente y Defensor del Pueblo enlazado a Gabilondo; sin provisionales Telegram."
+      "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos Telegram. Reparación visual solicitada."
     },
     {
-      "at": "2026-10-17T01:19:30+02:00",
+      "at": "2026-10-17T01:48:00+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Reconciliando telemetría durable tras una carrera de commits en main."
+    },
+    {
+      "at": "2026-10-17T01:49:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada y verificada: 2/2 revisiones cerradas; cola editorial 0."
+      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía y saneamiento visual delegado al workflow independiente."
     }
   ],
   "telegram_orphans": 0,
