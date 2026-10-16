@@ -10459,7 +10459,7 @@
       "id": "9f3e1ea405dd",
       "name": "Morata",
       "revision": 1,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-16T23:32:17+02:00",
       "rank": 4,
       "with_image": true,
@@ -10475,32 +10475,35 @@
       ],
       "auto_queued": false,
       "anticipated_entered_top10_at": "2026-09-28T23:11:20+02:00",
-      "explanation": "«Morata» alude a Álvaro Morata, titular del Leganés ante el Castellón este lunes en Butarque tras empezar de suplente ante el Granada por molestias gastrointestinales. Vuelve al once justo cuando el estómago deja de pedir el cambio.",
-      "rank_at_explanation": 7,
-      "group_id": "grp-leganes-morata-20260928",
-      "explanation_group_id": "grp-leganes-morata-20260928",
-      "group_title": "Morata regresa al once del Leganés",
+      "explanation": "TT#4 Morata es tendencia porque fue expulsado tras menos de 20 minutos en el 0-1 del Leganés ante el Córdoba en Butarque; Eder García marcó el gol visitante.\n#Morata #Leganés #CórdobaCF\n🌶️ Morata encontró la roja antes que el primer gol con el Leganés.",
+      "rank_at_explanation": 4,
+      "group_id": "grp-morata-butarque-20261016",
+      "explanation_group_id": "grp-morata-butarque-20261016",
+      "group_title": "Morata expulsado en el Leganés–Córdoba",
       "trend_names": [
-        "Morata"
+        "Morata",
+        "Butarque"
       ],
       "trend_context": [
         {
+          "id": "9f3e1ea405dd",
           "name": "Morata",
-          "rank": 7
+          "rank": 4,
+          "revision": 1
+        },
+        {
+          "id": "522f1f4ba5fb",
+          "name": "Butarque",
+          "rank": 9,
+          "revision": 0
         }
       ],
       "news_disposition": "ignored",
-      "news_note": "El Leganés–Castellón ya fue explicado en TTendencias con Luca Zidane y Suero; sin nuevo puente duplicado.",
-      "source": "editorial_manual_run",
+      "news_note": "El Córdoba ganó 0-1 en Butarque con gol de Eder García y Morata fue expulsado tras entrar en la segunda parte.",
+      "source": "editorial_chat_direct",
       "verification_sources": [
-        {
-          "source": "Cadena SER",
-          "url": "https://cadenaser.com/comunitat-valenciana/2026/09/28/el-cdcastellon-pone-a-prueba-su-liderato-en-butarque-ante-un-leganes-que-le-considera-el-mejor-equipo-de-segunda-radio-castellon/"
-        },
-        {
-          "source": "Información CD Leganés",
-          "url": "https://noticiascdleganes.es/partido/la-liga-2/leganes-castellon/28-09-2026"
-        }
+        "https://cadenaser.com/nacional/2026/10/16/alvaro-morata-expulsado-contra-el-cordoba-tras-estar-en-el-campo-menos-de-veinte-minutos-cadena-ser/",
+        "https://www.eldiadecordoba.es/cordobacf/cordoba-cf-saca-cabeza-fango-hunde-leganes_0_2008268153.html"
       ],
       "reexplain": true,
       "captured_with": [
@@ -10514,7 +10517,29 @@
         "Principios",
         "Butarque",
         "Cacería"
-      ]
+      ],
+      "explained_at": "2026-10-16T23:49:12+02:00",
+      "closer_text": "🌶️ Morata encontró la roja antes que el primer gol con el Leganés.",
+      "category": "Deportes",
+      "editorial_engine": "chat-direct",
+      "group_leader_id": "9f3e1ea405dd",
+      "grouped_member_revisions": [
+        {
+          "id": "9f3e1ea405dd",
+          "name": "Morata",
+          "revision": 1
+        },
+        {
+          "id": "522f1f4ba5fb",
+          "name": "Butarque",
+          "revision": 0
+        }
+      ],
+      "grouped_into_existing_card": false,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "image_pending": false,
+      "rewrite_pending": false
     },
     {
       "id": "18e72201e584",
@@ -60318,7 +60343,7 @@
       "id": "522f1f4ba5fb",
       "name": "Butarque",
       "rank": 9,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-16T23:32:17+02:00",
       "revision": 0,
       "reexplain": false,
@@ -60334,9 +60359,61 @@
         "Butarque"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-16T23:49:12+02:00",
+      "explanation": "TT#4 Morata es tendencia porque fue expulsado tras menos de 20 minutos en el 0-1 del Leganés ante el Córdoba en Butarque; Eder García marcó el gol visitante.\n#Morata #Leganés #CórdobaCF\n🌶️ Morata encontró la roja antes que el primer gol con el Leganés.",
+      "closer_text": "🌶️ Morata encontró la roja antes que el primer gol con el Leganés.",
+      "rank_at_explanation": 9,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://cadenaser.com/nacional/2026/10/16/alvaro-morata-expulsado-contra-el-cordoba-tras-estar-en-el-campo-menos-de-veinte-minutos-cadena-ser/",
+        "https://www.eldiadecordoba.es/cordobacf/cordoba-cf-saca-cabeza-fango-hunde-leganes_0_2008268153.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "El Córdoba ganó 0-1 en Butarque con gol de Eder García y Morata fue expulsado tras entrar en la segunda parte.",
+      "group_id": "grp-morata-butarque-20261016",
+      "explanation_group_id": "grp-morata-butarque-20261016",
+      "group_title": "Morata expulsado en el Leganés–Córdoba",
+      "group_leader_id": "9f3e1ea405dd",
+      "trend_names": [
+        "Morata",
+        "Butarque"
+      ],
+      "trend_context": [
+        {
+          "id": "9f3e1ea405dd",
+          "name": "Morata",
+          "rank": 4,
+          "revision": 1
+        },
+        {
+          "id": "522f1f4ba5fb",
+          "name": "Butarque",
+          "rank": 9,
+          "revision": 0
+        }
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "9f3e1ea405dd",
+          "name": "Morata",
+          "revision": 1
+        },
+        {
+          "id": "522f1f4ba5fb",
+          "name": "Butarque",
+          "revision": 0
+        }
+      ],
+      "grouped_into_existing_card": true,
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "image_pending": false,
+      "rewrite_pending": false
     }
   ],
-  "updated_at": "2026-10-16T23:32:17+02:00",
-  "count": 1012
+  "updated_at": "2026-10-16T23:49:12+02:00",
+  "count": 1015
 }
