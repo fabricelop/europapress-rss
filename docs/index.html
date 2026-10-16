@@ -26,7 +26,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
 /* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
 @media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
-.pilot-swipe{touch-action:pan-y;transition:transform .2s}
+
 .actions.ready-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;align-items:stretch}
 .actions.ready-actions .action{display:flex;align-items:center;justify-content:center;text-align:center;min-height:46px;padding:10px 7px;width:100%;white-space:normal;line-height:1.2;box-sizing:border-box}
 .actions.ready-actions .action.external{background:#205a77;border-color:#4995b6;color:#eefbff;font-weight:750}
@@ -42,7 +42,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Cómo funciona este piloto?</summary><p>Las noticias siguen elaborándose con sus sistemas actuales. Las acciones del iPhone van directamente al Worker de prueba, sin Telegram. Mientras la integración GitHub no esté activada, las órdenes se registran solo como simulación y no modifican noticias reales.</p></details>
-<div class="pilot-settings"><strong>TTActualidad · Gestión directa</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Vincular iPhone</button> <span id="pilot-status">Comprobando sesión…</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>TTActualidad · Gestión directa</strong><p>Listas: cuatro filas de dos botones. Publicar, copiar y quitar exclusivamente mediante botones. En elaboración puedes desestimar. TTImages abre directamente su chat.</p><button type="button" id="pilot-config">Vincular iPhone</button> <span id="pilot-status">Comprobando sesión…</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -510,27 +510,6 @@ async function pilotSend(item,decision){
   else showToast('No registrada: '+String(e.message||e).slice(0,80));
  }
 }
-function pilotSwipes(card,item){
- const ready=item._status==='LISTA'||item._status==='EXPLICADA';
- const working=item._status==='EN ELABORACIÓN'||item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
- if(!ready&&!working)return;
- card.classList.add('pilot-swipe');let down=null;
- card.addEventListener('touchstart',e=>{if(e.touches.length===1&&!e.target.closest('a,button,input,textarea'))down={x:e.touches[0].clientX,y:e.touches[0].clientY}},{passive:true});
- card.addEventListener('touchend',e=>{
-  if(!down||e.changedTouches.length!==1)return;
-  const dx=e.changedTouches[0].clientX-down.x,dy=e.changedTouches[0].clientY-down.y;down=null;
-  if(Math.abs(dx)<100||Math.abs(dx)<Math.abs(dy)*1.6)return;
-  card.style.transform='translateX('+(dx<0?-35:35)+'px)';
-  setTimeout(()=>card.style.transform='',220);
-  if(ready){
-   if(dx>0){pilotSend(item,'deleted');return}
-   const text=itemData(item).editorial;
-   if(!text){showToast('No hay texto cerrado para publicar');return}
-   location.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);
-  }else if(dx<0){pilotSend(item,'discard')}
- },{passive:true});
-}
-
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
@@ -549,7 +528,6 @@ function rowCard(x,i){
   if(['prepare','deleted','discard','published'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
- pilotSwipes(out,x);
  if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||x._status==='EXPLICADA')){
   // Exactly four rows, two buttons each; no Telegram command callbacks.
   a.classList.add('ready-actions');
