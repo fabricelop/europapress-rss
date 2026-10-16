@@ -1,6 +1,6 @@
 #requires -Version 5.1
 # TTActualidad V8 LIVE: actualiza solo los archivos del Worker existente.
-# Conserva secrets, cookie 30 días, KV y URL. No toca tareas Windows ni otras apps.
+# Conserva secrets, cookie 30 dias, KV y URL. No toca tareas Windows ni otras apps.
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 $root = Join-Path $env:LOCALAPPDATA 'TT_Recuperacion\TTActualidadPilot'
@@ -26,7 +26,7 @@ $health = Invoke-RestMethod -Uri ($url+'health?t='+[guid]::NewGuid().ToString('N
 if(!$health.ok -or $health.production_connected -ne $true -or
  $health.session_auth -cne 'signed_cookie_v1' -or
  @('isolated-ttactualidad-pilot','ttactualidad-direct-live') -cnotcontains [string]$health.kind){
- throw 'No se confirma la conexión REAL y la sesión segura actual. Sin cambios.'
+ throw 'No se confirma la conexion REAL y la sesion segura actual. Sin cambios.'
 }
 $temp = Join-Path $root 'update-v8'
 New-Item -ItemType Directory -Path $temp -Force | Out-Null
@@ -36,12 +36,12 @@ Invoke-WebRequest -UseBasicParsing -Uri ($base+'index.html?pin='+$pin) -OutFile 
 Invoke-WebRequest -UseBasicParsing -Uri ($base+'worker.js?pin='+$pin) -OutFile $newWorker -TimeoutSec 60
 $html = [IO.File]::ReadAllText($newUi,[Text.Encoding]::UTF8)
 $js = [IO.File]::ReadAllText($newWorker,[Text.Encoding]::UTF8)
-foreach($required in @('Pasar a En Elaboración','current-explained>48*3600000',
+foreach($required in @('Pasar a En Elaboraci','current-explained>48*3600000',
  'https://t.me/TTImages_bot','function hideOptimistically','async function checkPendingDeletes',
  'function confirmedAction','grid-template-columns:repeat(2,minmax(0,1fr))')){
  if(!$html.Contains($required)){throw ('No coincide interfaz V8: '+$required)}
 }
-if($html.Contains('¿Cómo funciona este piloto?') -or $html.Contains('Desestimación registrada en pruebas') -or
+if($html.Contains('funciona este piloto?') -or $html.Contains('registrada en pruebas') -or
  $html.Contains('function pilotSwipes(')){throw 'UI contiene un comportamiento antiguo. No se despliega.'}
 foreach($required in @("route==='/api/session'",'signed_cookie_v1',"['deleted','discard','prepare'].includes",
  'crypto.subtle.verify','ttactualidad-direct-live')){
@@ -74,7 +74,7 @@ try{
 if($code -ne 0){
  Copy-Item -LiteralPath $backupUi -Destination $site -Force
  Copy-Item -LiteralPath $backupWorker -Destination $worker -Force
- throw ('Wrangler falló ('+$code+'). Archivos locales restaurados.')
+ throw ('Wrangler fallo ('+$code+'). Archivos locales restaurados.')
 }
 $ok=$false
 for($i=0;$i -lt 10;$i++){
@@ -83,13 +83,13 @@ for($i=0;$i -lt 10;$i++){
   $page=Invoke-WebRequest -UseBasicParsing -Uri ($url+'?v8='+[guid]::NewGuid().ToString('N')) -TimeoutSec 20
   if($h.ok -and $h.kind -ceq 'ttactualidad-direct-live' -and $h.production_connected -eq $true -and
    $h.session_auth -ceq 'signed_cookie_v1' -and $page.StatusCode -eq 200 -and
-   $page.Content.Contains('Pasar a En Elaboración') -and
+   $page.Content.Contains('Pasar a En Elaboraci') -and
    $page.Content.Contains('current-explained>48*3600000')){$ok=$true;break}
  }catch{}
  if($i -lt 9){Start-Sleep -Seconds 3}
 }
-if(!$ok){throw 'Worker desplegado, pero verificación V8 remota incompleta; no se declara éxito. Revisa Cloudflare.'}
-Write-Host 'V8 en producción: Listas recientes, Desestimar real, Revisar a Elaboración y confirmación GitHub.' -ForegroundColor Green
+if(!$ok){throw 'Worker desplegado, pero verificacion V8 remota incompleta; no se declara exito. Revisa Cloudflare.'}
+Write-Host 'V8 en produccion: Listas recientes, Desestimar real, Revisar a Elaboracion y confirmacion GitHub.' -ForegroundColor Green
 Write-Host ('URL intacta: '+$url)
-Write-Host 'Conservados: secrets, sesión iPhone, TTImages, SeLoRecordamos, Tremending y Chrome.'
+Write-Host 'Conservados: secrets, sesion iPhone, TTImages, SeLoRecordamos, Tremending y Chrome.'
 Write-Host ('Respaldo: '+$backupUi)
