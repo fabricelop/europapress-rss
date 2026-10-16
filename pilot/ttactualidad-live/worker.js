@@ -78,7 +78,7 @@ export default {
   const url=new URL(req.url),route=url.pathname;
   if(req.method==='OPTIONS')return new Response('',{status:204,headers:cors(req)});
   if(route==='/health'&&req.method==='GET')
-   return respond(req,{ok:true,kind:'ttactualidad-direct-live',
+   return respond(req,{ok:true,kind:'ttactualidad-direct-live',version:'v8.1-kv-conflict-fix',
     production_connected:env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN),
     architecture:'on_demand_no_polling',session_auth:'signed_cookie_v1'});
   if(req.method==='GET'&&!route.startsWith('/api/')&&env.ASSETS)
