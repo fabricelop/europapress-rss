@@ -1,129 +1,15 @@
-name: TTiTTulares Telegram nativo (migración segura)
+name: "TTiTTulares Telegram nativo — desactivado por TTActualidad"
+# Desactivado 16-10-2026 a petición del usuario.
+# Las decisiones de TTActualidad se gestionan directamente en GitHub sin Telegram.
+# No elimina la elaboración editorial, ni toca SeLoRecordamos o TTImages.
+# Restaurar archivo desde historial GitHub si se necesita volver atrás.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *"
-  push:
-    branches: [main]
-    paths:
-      - "telegram/ttittulares_native_receiver.py"
-      - "telegram/ttittulares-transport.json"
-      - ".github/workflows/ttittulares-native-telegram.yml"
-
 permissions:
-  contents: write
-  actions: write
-
-concurrency:
-  group: ttittulares-telegram-native
-  cancel-in-progress: true
-
+  contents: read
 jobs:
-  check-and-listen:
+  disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 29
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /telegram/ttittulares_native_receiver.py
-            /telegram/tt-technical-receipts.json
-            /shared/telegram_pinned_index.py
-            /telegram/ttittulares-transport.json
-            /telegram/ttittulares-native-offset.json
-            /telegram/ttittulares-callback-inbox.json
-            /telegram/ttittulares-user-proposals.json
-            /telegram/ttittulares-deliveries.json
-            /telegram/tt-mobile-command-queue.json
-      - name: Verificar el receptor sin tocar Telegram
-        run: |
-          set -euo pipefail
-          python3 -m py_compile telegram/ttittulares_native_receiver.py
-          python3 telegram/ttittulares_native_receiver.py selftest
-      - name: Comprobar migración sin cortar funciones existentes
-        id: gate
-        run: |
-          python3 - <<'PY'
-          import json,os
-          doc=json.load(open('telegram/ttittulares-transport.json',encoding='utf8'))
-          active=(doc.get('mode')=='native' and doc.get('native_ready') is True
-                  and doc.get('native_commands_ready') is True
-                  and doc.get('native_chat_ready') is True)
-          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf8') as out:
-              out.write('active='+str(active).lower()+'\n')
-          print('TTI_NATIVE_LISTENER_READY' if active else 'TTI_NATIVE_STAGED_WEBHOOK_UNTOUCHED')
-          PY
-      - name: Confirmar desde GitHub acceso autenticado a preguntas
-        if: steps.gate.outputs.active == 'true'
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: |
-          python3 - <<'PY'
-          import os,urllib.request,urllib.error,json
-          token=os.environ['TELEGRAM_BOT_TOKEN'].strip()
-          assert token,'Bot credential unavailable'
-          req=urllib.request.Request(
-            'https://tt-control.fabricelop.workers.dev/api/telegram-native-question',
-            method='POST',data=b'{}',headers={
-              'Content-Type':'application/json',
-              'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-              'Authorization':'Bearer '+token})
-          try:
-              with urllib.request.urlopen(req,timeout=25) as r:
-                  code=r.status
-          except urllib.error.HTTPError as e:
-              code=e.code
-              body=e.read(3000)
-              if code==422:
-                  payload=json.loads(body)
-                  assert payload.get('error')=='question_not_handled',payload
-          assert code==422,'Private Q&A is not reachable, webhook must be preserved'
-          print('TTITTULARES_QA_RELAY_VERIFIED_NO_INFERENCE')
-          PY
-
-      - name: Conmutar de webhook a getUpdates sin descartar mensajes
-        if: steps.gate.outputs.active == 'true'
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: |
-          python3 - <<'PY'
-          import json,os,urllib.request
-          token=os.environ['TELEGRAM_BOT_TOKEN'].strip()
-          assert token,'Telegram token missing'
-          def api(method,data):
-              request=urllib.request.Request(
-                'https://api.telegram.org/bot'+token+'/'+method,
-                data=json.dumps(data).encode(),
-                headers={'Content-Type':'application/json'})
-              with urllib.request.urlopen(request,timeout=25) as response:
-                  result=json.load(response)
-              if not result.get('ok'):raise RuntimeError('Telegram '+method+' failed')
-              return result.get('result')
-          current=api('getWebhookInfo',{})
-          url=str(current.get('url') or '')
-          expected='https://tt-control.fabricelop.workers.dev/api/telegram-webhook'
-          if url and url!=expected:raise SystemExit('Unrecognized webhook; cutover refused')
-          if url:api('deleteWebhook',{'drop_pending_updates':False})
-          final=api('getWebhookInfo',{})
-          if final.get('url'):raise SystemExit('Cannot safely start getUpdates')
-          print('TTI_TELEGRAM_NATIVE_CUTOVER_OK webhook_deleted='+str(bool(url)))
-          PY
-
-      - name: Escuchar Telegram solo tras migración y sin webhook
-        if: steps.gate.outputs.active == 'true'
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          GH_TOKEN: ${{ github.token }}
-        run: python3 telegram/ttittulares_native_receiver.py listen
-
-      - name: Reiniciar único listener nativo al completar su ventana
-        if: ${{ !cancelled() && steps.gate.outputs.active == 'true' }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          sleep 2
-          gh workflow run ttittulares-native-telegram.yml -R "$GITHUB_REPOSITORY" --ref main
+      - name: Telegram TT sustituido por TTActualidad
+        run: echo "Workflow antiguo sin operaciones; conservado solo para diagnostico manual"
