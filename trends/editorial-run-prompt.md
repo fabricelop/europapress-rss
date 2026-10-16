@@ -323,6 +323,9 @@ Después de persistir `explained`, `.github/workflows/repair-ttendencias-explica
 
 ### Contrato visual del job dedicado
 
+**NORMA VISUAL PRIORITARIA 16/10/2026 — GUINDILLA SOLO EN TEXTO:** `🌶️` marca únicamente el remate escrito (`closer_text` y explicación), nunca el contenido gráfico. **Ninguna imagen de TTendencias debe incluir guindillas, chiles, pimientos picantes, el emoji, sus siluetas, iconos, logos, mascotas, firmas ni decoraciones equivalentes.** El gag representa el significado del remate, NO su marcador. Rige para el bridge local, jobs automáticos, pedidos manuales, regeneraciones e ilustraciones serias. Se preserva exactamente el remate textual con `🌶️`; si la imagen contiene una guindilla, se descarta y se regenera sin reabrir la explicación.
+
+
 Para cada job automático o manual:
 - genera UNA sola imagen para ese `target_id + revision`;
 - usa exclusivamente el `context_snapshot` del job;
