@@ -671,7 +671,8 @@ function rowCard(x,i){
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   if(showControls){command('Quitar de Listas','deleted')}
   else if(x._kind==='tti'&&x._status==='PROBLEMÁTICA'){command('Pasar a En Elaboración','prepare');command('Desestimar','discard')}
-  else if(x._kind==='tti'&&['CRECIENDO','EN ELABORACIÓN'].includes(x._status)){command('Desestimar','discard')}
+  else if(x._kind==='tti'&&x._status==='CRECIENDO'){command('Pasar a En Elaboración','prepare');command('Desestimar','discard')}
+  else if(x._kind==='tti'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard')}
   else if(x._kind==='tr'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard')}
   else if(x._kind==='tr'){command('Quitar de Listas','deleted')}
  }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
