@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T07:45:00+02:00",
-  "last_completed_at": "2026-10-16T07:50:00+02:00",
-  "updated_at": "2026-10-16T07:50:00+02:00",
+  "last_started_at": "2026-10-16T08:15:00+02:00",
+  "last_completed_at": "2026-10-16T08:19:30+02:00",
+  "updated_at": "2026-10-16T08:19:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,30 +16,30 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "requested",
+    "status": "running",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261016T0715+0200",
-    "requested_at": "2026-10-16T07:15:00+02:00",
+    "run_id": "tr-chat-20261016T0815+0200",
+    "requested_at": "2026-10-16T08:15:00+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_id": null,
+    "workflow_run_id": 38860403358,
     "workflow_conclusion": null,
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T0745+0200",
+    "run_id": "tr-chat-20261016T0815+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T07:45:00+02:00",
-    "updated_at": "2026-10-16T07:50:00+02:00",
-    "finished_at": "2026-10-16T07:50:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-16T08:15:00+02:00",
+    "updated_at": "2026-10-16T08:19:30+02:00",
+    "finished_at": "2026-10-16T08:19:30+02:00",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -52,17 +52,17 @@
       "pending_repair_triggered": 1,
       "visual_repair_workflow_started": 1,
       "visual_repair_workflow_verified": 0,
-      "telegram_delivery_triggered": 1,
-      "telegram_delivery_workflow_verified": 1,
+      "telegram_delivery_triggered": 0,
+      "telegram_delivery_workflow_verified": 0,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
       "provisional_telegram": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_reviewed": 1
+      "pending_cards_reviewed": 21
     },
-    "message": "Pasada 1/1 cerrada: Tesla Roadster explicada y verificada; cola final 0, Telegram final y 0 huérfanos. Reparación visual separada en ejecución.",
+    "message": "Pasada 0/0 cerrada: no había trabajo editorial nuevo; Endrick sigue cubierto (<48 h), cola final 0 y Telegram sin huérfanos. Saneamiento visual separado iniciado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,156 +72,53 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "0c919bb6d887",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.2,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c2",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c3",
-            "total": 8.1,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c4",
-            "total": 8.9,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c5",
-            "total": 7.9,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          }
-        ],
-        "selected_candidate": "c4",
-        "selected_score": 8.9,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T07:45:00+02:00",
+        "at": "2026-10-16T08:15:00+02:00",
         "phase": "preparing",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Iniciando pasada editorial: 1 tendencia activa; preparando verificación JIT y auditoría Telegram."
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial: cola 0; Endrick reaparece en Top 10 pero su explicación del 14/10 sigue dentro de 48 h."
       },
       {
-        "at": "2026-10-16T07:46:00+02:00",
+        "at": "2026-10-16T08:16:20+02:00",
         "phase": "verifying",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Releyendo estado autoritativo de Tesla Roadster."
+        "trend_id": null,
+        "title": null,
+        "message": "Reconciliando recent, requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-16T07:46:30+02:00",
-        "phase": "investigating",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Buscando detonante actual."
+        "at": "2026-10-16T08:17:10+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes: 21 Explicadas de menos de 24 h, todas con decisión terminal/borrado; 0 Pendientes vigentes."
       },
       {
-        "at": "2026-10-16T07:47:10+02:00",
-        "phase": "investigating",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Contrastando Reuters y EFE sobre la presentación del nuevo Roadster."
-      },
-      {
-        "at": "2026-10-16T07:47:50+02:00",
-        "phase": "investigating",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Hecho esencial verificado: maniobras aéreas con propulsores de tecnología SpaceX y producción prevista para 2028."
-      },
-      {
-        "at": "2026-10-16T07:48:15+02:00",
-        "phase": "drafting",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Redactando explicación factual con hashtags específicos."
-      },
-      {
-        "at": "2026-10-16T07:48:40+02:00",
-        "phase": "drafting",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Comprobando límite de X: texto final dentro del máximo."
-      },
-      {
-        "at": "2026-10-16T07:49:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Evaluando cinco candidatos de remate con el snapshot de ratings."
-      },
-      {
-        "at": "2026-10-16T07:49:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Remate seleccionado por especificidad, golpe y originalidad."
-      },
-      {
-        "at": "2026-10-16T07:49:30+02:00",
+        "at": "2026-10-16T08:17:48+02:00",
         "phase": "persisting",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola mediante el outbox directo."
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual solicitado mediante pending-repair-trigger; workflow 38860403358 arrancado."
       },
       {
-        "at": "2026-10-16T07:49:45+02:00",
+        "at": "2026-10-16T08:18:30+02:00",
         "phase": "verifying",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Releyendo main y verificando id+revision, texto persistido y cola final."
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría Telegram: 0 huérfanos, 0 entregas provisionales y cola editorial 0."
       },
       {
-        "at": "2026-10-16T07:50:00+02:00",
+        "at": "2026-10-16T08:19:30+02:00",
         "phase": "closing",
-        "trend_id": "0c919bb6d887",
-        "title": "Tesla Roadster",
-        "message": "Pasada 1/1 cerrada y verificada; Telegram final sin huérfanos. La reparación visual continúa en su workflow independiente."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 0/0 cerrada y verificada; el saneamiento visual sigue en su workflow independiente."
       }
     ]
   },
-  "run_id": "tr-chat-20261016T0715+0200",
+  "run_id": "tr-chat-20261016T0815+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -231,13 +128,13 @@
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
     "trends_dismissed": 0,
-    "incidents": 1,
+    "incidents": 0,
     "queue_remaining": 0,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
     "pending_repair_triggered": 1,
-    "visual_repair_workflow_started": 0,
+    "visual_repair_workflow_started": 1,
     "visual_repair_workflow_verified": 0,
     "telegram_delivery_triggered": 0,
     "telegram_delivery_workflow_verified": 0,
@@ -252,62 +149,49 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T07:15:00+02:00",
+      "at": "2026-10-16T08:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial: cola principal 0; revisando excepciones, Pendientes recientes y Telegram."
+      "message": "Iniciando pasada editorial: cola 0; Endrick reaparece en Top 10 pero su explicación del 14/10 sigue dentro de 48 h."
     },
     {
-      "at": "2026-10-16T07:16:00+02:00",
+      "at": "2026-10-16T08:16:20+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo editorial-queue y requests: 0 preparing/update y 0 problematic."
+      "message": "Reconciliando recent, requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
     },
     {
-      "at": "2026-10-16T07:16:20+02:00",
+      "at": "2026-10-16T08:17:10+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando reexplicaciones: 0 rewrite_pending."
+      "message": "Revisando Pendientes: 21 Explicadas de menos de 24 h, todas con decisión terminal/borrado; 0 Pendientes vigentes."
     },
     {
-      "at": "2026-10-16T07:16:40+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Explicadas recientes: 21 tarjetas, todas eliminadas explícitamente; 0 Pendientes vigentes."
-    },
-    {
-      "at": "2026-10-16T07:17:00+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Auditoría Telegram: 0 avisos huérfanos y 0 entregas provisionales sin decisión."
-    },
-    {
-      "at": "2026-10-16T07:17:28+02:00",
+      "at": "2026-10-16T08:17:48+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
-      "message": "Saneamiento visual solicitado mediante pending-repair-trigger."
+      "message": "Saneamiento visual solicitado mediante pending-repair-trigger; workflow 38860403358 arrancado."
     },
     {
-      "at": "2026-10-16T07:18:05+02:00",
+      "at": "2026-10-16T08:18:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola 0, sin problematic ni reexplicaciones pendientes."
+      "message": "Auditoría Telegram: 0 huérfanos, 0 entregas provisionales y cola editorial 0."
     },
     {
-      "at": "2026-10-16T07:18:22+02:00",
+      "at": "2026-10-16T08:19:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada; estado editorial limpio. El trigger visual quedó persistido, pero el conector no expone el run de Actions para verificar su ID."
+      "message": "Pasada 0/0 cerrada y verificada; el saneamiento visual sigue en su workflow independiente."
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": []
+  "telegram_orphan_ids": [],
+  "error": null
 }
