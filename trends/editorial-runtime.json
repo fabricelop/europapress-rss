@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T11:46:04+02:00",
-  "last_completed_at": "2026-10-16T11:56:29+02:00",
-  "updated_at": "2026-10-16T11:56:29+02:00",
+  "last_started_at": "2026-10-16T12:15:00+02:00",
+  "last_completed_at": "2026-10-16T12:17:00+02:00",
+  "updated_at": "2026-10-16T12:17:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,29 +18,29 @@
     "persisted_trigger": true,
     "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261016T111624+0200",
-    "requested_at": "2026-10-16T11:16:24+02:00",
+    "run_id": "tr-chat-20261016T121500+0200",
+    "requested_at": "2026-10-16T12:15:00+02:00",
     "reason": "execution-start-pending-repair",
     "workflow_run_id": null,
     "workflow_conclusion": null,
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T114604+0200",
+    "run_id": "tr-chat-20261016T121500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T11:46:04+02:00",
-    "updated_at": "2026-10-16T11:56:29+02:00",
-    "finished_at": "2026-10-16T11:56:29+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-16T12:15:00+02:00",
+    "updated_at": "2026-10-16T12:17:00+02:00",
+    "finished_at": "2026-10-16T12:17:00+02:00",
+    "current": 0,
+    "total": 0,
     "summary": {
-      "trends_processed": 2,
-      "trends_explained": 2,
+      "trends_processed": 0,
+      "trends_explained": 0,
       "explanation_groups": 0,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
       "trends_dismissed": 0,
@@ -52,17 +52,17 @@
       "pending_repair_triggered": 1,
       "visual_repair_workflow_started": 0,
       "visual_repair_workflow_verified": 0,
-      "telegram_delivery_triggered": 1,
+      "telegram_delivery_triggered": 0,
       "telegram_delivery_workflow_verified": 0,
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
       "provisional_telegram": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_reviewed": 0
     },
-    "message": "Pasada editorial 2/2 cerrada y verificada; cola final 0 y sin huérfanos Telegram.",
+    "message": "Pasada editorial 0/0 cerrada y verificada; trigger de saneamiento de Pendientes persistido.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,162 +72,41 @@
       "total_ratings": 154,
       "recent_considered": 20
     },
-    "remate_selections": [
-      {
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "closer_text": "🌶️ El traspaso se quedó en el banquillo antes de tener camiseta."
-      },
-      {
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "closer_text": "🌶️ La tertulia entra a plató con la fecha ya puesta."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T11:49:05+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Remate seleccionado · «El traspaso se quedó en el banquillo antes de tener camiseta.»"
+        "at": "2026-10-16T12:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial; cola textual 0. Revisando reexplicaciones, huérfanos y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-16T11:49:05+02:00",
+        "at": "2026-10-16T12:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Releyendo estado autoritativo de Nico"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, reexplicaciones, entregas y auditoría Telegram."
       },
       {
-        "at": "2026-10-16T11:49:31+02:00",
-        "phase": "persisting",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-16T11:49:44+02:00",
-        "phase": "persisting",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-16T11:49:55+02:00",
-        "phase": "persisting",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-16T11:50:21+02:00",
+        "at": "2026-10-16T12:16:30+02:00",
         "phase": "verifying",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Confirmado: 0 preparing/update, 0 rewrite_pending, 0 huérfanos y 0 Pendientes recientes; 20 explicadas recientes ya están terminales."
       },
       {
-        "at": "2026-10-16T11:50:21+02:00",
-        "phase": "verifying",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-16T11:50:21+02:00",
-        "phase": "verifying",
-        "trend_id": "6e5f3712838f",
-        "title": "Nico",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-16T11:50:21+02:00",
-        "phase": "verifying",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Releyendo estado autoritativo de #16OctubrESP"
-      },
-      {
-        "at": "2026-10-16T11:51:13+02:00",
-        "phase": "investigating",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-16T11:51:19+02:00",
-        "phase": "investigating",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Contrastando fuente 1/2 · parrilla de Antena 3"
-      },
-      {
-        "at": "2026-10-16T11:51:25+02:00",
-        "phase": "investigating",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Contrastando fuente 2/2 · patrón histórico del hashtag de Espejo Público"
-      },
-      {
-        "at": "2026-10-16T11:51:31+02:00",
-        "phase": "investigating",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Hecho esencial verificado · tendencia activa durante la emisión matinal de Espejo Público"
-      },
-      {
-        "at": "2026-10-16T11:51:36+02:00",
-        "phase": "drafting",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-16T11:51:42+02:00",
-        "phase": "drafting",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Comprobando límite de X · 218 caracteres"
-      },
-      {
-        "at": "2026-10-16T11:51:48+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-16T11:51:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Evaluando candidatos con ratings"
-      },
-      {
-        "at": "2026-10-16T11:52:08+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Remate seleccionado · «La tertulia entra a plató con la fecha ya puesta.»"
-      },
-      {
-        "at": "2026-10-16T11:56:29+02:00",
-        "phase": "verifying",
-        "trend_id": "6b9e9f047c7c",
-        "title": "#16OctubrESP",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-16T11:56:29+02:00",
+        "at": "2026-10-16T12:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial 2/2 cerrada y verificada; cola final 0 y sin huérfanos Telegram."
+        "message": "Pasada editorial 0/0 cerrada y verificada; trigger de saneamiento de Pendientes persistido."
       }
-    ]
+    ],
+    "queue_complete": true,
+    "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261016T111624+0200",
+  "run_id": "tr-chat-20261016T121500+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -258,21 +137,28 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T11:16:24+02:00",
+      "at": "2026-10-16T12:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Iniciando pasada editorial; cola textual 0. Revisando reexplicaciones, huérfanos y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-16T11:17:11+02:00",
+      "at": "2026-10-16T12:16:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Confirmado: cola 0, sin preparing/update ni rewrite_pending detectados y 0 huérfanos Telegram. #LaHora16O figura ya final y eliminada en el ledger."
+      "message": "Releyendo main: cola, reexplicaciones, entregas y auditoría Telegram."
     },
     {
-      "at": "2026-10-16T11:17:32+02:00",
+      "at": "2026-10-16T12:16:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Confirmado: 0 preparing/update, 0 rewrite_pending, 0 huérfanos y 0 Pendientes recientes; 20 explicadas recientes ya están terminales."
+    },
+    {
+      "at": "2026-10-16T12:17:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
