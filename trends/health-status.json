@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-16T11:45:20.847579+00:00",
-  "ok": true,
+  "checked_at": "2026-10-16T15:35:59.339641+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -56,7 +56,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 2.0,
-      "run_id": 38895635818,
+      "run_id": 38924973578,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,19 +77,79 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 10,
+      "overdue_count": 8,
+      "oldest_age_minutes": 153.1,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "3658e974d137",
+          "name": "Tebas",
+          "status": "preparing",
+          "age_minutes": 64.4
+        },
+        {
+          "id": "1781e388eb4e",
+          "name": "Athletic",
+          "status": "preparing",
+          "age_minutes": 153.1
+        },
+        {
+          "id": "ab56c8fcd556",
+          "name": "Elon Musk",
+          "status": "preparing",
+          "age_minutes": 153.1
+        },
+        {
+          "id": "6f9d2bd92779",
+          "name": "ignasi",
+          "status": "preparing",
+          "age_minutes": 153.1
+        },
+        {
+          "id": "54ae780111d5",
+          "name": "Porsche",
+          "status": "preparing",
+          "age_minutes": 143.5
+        },
+        {
+          "id": "421d4097fd38",
+          "name": "Goebbels",
+          "status": "preparing",
+          "age_minutes": 143.5
+        },
+        {
+          "id": "72936d2d448c",
+          "name": "#TEM16O",
+          "status": "preparing",
+          "age_minutes": 64.4
+        },
+        {
+          "id": "be618b93a8fe",
+          "name": "Metro",
+          "status": "preparing",
+          "age_minutes": 64.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "3658e974d137",
+        "a04af111227a",
+        "1781e388eb4e",
+        "ab56c8fcd556",
+        "6f9d2bd92779",
+        "54ae780111d5",
+        "421d4097fd38",
+        "72936d2d448c",
+        "be618b93a8fe",
+        "0a13d9520697"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -99,8 +159,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 153.1 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 153.1 min"
 }
