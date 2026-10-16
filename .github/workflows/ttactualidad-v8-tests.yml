@@ -4,6 +4,7 @@ on:
     branches: ['fix/ttactualidad-live-actions-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/test_ttactualidad_direct_actions.py'
       - 'pilot/ttactualidad-live/**'
       - '.github/workflows/ttactualidad-direct-actions.yml'
       - '.github/workflows/ttactualidad-v8-tests.yml'
@@ -16,6 +17,8 @@ jobs:
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
