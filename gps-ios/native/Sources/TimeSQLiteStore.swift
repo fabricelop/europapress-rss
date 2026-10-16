@@ -40,6 +40,7 @@ struct TimeStoreHeader: Codable {
 enum TimeStoreError: Error {
     case sql(String)
     case missingHeaderWithData
+    case missingHeader
 }
 
 final class TimeSQLiteStore {
@@ -210,6 +211,8 @@ final class TimeSQLiteStore {
                 data.dismissedGPSGapIDs = header.dismissedGPSGapIDs ?? []
             }
         }
+        // Missing header must never silently become a valid empty state.
+        if !hasExistingState { throw TimeStoreError.missingHeader }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
         defer { sqlite3_finalize(fixes) }
         var fixResult = sqlite3_step(fixes)
