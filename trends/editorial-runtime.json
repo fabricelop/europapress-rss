@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T13:15:00+02:00",
-  "last_completed_at": "2026-10-16T13:18:00+02:00",
-  "updated_at": "2026-10-16T13:18:00+02:00",
+  "last_started_at": "2026-10-16T13:45:30+02:00",
+  "last_completed_at": "2026-10-16T13:51:00+02:00",
+  "updated_at": "2026-10-16T13:51:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -18,21 +18,21 @@
     "persisted_trigger": true,
     "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261016T131500+0200",
-    "requested_at": "2026-10-16T13:15:00+02:00",
+    "run_id": "tr-chat-20261016T134500+0200",
+    "requested_at": "2026-10-16T13:45:30+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_id": 38892688475,
+    "workflow_run_id": 38896113956,
     "workflow_conclusion": "success",
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T131500+0200",
+    "run_id": "tr-chat-20261016T134500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T13:15:00+02:00",
-    "updated_at": "2026-10-16T13:18:00+02:00",
-    "finished_at": "2026-10-16T13:18:00+02:00",
+    "started_at": "2026-10-16T13:45:30+02:00",
+    "updated_at": "2026-10-16T13:51:00+02:00",
+    "finished_at": "2026-10-16T13:51:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -67,32 +67,38 @@
     "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 0
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T13:15:00+02:00",
+        "at": "2026-10-16T13:45:30+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial; cola textual 0. Revisando huérfanos, estado autoritativo y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial; cola textual 0. Revisando estado autoritativo, huérfanos y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-16T13:17:00+02:00",
+        "at": "2026-10-16T13:49:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola editorial 0 y auditoría Telegram sin huérfanos; saneamiento visual 1670 sigue en ejecución."
+        "message": "Radar fresco y cola 0; requests, Explicadas y entregas no han cambiado desde la pasada verificada de las 13:18. Auditoría Telegram permanece en 0 huérfanos."
       },
       {
-        "at": "2026-10-16T13:17:46+02:00",
+        "at": "2026-10-16T13:49:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual automático verificado: workflow 1670 completado con éxito."
+        "message": "Saneamiento visual automático verificado: workflow 1672 completado con éxito, sin jobs IA nuevos."
       },
       {
-        "at": "2026-10-16T13:18:00+02:00",
+        "at": "2026-10-16T13:51:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -102,7 +108,7 @@
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261016T131500+0200",
+  "run_id": "tr-chat-20261016T134500+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -133,28 +139,28 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T13:15:00+02:00",
+      "at": "2026-10-16T13:45:30+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial; cola textual 0. Revisando huérfanos, estado autoritativo y saneamiento de Pendientes."
+      "message": "Iniciando pasada editorial; cola textual 0. Revisando estado autoritativo, huérfanos y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-16T13:17:00+02:00",
+      "at": "2026-10-16T13:49:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola editorial 0 y auditoría Telegram sin huérfanos; saneamiento visual 1670 sigue en ejecución."
+      "message": "Radar fresco y cola 0; requests, Explicadas y entregas no han cambiado desde la pasada verificada de las 13:18. Auditoría Telegram permanece en 0 huérfanos."
     },
     {
-      "at": "2026-10-16T13:17:46+02:00",
+      "at": "2026-10-16T13:49:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Saneamiento visual automático verificado: workflow 1670 completado con éxito."
+      "message": "Saneamiento visual automático verificado: workflow 1672 completado con éxito, sin jobs IA nuevos."
     },
     {
-      "at": "2026-10-16T13:18:00+02:00",
+      "at": "2026-10-16T13:51:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
