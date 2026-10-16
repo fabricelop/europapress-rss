@@ -94,6 +94,40 @@ class LiveEditorialTests(unittest.TestCase):
   changed,result=app.apply_live('ttendencias','tr123','prepare',2)
   self.assertEqual(result,'applied')
   self.assertEqual(changed['trends/editorial-queue.json']['items'][0]['status'],'preparing')
+ def test_tremending_remove_one_and_preserve_checkpoint(self):
+  url1='https://www.publico.es/tremending/noticia-prueba-1.html'
+  url2='https://www.publico.es/tremending/noticia-prueba-2.html'
+  self.write('ttittulares/tremending/items.json',{'scan':{'seen_urls':[url2]},
+   'items':[{'id':'tremending-abc123','url':url1,'title':'Primera','status':'pending'},
+            {'id':'tremending-def456','url':url2,'title':'Segunda','status':'pending'}]})
+  changed,result=app.apply_live('ttittulares','tremending-abc123','deleted',0)
+  self.assertEqual(result,'applied')
+  items=changed['ttittulares/tremending/items.json']['items']
+  self.assertEqual([x['id'] for x in items],['tremending-def456'])
+  self.assertIn(url1,changed['ttittulares/tremending/items.json']['scan']['seen_urls'])
+  self.assertIn(url2,changed['ttittulares/tremending/items.json']['scan']['seen_urls'])
+  self.assertEqual(changed['ttittulares/decisions.json']['items'][0]['status'],'deleted')
+  self.assertNotIn('ttittulares/prepared.json',changed)
+  self.assertNotIn('telegram/editorial-processing.json',changed)
+ def test_tremending_repeat_is_idempotent(self):
+  self.write('ttittulares/tremending/items.json',{'items':[]})
+  self.write('ttittulares/decisions.json',{'items':[
+   {'event_id':'tremending-abc123','status':'deleted'}]})
+  changed,result=app.apply_live('ttittulares','tremending-abc123','deleted',0)
+  self.assertEqual(result,'already_applied')
+  self.assertFalse(changed)
+ def test_tremending_rejects_unknown_stale_and_other_actions(self):
+  url='https://www.publico.es/tremending/noticia-prueba.html'
+  self.write('ttittulares/tremending/items.json',{'items':[
+   {'id':'tremending-abc123','url':url,'status':'pending','revision':4}]})
+  for action in ('prepare','discard'):
+   with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','tremending-abc123',action,4)
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','tremending-abc123','deleted',3)
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','tremending-other','deleted',0)
+ def test_tremending_no_url_does_not_mutate(self):
+  self.write('ttittulares/tremending/items.json',{'items':[
+   {'id':'tremending-abc123','status':'pending'}]})
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','tremending-abc123','deleted',0)
  def test_no_telegram_or_tremending_writes(self):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','revision':1}]})
   changed,_=app.apply_live('ttittulares','abc123','prepare',1)
