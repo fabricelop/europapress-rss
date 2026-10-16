@@ -138,18 +138,23 @@ final class TimeSQLiteStore {
 
     /// Never initialize an empty header over orphaned records.
     func initializeIfTrulyEmpty(_ initial: SavedState) throws {
-        if hasExistingState { return }
+        if try headerExists() { return }
         if try countRows("fixes") > 0 || countRows("intervals") > 0 || countRows("totals") > 0 {
             throw TimeStoreError.missingHeaderWithData
         }
         try replaceAll(initial)
     }
 
-    var hasExistingState: Bool {
-        guard let stmt = try? prepared("SELECT 1 FROM meta WHERE key='header' LIMIT 1") else { return false }
+    func headerExists() throws -> Bool {
+        let stmt = try prepared("SELECT 1 FROM meta WHERE key='header' LIMIT 1")
         defer { sqlite3_finalize(stmt) }
-        return sqlite3_step(stmt) == SQLITE_ROW
+        let result = sqlite3_step(stmt)
+        if result == SQLITE_ROW { return true }
+        if result == SQLITE_DONE { return false }
+        throw TimeStoreError.sql(message())
     }
+
+    var hasExistingState: Bool { (try? headerExists()) ?? false }
 
     /// La migración solo queda visible tras COMMIT. No borra el JSON original.
     func replaceAll(_ data: SavedState) throws {
@@ -212,7 +217,7 @@ final class TimeSQLiteStore {
             }
         }
         // Missing header must never silently become a valid empty state.
-        if !hasExistingState { throw TimeStoreError.missingHeader }
+        if try !headerExists() { throw TimeStoreError.missingHeader }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
         defer { sqlite3_finalize(fixes) }
         var fixResult = sqlite3_step(fixes)
