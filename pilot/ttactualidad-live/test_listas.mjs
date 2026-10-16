@@ -27,4 +27,5 @@ for(const c of cases){
 assert(!page.includes('¿Cómo funciona este piloto?'));
 assert(!page.includes('Desestimación registrada en pruebas'));
 assert(page.includes('Pasar a En Elaboración'));
+assert(page.includes("x._status==='CRECIENDO'){command('Pasar a En Elaboración','prepare')"));
 console.log('TTActualidad V8: Listas and live buttons OK');

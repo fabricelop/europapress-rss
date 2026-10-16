@@ -1,7 +1,7 @@
 name: TTActualidad V8 safe live rollout
 on:
   push:
-    branches: ['fix/ttactualidad-live-actions-20261016']
+    branches: ['fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
       - 'pilot/test_ttactualidad_direct_actions.py'
