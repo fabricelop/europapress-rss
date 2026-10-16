@@ -314,7 +314,12 @@ struct SavedState: Codable {
         let legacy: SavedState? = (try? Data(contentsOf: fileURL))
             .flatMap { try? JSONDecoder().decode(SavedState.self, from: $0) }
         do {
-            let db = try TimeSQLiteStore(url: dir.appendingPathComponent("time-map-v3.sqlite"))
+            let databaseURL = dir.appendingPathComponent("time-map-v3.sqlite")
+            let databaseExisted = FileManager.default.fileExists(atPath: databaseURL.path)
+            let db = try TimeSQLiteStore(url: databaseURL)
+            if databaseExisted && !db.hasExistingState {
+                throw TimeStoreError.missingHeader
+            }
             try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
             store = db
