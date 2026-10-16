@@ -14,7 +14,8 @@ class KV{
 const kv=new KV();
 const env={PILOT_TOKEN:'test-private-token',PILOT_DECISIONS:kv};
 function req(path,opts={}){
- const headers={Authorization:'Bearer test-private-token',...opts.headers};
+ const headers={Authorization:'Bearer test-private-token','Content-Type':'application/json',
+   Origin:'https://ttactualidad-decisions-pilot.fabricelop.workers.dev',...opts.headers};
  return new Request('https://ttactualidad-decisions-pilot.fabricelop.workers.dev'+path,{...opts,headers});
 }
 async function request(path,opts){let r=await handler.fetch(req(path,opts),env);return {status:r.status,json:await r.json()}}
@@ -34,6 +35,33 @@ assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,0,'static public routes must
 r=await request('/api/decisions',{headers:{Authorization:'Bearer wrong'}});
 assert.equal(r.status,401);
 assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,0,'unauthorized must not touch KV');
+// Pairing must use a real bearer, mint a signed HttpOnly Secure cookie, and spend zero KV.
+const preSession=kv.getCalls+kv.writeCalls+kv.listCalls;
+const signed=await handler.fetch(req('/api/session',{method:'POST',body:'{}'}),env);
+assert.equal(signed.status,200);
+const setCookie=signed.headers.get('Set-Cookie');
+assert.match(setCookie,/__Host-ttactualidad_session=/);
+assert.match(setCookie,/HttpOnly/);
+assert.match(setCookie,/Secure/);
+assert.match(setCookie,/SameSite=Strict/);
+const cookieHeader=setCookie.split(';')[0];
+const cookieCheck=await handler.fetch(new Request(
+ 'https://ttactualidad-decisions-pilot.fabricelop.workers.dev/api/auth',
+ {headers:{Cookie:cookieHeader}}),env);
+assert.equal(cookieCheck.status,200);
+assert.equal((await cookieCheck.json()).session_authenticated,true);
+const crossSite=await handler.fetch(new Request(
+ 'https://ttactualidad-decisions-pilot.fabricelop.workers.dev/api/decision',
+ {method:'POST',headers:{Cookie:cookieHeader,Origin:'https://attacker.invalid','Content-Type':'application/json'},body:'{}'}),env);
+assert.equal(crossSite.status,403);
+const cookieDelete=await handler.fetch(new Request(
+ 'https://ttactualidad-decisions-pilot.fabricelop.workers.dev/api/decision',
+ {method:'POST',headers:{Cookie:cookieHeader,Origin:'https://ttactualidad-decisions-pilot.fabricelop.workers.dev','Content-Type':'application/json'},
+ body:JSON.stringify({project:'ttittulares',event_id:'cookie-auth-test-01',revision:1,decision:'deleted',
+ request_id:'88888888-2222-3333-4444-555555555555'})}),env);
+assert.equal(cookieDelete.status,201);
+assert.equal((await cookieDelete.json()).state,'pilot_only');
+assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,preSession+2,'Only decision spends KV; pairing is free');
 const authBefore=kv.getCalls+kv.writeCalls+kv.listCalls;
 const authCheck=await request('/api/auth');
 assert.equal(authCheck.status,200);
@@ -43,21 +71,21 @@ assert.equal(kv.getCalls+kv.writeCalls+kv.listCalls,authBefore,'auth checks cann
 let body={project:'ttittulares',event_id:'abcdef123456',decision:'deleted',request_id:'11111111-2222-3333-4444-555555555555'};
 r=await request('/api/decision',{method:'POST',body:JSON.stringify(body)});
 assert.equal(r.status,201);assert.equal(r.json.routed,false);assert.equal(r.json.state,'pilot_only');
-assert.equal(kv.writeCalls,1);
+assert.equal(kv.writeCalls,2);
 r=await request('/api/decision',{method:'POST',body:JSON.stringify(body)});
-assert.equal(r.status,200);assert.equal(r.json.duplicate,true);assert.equal(kv.writeCalls,1);
+assert.equal(r.status,200);assert.equal(r.json.duplicate,true);assert.equal(kv.writeCalls,2);
 r=await request('/api/decision',{method:'POST',body:JSON.stringify({...body,decision:'published'})});
-assert.equal(r.status,409);assert.equal(kv.writeCalls,1);
+assert.equal(r.status,409);assert.equal(kv.writeCalls,2);
 r=await request('/api/decision?project=ttittulares&event_id=abcdef123456');
 assert.equal(r.json.found,true);assert.equal(r.json.item.decision,'deleted');
 r=await request('/api/decisions');
-assert.equal(r.json.items.length,1);
-assert.equal(r.json.items[0].mode,'pilot_only');
+assert.equal(r.json.items.length,2);
+assert(r.json.items.every(x=>x.mode==='pilot_only'));
 r=await request('/api/decision',{method:'POST',body:JSON.stringify({...body,event_id:'abc',decision:'discard',project:'unknown'})});
 assert.equal(r.status,400);
 r=await request('/api/decision',{method:'POST',body:JSON.stringify({...body,event_id:'pilot-mobile-0123456789abcdef0123456789abcdef',decision:'prepare'})});
 assert.equal(r.json.routed,false);
-assert.equal(kv.writeCalls,2);
+assert.equal(kv.writeCalls,3);
 // Live state only submits `deleted`, never manufactures a completed deletion.
 env.ACTION_MODE='github_dispatch';env.GH_DISPATCH_TOKEN='fake-test-token';
 const originalFetch=globalThis.fetch;
