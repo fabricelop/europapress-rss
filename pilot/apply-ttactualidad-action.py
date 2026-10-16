@@ -97,44 +97,79 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         return outputs, "applied"
 
     if project == "ttendencias":
+        # The editorial explanation is authoritative; Telegram delivery is optional.
+        manual_path = "trends/telegram-manual-explained.json"
+        requests_path = "trends/requests.json"
         ledger_path = "trends/telegram-image-deliveries.json"
-        queue_path = "trends/editorial-queue.json"
         mobile_path = "trends/mobile-decisions.json"
+        manual = load(manual_path, {"items": []})
+        requests = load(requests_path, {"requests": []})
         deliveries = load(ledger_path, {"items": []})
-        queue = load(queue_path, {"items": []})
         mobile = load(mobile_path, {"items": []})
-        already = find(mobile.get("items", []), "id", event_id)
-        terminal = "dismissed" if decision == "discard" else decision
-        if already and already.get("status") in TERMINAL:
-            if already.get("status") == terminal:
+
+        existing = find(mobile.get("items", []), "id", event_id)
+        if existing and existing.get("status") in TERMINAL:
+            if existing["status"] == decision:
                 return {}, "already_applied"
-            fail("Esta tendencia ya tiene una decision diferente")
-        now = datetime.now(timezone.utc).isoformat()
-        if decision in {"published", "deleted"}:
-            entries = [x for x in deliveries.get("items", []) if x.get("event_id") == event_id]
-            ready = sorted(entries, key=lambda x: str(x.get("delivered_at") or ""), reverse=True)
-            if not ready or ready[0].get("status") != "sent":
-                fail("La tendencia ya no consta en Listas")
-            record = ready[0]
-            check_revision(record, revision)
-            record["status"] = terminal
-            record["updated_at"] = now
-            changed = {ledger_path: deliveries}
-        elif decision == "discard":
-            row = find(queue.get("items", []), "id", event_id)
-            if not row or str(row.get("status") or "").lower() not in {"preparing", "update"}:
-                fail("La tendencia ya no esta en elaboracion")
-            check_revision(row, revision)
-            row["status"] = "dismissed"
-            row["dismissed_at"] = now
-            queue["count"] = sum(str(x.get("status") or "").lower() in {"preparing", "update"} for x in queue["items"])
-            changed = {queue_path: queue}
+            fail("Esta tendencia ya tiene una decision final diferente")
+
+        explained = [row for row in manual.get("items", []) if str(row.get("id") or "") == event_id]
+        explained.sort(key=lambda row: (int(row.get("revision") or 0),
+                                        str(row.get("updated_at") or row.get("explained_at") or "")), reverse=True)
+        target = explained[0] if explained else None
+
+        old = [row for row in deliveries.get("items", []) if str(row.get("event_id") or "") == event_id]
+        old.sort(key=lambda row: (int(row.get("revision") or 0),
+                                  str(row.get("updated_at") or row.get("delivered_at") or "")), reverse=True)
+        legacy_delivery = old[0] if old else None
+
+        if target:
+            if (str(target.get("status") or "").lower() != "explained"
+                    or not str(target.get("explanation") or "").strip()
+                    or str(target.get("telegram_package_status") or "").lower() in TERMINAL):
+                fail("Esta explicacion ya no esta en Listas")
+            check_revision(target, revision)
+        elif legacy_delivery:
+            # Backward compatibility with old app versions until the editorial view ships.
+            if str(legacy_delivery.get("status") or "").lower() != "sent" or legacy_delivery.get("final") is False:
+                fail("La tendencia ya no esta en Listas")
+            check_revision(legacy_delivery, revision)
         else:
-            fail("Preparar novedad se conectara en una fase posterior")
-        if not already:
-            already = {"id": event_id}
-            mobile.setdefault("items", []).append(already)
-        already.update({"status": terminal, "updated_at": now, "source": "ttactualidad_direct"})
+            fail("La tendencia no esta en las Listas editoriales")
+
+        now = datetime.now(timezone.utc).isoformat()
+        changed = {}
+        if target:
+            target["status"] = "deleted"
+            target["telegram_package_status"] = "deleted"
+            target["deleted_at"] = now
+            target["decision_source"] = "ttactualidad_direct"
+            manual["updated_at"] = now
+            changed[manual_path] = manual
+
+        for req in requests.get("requests", []):
+            if str(req.get("id") or "") != event_id:
+                continue
+            # A newer revision is not deleted by an obsolete card.
+            if int(req.get("revision") or 0) > revision:
+                fail("Existe una revision editorial mas reciente; actualiza la app")
+            req["status"] = "deleted"
+            req["telegram_package_status"] = "deleted"
+            req["deleted_at"] = now
+            req["decision_source"] = "ttactualidad_direct"
+            changed[requests_path] = requests
+
+        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent":
+            check_revision(legacy_delivery, revision)
+            legacy_delivery["status"] = "deleted"
+            legacy_delivery["updated_at"] = now
+            changed[ledger_path] = deliveries
+
+        if not existing:
+            existing = {"id": event_id}
+            mobile.setdefault("items", []).append(existing)
+        existing.update({"status": "deleted", "revision": revision, "updated_at": now,
+                         "source": "ttactualidad_direct"})
         mobile["updated_at"] = now
         changed[mobile_path] = mobile
         return changed, "applied"
