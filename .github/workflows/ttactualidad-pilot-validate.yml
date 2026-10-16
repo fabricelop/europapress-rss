@@ -137,3 +137,8 @@ jobs:
         run: |
           node pilot/test-ttactualidad-trend-listas.mjs
           python -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
+      - name: Selftest TTendencias editorial queue without Telegram
+        shell: pwsh
+        run: |
+          python pilot/ttendencias_queue_reconcile_no_telegram.py selftest
+          python -m py_compile pilot/ttendencias_queue_reconcile_no_telegram.py
