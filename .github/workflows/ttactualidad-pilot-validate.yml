@@ -20,7 +20,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1','pilot/Enable-TTActualidad-Direct-V4.ps1')) {
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1','pilot/Enable-TTActualidad-Direct-V4.ps1','pilot/Update-TTActualidad-V5-Sesion.ps1')) {
             $tok = $null
             $errorsList = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -109,3 +109,16 @@ jobs:
           if (-not $worker.Contains("route==='/api/auth'")) { throw 'Worker missing zero-KV authentication route' }
           if (-not $worker.Contains('revision_required')) { throw 'Worker missing revision gate' }
           Write-Host 'Pinned V4 release assets verified'
+      - name: Verify pinned V5 session, optimistic hide and secure no-prompt update
+        shell: powershell
+        run: |
+          $pin = 'a24d54c5c8de619ac6c77592aca40e69dc6c32ca'
+          $base = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $pin + '/'
+          $html = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'docs/index.html?ci=' + $pin)).Content
+          $js = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'pilot/ttactualidad-worker.js?ci=' + $pin)).Content
+          if (-not $html.Contains('function hideOptimistically(item)')) { throw 'V5 hide missing' }
+          if (-not $html.Contains('async function checkPendingDeletes()')) { throw 'V5 reconciliation missing' }
+          if ($html.Contains("prompt('URL HTTPS del Worker")) { throw 'Old URL prompt survived' }
+          if (-not $js.Contains("route==='/api/session'")) { throw 'V5 session route missing' }
+          if (-not $js.Contains('HttpOnly; SameSite=Strict')) { throw 'HttpOnly session missing' }
+          Write-Host 'Pinned V5 deployment assets validated'
