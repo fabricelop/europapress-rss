@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T12:45:00+02:00",
-  "last_completed_at": "2026-10-16T12:53:00+02:00",
-  "updated_at": "2026-10-16T12:53:00+02:00",
+  "last_started_at": "2026-10-16T13:15:00+02:00",
+  "last_completed_at": "2026-10-16T13:18:00+02:00",
+  "updated_at": "2026-10-16T13:18:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "82ea0f90e8d0"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -20,30 +18,30 @@
     "persisted_trigger": true,
     "status": "success",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261016T124500+0200",
-    "requested_at": "2026-10-16T12:45:00+02:00",
+    "run_id": "tr-chat-20261016T131500+0200",
+    "requested_at": "2026-10-16T13:15:00+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_id": 38889884996,
+    "workflow_run_id": 38892688475,
     "workflow_conclusion": "success",
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T124500+0200",
+    "run_id": "tr-chat-20261016T131500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T12:45:00+02:00",
-    "updated_at": "2026-10-16T12:53:00+02:00",
-    "finished_at": "2026-10-16T12:53:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-16T13:15:00+02:00",
+    "updated_at": "2026-10-16T13:18:00+02:00",
+    "finished_at": "2026-10-16T13:18:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "trends_processed": 0,
+      "trends_explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "trends_problematic": 0,
@@ -61,178 +59,55 @@
       "telegram_orphans": 0,
       "bidirectional_issues": 0,
       "provisional_telegram": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "pending_cards_reviewed": 0
     },
-    "message": "Pasada editorial 1/1 cerrada y verificada; #Mañaneros16O explicado, cola 0 y reparación visual automática verificada.",
+    "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 20
-    },
-    "remate_selections": [
-      {
-        "trend_id": "82ea0f90e8d0",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c2",
-            "total": 8.1,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.5
-          },
-          {
-            "id": "c3",
-            "total": 7.9,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c4",
-            "total": 7.5,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          },
-          {
-            "id": "c5",
-            "total": 7.2,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.6
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.8,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T12:45:00+02:00",
+        "at": "2026-10-16T13:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial; cola textual 1. Revisando estado autoritativo y saneamiento de Pendientes."
+        "message": "Iniciando pasada editorial; cola textual 0. Revisando huérfanos, estado autoritativo y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-16T12:46:00+02:00",
-        "phase": "investigating",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Contrastando el detonante actual: emisión de Mañaneros 360 y foco de hoy en Metro Sol/acampada."
-      },
-      {
-        "at": "2026-10-16T12:46:30+02:00",
-        "phase": "drafting",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Redactando explicación factual y comprobando límite de X: 236 caracteres."
-      },
-      {
-        "at": "2026-10-16T12:46:45+02:00",
-        "phase": "remate_selection",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Evaluando cinco remates por especificidad, originalidad, ritmo y ajuste de longitud."
-      },
-      {
-        "at": "2026-10-16T12:47:00+02:00",
-        "phase": "persisting",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-16T12:47:05+02:00",
-        "phase": "persisting",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-16T12:47:10+02:00",
-        "phase": "persisting",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-16T12:50:50+02:00",
+        "at": "2026-10-16T13:17:00+02:00",
         "phase": "verifying",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola editorial 0 y auditoría Telegram sin huérfanos; saneamiento visual 1670 sigue en ejecución."
       },
       {
-        "at": "2026-10-16T12:51:10+02:00",
+        "at": "2026-10-16T13:17:46+02:00",
         "phase": "verifying",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Verificando id+revision y texto persistido"
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual automático verificado: workflow 1670 completado con éxito."
       },
       {
-        "at": "2026-10-16T12:51:30+02:00",
-        "phase": "verifying",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-16T12:52:30+02:00",
-        "phase": "verifying",
-        "trend_id": "82ea0f90e8d0",
-        "title": "#Mañaneros16O",
-        "message": "Reparación visual automática verificada: workflow 1667 completado con éxito"
-      },
-      {
-        "at": "2026-10-16T12:53:00+02:00",
+        "at": "2026-10-16T13:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial 1/1 cerrada y verificada; cola 0, sin huérfanos y reparación visual iniciada."
+        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261016T124500+0200",
+  "run_id": "tr-chat-20261016T131500+0200",
   "summary": {
-    "trends_processed": 1,
-    "trends_explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "trends_processed": 0,
+    "trends_explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "trends_problematic": 0,
@@ -250,96 +125,40 @@
     "telegram_orphans": 0,
     "bidirectional_issues": 0,
     "provisional_telegram": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "pending_cards_reviewed": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T12:45:00+02:00",
+      "at": "2026-10-16T13:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial; cola textual 1. Revisando estado autoritativo y saneamiento de Pendientes."
+      "message": "Iniciando pasada editorial; cola textual 0. Revisando huérfanos, estado autoritativo y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-16T12:46:00+02:00",
-      "phase": "investigating",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Contrastando el detonante actual: emisión de Mañaneros 360 y foco de hoy en Metro Sol/acampada."
-    },
-    {
-      "at": "2026-10-16T12:46:30+02:00",
-      "phase": "drafting",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Redactando explicación factual y comprobando límite de X: 236 caracteres."
-    },
-    {
-      "at": "2026-10-16T12:46:45+02:00",
-      "phase": "remate_selection",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Evaluando cinco remates por especificidad, originalidad, ritmo y ajuste de longitud."
-    },
-    {
-      "at": "2026-10-16T12:47:00+02:00",
-      "phase": "persisting",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-16T12:47:05+02:00",
-      "phase": "persisting",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-16T12:47:10+02:00",
-      "phase": "persisting",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-16T12:50:50+02:00",
+      "at": "2026-10-16T13:17:00+02:00",
       "phase": "verifying",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Releyendo main"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: cola editorial 0 y auditoría Telegram sin huérfanos; saneamiento visual 1670 sigue en ejecución."
     },
     {
-      "at": "2026-10-16T12:51:10+02:00",
+      "at": "2026-10-16T13:17:46+02:00",
       "phase": "verifying",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Verificando id+revision y texto persistido"
+      "trend_id": null,
+      "title": null,
+      "message": "Saneamiento visual automático verificado: workflow 1670 completado con éxito."
     },
     {
-      "at": "2026-10-16T12:51:30+02:00",
-      "phase": "verifying",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-16T12:52:30+02:00",
-      "phase": "verifying",
-      "trend_id": "82ea0f90e8d0",
-      "title": "#Mañaneros16O",
-      "message": "Reparación visual automática verificada: workflow 1667 completado con éxito"
-    },
-    {
-      "at": "2026-10-16T12:53:00+02:00",
+      "at": "2026-10-16T13:18:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial 1/1 cerrada y verificada; cola 0, sin huérfanos y reparación visual iniciada."
+      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía, sin huérfanos y saneamiento visual correcto."
     }
   ],
   "telegram_orphans": 0,
