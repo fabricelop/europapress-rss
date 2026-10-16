@@ -124,13 +124,19 @@ export default {
    const key=recordKey(p,id);
    const existing=await env.PILOT_DECISIONS.get(key,'json');
    if(existing){
-    if(existing.decision!==decision)return respond(req,{ok:false,error:'already_decided',decision:existing.decision},409);
-    if(existing.routed===true&&live){
+    // KV is an outbound-dispatch cache, not the authoritative editorial ledger.
+    // A past trial/failed/in-flight action must never permanently lock a new
+    // explicit LIVE user action. GitHub validates current state and revision.
+    if(!live&&existing.decision!==decision)
+     return respond(req,{ok:false,error:'already_decided',decision:existing.decision},409);
+    const sameRevision=Number.isInteger(existing.revision)&&existing.revision===b.revision;
+    if(existing.decision===decision&&existing.routed===true&&live&&sameRevision){
      const last=Date.parse(existing.received_at||'')||0;
      if(Date.now()-last<3*60*1000)
       return respond(req,{ok:true,stored:true,duplicate:true,state:'submitted',routed:true},200);
-     // Explicit retry after 3m is safe: GitHub validates item status/revision.
-    }else if(!live)return respond(req,{ok:true,stored:true,duplicate:true,state:'pilot_only',routed:false},200);
+     // Retry after 3m is safe: GitHub checks revision and terminal status.
+    }else if(!live&&existing.decision===decision)
+     return respond(req,{ok:true,stored:true,duplicate:true,state:'pilot_only',routed:false},200);
    }
    const row={project:p,event_id:id,decision,request_id:String(b.request_id),
     received_at:new Date().toISOString(),mode:live?'direct':'pilot_only',
