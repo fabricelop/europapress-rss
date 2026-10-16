@@ -97,7 +97,7 @@ prepared_doc = load("prepared.json")
 editorial_runtime = load("editorial-runtime.json", {}) or {}
 editorial_config = load("editorial-config.json", {}) or {}
 control_mode = load("control-mode.json", {}) or {}
-mode = str(control_mode.get("mode") or "telegram").strip().lower()
+mode = str(control_mode.get("mode") or "web").strip().lower()
 web_mode = mode == "web"
 
 modules = {}
@@ -206,12 +206,12 @@ for key, wf, age in [
         else:
             blocking.append(f"{key}: {st.get('reason')}")
 
-# Una ejecución editorial que no pudo enviar es bloqueante.
-if SEND_OUTCOME and SEND_OUTCOME != "success":
+# La entrega Telegram es histórica y nunca bloquea la salud en modo TTActualidad.
+if not web_mode and SEND_OUTCOME and SEND_OUTCOME != "success":
     modules["telegram_sender"] = {"ok": False, "outcome": SEND_OUTCOME}
     blocking.append(f"envío Telegram terminó en {SEND_OUTCOME}")
 else:
-    modules["telegram_sender"] = {"ok": True, "outcome": SEND_OUTCOME or "no-aplica"}
+    modules["telegram_sender"] = {"ok": True, "required": not web_mode, "outcome": SEND_OUTCOME or "no-aplica"}
 
 # Cola: estados desconocidos sí son anomalía; preparing/ready/explained son válidos.
 if isinstance(requests_doc, dict):
@@ -331,10 +331,9 @@ if isinstance(requests_doc, dict):
                 "runtime editorial en failure: " + str(editorial_runtime.get("error") or "sin detalle")
             )
 
-# A clean editorial queue is NOT proof Telegram has been updated. Track
-# provisional messages older than the configured threshold separately.
+# Diagnóstico legado: únicamente en modo Telegram, nunca reactivar desde TTActualidad.
 deliveries_doc = load("telegram-image-deliveries.json", {"items":[]}) or {"items":[]}
-if isinstance(requests_doc, dict) and isinstance(deliveries_doc, dict):
+if not web_mode and isinstance(requests_doc, dict) and isinstance(deliveries_doc, dict):
     by_id = {str(req.get("id") or ""): req
              for req in requests_doc.get("requests", []) if req.get("id")}
     delayed = []
@@ -383,6 +382,9 @@ if isinstance(requests_doc, dict) and isinstance(deliveries_doc, dict):
         if dispatch("send-ttendencias-explained-telegram.yml"):
             repairs.append("revisar y reconciliar avisos Telegram provisionales")
             modules["telegram_provisional"]["repair_started"] = True
+
+if web_mode:
+    modules["telegram_provisional"] = {"ok": True, "required": False, "reason": "control web activo"}
 
 signature = " | ".join(sorted(blocking))
 alerted = False
