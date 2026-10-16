@@ -2,39 +2,59 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-15T23:57:30.639131+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-16T04:18:51.048438+00:00",
+      "issue_count": 2,
       "issues": [
         {
-          "kind": "orphan_provisional",
-          "id": "c2c43d5d0990",
-          "title": "Madrid se suma a Santander y Zaragoza bajando el recibo IBI para 2027 al mínimo legal del 0,4%; redu",
-          "seconds": 4824,
-          "workflow": null
+          "kind": "missing_delivery",
+          "id": "8f882dc81f55",
+          "title": "María Corina Machado denuncia que EE.UU. la ha excluido de las negociaciones sobre Venezuela",
+          "seconds": 2511,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 7902,
+          "workflow": "telegram-pinned-index.yml"
         }
       ],
-      "actions_started": [],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "fb8c09af4b5417369de789b49352c8a9b37fcf0f02f5f13385a904c74beddcf0",
+      "open_signature": "d67e079541bb24eea01df180bdceeeb2d4fbdbc3324b2010471fbc2a7eec558d",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-15T23:57:30.639131+00:00",
-      "issue_count": 0,
-      "issues": [],
-      "actions_started": [],
+      "checked_at": "2026-10-16T04:18:51.048438+00:00",
+      "issue_count": 1,
+      "issues": [
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 7901,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "telegram-pinned-index.yml"
+      ],
       "repair_errors": [],
-      "open_signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-15T09:54:21.834461+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-15T00:33:58.394297+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-16T04:18:51.048438+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-16T04:18:51.048438+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-16T04:18:51.048438+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-15T23:57:30.639131+00:00"
+  "checked_at": "2026-10-16T04:18:51.048438+00:00"
 }
