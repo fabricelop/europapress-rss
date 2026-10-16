@@ -52,4 +52,50 @@ assert.equal(r.status,400);
 r=await request('/api/decision',{method:'POST',body:JSON.stringify({...body,event_id:'pilot-mobile-0123456789abcdef0123456789abcdef',decision:'prepare'})});
 assert.equal(r.json.routed,false);
 assert.equal(kv.writeCalls,2);
-console.log('OK: auth, KV-free health, one write per action, immutable decision, pilot isolation, synthetic safety');
+// Live state only submits `deleted`, never manufactures a completed deletion.
+env.ACTION_MODE='github_dispatch';env.GH_DISPATCH_TOKEN='fake-test-token';
+const originalFetch=globalThis.fetch;
+const messages=[];
+globalThis.fetch=async(url,options)=>{
+ messages.push({url,body:JSON.parse(options.body)});
+ return new Response('',{status:204});
+};
+try{
+ let live=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttendencias',event_id:'def123456abc',decision:'deleted',revision:2,
+   request_id:'cccccccc-2222-3333-4444-555555555555'})});
+ assert.equal(live.status,201);assert.equal(live.json.state,'submitted');
+ assert.equal(live.json.routed,true);
+ assert.equal(messages.length,1);
+ assert.equal(messages[0].body.client_payload.revision,2);
+ live=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttendencias',event_id:'def123456abc',decision:'deleted',revision:2,
+   request_id:'dddddddd-2222-3333-4444-555555555555'})});
+ assert.equal(live.json.duplicate,true);
+ assert.equal(messages.length,1,'repeat decision must not trigger second GitHub action');
+ let test=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttendencias',event_id:'f8aabbccddee',decision:'discard',revision:1,
+   request_id:'cccccccc-3333-3333-4444-555555555555'})});
+ assert.equal(test.json.state,'pilot_only');
+ assert.equal(messages.length,1,'discard stays in pilot until separately validated');
+ // Previously simulated deletion must be eligible for real dispatch later.
+ let staged=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttittulares',event_id:'abcdef123456',decision:'deleted',revision:1,
+   request_id:'cccccccc-4444-3333-4444-555555555555'})});
+ assert.equal(staged.json.state,'submitted');
+ assert.equal(messages.length,2);
+ // Refuse an absent revision without calling GitHub.
+ const missing=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttittulares',event_id:'fedcba654321',decision:'deleted',
+   request_id:'cccccccc-5555-3333-4444-555555555555'})});
+ assert.equal(missing.status,400);
+ assert.equal(messages.length,2);
+ globalThis.fetch=async()=>new Response('',{status:403});
+ const bad=await request('/api/decision',{method:'POST',body:JSON.stringify({
+   project:'ttittulares',event_id:'aabbccddeeff',decision:'deleted',revision:1,
+   request_id:'cccccccc-6666-3333-4444-555555555555'})});
+ assert.equal(bad.status,502);
+ assert.equal(bad.json.ok,false);
+ assert.equal(kv.map.has('action:ttittulares:aabbccddeeff'),false);
+}finally{globalThis.fetch=originalFetch}
+console.log('OK: isolated/live action gating, replay safety, revisions, GitHub refusal, no polling');
