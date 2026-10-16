@@ -307,10 +307,11 @@ function buildMessage(job){
   const sources=Array.isArray(ctx.verification_sources)?ctx.verification_sources.map(x=>String(x&&x.source||"")).filter(Boolean).join(", "):"";
   const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
   const styleName=String(ctx.image_style_name||"variable").trim();
+  const NO_PEPPER="REGLA VISUAL OBLIGATORIA: el emoji 🌶️ solo es un marcador del remate ESCRITO, nunca un elemento de la imagen. PROHIBIDO representar guindillas, chiles, pimientos picantes, iconos de guindilla, logotipos, mascotas o símbolos equivalentes, ni en fondo, objetos, carteles, ropa, decoraciones o firmas. Convierte exclusivamente el SIGNIFICADO del remate en un gag visual, nunca su emoji.";
   if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
     return ["TTENDENCIAS_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
       "CONTEXTO FACTUAL:",explanation,
-      "DIRECCIÓN VISUAL:",style,
+      "DIRECCIÓN VISUAL:",style,NO_PEPPER,
       "No hagas humor ni sátira. No trivialices víctimas o sufrimiento, no inventes escenas documentales ni personas identificables. Imagen editorial sobria, no gráfica. Ignora el remate humorístico."]
       .join("\\n");
   }
@@ -330,8 +331,9 @@ function buildMessage(job){
     "",
     "DIRECCIÓN VISUAL ASIGNADA ("+styleName+"):",
     style,
+    NO_PEPPER,
     "",
-    "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe traducir la guindilla cuando exista; si no hay remate, parte del hecho factual sin inventar otro.",
+    "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe expresar el SIGNIFICADO del chiste, no el emoji de texto; si no hay remate, parte del hecho factual sin inventar otro.",
     "No inventes hechos externos. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas la explicación completa dentro de la imagen. Genera exactamente UNA imagen. No proceses otra tendencia ni persistas la imagen: el puente local recoge el raster."
   ].filter(Boolean).join("\n")
 }
