@@ -1,0 +1,39 @@
+name: TT imagenes sin guindillas
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, fix/tt-images-no-guindilla-20261016]
+    paths:
+      - windows/TTiTTularesImageBridge.js
+      - windows/TTendenciasImageBridge.js
+      - windows/test-image-no-guindilla.cjs
+      - windows/TT-Images-Sin-Guindillas.ps1
+      - .github/workflows/repair-ttittulares-listas.yml
+      - .github/workflows/repair-ttendencias-explicadas.yml
+      - ttittulares/editorial-run-prompt.md
+      - trends/editorial-run-prompt.md
+      - trends/editorial-style.md
+      - .github/workflows/tt-image-no-pepper-policy.yml
+permissions:
+  contents: read
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar sintaxis y prompts de imagen
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          node --check windows/TTendenciasImageBridge.js
+          node --check windows/test-image-no-guindilla.cjs
+          node windows/test-image-no-guindilla.cjs
+      - name: Validar instalador PowerShell 5.1
+        shell: pwsh
+        run: |
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile('windows/TT-Images-Sin-Guindillas.ps1',[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0){ throw ($errors | ForEach-Object { $_.Message } | Out-String) }
+          $script=Get-Content 'windows/TT-Images-Sin-Guindillas.ps1' -Raw -Encoding UTF8
+          if($script -notmatch 'PROHIBIDO representar guindillas'){throw 'Falta validacion visual'}
+          Write-Host 'PowerShell no-pepper syntax OK'

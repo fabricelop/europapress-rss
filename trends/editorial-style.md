@@ -6,6 +6,10 @@ La referencia aprobada es la imagen de **Cleveland**: una **escena narrativa ún
 
 El criterio decisivo es: **si se elimina todo el texto de la imagen, el gag y la relación con el detonante real deben seguir entendiéndose**.
 
+## Regla de marca: guindilla solo en el texto (16/10/2026)
+
+El emoji `🌶️` distingue el remate escrito, **nunca es un elemento del gag gráfico**. Rechazar toda imagen que contenga guindillas, chiles, pimientos picantes, iconos, logos, siluetas, mascotas, sellos o decoración que represente ese símbolo, en cualquier zona del lienzo. No trasladar el marcador `🌶️` desde el texto a la imagen. El gag debe surgir del significado del remate y del hecho verificado. La ausencia de guindilla se comprueba visualmente tras la generación, sin alterar `closer_text`.
+
 ## Composición obligatoria
 
 - Una escena coherente, no un esquema.
