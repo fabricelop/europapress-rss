@@ -1,4 +1,4 @@
-name: TTActualidad direct actions (inactive until cutover)
+name: TTActualidad - quitar de Listas sin Telegram
 on:
   repository_dispatch:
     types: [ttactualidad_action_v1]
@@ -8,29 +8,40 @@ concurrency:
   group: ttactualidad-direct-serial
   cancel-in-progress: false
 jobs:
-  apply:
+  remove:
     if: github.event.action == 'ttactualidad_action_v1'
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
-      - name: Apply decision directly (without Telegram)
+          fetch-depth: 1
+      - name: Apply only validated delete, retry on competing editorial commits
         env:
           TT_ACTUALIDAD_EVENT_JSON: ${{ toJSON(github.event.client_payload) }}
-        run: |
-          python3 pilot/apply-ttactualidad-action.py
-      - name: Publish state changes after successful validation
+        shell: bash
         run: |
           set -euo pipefail
           git config user.name "ttactualidad-actions[bot]"
           git config user.email "ttactualidad-actions[bot]@users.noreply.github.com"
-          git add -- ttittulares/prepared.json ttittulares/editorial-queue.json ttittulares/decisions.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json pilot/ttactualidad-action-receipts.json
-          if git diff --cached --quiet; then
-            echo "No changes (idempotent)"
-            exit 0
-          fi
-          git commit -m "TTActualidad: apply direct editorial action"
-          git push origin HEAD:main
+          for attempt in 1 2 3 4 5; do
+            echo "Direct action attempt $attempt (read latest main)"
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/apply-ttactualidad-action.py
+            git add -- ttittulares/prepared.json ttittulares/decisions.json trends/mobile-decisions.json trends/telegram-image-deliveries.json pilot/ttactualidad-action-receipts.json
+            if git diff --cached --quiet; then
+              echo "Already processed; no changes to push."
+              exit 0
+            fi
+            git commit -m "TTActualidad: quitar elemento de Listas"
+            if git push origin HEAD:main; then
+              echo "Authoritative GitHub state updated."
+              exit 0
+            fi
+            echo "Concurrent update: retry against fresh main."
+            sleep $((attempt * 2))
+          done
+          echo "Could not persist action after five attempts" >&2
+          exit 1
