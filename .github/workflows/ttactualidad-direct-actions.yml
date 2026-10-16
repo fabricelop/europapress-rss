@@ -1,0 +1,36 @@
+name: TTActualidad direct actions (inactive until cutover)
+on:
+  repository_dispatch:
+    types: [ttactualidad_action_v1]
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-direct-serial
+  cancel-in-progress: false
+jobs:
+  apply:
+    if: github.event.action == 'ttactualidad_action_v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply decision directly (without Telegram)
+        env:
+          TT_ACTUALIDAD_EVENT_JSON: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          python3 pilot/apply-ttactualidad-action.py
+      - name: Publish state changes after successful validation
+        run: |
+          set -euo pipefail
+          git config user.name "ttactualidad-actions[bot]"
+          git config user.email "ttactualidad-actions[bot]@users.noreply.github.com"
+          git add -- ttittulares/prepared.json ttittulares/editorial-queue.json ttittulares/decisions.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json pilot/ttactualidad-action-receipts.json
+          if git diff --cached --quiet; then
+            echo "No changes (idempotent)"
+            exit 0
+          fi
+          git commit -m "TTActualidad: apply direct editorial action"
+          git push origin HEAD:main
