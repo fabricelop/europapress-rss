@@ -5,8 +5,8 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-16T22:45:00+02:00",
-  "last_completed_at": "2026-10-16T23:01:55.682+02:00",
-  "updated_at": "2026-10-16T23:01:55.682+02:00",
+  "last_completed_at": "2026-10-16T23:03:56.120+02:00",
+  "updated_at": "2026-10-16T23:03:56.120+02:00",
   "status": "success",
   "processed_ids": [
     "aaba41f2ac1f",
@@ -36,7 +36,7 @@
     "run_id": "tr-chat-20261016T224500-aaba41f2ac1f",
     "requested_at": "2026-10-16T22:45:00+02:00",
     "reason": "execution-start-pending-repair",
-    "workflow_run_id": 38965688689,
+    "workflow_run_id": 38966254341,
     "workflow_conclusion": "success"
   },
   "last_run": {
@@ -48,8 +48,8 @@
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-16T22:45:00+02:00",
-    "updated_at": "2026-10-16T23:01:55.682+02:00",
-    "finished_at": "2026-10-16T23:01:55.682+02:00",
+    "updated_at": "2026-10-16T23:03:56.120+02:00",
+    "finished_at": "2026-10-16T23:03:56.120+02:00",
     "current": 10,
     "total": 10,
     "trend_id": null,
@@ -61,7 +61,7 @@
       "new_cards": 5,
       "revisions_updated": 1,
       "grouped_into_existing_card": 1,
-      "trends_problematic": 3,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
       "incidents": 2,
       "queue_remaining": 1,
@@ -73,9 +73,10 @@
       "remates_omitted": 0,
       "telegram_orphans": 0,
       "provisional_telegram": 0,
-      "pending_repair_triggered": 1
+      "pending_repair_triggered": 1,
+      "trends_inactive": 2
     },
-    "message": "Pasada completada: 10 revisiones tratadas; 7 explicadas/verificadas, 3 problemáticas por falta de detonante fiable, 0 preparing/update, 0 rewrite_pending y Telegram sin huérfanos. Cacería queda reintentable como único problematic en cola.",
+    "message": "Pasada completada y verificada: 7 revisiones explicadas/cerradas, Athletic y Marta Nebot inactivas al salir del ámbito activo, Cacería permanece problematic tras dos intentos, 0 preparing/update, 0 rewrite_pending y Telegram sin huérfanos.",
     "incident_count": 2,
     "incidents": [
       {
@@ -564,7 +565,7 @@
     "new_cards": 5,
     "revisions_updated": 1,
     "grouped_into_existing_card": 1,
-    "trends_problematic": 3,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
     "incidents": 2,
     "queue_remaining": 1,
@@ -576,7 +577,8 @@
     "remates_omitted": 0,
     "telegram_orphans": 0,
     "provisional_telegram": 0,
-    "pending_repair_triggered": 1
+    "pending_repair_triggered": 1,
+    "trends_inactive": 2
   },
   "unresolved_orphan_ids": [],
   "activity": [
