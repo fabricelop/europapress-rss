@@ -9,6 +9,7 @@ class LiveEditorialTests(unittest.TestCase):
   self.addCleanup(lambda:setattr(app,'ROOT',self.original))
   self.write('ttittulares/editorial-queue.json',{'items':[]})
   self.write('ttittulares/status.json',{'processing_items':[],'problematic_items':[],'three_source_items':[]})
+  self.write('telegram/events.json',{'events':[]})
   self.write('ttittulares/decisions.json',{'items':[]})
   self.write('ttittulares/prepared.json',{'items':[]})
   self.write('trends/editorial-queue.json',{'items':[]})
@@ -33,6 +34,48 @@ class LiveEditorialTests(unittest.TestCase):
   self.assertEqual(item['status'],'PROCESSING')
   self.assertTrue(item['force_user_elaborate'])
   self.assertEqual(item['selection_mode'],'MANUAL_REOPEN_OUTCOME')
+ def test_tti_growing_manual_override_three_sources(self):
+  self.write('ttittulares/status.json',{'three_source_items':[{
+   'event_id':'grow123','revision':2,'title':'Noticia creciendo','source_count':3,
+   'sources':['Medio A','Medio B','Medio C']}]})
+  self.write('telegram/events.json',{'events':[{
+   'id':'grow123','revision':2,'canonical_title':'Noticia creciendo',
+   'source_count':3,'status':'WAITING','sources':['Medio A','Medio B','Medio C'],
+   'appearances':[{'source':'Medio A','url':'https://a.test/a'}]}]})
+  changed,result=app.apply_live('ttittulares','grow123','prepare',2)
+  self.assertEqual(result,'applied')
+  row=changed['ttittulares/editorial-queue.json']['items'][0]
+  self.assertEqual(row['status'],'PROCESSING')
+  self.assertEqual(row['selection_mode'],'MANUAL_GROWING_OVERRIDE')
+  self.assertEqual(row['source_count'],3)
+  self.assertEqual(row['source_evidence'][0]['source'],'Medio A')
+  self.assertTrue(row['force_user_elaborate'])
+  self.assertTrue(row['manual_threshold_override'])
+  self.assertTrue(row['manual_investigation_requested'])
+  self.assertNotIn('telegram/editorial-processing.json',changed)
+ def test_tti_growing_rejects_stale_revision(self):
+  self.write('ttittulares/status.json',{'three_source_items':[{'event_id':'grow123','revision':3}]})
+  self.write('telegram/events.json',{'events':[{'id':'grow123','revision':3,
+   'status':'WAITING','source_count':3}]})
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','grow123','prepare',2)
+ def test_tti_growing_rejects_radar_promoted_to_four(self):
+  self.write('ttittulares/status.json',{'three_source_items':[{'event_id':'grow123','revision':1}]})
+  self.write('telegram/events.json',{'events':[{'id':'grow123','revision':1,
+   'status':'ELIGIBLE','source_count':4}]})
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','grow123','prepare',1)
+ def test_tti_growing_rejects_non_growing_or_terminal(self):
+  self.write('telegram/events.json',{'events':[{'id':'grow123','revision':1,
+   'status':'WAITING','source_count':3}]})
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','grow123','prepare',1)
+  self.write('ttittulares/status.json',{'three_source_items':[{'event_id':'grow123','revision':1}]})
+  self.write('ttittulares/decisions.json',{'items':[{'event_id':'grow123','status':'deleted'}]})
+  with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','grow123','prepare',1)
+ def test_tti_growing_idempotent_if_already_processing(self):
+  self.write('ttittulares/editorial-queue.json',{'items':[{
+   'event_id':'grow123','status':'PROCESSING','revision':1}]})
+  changed,result=app.apply_live('ttittulares','grow123','prepare',1)
+  self.assertEqual(result,'already_applied')
+  self.assertFalse(changed)
  def test_tti_stale_prepare_rejected(self):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','revision':2}]})
   with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','abc123','prepare',1)
