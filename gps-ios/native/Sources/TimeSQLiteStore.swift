@@ -56,7 +56,7 @@ final class TimeSQLiteStore {
             throw TimeStoreError.sql(reason)
         }
         try execute("PRAGMA journal_mode=WAL")
-        try execute("PRAGMA synchronous=NORMAL")
+        try execute("PRAGMA synchronous=FULL")
         try execute("CREATE TABLE IF NOT EXISTS fixes (id TEXT PRIMARY KEY, date REAL NOT NULL, lat REAL, lon REAL, accuracy REAL, source TEXT)")
         try execute("CREATE INDEX IF NOT EXISTS idx_fixes_date ON fixes(date)")
         try execute("CREATE TABLE IF NOT EXISTS intervals (id TEXT PRIMARY KEY, start REAL, end REAL, cell_row INTEGER, cell_col INTEGER, quality TEXT, source TEXT)")
