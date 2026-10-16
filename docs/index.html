@@ -294,6 +294,52 @@ function trendRows(){
      ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
      (x.rank<=10||x._manualPending)):mapped;
  }
+ // TTActualidad direct Listas: editorial explanations are authoritative.
+ // A Telegram message is no longer a precondition for a ready trend.
+ if(state.tab==='listas'){
+  const lastRequests=new Map(),lastDeliveries=new Map(),lastManual=new Map();
+  const at=row=>Date.parse(row.updated_at||row.deleted_at||row.explained_at||row.requested_at||'')||0;
+  const closed=new Set(['deleted','dismissed','published','removed','delete_pending']);
+  for(const req of requests){
+   const id=String(req.id||'');if(!id)continue;
+   const prev=lastRequests.get(id);
+   if(!prev||Number(req.revision||0)>Number(prev.revision||0)||at(req)>=at(prev))
+    lastRequests.set(id,req);
+  }
+  for(const d of ledger){
+   const id=String(d.event_id||'');if(!id)continue;
+   const prev=lastDeliveries.get(id);
+   if(!prev||Number(d.revision||0)>Number(prev.revision||0)||
+      String(d.updated_at||d.delivered_at||'')>String(prev.updated_at||prev.delivered_at||''))
+    lastDeliveries.set(id,d);
+  }
+  for(const row of state.data.manual?.items||[]){
+   const id=String(row.id||'');if(!id)continue;
+   const prev=lastManual.get(id);
+   if(!prev||Number(row.revision||0)>Number(prev.revision||0)||at(row)>=at(prev))
+    lastManual.set(id,row);
+  }
+  const mobileClosed=new Set((state.data.mobileDecisions?.items||[])
+   .filter(row=>closed.has(String(row.status||'').toLowerCase()))
+   .map(row=>String(row.id||row.event_id||'')));
+  const current=Date.now();
+  return [...lastManual.values()].filter(row=>{
+   const id=String(row.id||''),req=lastRequests.get(id)||{},delivery=lastDeliveries.get(id)||{};
+   const explained=Date.parse(row.explained_at||'');
+   if(!Number.isFinite(explained)||current-explained>7*86400000||explained-current>3600000)return false;
+   if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
+   if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
+   if(mobileClosed.has(id))return false;
+   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
+      delivery.status].some(x=>closed.has(String(x||'').toLowerCase())))return false;
+   return true;
+  }).map(row=>({
+    ...row,title:String(row.name||row.display_name||row.id),
+    _kind:'tr',_id:String(row.id),_status:'EXPLICADA',_last_at:row.explained_at,
+    revision:Number(row.revision||0),
+    image_url:row.archive_image?.url||row.fallback_image?.url||''
+  })).sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,100);
+ }
  const latest=new Map();
  for(const x of ledger){
   const id=String(x.event_id||'');if(!id)continue;
