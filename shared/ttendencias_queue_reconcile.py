@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Persist verified TTendencias editorial results only AFTER Telegram delivery.
+"""Persist verified TTendencias editorial results independently of Telegram.
 
-Queue can be ahead of the huge requests.json file. This reconciles exact
-(id, revision) to both canonical editorial stores and drains only confirmed
-completed queue items. Never closes deleted/undelivered provisional cards.
+Queue may be ahead of the large requests.json file. Reconcile exact
+(id, revision) after editorial verification, never after transport confirmation.
+Terminal decisions and newer revisions remain protected.
 """
 import json
 import tempfile
@@ -35,9 +35,6 @@ def reconcile():
     byreq={str(row.get("id") or ""):row for row in reqs["requests"]}
     bymanual={(str(row.get("id") or ""),int(row.get("revision") or 0)):row
               for row in manual["items"]}
-    finals={(str(row.get("event_id") or ""),int(row.get("revision") or 0)):row
-            for row in d["items"] if row.get("status")=="sent" and row.get("final") is True
-            and int(row.get("telegram_message_id") or 0)>0}
     terminal={"deleted","dismissed","published","removed","delete_pending","delete_failed"}
     blocked={str(row.get("event_id") or "") for row in d["items"]
              if str(row.get("status") or "").lower() in terminal}
@@ -51,7 +48,7 @@ def reconcile():
         existing=byreq.get(tid)
         if (str(queue_row.get("status") or "").lower()!="explained"
                 or queue_row.get("editorial_verified") is not True
-                or not source[0] or tid in blocked or (tid,rev) not in finals
+                or not source[0] or tid in blocked
                 or existing and int(existing.get("revision") or 0)>rev
                 or existing and str(existing.get("status") or "").lower() in terminal):
             remain.append(queue_row)
@@ -65,8 +62,7 @@ def reconcile():
             "closer_text":source[1],"explained_at":stamp,
             "editorial_verified":True,
             "source_url":queue_row.get("source_url"),
-            "verification_sources":queue_row.get("verification_sources") or [],
-            "telegram_message_id":finals[(tid,rev)]["telegram_message_id"]
+            "verification_sources":queue_row.get("verification_sources") or []
         }
         # Preserve the current explanation_only metadata from the compact queue.
         # This is important when requests.json/manual-explained are too large for
@@ -123,19 +119,23 @@ def selftest():
                 {"id":"a","name":"Evento","rank":3,"revision":0,
                  "status":"explained","editorial_verified":True,
                  "explanation":"TT#3 Evento confirmado","closer_text":"🌶️ Remate"},
-                {"id":"b","name":"Aún sin enviar","revision":0,
+                {"id":"b","name":"Validado sin Telegram","revision":0,
                  "status":"explained","editorial_verified":True,
-                 "explanation":"Verificado"}]})
+                 "explanation":"Verificado"},
+                {"id":"c","name":"Sin validar","revision":0,
+                 "status":"explained","editorial_verified":False,
+                 "explanation":"No apto"}]})
             write("trends/telegram-image-deliveries.json",{"items":[
                 {"event_id":"a","revision":0,"telegram_message_id":44,
                  "status":"sent","final":True}]})
             write("trends/requests.json",{"requests":[]})
             write("trends/telegram-manual-explained.json",{"items":[]})
-            assert reconcile()==["a"]
+            assert reconcile()==["a","b"]
             assert reconcile()==[]
             assert read("trends/requests.json")["requests"][0]["status"]=="explained"
-            assert len(read("trends/telegram-manual-explained.json")["items"])==1
-            assert read("trends/editorial-queue.json")["items"][0]["id"]=="b"
+            assert len(read("trends/telegram-manual-explained.json")["items"])==2
+            assert read("trends/editorial-queue.json")["items"][0]["id"]=="c"
+            assert all("telegram_message_id" not in row for row in read("trends/telegram-manual-explained.json")["items"])
             print("TTENDENCIAS_EDITORIAL_RECONCILE_SELFTEST_OK")
         finally:ROOT=original
 
