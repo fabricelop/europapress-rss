@@ -51,6 +51,9 @@ Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noti
 
 ### Contrato visual persistente de Gag IA
 
+**NORMA VISUAL PRIORITARIA 16/10/2026 — GUINDILLA SOLO EN TEXTO:** `🌶️` es exclusivamente el icono tipográfico que introduce `tweet.remate` y la última línea del tuit. **Jamás debe aparecer dentro de una imagen de TTiTTulares**, ni como guindilla/chile/pimiento picante real o caricaturizado, ni como emoji, silueta, logo, mascota, sello, firma o elemento decorativo. El generador debe representar la **idea del remate** y los hechos, no ilustrar el emoji. Esta norma se aplica a Gag IA, imágenes serias, nuevos jobs, regeneraciones y solicitudes manuales. Conservar `🌶️` en el texto: no reescribirlo ni retirarlo. Si un resultado visual contiene una guindilla por accidente, se rechaza y se regenera; no modificar los datos editoriales por ello.
+
+
 Todo job automático o manual de TTiTTulares debe seguir este criterio:
 - **más gag, menos barroquismo**;
 - UNA sola idea visual fuerte por imagen, entendible en 1–2 segundos;
