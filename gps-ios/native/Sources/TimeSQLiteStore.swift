@@ -102,7 +102,8 @@ final class TimeSQLiteStore {
 
     func createSafetyCopy(in directory: URL) throws {
         guard let source = db else { throw TimeStoreError.sql("SQLite cerrado") }
-        let filename = "time-map-safety-\(Int(Date().timeIntervalSince1970))-\(UUID().uuidString).sqlite"
+        let microseconds = Int64(Date().timeIntervalSince1970 * 1_000_000)
+        let filename = "time-map-safety-\(microseconds)-\(UUID().uuidString).sqlite"
         let targetURL = directory.appendingPathComponent(filename)
         var target: OpaquePointer?
         let openResult = sqlite3_open_v2(targetURL.path, &target,
