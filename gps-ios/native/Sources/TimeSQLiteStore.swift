@@ -182,6 +182,7 @@ final class TimeSQLiteStore {
     /// Una sola transacción por lote; evita reescribir miles de muestras JSON.
     func append(fixes: [GPSPoint], intervals: [AssignedInterval],
                 totals: [String: TimeInterval], header: TimeStoreHeader) throws {
+        guard try headerExists() else { throw TimeStoreError.missingHeader }
         try transaction {
             for point in fixes { try insertFix(point) }
             for interval in intervals { try insertInterval(interval) }
@@ -190,6 +191,7 @@ final class TimeSQLiteStore {
         }
     }
     func saveHeader(_ header: TimeStoreHeader) throws {
+        guard try headerExists() else { throw TimeStoreError.missingHeader }
         try transaction { try writeHeader(header) }
     }
 
