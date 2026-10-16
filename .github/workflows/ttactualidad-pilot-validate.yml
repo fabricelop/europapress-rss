@@ -132,3 +132,8 @@ jobs:
           if (-not $html.Contains('function hideOptimistically(item)')) { throw 'Instant button deletion missing' }
           if (-not $html.Contains('https://t.me/TTImages_bot')) { throw 'TTImages button missing' }
           Write-Host 'V6 mobile UI read-only verification passed'
+      - name: Test Telegram-independent TTendencias ready cards
+        shell: pwsh
+        run: |
+          node pilot/test-ttactualidad-trend-listas.mjs
+          python -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
