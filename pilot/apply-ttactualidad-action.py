@@ -177,8 +177,55 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
 
 
 
+def delete_tremending(event_id: str, revision: int):
+    """Remove one Tremending card, keeping its URL in the collector checkpoint."""
+    if not event_id.startswith("tremending-"):
+        fail("Identificador Tremending no valido")
+    path = "ttittulares/tremending/items.json"
+    decisions_path = "ttittulares/decisions.json"
+    state = load(path, {"items": [], "scan": {}})
+    decisions = load(decisions_path, {"items": []})
+    selected = find(state.get("items", []), "id", event_id)
+    existing = find(decisions.get("items", []), "event_id", event_id)
+    if selected is None:
+        if existing and str(existing.get("status") or "").lower() == "deleted":
+            return {}, "already_applied"
+        fail("La entrada Tremending ya no existe; actualiza el panel")
+    check_revision(selected, revision)
+    if str(selected.get("status") or "").lower() in {"deleted", "dismissed", "removed"}:
+        fail("La entrada Tremending ya esta eliminada")
+    if existing and str(existing.get("status") or "").lower() in {"dismissed", "deleted"}:
+        fail("Esta entrada tiene una decision final incompatible; actualiza el panel")
+    url = str(selected.get("url") or "").strip()
+    if not url.startswith("https://www.publico.es/tremending/"):
+        fail("Falta URL Tremending valida; no se elimina")
+    scan = state.get("scan") or {}
+    # Collector ignores all scan.seen_urls, so removing the item cannot make
+    # it reappear after the next source refresh.
+    seen = set(scan.get("seen_urls") or [])
+    seen.add(url)
+    scan["seen_urls"] = sorted(seen)
+    state["scan"] = scan
+    state["items"] = [row for row in state["items"]
+                      if str(row.get("id") or "") != event_id]
+    now = datetime.now(timezone.utc).isoformat()
+    state["updated_at"] = now
+    state["scan"]["total_items"] = len(state["items"])
+    if not existing:
+        existing = {"event_id": event_id}
+        decisions.setdefault("items", []).append(existing)
+    existing.update({"status": "deleted", "revision": revision,
+                     "updated_at": now, "decision_source": "ttactualidad_direct_tremending"})
+    decisions["updated_at"] = now
+    return {path: state, decisions_path: decisions}, "applied"
+
+
 def apply_live(project: str, event_id: str, decision: str, revision: int):
     """Live editorial decisions. Never call legacy Telegram callbacks."""
+    if project == "ttittulares" and event_id.startswith("tremending-"):
+        if decision != "deleted":
+            fail("Tremending solo admite Quitar de Listas")
+        return delete_tremending(event_id, revision)
     if decision == "deleted":
         return apply(project, event_id, decision, revision)
     now = datetime.now(timezone.utc).isoformat()

@@ -1,7 +1,7 @@
 name: TTActualidad V8 safe live rollout
 on:
   push:
-    branches: ['fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016']
+    branches: ['fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
       - 'pilot/test_ttactualidad_direct_actions.py'
@@ -30,6 +30,8 @@ jobs:
         run: python3 -m unittest discover -s pilot/ttactualidad-live -p 'test_live_actions.py' -v
       - name: Trend card freshness and live interface
         run: node pilot/ttactualidad-live/test_listas.mjs
+      - name: Tremending UI deletion regression
+        run: node pilot/ttactualidad-live/test_tremending.mjs
       - name: Worker actions and safe retry
         run: node pilot/ttactualidad-live/test_worker_live.mjs
       - name: Validate browser and Worker JS
@@ -50,6 +52,7 @@ jobs:
           assert "crypto.subtle.verify" in worker
           wf=Path('.github/workflows/ttactualidad-direct-actions.yml').read_text()
           assert 'ttittulares/editorial-queue.json' in wf and 'trends/editorial-queue.json' in wf
+          assert 'ttittulares/tremending/items.json' in wf
           PY
           node --check /tmp/ttactualidad-v8-ui.js
           cp pilot/ttactualidad-live/worker.js /tmp/ttactualidad-v8-worker.mjs
@@ -67,4 +70,12 @@ jobs:
             $errorsFound | ForEach-Object { Write-Host $_.Message }
             throw 'PowerShell V8 syntax invalid'
           }
-          Write-Host 'TTActualidad deploy script syntax OK'
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V83-Tremending.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8.3 syntax invalid'
+          }
+          Write-Host 'TTActualidad deploy scripts syntax OK'
