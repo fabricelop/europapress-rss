@@ -248,6 +248,7 @@ struct SavedState: Codable {
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var storageLoadFailed = false
+    private var lastSafetyCopyAttempt = Date.distantPast
     var storageIsHealthy: Bool { !storageLoadFailed }
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
@@ -316,6 +317,7 @@ struct SavedState: Codable {
             .flatMap { try? JSONDecoder().decode(SavedState.self, from: $0) }
         do {
             let databaseURL = dir.appendingPathComponent("time-map-v3.sqlite")
+            try TimeSQLiteStore.recoverMissingPrimary(at: databaseURL)
             let databaseExisted = FileManager.default.fileExists(atPath: databaseURL.path)
             let db = try TimeSQLiteStore(url: databaseURL)
             if databaseExisted && !(try db.headerExists()) {
@@ -1301,6 +1303,18 @@ struct SavedState: Codable {
                 try JSONEncoder().encode(data).write(to:fileURL,options:.atomic)
             }
             lastSaved = .now
+            // Consistent on-device backup at most once every six hours.
+            // Keep tracking even if backup creation fails: the primary commit succeeded.
+            if let store,
+               Date().timeIntervalSince(lastSafetyCopyAttempt) >= 21_600,
+               (!data.fixes.isEmpty || !data.intervals.isEmpty || !data.totals.isEmpty) {
+                lastSafetyCopyAttempt = Date()
+                do {
+                    try store.createSafetyCopy(in: fileURL.deletingLastPathComponent())
+                } catch {
+                    storeStatus = "SQLite activo · copia de seguridad pendiente"
+                }
+            }
         } catch {
             storageLoadFailed = true
             storeStatus = "ERROR DE ALMACENAMIENTO · escrituras bloqueadas: \(error.localizedDescription)"
