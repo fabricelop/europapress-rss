@@ -36,7 +36,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Cómo funciona este piloto?</summary><p>Las noticias siguen elaborándose con sus sistemas actuales. Las acciones del iPhone van directamente al Worker de prueba, sin Telegram. Mientras la integración GitHub no esté activada, las órdenes se registran solo como simulación y no modifican noticias reales.</p></details>
-<div class="pilot-settings"><strong>TTActualidad · Vista nueva en pruebas</strong><p>Consulta las listas reales. Desliza a la izquierda para descartar; en Listas, a la derecha para abrir X. Los comandos no pasan por Telegram.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>TTActualidad · Vista nueva en pruebas</strong><p>Consulta las listas reales. Desliza para abrir X o retirar de Listas. Los comandos no pasan por Telegram.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button><p><button type="button" id="ttimages-change">Cambiar enlace de TTImages</button></p></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button><button class="refresh" id="ttimages-open" type="button" title="Abrir chat TTImages en Telegram">TTImages ↗</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -386,14 +386,14 @@ function pilotConfig(){
  const e=prompt('URL HTTPS del Worker de prueba',directPilot.url||suggested);if(e===null)return;
  if(!e.trim()){directPilot.url='';directPilot.key='';$('pilot-status').textContent='Sin configurar';return}
  let u;try{u=new URL(e.trim());if(u.protocol!=='https:')throw Error('HTTP')}catch{showToast('URL HTTPS requerida');return}
- const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return;
- directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;$('pilot-status').textContent='Configurado solo para prueba';
+ const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return false;
+ directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;$('pilot-status').textContent='Configurado solo para prueba';return true;
 }
 async function pilotSend(item,decision){
- if(!directPilot.url||!directPilot.key){showToast('Conecta primero las acciones directas');return}
+ if(!directPilot.url||!directPilot.key){if(!pilotConfig())return}
  const project=item._kind==='tr'?'ttendencias':'ttittulares',event_id=String(item._id||'');
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Esta tarjeta todavía no tiene un ID válido');return}
- const label={prepare:'Elaborar',discard:'Desestimar',deleted:'Borrar',published:'Ya publicada'}[decision]||decision;
+ const label={prepare:'Elaborar',discard:'Desestimar',deleted:'Quitar de Listas',published:'Quitar de Listas'}[decision]||decision;
  if(!confirm(label+' esta tarjeta? El piloto registra la orden, sin modificar producción.'))return;
  try{
   const r=await fetch(directPilot.url+'/api/decision',{method:'POST',
@@ -405,6 +405,29 @@ async function pilotSend(item,decision){
   const note=a.routed?'Orden enviada; esperando confirmación en GitHub':'Orden guardada SOLO en pruebas: la noticia sigue igual';
   showToast(note);
  }catch(e){showToast('No registrada: '+String(e.message||e).slice(0,110))}
+}
+
+const TTIMAGES_KEY='ttactualidad-ttimages-url';
+function telegramChatUrl(raw){
+ try{
+  const url=new URL(String(raw||'').trim());
+  if(url.protocol!=='https:'||!['t.me','telegram.me','www.t.me','www.telegram.me'].includes(url.hostname.toLowerCase()))return '';
+  if(url.username||url.password||url.port||url.pathname==='/'||url.pathname.length<2)return '';
+  // No arbitrary domains or URL schemes; never guess the chat username.
+  return url.href;
+ }catch{return ''}
+}
+function openTTImages(change=false){
+ let saved='';try{saved=localStorage.getItem(TTIMAGES_KEY)||''}catch{}
+ let url=telegramChatUrl(saved);
+ if(change||!url){
+  const raw=prompt('Pega el enlace exacto del chat TTImages de Telegram (t.me/...). Se guarda solo en este iPhone.',url||'');
+  if(raw===null)return;
+  url=telegramChatUrl(raw);
+  if(!url){showToast('Necesito un enlace real t.me/… de TTImages');return}
+  try{localStorage.setItem(TTIMAGES_KEY,url)}catch{showToast('El enlace no se guardará para próximas visitas')}
+ }
+ location.href=url;
 }
 function pilotSwipes(card,item){
  const ready=item._status==='LISTA'||item._status==='EXPLICADA';
@@ -463,7 +486,7 @@ function rowCard(x,i){
   if(d.editorial&&x._status==='EXPLICADA'&&x._telegramConfirmed){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
-   command('Ya publicada','published');command('Borrar','deleted');
+   command('Quitar de Listas','deleted');
   }
   // Manual request always remains available for ranks 11-30 that are
   // NOT currently in Explicadas or under editorial processing. A historical
@@ -484,7 +507,7 @@ function rowCard(x,i){
    tweets.forEach(t=>{const l=document.createElement('a');l.href=isHttp(t.url);l.target='_blank';l.rel='noopener';l.textContent=t.author||'Ver tuit';detail.append(l)});
    out.querySelector('.card-body').append(detail);
   }
-  command('🗑 Borrar','deleted');
+  command('Quitar de Listas','deleted');
   return out
  }
  if(x._historical){return out}
@@ -495,10 +518,10 @@ function rowCard(x,i){
   if(img)btn('📷 Copiar foto de archivo',()=>copyArchive(img,d.title));
   if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
-  if(showControls){command('Ya publicada','published');command('Borrar','deleted')}
-  else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO','EN ELABORACIÓN'].includes(x._status)){command('Desestimar','discard');btn('Dejar elaborar',()=>showToast('Continúa elaborándose como siempre'))}
-  else if(x._kind==='tr'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard');btn('Dejar elaborar',()=>showToast('Continúa elaborándose como siempre'))}
-  else if(x._kind==='tr'){command('Ya publicada','published');command('Borrar','deleted')}
+  if(showControls){command('Quitar de Listas','deleted')}
+  else if(x._kind==='tti'&&['PROBLEMÁTICA','CRECIENDO','EN ELABORACIÓN'].includes(x._status)){command('Desestimar','discard')}
+  else if(x._kind==='tr'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard')}
+  else if(x._kind==='tr'){command('Quitar de Listas','deleted')}
  }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
  return out
 }
@@ -574,6 +597,8 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
+$('ttimages-open').onclick=()=>openTTImages();
+$('ttimages-change').onclick=()=>openTTImages(true);
 $('pilot-prepare').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'prepare');
 $('pilot-discard').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'discard');
 void pilotPairFromUrl();
