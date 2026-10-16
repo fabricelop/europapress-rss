@@ -83,3 +83,16 @@ jobs:
           if (-not $html.Contains("command('Quitar de Listas','deleted')")) { throw 'Single remove action missing' }
           if (-not $html.Contains('if(!pilotConfig())return')) { throw 'Direct action setup missing' }
           Write-Host 'UI V3 pinned download and controls: OK'
+      - name: Verify exact V4 card grid, TTImages, and no useless buttons
+        shell: pwsh
+        run: |
+          $html = Get-Content docs/index.html -Raw -Encoding UTF8
+          foreach ($name in @('TTImages','Publicar en X','Copiar GAG Completo','Abrir ChatGPTImages','Copiar Texto','Copiar Foto Archivo','Quitar de Listas','Buscar en X')) {
+            if (-not $html.Contains($name)) { throw "V4 missing button: $name" }
+          }
+          if (-not $html.Contains('grid-template-columns:repeat(2,minmax(0,1fr))')) { throw 'V4 must be two columns' }
+          if (-not $html.Contains('https://t.me/TTImages_bot')) { throw 'TTImages exact chat link missing' }
+          if ($html.Contains('function openTTImages(')) { throw 'V4 must never ask for TTImages URL' }
+          if ($html.Contains("btn('Dejar elaborar'")) { throw 'V4 inert button must be removed' }
+          if ($html.Contains("command('Ya publicada'")) { throw 'V4 duplicate button must be removed' }
+          Write-Host 'V4 exact actions grid validated'
