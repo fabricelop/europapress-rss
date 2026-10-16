@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-16T01:08:52.290798Z",
+  "updated_at": "2026-10-16T01:11:53.170Z",
   "items": [
     {
       "event_id": "dc73fea88eb1",
@@ -731,7 +731,7 @@
       "with_image": true,
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
@@ -764,7 +764,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Lotería Nacional: resultado del jueves 15 de octubre de 2026"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-16T01:11:53.170Z",
+      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
     }
   ],
   "count": 0,
