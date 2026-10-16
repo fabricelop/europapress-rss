@@ -197,9 +197,12 @@ final class TimeSQLiteStore {
 
     func load() throws -> SavedState {
         var data = SavedState()
-        if let s = try? prepared("SELECT value FROM meta WHERE key='header'") {
-            defer { sqlite3_finalize(s) }
-            if sqlite3_step(s) == SQLITE_ROW, let bytes = sqlite3_column_blob(s, 0) {
+        let s = try prepared("SELECT value FROM meta WHERE key='header'")
+        defer { sqlite3_finalize(s) }
+        let headerResult = sqlite3_step(s)
+        if headerResult == SQLITE_ROW {
+            guard let bytes = sqlite3_column_blob(s, 0) else { throw TimeStoreError.missingHeader }
+            do {
                 let blob = Data(bytes: bytes, count: Int(sqlite3_column_bytes(s, 0)))
                 let header = try JSONDecoder().decode(TimeStoreHeader.self, from: blob)
                 data.names = header.names
@@ -217,9 +220,11 @@ final class TimeSQLiteStore {
                 data.gpsRest = header.gpsRest
                 data.dismissedGPSGapIDs = header.dismissedGPSGapIDs ?? []
             }
+        } else if headerResult == SQLITE_DONE {
+            throw TimeStoreError.missingHeader
+        } else {
+            throw TimeStoreError.sql(message())
         }
-        // Missing header must never silently become a valid empty state.
-        if try !headerExists() { throw TimeStoreError.missingHeader }
         let fixes = try prepared("SELECT id,date,lat,lon,accuracy,source FROM fixes ORDER BY date")
         defer { sqlite3_finalize(fixes) }
         var fixResult = sqlite3_step(fixes)
