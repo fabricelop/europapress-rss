@@ -248,6 +248,7 @@ struct SavedState: Codable {
     private let fileURL: URL
     private var store: TimeSQLiteStore?
     private var storageLoadFailed = false
+    var storageIsHealthy: Bool { !storageLoadFailed }
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
@@ -705,6 +706,10 @@ struct SavedState: Codable {
         assignName(cell,to:name)
     }
     func setTrackingEnabled(_ enabled: Bool) {
+        guard !enabled || storageIsHealthy else {
+            gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         data.trackingEnabled = enabled
         save(force: true)
         activityPublisher.refresh(from:self,force:true)
@@ -1391,6 +1396,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func begin(_ model: TimeModel) {
+        guard model.storageIsHealthy else {
+            model.gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         guard !restTransitionInProgress else { return }
         self.model = model
         if model.isResting {
