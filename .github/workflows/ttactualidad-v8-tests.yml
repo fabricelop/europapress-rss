@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -60,7 +60,8 @@ jobs:
           import subprocess
           allowed={'pilot/apply-ttactualidad-action.py',
                    '.github/workflows/ttactualidad-direct-actions.yml'}
-          paths=subprocess.check_output(['git','diff','--name-only','origin/main...HEAD'],text=True).splitlines()
+          subprocess.check_call(['git','fetch','--depth=1','origin','main'])
+          paths=subprocess.check_output(['git','diff','--name-only','origin/main','HEAD'],text=True).splitlines()
           assert all(p in allowed or p.startswith('pilot/ttactualidad-live/') or p=='.github/workflows/ttactualidad-v8-tests.yml' for p in paths),paths
           assert 'main/docs/index.html' not in paths and 'docs/index.html' not in paths
           print('ISOLATION_OK',paths)
