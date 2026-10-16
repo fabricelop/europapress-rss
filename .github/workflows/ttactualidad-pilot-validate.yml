@@ -20,7 +20,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1')) {
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1')) {
             $tok = $null
             $errorsList = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -69,3 +69,17 @@ jobs:
           if (-not $w.Contains('on_demand_no_polling') -or -not $w.Contains('env.ASSETS.fetch(req)')) { throw 'Pinned worker artifact mismatch' }
           if (-not $h.Contains('Conectar acciones directas') -or -not $h.Contains('pilotSwipes(card,item)')) { throw 'Pinned UI artifact mismatch' }
           Write-Host 'V2 pinned Worker and UI download validated'
+      - name: Verify TTImages and simplified list controls in pinned V3
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $pin = 'ae6d3bea1fa91d4bb2ac420f3ac40a668255ea02'
+          $url = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $pin + '/docs/index.html?verify=' + $pin
+          $html = (Invoke-WebRequest -UseBasicParsing -Uri $url).Content
+          if (-not $html.Contains('id="ttimages-open"')) { throw 'TTImages missing' }
+          if (-not $html.Contains('function telegramChatUrl(raw)')) { throw 'Telegram link validation missing' }
+          if ($html.Contains("btn('Dejar elaborar'")) { throw 'Inert button survived' }
+          if ($html.Contains("command('Ya publicada'")) { throw 'Duplicate status action survived' }
+          if (-not $html.Contains("command('Quitar de Listas','deleted')")) { throw 'Single remove action missing' }
+          if (-not $html.Contains('if(!pilotConfig())return')) { throw 'Direct action setup missing' }
+          Write-Host 'UI V3 pinned download and controls: OK'
