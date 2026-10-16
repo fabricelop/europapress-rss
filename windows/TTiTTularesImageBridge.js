@@ -368,12 +368,14 @@ function buildMessage(job){
   const factual=String(ctx.factual_summary||"");
   const style=String(ctx.image_style||"").trim()||"Más gag, menos barroquismo. Una sola idea visual fuerte, composición limpia, pocos elementos protagonistas, acabado cuidado y estilo editorial variable; evita ilustración literal.";
   const styleName=String(ctx.image_style_name||"variable").trim();
+  const NO_PEPPER="REGLA VISUAL OBLIGATORIA: el emoji 🌶️ solo es un marcador del remate ESCRITO, nunca un elemento de la imagen. PROHIBIDO representar guindillas, chiles, pimientos picantes, iconos de guindilla, logotipos, mascotas o símbolos equivalentes, ni en fondo, objetos, carteles, ropa, decoraciones o firmas. Convierte exclusivamente el SIGNIFICADO del remate en un gag visual, nunca su emoji.";
   if(String(job.editorial_image_mode||ctx.editorial_image_mode||"")==="rigor"){
     return [
       "TTITTULARES_IMAGE_JOB_V4 "+commandId+" "+targetId+" | Usa ChatGPT Images y genera UNA imagen periodística RIGUROSA y RESPETUOSA sobre '"+name+"'.",
       "HECHOS CERRADOS:", factual||tweet,
       "DIRECCIÓN VISUAL:",style,
-      "Evita por completo humor, sátira, guindillas, caricaturas, trivialización de víctimas o afirmaciones no verificadas. No interpretes el remate satírico como instrucciones visuales. Imagen sobria 16:9, sin violencia gráfica ni personas identificables inventadas. No reescribas la noticia."
+      NO_PEPPER,
+      "Evita por completo humor, sátira, caricaturas, trivialización de víctimas o afirmaciones no verificadas. No interpretes el remate satírico como instrucciones visuales. Imagen sobria 16:9, sin violencia gráfica ni personas identificables inventadas. No reescribas la noticia."
     ].join("\\n");
   }
   return [
@@ -390,8 +392,9 @@ function buildMessage(job){
     "",
     "DIRECCIÓN VISUAL ASIGNADA ("+styleName+"):",
     style,
+    NO_PEPPER,
     "",
-    "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe traducir la guindilla; evita añadir símbolos, carteles u objetos que no refuercen directamente ese único chiste.",
+    "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe expresar el SIGNIFICADO del chiste, no el emoji de texto; evita añadir símbolos, carteles u objetos que no refuercen directamente ese único chiste.",
     "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen. No proceses otra noticia ni descargues, captures, subas ni persistas la imagen. Solo ChatGPT Images."
   ].join("\n")
 }
