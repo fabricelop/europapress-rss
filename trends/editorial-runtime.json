@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T23:15:00+02:00",
-  "last_completed_at": "2026-10-16T23:24:00+02:00",
-  "updated_at": "2026-10-16T23:24:00+02:00",
+  "last_started_at": "2026-10-16T23:46:16+02:00",
+  "last_completed_at": "2026-10-16T23:54:29+02:00",
+  "updated_at": "2026-10-16T23:54:29+02:00",
   "status": "success",
   "processed_ids": [
     "aaba41f2ac1f",
@@ -40,24 +40,22 @@
     "workflow_conclusion": "success"
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T231500-aaba41f2ac1f",
+    "run_id": "tr-chat-20261016T234616-batch5",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T23:15:00+02:00",
-    "updated_at": "2026-10-16T23:24:00+02:00",
-    "finished_at": "2026-10-16T23:24:00+02:00",
-    "current": 1,
-    "total": 1,
-    "trend_id": null,
-    "title": null,
+    "started_at": "2026-10-16T23:46:16+02:00",
+    "updated_at": "2026-10-16T23:54:29+02:00",
+    "finished_at": "2026-10-16T23:54:29+02:00",
+    "current": 5,
+    "total": 5,
     "summary": {
-      "trends_processed": 1,
-      "trends_explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "trends_processed": 5,
+      "trends_explained": 5,
+      "explanation_groups": 4,
+      "new_cards": 2,
+      "revisions_updated": 2,
+      "grouped_into_existing_card": 1,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -65,15 +63,15 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 1,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
+      "remates_omitted": 0,
       "telegram_orphans": 0,
       "provisional_telegram": 0,
       "pending_repair_triggered": 1,
       "trends_inactive": 0
     },
-    "message": "Pasada completada y verificada: Cacería explicada; 0 preparing/update/problematic, 0 rewrite_pending y Telegram sin huérfanos.",
+    "message": "Pasada completada y verificada: 5 revisiones cerradas en 4 explicaciones, cola 0, sin rewrite_pending ni huérfanos Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -85,71 +83,178 @@
     },
     "remate_selections": [
       {
-        "trend_id": "aaba41f2ac1f",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
+        "trend_id": "9f3e1ea405dd",
+        "revision": 1,
+        "candidate_count": 5,
+        "selected_candidate": "Morata encontró la roja antes que el primer gol con el Leganés.",
         "selected_score": null,
-        "no_remate_reason": "Protección editorial: el detonante está ligado a denuncias de presunta agresión sexual; no se banaliza a posibles víctimas."
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "b73c43b052f7",
+        "revision": 1,
+        "candidate_count": 5,
+        "selected_candidate": "Yeremay volvió a convertir la banda en una puerta giratoria.",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "2c99d615cf1b",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "La papeleta llamó a la puerta del Constitucional.",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "94d8f884440a",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "El amor a ciegas volvió a llegar con hashtag propio.",
+        "selected_score": null,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-16T23:15:00+02:00",
-        "phase": "preparing",
+        "at": "2026-10-16T23:48:54+02:00",
+        "phase": "drafting",
+        "trend_id": "9f3e1ea405dd",
+        "title": "Morata + Butarque",
+        "message": "Redactando una sola explicación para Morata + Butarque y comprobando el límite completo de X."
+      },
+      {
+        "at": "2026-10-16T23:48:54+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9f3e1ea405dd",
+        "title": "Morata + Butarque",
+        "message": "Evaluando remates contra el historial de ratings; seleccionado un gag específico sobre la roja de Morata antes de su primer gol con el Leganés."
+      },
+      {
+        "at": "2026-10-16T23:48:54+02:00",
+        "phase": "persisting",
+        "trend_id": "9f3e1ea405dd",
+        "title": "Morata + Butarque",
+        "message": "Guardando ficha Explicada del grupo y actualizando las revisiones exactas de Morata r1 y Butarque r0."
+      },
+      {
+        "at": "2026-10-16T23:49:38+02:00",
+        "phase": "verifying",
+        "trend_id": "b73c43b052f7",
+        "title": "Yeremay",
+        "message": "Releyendo estado autoritativo de Yeremay; revisión 1 sigue activa y figura en el puesto 7."
+      },
+      {
+        "at": "2026-10-16T23:49:52+02:00",
+        "phase": "investigating",
+        "trend_id": "b73c43b052f7",
+        "title": "Yeremay",
+        "message": "Contraste completado: el Deportivo empató 1-1 con el Levante y Yeremay volvió a ser su principal foco ofensivo, participando en la jugada del gol de Nsongo."
+      },
+      {
+        "at": "2026-10-16T23:49:52+02:00",
+        "phase": "drafting",
+        "trend_id": "b73c43b052f7",
+        "title": "Yeremay",
+        "message": "Redactando la revisión 1 de Yeremay con el resultado de hoy y comprobando el límite completo de X."
+      },
+      {
+        "at": "2026-10-16T23:49:52+02:00",
+        "phase": "remate_selection",
+        "trend_id": "b73c43b052f7",
+        "title": "Yeremay",
+        "message": "Evaluando remates con los ratings recientes; seleccionado un gag visual sobre sus regates por la banda."
+      },
+      {
+        "at": "2026-10-16T23:49:52+02:00",
+        "phase": "persisting",
+        "trend_id": "b73c43b052f7",
+        "title": "Yeremay",
+        "message": "Guardando la ficha Explicada de Yeremay r1 y retirando esa revisión de la cola."
+      },
+      {
+        "at": "2026-10-16T23:50:34+02:00",
+        "phase": "verifying",
+        "trend_id": "2c99d615cf1b",
+        "title": "El Defensor del Pueblo",
+        "message": "Releyendo estado autoritativo de El Defensor del Pueblo; revisión 0 sigue activa y figura en el puesto 3."
+      },
+      {
+        "at": "2026-10-16T23:50:48+02:00",
+        "phase": "investigating",
+        "trend_id": "2c99d615cf1b",
+        "title": "El Defensor del Pueblo",
+        "message": "Contraste completado: Ángel Gabilondo recurrió al Constitucional la suspensión del voto a nacionalizados por la «ley de nietos» y pidió medidas cautelarísimas."
+      },
+      {
+        "at": "2026-10-16T23:50:48+02:00",
+        "phase": "drafting",
+        "trend_id": "2c99d615cf1b",
+        "title": "El Defensor del Pueblo",
+        "message": "Redactando la explicación política con dos hashtags específicos y comprobando el límite completo de X."
+      },
+      {
+        "at": "2026-10-16T23:50:48+02:00",
+        "phase": "remate_selection",
+        "trend_id": "2c99d615cf1b",
+        "title": "El Defensor del Pueblo",
+        "message": "Evaluando remates políticos neutrales con el historial de ratings; seleccionado un gag sobre la papeleta llamando al Constitucional."
+      },
+      {
+        "at": "2026-10-16T23:50:48+02:00",
+        "phase": "persisting",
+        "trend_id": "2c99d615cf1b",
+        "title": "El Defensor del Pueblo",
+        "message": "Guardando la ficha Explicada de El Defensor del Pueblo r0 y actualizando su request."
+      },
+      {
+        "at": "2026-10-16T23:51:39+02:00",
+        "phase": "verifying",
+        "trend_id": "94d8f884440a",
+        "title": "#FirstDates16O",
+        "message": "Releyendo estado autoritativo de #FirstDates16O; revisión 0 sigue activa y figura en el puesto 6."
+      },
+      {
+        "at": "2026-10-16T23:52:03+02:00",
+        "phase": "investigating",
+        "trend_id": "94d8f884440a",
+        "title": "#FirstDates16O",
+        "message": "Detonante verificado: #FirstDates16O acompaña la emisión de First Dates del 16 de octubre y la conversación en directo alrededor del programa."
+      },
+      {
+        "at": "2026-10-16T23:52:03+02:00",
+        "phase": "drafting",
+        "trend_id": "94d8f884440a",
+        "title": "#FirstDates16O",
+        "message": "Redactando la explicación de #FirstDates16O con etiquetas específicas y comprobando el límite completo de X."
+      },
+      {
+        "at": "2026-10-16T23:52:03+02:00",
+        "phase": "remate_selection",
+        "trend_id": "94d8f884440a",
+        "title": "#FirstDates16O",
+        "message": "Evaluando remates con los ratings recientes; seleccionado un gag sobre el formato de citas y su hashtag diario."
+      },
+      {
+        "at": "2026-10-16T23:52:03+02:00",
+        "phase": "persisting",
+        "trend_id": "94d8f884440a",
+        "title": "#FirstDates16O",
+        "message": "Guardando la ficha Explicada de #FirstDates16O r0 y retirando la revisión de la cola."
+      },
+      {
+        "at": "2026-10-16T23:54:14+02:00",
+        "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial directa; activando reparación de Pendientes y revalidando Cacería."
+        "message": "Releyendo main: las 5 revisiones están explicadas, la cola activa está a cero y no quedan rewrite_pending ni huérfanos Telegram."
       },
       {
-        "at": "2026-10-16T23:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Releyendo estado autoritativo de Cacería; revisión 0 sigue problematic y continúa en el Top 10."
-      },
-      {
-        "at": "2026-10-16T23:18:00+02:00",
-        "phase": "investigating",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Buscando detonante actual con consultas nuevas y contrastando fuentes recientes."
-      },
-      {
-        "at": "2026-10-16T23:19:00+02:00",
-        "phase": "investigating",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Hecho esencial verificado: Landaluce habla de «cacería personal» en plena moción de censura y tras denuncias de presuntas agresiones sexuales."
-      },
-      {
-        "at": "2026-10-16T23:20:00+02:00",
-        "phase": "drafting",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Redactando explicación factual y comprobando el límite de X; sin remate por protección editorial de posibles víctimas."
-      },
-      {
-        "at": "2026-10-16T23:21:00+02:00",
-        "phase": "persisting",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión de la cola mediante la reconciliación directa oficial."
-      },
-      {
-        "at": "2026-10-16T23:23:00+02:00",
-        "phase": "verifying",
-        "trend_id": "aaba41f2ac1f",
-        "title": "Cacería",
-        "message": "Releyendo main y verificando id+revision, texto persistido y retirada de la cola."
-      },
-      {
-        "at": "2026-10-16T23:24:00+02:00",
+        "at": "2026-10-16T23:54:29+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: Cacería explicada y verificada; cola editorial activa a cero y sin huérfanos Telegram."
+        "message": "Pasada completada y verificada: 5 revisiones cerradas en 4 explicaciones, cola 0, sin rewrite_pending ni huérfanos Telegram."
       }
     ],
     "queue_complete": true,
@@ -238,6 +343,5 @@
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "error": null
+  "telegram_orphan_ids": []
 }
