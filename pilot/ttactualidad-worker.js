@@ -45,6 +45,10 @@ export default {
   if(route==='/health'&&req.method==='GET')
    return respond(req,{ok:true,kind:'isolated-ttactualidad-pilot',production_connected:env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN),
     architecture:'on_demand_no_polling'});
+  // Public static pilot UI, icons and manifest. API routes stay private.
+  // Without this, Wrangler uploads assets but "/" returns unauthorized.
+  if(req.method==='GET'&&!route.startsWith('/api/')&&env.ASSETS)
+   return env.ASSETS.fetch(req);
   if(!access(req,env))return respond(req,{ok:false,error:'unauthorized'},401);
   if(!env.PILOT_DECISIONS)return respond(req,{ok:false,error:'pilot_KV_not_bound'},503);
   if(route==='/api/decisions'&&req.method==='GET'){
