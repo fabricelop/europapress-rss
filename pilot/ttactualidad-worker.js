@@ -24,7 +24,7 @@ function sane(p,id){return PROJECTS.has(p)&&ID.test(String(id||''))}
 function recordKey(project,id){return 'action:'+project+':'+id}
 async function dispatch(env,row){
  // The pilot has NO production integration until both variables are configured.
- if(env.ACTION_MODE!=='github_dispatch'||!env.GH_DISPATCH_TOKEN)
+ if(env.ACTION_MODE!=='github_dispatch'||!env.GH_DISPATCH_TOKEN||row.decision!=='deleted')
   return {state:'pilot_only',routed:false};
  const result=await fetch('https://api.github.com/repos/fabricelop/europapress-rss/dispatches',{
   method:'POST',
@@ -74,19 +74,24 @@ export default {
    const synthetic=/^pilot-(?:mobile|check|install|auth|diagnostic)-/i.test(id);
    const k=recordKey(p,id);
    const existing=await env.PILOT_DECISIONS.get(k,'json');
+   const live=env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN)&&decision==='deleted'&&!synthetic;
    if(existing){
     if(existing.decision!==decision)return respond(req,{ok:false,error:'already_decided',decision:existing.decision},409);
-    return respond(req,{ok:true,stored:true,duplicate:true,state:existing.state,
-     routed:existing.routed===true,production_connected:existing.routed===true},200);
+    if(existing.state==='submitted'||existing.routed===true)
+     return respond(req,{ok:true,stored:true,duplicate:true,state:'submitted',routed:true},200);
+    // A previously isolated trial does not block this first real deletion.
+    if(!live)return respond(req,{ok:true,stored:true,duplicate:true,state:'pilot_only',routed:false},200);
    }
+   if(live&&(!Number.isInteger(b.revision)||b.revision<0))
+    return respond(req,{ok:false,error:'revision_required'},400);
    const row={project:p,event_id:id,decision,request_id:String(b.request_id),
-    received_at:new Date().toISOString(),mode:'pilot_only',state:'pilot_only',
+    received_at:new Date().toISOString(),mode:live?'direct':'pilot_only',state:'pilot_only',
     routed:false,revision:Number.isInteger(b.revision)?b.revision:null};
-   // Acknowledgment from KV is NOT confirmation of real deletion.
-   // On dispatch failure preserve an accurate receipt, not a fake success.
-   if(!synthetic){
+   // Do not acknowledge a deletion if GitHub refused its dispatch.
+   // A 204 only means "queued by GitHub", never "removed from Listas".
+   if(live){
     try{Object.assign(row,await dispatch(env,row))}
-    catch(e){row.state='dispatch_failed';row.error=String(e.message||e).slice(0,65)}
+    catch(e){return respond(req,{ok:false,error:'github_dispatch_failed',details:String(e.message||e).slice(0,65)},502)}
    }
    await env.PILOT_DECISIONS.put(k,JSON.stringify(row));
    return respond(req,{ok:true,stored:true,duplicate:false,state:row.state,
