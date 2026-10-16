@@ -1841,22 +1841,10 @@ struct TimeMapView: View {
         let visibleCells = relevant
         let visibleZones = zoneHighlights
         let maximumVisibleTime = max(1,visibleCells.map(\.seconds).max() ?? 1)
+        let useBasicMap = model.forceBasicMap || !connectivity.connected
         ZStack(alignment: .bottom) {
-            if model.forceBasicMap || !connectivity.connected {
-                OfflineGridMap(model:model,region:$region,onNavigate:{ newRegion in
-                    followLocation = false
-                    model.updateCamera(newRegion)
-                    camera = .region(newRegion)
-                },onSelect:{ cell in
-                    selectOnMap(cell)
-                },onInteractionStart:{
-                    beginMapDrag()
-                },onInteractionEnd:{
-                    endMapDrag()
-                })
-                .onAppear { centerOnRequestedCell() }
-                .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
-            } else {
+            // Keep the same MapKit instance alive across network interruptions:
+            // only its visibility changes, never its identity or camera state.
             MapReader { proxy in
                 Map(position: $camera) {
                     ForEach(visibleCells) { item in
@@ -1954,6 +1942,22 @@ struct TimeMapView: View {
                 .onAppear { centerOnRequestedCell() }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
+            .opacity(useBasicMap ? 0 : 1)
+            .allowsHitTesting(!useBasicMap)
+            if useBasicMap {
+                OfflineGridMap(model:model,region:$region,onNavigate:{ newRegion in
+                    followLocation = false
+                    model.updateCamera(newRegion)
+                    camera = .region(newRegion)
+                },onSelect:{ cell in
+                    selectOnMap(cell)
+                },onInteractionStart:{
+                    beginMapDrag()
+                },onInteractionEnd:{
+                    endMapDrag()
+                })
+                .onAppear { centerOnRequestedCell() }
+                .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
             VStack(spacing:4) {
                 HStack(spacing:4) {
