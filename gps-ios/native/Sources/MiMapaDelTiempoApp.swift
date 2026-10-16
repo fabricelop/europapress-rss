@@ -1797,6 +1797,11 @@ struct TimeMapView: View {
     @State private var cardSize: TimeMapCardSize = .compact
     @State private var cardBeforeDragging: TimeMapCardSize?
     @State private var restoredCamera = false
+    // Drawing snapshot only; full GPS history remains stored unmodified.
+    @State private var renderedRouteSegments: [[CLLocationCoordinate2D]] = []
+    @State private var renderedRouteFixCount = -1
+    @State private var renderedRoutePeriod = ""
+    @State private var lastRouteDraw = Date.distantPast
     @Environment(\.scenePhase) private var scenePhase
 
     init(model: TimeModel, gps: GPSService) {
@@ -1918,15 +1923,9 @@ struct TimeMapView: View {
                         }
                     }
                     if model.showRoutes {
-                        let recent = model.routePoints()
-                        let groups = GPSRouteSegments.split(recent.map {
-                            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
-                        })
-                        ForEach(groups.indices, id: \.self) { index in
-                            MapPolyline(coordinates: groups[index].map {
-                                CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-                            })
-                            .stroke(.blue, lineWidth: 3)
+                        ForEach(renderedRouteSegments.indices, id: \.self) { index in
+                            MapPolyline(coordinates: renderedRouteSegments[index])
+                                .stroke(.blue, lineWidth: 3)
                         }
                     }
                 }
@@ -2202,7 +2201,14 @@ struct TimeMapView: View {
                 if followLocation { focusOnCurrentLocation() }
             }
         }
+        .onAppear { refreshRenderedRoutes(force: true) }
+        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.selectedTab) { _,tab in
+            if tab == 0 { refreshRenderedRoutes(force: true) }
+        }
         .onChange(of:model.current?.date) { _,_ in
+            refreshRenderedRoutes()
             if followLocation {
                 model.selected=nil
                 focusOnCurrentLocation()
@@ -2212,6 +2218,36 @@ struct TimeMapView: View {
             if followLocation { model.selected=nil }
         }
     }
+    /// Rebuild path geometry only for new fixes or an explicit route selection,
+    /// never on every UI refresh, zoom gesture, or clock tick.
+    private func refreshRenderedRoutes(force: Bool = false) {
+        guard model.showRoutes else {
+            if !renderedRouteSegments.isEmpty { renderedRouteSegments = [] }
+            renderedRouteFixCount = -1
+            return
+        }
+        let now = Date()
+        let count = model.data.fixes.count
+        let period = model.routePeriod.rawValue
+        if !force {
+            guard model.selectedTab == 0 else { return }
+            guard count != renderedRouteFixCount ||
+                  period != renderedRoutePeriod ||
+                  now.timeIntervalSince(lastRouteDraw) >= 60 else { return }
+            guard now.timeIntervalSince(lastRouteDraw) >= 5 else { return }
+        }
+        let points = model.routePoints(at: now)
+        renderedRouteSegments = GPSRouteSegments.split(points.map {
+            GPSHistoryFix(date: $0.date, latitude: $0.latitude, longitude: $0.longitude)
+        }).map { segment in
+            segment.map { CLLocationCoordinate2D(latitude: $0.latitude,
+                                                 longitude: $0.longitude) }
+        }
+        renderedRouteFixCount = count
+        renderedRoutePeriod = period
+        lastRouteDraw = now
+    }
+
     private func beginMapDrag() {
         guard cardBeforeDragging == nil else { return }
         cardBeforeDragging=cardSize
