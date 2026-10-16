@@ -1,0 +1,31 @@
+name: Repair Center manual dispatcher
+run-name: RC ${{ inputs.target }} ${{ inputs.request_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Catalog target (strict allowlist)
+        required: true
+        type: string
+      request_id:
+        description: UUID for audit and idempotency
+        required: true
+        type: string
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: repair-center-${{ inputs.target }}
+  cancel-in-progress: false
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate requested operation and dispatch only allowlisted safe workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RC_TARGET: ${{ inputs.target }}
+          RC_REQUEST_ID: ${{ inputs.request_id }}
+        run: python3 repair-center/dispatch.py
