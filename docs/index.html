@@ -42,13 +42,13 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Cómo funciona este piloto?</summary><p>Las noticias siguen elaborándose con sus sistemas actuales. Las acciones del iPhone van directamente al Worker de prueba, sin Telegram. Mientras la integración GitHub no esté activada, las órdenes se registran solo como simulación y no modifican noticias reales.</p></details>
-<div class="pilot-settings"><strong>TTActualidad · Vista nueva en pruebas</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<div class="pilot-settings"><strong>TTActualidad · Gestión directa</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
 <div id="cards" class="cards"></div>
-<div class="footer">Origen: datos editoriales de GitHub. La lectura no usa Cloudflare. Las órdenes directas se registran en el piloto de Cloudflare y solo se aplicarán tras habilitar la integración en una fase posterior.</div>
+<div class="footer">Origen: datos editoriales de GitHub. La lectura no usa Cloudflare. Cloudflare solo recibe las pulsaciones; cuando la conexión está activa, GitHub retira las noticias de Listas. El resto de procesos editoriales continúa igual.</div>
 <details><summary>Acerca de los datos y la conexión</summary><p>La app oficial sigue sirviéndose desde GitHub Pages. El piloto puede abrirse también desde workers.dev. Lee archivos JSON públicos de GitHub sin consultas en segundo plano. Cloudflare solo recibe acciones explícitas y protegidas por clave; sin Telegram. La clave se mantiene en memoria hasta cerrar o recargar.</p></details>
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
@@ -378,14 +378,25 @@ async function pilotPairFromUrl(){
  directPilot.url=location.origin;directPilot.key=pair;
  $('pilot-status').textContent='Comprobando acceso del iPhone…';
  try{
-  const r=await fetch(directPilot.url+'/api/decisions',{headers:{Authorization:'Bearer '+pair},cache:'no-store',signal:AbortSignal.timeout(12000)});
+  const r=await fetch(directPilot.url+'/api/auth',{headers:{Authorization:'Bearer '+pair},cache:'no-store',signal:AbortSignal.timeout(12000)});
   const data=await r.json();
-  if(!r.ok||!data.ok||data.mode!=='pilot_only')throw Error('No autorizado');
-  $('pilot-status').textContent='iPhone vinculado al piloto ✓';
+  if(!r.ok||!data.ok)throw Error('No autorizado');
+  $('pilot-status').textContent=data.production_connected?'Conectado · Quitar de Listas REAL':'Conectado · Solo pruebas';
  }catch{
   directPilot.key='';
   $('pilot-status').textContent='QR no autorizado; vuelve a vincular';
  }
+}
+async function refreshPilotConnection(){
+ if(!directPilot.url||!directPilot.key)return;
+ $('pilot-status').textContent='Verificando conexión…';
+ try{
+  const r=await fetch(directPilot.url+'/api/auth',{headers:{Authorization:'Bearer '+directPilot.key},
+   cache:'no-store',signal:AbortSignal.timeout(12000)});
+  const a=await r.json().catch(()=>({}));
+  if(!r.ok||!a.ok)throw Error('Clave no autorizada');
+  $('pilot-status').textContent=a.production_connected?'Conectado · Quitar de Listas REAL':'Conectado · Solo pruebas';
+ }catch(e){$('pilot-status').textContent='No autorizado: revisa clave'}
 }
 function pilotConfig(){
  const suggested=location.hostname.endsWith('.workers.dev')?location.origin:'';
@@ -393,14 +404,15 @@ function pilotConfig(){
  if(!e.trim()){directPilot.url='';directPilot.key='';$('pilot-status').textContent='Sin configurar';return}
  let u;try{u=new URL(e.trim());if(u.protocol!=='https:')throw Error('HTTP')}catch{showToast('URL HTTPS requerida');return}
  const key=prompt('Clave privada de prueba (solo en memoria)');if(!key)return false;
- directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;$('pilot-status').textContent='Configurado solo para prueba';return true;
+ directPilot.url=u.href.replace(/\/$/,'');directPilot.key=key;void refreshPilotConnection();return true;
 }
 async function pilotSend(item,decision){
  if(!directPilot.url||!directPilot.key){if(!pilotConfig())return}
  const project=item._kind==='tr'?'ttendencias':'ttittulares',event_id=String(item._id||'');
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Esta tarjeta todavía no tiene un ID válido');return}
  const label={prepare:'Elaborar',discard:'Desestimar',deleted:'Quitar de Listas',published:'Quitar de Listas'}[decision]||decision;
- if(!confirm(label+' esta tarjeta? El piloto registra la orden, sin modificar producción.'))return;
+ const confirmation=decision==='deleted'?('¿'+label+'? Se retirará realmente de GitHub si aparece la conexión REAL.'):(label+' esta tarjeta? La elaboración no se modificará: solo pruebas.');
+ if(!confirm(confirmation))return;
  try{
   const r=await fetch(directPilot.url+'/api/decision',{method:'POST',
    headers:{'Content-Type':'application/json','Authorization':'Bearer '+directPilot.key},
@@ -408,8 +420,13 @@ async function pilotSend(item,decision){
    signal:AbortSignal.timeout(12000)});
   const a=await r.json().catch(()=>({}));
   if(!r.ok||a.ok!==true)throw Error(a.error==='already_decided'?'Ya existe una decisión distinta para esta tarjeta':a.error||'HTTP '+r.status);
-  const note=a.routed?'Orden enviada; esperando confirmación en GitHub':'Orden guardada SOLO en pruebas: la noticia sigue igual';
+  const note=a.routed?'Enviada a GitHub; se quitará al confirmar el cambio':'Solo prueba; la tarjeta permanece igual';
   showToast(note);
+  if(a.routed&&decision==='deleted'){
+   // Read authoritative GitHub JSON twice, never poll Cloudflare KV.
+   setTimeout(()=>{if(!document.hidden)load(true)},18000);
+   setTimeout(()=>{if(!document.hidden)load(true)},65000);
+  }
  }catch(e){showToast('No registrada: '+String(e.message||e).slice(0,110))}
 }
 
