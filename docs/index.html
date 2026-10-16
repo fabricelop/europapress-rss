@@ -26,7 +26,13 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
 /* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
 @media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
-.pilot-swipe{touch-action:pan-y;transition:transform .2s}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}</style></head>
+.pilot-swipe{touch-action:pan-y;transition:transform .2s}
+.actions.ready-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;align-items:stretch}
+.actions.ready-actions .action{display:flex;align-items:center;justify-content:center;text-align:center;min-height:46px;padding:10px 7px;width:100%;white-space:normal;line-height:1.2;box-sizing:border-box}
+.actions.ready-actions .action.external{background:#205a77;border-color:#4995b6;color:#eefbff;font-weight:750}
+.actions.ready-actions .action.external:active{background:#317b9e}
+.actions.ready-actions .action.remove{border-color:#98616e;color:#ffd8e1}
+@media(max-width:365px){.actions.ready-actions{gap:6px}.actions.ready-actions .action{font-size:12px;padding:8px 5px}}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}</style></head>
 <body>
 <header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Una sola aplicación · GAG IA manual</p></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
@@ -36,7 +42,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 <details><summary>¿Cómo funciona este piloto?</summary><p>Las noticias siguen elaborándose con sus sistemas actuales. Las acciones del iPhone van directamente al Worker de prueba, sin Telegram. Mientras la integración GitHub no esté activada, las órdenes se registran solo como simulación y no modifican noticias reales.</p></details>
-<div class="pilot-settings"><strong>TTActualidad · Vista nueva en pruebas</strong><p>Consulta las listas reales. Desliza para abrir X o retirar de Listas. Los comandos no pasan por Telegram.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button><p><button type="button" id="ttimages-change">Cambiar enlace de TTImages</button></p></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button><button class="refresh" id="ttimages-open" type="button" title="Abrir chat TTImages en Telegram">TTImages ↗</button></div>
+<div class="pilot-settings"><strong>TTActualidad · Vista nueva en pruebas</strong><p>Listas: cuatro filas de dos botones. Desliza izquierda para X o derecha para retirar. En elaboración puedes desestimar. TTImages abre directamente el chat.</p><button type="button" id="pilot-config">Conectar acciones directas</button> <span id="pilot-status">Sin configurar</span><details><summary>Herramientas de comprobación</summary><p>Estas dos pruebas no alteran noticias reales.</p><button type="button" id="pilot-prepare">Probar Elaborar</button> <button type="button" id="pilot-discard">Probar Desestimar</button></details></div><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -407,28 +413,6 @@ async function pilotSend(item,decision){
  }catch(e){showToast('No registrada: '+String(e.message||e).slice(0,110))}
 }
 
-const TTIMAGES_KEY='ttactualidad-ttimages-url';
-function telegramChatUrl(raw){
- try{
-  const url=new URL(String(raw||'').trim());
-  if(url.protocol!=='https:'||!['t.me','telegram.me','www.t.me','www.telegram.me'].includes(url.hostname.toLowerCase()))return '';
-  if(url.username||url.password||url.port||url.pathname==='/'||url.pathname.length<2)return '';
-  // No arbitrary domains or URL schemes; never guess the chat username.
-  return url.href;
- }catch{return ''}
-}
-function openTTImages(change=false){
- let saved='';try{saved=localStorage.getItem(TTIMAGES_KEY)||''}catch{}
- let url=telegramChatUrl(saved);
- if(change||!url){
-  const raw=prompt('Pega el enlace exacto del chat TTImages de Telegram (t.me/...). Se guarda solo en este iPhone.',url||'');
-  if(raw===null)return;
-  url=telegramChatUrl(raw);
-  if(!url){showToast('Necesito un enlace real t.me/… de TTImages');return}
-  try{localStorage.setItem(TTIMAGES_KEY,url)}catch{showToast('El enlace no se guardará para próximas visitas')}
- }
- location.href=url;
-}
 function pilotSwipes(card,item){
  const ready=item._status==='LISTA'||item._status==='EXPLICADA';
  const working=item._status==='EN ELABORACIÓN'||item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
@@ -441,12 +425,12 @@ function pilotSwipes(card,item){
   if(Math.abs(dx)<100||Math.abs(dx)<Math.abs(dy)*1.6)return;
   card.style.transform='translateX('+(dx<0?-35:35)+'px)';
   setTimeout(()=>card.style.transform='',220);
-  if(dx<0){pilotSend(item,ready?'deleted':'discard');return}
   if(ready){
+   if(dx>0){pilotSend(item,'deleted');return}
    const text=itemData(item).editorial;
    if(!text){showToast('No hay texto cerrado para publicar');return}
    location.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);
-  }else showToast('Sigue elaborándose sin intervención');
+  }else if(dx<0){pilotSend(item,'discard')}
  },{passive:true});
 }
 
@@ -469,6 +453,22 @@ function rowCard(x,i){
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
  pilotSwipes(out,x);
+ if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||x._status==='EXPLICADA')){
+  // Exactly four rows, two buttons each; no Telegram command callbacks.
+  a.classList.add('ready-actions');
+  const external=(label,url)=>{
+   const el=link(label,url,true);el.classList.add('external');return el
+  };
+  external('TTImages','https://t.me/TTImages_bot');
+  external('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial||d.title));
+  btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
+  external('Abrir ChatGPTImages','https://chatgpt.com/images');
+  btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
+  btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
+  const remove=command('Quitar de Listas','deleted');remove.classList.add('remove');
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  return out;
+ }
  $('warning').style.display=state.lastError?'block':'none';
  $('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
  if(x._topOnly){
@@ -597,8 +597,6 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
-$('ttimages-open').onclick=()=>openTTImages();
-$('ttimages-change').onclick=()=>openTTImages(true);
 $('pilot-prepare').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'prepare');
 $('pilot-discard').onclick=()=>pilotSend({_kind:'tti',_id:'pilot-mobile-'+crypto.randomUUID().replace(/-/g,'')},'discard');
 void pilotPairFromUrl();
