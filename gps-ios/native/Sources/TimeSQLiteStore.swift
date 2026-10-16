@@ -77,6 +77,29 @@ final class TimeSQLiteStore {
         }.sorted { $0.lastPathComponent > $1.lastPathComponent }
     }
 
+    /// Restore a missing primary from the newest readable local copy.
+    /// Never touch an existing primary, even if it is damaged.
+    static func recoverMissingPrimary(at primaryURL: URL) throws {
+        guard !FileManager.default.fileExists(atPath: primaryURL.path) else { return }
+        let candidates = safetyCopyURLs(in: primaryURL.deletingLastPathComponent())
+        guard !candidates.isEmpty else { return }
+        for candidate in candidates {
+            let readable: Bool
+            do {
+                let verified = try TimeSQLiteStore(url: candidate)
+                let content = try verified.load()
+                readable = !content.fixes.isEmpty || !content.intervals.isEmpty || !content.totals.isEmpty
+            } catch {
+                continue
+            }
+            if readable {
+                try FileManager.default.copyItem(at: candidate, to: primaryURL)
+                return
+            }
+        }
+        throw TimeStoreError.sql("Existe una copia local, pero no es legible; no se iniciará un historial vacío")
+    }
+
     func createSafetyCopy(in directory: URL) throws {
         guard let source = db else { throw TimeStoreError.sql("SQLite cerrado") }
         let filename = "time-map-safety-\(Int(Date().timeIntervalSince1970))-\(UUID().uuidString).sqlite"
