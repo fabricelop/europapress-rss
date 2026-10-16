@@ -1,15 +1,23 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T22:57:52+02:00",
-  "last_completed_at": "2026-10-16T22:57:52+02:00",
-  "updated_at": "2026-10-16T22:57:52+02:00",
+  "last_started_at": "2026-10-16T22:51:00+02:00",
+  "last_completed_at": "2026-10-16T23:00:00+02:00",
+  "updated_at": "2026-10-16T23:00:00+02:00",
   "status": "success",
   "processed_ids": [
-    "aaba41f2ac1f"
+    "1781e388eb4e",
+    "ab56c8fcd556",
+    "6f9d2bd92779",
+    "54ae780111d5",
+    "208f2e50743c",
+    "630457a6a384",
+    "9adf708e44e5",
+    "e6697b8d115d",
+    "3d2bfcd082db"
   ],
   "remaining_ids": [
     "aaba41f2ac1f"
@@ -22,35 +30,32 @@
   "visual_repair": {
     "requested": true,
     "persisted_trigger": true,
-    "status": "success",
+    "status": "requested",
     "direct_imagegen": false,
-    "run_id": "tr-chat-20261016T134500+0200",
-    "requested_at": "2026-10-16T13:45:30+02:00",
-    "reason": "execution-start-pending-repair",
-    "workflow_run_id": 38896113956,
-    "workflow_conclusion": "success",
-    "image_jobs": []
+    "run_id": "tr-autoguard-1792183850",
+    "requested_at": "2026-10-16T22:51:00+02:00",
+    "reason": "execution-start-pending-repair"
   },
   "last_run": {
-    "run_id": "tr-autoguard-1792173387",
+    "run_id": "tr-autoguard-1792183850",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-16T20:07:00+02:00",
-    "updated_at": "2026-10-16T20:20:00+02:00",
-    "finished_at": "2026-10-16T20:20:00+02:00",
-    "current": 7,
-    "total": 7,
+    "started_at": "2026-10-16T22:51:00+02:00",
+    "updated_at": "2026-10-16T23:00:00+02:00",
+    "finished_at": "2026-10-16T23:00:00+02:00",
+    "current": 9,
+    "total": 9,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 7,
+      "trends_processed": 9,
       "trends_explained": 7,
       "explanation_groups": 7,
-      "new_cards": 7,
-      "revisions_updated": 0,
+      "new_cards": 6,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
-      "trends_problematic": 0,
+      "trends_problematic": 2,
       "trends_dismissed": 0,
       "incidents": 1,
       "queue_remaining": 0,
@@ -64,171 +69,87 @@
       "provisional_telegram": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada completada: 7/7 explicadas y verificadas; cola editorial 0, sin reexplicaciones pendientes ni huérfanos Telegram. Una incidencia técnica local fue recuperada sin cambios parciales.",
+    "message": "Pasada completada: 9 revisiones activas tratadas; 7 explicadas y verificadas, Athletic y Marta Nebot quedaron problematic por falta de detonante único fiable. 0 preparing/update, 0 rewrite_pending y Telegram limpio.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-16T20:14:00+02:00",
-        "phase": "persisting",
-        "message": "Primer intento de escritura directa abortado localmente antes de cualquier commit por una variable no definida; reintento completado sin cambios parciales."
+        "at": "2026-10-16T22:56:00+02:00",
+        "phase": "verifying",
+        "message": "Se detectó una persistencia parcial de Elon Musk: requests estaba explained pero faltaba la ficha Explicada y el texto usaba otro nombre literal. Se reparó atómicamente y se verificó tras releer main."
       }
     ],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T20:10:40+02:00",
-        "phase": "verifying",
-        "trend_id": "effdbf84545e",
-        "title": "El CNI",
-        "message": "Releyendo estado autoritativo de El CNI."
+        "at": "2026-10-16T22:51:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial directa con 9 revisiones preparing/update y reparación de Pendientes solicitada."
       },
       {
-        "at": "2026-10-16T20:11:00+02:00",
+        "at": "2026-10-16T22:52:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, requests y Explicadas; las 9 revisiones iniciales siguen identificadas por id+revision."
+      },
+      {
+        "at": "2026-10-16T22:53:00+02:00",
         "phase": "investigating",
-        "trend_id": "effdbf84545e",
-        "title": "El CNI",
-        "message": "Contrastando el informe remitido a la jueza María Tardón sobre Ceuta y Marruecos."
+        "trend_id": null,
+        "title": null,
+        "message": "Contrastando detonantes actuales; Athletic y Marta Nebot no permiten atribución única fiable."
       },
       {
-        "at": "2026-10-16T20:11:20+02:00",
-        "phase": "drafting",
-        "trend_id": "effdbf84545e",
-        "title": "El CNI",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-16T20:11:35+02:00",
-        "phase": "remate_selection",
-        "trend_id": "effdbf84545e",
-        "title": "El CNI",
-        "message": "Remate seleccionado con enfoque institucional y neutral."
-      },
-      {
-        "at": "2026-10-16T20:11:45+02:00",
+        "at": "2026-10-16T22:54:00+02:00",
         "phase": "verifying",
-        "trend_id": "390953f44e08",
-        "title": "Conciencia",
-        "message": "Releyendo estado autoritativo de Conciencia y verificando su relación con el mensaje de dimisión."
+        "trend_id": null,
+        "title": null,
+        "message": "Detectada persistencia concurrente parcial; se conserva texto ya persistido y se reconcilia idempotentemente."
       },
       {
-        "at": "2026-10-16T20:11:50+02:00",
-        "phase": "drafting",
-        "trend_id": "390953f44e08",
-        "title": "Conciencia",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-16T20:11:55+02:00",
+        "at": "2026-10-16T22:56:00+02:00",
         "phase": "verifying",
-        "trend_id": "c73c9d03530d",
-        "title": "Lérida",
-        "message": "Releyendo estado autoritativo de Lérida y confirmando la renuncia a encabezar la lista del 29N."
+        "trend_id": "ab56c8fcd556",
+        "title": "Elon Musk",
+        "message": "La cola activa llega a cero, pero Elon Musk queda sin ficha Explicada y con nombre literal incorrecto en requests."
       },
       {
-        "at": "2026-10-16T20:12:00+02:00",
+        "at": "2026-10-16T22:58:00+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando las cinco explicaciones verificadas mediante el outbox editorial oficial."
+        "trend_id": "ab56c8fcd556",
+        "title": "Elon Musk",
+        "message": "Reparando cierre atómico: sincronizando la revisión 0 entre Explicadas y requests sin generar imágenes."
       },
       {
-        "at": "2026-10-16T20:15:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Persistidas y reconciliadas las cinco revisiones iniciales; la cola revela dos entradas nuevas."
-      },
-      {
-        "at": "2026-10-16T20:15:20+02:00",
+        "at": "2026-10-16T22:59:00+02:00",
         "phase": "verifying",
-        "trend_id": "aae166854230",
-        "title": "Dimite",
-        "message": "Releyendo estado autoritativo de Dimite; revisión 0 sigue activa."
+        "trend_id": "ab56c8fcd556",
+        "title": "Elon Musk",
+        "message": "Releídos main, id+revision y texto persistido: 7 explicadas coinciden exactamente; 0 preparing/update y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-16T20:15:40+02:00",
-        "phase": "investigating",
-        "trend_id": "aae166854230",
-        "title": "Dimite",
-        "message": "Confirmando que el detonante es la dimisión de Montse Mínguez."
-      },
-      {
-        "at": "2026-10-16T20:16:00+02:00",
-        "phase": "drafting",
-        "trend_id": "aae166854230",
-        "title": "Dimite",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-16T20:16:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "aae166854230",
-        "title": "Dimite",
-        "message": "Remate seleccionado con enfoque factual y neutral."
-      },
-      {
-        "at": "2026-10-16T20:16:40+02:00",
-        "phase": "verifying",
-        "trend_id": "6ced0406ed4d",
-        "title": "Alba",
-        "message": "Releyendo estado autoritativo de Alba; revisión 0 sigue activa."
-      },
-      {
-        "at": "2026-10-16T20:17:00+02:00",
-        "phase": "investigating",
-        "trend_id": "6ced0406ed4d",
-        "title": "Alba",
-        "message": "Contrastando la salida de Alba Carrillo de El Sótano Club y la cancelación de la despedida."
-      },
-      {
-        "at": "2026-10-16T20:17:20+02:00",
-        "phase": "drafting",
-        "trend_id": "6ced0406ed4d",
-        "title": "Alba",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-16T20:17:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "6ced0406ed4d",
-        "title": "Alba",
-        "message": "Remate seleccionado por especificidad y concisión."
-      },
-      {
-        "at": "2026-10-16T20:18:00+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Persistidas las dos revisiones nuevas y retiradas de la cola."
-      },
-      {
-        "at": "2026-10-16T20:19:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificados 7/7 textos entre requests y Explicadas; sin rewrite_pending ni huérfanos Telegram."
-      },
-      {
-        "at": "2026-10-16T20:20:00+02:00",
+        "at": "2026-10-16T23:00:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada: 7/7 explicadas y verificadas; cola editorial 0."
+        "message": "Pasada cerrada: 7 explicadas y verificadas, 2 problemáticas, 0 trabajo editorial activo y Telegram limpio."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-autoguard-1792173387",
+  "run_id": "tr-autoguard-1792183850",
   "summary": {
-    "trends_processed": 7,
+    "trends_processed": 9,
     "trends_explained": 7,
     "explanation_groups": 7,
-    "new_cards": 7,
-    "revisions_updated": 0,
+    "new_cards": 6,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
-    "trends_problematic": 0,
+    "trends_problematic": 2,
     "trends_dismissed": 0,
     "incidents": 1,
     "queue_remaining": 0,
@@ -245,144 +166,60 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-16T20:10:40+02:00",
-      "phase": "verifying",
-      "trend_id": "effdbf84545e",
-      "title": "El CNI",
-      "message": "Releyendo estado autoritativo de El CNI."
+      "at": "2026-10-16T22:51:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Iniciando pasada editorial directa con 9 revisiones preparing/update y reparación de Pendientes solicitada."
     },
     {
-      "at": "2026-10-16T20:11:00+02:00",
+      "at": "2026-10-16T22:52:00+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola, requests y Explicadas; las 9 revisiones iniciales siguen identificadas por id+revision."
+    },
+    {
+      "at": "2026-10-16T22:53:00+02:00",
       "phase": "investigating",
-      "trend_id": "effdbf84545e",
-      "title": "El CNI",
-      "message": "Contrastando el informe remitido a la jueza María Tardón sobre Ceuta y Marruecos."
+      "trend_id": null,
+      "title": null,
+      "message": "Contrastando detonantes actuales; Athletic y Marta Nebot no permiten atribución única fiable."
     },
     {
-      "at": "2026-10-16T20:11:20+02:00",
-      "phase": "drafting",
-      "trend_id": "effdbf84545e",
-      "title": "El CNI",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-16T20:11:35+02:00",
-      "phase": "remate_selection",
-      "trend_id": "effdbf84545e",
-      "title": "El CNI",
-      "message": "Remate seleccionado con enfoque institucional y neutral."
-    },
-    {
-      "at": "2026-10-16T20:11:45+02:00",
+      "at": "2026-10-16T22:54:00+02:00",
       "phase": "verifying",
-      "trend_id": "390953f44e08",
-      "title": "Conciencia",
-      "message": "Releyendo estado autoritativo de Conciencia y verificando su relación con el mensaje de dimisión."
+      "trend_id": null,
+      "title": null,
+      "message": "Detectada persistencia concurrente parcial; se conserva texto ya persistido y se reconcilia idempotentemente."
     },
     {
-      "at": "2026-10-16T20:11:50+02:00",
-      "phase": "drafting",
-      "trend_id": "390953f44e08",
-      "title": "Conciencia",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-16T20:11:55+02:00",
+      "at": "2026-10-16T22:56:00+02:00",
       "phase": "verifying",
-      "trend_id": "c73c9d03530d",
-      "title": "Lérida",
-      "message": "Releyendo estado autoritativo de Lérida y confirmando la renuncia a encabezar la lista del 29N."
+      "trend_id": "ab56c8fcd556",
+      "title": "Elon Musk",
+      "message": "La cola activa llega a cero, pero Elon Musk queda sin ficha Explicada y con nombre literal incorrecto en requests."
     },
     {
-      "at": "2026-10-16T20:12:00+02:00",
+      "at": "2026-10-16T22:58:00+02:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Guardando las cinco explicaciones verificadas mediante el outbox editorial oficial."
+      "trend_id": "ab56c8fcd556",
+      "title": "Elon Musk",
+      "message": "Reparando cierre atómico: sincronizando la revisión 0 entre Explicadas y requests sin generar imágenes."
     },
     {
-      "at": "2026-10-16T20:15:00+02:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Persistidas y reconciliadas las cinco revisiones iniciales; la cola revela dos entradas nuevas."
-    },
-    {
-      "at": "2026-10-16T20:15:20+02:00",
+      "at": "2026-10-16T22:59:00+02:00",
       "phase": "verifying",
-      "trend_id": "aae166854230",
-      "title": "Dimite",
-      "message": "Releyendo estado autoritativo de Dimite; revisión 0 sigue activa."
+      "trend_id": "ab56c8fcd556",
+      "title": "Elon Musk",
+      "message": "Releídos main, id+revision y texto persistido: 7 explicadas coinciden exactamente; 0 preparing/update y 0 rewrite_pending."
     },
     {
-      "at": "2026-10-16T20:15:40+02:00",
-      "phase": "investigating",
-      "trend_id": "aae166854230",
-      "title": "Dimite",
-      "message": "Confirmando que el detonante es la dimisión de Montse Mínguez."
-    },
-    {
-      "at": "2026-10-16T20:16:00+02:00",
-      "phase": "drafting",
-      "trend_id": "aae166854230",
-      "title": "Dimite",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-16T20:16:20+02:00",
-      "phase": "remate_selection",
-      "trend_id": "aae166854230",
-      "title": "Dimite",
-      "message": "Remate seleccionado con enfoque factual y neutral."
-    },
-    {
-      "at": "2026-10-16T20:16:40+02:00",
-      "phase": "verifying",
-      "trend_id": "6ced0406ed4d",
-      "title": "Alba",
-      "message": "Releyendo estado autoritativo de Alba; revisión 0 sigue activa."
-    },
-    {
-      "at": "2026-10-16T20:17:00+02:00",
-      "phase": "investigating",
-      "trend_id": "6ced0406ed4d",
-      "title": "Alba",
-      "message": "Contrastando la salida de Alba Carrillo de El Sótano Club y la cancelación de la despedida."
-    },
-    {
-      "at": "2026-10-16T20:17:20+02:00",
-      "phase": "drafting",
-      "trend_id": "6ced0406ed4d",
-      "title": "Alba",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-16T20:17:40+02:00",
-      "phase": "remate_selection",
-      "trend_id": "6ced0406ed4d",
-      "title": "Alba",
-      "message": "Remate seleccionado por especificidad y concisión."
-    },
-    {
-      "at": "2026-10-16T20:18:00+02:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Persistidas las dos revisiones nuevas y retiradas de la cola."
-    },
-    {
-      "at": "2026-10-16T20:19:00+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificados 7/7 textos entre requests y Explicadas; sin rewrite_pending ni huérfanos Telegram."
-    },
-    {
-      "at": "2026-10-16T20:20:00+02:00",
+      "at": "2026-10-16T23:00:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada: 7/7 explicadas y verificadas; cola editorial 0."
+      "message": "Pasada cerrada: 7 explicadas y verificadas, 2 problemáticas, 0 trabajo editorial activo y Telegram limpio."
     }
   ],
   "telegram_orphans": 0,
