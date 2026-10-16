@@ -247,6 +247,9 @@ struct SavedState: Codable {
     private let territoryAutoClassifier = TerritoryAutoClassifier()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
+    @Published private var storageLoadFailed = false
+    private var lastSafetyCopyAttempt = Date.distantPast
+    var storageIsHealthy: Bool { !storageLoadFailed }
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
@@ -313,15 +316,22 @@ struct SavedState: Codable {
         let legacy: SavedState? = (try? Data(contentsOf: fileURL))
             .flatMap { try? JSONDecoder().decode(SavedState.self, from: $0) }
         do {
-            let db = try TimeSQLiteStore(url: dir.appendingPathComponent("time-map-v3.sqlite"))
-            if !db.hasExistingState { try db.replaceAll(legacy ?? SavedState()) }
+            let databaseURL = dir.appendingPathComponent("time-map-v3.sqlite")
+            try TimeSQLiteStore.recoverMissingPrimary(at: databaseURL)
+            let databaseExisted = FileManager.default.fileExists(atPath: databaseURL.path)
+            let db = try TimeSQLiteStore(url: databaseURL)
+            if databaseExisted {
+                guard try db.headerExists() else { throw TimeStoreError.missingHeader }
+            }
+            try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
             store = db
             storeStatus = "SQLite · protegido localmente"
         } catch {
             // Si falla una migración, los datos anteriores siguen en el JSON original.
             data = legacy ?? SavedState()
-            storeStatus = "JSON de respaldo · revisar SQLite: \(error.localizedDescription)"
+            storageLoadFailed = true
+            storeStatus = "ERROR DE ALMACENAMIENTO · no se guardarán cambios: \(error.localizedDescription)"
         }
         currentVisitStart = data.savedVisitStart
         if let resting = data.gpsRest,
@@ -698,6 +708,10 @@ struct SavedState: Codable {
         assignName(cell,to:name)
     }
     func setTrackingEnabled(_ enabled: Bool) {
+        guard !enabled || storageIsHealthy else {
+            gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         data.trackingEnabled = enabled
         save(force: true)
         activityPublisher.refresh(from:self,force:true)
@@ -1243,11 +1257,15 @@ struct SavedState: Codable {
         restored.trackingEnabled=false
         restored.gpsRest=nil
         restored.savedVisitStart=nil
-        if let store {
-            try store.replaceAll(restored)
-        } else {
-            try JSONEncoder().encode(restored).write(to:fileURL,options:.atomic)
+        guard !storageLoadFailed, let store else {
+            throw TimeStoreError.sql("Almacenamiento no disponible; restauración bloqueada para proteger los datos")
         }
+        // Do not overwrite a newer history with a backup during incident recovery.
+        let existing = try store.load()
+        guard existing.fixes.isEmpty && existing.intervals.isEmpty && existing.totals.isEmpty else {
+            throw TimeStoreError.sql("La restauración reemplazaría el historial existente. Exporta y verifica ambas copias antes de continuar.")
+        }
+        try store.replaceAll(restored)
         data=restored
         currentZoneVisitID=nil
         currentZoneVisitStart=nil
@@ -1269,6 +1287,10 @@ struct SavedState: Codable {
         return url
     }
     func save(force: Bool = false) {
+        guard !storageLoadFailed else {
+            gpsStatus = "Almacenamiento sin cargar · datos protegidos · no guardar"
+            return
+        }
         guard force || Date().timeIntervalSince(lastSaved) > 20 else { return }
         do {
             if let store {
@@ -1281,8 +1303,22 @@ struct SavedState: Codable {
                 try JSONEncoder().encode(data).write(to:fileURL,options:.atomic)
             }
             lastSaved = .now
+            // Consistent on-device backup at most once every six hours.
+            // Keep tracking even if backup creation fails: the primary commit succeeded.
+            if let store,
+               Date().timeIntervalSince(lastSafetyCopyAttempt) >= 21_600,
+               (!data.fixes.isEmpty || !data.intervals.isEmpty || !data.totals.isEmpty) {
+                lastSafetyCopyAttempt = Date()
+                do {
+                    try store.createSafetyCopy(in: fileURL.deletingLastPathComponent())
+                } catch {
+                    storeStatus = "SQLite activo · copia de seguridad pendiente"
+                }
+            }
         } catch {
-            gpsStatus = "Error guardando datos: \(error.localizedDescription)"
+            storageLoadFailed = true
+            storeStatus = "ERROR DE ALMACENAMIENTO · escrituras bloqueadas: \(error.localizedDescription)"
+            gpsStatus = "Error guardando datos · almacenamiento protegido"
         }
     }
 }
@@ -1374,6 +1410,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func begin(_ model: TimeModel) {
+        guard model.storageIsHealthy else {
+            model.gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         guard !restTransitionInProgress else { return }
         self.model = model
         if model.isResting {
@@ -1432,6 +1472,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func restoreRest(_ model: TimeModel) {
+        guard model.storageIsHealthy else {
+            model.gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         guard model.isResting else { return }
         self.model = model
         manager.stopUpdatingLocation()
@@ -1467,6 +1511,18 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
             manager.stopMonitoring(for: region)
         }
         manager.stopMonitoringSignificantLocationChanges()
+    }
+
+    @MainActor func haltForStorageFailure(_ model: TimeModel) {
+        manager.stopUpdatingLocation()
+        GPSStaleWatchdog.shared.cancel()
+        automaticMonitoringStop()
+        motion.end()
+        model.recording = false
+        model.gpsStatus = "GPS detenido · error de almacenamiento"
+        movingSoon = false
+        lastReceivedAt = nil
+        lastPosition = nil
     }
 
     @MainActor func end(_ model: TimeModel) {
@@ -1630,6 +1686,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     if model.isResting { gps.restoreRest(model) }
                     else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
                     model.restoreLiveActivityIfNeeded()
+                }
+                .onChange(of: model.storageIsHealthy) { _, healthy in
+                    if !healthy { gps.haltForStorageFailure(model) }
                 }
                 .onChange(of: phase) { _, state in
                     if state != .active { model.save(force:true) }
@@ -2265,7 +2324,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.36 · datos guardados en este iPhone",
+                    Label("Versión 1.0.37 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
