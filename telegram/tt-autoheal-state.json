@@ -2,34 +2,77 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-16T05:17:04.470007+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-16T09:08:14.429192+00:00",
+      "issue_count": 7,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "7cba9df72608",
+          "title": "La Junta Electoral acuerda enviar la documentación de voto a los 2,7 millones de inscritos en el ext",
+          "seconds": 1218,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "cb61537471f9",
+          "title": "Un hombre mata a dos hermanastros de 24 y 26 años en Mataporquera (Cantabria)",
+          "seconds": 1218,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ff5628029346",
+          "title": "Elecciones generales, última hora de los pactos electorales en directo | Rufián ve prácticamente imp",
+          "seconds": 325,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "90ee7d4f1171",
+          "title": "Ayuso anuncia el cierre de la estacin de Metro de Sol por las \"condiciones de insalubridad\" de la \"a",
+          "seconds": 325,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "orphan_provisional",
+          "id": "7431d7a55172",
+          "title": "Consumo abre expediente a una gran empresa de telecomunicaciones por imponer cláusulas abusivas",
+          "seconds": 2465,
+          "workflow": null
+        },
+        {
+          "kind": "orphan_provisional",
+          "id": "e35ea39aac3a",
+          "title": "Dos jóvenes mueren en una pelea entre familias en Valdeolea (Cantabria), la Guardia Civil busca al p",
+          "seconds": 3133,
+          "workflow": null
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 775,
+          "seconds": 1429,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "b22da307e5f3ad45c73a73c42d456b314d4365797e537220c69b2c4f1be83762",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 4
     },
     "ttendencias": {
-      "checked_at": "2026-10-16T05:17:04.470007+00:00",
+      "checked_at": "2026-10-16T09:08:14.429192+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 775,
+          "seconds": 1429,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -43,10 +86,10 @@
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-16T04:18:51.048438+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-16T05:17:04.470007+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-16T05:17:04.470007+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-16T09:08:14.429192+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-16T09:08:14.429192+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-16T09:08:14.429192+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-13T15:14:37.048013+00:00"
   },
-  "checked_at": "2026-10-16T05:17:04.470007+00:00"
+  "checked_at": "2026-10-16T09:08:14.429192+00:00"
 }
