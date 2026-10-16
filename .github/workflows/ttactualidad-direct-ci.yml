@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths:
       - 'pilot/apply-ttactualidad-action.py'
-      - 'pilot/test-ttactualidad-direct-actions.py'
+      - 'pilot/test_ttactualidad_direct_actions.py'
       - '.github/workflows/ttactualidad-direct-actions.yml'
       - '.github/workflows/ttactualidad-direct-ci.yml'
   workflow_dispatch:
@@ -19,4 +19,4 @@ jobs:
       - name: Validate direct Listas remove and isolation
         run: |
           python3 -m py_compile pilot/apply-ttactualidad-action.py
-          python3 -m unittest discover -s pilot -p 'test-ttactualidad-direct-actions.py' -v
+          python3 -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
