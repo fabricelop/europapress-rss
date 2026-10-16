@@ -73,14 +73,15 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(changes["trends/telegram-image-deliveries.json"]["items"][0]["status"], "deleted")
         self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
 
-    def test_tr_discard_not_allowed_by_live_gate(self):
+    def test_tr_discard_now_live(self):
         self.write("trends/editorial-queue.json", {
             "items": [{"id": "tr123", "revision": 2, "status": "preparing"}], "count": 1})
         cmd = {"project":"ttendencias","event_id":"tr123","decision":"discard",
                "request_id":"12345678-1111-1111-1111-123456789012","revision":2}
         with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(cmd)}):
-            with self.assertRaises(mod.InvalidAction):
-                mod.main()
+            mod.main()
+        self.assertEqual(mod.load("trends/mobile-decisions.json", {})["items"][0]["status"], "published")
+        self.assertEqual(mod.load("trends/editorial-queue.json", {})["items"][0]["status"], "published")
 
     def test_tr_stale_revision(self):
         self.write("trends/editorial-queue.json", {
