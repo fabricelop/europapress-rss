@@ -1,4 +1,4 @@
-name: Mi Mapa del Tiempo v1.0.36 - compilar y probar
+name: Mi Mapa del Tiempo v1.0.37 - compilar y probar
 
 on:
   push:
@@ -9,11 +9,19 @@ on:
       - 'gps-ios/native/**'
       - '.github/workflows/mi-mapa-del-tiempo-v36-impactor-verify.yml'
 
+  pull_request:
+    branches:
+      - feature/mi-mapa-del-tiempo-ios-v36-simple-history
+    paths:
+      - 'gps-ios/native/**'
+      - '.github/workflows/mi-mapa-del-tiempo-v36-impactor-verify.yml'
+  workflow_dispatch:
+
 permissions:
   contents: read
 
 concurrency:
-  group: gps-ios-v36-parallel
+  group: gps-ios-v37-storage-safe
   cancel-in-progress: true
 
 jobs:
@@ -56,11 +64,11 @@ jobs:
           app=plistlib.load((a/"Info.plist").open("rb"))
           ext=plistlib.load((a/"PlugIns/MiMapaWidgets.appex/Info.plist").open("rb"))
           assert app["CFBundleIdentifier"] == "es.mimapadeltiempo.appprueba", app
-          assert app["CFBundleVersion"] == "37", app
-          assert app["CFBundleShortVersionString"] == "1.0.36", app
+          assert app["CFBundleVersion"] == "38", app
+          assert app["CFBundleShortVersionString"] == "1.0.37", app
           assert ext["CFBundleIdentifier"] == "es.mimapadeltiempo.appprueba.widgets", ext
-          assert ext["CFBundleVersion"] == "37", ext
-          assert ext["CFBundleShortVersionString"] == "1.0.36", ext
+          assert ext["CFBundleVersion"] == "38", ext
+          assert ext["CFBundleShortVersionString"] == "1.0.37", ext
           assert ext["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.widgetkit-extension", ext
           print("App y extensión ActivityKit con identificadores verificados")
           PY
@@ -89,12 +97,12 @@ jobs:
           APP="$RUNNER_TEMP/gps-live-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
           mkdir -p Payload
           cp -R "$APP" Payload/
-          /usr/bin/zip -q -r MiMapaDelTiempo-v36-unsigned.ipa Payload
-          unzip -t MiMapaDelTiempo-v36-unsigned.ipa >/dev/null
+          /usr/bin/zip -q -r MiMapaDelTiempo-v37-unsigned.ipa Payload
+          unzip -t MiMapaDelTiempo-v37-unsigned.ipa >/dev/null
       - name: Guardar IPA de evaluación
         uses: actions/upload-artifact@v4
         with:
-          name: MiMapaDelTiempo-v36-unsigned
-          path: gps-ios/native/MiMapaDelTiempo-v36-unsigned.ipa
+          name: MiMapaDelTiempo-v37-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-v37-unsigned.ipa
           retention-days: 5
           if-no-files-found: error
