@@ -317,7 +317,7 @@ struct SavedState: Codable {
             let databaseURL = dir.appendingPathComponent("time-map-v3.sqlite")
             let databaseExisted = FileManager.default.fileExists(atPath: databaseURL.path)
             let db = try TimeSQLiteStore(url: databaseURL)
-            if databaseExisted && !db.hasExistingState {
+            if databaseExisted && !(try db.headerExists()) {
                 throw TimeStoreError.missingHeader
             }
             try db.initializeIfTrulyEmpty(legacy ?? SavedState())
