@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-16T19:00:56.922407+00:00",
-  "ok": false,
+  "checked_at": "2026-10-16T22:01:59.267514+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 7,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.1,
-      "run_id": 38951463475,
+      "age_minutes": 2.0,
+      "run_id": 38973014382,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,77 +77,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 8,
-      "overdue_count": 8,
-      "oldest_age_minutes": 358.1,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "630457a6a384",
-          "name": "Marta Nebot",
-          "status": "preparing",
-          "age_minutes": 148.4
-        },
-        {
-          "id": "1781e388eb4e",
-          "name": "Athletic",
-          "status": "preparing",
-          "age_minutes": 358.1
-        },
-        {
-          "id": "ab56c8fcd556",
-          "name": "Elon Musk",
-          "status": "preparing",
-          "age_minutes": 358.1
-        },
-        {
-          "id": "6f9d2bd92779",
-          "name": "ignasi",
-          "status": "preparing",
-          "age_minutes": 358.1
-        },
-        {
-          "id": "54ae780111d5",
-          "name": "Porsche",
-          "status": "preparing",
-          "age_minutes": 348.5
-        },
-        {
-          "id": "208f2e50743c",
-          "name": "RMTV",
-          "status": "preparing",
-          "age_minutes": 167.6
-        },
-        {
-          "id": "9adf708e44e5",
-          "name": "Compromís-Front Valencià",
-          "status": "preparing",
-          "age_minutes": 148.4
-        },
-        {
-          "id": "e6697b8d115d",
-          "name": "frederiksen",
-          "status": "preparing",
-          "age_minutes": 148.4
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "630457a6a384",
-        "1781e388eb4e",
-        "ab56c8fcd556",
-        "6f9d2bd92779",
-        "54ae780111d5",
-        "208f2e50743c",
-        "9adf708e44e5",
-        "e6697b8d115d"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -157,10 +99,8 @@
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 358.1 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 358.1 min"
+  "last_alert_signature": ""
 }
