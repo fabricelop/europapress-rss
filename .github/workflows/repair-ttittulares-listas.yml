@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Releer los envíos recién confirmados en Telegram antes de encolar.
+          # Releer los datos editoriales de Listas antes de encolar; sin necesidad de entrega Telegram.
           git fetch origin main
           git reset --hard origin/main
           CONTROL="control/ttittulares-run-trigger-v2"
@@ -152,7 +152,7 @@ jobs:
               tweet=item.get("tweet") or {}
               text=str(tweet.get("text") or "").strip()
               remate=str(tweet.get("remate") or "").strip()
-              if not eid or not text or not remate or eid in closed_ids or eid not in delivered_ids:
+              if not eid or not text or not remate or eid in closed_ids:
                   continue
               # No procesar retrospectivamente noticias antiguas.
               # prepared.json de Listas puede omitir prepared_at/ready_at aunque
@@ -169,7 +169,7 @@ jobs:
               launch_only_start=datetime.fromisoformat("2026-10-14T06:20:00+00:00")
               if entered_dt < launch_only_start or (now-entered_dt).total_seconds()>24*3600:
                   continue
-              # Una noticia sigue siendo elegible mientras continúe en Listas y Telegram.
+              # Una noticia sigue siendo elegible mientras permanezca en Listas; Telegram ya no es requisito.
               # Intentar todas las noticias, incluidas las sensibles. El estilo cambia; no se descartan.
               is_sensitive=any(k in (str(item.get("title") or "")+" "+str(item.get("factual_summary") or "")).casefold()
                      for k in ("fallece","muere","muerte","muertos","muertas","heridos","heridas","asesinat","suicid","violación","agresión sexual","menor fallecid","cáncer","enfermedad terminal","atentado","operado","operación quirúrgica","hospitalizado","adenocarcinoma","nódulo pulmonar","enfermedad grave","accidente mortal","víctimas mortales","abuso infantil","misiles balísticos","bombardeo"))
@@ -528,17 +528,5 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
-      - name: Entregar noticias listas a Telegram sin esperar al cron
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          # Los commits hechos por GITHUB_TOKEN no disparan automáticamente
-          # los workflows push. workflow_dispatch sí está permitido y el
-          # repartidor tiene exclusión mutua e idempotencia por event_id.
-          gh workflow run send-ttittulares-ready-telegram.yml --repo "$REPO" --ref main
-          echo "TTITTULARES_TELEGRAM_DISPATCH_REQUESTED"
-
+      - name: Listas e imágenes quedan disponibles sin Telegram
+        run: echo "Las imágenes se encolan por prepared.json; sin envío a Telegram"
