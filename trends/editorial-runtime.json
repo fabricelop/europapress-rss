@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-16T08:15:00+02:00",
-  "last_completed_at": "2026-10-16T08:19:30+02:00",
-  "updated_at": "2026-10-16T08:19:30+02:00",
+  "last_started_at": "2026-10-16T09:15:00+02:00",
+  "last_completed_at": "2026-10-16T09:17:00+02:00",
+  "updated_at": "2026-10-16T09:17:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -26,13 +26,13 @@
     "image_jobs": []
   },
   "last_run": {
-    "run_id": "tr-chat-20261016T0815+0200",
+    "run_id": "tr-chat-20261016T0915+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-16T08:15:00+02:00",
-    "updated_at": "2026-10-16T08:19:30+02:00",
-    "finished_at": "2026-10-16T08:19:30+02:00",
+    "started_at": "2026-10-16T09:15:00+02:00",
+    "updated_at": "2026-10-16T09:17:00+02:00",
+    "finished_at": "2026-10-16T09:17:00+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -60,9 +60,9 @@
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 0,
-      "pending_cards_reviewed": 21
+      "pending_cards_reviewed": 20
     },
-    "message": "Pasada 0/0 cerrada: no había trabajo editorial nuevo; Endrick sigue cubierto (<48 h), cola final 0 y Telegram sin huérfanos. Saneamiento visual separado iniciado.",
+    "message": "Pasada 0/0 cerrada: cola final 0, sin revisiones activas ni rewrite_pending, Telegram sin huérfanos; saneamiento visual separado iniciado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,46 +75,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-16T08:15:00+02:00",
+        "at": "2026-10-16T09:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial: cola 0; Endrick reaparece en Top 10 pero su explicación del 14/10 sigue dentro de 48 h."
+        "message": "Iniciando pasada editorial: cola autoritativa 0; auditando estado, Pendientes y Telegram."
       },
       {
-        "at": "2026-10-16T08:16:20+02:00",
+        "at": "2026-10-16T09:15:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Reconciliando recent, requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
+        "message": "Reconciliando requests y Explicadas: 0 preparing/update/problematic y 0 rewrite_pending."
       },
       {
-        "at": "2026-10-16T08:17:10+02:00",
+        "at": "2026-10-16T09:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes: 21 Explicadas de menos de 24 h, todas con decisión terminal/borrado; 0 Pendientes vigentes."
+        "message": "Revisando Pendientes: 20 Explicadas de menos de 24 h, todas borradas; 0 Pendientes vigentes."
       },
       {
-        "at": "2026-10-16T08:17:48+02:00",
+        "at": "2026-10-16T09:16:05+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual solicitado mediante pending-repair-trigger; workflow 38860403358 arrancado."
+        "message": "Saneamiento visual solicitado; workflow 38866129840 iniciado."
       },
       {
-        "at": "2026-10-16T08:18:30+02:00",
+        "at": "2026-10-16T09:16:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría Telegram: 0 huérfanos, 0 entregas provisionales y cola editorial 0."
+        "message": "Auditoría Telegram: 0 huérfanos y 0 entregas provisionales."
       },
       {
-        "at": "2026-10-16T08:19:30+02:00",
+        "at": "2026-10-16T09:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; el saneamiento visual sigue en su workflow independiente."
+        "message": "Pasada 0/0 cerrada y verificada; saneamiento visual continúa en workflow independiente."
       }
     ]
   },
@@ -192,6 +192,5 @@
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "error": null
+  "telegram_orphan_ids": []
 }
