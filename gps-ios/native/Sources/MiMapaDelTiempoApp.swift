@@ -1845,13 +1845,94 @@ struct TimeMapView: View {
         return .cyan
     }
     var body: some View {
+        ZStack(alignment: .bottom) {
+            mapLayers
+            mapControls
+        }
+        .sheet(item:$inspectedZone) { zone in
+            TimeMapZoneSummary(model:model,zone:zone) { cell in
+                followLocation=false
+                model.selected=cell
+                let target=MKCoordinateRegion(center:Grid.center(cell),span:region.span)
+                region=target
+                refreshMapSnapshot(force: true)
+                camera = .region(target)
+                queueCameraSave(target)
+            }
+        }
+        .sheet(item:$historyCell) { cell in
+            NavigationStack {
+                CellHistoryView(model:model,cell:cell)
+                    .toolbar {
+                        ToolbarItem(placement:.cancellationAction) {
+                            Button("Cerrar") { historyCell=nil }
+                        }
+                    }
+            }
+        }
+        .sheet(item:$namingCell) { cell in
+            TimeNameEditor(model:model,cell:cell)
+        }
+        .sheet(isPresented:$searchOpen) {
+            TimeUniversalSearch(model:model) { cell in
+                queuedCellForMap=cell
+                searchOpen=false
+            }
+        }
+        .onChange(of:searchOpen) { _,open in
+            if !open,let cell=queuedCellForMap {
+                queuedCellForMap=nil
+                model.navigate(to:cell)
+            }
+        }
+.onChange(of:scenePhase) { _,phase in
+            if phase == .active {
+                gps.refreshWhenForeground()
+                model.restoreLiveActivityIfNeeded()
+                if followLocation { focusOnCurrentLocation() }
+            }
+        }
+        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
+        .onDisappear {
+            deferredCameraSave?.cancel()
+            // Preserve the user's last viewpoint when leaving the map.
+            model.updateCamera(region)
+        }
+        .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
+        .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
+        .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:model.data.places.count) { _,_ in refreshMapSnapshot(force: true) }
+        .onChange(of:namingCell) { _,newValue in
+            if newValue == nil { refreshMapSnapshot(force: true) }
+        }
+        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
+        .onChange(of:model.selectedTab) { _,tab in
+            if tab == 0 { refreshRenderedRoutes() }
+        }
+        .onChange(of:model.current?.date) { _,_ in
+            refreshRenderedRoutes()
+            refreshMapSnapshot()
+            if followLocation {
+                model.selected=nil
+                focusOnCurrentLocation()
+            }
+        }
+        .onChange(of:model.activeCell?.id) { _,_ in
+            refreshMapSnapshot(force: true)
+            if followLocation { model.selected=nil }
+        }
+    }
+
+
+    /// Map rendering is isolated from overlay buttons and the 1-second clock.
+    private var mapLayers: some View {
         let visibleCells = renderedCells
         let visibleZones = renderedZones
         let maximumVisibleTime = renderedMaximumTime
         let useBasicMap = model.forceBasicMap || !connectivity.connected
-        ZStack(alignment: .bottom) {
-            // Keep the same MapKit instance alive across network interruptions:
-            // only its visibility changes, never its identity or camera state.
+        return ZStack {
             MapReader { proxy in
                 Map(position: $camera) {
                     ForEach(visibleCells) { item in
@@ -1963,6 +2044,10 @@ struct TimeMapView: View {
                 .onAppear { centerOnRequestedCell(); refreshMapSnapshot(force: true) }
                 .onChange(of:model.mapNavigationRevision) { _,_ in centerOnRequestedCell() }
             }
+        }
+    }
+
+    private var mapControls: some View {
             VStack(spacing:4) {
                 HStack(spacing:4) {
                     Menu {
@@ -2149,83 +2234,7 @@ struct TimeMapView: View {
                 .padding(.horizontal,12)
                 .padding(.bottom,8)
             }
-        }
-        .sheet(item:$inspectedZone) { zone in
-            TimeMapZoneSummary(model:model,zone:zone) { cell in
-                followLocation=false
-                model.selected=cell
-                let target=MKCoordinateRegion(center:Grid.center(cell),span:region.span)
-                region=target
-                refreshMapSnapshot(force: true)
-                camera = .region(target)
-                queueCameraSave(target)
-            }
-        }
-        .sheet(item:$historyCell) { cell in
-            NavigationStack {
-                CellHistoryView(model:model,cell:cell)
-                    .toolbar {
-                        ToolbarItem(placement:.cancellationAction) {
-                            Button("Cerrar") { historyCell=nil }
-                        }
-                    }
-            }
-        }
-        .sheet(item:$namingCell) { cell in
-            TimeNameEditor(model:model,cell:cell)
-        }
-        .sheet(isPresented:$searchOpen) {
-            TimeUniversalSearch(model:model) { cell in
-                queuedCellForMap=cell
-                searchOpen=false
-            }
-        }
-        .onChange(of:searchOpen) { _,open in
-            if !open,let cell=queuedCellForMap {
-                queuedCellForMap=nil
-                model.navigate(to:cell)
-            }
-        }
-.onChange(of:scenePhase) { _,phase in
-            if phase == .active {
-                gps.refreshWhenForeground()
-                model.restoreLiveActivityIfNeeded()
-                if followLocation { focusOnCurrentLocation() }
-            }
-        }
-        .onAppear { refreshRenderedRoutes(); refreshMapSnapshot(force: true) }
-        .onDisappear {
-            deferredCameraSave?.cancel()
-            // Preserve the user's last viewpoint when leaving the map.
-            model.updateCamera(region)
-        }
-        .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
-        .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
-        .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
-        .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
-        .onChange(of:model.data.places.count) { _,_ in refreshMapSnapshot(force: true) }
-        .onChange(of:namingCell) { _,newValue in
-            if newValue == nil { refreshMapSnapshot(force: true) }
-        }
-        .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
-        .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
-        .onChange(of:model.selectedTab) { _,tab in
-            if tab == 0 { refreshRenderedRoutes() }
-        }
-        .onChange(of:model.current?.date) { _,_ in
-            refreshRenderedRoutes()
-            refreshMapSnapshot()
-            if followLocation {
-                model.selected=nil
-                focusOnCurrentLocation()
-            }
-        }
-        .onChange(of:model.activeCell?.id) { _,_ in
-            refreshMapSnapshot(force: true)
-            if followLocation { model.selected=nil }
-        }
     }
-
     /// A viewport-indexed snapshot avoids scanning and rebuilding thousands
     /// of map overlays every time the GPS or the card clock publishes a change.
     private func refreshMapSnapshot(force: Bool = false) {
