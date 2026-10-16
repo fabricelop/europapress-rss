@@ -41,3 +41,14 @@ jobs:
         run: |
           node --check pilot/ttactualidad-pc-dryrun.mjs
           node pilot/ttactualidad-pc-dryrun.mjs --self-test
+      - name: Test on-demand action API and verify browser script syntax
+        shell: pwsh
+        run: |
+          node pilot/test-ttactualidad-worker.mjs
+          $html = Get-Content docs/index.html -Raw -Encoding UTF8
+          $start = $html.IndexOf('<script>')
+          $end = $html.IndexOf('</script>', $start)
+          if ($start -lt 0 -or $end -le $start) { throw 'Missing inline script' }
+          $js = $html.Substring($start + 8, $end - $start - 8)
+          [IO.File]::WriteAllText('pilot/ttactualidad-web-check.js', $js)
+          node --check pilot/ttactualidad-web-check.js
