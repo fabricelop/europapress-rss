@@ -320,8 +320,8 @@ struct SavedState: Codable {
             try TimeSQLiteStore.recoverMissingPrimary(at: databaseURL)
             let databaseExisted = FileManager.default.fileExists(atPath: databaseURL.path)
             let db = try TimeSQLiteStore(url: databaseURL)
-            if databaseExisted && !(try db.headerExists()) {
-                throw TimeStoreError.missingHeader
+            if databaseExisted {
+                guard try db.headerExists() else { throw TimeStoreError.missingHeader }
             }
             try db.initializeIfTrulyEmpty(legacy ?? SavedState())
             data = try db.load()
