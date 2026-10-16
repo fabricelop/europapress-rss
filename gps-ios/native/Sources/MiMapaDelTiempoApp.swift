@@ -2207,11 +2207,11 @@ struct TimeMapView: View {
                 if followLocation { focusOnCurrentLocation() }
             }
         }
-        .onAppear { refreshRenderedRoutes(force: true) }
+        .onAppear { refreshRenderedRoutes() }
         .onChange(of:model.routePeriod) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.showRoutes) { _,_ in refreshRenderedRoutes(force: true) }
         .onChange(of:model.selectedTab) { _,tab in
-            if tab == 0 { refreshRenderedRoutes(force: true) }
+            if tab == 0 { refreshRenderedRoutes() }
         }
         .onChange(of:model.current?.date) { _,_ in
             refreshRenderedRoutes()
