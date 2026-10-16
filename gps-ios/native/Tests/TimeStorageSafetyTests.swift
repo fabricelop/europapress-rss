@@ -44,4 +44,28 @@ final class TimeStorageSafetyTests: XCTestCase {
         sqlite3_finalize(stmt)
         XCTAssertEqual(count, 1)
     }
+
+    func testTwoRotatingBackupsRestoreMissingDatabase() throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let url = folder.appendingPathComponent("time-map-v3.sqlite")
+        var original: TimeSQLiteStore? = try TimeSQLiteStore(url: url)
+        var state = SavedState()
+        state.fixes = [GPSPoint(date: Date(), latitude: 40.4, longitude: -3.7, accuracy: 5, source: "first")]
+        try original!.initializeIfTrulyEmpty(state)
+        try original!.createSafetyCopy(in: folder)
+        try original!.append(
+            fixes: [GPSPoint(date: Date().addingTimeInterval(20), latitude: 40.41, longitude: -3.71, accuracy: 4, source: "second")],
+            intervals: [], totals: [:], header: TimeStoreHeader(state))
+        try original!.createSafetyCopy(in: folder)
+        try original!.createSafetyCopy(in: folder)
+        XCTAssertEqual(TimeSQLiteStore.safetyCopyURLs(in: folder).count, 2)
+        original = nil
+        try FileManager.default.removeItem(at: url)
+        try TimeSQLiteStore.recoverMissingPrimary(at: url)
+        let recovered = try TimeSQLiteStore(url: url)
+        XCTAssertEqual(try recovered.load().fixes.count, 2)
+    }
+
 }
