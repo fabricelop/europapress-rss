@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-f096af205ae1-r1-a1-1792107447665",
-  "requested_at": "2026-10-15T23:37:27.629306Z",
-  "updated_at": "2026-10-15T23:54:37.862100Z",
-  "status": "CANCELLED",
-  "phase": "expired",
+  "command_id": "tt-img-auto-f096af205ae1-r1-a2-1792109126901",
+  "requested_at": "2026-10-16T00:05:26.865660Z",
+  "updated_at": "2026-10-16T00:05:26.865660Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "delivery_mode": "launch_only",
   "editorial_image_mode": "rigor",
@@ -15,9 +15,9 @@
   "event_id": "f096af205ae1",
   "target_name": "Al menos cuatro muertos, entre ellos tres menores, en un tiroteo en una escuela de primaria de Oregón",
   "revision": 1,
-  "regenerate": false,
+  "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 1,
+  "auto_repair_attempt": 2,
   "manual_retry_version": 0,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
@@ -68,9 +68,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
     "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
   },
-  "message": "bridge_stalled_before_launch",
-  "pc_upload_secret_hash": "f01b19905825f8e3896e932cb37e5d3091379c260e60e20e6d82d52c910946bc",
-  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
-  "pc_picked_up_at": "2026-10-15T23:38:54.731Z",
-  "finished_at": "2026-10-15T23:54:37.862100Z"
+  "message": "Reparación automática de imagen IA para noticia en Listas."
 }
