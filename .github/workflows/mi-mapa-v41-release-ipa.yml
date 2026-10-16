@@ -1,0 +1,66 @@
+name: Mi Mapa 1.0.41 - IPA directa
+on:
+  push:
+    branches:
+      - fix/mi-mapa-v41-release-ipa
+    paths:
+      - 'gps-ios/native/**'
+      - '.github/workflows/mi-mapa-v41-release-ipa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mi-mapa-v41-direct-release
+  cancel-in-progress: true
+jobs:
+  release:
+    runs-on: macos-15
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generar proyecto y validar sintaxis
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Compilar iPhone 1.0.41 y extension sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/v41-release" CODE_SIGNING_ALLOWED=NO build
+      - name: Verificar version y crear IPA
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/v41-release/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          m=plistlib.loads((app/"Info.plist").read_bytes())
+          e=plistlib.loads((app/"PlugIns"/"MiMapaWidgets.appex"/"Info.plist").read_bytes())
+          assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert m["CFBundleShortVersionString"]=="1.0.41"
+          assert m["CFBundleVersion"]=="42"
+          assert e["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba.widgets"
+          assert e["CFBundleShortVersionString"]=="1.0.41"
+          assert e["CFBundleVersion"]=="42"
+          assert "location" in m["UIBackgroundModes"]
+          print("Version 1.0.41/build 42 validada, identificadores conservados")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-1.0.41.ipa Payload
+          unzip -t MiMapaDelTiempo-1.0.41.ipa >/dev/null
+      - name: Guardar IPA para Sideloadly
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-1.0.41-direct-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-1.0.41.ipa
+          retention-days: 7
+          if-no-files-found: error
