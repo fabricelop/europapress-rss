@@ -1783,8 +1783,10 @@ struct TimeMapView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
     @StateObject private var connectivity = MapConnectivity()
-    @State private var camera: MapCameraPosition = .automatic
-    @State private var region: MKCoordinateRegion = CameraSave().region
+    // Start at the saved viewport; avoid MapKit's automatic camera followed
+    // by an immediate recenter, which can flash empty map tiles on launch.
+    @State private var camera: MapCameraPosition
+    @State private var region: MKCoordinateRegion
     @State private var namingCell: Cell?
     @State private var historyCell: Cell?
     @State private var inspectedZone: TimeCustomZone?
@@ -1796,6 +1798,15 @@ struct TimeMapView: View {
     @State private var cardBeforeDragging: TimeMapCardSize?
     @State private var restoredCamera = false
     @Environment(\.scenePhase) private var scenePhase
+
+    init(model: TimeModel, gps: GPSService) {
+        self.model = model
+        self.gps = gps
+        let saved = model.data.camera.region
+        _camera = State(initialValue: .region(saved))
+        _region = State(initialValue: saved)
+    }
+
     private var relevant:[MapCellRender] {
         let now=Date()
         let totals=model.periodTotals(now:now)
@@ -1934,8 +1945,10 @@ struct TimeMapView: View {
                     }
                 }
                 .onMapCameraChange(frequency: .onEnd) { ctx in
-                    // Hidden MapKit can still report its old camera while offline.
-                    guard !useBasicMap else { return }
+                    // Suppress MapKit's own tiny startup/camera corrections:
+                    // they are not user moves and must not rewrite the viewport.
+                    guard !useBasicMap,
+                          MapViewportPolicy.meaningfulChange(from: region, to: ctx.region) else { return }
                     region = ctx.region
                     model.updateCamera(ctx.region)
                     // Solo un gesto manual desactiva Seguirme; un cambio de
@@ -2246,11 +2259,8 @@ struct TimeMapView: View {
             model.selected=c
             model.updateCamera(target)
         } else if !restoredCamera {
-            // Solo en la primera aparición: nunca rehacer el centrado
-            // al cambiar de pestaña o alternar el mapa offline.
+            // Initialized directly from the saved region; do not recenter again.
             restoredCamera = true
-            camera = .region(model.data.camera.region)
-            region = model.data.camera.region
         }
     }
 }
