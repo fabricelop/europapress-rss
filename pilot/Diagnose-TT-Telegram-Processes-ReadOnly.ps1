@@ -6,7 +6,8 @@ Write-Host '=== AUDITORIA SEGURA: TT TELEGRAM / CHROME / PROCESOS ===' -Foregrou
 Write-Host ('Fecha: '+(Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))
 $important='TTiTTulares|TTendencias|TT[-_ ]|telegram|SeLoRecordamos|TTImages|imagebridge|chrome'
 $tasks=@(Get-ScheduledTask -ErrorAction SilentlyContinue|Where-Object{
- $label=[string]$_.TaskName+' '+[string]$_.TaskPath+' '+(@($_.Actions)|ForEach-Object{[string]$_.Execute+' '+[string]$_.Arguments} -join ' ')
+ $actions=(@($_.Actions)|ForEach-Object{[string]$_.Execute+' '+[string]$_.Arguments}) -join ' '
+ $label=[string]$_.TaskName+' '+[string]$_.TaskPath+' '+$actions
  $label -match $important
 })
 function Classify([string]$s){
