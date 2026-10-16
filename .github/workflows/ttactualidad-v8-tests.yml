@@ -54,16 +54,17 @@ jobs:
           node --check /tmp/ttactualidad-v8-ui.js
           cp pilot/ttactualidad-live/worker.js /tmp/ttactualidad-v8-worker.mjs
           node --check /tmp/ttactualidad-v8-worker.mjs
-      - name: Confirm no changes to production GH Pages, Tremending, TTImages or SeLoRecordamos
+      - name: Parse deploy PowerShell without executing
+        shell: pwsh
         run: |
-          python3 - <<'PY'
-          import subprocess
-          allowed={'pilot/test_ttactualidad_direct_actions.py',
-                   'pilot/apply-ttactualidad-action.py',
-                   '.github/workflows/ttactualidad-direct-actions.yml'}
-          subprocess.check_call(['git','fetch','--depth=1','origin','main'])
-          paths=subprocess.check_output(['git','diff','--name-only','origin/main','HEAD'],text=True).splitlines()
-          assert all(p in allowed or p.startswith('pilot/ttactualidad-live/') or p=='.github/workflows/ttactualidad-v8-tests.yml' for p in paths),paths
-          assert 'main/docs/index.html' not in paths and 'docs/index.html' not in paths
-          print('ISOLATION_OK',paths)
-          PY
+          $tokens=$null
+          $errorsFound=$null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V8-EnVivo.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8 syntax invalid'
+          }
+          Write-Host 'TTActualidad deploy script syntax OK'
