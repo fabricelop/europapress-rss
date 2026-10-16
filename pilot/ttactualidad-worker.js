@@ -50,6 +50,8 @@ export default {
   if(req.method==='GET'&&!route.startsWith('/api/')&&env.ASSETS)
    return env.ASSETS.fetch(req);
   if(!access(req,env))return respond(req,{ok:false,error:'unauthorized'},401);
+  if(route==='/api/auth'&&req.method==='GET')
+   return respond(req,{ok:true,production_connected:env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN),architecture:'on_demand_no_polling'});
   if(!env.PILOT_DECISIONS)return respond(req,{ok:false,error:'pilot_KV_not_bound'},503);
   if(route==='/api/decisions'&&req.method==='GET'){
    const listing=await env.PILOT_DECISIONS.list({limit:100,prefix:'action:'});
