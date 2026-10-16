@@ -14,8 +14,8 @@ import CoreLocation
     private let restoreDelay: UInt64
 
     init(startMonitoring: Bool = true,
-         outageDelay: UInt64 = 12_000_000_000,
-         restoreDelay: UInt64 = 8_000_000_000) {
+         outageDelay: UInt64 = 30_000_000_000,
+         restoreDelay: UInt64 = 15_000_000_000) {
         self.outageDelay = outageDelay
         self.restoreDelay = restoreDelay
         if startMonitoring {
@@ -61,6 +61,7 @@ struct OfflineGridMap: View {
     var onInteractionStart:(()->Void)? = nil
     var onInteractionEnd:(()->Void)? = nil
     @State private var dragOffset: CGSize = .zero
+    @GestureState private var pinchPreview: CGFloat = 1
 
     private func screen(_ coordinate: CLLocationCoordinate2D, size: CGSize) -> CGPoint {
         let latitudeDelta = max(0.0001, region.span.latitudeDelta)
@@ -171,6 +172,11 @@ struct OfflineGridMap: View {
                                        with:.color(.white),lineWidth:2)
                     }
                 }
+                // Preview transforms use the GPU; the grid data is not rebuilt
+                // on every finger movement. Neutral fill covers exposed edges.
+                .scaleEffect(pinchPreview)
+                .offset(dragOffset)
+                .background(Color(red:0.92,green:0.95,blue:0.95))
                 .contentShape(Rectangle())
                 .onTapGesture { point in
                     let longitude=region.center.longitude +
@@ -195,6 +201,19 @@ struct OfflineGridMap: View {
                         dragOffset = .zero
                         onInteractionEnd?()
                     })
+                .simultaneousGesture(
+                    MagnificationGesture()
+                        .updating($pinchPreview) { amount, preview, _ in
+                            preview = max(0.35, min(3.0, amount))
+                        }
+                        .onEnded { amount in
+                            let scale = Double(max(0.35, min(3.0, amount)))
+                            let next = MapZoomPolicy.scaled(
+                                region, factor: 1.0 / scale, center: region.center)
+                            region = next
+                            onNavigate(next)
+                        }
+                )
             }
         }
     }
