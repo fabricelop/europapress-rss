@@ -1,12 +1,26 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-16T09:11:03.884147+00:00",
+  "checked_at": "2026-10-16T09:12:11.880523+00:00",
   "verification": "Telegram API send/edit acknowledgements + persisted deliveries; bot API does not provide private chat history",
   "ledger_entries": 404,
   "baseline_at": "2026-10-12T15:25:23Z",
   "archived_before_message_id": 3566,
-  "unresolved_count": 0,
-  "unresolved": [],
-  "alerted": {},
+  "unresolved_count": 1,
+  "unresolved": [
+    {
+      "key": "provisional:ff5628029346:4132",
+      "id": "ff5628029346",
+      "message_id": 4132,
+      "title": "Elecciones generales, última hora de los pactos electorales en directo | Rufián ve prácticamente imposible el acuerdo entre las izquierdas a pocas horas del cierre del plazo: \"Hemos fracasado\"",
+      "age_min": 3.8,
+      "reason": "Bloqueo editorial: transport_write_blocked"
+    }
+  ],
+  "alerted": {
+    "provisional:ff5628029346:4132": {
+      "signature": "68770dc76773e1861b",
+      "notified_at": null
+    }
+  },
   "last_alert_count": 0
 }
