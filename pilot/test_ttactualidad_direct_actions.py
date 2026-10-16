@@ -65,21 +65,22 @@ class ActionTests(unittest.TestCase):
         with self.assertRaises(mod.InvalidAction):
             mod.apply("ttittulares", "tt123", "discard", 1)
 
-    def test_tr_ready_published(self):
+    def test_tr_legacy_delivery_deleted(self):
         self.write("trends/telegram-image-deliveries.json", {"items": [
             {"event_id": "tr123", "revision": 0, "status": "sent"}]})
-        changes, result = mod.apply("ttendencias", "tr123", "published", 0)
+        changes, result = mod.apply("ttendencias", "tr123", "deleted", 0)
         self.assertEqual(result, "applied")
-        self.assertEqual(changes["trends/telegram-image-deliveries.json"]["items"][0]["status"], "published")
-        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "published")
+        self.assertEqual(changes["trends/telegram-image-deliveries.json"]["items"][0]["status"], "deleted")
+        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
 
-    def test_tr_discard_in_progress(self):
+    def test_tr_discard_not_allowed_by_live_gate(self):
         self.write("trends/editorial-queue.json", {
             "items": [{"id": "tr123", "revision": 2, "status": "preparing"}], "count": 1})
-        changes, result = mod.apply("ttendencias", "tr123", "discard", 2)
-        self.assertEqual(result, "applied")
-        self.assertEqual(changes["trends/editorial-queue.json"]["count"], 0)
-        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "dismissed")
+        cmd = {"project":"ttendencias","event_id":"tr123","decision":"discard",
+               "request_id":"12345678-1111-1111-1111-123456789012","revision":2}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(cmd)}):
+            with self.assertRaises(mod.InvalidAction):
+                mod.main()
 
     def test_tr_stale_revision(self):
         self.write("trends/editorial-queue.json", {
