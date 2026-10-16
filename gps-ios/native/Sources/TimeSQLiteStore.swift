@@ -218,7 +218,6 @@ final class TimeSQLiteStore {
                 data.shortIDs = header.shortIDs ?? [:]
                 data.gpsRest = header.gpsRest
                 data.dismissedGPSGapIDs = header.dismissedGPSGapIDs ?? []
-            }
         } else if headerResult == SQLITE_DONE {
             throw TimeStoreError.missingHeader
         } else {
