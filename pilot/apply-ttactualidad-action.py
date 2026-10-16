@@ -220,18 +220,48 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
             queue["updated_at"] = now
             return {queue_path: queue, prepared_path: prepared, state_path: decisions}, "applied"
         if decision == "prepare":
-            if not source or not any(str(row.get("event_id") or "") == event_id for row in status_doc.get("problematic_items", [])):
-                fail("Esta noticia ya no esta en Revision")
+            in_review = any(str(row.get("event_id") or "") == event_id
+                            for row in status_doc.get("problematic_items", []))
+            growing = next((row for row in status_doc.get("three_source_items", [])
+                            if str(row.get("event_id") or "") == event_id), None)
+            if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
+                check_revision(active, revision)
+                return {}, "already_applied"
+            if not source or not (in_review or growing):
+                fail("Esta noticia ya no esta en Revision ni Creciendo")
             if "revision" in source:
                 check_revision(source, revision)
             if existing and str(existing.get("status") or "").lower() in TERMINAL:
                 fail("La noticia tiene una decision final; no se reabre automaticamente")
-            if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
-                return {}, "already_applied"
-            fields = dict(source)
-            fields.update(status="PROCESSING", selection_mode="MANUAL_REOPEN_OUTCOME",
-                          force_user_elaborate=True, user_validated=True, user_validated_at=now,
-                          revision=revision, requested_at=now, selected_at=source.get("selected_at") or now)
+            if ready or (active and str(active.get("status") or "").upper() in
+                         {"READY", "PUBLISHED", "DISMISSED", "DELETED"}):
+                fail("La noticia ya fue cerrada o enviada a Listas")
+            if growing:
+                # The manual exception is available ONLY for an actual live
+                # three-source WAITING event, not for arbitrary client IDs.
+                radar = load("telegram/events.json", {"events": []})
+                event = find(radar.get("events", []), "id", event_id)
+                if not event or str(event.get("status") or "") not in {"WAITING", "UPDATE_WAITING"}:
+                    fail("La noticia ya no esta creciendo; actualiza el panel")
+                check_revision(event, revision)
+                if int(event.get("source_count") or 0) != 3:
+                    fail("El numero de fuentes ha cambiado; actualiza el panel")
+                fields = dict(event)
+                fields.update(event_id=event_id,
+                              title=event.get("canonical_title") or event.get("title") or source.get("title"),
+                              status="PROCESSING", selection_mode="MANUAL_GROWING_OVERRIDE",
+                              force_user_elaborate=True, manual_investigation_requested=True,
+                              manual_threshold_override=True, requested_at=now,
+                              selected_at=now, revision=revision)
+                # Three sources are enough to REQUEST investigation only.
+                # No evidence is promoted to "verified" by this click.
+                fields["source_count"] = 3
+                fields["source_evidence"] = list(event.get("appearances") or [])
+            else:
+                fields = dict(source)
+                fields.update(status="PROCESSING", selection_mode="MANUAL_REOPEN_OUTCOME",
+                              force_user_elaborate=True, user_validated=True, user_validated_at=now,
+                              revision=revision, requested_at=now, selected_at=source.get("selected_at") or now)
             if active:
                 active.update(fields)
             else:
