@@ -24,6 +24,8 @@ class ActionTests(unittest.TestCase):
             "ttittulares/editorial-queue.json": {"items": [], "count": 0},
             "ttittulares/decisions.json": {"items": []},
             "trends/telegram-image-deliveries.json": {"items": []},
+            "trends/telegram-manual-explained.json": {"items": []},
+            "trends/requests.json": {"requests": []},
             "trends/editorial-queue.json": {"items": [], "count": 0},
             "trends/mobile-decisions.json": {"items": []},
         }.items():
@@ -63,21 +65,22 @@ class ActionTests(unittest.TestCase):
         with self.assertRaises(mod.InvalidAction):
             mod.apply("ttittulares", "tt123", "discard", 1)
 
-    def test_tr_ready_published(self):
+    def test_tr_legacy_delivery_deleted(self):
         self.write("trends/telegram-image-deliveries.json", {"items": [
             {"event_id": "tr123", "revision": 0, "status": "sent"}]})
-        changes, result = mod.apply("ttendencias", "tr123", "published", 0)
+        changes, result = mod.apply("ttendencias", "tr123", "deleted", 0)
         self.assertEqual(result, "applied")
-        self.assertEqual(changes["trends/telegram-image-deliveries.json"]["items"][0]["status"], "published")
-        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "published")
+        self.assertEqual(changes["trends/telegram-image-deliveries.json"]["items"][0]["status"], "deleted")
+        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
 
-    def test_tr_discard_in_progress(self):
+    def test_tr_discard_not_allowed_by_live_gate(self):
         self.write("trends/editorial-queue.json", {
             "items": [{"id": "tr123", "revision": 2, "status": "preparing"}], "count": 1})
-        changes, result = mod.apply("ttendencias", "tr123", "discard", 2)
-        self.assertEqual(result, "applied")
-        self.assertEqual(changes["trends/editorial-queue.json"]["count"], 0)
-        self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "dismissed")
+        cmd = {"project":"ttendencias","event_id":"tr123","decision":"discard",
+               "request_id":"12345678-1111-1111-1111-123456789012","revision":2}
+        with patch.dict(os.environ, {"TT_ACTUALIDAD_EVENT_JSON": json.dumps(cmd)}):
+            with self.assertRaises(mod.InvalidAction):
+                mod.main()
 
     def test_tr_stale_revision(self):
         self.write("trends/editorial-queue.json", {
@@ -142,6 +145,41 @@ class ActionTests(unittest.TestCase):
             mod.main()
         self.assertEqual(mod.load("ttittulares/prepared.json", {})["count"], 0)
         self.assertEqual(len(mod.load(mod.LEDGER, {"items":[]})["items"]), 1)
+
+    def test_tr_editorial_ready_deletes_without_telegram_delivery(self):
+        self.write("trends/telegram-manual-explained.json", {"items": [
+            {"id":"row123","revision":2,"status":"explained","name":"Tendencia prueba",
+             "explanation":"Texto completo","explained_at":"2026-10-16T08:00:00Z"}]})
+        self.write("trends/requests.json", {"requests": [
+            {"id":"row123","revision":2,"status":"explained"}]})
+        change, result = mod.apply("ttendencias","row123","deleted",2)
+        self.assertEqual(result,"applied")
+        self.assertNotIn("trends/telegram-image-deliveries.json",change)
+        self.assertEqual(change["trends/telegram-manual-explained.json"]["items"][0]["status"],"deleted")
+        self.assertEqual(change["trends/requests.json"]["requests"][0]["status"],"deleted")
+        self.assertEqual(change["trends/mobile-decisions.json"]["items"][0]["status"],"deleted")
+
+    def test_tr_editorial_stale_revision_rejected(self):
+        self.write("trends/telegram-manual-explained.json", {"items": [
+            {"id":"row123","revision":4,"status":"explained","explanation":"Ready"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias","row123","deleted",3)
+
+    def test_tr_editorial_closed_rejected(self):
+        self.write("trends/telegram-manual-explained.json", {"items": [
+            {"id":"row123","revision":4,"status":"explained","explanation":"Ready",
+            "telegram_package_status":"deleted"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply("ttendencias","row123","deleted",4)
+
+    def test_tr_editorial_deleted_also_closes_legacy_delivery(self):
+        self.write("trends/telegram-manual-explained.json", {"items": [
+            {"id":"row123","revision":4,"status":"explained","explanation":"Ready"}]})
+        self.write("trends/telegram-image-deliveries.json", {"items": [
+            {"event_id":"row123","revision":4,"status":"sent","final":True}]})
+        change, result=mod.apply("ttendencias","row123","deleted",4)
+        self.assertEqual(change["trends/telegram-image-deliveries.json"]["items"][0]["status"],"deleted")
+        self.assertEqual(change["trends/telegram-manual-explained.json"]["items"][0]["status"],"deleted")
 
 
 if __name__ == "__main__":
