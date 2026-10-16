@@ -1297,7 +1297,9 @@ struct SavedState: Codable {
             }
             lastSaved = .now
         } catch {
-            gpsStatus = "Error guardando datos: \(error.localizedDescription)"
+            storageLoadFailed = true
+            storeStatus = "ERROR DE ALMACENAMIENTO · escrituras bloqueadas: \(error.localizedDescription)"
+            gpsStatus = "Error guardando datos · almacenamiento protegido"
         }
     }
 }
