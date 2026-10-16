@@ -247,7 +247,7 @@ struct SavedState: Codable {
     private let territoryAutoClassifier = TerritoryAutoClassifier()
     private let fileURL: URL
     private var store: TimeSQLiteStore?
-    private var storageLoadFailed = false
+    @Published private var storageLoadFailed = false
     private var lastSafetyCopyAttempt = Date.distantPast
     var storageIsHealthy: Bool { !storageLoadFailed }
     private var lastProcessedSample: GPSPoint?
@@ -1472,6 +1472,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 
     @MainActor func restoreRest(_ model: TimeModel) {
+        guard model.storageIsHealthy else {
+            model.gpsStatus = "GPS detenido · almacenamiento no disponible"
+            return
+        }
         guard model.isResting else { return }
         self.model = model
         manager.stopUpdatingLocation()
@@ -1507,6 +1511,18 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
             manager.stopMonitoring(for: region)
         }
         manager.stopMonitoringSignificantLocationChanges()
+    }
+
+    @MainActor func haltForStorageFailure(_ model: TimeModel) {
+        manager.stopUpdatingLocation()
+        GPSStaleWatchdog.shared.cancel()
+        automaticMonitoringStop()
+        motion.end()
+        model.recording = false
+        model.gpsStatus = "GPS detenido · error de almacenamiento"
+        movingSoon = false
+        lastReceivedAt = nil
+        lastPosition = nil
     }
 
     @MainActor func end(_ model: TimeModel) {
@@ -1670,6 +1686,9 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     if model.isResting { gps.restoreRest(model) }
                     else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
                     model.restoreLiveActivityIfNeeded()
+                }
+                .onChange(of: model.storageIsHealthy) { _, healthy in
+                    if !healthy { gps.haltForStorageFailure(model) }
                 }
                 .onChange(of: phase) { _, state in
                     if state != .active { model.save(force:true) }
