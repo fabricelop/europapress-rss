@@ -30,6 +30,8 @@ jobs:
         run: python3 -m unittest discover -s pilot/ttactualidad-live -p 'test_live_actions.py' -v
       - name: Trend card freshness and live interface
         run: node pilot/ttactualidad-live/test_listas.mjs
+      - name: Worker actions and safe retry
+        run: node pilot/ttactualidad-live/test_worker_live.mjs
       - name: Validate browser and Worker JS
         run: |
           python3 - <<'PY'
