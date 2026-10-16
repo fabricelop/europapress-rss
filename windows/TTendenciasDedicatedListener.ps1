@@ -768,47 +768,28 @@ function Test-DedicatedChromeCdpHealthy {
   }
 }
 function Restart-DedicatedChromeCdp([string]$CommandId,[string]$Reason) {
+  # Chrome9223 SAFE RECOVERY V2: never kill a living browser or request
+  # a parallel Chrome restart from image listeners. The local watchdog
+  # exclusively owns starting Chrome when its browser root is absent.
   if(Test-OtherImageBridgeBusy){
     Write-Log "CHROME CDP RECOVERY DEFERRED command=$CommandId reason=ttittulares-image-active"
     return $false
   }
-  # El endpoint vivo con 0 pestanas ChatGPT NO esta roto: crear la
-  # pestana es lo correcto. Nunca matar Chrome por este caso.
   try{
-    $v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 3
+    $v=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 4
     if($v -and $v.webSocketDebuggerUrl){
-      Write-Log "CHROME CDP BROWSER ALIVE command=$CommandId; recovering chat tab instead of restart"
+      Write-Log "CHROME CDP BROWSER ALIVE command=$CommandId; recovering chat target safely"
       return (Test-DedicatedChromeCdpHealthy)
     }
   }catch{}
-  # Si el endpoint REALMENTE esta caido, limitar reinicios a uno por 5 minutos.
-  $now=[DateTimeOffset]::UtcNow
-  if($now -lt $script:NextChromeRestartAt){
-    Write-Log "CHROME CDP RESTART COOLDOWN command=$CommandId next=$($script:NextChromeRestartAt.ToString('o'))"
-    return $false
-  }
-  $script:NextChromeRestartAt=$now.AddMinutes(5)
-  Write-Log "CHROME CDP RECOVERY START command=$CommandId reason=$Reason"
-  try {
-    $roots=@(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object {
-      ($_.Name -ieq "chrome.exe" -or $_.Name -ieq "msedge.exe") -and
-      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\s+)9223(?:\s|$)'
-    })
-    foreach($p in $roots){ try{& taskkill.exe /PID $p.ProcessId /T /F 1>$null 2>$null}catch{} }
-    Start-Sleep -Seconds 2
-    & schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null
-    $deadline=(Get-Date).AddSeconds(25)
-    while((Get-Date) -lt $deadline){
-      if(Test-DedicatedChromeCdpHealthy){
-        Write-Log "CHROME CDP RECOVERY OK command=$CommandId killed=$($roots.Count)"
-        return $true
-      }
-      Start-Sleep -Seconds 1
+  try{
+    $v6=Invoke-RestMethod -Uri "http://[::1]:9223/json/version" -TimeoutSec 4
+    if($v6 -and $v6.webSocketDebuggerUrl){
+      Write-Log "CHROME CDP IPV6 ALIVE command=$CommandId; no browser restart (IPv4 listener pending)"
+      return $false
     }
-    Write-Log "CHROME CDP RECOVERY FAILED command=$CommandId reason=endpoint-or-chat-not-ready"
-  } catch {
-    Write-Log "CHROME CDP RECOVERY ERROR command=$CommandId :: $($_.Exception.Message)"
-  }
+  }catch{}
+  Write-Log "CHROME CDP RECOVERY DEFERRED command=$CommandId reason=endpoint-unresponsive-watchdog-owns-start; no taskkill"
   return $false
 }
 

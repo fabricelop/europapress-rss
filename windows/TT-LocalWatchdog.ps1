@@ -78,19 +78,50 @@ function EnsureStartup([string]$Name,[string]$Script){
   }catch{Log "STARTUP ERROR $Name :: $($_.Exception.Message)"}
 }
 function EnsureChrome{
-  $ok=$false
+  # watchdog-v13: fail closed; don't relaunch a living Chrome 9223 on CDP timeout.
+  # Check IPv4 and IPv6, since Windows can bind to either loopback address.
+  foreach($hostAddress in @("127.0.0.1","[::1]")){
+    try{
+      $r=Invoke-RestMethod -Uri ("http://"+$hostAddress+":9223/json/version") -TimeoutSec 4
+      if($r -and $r.webSocketDebuggerUrl){return}
+    }catch{}
+  }
+
+  # A running browser is not proof of a healthy CDP endpoint, but attempting
+  # another launch makes things worse. Leave recovery to a controlled repair.
+  $browserRoots=@()
   try{
-    $r=Invoke-RestMethod -Uri "http://127.0.0.1:9223/json/version" -TimeoutSec 3
-    $ok=[bool]$r.webSocketDebuggerUrl
-  }catch{}
-  if($ok){return}
+    $browserRoots=@(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" -ErrorAction Stop | Where-Object {
+      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\s+)9223(?:\s|$)' -and
+      [string]$_.CommandLine -notmatch '(?:^|\s)--type='
+    })
+  }catch{
+    Log ("CHROME PROCESS CHECK FAILED; relaunch blocked :: "+$_.Exception.Message)
+    return
+  }
+  if($browserRoots.Count -gt 0){
+    $now=[DateTimeOffset]::UtcNow
+    if(-not $script:LastChromeAliveWarningAt -or ($now-$script:LastChromeAliveWarningAt).TotalMinutes -ge 10){
+      $script:LastChromeAliveWarningAt=$now
+      Log ("CHROME CDP UNREACHABLE BUT BROWSER ALIVE; relaunch blocked pid="+[string]$browserRoots[0].ProcessId)
+    }
+    return
+  }
+
+  # Even with no Chrome root, use Task Scheduler's persisted LastRunTime
+  # to avoid duplicate startups across watchdog instances.
   try{
-    & schtasks.exe /Query /TN "TT Chrome Auto" 1>$null 2>$null
-    if($LASTEXITCODE -eq 0){
-      & schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null
-      Log "CHROME AUTO REQUESTED"
-    }else{Log "CHROME TASK MISSING"}
-  }catch{Log "CHROME AUTO ERROR :: $($_.Exception.Message)"}
+    $task=Get-ScheduledTask -TaskName "TT Chrome Auto" -ErrorAction Stop
+    $info=Get-ScheduledTaskInfo -TaskName "TT Chrome Auto" -ErrorAction Stop
+    if([string]$task.State -eq "Running"){return}
+    if($info.LastRunTime -gt [datetime]::MinValue -and
+       ((Get-Date)-$info.LastRunTime).TotalSeconds -lt 300){return}
+    & schtasks.exe /Run /TN "TT Chrome Auto" 1>$null 2>$null
+    if($LASTEXITCODE -eq 0){Log "CHROME AUTO REQUESTED (no root, 5min cooldown)"}
+    else{Log "CHROME AUTO FAILED exit="+$LASTEXITCODE}
+  }catch{
+    Log ("CHROME TASK CHECK FAILED; no launch :: "+$_.Exception.Message)
+  }
 }
 # Recuperación segura tras caída de Internet: un proceso vivo puede conservar
 # conexiones/snapshots obsoletos y no volver a consumir imágenes REQUESTED.
