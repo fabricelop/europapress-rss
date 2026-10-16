@@ -3,16 +3,52 @@ import MapKit
 import Network
 import CoreLocation
 
+/// A momentary connectivity blip must not destroy and rebuild the MapKit view.
+/// Network status is a hint for selecting our offline canvas, not tile availability.
 @MainActor final class MapConnectivity: ObservableObject {
     @Published private(set) var connected = true
     private let monitor = NWPathMonitor()
-    init() {
-        monitor.pathUpdateHandler = { [weak self] path in
-            Task { @MainActor [weak self] in self?.connected = (path.status == .satisfied) }
+    private var pendingChange: Task<Void, Never>?
+    private var latestAvailable = true
+    private let outageDelay: UInt64
+    private let restoreDelay: UInt64
+
+    init(startMonitoring: Bool = true,
+         outageDelay: UInt64 = 12_000_000_000,
+         restoreDelay: UInt64 = 8_000_000_000) {
+        self.outageDelay = outageDelay
+        self.restoreDelay = restoreDelay
+        if startMonitoring {
+            monitor.pathUpdateHandler = { [weak self] path in
+                let available = path.status == .satisfied
+                Task { @MainActor [weak self] in self?.networkChanged(available) }
+            }
+            monitor.start(queue: DispatchQueue(label: "gps.map.network"))
         }
-        monitor.start(queue: DispatchQueue(label: "gps.map.network"))
     }
-    deinit { monitor.cancel() }
+
+    // Internal for deterministic regression tests without actual network switching.
+    func networkChanged(_ available: Bool) {
+        latestAvailable = available
+        pendingChange?.cancel()
+        pendingChange = nil
+        guard available != connected else { return }
+        // Wait for a sustained outage before falling back; wait for a sustained
+        // restoration before rebuilding visible map tiles.
+        let wait = available ? restoreDelay : outageDelay
+        pendingChange = Task { [weak self] in
+            do { try await Task.sleep(nanoseconds: wait) }
+            catch { return }
+            guard !Task.isCancelled, let self,
+                  self.latestAvailable == available else { return }
+            self.connected = available
+        }
+    }
+
+    deinit {
+        pendingChange?.cancel()
+        monitor.cancel()
+    }
 }
 
 /// Renderiza sin teselas ni servidor: los puntos visitados y una malla métrica
