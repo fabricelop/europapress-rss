@@ -67,6 +67,49 @@ final class TimeSQLiteStore {
 
     deinit { if db != nil { sqlite3_close(db) } }
 
+    /// Consistent standalone SQLite backups, including committed WAL contents.
+    /// Each backup is a new file; existing copies are only pruned after success.
+    static func safetyCopyURLs(in directory: URL) -> [URL] {
+        let files = (try? FileManager.default.contentsOfDirectory(at: directory,
+            includingPropertiesForKeys: nil)) ?? []
+        return files.filter {
+            $0.lastPathComponent.hasPrefix("time-map-safety-") && $0.pathExtension == "sqlite"
+        }.sorted { $0.lastPathComponent > $1.lastPathComponent }
+    }
+
+    func createSafetyCopy(in directory: URL) throws {
+        guard let source = db else { throw TimeStoreError.sql("SQLite cerrado") }
+        let filename = "time-map-safety-\(Int(Date().timeIntervalSince1970))-\(UUID().uuidString).sqlite"
+        let targetURL = directory.appendingPathComponent(filename)
+        var target: OpaquePointer?
+        let openResult = sqlite3_open_v2(targetURL.path, &target,
+                                        SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX, nil)
+        guard openResult == SQLITE_OK, let target else {
+            if target != nil { sqlite3_close(target) }
+            try? FileManager.default.removeItem(at: targetURL)
+            throw TimeStoreError.sql("No se pudo abrir la copia local")
+        }
+        var succeeded = false
+        defer {
+            sqlite3_close(target)
+            if !succeeded { try? FileManager.default.removeItem(at: targetURL) }
+        }
+        guard let backup = sqlite3_backup_init(target, "main", source, "main") else {
+            throw TimeStoreError.sql("No se pudo iniciar la copia SQLite")
+        }
+        let stepResult = sqlite3_backup_step(backup, -1)
+        let finishResult = sqlite3_backup_finish(backup)
+        guard stepResult == SQLITE_DONE && finishResult == SQLITE_OK else {
+            throw TimeStoreError.sql("No se pudo completar la copia SQLite")
+        }
+        succeeded = true
+        // Retain the two newest complete copies. Never delete first.
+        for old in Self.safetyCopyURLs(in: directory).dropFirst(2) {
+            try? FileManager.default.removeItem(at: old)
+        }
+    }
+
+
     private func message() -> String {
         guard let db else { return "Base de datos no disponible" }
         return String(cString: sqlite3_errmsg(db))
