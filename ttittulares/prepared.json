@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-16T08:11:36.800922Z",
+  "updated_at": "2026-10-16T08:13:11.479Z",
   "items": [
     {
       "event_id": "a7b623571cfe",
@@ -286,7 +286,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": true,
@@ -317,7 +317,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Comienza en Sevilla el juicio por el brote de listeriosis provocado por carne mechada contaminada de Magrudis que provocó cuatro muertes y la intoxicación de más de 200 personas"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-16T08:13:11.479Z",
+      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
     }
   ],
   "count": 2,
