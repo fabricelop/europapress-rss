@@ -1245,11 +1245,15 @@ struct SavedState: Codable {
         restored.trackingEnabled=false
         restored.gpsRest=nil
         restored.savedVisitStart=nil
-        if let store {
-            try store.replaceAll(restored)
-        } else {
-            try JSONEncoder().encode(restored).write(to:fileURL,options:.atomic)
+        guard !storageLoadFailed, let store else {
+            throw TimeStoreError.sql("Almacenamiento no disponible; restauración bloqueada para proteger los datos")
         }
+        // Do not overwrite a newer history with a backup during incident recovery.
+        let existing = try store.load()
+        guard existing.fixes.isEmpty && existing.intervals.isEmpty && existing.totals.isEmpty else {
+            throw TimeStoreError.sql("La restauración reemplazaría el historial existente. Exporta y verifica ambas copias antes de continuar.")
+        }
+        try store.replaceAll(restored)
         data=restored
         currentZoneVisitID=nil
         currentZoneVisitStart=nil
