@@ -33,7 +33,7 @@ async function dispatch(env,row){
    'Content-Type':'application/json'},
   body:JSON.stringify({event_type:'ttactualidad_action_v1',
    client_payload:{project:row.project,event_id:row.event_id,decision:row.decision,
-    request_id:row.request_id,received_at:row.received_at}}),
+    request_id:row.request_id,received_at:row.received_at,revision:row.revision}}),
  });
  if(result.status!==204)throw new Error('dispatch_http_'+result.status);
  return {state:'submitted',routed:true};
