@@ -20,7 +20,7 @@ jobs:
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
-          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1','pilot/Enable-TTActualidad-Direct-V4.ps1','pilot/Update-TTActualidad-V5-Sesion.ps1')) {
+          foreach ($f in @('pilot/Finish-TTActualidad-Pilot.ps1','pilot/Install-TTActualidad-Pilot.ps1','pilot/Verify-TTActualidad-Pilot.ps1','pilot/Diagnose-TTActualidad-Pilot-ReadOnly.ps1','pilot/Open-TTActualidad-iPhone-Pilot.ps1','pilot/Check-TTActualidad-Mobile.ps1','pilot/Start-TTActualidad-PC-Pilot.ps1','pilot/Update-TTActualidad-UI-v2.ps1','pilot/Update-TTActualidad-UI-v3.ps1','pilot/Enable-TTActualidad-Direct-V4.ps1','pilot/Update-TTActualidad-V5-Sesion.ps1','pilot/Update-TTActualidad-V6-SoloBotones.ps1','pilot/Diagnose-TT-Telegram-Processes-ReadOnly.ps1')) {
             $tok = $null
             $errorsList = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -122,3 +122,13 @@ jobs:
           if (-not $js.Contains("route==='/api/session'")) { throw 'V5 session route missing' }
           if (-not $js.Contains('HttpOnly; SameSite=Strict')) { throw 'HttpOnly session missing' }
           Write-Host 'Pinned V5 deployment assets validated'
+      - name: Validate V6 no-swipe HTML and immutable UI payload
+        shell: powershell
+        run: |
+          $pin = '497d54dfb95d4a0273008ad2bef01aa1903fa615'
+          $url = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $pin + '/docs/index.html?t=' + $pin
+          $html = (Invoke-WebRequest -UseBasicParsing -Uri $url).Content
+          if ($html.Contains('function pilotSwipes(') -or $html.Contains('touchstart') -or $html.Contains('touchend')) { throw 'Swipe implementation still present' }
+          if (-not $html.Contains('function hideOptimistically(item)')) { throw 'Instant button deletion missing' }
+          if (-not $html.Contains('https://t.me/TTImages_bot')) { throw 'TTImages button missing' }
+          Write-Host 'V6 mobile UI read-only verification passed'
