@@ -433,7 +433,7 @@ function savePending(){
 function removeKey(project,id){return project+':'+id}
 function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
 function isTemporarilyRemoved(item){
- if(item._kind==='tremending'||item._topOnly||item._historical)return false;
+ if(item._topOnly||item._historical)return false;
  return pendingDeletes.has(removeKey(itemProject(item),String(item._id)));
 }
 async function refreshPilotConnection(){
@@ -484,7 +484,7 @@ async function ensurePilotConnection(){
 function pilotConfig(){void pairPilot()}
 function hideOptimistically(item,decision){
  const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
- pendingDeletes.set(key,{key,project,id,revision:Number(item.revision||0),decision,
+ pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),decision,
   request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending'});
  savePending();render();
  return key;
@@ -495,8 +495,10 @@ function restoreOptimistic(key,message){
 function confirmedAction(op,docs){
  const id=op.id;
  if(op.project==='ttittulares'){
-  const [prepared,decisions,queue]=docs;
+  const [prepared,decisions,queue,tremending]=docs;
   const state=(decisions.items||[]).find(x=>String(x.event_id||'')===id);
+  if(op.kind==='tremending')return op.decision==='deleted'&&
+   state?.status==='deleted'&&!(tremending?.items||[]).some(x=>String(x.id||'')===id);
   const q=(queue.items||[]).find(x=>String(x.event_id||'')===id);
   if(op.decision==='deleted')
    return state?.status==='deleted'&&!(prepared.items||[]).some(x=>String(x.event_id||'')===id);
@@ -534,6 +536,8 @@ async function checkPendingDeletes(){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
    :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue']];
+  if(project==='ttittulares'&&pending.some(x=>x.project===project&&x.kind==='tremending'))
+   targets.push(['ttittulares/tremending/items.json','tremending']);
   let docs;
   try{
    docs=await Promise.all(targets.map(async([path])=>{
