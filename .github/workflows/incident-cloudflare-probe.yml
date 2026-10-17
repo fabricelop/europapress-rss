@@ -1,0 +1,35 @@
+name: Probe read-only TTActualidad and FabCalendar 2026-10-17
+on:
+  push:
+    branches:
+      - diagnostics/cloudflare-priority-20261017
+    paths:
+      - .github/workflows/incident-cloudflare-probe.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare-endpoints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Resolve and probe three public routes (GET only)
+        shell: bash
+        run: |
+          set +e
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            echo "::group::DNS $host"
+            getent ahosts "$host" || true
+            echo "::endgroup::"
+          done
+          for url in "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health" "https://fabcalendar-bot.fabricelop.workers.dev/healthz" "https://fabricelop.github.io/europapress-rss/"; do
+            echo "::group::CHECK $url"
+            curl -sS -L --retry 0 --connect-timeout 6 --max-time 12 -o /tmp/incident_response.txt -D /tmp/incident_headers.txt -w 'http=%{http_code} remote_ip=%{remote_ip} dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} total=%{time_total}\n' "$url"
+            code=$?
+            echo "curl_exit=$code"
+            grep -iE '^(HTTP/|server:|cf-ray:|content-type:|location:)' /tmp/incident_headers.txt | head -12 || true
+            head -c 400 /tmp/incident_response.txt || true
+            echo
+            echo "::endgroup::"
+            rm -f /tmp/incident_response.txt /tmp/incident_headers.txt
+          done
