@@ -407,9 +407,8 @@ function EnsureRemoteTelegramHeal{
   }
 }
 
-# Recuperar SOLO el listener TTiTTulares si hay una imagen vigente
-# REQUESTED que nadie ha recogido. No tocar la pestaña Chrome ni TTImages.
-# Si un bridge de cualquiera de los dos proyectos está activo, no intervenir.
+# Recuperar SOLO el listener TTiTTulares si una imagen de Listas
+# sigue en REQUESTED sin recogida. No se toca Chrome ni TTImages.
 $script:LastTTitImageRescueProbe=[DateTimeOffset]::MinValue
 function EnsureTTitRequestedImageRecovery{
   $now=[DateTimeOffset]::UtcNow
@@ -426,61 +425,7 @@ function EnsureTTitRequestedImageRecovery{
     $eligible=@{}
     foreach($row in @($prepared.items)){
       $eid=[string]$row.event_id
-      if($eid -match '^[a-fA-F0-9]{12}
-  foreach($name in @(
-    "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
-    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
-  )){
-    try{
-      $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
-      if($task -and $task.State -eq "Disabled"){
-        Enable-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue|Out-Null
-        Log "TASK ENABLED $name"
-      }
-    }catch{}
-  }
-  try{
-    $slr=Get-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
-    if($slr -and $slr.State -ne "Running"){
-      Start-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
-      Log "SLR TELEGRAM LISTENER REQUESTED"
-    }
-  }catch{}
-}
-
-New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
-if (-not (Enter-ProcessInstance (Join-Path $BaseDir "tt-watchdog.instance.lock"))) { exit 0 }
-
-$tt=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
-$tr=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
-$up=Join-Path $BaseDir "TT-AutoUpdater.ps1"
-$self=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
-EnsureStartup "TT Automation Watchdog.cmd" $self
-EnsureStartup "TTiTTulares Mobile Trigger Listener.cmd" $tt
-EnsureStartup "TTendencias Mobile Trigger Listener.cmd" $tr
-EnsureStartup "TT Auto Updater.cmd" $up
-
-Log "WATCHDOG START pid=$PID interval=$IntervalSeconds"
-try{
-  while($true){
-    EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
-    EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
-    EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
-    EnsureScheduledTasks
-    EnsureChrome
-    EnsureChromeTabHousekeeping
-    EnsureInternetRecovery
-    EnsureRemoteTelegramHeal
-    EnsureTTitRequestedImageRecovery
-    # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
-    # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
-    Start-Sleep -Seconds $IntervalSeconds
-  }
-}finally{
-  try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
-  try{if($script:InstanceHandle){$script:InstanceHandle.Dispose()}}catch{}
-}
- -and $row.tweet -and
+      if($eid -match '^[a-fA-F0-9]{12}$' -and $row.tweet -and
          -not [string]::IsNullOrWhiteSpace([string]$row.tweet.text) -and
          -not [string]::IsNullOrWhiteSpace([string]$row.tweet.remate)){
         $eligible[$eid]=$true
@@ -490,60 +435,7 @@ try{
     foreach($entry in @($idx.jobs)){
       $id=[string]$entry.target_id
       if(-not $eligible.ContainsKey($id)){continue}
-      if($id -notmatch '^[a-fA-F0-9]{12}
-  foreach($name in @(
-    "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
-    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
-  )){
-    try{
-      $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
-      if($task -and $task.State -eq "Disabled"){
-        Enable-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue|Out-Null
-        Log "TASK ENABLED $name"
-      }
-    }catch{}
-  }
-  try{
-    $slr=Get-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
-    if($slr -and $slr.State -ne "Running"){
-      Start-ScheduledTask -TaskName "SeLoRecordamos-Telegram" -ErrorAction SilentlyContinue
-      Log "SLR TELEGRAM LISTENER REQUESTED"
-    }
-  }catch{}
-}
-
-New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
-if (-not (Enter-ProcessInstance (Join-Path $BaseDir "tt-watchdog.instance.lock"))) { exit 0 }
-
-$tt=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
-$tr=Join-Path $BaseDir "TTendenciasDedicatedListener.ps1"
-$up=Join-Path $BaseDir "TT-AutoUpdater.ps1"
-$self=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
-EnsureStartup "TT Automation Watchdog.cmd" $self
-EnsureStartup "TTiTTulares Mobile Trigger Listener.cmd" $tt
-EnsureStartup "TTendencias Mobile Trigger Listener.cmd" $tr
-EnsureStartup "TT Auto Updater.cmd" $up
-
-Log "WATCHDOG START pid=$PID interval=$IntervalSeconds"
-try{
-  while($true){
-    EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
-    EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
-    EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
-    EnsureScheduledTasks
-    EnsureChrome
-    EnsureChromeTabHousekeeping
-    EnsureInternetRecovery
-    EnsureRemoteTelegramHeal
-    # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
-    # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
-    Start-Sleep -Seconds $IntervalSeconds
-  }
-}finally{
-  try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
-  try{if($script:InstanceHandle){$script:InstanceHandle.Dispose()}}catch{}
-}
-){continue}
+      if($id -notmatch '^[a-fA-F0-9]{12}$'){continue}
       $age=0
       try{$age=($now-[DateTimeOffset]::Parse([string]$entry.requested_at)).TotalMinutes}catch{continue}
       if($age -lt 8 -or $age -gt 720){continue}
@@ -555,7 +447,6 @@ try{
       }
     }
     if(-not $stalled){return}
-    # Nunca sustituir un proceso recién iniciado, ni matar un bridge vivo.
     $listenerPath=Join-Path $BaseDir "TTiTTularesDedicatedListener.ps1"
     $live=@(PsProcs "*TTiTTularesDedicatedListener.ps1*")
     if($live.Count -gt 0){
@@ -623,6 +514,7 @@ try{
     EnsureChromeTabHousekeeping
     EnsureInternetRecovery
     EnsureRemoteTelegramHeal
+    EnsureTTitRequestedImageRecovery
     # Los trabajos REQUESTED permanecen en GitHub durante la recuperación.
     # Nunca reiniciar Chrome ni un bridge que siga enviando una imagen.
     Start-Sleep -Seconds $IntervalSeconds
