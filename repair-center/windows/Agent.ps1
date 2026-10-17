@@ -2,6 +2,8 @@
 # Agente en modo consulta; NO diagnostica ni repara nada hasta recibir orden explícita.
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+# Windows PowerShell 5.1: DPAPI lives in System.Security.dll.
+Add-Type -AssemblyName System.Security
 [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
 $base=Join-Path $env:LOCALAPPDATA 'CentroReparaciones'
 $cfgPath=Join-Path $base 'agent-config.json'
@@ -11,7 +13,7 @@ $cfg=Get-Content -LiteralPath $cfgPath -Raw -Encoding UTF8 | ConvertFrom-Json
 if(([string]$cfg.url) -notmatch '^https://[A-Za-z0-9.-]+/?$'){throw 'URL HTTPS inválida'}
 $url=([string]$cfg.url).TrimEnd('/')
 $protected=[Convert]::FromBase64String([IO.File]::ReadAllText($tokenPath).Trim())
-$raw=[Security.Cryptography.ProtectedData]::Unprotect($protected,$null,[Security.Cryptography.DataProtectionScope]::CurrentUser)
+$raw=[System.Security.Cryptography.ProtectedData]::Unprotect($protected,$null,[System.Security.Cryptography.DataProtectionScope]::CurrentUser)
 $agentKey=[Text.Encoding]::UTF8.GetString($raw)
 [Array]::Clear($raw,0,$raw.Length)
 $headers=@{'X-Agent-Key'=$agentKey}
