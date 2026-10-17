@@ -134,6 +134,8 @@ with tempfile.TemporaryDirectory() as tmp:
     req=get(m.ROOT,"trends/requests.json")["requests"][0]
     queue=get(m.ROOT,"trends/editorial-queue.json")["items"]
     assert req["status"]=="preparing" and req["rank"]==22 and req["auto_queued"] is False
+    assert req["with_image"] is True and req["disable_ai_image"] is False
+    assert queue[0]["with_image"] is True and queue[0]["disable_ai_image"] is False
     assert len(queue)==1 and queue[0]["id"]==req["id"]
     assert queue[0]["rank"]==22 and queue[0]["auto_queued"] is False
     result=m.trend_command("prepare","#Tema Con Espacios","","","2026-10-11T22:20:01Z")
