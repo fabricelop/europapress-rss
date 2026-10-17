@@ -1,3 +1,17 @@
+# RainETA para iPhone — v0.10.0
+
+## v0.10.0 — Radar local prioritario para el pronóstico inmediato
+
+- Un único cálculo alimenta **contador, Actividad en Vivo, Pulso de lluvia y próximas 3 horas**. Evita contradicciones entre la primera tarjeta y los gráficos.
+- Nuevo muestreo a las **coordenadas del lugar seleccionado** de mosaicos de radar observado y nowcast de LibreWXR. Se comprueba frescura del último barrido, cobertura por el proveedor y presencia de suficientes fotogramas. Un error HTTP, falta de cobertura o datos antiguos no se consideran «seco».
+- Cuando el radar local es válido, sus ecos y fotogramas pronosticados tienen **prioridad de 0 a 60 minutos**. Si está seco en radar pero el modelo prevé lluvia ahora, no se anuncia lluvia inmediata sin soporte del radar.
+- Entre 60 y 90 minutos se atenúa la señal del último nowcast como **tendencia de baja confianza**; a partir de 90 minutos se vuelve a la previsión de 15 minutos y al consenso horario de modelos. El pronóstico llega hasta 120 minutos en Pulso y hasta 180 minutos en la gráfica de tres horas; **no se afirma que exista radar fiable de 120 minutos**.
+- El minuto es la **resolución de la visualización**, interpolada o asignada al intervalo real del proveedor (10 min radar, 15 min o 60 min modelos); NO son mediciones independientes por minuto. El radar de reflectividad sin calibración no puede aportar mm/h físicos fiables: se usa para decidir presencia/ausencia y se muestran intensidades **indicativas** procedentes de modelos cuando hay eco.
+- La localización y vigencia del radar son visibles en la primera tarjeta; si no hay cobertura, RainETA vuelve al pronóstico de modelos, claramente etiquetado.
+- Los totales de lluvia de toda la semana siguen siendo de los modelos (no se alteran con una falsa cuantificación del radar). Hoy y el periodo 0–180 min se destacan como perspectivas distintas cuando hay radar válido.
+- Pruebas: conflicto radar seco/modelo mojado, modelo seco/radar mojado, cambio futuro, atenuación 60–90 minutos, caída de cobertura o frescura, selección de fotograma local. Las pruebas de CI no demuestran precisión física en un lugar real.
+- Sin coste adicional ni Vercel/Cloudflare, sujeto a que LibreWXR siga disponible. Crédito LibreWXR conforme a condiciones de la fuente.
+
 # RainETA para iPhone — v0.9.2
 
 ## v0.9.2 — Pulso minuteado legible y ahora radar futuro coherente
