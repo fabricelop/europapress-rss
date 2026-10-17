@@ -6,6 +6,7 @@ struct RainModelDaily:Identifiable {
     let title:String
     let totals:[Double?]
     let checkedAt:Date
+    let hourly:[Date:Double]
 }
 
 enum RainModelCompareAPI {
@@ -20,6 +21,8 @@ enum RainModelCompareAPI {
                         URLQueryItem(name:"latitude",value:String(latitude)),
                         URLQueryItem(name:"longitude",value:String(longitude)),
                         URLQueryItem(name:"daily",value:"precipitation_sum"),
+                        URLQueryItem(name:"hourly",value:"precipitation"),
+                        URLQueryItem(name:"timeformat",value:"unixtime"),
                         URLQueryItem(name:"timezone",value:"auto"),
                         URLQueryItem(name:"forecast_days",value:name=="Météo-France" || name=="JMA" ? "4":"7")
                     ]
@@ -33,7 +36,15 @@ enum RainModelCompareAPI {
                           let raw=daily["precipitation_sum"] as? [Any],
                           !raw.isEmpty else {return nil}
                     let values=raw.map {($0 as? NSNumber)?.doubleValue}
-                    return RainModelDaily(id:name,title:name,totals:Array(values.prefix(7)) + Array(repeating:nil,count:max(0,7-values.count)),checkedAt:Date())
+                    let hours=json["hourly"] as? [String:Any] ?? [:]
+                    let times=hours["time"] as? [Int] ?? []
+                    let amounts=hours["precipitation"] as? [Any] ?? []
+                    let hourly=Dictionary(uniqueKeysWithValues:zip(times,amounts).compactMap {
+                        stamp,raw -> (Date,Double)? in
+                        guard let number=raw as? NSNumber else {return nil}
+                        return (Date(timeIntervalSince1970:Double(stamp)),number.doubleValue)
+                    })
+                    return RainModelDaily(id:name,title:name,totals:Array(values.prefix(7)) + Array(repeating:nil,count:max(0,7-values.count)),checkedAt:Date(),hourly:hourly)
                 }
             }
             var list:[RainModelDaily]=[]
@@ -58,7 +69,8 @@ struct RainMultiModelView: View {
         if let primary {
             rows.append(RainModelDaily(id:"auto",title:"Automático",
                           totals:Array(primary.days.prefix(7).map {Optional($0.totalMM)}),
-                          checkedAt:primary.updatedAt))
+                          checkedAt:primary.updatedAt,
+                          hourly:Dictionary(uniqueKeysWithValues:primary.hours.map{($0.time,$0.millimeters)})))
         }
         rows.append(contentsOf:forecasts)
         return rows
@@ -144,6 +156,7 @@ struct RainMultiModelView: View {
                     .foregroundStyle(wet>0 && wet<available.count ? .yellow:.cyan)
             }
             if loading {ProgressView("Consultando centros…").font(.caption)}
+            hourlyMatrix
             modelRows
             if forecasts.isEmpty && !loading {
                 Text("La previsión automática sigue disponible; los centros no han respondido.")
@@ -171,6 +184,50 @@ struct RainMultiModelView: View {
                 RainModelCompareRow(name:row.element.0,
                                     amount:row.element.1,maximum:peak)
             }
+        }
+    }
+
+    private var hourlyMatrix:some View {
+        let start=Calendar.current.startOfDay(for:
+            primary?.days.indices.contains(selectedDay)==true ?
+                primary!.days[selectedDay].date :
+                Calendar.current.date(byAdding:.day,value:selectedDay,to:Date()) ?? Date())
+        return VStack(alignment:.leading,spacing:7) {
+            Text("LLUVIA POR HORA · 00–23").font(.caption2.bold()).foregroundStyle(.cyan)
+            ScrollView(.horizontal,showsIndicators:true) {
+                VStack(alignment:.leading,spacing:5) {
+                    HStack(spacing:2) {
+                        Text("Hora").frame(width:85,alignment:.leading)
+                        ForEach(0..<24,id:\.self) { hour in
+                            Text(String(format:"%02d",hour))
+                                .font(.system(size:9,weight:.bold,design:.rounded))
+                                .frame(width:24)
+                        }
+                    }
+                    ForEach(allModels) { model in
+                        HStack(spacing:2) {
+                            Text(model.title).font(.system(size:10))
+                                .lineLimit(1).frame(width:85,alignment:.leading)
+                            ForEach(0..<24,id:\.self) { hour in
+                                let target=Calendar.current.date(byAdding:.hour,
+                                    value:hour,to:start) ?? start
+                                let amount=model.hourly.first {
+                                    Calendar.current.isDate($0.key,equalTo:target,toGranularity:.hour)
+                                }?.value
+                                RoundedRectangle(cornerRadius:3)
+                                    .fill(amount.map { $0>=0.1 ?
+                                        RainVisual.color(max(0.3,$0)) :
+                                        Color.mint.opacity(0.20) } ?? .gray.opacity(0.16))
+                                    .frame(width:24,height:18)
+                                    .accessibilityLabel("\(model.title), \(hour) horas, " +
+                                        (amount.map{String(format:"%.1f milímetros",$0)} ?? "sin datos"))
+                            }
+                        }
+                    }
+                }
+            }
+            Text("Color: lluvia prevista; verde tenue: seco; gris: sin datos. Pulsa una fila inferior para ver el acumulado.")
+                .font(.caption2).foregroundStyle(.secondary)
         }
     }
 
