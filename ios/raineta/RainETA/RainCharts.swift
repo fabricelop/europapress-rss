@@ -101,6 +101,7 @@ private struct RainMinuteBarCell:View {
 private struct RainMinuteBars:View {
     let data:[RainMinuteBar]
     let horizon:Int
+    let now:Date
     @Binding var selectedMinute:Int?
     @State private var scrollID=0
 
@@ -125,11 +126,13 @@ private struct RainMinuteBars:View {
                         }
                     }
                     HStack(spacing:0) {
-                        ForEach(0...horizon/10,id:\.self) { i in
-                            Text(i == 0 ? "Ahora" : "+\(i*10)")
+                        ForEach(0...horizon/30,id:\.self) { i in
+                            Text(i == 0 ? "Ahora" :
+                                 now.addingTimeInterval(Double(i*30*60))
+                                    .formatted(date:.omitted,time:.shortened))
                                 .font(.system(size:10,weight:.medium,design:.rounded))
                                 .foregroundStyle(.secondary)
-                                .frame(width:CGFloat(i==0 ? 10 : 10)*(barWidth+spacing),
+                                .frame(width:CGFloat(30)*(barWidth+spacing),
                                        alignment:.leading)
                         }
                     }
@@ -202,7 +205,8 @@ struct MinuteRainGraph:View {
                     .fixedSize(horizontal:false,vertical:true)
                 HStack(alignment:.firstTextBaseline) {
                     VStack(alignment:.leading,spacing:2) {
-                        Text(selectedMinute == nil ? "Ahora" : "En +\(selected.minute) min")
+                        Text(selectedMinute == nil ? "Ahora" :
+                             selected.at.formatted(date:.omitted,time:.shortened))
                             .font(.caption).foregroundStyle(.secondary)
                         Text(RainVisual.intensity(selected.rate))
                             .font(.title3.bold())
@@ -223,8 +227,6 @@ struct MinuteRainGraph:View {
                         .foregroundStyle(.cyan)
                 }
                 .font(.caption.bold())
-                Text("El porcentaje procede de la previsión probabilística; el acuerdo es un recuento de modelos, no otra probabilidad.")
-                    .font(.caption2).foregroundStyle(.secondary)
                 if store.radarLocal?.isFresh(at:now)==true {
                     Label(selected.radarInformed ? "Radar local + nowcast" : "Previsión por modelos",
                           systemImage:"dot.radiowaves.left.and.right")
@@ -234,7 +236,7 @@ struct MinuteRainGraph:View {
                     Text("Sin cobertura radar local válida · previsión por modelos")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
-                RainMinuteBars(data:bars,horizon:horizon,
+                RainMinuteBars(data:bars,horizon:horizon,now:now,
                                selectedMinute:$selectedMinute)
                 HStack(spacing:6) {
                     Text("Gris: sin lluvia")
@@ -244,9 +246,7 @@ struct MinuteRainGraph:View {
                     Image(systemName:"hand.draw").foregroundStyle(.secondary)
                 }
                 .font(.caption2).foregroundStyle(.secondary)
-                Text("Radar reciente y secuencia futura válida: prioridad hasta 60 min; tendencia atenuada hasta 90 min. " +
-                     "Los intervalos radar/modelo se muestran por minutos sin prometer mediciones cada minuto.")
-                    
+                Text("Barras por minuto; datos de origen por intervalos. % y votos son distintos.")
                     .font(.caption2).foregroundStyle(.secondary)
 
                 Button {
@@ -264,19 +264,8 @@ struct MinuteRainGraph:View {
                 }
                 .buttonStyle(.plain)
                 if showModels {
-                    VStack(alignment:.leading,spacing:9) {
-                        Text("Cada modelo tiene sus propias barras. Sus datos son horarios; " +
-                             "las barras intermedias repiten la estimación de esa hora.")
-                            .font(.caption2).foregroundStyle(.secondary)
-                        ForEach(store.shortModels,id:\.name) { model in
-                            RainModelBarDisclosure(model:model,now:now,horizon:horizon)
-                        }
-                        if store.shortModels.isEmpty {
-                            Text(store.shortModelsLoading ? "Consultando modelos…" :
-                                 "Ahora solo está disponible la previsión principal.")
-                                .font(.caption).foregroundStyle(.secondary)
-                        }
-                    }
+                    RainConsensusMatrix(models:store.shortModels,now:now,horizon:horizon,
+                                        step:15)
                 }
             }
         }
@@ -287,49 +276,89 @@ struct MinuteRainGraph:View {
     }
 }
 
-private struct RainModelBarDisclosure:View {
-    let model:RainShortModel
+/// One shared time axis makes disagreement visible without eight duplicate charts.
+private struct RainConsensusMatrix:View {
+    let models:[RainShortModel]
     let now:Date
     let horizon:Int
-    @State private var selectedMinute:Int?
+    let step:Int
+    @State private var selected=0
 
-    private var bars:[RainMinuteBar] {
-        (0...horizon).map { minute in
-            RainMinuteBar(minute:minute,
-              mmh:model.rateMMH(at:now.addingTimeInterval(Double(minute*60))))
-        }
+    private var slots:[Int] {Array(stride(from:0,through:horizon,by:step))}
+    private func time(_ minute:Int)->Date {now.addingTimeInterval(Double(minute*60))}
+    private func values(_ minute:Int)->[Double] {
+        models.compactMap{$0.rateMMH(at:time(minute))}
+    }
+    private func rainColor(_ rate:Double?)->Color {
+        guard let rate else {return .gray.opacity(0.20)}
+        return rate>=0.1 ? RainVisual.color(max(0.3,rate)) : .mint.opacity(0.25)
     }
     var body:some View {
-        VStack(alignment:.leading,spacing:8) {
-            HStack(spacing:7) {
-                    Image(systemName:"circle.hexagongrid.fill")
-                        .foregroundStyle(.cyan)
-                    VStack(alignment:.leading,spacing:3) {
-                        Text(model.name).font(.subheadline.bold())
-                        Text(RainBarDisplay.summary(bars,rainingNow:bars.first?.wet ?? false))
-                            .font(.caption2).foregroundStyle(.secondary)
-                            .lineLimit(2)
-                    }
-                    Spacer(minLength:8)
-                    Text(model.rateMMH(at:now).map {String(format:"%.1f",$0)}
-                         ?? "—")
-                        .font(.subheadline.monospacedDigit().bold())
-                    Text("mm/h").font(.caption2).foregroundStyle(.secondary)
+        VStack(alignment:.leading,spacing:9) {
+            HStack {
+                Text("CONSENSO POR HORA").font(.caption2.bold()).foregroundStyle(.cyan)
+                Spacer()
+                let counts=values(selected)
+                Text("\(counts.filter{$0>=0.1}.count)/\(counts.count) lluvia")
+                    .font(.caption.bold().monospacedDigit())
             }
-                let selected=bars.first(where:{$0.minute==selectedMinute}) ?? bars[0]
-                HStack {
-                    Text(selectedMinute == nil ? "Ahora" : "+\(selected.minute) min")
-                    Spacer()
-                    Text(selected.mmh.map{String(format:"%.1f mm/h",$0)} ?? "Sin dato")
+            ScrollView(.horizontal,showsIndicators:true) {
+                VStack(alignment:.leading,spacing:5) {
+                    HStack(spacing:3) {
+                        Text("Hora").frame(width:88,alignment:.leading)
+                        ForEach(slots,id:\.self) { minute in
+                            Button {
+                                selected=minute
+                            } label:{
+                                Text(time(minute).formatted(date:.omitted,time:.shortened))
+                                    .font(.system(size:9,weight:.bold,design:.rounded))
+                                    .frame(width:51)
+                                    .foregroundStyle(selected==minute ? .white:.secondary)
+                            }.buttonStyle(.plain)
+                        }
+                    }
+                    HStack(spacing:3) {
+                        Text("Acuerdo").font(.caption2.bold()).frame(width:88,alignment:.leading)
+                        ForEach(slots,id:\.self) { minute in
+                            let rates=values(minute)
+                            let wet=rates.filter{$0>=0.1}.count
+                            GeometryReader { geo in
+                                HStack(spacing:0) {
+                                    Rectangle().fill(.cyan).frame(width:geo.size.width *
+                                        CGFloat(wet)/CGFloat(max(1,rates.count)))
+                                    Rectangle().fill(.mint.opacity(0.25))
+                                }
+                            }
+                            .frame(width:51,height:17)
+                            .clipShape(RoundedRectangle(cornerRadius:4))
+                            .overlay {Text("\(wet)/\(rates.count)")
+                                .font(.system(size:9,weight:.heavy,design:.rounded))}
+                        }
+                    }
+                    ForEach(models,id:\.name) { model in
+                        HStack(spacing:3) {
+                            Text(model.name).font(.system(size:10,weight:.medium))
+                                .lineLimit(1).frame(width:88,alignment:.leading)
+                            ForEach(slots,id:\.self) { minute in
+                                let rate=model.rateMMH(at:time(minute))
+                                RoundedRectangle(cornerRadius:4)
+                                    .fill(rainColor(rate))
+                                    .frame(width:51,height:19)
+                                    .overlay {Text(rate.map{String(format:"%.1f",$0)} ?? "—")
+                                        .font(.system(size:9,weight:.bold).monospacedDigit())}
+                                    .accessibilityLabel("\(model.name), \(time(minute).formatted(date:.omitted,time:.shortened)), " +
+                                        (rate.map{String(format:"%.1f milímetros por hora",$0)} ?? "sin datos"))
+                            }
+                        }
+                    }
                 }
-                .font(.caption).foregroundStyle(.secondary)
-                RainMinuteBars(data:bars,horizon:horizon,
-                               selectedMinute:$selectedMinute)
-            Text("Intensidad media de la hora · probabilidad individual no publicada")
+            }
+            if models.isEmpty {Text("Consultando modelos…").font(.caption).foregroundStyle(.secondary)}
+            Text("Celdas: mm/h medios de la hora del modelo. Color: intensidad; acuerdo: votos, no probabilidad.")
                 .font(.caption2).foregroundStyle(.secondary)
         }
         .padding(10)
-        .background(.white.opacity(0.055),in:RoundedRectangle(cornerRadius:12))
+        .background(.indigo.opacity(0.18),in:RoundedRectangle(cornerRadius:13))
     }
 }
 
@@ -375,7 +404,7 @@ struct ThreeHourRainView:View {
                                 })?.probability
                                 Button {chosen=point.minute} label:{
                                     VStack(spacing:7) {
-                                        Text(point.minute==0 ? "AHORA" : "+\(point.minute)m")
+                                        Text(point.minute==0 ? "AHORA" : point.at.formatted(date:.omitted,time:.shortened))
                                             .font(.system(size:10,weight:.heavy,design:.rounded))
                                         Image(systemName:point.rate>=0.15 ? "cloud.rain.fill":"sun.max.fill")
                                             .font(.title3)
@@ -419,14 +448,8 @@ struct ThreeHourRainView:View {
                         .font(.subheadline.bold())
                     }
                     if showModels {
-                        ForEach(store.shortModels,id:\.name) { model in
-                            RainModelBarDisclosure(model:model,now:now,horizon:180)
-                        }
-                        if store.shortModels.isEmpty {
-                            Text(store.shortModelsLoading ? "Consultando modelos…" :
-                                 "No hay otros modelos disponibles para este lugar")
-                                .font(.caption)
-                        }
+                        RainConsensusMatrix(models:store.shortModels,now:now,horizon:180,
+                                            step:15)
                     }
                 }
             } else {
@@ -520,5 +543,53 @@ struct LongRainForecast: View {
         }
         .padding(15)
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
+    }
+}
+
+struct PastRainView:View {
+    @ObservedObject var store:RainStore
+    private var hours:[HourlyRain] {
+        let now=Date()
+        return store.snapshot?.hours.filter {
+            $0.time >= now.addingTimeInterval(-24*3600) && $0.time <= now
+        } ?? []
+    }
+    var body:some View {
+        VStack(alignment:.leading,spacing:10) {
+            Label("Lluvia · últimas 24 horas",systemImage:"clock.arrow.circlepath")
+                .font(.headline)
+            if !hours.isEmpty {
+                Chart {
+                    ForEach(hours) { hour in
+                        BarMark(x:.value("Hora",hour.time),
+                                y:.value("Milímetros estimados",hour.millimeters))
+                            .foregroundStyle(RainVisual.color(hour.millimeters))
+                    }
+                    ForEach(store.reports.filter {
+                        $0.date >= Date().addingTimeInterval(-24*3600) &&
+                        RainFeedback.near($0,latitude:store.coordinate.latitude,
+                                          longitude:store.coordinate.longitude)
+                    },id:\.date) { report in
+                        RuleMark(x:.value("Tu observación",report.date))
+                            .foregroundStyle(report.raining ? .red:.mint)
+                            .lineStyle(StrokeStyle(lineWidth:2,dash:[3,2]))
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(values:.stride(by:.hour,count:4)) { _ in
+                        AxisValueLabel(format:.dateTime.hour().minute())
+                    }
+                }
+                .frame(height:140)
+                Text("Milímetros horarios estimados por Open-Meteo; no son una medición en tu punto. Rojo: indicaste lluvia; verde: indicaste seco.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            } else {
+                Text("Historial horario pendiente").font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .padding(15)
+        .background(LinearGradient(colors:[.purple.opacity(0.22),.cyan.opacity(0.10)],
+            startPoint:.topLeading,endPoint:.bottomTrailing),
+            in:RoundedRectangle(cornerRadius:20))
     }
 }
