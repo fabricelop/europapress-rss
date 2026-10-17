@@ -108,10 +108,9 @@ enum RadarLocalAPI {
                  bitsPerComponent:8,bytesPerRow:size*4,
                  space:CGColorSpaceCreateDeviceRGB(),
                  bitmapInfo:CGImageAlphaInfo.premultipliedLast.rawValue) else{return false}
-            // iOS drawing contexts use a bottom-up coordinate system; flip to
-            // the top-down Web Mercator y origin of the actual tile.
-            ctx.translateBy(x:0,y:CGFloat(size))
-            ctx.scaleBy(x:1,y:-1)
+            // The decoded PNG is already in the tile's top-down pixel
+            // orientation when copied into this explicit RGBA bitmap.
+            // An extra CoreGraphics flip mirrors Madrid to another latitude.
             ctx.draw(image,in:CGRect(x:0,y:0,width:size,height:size))
             return true
         }
