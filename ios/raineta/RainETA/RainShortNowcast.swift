@@ -47,6 +47,40 @@ struct RainShortEstimate {
 }
 
 enum RainShortFusion {
+    static func estimateUsingLocal(weather:RainSnapshot,
+                                   radar:RadarLocalTimeline?,
+                                   models:[RainShortModel],now:Date)
+         -> RainShortEstimate {
+        let fallback=RainInsight.transition(
+            currentIsRaining:weather.isRaining,samples:weather.samples,now:now)
+        guard let radar,radar.isFresh(at:now) else {
+            return RainShortEstimate(issuedAt:now,change:fallback.change,
+                rainingNow:fallback.raining,method:"Modelos · radar no disponible",
+                confidence:"Orientativo",windowStart:nil,windowEnd:nil,
+                radarBased:false,radarObservedAt:nil)
+        }
+        let series=RadarWeightedForecast.make(snapshot:weather,models:models,
+                              radar:radar,now:now,horizon:180)
+        let decision=RadarWeightedForecast.transition(series:series,
+                             at:now,observation:weather.isRaining)
+        // A dry radar observation vetoes a model claiming that rain has
+        // already started. Only use fallback changes outside the radar-led
+        // 90-minute interval.
+        let later=fallback.change.flatMap { change in
+            change.timeIntervalSince(now)>90*60 ? change:nil
+        }
+        let change=decision.change ?? later
+        let offset=change.map{max(0,$0.timeIntervalSince(now)/60)} ?? 120
+        let margin=offset<=60 ? 10.0 : 20.0
+        return RainShortEstimate(
+            issuedAt:now,change:change,rainingNow:decision.wet,
+            method:"Radar local 0–60 min · modelos después",
+            confidence:offset<=60 ? "Confianza orientativa":"Confianza baja",
+            windowStart:change?.addingTimeInterval(-margin*60),
+            windowEnd:change?.addingTimeInterval(margin*60),
+            radarBased:true,radarObservedAt:radar.observedAt)
+    }
+
     private static func wet(_ signal: Double) -> Bool { signal >= 0.14 }
 
     /// Reject one-minute speckles and short gaps. Do not report an exact onset
