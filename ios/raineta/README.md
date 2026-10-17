@@ -1,3 +1,17 @@
+# RainETA para iPhone — v0.10.1
+
+## v0.10.1 — Reparación del radar local: Madrid se veía seco pero el modelo decía lluvia
+
+- **Causa corregida:** el código de la versión 0.10.0 construía las URL de las teselas de radar con latitud/longitud en los campos Web Mercator x/y, además de consultar una ruta de cobertura inexistente. La capa visible del mapa usaba x/y correctos, pero el motor de predicción local no: por eso podía caer al modelo meteorológico aunque el radar mostrase la localidad seca.
+- **Mismo dato que el mapa:** se proyecta la coordenada GPS o seleccionada a x/y enteros en z7, se descarga la misma paleta y el mismo fotograma del radar visible, y se comprueba el **píxel real de la ubicación** y sus vecinos. Para Madrid (40.4168, −3.7038), x=62, y=48, píxel local=(174,67): **nunca el centro de la tesela ni la latitud en la URL**.
+- Una tesela PNG descargada correctamente y transparente puede representar ausencia de eco. Si hay errores de red, falta el fotograma o la imagen no se puede decodificar, la lectura queda **no disponible**, no se interpreta como seco.
+- Se acepta **radar observado de RainViewer** para la situación actual cuando LibreWXR no proporcione nowcast. Sin futuro real del proveedor, la observación solo prevalece unos 10 min y pierde peso hasta los 20 min; después vuelven las previsiones por modelos.
+- El estado **ahora** se comprueba con el último fotograma observado, no con una predicción futura que todavía no es observación. El pronóstico del resto de los 60 min se apoya en los fotogramas nowcast disponibles y el Pulso, la gráfica de tres horas y la cuenta atrás comparten esa decisión.
+- La pantalla distingue **«Radar: sin eco local»** y **«Modelo prevé lluvia · no confirmada»**. No se presenta como medición la intensidad modelada, ni se garantiza que un radar despejado descarte llovizna muy débil bajo el umbral de detección.
+- Reparación de transición opuesta: si el modelo dice «llueve» y el radar indica «seco», ya no se reutiliza por error la hora **de final de lluvia** como cuenta atrás **de comienzo de lluvia**.
+- Pruebas de URL x/y y píxel real de Madrid, PNG transparente, fuente alternativa con radar observado sin nowcast, diferencia entre observado seco y futuro previsto mojado y transición contradictoria. Diagnóstico de tesela real en GitHub Actions (advertencia no bloqueante si el proveedor está temporalmente inaccesible).
+- La precisión real continúa dependiendo de la cobertura, frecuencia y frescura de los radares. No se garantiza lluvia al minuto exacto. Sin servidores propios, Vercel ni Cloudflare.
+
 # RainETA para iPhone — v0.10.0
 
 ## v0.10.0 — Radar local prioritario para el pronóstico inmediato
