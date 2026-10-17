@@ -109,7 +109,13 @@ function ttiRows(){
   const fresh=queue.filter(q=>['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
   const seen=new Set(fresh.map(q=>String(q.event_id||'')));
   const rows=Array.isArray(state.data.ttiQueue?.items) ? fresh : [...fresh,...(snap.processing_items||state.data.processing?.items||[]).filter(x=>!seen.has(String(x.event_id||'')))];
-  return rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}));
+  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttittulares'&&op.decision==='prepare'&&
+    ['sending','submitted'].includes(op.status)&&!seen.has(op.id)&&
+    !(state.data.prepared?.items||[]).some(x=>String(x.event_id||'')===op.id))
+   .map(op=>({...op.snapshot,event_id:op.id,title:op.snapshot?.title||op.id,
+     revision:op.revision,_kind:'tti',_id:op.id,_status:'PENDIENTE DE CONFIRMACIÓN',
+     _queuedAt:new Date(op.at).toISOString()}));
+  return [...pending,...rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))];
  }
  if(state.tab==='problematicas')return (snap.problematic_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
  if(state.tab==='creciendo')return (snap.three_source_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
@@ -489,8 +495,10 @@ async function ensurePilotConnection(){
 function pilotConfig(){void pairPilot()}
 function hideOptimistically(item,decision){
  const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
+ const snapshot={title:String(item.title||item.canonical_title||id),source_count:item.source_count,
+   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at};
  pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),decision,
-  request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending'});
+  request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending',snapshot});
  savePending();render();
  return key;
 }
@@ -508,7 +516,10 @@ function confirmedAction(op,docs){
   if(op.decision==='deleted')
    return state?.status==='deleted'&&!(prepared.items||[]).some(x=>String(x.event_id||'')===id);
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
-  if(op.decision==='prepare')return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase());
+  if(op.decision==='prepare'){
+   if((prepared.items||[]).some(x=>String(x.event_id||'')===id))return 'ready';
+   return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase())?'processing':false;
+  }
  }else{
   const [manual,mobile,queue]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
@@ -536,7 +547,7 @@ async function retryAction(op){
 async function checkPendingDeletes(){
  const pending=[...pendingDeletes.values()].filter(x=>x.status==='submitted'||x.status==='sending');
  if(!pending.length)return;
- let changed=false,confirmedPrepare=false,failed=false;
+ let changed=false,confirmedPrepare=false,readyConfirmed=false,failed=false;
  for(const project of [...new Set(pending.map(x=>x.project))]){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
@@ -552,9 +563,10 @@ async function checkPendingDeletes(){
    }));
   }catch{continue}
   for(const op of pending.filter(x=>x.project===project)){
-   if(confirmedAction(op,docs)){
+   const outcome=confirmedAction(op,docs);
+   if(outcome){
     op.status='confirmed';changed=true;
-    if(op.decision==='prepare')confirmedPrepare=true;
+    if(op.decision==='prepare'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
    }else if(Date.now()-op.at>20*60000){
     pendingDeletes.delete(op.key);changed=true;failed=true;
    }else if(Date.now()-op.at>175000){
@@ -566,8 +578,10 @@ async function checkPendingDeletes(){
   }
  }
  if(changed){savePending();render()}
- if(confirmedPrepare)void load(true);
- if(failed)showToast('GitHub no confirmó la acción tras varios reintentos. Actualiza y vuelve a intentarlo.');
+ if(readyConfirmed&&state.app==='tti'){
+  state.tab='listas';render();showToast('Noticia elaborada: ya está en Listas.');
+ }else if(confirmedPrepare)void load(true);
+ if(failed)showToast('GitHub no confirmó la acción. La noticia vuelve a su sección anterior.');
 }
 function schedulePendingChecks(){
  [14000,35000,75000,150000,245000,360000,600000,900000,1240000].forEach(ms=>
@@ -590,7 +604,8 @@ async function pilotSend(item,decision){
   if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
   if(!result.routed){restoreOptimistic(key,'GitHub no recibió la orden.');return}
   op.status='submitted';op.lastTry=Date.now();op.tries=1;savePending();
-  showToast('Orden enviada. Confirmando cambio editorial en GitHub.');
+  if(decision==='prepare'){state.tab='elaboracion';render();}
+  showToast(decision==='prepare'?'Noticia pendiente de confirmación en GitHub.':'Orden enviada. Confirmando cambio editorial en GitHub.');
   schedulePendingChecks();
   void checkPendingDeletes();
  }catch(e){restoreOptimistic(key,'Orden no aceptada: '+String(e.message||e).slice(0,80))}
