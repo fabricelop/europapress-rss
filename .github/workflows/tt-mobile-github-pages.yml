@@ -47,6 +47,16 @@ jobs:
           dest=Path('/tmp/tt-pages-site')
           shutil.copytree('docs',dest)
           (dest/'.nojekyll').write_text('',encoding='utf8')
+          # Emergency TTActualidad page loads the same authoritative JSON data.
+          # Keep a nested copy of snapshots because this page lives at /ttactualidad/.
+          emergency=dest/'ttactualidad'
+          emergency.mkdir(exist_ok=True)
+          for icon in ('icon.svg','icon-32.png','apple-touch-icon.png','manifest.webmanifest'):
+            source=dest/icon
+            if source.exists():
+              shutil.copyfile(source, emergency/icon)
+          # PNG icons are generated later; copy them after generation below.
+
           names=['ttittulares/prepared.json','ttittulares/status.json',
                  'ttittulares/decisions.json','telegram/editorial-processing.json',
                  'ttittulares/tremending/items.json',
@@ -65,6 +75,8 @@ jobs:
               print('STATIC_BACKUP',name,source.stat().st_size)
             except (ValueError,UnicodeError) as e:
               print('STATIC_BACKUP_SKIP_INVALID_JSON',name,type(e).__name__)
+          # Mirror data snapshots for /ttactualidad/ without touching source data.
+          shutil.copytree(dest/'data', dest/'ttactualidad'/'data', dirs_exist_ok=True)
           for must in ['ttittulares/status.json','ttittulares/prepared.json','trends/recent.json']:
             assert (dest/'data'/must).is_file(),must
           PY
@@ -99,6 +111,8 @@ jobs:
           manifest=json.loads((site/'manifest.webmanifest').read_text(encoding='utf8'))
           for item in manifest['icons']:
               assert (site/item['src'].removeprefix('./')).is_file(),item['src']
+          for icon in ('icon-32.png','apple-touch-icon.png','icon-192.png','icon-512.png'):
+              shutil.copyfile(site/icon,site/'ttactualidad'/icon)
           for filename in ('index.html','gag.html','photo.html'):
               html=(site/filename).read_text(encoding='utf8')
               assert 'rel="icon"' in html and 'rel="apple-touch-icon"' in html
