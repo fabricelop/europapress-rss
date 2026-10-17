@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-17T16:35:58.477063+00:00",
+  "checked_at": "2026-10-17T16:44:11.770356+00:00",
   "before": [
     "elaborando_bloqueado_6"
   ],
@@ -7,8 +7,34 @@
   "remaining": [
     "elaborando_bloqueado_6"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 3550603,
+  "healthy_source_count": 16,
+  "source_failures": [
+    {
+      "source": "EFE",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "Telecinco Noticias",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "Noticias Cuatro",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "AS",
+      "type": "sport",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 503: Service Unavailable"
+    }
+  ],
+  "events_bytes": 3549163,
   "ok": false
 }
