@@ -113,7 +113,7 @@ final class RadarWeightedForecastTests:XCTestCase {
                               radar:local,models:[],now:start)
         XCTAssertFalse(estimate.rainingNow)
         XCTAssertTrue(estimate.radarBased)
-        XCTAssertTrue(estimate.method.contains("Radar local"))
+        XCTAssertTrue(estimate.method.contains("Radar observado"))
         XCTAssertNotNil(estimate.change)
         XCTAssertGreaterThan(estimate.change!.timeIntervalSince(start),60*60)
     }
