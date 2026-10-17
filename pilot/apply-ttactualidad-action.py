@@ -231,14 +231,17 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
     now = datetime.now(timezone.utc).isoformat()
     if project == "ttittulares":
         queue_path = "ttittulares/editorial-queue.json"
+        processing_path = "telegram/editorial-processing.json"
         state_path = "ttittulares/decisions.json"
         prepared_path = "ttittulares/prepared.json"
         status_path = "ttittulares/status.json"
         queue = load(queue_path, {"items": []})
+        processing = load(processing_path, {"items": []})
         decisions = load(state_path, {"items": []})
         prepared = load(prepared_path, {"items": []})
         status_doc = load(status_path, {})
         active = find(queue.get("items", []), "event_id", event_id)
+        processing_active = find(processing.get("items", []), "event_id", event_id)
         existing = find(decisions.get("items", []), "event_id", event_id)
         ready = find(prepared.get("items", []), "event_id", event_id)
         source = next((row for section in ("processing_items", "problematic_items", "three_source_items")
@@ -273,7 +276,9 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
                             if str(row.get("event_id") or "") == event_id), None)
             if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
                 check_revision(active, revision)
-                return {}, "already_applied"
+                if processing_active and str(processing_active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
+                    check_revision(processing_active, revision)
+                    return {}, "already_applied"
             if not source or not (in_review or growing):
                 fail("Esta noticia ya no esta en Revision ni Creciendo")
             if "revision" in source:
@@ -313,9 +318,14 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
                 active.update(fields)
             else:
                 queue.setdefault("items", []).append(fields)
+            if processing_active:
+                processing_active.update(dict(fields))
+            else:
+                processing.setdefault("items", []).append(dict(fields))
             queue["count"] = sum(str(row.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"} for row in queue["items"])
             queue["updated_at"] = now
-            return {queue_path: queue}, "applied"
+            processing["updated_at"] = now
+            return {queue_path: queue, processing_path: processing}, "applied"
     if project == "ttendencias":
         queue_path, req_path, mobile_path = "trends/editorial-queue.json", "trends/requests.json", "trends/mobile-decisions.json"
         queue = load(queue_path, {"items": []})
