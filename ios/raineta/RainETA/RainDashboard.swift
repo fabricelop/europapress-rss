@@ -41,7 +41,10 @@ struct RainHeroCard: View {
                                                 "MODELO PREVÉ TIEMPO SECO"))
                                     .font(.system(size:10,weight:.heavy))
                                     .foregroundStyle(raining ? .cyan : .green)
-                                Text(raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?")
+                                Text(radarConfirmed ?
+                                         (raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?") :
+                                         (raining ? "¿Hasta cuándo prevé lluvia el modelo?" :
+                                                    "¿Cuándo prevé lluvia el modelo?"))
                                     .font(.subheadline)
                                     .foregroundStyle(.white.opacity(0.76))
                             }
