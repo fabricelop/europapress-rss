@@ -279,6 +279,14 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
                 if processing_active and str(processing_active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}:
                     check_revision(processing_active, revision)
                     return {}, "already_applied"
+                # Queue is authoritative. Repair a missing/stale processing
+                # mirror rather than reject a retry after the radar moved it.
+                if processing_active:
+                    processing_active.update(dict(active))
+                else:
+                    processing.setdefault("items", []).append(dict(active))
+                processing["updated_at"] = now
+                return {processing_path: processing}, "applied"
             if not source or not (in_review or growing):
                 fail("Esta noticia ya no esta en Revision ni Creciendo")
             if "revision" in source:
