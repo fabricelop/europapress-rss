@@ -457,17 +457,20 @@ def _finish_archive_image(item,row,events):
 
 
 def _enrich_prepared_images(p,q,events):
-    """Completa únicamente el fallback pendiente sin alterar READY ni la IA."""
+    """TTImages trabaja por separado: no añadir fotos de archivo a Listas."""
     changed=False
-    rows={(str(x.get("event_id") or ""),int(x.get("revision") or 1)):x for x in q.get("items",[]) or []}
     for item in p.get("items",[]) or []:
-        if str(item.get("fallback_image_status") or "") in {"ready","none"}:continue
-        eid=str(item.get("event_id") or "");revision=int(item.get("revision") or 1)
         before=json.dumps(item,ensure_ascii=False,sort_keys=True)
-        try:_recover_fallback_image(item,rows.get((eid,revision),{}),events)
-        except Exception as exc:
-            item["fallback_image_status"]="none";item["fallback_image_failure_reason"]=str(exc)[:500]
-        _select_image(item)
+        item.pop("fallback_image",None)
+        item.pop("fallback_image_failure_reason",None)
+        item["fallback_image_status"]="none"
+        if not isinstance(item.get("image"),dict) or item["image"].get("generated") is not True:
+            item.pop("image",None)
+            item["image_choice"]="none"
+            item["image_status"]="none"
+            item["image_app_available"]=False
+            item["image_delivery"]="none"
+            item["image_pending"]=False
         changed=changed or before!=json.dumps(item,ensure_ascii=False,sort_keys=True)
     return changed
 
