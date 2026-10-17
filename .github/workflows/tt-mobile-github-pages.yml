@@ -94,7 +94,7 @@ jobs:
           python3 -m pip install -q --disable-pip-version-check CairoSVG
           python3 - <<'PY'
           from pathlib import Path
-          import cairosvg, json, struct
+          import cairosvg, json, struct, shutil
           site=Path('/tmp/tt-pages-site')
           source=site/'icon.svg'
           assert source.is_file(), 'Missing vector favicon'
