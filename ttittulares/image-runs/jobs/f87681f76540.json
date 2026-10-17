@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-f87681f76540-r1-a1-1792170759281",
+  "requested_at": "2026-10-16T17:12:39.254440Z",
+  "updated_at": "2026-10-16T17:37:56.994322Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "f87681f76540",
+  "event_id": "f87681f76540",
+  "target_name": "El alcalde de Algeciras, citado como investigado por agresión sexual el 23 de octubre",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "El alcalde de Algeciras, citado como investigado por agresión sexual el 23 de octubre",
+    "revision": 1,
+    "factual_summary": "El alcalde de Algeciras ha sido citado a declarar como investigado el 23 de octubre a raíz de una denuncia por agresión sexual. La citación forma parte de la investigación judicial y no supone una declaración de culpabilidad.",
+    "tweet_text": "El alcalde de Algeciras está citado a declarar como investigado el 23 de octubre por una denuncia por agresión sexual.\n\n#Algeciras #Cádiz\n🌶️ Está citado a declarar el 23 de octubre.",
+    "remate": "🌶️ Está citado a declarar el 23 de octubre.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl alcalde de Algeciras está citado a declarar como investigado el 23 de octubre por una denuncia por agresión sexual.\n\n#Algeciras #Cádiz\n🌶️ Está citado a declarar el 23 de octubre.\n\nREMATE EXACTO:\n🌶️ Está citado a declarar el 23 de octubre.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl alcalde de Algeciras ha sido citado a declarar como investigado el 23 de octubre a raíz de una denuncia por agresión sexual. La citación forma parte de la investigación judicial y no supone una declaración de culpabilidad.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/2026-10-16/el-alcalde-de-algeciras-citado-como-imputado-por-agresion-sexual.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "El alcalde de Algeciras, citado como imputado por agresión sexual el 23 de octubre",
+        "url": "https://elpais.com/espana/2026-10-16/el-alcalde-de-algeciras-citado-como-imputado-por-agresion-sexual.html"
+      },
+      {
+        "source": "Público",
+        "title": "El alcalde de Algeciras, citado como imputado por un delito sexual",
+        "url": "https://www.publico.es/politica/alcalde-algeciras-citado-imputado-delito-sexual.html"
+      },
+      {
+        "source": "laSexta Noticias",
+        "title": "El alcalde de Algeciras, citado para declarar como imputado por un delito sexual",
+        "url": "https://www.lasexta.com/noticias/nacional/alcalde-algeciras-citado-declarar-como-imputado-delito-sexual_202610166ad24e7abafd3d736361df68.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "fb75ddc96f80226be9855777b05d517dfcfa8703bb0a5ddda6c20fa7906c8ced",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T17:14:56.189Z",
+  "pc_launched_at": "2026-10-16T17:15:18.226Z",
+  "finished_at": "2026-10-16T17:15:18.226Z"
+}

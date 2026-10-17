@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-01e9cdb2bd3a-r1-a2-1791365682537",
+  "requested_at": "2026-10-07T09:34:42.535483Z",
+  "updated_at": "2026-10-07T09:56:53.171Z",
+  "status": "CANCELLED",
+  "phase": "stale_target",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "01e9cdb2bd3a",
+  "event_id": "01e9cdb2bd3a",
+  "target_name": "Los médicos aplazan la huelga indefinida",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 2,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los médicos aplazan la huelga indefinida",
+    "revision": 1,
+    "factual_summary": "Los sindicatos médicos aplazan la huelga indefinida prevista para finales de octubre tras la convocatoria electoral del 29-N y avisan de que no renuncian a sus reivindicaciones.",
+    "tweet_text": "Los sindicatos médicos aplazan la huelga indefinida prevista para finales de octubre tras la convocatoria electoral del 29-N y avisan de que no renuncian a sus reivindicaciones.\n\n🌶️ La huelga ha pedido cita después de las urnas.",
+    "remate": "🌶️ La huelga ha pedido cita después de las urnas.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos sindicatos médicos aplazan la huelga indefinida prevista para finales de octubre tras la convocatoria electoral del 29-N y avisan de que no renuncian a sus reivindicaciones.\n\n🌶️ La huelga ha pedido cita después de las urnas.\n\nREMATE EXACTO:\n🌶️ La huelga ha pedido cita después de las urnas.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLos sindicatos médicos aplazan la huelga indefinida prevista para finales de octubre tras la convocatoria electoral del 29-N y avisan de que no renuncian a sus reivindicaciones.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/sociedad/medicos-aplazan-huelga-indefinida-adelanto-electoral-29n-20261007094302-nt.html",
+    "citations": [
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/nacional/los-sindicatos-medicos-aplazan-huelga-indefinida-por-adelanto-electoral-pero-avisan-decision-no-supone-una-renuncia_7045829_0.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/sociedad/2026-10-07/los-medicos-aplazan-los-paros-indefinidos-por-la-convocatoria-de-elecciones.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Cancelado antes de abrir chat: not_ready",
+  "pc_upload_secret_hash": "977ec796315a6771f659c78bc77b2733479717472ce39d3cb86b1c79e4f9622d",
+  "finished_at": "2026-10-07T09:56:53.171Z",
+  "pc_worker_id": "ttittulares-dedicated-v51"
+}

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-040478c5216b-r1-a1-1792092870090",
+  "requested_at": "2026-10-15T19:34:30.055141Z",
+  "updated_at": "2026-10-15T19:35:49.185631Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "040478c5216b",
+  "event_id": "040478c5216b",
+  "target_name": "Un misil de Gudelj rescata un punto para el Getafe en Craiova",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Un misil de Gudelj rescata un punto para el Getafe en Craiova",
+    "revision": 1,
+    "factual_summary": "Gudelj marcó un golazo que permitió al Getafe empatar en Craiova y sumar un punto en su debut en la Conference League.",
+    "tweet_text": "Gudelj marcó un golazo que permitió al Getafe empatar en Craiova y sumar un punto en su debut en la Conference League.\n\n#Getafe #ConferenceLeague #Gudelj\n🌶️ El Getafe salió de Craiova con un punto y el radar todavía buscando el balón.",
+    "remate": "🌶️ El Getafe salió de Craiova con un punto y el radar todavía buscando el balón.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nGudelj marcó un golazo que permitió al Getafe empatar en Craiova y sumar un punto en su debut en la Conference League.\n\n#Getafe #ConferenceLeague #Gudelj\n🌶️ El Getafe salió de Craiova con un punto y el radar todavía buscando el balón.\n\nREMATE EXACTO:\n🌶️ El Getafe salió de Craiova con un punto y el radar todavía buscando el balón.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nGudelj marcó un golazo que permitió al Getafe empatar en Craiova y sumar un punto en su debut en la Conference League.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/deportes/futbol/2026-10-15/un-misil-de-gudelj-rescata-un-punto-para-el-getafe-en-craiova.html",
+    "citations": [
+      {
+        "source": "COPE",
+        "title": "Un golazo de Gudelj permite al Getafe sumar un punto en su debut en la Conference",
+        "url": "https://www.cope.es/programas/tiempo-de-juego/cronica/directo-universidad-craiova-getafe-1a-jornada-conference-league-15-20261015_3456580.html"
+      },
+      {
+        "source": "ABC",
+        "title": "Gudelj rescata un merecido punto para el Getafe",
+        "url": "https://www.abc.es/deportes/futbol/gudelj-rescata-merecido-punto-getafe-20261015205643-nt.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "title": "Un misil de Gudelj rescata un punto para el Getafe en Craiova",
+        "url": "https://elpais.com/deportes/futbol/2026-10-15/un-misil-de-gudelj-rescata-un-punto-para-el-getafe-en-craiova.html"
+      },
+      {
+        "source": "Europa Press",
+        "title": "Gudelj salva un empate para el Getafe en Craiova",
+        "url": "https://www.europapress.es/deportes/futbol-00162/noticia-gudelj-salva-empate-getafe-craiova-20261015205725.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "5f611f9f1b0d7ef7d42c62915eb00f9234b7b92f591241a15e35b6c157d5e34d",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-15T19:34:51.260Z",
+  "pc_launched_at": "2026-10-15T19:35:00.370Z",
+  "finished_at": "2026-10-15T19:35:00.370Z"
+}
