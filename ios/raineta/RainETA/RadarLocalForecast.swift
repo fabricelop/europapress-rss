@@ -49,91 +49,117 @@ struct RadarLocalTimeline {
 }
 
 enum RadarLocalAPI {
-    private static let zoom=9
-    private static let size=256
-    private static let host="https://api.librewxr.net"
+    // Use the *same* palette and native zoom as RainRadarTiles on the visible
+    // map. LibreWXR is RainViewer-v2-compatible and takes integer z/x/y
+    // Web Mercator tile coordinates, NOT latitude/longitude in those slots.
+    static let zoom=7
+    static let size=256
 
-    private static func url(path:String,lat:Double,lon:Double,
-                            coverage:Bool=false) -> URL? {
-        let latPart=String(format:"%.5f",lat)
-        let lonPart=String(format:"%.5f",lon)
-        let prefix=coverage ? "/v2/coverage/0" : path
-        let end=coverage ? "0/0_0.png" : "255/0_0.png"
-        return URL(string:"\(host)\(prefix)/256/\(zoom)/\(latPart)/\(lonPart)/\(end)")
+    struct TilePoint {
+        let x:Int
+        let y:Int
+        let pixelX:Int
+        let pixelY:Int
+    }
+
+    static func tilePoint(latitude:Double,longitude:Double) -> TilePoint? {
+        guard latitude.isFinite,longitude.isFinite,
+              (-85...85).contains(latitude),
+              (-180...180).contains(longitude) else {return nil}
+        let scale=Double(1 << zoom)
+        let phi=latitude * Double.pi/180
+        let worldX=(longitude+180)/360*scale
+        let worldY=(1-asinh(tan(phi))/Double.pi)/2*scale
+        let tx=max(0,min(Int(scale)-1,Int(floor(worldX))))
+        let ty=max(0,min(Int(scale)-1,Int(floor(worldY))))
+        let px=max(0,min(255,Int((worldX-Double(tx))*256)))
+        let py=max(0,min(255,Int((worldY-Double(ty))*256)))
+        return TilePoint(x:tx,y:ty,pixelX:px,pixelY:py)
+    }
+
+    static func tileURL(host:String,path:String,point:TilePoint) -> URL? {
+        guard host.hasPrefix("https://"),path.hasPrefix("/v2/radar/"),
+              !path.contains("..") else {return nil}
+        return URL(string:"\(host)\(path)/256/\(zoom)/\(point.x)/\(point.y)/2/1_1.png")
     }
 
     private static func get(_ url:URL) async -> Data? {
         var request=URLRequest(url:url)
-        request.timeoutInterval=7
+        request.timeoutInterval=9
         request.cachePolicy = .returnCacheDataElseLoad
         guard let (data,response)=try? await URLSession.shared.data(for:request),
               (response as? HTTPURLResponse)?.statusCode==200,
-              data.starts(with:[0x89,0x50,0x4e,0x47]) else{return nil}
+              data.starts(with:[0x89,0x50,0x4e,0x47]),
+              UIImage(data:data) != nil else{return nil}
         return data
     }
 
-    /// iOS CoreGraphics RGBA sample. Center patch is ~1km at zoom 9 in
-    /// Spain, reducing sensitivity to tiny artefacts at exact GPS pixel.
-    static func wetFraction(_ data:Data,coverage:Bool=false) -> Double? {
-        guard let image=UIImage(data:data)?.cgImage else{return nil}
+    /// Samples exactly the geospatial pixel and its nearest neighbours.
+    /// A transparent successful PNG is a genuine *dry* radar tile;
+    /// missing/failed PNGs instead return nil (never "dry").
+    /// Echo coverage is a qualitative signal, not physically calibrated mm/h.
+    static func wetFraction(_ data:Data,point:TilePoint) -> Double? {
+        guard let image=UIImage(data:data)?.cgImage,
+              image.width==size,image.height==size else{return nil}
         var rgba=[UInt8](repeating:0,count:size*size*4)
         let worked=rgba.withUnsafeMutableBytes { raw -> Bool in
             guard let ctx=CGContext(data:raw.baseAddress,width:size,height:size,
                  bitsPerComponent:8,bytesPerRow:size*4,
                  space:CGColorSpaceCreateDeviceRGB(),
                  bitmapInfo:CGImageAlphaInfo.premultipliedLast.rawValue) else{return false}
+            // iOS drawing contexts use a bottom-up coordinate system; flip to
+            // the top-down Web Mercator y origin of the actual tile.
+            ctx.translateBy(x:0,y:CGFloat(size))
+            ctx.scaleBy(x:1,y:-1)
             ctx.draw(image,in:CGRect(x:0,y:0,width:size,height:size))
             return true
         }
-        guard worked else {return nil}
-        var hits=0, total=0
-        for y in 124...132 {
-            for x in 124...132 {
-                let offset=(y*size+x)*4
-                let alpha=Int(rgba[offset+3])
-                let brightness=max(rgba[offset],rgba[offset+1],rgba[offset+2])
-                if coverage {
-                    if alpha > 40 || brightness > 40 {hits+=1}
-                } else if alpha>28 && brightness>12 {
-                    hits+=1
-                }
+        guard worked else{return nil}
+        var hits=0,total=0
+        for dy in -3...3 {
+            for dx in -3...3 {
+                let x=point.pixelX+dx,y=point.pixelY+dy
+                guard x>=0,x<size,y>=0,y<size else {continue}
+                let p=(y*size+x)*4
+                let alpha=Int(rgba[p+3])
+                let color=max(Int(rgba[p]),Int(rgba[p+1]),Int(rgba[p+2]))
+                if alpha>=30 && color>=10 {hits+=1}
                 total+=1
             }
         }
-        return Double(hits)/Double(max(1,total))
+        guard total>=16 else{return nil}
+        return Double(hits)/Double(total)
     }
 
     static func fetch(feed:RadarFeed,coordinate:CLLocationCoordinate2D,
                       now:Date=Date()) async -> RadarLocalTimeline? {
-        guard feed.source=="LibreWXR", feed.hasNowcast,
+        guard feed.source=="LibreWXR",feed.hasNowcast,
               let last=feed.latest,
+              let point=tilePoint(latitude:coordinate.latitude,
+                                  longitude:coordinate.longitude),
+              let _=tileURL(host:feed.host,path:last.path,point:point),
               now.timeIntervalSince(last.date)>=0,
               now.timeIntervalSince(last.date)<18*60 else{return nil}
-        guard let cover=url(path:"",lat:coordinate.latitude,
-                            lon:coordinate.longitude,coverage:true),
-              let coverageData=await get(cover),
-              let coverage=wetFraction(coverageData,coverage:true),
-              coverage >= 0.7 else{return nil}
         let picks=Array(feed.frames.suffix(2))+feed.future.filter {
             $0.timestamp>last.timestamp &&
-            $0.timestamp<=last.timestamp+70*60
+            $0.timestamp<=last.timestamp+3600
         }
         guard picks.count>=5 else{return nil}
         let sampled=await withTaskGroup(of:RadarLocalFrame?.self) {group in
             for frame in picks {
                 group.addTask {
-                    guard let tile=url(path:frame.path,lat:coordinate.latitude,
-                                       lon:coordinate.longitude),
-                          let bytes=await get(tile),
-                          let echo=wetFraction(bytes) else{return nil}
+                    guard let tile=tileURL(host:feed.host,path:frame.path,point:point),
+                          let data=await get(tile),
+                          let echo=wetFraction(data,point:point) else{return nil}
                     return RadarLocalFrame(date:frame.date,echo:echo)
                 }
             }
             var results:[RadarLocalFrame]=[]
-            for await sample in group {if let sample {results.append(sample)}}
+            for await value in group {if let value {results.append(value)}}
             return results.sorted{$0.date<$1.date}
         }
-        // Incomplete observations must not be interpreted as dry.
+        // A confirmed observed tile at the location is our coverage evidence.
+        // Do not interpret a failed tile or missing future step as clear sky.
         guard sampled.contains(where:{$0.date==last.date}),
               sampled.filter({$0.date>last.date}).count>=3 else{return nil}
         return RadarLocalTimeline(observedAt:last.date,
