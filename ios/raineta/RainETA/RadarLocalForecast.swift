@@ -201,7 +201,14 @@ enum RadarWeightedForecast {
             let date=now.addingTimeInterval(Double(minute*60))
             let baseRate=base[minute]
             let echo:Double?
-            if fresh && minute<=60 {
+            if fresh && minute==0 {
+                // The map at AHORA explicitly displays the last observed
+                // frame. Never claim it is raining now from a forecast tile
+                // while the visible observed pixel is clear.
+                echo=radar?.frames.last(where:{
+                    $0.date == radar?.observedAt
+                })?.echo
+            } else if fresh && minute<=60 {
                 echo=radar?.echo(at:date)
             } else if fresh && minute<=90 {
                 echo=finalEcho
