@@ -79,6 +79,7 @@ struct RainHomeView: View {
                     RainHeroCard(store:store)
                     MinuteRainGraph(store:store)
                     ThreeHourRainView(store:store)
+                    PastRainView(store:store)
                     RainWeekForecast(weather:store.snapshot,
                                      radarAvailable:store.radarLocal?.isFresh(at:Date()) == true)
                     radarSection
@@ -182,6 +183,31 @@ struct RadarSection: View {
     private var sliderMinute:Double {
         guard let now=newest,let selection else{return 0}
         return Double(selection.timestamp-now.timestamp)/60
+    }
+    private var rainMarkers:[(date:Date,label:String)] {
+        guard let newest else{return []}
+        var marks:[(Date,String)]=[]
+        let observations=store.radarLocal?.isFresh(at:Date())==true ?
+            (store.radarLocal?.frames.filter{$0.date<=newest.date} ?? []) : []
+        for (index,frame) in observations.enumerated() where frame.echo>=0.12 &&
+            (index==0 || observations[index-1].echo<0.12) {
+            marks.append((frame.date,"ECO"))
+        }
+        marks += store.reports.filter {
+            $0.raining && $0.date >= (frames.first?.date ?? .distantFuture) &&
+            $0.date<=newest.date &&
+            RainFeedback.near($0,latitude:store.coordinate.latitude,
+                              longitude:store.coordinate.longitude)
+        }.suffix(2).map {($0.date,"TÚ")}
+        let future=store.minuteForecast(now:newest.date,horizon:futureLimit)
+        for point in future where point.minute>0 &&
+            point.minute<=futureLimit && point.minute.isMultiple(of:5) &&
+            point.rate>=0.15 &&
+            (future.first(where:{$0.minute==point.minute-1})?.rate ?? 0)<0.15 {
+            marks.append((point.at,"PREV."))
+        }
+        return Array(marks.sorted{$0.0<$1.0}.prefix(5))
+            .map{(date:$0.0,label:$0.1)}
     }
 
     private func choose(_ minutes:Int) {
@@ -336,9 +362,27 @@ struct RadarSection: View {
                         .foregroundStyle(.cyan)
                         .position(x:min(max(28,markerX),width-28),y:32)
                         .allowsHitTesting(false)
+                    ForEach(Array(rainMarkers.enumerated()),id:\.offset) { item in
+                        let index=item.offset
+                        let mark=item.element
+                        let offset=mark.date.timeIntervalSince(newest?.date ?? Date())/60
+                        let x=18+(width-36)*CGFloat((Double(span)+offset)/total)
+                        if x>=18 && x<=width-18 {
+                            Circle().fill(.red).frame(width:7,height:7)
+                                .position(x:x,y:10)
+                                .allowsHitTesting(false)
+                            Text(mark.label+" "+mark.date.formatted(date:.omitted,time:.shortened))
+                                .font(.system(size:8,weight:.bold))
+                                .foregroundStyle(.red)
+                                .fixedSize()
+                                .position(x:min(max(38,x),width-38),
+                                          y:index.isMultiple(of:2) ? 43:57)
+                                .allowsHitTesting(false)
+                        }
+                    }
                 }
             }
-            .frame(height:43)
+            .frame(height:67)
 
             HStack(spacing:10) {
                 Button {playing.toggle()} label:{
