@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 @testable import RainETA
 
 final class RadarWeightedForecastTests:XCTestCase {
@@ -24,6 +25,52 @@ final class RadarWeightedForecastTests:XCTestCase {
         return RadarLocalTimeline(observedAt:stamp,fetchedAt:stamp,
                             frames:frames,coverageConfirmed:true)
     }
+    func testMadridCoordinateMapsToSameTileAsVisibleRadar() {
+        let point=RadarLocalAPI.tilePoint(latitude:40.4168,longitude:-3.7038)
+        XCTAssertNotNil(point)
+        XCTAssertEqual(point?.x,62)
+        XCTAssertEqual(point?.y,48)
+        XCTAssertEqual(point?.pixelX,174)
+        XCTAssertEqual(point?.pixelY,67)
+        let url=RadarLocalAPI.tileURL(host:"https://api.librewxr.net",
+                          path:"/v2/radar/1792269600",point:point!)
+        XCTAssertEqual(url?.absoluteString,
+           "https://api.librewxr.net/v2/radar/1792269600/256/7/62/48/2/1_1.png")
+        XCTAssertNil(RadarLocalAPI.tilePoint(latitude:Double.nan,longitude:0))
+        XCTAssertNil(RadarLocalAPI.tileURL(host:"https://api.librewxr.net",
+                      path:"/v2/coverage/0",point:point!))
+    }
+
+    func testTransparentRadarTileIsDryOnlyWhenActuallyDownloaded() {
+        guard let point=RadarLocalAPI.tilePoint(latitude:40.4168,
+                                               longitude:-3.7038) else {
+            XCTFail("Madrid projection failed");return
+        }
+        let format=UIGraphicsImageRendererFormat()
+        format.opaque=false
+        format.scale=1
+        let transparent=UIGraphicsImageRenderer(size:CGSize(width:256,height:256),
+                      format:format).image {_ in}
+        let dry=RadarLocalAPI.wetFraction(transparent.pngData()!,point:point)
+        XCTAssertEqual(dry ?? -1,0,accuracy:0.001)
+
+        let rainy=UIGraphicsImageRenderer(size:CGSize(width:256,height:256),
+                      format:format).image {ctx in
+            UIColor.cyan.setFill()
+            ctx.fill(CGRect(x:point.pixelX-5,y:point.pixelY-5,
+                            width:11,height:11))
+        }
+        XCTAssertGreaterThan(RadarLocalAPI.wetFraction(rainy.pngData()!,point:point) ?? 0,0.6)
+        let distant=UIGraphicsImageRenderer(size:CGSize(width:256,height:256),
+                      format:format).image {ctx in
+            UIColor.blue.setFill()
+            ctx.fill(CGRect(x:128,y:128,width:10,height:10))
+        }
+        XCTAssertEqual(RadarLocalAPI.wetFraction(distant.pngData()!,point:point) ?? -1,
+                       0,accuracy:0.001)
+        XCTAssertNil(RadarLocalAPI.wetFraction(Data("not png".utf8),point:point))
+    }
+
     func testRadarDryOverridesContraryRainingNowModel() {
         let wx=weather(true)
         let local=radar(0,0)
