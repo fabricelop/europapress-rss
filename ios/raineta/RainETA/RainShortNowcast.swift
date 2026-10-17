@@ -66,7 +66,11 @@ enum RainShortFusion {
         // A dry radar observation vetoes a model claiming that rain has
         // already started. Only use fallback changes outside the radar-led
         // 90-minute interval.
+        // A model's "rain will END" timestamp must never be reused as
+        // the "rain will START" countdown after a dry radar observation.
+        // They are opposite transitions and would create a false ETA.
         let later=fallback.change.flatMap { change in
+            fallback.raining == decision.wet &&
             change.timeIntervalSince(now)>90*60 ? change:nil
         }
         let change=decision.change ?? later
