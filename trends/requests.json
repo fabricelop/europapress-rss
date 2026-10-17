@@ -61755,7 +61755,7 @@
       "id": "fc2bea7db15b",
       "name": "adivina",
       "rank": 4,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-17T16:32:36+02:00",
       "revision": 0,
       "reexplain": false,
@@ -61770,7 +61770,12 @@
         "Espanyol"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-17T20:28:00+02:00",
+      "last_attempt_at": "2026-10-17T20:28:00+02:00",
+      "problematic_attempts": 1,
+      "problem_reason": "No se ha podido identificar con fiabilidad un detonante actual único para «adivina» tras dos búsquedas distintas.",
+      "editorial_engine": "chat-direct"
     },
     {
       "id": "dbed6537630d",
@@ -62335,6 +62340,6 @@
       "closer_missing": false
     }
   ],
-  "updated_at": "2026-10-17T20:27:00+02:00",
+  "updated_at": "2026-10-17T20:28:00+02:00",
   "count": 1028
 }
