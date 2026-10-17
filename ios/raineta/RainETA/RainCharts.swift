@@ -154,9 +154,8 @@ struct MinuteRainGraph:View {
             }
             .pickerStyle(.segmented)
             let now=Date()
-            let rows=RainPulseFusion.points(samples:store.snapshot?.samples ?? [],
-                                        models:store.shortModels,now:now,horizon:horizon)
-            let bars=rows.map { RainMinuteBar(minute:$0.minute,mmh:$0.rateMMH) }
+            let rows=store.minuteForecast(now:now,horizon:horizon)
+            let bars=rows.map { RainMinuteBar(minute:$0.minute,mmh:$0.rate) }
             if bars.isEmpty {
                 ContentUnavailableView("Sin previsión local",systemImage:"cloud.slash",
                     description:Text("Actualiza la previsión de este lugar."))
@@ -166,7 +165,9 @@ struct MinuteRainGraph:View {
                     abs($0.minute-(selectedMinute ?? 0)) <
                     abs($1.minute-(selectedMinute ?? 0))
                 }) ?? rows[0]
-                let isRaining=store.snapshot?.isRaining ?? false
+                let isRaining=store.shortEstimate?.isUsable(at:now)==true ?
+                    (store.shortEstimate?.rainingNow ?? false) :
+                    (store.snapshot?.isRaining ?? false)
                 Text(RainBarDisplay.summary(bars,rainingNow:isRaining))
                     .font(.subheadline.bold())
                     .foregroundStyle(.cyan)
@@ -175,13 +176,22 @@ struct MinuteRainGraph:View {
                     VStack(alignment:.leading,spacing:2) {
                         Text(selectedMinute == nil ? "Ahora" : "En +\(selected.minute) min")
                             .font(.caption).foregroundStyle(.secondary)
-                        Text(RainVisual.intensity(selected.rateMMH))
+                        Text(RainVisual.intensity(selected.rate))
                             .font(.title3.bold())
-                            .foregroundStyle(RainVisual.color(selected.rateMMH))
+                            .foregroundStyle(RainVisual.color(selected.rate))
                     }
                     Spacer()
-                    Text(String(format:"%.1f mm/h",selected.rateMMH))
+                    Text(String(format:"%.1f mm/h",selected.rate))
                         .font(.title3.bold().monospacedDigit())
+                }
+                if store.radarLocal?.isFresh(at:now)==true {
+                    Label(selected.radarInformed ? "Radar local + nowcast" : "Previsión por modelos",
+                          systemImage:"dot.radiowaves.left.and.right")
+                        .font(.caption2)
+                        .foregroundStyle(selected.radarInformed ? .cyan:.secondary)
+                } else {
+                    Text("Sin cobertura radar local válida · previsión por modelos")
+                        .font(.caption2).foregroundStyle(.secondary)
                 }
                 RainMinuteBars(data:bars,horizon:horizon,
                                selectedMinute:$selectedMinute)
@@ -193,8 +203,9 @@ struct MinuteRainGraph:View {
                     Image(systemName:"hand.draw").foregroundStyle(.secondary)
                 }
                 .font(.caption2).foregroundStyle(.secondary)
-                Text("Desliza las barras para ver los \(horizon) minutos. " +
-                     "Cada minuto es una posición visual derivada de los intervalos de la fuente.")
+                Text("Radar prioritario hasta 60 min; tendencia atenuada hasta 90 min. " +
+                     "Los intervalos radar/modelo se muestran por minutos sin prometer mediciones cada minuto.")
+                    
                     .font(.caption2).foregroundStyle(.secondary)
 
                 Button {
