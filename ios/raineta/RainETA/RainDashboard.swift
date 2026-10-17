@@ -5,6 +5,13 @@ import SwiftUI
 struct RainHeroCard: View {
     @ObservedObject var store:RainStore
 
+    private func radarConfirmedDisplay(_ store:RainStore)->Bool {
+        let now=Date()
+        return store.radarLocal?.isFresh(at:now)==true &&
+               store.shortEstimate?.isUsable(at:now)==true &&
+               store.shortEstimate?.radarBased==true
+    }
+
     var body:some View {
         VStack(alignment:.leading,spacing:13) {
             HStack {
@@ -23,11 +30,15 @@ struct RainHeroCard: View {
                     let short=store.shortEstimate?.isUsable(at:moment)==true
                         ? store.shortEstimate : nil
                     let raining=short?.rainingNow ?? fallback.raining
+                    let radarConfirmed=short?.radarBased==true
                     let nextChange=short?.change ?? fallback.change
                     VStack(alignment:.leading,spacing:10) {
                         HStack(alignment:.center) {
                             VStack(alignment:.leading,spacing:5) {
-                                Text(raining ? "LLUVIA ESTIMADA AHORA" : "AHORA SIN LLUVIA PREVISTA")
+                                Text(radarConfirmed ?
+                                     (raining ? "RADAR: PRECIPITACIÓN DETECTADA" : "RADAR: SIN ECO LOCAL") :
+                                     (raining ? "MODELO PREVÉ LLUVIA · NO CONFIRMADA" :
+                                                "MODELO PREVÉ TIEMPO SECO"))
                                     .font(.system(size:10,weight:.heavy))
                                     .foregroundStyle(raining ? .cyan : .green)
                                 Text(raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?")
@@ -57,10 +68,9 @@ struct RainHeroCard: View {
                             Spacer()
 
                         }
-                        if store.radarLocal?.isFresh(at:moment)==true {
-                            Text(store.radarAnalysisStatus)
-                                .font(.caption2).foregroundStyle(.mint)
-                        }
+                        Text(store.radarAnalysisStatus)
+                            .font(.caption2)
+                            .foregroundStyle(radarConfirmed ? .mint : .yellow)
                         if let short {
                             HStack(spacing:6) {
                                 Text(short.method + " · " + short.confidence)
@@ -82,10 +92,10 @@ struct RainHeroCard: View {
                     if let temperature=weather.temperature {
                         Label(String(format:"%.0f °C",temperature),systemImage:"thermometer.medium")
                     }
-                    Label(store.radarLocal?.isFresh(at:Date())==true ?
+                    Label(radarConfirmedDisplay(store) ?
                           ((store.minuteForecast(now:Date(),horizon:0).first?.rate ?? 0)>=0.15 ?
-                              "Radar: lluvia estimada" : "Radar: seco en esta ubicación") :
-                          weather.intensity,systemImage:"drop.fill")
+                              "Eco de lluvia en radar" : "Sin eco de lluvia en radar") :
+                          "Modelo: " + weather.intensity,systemImage:"drop.fill")
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white.opacity(0.9))
