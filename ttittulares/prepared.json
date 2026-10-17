@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-17T20:34:00Z",
+  "updated_at": "2026-10-17T20:38:34.765435Z",
   "items": [
     {
       "event_id": "b9901af59308",
@@ -56,18 +56,36 @@
       },
       "prepared_at": "2026-10-17T20:34:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
       "image_delivery": "none",
-      "problematic_attempts_before_ready": 1
+      "problematic_attempts_before_ready": 1,
+      "archive_image_search_attempted_at": "2026-10-17T20:38:34.765435Z",
+      "fallback_image_search_attempted_at": "2026-10-17T20:38:34.765435Z",
+      "archive_image": {
+        "url": "https://img.rtve.es/imagenes/gobierno-niega-nueva-incursion-buques-marroquies-aguas-espanolas-visita-reyes-ceuta-melilla/01792145633877.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261016/gobierno-niega-nueva-incursion-buques-marroquies-aguas-espanolas-visita-reyes-ceuta-melilla/17269591.shtml",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El Gobierno niega una nueva \"incursión\" de buques marroquíes en aguas españolas tras la visita de los reyes a Ceuta y Melilla"
+      },
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/gobierno-niega-nueva-incursion-buques-marroquies-aguas-espanolas-visita-reyes-ceuta-melilla/01792145633877.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261016/gobierno-niega-nueva-incursion-buques-marroquies-aguas-espanolas-visita-reyes-ceuta-melilla/17269591.shtml",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El Gobierno niega una nueva \"incursión\" de buques marroquíes en aguas españolas tras la visita de los reyes a Ceuta y Melilla"
+      }
     }
   ],
   "count": 0,
