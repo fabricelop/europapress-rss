@@ -45,7 +45,7 @@ try{
       $detail="Tarea $taskName solicitada. Estado posterior: $($after.LastTaskResult); inicio del proceso final NO verificado."
     }else{
       $result='diagnosed'
-      $detail="Tarea $taskName: estado=$($task.State); ultimo resultado=$($before.LastTaskResult); ultima ejecución=$($before.LastRunTime). Sin cambios."
+      $detail="Tarea ${taskName}: estado=$($task.State); ultimo resultado=$($before.LastTaskResult); ultima ejecución=$($before.LastRunTime). Sin cambios."
     }
   }
 }catch{
