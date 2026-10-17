@@ -42,8 +42,8 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <div id="chips" class="chips" aria-label="Secciones"></div>
 <div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
 <div id="cards" class="cards"></div>
-<div class="footer">Origen: GitHub Pages y datos públicos de GitHub. Las acciones se confirman en Telegram y se ejecutan de forma segura en GitHub Actions, sin abrir formularios ni exponer credenciales en la web. Imágenes GAG solo mediante copia manual en ChatGPT Images.</div>
-<details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se reciben por el bot privado de Telegram y se ejecutan en GitHub Actions, sin guardar tokens en el navegador.</p></details>
+<div class="footer">Origen: GitHub Pages y datos públicos de GitHub. Las acciones se confirman en una incidencia de GitHub y se ejecutan en GitHub Actions. Imágenes IA: envío por TTImages.</div>
+<details><summary>Acerca de los datos y la conexión</summary><p>Esta web se sirve desde GitHub Pages. Consulta solo archivos editoriales públicos de GitHub, con una copia estática de respaldo. No utiliza Cloudflare ni Vercel, ni realiza peticiones continuas mientras está en segundo plano. Las solicitudes de edición se confirman con tu cuenta GitHub y se ejecutan en GitHub Actions, sin guardar tokens en el navegador.</p></details>
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
 (()=>{'use strict';
@@ -352,16 +352,12 @@ async function copyText(value,label){
  showToast(label+' copiado')
 }
 function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
-function telegramActionUrl(project,id,action){
- // Telegram deep links accept <=64 URL-safe characters. No browser token needed.
- const app=project==='ttittulares'?'n':'t',kind=({published:'p',deleted:'d',rework:'r',prepare:'e'})[action];
- if(!kind)return '';
- const bytes=new TextEncoder().encode(String(id||''));
- if(!bytes.length||bytes.length>39)return '';
- let raw='';for(const byte of bytes)raw+=String.fromCharCode(byte);
- const payload='ttm_'+app+'_'+kind+'_'+btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
- if(payload.length>64)return '';
- return 'https://t.me/TTiTTulares_bot?start='+payload;
+function githubIssueUrl(project,id,action,title){
+ const kind=action==='rework'?'rework':action;
+ if(!['published','deleted','rework','prepare','dismissed'].includes(kind)||!String(id||'').trim())return '';
+ const body='### Proyecto\n\n'+project+'\n\n### Acción\n\n'+kind+'\n\n### ID del elemento\n\n'+String(id).slice(0,120)+'\n\n### Titular o contexto\n\n'+String(title||id).slice(0,280);
+ const issueTitle='[TT-MOVIL] '+project+' '+kind+' '+String(id).slice(0,80);
+ return 'https://github.com/fabricelop/europapress-rss/issues/new?title='+encodeURIComponent(issueTitle)+'&body='+encodeURIComponent(body);
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
@@ -378,14 +374,14 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  const url=telegramActionUrl(x._kind==='tr'?'ttendencias':'ttittulares',x._id,action);
+  const url=githubIssueUrl(x._kind==='tr'?'ttendencias':'ttittulares',x._id,action,d.title);
   if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
   const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
   b.textContent=label;b.addEventListener('click',event=>{
    if(action==='deleted'&&!confirm(x._kind==='tremending'?'¿Borrar esta entrada de Tremending del panel?':('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?'))){
      event.preventDefault();return;
    }
-   showToast('La orden se enviará al bot de Telegram. Recibirás allí el resultado.');
+   showToast('Confirma la orden con «Submit new issue» en GitHub; recibirás allí el resultado.');
   });
   a.append(b);return b
  $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';

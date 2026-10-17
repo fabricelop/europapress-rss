@@ -40,7 +40,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
 </div>
 <main>
-<div class="notice" style="display:block">Acceso de emergencia por GitHub Pages. Las acciones editoriales abren el bot privado de Telegram para confirmar la orden en GitHub. También puedes usar el <a href="../">panel móvil alternativo</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+<div class="notice" style="display:block">Acceso de emergencia por GitHub Pages. Las acciones editoriales abren una orden ya rellenada en GitHub. Pulsa «Submit new issue» para confirmarla; el resultado aparecerá allí. También puedes usar el <a href="../">panel móvil alternativo</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 
 <details class="pilot-settings" id="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
@@ -588,21 +588,20 @@ function schedulePendingChecks(){
  [14000,35000,75000,150000,245000,360000,600000,900000,1240000].forEach(ms=>
   setTimeout(()=>{if(!document.hidden)void checkPendingDeletes()},ms));
 }
-function emergencyTelegramUrl(project,id,decision){
- const kind=({deleted:'d',prepare:'e',discard:project==='ttittulares'?'s':'p'})[decision];
- const app=project==='ttittulares'?'n':'t';
- if(!kind||!/^[A-Za-z0-9:_-]{3,39}$/.test(id))return '';
- let raw='';for(const byte of new TextEncoder().encode(id))raw+=String.fromCharCode(byte);
- const payload='ttm_'+app+'_'+kind+'_'+btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
- return payload.length<=64?'https://t.me/TTiTTulares_bot?start='+payload:'';
+function emergencyGithubIssueUrl(project,id,decision,title){
+ const action=decision==='discard'?(project==='ttittulares'?'dismissed':'published'):decision;
+ if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[A-Za-z0-9:_-]{3,128}$/.test(id))return '';
+ const body='### Proyecto\n\n'+project+'\n\n### Acción\n\n'+action+'\n\n### ID del elemento\n\n'+id+'\n\n### Titular o contexto\n\n'+String(title||id).slice(0,280);
+ const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
+ return 'https://github.com/fabricelop/europapress-rss/issues/new?title='+encodeURIComponent(issueTitle)+'&body='+encodeURIComponent(body);
 }
 async function pilotSend(item,decision){
  if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
   const project=itemProject(item),id=String(item._id||'');
-  const url=emergencyTelegramUrl(project,id,decision);
+  const url=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
   if(!url){showToast('Esta acción no está disponible en el acceso de emergencia');return}
   const label=decision==='deleted'?'Borrar':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
-  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'? Telegram confirmará el resultado.'))return;
+  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'? Confirma la orden con «Submit new issue» en GitHub.'))return;
   location.href=url;
   return;
  }

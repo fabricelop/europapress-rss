@@ -2,35 +2,6 @@ name: TT mobile authorized commands from GitHub Issues
 on:
   issues:
     types: [opened]
-  schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:
-    inputs:
-      run_pending:
-        description: Procesar órdenes previamente autenticadas desde el bot nativo Telegram
-        required: false
-        type: boolean
-        default: false
-      project:
-        description: Proyecto editorial
-        required: false
-        type: choice
-        options: [ttittulares, ttendencias]
-      action:
-        description: Acción solicitada desde Telegram
-        required: false
-        type: choice
-        options: [published, deleted, dismissed, rework, prepare]
-      id:
-        description: ID de noticia o tendencia
-        required: false
-        type: string
-      context:
-        required: false
-        type: string
-      instruction:
-        required: false
-        type: string
   push:
     branches: [main]
     paths:
@@ -48,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   validate:
-    if: github.event_name != 'issues' && github.event_name != 'schedule'
+    if: github.event_name != 'issues'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -70,7 +41,7 @@ jobs:
           PY
           python3 .github/scripts/test_tt_mobile_issue_command.py
   apply:
-    if: (github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')) || (github.event_name == 'workflow_dispatch' && (github.actor == 'fabricelop' || inputs.run_pending == true)) || (github.event_name=='schedule') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:'))
+    if: github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -81,7 +52,6 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TT_MOBILE_QUEUE_DISPATCH: ${{ inputs.run_pending }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -90,12 +60,8 @@ jobs:
             git fetch origin main
             git checkout -B main origin/main
             rm -f /tmp/tt-mobile-issue-result.txt /tmp/tt-mobile-queue-results.json
-            if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "schedule" || "$TT_MOBILE_QUEUE_DISPATCH" == "true" ]]; then
-              python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH" --queue
-            else
-              python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
-            fi
-            git add ttittulares/decisions.json ttittulares/prepared.json ttittulares/tremending/items.json telegram/editorial-processing.json \
+            python3 .github/scripts/tt_mobile_issue_command.py "$GITHUB_EVENT_PATH"
+            git add ttittulares/editorial-queue.json ttittulares/decisions.json ttittulares/prepared.json ttittulares/tremending/items.json telegram/editorial-processing.json \
               telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
               trends/requests.json trends/telegram-image-deliveries.json \
               telegram/tt-mobile-command-queue.json trends/editorial-queue.json || true
@@ -111,19 +77,6 @@ jobs:
               # editorial run as Top10, AFTER the GitHub queue is committed.
               python3 trends/request_pc_editorial.py --selftest
               python3 trends/request_pc_editorial.py
-              # Disparar aviso provisional de tendencias al guardar Preparar novedad.
-              if git show --pretty=format: --name-only HEAD | grep -Eq '^trends/(requests.json|editorial-queue.json)$'; then
-                if gh workflow run send-ttendencias-explained-telegram.yml -R "$GITHUB_REPOSITORY" --ref main; then
-                  echo "TTENDENCIAS_PENDING_DELIVERY_DISPATCHED"
-                else
-                  echo "TTENDENCIAS_PENDING_DELIVERY_RETRY_CRON" >&2
-                fi
-              fi
-              if gh workflow run send-ttittulares-ready-telegram.yml -R "$GITHUB_REPOSITORY" --ref main; then
-                echo "TTI_PROVISIONAL_DELIVERY_DISPATCHED"
-              else
-                echo "Aviso: el cron del repartidor reintentará la entrega" >&2
-              fi
               break
             fi
             if [[ "$attempt" == 6 ]]; then echo "TT_MOBILE_WRITE_CONFLICT" >&2;exit 1;fi
@@ -136,71 +89,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue comment ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --body "$(cat /tmp/tt-mobile-issue-result.txt)
-          
-          Orden guardada en GitHub. Las tareas de borrado de mensajes se completan después por GitHub Actions. No se ha lanzado generación IA."
+
+          Orden guardada en GitHub. La elaboración continúa en su cola editorial."
           gh issue close ${{ github.event.issue.number }} -R "$GITHUB_REPOSITORY" --reason completed
-      - name: Confirm commands in Telegram and auto-clean auxiliary messages
-        if: always() && (github.event_name == 'workflow_dispatch' || (github.event_name=='schedule') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'TT_MOBILE_QUEUE_WRITE:')))
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TT_JOB_STATUS: ${{ job.status }}
-        run: |
-          python3 - <<'PY'
-          import json,os,urllib.request,time
-          token=os.environ.get('TELEGRAM_BOT_TOKEN') or ''
-          chat=os.environ.get('TELEGRAM_CHAT_ID') or ''
-          if not token or not chat:
-              print('TELEGRAM_ACK_CREDENTIAL_MISSING');raise SystemExit(0)
-          success=os.environ.get('TT_JOB_STATUS')=='success'
-          event=os.environ.get('GITHUB_EVENT_NAME','')
-          messages=[]
-          if event in ('push','schedule') and success:
-              try:
-                  items=json.load(open('/tmp/tt-mobile-queue-results.json',encoding='utf8'))
-                  for item in items:
-                      message=('✅ ' if item.get('ok') else '⚠️ ')+str(item.get('message',''))[:3000]
-                      cleanup=[int(item.get(k) or 0) for k in ('cleanup_command_mid','cleanup_notice_mid')]
-                      messages.append((message,item.get('ok') is True,cleanup))
-              except (OSError,ValueError,TypeError):messages=[]
-          elif success:
-              try:
-                  result=open('/tmp/tt-mobile-issue-result.txt',encoding='utf8').read().strip()
-                  if result:messages=[('✅ '+result,False,[])]
-              except FileNotFoundError:pass
-          if not messages:
-              if success:raise SystemExit(0)
-              messages=[('⚠️ No se completó la orden. Comprueba el estado antes de reintentar.',False,[])]
-          base='https://api.telegram.org/bot'+token+'/'
-          def api(method,data):
-              req=urllib.request.Request(base+method,
-                data=json.dumps(data).encode(),
-                headers={'content-type':'application/json'})
-              with urllib.request.urlopen(req,timeout=25) as response:return json.load(response)
-          cleanup_ids=set()
-          had_error=False
-          for message,ok,mids in messages:
-              try:
-                  result=api('sendMessage',{'chat_id':chat,'text':message})
-                  sent=int((result.get('result') or {}).get('message_id') or 0)
-                  print('TELEGRAM_MOBILE_ACK_OK',bool(result.get('ok')))
-                  if sent:
-                      # Delete the /start, the receipt and this confirmation,
-                      # including failed commands (after giving time to read).
-                      cleanup_ids.add(sent)
-                      cleanup_ids.update(mid for mid in mids if mid>0)
-                      if not ok:had_error=True
-              except Exception as error:
-                  print('TELEGRAM_MOBILE_ACK_ERROR',type(error).__name__)
-                  had_error=True
-          if cleanup_ids:
-              # Successful commands disappear promptly. Failure notices stay
-              # briefly longer, but no auxiliary Telegram chatter is permanent.
-              time.sleep(60 if had_error else 20)
-              for mid in sorted(cleanup_ids):
-                  try:
-                      result=api('deleteMessage',{'chat_id':chat,'message_id':mid})
-                      print('TELEGRAM_MOBILE_AUX_DELETE',mid,bool(result.get('ok')))
-                  except Exception as error:
-                      print('TELEGRAM_MOBILE_AUX_DELETE_WARNING',mid,type(error).__name__)
-          PY
