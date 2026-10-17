@@ -286,6 +286,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var radar = RadarFeed()
     @Published var projection: RadarProjection?
     @Published var shortEstimate: RainShortEstimate?
+    @Published private(set) var radarLocal: RadarLocalTimeline?
     @Published private(set) var shortModels: [RainShortModel] = []
     @Published private(set) var shortModelsUpdatedAt: Date?
     @Published private(set) var shortModelsLoading = false
@@ -552,63 +553,67 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     /// Run the expensive radar analysis outside the main refresh path. The
     /// countdown is always available from the original forecast while the
     /// new estimate is loading; stale results cannot cross locations.
+    /// All short-range consumers (hero, Live Activity, minute Pulse, 3h chart)
+    /// use the same radar-led local estimate. Model updates and radar sampling
+    /// run concurrently. No stale place-specific results may overwrite a move.
     private func refreshShortEstimate() {
-        guard let wx = snapshot else { return }
+        guard let wx=snapshot else{return}
         shortTask?.cancel()
-        let coord = coordinate
-        let locationKey = String(format: "%.3f,%.3f", coord.latitude, coord.longitude)
-        if shortLocationKey != locationKey {
-            shortEstimate = nil
-            shortModels = []
-            shortModelsUpdatedAt = nil
-            shortModelsLoading = true
-            shortLocationKey = locationKey
+        let coord=coordinate
+        let locationKey=String(format:"%.3f,%.3f",coord.latitude,coord.longitude)
+        let changed=shortLocationKey != locationKey
+        if changed {
+            shortEstimate=nil
+            radarLocal=nil
+            shortModels=[]
+            shortModelsUpdatedAt=nil
+            shortLocationKey=locationKey
         }
-        let feed = radar
-        let lastPath = feed.latest?.path ?? ""
-        let frameKey = locationKey + "|" + lastPath
-        let knownRadar = frameKey == cachedRadarKey ? cachedRadarEvidence : nil
-        let cachedModels = shortModelKey == locationKey ? shortModels : []
-        let reuseModels = shortModelKey == locationKey && !cachedModels.isEmpty &&
-                          Date().timeIntervalSince(shortModelLoadedAt) < 10*60
-        shortModelsLoading = !reuseModels
-        let revision = placeSelectionRevision
+        let feed=radar
+        let modelsCache=shortModelKey==locationKey ? shortModels : []
+        let reuse=shortModelKey==locationKey && !modelsCache.isEmpty &&
+                  Date().timeIntervalSince(shortModelLoadedAt)<10*60
+        shortModelsLoading = !reuse
+        let revision=placeSelectionRevision
 
-        shortTask = Task {
-            async let latestRadar: RadarProjection? = knownRadar != nil ? nil :
-                RadarNowcaster.forecast(host: feed.host, frames: feed.frames, coordinate: coord)
-            async let latestModels: [RainShortModel] = reuseModels ? cachedModels :
-                RainShortModelAPI.compare(latitude: coord.latitude, longitude: coord.longitude)
-            let projection = await latestRadar
-            let fetchedModels = await latestModels
-            guard !Task.isCancelled, revision == placeSelectionRevision,
-                  locationKey == shortLocationKey else { return }
-            // Keep last same-place observations for a brief outage, never
-            // silently transplant another town's model forecast.
-            let models = !fetchedModels.isEmpty ? fetchedModels :
-                (shortModelKey == locationKey &&
-                 Date().timeIntervalSince(shortModelLoadedAt) < 30*60 ? cachedModels : [])
-            if !reuseModels && !fetchedModels.isEmpty {
-                shortModels = fetchedModels
-                shortModelKey = locationKey
-                shortModelLoadedAt = Date()
-                shortModelsUpdatedAt = Date()
+        shortTask=Task {
+            async let radarResult=RadarLocalAPI.fetch(feed:feed,coordinate:coord)
+            async let modelResult:[RainShortModel] = reuse ? modelsCache :
+                RainShortModelAPI.compare(latitude:coord.latitude,longitude:coord.longitude)
+            let local=await radarResult
+            // Publish radar detection promptly, without waiting for up to
+            // five slower model providers. The original snapshot is usable.
+            guard !Task.isCancelled,revision==placeSelectionRevision,
+                  shortLocationKey==locationKey else{return}
+            radarLocal=local
+            shortEstimate=RainShortFusion.estimateUsingLocal(
+                 weather:wx,radar:local,models:modelsCache,now:Date())
+            if liveEnabled {await updateLiveActivity()}
+
+            let received=await modelResult
+            guard !Task.isCancelled,revision==placeSelectionRevision,
+                  shortLocationKey==locationKey else{return}
+            let models=received.isEmpty && shortModelKey==locationKey &&
+                      Date().timeIntervalSince(shortModelLoadedAt)<30*60 ?
+                      modelsCache : received
+            if !reuse && !received.isEmpty {
+                shortModels=received
+                shortModelKey=locationKey
+                shortModelLoadedAt=Date()
+                shortModelsUpdatedAt=Date()
             }
-            shortModelsLoading = false
-            if knownRadar == nil {
-                cachedRadarKey = frameKey
-                cachedRadarEvidence = projection.map {
-                    RainRadarEvidence(observedAt: $0.observedAt,
-                                      movementConfidence: $0.confidence,
-                                      points: $0.minutePoints)
-                }
-            }
-            let evidence = frameKey == cachedRadarKey ? cachedRadarEvidence : nil
-            shortEstimate = RainShortFusion.estimate(
-                weather: wx, radar: knownRadar ?? evidence,
-                models: models, now: Date())
-            if liveEnabled { await updateLiveActivity() }
+            shortModelsLoading=false
+            shortEstimate=RainShortFusion.estimateUsingLocal(
+                 weather:wx,radar:local,models:models,now:Date())
+            if liveEnabled {await updateLiveActivity()}
         }
+    }
+
+    func minuteForecast(now:Date,horizon:Int) -> [RadarWeightedMinute] {
+        guard let snapshot else{return []}
+        let recentRadar=radarLocal?.isFresh(at:now)==true ? radarLocal:nil
+        return RadarWeightedForecast.make(snapshot:snapshot,models:shortModels,
+                                         radar:recentRadar,now:now,horizon:horizon)
     }
 
     func toggleLive() async {
