@@ -1,0 +1,33 @@
+name: TTActualidad worker remote recovery probe
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/ttactualidad-worker-recovery-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: DNS and connectivity (no secrets disclosed)
+        shell: bash
+        run: |
+          set +e
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            echo "::group::$host"
+            getent ahostsv4 "$host" | head -3 || true
+            curl -4 -sS --connect-timeout 5 --max-time 12 -o /tmp/probe-body -w 'IPv4 HTTP=%{http_code} DNS=%{time_namelookup}s TLS=%{time_appconnect}s TOTAL=%{time_total}s\n' "https://$host/health" 2>&1
+            echo "IPv4 EXIT=$?"
+            curl -6 -sS --connect-timeout 5 --max-time 12 -o /dev/null -w 'IPv6 HTTP=%{http_code} DNS=%{time_namelookup}s TLS=%{time_appconnect}s TOTAL=%{time_total}s\n' "https://$host/health" 2>&1
+            echo "IPv6 EXIT=$?"
+            echo "::endgroup::"
+          done
+      - name: Verify Cloudflare deploy authentication presence (no changes)
+        env:
+          CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CF_API" ]; then echo "CLOUDFLARE_API_TOKEN_PRESENT=yes"; else echo "CLOUDFLARE_API_TOKEN_PRESENT=no"; fi
+          if [ -n "$CF_ACCOUNT" ]; then echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=yes"; else echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=no"; fi
