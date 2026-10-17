@@ -74,7 +74,8 @@ enum RainShortFusion {
         let margin=offset<=60 ? 10.0 : 20.0
         return RainShortEstimate(
             issuedAt:now,change:change,rainingNow:decision.wet,
-            method:"Radar local 0–60 min · modelos después",
+            method:radar.hasFutureFrames ? "Radar observado + nowcast hasta 60 min" :
+                                         "Radar observado · futuro por modelos",
             confidence:offset<=60 ? "Confianza orientativa":"Confianza baja",
             windowStart:change?.addingTimeInterval(-margin*60),
             windowEnd:change?.addingTimeInterval(margin*60),
