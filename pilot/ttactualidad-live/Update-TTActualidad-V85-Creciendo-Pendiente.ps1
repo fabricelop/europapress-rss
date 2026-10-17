@@ -36,8 +36,8 @@ $js = Join-Path $env:TEMP ('ttactualidad-v85-'+[guid]::NewGuid().ToString('N')+'
 try {
     Invoke-WebRequest -UseBasicParsing -Uri $source -OutFile $temp -TimeoutSec 45
     $html = [IO.File]::ReadAllText($temp,[Text.Encoding]::UTF8)
-    foreach($marker in @('PENDIENTE DE CONFIRMACIÓN','readyConfirmed','Noticia elaborada: ya está en Listas.',
-                        'TTImages','Tremending','Pasar a En Elaboración')) {
+    foreach($marker in @('PENDIENTE DE CONFIRMACI','readyConfirmed','Noticia elaborada: ya est',
+                        'TTImages','Tremending','Pasar a En Elaboraci')) {
         if(-not $html.Contains($marker)) {throw ('Interfaz descargada sin marca esperada: '+$marker)}
     }
     $begin = $html.IndexOf('<script>')+8
@@ -80,7 +80,7 @@ try {
     for($i=0;$i -lt 8;$i++) {
         try {
             $live = (Invoke-WebRequest -UseBasicParsing -Uri ($url+'?v85='+[guid]::NewGuid().ToString('N')) -TimeoutSec 25).Content
-            if($live.Contains('PENDIENTE DE CONFIRMACIÓN') -and $live.Contains('readyConfirmed')) {
+            if($live.Contains('PENDIENTE DE CONFIRMACI') -and $live.Contains('readyConfirmed')) {
                 $published = $true
                 break
             }
