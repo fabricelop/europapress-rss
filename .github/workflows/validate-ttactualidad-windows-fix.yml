@@ -1,0 +1,28 @@
+name: Validate TTActualidad Windows fix
+on:
+  push:
+    branches:
+      - diagnostics/cloudflare-priority-20261017
+    paths:
+      - .github/workflows/validate-ttactualidad-windows-fix.yml
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Verify Windows PowerShell 5.1 parser and guardrails
+        shell: powershell
+        run: |
+          $path='pilot/ttactualidad-live/Fix-TTActualidad-Network.ps1'
+          $tok=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tok,[ref]$errors)|Out-Null
+          if($errors.Count -gt 0) { $errors | ForEach-Object {Write-Error $_.Message}; exit 1}
+          $s=[IO.File]::ReadAllText((Resolve-Path $path))
+          if($s -notmatch '104\.21\.22\.59' -or $s -notmatch 'Before-TTActualidad' -or $s -notmatch 'TTActualidad network workaround') {throw 'Guardrails missing'}
+          Write-Host 'WIN_PS51_FIX_VALIDATED; no system settings modified'
