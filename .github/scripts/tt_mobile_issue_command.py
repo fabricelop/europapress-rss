@@ -53,7 +53,7 @@ def parse_issue(event):
     instruction = field(body, "Instrucciones para reelaborar (opcional)")[:1000]
     if project not in {"ttittulares", "ttendencias"}:
         raise ValueError("Proyecto desconocido")
-    if action not in {"published", "deleted", "rework", "prepare"}:
+    if action not in {"published", "deleted", "dismissed", "rework", "prepare"}:
         raise ValueError("Acción no admitida")
     if not re.fullmatch(r"[\w#.\- ]{1,120}", element_id):
         raise ValueError("Identificador inválido")
@@ -74,7 +74,7 @@ def parse_dispatch(event, trusted_queue=False):
     element_id = str(inp.get("id") or "").strip()
     if project not in {"ttittulares", "ttendencias"}:
         raise ValueError("Proyecto no autorizado")
-    if action not in {"published", "deleted", "rework", "prepare"}:
+    if action not in {"published", "deleted", "dismissed", "rework", "prepare"}:
         raise ValueError("Acción no autorizada")
     if not re.fullmatch(r"[\w#.\- ]{1,120}", element_id):
         raise ValueError("ID no admitido")
@@ -167,6 +167,35 @@ def tti_command(action, element_id, context, instruction, now):
         raise ValueError("Evento ya cerrado: " + previous)
     if not existed:
         raise ValueError("No se encontró el evento TTiTTulares en el estado actual")
+    if action == "dismissed":
+        queue_path = "ttittulares/editorial-queue.json"
+        queue = load(queue_path, {"items": []})
+        active = next((x for x in queue.get("items", []) if matches(x, element_id)
+                       and str(x.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}), None)
+        if active is None:
+            raise ValueError("La noticia ya no consta en elaboración")
+        active.update(status="DISMISSED", dismissed_at=now,
+                      decision_source="telegram_private_deeplink_native")
+        queue["count"] = sum(str(x.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}
+                             for x in queue.get("items", []))
+        queue["updated_at"] = now
+        save(queue_path, queue)
+        processing_path = "telegram/editorial-processing.json"
+        processing = load(processing_path, {"items": []})
+        for item in processing.get("items", []):
+            if matches(item, element_id):
+                item.update(status="DISMISSED", dismissed_at=now,
+                            decision_source="telegram_private_deeplink_native")
+        processing["updated_at"] = now
+        save(processing_path, processing)
+        row = existing or {"event_id": element_id}
+        if existing is None:
+            decisions.setdefault("items", []).append(row)
+        row.update(status="dismissed", dismissed_at=now, updated_at=now,
+                   decision_source="telegram_private_deeplink_native")
+        decisions["updated_at"] = now
+        save(decisions_path, decisions)
+        return "TTiTTulares: desestimada en la cola editorial: " + element_id
     if action in {"published", "deleted"}:
         row = existing or {"event_id": element_id}
         if existing is None:

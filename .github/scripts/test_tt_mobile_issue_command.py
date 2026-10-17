@@ -137,4 +137,18 @@ with tempfile.TemporaryDirectory() as tmp:
     assert len(items)==2 and items[1]["name"]=="#Tema Con Espacios"
     assert len(items[1]["id"])==12 and " " not in items[1]["id"]
     assert len(get(m.ROOT,"trends/editorial-queue.json")["items"])==2
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    eid="abc123dismiss"
+    put(m.ROOT,"ttittulares/prepared.json",{"items":[]})
+    put(m.ROOT,"ttittulares/status.json",{"processing_items":[{"event_id":eid}]})
+    put(m.ROOT,"ttittulares/editorial-queue.json",{"items":[{"event_id":eid,"status":"PROCESSING"}],"count":1})
+    put(m.ROOT,"telegram/editorial-processing.json",{"items":[{"event_id":eid,"status":"PROCESSING"}]})
+    result=m.tti_command("dismissed",eid,"","","2026-10-17T17:30:00Z")
+    assert "desestimada" in result
+    assert get(m.ROOT,"ttittulares/decisions.json")["items"][0]["status"]=="dismissed"
+    assert get(m.ROOT,"ttittulares/editorial-queue.json")["items"][0]["status"]=="DISMISSED"
+    assert get(m.ROOT,"ttittulares/editorial-queue.json")["count"]==0
+    assert get(m.ROOT,"telegram/editorial-processing.json")["items"][0]["status"]=="DISMISSED"
+    assert "ya realizada" in m.tti_command("dismissed",eid,"","","2026-10-17T17:31:00Z")
 print("TT_MOBILE_ISSUE_FIXTURES_OK")

@@ -20,7 +20,7 @@ on:
         description: Acción solicitada desde Telegram
         required: false
         type: choice
-        options: [published, deleted, rework, prepare]
+        options: [published, deleted, dismissed, rework, prepare]
       id:
         description: ID de noticia o tendencia
         required: false

@@ -25,7 +25,7 @@ DELIVERIES = Path("telegram/ttittulares-deliveries.json")
 CONTROL_BRANCH = "control/ttittulares-run-trigger-v2"
 CONTROL_FILE = "ttittulares/run-now-trigger.json"
 CALLBACK = re.compile(r"^tt:([pdb]):([A-Za-z0-9_-]{5,80})$")
-MOBILE = re.compile(r"^/start(?:@[A-Za-z0-9_]+)?\s+ttm_([nt])_([pdre])_([A-Za-z0-9_-]{1,56})$", re.I)
+MOBILE = re.compile(r"^/start(?:@[A-Za-z0-9_]+)?\s+ttm_([nt])_([pdres])_([A-Za-z0-9_-]{1,56})$", re.I)
 REWORK_TTL_SECONDS = 1800
 MOBILE_QUEUE = Path("telegram/tt-mobile-command-queue.json")
 MODEL_ENDPOINT = "https://models.github.ai/inference/chat/completions"
@@ -61,7 +61,7 @@ def decode_mobile_command(text):
             re.fullmatch(r"[\w# .-]+", element_id, re.UNICODE)):
         return None
     return {"kind": "mobile", "project": "ttittulares" if match.group(1) == "n" else "ttendencias",
-            "action": {"p":"published","d":"deleted","r":"rework","e":"prepare"}[match.group(2)],
+            "action": {"p":"published","d":"deleted","r":"rework","e":"prepare","s":"dismissed"}[match.group(2)],
             "id": element_id}
 
 
