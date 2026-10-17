@@ -239,7 +239,18 @@ enum RadarWeightedForecast {
             } else {
                 w=radarWeight(at:minute,radarAvailable:echo != nil)
             }
-            guard let predicted=baseRate ?? echo.map({$0>=0.12 ? 0.4 : 0}) else{return nil}
+            guard let basePrediction=baseRate ?? echo.map({$0>=0.12 ? 0.4 : 0}) else{return nil}
+            // After a first-hand report, let temporarily reweighted models
+            // influence the next 20 minutes even if 15-minute data exists.
+            // Keep the finer forecast dominant and preserve radar priority.
+            let adjusted=observation == nil || minute>20 ? nil :
+                RainPulseFusion.weightedMedian(models.compactMap { model in
+                    model.rateMMH(at:date).map {
+                        (rate:$0,weight:weights[model.name] ?? 1)
+                    }
+                })
+            let predicted=adjusted.map { 0.70*basePrediction+0.30*$0 }
+                ?? basePrediction
             // Radar presence/absence gates the model, instead of turning
             // uncalibrated reflectivity into artificial measured mm/h.
             let radarRate:Double
