@@ -434,7 +434,12 @@ function removeKey(project,id){return project+':'+id}
 function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
 function isTemporarilyRemoved(item){
  if(item._topOnly||item._historical)return false;
- return pendingDeletes.has(removeKey(itemProject(item),String(item._id)));
+ const op=pendingDeletes.get(removeKey(itemProject(item),String(item._id)));
+ if(!op)return false;
+ // Prepare moves a card between sections. Only hide its stale source card:
+ // after GitHub confirms PROCESSING/READY, the target card must stay visible.
+ if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
+ return true;
 }
 async function refreshPilotConnection(){
  try{
