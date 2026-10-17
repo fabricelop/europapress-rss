@@ -56774,10 +56774,10 @@
       ],
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_choice": null,
-      "image_status": "pending",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
+      "image_status": "ready",
+      "image_pending": false,
       "reexplain": false,
       "captured_with": [
         "Betis",
@@ -56818,12 +56818,28 @@
           "revision": 1
         }
       ],
-      "disable_ai_image": false,
       "selected_tweet_image": null,
       "rewrite_pending": false,
-      "closer_missing": false
+      "closer_missing": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/policia-francesa-usa-gases-lacrimogenos-jornada-protestas-contra-coste-vida-con-decenas-detenidos/01792243471757.jpg",
+        "source": "RTVE · 17/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261017/policia-francesa-usa-gases-lacrimogenos-jornada-protestas-contra-coste-vida-con-decenas-detenidos/17271208.shtml",
+        "alt": "Imagen de archivo relacionada con Francia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/policia-francesa-usa-gases-lacrimogenos-jornada-protestas-contra-coste-vida-con-decenas-detenidos/01792243471757.jpg",
+        "source": "RTVE · 17/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261017/policia-francesa-usa-gases-lacrimogenos-jornada-protestas-contra-coste-vida-con-decenas-detenidos/17271208.shtml",
+        "alt": "Imagen de archivo relacionada con Francia",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-17T22:47:00+02:00",
+  "updated_at": "2026-10-17T20:49:50.108117Z",
   "count": 959
 }
