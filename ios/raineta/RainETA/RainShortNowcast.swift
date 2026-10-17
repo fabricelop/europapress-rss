@@ -49,20 +49,32 @@ struct RainShortEstimate {
 enum RainShortFusion {
     static func estimateUsingLocal(weather:RainSnapshot,
                                    radar:RadarLocalTimeline?,
-                                   models:[RainShortModel],now:Date)
+                                   models:[RainShortModel],now:Date,
+                                   weights:[String:Double] = [:],observation:Bool? = nil)
          -> RainShortEstimate {
         let fallback=RainInsight.transition(
             currentIsRaining:weather.isRaining,samples:weather.samples,now:now)
         guard let radar,radar.isFresh(at:now) else {
+            if let observation {
+                let series=RadarWeightedForecast.make(snapshot:weather,models:models,
+                    radar:nil,now:now,horizon:180,weights:weights,observation:observation)
+                let decision=RadarWeightedForecast.transition(series:series,at:now,
+                    observation:observation)
+                return RainShortEstimate(issuedAt:now,change:decision.change,
+                    rainingNow:observation,method:"Tu observación · modelos después",
+                    confidence:"Orientativo",windowStart:nil,windowEnd:nil,
+                    radarBased:false,radarObservedAt:nil)
+            }
             return RainShortEstimate(issuedAt:now,change:fallback.change,
                 rainingNow:fallback.raining,method:"Modelos · radar no disponible",
                 confidence:"Orientativo",windowStart:nil,windowEnd:nil,
                 radarBased:false,radarObservedAt:nil)
         }
         let series=RadarWeightedForecast.make(snapshot:weather,models:models,
-                              radar:radar,now:now,horizon:180)
+                              radar:radar,now:now,horizon:180,
+                              weights:weights,observation:observation)
         let decision=RadarWeightedForecast.transition(series:series,
-                             at:now,observation:weather.isRaining)
+                             at:now,observation:observation ?? weather.isRaining)
         // A dry radar observation vetoes a model claiming that rain has
         // already started. Only use fallback changes outside the radar-led
         // 90-minute interval.
@@ -78,12 +90,13 @@ enum RainShortFusion {
         let margin=offset<=60 ? 10.0 : 20.0
         return RainShortEstimate(
             issuedAt:now,change:change,rainingNow:decision.wet,
-            method:radar.hasFutureFrames ? "Radar observado + nowcast hasta 60 min" :
-                                         "Radar observado · futuro por modelos",
+            method:observation != nil ? "Tu observación · radar contrastado" :
+                radar.hasReliableFuture ? "Radar observado + nowcast hasta 60 min" :
+                                          "Radar observado · futuro por modelos",
             confidence:offset<=60 ? "Confianza orientativa":"Confianza baja",
             windowStart:change?.addingTimeInterval(-margin*60),
             windowEnd:change?.addingTimeInterval(margin*60),
-            radarBased:true,radarObservedAt:radar.observedAt)
+            radarBased:observation == nil,radarObservedAt:radar.observedAt)
     }
 
     private static func wet(_ signal: Double) -> Bool { signal >= 0.14 }
@@ -179,8 +192,11 @@ enum RainShortModelAPI {
         ("ECMWF", "https://api.open-meteo.com/v1/ecmwf"),
         ("ICON", "https://api.open-meteo.com/v1/dwd-icon"),
         ("GFS", "https://api.open-meteo.com/v1/gfs"),
-        ("ARPEGE", "https://api.open-meteo.com/v1/meteofrance"),
-        ("UKMO", "https://api.open-meteo.com/v1/ukmo")
+        ("Météo-France", "https://api.open-meteo.com/v1/meteofrance"),
+        ("UKMO", "https://api.open-meteo.com/v1/ukmo"),
+        ("GEM", "https://api.open-meteo.com/v1/gem"),
+        ("JMA", "https://api.open-meteo.com/v1/jma"),
+        ("BOM ACCESS", "https://api.open-meteo.com/v1/bom")
     ]
 
     static func parse(name: String, data: Data) -> RainShortModel? {

@@ -43,6 +43,7 @@ struct RainWeekForecast: View {
                 VStack(spacing:8) {
                     ForEach(weather.days) { day in
                         Button {selectedDay=day.date} label:{
+                            VStack(alignment:.leading,spacing:6) {
                             HStack(spacing:8) {
                                 Text(RainSpanishDates.day(day.date))
                                     .font(.system(size:11,weight:.bold))
@@ -95,6 +96,22 @@ struct RainWeekForecast: View {
                                     .frame(width:36,alignment:.trailing)
                             }
                             .frame(minHeight:52)
+                            let periods=RainInsight.dailyPeriods(weather,day:day.date)
+                            if !periods.isEmpty {
+                                ScrollView(.horizontal,showsIndicators:false) {
+                                    HStack(spacing:5) {
+                                        ForEach(Array(periods.prefix(4))) { period in
+                                            Text("☔︎ " + period.label)
+                                                .font(.system(size:10,weight:.bold,design:.rounded))
+                                                .padding(.horizontal,8).padding(.vertical,5)
+                                                .foregroundStyle(.white)
+                                                .background(RainVisual.color(period.peakMMH),
+                                                            in:Capsule())
+                                        }
+                                    }
+                                }
+                            }
+                            }
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
@@ -103,7 +120,7 @@ struct RainWeekForecast: View {
                         }
                     }
                 }
-                Text("Toca un día para ver horas, lluvia y probabilidad.")
+                Text("Las píldoras muestran las franjas de lluvia desde esta pantalla. Toca un día para ver el detalle.")
                     .font(.caption2).foregroundStyle(.secondary)
             } else {
                 ProgressView("Consultando la previsión semanal…")

@@ -29,24 +29,22 @@ struct RainHeroCard: View {
                                                         samples:weather.samples,now:moment)
                     let short=store.shortEstimate?.isUsable(at:moment)==true
                         ? store.shortEstimate : nil
-                    let raining=short?.rainingNow ?? fallback.raining
+                    let raining=store.currentObservation ?? short?.rainingNow ?? fallback.raining
                     let radarConfirmed=short?.radarBased==true
                     let nextChange=short?.change ?? fallback.change
                     VStack(alignment:.leading,spacing:10) {
                         HStack(alignment:.center) {
                             VStack(alignment:.leading,spacing:5) {
-                                Text(radarConfirmed ?
+                                Text(store.currentObservation != nil ?
+                                     (raining ? "TU OBSERVACIÓN: LLUEVE" : "TU OBSERVACIÓN: NO LLUEVE") : radarConfirmed ?
                                      (raining ? "RADAR: PRECIPITACIÓN DETECTADA" : "RADAR: SIN ECO LOCAL") :
                                      (raining ? "MODELO PREVÉ LLUVIA · NO CONFIRMADA" :
                                                 "MODELO PREVÉ TIEMPO SECO"))
                                     .font(.system(size:10,weight:.heavy))
                                     .foregroundStyle(raining ? .cyan : .green)
-                                Text(radarConfirmed ?
-                                         (raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?") :
-                                         (raining ? "¿Hasta cuándo prevé lluvia el modelo?" :
-                                                    "¿Cuándo prevé lluvia el modelo?"))
+                                Text(raining ? "Hasta que pare" : "Hasta que llueva")
                                     .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.76))
+                                    .foregroundStyle(.cyan)
                             }
                             Spacer()
                             Image(systemName:raining ? "cloud.rain.fill" : "cloud.sun.fill")
@@ -71,37 +69,26 @@ struct RainHeroCard: View {
                             Spacer()
 
                         }
-                        Text(store.radarAnalysisStatus)
-                            .font(.caption2)
-                            .foregroundStyle(radarConfirmed ? .mint : .yellow)
-                        if let short {
-                            HStack(spacing:6) {
-                                Text(short.method + " · " + short.confidence)
-                                Spacer(minLength:0)
-                            }
-                            .font(.caption2)
-                            .foregroundStyle(.white.opacity(0.75))
-                            if let low=short.windowStart,let high=short.windowEnd {
-                                Text((raining ? "Final orientativo: " : "Llegada orientativa: ") +
-                                     low.formatted(date:.omitted,time:.shortened) + "–" +
-                                     high.formatted(date:.omitted,time:.shortened))
-                                    .font(.caption2)
-                                    .foregroundStyle(.yellow)
-                            }
+                    }
+                }
+                let votes=store.shortModels.compactMap { $0.predictsRain(at:Date()) }
+                if votes.contains(true) && votes.contains(false) ||
+                   (store.radarLocal?.isFresh(at:Date())==true &&
+                    votes.contains(where:{$0 != (store.radarLocal?.isObservedDry(at:Date()) == false)})) {
+                    VStack(alignment:.leading,spacing:7) {
+                        Text("Fuentes en desacuerdo · ¿qué ves en tu ubicación?")
+                            .font(.caption.bold()).foregroundStyle(.yellow)
+                        HStack(spacing:9) {
+                            Button("Sí, llueve") { store.reportRain(true) }
+                                .tint(.cyan)
+                            Button("No llueve") { store.reportRain(false) }
+                                .tint(.mint)
                         }
+                        .buttonStyle(.borderedProminent)
+                        Text("Corrige ahora y reduce durante 20 min el peso de los modelos que fallaron. Los aciertos locales repetidos ajustan su peso a largo plazo.")
+                            .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
-                HStack(spacing:10) {
-                    if let temperature=weather.temperature {
-                        Label(String(format:"%.0f °C",temperature),systemImage:"thermometer.medium")
-                    }
-                    Label(radarConfirmedDisplay(store) ?
-                          ((store.minuteForecast(now:Date(),horizon:0).first?.rate ?? 0)>=0.15 ?
-                              "Eco de lluvia en radar" : "Sin eco de lluvia en radar") :
-                          "Modelo: " + weather.intensity,systemImage:"drop.fill")
-                }
-                .font(.subheadline.bold())
-                .foregroundStyle(.white.opacity(0.9))
                 HStack {
                     Label("Actualizado \(weather.updatedAt.formatted(date:.omitted,time:.shortened))",
                           systemImage:"clock.arrow.circlepath")
@@ -193,7 +180,7 @@ struct RainSettingsView: View {
             Section("Datos y fiabilidad") {
                 LabeledContent("Observación radar",value:"RainViewer")
                 LabeledContent("Modelo por horas",value:"Open-Meteo")
-                LabeledContent("Modelos en Pulso",value:"\(store.shortModels.count) de 5")
+                LabeledContent("Modelos en Pulso",value:"\(store.shortModels.count) de \(RainShortModelAPI.endpoints.count)")
                 Text("ECMWF IFS · DWD ICON · NOAA GFS · Météo-France · UKMO")
                     .font(.caption2).foregroundStyle(.secondary)
                 Link("Fuentes y licencia UKMO (CC BY-SA 4.0)",destination:URL(string:"https://open-meteo.com/en/docs/ukmo-api")!)

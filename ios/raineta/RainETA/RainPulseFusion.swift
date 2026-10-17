@@ -36,6 +36,21 @@ enum RainPulseFusion {
             ? (sorted[mid-1] + sorted[mid])/2 : sorted[mid]
     }
 
+    static func weightedMedian(_ rows: [(rate: Double, weight: Double)]) -> Double? {
+        guard !rows.isEmpty else { return nil }
+        let sorted = rows.sorted { $0.rate < $1.rate }
+        let half = sorted.reduce(0.0) { $0 + max(0, $1.weight) } / 2
+        var cumulative = 0.0
+        for (index, row) in sorted.enumerated() {
+            cumulative += max(0, row.weight)
+            if abs(cumulative - half) < 0.000001, index + 1 < sorted.count {
+                return (row.rate + sorted[index + 1].rate) / 2
+            }
+            if cumulative > half { return row.rate }
+        }
+        return sorted.last?.rate
+    }
+
     /// 15-minute precipitation belongs to the PRECEDING 15 minutes.
     /// For a minute inside that window, use its rate unchanged. It is a
     /// faithful per-minute DISPLAY, not a physical one-minute prediction.
@@ -47,7 +62,8 @@ enum RainPulseFusion {
     }
 
     static func points(samples: [RainSample], models: [RainShortModel],
-                       now: Date, horizon: Int, step: Int = 1) -> [RainPulseMinute] {
+                       now: Date, horizon: Int, step: Int = 1,
+                       weights: [String: Double] = [:]) -> [RainPulseMinute] {
         guard horizon >= 0, step > 0 else { return [] }
         return stride(from:0,through:horizon,by:step).compactMap { minute in
             let date = now.addingTimeInterval(TimeInterval(minute*60))
@@ -57,7 +73,10 @@ enum RainPulseFusion {
             // Hourly ensemble medians are only a fallback if that source lacks
             // data; averaging hourly values into minute bars would otherwise
             // erase dry gaps and manufacture rain all afternoon.
-            guard let selected = fine ?? median(observations) else { return nil }
+            let ranked = models.compactMap { model -> (rate: Double, weight: Double)? in
+                model.rateMMH(at: date).map { ($0, weights[model.name] ?? 1) }
+            }
+            guard let selected = fine ?? weightedMedian(ranked) else { return nil }
             return RainPulseMinute(
                 minute:minute,date:date,rateMMH:selected,automaticMMH:fine,
                 lowMMH:observations.min() ?? selected,

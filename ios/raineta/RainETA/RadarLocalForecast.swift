@@ -18,6 +18,22 @@ struct RadarLocalTimeline {
     let frames: [RadarLocalFrame]
     let coverageConfirmed: Bool
     var hasFutureFrames:Bool { frames.contains(where:{$0.date>observedAt}) }
+    var hasReliableFuture: Bool {
+        let observed = frames.filter { $0.date <= observedAt }
+        let future = frames.filter { $0.date > observedAt }.sorted { $0.date < $1.date }
+        guard observed.count >= 2, future.count >= 4,
+              let first = future.first, let last = future.last,
+              first.date.timeIntervalSince(observedAt) <= 15*60,
+              last.date.timeIntervalSince(observedAt) >= 45*60 else { return false }
+        let recent=Array(observed.suffix(4)).map { $0.echo >= 0.12 }
+        let switches=zip(recent,recent.dropFirst()).filter { $0.0 != $0.1 }.count
+        guard switches <= 1 else { return false }
+        let timeline = [observedAt] + future.map(\.date)
+        return zip(timeline, timeline.dropFirst()).allSatisfy {
+            $0.1.timeIntervalSince($0.0) > 0 &&
+            $0.1.timeIntervalSince($0.0) <= 15*60
+        }
+    }
 
     func isFresh(at now: Date) -> Bool {
         let age=now.timeIntervalSince(observedAt)
@@ -139,7 +155,7 @@ enum RadarLocalAPI {
               let _=tileURL(host:feed.host,path:last.path,point:point),
               now.timeIntervalSince(last.date)>=0,
               now.timeIntervalSince(last.date)<18*60 else{return nil}
-        let picks=Array(feed.frames.suffix(2))+feed.future.filter {
+        let picks=Array(feed.frames.suffix(4))+feed.future.filter {
             $0.timestamp>last.timestamp &&
             $0.timestamp<=last.timestamp+3600
         }
@@ -188,11 +204,12 @@ enum RadarWeightedForecast {
     }
 
     static func make(snapshot:RainSnapshot,models:[RainShortModel],
-                     radar:RadarLocalTimeline?,now:Date,horizon:Int) -> [RadarWeightedMinute] {
+                     radar:RadarLocalTimeline?,now:Date,horizon:Int,
+                     weights:[String:Double] = [:],observation:Bool? = nil) -> [RadarWeightedMinute] {
         guard horizon>=0 else{return []}
         let fresh=radar?.isFresh(at:now)==true
         let model=RainPulseFusion.points(samples:snapshot.samples,
-                                         models:models,now:now,horizon:horizon)
+                                         models:models,now:now,horizon:horizon,weights:weights)
         let base=Dictionary(uniqueKeysWithValues:model.map{($0.minute,$0.rateMMH)})
         let finalEcho=radar?.frames.last(where:{$0.date>=now})?.echo
         return (0...horizon).compactMap { minute in
@@ -206,23 +223,34 @@ enum RadarWeightedForecast {
                 echo=radar?.frames.last(where:{
                     $0.date == radar?.observedAt
                 })?.echo
-            } else if fresh && radar?.hasFutureFrames == true && minute<=60 {
+            } else if fresh && radar?.hasReliableFuture == true && minute<=60 {
                 echo=radar?.echo(at:date)
-            } else if fresh && radar?.hasFutureFrames == true && minute<=90 {
+            } else if fresh && radar?.hasReliableFuture == true && minute<=90 {
                 echo=finalEcho
-            } else if fresh && radar?.hasFutureFrames == false && minute<=20 {
+            } else if fresh && minute<=20 {
                 echo=radar?.frames.last(where:{$0.date==radar?.observedAt})?.echo
             } else {
                 echo=nil
             }
             let w:Double
-            if radar?.hasFutureFrames == false {
+            if radar?.hasReliableFuture != true {
                 w=echo == nil ? 0 :
                     (minute<=10 ? 1 : minute>=20 ? 0 : Double(20-minute)/10)
             } else {
                 w=radarWeight(at:minute,radarAvailable:echo != nil)
             }
-            guard let predicted=baseRate ?? echo.map({$0>=0.12 ? 0.4 : 0}) else{return nil}
+            guard let basePrediction=baseRate ?? echo.map({$0>=0.12 ? 0.4 : 0}) else{return nil}
+            // After a first-hand report, let temporarily reweighted models
+            // influence the next 20 minutes even if 15-minute data exists.
+            // Keep the finer forecast dominant and preserve radar priority.
+            let adjusted=observation == nil || minute>20 ? nil :
+                RainPulseFusion.weightedMedian(models.compactMap { model in
+                    model.rateMMH(at:date).map {
+                        (rate:$0,weight:weights[model.name] ?? 1)
+                    }
+                })
+            let predicted=adjusted.map { 0.70*basePrediction+0.30*$0 }
+                ?? basePrediction
             // Radar presence/absence gates the model, instead of turning
             // uncalibrated reflectivity into artificial measured mm/h.
             let radarRate:Double
@@ -231,9 +259,18 @@ enum RadarWeightedForecast {
             } else {
                 radarRate=0
             }
-            let value=w*radarRate+(1-w)*predicted
+            // A recent report settles current conditions. If it contradicts
+            // radar, fade its influence for 30 minutes rather than keeping a
+            // categorical false alarm for the whole first hour.
+            let trust = observation == nil ? w : w * min(1,Double(minute)/30)
+            let value: Double
+            if let observation, minute <= 10 {
+                value = observation ? max(0.4, predicted) : 0
+            } else {
+                value = trust*radarRate+(1-trust)*predicted
+            }
             return RadarWeightedMinute(minute:minute,at:date,
-                         rate:max(0,value),radarInformed:w>=0.4,radarEcho:echo)
+                         rate:max(0,value),radarInformed:trust>=0.4,radarEcho:echo)
         }
     }
 

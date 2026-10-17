@@ -79,6 +79,7 @@ struct RainHomeView: View {
                     RainHeroCard(store:store)
                     MinuteRainGraph(store:store)
                     ThreeHourRainView(store:store)
+                    PastRainView(store:store)
                     RainWeekForecast(weather:store.snapshot,
                                      radarAvailable:store.radarLocal?.isFresh(at:Date()) == true)
                     radarSection
@@ -183,6 +184,31 @@ struct RadarSection: View {
         guard let now=newest,let selection else{return 0}
         return Double(selection.timestamp-now.timestamp)/60
     }
+    private var rainMarkers:[(date:Date,label:String)] {
+        guard let newest else{return []}
+        var marks:[(Date,String)]=[]
+        let observations=store.radarLocal?.isFresh(at:Date())==true ?
+            (store.radarLocal?.frames.filter{$0.date<=newest.date} ?? []) : []
+        for (index,frame) in observations.enumerated() where frame.echo>=0.12 &&
+            (index==0 || observations[index-1].echo<0.12) {
+            marks.append((frame.date,"ECO"))
+        }
+        marks += store.reports.filter {
+            $0.raining && $0.date >= (frames.first?.date ?? .distantFuture) &&
+            $0.date<=newest.date &&
+            RainFeedback.near($0,latitude:store.coordinate.latitude,
+                              longitude:store.coordinate.longitude)
+        }.suffix(2).map {($0.date,"TÚ")}
+        let future=store.minuteForecast(now:newest.date,horizon:futureLimit)
+        for point in future where point.minute>0 &&
+            point.minute<=futureLimit && point.minute.isMultiple(of:5) &&
+            point.rate>=0.15 &&
+            (future.first(where:{$0.minute==point.minute-1})?.rate ?? 0)<0.15 {
+            marks.append((point.at,"PREV."))
+        }
+        return Array(marks.sorted{$0.0<$1.0}.prefix(5))
+            .map{(date:$0.0,label:$0.1)}
+    }
 
     private func choose(_ minutes:Int) {
         guard let last=newest else {return}
@@ -249,6 +275,22 @@ struct RadarSection: View {
                         .background(.black.opacity(0.78),in:Capsule())
                         .padding(9)
                 }
+                .overlay(alignment:.topLeading) {
+                    VStack(alignment:.leading,spacing:3) {
+                        Text(store.radarFutureMinutes>0 ? "DESPUÉS DE AHORA · PROYECCIÓN" :
+                             "HASTA AHORA · OBSERVACIÓN")
+                            .font(.system(size:10,weight:.heavy,design:.rounded))
+                        Text(store.radarFutureMinutes>0 ?
+                             "La incertidumbre crece con cada tramo" :
+                             "Última imagen real: " +
+                             (newest?.date.formatted(date:.omitted,time:.shortened) ?? "—"))
+                            .font(.system(size:9))
+                    }
+                    .foregroundStyle(store.radarFutureMinutes>0 ? .yellow:.mint)
+                    .padding(9)
+                    .background(.black.opacity(0.78),in:RoundedRectangle(cornerRadius:11))
+                    .padding(9)
+                }
                 .overlay(alignment:.bottomTrailing) {
                     Button {recenterRevision+=1} label:{
                         Image(systemName:"location.north.line.fill")
@@ -273,6 +315,31 @@ struct RadarSection: View {
             }
             .font(.caption.monospacedDigit())
 
+            let local=store.minuteForecast(now:Date(),horizon:60)
+            if !local.isEmpty {
+                HStack(spacing:5) {
+                    ForEach([0,15,30,45,60],id:\.self) { minute in
+                        if let point=local.first(where:{$0.minute==minute}) {
+                            VStack(spacing:3) {
+                                Text(minute==0 ? "AHORA":"+\(minute)m")
+                                    .font(.system(size:9,weight:.heavy))
+                                Text(point.rate>=0.15 ? "LLUVIA":"SECO")
+                                    .font(.system(size:10,weight:.bold))
+                                Text(point.radarInformed ? "RADAR":"MODELO")
+                                    .font(.system(size:8))
+                            }
+                            .frame(maxWidth:.infinity,minHeight:52)
+                            .foregroundStyle(.white)
+                            .background(point.rate>=0.15 ? RainVisual.color(point.rate) :
+                                        .mint.opacity(0.30),
+                                        in:RoundedRectangle(cornerRadius:10))
+                        }
+                    }
+                }
+                Text("La franja tras AHORA enseña el pronóstico local; el mapa futuro solo avanza si hay imágenes nowcast reales del proveedor.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+
             GeometryReader { geometry in
                 let width=geometry.size.width
                 let span=max(10,historyMinutes)
@@ -295,9 +362,27 @@ struct RadarSection: View {
                         .foregroundStyle(.cyan)
                         .position(x:min(max(28,markerX),width-28),y:32)
                         .allowsHitTesting(false)
+                    ForEach(Array(rainMarkers.enumerated()),id:\.offset) { item in
+                        let index=item.offset
+                        let mark=item.element
+                        let offset=mark.date.timeIntervalSince(newest?.date ?? Date())/60
+                        let x=18+(width-36)*CGFloat((Double(span)+offset)/total)
+                        if x>=18 && x<=width-18 {
+                            Circle().fill(.red).frame(width:7,height:7)
+                                .position(x:x,y:10)
+                                .allowsHitTesting(false)
+                            Text(mark.label+" "+mark.date.formatted(date:.omitted,time:.shortened))
+                                .font(.system(size:8,weight:.bold))
+                                .foregroundStyle(.red)
+                                .fixedSize()
+                                .position(x:min(max(38,x),width-38),
+                                          y:index.isMultiple(of:2) ? 43:57)
+                                .allowsHitTesting(false)
+                        }
+                    }
                 }
             }
-            .frame(height:43)
+            .frame(height:67)
 
             HStack(spacing:10) {
                 Button {playing.toggle()} label:{
