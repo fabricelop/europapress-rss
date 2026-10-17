@@ -2,129 +2,115 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-17T01:19:52.778225+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-17T05:45:36.894420+00:00",
+      "issue_count": 5,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "dc008be1d7d5",
+          "title": "Podemos rechaza la oferta 'in extremis' del Frente Amplio para un pacto estatal e insiste en acordar",
+          "seconds": 7055,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "83ac76aa8f74",
+          "title": "'El Faro On the Rocks', sobre la acampada en la Puerta de Sol: \"Hay gente allí que cree que realment",
+          "seconds": 1823,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e51ec25a9444",
+          "title": "Trump suspende temporalmente las sanciones del Congreso contra Rusia por «interés nacional»",
+          "seconds": 918,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b03dce46bfda",
+          "title": "Cambio de tiempo \"significativo\": una DANA provocará lluvias intensas y otro frente bajará las tempe",
+          "seconds": 432,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 55540,
+          "seconds": 71484,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "e9d80914e512f1ffa2a4cb1df5331341a258679cb7135035b758e28300d19eca",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-17T01:19:52.778225+00:00",
-      "issue_count": 12,
+      "checked_at": "2026-10-17T05:45:36.894420+00:00",
+      "issue_count": 6,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "ab56c8fcd556",
           "title": "Elon Musk",
-          "seconds": 44220,
+          "seconds": 60164,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "421d4097fd38",
           "title": "Goebbels",
-          "seconds": 43643,
+          "seconds": 59587,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0a13d9520697",
           "title": "Real Madrid TV",
-          "seconds": 35834,
+          "seconds": 51778,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "94d8f884440a",
-          "title": "#FirstDates16O",
-          "seconds": 13655,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "522f1f4ba5fb",
           "title": "Butarque",
-          "seconds": 13655,
+          "seconds": 29599,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "f273c1b56f63",
-          "title": "Jensen",
-          "seconds": 11812,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5327ef703129",
-          "title": "Villares",
-          "seconds": 11812,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "80bdd4d8965a",
-          "title": "Hidalgo",
-          "seconds": 11812,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "7893603ba39b",
-          "title": "Gabilondo",
-          "seconds": 11812,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "93021157930c",
-          "title": "Senado",
-          "seconds": 7637,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 7637,
+          "seconds": 23581,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 55539,
+          "seconds": 71484,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "3a0978aaecc23da25550c96f499c7f01dc1386a0444268d9dcdac021ac23bcf3",
+      "open_signature": "1f3e66d041e35d54ee09ce289acb655527fa05a694967c3834f8d951ccc82cbc",
       "repair_via_workflow_run": false,
-      "escalation_required": 11
+      "escalation_required": 5
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-16T17:56:32.934347+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-17T01:19:52.778225+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-17T01:19:52.778225+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T05:45:36.894420+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-17T05:45:36.894420+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-17T05:45:36.894420+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T01:19:52.778225+00:00"
   },
-  "checked_at": "2026-10-17T01:19:52.778225+00:00"
+  "checked_at": "2026-10-17T05:45:36.894420+00:00"
 }
