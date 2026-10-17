@@ -602,6 +602,7 @@ async function pilotSend(item,decision){
   if(!url){showToast('Esta acción no está disponible en el acceso de emergencia');return}
   const label=decision==='deleted'?'Borrar':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
   if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'? Confirma la orden con «Submit new issue» en GitHub.'))return;
+  try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
   location.href=url;
   return;
  }
@@ -802,6 +803,7 @@ $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkPendingDeletes()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+window.addEventListener('pageshow',()=>{try{if(sessionStorage.getItem('tt-gh-issue-return')==='1'){sessionStorage.removeItem('tt-gh-issue-return');load(true)}}catch{}});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
 </script></body></html>
