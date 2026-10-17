@@ -75,9 +75,18 @@ class LiveEditorialTests(unittest.TestCase):
  def test_tti_growing_idempotent_if_already_processing(self):
   self.write('ttittulares/editorial-queue.json',{'items':[{
    'event_id':'grow123','status':'PROCESSING','revision':1}]})
+  self.write('telegram/editorial-processing.json',{'items':[{
+   'event_id':'grow123','status':'PROCESSING','revision':1}]})
   changed,result=app.apply_live('ttittulares','grow123','prepare',1)
   self.assertEqual(result,'already_applied')
   self.assertFalse(changed)
+ def test_tti_growing_repairs_missing_processing_mirror(self):
+  self.write('ttittulares/editorial-queue.json',{'items':[{
+   'event_id':'grow123','status':'PROCESSING','revision':1}]})
+  changed,result=app.apply_live('ttittulares','grow123','prepare',1)
+  self.assertEqual(result,'applied')
+  self.assertEqual(list(changed),['telegram/editorial-processing.json'])
+  self.assertEqual(changed['telegram/editorial-processing.json']['items'][0]['event_id'],'grow123')
  def test_tti_stale_prepare_rejected(self):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','revision':2}]})
   with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','abc123','prepare',1)
