@@ -2,21 +2,63 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-17T13:16:31.717761+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-17T16:30:56.871752+00:00",
+      "issue_count": 8,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "e91209db22c0",
-          "title": "Detenidos dos menores por la muerte de una mujer inmovilizada y amordazada durante un robo en su cas",
-          "seconds": 692,
+          "id": "aefb9cc3152d",
+          "title": "Video Agresión a una periodista Cuatro vértebras rotas y una costilla fracturada: la agresión de col",
+          "seconds": 9304,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "36627ed73ad7",
+          "title": "Video \"Su memoria no se destruirá\" Vandalizan el altar en honor a Maricarmen que los vecinos levanta",
+          "seconds": 6849,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "355233565986",
+          "title": "El PP sitúa a Albiol como candidato por Barcelona el 29-N para frenar a Vox",
+          "seconds": 5772,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ca44538a6291",
+          "title": "El Rayo Vallecano-Athletic Club se reanudará a puerta cerrada",
+          "seconds": 5032,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "50fc70ddf759",
+          "title": "Protección Civil envía un Es-Alert a 4 comarcas de la costa central catalana por las lluvias",
+          "seconds": 4463,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "bb267af6f507",
+          "title": "Baena rompe a un combativo Espanyol con un gran gol en el último minuto y le da la victoria al Atlét",
+          "seconds": 4463,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4b74e3c00440",
+          "title": "Desmantelada una guardería logística del narcotráfico e incautado más de 10.120 litros de combustibl",
+          "seconds": 311,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 98539,
+          "seconds": 110204,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -25,68 +67,131 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "84b3793d3b6dbe9e4267b7f10ea93385eebafc1a80e3f2c7e07f314f46bde990",
+      "open_signature": "3ce51a6c02b4061653497553720cb7730ff27f66193f4f0d5a589ad7830ccc44",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 6
     },
     "ttendencias": {
-      "checked_at": "2026-10-17T13:16:31.717761+00:00",
-      "issue_count": 8,
+      "checked_at": "2026-10-17T16:30:56.871752+00:00",
+      "issue_count": 17,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "0a13d9520697",
-          "title": "Real Madrid TV",
-          "seconds": 78833,
+          "id": "24b16e906a60",
+          "title": "ES-Alert",
+          "seconds": 7100,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "fc2bea7db15b",
+          "title": "adivina",
+          "seconds": 7100,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "dbed6537630d",
+          "title": "Espanyol",
+          "seconds": 7100,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "053c8714516d",
+          "title": "Mendoza",
+          "seconds": 5288,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b0858b01041f",
+          "title": "celso",
+          "seconds": 540,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "6eea6899a0f5",
+          "title": "Víctor Muñoz",
+          "seconds": 540,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "b8187c2f1a64",
+          "title": "Hernández Hernández",
+          "seconds": 7100,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "522f1f4ba5fb",
           "title": "Butarque",
-          "seconds": 56654,
+          "seconds": 68319,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 50636,
+          "seconds": 62301,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74253d4d6c99",
           "title": "Guadarrama",
-          "seconds": 22410,
+          "seconds": 34075,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "e0b8b8bed871",
           "title": "Fuenlabrada",
-          "seconds": 8023,
+          "seconds": 19688,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "c7b7e021f98c",
           "title": "Dani Martínez",
-          "seconds": 8023,
+          "seconds": 19688,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "d71d9cbc6a33",
           "title": "Begoña",
-          "seconds": 3270,
+          "seconds": 14935,
           "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "c8490403e466",
+          "title": "#LaFuerzaDeLaGente",
+          "seconds": 11234,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "f390fb388c6a",
+          "title": "#EspanyolAtleti",
+          "seconds": 11234,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "a0f9b43477ef",
+          "title": "Giuliano",
+          "seconds": 11234,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 98538,
+          "seconds": 110204,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -95,16 +200,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "34ac5357fd29009f804bcd356bc833e1aea60c7e23f34e90d57d881c64bc456f",
+      "open_signature": "860e72a74f713417bba44e7092904b6bfe1141c822ae12a4969e9760cdb0cd0c",
       "repair_via_workflow_run": false,
-      "escalation_required": 7
+      "escalation_required": 14
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T13:16:31.717761+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-17T13:16:31.717761+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-17T13:16:31.717761+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T13:16:31.717761+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T16:30:56.871752+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-17T16:30:56.871752+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-17T16:30:56.871752+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T16:30:56.871752+00:00"
   },
-  "checked_at": "2026-10-17T13:16:31.717761+00:00"
+  "checked_at": "2026-10-17T16:30:56.871752+00:00"
 }
