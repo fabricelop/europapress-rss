@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T13:45:00+02:00",
-  "last_completed_at": "2026-10-17T13:47:00+02:00",
-  "updated_at": "2026-10-17T13:47:00+02:00",
+  "last_started_at": "2026-10-17T14:15:00+02:00",
+  "last_completed_at": "2026-10-17T14:17:30+02:00",
+  "updated_at": "2026-10-17T14:17:30+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,23 +15,22 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "status": "in_progress",
-    "requested_at": "2026-10-17T13:45:00+02:00",
-    "run_id": 39029973436,
-    "trigger_commit": "f024967fffa90884cdc55ca0924cace325fcd711",
+    "status": "requested",
+    "requested_at": "2026-10-17T14:15:00+02:00",
+    "trigger_commit": "f66eeb3ef97a7358ee6e848860e0691298be94e7",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261017T1345+0200",
+    "run_id": "tr-chat-20261017T1415+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-17T13:45:00+02:00",
-    "updated_at": "2026-10-17T13:47:00+02:00",
-    "finished_at": "2026-10-17T13:47:00+02:00",
+    "started_at": "2026-10-17T14:15:00+02:00",
+    "updated_at": "2026-10-17T14:17:30+02:00",
+    "finished_at": "2026-10-17T14:17:30+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -57,7 +56,7 @@
       "provisional_telegram": 0,
       "pending_repair_triggered": 1
     },
-    "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; reparación visual automática en curso.",
+    "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; saneamiento visual solicitado correctamente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -66,31 +65,31 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-17T13:45:00+02:00",
+        "at": "2026-10-17T14:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial; cola inicial 0. Revisando reexplicaciones, Pendientes y huérfanos Telegram."
       },
       {
-        "at": "2026-10-17T13:46:30+02:00",
+        "at": "2026-10-17T14:16:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final: cola activa 0, rewrite_pending 0 y huérfanos Telegram 0. Saneamiento visual de Pendientes iniciado."
+        "message": "Relectura final: cola activa 0, rewrite_pending 0 y huérfanos Telegram 0. Verificando saneamiento visual solicitado."
       },
       {
-        "at": "2026-10-17T13:47:00+02:00",
+        "at": "2026-10-17T14:17:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; reparación visual automática en curso."
+        "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; saneamiento visual solicitado correctamente."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261017T1345+0200",
+  "run_id": "tr-chat-20261017T1415+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -115,25 +114,25 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-17T13:45:00+02:00",
+      "at": "2026-10-17T14:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial; cola inicial 0. Revisando reexplicaciones, Pendientes y huérfanos Telegram."
     },
     {
-      "at": "2026-10-17T13:46:30+02:00",
+      "at": "2026-10-17T14:16:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final: cola activa 0, rewrite_pending 0 y huérfanos Telegram 0. Saneamiento visual de Pendientes iniciado."
+      "message": "Relectura final: cola activa 0, rewrite_pending 0 y huérfanos Telegram 0. Verificando saneamiento visual solicitado."
     },
     {
-      "at": "2026-10-17T13:47:00+02:00",
+      "at": "2026-10-17T14:17:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; reparación visual automática en curso."
+      "message": "Pasada cerrada 0/0: no había tendencias editoriales pendientes. Cola 0; saneamiento visual solicitado correctamente."
     }
   ],
   "telegram_orphans": 0,
