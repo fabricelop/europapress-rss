@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T01:45:00+02:00",
-  "last_completed_at": "2026-10-17T01:49:00+02:00",
-  "updated_at": "2026-10-17T01:49:00+02:00",
+  "last_started_at": "2026-10-17T02:15:00+02:00",
+  "last_completed_at": "2026-10-17T02:18:00+02:00",
+  "updated_at": "2026-10-17T02:18:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,19 +16,21 @@
     "aaba41f2ac1f"
   ],
   "visual_repair": {
-    "run_id": 38983147714,
-    "status": "in_progress",
     "workflow": "repair-ttendencias-explicadas.yml",
-    "editorial_blocking": false
+    "status": "triggered",
+    "requested_at": "2026-10-17T02:15:00+02:00",
+    "trigger_commit": "5c1a17e00096e484de098e112ef1a3ff2f30031a",
+    "editorial_blocking": false,
+    "pending_recent_count": 6
   },
   "last_run": {
-    "run_id": "tr-chat-20261017T0145+0200",
+    "run_id": "tr-chat-20261017T0215+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-17T01:45:00+02:00",
-    "updated_at": "2026-10-17T01:49:00+02:00",
-    "finished_at": "2026-10-17T01:49:00+02:00",
+    "started_at": "2026-10-17T02:15:00+02:00",
+    "updated_at": "2026-10-17T02:18:00+02:00",
+    "finished_at": "2026-10-17T02:18:00+02:00",
     "current": 0,
     "total": 0,
     "summary": {
@@ -54,7 +56,7 @@
       "pending_repair_triggered": 1,
       "trends_inactive": 0
     },
-    "message": "Pasada completada y verificada: 0/0 revisiones editoriales; cola 0, sin reexplicaciones ni huérfanos Telegram. La reparación visual continúa de forma independiente.",
+    "message": "Pasada completada y verificada: 0/0 revisiones editoriales; cola 0, sin reexplicaciones ni huérfanos. Se solicitó reparación visual para 6 fichas recientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -67,45 +69,45 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-17T01:45:00+02:00",
+        "at": "2026-10-17T02:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
       },
       {
-        "at": "2026-10-17T01:46:00+02:00",
+        "at": "2026-10-17T02:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-17T01:47:00+02:00",
+        "at": "2026-10-17T02:17:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos Telegram. Reparación visual solicitada."
+        "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos. Detectadas 6 fichas recientes con reparación visual pendiente."
       },
       {
-        "at": "2026-10-17T01:48:00+02:00",
+        "at": "2026-10-17T02:17:30+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
-        "message": "Reconciliando telemetría durable tras una carrera de commits en main."
+        "message": "Reparación visual solicitada mediante pending-repair-trigger; el workflow se activa por push a main."
       },
       {
-        "at": "2026-10-17T01:49:00+02:00",
+        "at": "2026-10-17T02:18:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía y saneamiento visual delegado al workflow independiente."
+        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía. La reparación visual sigue por su workflow independiente."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261017T0145+0200",
+  "run_id": "tr-chat-20261017T0215+0200",
   "summary": {
     "trends_processed": 0,
     "trends_explained": 0,
@@ -132,39 +134,39 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-17T01:45:00+02:00",
+      "at": "2026-10-17T02:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
     },
     {
-      "at": "2026-10-17T01:46:00+02:00",
+      "at": "2026-10-17T02:16:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-17T01:47:00+02:00",
+      "at": "2026-10-17T02:17:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos Telegram. Reparación visual solicitada."
+      "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos. Detectadas 6 fichas recientes con reparación visual pendiente."
     },
     {
-      "at": "2026-10-17T01:48:00+02:00",
+      "at": "2026-10-17T02:17:30+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
-      "message": "Reconciliando telemetría durable tras una carrera de commits en main."
+      "message": "Reparación visual solicitada mediante pending-repair-trigger; el workflow se activa por push a main."
     },
     {
-      "at": "2026-10-17T01:49:00+02:00",
+      "at": "2026-10-17T02:18:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía y saneamiento visual delegado al workflow independiente."
+      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía. La reparación visual sigue por su workflow independiente."
     }
   ],
   "telegram_orphans": 0,
