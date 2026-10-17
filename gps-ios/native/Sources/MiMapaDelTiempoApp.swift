@@ -156,6 +156,10 @@ struct SavedState: Codable {
 }
 @MainActor final class TimeModel: ObservableObject {
     @Published private(set) var data = SavedState()
+    // Lightweight visit summary cache: one-second card updates must never
+    // rebuild the entire visit history. No new persisted fields or migrations.
+    private var mapVisitCounts: [String: TimeMapVisitCounter.Snapshot] = [:]
+    private var mapVisitFingerprint = ""
     @Published var current: GPSPoint?
     @Published var currentVisitStart: Date?
     @Published private(set) var currentZoneVisitStart: Date?
@@ -428,6 +432,32 @@ struct SavedState: Codable {
             guard a.count == 2, let row = Int(a[0]), let col = Int(a[1]) else { return nil }
             return Cell(row: row, column: col)
         }
+    }
+    /// Same time filter as the Total column. Only a confirmed exit followed by
+    /// re-entry creates another visit; a missing GPS fix alone does not.
+    func numberOfVisits(for cellIDs:Set<String>,now:Date = .now) -> Int {
+        guard !cellIDs.isEmpty else { return 0 }
+        let window = TimeAnalytics.window(for:period,now:now)
+        let first = data.intervals.first
+        let last = data.intervals.last
+        let minuteStart = Int((window?.start.timeIntervalSince1970 ?? 0) / 60)
+        let minuteEnd = Int((window?.end.timeIntervalSince1970 ?? 0) / 60)
+        let fingerprint = "\(data.intervals.count)|\(first?.start.timeIntervalSince1970 ?? 0)|\(last?.start.timeIntervalSince1970 ?? 0)|\(last?.end.timeIntervalSince1970 ?? 0)|\(last?.cell.id ?? "")|\(period.rawValue)|\(minuteStart)|\(minuteEnd)"
+        if fingerprint != mapVisitFingerprint {
+            mapVisitFingerprint = fingerprint
+            mapVisitCounts.removeAll(keepingCapacity:true)
+        }
+        let key = cellIDs.sorted().joined(separator:"|")
+        let snapshot: TimeMapVisitCounter.Snapshot
+        if let cached = mapVisitCounts[key] {
+            snapshot = cached
+        } else {
+            snapshot = TimeMapVisitCounter.historical(data.intervals,
+                        cellIDs:cellIDs,window:window)
+            mapVisitCounts[key] = snapshot
+        }
+        return TimeMapVisitCounter.includingCurrent(snapshot,
+                   currentCellID:activeCell?.id,cellIDs:cellIDs)
     }
     func confirmedTotals(now:Date = .now) -> [String:TimeInterval] {
         let changed = data.intervals.count != normalizedCacheIntervalCount ||
@@ -2031,7 +2061,11 @@ struct TimeMapView: View {
                     guard !useBasicMap,
                           MapViewportPolicy.meaningfulChange(from: region, to: ctx.region) else { return }
                     region = ctx.region
-                    if followLocation { followLocation = false }
+                    // Camera updates also arrive from our own GPS recentering
+                    // and zoom buttons; those must keep follow mode enabled.
+                    if followLocation && camera.positionedByUser {
+                        followLocation = false
+                    }
                     refreshMapSnapshot(force: true)
                     queueCameraSave(ctx.region)
                     // Camera events no longer serialize the full GPS history
