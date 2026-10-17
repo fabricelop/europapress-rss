@@ -296,51 +296,50 @@ private struct RainModelBarDisclosure:View {
     }
 }
 
-struct ThreeHourRainView: View {
-    let weather:RainSnapshot?
-    let models:[RainShortModel]
+struct ThreeHourRainView:View {
+    @ObservedObject var store:RainStore
     @State private var chosen:Int=0
 
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
             Label("Próximas 3 horas",systemImage:"chart.bar.fill")
                 .font(.headline)
-            if let weather {
-                let overview=RainPulseFusion.points(samples:weather.samples,
-                                    models:models,now:Date(),horizon:120,step:15)
-                if let note=RainPulseFusion.summary(overview) {
-                    Text("Primeras 2 h · " + note)
-                        .font(.caption2).foregroundStyle(.cyan)
+            if store.snapshot != nil {
+                let now=Date()
+                let series=store.minuteForecast(now:now,horizon:180)
+                let slots=stride(from:0,through:180,by:15).compactMap { minute in
+                    series.first(where:{$0.minute==minute})
                 }
-
-                let slots=RainInsight.moments(samples:weather.samples,from:.now,minutes:180,step:15)
                 if slots.isEmpty {
-                    Text("No hay datos de 15 min para las próximas horas")
-                        .foregroundStyle(.secondary)
+                    Text("Sin datos para las próximas horas").foregroundStyle(.secondary)
                 } else {
-                    let selected=slots.min(by:{ abs($0.minute-chosen)<abs($1.minute-chosen) }) ?? slots[0]
+                    let selected=slots.min(by:{abs($0.minute-chosen)<abs($1.minute-chosen)}) ?? slots[0]
+                    Text(store.radarLocal?.isFresh(at:now)==true ?
+                         "Radar local de 0 a 60 min; influencia decreciente hasta 90 min. Después, modelos." :
+                         "Radar local no disponible · previsión de modelos")
+                        .font(.caption2).foregroundStyle(.cyan)
                     HStack(spacing:6) {
-                        Text(selected.date.formatted(date:.omitted,time:.shortened))
+                        Text(selected.at.formatted(date:.omitted,time:.shortened))
                             .font(.subheadline.bold())
                         Spacer()
-                        Text(String(format:"%.1f mm/h",selected.rateMMH))
+                        Text(String(format:"%.1f mm/h",selected.rate))
                             .font(.headline.monospacedDigit())
-                            .foregroundStyle(RainVisual.color(selected.rateMMH))
-                        Text(selected.probability.map{"\($0)%"} ?? "—")
-                            .font(.subheadline).foregroundStyle(.secondary)
+                            .foregroundStyle(RainVisual.color(selected.rate))
+                        Text(selected.radarInformed ? "Radar" : "Modelo")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
-                    GeometryReader { geometry in
-                        let barWidth=max(4,(geometry.size.width-CGFloat(slots.count-1)*5)/CGFloat(slots.count))
-                        let peak=max(0.7,slots.map(\.rateMMH).max() ?? 0)
+                    GeometryReader { geo in
+                        let width=max(4,(geo.size.width-CGFloat(slots.count-1)*5)/CGFloat(slots.count))
+                        let peak=max(0.7,slots.map(\.rate).max() ?? 0)
                         HStack(alignment:.bottom,spacing:5) {
                             ForEach(slots) { point in
                                 Button {chosen=point.minute} label:{
                                     VStack(spacing:5) {
                                         Spacer(minLength:0)
                                         RoundedRectangle(cornerRadius:3)
-                                            .fill(RainVisual.color(point.rateMMH))
-                                            .frame(height:max(point.rateMMH>0.1 ? 6:2,
-                                                              CGFloat(point.rateMMH/peak)*120))
+                                            .fill(RainVisual.color(point.rate))
+                                            .frame(height:max(point.rate>0.1 ? 6:2,
+                                                              CGFloat(point.rate/peak)*120))
                                             .overlay(alignment:.top) {
                                                 if chosen==point.minute {
                                                     RoundedRectangle(cornerRadius:3)
@@ -350,24 +349,21 @@ struct ThreeHourRainView: View {
                                         Text(point.minute%30==0 ? "+\(point.minute)" : " ")
                                             .font(.system(size:9))
                                             .foregroundStyle(.secondary)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.7)
                                             .frame(height:15)
                                     }
-                                    .frame(width:barWidth)
+                                    .frame(width:width)
                                 }
                                 .buttonStyle(.plain)
-                                .accessibilityLabel("+\(point.minute) min: \(String(format:"%.1f",point.rateMMH)) mm/h")
                             }
                         }
                     }
                     .frame(height:155)
                     RainIntensityLegend()
                     HStack {
-                        let wet=slots.filter{$0.rateMMH>=RainInsight.wetRate}.count
-                        Label("~\(wet*15) min con lluvia",systemImage:"clock")
+                        let wet=series.filter{$0.rate>=0.15}.count
+                        Label("~\(wet) min con precipitación estimada",systemImage:"clock")
                         Spacer()
-                        Text("Modelo 15 min")
+                        Text("Radar + modelos")
                     }
                     .font(.caption2).foregroundStyle(.secondary)
                 }
