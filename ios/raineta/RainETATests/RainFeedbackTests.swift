@@ -9,8 +9,10 @@ final class RainFeedbackTests: XCTestCase {
                        latitude:40.4168,longitude:-3.7038,
                        raining:true,modelWet:["A":true,"B":false])
         }
-        XCTAssertTrue(RainFeedback.weights(Array(reports.prefix(1)),
-            latitude:40.4168,longitude:-3.7038,now:now).isEmpty)
+        let first=RainFeedback.weights(Array(reports.prefix(1)),
+            latitude:40.4168,longitude:-3.7038,now:now)
+        XCTAssertLessThan(first["B"] ?? 1,1)
+        XCTAssertGreaterThan(first["A"] ?? 1,1)
         let weights=RainFeedback.weights(reports,latitude:40.4168,
                                          longitude:-3.7038,now:now)
         XCTAssertGreaterThan(weights["A"] ?? 0,weights["B"] ?? 0)
