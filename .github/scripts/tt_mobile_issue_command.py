@@ -323,6 +323,33 @@ def trend_command(action, element_id, context, instruction, now):
         if previous == action:
             return "TTendencias: acción ya realizada anteriormente (" + action + "): " + element_id
         raise ValueError("Tendencia ya cerrada")
+    # Desestimar detiene la elaboración pendiente; nunca equivale a publicar.
+    if action == "dismissed":
+        queue_path = "trends/editorial-queue.json"
+        queue = load(queue_path, {"items": []})
+        active = next((x for x in queue.get("items", [])
+                       if matches(x, element_id)
+                       and str(x.get("status") or "").lower() in {"preparing", "update"}), None)
+        if active is None:
+            raise ValueError("La tendencia ya no consta en elaboración")
+        active.update(status="dismissed", dismissed_at=now,
+                      decision_source="github_pages_authorized_issue")
+        queue["count"] = sum(str(x.get("status") or "").lower() in {"preparing", "update"}
+                             for x in queue.get("items", []))
+        queue["updated_at"] = now
+        save(queue_path, queue)
+        if r is not None:
+            r.update(status="dismissed", dismissed_at=now, updated_at=now)
+            doc["updated_at"] = now
+            save(p, doc)
+        if decided is None:
+            decided = {"id": element_id, "name": str(active.get("name") or "")}
+            decisions["items"].append(decided)
+        decided.update(status="dismissed", dismissed_at=now, updated_at=now,
+                       source="github_pages_authorized_issue")
+        decisions["updated_at"] = now
+        save(dpath, decisions)
+        return "TTendencias: desestimada en la cola editorial: " + element_id
     # Manual Prepare behaves like a Top 10 editorial item, but is created
     # only once while that specific revision is already under investigation.
     if (action == "prepare" and r is not None and
