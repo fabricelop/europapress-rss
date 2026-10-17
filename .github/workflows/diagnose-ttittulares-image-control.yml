@@ -69,4 +69,20 @@ jobs:
               print("INVALID_POST",e.code,e.read(240).decode("utf-8","replace"))
           except Exception as e:
               print("INVALID_POST_TRANSPORT_ERROR",type(e).__name__,str(e)[:240])
+          # Probe the ACK handler with a deliberately wrong command_id.
+          # It must reject before any write: HTTP 409 is a healthy route response.
+          invalid=json.dumps({"task":"image_pc_ack","target_id":"29bd988db076",
+                              "command_id":"TTIT_DIAGNOSTIC_NONEXISTENT_COMMAND",
+                              "stage":"picked_up","worker_id":"ttit-readonly-probe"}).encode("utf-8")
+          req=urllib.request.Request("https://tt-control.fabricelop.workers.dev/api/ttittulares-run",
+                                     data=invalid,method="POST",
+                                     headers={"Content-Type":"application/json",
+                                              "User-Agent":"TTImageControlDiagnostic-ReadOnly/1"})
+          try:
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  print("INVALID_IMAGE_ACK_RESULT",r.status,r.read(300).decode("utf-8","replace"))
+          except urllib.error.HTTPError as e:
+              print("INVALID_IMAGE_ACK_HTTP",e.code,e.read(300).decode("utf-8","replace"))
+          except Exception as e:
+              print("INVALID_IMAGE_ACK_TRANSPORT",type(e).__name__,str(e)[:240])
           PY
