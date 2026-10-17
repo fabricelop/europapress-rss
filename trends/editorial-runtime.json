@@ -4,11 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T02:15:00+02:00",
-  "last_completed_at": "2026-10-17T02:18:00+02:00",
-  "updated_at": "2026-10-17T02:18:00+02:00",
+  "last_started_at": "2026-10-17T10:45:00+02:00",
+  "last_completed_at": "2026-10-17T10:54:00+02:00",
+  "updated_at": "2026-10-17T10:54:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "0313ebd850d3",
+    "74253d4d6c99"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,28 +21,27 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "triggered",
-    "requested_at": "2026-10-17T02:15:00+02:00",
-    "trigger_commit": "5c1a17e00096e484de098e112ef1a3ff2f30031a",
-    "editorial_blocking": false,
-    "pending_recent_count": 6
+    "requested_at": "2026-10-17T10:45:00+02:00",
+    "trigger_commit": "02150a2e1ecdb7abdc2a468135b52525f1645b45",
+    "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261017T0215+0200",
+    "run_id": "tr-chat-20261017T1045+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-17T02:15:00+02:00",
-    "updated_at": "2026-10-17T02:18:00+02:00",
-    "finished_at": "2026-10-17T02:18:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-17T10:45:00+02:00",
+    "updated_at": "2026-10-17T10:54:00+02:00",
+    "finished_at": "2026-10-17T10:54:00+02:00",
+    "current": 2,
+    "total": 2,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 1,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -47,8 +49,8 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "remates_reused": 0,
       "telegram_orphans": 0,
@@ -56,7 +58,7 @@
       "pending_repair_triggered": 1,
       "trends_inactive": 0
     },
-    "message": "Pasada completada y verificada: 0/0 revisiones editoriales; cola 0, sin reexplicaciones ni huérfanos. Se solicitó reparación visual para 6 fichas recientes.",
+    "message": "Pasada completada y verificada: 2/2 revisiones explicadas en un único grupo; #AgropopularGanaderíaMadrid y Guadarrama comparten una sola tarjeta. Cola editorial 0 y sin huérfanos. La reparación visual continúa por su workflow independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -64,57 +66,195 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "0313ebd850d3",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.3,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c2",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c4",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
+          },
+          {
+            "id": "c5",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-17T02:15:00+02:00",
+        "at": "2026-10-17T10:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
+        "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 2."
       },
       {
-        "at": "2026-10-17T02:16:00+02:00",
+        "at": "2026-10-17T10:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Releyendo estado autoritativo; ambas revisiones siguen activas."
       },
       {
-        "at": "2026-10-17T02:17:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos. Detectadas 6 fichas recientes con reparación visual pendiente."
+        "at": "2026-10-17T10:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Buscando detonante actual y relación con Guadarrama."
       },
       {
-        "at": "2026-10-17T02:17:30+02:00",
+        "at": "2026-10-17T10:46:50+02:00",
+        "phase": "investigating",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Contrastando AGROPOPULAR con la agenda oficial de la subasta."
+      },
+      {
+        "at": "2026-10-17T10:47:10+02:00",
+        "phase": "investigating",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Hecho esencial verificado y agrupación con Guadarrama confirmada."
+      },
+      {
+        "at": "2026-10-17T10:47:30+02:00",
+        "phase": "drafting",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Redactando explicación factual conjunta."
+      },
+      {
+        "at": "2026-10-17T10:47:45+02:00",
+        "phase": "drafting",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Comprobando límite de X: 253 caracteres."
+      },
+      {
+        "at": "2026-10-17T10:48:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Generando y evaluando cinco candidatos de remate con ratings."
+      },
+      {
+        "at": "2026-10-17T10:48:15+02:00",
+        "phase": "remate_selection",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Remate seleccionado por especificidad y concisión."
+      },
+      {
+        "at": "2026-10-17T10:49:00+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual solicitada mediante pending-repair-trigger; el workflow se activa por push a main."
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Guardando ficha líder del grupo en Explicadas y requests."
       },
       {
-        "at": "2026-10-17T02:18:00+02:00",
+        "at": "2026-10-17T10:51:06+02:00",
+        "phase": "verifying",
+        "trend_id": "0313ebd850d3",
+        "title": "#AgropopularGanaderíaMadrid",
+        "message": "Ficha líder persistida y verificada; cola reducida a un pendiente."
+      },
+      {
+        "at": "2026-10-17T10:51:30+02:00",
+        "phase": "verifying",
+        "trend_id": "74253d4d6c99",
+        "title": "Guadarrama",
+        "message": "Releyendo estado autoritativo; Guadarrama r0 sigue activa."
+      },
+      {
+        "at": "2026-10-17T10:52:00+02:00",
+        "phase": "persisting",
+        "trend_id": "74253d4d6c99",
+        "title": "Guadarrama",
+        "message": "Enlazando Guadarrama a la tarjeta líder sin duplicar explicación."
+      },
+      {
+        "at": "2026-10-17T10:53:04+02:00",
+        "phase": "verifying",
+        "trend_id": "74253d4d6c99",
+        "title": "Guadarrama",
+        "message": "Main confirma Guadarrama explicada y cola editorial vacía."
+      },
+      {
+        "at": "2026-10-17T10:53:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificados id, revisión, texto y grupo en requests y Explicadas; sin huérfanos."
+      },
+      {
+        "at": "2026-10-17T10:54:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía. La reparación visual sigue por su workflow independiente."
+        "message": "Pasada completada: 2/2 revisiones explicadas en un único grupo; cola final 0."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261017T0215+0200",
+  "run_id": "tr-chat-20261017T1045+0200",
   "summary": {
-    "trends_processed": 0,
-    "trends_explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "trends_processed": 2,
+    "trends_explained": 2,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "grouped_into_existing_card": 1,
     "trends_problematic": 0,
     "trends_dismissed": 0,
     "incidents": 0,
@@ -122,8 +262,8 @@
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "remates_reused": 0,
     "telegram_orphans": 0,
@@ -134,39 +274,116 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-17T02:15:00+02:00",
+      "at": "2026-10-17T10:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 0."
+      "message": "Preparando pasada editorial y saneamiento de Pendientes; cola inicial 2."
     },
     {
-      "at": "2026-10-17T02:16:00+02:00",
+      "at": "2026-10-17T10:46:00+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main para confirmar cola, requests, reexplicaciones y Pendientes recientes."
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Releyendo estado autoritativo; ambas revisiones siguen activas."
     },
     {
-      "at": "2026-10-17T02:17:00+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Radar fresco; sin preparing/update, sin rewrite_pending y sin huérfanos. Detectadas 6 fichas recientes con reparación visual pendiente."
+      "at": "2026-10-17T10:46:20+02:00",
+      "phase": "investigating",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Buscando detonante actual y relación con Guadarrama."
     },
     {
-      "at": "2026-10-17T02:17:30+02:00",
+      "at": "2026-10-17T10:46:50+02:00",
+      "phase": "investigating",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Contrastando AGROPOPULAR con la agenda oficial de la subasta."
+    },
+    {
+      "at": "2026-10-17T10:47:10+02:00",
+      "phase": "investigating",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Hecho esencial verificado y agrupación con Guadarrama confirmada."
+    },
+    {
+      "at": "2026-10-17T10:47:30+02:00",
+      "phase": "drafting",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Redactando explicación factual conjunta."
+    },
+    {
+      "at": "2026-10-17T10:47:45+02:00",
+      "phase": "drafting",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Comprobando límite de X: 253 caracteres."
+    },
+    {
+      "at": "2026-10-17T10:48:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Generando y evaluando cinco candidatos de remate con ratings."
+    },
+    {
+      "at": "2026-10-17T10:48:15+02:00",
+      "phase": "remate_selection",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Remate seleccionado por especificidad y concisión."
+    },
+    {
+      "at": "2026-10-17T10:49:00+02:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Reparación visual solicitada mediante pending-repair-trigger; el workflow se activa por push a main."
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Guardando ficha líder del grupo en Explicadas y requests."
     },
     {
-      "at": "2026-10-17T02:18:00+02:00",
+      "at": "2026-10-17T10:51:06+02:00",
+      "phase": "verifying",
+      "trend_id": "0313ebd850d3",
+      "title": "#AgropopularGanaderíaMadrid",
+      "message": "Ficha líder persistida y verificada; cola reducida a un pendiente."
+    },
+    {
+      "at": "2026-10-17T10:51:30+02:00",
+      "phase": "verifying",
+      "trend_id": "74253d4d6c99",
+      "title": "Guadarrama",
+      "message": "Releyendo estado autoritativo; Guadarrama r0 sigue activa."
+    },
+    {
+      "at": "2026-10-17T10:52:00+02:00",
+      "phase": "persisting",
+      "trend_id": "74253d4d6c99",
+      "title": "Guadarrama",
+      "message": "Enlazando Guadarrama a la tarjeta líder sin duplicar explicación."
+    },
+    {
+      "at": "2026-10-17T10:53:04+02:00",
+      "phase": "verifying",
+      "trend_id": "74253d4d6c99",
+      "title": "Guadarrama",
+      "message": "Main confirma Guadarrama explicada y cola editorial vacía."
+    },
+    {
+      "at": "2026-10-17T10:53:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificados id, revisión, texto y grupo en requests y Explicadas; sin huérfanos."
+    },
+    {
+      "at": "2026-10-17T10:54:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada; cola editorial vacía. La reparación visual sigue por su workflow independiente."
+      "message": "Pasada completada: 2/2 revisiones explicadas en un único grupo; cola final 0."
     }
   ],
   "telegram_orphans": 0,
