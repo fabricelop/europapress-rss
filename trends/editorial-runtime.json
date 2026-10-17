@@ -4,21 +4,30 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T20:15:00+02:00",
-  "last_completed_at": "2026-10-17T20:22:30+02:00",
-  "updated_at": "2026-10-17T20:22:30+02:00",
+  "last_started_at": "2026-10-17T20:17:00+02:00",
+  "last_completed_at": "2026-10-17T20:31:00+02:00",
+  "updated_at": "2026-10-17T20:31:00+02:00",
   "status": "success",
   "processed_ids": [
-    "ab82f176f207",
-    "219ff5bd0b7d",
-    "0527bd84df25",
-    "1c04b17efffd",
-    "cb1ffceb0292"
+    "c8490403e466",
+    "f390fb388c6a",
+    "a0f9b43477ef",
+    "b8187c2f1a64",
+    "dbed6537630d",
+    "053c8714516d",
+    "24b16e906a60",
+    "b0858b01041f",
+    "6eea6899a0f5",
+    "fc2bea7db15b"
   ],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "fc2bea7db15b"
+  ],
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "fc2bea7db15b"
+  ],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "triggered",
@@ -31,374 +40,509 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261017T2015+0200",
+    "run_id": "tr-autoguard-1792254650",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-17T20:15:00+02:00",
-    "updated_at": "2026-10-17T20:22:30+02:00",
-    "finished_at": "2026-10-17T20:22:30+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-17T20:17:00+02:00",
+    "updated_at": "2026-10-17T20:31:00+02:00",
+    "finished_at": "2026-10-17T20:31:00+02:00",
+    "current": 10,
+    "total": 10,
     "trend_id": null,
     "title": null,
     "summary": {
-      "trends_processed": 5,
-      "trends_explained": 5,
+      "trends_processed": 10,
+      "trends_explained": 9,
       "explanation_groups": 4,
       "new_cards": 4,
-      "revisions_updated": 1,
-      "grouped_into_existing_card": 1,
-      "trends_problematic": 0,
+      "revisions_updated": 2,
+      "grouped_into_existing_card": 5,
+      "trends_problematic": 1,
       "trends_dismissed": 0,
-      "incidents": 0,
-      "queue_remaining": 0,
+      "incidents": 2,
+      "queue_remaining": 1,
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 5,
+      "explanations_verified_under_280": 4,
       "remates_selected": 4,
       "remates_omitted": 0,
-      "telegram_orphans": 0,
-      "provisional_telegram": 0,
-      "pending_repair_triggered": 1
+      "pending_repair_triggered": 1,
+      "jit_skipped_already_terminal": 5
     },
-    "message": "Pasada cerrada 5/5: cuatro fichas Explicadas, cinco revisiones verificadas y cola editorial vacía.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada cerrada: 9 revisiones explicadas y verificadas; adivina queda problematic por falta de detonante fiable. Cola editorial sin preparing/update y sin rewrite_pending. No se generaron imágenes.",
+    "incident_count": 2,
+    "incidents": [
+      {
+        "at": "2026-10-17T20:23:00+02:00",
+        "phase": "verifying",
+        "message": "Se detectó editorial-queue con items vacío y count obsoleto mientras requests conservaba 10 revisiones preparing; se reconstruyó la cola desde requests y se procesó."
+      },
+      {
+        "at": "2026-10-17T20:25:30+02:00",
+        "phase": "persisting",
+        "message": "Una operación compuesta excedió el límite de llamadas del conector; se releyó main y se continuó desde el último commit confirmado sin duplicar ni sobrescribir estado."
+      }
+    ],
     "ratings_snapshot": {
-      "recent_closers_checked": 20
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 100
     },
     "remate_selections": [
       {
-        "id": "ab82f176f207",
+        "trend_id": "c8490403e466",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.7,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c3",
+            "total": 8.5,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c5",
+            "total": 7.3,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8.5,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "f390fb388c6a",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c2",
+            "total": 8.6,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 7.4,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7.1,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "24b16e906a60",
         "revision": 1,
-        "selected": "🌶️ Lamine convirtió La Cartuja en un examen oral y escrito."
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c2",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.3,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 7,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.7,
+        "no_remate_reason": null
       },
       {
-        "id": "219ff5bd0b7d",
+        "trend_id": "6eea6899a0f5",
         "revision": 0,
-        "selected": "🌶️ Abde le dejó el lateral en modo puerta giratoria."
-      },
-      {
-        "id": "0527bd84df25",
-        "revision": 0,
-        "selected": "🌶️ La volea entró por la escuadra y salió por la pantalla."
-      },
-      {
-        "id": "cb1ffceb0292",
-        "revision": 0,
-        "selected": "🌶️ Bernal convirtió la celebración en billete al vestuario."
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.9,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c2",
+            "total": 8.4,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c3",
+            "total": 7.7,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 7,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.4,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-17T20:19:10+02:00",
-        "phase": "investigating",
-        "trend_id": "ab82f176f207",
-        "title": "Lamine Yamal",
-        "message": "Hecho esencial verificado: gol, asistencia y tangana del Betis-Barça"
-      },
-      {
-        "at": "2026-10-17T20:19:20+02:00",
-        "phase": "drafting",
-        "trend_id": "ab82f176f207",
-        "title": "Lamine Yamal",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-17T20:19:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "ab82f176f207",
-        "title": "Lamine Yamal",
-        "message": "Remate seleccionado con referencia a La Cartuja"
-      },
-      {
-        "at": "2026-10-17T20:19:40+02:00",
-        "phase": "verifying",
-        "trend_id": "219ff5bd0b7d",
-        "title": "Koundé",
-        "message": "Releyendo estado autoritativo de Koundé"
-      },
-      {
-        "at": "2026-10-17T20:19:50+02:00",
-        "phase": "investigating",
-        "trend_id": "219ff5bd0b7d",
-        "title": "Koundé",
-        "message": "Hecho esencial verificado: Abde supera a Koundé en el segundo gol bético"
-      },
-      {
-        "at": "2026-10-17T20:20:00+02:00",
-        "phase": "drafting",
-        "trend_id": "219ff5bd0b7d",
-        "title": "Koundé",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-17T20:20:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "219ff5bd0b7d",
-        "title": "Koundé",
-        "message": "Remate seleccionado sobre la acción de Abde"
-      },
-      {
-        "at": "2026-10-17T20:20:20+02:00",
-        "phase": "verifying",
-        "trend_id": "0527bd84df25",
-        "title": "Lo Celso",
-        "message": "Releyendo estado autoritativo de Lo Celso y De Burgos como grupo"
-      },
-      {
-        "at": "2026-10-17T20:20:30+02:00",
-        "phase": "investigating",
-        "trend_id": "0527bd84df25",
-        "title": "Lo Celso",
-        "message": "Hecho esencial verificado: golazo anulado por mano previa de Cucho tras aviso VAR"
-      },
-      {
-        "at": "2026-10-17T20:20:40+02:00",
-        "phase": "drafting",
-        "trend_id": "0527bd84df25",
-        "title": "Lo Celso",
-        "message": "Redactando explicación única para Lo Celso + De Burgos y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-17T20:20:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0527bd84df25",
-        "title": "Lo Celso",
-        "message": "Remate seleccionado sobre la revisión en pantalla"
-      },
-      {
-        "at": "2026-10-17T20:21:00+02:00",
-        "phase": "verifying",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Releyendo estado autoritativo de Bernal"
-      },
-      {
-        "at": "2026-10-17T20:21:10+02:00",
-        "phase": "investigating",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Hecho esencial verificado: expulsión tras golpear a Lamine Yamal en la tangana"
-      },
-      {
-        "at": "2026-10-17T20:21:20+02:00",
-        "phase": "drafting",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Redactando explicación factual y comprobando límite de X"
+        "at": "2026-10-17T20:17:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial real · 5 revisiones activas; reparación visual independiente solicitada."
       },
       {
         "at": "2026-10-17T20:21:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Remate seleccionado sobre la expulsión"
-      },
-      {
-        "at": "2026-10-17T20:21:35+02:00",
-        "phase": "persisting",
+        "phase": "verifying",
         "trend_id": "ab82f176f207",
         "title": "Lamine Yamal",
-        "message": "Guardando 4 fichas Explicadas y sincronizando 5 revisiones activas"
-      },
-      {
-        "at": "2026-10-17T20:22:12+02:00",
-        "phase": "verifying",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Releyendo main y verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-17T20:22:18+02:00",
-        "phase": "verifying",
-        "trend_id": "cb1ffceb0292",
-        "title": "Bernal",
-        "message": "Tendencia cerrada y verificada; 5 revisiones fuera de la cola"
-      },
-      {
-        "at": "2026-10-17T20:22:24+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final: sin preparing/update, sin rewrite_pending y sin problematic activos en Top 10"
+        "message": "Barrera JIT: otra ejecución cerró la revisión antes de escribir; no se sobrescribió."
       },
       {
         "at": "2026-10-17T20:22:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Lamine, Koundé, Lo Celso/De Burgos y Bernal ya estaban explained y verificados; se saltaron por JIT."
+      },
+      {
+        "at": "2026-10-17T20:23:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Detectadas 10 requests preparing ausentes de editorial-queue.items; la pasada no podía cerrarse."
+      },
+      {
+        "at": "2026-10-17T20:24:00+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola reconciliada con 10 revisiones activas ordenadas por requested_at."
+      },
+      {
+        "at": "2026-10-17T20:25:00+02:00",
+        "phase": "persisting",
+        "trend_id": "c8490403e466",
+        "title": "#LaFuerzaDeLaGente",
+        "message": "Explicación política guardada con remate neutral; request y cola sincronizadas."
+      },
+      {
+        "at": "2026-10-17T20:26:00+02:00",
+        "phase": "persisting",
+        "trend_id": "f390fb388c6a",
+        "title": "#EspanyolAtleti",
+        "message": "Grupo Espanyol-Atlético guardado y cinco revisiones reconciliadas en una sola ficha."
+      },
+      {
+        "at": "2026-10-17T20:27:00+02:00",
+        "phase": "persisting",
+        "trend_id": "24b16e906a60",
+        "title": "ES-Alert",
+        "message": "Reexplicación r1 actualizada con los avisos de hoy por la DANA Adam."
+      },
+      {
+        "at": "2026-10-17T20:28:00+02:00",
+        "phase": "verifying",
+        "trend_id": "fc2bea7db15b",
+        "title": "adivina",
+        "message": "Dos búsquedas distintas no identifican detonante fiable; revisión marcada problematic sin inventar hechos."
+      },
+      {
+        "at": "2026-10-17T20:29:00+02:00",
+        "phase": "persisting",
+        "trend_id": "b0858b01041f",
+        "title": "celso",
+        "message": "celso enlazado al grupo ya explicado Lo Celso + De Burgos sin crear tarjeta duplicada."
+      },
+      {
+        "at": "2026-10-17T20:30:00+02:00",
+        "phase": "persisting",
+        "trend_id": "6eea6899a0f5",
+        "title": "Víctor Muñoz",
+        "message": "Explicación factual guardada y verificada para la remontada del Liverpool ante Brentford."
+      },
+      {
+        "at": "2026-10-17T20:30:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: 0 preparing/update, 0 rewrite_pending; solo adivina permanece problematic."
+      },
+      {
+        "at": "2026-10-17T20:31:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 5/5: cuatro fichas Explicadas, cinco revisiones verificadas y cola editorial vacía"
+        "message": "Pasada cerrada: 9 revisiones explicadas, 1 problematic; no quedan preparing/update ni reexplicaciones pendientes."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": []
   },
-  "run_id": "tr-chat-20261017T2015+0200",
+  "run_id": "tr-autoguard-1792254650",
   "summary": {
-    "trends_processed": 5,
-    "trends_explained": 5,
+    "trends_processed": 10,
+    "trends_explained": 9,
     "explanation_groups": 4,
     "new_cards": 4,
-    "revisions_updated": 1,
-    "grouped_into_existing_card": 1,
-    "trends_problematic": 0,
+    "revisions_updated": 2,
+    "grouped_into_existing_card": 5,
+    "trends_problematic": 1,
     "trends_dismissed": 0,
-    "incidents": 0,
-    "queue_remaining": 0,
+    "incidents": 2,
+    "queue_remaining": 1,
     "visual_backlog": 0,
     "images_generated": 0,
     "imagegen_attempts": 0,
-    "explanations_verified_under_280": 5,
+    "explanations_verified_under_280": 4,
     "remates_selected": 4,
     "remates_omitted": 0,
-    "telegram_orphans": 0,
-    "provisional_telegram": 0,
-    "pending_repair_triggered": 1
+    "pending_repair_triggered": 1,
+    "jit_skipped_already_terminal": 5
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-17T20:19:10+02:00",
-      "phase": "investigating",
-      "trend_id": "ab82f176f207",
-      "title": "Lamine Yamal",
-      "message": "Hecho esencial verificado: gol, asistencia y tangana del Betis-Barça"
-    },
-    {
-      "at": "2026-10-17T20:19:20+02:00",
-      "phase": "drafting",
-      "trend_id": "ab82f176f207",
-      "title": "Lamine Yamal",
-      "message": "Redactando explicación factual y comprobando límite de X"
-    },
-    {
-      "at": "2026-10-17T20:19:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "ab82f176f207",
-      "title": "Lamine Yamal",
-      "message": "Remate seleccionado con referencia a La Cartuja"
-    },
-    {
-      "at": "2026-10-17T20:19:40+02:00",
-      "phase": "verifying",
-      "trend_id": "219ff5bd0b7d",
-      "title": "Koundé",
-      "message": "Releyendo estado autoritativo de Koundé"
-    },
-    {
-      "at": "2026-10-17T20:19:50+02:00",
-      "phase": "investigating",
-      "trend_id": "219ff5bd0b7d",
-      "title": "Koundé",
-      "message": "Hecho esencial verificado: Abde supera a Koundé en el segundo gol bético"
-    },
-    {
-      "at": "2026-10-17T20:20:00+02:00",
-      "phase": "drafting",
-      "trend_id": "219ff5bd0b7d",
-      "title": "Koundé",
-      "message": "Redactando explicación factual y comprobando límite de X"
-    },
-    {
-      "at": "2026-10-17T20:20:10+02:00",
-      "phase": "remate_selection",
-      "trend_id": "219ff5bd0b7d",
-      "title": "Koundé",
-      "message": "Remate seleccionado sobre la acción de Abde"
-    },
-    {
-      "at": "2026-10-17T20:20:20+02:00",
-      "phase": "verifying",
-      "trend_id": "0527bd84df25",
-      "title": "Lo Celso",
-      "message": "Releyendo estado autoritativo de Lo Celso y De Burgos como grupo"
-    },
-    {
-      "at": "2026-10-17T20:20:30+02:00",
-      "phase": "investigating",
-      "trend_id": "0527bd84df25",
-      "title": "Lo Celso",
-      "message": "Hecho esencial verificado: golazo anulado por mano previa de Cucho tras aviso VAR"
-    },
-    {
-      "at": "2026-10-17T20:20:40+02:00",
-      "phase": "drafting",
-      "trend_id": "0527bd84df25",
-      "title": "Lo Celso",
-      "message": "Redactando explicación única para Lo Celso + De Burgos y comprobando límite de X"
-    },
-    {
-      "at": "2026-10-17T20:20:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "0527bd84df25",
-      "title": "Lo Celso",
-      "message": "Remate seleccionado sobre la revisión en pantalla"
-    },
-    {
-      "at": "2026-10-17T20:21:00+02:00",
-      "phase": "verifying",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Releyendo estado autoritativo de Bernal"
-    },
-    {
-      "at": "2026-10-17T20:21:10+02:00",
-      "phase": "investigating",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Hecho esencial verificado: expulsión tras golpear a Lamine Yamal en la tangana"
-    },
-    {
-      "at": "2026-10-17T20:21:20+02:00",
-      "phase": "drafting",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Redactando explicación factual y comprobando límite de X"
+      "at": "2026-10-17T20:17:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial real · 5 revisiones activas; reparación visual independiente solicitada."
     },
     {
       "at": "2026-10-17T20:21:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Remate seleccionado sobre la expulsión"
-    },
-    {
-      "at": "2026-10-17T20:21:35+02:00",
-      "phase": "persisting",
+      "phase": "verifying",
       "trend_id": "ab82f176f207",
       "title": "Lamine Yamal",
-      "message": "Guardando 4 fichas Explicadas y sincronizando 5 revisiones activas"
-    },
-    {
-      "at": "2026-10-17T20:22:12+02:00",
-      "phase": "verifying",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Releyendo main y verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-17T20:22:18+02:00",
-      "phase": "verifying",
-      "trend_id": "cb1ffceb0292",
-      "title": "Bernal",
-      "message": "Tendencia cerrada y verificada; 5 revisiones fuera de la cola"
-    },
-    {
-      "at": "2026-10-17T20:22:24+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final: sin preparing/update, sin rewrite_pending y sin problematic activos en Top 10"
+      "message": "Barrera JIT: otra ejecución cerró la revisión antes de escribir; no se sobrescribió."
     },
     {
       "at": "2026-10-17T20:22:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Lamine, Koundé, Lo Celso/De Burgos y Bernal ya estaban explained y verificados; se saltaron por JIT."
+    },
+    {
+      "at": "2026-10-17T20:23:00+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Detectadas 10 requests preparing ausentes de editorial-queue.items; la pasada no podía cerrarse."
+    },
+    {
+      "at": "2026-10-17T20:24:00+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Cola reconciliada con 10 revisiones activas ordenadas por requested_at."
+    },
+    {
+      "at": "2026-10-17T20:25:00+02:00",
+      "phase": "persisting",
+      "trend_id": "c8490403e466",
+      "title": "#LaFuerzaDeLaGente",
+      "message": "Explicación política guardada con remate neutral; request y cola sincronizadas."
+    },
+    {
+      "at": "2026-10-17T20:26:00+02:00",
+      "phase": "persisting",
+      "trend_id": "f390fb388c6a",
+      "title": "#EspanyolAtleti",
+      "message": "Grupo Espanyol-Atlético guardado y cinco revisiones reconciliadas en una sola ficha."
+    },
+    {
+      "at": "2026-10-17T20:27:00+02:00",
+      "phase": "persisting",
+      "trend_id": "24b16e906a60",
+      "title": "ES-Alert",
+      "message": "Reexplicación r1 actualizada con los avisos de hoy por la DANA Adam."
+    },
+    {
+      "at": "2026-10-17T20:28:00+02:00",
+      "phase": "verifying",
+      "trend_id": "fc2bea7db15b",
+      "title": "adivina",
+      "message": "Dos búsquedas distintas no identifican detonante fiable; revisión marcada problematic sin inventar hechos."
+    },
+    {
+      "at": "2026-10-17T20:29:00+02:00",
+      "phase": "persisting",
+      "trend_id": "b0858b01041f",
+      "title": "celso",
+      "message": "celso enlazado al grupo ya explicado Lo Celso + De Burgos sin crear tarjeta duplicada."
+    },
+    {
+      "at": "2026-10-17T20:30:00+02:00",
+      "phase": "persisting",
+      "trend_id": "6eea6899a0f5",
+      "title": "Víctor Muñoz",
+      "message": "Explicación factual guardada y verificada para la remontada del Liverpool ante Brentford."
+    },
+    {
+      "at": "2026-10-17T20:30:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: 0 preparing/update, 0 rewrite_pending; solo adivina permanece problematic."
+    },
+    {
+      "at": "2026-10-17T20:31:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 5/5: cuatro fichas Explicadas, cinco revisiones verificadas y cola editorial vacía"
+      "message": "Pasada cerrada: 9 revisiones explicadas, 1 problematic; no quedan preparing/update ni reexplicaciones pendientes."
     }
   ],
   "telegram_orphans": 0,
