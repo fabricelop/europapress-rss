@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-17T08:51:00.840460+00:00",
-  "ok": false,
+  "checked_at": "2026-10-17T12:31:40.313194+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 7,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -56,7 +56,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 2.0,
-      "run_id": 39018778604,
+      "run_id": 39032735917,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,34 +77,20 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 108.0,
+      "ok": true,
+      "pending_count": 1,
+      "overdue_count": 0,
+      "oldest_age_minutes": 9.7,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "0313ebd850d3",
-          "name": "#AgropopularGanaderíaMadrid",
-          "status": "preparing",
-          "age_minutes": 108.0
-        },
-        {
-          "id": "74253d4d6c99",
-          "name": "Guadarrama",
-          "status": "preparing",
-          "age_minutes": 108.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "0313ebd850d3",
-        "74253d4d6c99"
+        "d71d9cbc6a33"
       ],
       "contradictory_success": false
     },
@@ -115,10 +101,8 @@
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 108.0 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 108.0 min"
+  "last_alert_signature": ""
 }
