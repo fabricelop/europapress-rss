@@ -356,7 +356,8 @@ function githubIssueUrl(project,id,action,title){
  const kind=action==='rework'?'rework':action;
  if(!['published','deleted','rework','prepare','dismissed'].includes(kind)||!String(id||'').trim())return '';
  const issueTitle='[TT-MOVIL] '+project+' '+kind+' '+String(id).slice(0,80);
- const fields=new URLSearchParams({template:'tt-mobile-command.yml',title:issueTitle,project,action:kind,id:String(id).slice(0,120),context:String(title||id).slice(0,280)});
+ const body=['### Proyecto','',project,'','### Acción','',kind,'','### ID del elemento','',String(id).slice(0,120),'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
+ const fields=new URLSearchParams({title:issueTitle,body});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 function rowCard(x,i){
@@ -376,13 +377,13 @@ function rowCard(x,i){
  function command(label,action){
   const url=githubIssueUrl(x._kind==='tr'?'ttendencias':'ttittulares',x._id,action,d.title);
   if(!url){const b=btn(label+' (sin ID válido)',()=>showToast('No se puede crear una orden segura para este identificador'));b.disabled=true;return b}
-  const b=document.createElement('a');b.className='action secondary';b.target='_self';b.href=url;
+  const b=document.createElement('a');b.className='action secondary';b.target='_blank';b.rel='noopener noreferrer';b.href=url;
   b.textContent=label;b.addEventListener('click',event=>{
-   if(action==='deleted'&&!confirm(x._kind==='tremending'?'¿Borrar esta entrada de Tremending del panel?':('¿Borrar esta '+(x._kind==='tti'?'noticia':'tendencia')+' y sus mensajes asociados de Telegram?'))){
+   if(action==='deleted'&&!confirm(x._kind==='tremending'?'¿Borrar esta entrada de Tremending del panel?':('¿Quitar de Listas esta '+(x._kind==='tti'?'noticia':'tendencia')+'?'))){
      event.preventDefault();return;
    }
    try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
-   showToast('Confirma la orden con «Submit new issue» en GitHub; recibirás allí el resultado.');
+   showToast('En GitHub pulsa «Create issue» para ejecutar la orden; el panel se actualizará al volver.');
   });
   a.append(b);return b
  $('warning').style.display=state.lastError?'block':'none';$('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
