@@ -2,7 +2,7 @@
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101827"><meta name="description" content="TTActualidad: gestión editorial real de noticias y tendencias">
-<title>TT Actualidad · acceso de emergencia</title>
+<title>TTActualidad · control editorial móvil</title>
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="icon" href="./icon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180">
@@ -40,7 +40,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
 </div>
 <main>
-<div class="notice" style="display:block">Acceso de emergencia por GitHub Pages. Las acciones editoriales abren una orden ya rellenada en GitHub. Pulsa «Submit new issue» para confirmarla; el resultado aparecerá allí. También puedes usar el <a href="../">panel móvil alternativo</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+<div class="notice" style="display:block">Control móvil desde GitHub Pages. Para quitar una noticia de Listas, pulsa el botón y confirma la orden en la pestaña de GitHub con «Create issue». Al volver, se comprueba el borrado y se actualiza el panel. <a href="../">Otra vista del panel</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 
 <details class="pilot-settings" id="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
@@ -442,7 +442,7 @@ function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
 function isTemporarilyRemoved(item){
  if(item._topOnly||item._historical)return false;
  const op=pendingDeletes.get(removeKey(itemProject(item),String(item._id)));
- if(!op)return false;
+ if(!op||op.status==='awaiting_github')return false;
  // Prepare moves a card between sections. Only hide its stale source card:
  // after GitHub confirms PROCESSING/READY, the target card must stay visible.
  if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
@@ -512,7 +512,7 @@ function confirmedAction(op,docs){
   const [prepared,decisions,queue,tremending]=docs;
   const state=(decisions.items||[]).find(x=>String(x.event_id||'')===id);
   if(op.kind==='tremending')return op.decision==='deleted'&&
-   state?.status==='deleted'&&!(tremending?.items||[]).some(x=>String(x.id||'')===id);
+   (tremending?.items||[]).some(x=>String(x.id||'')===id&&String(x.status||'').toLowerCase()==='deleted');
   const q=(queue.items||[]).find(x=>String(x.event_id||'')===id);
   if(op.decision==='deleted')
    return state?.status==='deleted'&&!(prepared.items||[]).some(x=>String(x.event_id||'')===id);
@@ -546,9 +546,9 @@ async function retryAction(op){
  }catch(e){console.warn('Reintento pendiente',String(e))}
 }
 async function checkPendingDeletes(){
- const pending=[...pendingDeletes.values()].filter(x=>x.status==='submitted'||x.status==='sending');
+ const pending=[...pendingDeletes.values()].filter(x=>['submitted','sending','awaiting_github'].includes(x.status));
  if(!pending.length)return;
- let changed=false,confirmedPrepare=false,readyConfirmed=false,failed=false;
+ let changed=false,confirmedPrepare=false,readyConfirmed=false,confirmedDelete=false,failed=false;
  for(const project of [...new Set(pending.map(x=>x.project))]){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
@@ -568,9 +568,10 @@ async function checkPendingDeletes(){
    if(outcome){
     op.status='confirmed';changed=true;
     if(op.decision==='prepare'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
+    if(op.decision==='deleted')confirmedDelete=true;
    }else if(Date.now()-op.at>20*60000){
     pendingDeletes.delete(op.key);changed=true;failed=true;
-   }else if(Date.now()-op.at>175000){
+   }else if(op.status!=='awaiting_github'&&Date.now()-op.at>175000){
     void retryAction(op);
    }
   }
@@ -582,6 +583,7 @@ async function checkPendingDeletes(){
  if(readyConfirmed&&state.app==='tti'){
   state.tab='listas';render();showToast('Noticia elaborada: ya está en Listas.');
  }else if(confirmedPrepare)void load(true);
+ if(confirmedDelete)showToast('Quitada de Listas: borrado confirmado en GitHub.');
  if(failed)showToast('GitHub no confirmó la acción. La noticia vuelve a su sección anterior.');
 }
 function schedulePendingChecks(){
@@ -592,7 +594,8 @@ function emergencyGithubIssueUrl(project,id,decision,title){
  const action=decision==='discard'?'dismissed':decision;
  if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[\p{L}\p{N}_#. \-]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
- const fields=new URLSearchParams({template:'tt-mobile-command.yml',title:issueTitle,project,action,id,context:String(title||id).slice(0,280)});
+ const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
+ const fields=new URLSearchParams({title:issueTitle,body});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 async function pilotSend(item,decision){
@@ -643,7 +646,27 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  if(['prepare','deleted','discard','published'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
+  if(['prepare','deleted','discard','published'].includes(action)){
+   if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
+    const project=itemProject(x),id=String(x._id||''),url=emergencyGithubIssueUrl(project,id,action,d.title);
+    if(!url){const bad=btn(label,()=>showToast('ID de la noticia no válido'));bad.disabled=true;return bad}
+    const link=document.createElement('a');link.className='action secondary';link.href=url;
+    link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;
+    link.addEventListener('click',event=>{
+     if(!confirm('¿'+(action==='deleted'?'Quitar de Listas':label)+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?')){
+      event.preventDefault();return;
+     }
+     const key=removeKey(project,id),at=Date.now();
+     pendingDeletes.set(key,{key,project,id,kind:x._kind,revision:Number(x.revision||0),decision:action,
+       request_id:'github-issue',at,lastTry:0,tries:0,status:'awaiting_github'});
+     savePending();schedulePendingChecks();
+     try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
+     showToast('Abre la pestaña GitHub y pulsa «Create issue» para ejecutar.');
+    });
+    a.append(link);return link;
+   }
+   return btn(label,()=>pilotSend(x,action),action==='prepare');
+  }
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
  if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||x._status==='EXPLICADA')){
