@@ -24,6 +24,8 @@ struct TimeMapZoneSummary:View {
                         VStack(alignment:.leading,spacing:8) {
                             LabeledContent("Tiempo total de zona",
                                 value:DurationFormat.full(model.total(for:zone,now:now)))
+                            LabeledContent("N.º visitas",
+                                value:String(model.numberOfVisits(for:zone.cells,now:now)))
                             if model.activeCell.map({zone.cellIDs.contains($0.id)}) == true {
                                 LabeledContent("Estancia actual en zona",
                                     value:DurationFormat.full(model.zoneStaySeconds(for:zone,now:now)))
