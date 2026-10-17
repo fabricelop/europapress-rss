@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-17T18:01:12.663674+00:00",
-  "ok": false,
+  "checked_at": "2026-10-17T19:48:12.735693+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,8 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "non_stale_sources": 7,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.9,
-      "run_id": 39056115272,
+      "age_minutes": 2.0,
+      "run_id": 39063872308,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,93 +77,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 12,
-      "overdue_count": 10,
-      "oldest_age_minutes": 277.5,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "b8187c2f1a64",
-          "name": "Hernández Hernández",
-          "status": "preparing",
-          "age_minutes": 208.6
-        },
-        {
-          "id": "24b16e906a60",
-          "name": "ES-Alert",
-          "status": "preparing",
-          "age_minutes": 208.6
-        },
-        {
-          "id": "c8490403e466",
-          "name": "#LaFuerzaDeLaGente",
-          "status": "preparing",
-          "age_minutes": 277.5
-        },
-        {
-          "id": "f390fb388c6a",
-          "name": "#EspanyolAtleti",
-          "status": "preparing",
-          "age_minutes": 277.5
-        },
-        {
-          "id": "a0f9b43477ef",
-          "name": "Giuliano",
-          "status": "preparing",
-          "age_minutes": 277.5
-        },
-        {
-          "id": "fc2bea7db15b",
-          "name": "adivina",
-          "status": "preparing",
-          "age_minutes": 208.6
-        },
-        {
-          "id": "dbed6537630d",
-          "name": "Espanyol",
-          "status": "preparing",
-          "age_minutes": 208.6
-        },
-        {
-          "id": "053c8714516d",
-          "name": "Mendoza",
-          "status": "preparing",
-          "age_minutes": 178.4
-        },
-        {
-          "id": "b0858b01041f",
-          "name": "celso",
-          "status": "preparing",
-          "age_minutes": 99.3
-        },
-        {
-          "id": "6eea6899a0f5",
-          "name": "Víctor Muñoz",
-          "status": "preparing",
-          "age_minutes": 99.3
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "b8187c2f1a64",
-        "ab82f176f207",
-        "24b16e906a60",
-        "c8490403e466",
-        "f390fb388c6a",
-        "a0f9b43477ef",
-        "fc2bea7db15b",
-        "dbed6537630d",
-        "053c8714516d",
-        "b0858b01041f",
-        "6eea6899a0f5",
-        "219ff5bd0b7d"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -173,10 +99,8 @@
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 277.5 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 277.5 min"
+  "last_alert_signature": ""
 }
