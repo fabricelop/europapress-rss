@@ -168,18 +168,26 @@ struct TimeStatsDashboard: View {
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.secondary).frame(width:23,alignment:.leading)
                         VStack(alignment:.leading,spacing:4) {
-                            HStack(spacing:5) {
-                                Text(item.title).font(.subheadline.weight(.semibold))
-                                    .lineLimit(1)
-                                if item.zoneID != nil {
+                            // El título utiliza todo el ancho disponible y puede
+                            // ocupar varias líneas: el icono nunca lo recorta.
+                            Text(item.title)
+                                .font(.subheadline.weight(.semibold))
+                                .fixedSize(horizontal:false,vertical:true)
+                            if item.zoneID != nil {
+                                HStack(spacing:5) {
                                     Image(systemName:"square.3.layers.3d")
                                         .foregroundStyle(.teal)
+                                        .accessibilityHidden(true)
+                                    Text("Zona · \(item.cellIDs.count) cuadrículas")
                                 }
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            } else {
+                                Text("Cuadrícula independiente")
+                                    .font(.caption2).foregroundStyle(.secondary)
                             }
-                            Text(item.zoneID == nil ? "Cuadrícula independiente" :
-                                "Zona · \(item.cellIDs.count) cuadrículas")
-                                .font(.caption2).foregroundStyle(.secondary)
                         }
+                        .frame(maxWidth:.infinity,alignment:.leading)
                         Spacer(minLength:4)
                         Text(DurationFormat.full(item.seconds))
                             .font(.caption.monospacedDigit()).foregroundStyle(.teal)
