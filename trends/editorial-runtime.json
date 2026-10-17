@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-17T20:45:00+02:00",
-  "last_completed_at": "2026-10-17T20:46:30+02:00",
-  "updated_at": "2026-10-17T20:46:30+02:00",
+  "last_started_at": "2026-10-17T21:15:00+02:00",
+  "last_completed_at": "2026-10-17T21:20:00+02:00",
+  "updated_at": "2026-10-17T21:20:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,27 +23,22 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-chat-20261017T2045+0200",
+    "run_id": "tr-chat-20261017T2115+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-17T20:45:00+02:00",
-    "updated_at": "2026-10-17T20:46:30+02:00",
-    "finished_at": "2026-10-17T20:46:30+02:00",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
+    "started_at": "2026-10-17T21:15:00+02:00",
+    "updated_at": "2026-10-17T21:20:00+02:00",
+    "finished_at": "2026-10-17T21:20:00+02:00",
+    "current": 2,
+    "total": 2,
     "summary": {
-      "trends_processed": 0,
-      "trends_explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "trends_processed": 2,
+      "trends_explained": 2,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 1,
       "trends_problematic": 0,
       "trends_dismissed": 0,
       "incidents": 0,
@@ -51,46 +46,102 @@
       "visual_backlog": 0,
       "images_generated": 0,
       "imagegen_attempts": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
-      "pending_repair_triggered": 1
+      "pending_repair_triggered": 1,
+      "jit_skipped_already_terminal": 0
     },
-    "message": "Pasada cerrada 0/0: no había preparing/update, reexplicaciones ni problematic activo en Top 10. No se generaron imágenes.",
+    "message": "Pasada completada: 2 revisiones explicadas en 1 grupo; cola final 0 y sin rewrite_pending.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
-      "recent_empty_closers_detected": 0
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "4cb39c1bdf5d",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-17T20:45:00+02:00",
+        "at": "2026-10-17T21:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada: cola autoritativa vacía; verificando reexplicaciones y estado fresco."
+        "message": "Preparando pasada editorial real · 2 revisiones activas; reparación visual independiente solicitada."
       },
       {
-        "at": "2026-10-17T20:45:40+02:00",
+        "at": "2026-10-17T21:16:00+02:00",
+        "phase": "investigating",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Buscando detonante actual y contrastando resultado final."
+      },
+      {
+        "at": "2026-10-17T21:16:40+02:00",
+        "phase": "investigating",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Hecho esencial verificado: Betis 2-5 Barcelona; Eric García marcó y terminó con molestias."
+      },
+      {
+        "at": "2026-10-17T21:17:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura de main: captura fresca; sin preparing/update, sin rewrite_pending y sin problematic activo en Top 10."
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Barrera JIT superada: ambas revisiones siguen preparing en main."
       },
       {
-        "at": "2026-10-17T20:46:00+02:00",
+        "at": "2026-10-17T21:17:30+02:00",
+        "phase": "drafting",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Redactando explicación factual conjunta para evitar duplicado del mismo partido."
+      },
+      {
+        "at": "2026-10-17T21:17:50+02:00",
+        "phase": "drafting",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Comprobando límite de X: texto final dentro del máximo."
+      },
+      {
+        "at": "2026-10-17T21:18:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Remate seleccionado tras comprobar originalidad y repetición."
+      },
+      {
+        "at": "2026-10-17T21:19:00+02:00",
+        "phase": "persisting",
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Ficha Explicada guardada; requests sincronizadas y revisiones retiradas de la cola."
+      },
+      {
+        "at": "2026-10-17T21:19:40+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisión editorial adicional: no se detectan remates vacíos ni trabajo textual pendiente."
+        "trend_id": "4cb39c1bdf5d",
+        "title": "Eric + Barcelona",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-17T20:46:30+02:00",
+        "at": "2026-10-17T21:20:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0: no había tendencias editoriales activas; saneamiento visual independiente solicitado."
+        "message": "Pasada completada: 2 revisiones explicadas en 1 grupo; cola final 0 y sin rewrite_pending."
       }
     ],
     "queue_complete": true,
