@@ -12,55 +12,48 @@ $Managed=@(
 )
 
 function Log([string]$Text){
-  New-Item -ItemType Directory -Path $BaseDir -Force|Out-Null
-  Add-Content -LiteralPath $LogPath -Value ((Get-Date -Format "yyyy-MM-dd HH:mm:ss")+" "+$Text) -Encoding UTF8
+  New-Item -ItemType Directory -Path $BaseDir -Force | Out-Null
+  $line=(Get-Date -Format "yyyy-MM-dd HH:mm:ss")+" "+$Text
+  Add-Content -LiteralPath $LogPath -Value $line -Encoding UTF8
+  # -Once is interactive maintenance: always show the exact stage and result.
+  if($Once){Write-Host $line}
 }
 
 function Get-MainSha {
-  try {
-    $git=Get-Command git.exe -ErrorAction SilentlyContinue
-    if(-not $git){$git=Get-Command git -ErrorAction SilentlyContinue}
-    if($git){
-      $oldPrompt=$env:GIT_TERMINAL_PROMPT
-      try{
-        $env:GIT_TERMINAL_PROMPT="0"
-        $line=& $git.Source ls-remote "https://github.com/fabricelop/europapress-rss.git" "refs/heads/main" 2>$null | Select-Object -First 1
-      }finally{
-        if($null -eq $oldPrompt){Remove-Item Env:GIT_TERMINAL_PROMPT -ErrorAction SilentlyContinue}else{$env:GIT_TERMINAL_PROMPT=$oldPrompt}
-      }
-      if([string]$line -match '^([0-9a-fA-F]{40})\s'){return $Matches[1].ToLowerInvariant()}
-    }
-  } catch {
-    Log ("MAIN SHA GIT WARNING :: "+$_.Exception.Message)
-  }
+  # Never run unbounded "git ls-remote" in an interactive repair.
+  # Only one time-limited GitHub API query per pass; RAW/main is the fallback.
   try {
     $uri="https://api.github.com/repos/fabricelop/europapress-rss/commits/main?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     $doc=Invoke-RestMethod -Uri $uri -Headers @{
       "Accept"="application/vnd.github+json"
-      "User-Agent"="TT-auto-updater-api-v6"
+      "User-Agent"="TT-auto-updater-timeout-v7"
       "Cache-Control"="no-cache"
-    } -TimeoutSec 20
+    } -TimeoutSec 12 -ErrorAction Stop
     $sha=[string]$doc.sha
     if($sha -match "^[0-9a-fA-F]{40}$"){return $sha.ToLowerInvariant()}
   } catch {
     Log ("MAIN SHA API WARNING :: "+$_.Exception.Message)
   }
+  Log "MAIN SHA FALLBACK: RAW main (no Git blocking)"
   return ""
 }
 
 function Download-Raw([string]$Path,[string]$MainSha){
   $ref=if($MainSha){$MainSha}else{"main"}
   $uri="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+$ref+"/"+$Path+"?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $wc=New-Object System.Net.WebClient
+  $tmp=Join-Path ([IO.Path]::GetTempPath()) ("tt-updater-"+[Guid]::NewGuid().ToString("N")+".raw")
   try{
-    $wc.Headers["User-Agent"]="TT-auto-updater-raw-v6"
-    $wc.Headers["Cache-Control"]="no-cache"
-    $bytes=$wc.DownloadData($uri)
-  }finally{
-    $wc.Dispose()
+    # WebClient.DownloadData has no bounded timeout; PowerShell's HTTP client does.
+    Invoke-WebRequest -Uri $uri -UseBasicParsing -OutFile $tmp -TimeoutSec 20 -Headers @{
+      "User-Agent"="TT-auto-updater-timeout-v7"
+      "Cache-Control"="no-cache"
+    } -ErrorAction Stop | Out-Null
+    [byte[]]$bytes=[IO.File]::ReadAllBytes($tmp)
+    if(-not $bytes -or $bytes.Length -lt 100){throw "RAW vacio/corto: $Path ref=$ref"}
+    return ,$bytes
+  } finally {
+    Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue
   }
-  if(-not $bytes -or $bytes.Length -lt 100){throw "RAW vacio/corto: $Path ref=$ref"}
-  return $bytes
 }
 
 function Sha256Bytes([byte[]]$Bytes){
@@ -126,8 +119,10 @@ function CheckOnce {
     $mainSha=Get-MainSha
     foreach($m in $Managed){
       $local=Join-Path $BaseDir ([string]$m.Local)
+      Log ("DOWNLOAD START "+[string]$m.Path)
       $bytes=Download-Raw ([string]$m.Path) $mainSha
       $downloads++
+      Log ("DOWNLOAD OK "+[string]$m.Path+" bytes="+$bytes.Length)
       $remoteSha=Sha256Bytes $bytes
       $localSha=LocalSha $local
       if($localSha -eq $remoteSha){continue}
