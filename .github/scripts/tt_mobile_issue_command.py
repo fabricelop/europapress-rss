@@ -158,7 +158,8 @@ def tti_command(action, element_id, context, instruction, now):
                any(matches(r, element_id) for r in ledger.get("items", [])) or
                any(matches(r, element_id) for r in status.get("processing_items", [])) or
                any(matches(r, element_id) for r in status.get("problematic_items", [])) or
-               any(matches(r, element_id) for r in status.get("three_source_items", [])))
+               any(matches(r, element_id) for r in status.get("three_source_items", [])) or
+               any(matches(r, element_id) for r in load("ttittulares/editorial-queue.json", {"items": []}).get("items", [])))
     existing = next((x for x in decisions.get("items", []) if matches(x, element_id)), None)
     if existing and str(existing.get("status") or "").lower() in TERMINAL:
         previous = str(existing.get("status") or "").lower()
@@ -175,7 +176,7 @@ def tti_command(action, element_id, context, instruction, now):
         if active is None:
             raise ValueError("La noticia ya no consta en elaboración")
         active.update(status="DISMISSED", dismissed_at=now,
-                      decision_source="telegram_private_deeplink_native")
+                      decision_source="github_pages_authorized_issue")
         queue["count"] = sum(str(x.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}
                              for x in queue.get("items", []))
         queue["updated_at"] = now
@@ -185,14 +186,14 @@ def tti_command(action, element_id, context, instruction, now):
         for item in processing.get("items", []):
             if matches(item, element_id):
                 item.update(status="DISMISSED", dismissed_at=now,
-                            decision_source="telegram_private_deeplink_native")
+                            decision_source="github_pages_authorized_issue")
         processing["updated_at"] = now
         save(processing_path, processing)
         row = existing or {"event_id": element_id}
         if existing is None:
             decisions.setdefault("items", []).append(row)
         row.update(status="dismissed", dismissed_at=now, updated_at=now,
-                   decision_source="telegram_private_deeplink_native")
+                   decision_source="github_pages_authorized_issue")
         decisions["updated_at"] = now
         save(decisions_path, decisions)
         return "TTiTTulares: desestimada en la cola editorial: " + element_id
@@ -260,6 +261,37 @@ def tti_command(action, element_id, context, instruction, now):
         record["source"] = source
     processing["updated_at"] = now
     save(processing_path, processing)
+    # Make the editorial state visible immediately in both mobile panels.
+    queue_path = "ttittulares/editorial-queue.json"
+    queue = load(queue_path, {"project": "TTiTTulares", "items": []})
+    queue_row = next((x for x in queue.get("items", []) if matches(x, element_id)), None)
+    if queue_row is None:
+        queue_row = {"event_id": element_id}
+        queue.setdefault("items", []).append(queue_row)
+    queue_row.update(title=title, status="PROCESSING", revision=record["revision"],
+                     selected_at=now, selection_mode="GITHUB_PAGES_MANUAL",
+                     rewrite_request=instruction, with_image=True,
+                     image_mode="ai_plus_fallback")
+    if url:
+        queue_row["url"] = url
+    if source:
+        queue_row["source"] = source
+    queue["count"] = sum(str(x.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"}
+                         for x in queue["items"])
+    queue["updated_at"] = now
+    save(queue_path, queue)
+    visible = status.setdefault("processing_items", [])
+    visible_row = next((x for x in visible if matches(x, element_id)), None)
+    if visible_row is None:
+        visible_row = {"event_id": element_id}
+        visible.insert(0, visible_row)
+    visible_row.update(title=title, selected_at=now,
+                       selection_mode="GITHUB_PAGES_MANUAL", revision=record["revision"])
+    if url:
+        visible_row["url"] = url
+    status["processing_count"] = len(visible)
+    status["updated_at"] = now
+    save("ttittulares/status.json", status)
     # Eliminar la versión lista para que reaparezca solo cuando exista una nueva.
     if ready:
         prepared["items"] = [x for x in rows if not matches(x, element_id)]

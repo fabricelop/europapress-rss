@@ -108,6 +108,10 @@ with tempfile.TemporaryDirectory() as tmp:
     assert stored["url"]=="https://example.org/ceuta"
     assert stored["source"]=="laSexta"
     assert stored["status"]=="PROCESSING"
+    queued=get(m.ROOT,"ttittulares/editorial-queue.json")
+    assert queued["count"]==1 and queued["items"][0]["title"]=="Titular real de Ceuta"
+    visible=get(m.ROOT,"ttittulares/status.json")
+    assert visible["processing_count"]==1 and visible["processing_items"][0]["title"]=="Titular real de Ceuta"
 with tempfile.TemporaryDirectory() as tmp:
     m.ROOT=Path(tmp)
     put(m.ROOT,"ttittulares/status.json",{"processing_items":[{"event_id":"unknown","title":"Noticia"}]})
