@@ -42,13 +42,9 @@ struct RainHeroCard: View {
                                                 "MODELO PREVÉ TIEMPO SECO"))
                                     .font(.system(size:10,weight:.heavy))
                                     .foregroundStyle(raining ? .cyan : .green)
-                                Text(store.currentObservation != nil ?
-                                     (raining ? "¿Cuándo podría parar?" : "¿Cuándo podría empezar?") : radarConfirmed ?
-                                         (raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?") :
-                                         (raining ? "¿Hasta cuándo prevé lluvia el modelo?" :
-                                                    "¿Cuándo prevé lluvia el modelo?"))
+                                Text(raining ? "Hasta que pare" : "Hasta que llueva")
                                     .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.76))
+                                    .foregroundStyle(.cyan)
                             }
                             Spacer()
                             Image(systemName:raining ? "cloud.rain.fill" : "cloud.sun.fill")
@@ -73,39 +69,8 @@ struct RainHeroCard: View {
                             Spacer()
 
                         }
-                        Text(store.radarAnalysisStatus)
-                            .font(.caption2)
-                            .foregroundStyle(radarConfirmed ? .mint : .yellow)
-                        if let short {
-                            HStack(spacing:6) {
-                                Text(short.method + " · " + short.confidence)
-                                Spacer(minLength:0)
-                            }
-                            .font(.caption2)
-                            .foregroundStyle(.white.opacity(0.75))
-                            if let low=short.windowStart,let high=short.windowEnd {
-                                Text((raining ? "Final orientativo: " : "Llegada orientativa: ") +
-                                     low.formatted(date:.omitted,time:.shortened) + "–" +
-                                     high.formatted(date:.omitted,time:.shortened))
-                                    .font(.caption2)
-                                    .foregroundStyle(.yellow)
-                            }
-                        }
                     }
                 }
-                HStack(spacing:10) {
-                    if let temperature=weather.temperature {
-                        Label(String(format:"%.0f °C",temperature),systemImage:"thermometer.medium")
-                    }
-                    Label(store.currentObservation != nil ?
-                          "Observación local: " + (store.currentObservation == true ? "llueve":"seco") :
-                          radarConfirmedDisplay(store) ?
-                          ((store.minuteForecast(now:Date(),horizon:0).first?.rate ?? 0)>=0.15 ?
-                              "Eco de lluvia en radar" : "Sin eco de lluvia en radar") :
-                          "Modelo: " + weather.intensity,systemImage:"drop.fill")
-                }
-                .font(.subheadline.bold())
-                .foregroundStyle(.white.opacity(0.9))
                 let votes=store.shortModels.compactMap { $0.predictsRain(at:Date()) }
                 if votes.contains(true) && votes.contains(false) ||
                    (store.radarLocal?.isFresh(at:Date())==true &&
@@ -120,7 +85,7 @@ struct RainHeroCard: View {
                                 .tint(.mint)
                         }
                         .buttonStyle(.borderedProminent)
-                        Text("Tu dato corrige el estado actual durante 20 min. Tras varias observaciones locales ajusta ligeramente el peso de cada modelo; queda solo en este iPhone.")
+                        Text("Corrige ahora y reduce durante 20 min el peso de los modelos que fallaron. Los aciertos locales repetidos ajustan su peso a largo plazo.")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
