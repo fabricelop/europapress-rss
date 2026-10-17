@@ -46,10 +46,28 @@ enum RainFeedback {
             let checked = nearby.compactMap { report -> Bool? in
                 report.modelWet[name].map { $0 == report.raining }
             }
-            guard checked.count >= 5 else { return nil }
-            let accuracy = (Double(checked.filter { $0 }.count) + 3) /
-                           (Double(checked.count) + 6)
-            return (name, min(1.25, max(0.75, 0.75 + 0.5 * accuracy)))
+            let baseline: Double
+            if checked.count >= 5 {
+                let accuracy = (Double(checked.filter { $0 }.count) + 3) /
+                               (Double(checked.count) + 6)
+                baseline = min(1.25, max(0.75, 0.75 + 0.5 * accuracy))
+            } else {
+                baseline = 1
+            }
+            // One local correction is immediately useful, but only briefly.
+            // Never exclude a model completely: the observation is subjective.
+            let recent = nearby.filter {
+                now.timeIntervalSince($0.date) < 20 * 60 &&
+                $0.modelWet[name] != nil
+            }.max(by: {$0.date < $1.date})
+            guard let recent else {
+                return checked.count >= 5 ? (name, baseline) : nil
+            }
+            let age = now.timeIntervalSince(recent.date)
+            let decay = max(0, 1 - age / (20 * 60))
+            let factor = recent.modelWet[name] == recent.raining ?
+                1 + 0.12 * decay : 1 - 0.35 * decay
+            return (name, min(1.25, max(0.60, baseline * factor)))
         })
     }
 }
