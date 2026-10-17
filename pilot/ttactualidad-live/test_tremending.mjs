@@ -47,4 +47,23 @@ assert.equal(vm.runInContext('confirmedAction(op,docs)',ctx),false,
  'Wrong decision cannot confirm');
 assert(html.includes("targets.push(['ttittulares/tremending/items.json','tremending'])"));
 assert(html.includes("command('Quitar de Listas','deleted')"));
-console.log('TTActualidad Tremending: UI pending, deletion and confirmation tests OK');
+// A confirmed manual "Elaborar" must remove the stale growing card,
+// but NEVER hide the authoritative PROCESSING/READY record in its new section.
+const growingId='growing-moved-123';
+pendingDeletes.set('ttittulares:'+growingId,{status:'confirmed',decision:'prepare'});
+state.data.status.three_source_items=[{event_id:growingId,revision:1,title:'Noticia creciendo'}];
+state.data.ttiQueue.items=[{event_id:growingId,revision:1,status:'PROCESSING',title:'Noticia en proceso'}];
+state.tab='creciendo';
+assert.equal(vm.runInContext('ttiRows().filter(x=>!isTemporarilyRemoved(x)).length',ctx),0,
+ 'Stale Creciendo card must be hidden once prepare is confirmed');
+state.tab='elaboracion';
+assert.equal(vm.runInContext('ttiRows().filter(x=>!isTemporarilyRemoved(x)).length',ctx),1,
+ 'Authoritative PROCESSING card must appear in En elaboración');
+state.data.prepared.items=[{event_id:growingId,title:'Noticia lista'}];
+state.tab='listas';
+assert.equal(vm.runInContext('ttiRows().filter(x=>!isTemporarilyRemoved(x)).length',ctx),1,
+ 'Prepared card must appear in Listas despite prior prepare marker');
+pendingDeletes.set('ttittulares:'+growingId,{status:'confirmed',decision:'deleted'});
+assert.equal(vm.runInContext('ttiRows().filter(x=>!isTemporarilyRemoved(x)).length',ctx),0,
+ 'Delete marker must still hide the card');
+console.log('TTActualidad Tremending + growing prepare visibility regression tests OK');
