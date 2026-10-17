@@ -1,45 +1,12 @@
-name: Enviar solo imágenes IA TTiTTulares
+name: TT AI image direct Telegram sender disabled
+# La entrega real a TTImages descarga ChatGPT Images en el PC y envía desde allí.
+# Desactivado tras la corrección del usuario 2026-10-17; no usar sendPhoto desde Actions.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'ttittulares/prepared.json'
-      - 'ttittulares/generated-images/**'
-      - '.github/scripts/send_tt_ai_images.py'
-      - '.github/workflows/send-tt-ai-images.yml'
 permissions:
-  contents: write
-concurrency:
-  group: tt-ai-image-delivery
-  cancel-in-progress: false
+  contents: read
 jobs:
-  send:
+  disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Enviar imagen y guardar confirmación
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin main
-          git checkout -B main origin/main
-          python3 .github/scripts/send_tt_ai_images.py
-          git add telegram/tt-ai-image-deliveries.json 2>/dev/null || true
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Registrar envío de imagen IA a Telegram'
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then exit 0; fi
-            git fetch origin main
-            git rebase origin/main
-            sleep "$attempt"
-          done
-          echo 'Imagen enviada; ledger pendiente de reconciliación, no reenviar' >&2
-          exit 1
+      - run: echo 'El envío de imágenes IA a TTImages se realiza desde el PC.'
