@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><title>TTActualidad — Diagnóstico IPv4 / IPv6</title>
+<style>
+:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f1f5fc}
+main{max-width:650px;margin:auto;padding:26px 18px 80px}h1{font-size:1.55rem;line-height:1.2}
+p{line-height:1.5;color:#c1d0e9}.panel{border:1px solid #35415b;background:#151d31;padding:17px;border-radius:14px;margin:15px 0}
+.item{border-top:1px solid #35415b;padding:13px 0}.item:first-child{border:0}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+strong{font-size:14px}.state{font-size:12px;padding:5px 8px;border-radius:6px;background:#35415b;white-space:nowrap}
+.ok{background:#144e36;color:#b9ffdc}.fail{background:#713040;color:#ffd8e1}.pending{background:#514829;color:#ffe8ad}
+.detail{font-size:12px;overflow-wrap:anywhere;margin:5px 0 0;opacity:.9}
+button,.link{border:1px solid #6b9cff;background:#27456d;border-radius:10px;padding:11px 13px;color:#fff;cursor:pointer;text-decoration:none;font-weight:650;font-size:15px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}small{color:#a4b3ca;line-height:1.55}
+</style></head><body><main>
+<h1>Diagnóstico de acceso IPv4 / IPv6</h1>
+<p>Prueba hecha desde <strong>este iPhone y esta conexión</strong>. No cambia el router ni instala nada. Compara el acceso a un sitio solo IPv4, otro solo IPv6 y los Workers de TTActualidad y FabCalendar.</p>
+<div class="controls"><button id="run" type="button">Repetir prueba</button><button id="copy" type="button">Copiar resultados</button><a class="link" href="./ttactualidad/">Volver a TTActualidad</a></div>
+<section class="panel" id="results" aria-live="polite"></section>
+<p id="assessment"></p>
+<small>Una prueba satisfactoria de IPv4 solo demuestra conectividad general mediante IPv4 o traducción NAT64; no fuerza a TTActualidad a usar IPv4. La prueba de Workers comprueba disponibilidad desde Safari, pero no puede saber qué familia IP eligió Safari. Los resultados son locales: no se envían a ningún servidor de diagnóstico.</small>
+<script>
+const CASES=[
+ {id:'v4',name:'Red IPv4',url:'https://ipv4.icanhazip.com/',mode:'no-cors',note:'Servidor accesible mediante IPv4 (o NAT64)'},
+ {id:'v6',name:'Red IPv6',url:'https://ipv6.icanhazip.com/',mode:'no-cors',note:'Servidor accesible mediante IPv6'},
+ {id:'tt',name:'TTActualidad · Worker original',url:'https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health',mode:'cors',note:'Respuesta real de /health'},
+ {id:'ttopaque',name:'TTActualidad · conectividad básica',url:'https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health',mode:'no-cors',note:'Comprueba conexión sin leer la respuesta (control CORS)'},
+ {id:'fab',name:'FabCalendar · conectividad básica',url:'https://fabcalendar-bot.fabricelop.workers.dev/healthz',mode:'no-cors',note:'No requiere sesión ni leer datos'}
+];
+const $=id=>document.getElementById(id), outcomes={};
+function update(item,text,detail,state){
+ const el=$(item.id);el.querySelector('.state').textContent=text;
+ el.querySelector('.state').className='state '+state;
+ el.querySelector('.detail').textContent=detail;
+}
+async function probe(item){
+ update(item,'Comprobando…',item.note,'pending');
+ const ac=new AbortController(), t0=performance.now();
+ const limit=setTimeout(()=>ac.abort(),10000);
+ try{
+  const u=item.url+(item.url.includes('?')?'&':'?')+'ttdiag='+Date.now();
+  const resp=await fetch(u,{mode:item.mode,cache:'no-store',redirect:'follow',signal:ac.signal});
+  const ms=Math.round(performance.now()-t0);
+  if(item.mode==='cors'&&!resp.ok)throw Error('HTTP '+resp.status);
+  let detail=item.note+' · '+ms+' ms';
+  if(item.id==='tt'){
+   const data=await resp.json();
+   if(!data.ok)throw Error('Respuesta sin ok=true');
+   detail='HTTP '+resp.status+' · '+ms+' ms · Worker='+String(data.kind||'?')+' · GitHub conectado='+String(data.production_connected);
+  }
+  outcomes[item.id]={ok:true,detail};
+  update(item,'CONECTA',detail,'ok');
+ }catch(e){
+  const detail=(ac.signal.aborted?'Tiempo agotado (10 s)':String(e.message||e).slice(0,90));
+  outcomes[item.id]={ok:false,detail};
+  update(item,'FALLA',detail,'fail');
+ }finally{clearTimeout(limit)}
+}
+function assess(){
+ const v4=outcomes.v4?.ok,v6=outcomes.v6?.ok,tt=outcomes.tt?.ok,opaque=outcomes.ttopaque?.ok,fab=outcomes.fab?.ok;
+ let t='';
+ if(tt)t='TTActualidad responde desde este iPhone. El acceso al Worker funciona; si «Quitar de Listas» no va, hay que revisar sesión y origen.';
+ else if(opaque)t='TTActualidad responde a nivel de conexión, pero su respuesta no se puede leer. Posible error de CORS o respuesta distinta de /health.';
+ else if(v4&&!v6)t='La conexión alcanza un servicio IPv4 pero no el IPv6 de prueba. TTActualidad sigue fallando: IPv6 no explica por sí solo el problema.';
+ else if(!v4&&v6)t='Falló la prueba de un servidor solo IPv4, aunque funciona IPv6. Puede haber un problema de acceso IPv4 o de ese servidor de prueba.';
+ else if(v4&&v6)t='IPv4 e IPv6 generales conectan, pero TTActualidad no. No es suficiente atribuirlo a IPv6; puede ser el subdominio o su ruta.';
+ else t='No hay conectividad confirmada en estas pruebas. Comprueba acceso a otras webs o repite con otra red.';
+ if(fab===false)t+=' FabCalendar tampoco responde desde esta red.';
+ $('assessment').textContent=t;
+}
+async function run(){
+ $('run').disabled=true;Object.keys(outcomes).forEach(k=>delete outcomes[k]);
+ $('assessment').textContent='Comprobando la red actual…';
+ await Promise.all(CASES.map(probe));
+ assess();$('run').disabled=false;
+}
+async function copy(){
+ const lines=['TTActualidad · Diagnóstico de Safari',new Date().toISOString(),
+  'Agente: '+navigator.userAgent, 'Online: '+navigator.onLine,
+  ...CASES.map(x=>x.name+': '+(outcomes[x.id]?.ok?'CONECTA':'FALLA')+' · '+(outcomes[x.id]?.detail||'No evaluado')),
+  'Interpretación: '+$('assessment').textContent];
+ const txt=lines.join('\n');
+ try{await navigator.clipboard.writeText(txt);$('copy').textContent='Copiado';}
+ catch{$('copy').textContent='Mantén pulsado para copiar';prompt('Copia el resultado',txt);}
+}
+$('results').innerHTML=CASES.map(x=>'<div class="item" id="'+x.id+'"><div class="head"><strong>'+x.name+'</strong><span class="state pending">Pendiente</span></div><p class="detail">'+x.note+'</p></div>').join('');
+$('run').addEventListener('click',run);
+$('copy').addEventListener('click',copy);
+run();
+</script>
+</main></body></html>
