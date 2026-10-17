@@ -71,6 +71,35 @@ final class RadarWeightedForecastTests:XCTestCase {
         XCTAssertNil(RadarLocalAPI.wetFraction(Data("not png".utf8),point:point))
     }
 
+    func testObservedOnlyRadarOverridesWetModelForCurrentConditions() {
+        let now=start.addingTimeInterval(8*60)
+        let local=RadarLocalTimeline(
+            observedAt:start,fetchedAt:now,
+            frames:[RadarLocalFrame(date:start.addingTimeInterval(-600),echo:0),
+                    RadarLocalFrame(date:start,echo:0)],
+            coverageConfirmed:true)
+        XCTAssertTrue(local.isFresh(at:now))
+        XCTAssertFalse(local.hasFutureFrames)
+        let series=RadarWeightedForecast.make(snapshot:weather(true),models:[],
+                                       radar:local,now:now,horizon:120)
+        XCTAssertLessThan(series[0].rate,0.15)
+        XCTAssertLessThan(series[5].rate,0.15)
+        let state=RainShortFusion.estimateUsingLocal(weather:weather(true),
+                                                     radar:local,models:[],now:now)
+        XCTAssertFalse(state.rainingNow)
+        XCTAssertTrue(state.method.contains("observado"))
+        XCTAssertTrue(state.method.contains("modelos"))
+    }
+
+    func testObservedDryDoesNotBecomeNowcastWetAtCurrentMinute() {
+        let now=start.addingTimeInterval(10*60)
+        let timeline=radar(0,0.9)
+        let series=RadarWeightedForecast.make(snapshot:weather(true),models:[],
+                                      radar:timeline,now:now,horizon:60)
+        XCTAssertEqual(series[0].rate,0,accuracy:0.0001)
+        XCTAssertGreaterThan(series[7].rate,0.15)
+    }
+
     func testRadarDryOverridesContraryRainingNowModel() {
         let wx=weather(true)
         let local=radar(0,0)
