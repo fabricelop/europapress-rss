@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-17T12:31:40.313194+00:00",
-  "ok": true,
+  "checked_at": "2026-10-17T15:54:25.064863+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.0,
-      "run_id": 39032735917,
+      "age_minutes": 1.6,
+      "run_id": 39046975523,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,20 +77,76 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 9.7,
+      "ok": false,
+      "pending_count": 8,
+      "overdue_count": 8,
+      "oldest_age_minutes": 150.7,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "b8187c2f1a64",
+          "name": "Hernández Hernández",
+          "status": "preparing",
+          "age_minutes": 81.8
+        },
+        {
+          "id": "24b16e906a60",
+          "name": "ES-Alert",
+          "status": "preparing",
+          "age_minutes": 81.8
+        },
+        {
+          "id": "c8490403e466",
+          "name": "#LaFuerzaDeLaGente",
+          "status": "preparing",
+          "age_minutes": 150.7
+        },
+        {
+          "id": "f390fb388c6a",
+          "name": "#EspanyolAtleti",
+          "status": "preparing",
+          "age_minutes": 150.7
+        },
+        {
+          "id": "a0f9b43477ef",
+          "name": "Giuliano",
+          "status": "preparing",
+          "age_minutes": 150.7
+        },
+        {
+          "id": "fc2bea7db15b",
+          "name": "adivina",
+          "status": "preparing",
+          "age_minutes": 81.8
+        },
+        {
+          "id": "dbed6537630d",
+          "name": "Espanyol",
+          "status": "preparing",
+          "age_minutes": 81.8
+        },
+        {
+          "id": "053c8714516d",
+          "name": "Mendoza",
+          "status": "preparing",
+          "age_minutes": 51.6
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "d71d9cbc6a33"
+        "b8187c2f1a64",
+        "24b16e906a60",
+        "c8490403e466",
+        "f390fb388c6a",
+        "a0f9b43477ef",
+        "fc2bea7db15b",
+        "dbed6537630d",
+        "053c8714516d"
       ],
       "contradictory_success": false
     },
@@ -101,8 +157,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 150.7 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 150.7 min"
 }
