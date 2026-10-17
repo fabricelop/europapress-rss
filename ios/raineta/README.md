@@ -1,4 +1,13 @@
-# RainETA para iPhone — v0.11.0
+# RainETA para iPhone — v0.12.0
+
+## v0.12.0 — Horas reales y consenso visual
+
+- Portada centrada en la cuenta atrás y el estado, con menos texto.
+- Horas locales en pulso y próximas 3 horas. Matriz conjunta de modelos con barras de acuerdo e intensidad por hora.
+- Comparación diaria con 24 columnas por modelo, además de acumulados.
+- Las observaciones propias penalizan durante 20 minutos a los modelos que fallaron (peso inicial 0,65) y refuerzan ligeramente los que acertaron; la corrección se desvanece. Tras al menos cinco observaciones cercanas sigue el ajuste moderado de largo plazo. En la fusión actual, el peso solo cambia el respaldo por mediana horaria cuando falta la previsión principal de 15 minutos.
+- Gráfico de 24 horas de estimación horaria de Open-Meteo, separado de los avisos propios. No es medición exacta local ni se utiliza como verdad para entrenar los modelos.
+- Marcas de ecos observados, informes propios y comienzo previsto de lluvia en la línea del radar.
 
 ## v0.11.0 — Inicio y fin de lluvia como decisión principal
 
