@@ -17,11 +17,12 @@ struct RadarLocalTimeline {
     let fetchedAt: Date
     let frames: [RadarLocalFrame]
     let coverageConfirmed: Bool
+    var hasFutureFrames:Bool { frames.contains(where:{$0.date>observedAt}) }
 
     func isFresh(at now: Date) -> Bool {
         let age=now.timeIntervalSince(observedAt)
         return coverageConfirmed && age >= -180 && age <= 18*60 &&
-               now.timeIntervalSince(fetchedAt) < 15*60 && frames.count >= 3
+               now.timeIntervalSince(fetchedAt) < 15*60 && !frames.isEmpty
     }
 
     /// Nearest frame. These are provider forecasts at ten-minute intervals,
@@ -133,8 +134,7 @@ enum RadarLocalAPI {
 
     static func fetch(feed:RadarFeed,coordinate:CLLocationCoordinate2D,
                       now:Date=Date()) async -> RadarLocalTimeline? {
-        guard feed.source=="LibreWXR",feed.hasNowcast,
-              let last=feed.latest,
+        guard let last=feed.latest,
               let point=tilePoint(latitude:coordinate.latitude,
                                   longitude:coordinate.longitude),
               let _=tileURL(host:feed.host,path:last.path,point:point),
@@ -144,7 +144,7 @@ enum RadarLocalAPI {
             $0.timestamp>last.timestamp &&
             $0.timestamp<=last.timestamp+3600
         }
-        guard picks.count>=5 else{return nil}
+        guard !picks.isEmpty else{return nil}
         let sampled=await withTaskGroup(of:RadarLocalFrame?.self) {group in
             for frame in picks {
                 group.addTask {
@@ -160,8 +160,7 @@ enum RadarLocalAPI {
         }
         // A confirmed observed tile at the location is our coverage evidence.
         // Do not interpret a failed tile or missing future step as clear sky.
-        guard sampled.contains(where:{$0.date==last.date}),
-              sampled.filter({$0.date>last.date}).count>=3 else{return nil}
+        guard sampled.contains(where:{$0.date==last.date}) else{return nil}
         return RadarLocalTimeline(observedAt:last.date,
                                   fetchedAt:now,frames:sampled,
                                   coverageConfirmed:true)
@@ -208,14 +207,22 @@ enum RadarWeightedForecast {
                 echo=radar?.frames.last(where:{
                     $0.date == radar?.observedAt
                 })?.echo
-            } else if fresh && minute<=60 {
+            } else if fresh && radar?.hasFutureFrames == true && minute<=60 {
                 echo=radar?.echo(at:date)
-            } else if fresh && minute<=90 {
+            } else if fresh && radar?.hasFutureFrames == true && minute<=90 {
                 echo=finalEcho
+            } else if fresh && radar?.hasFutureFrames == false && minute<=20 {
+                echo=radar?.frames.last(where:{$0.date==radar?.observedAt})?.echo
             } else {
                 echo=nil
             }
-            let w=radarWeight(at:minute,radarAvailable:echo != nil)
+            let w:Double
+            if radar?.hasFutureFrames == false {
+                w=echo == nil ? 0 :
+                    (minute<=10 ? 1 : minute>=20 ? 0 : Double(20-minute)/10)
+            } else {
+                w=radarWeight(at:minute,radarAvailable:echo != nil)
+            }
             guard let predicted=baseRate ?? echo.map({$0>=0.12 ? 0.4 : 0}) else{return nil}
             // Radar presence/absence gates the model, instead of turning
             // uncalibrated reflectivity into artificial measured mm/h.
