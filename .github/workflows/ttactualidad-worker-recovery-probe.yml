@@ -24,6 +24,25 @@ jobs:
             echo "IPv6 EXIT=$?"
             echo "::endgroup::"
           done
+      - name: Check complete application over IPv4 and DNS resolver answers
+        shell: bash
+        run: |
+          set +e
+          for url in "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/" "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health" "https://fabcalendar-bot.fabricelop.workers.dev/healthz"; do
+            echo "::group::$url"
+            curl -4 -L -sS --connect-timeout 6 --max-time 15 -o /tmp/check.body -D /tmp/check.headers -w 'HTTP=%{http_code} remote=%{remote_ip} total=%{time_total}s bytes=%{size_download}\\n' "$url"
+            grep -Ei '^(HTTP/|cf-ray:|content-type:|server:|location:)' /tmp/check.headers || true
+            head -c 250 /tmp/check.body | tr '\\n' ' '; echo
+            echo "::endgroup::"
+          done
+          echo '=== DNS answers from public resolvers ==='
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            for type in A AAAA; do
+              echo "$host $type"
+              dig +short @1.1.1.1 "$host" "$type" | head -12
+              dig +short @8.8.8.8 "$host" "$type" | head -12
+            done
+          done
       - name: Verify Cloudflare deploy authentication presence (no changes)
         env:
           CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
