@@ -64,6 +64,40 @@ private enum RainBarDisplay {
     }
 }
 
+private struct RainMinuteBarCell:View {
+    let point:RainMinuteBar
+    let height:CGFloat
+    let width:CGFloat
+    let selected:Bool
+    let action:() -> Void
+
+    private var barColor:Color {
+        guard let rate=point.mmh else { return .gray.opacity(0.22) }
+        return point.wet ? RainVisual.color(rate) : .mint.opacity(0.25)
+    }
+    private var spoken:String {
+        let rate=point.mmh.map { String(format:"%.1f milímetros por hora",$0) }
+                   ?? "sin dato"
+        let chance=point.probability.map { ", probabilidad \($0) por ciento" } ?? ""
+        return "Minuto \(point.minute), " + rate + chance
+    }
+    var body:some View {
+        Button(action:action) {
+            RoundedRectangle(cornerRadius:2)
+                .fill(barColor)
+                .frame(width:width,height:height)
+                .shadow(color:point.wet ? barColor.opacity(0.75) : .clear,
+                        radius:point.wet ? 6 : 0)
+                .overlay(alignment:.top) {
+                    if selected { Rectangle().stroke(.white,lineWidth:1.5) }
+                }
+                .frame(width:width,height:105,alignment:.bottom)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(spoken)
+    }
+}
+
 private struct RainMinuteBars:View {
     let data:[RainMinuteBar]
     let horizon:Int
@@ -82,28 +116,11 @@ private struct RainMinuteBars:View {
                 VStack(alignment:.leading,spacing:6) {
                     HStack(alignment:.bottom,spacing:spacing) {
                         ForEach(data) { point in
-                            Button {
+                            RainMinuteBarCell(point:point,
+                                height:barHeight(point),width:barWidth,
+                                selected:selectedMinute==point.minute) {
                                 selectedMinute=point.minute
-                            } label:{
-                                RoundedRectangle(cornerRadius:1.5)
-                                    .fill(point.mmh == nil ? Color.gray.opacity(0.22) :
-                                          point.wet ? RainVisual.color(point.mmh ?? 0) :
-                                          Color.mint.opacity(0.25))
-                                    .frame(width:barWidth,height:barHeight(point))
-                                    .shadow(color:point.wet ? RainVisual.color(point.mmh ?? 0).opacity(0.75) : .clear,
-                                            radius:point.wet ? 6 : 0)
-                                    .overlay(alignment:.top) {
-                                        if selectedMinute==point.minute {
-                                            Rectangle().stroke(.white,lineWidth:1.5)
-                                        }
-                                    }
-                                    .frame(width:barWidth,height:105,alignment:.bottom)
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel("Minuto \(point.minute), " +
-                                (point.mmh.map{String(format:"%.1f milímetros por hora",$0)}
-                                  ?? "sin dato") +
-                                (point.probability.map{", probabilidad \($0) por ciento"} ?? ""))
                             .id(point.minute)
                         }
                     }
