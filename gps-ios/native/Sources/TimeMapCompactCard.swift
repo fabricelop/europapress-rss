@@ -100,6 +100,7 @@ private struct TimeMapCardLiveRows:View {
                 Text("").frame(minWidth:64,alignment:.leading)
                 Text("Total").foregroundStyle(.secondary)
                 Text("Estancia").foregroundStyle(.secondary)
+                Text("N.º visitas").foregroundStyle(.secondary)
             }
             if let zone {
                 SwiftUI.GridRow {
@@ -108,6 +109,8 @@ private struct TimeMapCardLiveRows:View {
                         .fontWeight(.semibold)
                     Text(isHere ? TimeMapCardClock.display(
                         model.zoneStaySeconds(for:zone,now:now)) : "—")
+                        .fontWeight(.semibold)
+                    Text(String(model.numberOfVisits(for:zone.cells,now:now)))
                         .fontWeight(.semibold)
                 }
             }
@@ -118,6 +121,8 @@ private struct TimeMapCardLiveRows:View {
                         .fontWeight(.semibold)
                     Text(isHere ? TimeMapCardClock.display(
                         model.staySeconds(now:now)) : "—")
+                        .fontWeight(.semibold)
+                    Text(String(model.numberOfVisits(for:[picked.id],now:now)))
                         .fontWeight(.semibold)
                 }
             }
@@ -141,6 +146,9 @@ private struct TimeMapCardLiveRows:View {
                     TimeMapDetailRow(label:"Estancia actual en la zona",
                                      seconds:model.zoneStaySeconds(for:zone,now:now))
                 }
+                LabeledContent("N.º visitas",value:String(
+                    model.numberOfVisits(for:zone.cells,now:now)))
+                    .font(.subheadline.monospacedDigit())
             }
             if let picked {
                 if zone != nil { Divider().padding(.vertical,2) }
@@ -154,6 +162,9 @@ private struct TimeMapCardLiveRows:View {
                     TimeMapDetailRow(label:"Estancia actual en esta cuadrícula",
                                      seconds:model.staySeconds(now:now))
                 }
+                LabeledContent("N.º visitas",value:String(
+                    model.numberOfVisits(for:[picked.id],now:now)))
+                    .font(.subheadline.monospacedDigit())
             }
         }
     }
