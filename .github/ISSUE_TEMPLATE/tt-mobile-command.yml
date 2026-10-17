@@ -8,25 +8,20 @@ body:
         La orden se procesa en GitHub Actions tras pulsar **Submit new issue**.
         No compartas contraseñas ni tokens en este formulario.
         Puedes volver a la web al enviarla. La confirmación aparecerá en esta incidencia.
-  - type: dropdown
+  - type: input
     id: project
     attributes:
       label: "Proyecto"
-      options:
-        - ttittulares
-        - ttendencias
+      description: "Se rellena automáticamente desde TTActualidad. No cambiar."
+      placeholder: "ttittulares"
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: action
     attributes:
       label: "Acción"
-      options:
-        - published
-        - deleted
-        - dismissed
-        - rework
-        - prepare
+      description: "Se rellena automáticamente desde el botón. No cambiar."
+      placeholder: "published"
     validations:
       required: true
   - type: input
