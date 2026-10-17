@@ -2,6 +2,8 @@
 # Instala el agente como tarea no intrusiva. No inicia ningún otro proyecto.
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+# Windows PowerShell 5.1: DPAPI lives in System.Security.dll.
+Add-Type -AssemblyName System.Security
 $base=Join-Path $env:LOCALAPPDATA 'CentroReparaciones'
 New-Item -ItemType Directory -Force -Path $base | Out-Null
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'Agent.ps1') -Destination (Join-Path $base 'Agent.ps1') -Force
@@ -16,7 +18,7 @@ try{ $plain=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) }
 finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)}
 if($plain.Length -lt 32){throw 'La clave requiere al menos 32 caracteres'}
 $raw=[Text.Encoding]::UTF8.GetBytes($plain)
-$encrypted=[Security.Cryptography.ProtectedData]::Protect($raw,$null,[Security.Cryptography.DataProtectionScope]::CurrentUser)
+$encrypted=[System.Security.Cryptography.ProtectedData]::Protect($raw,$null,[System.Security.Cryptography.DataProtectionScope]::CurrentUser)
 [Array]::Clear($raw,0,$raw.Length)
 [IO.File]::WriteAllText((Join-Path $base 'agent-key.bin'),[Convert]::ToBase64String($encrypted))
 $action=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ('-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $base 'Agent.ps1')+'"')
