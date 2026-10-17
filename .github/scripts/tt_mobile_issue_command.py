@@ -395,7 +395,7 @@ def trend_command(action, element_id, context, instruction, now):
         r["name"] = str(top_row.get("name") or r.get("name") or "")
     r.update(status="preparing", requested_at=now, revision=int(r.get("revision") or 0) + 1,
              auto_queued=False, request_source="github_pages_authorized_issue",
-             task="explain", with_image=False, disable_ai_image=True,
+             task="explain", with_image=True, disable_ai_image=False,
              reexplain_instructions=instruction or "Investiga y explica esta tendencia con el mismo rigor que una Top 10. El texto y remate se cierran antes de las imágenes.")
     doc["updated_at"] = now
     save(p, doc)
@@ -408,7 +408,7 @@ def trend_command(action, element_id, context, instruction, now):
         "status": "preparing", "requested_at": now,
         "revision": r["revision"], "task": "explain",
         "auto_queued": False, "request_source": "github_pages_authorized_issue",
-        "with_image": False, "disable_ai_image": True,
+        "with_image": True, "disable_ai_image": False,
         "rewrite_instruction": r["reexplain_instructions"],
     })
     queue.update(project="TTendencias", items=rows, count=len(rows), updated_at=now)
