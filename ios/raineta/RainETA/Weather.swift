@@ -575,6 +575,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         let reuse=shortModelKey==locationKey && !modelsCache.isEmpty &&
                   Date().timeIntervalSince(shortModelLoadedAt)<10*60
         shortModelsLoading = !reuse
+        radarAnalysisStatus="Comprobando píxel radar de " + name + "…"
         let revision=placeSelectionRevision
 
         shortTask=Task {
@@ -593,7 +594,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             } else {
                 radarAnalysisStatus=feed.source=="LibreWXR" ?
                     "Sin lectura radar local válida; modelos de respaldo" :
-                    "Solo radar observado; sin nowcast local validado"
+                    "No se pudo leer el radar de este lugar; modelos sin confirmar"
             }
             shortEstimate=RainShortFusion.estimateUsingLocal(
                  weather:wx,radar:local,models:modelsCache,now:Date())
