@@ -10,6 +10,7 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('ttittulares/editorial-queue.json',{'items':[]})
   self.write('ttittulares/status.json',{'processing_items':[],'problematic_items':[],'three_source_items':[]})
   self.write('telegram/events.json',{'events':[]})
+  self.write('telegram/editorial-processing.json',{'items':[]})
   self.write('ttittulares/decisions.json',{'items':[]})
   self.write('ttittulares/prepared.json',{'items':[]})
   self.write('trends/editorial-queue.json',{'items':[]})
@@ -52,7 +53,8 @@ class LiveEditorialTests(unittest.TestCase):
   self.assertTrue(row['force_user_elaborate'])
   self.assertTrue(row['manual_threshold_override'])
   self.assertTrue(row['manual_investigation_requested'])
-  self.assertNotIn('telegram/editorial-processing.json',changed)
+  self.assertIn('telegram/editorial-processing.json',changed)
+  self.assertEqual(changed['telegram/editorial-processing.json']['items'][0]['status'],'PROCESSING')
  def test_tti_growing_rejects_stale_revision(self):
   self.write('ttittulares/status.json',{'three_source_items':[{'event_id':'grow123','revision':3}]})
   self.write('telegram/events.json',{'events':[{'id':'grow123','revision':3,
@@ -128,8 +130,8 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('ttittulares/tremending/items.json',{'items':[
    {'id':'tremending-abc123','status':'pending'}]})
   with self.assertRaises(app.InvalidAction):app.apply_live('ttittulares','tremending-abc123','deleted',0)
- def test_no_telegram_or_tremending_writes(self):
+ def test_only_editorial_processing_no_telegram_callbacks_or_tremending(self):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','revision':1}]})
   changed,_=app.apply_live('ttittulares','abc123','prepare',1)
-  self.assertTrue(all('telegram/' not in p and 'tremending' not in p and 'selorecordamos' not in p for p in changed))
+  self.assertEqual(set(changed),{'ttittulares/editorial-queue.json','telegram/editorial-processing.json'})
 if __name__=='__main__':unittest.main()
