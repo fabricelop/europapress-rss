@@ -591,9 +591,9 @@ function schedulePendingChecks(){
 function emergencyGithubIssueUrl(project,id,decision,title){
  const action=decision==='discard'?(project==='ttittulares'?'dismissed':'published'):decision;
  if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[A-Za-z0-9:_-]{3,128}$/.test(id))return '';
- const body='### Proyecto\n\n'+project+'\n\n### Acción\n\n'+action+'\n\n### ID del elemento\n\n'+id+'\n\n### Titular o contexto\n\n'+String(title||id).slice(0,280);
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
- return 'https://github.com/fabricelop/europapress-rss/issues/new?title='+encodeURIComponent(issueTitle)+'&body='+encodeURIComponent(body);
+ const fields=new URLSearchParams({template:'tt-mobile-command.yml',title:issueTitle,project,action,id,context:String(title||id).slice(0,280)});
+ return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 async function pilotSend(item,decision){
  if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
