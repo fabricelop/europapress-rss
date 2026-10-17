@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-ad443d46cc7d-r1-a4-1791397844488",
+  "requested_at": "2026-10-07T18:30:44.488081Z",
+  "updated_at": "2026-10-07T18:32:35.633Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "ad443d46cc7d",
+  "trend_id": "ad443d46cc7d",
+  "target_name": "#EleccionesEspaña",
+  "revision": 1,
+  "attempt": 4,
+  "auto_repair": true,
+  "auto_repair_attempt": 4,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "#EleccionesEspaña",
+    "revision": 1,
+    "explanation": "TT#8 #EleccionesEspaña es tendencia porque las generales del 29-N centran la conversación política tras el adelanto electoral, con el voto por correo en primer plano después de que dirigentes de PP y Vox cuestionaran sus garantías y Correos defendiera su seguridad.",
+    "closer_text": "",
+    "trend_names": [
+      "#EleccionesEspaña"
+    ],
+    "group_title": "Elecciones generales del 29-N y debate sobre voto por correo",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-07T20:18:00+02:00",
+    "verification_sources": [
+      {
+        "source": "RTVE · 7/10/2026",
+        "url": "https://www.rtve.es/play/audios/las-mananas-de-rne/correos-voto-correo-absolutamente-seguro/17256452/"
+      },
+      {
+        "source": "El País · 7/10/2026",
+        "url": "https://elpais.com/espana/elecciones-generales/2026-10-07/feijoo-abona-a-las-dudas-del-pp-sobre-el-voto-por-correo-y-pedira-mas-controles-a-la-junta-electoral.html"
+      },
+      {
+        "source": "Cadena SER · 5/10/2026",
+        "url": "https://cadenaser.com/nacional/2026/10/05/del-voto-por-correo-a-la-campana-asi-queda-el-calendario-electoral-despues-de-que-sanchez-haya-adelantado-las-elecciones-al-29-de-noviembre-cadena-ser/"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos.",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "d2093ecc863d2a4cea3a8314d8623b5ac13f7e6d2ef53bced8fa58cc9a24d624",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-07T18:31:12.663Z",
+  "pc_launched_at": "2026-10-07T18:31:35.176Z",
+  "upload_received_at": "2026-10-07T18:32:29.778Z",
+  "upload_sha256": "ea2c3ed581154ef20e1ad4b59e93cb08a22d6a252267bc2c36b5cd99cfced380",
+  "upload_bytes": 2287607,
+  "finished_at": "2026-10-07T18:32:35.633Z"
+}

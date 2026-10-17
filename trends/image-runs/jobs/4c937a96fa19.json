@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-4c937a96fa19-r0-a1-1791150773951",
+  "requested_at": "2026-10-04T21:52:53.951135Z",
+  "updated_at": "2026-10-04T21:55:02.930Z",
+  "status": "CANCELLED",
+  "phase": "stale_target",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "4c937a96fa19",
+  "trend_id": "4c937a96fa19",
+  "target_name": "Escribá",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Escribá",
+    "revision": 0,
+    "explanation": "TT#12 Escribá es tendencia porque el Valladolid empató 2-2 en Las Palmas: el Pucela remontó un 1-0, pero sigue sin ganar fuera; Escribá dijo que la primera victoria a domicilio está cada vez más cerca.\n🌶️ La victoria visitante ya sale en el GPS, pero aún no aparca.",
+    "closer_text": "🌶️ La victoria visitante ya sale en el GPS, pero aún no aparca.",
+    "trend_names": [
+      "Escribá"
+    ],
+    "group_title": "Escribá tras el 2-2 Las Palmas-Valladolid",
+    "rank_at_explanation": 12,
+    "explained_at": "2026-10-04T23:47:15+02:00",
+    "verification_sources": [
+      {
+        "source": "Real Valladolid · 4/10/2026",
+        "url": "https://www.realvalladolid.es/noticias/cronica-j8-las-palmas-real-valladolid-26-27"
+      },
+      {
+        "source": "AS · 4/10/2026",
+        "url": "https://as.com/futbol/segunda/escriba-la-victoria-fuera-de-casa-esta-cada-vez-mas-cerca-f202610-n/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Cancelado antes de abrir chat: not_pending_explained",
+  "pc_upload_secret_hash": "e335c8cd47992e07626a0a3e22c15572659e1a4a02407092ac4a5ccb02934f75",
+  "finished_at": "2026-10-04T21:55:02.930Z",
+  "pc_worker_id": "ttendencias-dedicated-v12"
+}
