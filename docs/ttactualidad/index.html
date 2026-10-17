@@ -590,7 +590,7 @@ function schedulePendingChecks(){
 }
 function emergencyGithubIssueUrl(project,id,decision,title){
  const action=decision==='discard'?'dismissed':decision;
- if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[A-Za-z0-9:_-]{3,128}$/.test(id))return '';
+ if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[\p{L}\p{N}_#. \-]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
  const fields=new URLSearchParams({template:'tt-mobile-command.yml',title:issueTitle,project,action,id,context:String(title||id).slice(0,280)});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
