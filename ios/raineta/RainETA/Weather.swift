@@ -287,6 +287,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published var projection: RadarProjection?
     @Published var shortEstimate: RainShortEstimate?
     @Published private(set) var radarLocal: RadarLocalTimeline?
+    @Published private(set) var radarAnalysisStatus = "Comprobando radar local…"
     @Published private(set) var shortModels: [RainShortModel] = []
     @Published private(set) var shortModelsUpdatedAt: Date?
     @Published private(set) var shortModelsLoading = false
@@ -586,6 +587,14 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             guard !Task.isCancelled,revision==placeSelectionRevision,
                   shortLocationKey==locationKey else{return}
             radarLocal=local
+            if let local,local.isFresh(at:Date()) {
+                radarAnalysisStatus="Radar local válido · \(feed.source) · observado " +
+                    local.observedAt.formatted(date:.omitted,time:.shortened)
+            } else {
+                radarAnalysisStatus=feed.source=="LibreWXR" ?
+                    "Sin lectura radar local válida; modelos de respaldo" :
+                    "Solo radar observado; sin nowcast local validado"
+            }
             shortEstimate=RainShortFusion.estimateUsingLocal(
                  weather:wx,radar:local,models:modelsCache,now:Date())
             if liveEnabled {await updateLiveActivity()}
