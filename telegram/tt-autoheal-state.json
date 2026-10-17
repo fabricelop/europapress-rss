@@ -2,114 +2,137 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-17T18:47:18.429663+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-17T21:03:36.657281+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ac5033eafc9c",
+          "title": "Dos cazas rumanos derriban dos drones sobre sus aguas territoriales en el mar Negro",
+          "seconds": 395,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 118386,
+          "seconds": 126564,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "5628b6286b86191d96514f705237e8f5e542ac61c648068796d64fcec6794d37",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-17T18:47:18.429663+00:00",
-      "issue_count": 10,
+      "checked_at": "2026-10-17T21:03:36.657281+00:00",
+      "issue_count": 12,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "b8187c2f1a64",
           "title": "Hernández Hernández",
-          "seconds": 15282,
+          "seconds": 23460,
           "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "6b6251a34bec",
+          "title": "Francia",
+          "seconds": 1272,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "522f1f4ba5fb",
           "title": "Butarque",
-          "seconds": 76501,
+          "seconds": 84679,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 70483,
+          "seconds": 78661,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74253d4d6c99",
           "title": "Guadarrama",
-          "seconds": 42257,
+          "seconds": 50435,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "a0f9b43477ef",
           "title": "Giuliano",
-          "seconds": 19416,
+          "seconds": 27594,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "dbed6537630d",
           "title": "Espanyol",
-          "seconds": 15282,
+          "seconds": 23460,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "053c8714516d",
           "title": "Mendoza",
-          "seconds": 13470,
+          "seconds": 21648,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "b0858b01041f",
           "title": "celso",
-          "seconds": 8722,
+          "seconds": 16900,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1c04b17efffd",
           "title": "De Burgos",
-          "seconds": 2640,
+          "seconds": 10818,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "062dda15f883",
+          "title": "Barcelona",
+          "seconds": 6673,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 118385,
+          "seconds": 126563,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "5c0c918c6996355049c3d02b3854c2b74deef7cff5c1ee68624e9eac603ea685",
+      "open_signature": "b998fe0b86a991187c9af75d797d7e119226b4dd7a147860d9454ba43b4324ac",
       "repair_via_workflow_run": false,
-      "escalation_required": 9
+      "escalation_required": 11
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T16:30:56.871752+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-17T18:47:18.429663+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-17T18:47:18.429663+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T16:30:56.871752+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T21:03:36.657281+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-17T21:03:36.657281+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-17T21:03:36.657281+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T21:03:36.657281+00:00"
   },
-  "checked_at": "2026-10-17T18:47:18.429663+00:00"
+  "checked_at": "2026-10-17T21:03:36.657281+00:00"
 }
