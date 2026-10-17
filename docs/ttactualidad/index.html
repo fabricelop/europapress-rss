@@ -40,7 +40,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
 </div>
 <main>
-<div class="notice" style="display:block">Control móvil desde GitHub Pages. Para quitar una noticia de Listas, pulsa el botón y confirma la orden en la pestaña de GitHub con «Create issue». Al volver, se comprueba el borrado y se actualiza el panel. <a href="../">Otra vista del panel</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+<div class="notice" style="display:block" id="access-notice">Comprobando la aplicación original para activar los botones directos… <a href="https://ttactualidad-decisions-pilot.fabricelop.workers.dev/">Abrir TTActualidad original</a>. <a href="?emergency=1">Usar respaldo GitHub Pages</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 
 <details class="pilot-settings" id="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
@@ -53,6 +53,22 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
 (()=>{'use strict';
+const DIRECT_URL='https://ttactualidad-decisions-pilot.fabricelop.workers.dev/';
+const ON_PAGES=location.origin==='https://fabricelop.github.io';
+// GitHub Pages is only a fallback: return to the original authenticated editor
+// whenever its health endpoint can be reached from THIS browser. No state-changing request.
+if(ON_PAGES&&!new URLSearchParams(location.search).has('emergency')){
+ const ac=new AbortController(),timer=setTimeout(()=>ac.abort(),6000);
+ fetch(DIRECT_URL+'health?mobile_reconnect='+Date.now(),{mode:'cors',cache:'no-store',signal:ac.signal})
+ .then(r=>r.ok?r.json():null)
+ .then(data=>{
+  if(data?.ok===true&&data.kind==='ttactualidad-direct-live'&&data.production_connected===true)
+   location.replace(DIRECT_URL+(location.hash||''));
+  else document.getElementById('access-notice').firstChild.textContent='El Worker original no confirma la edición directa. Este panel de respaldo sigue disponible. ';
+ })
+ .catch(()=>{document.getElementById('access-notice').firstChild.textContent='El Worker no responde desde esta red. Se mantiene el panel de respaldo. ';})
+ .finally(()=>clearTimeout(timer));
+}
 const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
  if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev')document.getElementById('pilot-settings').hidden=true;
 const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
