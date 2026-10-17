@@ -16,6 +16,7 @@ enum RainSpanishDates {
 
 struct RainWeekForecast: View {
     let weather:RainSnapshot?
+    let radarAvailable:Bool
     @State private var selectedDay:Date?
     private var temperatureBounds:(min:Double,max:Double) {
         guard let days=weather?.days else{return (0,30)}
@@ -33,6 +34,12 @@ struct RainWeekForecast: View {
                 Text("7 días").font(.caption.bold()).foregroundStyle(.cyan)
             }
             if let weather {
+                if radarAvailable {
+                    Label("El radar ajusta las próximas 2 horas en Pulso y en 3 horas. " +
+                          "Los totales de los 7 días siguen siendo previsiones de modelos.",
+                          systemImage:"dot.radiowaves.left.and.right")
+                        .font(.caption2).foregroundStyle(.cyan)
+                }
                 VStack(spacing:8) {
                     ForEach(weather.days) { day in
                         Button {selectedDay=day.date} label:{
