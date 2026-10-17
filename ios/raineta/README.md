@@ -1,3 +1,13 @@
+# RainETA para iPhone — v0.11.0
+
+## v0.11.0 — Inicio y fin de lluvia como decisión principal
+
+- Ocho centros meteorológicos consultados por ubicación (ECMWF, ICON, GFS, Météo-France, UKMO, GEM, JMA y BOM ACCESS); solo se muestran respuestas válidas. Los modelos horarios conservan su resolución real y no tienen una probabilidad individual inventada.
+- Radar observado en la localidad y secuencia de nowcast válida dan prioridad a la primera hora. Se exige cobertura, frescura, dos barridos observados y al menos cuatro barridos futuros continuos hasta 45 minutos; si faltan, la prioridad futura se reduce y prevalece el modelo. La vista diferencia los fotogramas observados de la proyección y presenta el estado local a +15, +30, +45 y +60 minutos.
+- El contador inicial permanece. Pulso muestra la intensidad y la probabilidad del pronóstico probabilístico por separado del número de modelos que prevén lluvia. Todos los modelos se despliegan juntos; las tarjetas de tres horas muestran los mismos intervalos y permiten desplegar los modelos completos.
+- Las franjas de precipitación de cada día se ven directamente en Semana meteorológica. Comparar modelos resume cuántos prevén lluvia y la dispersión de acumulados.
+- Si las fuentes discrepan, «Sí, llueve» o «No llueve» corrige el estado actual durante 20 minutos. El historial queda solo en el dispositivo. Tras cinco o más informes cercanos durante 14 días, la precisión observada ajusta el peso de cada modelo entre 0,75 y 1,25 en la síntesis de respaldo; una observación aislada no reentrena los modelos ni cambia sus datos originales. No se promete precisión minuto a minuto a partir de datos horarios.
+
 # RainETA para iPhone — v0.10.1
 
 ## v0.10.1 — Reparación del radar local: Madrid se veía seco pero el modelo decía lluvia

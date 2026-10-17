@@ -91,6 +91,27 @@ final class RadarWeightedForecastTests:XCTestCase {
         XCTAssertTrue(state.method.contains("modelos"))
     }
 
+    func testSparseFutureCannotTakePriorityForTheWholeHour() {
+        let sparse=RadarLocalTimeline(observedAt:start,fetchedAt:start,
+            frames:[RadarLocalFrame(date:start.addingTimeInterval(-600),echo:0),
+                    RadarLocalFrame(date:start,echo:0),
+                    RadarLocalFrame(date:start.addingTimeInterval(3600),echo:0)],
+            coverageConfirmed:true)
+        XCTAssertFalse(sparse.hasReliableFuture)
+        let series=RadarWeightedForecast.make(snapshot:weather(true),models:[],
+            radar:sparse,now:start,horizon:60)
+        XCTAssertLessThan(series[0].rate,0.15)
+        XCTAssertGreaterThan(series[30].rate,0.15)
+    }
+
+    func testLocalReportCorrectsCurrentRadarContradiction() {
+        let wetRadar=radar(0.9,0.9)
+        let series=RadarWeightedForecast.make(snapshot:weather(true),models:[],
+            radar:wetRadar,now:start,horizon:60,observation:false)
+        XCTAssertLessThan(series[0].rate,0.15)
+        XCTAssertLessThan(series[8].rate,0.15)
+    }
+
     func testObservedDryDoesNotBecomeNowcastWetAtCurrentMinute() {
         let now=start.addingTimeInterval(10*60)
         let timeline=radar(0,0.9)

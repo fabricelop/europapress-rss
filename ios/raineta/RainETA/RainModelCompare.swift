@@ -21,7 +21,7 @@ enum RainModelCompareAPI {
                         URLQueryItem(name:"longitude",value:String(longitude)),
                         URLQueryItem(name:"daily",value:"precipitation_sum"),
                         URLQueryItem(name:"timezone",value:"auto"),
-                        URLQueryItem(name:"forecast_days",value:name=="ARPEGE" ? "4":"7")
+                        URLQueryItem(name:"forecast_days",value:name=="Météo-France" || name=="JMA" ? "4":"7")
                     ]
                     guard let endpoint=url.url else {return nil}
                     var req=URLRequest(url:endpoint)
@@ -98,11 +98,11 @@ struct RainMultiModelView: View {
                 VStack(alignment:.leading,spacing:3) {
                     Label("Comparar modelos",systemImage:"square.stack.3d.up")
                         .font(.headline)
-                    Text("Precipitación total por día · mm")
+                    Text("Acuerdo y diferencias · lluvia diaria en mm")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
                 Spacer(minLength:10)
-                Text("\(forecasts.count)/5")
+                Text("\(forecasts.count)/\(RainShortModelAPI.endpoints.count)")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
                 Image(systemName:expanded ? "chevron.up":"chevron.down")
@@ -135,13 +135,21 @@ struct RainMultiModelView: View {
             dayPicker
             Text(dayLabel + " · lluvia acumulada estimada")
                 .font(.subheadline.bold())
+            let available=selectedRows.compactMap{$0.1}
+            if !available.isEmpty {
+                let wet=available.filter{$0>=0.1}.count
+                Text("\(wet)/\(available.count) fuentes prevén lluvia · intervalo " +
+                     String(format:"%.1f–%.1f mm",available.min() ?? 0,available.max() ?? 0))
+                    .font(.caption.bold())
+                    .foregroundStyle(wet>0 && wet<available.count ? .yellow:.cyan)
+            }
             if loading {ProgressView("Consultando centros…").font(.caption)}
             modelRows
             if forecasts.isEmpty && !loading {
                 Text("La previsión automática sigue disponible; los centros no han respondido.")
                     .font(.caption).foregroundStyle(.secondary)
             }
-            if selectedDay>3 && forecasts.contains(where:{$0.id=="ARPEGE"}) {
+            if selectedDay>3 && forecasts.contains(where:{$0.id=="Météo-France"}) {
                 Text("Météo-France puede no proporcionar datos más allá de 4 días.")
                     .font(.caption2).foregroundStyle(.secondary)
             }

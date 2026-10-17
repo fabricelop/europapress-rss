@@ -291,6 +291,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     @Published private(set) var shortModels: [RainShortModel] = []
     @Published private(set) var shortModelsUpdatedAt: Date?
     @Published private(set) var shortModelsLoading = false
+    @Published private(set) var reports: [RainReport] = RainFeedback.load()
     @Published var futureField: FutureRainField?
     @Published var futureFieldStatus = "Previsión DWD ICON-EU por horas. Pulsa +2 h o +4 h para consultar el modelo oficial."
     @Published var projectionStatus = "Calculando desplazamiento de la lluvia…"
@@ -328,6 +329,43 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
     private var shortModelLoadedAt: Date = .distantPast
     private var cachedRadarKey = ""
     private var cachedRadarEvidence: RainRadarEvidence?
+
+    var currentObservation: Bool? {
+        guard let report = reports.last,
+              Date().timeIntervalSince(report.date) >= 0,
+              Date().timeIntervalSince(report.date) <= 20*60,
+              RainFeedback.near(report,latitude:coordinate.latitude,
+                                longitude:coordinate.longitude) else { return nil }
+        return report.raining
+    }
+
+    private var modelWeights: [String: Double] {
+        RainFeedback.weights(reports,latitude:coordinate.latitude,
+                             longitude:coordinate.longitude,now:Date())
+    }
+
+    func reportRain(_ raining: Bool) {
+        let now = Date()
+        // A correction of the same event replaces the earlier tap; repeated
+        // taps must not count as five independent checks of model skill.
+        reports.removeAll { now.timeIntervalSince($0.date) < 60*60 &&
+            RainFeedback.near($0,latitude:coordinate.latitude,
+                              longitude:coordinate.longitude) }
+        let votes = Dictionary(uniqueKeysWithValues: shortModels.compactMap { model
+            -> (String,Bool)? in
+            model.predictsRain(at:now).map { (model.name,$0) }
+        })
+        reports.append(RainReport(date:now,latitude:coordinate.latitude,
+                                  longitude:coordinate.longitude,raining:raining,
+                                  modelWet:votes))
+        RainFeedback.save(reports,now:now)
+        if let snapshot {
+            shortEstimate=RainShortFusion.estimateUsingLocal(weather:snapshot,
+                radar:radarLocal,models:shortModels,now:now,
+                weights:modelWeights,observation:raining)
+            if liveEnabled { Task { await updateLiveActivity() } }
+        }
+    }
 
     init() {
         liveEnabled = !Activity<RainETAAttributes>.activities.isEmpty
@@ -597,7 +635,8 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
                     "No se pudo leer el radar de este lugar; modelos sin confirmar"
             }
             shortEstimate=RainShortFusion.estimateUsingLocal(
-                 weather:wx,radar:local,models:modelsCache,now:Date())
+                 weather:wx,radar:local,models:modelsCache,now:Date(),
+                 weights:modelWeights,observation:currentObservation)
             if liveEnabled {await updateLiveActivity()}
 
             let received=await modelResult
@@ -614,7 +653,8 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
             }
             shortModelsLoading=false
             shortEstimate=RainShortFusion.estimateUsingLocal(
-                 weather:wx,radar:local,models:models,now:Date())
+                 weather:wx,radar:local,models:models,now:Date(),
+                 weights:modelWeights,observation:currentObservation)
             if liveEnabled {await updateLiveActivity()}
         }
     }
@@ -623,7 +663,9 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         guard let snapshot else{return []}
         let recentRadar=radarLocal?.isFresh(at:now)==true ? radarLocal:nil
         return RadarWeightedForecast.make(snapshot:snapshot,models:shortModels,
-                                         radar:recentRadar,now:now,horizon:horizon)
+                                         radar:recentRadar,now:now,horizon:horizon,
+                                         weights:modelWeights,
+                                         observation:currentObservation)
     }
 
     func toggleLive() async {

@@ -249,6 +249,22 @@ struct RadarSection: View {
                         .background(.black.opacity(0.78),in:Capsule())
                         .padding(9)
                 }
+                .overlay(alignment:.topLeading) {
+                    VStack(alignment:.leading,spacing:3) {
+                        Text(store.radarFutureMinutes>0 ? "DESPUÉS DE AHORA · PROYECCIÓN" :
+                             "HASTA AHORA · OBSERVACIÓN")
+                            .font(.system(size:10,weight:.heavy,design:.rounded))
+                        Text(store.radarFutureMinutes>0 ?
+                             "La incertidumbre crece con cada tramo" :
+                             "Última imagen real: " +
+                             (newest?.date.formatted(date:.omitted,time:.shortened) ?? "—"))
+                            .font(.system(size:9))
+                    }
+                    .foregroundStyle(store.radarFutureMinutes>0 ? .yellow:.mint)
+                    .padding(9)
+                    .background(.black.opacity(0.78),in:RoundedRectangle(cornerRadius:11))
+                    .padding(9)
+                }
                 .overlay(alignment:.bottomTrailing) {
                     Button {recenterRevision+=1} label:{
                         Image(systemName:"location.north.line.fill")
@@ -272,6 +288,31 @@ struct RadarSection: View {
                 Text(selection?.date.formatted(date:.omitted,time:.shortened) ?? "")
             }
             .font(.caption.monospacedDigit())
+
+            let local=store.minuteForecast(now:Date(),horizon:60)
+            if !local.isEmpty {
+                HStack(spacing:5) {
+                    ForEach([0,15,30,45,60],id:\.self) { minute in
+                        if let point=local.first(where:{$0.minute==minute}) {
+                            VStack(spacing:3) {
+                                Text(minute==0 ? "AHORA":"+\(minute)m")
+                                    .font(.system(size:9,weight:.heavy))
+                                Text(point.rate>=0.15 ? "LLUVIA":"SECO")
+                                    .font(.system(size:10,weight:.bold))
+                                Text(point.radarInformed ? "RADAR":"MODELO")
+                                    .font(.system(size:8))
+                            }
+                            .frame(maxWidth:.infinity,minHeight:52)
+                            .foregroundStyle(.white)
+                            .background(point.rate>=0.15 ? RainVisual.color(point.rate) :
+                                        .mint.opacity(0.30),
+                                        in:RoundedRectangle(cornerRadius:10))
+                        }
+                    }
+                }
+                Text("La franja tras AHORA enseña el pronóstico local; el mapa futuro solo avanza si hay imágenes nowcast reales del proveedor.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
 
             GeometryReader { geometry in
                 let width=geometry.size.width
