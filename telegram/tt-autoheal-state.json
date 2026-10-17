@@ -2,42 +2,21 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-17T05:45:36.894420+00:00",
-      "issue_count": 5,
+      "checked_at": "2026-10-17T09:44:24.983734+00:00",
+      "issue_count": 2,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "dc008be1d7d5",
-          "title": "Podemos rechaza la oferta 'in extremis' del Frente Amplio para un pacto estatal e insiste en acordar",
-          "seconds": 7055,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "83ac76aa8f74",
-          "title": "'El Faro On the Rocks', sobre la acampada en la Puerta de Sol: \"Hay gente allí que cree que realment",
-          "seconds": 1823,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "e51ec25a9444",
-          "title": "Trump suspende temporalmente las sanciones del Congreso contra Rusia por «interés nacional»",
-          "seconds": 918,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "b03dce46bfda",
-          "title": "Cambio de tiempo \"significativo\": una DANA provocará lluvias intensas y otro frente bajará las tempe",
-          "seconds": 432,
+          "id": "ad0836020651",
+          "title": "La Guardia Civil desmantela nueve narcoviviendas en Pinos Puente (Granada) e interviene armas de gue",
+          "seconds": 615,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 71484,
+          "seconds": 85812,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -46,71 +25,86 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "e9d80914e512f1ffa2a4cb1df5331341a258679cb7135035b758e28300d19eca",
+      "open_signature": "760b193035adec2e463b28b99005f77446604d1a478eb2646aa49b2b9eefb4aa",
       "repair_via_workflow_run": false,
-      "escalation_required": 2
+      "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-17T05:45:36.894420+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-10-17T09:44:24.983734+00:00",
+      "issue_count": 8,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "1f7bb33bdd2d",
+          "title": "Rebeca Torró",
+          "seconds": 819,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "editorial_overdue",
           "id": "ab56c8fcd556",
           "title": "Elon Musk",
-          "seconds": 60164,
+          "seconds": 74492,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "421d4097fd38",
           "title": "Goebbels",
-          "seconds": 59587,
+          "seconds": 73915,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0a13d9520697",
           "title": "Real Madrid TV",
-          "seconds": 51778,
+          "seconds": 66106,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "522f1f4ba5fb",
           "title": "Butarque",
-          "seconds": 29599,
+          "seconds": 43927,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 23581,
+          "seconds": 37909,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "74253d4d6c99",
+          "title": "Guadarrama",
+          "seconds": 9683,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 71484,
+          "seconds": 85812,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "1f3e66d041e35d54ee09ce289acb655527fa05a694967c3834f8d951ccc82cbc",
+      "open_signature": "cf5217d44a73466a10fe106e96e0f75a137237e4b002e02a41e9bedb62b5459a",
       "repair_via_workflow_run": false,
-      "escalation_required": 5
+      "escalation_required": 6
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T05:45:36.894420+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-17T05:45:36.894420+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-17T05:45:36.894420+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T01:19:52.778225+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T09:44:24.983734+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-17T09:44:24.983734+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-17T09:44:24.983734+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-17T09:44:24.983734+00:00"
   },
-  "checked_at": "2026-10-17T05:45:36.894420+00:00"
+  "checked_at": "2026-10-17T09:44:24.983734+00:00"
 }
