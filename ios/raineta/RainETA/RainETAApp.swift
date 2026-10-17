@@ -78,7 +78,7 @@ struct RainHomeView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     RainHeroCard(store:store)
                     MinuteRainGraph(store:store)
-                    ThreeHourRainView(weather:store.snapshot,models:store.shortModels)
+                    ThreeHourRainView(store:store)
                     RainWeekForecast(weather:store.snapshot)
                     radarSection
                     RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
