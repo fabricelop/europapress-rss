@@ -7,7 +7,7 @@ const match=html.match(/<script>([\s\S]*?)<\/script>/i);
 assert(match,'Unified TT script absent');
 const code=match[1].replace(
   /const app=location\.hash[\s\S]*?setApp\(app\);/,
-  'globalThis.__TT_UI_TEST__={tabs,ttiRows,trendRows,itemData,manualPrompt,state};'
+  'globalThis.__TT_UI_TEST__={tabs,ttiRows,trendRows,itemData,manualPrompt,githubIssueUrl,state};'
 );
 const el={addEventListener(){},setAttribute(){},replaceChildren(){},style:{},classList:{add(){},remove(){}},removeAttribute(){},onclick:null,href:'',src:'',innerHTML:'',textContent:''};
 const context={document:{getElementById:()=>({...el}),createElement:()=>({...el}),addEventListener(){}},window:{addEventListener(){}},location:{hash:''},
@@ -16,6 +16,39 @@ const context={document:{getElementById:()=>({...el}),createElement:()=>({...el}
 vm.runInNewContext(code,context,{timeout:1000});
 const tt=context.__TT_UI_TEST__, st=tt.state;
 assert(tt,'UI test hooks unavailable');
+
+// iOS: GitHub Mobile does not reliably support Issue Forms or their prefilled fields.
+// The authenticated issue command must instead use the standard Markdown body.
+for(const [project,id,action] of [
+  ['ttittulares','abc123','deleted'],
+  ['ttendencias','trend-123','dismissed']
+]){
+ const route=new URL(tt.githubIssueUrl(project,id,action,'Titular de prueba'));
+ assert.equal(route.origin,'https://github.com');
+ assert.equal(route.searchParams.get('template'),null,'Do not open unsupported issue forms in GitHub Mobile');
+ const body=route.searchParams.get('body');
+ assert(body.includes('### Proyecto\n\n'+project));
+ assert(body.includes('### Acción\n\n'+action));
+ assert(body.includes('### ID del elemento\n\n'+id));
+ assert(route.searchParams.get('title').startsWith('[TT-MOVIL]'));
+}
+const mobileHtml=fs.readFileSync('docs/ttactualidad/index.html','utf8');
+const mobileMatch=mobileHtml.match(/<script>([\s\S]*?)<\/script>/i);
+assert(mobileMatch,'Dedicated TTActualidad mobile JavaScript absent');
+new vm.Script(mobileMatch[1],{filename:'docs/ttactualidad/index.html'});
+const start=mobileMatch[1].indexOf('function emergencyGithubIssueUrl(');
+const end=mobileMatch[1].indexOf('async function pilotSend(',start);
+assert(start>=0 && end>start,'Missing dedicated Safari command URL');
+const linkContext={URL,URLSearchParams};
+vm.runInNewContext(mobileMatch[1].slice(start,end)+
+ ';globalThis.__mobileUrl=emergencyGithubIssueUrl("ttittulares","abc123","deleted","Título");',linkContext);
+const dedicatedUrl=new URL(linkContext.__mobileUrl);
+assert.equal(dedicatedUrl.searchParams.get('template'),null);
+assert(dedicatedUrl.searchParams.get('body').includes('### Acción\n\ndeleted'));
+assert(mobileHtml.includes("link.target='_blank';link.rel='noopener noreferrer'"),'Mobile must open the browser tab');
+assert(mobileHtml.includes("status:'awaiting_github'"),'Mobile must track unconfirmed orders');
+assert(mobileHtml.includes("op.status!=='awaiting_github'"),'Never retry unauthenticated mobile issue orders with Worker API');
+
 
 // Regression: the screenshot showed the same 🌶️ line once inside "explanation"
 // and again below the card, because closer_text was repeated visually.
