@@ -1,7 +1,7 @@
 name: TTActualidad V8 safe live rollout
 on:
   push:
-    branches: ['fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
+    branches: ['main', 'fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
       - 'pilot/test_ttactualidad_direct_actions.py'
@@ -32,6 +32,8 @@ jobs:
         run: node pilot/ttactualidad-live/test_listas.mjs
       - name: Tremending UI deletion regression
         run: node pilot/ttactualidad-live/test_tremending.mjs
+      - name: Creciendo to En elaboración pending/ready regression
+        run: node pilot/ttactualidad-live/test_creciendo_pending.mjs
       - name: Worker actions and safe retry
         run: node pilot/ttactualidad-live/test_worker_live.mjs
       - name: Validate browser and Worker JS
@@ -77,5 +79,13 @@ jobs:
           if($errorsFound.Count -gt 0){
             $errorsFound | ForEach-Object { Write-Host $_.Message }
             throw 'PowerShell V8.3 syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V85-Creciendo-Pendiente.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8.5 syntax invalid'
           }
           Write-Host 'TTActualidad deploy scripts syntax OK'
