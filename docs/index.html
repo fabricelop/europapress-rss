@@ -355,9 +355,9 @@ function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show')
 function githubIssueUrl(project,id,action,title){
  const kind=action==='rework'?'rework':action;
  if(!['published','deleted','rework','prepare','dismissed'].includes(kind)||!String(id||'').trim())return '';
- const body='### Proyecto\n\n'+project+'\n\n### Acción\n\n'+kind+'\n\n### ID del elemento\n\n'+String(id).slice(0,120)+'\n\n### Titular o contexto\n\n'+String(title||id).slice(0,280);
  const issueTitle='[TT-MOVIL] '+project+' '+kind+' '+String(id).slice(0,80);
- return 'https://github.com/fabricelop/europapress-rss/issues/new?title='+encodeURIComponent(issueTitle)+'&body='+encodeURIComponent(body);
+ const fields=new URLSearchParams({template:'tt-mobile-command.yml',title:issueTitle,project,action:kind,id:String(id).slice(0,120),context:String(title||id).slice(0,280)});
+ return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
