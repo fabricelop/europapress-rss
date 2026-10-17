@@ -18,4 +18,18 @@ final class RainFeedbackTests: XCTestCase {
         XCTAssertTrue(RainFeedback.weights(reports,latitude:41.0,
             longitude:-3.7038,now:now).isEmpty)
     }
+
+    func testRecentCorrectionTemporarilyPenalizesWrongModelThenExpires() {
+        let now=Date(timeIntervalSince1970:1_800_000_000)
+        let report=RainReport(date:now,latitude:40.4168,longitude:-3.7038,
+                              raining:false,modelWet:["Wet":true,"Dry":false])
+        let current=RainFeedback.weights([report],latitude:40.4168,
+                                         longitude:-3.7038,now:now)
+        XCTAssertEqual(current["Wet"] ?? 0,0.65,accuracy:0.001)
+        XCTAssertEqual(current["Dry"] ?? 0,1.12,accuracy:0.001)
+        let later=RainFeedback.weights([report],latitude:40.4168,
+                                       longitude:-3.7038,
+                                       now:now.addingTimeInterval(20*60))
+        XCTAssertTrue(later.isEmpty)
+    }
 }
