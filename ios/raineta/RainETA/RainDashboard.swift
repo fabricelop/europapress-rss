@@ -57,6 +57,10 @@ struct RainHeroCard: View {
                             Spacer()
 
                         }
+                        if store.radarLocal?.isFresh(at:moment)==true {
+                            Text(store.radarAnalysisStatus)
+                                .font(.caption2).foregroundStyle(.mint)
+                        }
                         if let short {
                             HStack(spacing:6) {
                                 Text(short.method + " · " + short.confidence)
@@ -78,7 +82,10 @@ struct RainHeroCard: View {
                     if let temperature=weather.temperature {
                         Label(String(format:"%.0f °C",temperature),systemImage:"thermometer.medium")
                     }
-                    Label(weather.intensity,systemImage:"drop.fill")
+                    Label(store.radarLocal?.isFresh(at:Date())==true ?
+                          ((store.minuteForecast(now:Date(),horizon:0).first?.rate ?? 0)>=0.15 ?
+                              "Radar: lluvia estimada" : "Radar: seco en esta ubicación") :
+                          weather.intensity,systemImage:"drop.fill")
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white.opacity(0.9))
