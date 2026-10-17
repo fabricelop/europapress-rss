@@ -596,6 +596,10 @@ def main():
                 continue
             if st=="ready":
                 item=preserve_rework(validate_ready(payload), row)
+                item.setdefault("prepared_at", now)
+                if not item.get("image_mode") and not item.get("disable_ai_image"):
+                    item["image_mode"]="ai_plus_fallback"
+                    item["image_strategy"]="ai_plus_fallback"
                 if provisional_repair:
                     item["telegram_provisional_repair"]=True
                     item["repaired_from_status"]=row_status
