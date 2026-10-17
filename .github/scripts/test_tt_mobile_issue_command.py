@@ -155,4 +155,18 @@ with tempfile.TemporaryDirectory() as tmp:
     assert get(m.ROOT,"ttittulares/editorial-queue.json")["count"]==0
     assert get(m.ROOT,"telegram/editorial-processing.json")["items"][0]["status"]=="DISMISSED"
     assert "ya realizada" in m.tti_command("dismissed",eid,"","","2026-10-17T17:31:00Z")
+# Desestimar una tendencia pendiente no la publica ni genera entregas en Telegram.
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    eid="trenddismiss123"
+    put(m.ROOT,"trends/requests.json",{"requests":[{"id":eid,"name":"Tendencia de prueba","status":"preparing","revision":1}]})
+    put(m.ROOT,"trends/editorial-queue.json",{"items":[{"id":eid,"name":"Tendencia de prueba","status":"preparing"}],"count":1})
+    result=m.trend_command("dismissed",eid,"","","2026-10-17T19:30:00Z")
+    assert "desestimada" in result
+    assert get(m.ROOT,"trends/editorial-queue.json")["items"][0]["status"]=="dismissed"
+    assert get(m.ROOT,"trends/editorial-queue.json")["count"]==0
+    assert get(m.ROOT,"trends/requests.json")["requests"][0]["status"]=="dismissed"
+    assert get(m.ROOT,"trends/mobile-decisions.json")["items"][0]["status"]=="dismissed"
+    assert not (m.ROOT/"trends/telegram-image-deliveries.json").exists()
+    assert "ya realizada" in m.trend_command("dismissed",eid,"","","2026-10-17T19:31:00Z")
 print("TT_MOBILE_ISSUE_FIXTURES_OK")
