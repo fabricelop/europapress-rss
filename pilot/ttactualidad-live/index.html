@@ -70,10 +70,10 @@ tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/
 const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  let errors=[];
- const sources=force?[RAW+path,SITE_DATA+path]:[RAW+path,SITE_DATA+path];
+ const sources=[RAW+path,SITE_DATA+path];
  for(const source of sources){
   const key='tt-web-cache-'+path;
-  try{const r=await fetch(source+(source===RAW+path?'?v='+Math.floor(Date.now()/120000):''),{cache:'no-cache'});
+  try{const r=await fetch(source+(source===RAW+path?'?v='+Date.now():'?v='+Date.now()),{cache:'no-store'});
    if(!r.ok)throw Error('HTTP '+r.status);const doc=await r.json();if(!doc||typeof doc!=='object')throw Error('JSON inválido');
    try{localStorage.setItem(key,JSON.stringify({doc,at:Date.now()}))}catch{}
    return doc
@@ -108,7 +108,7 @@ function ttiRows(){
  if(state.tab==='elaboracion'){
   const fresh=queue.filter(q=>['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
   const seen=new Set(fresh.map(q=>String(q.event_id||'')));
-  const rows=[...fresh,...(snap.processing_items||state.data.processing?.items||[]).filter(x=>!seen.has(String(x.event_id||'')))];
+  const rows=Array.isArray(state.data.ttiQueue?.items) ? fresh : [...fresh,...(snap.processing_items||state.data.processing?.items||[]).filter(x=>!seen.has(String(x.event_id||'')))];
   return rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}));
  }
  if(state.tab==='problematicas')return (snap.problematic_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
