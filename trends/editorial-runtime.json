@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T16:19:01+02:00",
-  "last_completed_at": "2026-10-18T16:19:01+02:00",
-  "updated_at": "2026-10-18T16:19:01+02:00",
+  "last_started_at": "2026-10-18T14:15:00.000Z",
+  "last_completed_at": "2026-10-18T14:20:43.104Z",
+  "updated_at": "2026-10-18T14:20:43.104Z",
   "status": "success",
   "processed_ids": [
     "c4a371acd7c3"
@@ -31,25 +31,26 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018140303",
+    "run_id": "tr-editorial-20261018141500",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T14:03:03.546Z",
-    "updated_at": "2026-10-18T14:05:22.572Z",
+    "started_at": "2026-10-18T14:15:00.000Z",
+    "updated_at": "2026-10-18T14:20:43.104Z",
+    "finished_at": "2026-10-18T14:20:43.104Z",
     "current": 1,
     "total": 1,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 9. Sin preparing/update ni rewrite_pending; cola visible 1→1.",
+    "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 10. Sin preparing/update ni rewrite_pending; cola visible 1→1.",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
         "reason": "detonante_no_verificado",
-        "at": "2026-10-18T14:05:22.572Z"
+        "at": "2026-10-18T14:20:43.104Z"
       }
     ],
     "ratings_snapshot": {
@@ -60,58 +61,87 @@
       "recent_considered": 20
     },
     "remate_selections": [],
+    "research_queries": [
+      "\"África\" 18 octubre 2026 España tendencia",
+      "\"Africa\" 18 October 2026 Spain trending",
+      "\"África\" Foki España",
+      "\"África\" Jodar España octubre 2026",
+      "\"Africa\" Formula 1 Rwanda October 18 2026 Hamilton",
+      "\"África\" Rwanda Hamilton España 18 octubre 2026",
+      "\"Africa\" Spain Twitter trends October 18 2026"
+    ],
     "activity": [
       {
-        "at": "2026-10-18T14:03:03.546Z",
+        "at": "2026-10-18T14:15:00.000Z",
         "phase": "preparing",
+        "trend_id": null,
         "title": null,
-        "message": "Contrato y estado actual leídos; sin acciones visuales ni Telegram"
+        "message": "Contrato y estado actual leídos; preparando reintento problemático de Africa sin acciones visuales ni Telegram"
       },
       {
-        "at": "2026-10-18T14:03:21.959Z",
+        "at": "2026-10-18T14:15:45.000Z",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Africa r0 revalidada en cola, requests y Explicadas; sin preparing/update anteriores"
+        "message": "Releyendo estado autoritativo de Africa"
       },
       {
-        "at": "2026-10-18T14:03:21.959Z",
+        "at": "2026-10-18T14:16:00.000Z",
         "phase": "investigating",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "JIT confirma Africa r0 problemática en TT#9; buscando señales actuales distintas de F1/TV"
+        "message": "Buscando detonante actual con consultas distintas"
       },
       {
-        "at": "2026-10-18T14:03:59.654Z",
+        "at": "2026-10-18T14:17:10.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Contrastando fuente 1/2 · regreso de la F1 a África y acuerdo con Ruanda"
+      },
+      {
+        "at": "2026-10-18T14:18:10.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Contrastando fuente 2/2 · rastreadores públicos y señales sociales; ranking y causa no coinciden de forma inequívoca"
+      },
+      {
+        "at": "2026-10-18T14:19:00.000Z",
         "phase": "persisting",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Consultas de actualidad y señales sociales no prueban una causa única; JIT mantiene Africa r0 problemática"
+        "message": "Dos vías de contraste no prueban un detonante único; preparando reintento problematic sin inventar explicación"
       },
       {
-        "at": "2026-10-18T14:04:38.048Z",
+        "at": "2026-10-18T14:19:30.000Z",
+        "phase": "persisting",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Guardando resultado problematic r0 en el outbox editorial"
+      },
+      {
+        "at": "2026-10-18T14:20:30.000Z",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Outbox r0 enviado; comprobando aplicación real y contador de intentos en main"
+        "message": "Outbox problematic r0 enviado; comprobando que Actions lo consuma y actualice el contador en main"
       },
       {
-        "at": "2026-10-18T14:05:22.572Z",
+        "at": "2026-10-18T14:20:43.104Z",
+        "phase": "verifying",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Aplicación confirmada en main: outbox consumido y problematic_attempts=10"
+      },
+      {
+        "at": "2026-10-18T14:20:43.104Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 9. Sin preparing/update ni rewrite_pending; cola visible 1→1."
+        "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 10. Sin preparing/update ni rewrite_pending; cola visible 1→1."
       }
     ],
-    "research_queries": [
-      "\"Africa\" \"18/10/2026\" Twitter España",
-      "\"África\" \"18 de octubre de 2026\" \"Bardem\"",
-      "\"África\" tendencia España Francia octubre 18 2026",
-      "\"Africa\" \"trending\" \"Spain\" October 18 2026",
-      "\"África\" \"tendencia\" \"hoy\" \"18\" octubre",
-      "site:x.com \"África\" \"Francia\" \"18\" octubre 2026"
-    ],
-    "finished_at": "2026-10-18T14:05:22.572Z",
     "summary": {
       "initial_active_requests": 0,
       "initial_compact_queue": 1,
@@ -125,7 +155,7 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 1,
       "partial": false
     },
@@ -136,13 +166,13 @@
         "name": "Africa",
         "revision": 0,
         "status": "problematic",
-        "problematic_attempts": 9,
+        "problematic_attempts": 10,
         "verified_in_main": true,
-        "workflow_run": 39134346243
+        "apply_commit": "e02a635214a14522c73ba3e6c0be7c47c70a0e34"
       }
     ]
   },
-  "run_id": "tr-editorial-20261018140303",
+  "run_id": "tr-editorial-20261018141500",
   "summary": {
     "initial_active_requests": 0,
     "initial_compact_queue": 1,
@@ -156,52 +186,81 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 1,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T14:03:03.546Z",
+      "at": "2026-10-18T14:15:00.000Z",
       "phase": "preparing",
+      "trend_id": null,
       "title": null,
-      "message": "Contrato y estado actual leídos; sin acciones visuales ni Telegram"
+      "message": "Contrato y estado actual leídos; preparando reintento problemático de Africa sin acciones visuales ni Telegram"
     },
     {
-      "at": "2026-10-18T14:03:21.959Z",
+      "at": "2026-10-18T14:15:45.000Z",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Africa r0 revalidada en cola, requests y Explicadas; sin preparing/update anteriores"
+      "message": "Releyendo estado autoritativo de Africa"
     },
     {
-      "at": "2026-10-18T14:03:21.959Z",
+      "at": "2026-10-18T14:16:00.000Z",
       "phase": "investigating",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "JIT confirma Africa r0 problemática en TT#9; buscando señales actuales distintas de F1/TV"
+      "message": "Buscando detonante actual con consultas distintas"
     },
     {
-      "at": "2026-10-18T14:03:59.654Z",
+      "at": "2026-10-18T14:17:10.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Contrastando fuente 1/2 · regreso de la F1 a África y acuerdo con Ruanda"
+    },
+    {
+      "at": "2026-10-18T14:18:10.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Contrastando fuente 2/2 · rastreadores públicos y señales sociales; ranking y causa no coinciden de forma inequívoca"
+    },
+    {
+      "at": "2026-10-18T14:19:00.000Z",
       "phase": "persisting",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Consultas de actualidad y señales sociales no prueban una causa única; JIT mantiene Africa r0 problemática"
+      "message": "Dos vías de contraste no prueban un detonante único; preparando reintento problematic sin inventar explicación"
     },
     {
-      "at": "2026-10-18T14:04:38.048Z",
+      "at": "2026-10-18T14:19:30.000Z",
+      "phase": "persisting",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Guardando resultado problematic r0 en el outbox editorial"
+    },
+    {
+      "at": "2026-10-18T14:20:30.000Z",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Outbox r0 enviado; comprobando aplicación real y contador de intentos en main"
+      "message": "Outbox problematic r0 enviado; comprobando que Actions lo consuma y actualice el contador en main"
     },
     {
-      "at": "2026-10-18T14:05:22.572Z",
+      "at": "2026-10-18T14:20:43.104Z",
+      "phase": "verifying",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Aplicación confirmada en main: outbox consumido y problematic_attempts=10"
+    },
+    {
+      "at": "2026-10-18T14:20:43.104Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 9. Sin preparing/update ni rewrite_pending; cola visible 1→1."
+      "message": "Reintento aplicado y verificado: Africa r0 sigue problematic, intento 10. Sin preparing/update ni rewrite_pending; cola visible 1→1."
     }
   ],
   "telegram_orphans": 0,
