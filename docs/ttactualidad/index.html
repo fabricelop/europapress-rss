@@ -42,7 +42,17 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" style="display:block" id="access-notice">Comprobando la aplicación original para activar los botones directos… <a href="https://ttactualidad-decisions-pilot.fabricelop.workers.dev/">Abrir TTActualidad original</a>. <a href="?emergency=1">Usar respaldo GitHub Pages</a>.</div><div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 
-<details class="pilot-settings" id="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<details class="pilot-settings" id="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details>
+<details class="pilot-settings" id="emergency-settings" hidden>
+ <summary><strong id="emergency-auth-status">Activar botones directos (una sola vinculación)</strong></summary>
+ <p>Para borrar sin abrir GitHub, vincula este navegador con un token personal de GitHub limitado al repositorio <strong>fabricelop/europapress-rss</strong> y permiso <strong>Issues: Read and write</strong>. No hace falta dar acceso a otros repositorios.</p>
+ <p><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Crear una clave de acceso limitada (solo configuración inicial)</a>. La clave se guarda únicamente en esta pestaña de Safari y nunca se publica en GitHub Pages.</p>
+ <label for="emergency-token">Clave de acceso (ghp_ o github_pat_)</label>
+ <input id="emergency-token" type="password" autocomplete="off" spellcheck="false" placeholder="Pegar token limitado a Issues">
+ <button type="button" id="emergency-connect">Vincular para borrar directamente</button>
+ <button type="button" id="emergency-disconnect">Desvincular este navegador</button>
+ <p id="emergency-error" role="status"></p>
+</details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -70,7 +80,7 @@ if(ON_PAGES&&!new URLSearchParams(location.search).has('emergency')){
  .finally(()=>clearTimeout(timer));
 }
 const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
- if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev')document.getElementById('pilot-settings').hidden=true;
+ if(ON_PAGES){document.getElementById('pilot-settings').hidden=true;document.getElementById('emergency-settings').hidden=false;}
 const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -458,7 +468,7 @@ function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
 function isTemporarilyRemoved(item){
  if(item._topOnly||item._historical)return false;
  const op=pendingDeletes.get(removeKey(itemProject(item),String(item._id)));
- if(!op||op.status==='awaiting_github')return false;
+ if(!op||(op.status==='awaiting_github'&&!op.issue_number))return false;
  // Prepare moves a card between sections. Only hide its stale source card:
  // after GitHub confirms PROCESSING/READY, the target card must stay visible.
  if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
@@ -619,15 +629,104 @@ function emergencyGithubIssueUrl(project,id,decision,title){
  const fields=new URLSearchParams({title:issueTitle,body});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
+// Direct authenticated emergency actions. GitHub Issues API is used silently;
+// its existing owner-only workflow applies the decision to the authoritative repo.
+// GitHub Pages never receives/stores an owner token in HTML or in the repository.
+const EMERGENCY_TOKEN_KEY='tt-emergency-issue-token-session-v1';
+let emergencyToken='';
+let emergencyPending=null;
+const emergencySending=new Set();
+function emergencySessionToken(){
+ if(emergencyToken)return emergencyToken;
+ try{emergencyToken=sessionStorage.getItem(EMERGENCY_TOKEN_KEY)||''}catch{}
+ return emergencyToken;
+}
+function emergencyAuthState(){
+ const ok=Boolean(emergencySessionToken()),el=$('emergency-auth-status');
+ if(el)el.textContent=ok?'Conectado · botones directos disponibles':'Activar botones directos (una sola vinculación)';
+ const c=$('emergency-connect');if(c)c.textContent=ok?'Renovar vinculación':'Vincular para borrar directamente';
+}
+function emergencyForget(){
+ emergencyToken='';
+ try{sessionStorage.removeItem(EMERGENCY_TOKEN_KEY)}catch{}
+ const input=$('emergency-token');if(input)input.value='';
+ emergencyAuthState();showToast('Vinculación temporal eliminada');
+}
+async function emergencyPair(){
+ const input=$('emergency-token'),token=String(input?.value||'').trim();
+ const error=$('emergency-error');if(error)error.textContent='';
+ if(!/^(github_pat_|ghp_)[A-Za-z0-9_]{18,}$/.test(token)){
+  if(error)error.textContent='Pega una clave fine-grained válida con Issues: Read and write.';
+  return;
+ }
+ const b=$('emergency-connect');if(b)b.disabled=true;
+ try{
+  const res=await fetch('https://api.github.com/user',{headers:{
+   'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json',
+   'X-GitHub-Api-Version':'2022-11-28'},cache:'no-store',signal:AbortSignal.timeout(12000)});
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok||String(data.login||'').toLowerCase()!=='fabricelop')
+   throw Error('La clave debe pertenecer al propietario fabricelop (HTTP '+res.status+').');
+  emergencyToken=token;
+  try{sessionStorage.setItem(EMERGENCY_TOKEN_KEY,token)}catch{}
+  if(input)input.value='';
+  emergencyAuthState();
+  $('emergency-settings').open=false;
+  showToast('Vinculado. Los botones ya no abrirán GitHub.');
+  if(emergencyPending){const pending=emergencyPending;emergencyPending=null;void sendEmergencyDirect(pending.item,pending.decision)}
+ }catch(e){
+  if(error)error.textContent='No se pudo validar la clave: '+String(e.message||e).slice(0,130);
+ }finally{if(b)b.disabled=false}
+}
+async function sendEmergencyDirect(item,decision){
+ const project=itemProject(item),id=String(item._id||''),key=removeKey(project,id);
+ const issueURL=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
+ if(!issueURL){showToast('No se puede ejecutar: identificador no admitido');return}
+ const existing=pendingDeletes.get(key);
+ if(emergencySending.has(key)||(existing&&['awaiting_github','confirmed'].includes(existing.status)&&
+    Date.now()-existing.at<20*60000)){
+  showToast('Orden anterior en comprobación: no se enviará dos veces.');return;
+ }
+ const token=emergencySessionToken();
+ if(!token){
+  emergencyPending={item,decision};
+  $('emergency-settings').open=true;
+  $('emergency-token').focus();
+  showToast('Vincula una vez la clave limitada para usar botones directos.');
+  return;
+ }
+ const url=new URL(issueURL);
+ const issueTitle=url.searchParams.get('title'),body=url.searchParams.get('body');
+ const snapshot={title:String(item.title||item.name||id),revision:Number(item.revision||0)};
+ emergencySending.add(key);
+ showToast('Enviando orden de forma segura…');
+ try{
+  const response=await fetch('https://api.github.com/repos/fabricelop/europapress-rss/issues',{
+   method:'POST',headers:{
+    'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json',
+    'X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'},
+   body:JSON.stringify({title:issueTitle,body}),signal:AbortSignal.timeout(18000)
+  });
+  const data=await response.json().catch(()=>({}));
+  if(response.status!==201||!Number.isInteger(Number(data.number))) {
+   if(response.status===401){emergencyForget();throw Error('La clave ha caducado. Hay que vincularla otra vez.')}
+   throw Error('GitHub API HTTP '+response.status+': '+String(data.message||'orden no aceptada').slice(0,95));
+  }
+  const now=Date.now();
+  pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),
+   decision,at:now,lastTry:now,tries:1,issue_number:Number(data.number),
+   status:'awaiting_github',snapshot});
+  savePending();render();
+  showToast('Orden recibida. Verificando el cambio real…');
+  schedulePendingChecks();
+  void checkPendingDeletes();
+ }catch(e){
+  showToast('No se confirmó la orden: '+String(e.message||e).slice(0,100));
+ }finally{emergencySending.delete(key)}
+}
 async function pilotSend(item,decision){
  if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
-  const project=itemProject(item),id=String(item._id||'');
-  const url=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
-  if(!url){showToast('Esta acción no está disponible en el acceso de emergencia');return}
-  const label=decision==='deleted'?'Borrar':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
-  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'? Confirma la orden con «Submit new issue» en GitHub.'))return;
-  try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
-  location.href=url;
+  await sendEmergencyDirect(item,decision);
   return;
  }
  if(!await ensurePilotConnection())return;
@@ -668,24 +767,7 @@ function rowCard(x,i){
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
   if(['prepare','deleted','discard','published'].includes(action)){
-   if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
-    const project=itemProject(x),id=String(x._id||''),url=emergencyGithubIssueUrl(project,id,action,d.title);
-    if(!url){const bad=btn(label,()=>showToast('ID de la noticia no válido'));bad.disabled=true;return bad}
-    const link=document.createElement('a');link.className='action secondary';link.href=url;
-    link.target='_blank';link.rel='noopener noreferrer';link.textContent=label+' · confirmar en GitHub';
-    link.addEventListener('click',event=>{
-     if(!confirm('¿'+(action==='deleted'?'Quitar de Listas':label)+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?')){
-      event.preventDefault();return;
-     }
-     const key=removeKey(project,id),at=Date.now();
-     pendingDeletes.set(key,{key,project,id,kind:x._kind,revision:Number(x.revision||0),decision:action,
-       request_id:'github-issue',at,lastTry:0,tries:0,status:'awaiting_github'});
-     savePending();schedulePendingChecks();
-     try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
-     showToast('En GitHub comprueba los campos y pulsa «Submit new issue». Solo entonces se guardará.');
-    });
-    a.append(link);return link;
-   }
+   if(ON_PAGES)return btn(label,()=>sendEmergencyDirect(x,action),action==='prepare');
    return btn(label,()=>pilotSend(x,action),action==='prepare');
   }
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
@@ -836,7 +918,10 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
-void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes();if(ON_PAGES){const awaiting=[...pendingDeletes.values()].filter(x=>x.status==='awaiting_github').length;if(awaiting)showToast('Hay '+awaiting+' orden(es) pendientes de confirmar en GitHub.')}}})();
+$('emergency-connect').onclick=()=>void emergencyPair();
+$('emergency-disconnect').onclick=emergencyForget;
+if(ON_PAGES)emergencyAuthState();
+void (async()=>{if(!ON_PAGES){await pilotPairFromUrl();await refreshPilotConnection();}if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes();}})();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
 
@@ -847,7 +932,7 @@ $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){void load(true);void checkPendingDeletes();}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
-window.addEventListener('pageshow',()=>{try{if(sessionStorage.getItem('tt-gh-issue-return')==='1'){sessionStorage.removeItem('tt-gh-issue-return');showToast('Comprobando en GitHub si la orden se ha guardado…');load(true);void checkPendingDeletes();schedulePendingChecks()}}catch{}});
+window.addEventListener('pageshow',()=>{if(ON_PAGES){void load(true);void checkPendingDeletes();}});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
 </script></body></html>
