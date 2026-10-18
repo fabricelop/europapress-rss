@@ -207,6 +207,43 @@ async function navigateChatBestEffort(cdp){
   }
 }
 
+// Reduce renderer churn: prefer ChatGPT's SPA "new chat" over a full reload.
+// Only used after the listeners have acquired the exclusive image slot.
+async function prepareReusableConversation(cdp){
+  const validHome=u=>u==="https://chatgpt.com/"||u==="https://chatgpt.com";
+  const inspect=()=>cdp.eval("(()=>({url:location.href,composer:!!document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+")}))()");
+  let state=null;
+  try{state=await inspect()}catch{}
+  if(state&&validHome(String(state.url||""))&&state.composer){
+    console.log("BRIDGE FIXED TAB SPA REUSE home-ready");
+    return await waitComposer(cdp,60000);
+  }
+  if(state&&/^https:\/\/chatgpt\.com\/c\/[^/?#]+/.test(String(state.url||""))){
+    let clicked=false;
+    try{
+      clicked=Boolean(await cdp.eval("(()=>{const a=[...document.querySelectorAll('a,button')];const label=x=>String(x.getAttribute('aria-label')||x.getAttribute('title')||x.innerText||'');const b=a.find(x=>/new chat|nuevo chat/i.test(label(x)))||a.find(x=>x.tagName==='A'&&x.getAttribute('href')==='/');if(!b)return false;b.click();return true})()"));
+    }catch{}
+    if(clicked){
+      const deadline=Date.now()+12000;
+      while(Date.now()<deadline){
+        await sleep(450);
+        try{
+          const next=await inspect();
+          if(next&&validHome(String(next.url||""))&&next.composer){
+            console.log("BRIDGE FIXED TAB SPA NEW CHAT confirmed");
+            return await waitComposer(cdp,60000);
+          }
+        }catch{}
+      }
+      console.log("BRIDGE FIXED TAB SPA NEW CHAT timeout; using navigation fallback");
+    }
+  }
+  // Blank, malformed, unresponsive, or unsupported routes retain the old
+  // reliable navigation fallback. Never create another Chrome instance here.
+  await navigateChatBestEffort(cdp);
+  return await waitComposer(cdp,60000);
+}
+
 async function openFreshDedicatedConversation(){
   let t=await fixedTarget(true);
   await progress("fixed_tab","Pestaña física dedicada disponible: "+String(t.id));
@@ -215,8 +252,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await navigateChatBestEffort(cdp);
-    await waitComposer(cdp,60000);
+    await prepareReusableConversation(cdp);
     await progress("composer_ready","ChatGPT cargado en la pestaña fija; compositor disponible.");
     // Si ChatGPT restaurase una conversación previa al navegar a raíz, pulsa "Nuevo chat"
     // dentro de LA MISMA pestaña. El target CDP no cambia.
@@ -254,8 +290,7 @@ async function openFreshDedicatedConversation(){
     await cdp.open();
     try{await cdp.call("Page.enable",{},5000)}catch{}
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
-    await navigateChatBestEffort(cdp);
-    await waitComposer(cdp,60000);
+    await prepareReusableConversation(cdp);
     await progress("composer_ready","Pestaña fija recreada; compositor disponible.");
     console.log("BRIDGE FIXED TAB RECOVERED target="+String(t.id));
     return cdp
