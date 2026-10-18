@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-18T10:30:00Z",
+  "updated_at": "2026-10-18T10:35:23.481257Z",
   "items": [
     {
       "event_id": "a40cf052272a",
@@ -142,17 +142,35 @@
       },
       "prepared_at": "2026-10-18T10:30:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-18T10:35:23.481257Z",
+      "fallback_image_search_attempted_at": "2026-10-18T10:35:23.481257Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/bac6b43d-90c4-4f0f-b956-2bbdbe844f47_facebook-aspect-ratio-1200-675_default_0_x914y322.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/cultura/cine/bola-negra-supera-torrente-cuarta-pelicula-taquillera-historia-cine-espanol_1_13590470.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "‘La bola negra’ supera a Torrente y ya es la cuarta película más taquillera de la historia del cine español"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/bac6b43d-90c4-4f0f-b956-2bbdbe844f47_facebook-aspect-ratio-1200-675_default_0_x914y322.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/cultura/cine/bola-negra-supera-torrente-cuarta-pelicula-taquillera-historia-cine-espanol_1_13590470.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "‘La bola negra’ supera a Torrente y ya es la cuarta película más taquillera de la historia del cine español"
+      }
     }
   ],
   "count": 0,
