@@ -289,7 +289,7 @@ function Get-ChatCdpTabCount{
     $targets=@(Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 4 -Headers @{"Cache-Control"="no-cache"})
     return @($targets | Where-Object {
       [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
-      [string]$_.url -like "https://chatgpt.com/*"
+      [string]$_.url -match '(?i)^https://chatgpt[.]com/(?:$|[?#]|c/|g/|project/|images(?:/|$))'
     }).Count
   }catch{return -1}
 }
@@ -469,6 +469,41 @@ function EnsureTTitRequestedImageRecovery{
   }
 }
 
+
+# Chrome 9223 resource telemetry. No automatic browser kill or cache deletion:
+# image jobs may be running on ChatGPT even after an ACK.
+$script:LastChromePressureProbeAt=[DateTimeOffset]::MinValue
+function MeasureChrome9223Pressure {
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:LastChromePressureProbeAt).TotalMinutes -lt 10){return}
+  $script:LastChromePressureProbeAt=$now
+  try{
+    $all=@(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" -ErrorAction Stop)
+    $roots=@($all | Where-Object {
+      [string]$_.CommandLine -match '--remote-debugging-port(?:=|\\s+)9223(?:\\s|$)' -and
+      [string]$_.CommandLine -notmatch '(?:^|\\s)--type=' -and
+      [string]$_.CommandLine -match 'ChromeAuto'
+    })
+    if($roots.Count -ne 1){
+      Log ("CHROME 9223 TELEMETRY UNCERTAIN roots="+$roots.Count+"; no action")
+      return
+    }
+    $rootPid=[int]$roots[0].ProcessId
+    $group=@($all | Where-Object {
+      [int]$_.ProcessId -eq $rootPid -or [int]$_.ParentProcessId -eq $rootPid
+    })
+    $renderers=@($group | Where-Object { [string]$_.CommandLine -match '(?:^|\\s)--type=renderer(?:\\s|$)' }).Count
+    [long]$ram=0
+    foreach($p in $group){ $ram += [long]$p.WorkingSetSize }
+    $ramMB=[math]::Round($ram / 1MB, 0)
+    if($renderers -ge 40 -or $ramMB -ge 6144){
+      Log ("CHROME 9223 RESOURCE PRESSURE pid=$rootPid renderers=$renderers processes="+$group.Count+" apparent_ram_mb=$ramMB no_auto_restart=1")
+    }
+  }catch{
+    Log ("CHROME 9223 TELEMETRY UNAVAILABLE; no action :: "+$_.Exception.Message)
+  }
+}
+
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -511,6 +546,7 @@ try{
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome
+    MeasureChrome9223Pressure
     EnsureChromeTabHousekeeping
     EnsureInternetRecovery
     EnsureRemoteTelegramHeal
