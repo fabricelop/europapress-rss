@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-18T12:33:20Z",
+  "updated_at": "2026-10-18T12:37:27.942872Z",
   "items": [
     {
       "event_id": "cfe9cdf6122d",
@@ -240,17 +240,35 @@
       },
       "prepared_at": "2026-10-18T12:33:20Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-18T12:37:27.942872Z",
+      "fallback_image_search_attempted_at": "2026-10-18T12:37:27.942872Z",
+      "archive_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413463516-1.jpeg",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-acusa-psoe-tratar-pensionistas-como-ninos-avisa-sanchez-jetas-tengan-cuidado-viene-pp/1413463516",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo acusa al PSOE de tratar a los pensionistas “como niños” y avisa a Sánchez y los “jetas”: “Que tengan cuidado, que viene el PP”"
+      },
+      "fallback_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413463516-1.jpeg",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-acusa-psoe-tratar-pensionistas-como-ninos-avisa-sanchez-jetas-tengan-cuidado-viene-pp/1413463516",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo acusa al PSOE de tratar a los pensionistas “como niños” y avisa a Sánchez y los “jetas”: “Que tengan cuidado, que viene el PP”"
+      }
     }
   ],
   "count": 1,
