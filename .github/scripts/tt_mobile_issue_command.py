@@ -55,7 +55,7 @@ def parse_issue(event):
         raise ValueError("Proyecto desconocido")
     if action not in {"published", "deleted", "dismissed", "rework", "prepare"}:
         raise ValueError("Acción no admitida")
-    if not re.fullmatch(r"[\w#.\- ]{1,120}", element_id):
+    if not re.fullmatch(r"[^\x00-\x1f\x7f]{1,120}", element_id):
         raise ValueError("Identificador inválido")
     return project, action, element_id, context, instruction
 
@@ -382,6 +382,9 @@ def trend_command(action, element_id, context, instruction, now):
                     if matches(x, element_id) or
                     (r and str(x.get("name") or "").casefold()==
                      str(r.get("name") or "").casefold())), None)
+    if action == "prepare" and r is None and (
+            top_row is None or not 11 <= int(top_row.get("rank") or 0) <= 30):
+        raise ValueError("Preparar novedad requiere una tendencia vigente del puesto 11 al 30")
     if r is None:
         # New 11-30 cards may use their visible name as the Telegram deep-link
         # ID. The editorial ID must be stable and safe for outbox filenames.
@@ -411,7 +414,9 @@ def trend_command(action, element_id, context, instruction, now):
         "with_image": True, "disable_ai_image": False,
         "rewrite_instruction": r["reexplain_instructions"],
     })
-    queue.update(project="TTendencias", items=rows, count=len(rows), updated_at=now)
+    queue.update(project="TTendencias", items=rows,
+                 count=sum(str(x.get("status") or "").lower() in {"preparing", "update"} for x in rows),
+                 updated_at=now)
     save(path, queue)
     return "TTendencias: petición de explicación registrada: " + str(r["name"])
 

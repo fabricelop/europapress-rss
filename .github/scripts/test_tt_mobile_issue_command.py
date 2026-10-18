@@ -171,4 +171,31 @@ with tempfile.TemporaryDirectory() as tmp:
     assert get(m.ROOT,"trends/mobile-decisions.json")["items"][0]["status"]=="dismissed"
     assert not (m.ROOT/"trends/telegram-image-deliveries.json").exists()
     assert "ya realizada" in m.trend_command("dismissed",eid,"","","2026-10-17T19:31:00Z")
+# Browser issue links can contain legitimate punctuation in a trend name.
+# Never accept newline/control injection or enqueue outside Top 11-30.
+owner={"user":{"login":"fabricelop"}}
+name="#Tema: edición / España"
+body="### Proyecto\n\nttendencias\n\n### Acción\n\nprepare\n\n### ID del elemento\n\n"+name+"\n\n### Titular o contexto\n\n"+name+"\n"
+parsed=m.parse_issue({"sender":{"login":"fabricelop"},"issue":{**owner,"title":"[TT-MOVIL] ttendencias prepare","body":body}})
+assert parsed[:3]==("ttendencias","prepare",name)
+try:
+    m.parse_issue({"sender":{"login":"fabricelop"},"issue":{**owner,"title":"[TT-MOVIL] bad","body":body.replace(name,name+"\nmalicious",1)}})
+    raise AssertionError("Newline injection accepted")
+except ValueError:pass
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    put(m.ROOT,"trends/requests.json",{"requests":[]})
+    put(m.ROOT,"trends/recent.json",{"items":[{"rank":10,"name":"Top10"},{"rank":11,"name":name},{"rank":30,"name":"Treinta"},{"rank":31,"name":"Fuera"}]})
+    response=m.trend_command("prepare",name,name,"","2026-10-18T08:00:00Z")
+    assert "registrada" in response
+    request=get(m.ROOT,"trends/requests.json")["requests"][0]
+    queue=get(m.ROOT,"trends/editorial-queue.json")
+    assert request["name"]==name and request["status"]=="preparing" and request["rank"]==11
+    assert queue["count"]==1 and queue["items"][0]["id"]==request["id"] and queue["items"][0]["status"]=="preparing"
+    assert "ya está en elaboración" in m.trend_command("prepare",name,name,"","2026-10-18T08:00:10Z")
+    assert len(get(m.ROOT,"trends/requests.json")["requests"])==1
+    for outside in ("Top10","Fuera"):
+        try:m.trend_command("prepare",outside,outside,"","2026-10-18T08:00:10Z");raise AssertionError("Out-of-range trend queued")
+        except ValueError:pass
+    assert len(get(m.ROOT,"trends/requests.json")["requests"])==1
 print("TT_MOBILE_ISSUE_FIXTURES_OK")

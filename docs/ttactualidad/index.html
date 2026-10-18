@@ -608,7 +608,7 @@ function schedulePendingChecks(){
 }
 function emergencyGithubIssueUrl(project,id,decision,title){
  const action=decision==='discard'?'dismissed':decision;
- if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[\p{L}\p{N}_#. \-]{1,120}$/u.test(id))return '';
+ if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
  const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
  const fields=new URLSearchParams({title:issueTitle,body});

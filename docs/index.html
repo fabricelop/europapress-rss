@@ -106,7 +106,7 @@ function setApp(app){
  try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
  render();load(true)
 }
-function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['pendientes','Pendientes'],['explicadas','Explicadas'],['historico','Histórico']]}
+function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['elaboracion','En elaboración'],['pendientes','Pendientes'],['explicadas','Explicadas'],['historico','Histórico']]}
 function ttiRows(){
  const s=state.data.status||{},d=decisions(),prepared=(state.data.prepared?.items||[]).filter(x=>!isClosed(d.get(String(x.event_id))));
  if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
@@ -126,6 +126,12 @@ function trendClosed(x){
 function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
+ if(state.tab==='elaboracion'){
+  return (state.data.editorialQueue?.items||[])
+   .filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())&&!trendClosed(x))
+   .map(x=>({...x,title:String(x.name||x.title||x.id),_kind:'tr',_id:String(x.id||''),
+      _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
+ }
  if(state.tab==='top'||state.tab==='pendientes'){
   // A single view shows BOTH the rank and the current editorial state.
   // Matching is by normalized literal trend name (including group members),
