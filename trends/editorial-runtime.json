@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T14:03:30+02:00",
-  "last_completed_at": "2026-10-18T14:03:30+02:00",
-  "updated_at": "2026-10-18T14:03:30+02:00",
+  "last_started_at": "2026-10-18T12:00:35.288Z",
+  "last_completed_at": "2026-10-18T12:05:54.846Z",
+  "updated_at": "2026-10-18T12:05:54.846Z",
   "status": "success",
   "processed_ids": [
     "c4a371acd7c3"
@@ -31,91 +31,78 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018134500",
+    "run_id": "tr-editorial-20261018120035",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T11:45:00.000Z",
-    "updated_at": "2026-10-18T11:48:20.000Z",
-    "finished_at": "2026-10-18T11:48:20.000Z",
+    "started_at": "2026-10-18T12:00:35.288Z",
+    "updated_at": "2026-10-18T12:05:54.846Z",
     "current": 1,
     "total": 1,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Africa sigue en TT#5, pero el segundo intento tampoco permite atribuirle un detonante verificable. Se mantiene problematic sin explicación inventada.",
+    "message": "Tercer intento de Africa aplicado y verificado: sigue problematic, sin detonante demostrable. No quedan preparing/update ni rewrite_pending.",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
-        "reason": "detonante_no_verificado_reintento_2",
-        "at": "2026-10-18T11:47:20.000Z"
+        "reason": "detonante_no_verificado_reintento_3",
+        "at": "2026-10-18T12:02:52.414Z"
       }
     ],
-    "ratings_snapshot": null,
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 100
+    },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T11:45:00.000Z",
+        "at": "2026-10-18T12:00:35.288Z",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial; 1 problemática vigente en Top 10"
+        "message": "Lectura autoritativa y snapshot de ratings completados"
       },
       {
-        "at": "2026-10-18T11:45:08.000Z",
-        "phase": "verifying",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Releyendo estado autoritativo de Africa r0"
-      },
-      {
-        "at": "2026-10-18T11:46:00.000Z",
+        "at": "2026-10-18T12:02:17.989Z",
         "phase": "investigating",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Buscando detonante actual con consultas distintas al intento anterior"
+        "message": "Reintento autorizado por Top10: buscando publicaciones del18/10 yepisodio concreto con consultasnuevas"
       },
       {
-        "at": "2026-10-18T11:47:00.000Z",
-        "phase": "investigating",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Segundo reintento: varias búsquedas y fuentes de tendencias confirman el término, pero no un detonante concreto verificable; no se infiere motivo"
-      },
-      {
-        "at": "2026-10-18T11:47:20.000Z",
+        "at": "2026-10-18T12:02:52.414Z",
         "phase": "persisting",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Registrando Africa r0 como problematic de nuevo, sin explicación especulativa"
+        "message": "Nuevas consultas por publicaciones del18/10 tampoco aíslan un detonante; registrando tercer intento fallido, sin explicación inventada"
       },
       {
-        "at": "2026-10-18T11:48:20.000Z",
+        "at": "2026-10-18T12:05:54.846Z",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Outbox consumido; request problematic_attempts=2 y motivo actualizado en main"
+        "message": "Request r0 con problematic_attempts=3 y motivo nuevo; workflow 39125682196 success"
       },
       {
-        "at": "2026-10-18T11:48:20.000Z",
+        "at": "2026-10-18T12:05:54.846Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 preparing/update, Africa permanece problematic para un futuro reintento mientras siga en Top 10"
+        "message": "Sin nuevas explicaciones: activas 0, problemática vigente 1; se conservan todos los borrados"
       }
     ],
+    "finished_at": "2026-10-18T12:05:54.846Z",
+    "partial": false,
     "summary": {
       "initial_active_requests": 0,
       "initial_compact_queue": 1,
       "attempted": 1,
-      "explained_materialized_and_verified": 0,
-      "unique_explanations_materialized": 0,
-      "grouped_requests": 0,
+      "explained": 0,
       "problematic_reviewed": 1,
-      "current_explained_requests": 337,
-      "current_visible_explanation_cards": 633,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "final_compact_queue": 1,
@@ -126,29 +113,23 @@
       "incidents": 1,
       "partial": false
     },
-    "partial": false,
     "final_outcomes": [
       {
         "id": "c4a371acd7c3",
         "name": "Africa",
-        "status": "problematic",
         "revision": 0,
-        "problematic_attempts": 2
+        "status": "problematic",
+        "problematic_attempts": 3
       }
     ]
   },
-  "run_id": "tr-editorial-20261018110424",
+  "run_id": "tr-editorial-20261018120035",
   "summary": {
-    "initial_active_requests": 8,
-    "initial_compact_queue": 4,
-    "attempted": 8,
-    "explained_materialized_and_verified": 7,
-    "unique_explanations_materialized": 5,
-    "grouped_requests": 2,
+    "initial_active_requests": 0,
+    "initial_compact_queue": 1,
+    "attempted": 1,
+    "explained": 0,
     "problematic_reviewed": 1,
-    "user_deleted_after_explained": 4,
-    "current_explained_requests": 3,
-    "current_visible_explanation_cards": 1,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "final_compact_queue": 1,
@@ -156,62 +137,45 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "incidents": 2,
+    "incidents": 1,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T11:45:00.000Z",
+      "at": "2026-10-18T12:00:35.288Z",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Preparando pasada editorial; 1 problemática vigente en Top 10"
+      "message": "Lectura autoritativa y snapshot de ratings completados"
     },
     {
-      "at": "2026-10-18T11:45:08.000Z",
-      "phase": "verifying",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Releyendo estado autoritativo de Africa r0"
-    },
-    {
-      "at": "2026-10-18T11:46:00.000Z",
+      "at": "2026-10-18T12:02:17.989Z",
       "phase": "investigating",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Buscando detonante actual con consultas distintas al intento anterior"
+      "message": "Reintento autorizado por Top10: buscando publicaciones del18/10 yepisodio concreto con consultasnuevas"
     },
     {
-      "at": "2026-10-18T11:47:00.000Z",
-      "phase": "investigating",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Segundo reintento: varias búsquedas y fuentes de tendencias confirman el término, pero no un detonante concreto verificable; no se infiere motivo"
-    },
-    {
-      "at": "2026-10-18T11:47:20.000Z",
+      "at": "2026-10-18T12:02:52.414Z",
       "phase": "persisting",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Registrando Africa r0 como problematic de nuevo, sin explicación especulativa"
+      "message": "Nuevas consultas por publicaciones del18/10 tampoco aíslan un detonante; registrando tercer intento fallido, sin explicación inventada"
     },
     {
-      "at": "2026-10-18T11:48:20.000Z",
+      "at": "2026-10-18T12:05:54.846Z",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Outbox consumido; request problematic_attempts=2 y motivo actualizado en main"
+      "message": "Request r0 con problematic_attempts=3 y motivo nuevo; workflow 39125682196 success"
     },
     {
-      "at": "2026-10-18T11:48:20.000Z",
+      "at": "2026-10-18T12:05:54.846Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 0 preparing/update, Africa permanece problematic para un futuro reintento mientras siga en Top 10"
+      "message": "Sin nuevas explicaciones: activas 0, problemática vigente 1; se conservan todos los borrados"
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "error": null
+  "telegram_orphan_ids": []
 }
