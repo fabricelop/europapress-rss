@@ -5,10 +5,12 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-18T07:16:51.775Z",
-  "last_completed_at": "2026-10-18T07:17:40.891Z",
-  "updated_at": "2026-10-18T07:17:40.891Z",
+  "last_completed_at": "2026-10-18T07:23:28.203Z",
+  "updated_at": "2026-10-18T07:23:28.203Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "e7ea52cea2c4"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -30,16 +32,16 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-18T07:16:51.775Z",
-    "updated_at": "2026-10-18T07:17:40.891Z",
-    "finished_at": "2026-10-18T07:17:40.891Z",
-    "current": 0,
-    "total": 0,
+    "updated_at": "2026-10-18T07:23:28.203Z",
+    "finished_at": "2026-10-18T07:23:28.203Z",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0/0: main revalidado; 0 preparing/update y 0 rewrite_pending. Sin ImageGen.",
+    "message": "Pasada completada 1/1 · cola final 0, sin preparing/update ni rewrite_pending; sin ImageGen.",
     "summary": {
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 1,
+      "explained": 1,
       "remaining_active": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
@@ -55,7 +57,37 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "e7ea52cea2c4",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 9.1
+          },
+          {
+            "id": "c2",
+            "total": 8.1
+          },
+          {
+            "id": "c3",
+            "total": 8.4
+          },
+          {
+            "id": "c4",
+            "total": 8
+          },
+          {
+            "id": "c5",
+            "total": 8.3
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 9.1
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-18T07:16:51.775Z",
@@ -65,18 +97,74 @@
         "message": "Preparando pasada editorial real · cola autoritativa inicial 0; comprobando reexplicaciones y estado final."
       },
       {
-        "at": "2026-10-18T07:18:59.324Z",
+        "at": "2026-10-18T07:17:59.025Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y comprobando preparing/update y rewrite_pending antes del cierre 0/0."
+        "message": "Última relectura de main detectó una nueva entrada activa."
       },
       {
-        "at": "2026-10-18T07:17:40.891Z",
+        "at": "2026-10-18T07:20:58.771Z",
+        "phase": "drafting",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Redactando explicación factual de #Terremoto."
+      },
+      {
+        "at": "2026-10-18T07:21:00.859Z",
+        "phase": "drafting",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Comprobando límite de X · texto final 251 caracteres."
+      },
+      {
+        "at": "2026-10-18T07:21:02.937Z",
+        "phase": "remate_selection",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-18T07:21:05.122Z",
+        "phase": "remate_selection",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Evaluando candidatos con ratings y filtro de originalidad."
+      },
+      {
+        "at": "2026-10-18T07:21:07.065Z",
+        "phase": "remate_selection",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Remate seleccionado · c1."
+      },
+      {
+        "at": "2026-10-18T07:21:09.525Z",
+        "phase": "verifying",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Releyendo estado autoritativo de #Terremoto justo antes de persistir."
+      },
+      {
+        "at": "2026-10-18T07:21:24.711Z",
+        "phase": "persisting",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Guardando ficha Explicada y sincronizando requests/cola mediante outbox transaccional."
+      },
+      {
+        "at": "2026-10-18T07:23:10.712Z",
+        "phase": "verifying",
+        "trend_id": "e7ea52cea2c4",
+        "title": "#Terremoto",
+        "message": "Tendencia cerrada y verificada · id+revision, texto y remate coinciden en main."
+      },
+      {
+        "at": "2026-10-18T07:23:28.203Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0: main revalidado; 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
+        "message": "Pasada completada 1/1 · cola final 0, sin preparing/update ni rewrite_pending; sin ImageGen."
       }
     ],
     "queue_complete": true,
@@ -84,8 +172,8 @@
   },
   "run_id": "tr-autoguard-20261018071651",
   "summary": {
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 1,
+    "explained": 1,
     "remaining_active": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
@@ -102,18 +190,74 @@
       "message": "Preparando pasada editorial real · cola autoritativa inicial 0; comprobando reexplicaciones y estado final."
     },
     {
-      "at": "2026-10-18T07:18:59.324Z",
+      "at": "2026-10-18T07:17:59.025Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y comprobando preparing/update y rewrite_pending antes del cierre 0/0."
+      "message": "Última relectura de main detectó una nueva entrada activa."
     },
     {
-      "at": "2026-10-18T07:17:40.891Z",
+      "at": "2026-10-18T07:20:58.771Z",
+      "phase": "drafting",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Redactando explicación factual de #Terremoto."
+    },
+    {
+      "at": "2026-10-18T07:21:00.859Z",
+      "phase": "drafting",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Comprobando límite de X · texto final 251 caracteres."
+    },
+    {
+      "at": "2026-10-18T07:21:02.937Z",
+      "phase": "remate_selection",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Generando candidatos de remate."
+    },
+    {
+      "at": "2026-10-18T07:21:05.122Z",
+      "phase": "remate_selection",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Evaluando candidatos con ratings y filtro de originalidad."
+    },
+    {
+      "at": "2026-10-18T07:21:07.065Z",
+      "phase": "remate_selection",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Remate seleccionado · c1."
+    },
+    {
+      "at": "2026-10-18T07:21:09.525Z",
+      "phase": "verifying",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Releyendo estado autoritativo de #Terremoto justo antes de persistir."
+    },
+    {
+      "at": "2026-10-18T07:21:24.711Z",
+      "phase": "persisting",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Guardando ficha Explicada y sincronizando requests/cola mediante outbox transaccional."
+    },
+    {
+      "at": "2026-10-18T07:23:10.712Z",
+      "phase": "verifying",
+      "trend_id": "e7ea52cea2c4",
+      "title": "#Terremoto",
+      "message": "Tendencia cerrada y verificada · id+revision, texto y remate coinciden en main."
+    },
+    {
+      "at": "2026-10-18T07:23:28.203Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 0/0: main revalidado; 0 preparing/update y 0 rewrite_pending. Sin ImageGen."
+      "message": "Pasada completada 1/1 · cola final 0, sin preparing/update ni rewrite_pending; sin ImageGen."
     }
   ],
   "telegram_orphans": 0,
