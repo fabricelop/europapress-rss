@@ -7530,28 +7530,30 @@
     {
       "id": "9cf1498400ce",
       "name": "Celades",
-      "rank": 9,
-      "status": "explained",
-      "requested_at": "2026-09-26T22:41:01+02:00",
-      "revision": 0,
-      "reexplain": false,
-      "with_image": false,
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-10-18T18:12:24+02:00",
+      "revision": 1,
+      "reexplain": true,
+      "with_image": true,
       "alternatives_target": 0,
       "batch_id": "0e95aa394f5f",
       "requested_together": [
         "Celades"
       ],
       "captured_with": [
-        "Ferran",
-        "Wembley",
-        "Inglaterra",
-        "Eric García",
-        "#NationsLeague",
-        "Vomitivo",
-        "Celades"
+        "Francia",
+        "Javi Rodríguez",
+        "Celades",
+        "Albiol",
+        "Osasuna",
+        "#CeltaAlavés",
+        "carrick",
+        "Calero",
+        "Budimir",
+        "París"
       ],
       "auto_queued": true,
-      "explained_at": "2026-09-26T22:35:41.483Z",
       "explanation": "Albert Celades es tendencia porque el Cádiz empató 1-1 con el Tenerife y continúa sin ganar tras siete jornadas de Liga, lo que mantiene la presión sobre el entrenador.",
       "news_disposition": "processing",
       "ttittulares_event_id": "trendnews-11ebcff5cf42"
@@ -63340,7 +63342,7 @@
       "id": "c4a371acd7c3",
       "name": "Africa",
       "rank": 7,
-      "status": "problematic",
+      "status": "inactive",
       "requested_at": "2026-10-18T13:03:04+02:00",
       "revision": 0,
       "reexplain": false,
@@ -63362,7 +63364,9 @@
       "problem_reason": "Reintento del 18/10/2026: Africa continúa en el puesto 7 del radar autoritativo. Las consultas nuevas con el contexto Calero/Leeds, búsquedas fechadas de tuits y una segunda ruta de búsqueda social y periodística no permiten vincular un acontecimiento único y suficientemente verificado con el pico español. Se mantiene problematic sin atribuir una causa por mera coincidencia temporal.",
       "problematic_attempts": 14,
       "editorial_engine": "chatgpt-automation-outbox",
-      "last_attempt_at": "2026-10-18T15:55:20+02:00"
+      "last_attempt_at": "2026-10-18T15:55:20+02:00",
+      "inactive_at": "2026-10-18T18:12:24+02:00",
+      "inactive_reason": "left-top10-radar"
     },
     {
       "id": "5b5d288d7551",
@@ -63912,8 +63916,74 @@
       "telegram_package_status": "deleted",
       "deleted_at": "2026-10-18T15:14:12.342125+00:00",
       "decision_source": "ttactualidad_direct"
+    },
+    {
+      "id": "2c9325fabd78",
+      "name": "Javi Rodríguez",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-10-18T18:12:24+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "705c2d244c62",
+      "requested_together": [
+        "Javi Rodríguez"
+      ],
+      "captured_with": [
+        "Javi Rodríguez",
+        "#CeltaAlavés",
+        "carrick"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "2a6252d87b51",
+      "name": "#CeltaAlavés",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-10-18T18:12:24+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "705c2d244c62",
+      "requested_together": [
+        "#CeltaAlavés"
+      ],
+      "captured_with": [
+        "Javi Rodríguez",
+        "#CeltaAlavés",
+        "carrick"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "d5d4caec3c81",
+      "name": "carrick",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-18T18:12:24+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "705c2d244c62",
+      "requested_together": [
+        "carrick"
+      ],
+      "captured_with": [
+        "Javi Rodríguez",
+        "#CeltaAlavés",
+        "carrick"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
     }
   ],
-  "updated_at": "2026-10-18T18:02:08+02:00",
+  "updated_at": "2026-10-18T18:12:24+02:00",
   "count": 1062
 }
