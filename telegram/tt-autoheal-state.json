@@ -2,111 +2,98 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-18T05:44:34.780637+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-18T09:56:25.309440+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ce8e594d2a63",
+          "title": "Real Madrid - Sevilla: horario y dnde ver hoy por TV el partido de LaLiga",
+          "seconds": 9616,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 157822,
+          "seconds": 172933,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "bb3041203d0d7182adf8b1d404e2543464a2bef0682536440d6997916b63d49d",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-18T05:44:34.780637+00:00",
-      "issue_count": 12,
+      "checked_at": "2026-10-18T09:56:25.309440+00:00",
+      "issue_count": 9,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "b8187c2f1a64",
           "title": "Hernández Hernández",
-          "seconds": 54718,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "74253d4d6c99",
-          "title": "Guadarrama",
-          "seconds": 81693,
+          "seconds": 69829,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "a0f9b43477ef",
           "title": "Giuliano",
-          "seconds": 58852,
+          "seconds": 73963,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "dbed6537630d",
           "title": "Espanyol",
-          "seconds": 54718,
+          "seconds": 69829,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "053c8714516d",
           "title": "Mendoza",
-          "seconds": 52906,
+          "seconds": 68017,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "b0858b01041f",
           "title": "celso",
-          "seconds": 48158,
+          "seconds": 63269,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1c04b17efffd",
           "title": "De Burgos",
-          "seconds": 42076,
+          "seconds": 57187,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "062dda15f883",
           "title": "Barcelona",
-          "seconds": 37931,
+          "seconds": 53042,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "2e564c33ef64",
-          "title": "#Felices31Agoney",
-          "seconds": 23414,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4cdbb83404e6",
-          "title": "Danjuma",
-          "seconds": 21649,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "c477355bbc56",
-          "title": "París",
-          "seconds": 19686,
+          "id": "78f0861a78ef",
+          "title": "#CCubicos438",
+          "seconds": 2017,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 157821,
+          "seconds": 172932,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -115,16 +102,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "071e835187ceb94a48b7405f2202295f40759312462f3f554c2caabaad5649ea",
+      "open_signature": "4c553dfeaa91bc5ba8da5faf09b59b4fab7f8cb818272731be08b1aed429ddf4",
       "repair_via_workflow_run": false,
-      "escalation_required": 11
+      "escalation_required": 8
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-17T21:03:36.657281+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-18T05:44:34.780637+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-18T05:44:34.780637+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T05:44:34.780637+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T09:56:25.309440+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-18T09:56:25.309440+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-18T09:56:25.309440+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T09:56:25.309440+00:00"
   },
-  "checked_at": "2026-10-18T05:44:34.780637+00:00"
+  "checked_at": "2026-10-18T09:56:25.309440+00:00"
 }
