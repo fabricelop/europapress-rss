@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T07:16:51.775Z",
-  "last_completed_at": "2026-10-18T07:23:28.203Z",
-  "updated_at": "2026-10-18T07:23:28.203Z",
+  "last_started_at": "2026-10-18T09:45:00+02:00",
+  "last_completed_at": "2026-10-18T09:47:00+02:00",
+  "updated_at": "2026-10-18T09:47:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "e7ea52cea2c4"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -18,8 +16,8 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
-    "requested_at": "2026-10-18T07:16:51.775Z",
-    "trigger_commit": "a61736d14e1c97147120ea718d0ab667ed27ceee",
+    "requested_at": "2026-10-18T09:45:00+02:00",
+    "trigger_commit": "5bed23e6eee43584a733c38be4ee9604feaac8ee",
     "run_id": null,
     "editorial_blocking": false
   },
@@ -27,21 +25,21 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-20261018071651",
+    "run_id": "tr-chat-20261018094500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-18T07:16:51.775Z",
-    "updated_at": "2026-10-18T07:23:28.203Z",
-    "finished_at": "2026-10-18T07:23:28.203Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-18T09:45:00+02:00",
+    "updated_at": "2026-10-18T09:47:00+02:00",
+    "finished_at": "2026-10-18T09:47:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "message": "Pasada completada 1/1 · cola final 0, sin preparing/update ni rewrite_pending; sin ImageGen.",
+    "message": "Pasada completada 0/0 · cola final 0, sin preparing/update ni rewrite_pending; saneamiento de Pendientes solicitado; sin ImageGen.",
     "summary": {
-      "attempted": 1,
-      "explained": 1,
+      "attempted": 0,
+      "explained": 0,
       "remaining_active": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
@@ -57,114 +55,28 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "e7ea52cea2c4",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 9.1
-          },
-          {
-            "id": "c2",
-            "total": 8.1
-          },
-          {
-            "id": "c3",
-            "total": 8.4
-          },
-          {
-            "id": "c4",
-            "total": 8
-          },
-          {
-            "id": "c5",
-            "total": 8.3
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 9.1
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T07:16:51.775Z",
+        "at": "2026-10-18T09:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial real · cola autoritativa inicial 0; comprobando reexplicaciones y estado final."
+        "message": "Preparando pasada editorial real · cola autoritativa inicial 0; comprobando reexplicaciones y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-18T07:17:59.025Z",
+        "at": "2026-10-18T09:46:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Última relectura de main detectó una nueva entrada activa."
+        "message": "Releyendo main · cola, captura reciente y marcas de reexplicación antes del cierre."
       },
       {
-        "at": "2026-10-18T07:20:58.771Z",
-        "phase": "drafting",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Redactando explicación factual de #Terremoto."
-      },
-      {
-        "at": "2026-10-18T07:21:00.859Z",
-        "phase": "drafting",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Comprobando límite de X · texto final 251 caracteres."
-      },
-      {
-        "at": "2026-10-18T07:21:02.937Z",
-        "phase": "remate_selection",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-18T07:21:05.122Z",
-        "phase": "remate_selection",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Evaluando candidatos con ratings y filtro de originalidad."
-      },
-      {
-        "at": "2026-10-18T07:21:07.065Z",
-        "phase": "remate_selection",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Remate seleccionado · c1."
-      },
-      {
-        "at": "2026-10-18T07:21:09.525Z",
-        "phase": "verifying",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Releyendo estado autoritativo de #Terremoto justo antes de persistir."
-      },
-      {
-        "at": "2026-10-18T07:21:24.711Z",
-        "phase": "persisting",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Guardando ficha Explicada y sincronizando requests/cola mediante outbox transaccional."
-      },
-      {
-        "at": "2026-10-18T07:23:10.712Z",
-        "phase": "verifying",
-        "trend_id": "e7ea52cea2c4",
-        "title": "#Terremoto",
-        "message": "Tendencia cerrada y verificada · id+revision, texto y remate coinciden en main."
-      },
-      {
-        "at": "2026-10-18T07:23:28.203Z",
+        "at": "2026-10-18T09:47:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada 1/1 · cola final 0, sin preparing/update ni rewrite_pending; sin ImageGen."
+        "message": "Pasada completada 0/0 · cola final 0, sin preparing/update ni rewrite_pending; saneamiento de Pendientes solicitado; sin ImageGen."
       }
     ],
     "queue_complete": true,
