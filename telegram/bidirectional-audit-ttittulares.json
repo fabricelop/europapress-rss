@@ -1,12 +1,22 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-18T09:56:22.275899+00:00",
+  "checked_at": "2026-10-18T13:52:47.294681+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 1,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 14,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "760bd65e75b8",
+      "title": "Chacarra gana en la India y se pone primero en la Race to Dubai ante la mirada de Luke Donald",
+      "source": [
+        "app_processing",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +110,9 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "760bd65e75b8"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",

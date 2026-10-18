@@ -2,21 +2,28 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-18T09:56:25.309440+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-18T13:52:51.373026+00:00",
+      "issue_count": 3,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "ce8e594d2a63",
           "title": "Real Madrid - Sevilla: horario y dnde ver hoy por TV el partido de LaLiga",
-          "seconds": 9616,
+          "seconds": 23802,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "760bd65e75b8",
+          "title": "Chacarra gana en la India y se pone primero en la Race to Dubai ante la mirada de Luke Donald",
+          "seconds": 497,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 172933,
+          "seconds": 187119,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -25,75 +32,110 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "bb3041203d0d7182adf8b1d404e2543464a2bef0682536440d6997916b63d49d",
+      "open_signature": "8e5efc0e62a7eb48eef4dad74e2ccef133e417d6425691ba3b581ced3c4e7344",
       "repair_via_workflow_run": false,
       "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-18T09:56:25.309440+00:00",
-      "issue_count": 9,
+      "checked_at": "2026-10-18T13:52:51.373026+00:00",
+      "issue_count": 14,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "b8187c2f1a64",
-          "title": "Hernández Hernández",
-          "seconds": 69829,
+          "id": "26734863a6f4",
+          "title": "Budimir",
+          "seconds": 1819,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
-          "id": "a0f9b43477ef",
-          "title": "Giuliano",
-          "seconds": 73963,
+          "id": "b8187c2f1a64",
+          "title": "Hernández Hernández",
+          "seconds": 84015,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "dbed6537630d",
           "title": "Espanyol",
-          "seconds": 69829,
+          "seconds": 84015,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "053c8714516d",
           "title": "Mendoza",
-          "seconds": 68017,
+          "seconds": 82203,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "b0858b01041f",
           "title": "celso",
-          "seconds": 63269,
+          "seconds": 77455,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1c04b17efffd",
           "title": "De Burgos",
-          "seconds": 57187,
+          "seconds": 71373,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "062dda15f883",
           "title": "Barcelona",
-          "seconds": 53042,
+          "seconds": 67228,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "19071fd1ceab",
+          "title": "Bardem",
+          "seconds": 12055,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "1e989dcc6d17",
+          "title": "Jodar",
+          "seconds": 10187,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "74aa2ef26308",
+          "title": "Foki",
+          "seconds": 6013,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "78f0861a78ef",
-          "title": "#CCubicos438",
-          "seconds": 2017,
+          "id": "94d3660c9fdb",
+          "title": "Jassel Pérez",
+          "seconds": 1819,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "860d1cab81b0",
+          "title": "#OsasunaRacing",
+          "seconds": 1819,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4e36c914f032",
+          "title": "Decencia",
+          "seconds": 1819,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 172932,
+          "seconds": 187118,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -102,16 +144,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "4c553dfeaa91bc5ba8da5faf09b59b4fab7f8cb818272731be08b1aed429ddf4",
+      "open_signature": "c67e1a62d3f6d9b7f950d30999e6a7e3bbf8f59be9bec2c784e9f2f9afa38b8e",
       "repair_via_workflow_run": false,
-      "escalation_required": 8
+      "escalation_required": 13
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T09:56:25.309440+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-18T09:56:25.309440+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-18T09:56:25.309440+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T09:56:25.309440+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T13:52:51.373026+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-18T13:52:51.373026+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-18T13:52:51.373026+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T13:52:51.373026+00:00"
   },
-  "checked_at": "2026-10-18T09:56:25.309440+00:00"
+  "checked_at": "2026-10-18T13:52:51.373026+00:00"
 }
