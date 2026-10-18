@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T15:19:03+02:00",
-  "last_completed_at": "2026-10-18T15:19:03+02:00",
-  "updated_at": "2026-10-18T15:19:03+02:00",
+  "last_started_at": "2026-10-18T13:16:28.575Z",
+  "last_completed_at": "2026-10-18T13:20:38.433Z",
+  "updated_at": "2026-10-18T13:20:38.433Z",
   "status": "success",
   "processed_ids": [
     "c4a371acd7c3"
@@ -31,25 +31,25 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018130440",
+    "run_id": "tr-editorial-20261018131628",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T13:04:40.816Z",
-    "updated_at": "2026-10-18T13:09:25.831Z",
+    "started_at": "2026-10-18T13:16:28.575Z",
+    "updated_at": "2026-10-18T13:20:38.433Z",
+    "finished_at": "2026-10-18T13:20:38.433Z",
     "current": 1,
     "total": 1,
-    "title": null,
-    "event_id": null,
     "trend_id": null,
-    "message": "Africa r0 aplicada como problematic, intento 5; no quedan preparing/update ni rewrite_pending. Cola visible 1→1 sin fingir explained.",
+    "title": null,
+    "message": "Pasada cerrada: no quedan preparing/update; Africa r0 continúa problematic tras el sexto intento verificado",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
         "reason": "detonante_no_verificado",
-        "at": "2026-10-18T13:09:25.831Z"
+        "at": "2026-10-18T13:20:38.433Z"
       }
     ],
     "ratings_snapshot": {
@@ -62,40 +62,62 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T13:04:40.816Z",
+        "at": "2026-10-18T13:16:28.575Z",
         "phase": "preparing",
-        "message": "Estado fresco y snapshot de ratings leídos; sin imágenes ni Telegram"
+        "trend_id": null,
+        "title": null,
+        "message": "Estado fresco y snapshot editorial en preparación; iniciando reparación de Pendientes y reintento Top 10 sin ImageGen"
       },
       {
-        "at": "2026-10-18T13:07:18.925Z",
-        "phase": "investigating",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Africa r0 sigue problemática en Top 10; buscando un detonante con consultas nuevas"
-      },
-      {
-        "at": "2026-10-18T13:07:47.558Z",
-        "phase": "persisting",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Dos familias de búsqueda no prueban el detonante; preparando resultado problematic r0"
-      },
-      {
-        "at": "2026-10-18T13:08:43.911Z",
+        "at": "2026-10-18T13:16:49.388Z",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Outbox r0 releído; GitHub Actions 39130208299 está aplicando el resultado"
+        "message": "Releyendo estado autoritativo de Africa: sigue problematic r0 y TT#8 en captura fresca"
       },
       {
-        "at": "2026-10-18T13:09:25.831Z",
+        "at": "2026-10-18T13:17:20.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Buscando detonante actual con una primera familia de consultas nuevas"
+      },
+      {
+        "at": "2026-10-18T13:17:50.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Contrastando una segunda familia de búsquedas y señales actuales"
+      },
+      {
+        "at": "2026-10-18T13:18:20.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Término confirmado como tendencia, pero sin detonante único verificable; no se redacta una explicación inventada"
+      },
+      {
+        "at": "2026-10-18T13:18:20.362Z",
+        "phase": "persisting",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Persistiendo Africa r0 como problematic para no inventar una explicación"
+      },
+      {
+        "at": "2026-10-18T13:19:03.000Z",
+        "phase": "verifying",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Aplicador consumió el outbox; requests registra problematic_attempts=6 y la cola mantiene solo Africa como problematic"
+      },
+      {
+        "at": "2026-10-18T13:20:38.433Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Africa r0 aplicada como problematic, intento 5; no quedan preparing/update ni rewrite_pending. Cola visible 1→1 sin fingir explained."
+        "message": "Pasada cerrada: no quedan preparing/update; Africa r0 continúa problematic tras el sexto intento verificado"
       }
     ],
-    "finished_at": "2026-10-18T13:09:25.831Z",
     "summary": {
       "initial_active_requests": 0,
       "initial_compact_queue": 1,
@@ -109,7 +131,7 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 1,
       "partial": false
     },
@@ -120,13 +142,13 @@
         "name": "Africa",
         "revision": 0,
         "status": "problematic",
-        "problematic_attempts": 5,
+        "problematic_attempts": 6,
         "verified_in_main": true,
-        "workflow_run": 39130208299
+        "apply_commit": "ccb9f9ce9b0f58eface502038c69279f58bc87ba"
       }
     ]
   },
-  "run_id": "tr-editorial-20261018130440",
+  "run_id": "tr-editorial-20261018131628",
   "summary": {
     "initial_active_requests": 0,
     "initial_compact_queue": 1,
@@ -140,44 +162,67 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 1,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T13:04:40.816Z",
+      "at": "2026-10-18T13:16:28.575Z",
       "phase": "preparing",
-      "message": "Estado fresco y snapshot de ratings leídos; sin imágenes ni Telegram"
+      "trend_id": null,
+      "title": null,
+      "message": "Estado fresco y snapshot editorial en preparación; iniciando reparación de Pendientes y reintento Top 10 sin ImageGen"
     },
     {
-      "at": "2026-10-18T13:07:18.925Z",
-      "phase": "investigating",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Africa r0 sigue problemática en Top 10; buscando un detonante con consultas nuevas"
-    },
-    {
-      "at": "2026-10-18T13:07:47.558Z",
-      "phase": "persisting",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Dos familias de búsqueda no prueban el detonante; preparando resultado problematic r0"
-    },
-    {
-      "at": "2026-10-18T13:08:43.911Z",
+      "at": "2026-10-18T13:16:49.388Z",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Outbox r0 releído; GitHub Actions 39130208299 está aplicando el resultado"
+      "message": "Releyendo estado autoritativo de Africa: sigue problematic r0 y TT#8 en captura fresca"
     },
     {
-      "at": "2026-10-18T13:09:25.831Z",
+      "at": "2026-10-18T13:17:20.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Buscando detonante actual con una primera familia de consultas nuevas"
+    },
+    {
+      "at": "2026-10-18T13:17:50.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Contrastando una segunda familia de búsquedas y señales actuales"
+    },
+    {
+      "at": "2026-10-18T13:18:20.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Término confirmado como tendencia, pero sin detonante único verificable; no se redacta una explicación inventada"
+    },
+    {
+      "at": "2026-10-18T13:18:20.362Z",
+      "phase": "persisting",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Persistiendo Africa r0 como problematic para no inventar una explicación"
+    },
+    {
+      "at": "2026-10-18T13:19:03.000Z",
+      "phase": "verifying",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Aplicador consumió el outbox; requests registra problematic_attempts=6 y la cola mantiene solo Africa como problematic"
+    },
+    {
+      "at": "2026-10-18T13:20:38.433Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Africa r0 aplicada como problematic, intento 5; no quedan preparing/update ni rewrite_pending. Cola visible 1→1 sin fingir explained."
+      "message": "Pasada cerrada: no quedan preparing/update; Africa r0 continúa problematic tras el sexto intento verificado"
     }
   ],
   "telegram_orphans": 0,
