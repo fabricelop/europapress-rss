@@ -4,15 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T00:45:15+02:00",
-  "last_completed_at": "2026-10-19T00:53:10+02:00",
-  "updated_at": "2026-10-19T00:53:10+02:00",
+  "last_started_at": "2026-10-18T23:06:05.509Z",
+  "last_completed_at": "2026-10-18T23:06:27.830Z",
+  "updated_at": "2026-10-18T23:06:27.830Z",
   "status": "success",
-  "processed_ids": [
-    "c73f1c05a572",
-    "5877a27de3b6",
-    "ea3aa08d7383"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -29,19 +25,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610190045-chat",
+    "run_id": "tr-editorial-20261018230605",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T00:45:15+02:00",
-    "updated_at": "2026-10-19T00:53:10+02:00",
-    "finished_at": "2026-10-19T00:53:10+02:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-18T23:06:05.509Z",
+    "updated_at": "2026-10-18T23:06:27.830Z",
+    "current": 0,
+    "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 3/3 verificada en main: Juan Iglesias r0, #DebateGemelos r0 y Cucurella r1 cerradas; cola 0 y sin requests preparing/update ni rewrite_pending.",
+    "message": "Pasada 0/0 verificada: sin PROCESSING/preparing/update ni rewrite_pending. No se crean textos, outboxes, imágenes, reparaciones visuales ni envíos a Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -49,312 +44,102 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 0
     },
-    "remate_selections": [
-      {
-        "trend_id": "c73f1c05a572",
-        "title": "Juan Iglesias",
-        "selected": "🌶️ La zona mixta acabó pidiendo su propio VAR."
-      },
-      {
-        "trend_id": "5877a27de3b6",
-        "title": "#DebateGemelos",
-        "selected": "🌶️ El algoritmo también pidió turno de palabra."
-      },
-      {
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "selected": "🌶️ En una noche de golazos, el lateral hizo trabajo de letra pequeña."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T00:45:15+02:00",
+        "at": "2026-10-18T23:06:05.509Z",
         "phase": "preparing",
+        "title": null,
         "event_id": null,
         "trend_id": null,
+        "message": "Colas vacías; se respetan los cierres y las problemáticas históricas sin validación explícita."
+      },
+      {
+        "at": "2026-10-18T23:06:07.986Z",
+        "phase": "verifying",
         "title": null,
-        "message": "Preparando pasada editorial: 2 revisiones en la cola compacta; saneamiento visual solicitado sin bloquear el texto."
-      },
-      {
-        "at": "2026-10-19T00:46:30+02:00",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "c73f1c05a572",
-        "title": "Juan Iglesias",
-        "message": "Detonante verificado: declaraciones postpartido sobre el arbitraje tras el 4-1."
-      },
-      {
-        "at": "2026-10-19T00:47:10+02:00",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "c73f1c05a572",
-        "title": "Juan Iglesias",
-        "message": "Ficha, request y cola actualizadas."
-      },
-      {
-        "at": "2026-10-19T00:48:10+02:00",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "c73f1c05a572",
-        "title": "Juan Iglesias",
-        "message": "Tendencia cerrada y verificada en main."
-      },
-      {
-        "at": "2026-10-19T00:48:40+02:00",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "5877a27de3b6",
-        "title": "#DebateGemelos",
-        "message": "Detonante verificado: directo político de Zona Gemelos entre creadores de izquierda y derecha."
-      },
-      {
-        "at": "2026-10-19T00:49:20+02:00",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "5877a27de3b6",
-        "title": "#DebateGemelos",
-        "message": "Ficha, request y cola actualizadas."
-      },
-      {
-        "at": "2026-10-19T00:50:00+02:00",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "5877a27de3b6",
-        "title": "#DebateGemelos",
-        "message": "Tendencia cerrada y verificada en main."
-      },
-      {
-        "at": "2026-10-19T00:50:20+02:00",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "message": "Reconciliando request activa fuera de la cola compacta: Cucurella r1."
-      },
-      {
-        "at": "2026-10-19T00:51:00+02:00",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "message": "Contrastando el detonante actual con el Real Madrid-Sevilla."
-      },
-      {
-        "at": "2026-10-19T00:51:35+02:00",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-19T00:51:55+02:00",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "message": "Remate deportivo seleccionado tras control de originalidad."
-      },
-      {
-        "at": "2026-10-19T00:52:20+02:00",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "ea3aa08d7383",
-        "title": "Cucurella",
-        "message": "Guardando Cucurella r1 y cerrando la request activa."
-      },
-      {
-        "at": "2026-10-19T00:52:50+02:00",
-        "phase": "verifying",
         "event_id": null,
         "trend_id": null,
-        "title": null,
-        "message": "Releyendo main y verificando id+revision y texto persistido para las tres revisiones."
+        "message": "Releyendo main para confirmar ausencia de PROCESSING/preparing/update y rewrite_pending; sin activar el circuito visual"
       },
       {
-        "at": "2026-10-19T00:53:10+02:00",
+        "at": "2026-10-18T23:06:27.830Z",
         "phase": "closing",
+        "title": null,
         "event_id": null,
         "trend_id": null,
-        "title": null,
-        "message": "Pasada 3/3 verificada en main: cola 0, sin requests preparing/update ni rewrite_pending."
+        "message": "Pasada 0/0 verificada: sin PROCESSING/preparing/update ni rewrite_pending. No se crean textos, outboxes, imágenes, reparaciones visuales ni envíos a Telegram."
       }
     ],
+    "finished_at": "2026-10-18T23:06:27.830Z",
+    "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "partial": false,
-    "final_outcomes": [
-      {
-        "id": "c73f1c05a572",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "5877a27de3b6",
-        "revision": 0,
-        "status": "explained"
-      },
-      {
-        "id": "ea3aa08d7383",
-        "revision": 1,
-        "status": "explained"
-      }
-    ],
+    "final_outcomes": [],
     "summary": {
-      "initial_compact_queue": 2,
-      "initial_active_requests": 3,
-      "discovered_reconciliation": 1,
+      "initial_compact_queue": 0,
+      "initial_active_requests": 0,
       "final_compact_queue": 0,
-      "attempted": 3,
-      "explained": 3,
+      "attempted": 0,
+      "explained": 0,
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "incidents": 0,
       "partial": false
     }
   },
-  "run_id": "tr-editorial-202610190045-chat",
+  "run_id": "tr-editorial-20261018230605",
   "summary": {
-    "initial_compact_queue": 2,
-    "initial_active_requests": 3,
-    "discovered_reconciliation": 1,
+    "initial_compact_queue": 0,
+    "initial_active_requests": 0,
     "final_compact_queue": 0,
-    "attempted": 3,
-    "explained": 3,
+    "attempted": 0,
+    "explained": 0,
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T00:45:15+02:00",
+      "at": "2026-10-18T23:06:05.509Z",
       "phase": "preparing",
+      "title": null,
       "event_id": null,
       "trend_id": null,
+      "message": "Colas vacías; se respetan los cierres y las problemáticas históricas sin validación explícita."
+    },
+    {
+      "at": "2026-10-18T23:06:07.986Z",
+      "phase": "verifying",
       "title": null,
-      "message": "Preparando pasada editorial: 2 revisiones en la cola compacta; saneamiento visual solicitado sin bloquear el texto."
-    },
-    {
-      "at": "2026-10-19T00:46:30+02:00",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "c73f1c05a572",
-      "title": "Juan Iglesias",
-      "message": "Detonante verificado: declaraciones postpartido sobre el arbitraje tras el 4-1."
-    },
-    {
-      "at": "2026-10-19T00:47:10+02:00",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "c73f1c05a572",
-      "title": "Juan Iglesias",
-      "message": "Ficha, request y cola actualizadas."
-    },
-    {
-      "at": "2026-10-19T00:48:10+02:00",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "c73f1c05a572",
-      "title": "Juan Iglesias",
-      "message": "Tendencia cerrada y verificada en main."
-    },
-    {
-      "at": "2026-10-19T00:48:40+02:00",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "5877a27de3b6",
-      "title": "#DebateGemelos",
-      "message": "Detonante verificado: directo político de Zona Gemelos entre creadores de izquierda y derecha."
-    },
-    {
-      "at": "2026-10-19T00:49:20+02:00",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "5877a27de3b6",
-      "title": "#DebateGemelos",
-      "message": "Ficha, request y cola actualizadas."
-    },
-    {
-      "at": "2026-10-19T00:50:00+02:00",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "5877a27de3b6",
-      "title": "#DebateGemelos",
-      "message": "Tendencia cerrada y verificada en main."
-    },
-    {
-      "at": "2026-10-19T00:50:20+02:00",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "ea3aa08d7383",
-      "title": "Cucurella",
-      "message": "Reconciliando request activa fuera de la cola compacta: Cucurella r1."
-    },
-    {
-      "at": "2026-10-19T00:51:00+02:00",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "ea3aa08d7383",
-      "title": "Cucurella",
-      "message": "Contrastando el detonante actual con el Real Madrid-Sevilla."
-    },
-    {
-      "at": "2026-10-19T00:51:35+02:00",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "ea3aa08d7383",
-      "title": "Cucurella",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-19T00:51:55+02:00",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "ea3aa08d7383",
-      "title": "Cucurella",
-      "message": "Remate deportivo seleccionado tras control de originalidad."
-    },
-    {
-      "at": "2026-10-19T00:52:20+02:00",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "ea3aa08d7383",
-      "title": "Cucurella",
-      "message": "Guardando Cucurella r1 y cerrando la request activa."
-    },
-    {
-      "at": "2026-10-19T00:52:50+02:00",
-      "phase": "verifying",
       "event_id": null,
       "trend_id": null,
-      "title": null,
-      "message": "Releyendo main y verificando id+revision y texto persistido para las tres revisiones."
+      "message": "Releyendo main para confirmar ausencia de PROCESSING/preparing/update y rewrite_pending; sin activar el circuito visual"
     },
     {
-      "at": "2026-10-19T00:53:10+02:00",
+      "at": "2026-10-18T23:06:27.830Z",
       "phase": "closing",
+      "title": null,
       "event_id": null,
       "trend_id": null,
-      "title": null,
-      "message": "Pasada 3/3 verificada en main: cola 0, sin requests preparing/update ni rewrite_pending."
+      "message": "Pasada 0/0 verificada: sin PROCESSING/preparing/update ni rewrite_pending. No se crean textos, outboxes, imágenes, reparaciones visuales ni envíos a Telegram."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "previous_concurrent_run_id": "tr-editorial-202610182215-chat",
-  "error": null
+  "previous_concurrent_run_id": "tr-editorial-202610182215-chat"
 }
