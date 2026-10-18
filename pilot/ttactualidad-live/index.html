@@ -598,7 +598,10 @@ async function pilotSend(item,decision){
  if(!await ensurePilotConnection())return;
  if(!directPilot.real){showToast('Edición GitHub no conectada');return}
  const project=itemProject(item),event_id=String(item._id||'');
- if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador no válido');return}
+ if(decision==='prepare'&&project==='ttendencias'&&!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){
+  showToast('Esta tendencia no tiene identificador editorial válido. No se ha enviado la orden.');return;
+ }
+ if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador editorial no válido: no se ha enviado la orden');return}
  const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
  const key=hideOptimistically(item,decision),op=pendingDeletes.get(key);
