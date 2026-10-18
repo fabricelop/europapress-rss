@@ -2,28 +2,28 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-18T13:52:51.373026+00:00",
+      "checked_at": "2026-10-18T17:03:57.819635+00:00",
       "issue_count": 3,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "ce8e594d2a63",
           "title": "Real Madrid - Sevilla: horario y dnde ver hoy por TV el partido de LaLiga",
-          "seconds": 23802,
+          "seconds": 35268,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "760bd65e75b8",
-          "title": "Chacarra gana en la India y se pone primero en la Race to Dubai ante la mirada de Luke Donald",
-          "seconds": 497,
+          "id": "5a02666296c4",
+          "title": "El Barça pierde a Eric García, estará alrededor de un mes de baja, y a Koundé antes del partido cont",
+          "seconds": 1419,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 187119,
+          "seconds": 198585,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -32,128 +32,85 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "8e5efc0e62a7eb48eef4dad74e2ccef133e417d6425691ba3b581ced3c4e7344",
+      "open_signature": "52ca51bd1e91c0000c8827368a07aa8121ad33940f6786e9b1812099044e66b6",
       "repair_via_workflow_run": false,
-      "escalation_required": 1
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-18T13:52:51.373026+00:00",
-      "issue_count": 14,
+      "checked_at": "2026-10-18T17:03:57.819635+00:00",
+      "issue_count": 8,
       "issues": [
-        {
-          "kind": "editorial_overdue",
-          "id": "26734863a6f4",
-          "title": "Budimir",
-          "seconds": 1819,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "b8187c2f1a64",
-          "title": "Hernández Hernández",
-          "seconds": 84015,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "dbed6537630d",
-          "title": "Espanyol",
-          "seconds": 84015,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "053c8714516d",
-          "title": "Mendoza",
-          "seconds": 82203,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "b0858b01041f",
-          "title": "celso",
-          "seconds": 77455,
-          "workflow": null
-        },
         {
           "kind": "editorial_overdue",
           "id": "1c04b17efffd",
           "title": "De Burgos",
-          "seconds": 71373,
+          "seconds": 82839,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "062dda15f883",
           "title": "Barcelona",
-          "seconds": 67228,
+          "seconds": 78694,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "19071fd1ceab",
           "title": "Bardem",
-          "seconds": 12055,
+          "seconds": 23521,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1e989dcc6d17",
           "title": "Jodar",
-          "seconds": 10187,
+          "seconds": 21653,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74aa2ef26308",
           "title": "Foki",
-          "seconds": 6013,
+          "seconds": 17479,
           "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "94d3660c9fdb",
-          "title": "Jassel Pérez",
-          "seconds": 1819,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "26734863a6f4",
+          "title": "Budimir",
+          "seconds": 13285,
+          "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "860d1cab81b0",
-          "title": "#OsasunaRacing",
-          "seconds": 1819,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4e36c914f032",
-          "title": "Decencia",
-          "seconds": 1819,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "2a6252d87b51",
+          "title": "#CeltaAlavés",
+          "seconds": 3093,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 187118,
+          "seconds": 198584,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "c67e1a62d3f6d9b7f950d30999e6a7e3bbf8f59be9bec2c784e9f2f9afa38b8e",
+      "open_signature": "2a0d237dbaaa70038b2697781e9c927f171ba0e44d34507d7102e438b589fbcd",
       "repair_via_workflow_run": false,
-      "escalation_required": 13
+      "escalation_required": 7
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T13:52:51.373026+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-18T13:52:51.373026+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-18T13:52:51.373026+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T17:03:57.819635+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-18T17:03:57.819635+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-18T17:03:57.819635+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T13:52:51.373026+00:00"
   },
-  "checked_at": "2026-10-18T13:52:51.373026+00:00"
+  "checked_at": "2026-10-18T17:03:57.819635+00:00"
 }
