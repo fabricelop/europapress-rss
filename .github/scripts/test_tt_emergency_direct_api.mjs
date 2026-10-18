@@ -34,9 +34,9 @@ const sandbox={
  },
  console
 };
-vm.runInNewContext(part+\`\n
+vm.runInNewContext(part+`\n
 globalThis.API_TEST={emergencyPair,sendEmergencyDirect,emergencyForget,emergencySessionToken}
-\`,sandbox,{timeout:1000});
+`,sandbox,{timeout:1000});
 const api=sandbox.API_TEST;
 const item={_kind:'tti',_id:'abc123',title:'Título público',revision:1};
 await api.sendEmergencyDirect(item,'deleted');
@@ -49,7 +49,6 @@ await new Promise(resolve=>setTimeout(resolve,0));
 assert.equal(calls.length,2,'After owner verification, submit pending action directly');
 assert.equal(calls[1].url,'https://api.github.com/repos/fabricelop/europapress-rss/issues');
 assert.equal(calls[1].options.method,'POST');
-assert.equal(calls[1].options.headers.Authorization,undefined);
 assert.equal(calls[1].options.headers['Authorization'],'Bearer '+token);
 const body=JSON.parse(calls[1].options.body);
 assert(body.title.startsWith('[TT-MOVIL] ttittulares deleted abc123'));
