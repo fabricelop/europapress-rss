@@ -503,7 +503,7 @@ function pilotConfig(){void pairPilot()}
 function hideOptimistically(item,decision){
  const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
  const snapshot={title:String(item.title||item.canonical_title||id),source_count:item.source_count,
-   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at};
+   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at,trend_name:item.name||item.title,trend_rank:Number(item.rank||0)};
  pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),decision,
   request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending',snapshot});
  savePending();render();
@@ -545,7 +545,7 @@ async function retryAction(op){
   const result=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
    headers:{'Content-Type':'application/json'},
    body:JSON.stringify({project:op.project,event_id:op.id,revision:op.revision,
-    decision:op.decision,request_id:op.request_id||crypto.randomUUID()}),
+    decision:op.decision,request_id:op.request_id||crypto.randomUUID(),trend_name:op.snapshot?.trend_name,trend_rank:op.snapshot?.trend_rank}),
    signal:AbortSignal.timeout(15000)});
   const data=await result.json().catch(()=>({}));
   if(!result.ok||!data.routed)console.warn('Reintento de confirmación pendiente',data.error||result.status);
@@ -597,18 +597,24 @@ function schedulePendingChecks(){
 async function pilotSend(item,decision){
  if(!await ensurePilotConnection())return;
  if(!directPilot.real){showToast('Edición GitHub no conectada');return}
- const project=itemProject(item),event_id=String(item._id||'');
- if(decision==='prepare'&&project==='ttendencias'&&!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){
-  showToast('Esta tendencia no tiene identificador editorial válido. No se ha enviado la orden.');return;
+ const project=itemProject(item),trend_name=String(item.name||item.title||'').trim(),trend_rank=Number(item.rank||0);
+ let event_id=String(item._id||'');
+ if(decision==='prepare'&&project==='ttendencias'&&trend_rank>=11&&trend_rank<=30){
+  const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===event_id);
+  if(!known){
+   const bytes=new TextEncoder().encode(trend_name.normalize('NFC'));
+   const hash=await crypto.subtle.digest('SHA-256',bytes);
+   event_id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+  }
  }
- if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador editorial no válido: no se ha enviado la orden');return}
+ if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador editorial no válido');return}
  const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
- const key=hideOptimistically(item,decision),op=pendingDeletes.get(key);
+ const key=hideOptimistically({...item,_id:event_id},decision),op=pendingDeletes.get(key);
  try{
   const res=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
    headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({project,event_id,decision,revision:op.revision,request_id:op.request_id}),
+   body:JSON.stringify({project,event_id,decision,revision:op.revision,request_id:op.request_id,trend_name,trend_rank}),
    signal:AbortSignal.timeout(15000)});
   const result=await res.json().catch(()=>({}));
   if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
