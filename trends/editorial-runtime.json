@@ -5,17 +5,15 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-18T00:02:00.956Z",
-  "last_completed_at": "2026-10-18T01:22:00+02:00",
-  "updated_at": "2026-10-18T00:02:30.921Z",
-  "status": "running",
+  "last_completed_at": "2026-10-18T00:05:00.258Z",
+  "updated_at": "2026-10-18T00:05:00.258Z",
+  "status": "success",
   "processed_ids": [
-    "2e564c33ef64"
-  ],
-  "remaining_ids": [],
-  "queue_complete": false,
-  "remaining_active_ids": [
     "4cdbb83404e6"
   ],
+  "remaining_ids": [],
+  "queue_complete": true,
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
@@ -31,16 +29,29 @@
     "project": "TTendencias",
     "run_id": "tr-editorial-20261018000200956",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "remate_selection",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-18T00:02:00.956Z",
-    "updated_at": "2026-10-18T00:02:30.921Z",
+    "updated_at": "2026-10-18T00:05:00.258Z",
     "current": 1,
     "total": 1,
     "trend_id": "4cdbb83404e6",
     "title": "Danjuma",
-    "summary": {},
-    "message": "Cinco remates evaluados con ratings; seleccionado un giro sobre el palo largo",
+    "summary": {
+      "trends_processed": 1,
+      "trends_explained": 1,
+      "revisions_updated": 1,
+      "trends_problematic": 0,
+      "incidents": 0,
+      "queue_remaining": 0,
+      "visual_backlog": 0,
+      "images_generated": 0,
+      "imagegen_attempts": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "partial": false
+    },
+    "message": "Danjuma revisión 0 explicada y verificada en ambos registros; colas editoriales vacías",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -154,11 +165,53 @@
         "trend_id": "4cdbb83404e6",
         "title": "Danjuma",
         "message": "Cinco remates evaluados con ratings; seleccionado un giro sobre el palo largo"
+      },
+      {
+        "at": "2026-10-18T00:02:40.737Z",
+        "phase": "persisting",
+        "trend_id": "4cdbb83404e6",
+        "title": "Danjuma",
+        "message": "Enviando explicación de Danjuma r0 al outbox oficial"
+      },
+      {
+        "at": "2026-10-18T00:03:26.674Z",
+        "phase": "verifying",
+        "trend_id": "4cdbb83404e6",
+        "title": "Danjuma",
+        "message": "Verificando ficha y requests: Actions sigue aplicando; todavía no se confirma cierre"
+      },
+      {
+        "at": "2026-10-18T00:05:00.258Z",
+        "phase": "verifying",
+        "trend_id": "4cdbb83404e6",
+        "title": "Danjuma",
+        "message": "id, revisión, explicación, remate y fecha idénticos en requests y ficha; estado explained confirmado"
+      },
+      {
+        "at": "2026-10-18T00:05:00.258Z",
+        "phase": "closing",
+        "trend_id": "4cdbb83404e6",
+        "title": "Danjuma",
+        "message": "Cola textual 1→0; TTiTTulares sin PROCESSING ni rewrite_pending; ninguna entrega Telegram"
       }
-    ]
+    ],
+    "finished_at": "2026-10-18T00:05:00.258Z"
   },
   "run_id": "tr-editorial-20261018000200956",
-  "summary": {},
+  "summary": {
+    "trends_processed": 1,
+    "trends_explained": 1,
+    "revisions_updated": 1,
+    "trends_problematic": 0,
+    "incidents": 0,
+    "queue_remaining": 0,
+    "visual_backlog": 0,
+    "images_generated": 0,
+    "imagegen_attempts": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
+    "partial": false
+  },
   "unresolved_orphan_ids": [],
   "activity": [
     {
@@ -202,9 +255,36 @@
       "trend_id": "4cdbb83404e6",
       "title": "Danjuma",
       "message": "Cinco remates evaluados con ratings; seleccionado un giro sobre el palo largo"
+    },
+    {
+      "at": "2026-10-18T00:02:40.737Z",
+      "phase": "persisting",
+      "trend_id": "4cdbb83404e6",
+      "title": "Danjuma",
+      "message": "Enviando explicación de Danjuma r0 al outbox oficial"
+    },
+    {
+      "at": "2026-10-18T00:03:26.674Z",
+      "phase": "verifying",
+      "trend_id": "4cdbb83404e6",
+      "title": "Danjuma",
+      "message": "Verificando ficha y requests: Actions sigue aplicando; todavía no se confirma cierre"
+    },
+    {
+      "at": "2026-10-18T00:05:00.258Z",
+      "phase": "verifying",
+      "trend_id": "4cdbb83404e6",
+      "title": "Danjuma",
+      "message": "id, revisión, explicación, remate y fecha idénticos en requests y ficha; estado explained confirmado"
+    },
+    {
+      "at": "2026-10-18T00:05:00.258Z",
+      "phase": "closing",
+      "trend_id": "4cdbb83404e6",
+      "title": "Danjuma",
+      "message": "Cola textual 1→0; TTiTTulares sin PROCESSING ni rewrite_pending; ninguna entrega Telegram"
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "error": null
+  "telegram_orphan_ids": []
 }
