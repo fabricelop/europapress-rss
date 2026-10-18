@@ -4,16 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T18:15:00+02:00",
-  "last_completed_at": "2026-10-18T18:25:40+02:00",
-  "updated_at": "2026-10-18T18:25:40+02:00",
+  "last_started_at": "2026-10-18T17:05:41.213Z",
+  "last_completed_at": "2026-10-18T17:06:33.473Z",
+  "updated_at": "2026-10-18T17:06:33.473Z",
   "status": "success",
-  "processed_ids": [
-    "9cf1498400ce",
-    "2c9325fabd78",
-    "2a6252d87b51",
-    "d5d4caec3c81"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -28,19 +23,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018181500",
+    "run_id": "tr-editorial-20261018170541",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-18T18:15:00+02:00",
-    "updated_at": "2026-10-18T18:25:40+02:00",
-    "finished_at": "2026-10-18T18:25:40+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-18T17:05:41.213Z",
+    "updated_at": "2026-10-18T17:06:33.473Z",
+    "current": 0,
+    "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "4/4 revisiones cerradas y verificadas en main; cola editorial vacía.",
+    "message": "Cola 0→0, sin preparing/update ni rewrite_pending. Africa inactive fuera del Top 10; no se reabre.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -50,166 +44,35 @@
       "total_ratings": 154,
       "recent_considered": 20
     },
-    "remate_selections": [
-      {
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "selected": "🌶️ La clasificación ya no necesita lupa para encontrar el apuro.",
-        "reason": "específico al resultado y situación; sin repetición conceptual reciente"
-      },
-      {
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "selected": "🌶️ Balaídos le dio dos casillas y marcó las dos.",
-        "reason": "resume asistencia+gol con imagen propia; no repite los últimos 30"
-      },
-      {
-        "trend_id": "d5d4caec3c81",
-        "title": "carrick",
-        "selected": "🌶️ El United sumó uno; la presión, varios.",
-        "reason": "contraste específico entre punto y presión; no replica estructuras recientes"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T18:15:00+02:00",
+        "at": "2026-10-18T17:05:41.213Z",
         "phase": "preparing",
-        "trend_id": null,
         "title": null,
-        "message": "Estado fresco leído: 4 revisiones activas; preparando validación JIT"
+        "message": "Contratos y estado fresco leídos; ninguna acción de imágenes ni Telegram"
       },
       {
-        "at": "2026-10-18T18:15:00+02:00",
+        "at": "2026-10-18T17:06:33.473Z",
         "phase": "verifying",
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "message": "Releyendo estado autoritativo de Celades"
-      },
-      {
-        "at": "2026-10-18T18:15:00+02:00",
-        "phase": "investigating",
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "message": "Hecho esencial verificado: Granada 2-0 Cádiz, segunda derrota seguida y 7 puntos en 10 jornadas"
-      },
-      {
-        "at": "2026-10-18T18:15:00+02:00",
-        "phase": "drafting",
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "message": "Redactando explicación factual y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-18T18:15:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "message": "Remate seleccionado tras contrastar ratings y últimos 30"
-      },
-      {
-        "at": "2026-10-18T18:20:15+02:00",
-        "phase": "verifying",
-        "trend_id": "9cf1498400ce",
-        "title": "Celades",
-        "message": "Celades r1 persistida y verificada en main"
-      },
-      {
-        "at": "2026-10-18T18:20:30+02:00",
-        "phase": "verifying",
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "message": "Releyendo estado autoritativo de las dos revisiones del grupo"
-      },
-      {
-        "at": "2026-10-18T18:20:30+02:00",
-        "phase": "investigating",
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "message": "Hecho esencial verificado: Celta 2-1 Alavés; Javi asistió el 1-0 y marcó el 2-0"
-      },
-      {
-        "at": "2026-10-18T18:20:30+02:00",
-        "phase": "drafting",
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "message": "Redactando explicación única del grupo y comprobando límite de X"
-      },
-      {
-        "at": "2026-10-18T18:20:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "message": "Remate seleccionado tras control de originalidad"
-      },
-      {
-        "at": "2026-10-18T18:23:02+02:00",
-        "phase": "verifying",
-        "trend_id": "2c9325fabd78",
-        "title": "Javi Rodríguez / #CeltaAlavés",
-        "message": "Líder Javi Rodríguez r0 persistido; texto y remate coinciden exactamente"
-      },
-      {
-        "at": "2026-10-18T18:23:30+02:00",
-        "phase": "investigating",
-        "trend_id": "d5d4caec3c81",
-        "title": "carrick",
-        "message": "Reuters y Guardian confirman Leeds 1-1 United y una victoria liguera en siete"
-      },
-      {
-        "at": "2026-10-18T18:23:30+02:00",
-        "phase": "drafting",
-        "trend_id": "d5d4caec3c81",
-        "title": "carrick",
-        "message": "Explicación de Carrick redactada y comprobada: 260 caracteres"
-      },
-      {
-        "at": "2026-10-18T18:23:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d5d4caec3c81",
-        "title": "carrick",
-        "message": "Remate seleccionado tras control de originalidad"
-      },
-      {
-        "at": "2026-10-18T18:23:30+02:00",
-        "phase": "persisting",
-        "trend_id": "2a6252d87b51",
-        "title": "#CeltaAlavés / carrick",
-        "message": "Guardando enlace de #CeltaAlavés al grupo y ficha Carrick en el último lote"
-      },
-      {
-        "at": "2026-10-18T18:25:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
         "title": null,
-        "message": "Releyendo main y comparando revisiones, textos, remates y agrupación"
-      },
-      {
-        "at": "2026-10-18T18:25:40+02:00",
-        "phase": "verifying",
         "trend_id": null,
-        "title": null,
-        "message": "4/4 revisiones verificadas; cola 0, sin preparing/update ni rewrite_pending"
+        "message": "Relectura de main: cola vacía, requests sin preparing/update y Explicadas sin rewrite_pending"
       },
       {
-        "at": "2026-10-18T18:25:40+02:00",
+        "at": "2026-10-18T17:06:33.473Z",
         "phase": "closing",
-        "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 4 revisiones explicadas en 3 fichas, una agrupada"
+        "trend_id": null,
+        "message": "Cola 0→0, sin preparing/update ni rewrite_pending. Africa inactive fuera del Top 10; no se reabre."
       }
     ],
-    "research_queries": [
-      "Celades Granada Cádiz 2-0 18 octubre 2026",
-      "Javi Rodríguez Celta Alavés 2-1 18 octubre 2026",
-      "carrick Leeds Manchester United 1-1 18 octubre 2026"
-    ],
+    "finished_at": "2026-10-18T17:06:33.473Z",
     "summary": {
-      "initial_active_requests": 4,
-      "initial_compact_queue": 4,
-      "attempted": 4,
-      "explained": 4,
-      "explained_cards": 3,
-      "groups_created": 1,
+      "initial_active_requests": 0,
+      "initial_compact_queue": 0,
+      "attempted": 0,
+      "explained": 0,
       "problematic_reviewed": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -218,57 +81,18 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "incidents": 0,
       "partial": false
     },
-    "partial": false,
-    "final_outcomes": [
-      {
-        "id": "9cf1498400ce",
-        "name": "Celades",
-        "revision": 1,
-        "status": "explained",
-        "verified_in_main": true,
-        "workflow_run": 39144441210
-      },
-      {
-        "id": "2c9325fabd78",
-        "name": "Javi Rodríguez",
-        "revision": 0,
-        "status": "explained",
-        "verified_in_main": true,
-        "workflow_run": 39144580650,
-        "group_id": "grp-2c9325fabd78"
-      },
-      {
-        "id": "2a6252d87b51",
-        "name": "#CeltaAlavés",
-        "revision": 0,
-        "status": "explained",
-        "verified_in_main": true,
-        "workflow_run": 39144797373,
-        "group_id": "grp-2c9325fabd78",
-        "group_leader_id": "2c9325fabd78"
-      },
-      {
-        "id": "d5d4caec3c81",
-        "name": "carrick",
-        "revision": 0,
-        "status": "explained",
-        "verified_in_main": true,
-        "workflow_run": 39144797373
-      }
-    ]
+    "partial": false
   },
-  "run_id": "tr-editorial-20261018181500",
+  "run_id": "tr-editorial-20261018170541",
   "summary": {
-    "initial_active_requests": 4,
-    "initial_compact_queue": 4,
-    "attempted": 4,
-    "explained": 4,
-    "explained_cards": 3,
-    "groups_created": 1,
+    "initial_active_requests": 0,
+    "initial_compact_queue": 0,
+    "attempted": 0,
+    "explained": 0,
     "problematic_reviewed": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
@@ -277,140 +101,35 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T18:15:00+02:00",
+      "at": "2026-10-18T17:05:41.213Z",
       "phase": "preparing",
-      "trend_id": null,
       "title": null,
-      "message": "Estado fresco leído: 4 revisiones activas; preparando validación JIT"
+      "message": "Contratos y estado fresco leídos; ninguna acción de imágenes ni Telegram"
     },
     {
-      "at": "2026-10-18T18:15:00+02:00",
+      "at": "2026-10-18T17:06:33.473Z",
       "phase": "verifying",
-      "trend_id": "9cf1498400ce",
-      "title": "Celades",
-      "message": "Releyendo estado autoritativo de Celades"
-    },
-    {
-      "at": "2026-10-18T18:15:00+02:00",
-      "phase": "investigating",
-      "trend_id": "9cf1498400ce",
-      "title": "Celades",
-      "message": "Hecho esencial verificado: Granada 2-0 Cádiz, segunda derrota seguida y 7 puntos en 10 jornadas"
-    },
-    {
-      "at": "2026-10-18T18:15:00+02:00",
-      "phase": "drafting",
-      "trend_id": "9cf1498400ce",
-      "title": "Celades",
-      "message": "Redactando explicación factual y comprobando límite de X"
-    },
-    {
-      "at": "2026-10-18T18:15:00+02:00",
-      "phase": "remate_selection",
-      "trend_id": "9cf1498400ce",
-      "title": "Celades",
-      "message": "Remate seleccionado tras contrastar ratings y últimos 30"
-    },
-    {
-      "at": "2026-10-18T18:20:15+02:00",
-      "phase": "verifying",
-      "trend_id": "9cf1498400ce",
-      "title": "Celades",
-      "message": "Celades r1 persistida y verificada en main"
-    },
-    {
-      "at": "2026-10-18T18:20:30+02:00",
-      "phase": "verifying",
-      "trend_id": "2c9325fabd78",
-      "title": "Javi Rodríguez / #CeltaAlavés",
-      "message": "Releyendo estado autoritativo de las dos revisiones del grupo"
-    },
-    {
-      "at": "2026-10-18T18:20:30+02:00",
-      "phase": "investigating",
-      "trend_id": "2c9325fabd78",
-      "title": "Javi Rodríguez / #CeltaAlavés",
-      "message": "Hecho esencial verificado: Celta 2-1 Alavés; Javi asistió el 1-0 y marcó el 2-0"
-    },
-    {
-      "at": "2026-10-18T18:20:30+02:00",
-      "phase": "drafting",
-      "trend_id": "2c9325fabd78",
-      "title": "Javi Rodríguez / #CeltaAlavés",
-      "message": "Redactando explicación única del grupo y comprobando límite de X"
-    },
-    {
-      "at": "2026-10-18T18:20:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "2c9325fabd78",
-      "title": "Javi Rodríguez / #CeltaAlavés",
-      "message": "Remate seleccionado tras control de originalidad"
-    },
-    {
-      "at": "2026-10-18T18:23:02+02:00",
-      "phase": "verifying",
-      "trend_id": "2c9325fabd78",
-      "title": "Javi Rodríguez / #CeltaAlavés",
-      "message": "Líder Javi Rodríguez r0 persistido; texto y remate coinciden exactamente"
-    },
-    {
-      "at": "2026-10-18T18:23:30+02:00",
-      "phase": "investigating",
-      "trend_id": "d5d4caec3c81",
-      "title": "carrick",
-      "message": "Reuters y Guardian confirman Leeds 1-1 United y una victoria liguera en siete"
-    },
-    {
-      "at": "2026-10-18T18:23:30+02:00",
-      "phase": "drafting",
-      "trend_id": "d5d4caec3c81",
-      "title": "carrick",
-      "message": "Explicación de Carrick redactada y comprobada: 260 caracteres"
-    },
-    {
-      "at": "2026-10-18T18:23:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "d5d4caec3c81",
-      "title": "carrick",
-      "message": "Remate seleccionado tras control de originalidad"
-    },
-    {
-      "at": "2026-10-18T18:23:30+02:00",
-      "phase": "persisting",
-      "trend_id": "2a6252d87b51",
-      "title": "#CeltaAlavés / carrick",
-      "message": "Guardando enlace de #CeltaAlavés al grupo y ficha Carrick en el último lote"
-    },
-    {
-      "at": "2026-10-18T18:25:40+02:00",
-      "phase": "verifying",
-      "trend_id": null,
       "title": null,
-      "message": "Releyendo main y comparando revisiones, textos, remates y agrupación"
-    },
-    {
-      "at": "2026-10-18T18:25:40+02:00",
-      "phase": "verifying",
       "trend_id": null,
-      "title": null,
-      "message": "4/4 revisiones verificadas; cola 0, sin preparing/update ni rewrite_pending"
+      "message": "Relectura de main: cola vacía, requests sin preparing/update y Explicadas sin rewrite_pending"
     },
     {
-      "at": "2026-10-18T18:25:40+02:00",
+      "at": "2026-10-18T17:06:33.473Z",
       "phase": "closing",
-      "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 4 revisiones explicadas en 3 fichas, una agrupada"
+      "trend_id": null,
+      "message": "Cola 0→0, sin preparing/update ni rewrite_pending. Africa inactive fuera del Top 10; no se reabre."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "previous_concurrent_run_id": "tr-editorial-20261018171500"
+  "previous_concurrent_run_id": "tr-editorial-20261018171500",
+  "error": null
 }
