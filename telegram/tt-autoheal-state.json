@@ -2,98 +2,76 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-18T17:03:57.819635+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-10-18T19:24:41.170697+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "ce8e594d2a63",
-          "title": "Real Madrid - Sevilla: horario y dnde ver hoy por TV el partido de LaLiga",
-          "seconds": 35268,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5a02666296c4",
-          "title": "El Barça pierde a Eric García, estará alrededor de un mes de baja, y a Koundé antes del partido cont",
-          "seconds": 1419,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 198585,
+          "seconds": 207028,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "52ca51bd1e91c0000c8827368a07aa8121ad33940f6786e9b1812099044e66b6",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
-      "escalation_required": 2
+      "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-18T17:03:57.819635+00:00",
-      "issue_count": 8,
+      "checked_at": "2026-10-18T19:24:41.170697+00:00",
+      "issue_count": 7,
       "issues": [
-        {
-          "kind": "editorial_overdue",
-          "id": "1c04b17efffd",
-          "title": "De Burgos",
-          "seconds": 82839,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "062dda15f883",
-          "title": "Barcelona",
-          "seconds": 78694,
-          "workflow": null
-        },
         {
           "kind": "editorial_overdue",
           "id": "19071fd1ceab",
           "title": "Bardem",
-          "seconds": 23521,
+          "seconds": 31965,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1e989dcc6d17",
           "title": "Jodar",
-          "seconds": 21653,
+          "seconds": 30097,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74aa2ef26308",
           "title": "Foki",
-          "seconds": 17479,
+          "seconds": 25923,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "26734863a6f4",
           "title": "Budimir",
-          "seconds": 13285,
+          "seconds": 21729,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "2a6252d87b51",
           "title": "#CeltaAlavés",
-          "seconds": 3093,
+          "seconds": 11537,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "73f517ae52f9",
+          "title": "Funes",
+          "seconds": 1301,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 198584,
+          "seconds": 207028,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -101,16 +79,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "2a0d237dbaaa70038b2697781e9c927f171ba0e44d34507d7102e438b589fbcd",
+      "open_signature": "aba711ca5ba8869de308c5236dbf68215b38f546c980eaf84af38b6fd6a6876d",
       "repair_via_workflow_run": false,
-      "escalation_required": 7
+      "escalation_required": 6
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T17:03:57.819635+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-18T17:03:57.819635+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-18T17:03:57.819635+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-18T19:24:41.170697+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-18T19:24:41.170697+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T13:52:51.373026+00:00"
   },
-  "checked_at": "2026-10-18T17:03:57.819635+00:00"
+  "checked_at": "2026-10-18T19:24:41.170697+00:00"
 }
