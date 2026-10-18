@@ -540,7 +540,12 @@ function confirmedAction(op,docs){
  }else{
   const [manual,mobile,queue]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
-  const q=(queue.items||[]).find(x=>String(x.id||'')===id);
+  // An 11-30 trend may receive a new stable ID after manual preparation.
+  // Match the authoritative request/queue by its name, revision and time too.
+  const sameName=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
+  const q=(queue.items||[]).find(x=>String(x.id||'')===id||
+    (op.decision==='prepare'&&sameName(x.name||x.title)===sameName(op.snapshot?.title||id)&&
+     Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
   if(op.decision==='deleted')return state?.status==='deleted';
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
   if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
