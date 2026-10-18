@@ -9,6 +9,7 @@ on:
       - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/TTendenciasDedicatedListener.ps1"
       - "windows/TTendenciasImageBridge.js"
+      - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - ".github/workflows/validate-image-bridges.yml"
 
 permissions:
@@ -27,6 +28,7 @@ jobs:
             /windows/TTiTTularesImageBridge.js
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasImageBridge.js
+            /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
             /windows/TT-LocalWatchdog.ps1
@@ -65,6 +67,9 @@ jobs:
           if($trends -notmatch 'delivery_mode.*launch_only'){
             throw 'REGRESSION: TTendencias debe omitir prompts launch_only ya enviados'
           }
+
+      - name: Probar reutilizacion SPA de Chrome 9223 sin recargas innecesarias
+        run: node windows/tests/test_chrome9223_spa_reuse.cjs
 
       - name: Validar contrato launch-only sin false ERROR ni raster
         run: |
