@@ -1,18 +1,29 @@
 {
   "project": "TTendencias",
-  "engine": "chat-direct",
+  "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T12:45:00+02:00",
+  "last_started_at": "2026-10-18T13:24:30+02:00",
   "last_completed_at": "2026-10-18T12:46:00+02:00",
-  "updated_at": "2026-10-18T12:46:00+02:00",
-  "status": "success",
-  "processed_ids": [],
-  "remaining_ids": [],
-  "queue_complete": true,
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
+  "updated_at": "2026-10-18T13:24:30+02:00",
+  "status": "waiting",
+  "processed_ids": [
+    "c4a371acd7c3"
+  ],
+  "remaining_ids": [
+    "5b5d288d7551",
+    "1e989dcc6d17",
+    "c4a371acd7c3"
+  ],
+  "queue_complete": false,
+  "remaining_active_ids": [
+    "5b5d288d7551",
+    "1e989dcc6d17"
+  ],
+  "remaining_problematic_ids": [
+    "c4a371acd7c3"
+  ],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
@@ -133,5 +144,6 @@
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": []
+  "telegram_orphan_ids": [],
+  "error": null
 }
