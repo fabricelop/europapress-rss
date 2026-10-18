@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1469a9"><title>FabCalendar · acceso de emergencia</title>
+<meta name="description" content="Acceso de emergencia privado a Google Calendar y Google Tasks sin depender de workers.dev.">
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color-scheme:light;--blue:#1569a9;--ink:#18334b;--sub:#587086;--line:#d3e0e8;--bg:#edf4f8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}main{max-width:760px;margin:auto;padding:18px 15px 90px}
+header{display:flex;gap:12px;align-items:center;margin-bottom:15px}header .logo{display:grid;place-items:center;background:var(--blue);color:white;border-radius:18px;width:55px;height:55px;font-size:26px}
+h1{font-size:25px;margin:0}header small{color:var(--sub)}.notice{background:#e4f0fb;border:1px solid #bfd9ed;padding:14px;border-radius:15px;font-size:14px;line-height:1.5}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:15px;box-shadow:0 8px 22px #1c527d0b}
+h2{margin:0 0 11px;font-size:18px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+a.button,button.button{display:flex;align-items:center;justify-content:center;min-height:48px;padding:11px;border:0;border-radius:12px;background:var(--blue);color:white;text-decoration:none;font:700 14px system-ui;cursor:pointer;text-align:center}
+a.button.secondary,button.button.secondary{background:#e5f2fa;color:#114d7c;border:1px solid #bed8eb}
+a.button:focus-visible,button.button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #ffb900;outline-offset:2px}
+.month{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:7px 0 17px}
+.month button{border:1px solid var(--line);background:#eef6fc;border-radius:10px;width:43px;height:42px;font-size:20px;cursor:pointer}
+.month strong{font-size:17px;text-transform:capitalize}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cal .dow{color:var(--sub);text-align:center;font-size:12px;font-weight:700;padding-bottom:4px}
+.cal .day{height:47px;border:1px solid #e0e7ee;border-radius:9px;background:white;color:var(--ink);cursor:pointer;font-size:15px}
+.cal .day[aria-pressed=true]{background:var(--blue);color:white;border-color:var(--blue);font-weight:800}
+.cal .day.today:not([aria-pressed=true]){border:2px solid var(--blue);font-weight:800}
+.cal .spacer{height:47px}
+fieldset{border:0;margin:0;padding:0}label{display:block;font-weight:700;font-size:13px;margin:10px 0 5px}
+input,textarea{width:100%;padding:12px;border:1px solid #b9ccda;border-radius:11px;background:#fff;font:16px system-ui}textarea{min-height:75px}
+small.hint,footer{display:block;color:var(--sub);font-size:13px;line-height:1.6;margin-top:10px}
+@media(max-width:375px){.buttons{grid-template-columns:1fr}.cal .day,.cal .spacer{height:41px}}
+</style></head><body><main>
+<header><div class="logo" aria-hidden="true">▦</div><div><h1>FabCalendar</h1><small>Acceso de emergencia · independiente de Cloudflare</small></div></header>
+<div class="notice"><strong>Modo de emergencia.</strong> Mientras FabCalendar no abra en el iPhone, utiliza las mismas tareas y citas mediante Google Calendar y Google Tasks. La página no solicita contraseñas, no lee ni almacena tus eventos y no depende del Worker. Las operaciones se confirman en Google.</div>
+<section class="panel"><h2>Mis tareas y citas reales</h2><div class="buttons">
+<a class="button" href="https://calendar.google.com/calendar/u/0/r/" target="_blank" rel="noopener noreferrer">Abrir Google Calendar</a>
+<a class="button" href="https://tasks.google.com/" target="_blank" rel="noopener noreferrer">Abrir Google Tasks</a>
+<a class="button secondary" href="https://calendar.google.com/calendar/u/0/r/tasks" target="_blank" rel="noopener noreferrer">Tareas en Calendar</a>
+<a class="button secondary" href="https://fabcalendar-bot.fabricelop.workers.dev/app" target="_blank" rel="noopener noreferrer">Probar FabCalendar normal</a>
+</div><small class="hint">Usa la misma cuenta Google vinculada a FabCalendar. Para editar, completar o borrar tareas existentes, hazlo en Google Tasks; los cambios se conservarán en Google.</small></section>
+<section class="panel"><h2>Calendario rápido</h2>
+<div class="month"><button id="prev" type="button" aria-label="Mes anterior">‹</button><strong id="month"></strong><button id="next" type="button" aria-label="Mes siguiente">›</button></div>
+<div id="cal" class="cal" role="group" aria-label="Elegir fecha"></div>
+<p id="picked" style="font-size:14px;color:var(--sub)"></p>
+<div class="buttons"><button class="button secondary" id="openDay" type="button">Ver día en Google</button><button class="button secondary" id="today" type="button">Ir a hoy</button></div>
+</section>
+<section class="panel"><h2>Crear un evento de día completo</h2>
+<form id="create"><fieldset>
+<label for="date">Fecha</label><input id="date" type="date" required>
+<label for="name">Nombre</label><input id="name" type="text" maxlength="180" placeholder="Nombre de la cita" required>
+<label for="notes">Notas (opcional)</label><textarea id="notes" maxlength="1000"></textarea>
+<button class="button" type="submit" style="width:100%;margin-top:15px">Continuar en Google Calendar</button>
+</fieldset></form>
+<small class="hint">Se abrirá Google Calendar con el evento preparado. Revísalo y pulsa Guardar allí para confirmarlo. No se envía ninguna información a GitHub.</small></section>
+<footer>Este acceso no muestra automáticamente tus eventos dentro de la cuadrícula ni ejecuta las acciones privadas del Worker. Los enlaces oficiales sí permiten gestionar tus datos existentes. No uses esta página para pegar tokens ni contraseñas.</footer>
+</main>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const madridDate=()=>{const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const n=k=>p.find(x=>x.type===k).value;return n('year')+'-'+n('month')+'-'+n('day')};
+const current=madridDate();
+let chosen=current,visible=new Date(Number(current.slice(0,4)),Number(current.slice(5,7))-1,1);
+const dateParts=d=>d.split('-').map(Number);
+const pad=n=>String(n).padStart(2,'0');
+const iso=(y,m,d)=>y+'-'+pad(m)+'-'+pad(d);
+const daysIn=(y,m)=>new Date(y,m,0).getDate();
+const readable=d=>new Intl.DateTimeFormat('es-ES',{dateStyle:'full',timeZone:'Europe/Madrid'}).format(new Date(d+'T12:00:00Z'));
+function setChosen(d){chosen=d;$('date').value=d;$('picked').textContent='Fecha seleccionada: '+readable(d);render()}
+function render(){
+ const y=visible.getFullYear(),m=visible.getMonth()+1;
+ $('month').textContent=new Intl.DateTimeFormat('es-ES',{month:'long',year:'numeric'}).format(visible);
+ const cal=$('cal');cal.replaceChildren();
+ for(const name of ['L','M','X','J','V','S','D']){const el=document.createElement('span');el.className='dow';el.textContent=name;cal.append(el)}
+ const offset=(new Date(y,m-1,1).getDay()+6)%7;
+ for(let i=0;i<offset;i++){const el=document.createElement('span');el.className='spacer';cal.append(el)}
+ for(let d=1;d<=daysIn(y,m);d++){const day=iso(y,m,d),b=document.createElement('button');b.type='button';b.className='day'+(day===current?' today':'');b.textContent=d;b.setAttribute('aria-label',readable(day));b.setAttribute('aria-pressed',String(day===chosen));b.addEventListener('click',()=>setChosen(day));cal.append(b)}
+}
+$('prev').onclick=()=>{visible=new Date(visible.getFullYear(),visible.getMonth()-1,1);render()};
+$('next').onclick=()=>{visible=new Date(visible.getFullYear(),visible.getMonth()+1,1);render()};
+$('today').onclick=()=>{const [y,m]=dateParts(current);visible=new Date(y,m-1,1);setChosen(current)};
+$('date').addEventListener('change',e=>{if(!e.target.value)return;const [y,m]=dateParts(e.target.value);visible=new Date(y,m-1,1);setChosen(e.target.value)});
+const go=url=>window.open(url,'_blank','noopener,noreferrer')||window.location.assign(url);
+$('openDay').onclick=()=>{const [y,m,d]=dateParts(chosen);go('https://calendar.google.com/calendar/u/0/r/day/'+y+'/'+m+'/'+d)};
+$('create').addEventListener('submit',e=>{
+ e.preventDefault();if(!$('create').reportValidity())return;
+ const [y,m,d]=dateParts($('date').value);
+ const start=new Date(Date.UTC(y,m-1,d,12)),end=new Date(start.getTime()+86400000);
+ const stamp=v=>v.toISOString().slice(0,10).replaceAll('-','');
+ const q=new URLSearchParams({action:'TEMPLATE',text:$('name').value.trim(),dates:stamp(start)+'/'+stamp(end),details:$('notes').value.trim()});
+ go('https://calendar.google.com/calendar/u/0/r/eventedit?'+q.toString());
+});
+$('date').value=current;setChosen(current);
+})();
+</script></body></html>
