@@ -7,6 +7,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import hashlib
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -220,7 +222,7 @@ def delete_tremending(event_id: str, revision: int):
     return {path: state, decisions_path: decisions}, "applied"
 
 
-def apply_live(project: str, event_id: str, decision: str, revision: int):
+def apply_live(project: str, event_id: str, decision: str, revision: int, trend_name: str = '', trend_rank: int = 0):
     """Live editorial decisions. Never call legacy Telegram callbacks."""
     if project == "ttittulares" and event_id.startswith("tremending-"):
         if decision != "deleted":
@@ -360,7 +362,23 @@ def apply_live(project: str, event_id: str, decision: str, revision: int):
             return {queue_path: queue, req_path: requests, mobile_path: mobile}, "applied"
         if decision == "prepare":
             if not request:
-                fail("La tendencia necesita una solicitud editorial identificada")
+                # A Top 11-30 trend has no editorial request until the user presses Preparar.
+                # Verify against the authoritative current radar, not client-supplied rank alone.
+                recent = load("trends/recent.json", {"items": []})
+                current = next((row for row in recent.get("items", [])
+                                if str(row.get("name") or "").strip() == trend_name), None)
+                if not current or not 11 <= int(current.get("rank") or 0) <= 30:
+                    fail("La tendencia ya no esta entre los puestos 11 y 30")
+                if int(current.get("rank") or 0) != trend_rank:
+                    fail("El puesto ha cambiado; actualiza el radar")
+                digest = hashlib.sha256(unicodedata.normalize("NFC", trend_name).encode("utf-8")).hexdigest()[:32]
+                if event_id != "manual-" + digest:
+                    fail("Identificador manual no coincide con la tendencia")
+                request = {"id": event_id, "name": trend_name, "rank": trend_rank,
+                           "revision": revision, "auto_queued": False, "status": "preparing",
+                           "created_at": now, "requested_at": now,
+                           "request_source": "ttactualidad_direct"}
+                requests.setdefault("requests", []).append(request)
             check_revision(request, revision)
             if existing and str(existing.get("status") or "").lower() in TERMINAL:
                 fail("Tendencia cerrada; nueva revision editorial necesaria")
@@ -387,6 +405,8 @@ def main():
     decision = str(cmd.get("decision") or "")
     request_id = str(cmd.get("request_id") or "")
     revision = cmd.get("revision")
+    trend_name = str(cmd.get("trend_name") or "").strip()
+    trend_rank = cmd.get("trend_rank")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
     if decision not in {"deleted", "discard", "prepare"}:
@@ -400,7 +420,8 @@ def main():
     if previous:
         print("IDEMPOTENT: recibida anteriormente", previous.get("status"))
         return
-    changes, status = apply_live(project, event_id, decision, revision)
+    changes, status = apply_live(project, event_id, decision, revision,
+                                 trend_name, trend_rank if type(trend_rank) is int else 0)
     stamp = datetime.now(timezone.utc).isoformat()
     history["items"].append({"request_id": request_id, "project": project,
                              "event_id": event_id, "revision": revision,
