@@ -4,42 +4,45 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T20:15:00+02:00",
-  "last_completed_at": "2026-10-18T20:15:45+02:00",
-  "updated_at": "2026-10-18T20:15:45+02:00",
+  "last_started_at": "2026-10-18T20:45:00+02:00",
+  "last_completed_at": "2026-10-18T20:52:10+02:00",
+  "updated_at": "2026-10-18T20:52:10+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "ae7f066f3c94"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "status": "requested",
-    "requested_at": "2026-10-18T19:45:00+02:00",
-    "editorial_blocking": false
+    "status": "in_progress",
+    "requested_at": "2026-10-18T20:50:30+02:00",
+    "editorial_blocking": false,
+    "run_id": 39156009908
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018201500",
+    "run_id": "tr-editorial-20261018204500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-18T20:15:00+02:00",
-    "updated_at": "2026-10-18T20:15:45+02:00",
-    "finished_at": "2026-10-18T20:15:45+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-18T20:45:00+02:00",
+    "updated_at": "2026-10-18T20:52:10+02:00",
+    "finished_at": "2026-10-18T20:52:10+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada 0→0; sin preparing/update ni rewrite_pending.",
+    "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante.",
     "summary": {
-      "initial_active_requests": 0,
-      "initial_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "initial_active_requests": 1,
+      "initial_compact_queue": 1,
+      "attempted": 1,
+      "explained": 1,
       "problematic_reviewed": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -59,42 +62,105 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 20
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "selected": "🌶️ El homenaje fue antes del partido; el bis lo puso él después.",
+        "originality_checked_against_recent": 30
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-18T20:15:00+02:00",
+        "at": "2026-10-18T20:45:00+02:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Estado fresco leído; cola editorial 0. Comprobando reexplicaciones y cierre autoritativo."
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Estado fresco leído; 1 preparing activo. Iniciando barrera JIT y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-18T20:15:30+02:00",
+        "at": "2026-10-18T20:45:20+02:00",
+        "phase": "verifying",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Releyendo estado autoritativo de Oyarzabal."
+      },
+      {
+        "at": "2026-10-18T20:45:40+02:00",
+        "phase": "investigating",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Contrastando fuentes actuales del Málaga–Real Sociedad."
+      },
+      {
+        "at": "2026-10-18T20:46:10+02:00",
+        "phase": "investigating",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Hecho esencial verificado: doblete de Oyarzabal en el 2-5 de la Real Sociedad."
+      },
+      {
+        "at": "2026-10-18T20:46:25+02:00",
+        "phase": "drafting",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Redactando explicación factual y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-18T20:46:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Evaluando remate frente a los últimos 30 cierres; seleccionado uno específico sin repetición conceptual."
+      },
+      {
+        "at": "2026-10-18T20:46:55+02:00",
+        "phase": "persisting",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Guardando ficha Explicada mediante TTENDENCIAS_CHAT_OUTBOX_V1."
+      },
+      {
+        "at": "2026-10-18T20:50:34+02:00",
+        "phase": "verifying",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Aplicador completado con éxito; requests, Explicadas y retirada de cola confirmados en commit 2be33e20."
+      },
+      {
+        "at": "2026-10-18T20:50:39+02:00",
+        "phase": "verifying",
+        "trend_id": "ae7f066f3c94",
+        "title": "Oyarzabal",
+        "message": "Flujo Telegram legado confirmado deshabilitado; 0 envíos."
+      },
+      {
+        "at": "2026-10-18T20:52:03+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura de main: 0 preparing/update, 0 rewrite_pending y 0 problematic activos."
+        "message": "Relectura final de main tras refresco concurrente: cola editorial 0."
       },
       {
-        "at": "2026-10-18T20:15:45+02:00",
+        "at": "2026-10-18T20:52:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0→0; sin trabajo editorial pendiente. Reparación visual solicitada por trigger independiente."
+        "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante."
       }
     ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false
   },
-  "run_id": "tr-editorial-20261018180105",
+  "run_id": "tr-editorial-20261018204500",
   "summary": {
-    "initial_active_requests": 0,
-    "initial_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "initial_active_requests": 1,
+    "initial_compact_queue": 1,
+    "attempted": 1,
+    "explained": 1,
     "problematic_reviewed": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
@@ -103,29 +169,88 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T18:01:05.524Z",
+      "at": "2026-10-18T20:45:00+02:00",
       "phase": "preparing",
-      "title": null,
-      "message": "Contrato y estado fresco leídos; sin imágenes ni Telegram"
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Estado fresco leído; 1 preparing activo. Iniciando barrera JIT y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-18T18:02:24.241Z",
+      "at": "2026-10-18T20:45:20+02:00",
       "phase": "verifying",
-      "title": null,
-      "message": "Cola, requests y Explicadas releídas desde main sin trabajo activo"
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Releyendo estado autoritativo de Oyarzabal."
     },
     {
-      "at": "2026-10-18T18:02:24.241Z",
-      "phase": "closing",
+      "at": "2026-10-18T20:45:40+02:00",
+      "phase": "investigating",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Contrastando fuentes actuales del Málaga–Real Sociedad."
+    },
+    {
+      "at": "2026-10-18T20:46:10+02:00",
+      "phase": "investigating",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Hecho esencial verificado: doblete de Oyarzabal en el 2-5 de la Real Sociedad."
+    },
+    {
+      "at": "2026-10-18T20:46:25+02:00",
+      "phase": "drafting",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Redactando explicación factual y comprobando el límite de X."
+    },
+    {
+      "at": "2026-10-18T20:46:40+02:00",
+      "phase": "remate_selection",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Evaluando remate frente a los últimos 30 cierres; seleccionado uno específico sin repetición conceptual."
+    },
+    {
+      "at": "2026-10-18T20:46:55+02:00",
+      "phase": "persisting",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Guardando ficha Explicada mediante TTENDENCIAS_CHAT_OUTBOX_V1."
+    },
+    {
+      "at": "2026-10-18T20:50:34+02:00",
+      "phase": "verifying",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Aplicador completado con éxito; requests, Explicadas y retirada de cola confirmados en commit 2be33e20."
+    },
+    {
+      "at": "2026-10-18T20:50:39+02:00",
+      "phase": "verifying",
+      "trend_id": "ae7f066f3c94",
+      "title": "Oyarzabal",
+      "message": "Flujo Telegram legado confirmado deshabilitado; 0 envíos."
+    },
+    {
+      "at": "2026-10-18T20:52:03+02:00",
+      "phase": "verifying",
+      "trend_id": null,
       "title": null,
-      "message": "Cola 0→0; sin preparing/update ni rewrite_pending. Sin acciones visuales ni Telegram."
+      "message": "Relectura final de main tras refresco concurrente: cola editorial 0."
+    },
+    {
+      "at": "2026-10-18T20:52:10+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante."
     }
   ],
   "telegram_orphans": 0,
