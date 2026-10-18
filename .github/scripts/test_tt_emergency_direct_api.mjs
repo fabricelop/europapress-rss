@@ -43,7 +43,7 @@ await api.sendEmergencyDirect(item,'deleted');
 assert.equal(calls.length,0,'No API call should be made without a token');
 assert.equal(elements['emergency-settings'].open,true,'Pairing should stay inside the app');
 await api.emergencyPair();
-assert.equal(calls.length,1,'Must validate owner');
+assert.equal(calls[0].url,'https://api.github.com/user','Must validate owner first');
 assert.equal(store.size,1,'Session-only token');
 await new Promise(resolve=>setTimeout(resolve,0));
 assert.equal(calls.length,2,'After owner verification, submit pending action directly');
