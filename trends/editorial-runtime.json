@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T10:45:00+02:00",
-  "last_completed_at": "2026-10-18T10:46:30+02:00",
-  "updated_at": "2026-10-18T10:46:30+02:00",
+  "last_started_at": "2026-10-18T11:15:00+02:00",
+  "last_completed_at": "2026-10-18T11:16:00+02:00",
+  "updated_at": "2026-10-18T11:16:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,8 +16,8 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
-    "requested_at": "2026-10-18T09:45:00+02:00",
-    "trigger_commit": "5bed23e6eee43584a733c38be4ee9604feaac8ee",
+    "requested_at": "2026-10-18T11:15:00+02:00",
+    "trigger_commit": "c980d7234ba245964a27d5ade1f09e10d6ff0c6e",
     "run_id": null,
     "editorial_blocking": false
   },
@@ -25,13 +25,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261018104500",
+    "run_id": "tr-chat-20261018111500",
     "source": "chat",
     "status": "DONE",
     "phase": "done",
-    "started_at": "2026-10-18T10:45:00+02:00",
-    "updated_at": "2026-10-18T10:46:30+02:00",
-    "finished_at": "2026-10-18T10:46:30+02:00",
+    "started_at": "2026-10-18T11:15:00+02:00",
+    "updated_at": "2026-10-18T11:16:00+02:00",
+    "finished_at": "2026-10-18T11:16:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -58,21 +58,21 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T10:45:00+02:00",
+        "at": "2026-10-18T11:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Iniciando pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-18T10:46:00+02:00",
+        "at": "2026-10-18T11:15:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: cola 0; requests sin preparing/update/problematic; sin reexplicaciones ni Pendientes recientes."
       },
       {
-        "at": "2026-10-18T10:46:30+02:00",
+        "at": "2026-10-18T11:16:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -80,7 +80,7 @@
       }
     ]
   },
-  "run_id": "tr-editorial-20261018080453",
+  "run_id": "tr-chat-20261018111500",
   "summary": {
     "attempted": 0,
     "explained": 0,
@@ -93,11 +93,25 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T08:07:11.280Z",
+      "at": "2026-10-18T11:15:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Iniciando pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+    },
+    {
+      "at": "2026-10-18T11:15:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura main: cola0; requests sinpreparing/update; explicadas sinrewrite_pending"
+      "message": "Releyendo main: cola 0; requests sin preparing/update/problematic; sin reexplicaciones ni Pendientes recientes."
+    },
+    {
+      "at": "2026-10-18T11:16:00+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre transaccional sin trabajo editorial pendiente."
     }
   ],
   "telegram_orphans": 0,
