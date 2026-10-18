@@ -611,7 +611,15 @@ function emergencyGithubIssueUrl(project,id,decision,title){
  if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
  const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
- const fields=new URLSearchParams({title:issueTitle,body});
+ // GitHub Issue Forms do not consume a generic body= as prefilled form fields.
+ // The canonical field IDs are project/action/id/context/instructions.
+ const fields=new URLSearchParams({
+  template:'tt-mobile-command.yml',
+  title:issueTitle,
+  project,action,id,
+  context:String(title||id).replace(/\\s+/g,' ').trim().slice(0,280),
+  instructions:''
+ });
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 async function pilotSend(item,decision){
@@ -667,7 +675,7 @@ function rowCard(x,i){
     const project=itemProject(x),id=String(x._id||''),url=emergencyGithubIssueUrl(project,id,action,d.title);
     if(!url){const bad=btn(label,()=>showToast('ID de la noticia no válido'));bad.disabled=true;return bad}
     const link=document.createElement('a');link.className='action secondary';link.href=url;
-    link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;
+    link.target='_blank';link.rel='noopener noreferrer';link.textContent=label+' · confirmar en GitHub';
     link.addEventListener('click',event=>{
      if(!confirm('¿'+(action==='deleted'?'Quitar de Listas':label)+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?')){
       event.preventDefault();return;
@@ -677,7 +685,7 @@ function rowCard(x,i){
        request_id:'github-issue',at,lastTry:0,tries:0,status:'awaiting_github'});
      savePending();schedulePendingChecks();
      try{sessionStorage.setItem('tt-gh-issue-return','1')}catch{}
-     showToast('Abre la pestaña GitHub y pulsa «Create issue» para ejecutar.');
+     showToast('En GitHub comprueba los campos y pulsa «Submit new issue». Solo entonces se guardará.');
     });
     a.append(link);return link;
    }
@@ -831,7 +839,7 @@ function openPhoto(url,title){
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
 $('pilot-config').onclick=pilotConfig;
-void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes()}})();
+void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes();if(ON_PAGES){const awaiting=[...pendingDeletes.values()].filter(x=>x.status==='awaiting_github').length;if(awaiting)showToast('Hay '+awaiting+' orden(es) pendientes de confirmar en GitHub.')}}})();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
 $('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
 
@@ -839,10 +847,10 @@ $('tab-tti').addEventListener('click',()=>setApp('tti'));
 $('tab-tr').addEventListener('click',()=>setApp('tr'));
 $('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()});
 $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkPendingDeletes()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){void load(true);void checkPendingDeletes();}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
-window.addEventListener('pageshow',()=>{try{if(sessionStorage.getItem('tt-gh-issue-return')==='1'){sessionStorage.removeItem('tt-gh-issue-return');load(true)}}catch{}});
+window.addEventListener('pageshow',()=>{try{if(sessionStorage.getItem('tt-gh-issue-return')==='1'){sessionStorage.removeItem('tt-gh-issue-return');showToast('Comprobando en GitHub si la orden se ha guardado…');load(true);void checkPendingDeletes();schedulePendingChecks()}}catch{}});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
 </script></body></html>
