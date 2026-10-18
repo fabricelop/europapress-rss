@@ -728,7 +728,7 @@ function Test-DedicatedChromeCdpHealthy {
     $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 4
     $chatPages=@($targets | Where-Object {
       [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
-      [string]$_.url -like "https://chatgpt.com/*"
+      [string]$_.url -match '(?i)^https://chatgpt[.]com/(?:$|[?#]|c/|g/|project/|images(?:/|$))'
     })
     if($chatPages.Count -gt 0){ return $true }
 
@@ -752,7 +752,7 @@ function Test-DedicatedChromeCdpHealthy {
         $targets=Invoke-RestMethod -Uri ("http://127.0.0.1:9223/json/list?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -Headers @{"Cache-Control"="no-cache"} -TimeoutSec 3
         $chat=@($targets | Where-Object {
           [string]$_.type -eq "page" -and $_.webSocketDebuggerUrl -and
-          [string]$_.url -like "https://chatgpt.com/*"
+          [string]$_.url -match '(?i)^https://chatgpt[.]com/(?:$|[?#]|c/|g/|project/|images(?:/|$))'
         })
         if($chat.Count -gt 0){
           Write-Log "IMAGE CHROME CHAT TAB RECOVERED count=$($chat.Count)"
