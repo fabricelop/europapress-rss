@@ -45,7 +45,12 @@ vm.runInNewContext(mobileMatch[1].slice(start,end)+
 const dedicatedUrl=new URL(linkContext.__mobileUrl);
 assert.equal(dedicatedUrl.searchParams.get('template'),null);
 assert(dedicatedUrl.searchParams.get('body').includes('### Acción\n\ndeleted'));
-assert(mobileHtml.includes("link.target='_blank';link.rel='noopener noreferrer'"),'Mobile must open the browser tab');
+assert(mobileHtml.includes("if(ON_PAGES)return btn(label,()=>sendEmergencyDirect(x,action)"),'Emergency controls must be in-page buttons');
+assert(mobileHtml.includes("fetch('https://api.github.com/repos/fabricelop/europapress-rss/issues'"),'Emergency must submit authenticated commands without navigation');
+assert(!mobileHtml.includes("location.href=url;"),'Emergency must not redirect to GitHub');
+assert(mobileHtml.includes("'Authorization':'Bearer '+token"),'Emergency must authorize its direct GitHub API call');
+assert(mobileHtml.includes("sessionStorage.setItem(EMERGENCY_TOKEN_KEY,token)"),'Token must remain session-scoped, not embedded');
+assert(mobileHtml.includes("response.status!==201"),'No optimistic success without a confirmed API response');
 assert(mobileHtml.includes("status:'awaiting_github'"),'Mobile must track unconfirmed orders');
 assert(mobileHtml.includes("op.status!=='awaiting_github'"),'Never retry unauthenticated mobile issue orders with Worker API');
 
