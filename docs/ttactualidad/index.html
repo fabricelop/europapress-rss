@@ -616,15 +616,7 @@ function emergencyGithubIssueUrl(project,id,decision,title){
  if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
  const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
- // GitHub Issue Forms do not consume a generic body= as prefilled form fields.
- // The canonical field IDs are project/action/id/context/instructions.
- const fields=new URLSearchParams({
-  template:'tt-mobile-command.yml',
-  title:issueTitle,
-  project,action,id,
-  context:String(title||id).replace(/\\s+/g,' ').trim().slice(0,280),
-  instructions:''
- });
+ const fields=new URLSearchParams({title:issueTitle,body});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
 async function pilotSend(item,decision){
