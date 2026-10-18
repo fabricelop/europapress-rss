@@ -2,76 +2,105 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-18T19:24:41.170697+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-18T21:41:31.957043+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "008e79aca1ee",
+          "title": "Cindy Crawford se despide de su hijo con una dolorosa carta: \"Nos sentimos tan bendecidos de haber t",
+          "seconds": 1012,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "96edd3458c3b",
+          "title": "Alejandro Davidovich remonta a Rafa Jdar en la final espaola de Shanghi y suma su primer Masters 100",
+          "seconds": 1012,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 207028,
+          "seconds": 215239,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "3074b09b541baa879c2dc182199d69d10f7f6263529fb9cbe1a705f301b30302",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-18T19:24:41.170697+00:00",
-      "issue_count": 7,
+      "checked_at": "2026-10-18T21:41:31.957043+00:00",
+      "issue_count": 9,
       "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "3a6087fb127f",
+          "title": "#ConexiónHonduras6",
+          "seconds": 1592,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "6737a24f7e65",
+          "title": "Movistar",
+          "seconds": 1592,
+          "workflow": null
+        },
         {
           "kind": "editorial_overdue",
           "id": "19071fd1ceab",
           "title": "Bardem",
-          "seconds": 31965,
+          "seconds": 40175,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "1e989dcc6d17",
           "title": "Jodar",
-          "seconds": 30097,
+          "seconds": 38307,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74aa2ef26308",
           "title": "Foki",
-          "seconds": 25923,
+          "seconds": 34133,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "26734863a6f4",
           "title": "Budimir",
-          "seconds": 21729,
+          "seconds": 29939,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "2a6252d87b51",
           "title": "#CeltaAlavés",
-          "seconds": 11537,
+          "seconds": 19747,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "73f517ae52f9",
           "title": "Funes",
-          "seconds": 1301,
+          "seconds": 9511,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 207028,
+          "seconds": 215239,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -79,16 +108,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "aba711ca5ba8869de308c5236dbf68215b38f546c980eaf84af38b6fd6a6876d",
+      "open_signature": "80c768bde62c9bd97ae2d716b014a55304f77745075fd99377a67110240cfdf0",
       "repair_via_workflow_run": false,
-      "escalation_required": 6
+      "escalation_required": 8
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T17:03:57.819635+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-18T19:24:41.170697+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-18T19:24:41.170697+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T21:41:31.957043+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-18T21:41:31.957043+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-18T21:41:31.957043+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-18T13:52:51.373026+00:00"
   },
-  "checked_at": "2026-10-18T19:24:41.170697+00:00"
+  "checked_at": "2026-10-18T21:41:31.957043+00:00"
 }
