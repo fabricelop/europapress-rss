@@ -68,7 +68,7 @@ async function dispatch(env,row){
    'Content-Type':'application/json'
   },body:JSON.stringify({event_type:'ttactualidad_action_v1',
    client_payload:{project:row.project,event_id:row.event_id,decision:row.decision,
-    request_id:row.request_id,received_at:row.received_at,revision:row.revision}})
+    request_id:row.request_id,received_at:row.received_at,revision:row.revision,trend_name:row.trend_name,trend_rank:row.trend_rank}})
  });
  if(result.status!==204)throw Error('dispatch_http_'+result.status);
  return {state:'submitted',routed:true};
@@ -140,7 +140,7 @@ export default {
    }
    const row={project:p,event_id:id,decision,request_id:String(b.request_id),
     received_at:new Date().toISOString(),mode:live?'direct':'pilot_only',
-    state:'pilot_only',routed:false,revision:Number.isInteger(b.revision)?b.revision:null};
+    state:'pilot_only',routed:false,revision:Number.isInteger(b.revision)?b.revision:null,trend_name:String(b.trend_name||'').slice(0,180),trend_rank:Number(b.trend_rank||0)};
    if(live){
     try{Object.assign(row,await dispatch(env,row))}
     catch(e){return respond(req,{ok:false,error:'github_dispatch_failed',details:String(e.message||e).slice(0,65)},502)}
