@@ -4,15 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T14:45:00.000Z",
-  "last_completed_at": "2026-10-18T14:57:05.900Z",
-  "updated_at": "2026-10-18T14:57:05.900Z",
+  "last_started_at": "2026-10-18T14:57:14.729Z",
+  "last_completed_at": "2026-10-18T14:58:42.229Z",
+  "updated_at": "2026-10-18T14:58:42.229Z",
   "status": "success",
-  "processed_ids": [
-    "bf5ade33b5b4",
-    "70c362443142",
-    "c4a371acd7c3"
-  ],
+  "processed_ids": [],
   "remaining_ids": [
     "c4a371acd7c3"
   ],
@@ -33,26 +29,26 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018164500",
+    "run_id": "tr-editorial-audit-20261018145839",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T14:45:00.000Z",
-    "updated_at": "2026-10-18T14:57:05.900Z",
-    "finished_at": "2026-10-18T14:57:05.900Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-18T14:57:14.729Z",
+    "updated_at": "2026-10-18T14:58:42.229Z",
+    "current": 0,
+    "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "2 explicadas y verificadas; Africa sigue problematic en intento 11. Sin preparing/update ni rewrite_pending.",
+    "message": "Sin preparing/update ni rewrite_pending. Africa r0 cerrada concurrentemente como problematic, intento 11; no se repite la investigación ni el outbox.",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
         "reason": "detonante_no_verificado",
-        "at": "2026-10-18T14:55:30.000Z"
+        "origin": "concurrent_verified",
+        "at": "2026-10-18T14:58:39.896Z"
       }
     ],
     "ratings_snapshot": {
@@ -62,288 +58,39 @@
       "total_ratings": 154,
       "recent_considered": 20
     },
-    "remate_selections": [
-      {
-        "trend_id": "bf5ade33b5b4",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "b1",
-            "total": 8.1,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "b2",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "b3",
-            "total": 7.4,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "b4",
-            "total": 6.9,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "b5",
-            "total": 7,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 0.9,
-            "repetition_penalty": -0.4
-          }
-        ],
-        "selected_candidate": "b1",
-        "selected_score": 8.1,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "70c362443142",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "a1",
-            "total": 8.2,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "a2",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "a3",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "a4",
-            "total": 7.1,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "a5",
-            "total": 6.8,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          }
-        ],
-        "selected_candidate": "a1",
-        "selected_score": 8.2,
-        "no_remate_reason": null
-      }
-    ],
-    "research_queries": [
-      "Brighton 18 octubre 2026 tendencia España",
-      "Brighton today October 18 2026 match Premier League",
-      "Brighton Crystal Palace final score 18 Oct 2026",
-      "Xavier García Albiol 18 octubre 2026 Feijóo ley antiocupación Barcelona 29-N",
-      "Albiol candidato Barcelona 29-N alcalde Badalona 18 octubre 2026",
-      "\"Africa\" España 18 octubre 2026 X tendencia noticia",
-      "\"África\" 18 octubre 2026 España noticia domingo",
-      "\"Africa\" \"18 de octubre de 2026\" España deporte televisión",
-      "\"Africa\" Carlos Bardem Davidovich Jodar 18 octubre 2026",
-      "site:trends24.in/spain Africa October 18 2026 Spain Twitter trends"
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T14:45:20.000Z",
+        "at": "2026-10-18T14:57:14.729Z",
         "phase": "verifying",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Releyendo estado autoritativo de Brighton"
-      },
-      {
-        "at": "2026-10-18T14:46:20.000Z",
-        "phase": "investigating",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Contrastando fuente 1/2 · 4-0 al Crystal Palace confirmado"
-      },
-      {
-        "at": "2026-10-18T14:46:35.000Z",
-        "phase": "investigating",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Contrastando fuente 2/2 · gol de Diego Gómez desde el centro del campo confirmado"
-      },
-      {
-        "at": "2026-10-18T14:47:10.000Z",
-        "phase": "drafting",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Explicación factual redactada y límite de X comprobado"
-      },
-      {
-        "at": "2026-10-18T14:47:40.000Z",
-        "phase": "remate_selection",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Remate seleccionado mediante snapshot de ratings"
-      },
-      {
-        "at": "2026-10-18T14:47:50.000Z",
-        "phase": "persisting",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-18T14:50:25.000Z",
-        "phase": "verifying",
-        "trend_id": "bf5ade33b5b4",
-        "title": "Brighton",
-        "message": "Tendencia cerrada y verificada en main"
-      },
-      {
-        "at": "2026-10-18T14:50:35.000Z",
-        "phase": "verifying",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Releyendo estado autoritativo de Albiol"
-      },
-      {
-        "at": "2026-10-18T14:51:10.000Z",
-        "phase": "investigating",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Contrastando fuente 1/2 · candidatura del PP por Barcelona confirmada"
-      },
-      {
-        "at": "2026-10-18T14:51:20.000Z",
-        "phase": "investigating",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Contrastando fuente 2/2 · encargo de la futura ley antiocupación confirmado"
-      },
-      {
-        "at": "2026-10-18T14:51:30.000Z",
-        "phase": "drafting",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Explicación factual redactada y límite de X comprobado"
-      },
-      {
-        "at": "2026-10-18T14:51:40.000Z",
-        "phase": "remate_selection",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Remate político neutral seleccionado mediante ratings"
-      },
-      {
-        "at": "2026-10-18T14:51:50.000Z",
-        "phase": "persisting",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-18T14:55:00.000Z",
-        "phase": "verifying",
-        "trend_id": "70c362443142",
-        "title": "Albiol",
-        "message": "Tendencia cerrada y verificada en main"
-      },
-      {
-        "at": "2026-10-18T14:55:05.000Z",
-        "phase": "verifying",
-        "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Releyendo estado autoritativo de Africa"
-      },
-      {
-        "at": "2026-10-18T14:55:20.000Z",
-        "phase": "investigating",
         "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Contrastando ruta 1 · noticias españolas del 18/10 sin coincidencia inequívoca"
+        "message": "Detectada otra ejecución persistiendo la misma revisión r0; se preserva su RUNTRACE activo"
       },
       {
-        "at": "2026-10-18T14:55:25.000Z",
-        "phase": "investigating",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Contrastando ruta 2 · trackers públicos de X sin detonante común verificable"
-      },
-      {
-        "at": "2026-10-18T14:55:30.000Z",
-        "phase": "persisting",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Guardando nuevo intento problematic sin inventar explicación"
-      },
-      {
-        "at": "2026-10-18T14:56:31.895Z",
+        "at": "2026-10-18T14:58:39.896Z",
         "phase": "verifying",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Aplicación confirmada en main: problematic_attempts=11"
+        "title": null,
+        "trend_id": null,
+        "message": "Aplicador 39138194805 success; Africa r0 problemática intento 11. Albiol explicada y Brighton borrada concordantes en ambos registros."
       },
       {
-        "at": "2026-10-18T14:57:05.900Z",
+        "at": "2026-10-18T14:58:42.229Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "2 explicadas y verificadas; Africa sigue problematic en intento 11. Sin preparing/update ni rewrite_pending."
+        "message": "Sin preparing/update ni rewrite_pending. Africa r0 cerrada concurrentemente como problematic, intento 11; no se repite la investigación ni el outbox."
       }
     ],
+    "concurrent_run_id": "tr-editorial-20261018164500",
+    "finished_at": "2026-10-18T14:58:42.229Z",
     "summary": {
-      "initial_active_requests": 2,
-      "initial_compact_queue": 3,
-      "attempted": 3,
-      "explained": 2,
-      "problematic_reviewed": 1,
+      "initial_active_requests": 0,
+      "initial_compact_queue": 1,
+      "attempted": 0,
+      "explained": 0,
+      "problematic_reviewed": 0,
+      "concurrent_problematic_verified": 1,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "final_compact_queue": 1,
@@ -351,46 +98,42 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "incidents": 1,
       "partial": false
     },
     "partial": false,
     "final_outcomes": [
       {
-        "id": "bf5ade33b5b4",
-        "name": "Brighton",
-        "revision": 0,
-        "status": "explained",
-        "verified_in_main": true,
-        "apply_commit": "b633124bf40a93bf26858776b924b3d73346d37b"
-      },
-      {
-        "id": "70c362443142",
-        "name": "Albiol",
-        "revision": 0,
-        "status": "explained",
-        "verified_in_main": true,
-        "apply_commit": "39560d05d06d0232a02c7ce23218c2ffcbb312ee"
-      },
-      {
         "id": "c4a371acd7c3",
-        "name": "Africa",
         "revision": 0,
         "status": "problematic",
         "problematic_attempts": 11,
-        "verified_in_main": true,
-        "apply_commit": "fcfc93c"
+        "origin": "concurrent_verified",
+        "workflow_run": 39138194805
+      },
+      {
+        "id": "70c362443142",
+        "revision": 0,
+        "status": "explained",
+        "origin": "concurrent_verified"
+      },
+      {
+        "id": "bf5ade33b5b4",
+        "revision": 0,
+        "status": "deleted",
+        "origin": "preserved_user_decision"
       }
     ]
   },
-  "run_id": "tr-editorial-20261018164500",
+  "run_id": "tr-editorial-audit-20261018145839",
   "summary": {
-    "initial_active_requests": 2,
-    "initial_compact_queue": 3,
-    "attempted": 3,
-    "explained": 2,
-    "problematic_reviewed": 1,
+    "initial_active_requests": 0,
+    "initial_compact_queue": 1,
+    "attempted": 0,
+    "explained": 0,
+    "problematic_reviewed": 0,
+    "concurrent_problematic_verified": 1,
     "remaining_active": 0,
     "remaining_problematic": 1,
     "final_compact_queue": 1,
@@ -398,154 +141,36 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 1,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T14:45:20.000Z",
+      "at": "2026-10-18T14:57:14.729Z",
       "phase": "verifying",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Releyendo estado autoritativo de Brighton"
-    },
-    {
-      "at": "2026-10-18T14:46:20.000Z",
-      "phase": "investigating",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Contrastando fuente 1/2 · 4-0 al Crystal Palace confirmado"
-    },
-    {
-      "at": "2026-10-18T14:46:35.000Z",
-      "phase": "investigating",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Contrastando fuente 2/2 · gol de Diego Gómez desde el centro del campo confirmado"
-    },
-    {
-      "at": "2026-10-18T14:47:10.000Z",
-      "phase": "drafting",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Explicación factual redactada y límite de X comprobado"
-    },
-    {
-      "at": "2026-10-18T14:47:40.000Z",
-      "phase": "remate_selection",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Remate seleccionado mediante snapshot de ratings"
-    },
-    {
-      "at": "2026-10-18T14:47:50.000Z",
-      "phase": "persisting",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-18T14:50:25.000Z",
-      "phase": "verifying",
-      "trend_id": "bf5ade33b5b4",
-      "title": "Brighton",
-      "message": "Tendencia cerrada y verificada en main"
-    },
-    {
-      "at": "2026-10-18T14:50:35.000Z",
-      "phase": "verifying",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Releyendo estado autoritativo de Albiol"
-    },
-    {
-      "at": "2026-10-18T14:51:10.000Z",
-      "phase": "investigating",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Contrastando fuente 1/2 · candidatura del PP por Barcelona confirmada"
-    },
-    {
-      "at": "2026-10-18T14:51:20.000Z",
-      "phase": "investigating",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Contrastando fuente 2/2 · encargo de la futura ley antiocupación confirmado"
-    },
-    {
-      "at": "2026-10-18T14:51:30.000Z",
-      "phase": "drafting",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Explicación factual redactada y límite de X comprobado"
-    },
-    {
-      "at": "2026-10-18T14:51:40.000Z",
-      "phase": "remate_selection",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Remate político neutral seleccionado mediante ratings"
-    },
-    {
-      "at": "2026-10-18T14:51:50.000Z",
-      "phase": "persisting",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-18T14:55:00.000Z",
-      "phase": "verifying",
-      "trend_id": "70c362443142",
-      "title": "Albiol",
-      "message": "Tendencia cerrada y verificada en main"
-    },
-    {
-      "at": "2026-10-18T14:55:05.000Z",
-      "phase": "verifying",
-      "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Releyendo estado autoritativo de Africa"
-    },
-    {
-      "at": "2026-10-18T14:55:20.000Z",
-      "phase": "investigating",
       "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Contrastando ruta 1 · noticias españolas del 18/10 sin coincidencia inequívoca"
+      "message": "Detectada otra ejecución persistiendo la misma revisión r0; se preserva su RUNTRACE activo"
     },
     {
-      "at": "2026-10-18T14:55:25.000Z",
-      "phase": "investigating",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Contrastando ruta 2 · trackers públicos de X sin detonante común verificable"
-    },
-    {
-      "at": "2026-10-18T14:55:30.000Z",
-      "phase": "persisting",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Guardando nuevo intento problematic sin inventar explicación"
-    },
-    {
-      "at": "2026-10-18T14:56:31.895Z",
+      "at": "2026-10-18T14:58:39.896Z",
       "phase": "verifying",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Aplicación confirmada en main: problematic_attempts=11"
+      "title": null,
+      "trend_id": null,
+      "message": "Aplicador 39138194805 success; Africa r0 problemática intento 11. Albiol explicada y Brighton borrada concordantes en ambos registros."
     },
     {
-      "at": "2026-10-18T14:57:05.900Z",
+      "at": "2026-10-18T14:58:42.229Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "2 explicadas y verificadas; Africa sigue problematic en intento 11. Sin preparing/update ni rewrite_pending."
+      "message": "Sin preparing/update ni rewrite_pending. Africa r0 cerrada concurrentemente como problematic, intento 11; no se repite la investigación ni el outbox."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "error": null
+  "error": null,
+  "previous_concurrent_run_id": "tr-editorial-20261018164500"
 }
