@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T17:51:09+02:00",
-  "last_completed_at": "2026-10-18T17:51:09+02:00",
-  "updated_at": "2026-10-18T17:51:09+02:00",
+  "last_started_at": "2026-10-18T17:45:00+02:00",
+  "last_completed_at": "2026-10-18T17:52:00+02:00",
+  "updated_at": "2026-10-18T17:52:00+02:00",
   "status": "success",
   "processed_ids": [
     "c4a371acd7c3"
@@ -22,34 +22,34 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
-    "requested_at": "2026-10-18T15:53:41+02:00",
-    "trigger_commit": "ed58868c43045d4e483f5a02cedc55282a5cac28",
-    "run_id": 39133553914,
+    "requested_at": "2026-10-18T17:50:05+02:00",
+    "trigger_commit": "ab986e6d9432c1e1f7bc66239f11dc74a7388781",
+    "run_id": 39142346154,
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018171500",
+    "run_id": "tr-editorial-20261018174500",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T17:15:00+02:00",
-    "updated_at": "2026-10-18T17:20:00+02:00",
-    "finished_at": "2026-10-18T17:20:00+02:00",
+    "started_at": "2026-10-18T17:45:00+02:00",
+    "updated_at": "2026-10-18T17:52:00+02:00",
+    "finished_at": "2026-10-18T17:52:00+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 12 verificado.",
+    "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 13 verificado.",
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
-        "reason": "detonante_no_verificado_intento_12",
-        "at": "2026-10-18T17:18:40+02:00"
+        "reason": "detonante_no_verificado_intento_13",
+        "at": "2026-10-18T17:51:09+02:00"
       }
     ],
     "ratings_snapshot": {
@@ -62,46 +62,46 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T17:15:00+02:00",
+        "at": "2026-10-18T17:45:00+02:00",
         "phase": "preparing",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Lectura autoritativa completada: Africa r0 sigue problematic en el Top 10; comienza un nuevo reintento con consultas distintas."
+        "message": "Lectura autoritativa completada: Africa r0 sigue problematic en el Top 10; comienza el reintento 13 con consultas distintas."
       },
       {
-        "at": "2026-10-18T17:16:00+02:00",
+        "at": "2026-10-18T17:49:00+02:00",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
         "message": "Releyendo estado autoritativo de Africa r0 antes de investigar."
       },
       {
-        "at": "2026-10-18T17:17:00+02:00",
+        "at": "2026-10-18T17:50:00+02:00",
         "phase": "investigating",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Dos baterías de búsquedas nuevas no aíslan un detonante único verificable; se contrastan ahora estados y mecanismo de reintento antes de persistir."
+        "message": "Buscando detonante actual en tendencias, prensa y resultados sociales con consultas distintas a las pasadas anteriores."
       },
       {
-        "at": "2026-10-18T17:18:00+02:00",
+        "at": "2026-10-18T17:51:00+02:00",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Dos baterías de búsquedas nuevas no aíslan un detonante único verificable; no se atribuye un motivo especulativo."
+      },
+      {
+        "at": "2026-10-18T17:51:09+02:00",
         "phase": "persisting",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Revalidado id+revision; se registra un nuevo intento problematic sin inventar explicación."
+        "message": "Aplicador editorial ejecutado con éxito; outbox consumido y problematic_attempts incrementado a 13."
       },
       {
-        "at": "2026-10-18T17:18:40+02:00",
-        "phase": "verifying",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Aplicador editorial ejecutado con éxito; outbox consumido y problematic_attempts incrementado a 12."
-      },
-      {
-        "at": "2026-10-18T17:20:00+02:00",
+        "at": "2026-10-18T17:52:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 12 verificado."
+        "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 13 verificado."
       }
     ],
     "summary": {
@@ -127,13 +127,13 @@
         "id": "c4a371acd7c3",
         "revision": 0,
         "status": "problematic",
-        "problematic_attempts": 12,
+        "problematic_attempts": 13,
         "origin": "direct_chat_verified",
-        "workflow_run": 39139858119
+        "workflow_run": 39142297154
       }
     ]
   },
-  "run_id": "tr-editorial-20261018171500",
+  "run_id": "tr-editorial-20261018174500",
   "summary": {
     "initial_active_requests": 0,
     "initial_compact_queue": 1,
@@ -154,50 +154,50 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T17:15:00+02:00",
+      "at": "2026-10-18T17:45:00+02:00",
       "phase": "preparing",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Lectura autoritativa completada: Africa r0 sigue problematic en el Top 10; comienza un nuevo reintento con consultas distintas."
+      "message": "Lectura autoritativa completada: Africa r0 sigue problematic en el Top 10; comienza el reintento 13 con consultas distintas."
     },
     {
-      "at": "2026-10-18T17:16:00+02:00",
+      "at": "2026-10-18T17:49:00+02:00",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
       "message": "Releyendo estado autoritativo de Africa r0 antes de investigar."
     },
     {
-      "at": "2026-10-18T17:17:00+02:00",
+      "at": "2026-10-18T17:50:00+02:00",
       "phase": "investigating",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Dos baterías de búsquedas nuevas no aíslan un detonante único verificable; se contrastan ahora estados y mecanismo de reintento antes de persistir."
+      "message": "Buscando detonante actual en tendencias, prensa y resultados sociales con consultas distintas a las pasadas anteriores."
     },
     {
-      "at": "2026-10-18T17:18:00+02:00",
+      "at": "2026-10-18T17:51:00+02:00",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Dos baterías de búsquedas nuevas no aíslan un detonante único verificable; no se atribuye un motivo especulativo."
+    },
+    {
+      "at": "2026-10-18T17:51:09+02:00",
       "phase": "persisting",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Revalidado id+revision; se registra un nuevo intento problematic sin inventar explicación."
+      "message": "Aplicador editorial ejecutado con éxito; outbox consumido y problematic_attempts incrementado a 13."
     },
     {
-      "at": "2026-10-18T17:18:40+02:00",
-      "phase": "verifying",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Aplicador editorial ejecutado con éxito; outbox consumido y problematic_attempts incrementado a 12."
-    },
-    {
-      "at": "2026-10-18T17:20:00+02:00",
+      "at": "2026-10-18T17:52:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 12 verificado."
+      "message": "Pasada cerrada: 0 preparing/update, 0 rewrite_pending; Africa r0 continúa problematic tras el intento 13 verificado."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "error": null,
-  "previous_concurrent_run_id": "tr-editorial-20261018164500"
+  "previous_concurrent_run_id": "tr-editorial-20261018171500"
 }
