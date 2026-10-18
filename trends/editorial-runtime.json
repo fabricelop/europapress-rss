@@ -1,10 +1,10 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T13:48:20+02:00",
+  "last_started_at": "2026-10-18T13:45:00+02:00",
   "last_completed_at": "2026-10-18T13:48:20+02:00",
   "updated_at": "2026-10-18T13:48:20+02:00",
   "status": "success",
@@ -31,498 +31,91 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018110424",
+    "run_id": "tr-editorial-20261018134500",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-18T11:04:24.762Z",
-    "updated_at": "2026-10-18T11:31:02.249Z",
-    "current": 8,
-    "total": 8,
+    "started_at": "2026-10-18T11:45:00.000Z",
+    "updated_at": "2026-10-18T11:48:20.000Z",
+    "finished_at": "2026-10-18T11:48:20.000Z",
+    "current": 1,
+    "total": 1,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "8 solicitudes tratadas:7explained verificadas antesdeborrados y1problematic;4borradosposteriores respetados. Activas0. GrupoBardem conserva requestexplained conlíderborrado.",
-    "incident_count": 2,
+    "message": "Africa sigue en TT#5, pero el segundo intento tampoco permite atribuirle un detonante verificable. Se mantiene problematic sin explicación inventada.",
+    "incident_count": 1,
     "incidents": [
       {
         "trend_id": "c4a371acd7c3",
         "revision": 0,
-        "reason": "detonante_no_verificado_tras_dos_busquedas",
-        "at": "2026-10-18T11:23:39.106Z"
-      },
-      {
-        "trend_id": "19071fd1ceab",
-        "leader_id": "c0e3e2da216e",
-        "reason": "explained_member_with_user_deleted_leader",
-        "at": "2026-10-18T11:31:02.249Z",
-        "action": "Respect user deletion; no restoration or status fabrication"
+        "reason": "detonante_no_verificado_reintento_2",
+        "at": "2026-10-18T11:47:20.000Z"
       }
     ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
-    },
-    "remate_selections": [
-      {
-        "trend_id": "69b78892a601",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "c0e3e2da216e",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.4,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "d1be44f069fb",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.2,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.3,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e2e405a64d71",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "5b5d288d7551",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.4,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-18T11:18:25.902Z",
-        "phase": "persisting",
-        "trend_id": "d1be44f069fb",
-        "title": "#BrunetDay",
-        "message": "Outbox oficial6249260179 enviado; esperando aplicación y verificación en main"
+        "at": "2026-10-18T11:45:00.000Z",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial; 1 problemática vigente en Top 10"
       },
       {
-        "at": "2026-10-18T11:20:20.402Z",
-        "phase": "verifying",
-        "trend_id": "d1be44f069fb",
-        "title": "#BrunetDay",
-        "message": "#BrunetDay explained r0: cinco campos idénticos en request y ficha, texto exacto verificado"
-      },
-      {
-        "at": "2026-10-18T11:20:20.402Z",
-        "phase": "verifying",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Releyendo estado autoritativo de Le Pen r0 antes de investigar"
-      },
-      {
-        "at": "2026-10-18T11:20:22.983Z",
-        "phase": "investigating",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Buscando detonante actual de Le Pen y contraste con fuentes francesas"
-      },
-      {
-        "at": "2026-10-18T11:20:38.186Z",
-        "phase": "drafting",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Le Pen reaccionó a los disturbios del17/10: AFP y EuropaPress coinciden; redactando atribución sin adoptar su acusación"
-      },
-      {
-        "at": "2026-10-18T11:21:00.371Z",
-        "phase": "remate_selection",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Evaluando cinco remates sobre precampaña y pancartas; sin bromas sobre heridos"
-      },
-      {
-        "at": "2026-10-18T11:21:02.634Z",
-        "phase": "persisting",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Guardando explicación Le Pen r0 mediante outbox oficial; después se verificarán ficha, request y cola"
-      },
-      {
-        "at": "2026-10-18T11:23:18.142Z",
-        "phase": "verifying",
-        "trend_id": "e2e405a64d71",
-        "title": "Le Pen",
-        "message": "Le Pen explained r0 verificada, cinco campos iguales y outbox aplicado con success"
-      },
-      {
-        "at": "2026-10-18T11:23:18.142Z",
-        "phase": "investigating",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Africa r0 sigue preparing y rank5; buscando detonante sin asumir continente ni persona"
-      },
-      {
-        "at": "2026-10-18T11:23:39.106Z",
-        "phase": "persisting",
-        "trend_id": "c4a371acd7c3",
-        "title": "Africa",
-        "message": "Dos búsquedas distintas sin detonante verificable de Africa; preparando outboxproblematic oficial, sin explicación especulativa"
-      },
-      {
-        "at": "2026-10-18T11:24:52.849Z",
+        "at": "2026-10-18T11:45:08.000Z",
         "phase": "verifying",
         "trend_id": "c4a371acd7c3",
         "title": "Africa",
-        "message": "Africa r0 problematic confirmado; workflowoficial39123069448 success. No se declaraexplained"
+        "message": "Releyendo estado autoritativo de Africa r0"
       },
       {
-        "at": "2026-10-18T11:24:52.849Z",
-        "phase": "verifying",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich / Jodar",
-        "message": "Releyendo ambas revisiones r0 y comprobando posible final compartida"
-      },
-      {
-        "at": "2026-10-18T11:24:54.576Z",
+        "at": "2026-10-18T11:46:00.000Z",
         "phase": "investigating",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich / Jodar",
-        "message": "Buscando final Davidovich–Jódar y resultado vigente en Shanghái; no se anticipa ganador"
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Buscando detonante actual con consultas distintas al intento anterior"
       },
       {
-        "at": "2026-10-18T11:25:03.927Z",
-        "phase": "drafting",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich / Jodar",
-        "message": "ATP yCadenaSER confirman victoriaDavidovich1-6,7-6,6-4 anteJódar: redactando explicación común, sin confundir previa y resultado"
+        "at": "2026-10-18T11:47:00.000Z",
+        "phase": "investigating",
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Segundo reintento: varias búsquedas y fuentes de tendencias confirman el término, pero no un detonante concreto verificable; no se infiere motivo"
       },
       {
-        "at": "2026-10-18T11:25:36.384Z",
-        "phase": "remate_selection",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich / Jodar",
-        "message": "Cinco remates evaluados sobre remontada y primer set; elegido detalle1-6 con giro de viaje"
-      },
-      {
-        "at": "2026-10-18T11:25:38.231Z",
+        "at": "2026-10-18T11:47:20.000Z",
         "phase": "persisting",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich / Jodar",
-        "message": "Guardando líder Davidovich r0; Jodar se enlazará sólo después de verificar el líder"
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Registrando Africa r0 como problematic de nuevo, sin explicación especulativa"
       },
       {
-        "at": "2026-10-18T11:28:07.553Z",
+        "at": "2026-10-18T11:48:20.000Z",
         "phase": "verifying",
-        "trend_id": "5b5d288d7551",
-        "title": "Davidovich",
-        "message": "Líder explained r0, cinco campos idénticos y texto exacto verificados; workflow39123190442 success"
+        "trend_id": "c4a371acd7c3",
+        "title": "Africa",
+        "message": "Outbox consumido; request problematic_attempts=2 y motivo actualizado en main"
       },
       {
-        "at": "2026-10-18T11:28:07.553Z",
-        "phase": "persisting",
-        "trend_id": "1e989dcc6d17",
-        "title": "Jodar",
-        "message": "Enlazando Jodar r0 vigente al líder Davidovich ya explicado, sin segunda ficha"
-      },
-      {
-        "at": "2026-10-18T11:31:02.249Z",
-        "phase": "verifying",
-        "trend_id": "1e989dcc6d17",
-        "title": "Davidovich / Jodar",
-        "message": "Ambas requests explained, texto ygrupoidénticos, una ficha; workflow39123356201 success"
-      },
-      {
-        "at": "2026-10-18T11:31:02.249Z",
+        "at": "2026-10-18T11:48:20.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cola4→1problematic ypreparing/update8→0; cuatroborradosrespetados, sinrestaurar."
+        "message": "Pasada cerrada: 0 preparing/update, Africa permanece problematic para un futuro reintento mientras siga en Top 10"
       }
     ],
-    "finished_at": "2026-10-18T11:31:02.249Z",
-    "partial": false,
     "summary": {
-      "initial_active_requests": 8,
-      "initial_compact_queue": 4,
-      "attempted": 8,
-      "explained_materialized_and_verified": 7,
-      "unique_explanations_materialized": 5,
-      "grouped_requests": 2,
+      "initial_active_requests": 0,
+      "initial_compact_queue": 1,
+      "attempted": 1,
+      "explained_materialized_and_verified": 0,
+      "unique_explanations_materialized": 0,
+      "grouped_requests": 0,
       "problematic_reviewed": 1,
-      "user_deleted_after_explained": 4,
-      "current_explained_requests": 3,
-      "current_visible_explanation_cards": 1,
+      "current_explained_requests": 337,
+      "current_visible_explanation_cards": 633,
       "remaining_active": 0,
       "remaining_problematic": 1,
       "final_compact_queue": 1,
@@ -530,73 +123,17 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "incidents": 2,
+      "incidents": 1,
       "partial": false
     },
+    "partial": false,
     "final_outcomes": [
-      {
-        "id": "69b78892a601",
-        "name": "César y a Dios",
-        "status": "deleted",
-        "revision": 0,
-        "leader": "69b78892a601"
-      },
-      {
-        "id": "19071fd1ceab",
-        "name": "Bardem",
-        "status": "explained",
-        "revision": 0,
-        "leader": "c0e3e2da216e",
-        "text_match": true,
-        "closer_match": true,
-        "same_group": true
-      },
-      {
-        "id": "d1be44f069fb",
-        "name": "#BrunetDay",
-        "status": "deleted",
-        "revision": 0,
-        "leader": "d1be44f069fb"
-      },
-      {
-        "id": "e2e405a64d71",
-        "name": "Le Pen",
-        "status": "deleted",
-        "revision": 0,
-        "leader": "e2e405a64d71"
-      },
-      {
-        "id": "c0e3e2da216e",
-        "name": "Carlos Bardem",
-        "status": "deleted",
-        "revision": 0,
-        "leader": "c0e3e2da216e"
-      },
       {
         "id": "c4a371acd7c3",
         "name": "Africa",
         "status": "problematic",
-        "revision": 0
-      },
-      {
-        "id": "5b5d288d7551",
-        "name": "Davidovich",
-        "status": "explained",
         "revision": 0,
-        "leader": "5b5d288d7551",
-        "text_match": true,
-        "closer_match": true,
-        "same_group": true
-      },
-      {
-        "id": "1e989dcc6d17",
-        "name": "Jodar",
-        "status": "explained",
-        "revision": 0,
-        "leader": "5b5d288d7551",
-        "text_match": true,
-        "closer_match": true,
-        "same_group": true
+        "problematic_attempts": 2
       }
     ]
   },
@@ -625,147 +162,55 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T11:18:25.902Z",
-      "phase": "persisting",
-      "trend_id": "d1be44f069fb",
-      "title": "#BrunetDay",
-      "message": "Outbox oficial6249260179 enviado; esperando aplicación y verificación en main"
+      "at": "2026-10-18T11:45:00.000Z",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial; 1 problemática vigente en Top 10"
     },
     {
-      "at": "2026-10-18T11:20:20.402Z",
-      "phase": "verifying",
-      "trend_id": "d1be44f069fb",
-      "title": "#BrunetDay",
-      "message": "#BrunetDay explained r0: cinco campos idénticos en request y ficha, texto exacto verificado"
-    },
-    {
-      "at": "2026-10-18T11:20:20.402Z",
-      "phase": "verifying",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Releyendo estado autoritativo de Le Pen r0 antes de investigar"
-    },
-    {
-      "at": "2026-10-18T11:20:22.983Z",
-      "phase": "investigating",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Buscando detonante actual de Le Pen y contraste con fuentes francesas"
-    },
-    {
-      "at": "2026-10-18T11:20:38.186Z",
-      "phase": "drafting",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Le Pen reaccionó a los disturbios del17/10: AFP y EuropaPress coinciden; redactando atribución sin adoptar su acusación"
-    },
-    {
-      "at": "2026-10-18T11:21:00.371Z",
-      "phase": "remate_selection",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Evaluando cinco remates sobre precampaña y pancartas; sin bromas sobre heridos"
-    },
-    {
-      "at": "2026-10-18T11:21:02.634Z",
-      "phase": "persisting",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Guardando explicación Le Pen r0 mediante outbox oficial; después se verificarán ficha, request y cola"
-    },
-    {
-      "at": "2026-10-18T11:23:18.142Z",
-      "phase": "verifying",
-      "trend_id": "e2e405a64d71",
-      "title": "Le Pen",
-      "message": "Le Pen explained r0 verificada, cinco campos iguales y outbox aplicado con success"
-    },
-    {
-      "at": "2026-10-18T11:23:18.142Z",
-      "phase": "investigating",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Africa r0 sigue preparing y rank5; buscando detonante sin asumir continente ni persona"
-    },
-    {
-      "at": "2026-10-18T11:23:39.106Z",
-      "phase": "persisting",
-      "trend_id": "c4a371acd7c3",
-      "title": "Africa",
-      "message": "Dos búsquedas distintas sin detonante verificable de Africa; preparando outboxproblematic oficial, sin explicación especulativa"
-    },
-    {
-      "at": "2026-10-18T11:24:52.849Z",
+      "at": "2026-10-18T11:45:08.000Z",
       "phase": "verifying",
       "trend_id": "c4a371acd7c3",
       "title": "Africa",
-      "message": "Africa r0 problematic confirmado; workflowoficial39123069448 success. No se declaraexplained"
+      "message": "Releyendo estado autoritativo de Africa r0"
     },
     {
-      "at": "2026-10-18T11:24:52.849Z",
-      "phase": "verifying",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich / Jodar",
-      "message": "Releyendo ambas revisiones r0 y comprobando posible final compartida"
-    },
-    {
-      "at": "2026-10-18T11:24:54.576Z",
+      "at": "2026-10-18T11:46:00.000Z",
       "phase": "investigating",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich / Jodar",
-      "message": "Buscando final Davidovich–Jódar y resultado vigente en Shanghái; no se anticipa ganador"
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Buscando detonante actual con consultas distintas al intento anterior"
     },
     {
-      "at": "2026-10-18T11:25:03.927Z",
-      "phase": "drafting",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich / Jodar",
-      "message": "ATP yCadenaSER confirman victoriaDavidovich1-6,7-6,6-4 anteJódar: redactando explicación común, sin confundir previa y resultado"
+      "at": "2026-10-18T11:47:00.000Z",
+      "phase": "investigating",
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Segundo reintento: varias búsquedas y fuentes de tendencias confirman el término, pero no un detonante concreto verificable; no se infiere motivo"
     },
     {
-      "at": "2026-10-18T11:25:36.384Z",
-      "phase": "remate_selection",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich / Jodar",
-      "message": "Cinco remates evaluados sobre remontada y primer set; elegido detalle1-6 con giro de viaje"
-    },
-    {
-      "at": "2026-10-18T11:25:38.231Z",
+      "at": "2026-10-18T11:47:20.000Z",
       "phase": "persisting",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich / Jodar",
-      "message": "Guardando líder Davidovich r0; Jodar se enlazará sólo después de verificar el líder"
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Registrando Africa r0 como problematic de nuevo, sin explicación especulativa"
     },
     {
-      "at": "2026-10-18T11:28:07.553Z",
+      "at": "2026-10-18T11:48:20.000Z",
       "phase": "verifying",
-      "trend_id": "5b5d288d7551",
-      "title": "Davidovich",
-      "message": "Líder explained r0, cinco campos idénticos y texto exacto verificados; workflow39123190442 success"
+      "trend_id": "c4a371acd7c3",
+      "title": "Africa",
+      "message": "Outbox consumido; request problematic_attempts=2 y motivo actualizado en main"
     },
     {
-      "at": "2026-10-18T11:28:07.553Z",
-      "phase": "persisting",
-      "trend_id": "1e989dcc6d17",
-      "title": "Jodar",
-      "message": "Enlazando Jodar r0 vigente al líder Davidovich ya explicado, sin segunda ficha"
-    },
-    {
-      "at": "2026-10-18T11:31:02.249Z",
-      "phase": "verifying",
-      "trend_id": "1e989dcc6d17",
-      "title": "Davidovich / Jodar",
-      "message": "Ambas requests explained, texto ygrupoidénticos, una ficha; workflow39123356201 success"
-    },
-    {
-      "at": "2026-10-18T11:31:02.249Z",
+      "at": "2026-10-18T11:48:20.000Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cola4→1problematic ypreparing/update8→0; cuatroborradosrespetados, sinrestaurar."
+      "message": "Pasada cerrada: 0 preparing/update, Africa permanece problematic para un futuro reintento mientras siga en Top 10"
     }
   ],
   "telegram_orphans": 0,
-  "telegram_orphan_ids": [],
-  "error": null
+  "telegram_orphan_ids": []
 }
