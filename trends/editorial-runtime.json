@@ -4,12 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T20:45:00+02:00",
-  "last_completed_at": "2026-10-18T20:52:10+02:00",
-  "updated_at": "2026-10-18T20:52:10+02:00",
+  "last_started_at": "2026-10-18T18:58:53.220Z",
+  "last_completed_at": "2026-10-18T19:14:35.646Z",
+  "updated_at": "2026-10-18T19:14:35.646Z",
   "status": "success",
   "processed_ids": [
-    "ae7f066f3c94"
+    "73f517ae52f9",
+    "f2cfd5ced236",
+    "387b6585fcf8"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -26,35 +28,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018204500",
+    "run_id": "tr-editorial-20261018185853",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-18T20:45:00+02:00",
-    "updated_at": "2026-10-18T20:52:10+02:00",
-    "finished_at": "2026-10-18T20:52:10+02:00",
-    "current": 1,
-    "total": 1,
-    "trend_id": null,
+    "started_at": "2026-10-18T18:58:53.220Z",
+    "updated_at": "2026-10-18T19:14:35.646Z",
+    "current": 3,
+    "total": 3,
     "title": null,
-    "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante.",
-    "summary": {
-      "initial_active_requests": 1,
-      "initial_compact_queue": 1,
-      "attempted": 1,
-      "explained": 1,
-      "problematic_reviewed": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 0,
-      "final_compact_queue": 0,
-      "rewrite_pending": 0,
-      "visual_backlog": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "pending_repair_triggered": 1,
-      "incidents": 0,
-      "partial": false
-    },
+    "event_id": null,
+    "trend_id": null,
+    "message": "Tres revisiones r0 cerradas y verificadas; cola detectada 3→0: Funes enlazado a Oyarzabal, textos nuevos de Ademo y Dumfries exactos en ficha/request. Sin rewrite_pending, IA ni Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -62,195 +47,498 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 20
     },
     "remate_selections": [
       {
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "selected": "🌶️ El homenaje fue antes del partido; el bis lo puso él después.",
-        "originality_checked_against_recent": 30
+        "trend_id": "73f517ae52f9",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Mismo episodio: se enlaza al grupo Oyarzabal r1, con texto y remate existente conservados; no hay una nueva selección editorial."
+      },
+      {
+        "trend_id": "f2cfd5ced236",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "a1",
+            "total": 8.4,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "a2",
+            "total": 7.6,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "a3",
+            "total": 7.1,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "a4",
+            "total": 6.6,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 2,
+            "punch": 0.7,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "a5",
+            "total": 5.9,
+            "ratings_affinity": 1.5,
+            "trend_specificity": 1.3,
+            "punch": 1.3,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "a1",
+        "selected_score": 8.4,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "387b6585fcf8",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "d1",
+            "total": 5.1,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.1,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": -1.3
+          },
+          {
+            "id": "d2",
+            "total": 8.5,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "d3",
+            "total": 6.7,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
+          },
+          {
+            "id": "d4",
+            "total": 7.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "d5",
+            "total": 6.4,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.9,
+            "punch": 0.8,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "d2",
+        "selected_score": 8.5,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-18T20:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Estado fresco leído; 1 preparing activo. Iniciando barrera JIT y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-18T20:45:20+02:00",
+        "at": "2026-10-18T19:05:10.574Z",
         "phase": "verifying",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Releyendo estado autoritativo de Oyarzabal."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Tres entradas nuevas detectadas durante la pasada: Funes, Ademo y Dumfries. JIT de Funes r0 antes de investigar."
       },
       {
-        "at": "2026-10-18T20:45:40+02:00",
+        "at": "2026-10-18T19:05:24.504Z",
         "phase": "investigating",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Contrastando fuentes actuales del Málaga–Real Sociedad."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Buscando detonante actual de Funes; contrastando rueda de prensa y crónica del Málaga–Real Sociedad"
       },
       {
-        "at": "2026-10-18T20:46:10+02:00",
-        "phase": "investigating",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Hecho esencial verificado: doblete de Oyarzabal en el 2-5 de la Real Sociedad."
-      },
-      {
-        "at": "2026-10-18T20:46:25+02:00",
+        "at": "2026-10-18T19:06:30.254Z",
         "phase": "drafting",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Redactando explicación factual y comprobando el límite de X."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Funes corresponde al mismo Málaga–Real Sociedad ya explicado con Oyarzabal: reutilizando ficha existente, sin crear tarjeta ni remate duplicados"
       },
       {
-        "at": "2026-10-18T20:46:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Evaluando remate frente a los últimos 30 cierres; seleccionado uno específico sin repetición conceptual."
-      },
-      {
-        "at": "2026-10-18T20:46:55+02:00",
+        "at": "2026-10-18T19:06:40.322Z",
         "phase": "persisting",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Guardando ficha Explicada mediante TTENDENCIAS_CHAT_OUTBOX_V1."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Guardando enlace de Funes r0 a la ficha Oyarzabal r1; el aplicador actualizará request y retirará solo esa revisión de cola"
       },
       {
-        "at": "2026-10-18T20:50:34+02:00",
+        "at": "2026-10-18T19:07:14.715Z",
         "phase": "verifying",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Aplicador completado con éxito; requests, Explicadas y retirada de cola confirmados en commit 2be33e20."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Outbox de enlace recibido; esperando a verificar ficha compartida, request explained y retirada de Funes r0 de cola"
       },
       {
-        "at": "2026-10-18T20:50:39+02:00",
+        "at": "2026-10-18T19:08:25.261Z",
         "phase": "verifying",
-        "trend_id": "ae7f066f3c94",
-        "title": "Oyarzabal",
-        "message": "Flujo Telegram legado confirmado deshabilitado; 0 envíos."
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "JIT Ademo r0 activo; Funes sigue pendiente de aplicación por checkout de Actions, no se cuenta aún como explicado"
       },
       {
-        "at": "2026-10-18T20:52:03+02:00",
+        "at": "2026-10-18T19:08:26.103Z",
+        "phase": "investigating",
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "Buscando el detonante actual de Ademo y contrastando identidad, fecha y contexto; no se presupone relación con los otros términos del lote"
+      },
+      {
+        "at": "2026-10-18T19:09:17.234Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main tras refresco concurrente: cola editorial 0."
+        "trend_id": "73f517ae52f9",
+        "title": "Funes",
+        "message": "Funes r0 explained en request; miembro de Oyarzabal r1 en ficha, texto y remate compartidos exactos; cola 3→2"
       },
       {
-        "at": "2026-10-18T20:52:10+02:00",
+        "at": "2026-10-18T19:09:17.234Z",
+        "phase": "drafting",
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "Ademo identificado como Peter Ademo: expulsión por doble amarilla y 0-0 final contrastados con crónicas AS y SER; sin minuto por discrepancia 81/82"
+      },
+      {
+        "at": "2026-10-18T19:09:33.654Z",
+        "phase": "remate_selection",
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "Cinco candidatos internos puntuados con ratings; seleccionado contraste cromático de tarjetas y 0-0, sin clichés ni juicio arbitral"
+      },
+      {
+        "at": "2026-10-18T19:09:38.391Z",
+        "phase": "persisting",
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "JIT Ademo r0 válido; guardando ficha, request explained y retirada de cola mediante outbox oficial #7"
+      },
+      {
+        "at": "2026-10-18T19:09:53.805Z",
+        "phase": "verifying",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Releyendo Dumfries r0 antes de investigar; revisión activa confirmada en main"
+      },
+      {
+        "at": "2026-10-18T19:09:54.701Z",
+        "phase": "investigating",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Buscando detonante actual de Dumfries; separando informaciones de mercado de actuaciones o rumores no confirmados"
+      },
+      {
+        "at": "2026-10-18T19:10:42.430Z",
+        "phase": "drafting",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Once inicial contrastado: Dumfries suplente y Valverde lateral derecho. Se redacta la decisión de salida, sin presentar resultado final ni afirmar que siga en el banquillo."
+      },
+      {
+        "at": "2026-10-18T19:11:02.680Z",
+        "phase": "remate_selection",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Cinco enfoques internos evaluados; elegido bricolaje táctico. Penalizadas metáforas de llaves y pluriempleo ya próximas en el histórico; texto 229 caracteres"
+      },
+      {
+        "at": "2026-10-18T19:11:05.069Z",
+        "phase": "persisting",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "JIT Dumfries r0 vigente; guardando ficha, request y retirada exacta de cola por outbox oficial #7"
+      },
+      {
+        "at": "2026-10-18T19:11:54.020Z",
+        "phase": "verifying",
+        "trend_id": "f2cfd5ced236",
+        "title": "Ademo",
+        "message": "Ficha y request exactos; texto propio confirmado y revisión retirada de cola"
+      },
+      {
+        "at": "2026-10-18T19:11:54.020Z",
+        "phase": "verifying",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Ademo r0 explained verificado con cinco campos exactos en ficha/request y fuera de cola; Dumfries enviado, esperando aplicación real. Cola 3→1."
+      },
+      {
+        "at": "2026-10-18T19:14:35.646Z",
+        "phase": "verifying",
+        "trend_id": "387b6585fcf8",
+        "title": "Dumfries",
+        "message": "Dumfries r0: ficha/request con id, revision, explanation, closer_text y explained_at exactos; cola vacía"
+      },
+      {
+        "at": "2026-10-18T19:14:35.646Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante."
+        "message": "Tres revisiones r0 cerradas y verificadas; cola detectada 3→0: Funes enlazado a Oyarzabal, textos nuevos de Ademo y Dumfries exactos en ficha/request. Sin rewrite_pending, IA ni Telegram."
       }
     ],
+    "finished_at": "2026-10-18T19:14:35.646Z",
+    "summary": {
+      "initial_active_requests": 0,
+      "initial_compact_queue": 0,
+      "new_active_during_run": 3,
+      "peak_compact_queue": 3,
+      "attempted": 3,
+      "explained": 3,
+      "new_explanations": 2,
+      "linked_existing_group": 1,
+      "problematic_reviewed": 0,
+      "remaining_active": 0,
+      "final_compact_queue": 0,
+      "rewrite_pending": 0,
+      "visual_backlog": 0,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
+      "pending_repair_triggered": 0,
+      "incidents": 0,
+      "partial": false
+    },
+    "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "partial": false
+    "final_outcomes": [
+      {
+        "trend_id": "73f517ae52f9",
+        "revision": 0,
+        "status": "explained",
+        "origin": "linked_existing_group",
+        "leader_id": "ae7f066f3c94",
+        "workflow_run": 39157252702,
+        "verified_in_main": true,
+        "group_fields_match": true
+      },
+      {
+        "trend_id": "f2cfd5ced236",
+        "revision": 0,
+        "status": "explained",
+        "origin": "own_outbox",
+        "workflow_run": 39157480433,
+        "verified_in_main": true,
+        "fields_match": true
+      },
+      {
+        "trend_id": "387b6585fcf8",
+        "revision": 0,
+        "status": "explained",
+        "origin": "own_outbox",
+        "workflow_run": 39157593962,
+        "verified_in_main": true,
+        "fields_match": true
+      }
+    ]
   },
-  "run_id": "tr-editorial-20261018204500",
+  "run_id": "tr-editorial-20261018185853",
   "summary": {
-    "initial_active_requests": 1,
-    "initial_compact_queue": 1,
-    "attempted": 1,
-    "explained": 1,
+    "initial_active_requests": 0,
+    "initial_compact_queue": 0,
+    "new_active_during_run": 3,
+    "peak_compact_queue": 3,
+    "attempted": 3,
+    "explained": 3,
+    "new_explanations": 2,
+    "linked_existing_group": 1,
     "problematic_reviewed": 0,
     "remaining_active": 0,
-    "remaining_problematic": 0,
     "final_compact_queue": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T20:45:00+02:00",
-      "phase": "preparing",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Estado fresco leído; 1 preparing activo. Iniciando barrera JIT y saneamiento de Pendientes."
-    },
-    {
-      "at": "2026-10-18T20:45:20+02:00",
+      "at": "2026-10-18T19:05:10.574Z",
       "phase": "verifying",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Releyendo estado autoritativo de Oyarzabal."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Tres entradas nuevas detectadas durante la pasada: Funes, Ademo y Dumfries. JIT de Funes r0 antes de investigar."
     },
     {
-      "at": "2026-10-18T20:45:40+02:00",
+      "at": "2026-10-18T19:05:24.504Z",
       "phase": "investigating",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Contrastando fuentes actuales del Málaga–Real Sociedad."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Buscando detonante actual de Funes; contrastando rueda de prensa y crónica del Málaga–Real Sociedad"
     },
     {
-      "at": "2026-10-18T20:46:10+02:00",
-      "phase": "investigating",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Hecho esencial verificado: doblete de Oyarzabal en el 2-5 de la Real Sociedad."
-    },
-    {
-      "at": "2026-10-18T20:46:25+02:00",
+      "at": "2026-10-18T19:06:30.254Z",
       "phase": "drafting",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Redactando explicación factual y comprobando el límite de X."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Funes corresponde al mismo Málaga–Real Sociedad ya explicado con Oyarzabal: reutilizando ficha existente, sin crear tarjeta ni remate duplicados"
     },
     {
-      "at": "2026-10-18T20:46:40+02:00",
-      "phase": "remate_selection",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Evaluando remate frente a los últimos 30 cierres; seleccionado uno específico sin repetición conceptual."
-    },
-    {
-      "at": "2026-10-18T20:46:55+02:00",
+      "at": "2026-10-18T19:06:40.322Z",
       "phase": "persisting",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Guardando ficha Explicada mediante TTENDENCIAS_CHAT_OUTBOX_V1."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Guardando enlace de Funes r0 a la ficha Oyarzabal r1; el aplicador actualizará request y retirará solo esa revisión de cola"
     },
     {
-      "at": "2026-10-18T20:50:34+02:00",
+      "at": "2026-10-18T19:07:14.715Z",
       "phase": "verifying",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Aplicador completado con éxito; requests, Explicadas y retirada de cola confirmados en commit 2be33e20."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Outbox de enlace recibido; esperando a verificar ficha compartida, request explained y retirada de Funes r0 de cola"
     },
     {
-      "at": "2026-10-18T20:50:39+02:00",
+      "at": "2026-10-18T19:08:25.261Z",
       "phase": "verifying",
-      "trend_id": "ae7f066f3c94",
-      "title": "Oyarzabal",
-      "message": "Flujo Telegram legado confirmado deshabilitado; 0 envíos."
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "JIT Ademo r0 activo; Funes sigue pendiente de aplicación por checkout de Actions, no se cuenta aún como explicado"
     },
     {
-      "at": "2026-10-18T20:52:03+02:00",
+      "at": "2026-10-18T19:08:26.103Z",
+      "phase": "investigating",
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "Buscando el detonante actual de Ademo y contrastando identidad, fecha y contexto; no se presupone relación con los otros términos del lote"
+    },
+    {
+      "at": "2026-10-18T19:09:17.234Z",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main tras refresco concurrente: cola editorial 0."
+      "trend_id": "73f517ae52f9",
+      "title": "Funes",
+      "message": "Funes r0 explained en request; miembro de Oyarzabal r1 en ficha, texto y remate compartidos exactos; cola 3→2"
     },
     {
-      "at": "2026-10-18T20:52:10+02:00",
+      "at": "2026-10-18T19:09:17.234Z",
+      "phase": "drafting",
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "Ademo identificado como Peter Ademo: expulsión por doble amarilla y 0-0 final contrastados con crónicas AS y SER; sin minuto por discrepancia 81/82"
+    },
+    {
+      "at": "2026-10-18T19:09:33.654Z",
+      "phase": "remate_selection",
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "Cinco candidatos internos puntuados con ratings; seleccionado contraste cromático de tarjetas y 0-0, sin clichés ni juicio arbitral"
+    },
+    {
+      "at": "2026-10-18T19:09:38.391Z",
+      "phase": "persisting",
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "JIT Ademo r0 válido; guardando ficha, request explained y retirada de cola mediante outbox oficial #7"
+    },
+    {
+      "at": "2026-10-18T19:09:53.805Z",
+      "phase": "verifying",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Releyendo Dumfries r0 antes de investigar; revisión activa confirmada en main"
+    },
+    {
+      "at": "2026-10-18T19:09:54.701Z",
+      "phase": "investigating",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Buscando detonante actual de Dumfries; separando informaciones de mercado de actuaciones o rumores no confirmados"
+    },
+    {
+      "at": "2026-10-18T19:10:42.430Z",
+      "phase": "drafting",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Once inicial contrastado: Dumfries suplente y Valverde lateral derecho. Se redacta la decisión de salida, sin presentar resultado final ni afirmar que siga en el banquillo."
+    },
+    {
+      "at": "2026-10-18T19:11:02.680Z",
+      "phase": "remate_selection",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Cinco enfoques internos evaluados; elegido bricolaje táctico. Penalizadas metáforas de llaves y pluriempleo ya próximas en el histórico; texto 229 caracteres"
+    },
+    {
+      "at": "2026-10-18T19:11:05.069Z",
+      "phase": "persisting",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "JIT Dumfries r0 vigente; guardando ficha, request y retirada exacta de cola por outbox oficial #7"
+    },
+    {
+      "at": "2026-10-18T19:11:54.020Z",
+      "phase": "verifying",
+      "trend_id": "f2cfd5ced236",
+      "title": "Ademo",
+      "message": "Ficha y request exactos; texto propio confirmado y revisión retirada de cola"
+    },
+    {
+      "at": "2026-10-18T19:11:54.020Z",
+      "phase": "verifying",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Ademo r0 explained verificado con cinco campos exactos en ficha/request y fuera de cola; Dumfries enviado, esperando aplicación real. Cola 3→1."
+    },
+    {
+      "at": "2026-10-18T19:14:35.646Z",
+      "phase": "verifying",
+      "trend_id": "387b6585fcf8",
+      "title": "Dumfries",
+      "message": "Dumfries r0: ficha/request con id, revision, explanation, closer_text y explained_at exactos; cola vacía"
+    },
+    {
+      "at": "2026-10-18T19:14:35.646Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 1→0; Oyarzabal explicado y verificado. Reparación visual continúa de forma no bloqueante."
+      "message": "Tres revisiones r0 cerradas y verificadas; cola detectada 3→0: Funes enlazado a Oyarzabal, textos nuevos de Ademo y Dumfries exactos en ficha/request. Sin rewrite_pending, IA ni Telegram."
     }
   ],
   "telegram_orphans": 0,
