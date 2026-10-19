@@ -52,14 +52,14 @@ private enum RainBarDisplay {
         if rainingNow {
             if let stop=points.first(where:{$0.minute>=5 &&
                     sustained($0.minute,expectRain:false)}) {
-                return "Llueve ahora · posible final en +\(stop.minute) min"
+                return "Precipitación ahora · posible final en +\(stop.minute) min"
             }
-            return "Llueve ahora · sin final claro en este intervalo"
+            return "Precipitación ahora · sin final claro en este intervalo"
         }
         if let start=points.first(where:{sustained($0.minute,expectRain:true)}) {
-            return "Seco ahora · posible lluvia en +\(start.minute) min"
+            return "Seco ahora · posible precipitación en +\(start.minute) min"
         }
-        return "Sin lluvia apreciable en este intervalo"
+        return "Sin precipitación apreciable en este intervalo"
     }
 }
 
@@ -140,7 +140,7 @@ struct MinuteRainGraph:View {
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
-                Label("Pulso de lluvia",systemImage:"waveform.path")
+                Label("Pulso de precipitación",systemImage:"waveform.path")
                     .font(.headline)
                 Spacer()
                 Text("1 BARRA / MIN")
@@ -176,7 +176,8 @@ struct MinuteRainGraph:View {
                     VStack(alignment:.leading,spacing:2) {
                         Text(selectedMinute == nil ? "Ahora" : "En +\(selected.minute) min")
                             .font(.caption).foregroundStyle(.secondary)
-                        Text(RainVisual.intensity(selected.rate))
+                        Text(selected.rate >= 0.15 && store.snapshot?.phase(at:selected.at) == .snow ?
+                             "Nieve prevista" : RainVisual.intensity(selected.rate))
                             .font(.title3.bold())
                             .foregroundStyle(RainVisual.color(selected.rate))
                     }
@@ -196,15 +197,14 @@ struct MinuteRainGraph:View {
                 RainMinuteBars(data:bars,horizon:horizon,
                                selectedMinute:$selectedMinute)
                 HStack(spacing:6) {
-                    Text("Gris: sin lluvia")
+                    Text("Gris: sin precipitación")
                     Spacer()
                     Text("Color: intensidad")
                     Spacer()
                     Image(systemName:"hand.draw").foregroundStyle(.secondary)
                 }
                 .font(.caption2).foregroundStyle(.secondary)
-                Text("Radar prioritario hasta 60 min; tendencia atenuada hasta 90 min. " +
-                     "Los intervalos radar/modelo se muestran por minutos sin prometer mediciones cada minuto.")
+                Text("Radar prioritario hasta 60 min. Precipitación equivalente en mm/h; tipo nieve según modelo. Cada minuto es visual, no una medición nueva.")
                     
                     .font(.caption2).foregroundStyle(.secondary)
 
