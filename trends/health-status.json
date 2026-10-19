@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-19T12:18:46.100788+00:00",
-  "ok": true,
+  "checked_at": "2026-10-19T12:50:56.264009+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.4,
-      "run_id": 39250746462,
+      "age_minutes": 2.0,
+      "run_id": 39254989742,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,21 +77,26 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 3,
-      "overdue_count": 0,
-      "oldest_age_minutes": 1.7,
+      "ok": false,
+      "pending_count": 1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 33.9,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "8c318a4327b6",
+          "name": "Cruz Roja",
+          "status": "preparing",
+          "age_minutes": 33.9
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "c5cd79f387ad",
-        "b3f798855b6d",
         "8c318a4327b6"
       ],
       "contradictory_success": false
@@ -103,8 +108,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.9 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.9 min"
 }
