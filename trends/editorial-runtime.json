@@ -4,11 +4,13 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T21:04:49.897Z",
-  "last_completed_at": "2026-10-19T21:07:58.096Z",
-  "updated_at": "2026-10-19T21:07:58.096Z",
+  "last_started_at": "2026-10-19T22:03:55.924Z",
+  "last_completed_at": "2026-10-19T22:06:49.492Z",
+  "updated_at": "2026-10-19T22:06:50.315Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "b9fd3c6b62bd"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -23,18 +25,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019210449",
+    "run_id": "tr-editorial-20261019220355",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T21:04:49.897Z",
-    "updated_at": "2026-10-19T21:07:58.096Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-19T22:03:55.924Z",
+    "updated_at": "2026-10-19T22:06:50.315Z",
+    "current": 1,
+    "total": 1,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Cola y requests releídas: ninguna preparing/update, ninguna reexplicación pendiente ni remate vacío reciente que reparar. Sin intervención visual ni Telegram.",
+    "message": "#FirstDates19O elaborada y verificada explained r0; ficha y request idénticas, cola 1 → 0. Emisión P2408 del 19/10 Telecinco. Persistencia textual directa vigente, sin activar workflows visuales/Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -42,35 +44,171 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "b9fd3c6b62bd",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": 1,
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 2,
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 3,
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 4,
+            "total": 8.2,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 5,
+            "total": 8.7,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 1.9,
+            "punch": 1.9,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": 5,
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-19T21:05:27.498Z",
+        "at": "2026-10-19T22:04:21.105Z",
         "phase": "verifying",
-        "message": "Cola inicial 0."
+        "message": "Cola inicial 1."
       },
       {
-        "at": "2026-10-19T21:07:58.096Z",
+        "at": "2026-10-19T22:04:23.137Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Releyendo #FirstDates19O r0 y su revisión vigente antes de buscar el episodio del 19 de octubre."
+      },
+      {
+        "at": "2026-10-19T22:04:30.361Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Buscando detonante concreto de la emisión First Dates del 19/10 y contraste con Cuatro; evitar mezclar citas de días distintos."
+      },
+      {
+        "at": "2026-10-19T22:05:07.296Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Los comentarios fechados del hashtag apuntan a la emisión del 19/10; la web de Cuatro muestra piezas anteriores. Comprobando parrilla y cobertura de Telecinco, sin atribuirle una cita antigua."
+      },
+      {
+        "at": "2026-10-19T22:05:48.562Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Ficha oficial P2408 (19/10, Telecinco) contrastada con guía TV y comentarios fechados. Explicar emisión y contraste compromiso/presente sin inventar resultado de la cita."
+      },
+      {
+        "at": "2026-10-19T22:05:49.565Z",
+        "phase": "remate_selection",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Cinco enfoques evaluados con snapshot de 100 ratings y 30 cierres recientes; gana personificación futuro/ya veremos (8,7), sin inventar desenlace ni burlarse de participantes."
+      },
+      {
+        "at": "2026-10-19T22:06:09.192Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Guardando ficha Explicada de 223 puntos de código por persistencia directa vigente. No se usa el workflow chat-outbox porque contiene despacho Telegram explícito."
+      },
+      {
+        "at": "2026-10-19T22:06:14.563Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Ficha guardada; sincronizando request con idénticos id, revisión, texto, cierre y fecha."
+      },
+      {
+        "at": "2026-10-19T22:06:19.009Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Ficha y request verificadas idénticas; retirando únicamente #FirstDates19O r0 de la cola."
+      },
+      {
+        "at": "2026-10-19T22:06:34.198Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "b9fd3c6b62bd",
+        "title": "#FirstDates19O",
+        "message": "Releídos main, ficha y request: #FirstDates19O r0 explained y cinco campos idénticos. Cola 1 → 0. No hay ninguna preparing/update adicional."
+      },
+      {
+        "at": "2026-10-19T22:06:50.315Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cola y requests releídas: ninguna preparing/update, ninguna reexplicación pendiente ni remate vacío reciente que reparar. Sin intervención visual ni Telegram."
+        "message": "#FirstDates19O elaborada y verificada explained r0; ficha y request idénticas, cola 1 → 0. Emisión P2408 del 19/10 Telecinco. Persistencia textual directa vigente, sin activar workflows visuales/Telegram."
       }
     ],
-    "finished_at": "2026-10-19T21:07:58.096Z",
+    "finished_at": "2026-10-19T22:06:49.492Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "6cb1edac438020b6b189199814061fa58b15aaa5",
+    "verification_head": "b660143bb9a916a0e5c761659f1f86534dee0d3b",
     "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
+      "initial_compact_queue": 1,
+      "initial_active_requests": 1,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 1,
+      "explained": 1,
+      "processed_ids": [
+        "b9fd3c6b62bd"
+      ],
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
@@ -80,15 +218,27 @@
       "pending_repair_triggered": 0,
       "incidents": 0,
       "partial": false
+    },
+    "persistence": {
+      "mode": "explanation_only_direct",
+      "reason": "El workflow apply-ttendencias-chat-outbox.yml dispara explícitamente send-ttendencias-explained-telegram.yml; no se invoca para respetar la prohibición de entregas Telegram.",
+      "commits": [
+        "1b618a4d8b09c32f501e184c378c3a27419c05ac",
+        "a88b617ee9b7d6216f50e9268eb0f4dba5f135f5",
+        "b660143bb9a916a0e5c761659f1f86534dee0d3b"
+      ]
     }
   },
-  "run_id": "tr-editorial-20261019210449",
+  "run_id": "tr-editorial-20261019220355",
   "summary": {
-    "initial_compact_queue": 0,
-    "initial_active_requests": 0,
+    "initial_compact_queue": 1,
+    "initial_active_requests": 1,
     "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 1,
+    "explained": 1,
+    "processed_ids": [
+      "b9fd3c6b62bd"
+    ],
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
@@ -102,17 +252,89 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T21:05:27.498Z",
+      "at": "2026-10-19T22:04:21.105Z",
       "phase": "verifying",
-      "message": "Cola inicial 0."
+      "message": "Cola inicial 1."
     },
     {
-      "at": "2026-10-19T21:07:58.096Z",
+      "at": "2026-10-19T22:04:23.137Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Releyendo #FirstDates19O r0 y su revisión vigente antes de buscar el episodio del 19 de octubre."
+    },
+    {
+      "at": "2026-10-19T22:04:30.361Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Buscando detonante concreto de la emisión First Dates del 19/10 y contraste con Cuatro; evitar mezclar citas de días distintos."
+    },
+    {
+      "at": "2026-10-19T22:05:07.296Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Los comentarios fechados del hashtag apuntan a la emisión del 19/10; la web de Cuatro muestra piezas anteriores. Comprobando parrilla y cobertura de Telecinco, sin atribuirle una cita antigua."
+    },
+    {
+      "at": "2026-10-19T22:05:48.562Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Ficha oficial P2408 (19/10, Telecinco) contrastada con guía TV y comentarios fechados. Explicar emisión y contraste compromiso/presente sin inventar resultado de la cita."
+    },
+    {
+      "at": "2026-10-19T22:05:49.565Z",
+      "phase": "remate_selection",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Cinco enfoques evaluados con snapshot de 100 ratings y 30 cierres recientes; gana personificación futuro/ya veremos (8,7), sin inventar desenlace ni burlarse de participantes."
+    },
+    {
+      "at": "2026-10-19T22:06:09.192Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Guardando ficha Explicada de 223 puntos de código por persistencia directa vigente. No se usa el workflow chat-outbox porque contiene despacho Telegram explícito."
+    },
+    {
+      "at": "2026-10-19T22:06:14.563Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Ficha guardada; sincronizando request con idénticos id, revisión, texto, cierre y fecha."
+    },
+    {
+      "at": "2026-10-19T22:06:19.009Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Ficha y request verificadas idénticas; retirando únicamente #FirstDates19O r0 de la cola."
+    },
+    {
+      "at": "2026-10-19T22:06:34.198Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "b9fd3c6b62bd",
+      "title": "#FirstDates19O",
+      "message": "Releídos main, ficha y request: #FirstDates19O r0 explained y cinco campos idénticos. Cola 1 → 0. No hay ninguna preparing/update adicional."
+    },
+    {
+      "at": "2026-10-19T22:06:50.315Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cola y requests releídas: ninguna preparing/update, ninguna reexplicación pendiente ni remate vacío reciente que reparar. Sin intervención visual ni Telegram."
+      "message": "#FirstDates19O elaborada y verificada explained r0; ficha y request idénticas, cola 1 → 0. Emisión P2408 del 19/10 Telecinco. Persistencia textual directa vigente, sin activar workflows visuales/Telegram."
     }
   ],
   "telegram_orphans": 0,
