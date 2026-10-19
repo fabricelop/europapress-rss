@@ -81,7 +81,10 @@ def apply(payload, at=None):
             continue
         old_url = str(x.get("url") or "").strip()
         old_title = str(x.get("title") or "").strip()
-        if (url and old_url and clean_url(old_url) == url) or (
+        # Historical sources can contain HTTP or malformed legacy links.
+        # A new manual request must not fail because an old row is malformed.
+        same_url = url and old_url.lower().startswith("https://") and clean_url(old_url) == url
+        if same_url or (
                 not url and not old_url and title and old_title and normalize(title) == normalize(old_title)):
             return "already_exists", str(x.get("event_id") or "")
     now = at or datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
