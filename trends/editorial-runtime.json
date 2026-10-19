@@ -4,11 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T15:15:00+02:00",
-  "last_completed_at": "2026-10-19T15:18:00+02:00",
-  "updated_at": "2026-10-19T15:18:00+02:00",
+  "last_started_at": "2026-10-19T13:34:36.517Z",
+  "last_completed_at": "2026-10-19T13:43:28.588Z",
+  "updated_at": "2026-10-19T13:43:28.588Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "8c318a4327b6",
+    "6ee2479c2194"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -25,13 +28,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019151500",
+    "run_id": "tr-editorial-20261019133436",
     "source": "chat",
-    "current": 0,
-    "total": 0,
+    "status": "DONE",
+    "phase": "closing",
+    "started_at": "2026-10-19T13:34:36.517Z",
+    "updated_at": "2026-10-19T13:43:28.588Z",
+    "current": 2,
+    "total": 2,
     "title": null,
     "event_id": null,
     "trend_id": null,
+    "message": "Cruz Roja y Torrente explained r0 verificadas con texto, remate y fecha idénticos en requests/manual. Cola 2→0, sin revisiones activas. Solo texto; sin Telegram ni ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -39,100 +47,334 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "8c318a4327b6",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Riesgo de pérdida de alojamiento de personas vulnerables: sin humor."
+      },
+      {
+        "trend_id": "6ee2479c2194",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "candidate": 1,
+            "ratings_affinity": 2.4,
+            "news_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0,
+            "total": 8.7
+          },
+          {
+            "candidate": 2,
+            "ratings_affinity": 2.2,
+            "news_specificity": 2,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0,
+            "total": 7.9
+          },
+          {
+            "candidate": 3,
+            "ratings_affinity": 1.4,
+            "news_specificity": 1.9,
+            "punch": 1,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": -0.4,
+            "total": 5.8
+          },
+          {
+            "candidate": 4,
+            "ratings_affinity": 2.1,
+            "news_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0,
+            "total": 7.8
+          },
+          {
+            "candidate": 5,
+            "ratings_affinity": 1.5,
+            "news_specificity": 1.4,
+            "punch": 1.1,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0,
+            "total": 6.2
+          }
+        ],
+        "selected_candidate": 1,
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      }
+    ],
+    "activity": [
+      {
+        "at": "2026-10-19T13:34:36.517Z",
+        "phase": "preparing",
+        "message": "Cola inicial 2; comprobación de revisión y decisiones."
+      },
+      {
+        "at": "2026-10-19T13:34:38.799Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "8c318a4327b6",
+        "title": "Cruz Roja",
+        "message": "Releyendo Cruz Roja r0, la solicitud más antigua, y comprobando si ya existe explicación o cierre."
+      },
+      {
+        "at": "2026-10-19T13:34:50.999Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "8c318a4327b6",
+        "title": "Cruz Roja",
+        "message": "Buscando el detonante actual de Cruz Roja y contrastando la no renovación del programa de acogida de la Junta; sin reabrir ONGs ya explicado."
+      },
+      {
+        "at": "2026-10-19T13:35:47.073Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "8c318a4327b6",
+        "title": "Cruz Roja",
+        "message": "Redactando Cruz Roja con puesto actual 8; no se reabre ONGs borrado. Sin humor por el riesgo para personas sin hogar."
+      },
+      {
+        "at": "2026-10-19T13:35:50.119Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "8c318a4327b6",
+        "title": "Cruz Roja",
+        "message": "Cruz Roja r0 sigue activa; enviando ficha textual al outbox de PR #7."
+      },
+      {
+        "at": "2026-10-19T13:38:21.027Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "8c318a4327b6",
+        "title": "Cruz Roja",
+        "message": "Cruz Roja r0 figura explained con los cinco campos idénticos en requests/manual y ha salido de la cola."
+      },
+      {
+        "at": "2026-10-19T13:39:14.839Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "6ee2479c2194",
+        "title": "Torrente",
+        "message": "Torrente r0 sigue preparing; buscando el detonante actual antes de atribuirlo a una película o a otra referencia."
+      },
+      {
+        "at": "2026-10-19T13:40:16.320Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "6ee2479c2194",
+        "title": "Torrente",
+        "message": "Redactando Torrente: sorpaso en recaudación española contrastado en EFE y EL PAÍS; no se confunden ingresos con espectadores ni previsiones con cifras cerradas."
+      },
+      {
+        "at": "2026-10-19T13:40:17.821Z",
+        "phase": "remate_selection",
+        "event_id": null,
+        "trend_id": "6ee2479c2194",
+        "title": "Torrente",
+        "message": "Cinco mecanismos contrastados con ratings y remates recientes; seleccionado el relevo presidencial figurado mediante las entradas del cine, sin repetir una fórmula reciente."
+      },
+      {
+        "at": "2026-10-19T13:40:21.731Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "6ee2479c2194",
+        "title": "Torrente",
+        "message": "Torrente r0 revalidada activa y sin tarjeta cerrada; enviando ficha al outbox oficial de PR #7."
+      },
+      {
+        "at": "2026-10-19T13:41:10.633Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "6ee2479c2194",
+        "title": "Torrente",
+        "message": "Cruz Roja exacta en main; Torrente aceptada por outbox, Actions todavía en checkout. No se declara terminada hasta ver explained y retirada de cola."
+      },
+      {
+        "at": "2026-10-19T13:43:28.588Z",
+        "phase": "closing",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Cruz Roja y Torrente explained r0 verificadas con texto, remate y fecha idénticos en requests/manual. Cola 2→0, sin revisiones activas. Solo texto; sin Telegram ni ImageGen."
+      }
+    ],
+    "finished_at": "2026-10-19T13:43:28.588Z",
+    "remaining_active_ids": [],
+    "queue_complete": true,
+    "partial": false,
+    "final_outcomes": [
+      {
+        "id": "8c318a4327b6",
+        "revision": 0,
+        "status": "explained",
+        "exact": true,
+        "queue_absent": true
+      },
+      {
+        "id": "6ee2479c2194",
+        "revision": 0,
+        "status": "explained",
+        "exact": true,
+        "queue_absent": true
+      }
+    ],
     "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
+      "initial_compact_queue": 2,
+      "initial_active_requests": 2,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 2,
+      "explained": 2,
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
-      "refresh_requested": 0,
+      "pending_repair_triggered": 0,
       "incidents": 0,
       "partial": false
     },
-    "remaining_active_ids": [],
-    "partial": false,
-    "final_outcomes": [],
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-19T15:15:00+02:00",
-    "updated_at": "2026-10-19T15:18:00+02:00",
-    "finished_at": "2026-10-19T15:18:00+02:00",
-    "message": "Pasada 0/0 cerrada y verificada: radar fresco, cola editorial vacía y sin revisiones activas. Saneamiento de Pendientes lanzado. Sin ImageGen ni Telegram.",
-    "activity": [
+    "applier_runs": [
       {
-        "at": "2026-10-19T15:16:30+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Lectura inicial: radar fresco capturado a las 15:15:55 y cola editorial count=0. Activando saneamiento de Pendientes y verificando revisiones activas antes de cerrar."
+        "id": 39261519264,
+        "conclusion": "success",
+        "trend_id": "8c318a4327b6"
       },
       {
-        "at": "2026-10-19T15:17:35+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: Top 30 capturado a las 15:15:55, cola editorial count=0 y sin revisiones preparing/update ni rewrite_pending detectadas."
-      },
-      {
-        "at": "2026-10-19T15:18:00+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada 0/0 cerrada y verificada: radar fresco, cola editorial vacía y sin revisiones activas. Saneamiento de Pendientes lanzado. Sin ImageGen ni Telegram."
+        "id": 39262151460,
+        "conclusion": "success",
+        "trend_id": "6ee2479c2194"
       }
-    ],
-    "queue_complete": true
+    ]
   },
-  "run_id": "tr-editorial-20261019151500",
+  "run_id": "tr-editorial-20261019133436",
   "summary": {
-    "initial_compact_queue": 0,
-    "initial_active_requests": 0,
+    "initial_compact_queue": 2,
+    "initial_active_requests": 2,
     "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 2,
+    "explained": 2,
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
-    "refresh_requested": 0,
+    "pending_repair_triggered": 0,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T15:16:30+02:00",
+      "at": "2026-10-19T13:34:36.517Z",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Lectura inicial: radar fresco capturado a las 15:15:55 y cola editorial count=0. Activando saneamiento de Pendientes y verificando revisiones activas antes de cerrar."
+      "message": "Cola inicial 2; comprobación de revisión y decisiones."
     },
     {
-      "at": "2026-10-19T15:17:35+02:00",
+      "at": "2026-10-19T13:34:38.799Z",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: Top 30 capturado a las 15:15:55, cola editorial count=0 y sin revisiones preparing/update ni rewrite_pending detectadas."
+      "event_id": null,
+      "trend_id": "8c318a4327b6",
+      "title": "Cruz Roja",
+      "message": "Releyendo Cruz Roja r0, la solicitud más antigua, y comprobando si ya existe explicación o cierre."
     },
     {
-      "at": "2026-10-19T15:18:00+02:00",
+      "at": "2026-10-19T13:34:50.999Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "8c318a4327b6",
+      "title": "Cruz Roja",
+      "message": "Buscando el detonante actual de Cruz Roja y contrastando la no renovación del programa de acogida de la Junta; sin reabrir ONGs ya explicado."
+    },
+    {
+      "at": "2026-10-19T13:35:47.073Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "8c318a4327b6",
+      "title": "Cruz Roja",
+      "message": "Redactando Cruz Roja con puesto actual 8; no se reabre ONGs borrado. Sin humor por el riesgo para personas sin hogar."
+    },
+    {
+      "at": "2026-10-19T13:35:50.119Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "8c318a4327b6",
+      "title": "Cruz Roja",
+      "message": "Cruz Roja r0 sigue activa; enviando ficha textual al outbox de PR #7."
+    },
+    {
+      "at": "2026-10-19T13:38:21.027Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "8c318a4327b6",
+      "title": "Cruz Roja",
+      "message": "Cruz Roja r0 figura explained con los cinco campos idénticos en requests/manual y ha salido de la cola."
+    },
+    {
+      "at": "2026-10-19T13:39:14.839Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "6ee2479c2194",
+      "title": "Torrente",
+      "message": "Torrente r0 sigue preparing; buscando el detonante actual antes de atribuirlo a una película o a otra referencia."
+    },
+    {
+      "at": "2026-10-19T13:40:16.320Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "6ee2479c2194",
+      "title": "Torrente",
+      "message": "Redactando Torrente: sorpaso en recaudación española contrastado en EFE y EL PAÍS; no se confunden ingresos con espectadores ni previsiones con cifras cerradas."
+    },
+    {
+      "at": "2026-10-19T13:40:17.821Z",
+      "phase": "remate_selection",
+      "event_id": null,
+      "trend_id": "6ee2479c2194",
+      "title": "Torrente",
+      "message": "Cinco mecanismos contrastados con ratings y remates recientes; seleccionado el relevo presidencial figurado mediante las entradas del cine, sin repetir una fórmula reciente."
+    },
+    {
+      "at": "2026-10-19T13:40:21.731Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "6ee2479c2194",
+      "title": "Torrente",
+      "message": "Torrente r0 revalidada activa y sin tarjeta cerrada; enviando ficha al outbox oficial de PR #7."
+    },
+    {
+      "at": "2026-10-19T13:41:10.633Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "6ee2479c2194",
+      "title": "Torrente",
+      "message": "Cruz Roja exacta en main; Torrente aceptada por outbox, Actions todavía en checkout. No se declara terminada hasta ver explained y retirada de cola."
+    },
+    {
+      "at": "2026-10-19T13:43:28.588Z",
       "phase": "closing",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada: radar fresco, cola editorial vacía y sin revisiones activas. Saneamiento de Pendientes lanzado. Sin ImageGen ni Telegram."
+      "message": "Cruz Roja y Torrente explained r0 verificadas con texto, remate y fecha idénticos en requests/manual. Cola 2→0, sin revisiones activas. Solo texto; sin Telegram ni ImageGen."
     }
   ],
   "telegram_orphans": 0,
