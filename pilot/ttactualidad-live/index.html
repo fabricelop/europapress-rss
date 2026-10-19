@@ -32,7 +32,18 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .actions.ready-actions .action.external{background:#205a77;border-color:#4995b6;color:#eefbff;font-weight:750}
 .actions.ready-actions .action.external:active{background:#317b9e}
 .actions.ready-actions .action.remove{border-color:#98616e;color:#ffd8e1}
-@media(max-width:365px){.actions.ready-actions{gap:6px}.actions.ready-actions .action{font-size:12px;padding:8px 5px}}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}</style></head>
+@media(max-width:365px){.actions.ready-actions{gap:6px}.actions.ready-actions .action{font-size:12px;padding:8px 5px}}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}
+.manual-open{background:#226b68;border:1px solid #6fd9cc;color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+.manual-overlay[hidden]{display:none}.manual-overlay{position:fixed;inset:0;z-index:150;background:#050a16e9;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
+.manual-panel{background:var(--surface);color:var(--ink);border:1px solid var(--stroke);border-radius:16px;padding:18px;max-width:530px;width:100%;max-height:93dvh;overflow:auto}
+.manual-panel label{display:block;margin:12px 0 5px;font-size:13px;color:var(--sub);font-weight:750}
+.manual-panel input,.manual-panel textarea{width:100%;background:#0d1528;border:1px solid #3b4863;border-radius:10px;color:var(--ink);padding:12px;font-size:16px}
+.manual-panel textarea{min-height:75px;resize:vertical}.manual-panel .actions{display:flex;justify-content:flex-end;gap:10px}
+.manual-panel .actions button{border:1px solid var(--stroke);border-radius:10px;background:var(--panel);color:var(--ink);padding:12px 15px}
+.manual-panel .actions button[type=submit]{background:#226b68;border-color:#6fd9cc;font-weight:800}
+.manual-panel button:disabled{opacity:.55}.manual-panel h2{font-size:20px}
+.manual-panel .feedback{min-height:20px;font-size:13px;color:var(--orange)}
+</style></head>
 <body>
 <header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
@@ -42,7 +53,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <main>
 <div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
 
-<details class="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button></div>
+<details class="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button><button class="manual-open" id="manual-open" type="button" hidden>＋ Noticia</button></div>
 <div id="status" class="status" role="status">Leyendo datos…</div>
 <section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
 <div id="chips" class="chips" aria-label="Secciones"></div>
@@ -50,11 +61,29 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 <div id="cards" class="cards"></div>
 
 
-</main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
+</main><div id="toast" class="toast" role="status"></div>
+<div id="manual-overlay" class="manual-overlay" role="dialog" aria-modal="true" aria-labelledby="manual-title" hidden>
+ <div class="manual-panel">
+  <h2 id="manual-title">＋ Añadir noticia a En Elaboración</h2>
+  <p class="fact">Pega un enlace, escribe un titular o ambos. La investigación comprobará los hechos antes de preparar el texto y la imagen.</p>
+  <form id="manual-form">
+   <label for="manual-url">Enlace a la noticia (opcional)</label>
+   <input id="manual-url" type="url" inputmode="url" autocomplete="url" placeholder="https://..." maxlength="2000">
+   <label for="manual-headline">Titular o descripción (opcional si hay enlace)</label>
+   <textarea id="manual-headline" maxlength="240" placeholder="¿Qué ha ocurrido?"></textarea>
+   <label for="manual-instructions">Indicaciones para la elaboración (opcional)</label>
+   <textarea id="manual-instructions" maxlength="1000" placeholder="Por ejemplo: comprueba el contexto o prioriza esta declaración"></textarea>
+   <p id="manual-feedback" class="feedback" role="status"></p>
+   <div class="actions"><button id="manual-close" type="button">Cancelar</button><button id="manual-submit" type="submit">Enviar a En Elaboración</button></div>
+  </form>
+ </div>
+</div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
 (()=>{'use strict';
 const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
 const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
+const pendingManual=new Map();
+let manualRequestId=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const stamp=s=>{if(!s)return '—';const d=new Date(s);return isNaN(d)?'—':new Intl.DateTimeFormat('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Madrid'}).format(d)};
@@ -115,7 +144,9 @@ function ttiRows(){
    .map(op=>({...op.snapshot,event_id:op.id,title:op.snapshot?.title||op.id,
      revision:op.revision,_kind:'tti',_id:op.id,_status:'PENDIENTE DE CONFIRMACIÓN',
      _queuedAt:new Date(op.at).toISOString()}));
-  return [...pending,...rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))];
+  const manual=[...pendingManual.values()].filter(x=>!seen.has(x.event_id))
+   .map(x=>({...x,_kind:'tti',_id:x.event_id,_status:'PENDIENTE DE CONFIRMACIÓN',_queuedAt:x.selected_at}));
+  return [...manual,...pending,...rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))];
  }
  if(state.tab==='problematicas')return (snap.problematic_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
  if(state.tab==='creciendo')return (snap.three_source_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
@@ -719,6 +750,7 @@ function rowCard(x,i){
  return out
 }
 function render(){
+ $('manual-open').hidden=state.app!=='tti';
  const tabsList=tabs();
  if(state.app==='tr'&&!tabsList.some(t=>t[0]===state.tab))state.tab='listas';
  $('chips').style.display=state.app==='tti'?'none':'flex';
@@ -789,6 +821,61 @@ function openPhoto(url,title){
  link.href=url;sheet.hidden=false;
  $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
 }
+function openManualNews(){
+ manualRequestId=null;
+ $('manual-feedback').textContent='';
+ $('manual-submit').disabled=false;
+ $('manual-overlay').hidden=false;
+ $('manual-url').focus();
+}
+function closeManualNews(){$('manual-overlay').hidden=true}
+async function submitManualNews(event){
+ event.preventDefault();
+ const url=$('manual-url').value.trim();
+ const title=$('manual-headline').value.trim();
+ const instructions=$('manual-instructions').value.trim();
+ if(!url&&!title){$('manual-feedback').textContent='Introduce un enlace o una descripción.';return}
+ if(title&&title.length<5){$('manual-feedback').textContent='Escribe al menos 5 caracteres en el titular.';return}
+ if(url){try{const u=new URL(url);if(u.protocol!=='https:'||u.username||u.password)throw Error('invalid')}
+  catch{$('manual-feedback').textContent='Utiliza un enlace HTTPS válido.';return}}
+ if(!manualRequestId)manualRequestId=crypto.randomUUID();
+ $('manual-submit').disabled=true;
+ $('manual-feedback').textContent='Enviando solicitud autenticada…';
+ try{
+  const response=await fetch('/api/manual-news',{method:'POST',credentials:'same-origin',
+   headers:{'Content-Type':'application/json'},body:JSON.stringify({title,url,instructions,request_id:manualRequestId}),
+   signal:AbortSignal.timeout(15000)});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||!result.routed||!result.event_id)
+   throw Error(response.status===401?'Conecta primero este iPhone en «Conexión».':
+    result.error==='editorial_dispatch_unavailable'?'La conexión con GitHub no está disponible. No se ha encolado.':
+    'No se pudo registrar la solicitud en GitHub.');
+  const id=String(result.event_id);
+  pendingManual.set(id,{event_id:id,title:title||('Investigar noticia del enlace: '+new URL(url).hostname),
+   url,revision:1,selected_at:new Date().toISOString()});
+  $('manual-form').reset();closeManualNews();manualRequestId=null;
+  state.app='tti';state.tab='elaboracion';render();
+  showToast('Solicitud enviada. Pendiente de confirmación en GitHub.');
+  let attempts=0;
+  const check=async()=>{
+   if(!pendingManual.has(id))return;
+   await load(true);
+   if((state.data.ttiQueue?.items||[]).some(x=>String(x.event_id||'')===id)||
+      (state.data.processing?.items||[]).some(x=>String(x.event_id||'')===id)){
+    pendingManual.delete(id);render();showToast('Noticia confirmada en En Elaboración.');return;
+   }
+   if(++attempts<8)setTimeout(check,5000);
+   else{pendingManual.delete(id);render();showToast('Sin confirmación de GitHub. Comprueba el estado antes de reenviar.')}
+  };
+  setTimeout(check,5000);
+ }catch(error){
+  $('manual-feedback').textContent=String(error.message||error);
+ }finally{$('manual-submit').disabled=false}
+}
+$('manual-open').onclick=openManualNews;
+$('manual-close').onclick=closeManualNews;
+$('manual-form').addEventListener('submit',submitManualNews);
+$('manual-overlay').addEventListener('click',e=>{if(e.target===$('manual-overlay'))closeManualNews()});
 $('pilot-config').onclick=pilotConfig;
 void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes()}})();
 $('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
