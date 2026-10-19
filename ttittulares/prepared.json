@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-19T20:11:04.778Z",
+  "updated_at": "2026-10-19T20:11:39.032Z",
   "items": [
     {
       "event_id": "d56ca2778ec0",
@@ -487,7 +487,7 @@
       "with_image": true,
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -513,7 +513,10 @@
         "generated": false,
         "alt": "El primer ministro de Países Bajos anuncia junto a su novio su próxima paternidad por gestación subrogada"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-19T20:11:39.032Z",
+      "ai_image_failure_reason": "Fallback no pudo escribir el prompt completo"
     }
   ],
   "count": 4,
