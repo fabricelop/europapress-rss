@@ -5,8 +5,8 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-19T16:17:30+02:00",
-  "last_completed_at": "2026-10-19T16:20:00+02:00",
-  "updated_at": "2026-10-19T16:20:30+02:00",
+  "last_completed_at": "2026-10-19T16:20:40+02:00",
+  "updated_at": "2026-10-19T16:20:40+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -17,7 +17,7 @@
     "workflow": "repair-ttendencias-explicadas.yml",
     "run_id": 39267780001,
     "status": "in_progress",
-    "head_sha": "2f58ed5e86b439dac8e7047fd7d220f32fa19a2c"
+    "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
@@ -28,14 +28,14 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-19T16:17:30+02:00",
-    "updated_at": "2026-10-19T16:20:00+02:00",
-    "finished_at": "2026-10-19T16:20:00+02:00",
+    "updated_at": "2026-10-19T16:20:40+02:00",
+    "finished_at": "2026-10-19T16:20:40+02:00",
     "current": 0,
     "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada editorial 0/0 cerrada y verificada; se conservan las decisiones recientes del Top 10. Sin ImageGen ni Telegram editorial.",
+    "message": "Pasada editorial 0/0 cerrada y verificada tras refresco manual exitoso: cola 0 y 0 solicitudes activas. Se conservan las decisiones recientes del Top 10. Sin ImageGen ni Telegram editorial.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,12 +79,20 @@
         "message": "Relectura autoritativa completada: cola 0 y 0 solicitudes activas; no se reabren decisiones recientes."
       },
       {
-        "at": "2026-10-19T16:20:00+02:00",
+        "at": "2026-10-19T16:20:30+02:00",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Refresco manual completado con éxito; la cola continúa en 0 y no hay solicitudes activas."
+      },
+      {
+        "at": "2026-10-19T16:20:40+02:00",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial 0/0 cerrada y verificada; refresco de radar y saneamiento visual quedaron disparados como procesos independientes."
+        "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente ya disparado."
       }
     ],
     "summary": {
@@ -111,17 +119,16 @@
       "workflow": "ttendencias-refresh.yml",
       "run_id": 39267607719,
       "status": "completed",
-      "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b",
       "conclusion": "success",
-      "verified_at": "2026-10-19T16:20:30+02:00"
+      "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b"
     },
     "visual_repair": {
       "workflow": "repair-ttendencias-explicadas.yml",
       "run_id": 39267780001,
       "status": "in_progress",
-      "head_sha": "2f58ed5e86b439dac8e7047fd7d220f32fa19a2c"
+      "editorial_blocking": false
     },
-    "verification_head": "e5595e36d5857acde4b6c457d76055c1489b5272"
+    "verification_head": "518f6b0f57d477259ea5ed1caa96c9559f0be965"
   },
   "run_id": "tr-editorial-20261019161500",
   "summary": {
@@ -175,12 +182,20 @@
       "message": "Relectura autoritativa completada: cola 0 y 0 solicitudes activas; no se reabren decisiones recientes."
     },
     {
-      "at": "2026-10-19T16:20:00+02:00",
+      "at": "2026-10-19T16:20:30+02:00",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Refresco manual completado con éxito; la cola continúa en 0 y no hay solicitudes activas."
+    },
+    {
+      "at": "2026-10-19T16:20:40+02:00",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial 0/0 cerrada y verificada; refresco de radar y saneamiento visual quedaron disparados como procesos independientes."
+      "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente ya disparado."
     }
   ],
   "telegram_orphans": 0,
@@ -191,8 +206,7 @@
     "workflow": "ttendencias-refresh.yml",
     "run_id": 39267607719,
     "status": "completed",
-    "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b",
     "conclusion": "success",
-    "verified_at": "2026-10-19T16:20:30+02:00"
+    "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b"
   }
 }
