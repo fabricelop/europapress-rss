@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T16:17:30+02:00",
-  "last_completed_at": "2026-10-19T16:20:40+02:00",
-  "updated_at": "2026-10-19T16:20:40+02:00",
+  "last_started_at": "2026-10-19T16:45:00+02:00",
+  "last_completed_at": "2026-10-19T16:48:20+02:00",
+  "updated_at": "2026-10-19T16:48:20+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,7 +15,7 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "run_id": 39267780001,
+    "run_id": 39272102713,
     "status": "in_progress",
     "editorial_blocking": false
   },
@@ -23,23 +23,24 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019161500",
+    "run_id": "tr-editorial-20261019164500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T16:17:30+02:00",
-    "updated_at": "2026-10-19T16:20:40+02:00",
-    "finished_at": "2026-10-19T16:20:40+02:00",
+    "started_at": "2026-10-19T16:45:00+02:00",
+    "updated_at": "2026-10-19T16:48:20+02:00",
+    "finished_at": "2026-10-19T16:48:20+02:00",
     "current": 0,
     "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada editorial 0/0 cerrada y verificada tras refresco manual exitoso: cola 0 y 0 solicitudes activas. Se conservan las decisiones recientes del Top 10. Sin ImageGen ni Telegram editorial.",
+    "message": "Pasada editorial 0/0 cerrada y verificada con captura fresca de las 16:47:50: cola 0. Saneamiento visual independiente en ejecución. Sin ImageGen ni Telegram editorial.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 0
@@ -47,15 +48,15 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T16:17:30+02:00",
+        "at": "2026-10-19T16:45:00+02:00",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Refresco manual lanzado desde chat-direct sobre main."
+        "message": "Iniciando pasada editorial directa sobre main; estado Top 30 y cola autoritativa en revisión."
       },
       {
-        "at": "2026-10-19T16:17:45+02:00",
+        "at": "2026-10-19T16:47:10+02:00",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
@@ -63,36 +64,28 @@
         "message": "Saneamiento visual de Pendientes activado con el run_id de esta ejecución."
       },
       {
-        "at": "2026-10-19T16:18:10+02:00",
+        "at": "2026-10-19T16:47:50+02:00",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cola inicial 0; verificando estados autoritativos y decisiones recientes del Top 10."
+        "message": "Captura Top 30 fresca disponible; releyendo cola editorial sobre main."
       },
       {
-        "at": "2026-10-19T16:19:20+02:00",
+        "at": "2026-10-19T16:48:10+02:00",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Relectura autoritativa completada: cola 0 y 0 solicitudes activas; no se reabren decisiones recientes."
+        "message": "Relectura autoritativa completada: cola 0 tras la captura fresca; no hay trabajo editorial nuevo."
       },
       {
-        "at": "2026-10-19T16:20:30+02:00",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": null,
-        "title": null,
-        "message": "Refresco manual completado con éxito; la cola continúa en 0 y no hay solicitudes activas."
-      },
-      {
-        "at": "2026-10-19T16:20:40+02:00",
+        "at": "2026-10-19T16:48:20+02:00",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente ya disparado."
+        "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente continúa en ejecución."
       }
     ],
     "summary": {
@@ -116,21 +109,19 @@
     "queue_complete": true,
     "final_outcomes": [],
     "radar_refresh": {
-      "workflow": "ttendencias-refresh.yml",
-      "run_id": 39267607719,
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b"
+      "status": "fresh-main",
+      "captured_at": "2026-10-19T16:47:50+02:00",
+      "head_sha": "762e081ace209af067e548450fa5ba8742c9576f"
     },
     "visual_repair": {
       "workflow": "repair-ttendencias-explicadas.yml",
-      "run_id": 39267780001,
+      "run_id": 39272102713,
       "status": "in_progress",
       "editorial_blocking": false
     },
-    "verification_head": "518f6b0f57d477259ea5ed1caa96c9559f0be965"
+    "verification_head": "762e081ace209af067e548450fa5ba8742c9576f"
   },
-  "run_id": "tr-editorial-20261019161500",
+  "run_id": "tr-editorial-20261019164500",
   "summary": {
     "initial_compact_queue": 0,
     "initial_active_requests": 0,
@@ -150,15 +141,15 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T16:17:30+02:00",
+      "at": "2026-10-19T16:45:00+02:00",
       "phase": "preparing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Refresco manual lanzado desde chat-direct sobre main."
+      "message": "Iniciando pasada editorial directa sobre main; estado Top 30 y cola autoritativa en revisión."
     },
     {
-      "at": "2026-10-19T16:17:45+02:00",
+      "at": "2026-10-19T16:47:10+02:00",
       "phase": "preparing",
       "event_id": null,
       "trend_id": null,
@@ -166,36 +157,28 @@
       "message": "Saneamiento visual de Pendientes activado con el run_id de esta ejecución."
     },
     {
-      "at": "2026-10-19T16:18:10+02:00",
+      "at": "2026-10-19T16:47:50+02:00",
       "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cola inicial 0; verificando estados autoritativos y decisiones recientes del Top 10."
+      "message": "Captura Top 30 fresca disponible; releyendo cola editorial sobre main."
     },
     {
-      "at": "2026-10-19T16:19:20+02:00",
+      "at": "2026-10-19T16:48:10+02:00",
       "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Relectura autoritativa completada: cola 0 y 0 solicitudes activas; no se reabren decisiones recientes."
+      "message": "Relectura autoritativa completada: cola 0 tras la captura fresca; no hay trabajo editorial nuevo."
     },
     {
-      "at": "2026-10-19T16:20:30+02:00",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": null,
-      "title": null,
-      "message": "Refresco manual completado con éxito; la cola continúa en 0 y no hay solicitudes activas."
-    },
-    {
-      "at": "2026-10-19T16:20:40+02:00",
+      "at": "2026-10-19T16:48:20+02:00",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente ya disparado."
+      "message": "Pasada editorial 0/0 cerrada y verificada; saneamiento visual independiente continúa en ejecución."
     }
   ],
   "telegram_orphans": 0,
@@ -203,10 +186,8 @@
   "previous_concurrent_run_id": "tr-editorial-202610182215-chat",
   "partial": false,
   "radar_refresh": {
-    "workflow": "ttendencias-refresh.yml",
-    "run_id": 39267607719,
-    "status": "completed",
-    "conclusion": "success",
-    "head_sha": "17904744fffeeb8ca9444f99d47aae0059fcfb8b"
+    "status": "fresh-main",
+    "captured_at": "2026-10-19T16:47:50+02:00",
+    "head_sha": "762e081ace209af067e548450fa5ba8742c9576f"
   }
 }
