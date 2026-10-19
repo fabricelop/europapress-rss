@@ -443,7 +443,7 @@ const BRIDGE_FEATURES="v54-submit-generating-transition";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
-const COMPOSER_SELECTOR='#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
+const COMPOSER_SELECTOR='[data-tt-image-composer="true"],#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
@@ -458,15 +458,31 @@ async function injectPromptIntoChat(cdp,job){
     cdp.preSubmitImageSrcs=new Set(before.map(x=>x.src));
     console.log("BRIDGE SELF-SUBMIT BASELINE images="+before.length);
   }catch{}
-  const prep=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return {ok:false};c.focus();try{if(c.tagName==='TEXTAREA'||c.tagName==='INPUT'){c.value='';c.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection();const r=document.createRange();r.selectNodeContents(c);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,url:location.href,title:document.title||''}})()");
-  if(!prep||!prep.ok)throw Error("No hay compositor utilizable para fallback");
-
-  await cdp.call("Input.insertText",{text:message});
-  await sleep(250);
-  const verify=await cdp.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const t=String(c&&(c.innerText||c.textContent||c.value)||'');return {ok:t.includes("+JSON.stringify(commandId)+"),len:t.length,url:location.href,title:document.title||''}})()");
-  if(!verify||!verify.ok)throw Error("Fallback no pudo escribir el prompt completo");
-  console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED "+String(verify.url||""));
-  return cdp
+  let last={};
+  // A visible editor is mandatory: ChatGPT can retain invisible/stale editors
+  // in the DOM during SPA navigation. Never type into the first hidden match.
+  for(let attempt=1;attempt<=2;attempt++){
+    const prep=await cdp.eval("(()=>{const elements=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const visible=c=>{const r=c.getBoundingClientRect();const style=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&style.display!=='none'&&style.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\\\"true\\\"]')};const chosen=elements.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&visible(c))||elements.find(visible);if(!chosen)return {ok:false,found:elements.length,url:location.href};elements.forEach(c=>c.removeAttribute('data-tt-image-composer'));chosen.setAttribute('data-tt-image-composer','true');chosen.focus();try{if(chosen.tagName==='TEXTAREA'||chosen.tagName==='INPUT'){chosen.value='';chosen.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection(),r=document.createRange();r.selectNodeContents(chosen);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,found:elements.length,tag:chosen.tagName,url:location.href,focused:document.activeElement===chosen}})()");
+    if(!prep||!prep.ok)throw Error("No hay compositor visible utilizable para fallback found="+String(prep&&prep.found||0));
+    // The previous edit may have caused a React/Lexical rerender; bring the
+    // dedicated tab to front and wait for its editor before typing.
+    try{await cdp.call("Page.bringToFront",{},5000)}catch{}
+    await sleep(attempt===1?250:650);
+    const refocus=await cdp.eval("(()=>{const c=document.querySelector('[data-tt-image-composer=\\\"true\\\"]');if(!c||!c.isConnected)return {ok:false};c.focus();return {ok:document.activeElement===c}})()");
+    if(!refocus||!refocus.ok){last={...prep,reason:"editor_replaced_during_focus"};continue}
+    await cdp.call("Input.insertText",{text:message});
+    await sleep(550);
+    const verify=await cdp.eval("(()=>{const c=document.querySelector('[data-tt-image-composer=\\\"true\\\"]');const t=String(c&&(c.value||c.innerText||c.textContent)||'');return {ok:!!c&&t.includes("+JSON.stringify(commandId)+")&&t.includes("+JSON.stringify(message.slice(-65))+")&&t.length>= "+Math.floor(message.length*0.80)+",len:t.length,tag:c&&c.tagName,url:location.href,focused:document.activeElement===c}})()");
+    if(verify&&verify.ok){
+      console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED attempt="+attempt+" len="+verify.len);
+      return cdp;
+    }
+    // IMPORTANT: do not press Send on failure. Only clear and retry the draft
+    // in the same tab, which prevents posting a partial or duplicate prompt.
+    last={...prep,...verify,expectedLength:message.length,reason:"prompt_not_in_visible_editor"};
+    console.log("BRIDGE PROMPT RETRY attempt="+attempt+" actual="+String(verify&&verify.len||0)+" expected="+message.length);
+  }
+  throw Error("Fallback no pudo escribir el prompt completo: "+JSON.stringify(last).slice(0,280));
 }
 
 async function findFallbackComposerChat(job){
