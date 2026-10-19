@@ -94,6 +94,51 @@ export default {
   // A stolen cross-site form cannot send a deletion using the browser session.
   if(cookie&&req.method==='POST'&&req.headers.get('Origin')!==url.origin)
    return respond(req,{ok:false,error:'cross_origin_forbidden'},403);
+  // +Noticia is deliberately separate from existing revisions and decisions.
+  // GitHub main is the only editorial authority; 202 means dispatched, NOT saved.
+  if(route==='/api/manual-news'&&req.method==='POST'){
+   if(!env.PILOT_DECISIONS||env.ACTION_MODE!=='github_dispatch'||!env.GH_DISPATCH_TOKEN)
+    return respond(req,{ok:false,error:'editorial_dispatch_unavailable'},503);
+   if(!(req.headers.get('Content-Type')||'').toLowerCase().startsWith('application/json'))
+    return respond(req,{ok:false,error:'json_required'},415);
+   let body;try{body=await req.json()}catch{return respond(req,{ok:false,error:'bad_json'},400)}
+   const string=x=>typeof x==='string'?x.trim():null;
+   const title=string(body.title),rawUrl=string(body.url),instructions=string(body.instructions);
+   const requestId=string(body.request_id);
+   if(title===null||rawUrl===null||instructions===null||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId||'')||
+      title.length>240||rawUrl.length>2000||instructions.length>1000||
+      (!title&&!rawUrl)||(title&&title.length<5))
+    return respond(req,{ok:false,error:'invalid_manual_news'},400);
+   let link='';
+   if(rawUrl){
+    try{const parsed=new URL(rawUrl);
+     if(parsed.protocol!=='https:'||!parsed.hostname||parsed.username||parsed.password)
+      throw Error('invalid_url');
+     parsed.hash='';link=parsed.href;
+    }catch{return respond(req,{ok:false,error:'invalid_https_url'},400)}
+   }
+   const eventId='manual-'+requestId.toLowerCase();
+   let result;
+   try{
+    result=await fetch('https://api.github.com/repos/fabricelop/europapress-rss/dispatches',{
+     method:'POST',headers:{
+      'Authorization':'Bearer '+env.GH_DISPATCH_TOKEN,
+      'Accept':'application/vnd.github+json',
+      'X-GitHub-Api-Version':'2022-11-28',
+      'Content-Type':'application/json',
+      'User-Agent':'TTActualidad-Manual-v1'
+     },
+     body:JSON.stringify({event_type:'ttactualidad_manual_news_v1',
+      client_payload:{project:'ttittulares',request_id:requestId.toLowerCase(),
+       title,url:link,instructions}})
+    });
+   }catch{return respond(req,{ok:false,error:'github_dispatch_unreachable'},502)}
+   if(result.status!==204)
+    return respond(req,{ok:false,error:'github_dispatch_failed',http_status:result.status},502);
+   return respond(req,{ok:true,routed:true,state:'submitted',event_id:eventId,
+    message:'Pendiente de confirmación en GitHub'},202);
+  }
   if(route==='/api/auth'&&req.method==='GET')
    return respond(req,{ok:true,production_connected:env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN),
     architecture:'on_demand_no_polling',session_authenticated:cookie});
