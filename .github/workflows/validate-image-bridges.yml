@@ -11,6 +11,7 @@ on:
       - "windows/TTendenciasImageBridge.js"
       - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
+      - "windows/tests/test_image_submission_evidence.cjs"
       - "windows/Install-TTImages-PromptFix-Safe.ps1"
       - ".github/workflows/validate-image-bridges.yml"
 
@@ -32,6 +33,7 @@ jobs:
             /windows/TTendenciasImageBridge.js
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
+            /windows/tests/test_image_submission_evidence.cjs
             /windows/Install-TTImages-PromptFix-Safe.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
@@ -78,6 +80,9 @@ jobs:
 
       - name: Probar compositor visible, reintento sin prompts duplicados
         run: node windows/tests/test_image_prompt_injection.cjs
+
+      - name: Probar reconocimiento de generacion activa sin /c/ y sin falsos positivos
+        run: node windows/tests/test_image_submission_evidence.cjs
 
       - name: Validar contrato launch-only sin false ERROR ni raster
         run: |
