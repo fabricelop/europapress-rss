@@ -92,12 +92,12 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr RainETA-0.11.0-unsigned.ipa Payload
-          unzip -l RainETA-0.11.0-unsigned.ipa | grep 'RainETALive.appex'
+          zip -qr RainETA-0.12.0-unsigned.ipa Payload
+          unzip -l RainETA-0.12.0-unsigned.ipa | grep 'RainETALive.appex'
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: RainETA-0.11.0-IPA
-          path: ios/raineta/dist/RainETA-0.11.0-unsigned.ipa
+          name: RainETA-0.12.0-IPA
+          path: ios/raineta/dist/RainETA-0.12.0-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
