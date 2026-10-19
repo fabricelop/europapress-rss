@@ -4,11 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T18:56:05.724Z",
-  "last_completed_at": "2026-10-19T18:58:20.028Z",
-  "updated_at": "2026-10-19T18:58:20.028Z",
+  "last_started_at": "2026-10-19T20:03:59.883Z",
+  "last_completed_at": "2026-10-19T20:12:05.454Z",
+  "updated_at": "2026-10-19T20:12:06.524Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "40cd1dafba71",
+    "9ad91851d4da"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -23,18 +26,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019185605",
+    "run_id": "tr-editorial-20261019200359",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T18:56:05.724Z",
-    "updated_at": "2026-10-19T18:58:20.028Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-19T20:03:59.883Z",
+    "updated_at": "2026-10-19T20:12:06.524Z",
+    "current": 2,
+    "total": 2,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Releídas 1.104 solicitudes y Explicadas: ninguna preparing/update ni rewrite_pending. Cierre 0/0, sin acciones visuales o Telegram.",
+    "message": "Dos textos elaborados y verificados explained: #ElTDdeNuestrasVidas r0 y Palencia r0. Fichas y requests idénticas, cola 2 → 0. Persistencia directa vigente explanation_only; sin imágenes ni Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -42,35 +45,288 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": [],
-    "activity": [
+    "remate_selections": [
       {
-        "at": "2026-10-19T18:56:05.724Z",
-        "phase": "verifying",
-        "message": "Cola inicial 0; sin imágenes ni Telegram."
+        "trend_id": "40cd1dafba71",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": 1,
+            "total": 8.6,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.9,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 2,
+            "total": 8.2,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 3,
+            "total": 7.9,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 4,
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 5,
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": 1,
+        "selected_score": 8.6,
+        "no_remate_reason": null
       },
       {
-        "at": "2026-10-19T18:58:20.028Z",
+        "trend_id": "9ad91851d4da",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": 1,
+            "total": 8.8,
+            "ratings_affinity": 2.4,
+            "trend_specificity": 2,
+            "punch": 1.9,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 2,
+            "total": 8.3,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 3,
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 4,
+            "total": 7.9,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 5,
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": 1,
+        "selected_score": 8.8,
+        "no_remate_reason": null
+      }
+    ],
+    "activity": [
+      {
+        "at": "2026-10-19T20:03:59.883Z",
+        "phase": "verifying",
+        "message": "Cola inicial 2."
+      },
+      {
+        "at": "2026-10-19T20:04:56.851Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Releyendo #ElTDdeNuestrasVidas r0, la petición más antigua."
+      },
+      {
+        "at": "2026-10-19T20:05:00.432Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Buscando detonante actual del especial de Telediario y su emisión esta noche."
+      },
+      {
+        "at": "2026-10-19T20:06:06.405Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Verificado especial del 70.º aniversario de TVE con RTVE y EL PAÍS; redactando en rango actual, sin repetir hashtag de cabecera."
+      },
+      {
+        "at": "2026-10-19T20:06:07.571Z",
+        "phase": "remate_selection",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Cinco enfoques evaluados con ratings; gana personificación de hemeroteca (8,6), sin repetir metáforas recientes."
+      },
+      {
+        "at": "2026-10-19T20:06:10.981Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Guardando ficha Explicada por la persistencia directa vigente de explanation_only; el aplicador legado exige alternativas y no materializa explained."
+      },
+      {
+        "at": "2026-10-19T20:06:17.556Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Sincronizando request con los mismos id, revisión, texto, cierre y fecha de explicación."
+      },
+      {
+        "at": "2026-10-19T20:06:24.141Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Ficha y request idénticas; retirando únicamente la revisión cerrada de la cola."
+      },
+      {
+        "at": "2026-10-19T20:06:28.939Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "40cd1dafba71",
+        "title": "#ElTDdeNuestrasVidas",
+        "message": "Relectura main: #ElTDdeNuestrasVidas r0 explained, ficha y request idénticas y retirada de cola."
+      },
+      {
+        "at": "2026-10-19T20:08:14.012Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Releyendo Palencia r0 antes de buscar su detonante actual."
+      },
+      {
+        "at": "2026-10-19T20:08:17.502Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Buscando por qué Palencia es tendencia ahora; contrastar retirada de candidatura y no confundir con sucesos o deporte."
+      },
+      {
+        "at": "2026-10-19T20:10:54.410Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Radio Palencia y EFE confirman retirada de los cuatro miembros de la lista propuesta por las bases tras el relevo federal; no se atribuye renuncia a Martínez Seijo."
+      },
+      {
+        "at": "2026-10-19T20:10:55.924Z",
+        "phase": "remate_selection",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Cinco enfoques evaluados; gana la imagen cabeza/cuerpo (8,8), sátira de la confección de listas sin valoración partidista."
+      },
+      {
+        "at": "2026-10-19T20:10:59.430Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Guardando ficha Explicada por la persistencia directa vigente de explanation_only; el aplicador legado exige alternativas y no materializa explained."
+      },
+      {
+        "at": "2026-10-19T20:11:06.233Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Sincronizando request con los mismos id, revisión, texto, cierre y fecha de explicación."
+      },
+      {
+        "at": "2026-10-19T20:11:11.814Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Ficha y request idénticas; retirando únicamente la revisión cerrada de la cola."
+      },
+      {
+        "at": "2026-10-19T20:11:22.273Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "9ad91851d4da",
+        "title": "Palencia",
+        "message": "Relectura main: Palencia r0 explained, ficha y request idénticas; cola de tendencias 2 → 0."
+      },
+      {
+        "at": "2026-10-19T20:12:06.524Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Releídas 1.104 solicitudes y Explicadas: ninguna preparing/update ni rewrite_pending. Cierre 0/0, sin acciones visuales o Telegram."
+        "message": "Dos textos elaborados y verificados explained: #ElTDdeNuestrasVidas r0 y Palencia r0. Fichas y requests idénticas, cola 2 → 0. Persistencia directa vigente explanation_only; sin imágenes ni Telegram."
       }
     ],
-    "finished_at": "2026-10-19T18:58:20.028Z",
+    "finished_at": "2026-10-19T20:12:05.454Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "4d2a1db3042ef5d1471173e70c2ba74139e5da4b",
+    "verification_head": "13ec9807e9d80eb4a4f1f8ef0a3ccc6e10723cd8",
     "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
+      "initial_compact_queue": 2,
+      "initial_active_requests": 2,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 2,
+      "explained": 2,
+      "processed_ids": [
+        "40cd1dafba71",
+        "9ad91851d4da"
+      ],
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
@@ -82,13 +338,17 @@
       "partial": false
     }
   },
-  "run_id": "tr-editorial-20261019185605",
+  "run_id": "tr-editorial-20261019200359",
   "summary": {
-    "initial_compact_queue": 0,
-    "initial_active_requests": 0,
+    "initial_compact_queue": 2,
+    "initial_active_requests": 2,
     "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 2,
+    "explained": 2,
+    "processed_ids": [
+      "40cd1dafba71",
+      "9ad91851d4da"
+    ],
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
@@ -102,17 +362,145 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T18:56:05.724Z",
+      "at": "2026-10-19T20:03:59.883Z",
       "phase": "verifying",
-      "message": "Cola inicial 0; sin imágenes ni Telegram."
+      "message": "Cola inicial 2."
     },
     {
-      "at": "2026-10-19T18:58:20.028Z",
+      "at": "2026-10-19T20:04:56.851Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Releyendo #ElTDdeNuestrasVidas r0, la petición más antigua."
+    },
+    {
+      "at": "2026-10-19T20:05:00.432Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Buscando detonante actual del especial de Telediario y su emisión esta noche."
+    },
+    {
+      "at": "2026-10-19T20:06:06.405Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Verificado especial del 70.º aniversario de TVE con RTVE y EL PAÍS; redactando en rango actual, sin repetir hashtag de cabecera."
+    },
+    {
+      "at": "2026-10-19T20:06:07.571Z",
+      "phase": "remate_selection",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Cinco enfoques evaluados con ratings; gana personificación de hemeroteca (8,6), sin repetir metáforas recientes."
+    },
+    {
+      "at": "2026-10-19T20:06:10.981Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Guardando ficha Explicada por la persistencia directa vigente de explanation_only; el aplicador legado exige alternativas y no materializa explained."
+    },
+    {
+      "at": "2026-10-19T20:06:17.556Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Sincronizando request con los mismos id, revisión, texto, cierre y fecha de explicación."
+    },
+    {
+      "at": "2026-10-19T20:06:24.141Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Ficha y request idénticas; retirando únicamente la revisión cerrada de la cola."
+    },
+    {
+      "at": "2026-10-19T20:06:28.939Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "40cd1dafba71",
+      "title": "#ElTDdeNuestrasVidas",
+      "message": "Relectura main: #ElTDdeNuestrasVidas r0 explained, ficha y request idénticas y retirada de cola."
+    },
+    {
+      "at": "2026-10-19T20:08:14.012Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Releyendo Palencia r0 antes de buscar su detonante actual."
+    },
+    {
+      "at": "2026-10-19T20:08:17.502Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Buscando por qué Palencia es tendencia ahora; contrastar retirada de candidatura y no confundir con sucesos o deporte."
+    },
+    {
+      "at": "2026-10-19T20:10:54.410Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Radio Palencia y EFE confirman retirada de los cuatro miembros de la lista propuesta por las bases tras el relevo federal; no se atribuye renuncia a Martínez Seijo."
+    },
+    {
+      "at": "2026-10-19T20:10:55.924Z",
+      "phase": "remate_selection",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Cinco enfoques evaluados; gana la imagen cabeza/cuerpo (8,8), sátira de la confección de listas sin valoración partidista."
+    },
+    {
+      "at": "2026-10-19T20:10:59.430Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Guardando ficha Explicada por la persistencia directa vigente de explanation_only; el aplicador legado exige alternativas y no materializa explained."
+    },
+    {
+      "at": "2026-10-19T20:11:06.233Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Sincronizando request con los mismos id, revisión, texto, cierre y fecha de explicación."
+    },
+    {
+      "at": "2026-10-19T20:11:11.814Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Ficha y request idénticas; retirando únicamente la revisión cerrada de la cola."
+    },
+    {
+      "at": "2026-10-19T20:11:22.273Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "9ad91851d4da",
+      "title": "Palencia",
+      "message": "Relectura main: Palencia r0 explained, ficha y request idénticas; cola de tendencias 2 → 0."
+    },
+    {
+      "at": "2026-10-19T20:12:06.524Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Releídas 1.104 solicitudes y Explicadas: ninguna preparing/update ni rewrite_pending. Cierre 0/0, sin acciones visuales o Telegram."
+      "message": "Dos textos elaborados y verificados explained: #ElTDdeNuestrasVidas r0 y Palencia r0. Fichas y requests idénticas, cola 2 → 0. Persistencia directa vigente explanation_only; sin imágenes ni Telegram."
     }
   ],
   "telegram_orphans": 0,
