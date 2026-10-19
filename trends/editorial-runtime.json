@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T10:15:00.000Z",
-  "last_completed_at": "2026-10-19T10:15:55.000Z",
-  "updated_at": "2026-10-19T10:15:55.000Z",
+  "last_started_at": "2026-10-19T10:45:00.000Z",
+  "last_completed_at": "2026-10-19T10:45:55.000Z",
+  "updated_at": "2026-10-19T10:45:55.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,22 +16,22 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
-    "requested_at": "2026-10-19T12:15:00+02:00",
+    "requested_at": "2026-10-19T12:45:00+02:00",
     "editorial_blocking": false,
     "run_id": null,
-    "trigger_run_id": "tr-editorial-20261019121500"
+    "trigger_run_id": "tr-editorial-20261019124500"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019121500",
+    "run_id": "tr-editorial-20261019124500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T10:15:00.000Z",
-    "updated_at": "2026-10-19T10:15:55.000Z",
-    "finished_at": "2026-10-19T10:15:55.000Z",
+    "started_at": "2026-10-19T10:45:00.000Z",
+    "updated_at": "2026-10-19T10:45:55.000Z",
+    "finished_at": "2026-10-19T10:45:55.000Z",
     "current": 0,
     "total": 0,
     "title": null,
@@ -50,21 +50,21 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T10:15:00.000Z",
+        "at": "2026-10-19T10:45:00.000Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Cola compacta 0. Releyendo estado autoritativo y activando saneamiento de Pendientes antes del cierre."
       },
       {
-        "at": "2026-10-19T10:15:35.000Z",
+        "at": "2026-10-19T10:45:35.000Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura de main completada: cola 0 y sin preparing, update, rewrite_pending ni problematic. Verificando cierre durable 0/0."
       },
       {
-        "at": "2026-10-19T10:15:55.000Z",
+        "at": "2026-10-19T10:45:55.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -92,7 +92,7 @@
       "partial": false
     }
   },
-  "run_id": "tr-editorial-20261019121500",
+  "run_id": "tr-editorial-20261019124500",
   "summary": {
     "initial_compact_queue": 0,
     "initial_active_requests": 0,
@@ -112,21 +112,21 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T10:15:00.000Z",
+      "at": "2026-10-19T10:45:00.000Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Cola compacta 0. Releyendo estado autoritativo y activando saneamiento de Pendientes antes del cierre."
     },
     {
-      "at": "2026-10-19T10:15:35.000Z",
+      "at": "2026-10-19T10:45:35.000Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura de main completada: cola 0 y sin preparing, update, rewrite_pending ni problematic. Verificando cierre durable 0/0."
     },
     {
-      "at": "2026-10-19T10:15:55.000Z",
+      "at": "2026-10-19T10:45:55.000Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
