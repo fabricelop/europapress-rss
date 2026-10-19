@@ -1,14 +1,16 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T17:29:42+02:00",
-  "last_completed_at": "2026-10-19T17:29:42+02:00",
-  "updated_at": "2026-10-19T17:29:42+02:00",
+  "last_started_at": "2026-10-19T17:15:00+02:00",
+  "last_completed_at": "2026-10-19T17:30:30+02:00",
+  "updated_at": "2026-10-19T17:30:30+02:00",
   "status": "success",
   "processed_ids": [
+    "2dadd0e6027e",
+    "cbe9ce75bb91",
     "1a17da1704d9"
   ],
   "remaining_ids": [
@@ -29,89 +31,478 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019150125",
+    "run_id": "tr-editorial-20261019171500",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-19T15:01:25.706Z",
-    "updated_at": "2026-10-19T15:03:45.233Z",
-    "current": 0,
-    "total": 0,
-    "title": null,
-    "event_id": null,
+    "started_at": "2026-10-19T17:15:00+02:00",
+    "updated_at": "2026-10-19T17:30:30+02:00",
+    "finished_at": "2026-10-19T17:30:30+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
-    "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Conservados todos los borrados del móvil. Solo texto; sin Telegram ni ImageGen.",
-    "incident_count": 0,
-    "incidents": [],
+    "title": null,
+    "message": "Pasada 3/3 cerrada: 2 explicadas y verificadas; Gurú queda problematic sin inventar detonante. Sin preparing/update ni rewrite_pending; sin Telegram ni ImageGen editorial.",
+    "summary": {
+      "initial_compact_queue": 3,
+      "initial_active_requests": 3,
+      "final_compact_queue": 1,
+      "attempted": 3,
+      "explained": 2,
+      "remaining_active": 0,
+      "problematic_reviewed": 1,
+      "rewrite_pending": 0,
+      "visual_backlog": 0,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
+      "pending_repair_triggered": 1,
+      "incidents": 1,
+      "partial": false,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
+      "remates_omitted": 0
+    },
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-19T17:29:00+02:00",
+        "phase": "investigating",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "reason": "Detonante actual no verificable con suficiente fiabilidad tras varias búsquedas independientes; resultados ambiguos y no relacionados."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 100
     },
-    "remate_selections": [],
-    "activity": [
+    "remate_selections": [
       {
-        "at": "2026-10-19T15:01:25.706Z",
-        "phase": "preparing",
-        "message": "Lectura autoritativa de main; cola inicial 0."
+        "trend_id": "2dadd0e6027e",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.6,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0.1
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c4",
+            "total": 7.1,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          },
+          {
+            "id": "c5",
+            "total": 6.8,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.6,
+        "no_remate_reason": null
       },
       {
-        "at": "2026-10-19T15:03:45.233Z",
-        "phase": "closing",
-        "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Conservados todos los borrados del móvil. Solo texto; sin Telegram ni ImageGen."
+        "trend_id": "cbe9ce75bb91",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 8.3,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "total": 6.9,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c5",
+            "total": 6.5,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.2
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.3,
+        "no_remate_reason": null
       }
     ],
-    "finished_at": "2026-10-19T15:03:45.233Z",
-    "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
-      "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
-      "remaining_active": 0,
-      "problematic_reviewed": 0,
-      "rewrite_pending": 0,
-      "visual_backlog": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "pending_repair_triggered": 0,
-      "incidents": 0,
-      "partial": false
-    },
+    "activity": [
+      {
+        "at": "2026-10-19T17:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Lectura autoritativa de main completada: 3 tendencias preparing. Activando saneamiento de Pendientes."
+      },
+      {
+        "at": "2026-10-19T17:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Releyendo estado autoritativo de #ElSótano19O r0."
+      },
+      {
+        "at": "2026-10-19T17:16:20+02:00",
+        "phase": "investigating",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Buscando detonante actual y contrastando cobertura de hoy."
+      },
+      {
+        "at": "2026-10-19T17:17:10+02:00",
+        "phase": "investigating",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Hecho esencial verificado: salida de Alba Carrillo y anuncio de medidas legales; el programa aborda su marcha."
+      },
+      {
+        "at": "2026-10-19T17:18:00+02:00",
+        "phase": "drafting",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Redactando explicación factual con hashtags y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-19T17:18:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Cinco candidatos evaluados con ratings; remate seleccionado."
+      },
+      {
+        "at": "2026-10-19T17:20:30+02:00",
+        "phase": "verifying",
+        "trend_id": "2dadd0e6027e",
+        "title": "#ElSótano19O",
+        "message": "Tendencia cerrada y verificada en main: requests y Explicadas idénticos; retirada de la cola."
+      },
+      {
+        "at": "2026-10-19T17:23:30+02:00",
+        "phase": "verifying",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Releyendo estado autoritativo de #TEM19O r0; sigue preparando y en puesto 5."
+      },
+      {
+        "at": "2026-10-19T17:24:00+02:00",
+        "phase": "investigating",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Contrastando el hashtag con la emisión de hoy y las páginas oficiales de Todo es mentira."
+      },
+      {
+        "at": "2026-10-19T17:24:40+02:00",
+        "phase": "investigating",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Hecho esencial verificado: conversación sobre la emisión actual de Todo es mentira en Cuatro."
+      },
+      {
+        "at": "2026-10-19T17:25:00+02:00",
+        "phase": "drafting",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Redactando explicación factual con hashtags y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-19T17:25:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Cinco remates evaluados con ratings y filtro de repetición; remate seleccionado."
+      },
+      {
+        "at": "2026-10-19T17:27:40+02:00",
+        "phase": "verifying",
+        "trend_id": "cbe9ce75bb91",
+        "title": "#TEM19O",
+        "message": "Tendencia cerrada y verificada en main: requests y Explicadas idénticos; retirada de la cola."
+      },
+      {
+        "at": "2026-10-19T17:28:00+02:00",
+        "phase": "verifying",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Releyendo estado autoritativo de Gurú r0; sigue preparando y en puesto 10."
+      },
+      {
+        "at": "2026-10-19T17:28:10+02:00",
+        "phase": "investigating",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Buscando detonante actual con consultas independientes y cruces por política, TV, deporte e Internet."
+      },
+      {
+        "at": "2026-10-19T17:28:45+02:00",
+        "phase": "investigating",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Segundo contraste completado: resultados ambiguos, antiguos o no relacionados; no hay hecho actual suficientemente verificable."
+      },
+      {
+        "at": "2026-10-19T17:29:42+02:00",
+        "phase": "verifying",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Estado problematic aplicado y verificado en main; permanece visible por seguir en Top 10."
+      },
+      {
+        "at": "2026-10-19T17:30:30+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 3/3 cerrada: 2 explicadas y verificadas; Gurú queda problematic sin inventar detonante. Sin preparing/update ni rewrite_pending; sin Telegram ni ImageGen editorial."
+      }
+    ],
     "partial": false,
+    "queue_complete": true,
     "remaining_active_ids": [],
-    "queue_complete": true
+    "final_outcomes": [
+      {
+        "id": "2dadd0e6027e",
+        "revision": 0,
+        "name": "#ElSótano19O",
+        "status": "explained",
+        "explained_at": "2026-10-19T17:20:30+02:00"
+      },
+      {
+        "id": "cbe9ce75bb91",
+        "revision": 0,
+        "name": "#TEM19O",
+        "status": "explained",
+        "explained_at": "2026-10-19T17:26:00+02:00"
+      },
+      {
+        "id": "1a17da1704d9",
+        "revision": 0,
+        "name": "Gurú",
+        "status": "problematic",
+        "problematic_at": "2026-10-19T17:29:42+02:00"
+      }
+    ]
   },
-  "run_id": "tr-editorial-20261019150125",
+  "run_id": "tr-editorial-20261019171500",
   "summary": {
-    "initial_compact_queue": 0,
-    "initial_active_requests": 0,
-    "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "initial_compact_queue": 3,
+    "initial_active_requests": 3,
+    "final_compact_queue": 1,
+    "attempted": 3,
+    "explained": 2,
     "remaining_active": 0,
-    "problematic_reviewed": 0,
+    "problematic_reviewed": 1,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
-    "incidents": 0,
-    "partial": false
+    "pending_repair_triggered": 1,
+    "incidents": 1,
+    "partial": false,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
+    "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T15:01:25.706Z",
+      "at": "2026-10-19T17:15:00+02:00",
       "phase": "preparing",
-      "message": "Lectura autoritativa de main; cola inicial 0."
+      "trend_id": null,
+      "title": null,
+      "message": "Lectura autoritativa de main completada: 3 tendencias preparing. Activando saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-19T15:03:45.233Z",
+      "at": "2026-10-19T17:16:00+02:00",
+      "phase": "verifying",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Releyendo estado autoritativo de #ElSótano19O r0."
+    },
+    {
+      "at": "2026-10-19T17:16:20+02:00",
+      "phase": "investigating",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Buscando detonante actual y contrastando cobertura de hoy."
+    },
+    {
+      "at": "2026-10-19T17:17:10+02:00",
+      "phase": "investigating",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Hecho esencial verificado: salida de Alba Carrillo y anuncio de medidas legales; el programa aborda su marcha."
+    },
+    {
+      "at": "2026-10-19T17:18:00+02:00",
+      "phase": "drafting",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Redactando explicación factual con hashtags y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-19T17:18:40+02:00",
+      "phase": "remate_selection",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Cinco candidatos evaluados con ratings; remate seleccionado."
+    },
+    {
+      "at": "2026-10-19T17:20:30+02:00",
+      "phase": "verifying",
+      "trend_id": "2dadd0e6027e",
+      "title": "#ElSótano19O",
+      "message": "Tendencia cerrada y verificada en main: requests y Explicadas idénticos; retirada de la cola."
+    },
+    {
+      "at": "2026-10-19T17:23:30+02:00",
+      "phase": "verifying",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Releyendo estado autoritativo de #TEM19O r0; sigue preparando y en puesto 5."
+    },
+    {
+      "at": "2026-10-19T17:24:00+02:00",
+      "phase": "investigating",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Contrastando el hashtag con la emisión de hoy y las páginas oficiales de Todo es mentira."
+    },
+    {
+      "at": "2026-10-19T17:24:40+02:00",
+      "phase": "investigating",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Hecho esencial verificado: conversación sobre la emisión actual de Todo es mentira en Cuatro."
+    },
+    {
+      "at": "2026-10-19T17:25:00+02:00",
+      "phase": "drafting",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Redactando explicación factual con hashtags y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-19T17:25:30+02:00",
+      "phase": "remate_selection",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Cinco remates evaluados con ratings y filtro de repetición; remate seleccionado."
+    },
+    {
+      "at": "2026-10-19T17:27:40+02:00",
+      "phase": "verifying",
+      "trend_id": "cbe9ce75bb91",
+      "title": "#TEM19O",
+      "message": "Tendencia cerrada y verificada en main: requests y Explicadas idénticos; retirada de la cola."
+    },
+    {
+      "at": "2026-10-19T17:28:00+02:00",
+      "phase": "verifying",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Releyendo estado autoritativo de Gurú r0; sigue preparando y en puesto 10."
+    },
+    {
+      "at": "2026-10-19T17:28:10+02:00",
+      "phase": "investigating",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Buscando detonante actual con consultas independientes y cruces por política, TV, deporte e Internet."
+    },
+    {
+      "at": "2026-10-19T17:28:45+02:00",
+      "phase": "investigating",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Segundo contraste completado: resultados ambiguos, antiguos o no relacionados; no hay hecho actual suficientemente verificable."
+    },
+    {
+      "at": "2026-10-19T17:29:42+02:00",
+      "phase": "verifying",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Estado problematic aplicado y verificado en main; permanece visible por seguir en Top 10."
+    },
+    {
+      "at": "2026-10-19T17:30:30+02:00",
       "phase": "closing",
-      "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Conservados todos los borrados del móvil. Solo texto; sin Telegram ni ImageGen."
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada 3/3 cerrada: 2 explicadas y verificadas; Gurú queda problematic sin inventar detonante. Sin preparing/update ni rewrite_pending; sin Telegram ni ImageGen editorial."
     }
   ],
   "telegram_orphans": 0,
@@ -120,8 +511,7 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-19T16:47:50+02:00",
-    "head_sha": "762e081ace209af067e548450fa5ba8742c9576f"
+    "captured_at": "2026-10-19T17:22:50+02:00"
   },
   "error": null
 }
