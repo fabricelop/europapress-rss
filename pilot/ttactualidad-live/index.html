@@ -144,7 +144,7 @@ function ttiRows(){
    .map(op=>({...op.snapshot,event_id:op.id,title:op.snapshot?.title||op.id,
      revision:op.revision,_kind:'tti',_id:op.id,_status:'PENDIENTE DE CONFIRMACIÓN',
      _queuedAt:new Date(op.at).toISOString()}));
-  const manual=[...pendingManual.values()].filter(x=>!seen.has(x.event_id))
+  const manual=(typeof pendingManual==='undefined'?[]:[...pendingManual.values()]).filter(x=>!seen.has(x.event_id))
    .map(x=>({...x,_kind:'tti',_id:x.event_id,_status:'PENDIENTE DE CONFIRMACIÓN',_queuedAt:x.selected_at}));
   return [...manual,...pending,...rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))];
  }
