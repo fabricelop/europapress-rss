@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-19T15:09:30Z",
+  "updated_at": "2026-10-19T15:06:17.970090Z",
   "items": [
     {
       "event_id": "1e1ed344525f",
@@ -125,17 +125,35 @@
       },
       "prepared_at": "2026-10-19T15:09:30Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": true,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-19T15:06:17.970090Z",
+      "fallback_image_search_attempted_at": "2026-10-19T15:06:17.970090Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/2ddec482-b954-4d38-b837-e316514a4b09_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/comunitat-valenciana/temporal-adam-deja-registros-700-litros-metro-cuadrado-24-horas-comarcas-valencianas-marina-alta-safor_1_13597512.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El temporal Adam deja registros de más de 700 litros por metro cuadrado en 48 horas en las comarcas valencianas de la Marina Alta y la Safor"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/2ddec482-b954-4d38-b837-e316514a4b09_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/comunitat-valenciana/temporal-adam-deja-registros-700-litros-metro-cuadrado-24-horas-comarcas-valencianas-marina-alta-safor_1_13597512.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "El temporal Adam deja registros de más de 700 litros por metro cuadrado en 48 horas en las comarcas valencianas de la Marina Alta y la Safor"
+      }
     }
   ],
   "count": 0,
