@@ -4,6 +4,9 @@ on:
     branches: ['main', 'fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/submit_ttactualidad_manual.py'
+      - 'pilot/test_ttactualidad_manual.py'
+      - '.github/workflows/ttactualidad-manual-news.yml'
       - 'pilot/test_ttactualidad_direct_actions.py'
       - 'pilot/ttactualidad-live/**'
       - '.github/workflows/ttactualidad-direct-actions.yml'
@@ -26,6 +29,8 @@ jobs:
         run: python3 -m py_compile pilot/apply-ttactualidad-action.py pilot/ttactualidad-live/test_live_actions.py
       - name: Earlier GitHub direct-action regression tests
         run: python3 -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
+      - name: New +Noticia isolated queue tests
+        run: python3 -m unittest discover -s pilot -p 'test_ttactualidad_manual.py' -v
       - name: New live editorial actions
         run: python3 -m unittest discover -s pilot/ttactualidad-live -p 'test_live_actions.py' -v
       - name: Trend card freshness and live interface
@@ -44,12 +49,16 @@ jobs:
           a=html.index('<script>')+len('<script>');b=html.index('</script>',a)
           Path('/tmp/ttactualidad-v8-ui.js').write_text(html[a:b])
           assert "Pasar a En Elaboración" in html
+          assert 'id="manual-open"' in html and '/api/manual-news' in html
+          assert 'id="manual-headline"' in html and 'id="manual-url"' in html
           assert 'current-explained>48*3600000' in html
           assert 'Probar Desestimar' not in html and '¿Cómo funciona este piloto?' not in html
           for token in ('TTImages','Publicar en X','Copiar GAG Completo','Abrir ChatGPTImages','Copiar Texto','Copiar Foto Archivo','Quitar de Listas','Buscar en X'):
               assert token in html,token
           worker=Path('pilot/ttactualidad-live/worker.js').read_text()
           assert "signed_cookie_v1" in worker
+          assert "ttactualidad_manual_news_v1" in worker
+          assert "editorial_dispatch_unavailable" in worker
           assert "['deleted','discard','prepare'].includes" in worker
           assert "crypto.subtle.verify" in worker
           wf=Path('.github/workflows/ttactualidad-direct-actions.yml').read_text()
