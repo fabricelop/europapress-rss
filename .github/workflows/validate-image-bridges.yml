@@ -11,6 +11,7 @@ on:
       - "windows/TTendenciasImageBridge.js"
       - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
+      - "windows/Install-TTImages-PromptFix-Safe.ps1"
       - ".github/workflows/validate-image-bridges.yml"
 
 permissions:
@@ -31,6 +32,7 @@ jobs:
             /windows/TTendenciasImageBridge.js
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
+            /windows/Install-TTImages-PromptFix-Safe.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
             /windows/TT-LocalWatchdog.ps1
@@ -45,6 +47,7 @@ jobs:
             "windows/TTiTTularesDedicatedListener.ps1",
             "windows/TTendenciasDedicatedListener.ps1",
             "windows/Install-ImageBridge-Hotfix.ps1",
+            "windows/Install-TTImages-PromptFix-Safe.ps1",
             "windows/TT-LocalWatchdog.ps1"
           )
           foreach($file in $files){
