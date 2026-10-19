@@ -44,7 +44,11 @@ final class RainVisualForecastTests: XCTestCase {
         XCTAssertEqual(bins[6].radarMinutes,0)
         XCTAssertEqual(RainVisualForecast.rainyMinutes(bins),60)
         XCTAssertEqual(RainVisualForecast.estimatedNextChange(bins,rainingNow:false),30)
-        XCTAssertEqual(RainVisualForecast.estimatedNextChange(bins,rainingNow:true),90)
+        let wetFirst=(0..<120).map { minute in
+            self.minute(minute,minute<90 ? 1.0:0,radar:minute<60)
+        }
+        XCTAssertEqual(RainVisualForecast.estimatedNextChange(
+            RainVisualForecast.overview(wetFirst,weather:nil),rainingNow:true),90)
         XCTAssertEqual(RainVisualForecast.liquidEquivalent(values),0.75,accuracy:0.0001)
     }
 
