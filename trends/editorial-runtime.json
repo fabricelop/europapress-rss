@@ -4,43 +4,40 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T12:19:51.388Z",
-  "last_completed_at": "2026-10-19T12:34:43.529Z",
-  "updated_at": "2026-10-19T12:34:43.529Z",
+  "last_started_at": "2026-10-19T14:45:00+02:00",
+  "last_completed_at": "2026-10-19T14:48:00+02:00",
+  "updated_at": "2026-10-19T14:48:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "c5cd79f387ad",
-    "b3f798855b6d",
-    "15cbef52f064"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "status": "triggered_by_explained_push",
-    "requested_at": "2026-10-19T14:31:00+02:00",
+    "status": "triggered_by_execution_start",
+    "requested_at": "2026-10-19T14:45:00+02:00",
     "editorial_blocking": false,
     "run_id": null,
-    "trigger_run_id": "tr-editorial-20261019121951"
+    "trigger_run_id": "tr-editorial-20261019144500"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019121951",
+    "run_id": "tr-editorial-20261019144500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T12:19:51.388Z",
-    "updated_at": "2026-10-19T12:34:43.529Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-19T14:45:00+02:00",
+    "updated_at": "2026-10-19T14:48:00+02:00",
+    "finished_at": "2026-10-19T14:48:00+02:00",
+    "current": 0,
+    "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Cierre verificado: 3 tendencias explicadas, cola editorial 0 y rewrite_pending 0. Cruz Roja salió de la cola antes de su tratamiento; DANA Adam entró durante la ejecución y fue procesada.",
+    "message": "Pasada 0/0 cerrada y verificada: no hay cola editorial activa en main; radar vigente capturado a las 14:41. Saneamiento de Pendientes solicitado. Sin ImageGen ni Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -50,172 +47,36 @@
       "total_ratings": 154,
       "recent_considered": 0
     },
-    "remate_selections": [
-      {
-        "id": "c5cd79f387ad",
-        "name": "Contrato con España",
-        "selected": "🌶️ Doce cláusulas; la letra pequeña se vota el 29-N."
-      },
-      {
-        "id": "b3f798855b6d",
-        "name": "ONGs",
-        "selected": "🌶️ La palabra «prioridad» llegó antes que la renovación."
-      },
-      {
-        "id": "15cbef52f064",
-        "name": "DANA Adam",
-        "selected": null,
-        "reason": "sensitive_active_emergency"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T12:25:25.000Z",
-        "phase": "drafting",
-        "trend_id": "c5cd79f387ad",
-        "title": "Contrato con España",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
+        "at": "2026-10-19T14:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Lectura inicial: cola compacta 0 en la captura de las 14:41. Activando saneamiento de Pendientes y verificando reexplicaciones antes de cerrar."
       },
       {
-        "at": "2026-10-19T12:25:40.000Z",
-        "phase": "remate_selection",
-        "trend_id": "c5cd79f387ad",
-        "title": "Contrato con España",
-        "message": "Evaluando remate político con control de originalidad y repetición"
-      },
-      {
-        "at": "2026-10-19T12:25:55.000Z",
-        "phase": "remate_selection",
-        "trend_id": "c5cd79f387ad",
-        "title": "Contrato con España",
-        "message": "Remate seleccionado: «Doce cláusulas; la letra pequeña se vota el 29-N.»"
-      },
-      {
-        "at": "2026-10-19T12:25:18.031Z",
-        "phase": "persisting",
-        "trend_id": "c5cd79f387ad",
-        "title": "Contrato con España",
-        "message": "Guardando ficha Explicada de Contrato con España"
-      },
-      {
-        "at": "2026-10-19T12:28:05.700Z",
+        "at": "2026-10-19T14:46:30+02:00",
         "phase": "verifying",
-        "trend_id": "c5cd79f387ad",
-        "title": "Contrato con España",
-        "message": "Tendencia cerrada y verificada en main"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: Top 30 capturado a las 14:41, cola editorial count=0 y auditoría de huérfanos count=0."
       },
       {
-        "at": "2026-10-19T12:28:08.367Z",
-        "phase": "verifying",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Releyendo estado autoritativo de ONGs"
-      },
-      {
-        "at": "2026-10-19T12:28:48.918Z",
-        "phase": "investigating",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Hecho esencial verificado: la Junta no prorrogará las ayudas a Cruz Roja, SAMU e Inserta para el programa de personas sin hogar y desvincula la decisión del pacto PP-Vox."
-      },
-      {
-        "at": "2026-10-19T12:28:51.361Z",
-        "phase": "drafting",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Redactando explicación factual de ONGs"
-      },
-      {
-        "at": "2026-10-19T12:28:54.318Z",
-        "phase": "drafting",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
-      },
-      {
-        "at": "2026-10-19T12:28:57.764Z",
-        "phase": "remate_selection",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Evaluando remate político con control de originalidad y sensibilidad"
-      },
-      {
-        "at": "2026-10-19T12:29:01.395Z",
-        "phase": "remate_selection",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Remate seleccionado: «La palabra “prioridad” llegó antes que la renovación.»"
-      },
-      {
-        "at": "2026-10-19T12:29:17.883Z",
-        "phase": "persisting",
-        "trend_id": "b3f798855b6d",
-        "title": "ONGs",
-        "message": "Guardando ficha Explicada de ONGs"
-      },
-      {
-        "at": "2026-10-19T12:30:05.034Z",
-        "phase": "verifying",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Releyendo estado autoritativo de DANA Adam"
-      },
-      {
-        "at": "2026-10-19T12:30:07.365Z",
-        "phase": "investigating",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Buscando detonante actual de DANA Adam"
-      },
-      {
-        "at": "2026-10-19T12:30:44.905Z",
-        "phase": "investigating",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Hecho esencial verificado: DANA Adam mantiene inundaciones y rescates en Valencia y Alicante; hay confinamientos amplios y víctimas mortales confirmadas."
-      },
-      {
-        "at": "2026-10-19T12:30:48.262Z",
-        "phase": "drafting",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Redactando explicación factual de DANA Adam con tratamiento sensible"
-      },
-      {
-        "at": "2026-10-19T12:30:52.002Z",
-        "phase": "drafting",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
-      },
-      {
-        "at": "2026-10-19T12:30:55.143Z",
-        "phase": "remate_selection",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Sin remate · víctimas mortales y emergencia activa"
-      },
-      {
-        "at": "2026-10-19T12:31:11.738Z",
-        "phase": "persisting",
-        "trend_id": "15cbef52f064",
-        "title": "DANA Adam",
-        "message": "Guardando ficha Explicada de DANA Adam"
-      },
-      {
-        "at": "2026-10-19T12:34:43.529Z",
+        "at": "2026-10-19T14:48:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Cierre verificado: 3 tendencias explicadas, cola editorial 0 y rewrite_pending 0. Cruz Roja salió de la cola antes de su tratamiento; DANA Adam entró durante la ejecución y fue procesada."
+        "message": "Pasada 0/0 cerrada y verificada: no hay preparing/update ni cola editorial activa; saneamiento de Pendientes solicitado. Sin ImageGen ni Telegram."
       }
     ],
     "summary": {
-      "initial_compact_queue": 3,
-      "initial_active_requests": 3,
+      "initial_compact_queue": 0,
+      "initial_active_requests": 0,
       "final_compact_queue": 0,
-      "attempted": 3,
-      "explained": 3,
+      "attempted": 0,
+      "explained": 0,
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
@@ -223,47 +84,22 @@
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "pending_repair_triggered": 1,
+      "refresh_requested": 1,
       "incidents": 0,
       "partial": false
     },
-    "finished_at": "2026-10-19T12:34:43.529Z",
     "queue_complete": true,
     "remaining_active_ids": [],
     "partial": false,
-    "final_outcomes": [
-      {
-        "id": "c5cd79f387ad",
-        "name": "Contrato con España",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "b3f798855b6d",
-        "name": "ONGs",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "8c318a4327b6",
-        "name": "Cruz Roja",
-        "revision": 0,
-        "outcome": "skipped_jit_not_in_queue"
-      },
-      {
-        "id": "15cbef52f064",
-        "name": "DANA Adam",
-        "revision": 0,
-        "outcome": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-editorial-20261019121951",
+  "run_id": "tr-editorial-20261019144500",
   "summary": {
-    "initial_compact_queue": 3,
-    "initial_active_requests": 3,
+    "initial_compact_queue": 0,
+    "initial_active_requests": 0,
     "final_compact_queue": 0,
-    "attempted": 3,
-    "explained": 3,
+    "attempted": 0,
+    "explained": 0,
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
@@ -271,150 +107,32 @@
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "pending_repair_triggered": 1,
+    "refresh_requested": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T12:25:25.000Z",
-      "phase": "drafting",
-      "trend_id": "c5cd79f387ad",
-      "title": "Contrato con España",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
+      "at": "2026-10-19T14:45:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Lectura inicial: cola compacta 0 en la captura de las 14:41. Activando saneamiento de Pendientes y verificando reexplicaciones antes de cerrar."
     },
     {
-      "at": "2026-10-19T12:25:40.000Z",
-      "phase": "remate_selection",
-      "trend_id": "c5cd79f387ad",
-      "title": "Contrato con España",
-      "message": "Evaluando remate político con control de originalidad y repetición"
-    },
-    {
-      "at": "2026-10-19T12:25:55.000Z",
-      "phase": "remate_selection",
-      "trend_id": "c5cd79f387ad",
-      "title": "Contrato con España",
-      "message": "Remate seleccionado: «Doce cláusulas; la letra pequeña se vota el 29-N.»"
-    },
-    {
-      "at": "2026-10-19T12:25:18.031Z",
-      "phase": "persisting",
-      "trend_id": "c5cd79f387ad",
-      "title": "Contrato con España",
-      "message": "Guardando ficha Explicada de Contrato con España"
-    },
-    {
-      "at": "2026-10-19T12:28:05.700Z",
+      "at": "2026-10-19T14:46:30+02:00",
       "phase": "verifying",
-      "trend_id": "c5cd79f387ad",
-      "title": "Contrato con España",
-      "message": "Tendencia cerrada y verificada en main"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: Top 30 capturado a las 14:41, cola editorial count=0 y auditoría de huérfanos count=0."
     },
     {
-      "at": "2026-10-19T12:28:08.367Z",
-      "phase": "verifying",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Releyendo estado autoritativo de ONGs"
-    },
-    {
-      "at": "2026-10-19T12:28:48.918Z",
-      "phase": "investigating",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Hecho esencial verificado: la Junta no prorrogará las ayudas a Cruz Roja, SAMU e Inserta para el programa de personas sin hogar y desvincula la decisión del pacto PP-Vox."
-    },
-    {
-      "at": "2026-10-19T12:28:51.361Z",
-      "phase": "drafting",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Redactando explicación factual de ONGs"
-    },
-    {
-      "at": "2026-10-19T12:28:54.318Z",
-      "phase": "drafting",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
-    },
-    {
-      "at": "2026-10-19T12:28:57.764Z",
-      "phase": "remate_selection",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Evaluando remate político con control de originalidad y sensibilidad"
-    },
-    {
-      "at": "2026-10-19T12:29:01.395Z",
-      "phase": "remate_selection",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Remate seleccionado: «La palabra “prioridad” llegó antes que la renovación.»"
-    },
-    {
-      "at": "2026-10-19T12:29:17.883Z",
-      "phase": "persisting",
-      "trend_id": "b3f798855b6d",
-      "title": "ONGs",
-      "message": "Guardando ficha Explicada de ONGs"
-    },
-    {
-      "at": "2026-10-19T12:30:05.034Z",
-      "phase": "verifying",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Releyendo estado autoritativo de DANA Adam"
-    },
-    {
-      "at": "2026-10-19T12:30:07.365Z",
-      "phase": "investigating",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Buscando detonante actual de DANA Adam"
-    },
-    {
-      "at": "2026-10-19T12:30:44.905Z",
-      "phase": "investigating",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Hecho esencial verificado: DANA Adam mantiene inundaciones y rescates en Valencia y Alicante; hay confinamientos amplios y víctimas mortales confirmadas."
-    },
-    {
-      "at": "2026-10-19T12:30:48.262Z",
-      "phase": "drafting",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Redactando explicación factual de DANA Adam con tratamiento sensible"
-    },
-    {
-      "at": "2026-10-19T12:30:52.002Z",
-      "phase": "drafting",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres"
-    },
-    {
-      "at": "2026-10-19T12:30:55.143Z",
-      "phase": "remate_selection",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Sin remate · víctimas mortales y emergencia activa"
-    },
-    {
-      "at": "2026-10-19T12:31:11.738Z",
-      "phase": "persisting",
-      "trend_id": "15cbef52f064",
-      "title": "DANA Adam",
-      "message": "Guardando ficha Explicada de DANA Adam"
-    },
-    {
-      "at": "2026-10-19T12:34:43.529Z",
+      "at": "2026-10-19T14:48:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Cierre verificado: 3 tendencias explicadas, cola editorial 0 y rewrite_pending 0. Cruz Roja salió de la cola antes de su tratamiento; DANA Adam entró durante la ejecución y fue procesada."
+      "message": "Pasada 0/0 cerrada y verificada: no hay preparing/update ni cola editorial activa; saneamiento de Pendientes solicitado. Sin ImageGen ni Telegram."
     }
   ],
   "telegram_orphans": 0,
