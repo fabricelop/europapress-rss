@@ -54,7 +54,7 @@ final class RainVisualForecastTests: XCTestCase {
         XCTAssertEqual(bins.count,2)
         XCTAssertNil(bins[0].meanRate)
         XCTAssertNil(bins[1].meanRate)
-        XCTAssertNotNil(RainVisualForecast.estimatedNextChange(bins,rainingNow:false)==nil)
+        XCTAssertNil(RainVisualForecast.estimatedNextChange(bins,rainingNow:false))
     }
 
     func testSnowIsFlaggedSeparatelyFromEquivalentRainfall() {
