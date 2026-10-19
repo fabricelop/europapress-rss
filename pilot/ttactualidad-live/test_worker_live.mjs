@@ -73,6 +73,26 @@ try{
    '77777777-7777-7777-7777-777777777777'),env);
  assert.equal(blockedConflict.status,409);
  assert.equal((await blockedConflict.json()).error,'already_decided');
+ // New manual submission is isolated from /api/decision and its KV records.
+ const manualPayload={title:'Titular proporcionado',url:'https://example.org/news#section',
+  instructions:'Verificar fuentes',request_id:'01234567-89ab-4cde-8fab-0123456789ab'};
+ const manualReq=(payload,auth=true,origin=root)=>new Request(root+'/api/manual-news',{
+  method:'POST',headers:{...(auth?{'Authorization':'Bearer unit-test-secret'}:{}),
+   Origin:origin,'Content-Type':'application/json'},body:JSON.stringify(payload)});
+ const newNews=await app.fetch(manualReq(manualPayload),env);
+ assert.equal(newNews.status,202);
+ const manualData=await newNews.json();
+ assert.equal(manualData.state,'submitted');
+ assert.equal(manualData.event_id,'manual-'+manualPayload.request_id);
+ assert.equal(calls.at(-1).event_type,'ttactualidad_manual_news_v1');
+ assert.equal(calls.at(-1).client_payload.url,'https://example.org/news');
+ assert.equal(calls.at(-1).client_payload.instructions,'Verificar fuentes');
+ const posted=calls.length;
+ assert.equal((await app.fetch(manualReq({...manualPayload,url:'http://example.org'}),env)).status,400);
+ assert.equal((await app.fetch(manualReq({...manualPayload,title:'',url:''}),env)).status,400);
+ assert.equal((await app.fetch(manualReq(manualPayload,false),env)).status,401);
+ assert.equal(calls.length,posted);
+ assert.equal(memory.has('action:ttittulares:'+manualData.event_id),false);
  const health=await app.fetch(new Request(root+'/health'),env);
  assert.equal((await health.json()).version,'v8.1-kv-conflict-fix');
 }finally{globalThis.fetch=original}
