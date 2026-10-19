@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T08:10:04.204Z",
-  "last_completed_at": "2026-10-19T08:10:34.959Z",
-  "updated_at": "2026-10-19T08:10:34.959Z",
+  "last_started_at": "2026-10-19T08:15:00.000Z",
+  "last_completed_at": "2026-10-19T08:15:20.000Z",
+  "updated_at": "2026-10-19T08:15:20.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -16,27 +16,27 @@
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
     "status": "requested",
-    "requested_at": "2026-10-19T09:15:00+02:00",
+    "requested_at": "2026-10-19T10:15:00+02:00",
     "editorial_blocking": false,
     "run_id": null,
-    "trigger_run_id": "tr-editorial-20261019091500"
+    "trigger_run_id": "tr-editorial-20261019101500"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019081004",
+    "run_id": "tr-editorial-20261019101500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T08:10:04.204Z",
-    "updated_at": "2026-10-19T08:10:34.959Z",
+    "started_at": "2026-10-19T08:15:00.000Z",
+    "updated_at": "2026-10-19T08:15:20.000Z",
     "current": 0,
     "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Sin textos nuevos, imágenes, reparación visual o envíos a Telegram.",
+    "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Saneamiento visual solicitado al inicio; sin ImageGen ni Telegram directos.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -49,31 +49,31 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T08:10:04.204Z",
+        "at": "2026-10-19T08:15:00.000Z",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Lectura inicial: cola 0 y sin revisiones activas. Sin activar imágenes, reparación visual ni entregas a Telegram."
+        "message": "Lectura inicial: cola compacta 0. Comprobando estado reconciliado y rewrite_pending antes de cerrar."
       },
       {
-        "at": "2026-10-19T08:10:07.243Z",
+        "at": "2026-10-19T08:15:10.000Z",
         "phase": "verifying",
-        "title": null,
         "event_id": null,
         "trend_id": null,
+        "title": null,
         "message": "Releyendo main: cola, solicitudes y marcas rewrite_pending antes de cerrar."
       },
       {
-        "at": "2026-10-19T08:10:34.959Z",
+        "at": "2026-10-19T08:15:20.000Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Sin textos nuevos, imágenes, reparación visual o envíos a Telegram."
+        "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Saneamiento visual solicitado al inicio; sin ImageGen ni Telegram directos."
       }
     ],
-    "finished_at": "2026-10-19T08:10:34.959Z",
+    "finished_at": "2026-10-19T08:15:20.000Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -90,12 +90,12 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     }
   },
-  "run_id": "tr-editorial-20261019081004",
+  "run_id": "tr-editorial-20261019101500",
   "summary": {
     "initial_compact_queue": 0,
     "initial_active_requests": 0,
@@ -108,35 +108,35 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T08:10:04.204Z",
+      "at": "2026-10-19T08:15:00.000Z",
       "phase": "preparing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Lectura inicial: cola 0 y sin revisiones activas. Sin activar imágenes, reparación visual ni entregas a Telegram."
+      "message": "Lectura inicial: cola compacta 0. Comprobando estado reconciliado y rewrite_pending antes de cerrar."
     },
     {
-      "at": "2026-10-19T08:10:07.243Z",
+      "at": "2026-10-19T08:15:10.000Z",
       "phase": "verifying",
-      "title": null,
       "event_id": null,
       "trend_id": null,
+      "title": null,
       "message": "Releyendo main: cola, solicitudes y marcas rewrite_pending antes de cerrar."
     },
     {
-      "at": "2026-10-19T08:10:34.959Z",
+      "at": "2026-10-19T08:15:20.000Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Sin textos nuevos, imágenes, reparación visual o envíos a Telegram."
+      "message": "Pasada 0/0 verificada en main: sin preparing/update ni rewrite_pending. Saneamiento visual solicitado al inicio; sin ImageGen ni Telegram directos."
     }
   ],
   "telegram_orphans": 0,
