@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T10:45:00+02:00",
-  "last_completed_at": "2026-10-19T10:48:30+02:00",
-  "updated_at": "2026-10-19T10:48:30+02:00",
+  "last_started_at": "2026-10-19T09:01:48.228Z",
+  "last_completed_at": "2026-10-19T09:05:41.962Z",
+  "updated_at": "2026-10-19T09:05:41.962Z",
   "status": "success",
-  "processed_ids": [
-    "1ab3c0fa5d5a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -27,37 +25,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019104500",
+    "run_id": "tr-editorial-20261019090148",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T10:45:00+02:00",
-    "updated_at": "2026-10-19T10:48:30+02:00",
-    "finished_at": "2026-10-19T10:48:30+02:00",
-    "current": 1,
-    "total": 1,
-    "trend_id": null,
+    "started_at": "2026-10-19T09:01:48.228Z",
+    "updated_at": "2026-10-19T09:05:41.962Z",
+    "current": 0,
+    "total": 0,
     "title": null,
-    "message": "Pasada 1/1 cerrada y verificada: Cáncer de Mama r0 explicada; cola activa 0 y rewrite_pending 0.",
-    "summary": {
-      "initial_compact_queue": 1,
-      "initial_active_requests": 1,
-      "final_compact_queue": 0,
-      "attempted": 1,
-      "explained": 1,
-      "remaining_active": 0,
-      "problematic_reviewed": 0,
-      "rewrite_pending": 0,
-      "visual_backlog": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "pending_repair_triggered": 1,
-      "incidents": 0,
-      "partial": false,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 1
-    },
+    "event_id": null,
+    "trend_id": null,
+    "message": "Pasada 0/0 verificada: sin preparing/update ni rewrite_pending. Cáncer de Mama conserva cierre sensible sin humor. Sin imágenes, reparación visual o Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -65,195 +44,96 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 0
     },
-    "remate_selections": [
-      {
-        "trend_id": "1ab3c0fa5d5a",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "sensitive_health_context"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T10:45:00+02:00",
+        "at": "2026-10-19T09:01:48.228Z",
         "phase": "preparing",
+        "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Lectura inicial completada: 1 preparing/update y 0 rewrite_pending. Activando saneamiento de Pendientes antes de tratar Cáncer de Mama."
+        "message": "Cola inicial 0, sin preparing/update."
       },
       {
-        "at": "2026-10-19T10:45:40+02:00",
+        "at": "2026-10-19T09:03:44.525Z",
         "phase": "verifying",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Releyendo estado autoritativo de Cáncer de Mama r0 antes de investigarla."
+        "event_id": null,
+        "title": null,
+        "message": "Releyendo main para confirmar ausencia de preparing/update y reexplicaciones; Cáncer de Mama conserva cierre sensible sin humor."
       },
       {
-        "at": "2026-10-19T10:46:00+02:00",
-        "phase": "investigating",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Buscando detonante actual y contrastando la conmemoración del 19 de octubre en fuentes de hoy."
-      },
-      {
-        "at": "2026-10-19T10:46:20+02:00",
-        "phase": "investigating",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Hecho esencial verificado: hoy es el Día Mundial contra el Cáncer de Mama y las campañas ponen el foco en detección precoz y apoyo a pacientes."
-      },
-      {
-        "at": "2026-10-19T10:46:40+02:00",
-        "phase": "drafting",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Redactando explicación factual y comprobando el límite de X."
-      },
-      {
-        "at": "2026-10-19T10:47:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Sin remate · contexto sanitario sensible; explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-19T10:47:10+02:00",
-        "phase": "verifying",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Releyendo cola, requests, Explicadas y rango actual antes de persistir r0."
-      },
-      {
-        "at": "2026-10-19T10:47:30+02:00",
-        "phase": "persisting",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando r0 de la cola."
-      },
-      {
-        "at": "2026-10-19T10:48:10+02:00",
-        "phase": "verifying",
-        "trend_id": "1ab3c0fa5d5a",
-        "title": "Cáncer de Mama",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-19T10:48:30+02:00",
+        "at": "2026-10-19T09:05:41.962Z",
         "phase": "closing",
-        "trend_id": null,
+        "event_id": null,
         "title": null,
-        "message": "Pasada 1/1 cerrada y verificada: Cáncer de Mama r0 explicada; cola activa 0 y rewrite_pending 0."
+        "message": "Pasada 0/0 verificada: sin preparing/update ni rewrite_pending. Cáncer de Mama conserva cierre sensible sin humor. Sin imágenes, reparación visual o Telegram."
       }
     ],
+    "finished_at": "2026-10-19T09:05:41.962Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "1ab3c0fa5d5a",
-        "revision": 0,
-        "name": "Cáncer de Mama",
-        "status": "explained",
-        "explained_at": "2026-10-19T10:47:30+02:00"
-      }
-    ]
+    "remaining_queue_ids": [],
+    "final_outcomes": [],
+    "summary": {
+      "initial_compact_queue": 0,
+      "initial_active_requests": 0,
+      "final_compact_queue": 0,
+      "attempted": 0,
+      "explained": 0,
+      "remaining_active": 0,
+      "problematic_reviewed": 0,
+      "rewrite_pending": 0,
+      "visual_backlog": 0,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
+      "pending_repair_triggered": 0,
+      "incidents": 0,
+      "partial": false
+    }
   },
-  "run_id": "tr-editorial-20261019104500",
+  "run_id": "tr-editorial-20261019090148",
   "summary": {
-    "initial_compact_queue": 1,
-    "initial_active_requests": 1,
+    "initial_compact_queue": 0,
+    "initial_active_requests": 0,
     "final_compact_queue": 0,
-    "attempted": 1,
-    "explained": 1,
+    "attempted": 0,
+    "explained": 0,
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
-    "partial": false,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 0,
-    "remates_omitted": 1
+    "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T10:45:00+02:00",
+      "at": "2026-10-19T09:01:48.228Z",
       "phase": "preparing",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Lectura inicial completada: 1 preparing/update y 0 rewrite_pending. Activando saneamiento de Pendientes antes de tratar Cáncer de Mama."
+      "message": "Cola inicial 0, sin preparing/update."
     },
     {
-      "at": "2026-10-19T10:45:40+02:00",
+      "at": "2026-10-19T09:03:44.525Z",
       "phase": "verifying",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Releyendo estado autoritativo de Cáncer de Mama r0 antes de investigarla."
+      "event_id": null,
+      "title": null,
+      "message": "Releyendo main para confirmar ausencia de preparing/update y reexplicaciones; Cáncer de Mama conserva cierre sensible sin humor."
     },
     {
-      "at": "2026-10-19T10:46:00+02:00",
-      "phase": "investigating",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Buscando detonante actual y contrastando la conmemoración del 19 de octubre en fuentes de hoy."
-    },
-    {
-      "at": "2026-10-19T10:46:20+02:00",
-      "phase": "investigating",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Hecho esencial verificado: hoy es el Día Mundial contra el Cáncer de Mama y las campañas ponen el foco en detección precoz y apoyo a pacientes."
-    },
-    {
-      "at": "2026-10-19T10:46:40+02:00",
-      "phase": "drafting",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Redactando explicación factual y comprobando el límite de X."
-    },
-    {
-      "at": "2026-10-19T10:47:00+02:00",
-      "phase": "remate_selection",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Sin remate · contexto sanitario sensible; explicación factual suficiente."
-    },
-    {
-      "at": "2026-10-19T10:47:10+02:00",
-      "phase": "verifying",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Releyendo cola, requests, Explicadas y rango actual antes de persistir r0."
-    },
-    {
-      "at": "2026-10-19T10:47:30+02:00",
-      "phase": "persisting",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Guardando ficha Explicada, actualizando requests y retirando r0 de la cola."
-    },
-    {
-      "at": "2026-10-19T10:48:10+02:00",
-      "phase": "verifying",
-      "trend_id": "1ab3c0fa5d5a",
-      "title": "Cáncer de Mama",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
-    },
-    {
-      "at": "2026-10-19T10:48:30+02:00",
+      "at": "2026-10-19T09:05:41.962Z",
       "phase": "closing",
-      "trend_id": null,
+      "event_id": null,
       "title": null,
-      "message": "Pasada 1/1 cerrada y verificada: Cáncer de Mama r0 explicada; cola activa 0 y rewrite_pending 0."
+      "message": "Pasada 0/0 verificada: sin preparing/update ni rewrite_pending. Cáncer de Mama conserva cierre sensible sin humor. Sin imágenes, reparación visual o Telegram."
     }
   ],
   "telegram_orphans": 0,
