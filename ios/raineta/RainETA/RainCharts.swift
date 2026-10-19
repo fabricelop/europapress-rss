@@ -33,6 +33,7 @@ struct RainIntensityLegend: View {
 private struct RainMinuteBar:Identifiable {
     let minute:Int
     let mmh:Double?
+    var snow:Bool=false
     var id:Int {minute}
     var wet:Bool { (mmh ?? 0) >= 0.15 }
 }
@@ -86,7 +87,8 @@ private struct RainMinuteBars:View {
                             } label:{
                                 RoundedRectangle(cornerRadius:1.5)
                                     .fill(point.mmh == nil ? Color.gray.opacity(0.22) :
-                                          point.wet ? RainVisual.color(point.mmh ?? 0) :
+                                          point.wet ? (point.snow ? Color.white.opacity(0.92) :
+                                                       RainVisual.color(point.mmh ?? 0)) :
                                           Color.gray.opacity(0.25))
                                     .frame(width:barWidth,height:barHeight(point))
                                     .overlay(alignment:.top) {
@@ -99,7 +101,8 @@ private struct RainMinuteBars:View {
                             .buttonStyle(.plain)
                             .accessibilityLabel("Minuto \(point.minute), " +
                                 (point.mmh.map{String(format:"%.1f milímetros por hora",$0)}
-                                  ?? "sin dato"))
+                                  ?? "sin dato") +
+                                (point.snow ? ", nieve según modelo" : ""))
                             .id(point.minute)
                         }
                     }
@@ -154,7 +157,10 @@ struct MinuteRainGraph:View {
             .pickerStyle(.segmented)
             let now=Date()
             let rows=store.minuteForecast(now:now,horizon:horizon)
-            let bars=rows.map { RainMinuteBar(minute:$0.minute,mmh:$0.rate) }
+            let bars=rows.map {
+                RainMinuteBar(minute:$0.minute,mmh:$0.rate,
+                    snow:$0.rate>=0.15 && store.snapshot?.phase(at:$0.at)==(.snow))
+            }
             if bars.isEmpty {
                 ContentUnavailableView("Sin previsión local",systemImage:"cloud.slash",
                     description:Text("Actualiza la previsión de este lugar."))
