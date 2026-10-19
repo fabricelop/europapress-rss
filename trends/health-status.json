@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-19T21:17:49.354258+00:00",
-  "ok": true,
+  "checked_at": "2026-10-19T21:47:48.388651+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -42,7 +42,7 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 6,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.0,
-      "run_id": 39326093636,
+      "age_minutes": 1.9,
+      "run_id": 39330022764,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,17 +77,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 3.6,
+      "overdue_count": 1,
+      "oldest_age_minutes": 33.6,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "b9fd3c6b62bd",
+          "name": "#FirstDates19O",
+          "status": "preparing",
+          "age_minutes": 33.6
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "b9fd3c6b62bd"
@@ -101,8 +108,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.6 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.6 min"
 }
