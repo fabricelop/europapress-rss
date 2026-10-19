@@ -4,39 +4,42 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-18T23:57:30.208Z",
-  "last_completed_at": "2026-10-18T23:57:54.788Z",
-  "updated_at": "2026-10-18T23:57:54.788Z",
+  "last_started_at": "2026-10-19T00:15:00.000Z",
+  "last_completed_at": "2026-10-19T00:16:24.000Z",
+  "updated_at": "2026-10-19T00:16:24.000Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "b166a096d1dd",
+    "ca1b1ce24c14"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "status": "running",
-    "requested_at": "2026-10-19T01:45:00+02:00",
+    "status": "requested",
+    "requested_at": "2026-10-19T02:15:00+02:00",
     "editorial_blocking": false,
-    "run_id": 39178022802,
-    "trigger_run_id": "tr-editorial-202610190145-chat"
+    "run_id": null,
+    "trigger_run_id": "tr-editorial-202610190215-chat"
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261018235730",
+    "run_id": "tr-editorial-202610190215-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-18T23:57:30.208Z",
-    "updated_at": "2026-10-18T23:57:54.788Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-19T00:15:00.000Z",
+    "updated_at": "2026-10-19T00:16:24.000Z",
+    "current": 2,
+    "total": 2,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 0/0 verificada en main: sin revisiones PROCESSING/preparing/update ni rewrite_pending. Sin nuevos textos, outboxes, imágenes, reparación visual o Telegram.",
+    "message": "Pasada 2/2 verificada en main: Guler y Mbappe explicadas; cola 0, sin preparing/update ni rewrite_pending.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -44,99 +47,507 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 100
     },
-    "remate_selections": [],
-    "activity": [
+    "remate_selections": [
       {
-        "at": "2026-10-18T23:57:30.208Z",
-        "phase": "preparing",
-        "title": null,
-        "event_id": null,
-        "trend_id": null,
-        "message": "Colas vacías; no se reabren cierres del usuario ni problemáticas históricas sin validación."
+        "trend_id": "b166a096d1dd",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "A",
+            "total": 7.8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.3
+          },
+          {
+            "id": "B",
+            "total": 7.2,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "C",
+            "total": 8.6,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "D",
+            "total": 6.9,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -1
+          },
+          {
+            "id": "E",
+            "total": 7.5,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "C",
+        "selected_score": 8.6,
+        "no_remate_reason": null
       },
       {
-        "at": "2026-10-18T23:57:32.325Z",
-        "phase": "verifying",
-        "title": null,
-        "event_id": null,
-        "trend_id": null,
-        "message": "Releyendo main: colas, revisiones y marcas rewrite_pending; no se activa reparación visual ni Telegram"
-      },
-      {
-        "at": "2026-10-18T23:57:54.788Z",
-        "phase": "closing",
-        "title": null,
-        "event_id": null,
-        "trend_id": null,
-        "message": "Pasada 0/0 verificada en main: sin revisiones PROCESSING/preparing/update ni rewrite_pending. Sin nuevos textos, outboxes, imágenes, reparación visual o Telegram."
+        "trend_id": "ca1b1ce24c14",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "A",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "B",
+            "total": 8.4,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "C",
+            "total": 7.3,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "D",
+            "total": 8.7,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "E",
+            "total": 7.4,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "D",
+        "selected_score": 8.7,
+        "no_remate_reason": null
       }
     ],
-    "finished_at": "2026-10-18T23:57:54.788Z",
+    "activity": [
+      {
+        "at": "2026-10-19T00:15:34.000Z",
+        "phase": "persisting",
+        "trend_id": "b166a096d1dd",
+        "title": "Guler",
+        "event_id": null,
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-19T00:15:42.000Z",
+        "phase": "verifying",
+        "trend_id": "b166a096d1dd",
+        "title": "Guler",
+        "event_id": null,
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-19T00:15:44.000Z",
+        "phase": "verifying",
+        "trend_id": "b166a096d1dd",
+        "title": "Guler",
+        "event_id": null,
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-19T00:15:46.000Z",
+        "phase": "verifying",
+        "trend_id": "b166a096d1dd",
+        "title": "Guler",
+        "event_id": null,
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-19T00:15:48.000Z",
+        "phase": "verifying",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Releyendo estado autoritativo de Mbappe"
+      },
+      {
+        "at": "2026-10-19T00:15:50.000Z",
+        "phase": "investigating",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Buscando detonante actual de Mbappe"
+      },
+      {
+        "at": "2026-10-19T00:15:52.000Z",
+        "phase": "investigating",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Contrastando fuente 1/2 · doblete en el Real Madrid-Sevilla"
+      },
+      {
+        "at": "2026-10-19T00:15:54.000Z",
+        "phase": "investigating",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Contrastando fuente 2/2 · gol de jugada y penalti a lo Panenka"
+      },
+      {
+        "at": "2026-10-19T00:15:56.000Z",
+        "phase": "investigating",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-19T00:15:58.000Z",
+        "phase": "drafting",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-19T00:16:00.000Z",
+        "phase": "drafting",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-19T00:16:02.000Z",
+        "phase": "remate_selection",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-19T00:16:04.000Z",
+        "phase": "remate_selection",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-19T00:16:06.000Z",
+        "phase": "remate_selection",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-19T00:16:08.000Z",
+        "phase": "persisting",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-19T00:16:12.000Z",
+        "phase": "persisting",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Actualizando requests y retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-19T00:16:16.000Z",
+        "phase": "verifying",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-19T00:16:18.000Z",
+        "phase": "verifying",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-19T00:16:20.000Z",
+        "phase": "verifying",
+        "trend_id": "ca1b1ce24c14",
+        "title": "Mbappe",
+        "event_id": null,
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-19T00:16:24.000Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "event_id": null,
+        "message": "Pasada 2/2 verificada en main: Guler y Mbappe explicadas; cola 0, sin preparing/update ni rewrite_pending."
+      }
+    ],
+    "finished_at": "2026-10-19T00:16:24.000Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [],
+    "final_outcomes": [
+      {
+        "trend_id": "b166a096d1dd",
+        "name": "Guler",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "trend_id": "ca1b1ce24c14",
+        "name": "Mbappe",
+        "revision": 0,
+        "status": "explained"
+      }
+    ],
     "summary": {
       "initial_compact_queue": 0,
       "initial_active_requests": 0,
+      "direct_top10_materialized": 2,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 2,
+      "explained": 2,
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     }
   },
-  "run_id": "tr-editorial-20261018235730",
+  "run_id": "tr-editorial-202610190215-chat",
   "summary": {
     "initial_compact_queue": 0,
     "initial_active_requests": 0,
+    "direct_top10_materialized": 2,
     "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 2,
+    "explained": 2,
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-18T23:57:30.208Z",
-      "phase": "preparing",
-      "title": null,
+      "at": "2026-10-19T00:15:34.000Z",
+      "phase": "persisting",
+      "trend_id": "b166a096d1dd",
+      "title": "Guler",
       "event_id": null,
-      "trend_id": null,
-      "message": "Colas vacías; no se reabren cierres del usuario ni problemáticas históricas sin validación."
+      "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-18T23:57:32.325Z",
+      "at": "2026-10-19T00:15:42.000Z",
       "phase": "verifying",
-      "title": null,
+      "trend_id": "b166a096d1dd",
+      "title": "Guler",
       "event_id": null,
-      "trend_id": null,
-      "message": "Releyendo main: colas, revisiones y marcas rewrite_pending; no se activa reparación visual ni Telegram"
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-18T23:57:54.788Z",
+      "at": "2026-10-19T00:15:44.000Z",
+      "phase": "verifying",
+      "trend_id": "b166a096d1dd",
+      "title": "Guler",
+      "event_id": null,
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-19T00:15:46.000Z",
+      "phase": "verifying",
+      "trend_id": "b166a096d1dd",
+      "title": "Guler",
+      "event_id": null,
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-19T00:15:48.000Z",
+      "phase": "verifying",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Releyendo estado autoritativo de Mbappe"
+    },
+    {
+      "at": "2026-10-19T00:15:50.000Z",
+      "phase": "investigating",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Buscando detonante actual de Mbappe"
+    },
+    {
+      "at": "2026-10-19T00:15:52.000Z",
+      "phase": "investigating",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Contrastando fuente 1/2 · doblete en el Real Madrid-Sevilla"
+    },
+    {
+      "at": "2026-10-19T00:15:54.000Z",
+      "phase": "investigating",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Contrastando fuente 2/2 · gol de jugada y penalti a lo Panenka"
+    },
+    {
+      "at": "2026-10-19T00:15:56.000Z",
+      "phase": "investigating",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-19T00:15:58.000Z",
+      "phase": "drafting",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-19T00:16:00.000Z",
+      "phase": "drafting",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-19T00:16:02.000Z",
+      "phase": "remate_selection",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-19T00:16:04.000Z",
+      "phase": "remate_selection",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Evaluando candidatos con ratings"
+    },
+    {
+      "at": "2026-10-19T00:16:06.000Z",
+      "phase": "remate_selection",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-19T00:16:08.000Z",
+      "phase": "persisting",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-19T00:16:12.000Z",
+      "phase": "persisting",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Actualizando requests y retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-19T00:16:16.000Z",
+      "phase": "verifying",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-19T00:16:18.000Z",
+      "phase": "verifying",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-19T00:16:20.000Z",
+      "phase": "verifying",
+      "trend_id": "ca1b1ce24c14",
+      "title": "Mbappe",
+      "event_id": null,
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-19T00:16:24.000Z",
       "phase": "closing",
+      "trend_id": null,
       "title": null,
       "event_id": null,
-      "trend_id": null,
-      "message": "Pasada 0/0 verificada en main: sin revisiones PROCESSING/preparing/update ni rewrite_pending. Sin nuevos textos, outboxes, imágenes, reparación visual o Telegram."
+      "message": "Pasada 2/2 verificada en main: Guler y Mbappe explicadas; cola 0, sin preparing/update ni rewrite_pending."
     }
   ],
   "telegram_orphans": 0,
