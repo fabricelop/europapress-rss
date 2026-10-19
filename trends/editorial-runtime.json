@@ -4,11 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T01:16:17.942Z",
-  "last_completed_at": "2026-10-19T01:16:52.459Z",
-  "updated_at": "2026-10-19T01:16:52.459Z",
+  "last_started_at": "2026-10-19T03:45:00+02:00",
+  "last_completed_at": "2026-10-19T03:48:00+02:00",
+  "updated_at": "2026-10-19T03:48:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "31d906866515",
+    "5662169d58be"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -25,18 +28,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019031617-chat",
+    "run_id": "tr-editorial-20261019034500-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T01:16:17.942Z",
-    "updated_at": "2026-10-19T01:16:52.459Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-19T03:45:00+02:00",
+    "updated_at": "2026-10-19T03:48:00+02:00",
+    "current": 2,
+    "total": 2,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos y sin rewrite_pending. Saneamiento visual solicitado al inicio.",
+    "message": "Pasada 2/2 verificada: #VSFashionShow y Kylie cerradas en un único grupo; cola editorial vacía.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -44,43 +47,140 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "selected": "🌶️ Ocho años después, volvió con 4.410 diamantes de equipaje.",
+        "reason": "Específico del regreso del Fantasy Bra; usa el dato verificado de 4.410 diamantes y no repite mecanismos de los últimos 30 remates."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-19T01:16:17.942Z",
+        "at": "2026-10-19T03:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola autoritativa vacía; iniciando saneamiento de Pendientes y verificación de estado fresco."
+        "message": "Cola autoritativa: 2 preparing. Iniciando saneamiento de Pendientes y validación JIT del lote."
       },
       {
-        "at": "2026-10-19T01:16:49.848Z",
+        "at": "2026-10-19T03:46:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola, requests y Explicadas en main antes del cierre 0/0."
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow",
+        "message": "Releyendo estado autoritativo de #VSFashionShow y Kylie."
       },
       {
-        "at": "2026-10-19T01:16:52.459Z",
+        "at": "2026-10-19T03:46:10+02:00",
+        "phase": "investigating",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow",
+        "message": "Contrastando el detonante actual en fuentes de moda y actualidad."
+      },
+      {
+        "at": "2026-10-19T03:46:20+02:00",
+        "phase": "investigating",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow",
+        "message": "Hecho esencial verificado: mismo desfile; Kylie debutó con el Fantasy Bra recuperado tras ocho años."
+      },
+      {
+        "at": "2026-10-19T03:46:30+02:00",
+        "phase": "drafting",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Redactando explicación factual agrupada y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-19T03:46:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Evaluando candidatos de remate frente a los últimos 30 publicados; sin repetición conceptual relevante."
+      },
+      {
+        "at": "2026-10-19T03:46:50+02:00",
+        "phase": "remate_selection",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Remate seleccionado: «Ocho años después, volvió con 4.410 diamantes de equipaje.»"
+      },
+      {
+        "at": "2026-10-19T03:47:00+02:00",
+        "phase": "persisting",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Guardando ficha Explicada agrupada."
+      },
+      {
+        "at": "2026-10-19T03:47:05+02:00",
+        "phase": "persisting",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Actualizando requests de #VSFashionShow y Kylie."
+      },
+      {
+        "at": "2026-10-19T03:47:10+02:00",
+        "phase": "persisting",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Retirando ambas revisiones de la cola editorial."
+      },
+      {
+        "at": "2026-10-19T03:47:40+02:00",
+        "phase": "verifying",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Releyendo main tras persistencia."
+      },
+      {
+        "at": "2026-10-19T03:47:50+02:00",
+        "phase": "verifying",
+        "trend_id": "31d906866515",
+        "title": "#VSFashionShow + Kylie",
+        "message": "Verificando id+revision y texto persistido en Explicadas, requests y cola."
+      },
+      {
+        "at": "2026-10-19T03:48:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos y sin rewrite_pending. Saneamiento visual solicitado al inicio."
+        "message": "Pasada 2/2 verificada: #VSFashionShow y Kylie cerradas en un único grupo; cola editorial vacía."
       }
     ],
-    "finished_at": "2026-10-19T01:16:52.459Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [],
+    "final_outcomes": [
+      {
+        "group_id": "grp-31d906866515-r0",
+        "leader_id": "31d906866515",
+        "members": [
+          {
+            "id": "31d906866515",
+            "name": "#VSFashionShow",
+            "revision": 0,
+            "status": "explained"
+          },
+          {
+            "id": "5662169d58be",
+            "name": "Kylie",
+            "revision": 0,
+            "status": "explained"
+          }
+        ],
+        "explanation": "TT#6 #VSFashionShow es tendencia por el desfile 2026: Kylie Jenner debutó con el Fantasy Bra de 50 millones de dólares, recuperado tras ocho años.\n#KylieJenner #VictoriasSecret #FantasyBra\n🌶️ Ocho años después, volvió con 4.410 diamantes de equipaje."
+      }
+    ],
     "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
+      "initial_compact_queue": 2,
+      "initial_active_requests": 2,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 2,
+      "explained": 2,
+      "groups_closed": 1,
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
@@ -90,7 +190,8 @@
       "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
-    }
+    },
+    "finished_at": "2026-10-19T03:48:00+02:00"
   },
   "run_id": "tr-editorial-20261019010133",
   "summary": {
@@ -138,5 +239,6 @@
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "previous_concurrent_run_id": "tr-editorial-202610182215-chat"
+  "previous_concurrent_run_id": "tr-editorial-202610182215-chat",
+  "error": null
 }
