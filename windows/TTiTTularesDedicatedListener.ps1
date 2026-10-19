@@ -480,6 +480,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
         $localTxt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and
         $localTxt.Contains('BRIDGE_FEATURES="v54-submit-generating-transition"') -and
         $localTxt.Contains('await cdp.call("Input.insertText",{text:message});') -and
+        $localTxt.Contains('data-tt-image-composer') -and
+        $localTxt.Contains('prompt_not_in_visible_editor') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=') -and
         $localTxt.Contains('automaticImageDeadline') -and
         $localTxt.Contains('BRIDGE LAUNCH ONLY CONFIRMED') -and
@@ -516,6 +518,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
       'BRIDGE_FEATURES="v54-submit-generating-transition"',
       'await cdp.call("Input.insertText",{text:message});',
+      'data-tt-image-composer',
+      'prompt_not_in_visible_editor',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker',
       'automaticImageDeadline',
