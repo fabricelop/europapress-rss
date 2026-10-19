@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T09:15:00+02:00",
-  "last_completed_at": "2026-10-19T09:16:00+02:00",
-  "updated_at": "2026-10-19T09:16:00+02:00",
+  "last_started_at": "2026-10-19T09:45:00+02:00",
+  "last_completed_at": "2026-10-19T09:46:00+02:00",
+  "updated_at": "2026-10-19T09:46:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -25,19 +25,19 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019091500",
+    "run_id": "tr-editorial-20261019094500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T09:15:00+02:00",
-    "updated_at": "2026-10-19T09:16:00+02:00",
-    "finished_at": "2026-10-19T09:16:00+02:00",
+    "started_at": "2026-10-19T09:45:00+02:00",
+    "updated_at": "2026-10-19T09:46:00+02:00",
+    "finished_at": "2026-10-19T09:46:00+02:00",
     "current": 0,
     "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update ni rewrite_pending. Saneamiento de Pendientes solicitado; sin ImageGen ni envíos a Telegram.",
+    "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos ni rewrite_pending. Saneamiento de Pendientes solicitado; sin ImageGen ni envíos a Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -50,28 +50,28 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T09:15:00+02:00",
+        "at": "2026-10-19T09:45:00+02:00",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Lectura inicial: cola editorial 0. Revisando main, reexplicaciones y saneamiento pendiente antes del cierre."
+        "message": "Lectura inicial: cola editorial 0. Revisando main, solicitudes activas y reexplicaciones antes del cierre."
       },
       {
-        "at": "2026-10-19T09:15:30+02:00",
+        "at": "2026-10-19T09:45:40+02:00",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola, estado editorial y rewrite_pending tras el trigger de saneamiento."
+        "message": "Relectura de main: 0 solicitudes preparing/update/problematic, 0 rewrite_pending y 0 explicadas recientes sin remate."
       },
       {
-        "at": "2026-10-19T09:16:00+02:00",
+        "at": "2026-10-19T09:46:00+02:00",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update ni rewrite_pending. Saneamiento de Pendientes solicitado; sin ImageGen ni envíos a Telegram."
+        "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos ni rewrite_pending. Saneamiento de Pendientes solicitado; sin ImageGen ni envíos a Telegram."
       }
     ],
     "partial": false,
