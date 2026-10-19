@@ -59031,14 +59031,29 @@
         }
       ],
       "with_image": true,
-      "image_strategy": "fallback_only",
-      "ai_image_status": "disabled",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "disable_ai_image": true,
-      "ai_image_block_reason": "queue_override"
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261019121615_1200.jpg",
+        "source": "Europa Press · 19/10/2026",
+        "source_url": "https://www.europapress.es/euskadi/noticia-lopez-cree-pse-ganara-euskadi-porque-vascos-prefieren-goleada-sanchez-feijoo-abascal-20261019121615.html",
+        "alt": "Imagen de archivo relacionada con Patxi López",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261019121615_1200.jpg",
+        "source": "Europa Press · 19/10/2026",
+        "source_url": "https://www.europapress.es/euskadi/noticia-lopez-cree-pse-ganara-euskadi-porque-vascos-prefieren-goleada-sanchez-feijoo-abascal-20261019121615.html",
+        "alt": "Imagen de archivo relacionada con Patxi López",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "ac4eaffc642f",
@@ -59089,10 +59104,27 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.elindependiente.com/wp-content/uploads/2026/10/jesus-cintora-mananeros-360-la-1-rtve-1200x675.jpeg",
+        "source": "El Independiente · 19/10/2026",
+        "source_url": "https://www.elindependiente.com/series-y-television/2026/10/19/rtve-blinda-la-produccion-del-magacin-de-la-1-con-jesus-cintora-mananeros-360-durante-4-meses-tras-las-elecciones-generales/",
+        "alt": "Imagen de archivo relacionada con #Mañaneros19O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.elindependiente.com/wp-content/uploads/2026/10/jesus-cintora-mananeros-360-la-1-rtve-1200x675.jpeg",
+        "source": "El Independiente · 19/10/2026",
+        "source_url": "https://www.elindependiente.com/series-y-television/2026/10/19/rtve-blinda-la-produccion-del-magacin-de-la-1-con-jesus-cintora-mananeros-360-durante-4-meses-tras-las-elecciones-generales/",
+        "alt": "Imagen de archivo relacionada con #Mañaneros19O",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "54bdd579bfed",
@@ -59143,10 +59175,27 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.educacionfpydeportes.gob.es/.imaging/mte/mefp-theme/cabecera-imagenRRSS/dam/mefp/mc/sgctie/comunicacion/noticias/2026/octubre/diaescritoras/jcr:content/diaescritoras.jpg",
+        "source": "Ministerio de Educación · 19/10/2026",
+        "source_url": "https://www.educacionfpydeportes.gob.es/mc/sgctie/comunicacion/noticias/2026/octubre2026/diaescritoras.html",
+        "alt": "Imagen de archivo relacionada con #DiaDeLasEscritoras",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.educacionfpydeportes.gob.es/.imaging/mte/mefp-theme/cabecera-imagenRRSS/dam/mefp/mc/sgctie/comunicacion/noticias/2026/octubre/diaescritoras/jcr:content/diaescritoras.jpg",
+        "source": "Ministerio de Educación · 19/10/2026",
+        "source_url": "https://www.educacionfpydeportes.gob.es/mc/sgctie/comunicacion/noticias/2026/octubre2026/diaescritoras.html",
+        "alt": "Imagen de archivo relacionada con #DiaDeLasEscritoras",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "4eab75dfe3d7",
@@ -59197,11 +59246,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "closer_omitted_reason": "sensitive_health_context"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "closer_omitted_reason": "sensitive_health_context",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.fraternidad.com/sites/default/files/styles/original/public/node/noticia/field_image_main/banner-dia-cancer-de-mama-18248.webp?itok=6PTRpDwx",
+        "source": "Fraternidad-Muprespa · 19/10/2026",
+        "source_url": "https://www.fraternidad.com/es-ES/noticias/dia-mundial-del-cancer-de-mama-prevencion-apoyo-y-retorno-laboral-para-cuidar-la-salud-y",
+        "alt": "Imagen de archivo relacionada con #19DeOctubre",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.fraternidad.com/sites/default/files/styles/original/public/node/noticia/field_image_main/banner-dia-cancer-de-mama-18248.webp?itok=6PTRpDwx",
+        "source": "Fraternidad-Muprespa · 19/10/2026",
+        "source_url": "https://www.fraternidad.com/es-ES/noticias/dia-mundial-del-cancer-de-mama-prevencion-apoyo-y-retorno-laboral-para-cuidar-la-salud-y",
+        "alt": "Imagen de archivo relacionada con #19DeOctubre",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "267edd32d0e3",
@@ -59252,12 +59318,29 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/llarena-supremo-amnistia-puigdemont/01792132002226.jpg",
+        "source": "RTVE · 19/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261019/llarena-supremo-amnistia-puigdemont/17269179.shtml",
+        "alt": "Imagen de archivo relacionada con el constitucional",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/llarena-supremo-amnistia-puigdemont/01792132002226.jpg",
+        "source": "RTVE · 19/10/2026",
+        "source_url": "https://www.rtve.es/noticias/20261019/llarena-supremo-amnistia-puigdemont/17269179.shtml",
+        "alt": "Imagen de archivo relacionada con el constitucional",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-10-19T13:49:41+02:00",
+  "updated_at": "2026-10-19T11:52:53.433530Z",
   "count": 1009
 }
