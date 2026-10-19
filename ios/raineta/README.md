@@ -1,3 +1,16 @@
+# RainETA para iPhone — v0.11.0
+
+## v0.11.0 — Precipitación primero y Actividad en Vivo mejorada
+
+- **Lluvia/nieve son las prioridades** de la app. Pantalla principal: estado y cuenta atrás, Pulso local 0–120 min, próximo período de 3 horas, radar observado/nowcast y después semana/modelos. Temperatura queda como información secundaria.
+- Open-Meteo proporciona `weather_code` y `snowfall` actuales, además de `snowfall` horario en centímetros. El tipo de precipitación se deriva **del modelo**, NO de colores del radar; un eco radar solo ayuda a confirmar presencia/ausencia de precipitación, no si es nieve.
+- El Pulso de precipitación mantiene barras por minuto *visuales* de equivalente líquido en mm/h, etiqueta nieve cuando corresponde según modelo y no inventa resolución física minuto a minuto.
+- **Actividad en Vivo (pantalla bloqueada y Dynamic Island):** estado de precipitación, icono de lluvia/nieve, cuenta atrás cuando hay cambio, barra compacta de los próximos 60 minutos, procedencia del dato (radar local o modelo) y hora de actualización. La temperatura aparece pequeña y opcional. Sin ETA se presenta estado seco o precipitación en curso, no un contador ficticio.
+- La extensión actualiza `staleDate` tras ~12 minutos con radar validado o ~25 minutos con modelos. Los datos sin actualizar aparecen como antiguos. El contador puede seguir avanzando con el reloj de iOS, pero **la app no recibe datos meteorológicos nuevos cuando iOS la suspende**.
+- Estado de Actividad en Vivo compatible con datos antiguos mediante propiedades opcionales: fase, procedencia, confianza, hora observada, temperatura y doce barras de intensidad. Los tramos sin dato son **desconocidos**, no secos.
+- **No se añade un widget independiente.** El paquete sigue siendo una IPA sin firmar para Sideloadly; la disponibilidad efectiva de Actividades en Vivo depende de la firma/permisos y de iOS. No se promete que una extensión funcione en cualquier instalación.
+- Pruebas para lluvia/nieve, previsión futura, barras y compatibilidad de estado; compilación y tests iOS se verifican en GitHub. **Sin cambios en la PWA ni infraestructura de servidores.**
+
 # RainETA para iPhone — v0.10.1
 
 ## v0.10.1 — Reparación del radar local: Madrid se veía seco pero el modelo decía lluvia
