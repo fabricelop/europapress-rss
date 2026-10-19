@@ -80,6 +80,7 @@ struct RainHomeView: View {
                     MinuteRainGraph(store:store)
                     ThreeHourRainView(store:store)
                     radarSection
+                    RainTwentyFourHourView(weather:store.snapshot)
                     RainWeekForecast(weather:store.snapshot,
                                      radarAvailable:store.radarLocal?.isFresh(at:Date()) == true)
                     RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
