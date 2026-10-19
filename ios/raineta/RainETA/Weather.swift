@@ -680,20 +680,44 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
 
     func updateLiveActivity() async {
         guard let wx = snapshot else { return }
-        let decision = shortEstimate?.isUsable(at: Date()) == true ? shortEstimate : nil
-        let rainingNow = decision?.rainingNow ?? wx.isRaining
-        let arrival = decision?.change ?? wx.nextChange
-        let state = RainETAAttributes.ContentState(
-            arrival: arrival,
-            rainingNow: rainingNow,
-            intensity: wx.intensity,
-            updatedAt: wx.updatedAt,
-            summary: rainingNow ? "Lluvia estimada ahora" : (arrival == nil ? "Sin lluvia inminente" : "Lluvia prevista"),
-            locationName: name
+        let now=Date()
+        let decision=shortEstimate?.isUsable(at:now)==true ? shortEstimate:nil
+        let wet=decision?.rainingNow ?? wx.isRaining
+        let change=decision?.change
+        let fallback=RainInsight.transition(currentIsRaining:wx.isRaining,
+                                             samples:wx.samples,now:now)
+        // The transition timestamp from an outdated estimate is not used
+        // merely because it remains encoded in the Activity state.
+        let eta=decision == nil ? fallback.change : change
+        let phase=wx.phase(at:wet ? now : (eta ?? now))
+        let localRadar=radarLocal?.isFresh(at:now)==true ? radarLocal:nil
+        let radarVerified=decision?.radarBased == true && localRadar != nil
+        let series=minuteForecast(now:now,horizon:60)
+        let rates=stride(from:0,to:60,by:5).map { minute in
+            series.first(where:{$0.minute==minute})?.rate ?? 0
+        }
+        let summary=RainLiveDisplay.title(wet:wet,kind:phase,
+                             hasReliableTime:eta != nil)
+        let displayRate=series.first?.rate ?? 0
+        let state=RainETAAttributes.ContentState(
+            arrival:eta,
+            rainingNow:wet,
+            intensity:wet ? RainVisual.intensity(displayRate) : "Sin precipitación",
+            updatedAt:now,
+            summary:summary,
+            locationName:name,
+            precipitationKind:phase.rawValue,
+            sourceLabel:radarVerified ? "Radar local" : "Modelo · sin confirmar",
+            confidenceLabel:decision?.confidence ?? "Orientativo",
+            radarObservedAt:radarVerified ? localRadar?.observedAt : nil,
+            nextHourBars:RainLiveDisplay.pulseLevels(rates),
+            temperatureC:wx.temperature
         )
-        let content = ActivityContent(state: state,
-                                      staleDate: wx.updatedAt.addingTimeInterval(30 * 60),
-                                      relevanceScore: 0.7)
+        // A lock-screen countdown can update locally, but the observation and
+        // all data bars must become STALE if the app stops obtaining data.
+        let content=ActivityContent(state:state,
+                       staleDate:now.addingTimeInterval(radarVerified ? 12*60 : 25*60),
+                       relevanceScore:eta != nil ? 0.8 : 0.5)
         if let existing = Activity<RainETAAttributes>.activities.first {
             await existing.update(content)
             liveStatus = "En Vivo: \(name) · actualizada"
