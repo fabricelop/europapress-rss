@@ -32,24 +32,27 @@ struct RainHeroCard: View {
                     let raining=short?.rainingNow ?? fallback.raining
                     let radarConfirmed=short?.radarBased==true
                     let nextChange=short?.change ?? fallback.change
+                    let phase=weather.phase(at:raining ? moment : (nextChange ?? moment))
+                    let precipitation=phase.label
                     VStack(alignment:.leading,spacing:10) {
                         HStack(alignment:.center) {
                             VStack(alignment:.leading,spacing:5) {
                                 Text(radarConfirmed ?
                                      (raining ? "RADAR: PRECIPITACIÓN DETECTADA" : "RADAR: SIN ECO LOCAL") :
-                                     (raining ? "MODELO PREVÉ LLUVIA · NO CONFIRMADA" :
+                                     (raining ? "MODELO PREVÉ PRECIPITACIÓN · NO CONFIRMADA" :
                                                 "MODELO PREVÉ TIEMPO SECO"))
                                     .font(.system(size:10,weight:.heavy))
                                     .foregroundStyle(raining ? .cyan : .green)
                                 Text(radarConfirmed ?
-                                         (raining ? "¿Cuándo dejará de llover?" : "¿Cuándo llegará la lluvia?") :
-                                         (raining ? "¿Hasta cuándo prevé lluvia el modelo?" :
-                                                    "¿Cuándo prevé lluvia el modelo?"))
+                                         (raining ? "¿Cuándo terminará la precipitación?" :
+                                                    "¿Cuándo llegará la \(precipitation)?") :
+                                         (raining ? "¿Hasta cuándo prevé \(precipitation)?" :
+                                                    "¿Cuándo prevé \(precipitation)?"))
                                     .font(.subheadline)
                                     .foregroundStyle(.white.opacity(0.76))
                             }
                             Spacer()
-                            Image(systemName:raining ? "cloud.rain.fill" : "cloud.sun.fill")
+                            Image(systemName:raining ? phase.glyph : "cloud.fill")
                                 .font(.system(size:40))
                                 .foregroundStyle(raining ? .cyan : .yellow)
                                 .symbolRenderingMode(.hierarchical)
@@ -65,7 +68,7 @@ struct RainHeroCard: View {
                         HStack {
                             Text(nextChange.map {
                                 "Cambio estimado: " + $0.formatted(date:.omitted,time:.shortened)
-                            } ?? "Sin cambio fiable en 24 horas")
+                            } ?? "Sin cambio próximo con hora fiable")
                                 .font(.caption)
                                 .foregroundStyle(.cyan)
                             Spacer()
@@ -97,8 +100,9 @@ struct RainHeroCard: View {
                     }
                     Label(radarConfirmedDisplay(store) ?
                           ((store.minuteForecast(now:Date(),horizon:0).first?.rate ?? 0)>=0.15 ?
-                              "Eco de lluvia en radar" : "Sin eco de lluvia en radar") :
-                          "Modelo: " + weather.intensity,systemImage:"drop.fill")
+                              "Eco de precipitación" : "Radar: seco") :
+                          "Modelo: " + weather.phase().label,
+                          systemImage:"drop.fill")
                 }
                 .font(.subheadline.bold())
                 .foregroundStyle(.white.opacity(0.9))
@@ -154,7 +158,7 @@ struct RainSettingsView: View {
                 }
                 Text(store.liveStatus)
                     .font(.caption).foregroundStyle(.secondary)
-                Text("La actividad muestra la localidad y la cuenta atrás. iOS puede suspender consultas con la app cerrada; el contador no garantiza datos nuevos.")
+                Text("La actividad muestra lluvia/nieve, cuenta atrás, franja de precipitación de 60 min, fuente y hora de actualización. No depende de un widget de pantalla de inicio. Si iOS suspende RainETA, la predicción quedará marcada como antigua; el contador no recibe datos nuevos por sí solo.")
                     .font(.caption2).foregroundStyle(.secondary)
             } header:{Label("Pantalla bloqueada",systemImage:"lock.iphone")}
 
@@ -186,7 +190,7 @@ struct RainSettingsView: View {
                     Text("60 minutos").tag(60)
                     Text("120 minutos").tag(120)
                 }
-                Text("El Pulso muestra 30, 60 o 120 minutos. El detalle de un minuto es visual: cada curva conserva la resolución real de su proveedor.")
+                Text("Prioridad a lluvia y nieve. El Pulso de precipitación muestra 30, 60 o 120 minutos; la resolución de 1 minuto es visual, no una medición nueva cada minuto.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
 
