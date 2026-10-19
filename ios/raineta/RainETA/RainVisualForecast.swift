@@ -105,8 +105,8 @@ struct RainPulseOverview:View {
                     .font(.caption2).foregroundStyle(.secondary)
             }
             let info=bins
-            if info.isEmpty {
-                Text("Sin datos para representar")
+            if info.isEmpty || info.allSatisfy({$0.meanRate == nil}) {
+                Text("Sin datos suficientes para representar las próximas 2 horas")
                     .font(.caption).foregroundStyle(.secondary)
             } else {
                 HStack(spacing:3) {
@@ -153,7 +153,9 @@ struct RainPulseOverview:View {
                 .font(.system(size:10,design:.rounded))
                 .foregroundStyle(.secondary)
                 HStack(spacing:10) {
-                    Label("\(RainVisualForecast.rainyMinutes(info)) min con precipitación",
+                    Label(info.contains(where:{$0.meanRate==nil}) ?
+                          "\(RainVisualForecast.rainyMinutes(info)) min de precipitación · parcial" :
+                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación",
                           systemImage:"clock")
                     Spacer(minLength:0)
                     Text(hasValidRadar ? "Cian: tramo con radar" : "Previsión de modelos")
