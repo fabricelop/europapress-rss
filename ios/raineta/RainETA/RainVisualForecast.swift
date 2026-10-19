@@ -208,7 +208,7 @@ struct RainTwentyFourHourView: View {
                 Label("Precipitación · 24 horas",systemImage:"cloud.rain")
                     .font(.headline)
                 Spacer()
-                Text("LLUVI A / NIEVE".replacingOccurrences(of:" ",with:""))
+                Text("LLUVIA / NIEVE")
                     .font(.system(size:10,weight:.bold))
                     .foregroundStyle(.cyan)
             }
@@ -326,5 +326,34 @@ struct RainTwentyFourHourView: View {
         if !hour.isWet{return Color.gray.opacity(0.24)}
         if hour.snowCM>=0.1 {return Color.white.opacity(0.92)}
         return RainVisual.color(hour.millimeters)
+    }
+}
+
+
+/// Twelve bins covering the same interval and vertical intensity scale for
+/// every model. Their hourly input cannot imply a new 10-minute prediction.
+struct RainModelPulseStrip: View {
+    let model: RainShortModel
+    let now: Date
+    let horizon: Int
+    let sharedPeak: Double
+
+    var body: some View {
+        let bins=Array(stride(from:0,to:max(1,horizon),by:10))
+        HStack(alignment:.bottom,spacing:3) {
+            ForEach(bins,id:\.self) { minute in
+                let rain=model.rateMMH(at:now.addingTimeInterval(Double(minute*60)))
+                RoundedRectangle(cornerRadius:2)
+                    .fill(rain == nil ? Color.gray.opacity(0.13) :
+                          rain!<0.1 ? Color.gray.opacity(0.30) :
+                          RainVisual.color(rain!))
+                    .frame(maxWidth:.infinity)
+                    .frame(height:rain.map{
+                        $0<0.1 ? 4 : max(5,CGFloat($0/max(0.5,sharedPeak))*30)
+                    } ?? 4,alignment:.bottom)
+            }
+        }
+        .frame(height:31,alignment:.bottom)
+        .accessibilityLabel("Precipitación horaria por modelo, representada en bloques visuales de diez minutos")
     }
 }
