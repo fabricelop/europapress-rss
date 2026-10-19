@@ -49,7 +49,7 @@ struct RainSnapshot {
     func phase(at when: Date = Date()) -> RainPrecipitationPhase {
         let snow: Double
         if when.timeIntervalSince(updatedAt) >= -1800 &&
-           when.timeIntervalSince(updatedAt) < 3600 {
+           when.timeIntervalSince(updatedAt) <= 5*60 {
             snow = currentSnowfallCM
             return RainPrecipitationPhase.classify(
                 weatherCode: currentWeatherCode, snowfallCM: snow)
@@ -694,7 +694,7 @@ final class RainLocation: NSObject, CLLocationManagerDelegate {
         let radarVerified=decision?.radarBased == true && localRadar != nil
         let series=minuteForecast(now:now,horizon:60)
         let rates=stride(from:0,to:60,by:5).map { minute in
-            series.first(where:{$0.minute==minute})?.rate ?? 0
+            series.first(where:{$0.minute==minute})?.rate ?? Double.nan
         }
         let summary=RainLiveDisplay.title(wet:wet,kind:phase,
                              hasReliableTime:eta != nil)
