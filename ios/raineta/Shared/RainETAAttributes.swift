@@ -14,12 +14,12 @@ struct RainETAAttributes: ActivityAttributes {
         // Optional for backward compatibility with activities from earlier
         // RainETA releases. Values encode modelled precipitation phase, not
         // a radar-confirmed rain/snow classification.
-        var precipitationKind: String?
-        var sourceLabel: String?
-        var confidenceLabel: String?
-        var radarObservedAt: Date?
-        var nextHourBars: [Int]?
-        var temperatureC: Double?
+        var precipitationKind: String? = nil
+        var sourceLabel: String? = nil
+        var confidenceLabel: String? = nil
+        var radarObservedAt: Date? = nil
+        var nextHourBars: [Int]? = nil
+        var temperatureC: Double? = nil
     }
 
     var locationName: String
