@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-19T14:35:33.988235+00:00",
+      "checked_at": "2026-10-19T20:11:48.941567+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 276081,
+          "seconds": 296256,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,52 +22,53 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-19T14:35:33.988235+00:00",
+      "checked_at": "2026-10-19T20:11:48.941567+00:00",
       "issue_count": 4,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "2a6252d87b51",
-          "title": "#CeltaAlavés",
-          "seconds": 80589,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "73f517ae52f9",
-          "title": "Funes",
-          "seconds": 70353,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
           "id": "5662169d58be",
           "title": "Kylie",
-          "seconds": 47751,
+          "seconds": 67926,
           "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "40cd1dafba71",
+          "title": "#ElTDdeNuestrasVidas",
+          "seconds": 1749,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9ad91851d4da",
+          "title": "Palencia",
+          "seconds": 554,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 276081,
+          "seconds": 296256,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "248fa2f9af1361a05d17ff367adc5e57d9d0b11b0d59a9a0d5a3431069ba1153",
+      "open_signature": "1e18e26c3acb98fee742f1acc944d7ffdeda1af6802614a1fc1484b65db951dd",
       "repair_via_workflow_run": false,
-      "escalation_required": 3
+      "escalation_required": 2
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T21:41:31.957043+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-19T14:35:33.988235+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-19T14:35:33.988235+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-19T01:47:12.848890+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-19T20:11:48.941567+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-19T20:11:48.941567+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-19T20:11:48.941567+00:00"
   },
-  "checked_at": "2026-10-19T14:35:33.988235+00:00"
+  "checked_at": "2026-10-19T20:11:48.941567+00:00"
 }
