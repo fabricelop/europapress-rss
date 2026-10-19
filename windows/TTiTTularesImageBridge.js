@@ -464,6 +464,12 @@ async function injectPromptIntoChat(cdp,job){
   for(let attempt=1;attempt<=2;attempt++){
     const prep=await cdp.eval("(()=>{const elements=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const visible=c=>{const r=c.getBoundingClientRect();const style=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&style.display!=='none'&&style.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\\\"true\\\"]')};const chosen=elements.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&visible(c))||elements.find(visible);if(!chosen)return {ok:false,found:elements.length,url:location.href};elements.forEach(c=>c.removeAttribute('data-tt-image-composer'));chosen.setAttribute('data-tt-image-composer','true');chosen.focus();try{if(chosen.tagName==='TEXTAREA'||chosen.tagName==='INPUT'){chosen.value='';chosen.dispatchEvent(new Event('input',{bubbles:true}))}else{const s=getSelection(),r=document.createRange();r.selectNodeContents(chosen);s.removeAllRanges();s.addRange(r);document.execCommand('delete',false,null)}}catch(_){}return {ok:true,found:elements.length,tag:chosen.tagName,url:location.href,focused:document.activeElement===chosen}})()");
     if(!prep||!prep.ok)throw Error("No hay compositor visible utilizable para fallback found="+String(prep&&prep.found||0));
+    if(attempt===1){
+      try{
+        const baseline=await cdp.eval("(()=>({generating:!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]')}))()");
+        cdp.preexistingGenerating=Boolean(baseline&&baseline.generating);
+      }catch{cdp.preexistingGenerating=true} // Unknown baseline must not certify a stop-button transition.
+    }
     // The previous edit may have caused a React/Lexical rerender; bring the
     // dedicated tab to front and wait for its editor before typing.
     try{await cdp.call("Page.bringToFront",{},5000)}catch{}
@@ -474,6 +480,7 @@ async function injectPromptIntoChat(cdp,job){
     await sleep(550);
     const verify=await cdp.eval("(()=>{const c=document.querySelector('[data-tt-image-composer=\\\"true\\\"]');const t=String(c&&(c.value||c.innerText||c.textContent)||'');return {ok:!!c&&t.includes("+JSON.stringify(commandId)+")&&t.includes("+JSON.stringify(message.slice(-65))+")&&t.length>= "+Math.floor(message.length*0.80)+",len:t.length,tag:c&&c.tagName,url:location.href,focused:document.activeElement===c}})()");
     if(verify&&verify.ok){
+      cdp.promptWasVerified=true;
       console.log("BRIDGE SELF-SUBMIT PROMPT INJECTED attempt="+attempt+" len="+verify.len);
       return cdp;
     }
@@ -582,6 +589,20 @@ async function reacquireCommandChat(job){
   return null
 }
 
+// Confirm the CURRENT prompt, not a stale stop button from a previous turn.
+// ChatGPT may continue generating on / (temporary chat) or /images without /c/.
+// Only a verified, locally triggered send can use a generation transition.
+function submissionEvidence(st,{triggeredAt=0,promptWasVerified=false,preexistingGenerating=false,now=Date.now()}={}){
+  if(!st)return "";
+  if(st.submitted)return "user-turn";
+  const elapsed=triggeredAt?now-triggeredAt:0;
+  const chatPage=/^https:\/\/chatgpt\.com(?:\/|$)/i.test(String(st.url||""));
+  if(!promptWasVerified||!chatPage||elapsed<650||st.composerMarker)return "";
+  if(st.commandOutsideComposer)return "command-outside-composer";
+  if(st.generating&&!preexistingGenerating)return "post-send-generation";
+  return "";
+}
+
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
   let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0,startedAt=Date.now();
@@ -601,26 +622,14 @@ async function ensureSubmitted(cdp,job){
     }
 
     last=st;
-    const strongTransition=Boolean(
-      st && triggeredAt &&
-      st.inConversation &&
-      !st.composerMarker &&
-      (st.generating || st.commandOutsideComposer) &&
-      (Date.now()-triggeredAt)>=500
-    );
-    // En una conversación recién creada, "generating" con el compositor ya vacío
-    // es evidencia suficiente de que el prompt arrancó aunque ChatGPT aún no haya
-    // materializado el turno de usuario en el DOM.
-    const generatingTransition=Boolean(
-      st && st.inConversation && !st.composerMarker && st.generating &&
-      (Date.now()-startedAt)>=700
-    );
-
-    if(st&&(st.submitted||strongTransition||generatingTransition)){
+    const evidence=submissionEvidence(st,{
+      triggeredAt,promptWasVerified:Boolean(current.promptWasVerified),
+      preexistingGenerating:Boolean(current.preexistingGenerating)
+    });
+    if(evidence){
       current.submissionVerified=true;
       current.acceptInitialRaster=true;
-      const mode=st.submitted?"user-turn":strongTransition?"conversation-transition":"generating-transition";
-      console.log("BRIDGE SUBMIT VERIFIED mode="+mode+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
+      console.log("BRIDGE SUBMIT VERIFIED mode="+evidence+" generating="+Boolean(st.generating)+" url="+String(st.url||""));
       return current
     }
 
