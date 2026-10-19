@@ -1,3 +1,17 @@
+# RainETA para iPhone — v0.12.0
+
+## v0.12.0 — Rediseño visual de lluvia y nieve
+
+- **Mantiene el contador protagonista**, la prioridad de radar local fresco para 0–60 min, el Pulso detallado de 1 minuto y la Actividad en Vivo de v0.11.0. No incorpora un widget independiente.
+- **Pulso 120 min, panorama nuevo:** 12 columnas visibles de 10 min para distinguir intervalos secos, lluvia y posible nieve de un vistazo; fuente radar/modelo identificada por tramo, intensidad relativa y duración. Pulsar una columna selecciona su minuto inicial en la vista detallada; el horizonte detallado pasa a 120 min si hace falta.
+- **Pulso detallado:** las 30/60/120 barras de 1 minuto permanecen desplazables horizontalmente. Gris = seco, colores = intensidad indicativa; blanco = nieve según modelos. El radar no identifica por sí mismo nieve.
+- **Comparación de modelos:** las filas ECMWF, ICON, GFS, ARPEGE y UKMO tienen ahora *mini-gráficas visibles* normalizadas a una escala de intensidad compartida; al abrir cada fila aparecen las barras detalladas del modelo. Los datos originales son principalmente horarios y no constituyen pronósticos independientes minuto a minuto.
+- **Nueva vista interactiva de 24 h:** 24 barras horarias de precipitación (en mm acumulados por la hora anterior), banda independiente para probabilidad %, selección de hora con lluvia, nieve prevista en centímetros si la fuente la indica y temperatura secundaria. No se suman cm de nieve a mm de lluvia.
+- **Jerarquía de Inicio:** estado/cuenta atrás → panorama y minuto a minuto → próximas 3 horas → radar observado/futuro coherente → precipitación 24h → semana/7 días → comparación diaria.
+- **Calidad meteorológica:** el panorama de 120 min y las 24 horas reutilizan las fuentes previamente integradas; no se dibuja como radar observado lo que solo es previsión por modelos. Los tramos incompletos son «sin datos», no secos.
+- Pruebas para continuidad 0–120, ausencia de datos, periodos secos, lluvia/nieve y 24 acumulados/probabilidades horarios. Compilación de iOS y simulador en GitHub Actions. La precisión y la legibilidad sobre el iPhone real aún requieren verificación.
+- No hay modificaciones en la PWA ni infraestructura de Vercel/Cloudflare. IPA sin firmar para Sideloadly; Live Activity sujeta a la firma y permisos de iOS.
+
 # RainETA para iPhone — v0.11.0
 
 ## v0.11.0 — Precipitación primero y Actividad en Vivo mejorada
