@@ -4,39 +4,41 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T16:05:03.942Z",
-  "last_completed_at": "2026-10-19T16:09:40.825Z",
-  "updated_at": "2026-10-19T16:09:40.825Z",
+  "last_started_at": "2026-10-19T16:19:25.448Z",
+  "last_completed_at": "2026-10-19T16:32:25.000Z",
+  "updated_at": "2026-10-19T16:32:25.000Z",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "2efd45fd1d80",
+    "03ebec9c329b",
+    "1a17da1704d9"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "1a17da1704d9"
-  ],
+  "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "run_id": 39272102713,
-    "status": "in_progress",
+    "run_id": 39285422968,
+    "status": "queued",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019160503",
+    "run_id": "tr-editorial-20261019181925",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T16:05:03.942Z",
-    "updated_at": "2026-10-19T16:09:40.825Z",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-19T16:19:25.448Z",
+    "updated_at": "2026-10-19T16:32:25.000Z",
+    "current": 3,
+    "total": 3,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Tarjetas borradas preservadas; sin ImageGen, Telegram ni activación del circuito visual.",
+    "message": "Pasada cerrada y verificada: 3 explicadas, 0 activas, sin ImageGen directo ni envíos Telegram.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -49,66 +51,326 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T16:05:03.942Z",
-        "phase": "preparing",
-        "message": "Lectura autoritativa de main; cola inicial 0."
+        "at": "2026-10-19T16:24:05.000Z",
+        "phase": "investigating",
+        "trend_id": "2efd45fd1d80",
+        "title": "negociar",
+        "message": "Hecho esencial verificado: huelga educativa madrileña y exigencia de sentarse a negociar."
       },
       {
-        "at": "2026-10-19T16:09:40.825Z",
+        "at": "2026-10-19T16:24:40.000Z",
+        "phase": "drafting",
+        "trend_id": "2efd45fd1d80",
+        "title": "negociar",
+        "message": "Redactando explicación factual y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-19T16:25:00.000Z",
+        "phase": "remate_selection",
+        "trend_id": "2efd45fd1d80",
+        "title": "negociar",
+        "message": "Evaluando candidatos de remate con originalidad y neutralidad."
+      },
+      {
+        "at": "2026-10-19T16:25:20.000Z",
+        "phase": "remate_selection",
+        "trend_id": "2efd45fd1d80",
+        "title": "negociar",
+        "message": "Remate seleccionado: «La negociación sigue buscando silla.»"
+      },
+      {
+        "at": "2026-10-19T16:25:40.000Z",
+        "phase": "verifying",
+        "trend_id": "03ebec9c329b",
+        "title": "julio iglesias",
+        "message": "Releyendo estado autoritativo de julio iglesias."
+      },
+      {
+        "at": "2026-10-19T16:26:10.000Z",
+        "phase": "investigating",
+        "trend_id": "03ebec9c329b",
+        "title": "julio iglesias",
+        "message": "Contrastando el cambio de criterio de la Fiscalía y la competencia de la Audiencia Nacional."
+      },
+      {
+        "at": "2026-10-19T16:26:30.000Z",
+        "phase": "investigating",
+        "trend_id": "03ebec9c329b",
+        "title": "julio iglesias",
+        "message": "Hecho esencial verificado con fuentes judiciales y jurídicas actuales."
+      },
+      {
+        "at": "2026-10-19T16:26:50.000Z",
+        "phase": "drafting",
+        "trend_id": "03ebec9c329b",
+        "title": "julio iglesias",
+        "message": "Redactando explicación factual y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-19T16:27:10.000Z",
+        "phase": "drafting",
+        "trend_id": "03ebec9c329b",
+        "title": "julio iglesias",
+        "message": "Sin remate · tratamiento factual por sensibilidad de las acusaciones."
+      },
+      {
+        "at": "2026-10-19T16:27:30.000Z",
+        "phase": "verifying",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Releyendo estado autoritativo de Gurú."
+      },
+      {
+        "at": "2026-10-19T16:28:05.000Z",
+        "phase": "investigating",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Contrastando el término «Gurú» con la lesión confirmada de Gorka Guruzeta."
+      },
+      {
+        "at": "2026-10-19T16:28:25.000Z",
+        "phase": "investigating",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Hecho esencial verificado: Guruzeta sufre una rotura del ligamento cruzado anterior izquierdo."
+      },
+      {
+        "at": "2026-10-19T16:28:45.000Z",
+        "phase": "drafting",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Redactando explicación factual y comprobando el límite de X."
+      },
+      {
+        "at": "2026-10-19T16:29:05.000Z",
+        "phase": "drafting",
+        "trend_id": "1a17da1704d9",
+        "title": "Gurú",
+        "message": "Sin remate · explicación factual suficiente ante una lesión grave."
+      },
+      {
+        "at": "2026-10-19T16:29:25.000Z",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Guardando las tres fichas Explicadas sobre main fresco."
+      },
+      {
+        "at": "2026-10-19T16:30:10.000Z",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Fichas Explicadas guardadas; actualizando requests."
+      },
+      {
+        "at": "2026-10-19T16:30:30.000Z",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Requests actualizados; retirando las tres revisiones de la cola."
+      },
+      {
+        "at": "2026-10-19T16:30:50.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main para verificar id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-19T16:32:05.000Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación completa: 3/3 revisiones coinciden en Explicadas y requests; cola 0."
+      },
+      {
+        "at": "2026-10-19T16:32:25.000Z",
         "phase": "closing",
-        "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Tarjetas borradas preservadas; sin ImageGen, Telegram ni activación del circuito visual."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada cerrada y verificada: 3 explicadas, 0 activas, sin ImageGen directo ni envíos Telegram."
       }
     ],
-    "finished_at": "2026-10-19T16:09:40.825Z",
+    "finished_at": "2026-10-19T16:32:25.000Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "summary": {
-      "initial_compact_queue": 0,
-      "initial_active_requests": 0,
+      "initial_compact_queue": 3,
+      "initial_active_requests": 3,
       "final_compact_queue": 0,
-      "attempted": 0,
-      "explained": 0,
+      "attempted": 3,
+      "explained": 3,
       "remaining_active": 0,
-      "problematic_reviewed": 0,
+      "problematic_reviewed": 1,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     },
-    "verification_head": "02047c9c239876bd34455f577dafccb8927a1c7f"
+    "verification_head": "ab64b3343338c62c9ada2df4fe092583a9b8b79b"
   },
-  "run_id": "tr-editorial-20261019160503",
+  "run_id": "tr-editorial-20261019181925",
   "summary": {
-    "initial_compact_queue": 0,
-    "initial_active_requests": 0,
+    "initial_compact_queue": 3,
+    "initial_active_requests": 3,
     "final_compact_queue": 0,
-    "attempted": 0,
-    "explained": 0,
+    "attempted": 3,
+    "explained": 3,
     "remaining_active": 0,
-    "problematic_reviewed": 0,
+    "problematic_reviewed": 1,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T16:05:03.942Z",
-      "phase": "preparing",
-      "message": "Lectura autoritativa de main; cola inicial 0."
+      "at": "2026-10-19T16:24:05.000Z",
+      "phase": "investigating",
+      "trend_id": "2efd45fd1d80",
+      "title": "negociar",
+      "message": "Hecho esencial verificado: huelga educativa madrileña y exigencia de sentarse a negociar."
     },
     {
-      "at": "2026-10-19T16:09:40.825Z",
+      "at": "2026-10-19T16:24:40.000Z",
+      "phase": "drafting",
+      "trend_id": "2efd45fd1d80",
+      "title": "negociar",
+      "message": "Redactando explicación factual y comprobando el límite de X."
+    },
+    {
+      "at": "2026-10-19T16:25:00.000Z",
+      "phase": "remate_selection",
+      "trend_id": "2efd45fd1d80",
+      "title": "negociar",
+      "message": "Evaluando candidatos de remate con originalidad y neutralidad."
+    },
+    {
+      "at": "2026-10-19T16:25:20.000Z",
+      "phase": "remate_selection",
+      "trend_id": "2efd45fd1d80",
+      "title": "negociar",
+      "message": "Remate seleccionado: «La negociación sigue buscando silla.»"
+    },
+    {
+      "at": "2026-10-19T16:25:40.000Z",
+      "phase": "verifying",
+      "trend_id": "03ebec9c329b",
+      "title": "julio iglesias",
+      "message": "Releyendo estado autoritativo de julio iglesias."
+    },
+    {
+      "at": "2026-10-19T16:26:10.000Z",
+      "phase": "investigating",
+      "trend_id": "03ebec9c329b",
+      "title": "julio iglesias",
+      "message": "Contrastando el cambio de criterio de la Fiscalía y la competencia de la Audiencia Nacional."
+    },
+    {
+      "at": "2026-10-19T16:26:30.000Z",
+      "phase": "investigating",
+      "trend_id": "03ebec9c329b",
+      "title": "julio iglesias",
+      "message": "Hecho esencial verificado con fuentes judiciales y jurídicas actuales."
+    },
+    {
+      "at": "2026-10-19T16:26:50.000Z",
+      "phase": "drafting",
+      "trend_id": "03ebec9c329b",
+      "title": "julio iglesias",
+      "message": "Redactando explicación factual y comprobando el límite de X."
+    },
+    {
+      "at": "2026-10-19T16:27:10.000Z",
+      "phase": "drafting",
+      "trend_id": "03ebec9c329b",
+      "title": "julio iglesias",
+      "message": "Sin remate · tratamiento factual por sensibilidad de las acusaciones."
+    },
+    {
+      "at": "2026-10-19T16:27:30.000Z",
+      "phase": "verifying",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Releyendo estado autoritativo de Gurú."
+    },
+    {
+      "at": "2026-10-19T16:28:05.000Z",
+      "phase": "investigating",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Contrastando el término «Gurú» con la lesión confirmada de Gorka Guruzeta."
+    },
+    {
+      "at": "2026-10-19T16:28:25.000Z",
+      "phase": "investigating",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Hecho esencial verificado: Guruzeta sufre una rotura del ligamento cruzado anterior izquierdo."
+    },
+    {
+      "at": "2026-10-19T16:28:45.000Z",
+      "phase": "drafting",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Redactando explicación factual y comprobando el límite de X."
+    },
+    {
+      "at": "2026-10-19T16:29:05.000Z",
+      "phase": "drafting",
+      "trend_id": "1a17da1704d9",
+      "title": "Gurú",
+      "message": "Sin remate · explicación factual suficiente ante una lesión grave."
+    },
+    {
+      "at": "2026-10-19T16:29:25.000Z",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Guardando las tres fichas Explicadas sobre main fresco."
+    },
+    {
+      "at": "2026-10-19T16:30:10.000Z",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Fichas Explicadas guardadas; actualizando requests."
+    },
+    {
+      "at": "2026-10-19T16:30:30.000Z",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Requests actualizados; retirando las tres revisiones de la cola."
+    },
+    {
+      "at": "2026-10-19T16:30:50.000Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main para verificar id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-19T16:32:05.000Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación completa: 3/3 revisiones coinciden en Explicadas y requests; cola 0."
+    },
+    {
+      "at": "2026-10-19T16:32:25.000Z",
       "phase": "closing",
-      "message": "Doble lectura de main: cola 0, sin preparing/update ni rewrite_pending. Tarjetas borradas preservadas; sin ImageGen, Telegram ni activación del circuito visual."
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada y verificada: 3 explicadas, 0 activas, sin ImageGen directo ni envíos Telegram."
     }
   ],
   "telegram_orphans": 0,
@@ -117,6 +379,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-19T17:22:50+02:00"
+    "captured_at": "2026-10-19T18:17:22+02:00"
   }
 }
