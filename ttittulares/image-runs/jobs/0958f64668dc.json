@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tt-img-auto-0958f64668dc-r1-a4-1792444403911",
-  "requested_at": "2026-10-19T21:13:23.886804Z",
-  "updated_at": "2026-10-19T21:19:47.288Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
+  "command_id": "tt-img-auto-0958f64668dc-r1-a5-1792445456244",
+  "requested_at": "2026-10-19T21:30:56.195209Z",
+  "updated_at": "2026-10-19T21:30:56.195209Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_ready_repair",
   "delivery_mode": "launch_only",
   "editorial_image_mode": "humor",
@@ -17,8 +17,8 @@
   "revision": 1,
   "regenerate": true,
   "auto_repair": true,
-  "auto_repair_attempt": 4,
-  "manual_retry_version": 1,
+  "auto_repair_attempt": 5,
+  "manual_retry_version": 2,
   "chat_command_version": 7,
   "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
   "context_snapshot": {
@@ -53,9 +53,5 @@
     "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
     "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
   },
-  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":false,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false,",
-  "pc_upload_secret_hash": "dd58c06505cca54e44271fc341cd3e4b30bc8e29b6e90743f946e41a262ae189",
-  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
-  "pc_picked_up_at": "2026-10-19T21:18:55.091Z",
-  "finished_at": "2026-10-19T21:19:47.288Z"
+  "message": "Reintento manual de imagen IA desde Telegram."
 }
