@@ -116,8 +116,7 @@ private struct RainMinuteBars:View {
                 .padding(.vertical,5)
             }
             .onChange(of:horizon) {_,_ in
-                selectedMinute=nil
-                withAnimation {reader.scrollTo(0,anchor:.leading)}
+                withAnimation {reader.scrollTo(selectedMinute ?? 0,anchor:.leading)}
             }
         }
         .frame(height:145)
@@ -185,6 +184,10 @@ struct MinuteRainGraph:View {
                     Text(String(format:"%.1f mm/h",selected.rate))
                         .font(.title3.bold().monospacedDigit())
                 }
+                RainPulseOverview(series:store.minuteForecast(now:now,horizon:120),
+                                  weather:store.snapshot,
+                                  hasValidRadar:store.radarLocal?.isFresh(at:now)==true,
+                                  selectedMinute:$selectedMinute)
                 if store.radarLocal?.isFresh(at:now)==true {
                     Label(selected.radarInformed ? "Radar local + nowcast" : "Previsión por modelos",
                           systemImage:"dot.radiowaves.left.and.right")
@@ -241,6 +244,9 @@ struct MinuteRainGraph:View {
         }
         .padding(15)
         .background(.white.opacity(0.065),in:RoundedRectangle(cornerRadius:20))
+        .onChange(of:selectedMinute) {_,next in
+            if let next,next>horizon {horizon=120}
+        }
     }
 }
 
