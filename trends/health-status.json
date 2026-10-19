@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-19T22:58:34.080510+00:00",
-  "ok": false,
+  "checked_at": "2026-10-19T23:17:45.714227+00:00",
+  "ok": true,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -43,7 +43,7 @@
       "ok": true,
       "count": 10,
       "non_stale_sources": 6,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.1,
-      "run_id": 39338361670,
+      "age_minutes": 2.2,
+      "run_id": 39340434807,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,49 +77,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 4,
-      "overdue_count": 4,
-      "oldest_age_minutes": 40.9,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "d0b77011bcc7",
-          "name": "#laisladelastentaciones13",
-          "status": "preparing",
-          "age_minutes": 40.9
-        },
-        {
-          "id": "e9f3f719cfa1",
-          "name": "#GetafeRayo",
-          "status": "preparing",
-          "age_minutes": 40.9
-        },
-        {
-          "id": "ad7a75826c85",
-          "name": "djené",
-          "status": "preparing",
-          "age_minutes": 40.9
-        },
-        {
-          "id": "ade467a17048",
-          "name": "Nacho Gil",
-          "status": "preparing",
-          "age_minutes": 40.9
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "d0b77011bcc7",
-        "e9f3f719cfa1",
-        "ad7a75826c85",
-        "ade467a17048"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -129,10 +99,8 @@
     }
   },
   "repairs_started": [],
-  "blocking": [
-    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 40.9 min"
-  ],
+  "blocking": [],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 40.9 min"
+  "last_alert_signature": ""
 }
