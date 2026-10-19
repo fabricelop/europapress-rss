@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-19T23:08:38.927507Z",
+  "updated_at": "2026-10-19T23:11:40.510Z",
   "items": [
     {
       "event_id": "d397d0aca613",
@@ -217,7 +217,7 @@
       "editorial_note": "Solo elaboración textual; sin ImageGen ni envío Telegram. Junio de 2027 es fecha futura anunciada.",
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -242,7 +242,10 @@
         "generated": false,
         "alt": "La periodista Christiane Amanpour se despide de la CNN después de 43 años: “Sed siempre veraces, no neutrales”"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-19T23:11:40.510Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":false,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false"
     }
   ],
   "count": 0,
