@@ -10,6 +10,11 @@ struct RainSample: Identifiable {
     var probability: Int?
 }
 
+struct HourlySnow {
+    let end: Date
+    let centimeters: Double
+}
+
 struct HourlyRain: Identifiable {
     var id: Int
     var time: Date
@@ -35,6 +40,25 @@ struct RainSnapshot {
     var samples: [RainSample]
     var hours: [HourlyRain]
     var days: [DailyRain]
+    // Snowfall data is modelled, typically hourly in cm. Radar alone
+    // cannot determine the precipitation phase.
+    var currentSnowfallCM: Double = 0
+    var currentWeatherCode: Int? = nil
+    var snowHours: [HourlySnow] = []
+
+    func phase(at when: Date = Date()) -> RainPrecipitationPhase {
+        let snow: Double
+        if when.timeIntervalSince(updatedAt) >= -1800 &&
+           when.timeIntervalSince(updatedAt) < 3600 {
+            snow = currentSnowfallCM
+            return RainPrecipitationPhase.classify(
+                weatherCode: currentWeatherCode, snowfallCM: snow)
+        }
+        snow = snowHours.first(where: {
+            $0.end.addingTimeInterval(-3600) <= when && when < $0.end
+        })?.centimeters ?? 0
+        return RainPrecipitationPhase.classify(weatherCode: nil,snowfallCM:snow)
+    }
 
     var isRaining: Bool { currentPrecipitation >= 0.1 }
     var upcomingWet: RainSample? {
@@ -76,9 +100,9 @@ enum RainAPI {
         parts.queryItems = [
             URLQueryItem(name: "latitude", value: String(latitude)),
             URLQueryItem(name: "longitude", value: String(longitude)),
-            URLQueryItem(name: "current", value: "temperature_2m,precipitation"),
+            URLQueryItem(name: "current", value: "temperature_2m,precipitation,snowfall,weather_code"),
             URLQueryItem(name: "minutely_15", value: "precipitation"),
-            URLQueryItem(name: "hourly", value: "precipitation_probability,precipitation,temperature_2m"),
+            URLQueryItem(name: "hourly", value: "precipitation_probability,precipitation,temperature_2m,snowfall"),
             URLQueryItem(name: "daily", value: "precipitation_sum,precipitation_probability_max,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "timezone", value: "auto"),
             URLQueryItem(name: "forecast_days", value: "7")
@@ -99,6 +123,11 @@ enum RainAPI {
         let hourlyProb = hours["precipitation_probability"] as? [Double] ?? []
         let hourlyAmounts = hours["precipitation"] as? [Double] ?? []
         let hourlyTemps = hours["temperature_2m"] as? [Double] ?? []
+        let hourlySnowfall = hours["snowfall"] as? [Double] ?? []
+        let snowHours = hourTimes.enumerated().compactMap { index,date -> HourlySnow? in
+            guard index < hourlySnowfall.count else {return nil}
+            return HourlySnow(end:date,centimeters:max(0,hourlySnowfall[index]))
+        }
         let times = fine["time"] as? [String] ?? []
         let amounts = fine["precipitation"] as? [Double] ?? []
         let now = Date()
@@ -146,7 +175,10 @@ enum RainAPI {
             currentPrecipitation: current["precipitation"] as? Double ?? 0,
             samples: samples,
             hours: extended,
-            days: daily
+            days: daily,
+            currentSnowfallCM: max(0,current["snowfall"] as? Double ?? 0),
+            currentWeatherCode: current["weather_code"] as? Int,
+            snowHours: snowHours
         )
     }
 
