@@ -15,6 +15,7 @@ async function runOne(path){
    async eval(expr){
     if(expr.includes('const elements=[...document.querySelectorAll('))
      return {ok:!noEditor,found:noEditor?0:1,tag:'DIV',url:'https://chatgpt.com/'};
+    if(expr.includes('generating:!!document.querySelector'))return {generating:false};
     if(expr.includes('return {ok:document.activeElement===c}'))return {ok:true};
     if(expr.includes('return {ok:!!c&&t.includes(')){
      const ok=validations[calls.checked++]??false;
