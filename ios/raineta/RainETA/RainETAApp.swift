@@ -79,9 +79,9 @@ struct RainHomeView: View {
                     RainHeroCard(store:store)
                     MinuteRainGraph(store:store)
                     ThreeHourRainView(store:store)
+                    radarSection
                     RainWeekForecast(weather:store.snapshot,
                                      radarAvailable:store.radarLocal?.isFresh(at:Date()) == true)
-                    radarSection
                     RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
                 }
                 .padding(16)
