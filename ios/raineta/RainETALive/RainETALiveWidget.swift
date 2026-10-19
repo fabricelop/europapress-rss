@@ -2,99 +2,184 @@ import SwiftUI
 import WidgetKit
 import ActivityKit
 
-private struct RainLiveSummary: View {
-    let state: RainETAAttributes.ContentState
-    let isStale: Bool
-    var body: some View {
-        if state.summary == "Actualizando previsión" {
-            Label("Actualizando previsión…", systemImage: "arrow.clockwise")
-                .foregroundStyle(.cyan)
-        } else if isStale {
-            Label("Previsión sin actualizar", systemImage: "exclamationmark.triangle.fill")
-                .foregroundStyle(.yellow)
-        } else if let target = state.arrival, target > Date() {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(state.rainingNow ? "Dejará de llover en" : "Lloverá en")
-                    .font(.caption)
-                Text(timerInterval: Date()...target, countsDown: true)
-                    .font(.title2.weight(.bold))
+// This extension intentionally contains ONLY a Live Activity; it does not
+// expose an independent Home Screen widget that needs an extra install path.
+
+private enum LivePrecipitation {
+    static func kind(_ state:RainETAAttributes.ContentState) -> RainPrecipitationPhase {
+        RainPrecipitationPhase(rawValue:state.precipitationKind ?? "") ?? .rain
+    }
+    static func glyph(_ state:RainETAAttributes.ContentState) -> String {
+        if state.summary == "Actualizando previsión" {return "arrow.clockwise"}
+        return state.rainingNow ? kind(state).glyph :
+               "cloud.fill"
+    }
+    static func source(_ state:RainETAAttributes.ContentState)->String {
+        state.sourceLabel ?? "Previsión orientativa"
+    }
+}
+
+private struct RainLiveSummary:View {
+    let state:RainETAAttributes.ContentState
+    let isStale:Bool
+
+    var body:some View {
+        VStack(alignment:.leading,spacing:3) {
+            if state.summary == "Actualizando previsión" {
+                Label("Consultando precipitación…",systemImage:"arrow.clockwise")
+                    .foregroundStyle(.cyan)
+            } else if isStale {
+                Label("Datos sin actualizar",systemImage:"exclamationmark.triangle.fill")
+                    .font(.headline)
+                    .foregroundStyle(.yellow)
+            } else if let target=state.arrival,target>Date() {
+                Text(state.rainingNow ?
+                     "Termina \(LivePrecipitation.kind(state).label) en" :
+                     "Llega \(LivePrecipitation.kind(state).label) en")
+                    .font(.caption).foregroundStyle(.secondary)
+                Text(timerInterval:Date()...target,countsDown:true)
+                    .font(.system(size:27,weight:.bold,design:.rounded))
                     .monospacedDigit()
+            } else {
+                Text(state.summary)
+                    .font(.headline.bold())
+                    .fixedSize(horizontal:false,vertical:true)
+                    .lineLimit(2)
             }
-        } else {
-            Text(state.summary).font(.headline)
         }
     }
 }
 
-struct RainETALiveWidget: Widget {
-    var body: some WidgetConfiguration {
-        ActivityConfiguration(for: RainETAAttributes.self) { context in
-            HStack(spacing: 12) {
-                Image(systemName: context.state.rainingNow ? "cloud.rain.fill" : "cloud.sun.rain.fill")
-                    .font(.title2)
-                    .foregroundStyle(.cyan)
-                VStack(alignment: .leading, spacing: 5) {
+private struct RainLivePulse:View {
+    let state:RainETAAttributes.ContentState
+    let height:CGFloat
+
+    var body:some View {
+        if let bars=state.nextHourBars,!bars.isEmpty {
+            VStack(alignment:.leading,spacing:4) {
+                HStack(alignment:.bottom,spacing:3) {
+                    ForEach(Array(bars.prefix(12).enumerated()),id:\.offset) { item in
+                        RoundedRectangle(cornerRadius:2)
+                            .fill(item.element==0 ?
+                                  Color.gray.opacity(0.30) :
+                                  LivePrecipitation.kind(state)==(.snow) ?
+                                  Color.white.opacity(0.92) : Color.cyan)
+                            .frame(maxWidth:.infinity)
+                            .frame(height:max(3,height*CGFloat(item.element+1)/5))
+                    }
+                }
+                .frame(height:height,alignment:.bottom)
+                HStack {
+                    Text("Ahora")
+                    Spacer()
+                    Text("+30 min")
+                    Spacer()
+                    Text("+60 min")
+                }
+                .font(.system(size:9))
+                .foregroundStyle(.secondary)
+            }
+            .accessibilityLabel("Evolución orientativa de precipitación en los próximos 60 minutos")
+        }
+    }
+}
+
+private struct RainLiveDetails:View {
+    let state:RainETAAttributes.ContentState
+    let stale:Bool
+    var body:some View {
+        HStack(spacing:5) {
+            Text(LivePrecipitation.source(state))
+            if !stale,let observed=state.radarObservedAt {
+                Text("· radar \(observed.formatted(date:.omitted,time:.shortened))")
+            }
+            Spacer(minLength:0)
+            Text(state.updatedAt,style:.time)
+        }
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .lineLimit(1)
+        if LivePrecipitation.kind(state) != .rain {
+            Text("Tipo de precipitación según modelo; radar no distingue nieve")
+                .font(.system(size:9))
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+        }
+    }
+}
+
+struct RainETALiveWidget:Widget {
+    var body:some WidgetConfiguration {
+        ActivityConfiguration(for:RainETAAttributes.self) { context in
+            VStack(alignment:.leading,spacing:9) {
+                HStack(alignment:.center,spacing:9) {
+                    Image(systemName:LivePrecipitation.glyph(context.state))
+                        .font(.title2)
+                        .foregroundStyle(.cyan)
                     Text("RainETA · \(context.state.locationName ?? context.attributes.locationName)")
                         .font(.caption.bold())
-                    RainLiveSummary(state: context.state, isStale: context.isStale)
-                    Text("Radar/modelo: \(context.state.updatedAt.formatted(date: .omitted, time: .shortened))")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    Spacer(minLength:3)
+                    if let temp=context.state.temperatureC {
+                        Text("\(Int(temp.rounded()))°")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+                    }
                 }
-                Spacer(minLength: 0)
+                RainLiveSummary(state:context.state,isStale:context.isStale)
+                RainLivePulse(state:context.state,height:32)
+                RainLiveDetails(state:context.state,stale:context.isStale)
             }
-            .padding(12)
-            .activityBackgroundTint(Color(red: 0.025, green: 0.07, blue: 0.16))
+            .padding(13)
+            .activityBackgroundTint(Color(red:0.025,green:0.07,blue:0.15))
             .activitySystemActionForegroundColor(.cyan)
-        } dynamicIsland: { context in
+        } dynamicIsland: {context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Label("RainETA", systemImage: "cloud.rain.fill")
+                    Label("RainETA",systemImage:LivePrecipitation.glyph(context.state))
                         .foregroundStyle(.cyan)
+                        .font(.caption.bold())
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     Text(context.state.locationName ?? context.attributes.locationName)
                         .font(.caption)
+                        .lineLimit(1)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Ubicación: \(context.state.locationName ?? context.attributes.locationName)")
-                            .font(.caption.bold())
-                            .lineLimit(1)
-                        HStack {
-                        RainLiveSummary(state: context.state, isStale: context.isStale)
-                        Spacer()
-                        Text(context.state.updatedAt, style: .time)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        }
+                    VStack(alignment:.leading,spacing:8) {
+                        RainLiveSummary(state:context.state,isStale:context.isStale)
+                        RainLivePulse(state:context.state,height:25)
+                        RainLiveDetails(state:context.state,stale:context.isStale)
                     }
                 }
             } compactLeading: {
-                Image(systemName: "cloud.rain.fill")
-                    .foregroundStyle(.cyan)
+                Image(systemName:LivePrecipitation.glyph(context.state))
+                    .foregroundStyle(context.isStale ? .yellow : .cyan)
             } compactTrailing: {
-                if context.state.summary == "Actualizando previsión" {
-                    Text("...").font(.caption2.bold())
+                if context.state.summary=="Actualizando previsión" {
+                    Text("…").font(.caption2.bold())
                 } else if context.isStale {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                } else if let target = context.state.arrival, target > Date() {
-                    Text(timerInterval: Date()...target, countsDown: true, showsHours: false)
+                    Image(systemName:"exclamationmark.triangle.fill")
+                        .foregroundStyle(.yellow)
+                } else if let target=context.state.arrival,target>Date() {
+                    Text(timerInterval:Date()...target,countsDown:true,showsHours:false)
                         .font(.caption2.monospacedDigit())
                 } else {
-                    Text("SECO").font(.caption2.bold())
+                    Text(context.state.rainingNow ? 
+                         (LivePrecipitation.kind(context.state)==(.snow) ? "NIEVE":"LLUEVE") : "SECO")
+                        .font(.system(size:9,weight:.bold))
                 }
             } minimal: {
-                Image(systemName: "cloud.rain.fill")
-                    .foregroundStyle(.cyan)
+                Image(systemName:LivePrecipitation.glyph(context.state))
+                    .foregroundStyle(context.isStale ? .yellow : .cyan)
             }
         }
     }
 }
 
 @main
-struct RainETALiveBundle: WidgetBundle {
-    var body: some Widget {
+struct RainETALiveBundle:WidgetBundle {
+    var body:some Widget {
         RainETALiveWidget()
     }
 }
