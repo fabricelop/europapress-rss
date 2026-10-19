@@ -227,11 +227,16 @@ struct MinuteRainGraph:View {
                 .buttonStyle(.plain)
                 if showModels {
                     VStack(alignment:.leading,spacing:9) {
-                        Text("Cada modelo tiene sus propias barras. Sus datos son horarios; " +
-                             "las barras intermedias repiten la estimación de esa hora.")
+                        Text("Las miniaturas comparten escala. Abre cualquier modelo para consultar sus barras minuto a minuto (datos horarios repetidos, no predicciones nativas por minuto).")
                             .font(.caption2).foregroundStyle(.secondary)
+                        let sharedPeak=max(0.5,store.shortModels.flatMap {
+                            model in (0...horizon).compactMap { minute in
+                                model.rateMMH(at:now.addingTimeInterval(Double(minute*60)))
+                            }
+                        }.max() ?? 0)
                         ForEach(store.shortModels,id:\.name) { model in
-                            RainModelBarDisclosure(model:model,now:now,horizon:horizon)
+                            RainModelBarDisclosure(model:model,now:now,horizon:horizon,
+                                                   sharedPeak:sharedPeak)
                         }
                         if store.shortModels.isEmpty {
                             Text(store.shortModelsLoading ? "Consultando modelos…" :
@@ -254,6 +259,7 @@ private struct RainModelBarDisclosure:View {
     let model:RainShortModel
     let now:Date
     let horizon:Int
+    let sharedPeak:Double
     @State private var open=false
     @State private var selectedMinute:Int?
 
@@ -285,6 +291,17 @@ private struct RainModelBarDisclosure:View {
                 }
             }
             .buttonStyle(.plain)
+            RainModelPulseStrip(model:model,now:now,horizon:horizon,
+                                sharedPeak:sharedPeak)
+            HStack {
+                Text("Ahora")
+                Spacer()
+                Text("+\(horizon/2) min")
+                Spacer()
+                Text("+\(horizon) min")
+            }
+            .font(.system(size:9))
+            .foregroundStyle(.secondary)
             if open {
                 let selected=bars.first(where:{$0.minute==selectedMinute}) ?? bars[0]
                 HStack {
