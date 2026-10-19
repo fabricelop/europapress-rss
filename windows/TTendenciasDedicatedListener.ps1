@@ -532,7 +532,9 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'BRIDGE_MODE="capture-only-v28-dead-submit-retry"',
       'view=image-job&strong=1&id=',
       'imagesAfterMarker',
-      'BRIDGE SUBMIT VERIFY WARNING'
+      'BRIDGE SUBMIT VERIFY WARNING',
+      'data-tt-image-composer',
+      'prompt_not_in_visible_editor'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
     }
@@ -550,7 +552,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING') -and $txt.Contains('data-tt-image-composer') -and $txt.Contains('prompt_not_in_visible_editor')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
           Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v28"
