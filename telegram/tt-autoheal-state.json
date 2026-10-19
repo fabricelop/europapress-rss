@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-19T20:11:48.941567+00:00",
+      "checked_at": "2026-10-19T23:45:20.743373+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 296256,
+          "seconds": 309068,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,35 +22,77 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-19T20:11:48.941567+00:00",
-      "issue_count": 4,
+      "checked_at": "2026-10-19T23:45:20.743373+00:00",
+      "issue_count": 10,
       "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "fc1e4bc8ee32",
+          "title": "#MCCLegends",
+          "seconds": 1344,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "0c086cdc772a",
+          "title": "paula",
+          "seconds": 1344,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "d37f78ec86d1",
+          "title": "Kiko",
+          "seconds": 1344,
+          "workflow": null
+        },
         {
           "kind": "editorial_overdue",
           "id": "5662169d58be",
           "title": "Kylie",
-          "seconds": 67926,
+          "seconds": 80738,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "40cd1dafba71",
-          "title": "#ElTDdeNuestrasVidas",
-          "seconds": 1749,
+          "id": "b9fd3c6b62bd",
+          "title": "#FirstDates19O",
+          "seconds": 9066,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "9ad91851d4da",
-          "title": "Palencia",
-          "seconds": 554,
+          "id": "d0b77011bcc7",
+          "title": "#laisladelastentaciones13",
+          "seconds": 5261,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e9f3f719cfa1",
+          "title": "#GetafeRayo",
+          "seconds": 5261,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ad7a75826c85",
+          "title": "djené",
+          "seconds": 5261,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ade467a17048",
+          "title": "Nacho Gil",
+          "seconds": 5261,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 296256,
+          "seconds": 309067,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -59,16 +101,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "1e18e26c3acb98fee742f1acc944d7ffdeda1af6802614a1fc1484b65db951dd",
+      "open_signature": "d16e543af8a0167f7738ae8b82abb77ef2b854430d1e171027bcdf174be92067",
       "repair_via_workflow_run": false,
-      "escalation_required": 2
+      "escalation_required": 9
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T21:41:31.957043+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-19T20:11:48.941567+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-19T20:11:48.941567+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-19T20:11:48.941567+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-19T23:45:20.743373+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-19T23:45:20.743373+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-19T23:45:20.743373+00:00"
   },
-  "checked_at": "2026-10-19T20:11:48.941567+00:00"
+  "checked_at": "2026-10-19T23:45:20.743373+00:00"
 }
