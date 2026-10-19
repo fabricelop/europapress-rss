@@ -34,8 +34,8 @@ private struct RainLiveSummary:View {
                     .foregroundStyle(.yellow)
             } else if let target=state.arrival,target>Date() {
                 Text(state.rainingNow ?
-                     "Termina \(LivePrecipitation.kind(state).label) en" :
-                     "Llega \(LivePrecipitation.kind(state).label) en")
+                     "Termina la \(LivePrecipitation.kind(state).label) en" :
+                     "Llega la \(LivePrecipitation.kind(state).label) en")
                     .font(.caption).foregroundStyle(.secondary)
                 Text(timerInterval:Date()...target,countsDown:true)
                     .font(.system(size:27,weight:.bold,design:.rounded))
@@ -60,8 +60,8 @@ private struct RainLivePulse:View {
                 HStack(alignment:.bottom,spacing:3) {
                     ForEach(Array(bars.prefix(12).enumerated()),id:\.offset) { item in
                         RoundedRectangle(cornerRadius:2)
-                            .fill(item.element==0 ?
-                                  Color.gray.opacity(0.30) :
+                            .fill(item.element<=0 ?
+                                  Color.gray.opacity(item.element<0 ? 0.12:0.30) :
                                   LivePrecipitation.kind(state)==(.snow) ?
                                   Color.white.opacity(0.92) : Color.cyan)
                             .frame(maxWidth:.infinity)
