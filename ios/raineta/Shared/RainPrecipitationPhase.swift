@@ -41,7 +41,7 @@ enum RainPrecipitationPhase: String {
 enum RainLiveDisplay {
     static func pulseLevels(_ rates: [Double]) -> [Int] {
         Array(rates.prefix(12)).map {
-            guard $0.isFinite else { return 0 }
+            guard $0.isFinite else { return -1 }
             switch max(0,$0) {
             case ..<0.15: return 0
             case ..<0.6: return 1
@@ -54,8 +54,8 @@ enum RainLiveDisplay {
 
     static func title(wet: Bool, kind: RainPrecipitationPhase,
                       hasReliableTime: Bool) -> String {
-        if wet { return kind == .snow ? "Nieve detectada/prevista" :
-                         kind == .mixed ? "Precipitación invernal" : "Precipitación actual" }
+        if wet { return kind == .snow ? "Precipitación · nieve según modelo" :
+                         kind == .mixed ? "Precipitación invernal posible" : "Precipitación actual" }
         return hasReliableTime ? (kind == .snow ? "Se prevé nieve" : "Se prevé lluvia") :
                                  "Sin precipitación próxima confirmada"
     }
