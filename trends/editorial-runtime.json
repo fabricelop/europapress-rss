@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T01:01:33.559Z",
-  "last_completed_at": "2026-10-19T01:01:59.923Z",
-  "updated_at": "2026-10-19T01:01:59.923Z",
+  "last_started_at": "2026-10-19T01:16:17.942Z",
+  "last_completed_at": "2026-10-19T01:16:52.459Z",
+  "updated_at": "2026-10-19T01:16:52.459Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -25,18 +25,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019010133",
+    "run_id": "tr-editorial-20261019031617-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-19T01:01:33.559Z",
-    "updated_at": "2026-10-19T01:01:59.923Z",
+    "started_at": "2026-10-19T01:16:17.942Z",
+    "updated_at": "2026-10-19T01:16:52.459Z",
     "current": 0,
     "total": 0,
     "title": null,
     "event_id": null,
     "trend_id": null,
-    "message": "Pasada 0/0 verificada en main: sin PROCESSING/preparing/update ni rewrite_pending. Sin nuevos textos, outboxes, imágenes, reparación visual o Telegram.",
+    "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos y sin rewrite_pending. Saneamiento visual solicitado al inicio.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -49,31 +49,28 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-19T01:01:33.559Z",
+        "at": "2026-10-19T01:16:17.942Z",
         "phase": "preparing",
-        "title": null,
-        "event_id": null,
         "trend_id": null,
-        "message": "Colas vacías; cierres del móvil y problemáticas históricas sin Check conservados."
+        "title": null,
+        "message": "Cola autoritativa vacía; iniciando saneamiento de Pendientes y verificación de estado fresco."
       },
       {
-        "at": "2026-10-19T01:01:35.814Z",
+        "at": "2026-10-19T01:16:49.848Z",
         "phase": "verifying",
-        "title": null,
-        "event_id": null,
         "trend_id": null,
-        "message": "Releyendo colas, estados consumidos y rewrite_pending en main, sin activar imágenes ni Telegram"
+        "title": null,
+        "message": "Releyendo cola, requests y Explicadas en main antes del cierre 0/0."
       },
       {
-        "at": "2026-10-19T01:01:59.923Z",
+        "at": "2026-10-19T01:16:52.459Z",
         "phase": "closing",
-        "title": null,
-        "event_id": null,
         "trend_id": null,
-        "message": "Pasada 0/0 verificada en main: sin PROCESSING/preparing/update ni rewrite_pending. Sin nuevos textos, outboxes, imágenes, reparación visual o Telegram."
+        "title": null,
+        "message": "Pasada 0/0 verificada en main: cola vacía, sin preparing/update/problematic activos y sin rewrite_pending. Saneamiento visual solicitado al inicio."
       }
     ],
-    "finished_at": "2026-10-19T01:01:59.923Z",
+    "finished_at": "2026-10-19T01:16:52.459Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -90,7 +87,7 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     }
