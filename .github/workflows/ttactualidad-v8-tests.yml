@@ -4,6 +4,7 @@ on:
     branches: ['main', 'fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
     paths:
       - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/trends_rework.py'
       - 'pilot/submit_ttactualidad_manual.py'
       - 'pilot/test_ttactualidad_manual.py'
       - '.github/workflows/ttactualidad-manual-news.yml'
@@ -61,7 +62,8 @@ jobs:
           assert "signed_cookie_v1" in worker
           assert "ttactualidad_manual_news_v1" in worker
           assert "editorial_dispatch_unavailable" in worker
-          assert "['deleted','discard','prepare'].includes" in worker
+          assert "['deleted','discard','prepare','rework'].includes" in worker
+          assert "Volver a En elaboración" in html
           assert "crypto.subtle.verify" in worker
           wf=Path('.github/workflows/ttactualidad-direct-actions.yml').read_text()
           assert 'ttittulares/editorial-queue.json' in wf and 'trends/editorial-queue.json' in wf
