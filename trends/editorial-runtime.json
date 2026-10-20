@@ -4,15 +4,14 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-19T22:57:43.957Z",
-  "last_completed_at": "2026-10-19T23:03:45.714Z",
-  "updated_at": "2026-10-19T23:03:46.034Z",
+  "last_started_at": "2026-10-20T01:57:09+02:00",
+  "last_completed_at": "2026-10-20T02:05:13+02:00",
+  "updated_at": "2026-10-20T02:05:13+02:00",
   "status": "success",
   "processed_ids": [
-    "d0b77011bcc7",
-    "e9f3f719cfa1",
-    "ad7a75826c85",
-    "ade467a17048"
+    "fc1e4bc8ee32",
+    "0c086cdc772a",
+    "d37f78ec86d1"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -28,26 +27,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261019225743",
+    "run_id": "tr-editorial-20261020015709",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-19T22:57:43.957Z",
-    "updated_at": "2026-10-19T23:03:46.034Z",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-20T01:57:09+02:00",
+    "updated_at": "2026-10-20T02:05:13+02:00",
+    "finished_at": "2026-10-20T02:05:13+02:00",
+    "current": 3,
+    "total": 3,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Cuatro revisiones explained verificadas en tres fichas: gala 13, GetafeRayo+djené y Nacho Gil. Cola 4 → 0. Incidencia intermedia de ficha Nacho reconciliada; sin pendientes textuales, imágenes ni Telegram.",
+    "message": "Pasada 3/3 cerrada: #MCCLegends r2 explicada; Paula r0 y Kiko r0 enlazadas al grupo ya explicado de La isla. Cola final 0, preparing/update 0 y rewrite_pending 0. Sin ImageGen ni Telegram editorial.",
     "incident_count": 1,
     "incidents": [
       {
-        "trend_id": "ade467a17048",
-        "revision": 0,
-        "reason": "intermediate_persistence_incomplete_reconciled",
+        "at": "2026-10-20T02:02:57+02:00",
+        "phase": "persisting",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "reason": "concurrent_sha_conflict_explained",
         "resolved": true,
-        "detail": "Request guardada; faltaba ficha tras primera escritura. Se restauró misma revisión/texto/fecha y se verificó antes de retirar cola."
+        "detail": "El reparador visual actualizó telegram-manual-explained.json entre lectura y escritura. Se releyó main y se reaplicó solo la ampliación del grupo sin perder cambios concurrentes."
       }
     ],
     "ratings_snapshot": {
@@ -59,102 +61,22 @@
     },
     "remate_selections": [
       {
-        "trend_id": "d0b77011bcc7",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": 1,
-            "total": 8.6,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.9,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 2,
-            "total": 7.1,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -1
-          },
-          {
-            "id": 3,
-            "total": 7.9,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 4,
-            "total": 8.9,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 2,
-            "punch": 2,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 5,
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.3,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": 4,
-        "selected_score": 8.9,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "e9f3f719cfa1",
-        "revision": 0,
+        "trend_id": "fc1e4bc8ee32",
+        "revision": 2,
         "candidate_count": 5,
         "candidates": [
           {
             "id": 1,
             "total": 8.8,
-            "ratings_affinity": 2.4,
+            "ratings_affinity": 2.3,
             "trend_specificity": 2,
-            "punch": 1.9,
-            "originality": 1.5,
+            "punch": 1.8,
+            "originality": 1.7,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": 2,
-            "total": 8.3,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 3,
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.4,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 4,
             "total": 8,
             "ratings_affinity": 2.1,
             "trend_specificity": 1.9,
@@ -164,12 +86,32 @@
             "repetition_penalty": 0
           },
           {
-            "id": 5,
+            "id": 3,
             "total": 7.7,
-            "ratings_affinity": 2.1,
+            "ratings_affinity": 2,
             "trend_specificity": 1.8,
-            "punch": 1.5,
+            "punch": 1.6,
             "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 4,
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.4,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": 5,
+            "total": 7.1,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.3,
+            "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": 0
           }
@@ -177,247 +119,143 @@
         "selected_candidate": 1,
         "selected_score": 8.8,
         "no_remate_reason": null
-      },
-      {
-        "trend_id": "ade467a17048",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": 1,
-            "total": 8.9,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 2,
-            "punch": 2,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 2,
-            "total": 8.2,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 3,
-            "total": 8.1,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 4,
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": 5,
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": 1,
-        "selected_score": 8.9,
-        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-19T22:59:18.843Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "d0b77011bcc7",
-        "title": "#laisladelastentaciones13",
-        "message": "Cinco enfoques evaluados; gana correo del corazón con hélices (8,9), propio del dron de esta gala. Se penaliza equipaje emocional por cliché; sin repetir cierres recientes."
-      },
-      {
-        "at": "2026-10-19T22:59:21.609Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "d0b77011bcc7",
-        "title": "#laisladelastentaciones13",
-        "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-      },
-      {
-        "at": "2026-10-19T22:59:26.505Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "d0b77011bcc7",
-        "title": "#laisladelastentaciones13",
-        "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-      },
-      {
-        "at": "2026-10-19T22:59:33.077Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "d0b77011bcc7",
-        "title": "#laisladelastentaciones13",
-        "message": "Fichas y requests verificadas; retirando solo las revisiones explicadas de la cola."
-      },
-      {
-        "at": "2026-10-19T22:59:46.432Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo",
-        "message": "Gala r0 explicada y verificada, cola 4 → 3. Releyendo #GetafeRayo, djené y Nacho Gil para comprobar si corresponden al mismo partido."
-      },
-      {
-        "at": "2026-10-19T22:59:53.092Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo",
-        "message": "Contrastando resultado final del Getafe–Rayo y motivo de Djené/Nacho Gil; no agrupar por mero lote."
-      },
-      {
-        "at": "2026-10-19T23:00:29.759Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo · djené",
-        "message": "Resultado final 1-1 comprobado en LaLiga y crónicas. #GetafeRayo + djené se agrupan por mismo partido; Nacho Gil queda fuera. No precisar roja directa/doble amarilla porque las crónicas discrepan."
-      },
-      {
-        "at": "2026-10-19T23:00:31.105Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo · djené",
-        "message": "Cinco candidatos evaluados: gana descuento de un jugador (8,8), juego fútbol/número de futbolistas vinculado a la expulsión; sin lesiones ni desenlace inventado."
-      },
-      {
-        "at": "2026-10-19T23:00:33.552Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo",
-        "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-      },
-      {
-        "at": "2026-10-19T23:00:39.476Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo",
-        "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-      },
-      {
-        "at": "2026-10-19T23:00:44.832Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "e9f3f719cfa1",
-        "title": "#GetafeRayo",
-        "message": "Fichas y requests verificadas; retirando solo las revisiones explicadas de la cola."
-      },
-      {
-        "at": "2026-10-19T23:00:53.701Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Grupo #GetafeRayo + djené verificado explained r0, una ficha y dos requests; cola 3 → 1. Releyendo Nacho Gil."
-      },
-      {
-        "at": "2026-10-19T23:00:56.072Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Contrastando 1-1 Celta Fortuna–Tenerife, gol de Nacho Gil y penalti final fallado; confirmar final y no confundir homónimos."
-      },
-      {
-        "at": "2026-10-19T23:01:22.926Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Final 1-1 confirmado por CD Tenerife y AS. Nacho Gil marcó el empate y erró el penalti del 93 tras resbalar; redactando sin atribuir lesión."
-      },
-      {
-        "at": "2026-10-19T23:01:24.181Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Cinco enfoques evaluados: gana tres puntos por la suela (8,9), imagen breve del resbalón verificado; no reutiliza metáforas recientes."
-      },
-      {
-        "at": "2026-10-19T23:01:26.501Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-      },
-      {
-        "at": "2026-10-19T23:01:30.092Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-      },
-      {
-        "at": "2026-10-19T23:01:54.168Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Detectada escritura intermedia incompleta: request explicada pero falta ficha de Nacho Gil. Reconciliando misma revisión y mismo texto antes de retirar cola."
-      },
-      {
-        "at": "2026-10-19T23:02:07.011Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "ade467a17048",
-        "title": "Nacho Gil",
-        "message": "Nacho Gil r0 reconciliada sin reescribir: ficha/request idénticas y fuera de cola. Cuatro revisiones cerradas en tres fichas; tendencias 4 → 0."
-      },
-      {
-        "at": "2026-10-19T23:03:46.034Z",
-        "phase": "closing",
-        "event_id": null,
+        "at": "2026-10-20T01:57:09+02:00",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cuatro revisiones explained verificadas en tres fichas: gala 13, GetafeRayo+djené y Nacho Gil. Cola 4 → 0. Incidencia intermedia de ficha Nacho reconciliada; sin pendientes textuales, imágenes ni Telegram."
+        "message": "Cola inicial 3. Revalidando estado autoritativo y preparando saneamiento visual independiente; sin ImageGen editorial."
+      },
+      {
+        "at": "2026-10-20T01:58:20+02:00",
+        "phase": "verifying",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Releyendo estado autoritativo de #MCCLegends r2 antes de investigar."
+      },
+      {
+        "at": "2026-10-20T01:58:47+02:00",
+        "phase": "investigating",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Fuente oficial RTVE confirma la gala 7 en emisión; contrastando el detonante concreto y manteniendo Paula/Kiko fuera del grupo hasta verificar relación."
+      },
+      {
+        "at": "2026-10-20T02:00:20+02:00",
+        "phase": "drafting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Hecho esencial verificado en RTVE y segunda fuente: gala 7 en directo, nueve aspirantes y prueba de eliminación de sushi fusión y coctelería. Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-20T02:00:35+02:00",
+        "phase": "drafting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Comprobando límite de X: explicación completa con dos hashtags y remate queda en 243 caracteres Unicode, por debajo del máximo configurado."
+      },
+      {
+        "at": "2026-10-20T02:00:53+02:00",
+        "phase": "remate_selection",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Cinco enfoques evaluados con el historial de ratings; seleccionado el gag de delantal negro con palillos y coctelera por ser específico de la prueba y no repetir muletillas recientes."
+      },
+      {
+        "at": "2026-10-20T02:01:05+02:00",
+        "phase": "persisting",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "Ficha Explicada r2 guardada; sincronizada la request exacta con el mismo texto, remate y fecha."
+      },
+      {
+        "at": "2026-10-20T02:01:28+02:00",
+        "phase": "verifying",
+        "trend_id": "fc1e4bc8ee32",
+        "title": "#MCCLegends",
+        "message": "#MCCLegends r2 verificada en main y retirada de la cola; quedan Paula r0 y Kiko r0."
+      },
+      {
+        "at": "2026-10-20T02:02:00+02:00",
+        "phase": "verifying",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "Releídas y validadas Paula r0 y Kiko r0 justo antes de tratarlas; ambas siguen preparing."
+      },
+      {
+        "at": "2026-10-20T02:02:10+02:00",
+        "phase": "investigating",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "Mediaset y FormulaTV confirman que Paula y Kico protagonizan los dos cara a cara de la misma entrega de La isla ya explicada esta noche."
+      },
+      {
+        "at": "2026-10-20T02:02:15+02:00",
+        "phase": "drafting",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "No se redacta una tarjeta nueva: la explicación existente ya contiene exactamente Náyades–Paula y Kico–Fran; se enlazan ambas revisiones al grupo vigente."
+      },
+      {
+        "at": "2026-10-20T02:02:57+02:00",
+        "phase": "persisting",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "Conflicto SHA concurrente al guardar Explicadas; relectura fresca preservó la reparación visual y reintentó solo la ampliación del grupo."
+      },
+      {
+        "at": "2026-10-20T02:03:20+02:00",
+        "phase": "persisting",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "Grupo existente ampliado con Paula r0 y Kiko r0; requests sincronizadas con el mismo texto, remate, fecha y group_id."
+      },
+      {
+        "at": "2026-10-20T02:03:48+02:00",
+        "phase": "verifying",
+        "trend_id": "0c086cdc772a",
+        "title": "paula · Kiko",
+        "message": "Paula r0 y Kiko r0 verificadas contra la ficha de grupo y retiradas de la cola."
+      },
+      {
+        "at": "2026-10-20T02:04:15+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: editorial-queue count 0, ninguna request preparing/update, rewrite_pending 0 y ninguna Explicada reciente sin remate pendiente."
+      },
+      {
+        "at": "2026-10-20T02:05:13+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 3/3 cerrada: #MCCLegends r2 explicada; Paula r0 y Kiko r0 enlazadas al grupo ya explicado de La isla. Cola final 0, preparing/update 0 y rewrite_pending 0. Sin ImageGen ni Telegram editorial."
       }
     ],
-    "finished_at": "2026-10-19T23:03:45.714Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "4992c61c51cb391185ecef228b5ec050cf2f231f",
+    "verification": {
+      "queue_sha": "3700fdd65709aa27f6cb0f98ecd794aa391c305c",
+      "requests_sha": "5c6b37f0800a6e00d566a53f185ba4e4b360d024",
+      "explained_sha": "7b7e46dafedb2d88717e226883dc260bb6085417"
+    },
     "summary": {
-      "initial_compact_queue": 4,
-      "initial_active_requests": 4,
+      "initial_compact_queue": 3,
+      "initial_active_requests": 3,
       "final_compact_queue": 0,
-      "attempted": 4,
-      "explained": 4,
-      "explanation_groups": 3,
+      "attempted": 3,
+      "explained": 3,
+      "explanation_groups": 2,
+      "new_explanations": 1,
+      "grouped_into_existing_card": 2,
       "processed_ids": [
-        "d0b77011bcc7",
-        "e9f3f719cfa1",
-        "ad7a75826c85",
-        "ade467a17048"
+        "fc1e4bc8ee32",
+        "0c086cdc772a",
+        "d37f78ec86d1"
       ],
       "remaining_active": 0,
       "problematic_reviewed": 0,
@@ -425,28 +263,59 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 1,
-      "partial": false
+      "partial": false,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
+      "remates_reused": 2
     },
+    "final_outcomes": [
+      {
+        "id": "fc1e4bc8ee32",
+        "revision": 2,
+        "name": "#MCCLegends",
+        "status": "explained",
+        "group_id": "grp-fc1e4bc8ee32-r2",
+        "explained_at": "2026-10-20T02:01:05+02:00"
+      },
+      {
+        "id": "0c086cdc772a",
+        "revision": 0,
+        "name": "paula",
+        "status": "explained",
+        "group_id": "grp-d0b77011bcc7",
+        "explained_at": "2026-10-19T22:59:20.060Z"
+      },
+      {
+        "id": "d37f78ec86d1",
+        "revision": 0,
+        "name": "Kiko",
+        "status": "explained",
+        "group_id": "grp-d0b77011bcc7",
+        "explained_at": "2026-10-19T22:59:20.060Z"
+      }
+    ],
     "persistence": {
       "mode": "explanation_only_direct",
-      "reason": "No invocar workflow chat-outbox que dispara Telegram; persistencia directa vigente, archivos sincronizados."
+      "imagegen_calls": 0,
+      "telegram_sends": 0
     }
   },
-  "run_id": "tr-editorial-20261019225743",
+  "run_id": "tr-editorial-20261020015709",
   "summary": {
-    "initial_compact_queue": 4,
-    "initial_active_requests": 4,
+    "initial_compact_queue": 3,
+    "initial_active_requests": 3,
     "final_compact_queue": 0,
-    "attempted": 4,
-    "explained": 4,
-    "explanation_groups": 3,
+    "attempted": 3,
+    "explained": 3,
+    "explanation_groups": 2,
+    "new_explanations": 1,
+    "grouped_into_existing_card": 2,
     "processed_ids": [
-      "d0b77011bcc7",
-      "e9f3f719cfa1",
-      "ad7a75826c85",
-      "ade467a17048"
+      "fc1e4bc8ee32",
+      "0c086cdc772a",
+      "d37f78ec86d1"
     ],
     "remaining_active": 0,
     "problematic_reviewed": 0,
@@ -454,171 +323,126 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 1,
-    "partial": false
+    "partial": false,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 1,
+    "remates_reused": 2
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-19T22:59:18.843Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "d0b77011bcc7",
-      "title": "#laisladelastentaciones13",
-      "message": "Cinco enfoques evaluados; gana correo del corazón con hélices (8,9), propio del dron de esta gala. Se penaliza equipaje emocional por cliché; sin repetir cierres recientes."
-    },
-    {
-      "at": "2026-10-19T22:59:21.609Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "d0b77011bcc7",
-      "title": "#laisladelastentaciones13",
-      "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-    },
-    {
-      "at": "2026-10-19T22:59:26.505Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "d0b77011bcc7",
-      "title": "#laisladelastentaciones13",
-      "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-    },
-    {
-      "at": "2026-10-19T22:59:33.077Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "d0b77011bcc7",
-      "title": "#laisladelastentaciones13",
-      "message": "Fichas y requests verificadas; retirando solo las revisiones explicadas de la cola."
-    },
-    {
-      "at": "2026-10-19T22:59:46.432Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo",
-      "message": "Gala r0 explicada y verificada, cola 4 → 3. Releyendo #GetafeRayo, djené y Nacho Gil para comprobar si corresponden al mismo partido."
-    },
-    {
-      "at": "2026-10-19T22:59:53.092Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo",
-      "message": "Contrastando resultado final del Getafe–Rayo y motivo de Djené/Nacho Gil; no agrupar por mero lote."
-    },
-    {
-      "at": "2026-10-19T23:00:29.759Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo · djené",
-      "message": "Resultado final 1-1 comprobado en LaLiga y crónicas. #GetafeRayo + djené se agrupan por mismo partido; Nacho Gil queda fuera. No precisar roja directa/doble amarilla porque las crónicas discrepan."
-    },
-    {
-      "at": "2026-10-19T23:00:31.105Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo · djené",
-      "message": "Cinco candidatos evaluados: gana descuento de un jugador (8,8), juego fútbol/número de futbolistas vinculado a la expulsión; sin lesiones ni desenlace inventado."
-    },
-    {
-      "at": "2026-10-19T23:00:33.552Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo",
-      "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-    },
-    {
-      "at": "2026-10-19T23:00:39.476Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo",
-      "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-    },
-    {
-      "at": "2026-10-19T23:00:44.832Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "e9f3f719cfa1",
-      "title": "#GetafeRayo",
-      "message": "Fichas y requests verificadas; retirando solo las revisiones explicadas de la cola."
-    },
-    {
-      "at": "2026-10-19T23:00:53.701Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Grupo #GetafeRayo + djené verificado explained r0, una ficha y dos requests; cola 3 → 1. Releyendo Nacho Gil."
-    },
-    {
-      "at": "2026-10-19T23:00:56.072Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Contrastando 1-1 Celta Fortuna–Tenerife, gol de Nacho Gil y penalti final fallado; confirmar final y no confundir homónimos."
-    },
-    {
-      "at": "2026-10-19T23:01:22.926Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Final 1-1 confirmado por CD Tenerife y AS. Nacho Gil marcó el empate y erró el penalti del 93 tras resbalar; redactando sin atribuir lesión."
-    },
-    {
-      "at": "2026-10-19T23:01:24.181Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Cinco enfoques evaluados: gana tres puntos por la suela (8,9), imagen breve del resbalón verificado; no reutiliza metáforas recientes."
-    },
-    {
-      "at": "2026-10-19T23:01:26.501Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Guardando ficha Explicada por persistencia directa explanation_only; no activar el transporte que despacha Telegram."
-    },
-    {
-      "at": "2026-10-19T23:01:30.092Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Sincronizando requests del grupo con texto, cierre, fecha e identificadores exactos."
-    },
-    {
-      "at": "2026-10-19T23:01:54.168Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Detectada escritura intermedia incompleta: request explicada pero falta ficha de Nacho Gil. Reconciliando misma revisión y mismo texto antes de retirar cola."
-    },
-    {
-      "at": "2026-10-19T23:02:07.011Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "ade467a17048",
-      "title": "Nacho Gil",
-      "message": "Nacho Gil r0 reconciliada sin reescribir: ficha/request idénticas y fuera de cola. Cuatro revisiones cerradas en tres fichas; tendencias 4 → 0."
-    },
-    {
-      "at": "2026-10-19T23:03:46.034Z",
-      "phase": "closing",
-      "event_id": null,
+      "at": "2026-10-20T01:57:09+02:00",
+      "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cuatro revisiones explained verificadas en tres fichas: gala 13, GetafeRayo+djené y Nacho Gil. Cola 4 → 0. Incidencia intermedia de ficha Nacho reconciliada; sin pendientes textuales, imágenes ni Telegram."
+      "message": "Cola inicial 3. Revalidando estado autoritativo y preparando saneamiento visual independiente; sin ImageGen editorial."
+    },
+    {
+      "at": "2026-10-20T01:58:20+02:00",
+      "phase": "verifying",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Releyendo estado autoritativo de #MCCLegends r2 antes de investigar."
+    },
+    {
+      "at": "2026-10-20T01:58:47+02:00",
+      "phase": "investigating",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Fuente oficial RTVE confirma la gala 7 en emisión; contrastando el detonante concreto y manteniendo Paula/Kiko fuera del grupo hasta verificar relación."
+    },
+    {
+      "at": "2026-10-20T02:00:20+02:00",
+      "phase": "drafting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Hecho esencial verificado en RTVE y segunda fuente: gala 7 en directo, nueve aspirantes y prueba de eliminación de sushi fusión y coctelería. Redactando explicación factual."
+    },
+    {
+      "at": "2026-10-20T02:00:35+02:00",
+      "phase": "drafting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Comprobando límite de X: explicación completa con dos hashtags y remate queda en 243 caracteres Unicode, por debajo del máximo configurado."
+    },
+    {
+      "at": "2026-10-20T02:00:53+02:00",
+      "phase": "remate_selection",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Cinco enfoques evaluados con el historial de ratings; seleccionado el gag de delantal negro con palillos y coctelera por ser específico de la prueba y no repetir muletillas recientes."
+    },
+    {
+      "at": "2026-10-20T02:01:05+02:00",
+      "phase": "persisting",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "Ficha Explicada r2 guardada; sincronizada la request exacta con el mismo texto, remate y fecha."
+    },
+    {
+      "at": "2026-10-20T02:01:28+02:00",
+      "phase": "verifying",
+      "trend_id": "fc1e4bc8ee32",
+      "title": "#MCCLegends",
+      "message": "#MCCLegends r2 verificada en main y retirada de la cola; quedan Paula r0 y Kiko r0."
+    },
+    {
+      "at": "2026-10-20T02:02:00+02:00",
+      "phase": "verifying",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "Releídas y validadas Paula r0 y Kiko r0 justo antes de tratarlas; ambas siguen preparing."
+    },
+    {
+      "at": "2026-10-20T02:02:10+02:00",
+      "phase": "investigating",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "Mediaset y FormulaTV confirman que Paula y Kico protagonizan los dos cara a cara de la misma entrega de La isla ya explicada esta noche."
+    },
+    {
+      "at": "2026-10-20T02:02:15+02:00",
+      "phase": "drafting",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "No se redacta una tarjeta nueva: la explicación existente ya contiene exactamente Náyades–Paula y Kico–Fran; se enlazan ambas revisiones al grupo vigente."
+    },
+    {
+      "at": "2026-10-20T02:02:57+02:00",
+      "phase": "persisting",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "Conflicto SHA concurrente al guardar Explicadas; relectura fresca preservó la reparación visual y reintentó solo la ampliación del grupo."
+    },
+    {
+      "at": "2026-10-20T02:03:20+02:00",
+      "phase": "persisting",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "Grupo existente ampliado con Paula r0 y Kiko r0; requests sincronizadas con el mismo texto, remate, fecha y group_id."
+    },
+    {
+      "at": "2026-10-20T02:03:48+02:00",
+      "phase": "verifying",
+      "trend_id": "0c086cdc772a",
+      "title": "paula · Kiko",
+      "message": "Paula r0 y Kiko r0 verificadas contra la ficha de grupo y retiradas de la cola."
+    },
+    {
+      "at": "2026-10-20T02:04:15+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: editorial-queue count 0, ninguna request preparing/update, rewrite_pending 0 y ninguna Explicada reciente sin remate pendiente."
+    },
+    {
+      "at": "2026-10-20T02:05:13+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada 3/3 cerrada: #MCCLegends r2 explicada; Paula r0 y Kiko r0 enlazadas al grupo ya explicado de La isla. Cola final 0, preparing/update 0 y rewrite_pending 0. Sin ImageGen ni Telegram editorial."
     }
   ],
   "telegram_orphans": 0,
