@@ -197,10 +197,18 @@ function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
  if(state.tab==='elaboracion'){
-  return (state.data.editorialQueue?.items||[])
+  const queued=(state.data.editorialQueue?.items||[])
    .filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())&&!trendClosed(x))
    .map(x=>({...x,title:String(x.name||x.title||x.id),_kind:'tr',_id:String(x.id||''),
       _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
+  const seen=new Set(queued.map(x=>String(x._id)));
+  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttendencias'&&
+   (op.decision==='prepare'||op.decision==='rework')&&
+   ['sending','submitted','awaiting_github'].includes(op.status)&&!seen.has(String(op.id)))
+   .map(op=>({...op.snapshot,id:op.id,title:op.snapshot?.title||op.id,
+     _kind:'tr',_id:String(op.id),_status:'PENDIENTE DE CONFIRMACIÓN',
+     _queuedAt:new Date(op.at).toISOString(),_working:true}));
+  return [...pending,...queued];
  }
  if(state.tab==='top'||state.tab==='pendientes'){
   try{
@@ -520,7 +528,7 @@ function isTemporarilyRemoved(item){
  // Prepare moves a card between sections. Only hide its stale source card:
  // after GitHub confirms PROCESSING/READY, the target card must stay visible.
  if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
- if(op.decision==='rework')return item._status==='EXPLICADA';
+ if(op.decision==='rework')return item._status==='EXPLICADA'&&Number(item.revision||0)<=op.revision;
  return true;
 }
 async function refreshPilotConnection(){
