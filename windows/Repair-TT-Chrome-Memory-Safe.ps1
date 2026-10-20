@@ -177,6 +177,13 @@ try {
     & $node $prune --apply 2>&1 | ForEach-Object { Say ('PRUNE ' + $_) }
     Say ('SAFE_PRUNE_EXIT ' + $LASTEXITCODE)
   }
+  $afterChrome = @(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" -ErrorAction SilentlyContinue)
+  $afterPrivate = ($afterChrome | Measure-Object -Property PrivatePageCount -Sum).Sum
+  Say ('AFTER chrome_processes=' + $afterChrome.Count + ' total_private_GB=' + [math]::Round([double]$afterPrivate/1GB,2))
+  try {
+    $afterMemory = Get-CimInstance Win32_PerfFormattedData_PerfOS_Memory -ErrorAction Stop
+    Say ('AFTER committed_GB=' + [math]::Round([double]$afterMemory.CommittedBytes/1GB,2) + ' commit_limit_GB=' + [math]::Round([double]$afterMemory.CommitLimit/1GB,2))
+  } catch {}
   Say 'REPAIR_END no Chrome process killed; 9234 untouched'
 } catch {
   Say ('REPAIR_ERROR ' + $_.Exception.Message)
