@@ -120,98 +120,56 @@
       ]
     }
   },
-  "run_id": "tr-editorial-20261020224954-chat",
+  "run_id": "tr-editorial-20261020231800-chat",
   "summary": {
-    "attempted": 5,
+    "attempted": 0,
     "ready": 0,
-    "explained": 5,
-    "explanation_groups": 1,
-    "duplicates_closed": 4,
+    "explained": 0,
+    "explanation_groups": 0,
+    "duplicates_closed": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 5,
+    "initial_compact_queue": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
-    "visual_backlog": 1,
+    "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T22:49:54+02:00",
+      "at": "2026-10-20T23:18:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada directa: 5 revisiones activas en preparing; comprobando agrupación, estado fresco y ratings."
+      "message": "Iniciando pasada directa: cola compacta 0; releyendo radar y estado autoritativo antes de cerrar."
     },
     {
-      "at": "2026-10-20T22:50:10+02:00",
-      "phase": "verifying",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Barrera JIT superada: las cinco revisiones siguen activas y el radar está fresco."
+      "at": "2026-10-20T23:18:40+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-20T22:50:25+02:00",
-      "phase": "investigating",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Verificado el detonante común del PSG-Barça y el 2-1 final del PSG."
-    },
-    {
-      "at": "2026-10-20T22:50:40+02:00",
-      "phase": "drafting",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Redactada una sola explicación agrupada para Ferran, Doué, Joan García, Dembele y #PSGbarca; 228 caracteres."
-    },
-    {
-      "at": "2026-10-20T22:50:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Cinco candidatos evaluados; elegido un remate específico del reencuentro de Ferran y las paradas de Joan García."
-    },
-    {
-      "at": "2026-10-20T22:51:00+02:00",
-      "phase": "persisting",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Persistiendo primero la ficha líder y después enlazando las cuatro revisiones restantes al mismo grupo."
-    },
-    {
-      "at": "2026-10-20T22:53:25+02:00",
-      "phase": "persisting",
-      "trend_id": "f5060a515233",
-      "title": "Ferran",
-      "message": "Ficha líder persistida; cola reducida de 5 a 4."
-    },
-    {
-      "at": "2026-10-20T22:56:45+02:00",
-      "phase": "persisting",
-      "trend_id": "53043f52bd60",
-      "title": "#PSGbarca",
-      "message": "Las cuatro revisiones restantes quedaron enlazadas al grupo único del PSG-Barça."
-    },
-    {
-      "at": "2026-10-20T22:57:08+02:00",
+      "at": "2026-10-20T23:19:20+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura de main completada: las cinco revisiones están explained, el texto y el remate coinciden y la cola está vacía."
+      "message": "Radar fresco de las 23:11 revalidado; Top 10 leído y cola editorial sigue en 0."
     },
     {
-      "at": "2026-10-20T22:57:08+02:00",
+      "at": "2026-10-20T23:20:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada 5/5 cerrada y verificada. Un solo grupo editorial; reparación visual independiente lanzada."
+      "message": "Pasada 0/0 cerrada: no queda trabajo editorial activo en la cola autoritativa."
     }
   ],
   "telegram_orphans": 0,
@@ -220,6 +178,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-20T22:51:03+02:00"
+    "captured_at": "2026-10-20T23:11:14+02:00"
   }
 }
