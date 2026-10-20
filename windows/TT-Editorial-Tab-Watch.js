@@ -172,7 +172,10 @@ async function sweep(){
         continue;
       }
       const now=Date.now();
-      if(!j.landingIdleSince)j.landingIdleSince=now;
+      if(!j.landingIdleSince){
+        j.landingIdleSince=now;
+        log('LANDING_IDLE_START '+j.id.slice(0,18)+' age_min='+Math.floor((now-j.created)/60000));
+      }
       if(!j.lastLandingSampleAt||now-j.lastLandingSampleAt>=60000){
         j.landingSamples=Number(j.landingSamples||0)+1;
         j.lastLandingSampleAt=now;
