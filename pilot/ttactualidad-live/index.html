@@ -139,7 +139,21 @@ async function load(force=false){
    render();
   }catch(e){errors.push(String(e))}
  }
- const wanted=fields[app].filter(path=>path!==radarPath);
+ // Display the tiny editorial queue before large explanation ledgers.
+ // This keeps "En elaboración" responsive immediately after a rework.
+ const queuePath=app==='tr'?'trends/editorial-queue.json':null;
+ if(queuePath){
+  try{
+   const queue=await fetchJson(queuePath,force);
+   if(revision!==loadRevision||app!==state.app)return;
+   const old=state.data.editorialQueue;
+   const incomingAt=Date.parse(queue.updated_at||'')||0;
+   const existingAt=Date.parse(old?.updated_at||'')||0;
+   state.data={...state.data,editorialQueue:existingAt>incomingAt?old:queue};
+   render();
+  }catch(e){errors.push(String(e))}
+ }
+ const wanted=fields[app].filter(path=>path!==radarPath&&path!==queuePath);
  const output=await Promise.all(wanted.map(async path=>{
   try{return [aliases[path],await fetchJson(path,force)]}
   catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}
@@ -201,17 +215,32 @@ function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
  if(state.tab==='elaboracion'){
-  const queued=(state.data.editorialQueue?.items||[])
-   .filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())&&!trendClosed(x))
+  // The small editorial queue is preferred, but the persisted request is
+  // also authoritative. A slow/blocked queue download must not hide work.
+  const active=x=>['preparing','update'].includes(String(x.status||'').toLowerCase());
+  const queued=(state.data.editorialQueue?.items||[]).filter(active);
+  const byId=new Map(queued.map(x=>[String(x.id||''),x]));
+  for(const req of requests){
+   if(active(req)&&String(req.id||'')&&!byId.has(String(req.id))){
+    byId.set(String(req.id),req);
+   }
+  }
+  const activeRows=[...byId.values()].filter(x=>!trendClosed(x))
    .map(x=>({...x,title:String(x.name||x.title||x.id),_kind:'tr',_id:String(x.id||''),
       _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
-  const seen=new Set(queued.map(x=>String(x._id)));
-  const awaiting=[...pendingDeletes.values()].filter(op=>op.project==='ttendencias'&&op.decision==='prepare'&&
-   ['sending','submitted'].includes(op.status)&&!seen.has(String(op.id)))
-   .map(op=>({...op.snapshot,id:op.id,title:op.snapshot?.title||op.id,
-    _kind:'tr',_id:String(op.id),_status:'PENDIENTE DE CONFIRMACIÓN',
+  const seen=new Set(activeRows.map(x=>String(x._id)));
+  // Rework moves an EXPLICADA card to drafting. Never leave a blank screen
+  // while GitHub updates or large ledgers are still downloading.
+  const awaiting=[...pendingDeletes.values()].filter(op=>
+   op.project==='ttendencias'&&['prepare','rework'].includes(op.decision)&&
+   ['sending','submitted','confirmed'].includes(op.status)&&!seen.has(String(op.id))&&
+   !(state.data.requests?.requests||[]).some(req=>String(req.id||'')===String(op.id)&&
+      Number(req.revision||0)>Number(op.revision||0)&&!active(req)))
+   .map(op=>({...op.snapshot,id:op.id,name:op.snapshot?.trend_name||op.snapshot?.title||op.id,
+    title:op.snapshot?.title||op.id,revision:op.revision+1,
+    _kind:'tr',_id:String(op.id),_status:op.status==='confirmed'?'EN ELABORACIÓN':'PENDIENTE DE CONFIRMACIÓN',
     _queuedAt:new Date(op.at).toISOString(),_working:true}));
-  return [...awaiting,...queued];
+  return [...awaiting,...activeRows];
  }
  if(state.tab==='top'||state.tab==='pendientes'){
   try{
