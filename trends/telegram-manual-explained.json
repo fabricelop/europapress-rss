@@ -60234,7 +60234,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -60298,9 +60297,30 @@
           "revision": 0
         }
       ],
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://pbs.twimg.com/amplify_video_thumb/2112423996759080960/img/qt2O02xKqO6C8qus?format=webp&name=large",
+        "source": "La Hora de La 1 (cuenta oficial)",
+        "source_url": "https://x.com/LaHoraTVE/status/2112424097896632791",
+        "alt": "Imagen de archivo relacionada con #LaHora20O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://pbs.twimg.com/amplify_video_thumb/2112423996759080960/img/qt2O02xKqO6C8qus?format=webp&name=large",
+        "source": "La Hora de La 1 (cuenta oficial)",
+        "source_url": "https://x.com/LaHoraTVE/status/2112424097896632791",
+        "alt": "Imagen de archivo relacionada con #LaHora20O",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-20T08:08:56.107Z",
+  "updated_at": "2026-10-20T08:10:26.744467Z",
   "count": 1028
 }
