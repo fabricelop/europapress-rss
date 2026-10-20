@@ -169,7 +169,7 @@ function ttiRows(){
   const fresh=queue.filter(q=>['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
   const seen=new Set(fresh.map(q=>String(q.event_id||'')));
   const rows=Array.isArray(state.data.ttiQueue?.items) ? fresh : [...fresh,...(snap.processing_items||state.data.processing?.items||[]).filter(x=>!seen.has(String(x.event_id||'')))];
-  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttittulares'&&op.decision==='prepare'&&
+  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttittulares'&&(op.decision==='prepare'||op.decision==='rework')&&
     ['sending','submitted'].includes(op.status)&&!seen.has(op.id)&&
     !(state.data.prepared?.items||[]).some(x=>String(x.event_id||'')===op.id))
    .map(op=>({...op.snapshot,event_id:op.id,title:op.snapshot?.title||op.id,
@@ -520,6 +520,7 @@ function isTemporarilyRemoved(item){
  // Prepare moves a card between sections. Only hide its stale source card:
  // after GitHub confirms PROCESSING/READY, the target card must stay visible.
  if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
+ if(op.decision==='rework')return item._status==='EXPLICADA';
  return true;
 }
 async function refreshPilotConnection(){
@@ -607,6 +608,8 @@ function confirmedAction(op,docs){
   if(op.decision==='deleted')return state?.status==='deleted';
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
   if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
+  if(op.decision==='rework')return ['preparing','update'].includes(String(q?.status||'').toLowerCase())&&
+   !(manual.items||[]).some(x=>String(x.id||'')===id&&String(x.status||'').toLowerCase()==='explained');
  }
  return false;
 }
@@ -646,7 +649,7 @@ async function checkPendingDeletes(){
    const outcome=confirmedAction(op,docs);
    if(outcome){
     op.status='confirmed';changed=true;
-    if(op.decision==='prepare'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
+    if(op.decision==='prepare'||op.decision==='rework'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
     if(op.decision==='deleted')confirmedDelete=true;
    }else if(Date.now()-op.at>20*60000){
     pendingDeletes.delete(op.key);changed=true;failed=true;
@@ -671,7 +674,7 @@ function schedulePendingChecks(){
 }
 function emergencyGithubIssueUrl(project,id,decision,title){
  const action=decision==='discard'?'dismissed':decision;
- if(!['deleted','prepare','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
+ if(!['deleted','prepare','rework','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
  const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
  const fields=new URLSearchParams({title:issueTitle,body});
@@ -728,6 +731,7 @@ async function emergencyPair(){
 }
 async function sendEmergencyDirect(item,decision){
  const project=itemProject(item),id=String(item._id||''),key=removeKey(project,id);
+ if(decision==='rework'&&!confirm('¿Retirar esta tendencia de Listas y elaborar de cero un texto, remate y foto de archivo nuevos?'))return;
  const issueURL=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
  if(!issueURL){showToast('No se puede ejecutar: identificador no admitido');return}
  const existing=pendingDeletes.get(key);
@@ -764,7 +768,9 @@ async function sendEmergencyDirect(item,decision){
   pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),
    decision,at:now,lastTry:now,tries:1,issue_number:Number(data.number),
    status:'awaiting_github',snapshot});
-  savePending();render();
+  savePending();
+  if(decision==='rework'){state.tab='elaboracion';}
+  render();
   showToast('Orden recibida. Verificando el cambio real…');
   schedulePendingChecks();
   void checkPendingDeletes();
@@ -781,7 +787,7 @@ async function pilotSend(item,decision){
  if(!directPilot.real){showToast('Edición GitHub no conectada');return}
  const project=itemProject(item),event_id=String(item._id||'');
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador no válido');return}
- const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':'Pasar a En Elaboración';
+ const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
  const key=hideOptimistically(item,decision),op=pendingDeletes.get(key);
  try{
@@ -793,7 +799,7 @@ async function pilotSend(item,decision){
   if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
   if(!result.routed){restoreOptimistic(key,'GitHub no recibió la orden.');return}
   op.status='submitted';op.lastTry=Date.now();op.tries=1;savePending();
-  if(decision==='prepare'){state.tab='elaboracion';render();}
+  if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}
   showToast(decision==='prepare'?'Noticia pendiente de confirmación en GitHub.':'Orden enviada. Confirmando cambio editorial en GitHub.');
   schedulePendingChecks();
   void checkPendingDeletes();
@@ -814,7 +820,7 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  if(['prepare','deleted','discard','published'].includes(action)){
+  if(['prepare','deleted','discard','published','rework'].includes(action)){
    if(ON_PAGES)return btn(label,()=>sendEmergencyDirect(x,action),action==='prepare');
    return btn(label,()=>pilotSend(x,action),action==='prepare');
   }
@@ -832,6 +838,9 @@ function rowCard(x,i){
   external('Abrir ChatGPTImages','https://chatgpt.com/images');
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
+  if(x._kind==='tr'&&x._status==='EXPLICADA'){
+   const redo=command('Volver a En elaboración','rework');redo.classList.add('rework');
+  }
   const remove=command('Quitar de Listas','deleted');remove.classList.add('remove');
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   return out;
