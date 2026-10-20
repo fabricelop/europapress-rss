@@ -67,18 +67,8 @@ const DIRECT_URL='https://ttactualidad-decisions-pilot.fabricelop.workers.dev/';
 const ON_PAGES=location.origin==='https://fabricelop.github.io';
 // GitHub Pages is only a fallback: return to the original authenticated editor
 // whenever its health endpoint can be reached from THIS browser. No state-changing request.
-if(ON_PAGES&&!new URLSearchParams(location.search).has('emergency')){
- const ac=new AbortController(),timer=setTimeout(()=>ac.abort(),6000);
- fetch(DIRECT_URL+'health?mobile_reconnect='+Date.now(),{mode:'cors',cache:'no-store',signal:ac.signal})
- .then(r=>r.ok?r.json():null)
- .then(data=>{
-  if(data?.ok===true&&data.kind==='ttactualidad-direct-live'&&data.production_connected===true)
-   location.replace(DIRECT_URL+(location.hash||''));
-  else document.getElementById('access-notice').firstChild.textContent='El Worker original no confirma la edición directa. Este panel de respaldo sigue disponible. ';
- })
- .catch(()=>{document.getElementById('access-notice').firstChild.textContent='El Worker no responde desde esta red. Se mantiene el panel de respaldo. ';})
- .finally(()=>clearTimeout(timer));
-}
+// Pages is the verified interface until the Worker is redeployed with the same controls.
+
 const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
  if(ON_PAGES){document.getElementById('pilot-settings').hidden=true;document.getElementById('emergency-settings').hidden=false;}
 const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
