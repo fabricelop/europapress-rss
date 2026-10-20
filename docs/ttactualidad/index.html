@@ -423,6 +423,10 @@ function trendRows(){
    const explained=Date.parse(row.explained_at||'');
    if(!Number.isFinite(explained)||current-explained>48*3600000||explained-current>3600000)return false;
    if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
+   // A newer revision already in progress invalidates the old Listas card,
+   // including when independent GitHub raw files refresh at different times.
+   if(['preparing','update'].includes(String(req.status||'').toLowerCase())&&
+      Number(req.revision||0)>Number(row.revision||0))return false;
    if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
    if(mobileClosed.has(id))return false;
    if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
