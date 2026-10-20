@@ -2,7 +2,7 @@ import json
 import re
 import unicodedata
 from urllib.parse import parse_qs, unquote, urlparse
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -556,27 +556,89 @@ def lower_rank_stats(source_data, top30):
     return stats
 
 def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, now):
+    """Radar de señales fuera del Top 30 con continuidad entre capturas.
+
+    upcoming es una *vista filtrada*, no un historial. Conservar exclusivamente
+    esa vista hacía que cualquier señal estable, al desaparecer de la vista,
+    regresara falsamente como 'new' y con una sola observación.
+    """
     stats = lower_rank_stats(source_data, top30)
-    previous = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
+    now_iso = now.isoformat(timespec="seconds")
+    expiry = now - timedelta(hours=72)
+    previous_radar = previous_doc.get("radar_history") or {}
+    previous_upcoming = {
+        term_key(x.get("name")): x
+        for x in (previous_doc.get("upcoming") or [])
+        if x.get("name")
+    }
+    history = {}
+
+    def recently_seen(item):
+        raw = item.get("last_seen_at") or item.get("captured_at") or previous_doc.get("captured_at")
+        try:
+            dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=MADRID)
+            return dt >= expiry
+        except (TypeError, ValueError):
+            return False
+
+    for key, item in previous_radar.items():
+        if isinstance(item, dict) and recently_seen(item):
+            history[key] = dict(item)
+
+    # Migración sin pérdida desde la vista anterior a la persistencia nueva.
+    for key, item in previous_upcoming.items():
+        if key not in history:
+            history[key] = {
+                "name": item["name"],
+                "best_observed_rank": item.get("best_observed_rank"),
+                "social_source_count": item.get("social_source_count"),
+                "rank_history": item.get("rank_history") or [],
+                "first_detected_at": item.get("first_detected_at"),
+                "last_seen_at": previous_doc.get("captured_at") or now_iso,
+                "inside_top30": False,
+            }
+
+    # Un tema que estaba en el Top 30 en la captura anterior no puede
+    # llamarse 'nuevo' al salir del Top 30 por un cambio de fuente ancla.
+    for name in (previous_doc.get("top30") or []):
+        key = term_key(name)
+        if key and key not in history:
+            history[key] = {
+                "name": name,
+                "inside_top30": True,
+                "last_seen_at": previous_doc.get("captured_at") or now_iso,
+            }
+
+    for name in top30:
+        key = term_key(name)
+        if not key:
+            continue
+        item = dict(history.get(key) or {})
+        item.update(name=name, inside_top30=True, last_seen_at=now_iso)
+        history[key] = item
+
     rows = []
     for key, row in stats.items():
         news = best_news_signal(row["name"], status_doc, full_events)
         news_count = int((news or {}).get("source_count") or 0)
         social_count = int(row["social_source_count"])
-        if social_count < 2 and not (social_count >= 1 and news_count >= 4):
-            continue
-
-        prev = previous.get(key)
+        prev = history.get(key)
+        previously_in_top30 = bool((prev or {}).get("inside_top30"))
         previous_rank = int((prev or {}).get("best_observed_rank") or 999)
         previous_support = int((prev or {}).get("social_source_count") or 0)
         previous_history = list((prev or {}).get("rank_history") or [])
         current_observation = {
-            "captured_at": now.isoformat(timespec="seconds"),
+            "captured_at": now_iso,
             "best_rank": int(row["best_observed_rank"]),
             "source_count": social_count,
         }
         rank_history = (previous_history + [current_observation])[-8:]
-        if prev is None:
+
+        if previously_in_top30:
+            movement = "down"
+        elif prev is None:
             movement = "new"
         elif row["best_observed_rank"] < previous_rank or social_count > previous_support:
             movement = "up"
@@ -585,13 +647,25 @@ def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, no
         else:
             movement = "flat"
 
-        # Excluir señales estables o descendentes: solo nuevas con respaldo
-        # multifuente o con mejora observable de rango/cobertura.
+        first_detected = (prev or {}).get("first_detected_at") or now_iso
+        history[key] = {
+            "name": row["name"],
+            "best_observed_rank": int(row["best_observed_rank"]),
+            "social_source_count": social_count,
+            "rank_history": rank_history,
+            "first_detected_at": first_detected,
+            "last_seen_at": now_iso,
+            "inside_top30": False,
+        }
+
+        if social_count < 2 and not (social_count >= 1 and news_count >= 4):
+            continue
+
+        # Una señal estable o descendente NO debe renacer como 'new' tras
+        # desaparecer temporalmente de upcoming, que es solo una vista.
         if movement not in {"new", "up"}:
             continue
 
-        # La puntuación solo ordena internamente las señales. La interfaz muestra
-        # los datos observados (fuentes, posición y cobertura), no una probabilidad.
         score = (
             social_count * 20
             + max(0, 51 - int(row["best_observed_rank"])) * 2
@@ -607,7 +681,7 @@ def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, no
             "movement": movement,
             "rank_history": rank_history,
             "observations": len(rank_history),
-            "first_detected_at": (prev or {}).get("first_detected_at") or now.isoformat(timespec="seconds"),
+            "first_detected_at": first_detected,
             "news_source_count": news_count,
             "news_event_id": (news or {}).get("event_id"),
             "news_title": (news or {}).get("title"),
@@ -619,7 +693,11 @@ def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, no
     rows.sort(key=lambda x: (-x["_score"], -x["social_source_count"], x["best_observed_rank"], x["name"].casefold()))
     for row in rows:
         row.pop("_score", None)
-    return rows[:20]
+    # Estado acotado: tres días de observaciones y como máximo 300 señales.
+    trimmed_history = dict(
+        sorted(history.items(), key=lambda item: item[1].get("last_seen_at") or "", reverse=True)[:300]
+    )
+    return rows[:20], trimmed_history
 
 def filter_dismissed_upcoming(rows, requests_doc):
     """No resucitar en Radar una señal que el usuario acaba de desestimar.
@@ -768,7 +846,7 @@ def main():
     ttittulares_status = load_json(TTITTULARES_STATUS, {})
     ttittulares_events_doc = load_json(TTITTULARES_EVENTS, {})
     ttittulares_events = {str(x.get("id")): x for x in (ttittulares_events_doc.get("events") or []) if x.get("id")}
-    upcoming = build_upcoming(source_data, top30, previous_doc, ttittulares_status, ttittulares_events, now)
+    upcoming, radar_history = build_upcoming(source_data, top30, previous_doc, ttittulares_status, ttittulares_events, now)
     upcoming = filter_dismissed_upcoming(upcoming, requests_doc)
     anticipated = anticipated_entries(top10, previous_doc, now)
 
@@ -799,6 +877,7 @@ def main():
         "unchanged_from_previous": unchanged,
         "new_entries": new_entries,
         "upcoming": upcoming,
+        "radar_history": radar_history,
         "anticipated_entries": anticipated,
         "upcoming_method": "outside-top30 + confirmed-social-support + rising-or-new",
         "sources": source_data,
