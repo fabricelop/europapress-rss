@@ -105,6 +105,47 @@ class LiveEditorialTests(unittest.TestCase):
   changed,result=app.apply_live('ttendencias','tr123','prepare',2)
   self.assertEqual(result,'applied')
   self.assertEqual(changed['trends/editorial-queue.json']['items'][0]['status'],'preparing')
+ def test_tr_rework_ready_card_from_scratch_and_fresh_photo(self):
+  old_photo="https://example.test/old-match-score.jpg"
+  self.write('trends/requests.json',{'requests':[{'id':'ferran-test','name':'Ferran',
+   'revision':1,'status':'explained','explanation':'Marcador antiguo',
+   'closer_text':'Remate antiguo','fallback_image':{'url':old_photo},
+   'archive_image':{'url':old_photo},'ai_image':{'url':'https://example.test/old-ai.jpg'},
+   'explained_at':'2026-10-20T20:00:00Z'}]})
+  self.write('trends/telegram-manual-explained.json',{'items':[{
+   'id':'ferran-test','name':'Ferran','revision':1,'status':'explained',
+   'explanation':'Marcador antiguo','explained_at':'2026-10-20T20:00:00Z',
+   'fallback_image':{'url':old_photo}}]})
+  self.write('trends/prepared.json',{'items':[{'id':'ferran-test','revision':1,
+   'image':{'url':old_photo}}]})
+  self.write('trends/telegram-image-deliveries.json',{'items':[{
+   'event_id':'ferran-test','revision':1,'status':'sent'}]})
+  changed,result=app.apply_live('ttendencias','ferran-test','rework',1)
+  self.assertEqual(result,'applied')
+  self.assertFalse(changed['trends/telegram-manual-explained.json']['items'])
+  self.assertFalse(changed['trends/prepared.json']['items'])
+  req=changed['trends/requests.json']['requests'][0]
+  self.assertEqual(req['revision'],2)
+  self.assertEqual(req['status'],'preparing')
+  self.assertEqual(req['fallback_image_status'],'pending')
+  self.assertEqual(req['ai_image_status'],'pending')
+  for field in ('explanation','closer_text','fallback_image','archive_image','ai_image','explained_at'):
+   self.assertNotIn(field,req)
+  self.assertEqual(changed['trends/editorial-queue.json']['items'][0]['revision'],2)
+  self.assertEqual(changed['trends/telegram-image-deliveries.json']['items'][0]['status'],'superseded')
+  self.assertNotIn(old_photo,str(changed['trends/requests.json']))
+ def test_tr_rework_rejects_obsolete_or_already_processing(self):
+  self.write('trends/requests.json',{'requests':[{
+   'id':'ferran-test','name':'Ferran','revision':2,'status':'explained'}]})
+  self.write('trends/telegram-manual-explained.json',{'items':[{
+   'id':'ferran-test','name':'Ferran','revision':2,'status':'explained',
+   'explanation':'Ultimo texto','explained_at':'2026-10-20T21:00:00Z'}]})
+  with self.assertRaises(app.InvalidAction):
+   app.apply_live('ttendencias','ferran-test','rework',1)
+  self.write('trends/editorial-queue.json',{'items':[{
+   'id':'ferran-test','revision':2,'status':'preparing'}]})
+  with self.assertRaises(app.InvalidAction):
+   app.apply_live('ttendencias','ferran-test','rework',2)
  def test_tremending_remove_one_and_preserve_checkpoint(self):
   url1='https://www.publico.es/tremending/noticia-prueba-1.html'
   url2='https://www.publico.es/tremending/noticia-prueba-2.html'
