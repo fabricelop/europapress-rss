@@ -116,7 +116,8 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('trends/telegram-manual-explained.json',{'items':[{
    'id':'ferran-test','name':'Ferran','revision':1,'status':'explained',
    'explanation':'Marcador antiguo','explained_at':'2026-10-20T20:00:00Z',
-   'fallback_image':{'url':old_photo}}]})
+   'fallback_image':{'url':old_photo},
+   'grouped_member_revisions':[{'id':'joan-garcia','revision':0}]}]})
   self.write('trends/prepared.json',{'items':[{'id':'ferran-test','revision':1,
    'image':{'url':old_photo}}]})
   self.write('trends/telegram-image-deliveries.json',{'items':[{
