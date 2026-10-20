@@ -4,57 +4,54 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T09:03:05.266Z",
-  "last_completed_at": "2026-10-20T09:05:42.383Z",
-  "updated_at": "2026-10-20T09:05:42.383Z",
+  "last_started_at": "2026-10-20T09:16:21.000Z",
+  "last_completed_at": "2026-10-20T09:17:39.000Z",
+  "updated_at": "2026-10-20T09:17:39.000Z",
   "status": "success",
-  "processed_ids": [
-    "9cf91d2b480b"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "run_id": 39306386029,
-    "status": "in_progress",
+    "trigger_run_id": "tr-editorial-20261020111621",
+    "status": "triggered",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020090305",
+    "run_id": "tr-editorial-20261020111621",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T09:03:05.266Z",
-    "updated_at": "2026-10-20T09:05:42.383Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-20T09:16:21.000Z",
+    "updated_at": "2026-10-20T09:17:39.000Z",
+    "finished_at": "2026-10-20T09:17:39.000Z",
+    "current": 0,
+    "total": 0,
     "event_id": null,
-    "trend_id": "9cf91d2b480b",
-    "title": "Sergio Carranza",
-    "message": "Sergio Carranza r0 cerrada y verificada; cola 1→0. Sin noticias o reelaboraciones activas, imágenes ni envíos Telegram.",
+    "trend_id": null,
+    "title": null,
+    "message": "Pasada completada 0/0: no hay trabajo editorial activo; saneamiento visual disparado de forma no bloqueante.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "final_compact_queue": 0,
-      "attempted": 1,
-      "explained": 1,
-      "explanation_groups": 1,
-      "processed_ids": [
-        "9cf91d2b480b"
-      ],
+      "attempted": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "processed_ids": [],
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     },
@@ -65,337 +62,81 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "id": "9cf91d2b480b",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.5,
-            "ratings_affinity": 2.3,
-            "news_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.8,
-            "ratings_affinity": 2.1,
-            "news_specificity": 2,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c3",
-            "total": 6.8,
-            "ratings_affinity": 1.7,
-            "news_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c4",
-            "total": 6.8,
-            "ratings_affinity": 1.8,
-            "news_specificity": 1.4,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.7,
-            "news_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T09:03:07.365Z",
+        "at": "2026-10-20T09:16:21.000Z",
+        "phase": "preparing",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, requests y Explicadas; saneamiento visual de Pendientes solicitado."
+      },
+      {
+        "at": "2026-10-20T09:17:16.000Z",
         "phase": "verifying",
         "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Releyendo estado autoritativo de Sergio Carranza r0."
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final: cola 0, sin preparing/update ni rewrite_pending; captura 11:12 fresca."
       },
       {
-        "at": "2026-10-20T09:03:10.592Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Buscando identidad y detonante actual en España; evitando homónimos y referencias antiguas."
-      },
-      {
-        "at": "2026-10-20T09:03:21.904Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Identidad acotada: responsable de realización editorial de LaLiga, por sus declaraciones sobre repeticiones del Real Madrid-Sevilla. Buscando entrevista original."
-      },
-      {
-        "at": "2026-10-20T09:04:25.361Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Contrastados 20minutos, ElDesmarque y Mundo Deportivo: coinciden en decisiones editoriales y negación de presiones; COPE bloquea el acceso automatizado."
-      },
-      {
-        "at": "2026-10-20T09:04:28.135Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Redactando el núcleo común sin adjudicar la misma cita a una jugada concreta ni afirmar manipulación arbitral."
-      },
-      {
-        "at": "2026-10-20T09:04:28.996Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Longitud comprobada: 241 caracteres, dos hashtags específicos, prefijo único y declaración atribuida."
-      },
-      {
-        "at": "2026-10-20T09:04:30.230Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Generando cinco candidatos internos sobre el criterio editorial de las repeticiones."
-      },
-      {
-        "at": "2026-10-20T09:04:31.704Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Evaluando con ratings congelados: gana el giro concreto sobre el botón de repetición; se descartan exageraciones y recuentos no acreditados."
-      },
-      {
-        "at": "2026-10-20T09:04:32.985Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Seleccionado c1 (8,5/10), sin acusaciones de favoritismo, presiones ni falta arbitral probadas."
-      },
-      {
-        "at": "2026-10-20T09:05:06.069Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Revalidando Sergio Carranza r0 y el rango actual antes de persistir."
-      },
-      {
-        "at": "2026-10-20T09:05:09.256Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Guardando ficha Explicada r0; transporte de chat no usado por su despacho explícito de Telegram."
-      },
-      {
-        "at": "2026-10-20T09:05:14.258Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Ficha r0 guardada; actualizando request con el mismo texto, remate y fecha."
-      },
-      {
-        "at": "2026-10-20T09:05:19.789Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Ficha y request explained verificadas; retirando únicamente Sergio Carranza r0 de la cola."
-      },
-      {
-        "at": "2026-10-20T09:05:41.425Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Releyendo main: Sergio Carranza r0 explained con ficha/request idénticas y sin su revisión en cola."
-      },
-      {
-        "at": "2026-10-20T09:05:42.383Z",
+        "at": "2026-10-20T09:17:39.000Z",
         "phase": "closing",
         "event_id": null,
-        "trend_id": "9cf91d2b480b",
-        "title": "Sergio Carranza",
-        "message": "Sergio Carranza r0 cerrada y verificada; cola 1→0. Sin noticias o reelaboraciones activas, imágenes ni envíos Telegram."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada completada 0/0: no hay trabajo editorial activo; saneamiento visual disparado de forma no bloqueante."
       }
     ],
-    "finished_at": "2026-10-20T09:05:42.383Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "d6e5cd24e397bde9e2b45d5b4ce6ed44074ef96f"
+    "verification_head": "9fa78c47c38d87b812ca01fbd644a49cfabe3d65"
   },
-  "run_id": "tr-editorial-20261020090305",
+  "run_id": "tr-editorial-20261020111621",
   "summary": {
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "final_compact_queue": 0,
-    "attempted": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "processed_ids": [
-      "9cf91d2b480b"
-    ],
+    "attempted": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "processed_ids": [],
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T09:03:07.365Z",
+      "at": "2026-10-20T09:16:21.000Z",
+      "phase": "preparing",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola, requests y Explicadas; saneamiento visual de Pendientes solicitado."
+    },
+    {
+      "at": "2026-10-20T09:17:16.000Z",
       "phase": "verifying",
       "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Releyendo estado autoritativo de Sergio Carranza r0."
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final: cola 0, sin preparing/update ni rewrite_pending; captura 11:12 fresca."
     },
     {
-      "at": "2026-10-20T09:03:10.592Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Buscando identidad y detonante actual en España; evitando homónimos y referencias antiguas."
-    },
-    {
-      "at": "2026-10-20T09:03:21.904Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Identidad acotada: responsable de realización editorial de LaLiga, por sus declaraciones sobre repeticiones del Real Madrid-Sevilla. Buscando entrevista original."
-    },
-    {
-      "at": "2026-10-20T09:04:25.361Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Contrastados 20minutos, ElDesmarque y Mundo Deportivo: coinciden en decisiones editoriales y negación de presiones; COPE bloquea el acceso automatizado."
-    },
-    {
-      "at": "2026-10-20T09:04:28.135Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Redactando el núcleo común sin adjudicar la misma cita a una jugada concreta ni afirmar manipulación arbitral."
-    },
-    {
-      "at": "2026-10-20T09:04:28.996Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Longitud comprobada: 241 caracteres, dos hashtags específicos, prefijo único y declaración atribuida."
-    },
-    {
-      "at": "2026-10-20T09:04:30.230Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Generando cinco candidatos internos sobre el criterio editorial de las repeticiones."
-    },
-    {
-      "at": "2026-10-20T09:04:31.704Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Evaluando con ratings congelados: gana el giro concreto sobre el botón de repetición; se descartan exageraciones y recuentos no acreditados."
-    },
-    {
-      "at": "2026-10-20T09:04:32.985Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Seleccionado c1 (8,5/10), sin acusaciones de favoritismo, presiones ni falta arbitral probadas."
-    },
-    {
-      "at": "2026-10-20T09:05:06.069Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Revalidando Sergio Carranza r0 y el rango actual antes de persistir."
-    },
-    {
-      "at": "2026-10-20T09:05:09.256Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Guardando ficha Explicada r0; transporte de chat no usado por su despacho explícito de Telegram."
-    },
-    {
-      "at": "2026-10-20T09:05:14.258Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Ficha r0 guardada; actualizando request con el mismo texto, remate y fecha."
-    },
-    {
-      "at": "2026-10-20T09:05:19.789Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Ficha y request explained verificadas; retirando únicamente Sergio Carranza r0 de la cola."
-    },
-    {
-      "at": "2026-10-20T09:05:41.425Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Releyendo main: Sergio Carranza r0 explained con ficha/request idénticas y sin su revisión en cola."
-    },
-    {
-      "at": "2026-10-20T09:05:42.383Z",
+      "at": "2026-10-20T09:17:39.000Z",
       "phase": "closing",
       "event_id": null,
-      "trend_id": "9cf91d2b480b",
-      "title": "Sergio Carranza",
-      "message": "Sergio Carranza r0 cerrada y verificada; cola 1→0. Sin noticias o reelaboraciones activas, imágenes ni envíos Telegram."
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada completada 0/0: no hay trabajo editorial activo; saneamiento visual disparado de forma no bloqueante."
     }
   ],
   "telegram_orphans": 0,
@@ -404,6 +145,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-20T10:12:24+02:00"
+    "captured_at": "2026-10-20T11:12:01+02:00"
   }
 }
