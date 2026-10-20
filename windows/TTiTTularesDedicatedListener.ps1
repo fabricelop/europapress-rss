@@ -484,6 +484,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
         $localTxt.Contains('prompt_not_in_visible_editor') -and
         $localTxt.Contains('function submissionEvidence(') -and
         $localTxt.Contains('post-send-generation') -and
+        $localTxt.Contains('async function submitVerifiedDraft(') -and
+        $localTxt.Contains('BRIDGE FIXED TAB UNRESPONSIVE') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=') -and
         $localTxt.Contains('automaticImageDeadline') -and
         $localTxt.Contains('BRIDGE LAUNCH ONLY CONFIRMED') -and
@@ -524,6 +526,8 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'prompt_not_in_visible_editor',
       'function submissionEvidence(',
       'post-send-generation',
+      'async function submitVerifiedDraft(',
+      'BRIDGE FIXED TAB UNRESPONSIVE',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker',
       'automaticImageDeadline',
