@@ -485,7 +485,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
         $localTxt.Contains('function submissionEvidence(') -and
         $localTxt.Contains('post-send-generation') -and
         $localTxt.Contains('async function submitVerifiedDraft(') -and
-        $localTxt.Contains('v55-match-command-across-editors') -and
+        $localTxt.Contains('v56-atomic-command-scoped-submit') -and
         $localTxt.Contains('BRIDGE FIXED TAB UNRESPONSIVE') -and
         $localTxt.Contains('ttittulares-run-status?view=image-job&strong=1&id=') -and
         $localTxt.Contains('automaticImageDeadline') -and
@@ -528,7 +528,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'function submissionEvidence(',
       'post-send-generation',
       'async function submitVerifiedDraft(',
-      'v55-match-command-across-editors',
+      'v56-atomic-command-scoped-submit',
       'BRIDGE FIXED TAB UNRESPONSIVE',
       'ttittulares-run-status?view=image-job&strong=1&id=',
       'imagesAfterMarker',
