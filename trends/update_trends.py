@@ -49,13 +49,14 @@ def term_key(text):
     # Algunos agregadores anteponen # incluso a temas que no son hashtags.
     # Ignoramos un # inicial solo para comparar fuentes; conservamos el nombre
     # real de la fuente elegida para mostrarlo.
-    return clean_term(text).casefold().lstrip("#")
+    folded = unicodedata.normalize("NFD", clean_term(text).casefold().lstrip("#"))
+    return "".join(ch for ch in folded if unicodedata.category(ch) != "Mn")
 
 def unique(values):
     out, seen = [], set()
     for value in values:
         value = clean_term(value)
-        key = value.casefold()
+        key = term_key(value)
         if not value or key in seen or len(value) > 100:
             continue
         seen.add(key)
@@ -815,7 +816,7 @@ def main():
     # Si el radar no alcanza 30 entradas fiables, mostrar las observadas;
     # nunca fabricar nombres ni puestos para rellenar.
 
-    unchanged = [x.casefold() for x in top10] == [x.casefold() for x in previous]
+    unchanged = [term_key(x) for x in top10] == [term_key(x) for x in previous]
     previous_keys = {term_key(x) for x in previous}
     previous_rank_by_key = {term_key(name): i + 1 for i, name in enumerate(previous)}
     new_entries = [x for x in top10 if term_key(x) not in previous_keys]
