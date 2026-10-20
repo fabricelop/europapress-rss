@@ -60334,7 +60334,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -60408,9 +60407,30 @@
           "revision": 0
         }
       ],
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/19/6ad60008962327-08787790.jpeg",
+        "source": "20minutos",
+        "source_url": "https://www.20minutos.es/deportes/futbol/sergio-carranza-realizador-laliga-sobre-polemica-accion-arda-gueler-con-peque-se-decidio-no-dar-esa-repeticion_7050833_0.html",
+        "alt": "Imagen de archivo relacionada con Sergio Carranza",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/19/6ad60008962327-08787790.jpeg",
+        "source": "20minutos",
+        "source_url": "https://www.20minutos.es/deportes/futbol/sergio-carranza-realizador-laliga-sobre-polemica-accion-arda-gueler-con-peque-se-decidio-no-dar-esa-repeticion_7050833_0.html",
+        "alt": "Imagen de archivo relacionada con Sergio Carranza",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-20T09:05:09.255Z",
+  "updated_at": "2026-10-20T09:06:58.197009Z",
   "count": 1029
 }
