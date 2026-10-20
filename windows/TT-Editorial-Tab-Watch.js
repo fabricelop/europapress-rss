@@ -18,6 +18,10 @@ const OLD_JOB_POLL_MS=5*60000;
 const LANDING_MIN_AGE_MS=20*60000;
 const LANDING_IDLE_MS=6*60000;
 const LANDING_MIN_SAMPLES=3;
+// Long-empty registered conversation is a stale candidate, not proof of job completion.
+const BLANK_CONVERSATION_MIN_AGE_MS=60*60000;
+const BLANK_CONVERSATION_IDLE_MS=12*60000;
+const BLANK_CONVERSATION_MIN_SAMPLES=5;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const log=s=>{try{fs.appendFileSync(LOG,new Date().toISOString()+' '+s+'\n','utf8')}catch{}};
 const pidAlive=pid=>{if(!Number.isInteger(pid)||pid<=0)return false;try{process.kill(pid,0);return true}catch(e){return e?.code==='EPERM'}};
@@ -62,7 +66,8 @@ async function inspect(t){
       err?reject(err):resolve(value)
     }
     // Return only status and a numeric fingerprint. Never persist chat contents.
-    const expression=`(()=>{const allMessages=[...document.querySelectorAll('[data-message-author-role]')];const a=allMessages.filter(x=>x.getAttribute('data-message-author-role')==='assistant');const last=a.length?a[a.length-1]:null;const s=String(last?.innerText||'');let hash=5381;for(let i=0;i<s.length;i++)hash=((hash<<5)+hash+s.charCodeAt(i))|0;const b=[...document.querySelectorAll('button')];const stop=b.some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');const editor=document.querySelector('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]');const draft=String(editor?.innerText||editor?.value||'').trim();return {url:location.href,ready:document.readyState,assistantCount:a.length,messageCount:allMessages.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy,draftChars:draft.length}})()`;
+    // Avoid forcing layout on long answers: textContent is cheaper than innerText.
+    const expression=`(()=>{const allMessages=document.querySelectorAll('[data-message-author-role]');const a=document.querySelectorAll('[data-message-author-role="assistant"]');const last=a.length?a[a.length-1]:null;const s=String(last?.textContent||'');const tail=s.slice(-8192);let hash=5381;for(let i=0;i<tail.length;i++)hash=((hash<<5)+hash+tail.charCodeAt(i))|0;const stop=[...document.querySelectorAll('button')].some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');const editor=document.querySelector('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]');const draft=String(editor?.textContent||editor?.value||'').trim();return {url:location.href,ready:document.readyState,assistantCount:a.length,messageCount:allMessages.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy,draftChars:draft.length,focused:document.hasFocus()}})()`;
     try{
       ws=new WebSocket(t.webSocketDebuggerUrl);
       ws.addEventListener('open',()=>{
@@ -148,7 +153,7 @@ async function sweep(){
       const to=new URL(s.url).pathname;
       const landing=from==='/'||from.startsWith('/g/')||from.startsWith('/project/');
       const conversation=/(?:^|\/)c\/[^/]+/.test(to);
-      if(!j.followedRoute&&landing&&conversation&&Date.now()-j.created<30*60000){
+      if(!j.followedRoute&&landing&&conversation){
         j.url=s.url;
         j.followedRoute=true;
         j.firstStable=0;
@@ -198,6 +203,45 @@ async function sweep(){
         stopTracking(f,'closed_verified_idle_project_landing');
       }else log('LANDING_CLOSE_RETRY '+j.id.slice(0,18)+' HTTP '+result.status);
       continue;
+    }
+    // Chrome may route a registered project landing into /g/<project>/c/<id>
+    // while its React message list stays unmounted. It must NOT be considered
+    // "complete" merely because zero messages are rendered. Instead, after
+    // an hour, check that this owned target remains blank for 12 more minutes.
+    const blankConversation=/(?:^|\/)c\/[^/]+/.test(pathname);
+    const blankIdle=blankConversation&&s.ready==='complete'&&s.messageCount===0&&
+      s.assistantCount===0&&!s.busy&&s.draftChars===0&&s.focused===false;
+    if(blankIdle){
+      const now=Date.now();
+      if(!j.blankIdleSince){
+        j.blankIdleSince=now;
+        j.blankSamples=0;
+        log('BLANK_CONVERSATION_OBSERVED '+j.id.slice(0,18)+' age_min='+Math.floor((now-j.created)/60000));
+      }
+      if(!j.lastBlankSampleAt||now-j.lastBlankSampleAt>=60000){
+        j.blankSamples=Number(j.blankSamples||0)+1;
+        j.lastBlankSampleAt=now;
+        saveJob(f,j);
+      }
+      if(now-j.created<BLANK_CONVERSATION_MIN_AGE_MS||
+         now-j.blankIdleSince<BLANK_CONVERSATION_IDLE_MS||
+         j.blankSamples<BLANK_CONVERSATION_MIN_SAMPLES)continue;
+      const refreshed=(await targets()).find(x=>x.type==='page'&&x.id===j.id);
+      if(!refreshed||imagePins().has(j.id)||refreshed.url!==s.url)continue;
+      let verify;
+      try{verify=await inspect(refreshed)}catch{continue}
+      if(verify.url!==s.url||verify.ready!=='complete'||verify.messageCount!==0||
+         verify.assistantCount!==0||verify.busy||verify.draftChars!==0||
+         verify.focused!==false)continue;
+      const res=await fetch(BASE+'/json/close/'+encodeURIComponent(j.id),{signal:AbortSignal.timeout(6000)});
+      if(res.ok){
+        log('CLOSED_STALE_BLANK_CONVERSATION '+j.id.slice(0,18)+' age_min='+Math.floor((now-j.created)/60000));
+        stopTracking(f,'closed_verified_stale_blank_conversation');
+      }else log('BLANK_CLOSE_RETRY '+j.id.slice(0,18)+' HTTP '+res.status);
+      continue;
+    }
+    if(j.blankIdleSince){
+      j.blankIdleSince=0;j.blankSamples=0;j.lastBlankSampleAt=0;saveJob(f,j);
     }
     if(s.busy||s.draftChars>0||s.ready!=='complete'||s.assistantCount<1||s.assistantChars<20){
       j.firstStable=0;j.lastFingerprint='';saveJob(f,j);continue
