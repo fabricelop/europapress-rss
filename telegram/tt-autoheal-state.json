@@ -2,55 +2,84 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-20T12:58:33.106237+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-20T17:55:29.755630+00:00",
+      "issue_count": 5,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "08826b4e051b",
+          "title": "Patti Smith se define como \"devota\" de León XIV y pide \"acción civil\" ante el \"liderazgo deplorable\"",
+          "seconds": 12647,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "aae1dd9610e6",
+          "title": "Muere una mujer de 52 años tras ser apuñalada en el portal de una urbanización en Madrid",
+          "seconds": 2240,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "6ec7436f6c2e",
+          "title": "A qué hora juega el Barcelona contra el PSG y dónde ver hoy por TV el partido de Champions League",
+          "seconds": 1269,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "5cc4d64d250e",
+          "title": "Christina Applegate desvela que su diagnóstico de esclerosis múltiple fue erróneo",
+          "seconds": 1269,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 356660,
+          "seconds": 374477,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "3b7514b6511b4d0b22f0ad4afc15b9328dd3636c48e51496e44b37bffe4a6533",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 4
     },
     "ttendencias": {
-      "checked_at": "2026-10-20T12:58:33.106237+00:00",
+      "checked_at": "2026-10-20T17:55:29.755630+00:00",
       "issue_count": 4,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "ad7a75826c85",
           "title": "djené",
-          "seconds": 52854,
+          "seconds": 70670,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0c086cdc772a",
           "title": "paula",
-          "seconds": 48937,
+          "seconds": 66753,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "d37f78ec86d1",
           "title": "Kiko",
-          "seconds": 48937,
+          "seconds": 66753,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 356660,
+          "seconds": 374476,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -64,10 +93,10 @@
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-20T07:36:30.508409+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-20T12:58:33.106237+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-20T12:58:33.106237+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-20T17:55:29.755630+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-20T17:55:29.755630+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-20T17:55:29.755630+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-20T02:10:04.909071+00:00"
   },
-  "checked_at": "2026-10-20T12:58:33.106237+00:00"
+  "checked_at": "2026-10-20T17:55:29.755630+00:00"
 }
