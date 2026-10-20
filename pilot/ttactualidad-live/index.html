@@ -678,7 +678,7 @@ function confirmedAction(op,docs){
  }else{
   const [manual,mobile,queue,requestsDoc]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
-  const normalize=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
+  const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
   const q=(queue.items||[]).find(x=>String(x.id||'')===id||
     (op.decision==='prepare'&&normalize(x.name||x.title)===normalize(op.snapshot?.title||id)&&
      Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
