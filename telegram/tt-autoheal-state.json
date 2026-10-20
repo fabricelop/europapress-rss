@@ -2,42 +2,35 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-20T17:55:29.755630+00:00",
-      "issue_count": 5,
+      "checked_at": "2026-10-20T21:24:42.946949+00:00",
+      "issue_count": 4,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "08826b4e051b",
           "title": "Patti Smith se define como \"devota\" de León XIV y pide \"acción civil\" ante el \"liderazgo deplorable\"",
-          "seconds": 12647,
+          "seconds": 25200,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "aae1dd9610e6",
-          "title": "Muere una mujer de 52 años tras ser apuñalada en el portal de una urbanización en Madrid",
-          "seconds": 2240,
+          "id": "37825acf4198",
+          "title": "Video DANA ADAM Los vecinos de Els Poblets (Alicante) ya limpian el barro de las calles tras la DANA",
+          "seconds": 1051,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "6ec7436f6c2e",
-          "title": "A qué hora juega el Barcelona contra el PSG y dónde ver hoy por TV el partido de Champions League",
-          "seconds": 1269,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5cc4d64d250e",
-          "title": "Christina Applegate desvela que su diagnóstico de esclerosis múltiple fue erróneo",
-          "seconds": 1269,
+          "id": "6a4a972f7299",
+          "title": "Un activista de 34 años, radical de ultraizquierda y de padre español, detenido por la quema del Ayu",
+          "seconds": 1051,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 374477,
+          "seconds": 387030,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -46,57 +39,114 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "3b7514b6511b4d0b22f0ad4afc15b9328dd3636c48e51496e44b37bffe4a6533",
+      "open_signature": "5f89d540a7156a93a4d073dcd9d3655c94d3fb7e88171dcdde465bd6ace38281",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-20T17:55:29.755630+00:00",
-      "issue_count": 4,
+      "checked_at": "2026-10-20T21:24:42.946949+00:00",
+      "issue_count": 12,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "e86ad06ee4ec",
+          "title": "Xavi Espart",
+          "seconds": 199,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "965aa27693ac",
+          "title": "Fabián",
+          "seconds": 199,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "40a650195194",
+          "title": "Vitinha",
+          "seconds": 199,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f5060a515233",
+          "title": "Ferran",
+          "seconds": 2603,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "editorial_overdue",
           "id": "ad7a75826c85",
           "title": "djené",
-          "seconds": 70670,
+          "seconds": 83223,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0c086cdc772a",
           "title": "paula",
-          "seconds": 66753,
+          "seconds": 79306,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "d37f78ec86d1",
           "title": "Kiko",
-          "seconds": 66753,
+          "seconds": 79306,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ed0118581088",
+          "title": "Doué",
+          "seconds": 2603,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "9d85e04de81b",
+          "title": "Joan García",
+          "seconds": 2603,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "19c05b7e363a",
+          "title": "Dembele",
+          "seconds": 2603,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "53043f52bd60",
+          "title": "#PSGbarca",
+          "seconds": 2603,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 374476,
+          "seconds": 387030,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "362b3c7f7092ebebbe173d3758f7ea6f9dbcdff9031c19b47f9d81a41fe1734d",
+      "open_signature": "b4984957d8e78fe020c90c9a0e0a390017fe070c44f22fba81d6ffd97aa68993",
       "repair_via_workflow_run": false,
-      "escalation_required": 3
+      "escalation_required": 8
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-20T17:55:29.755630+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-20T17:55:29.755630+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-20T17:55:29.755630+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-20T02:10:04.909071+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-20T21:24:42.946949+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-20T21:24:42.946949+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-20T21:24:42.946949+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-20T21:24:42.946949+00:00"
   },
-  "checked_at": "2026-10-20T17:55:29.755630+00:00"
+  "checked_at": "2026-10-20T21:24:42.946949+00:00"
 }
