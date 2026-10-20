@@ -1,7 +1,7 @@
 // TTActualidad LIVE V8: static pages and real editorial decisions, without Telegram or polling.
 const ORIGIN='https://fabricelop.github.io';
 const PROJECTS=new Set(['ttittulares','ttendencias']);
-const ACTIONS=new Set(['prepare','discard','deleted','published']);
+const ACTIONS=new Set(['prepare','discard','deleted','published','rework']);
 const ID=/^[A-Za-z0-9:_-]{3,128}$/;
 const REQUEST=/^[A-Za-z0-9-]{12,80}$/;
 const COOKIE_NAME='__Host-ttactualidad_session';
@@ -59,7 +59,7 @@ async function cookieAuth(req,env){
 function sane(p,id){return PROJECTS.has(p)&&ID.test(String(id||''))}
 function recordKey(project,id){return 'action:'+project+':'+id}
 async function dispatch(env,row){
- if(env.ACTION_MODE!=='github_dispatch'||!env.GH_DISPATCH_TOKEN||!['deleted','discard','prepare'].includes(row.decision))
+ if(env.ACTION_MODE!=='github_dispatch'||!env.GH_DISPATCH_TOKEN||!['deleted','discard','prepare','rework'].includes(row.decision))
   return {state:'pilot_only',routed:false};
  const result=await fetch('https://api.github.com/repos/fabricelop/europapress-rss/dispatches',{
   method:'POST',headers:{
@@ -163,7 +163,7 @@ export default {
    if(!sane(p,id)||!ACTIONS.has(decision)||!REQUEST.test(String(b.request_id||'')))
     return respond(req,{ok:false,error:'invalid_decision'},400);
    const synthetic=/^pilot-(?:mobile|check|install|auth|diagnostic)-/i.test(id);
-   const live=env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN)&&['deleted','discard','prepare'].includes(decision)&&!synthetic;
+   const live=env.ACTION_MODE==='github_dispatch'&&Boolean(env.GH_DISPATCH_TOKEN)&&['deleted','discard','prepare','rework'].includes(decision)&&!synthetic;
    if(live&&(!Number.isInteger(b.revision)||b.revision<0))
     return respond(req,{ok:false,error:'revision_required'},400);
    const key=recordKey(p,id);
