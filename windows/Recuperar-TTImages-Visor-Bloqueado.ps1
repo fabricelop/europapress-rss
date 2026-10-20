@@ -25,8 +25,14 @@ function GetChromeTargets {
       throw 'Chrome devolvio targets agrupados o JSON no valido. Sin cambios.'
     }
     if([string]::IsNullOrWhiteSpace([string]$target.type) -or
-       [string]::IsNullOrWhiteSpace([string]$target.url)){
+       $target.id -is [array] -or
+       [string]::IsNullOrWhiteSpace([string]$target.id)){
       throw 'Target Chrome incompleto. Sin cambios.'
+    }
+    # iframe, worker and browser_ui targets may legitimately have an empty URL.
+    if([string]$target.type -ceq 'page' -and
+       [string]::IsNullOrWhiteSpace([string]$target.url)){
+      throw 'Pestana Chrome sin URL. Sin cambios.'
     }
   }
   return $targets
