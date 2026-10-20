@@ -457,9 +457,16 @@ async function submitVerifiedDraft(cdp,job){
     "(()=>{",
     "const command="+JSON.stringify(commandId)+";",
     "const suffix="+JSON.stringify(message.slice(-65))+";",
-    "const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
-    "const txt=String(c&&(c.value||c.innerText||c.textContent)||'');",
-    "if(!c||!txt.includes(command)||!txt.includes(suffix)||txt.length<"+Math.floor(message.length*0.8)+")return {triggered:false,reason:'draft_missing_or_changed',draftLength:txt.length};",
+    // Important: querySelector(COMPOSER_SELECTOR) returns the first DOM match,
+    // even if a hidden/empty editor precedes the marked visible editor.
+    // The command text (not DOM order) identifies the editor to submit.
+    "const editors=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];",
+    "const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');",
+    "const matches=c=>{const t=read(c);return t.includes(command)&&t.includes(suffix)&&t.length>="+Math.floor(message.length*0.8)+"};",
+    "const c=editors.find(x=>x.getAttribute('data-tt-image-composer')==='true'&&matches(x))||editors.find(matches);",
+    "const txt=read(c);",
+    "const maxDraftLength=Math.max(0,...editors.map(x=>read(x).length));",
+    "if(!c)return {triggered:false,reason:'draft_missing_or_changed',draftLength:maxDraftLength,editors:editors.length};",
     "const form=c.closest('form');",
     "const sendSelector="+JSON.stringify('button[data-testid="send-button"],button[data-testid="composer-send-button"],button[data-testid="composer-submit-button"],#composer-submit-button,button[aria-label*="Send" i],button[aria-label*="Enviar" i],button[aria-label*="Submit" i],button[type="submit"]')+";",
     "const globalSendSelector="+JSON.stringify('button[data-testid="send-button"],button[data-testid="composer-send-button"],button[data-testid="composer-submit-button"],#composer-submit-button,button[aria-label*="Send" i],button[aria-label*="Enviar" i],button[aria-label*="Submit" i]')+";",
@@ -604,7 +611,7 @@ async function ensureSubmitted(cdp,job){
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const editors=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');const composer=editors.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&read(c).includes(command))||editors.find(c=>read(c).includes(command))||editors.find(c=>c.getAttribute('data-tt-image-composer')==='true')||editors[0]||null;const composerText=read(composer);const composerMarker=editors.some(c=>read(c).includes(command));const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -630,21 +637,7 @@ async function ensureSubmitted(cdp,job){
 
     if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=6000){
       lastAttemptAt=Date.now();
-      let triggered=false;
-      try{
-        triggered=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const b=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');if(b&&!b.disabled){b.click();return true}const form=c&&c.closest&&c.closest('form');if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return true}return false})()"));
-      }catch{}
-      if(!triggered){
-        try{
-          const focused=Boolean(await current.eval("(()=>{const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");if(!c)return false;c.focus();return true})()"));
-          if(focused){
-            await current.call("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            await current.call("Input.dispatchKeyEvent",{type:"char",text:"\r",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            await current.call("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-            triggered=true;
-          }
-        }catch{}
-      }
+      const triggered=await submitVerifiedDraft(current,job);
       if(triggered&&!triggeredAt)triggeredAt=Date.now();
       console.log("BRIDGE SUBMIT RECOVERY "+(triggered?"TRIGGERED":"WAIT")+" sendDisabled="+Boolean(st.sendDisabled)+" generating="+Boolean(st.generating));
     }
