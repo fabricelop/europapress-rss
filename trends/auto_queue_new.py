@@ -493,14 +493,33 @@ def explanation_expired(key):
     explained_at = latest_explanation.get(key)
     return bool(explained_at and now_dt - explained_at > EXPLANATION_TTL)
 
+def closed_name_eligible_for_new_event(req, item):
+    """A deleted old package must not block a genuinely new Top-10 occurrence.
+
+    Re-entry after 48h opens a separate ID; the old deleted revision stays
+    terminal. Holiday aliases remain explicitly protected from auto-reopen.
+    """
+    if editorial_topic(item["name"]):
+        return False
+    if str((req or {}).get("status") or "").lower() not in CLOSED:
+        return False
+    latest = parse_timestamp((req or {}).get("deleted_at") or (req or {}).get("published_at")
+                             or (req or {}).get("dismissed_at") or (req or {}).get("updated_at")
+                             or (req or {}).get("explained_at"))
+    last_explanation = latest_explanation.get(norm(item["name"]))
+    if latest and timedelta(0) <= now_dt - latest < EXPLANATION_TTL:
+        return False
+    # A current Top-10 appearance, 48h after both last explanation and close,
+    # is evidence of re-entry, not evidence that an older result is still true.
+    return bool(last_explanation and now_dt - last_explanation > EXPLANATION_TTL)
+
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
     # A deliberate new manual investigation is separate; routine radar
     # captures may not resurrect a Telegram-closed subject for seven days.
-    if key in recently_closed_names and (not req or req.get("auto_queued") is True
-                                         or str(req.get("status") or "").lower() in CLOSED):
+    if key in recently_closed_names and (not closed_name_eligible_for_new_event(req, item)):
         continue
     if (editorial_topic(item["name"]) in recently_closed_topics and
             (req is None or req.get("auto_queued") is True) and
@@ -509,6 +528,11 @@ for item in current:
               "telegram_private_deeplink_native"}):
         continue
     status = str((req or {}).get("status") or "")
+    # A genuinely resurfaced Top-10 trend must be researched as a NEW event,
+    # never silently reuse the old deleted request or revive its media.
+    if status in CLOSED and closed_name_eligible_for_new_event(req, item):
+        print("Nuevo episodio Top 10 tras cierre anterior:", item["name"])
+        status = "new_event"
     if req:
         if item["rank"] <= 10 and status == "explained" and explanation_expired(key):
             reopened_at = now_dt.isoformat(timespec="seconds")
@@ -596,14 +620,19 @@ for item in to_queue:
     name = item["name"]
     key = norm(name)
     req = by_name.get(key)
-    req_id = str((req or {}).get("id") or hashlib.sha256(name.encode("utf-8")).hexdigest()[:12])
+    closed_reentry = closed_name_eligible_for_new_event(req, item)
+    req_id = (
+        hashlib.sha256(("top10-reentry|" + key + "|" + now_dt.date().isoformat()).encode("utf-8")).hexdigest()[:12]
+        if closed_reentry else
+        str((req or {}).get("id") or hashlib.sha256(name.encode("utf-8")).hexdigest()[:12])
+    )
     new_req = {
         "id": req_id,
         "name": name,
         "rank": item["rank"],
         "status": "preparing",
         "requested_at": now,
-        "revision": int((req or {}).get("revision") or 0) + (1 if req and str(req.get("status") or "") == "inactive" else 0),
+        "revision": 0 if closed_reentry else int((req or {}).get("revision") or 0) + (1 if req and str(req.get("status") or "") == "inactive" else 0),
         "reexplain": False,
         "with_image": True,
         "alternatives_target": 0,
@@ -615,7 +644,8 @@ for item in to_queue:
         "auto_queued": True,
         "auto_queue_scope": "top10",
     }
-    if req is None:
+    if req is None or closed_reentry:
+        # Keep closed historical IDs, append a separate current occurrence.
         requests.append(new_req)
         by_name[key] = new_req
     else:
