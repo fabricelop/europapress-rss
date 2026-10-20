@@ -20,21 +20,26 @@ REPO = "fabricelop/europapress-rss"
 BRANCH = "control/ttendencias-run-trigger"
 TARGET = "trends/run-now-trigger.json"
 MARKER = "TTendencias: petición de explicación registrada:"
-MARKER_REWORK = "TTendencias: petición de"
+MARKER_REWORK = "vuelve a En elaboración (r"
+
+def is_rework_message(value):
+    value = str(value or "")
+    return value.startswith("TTendencias: ") and MARKER_REWORK in value
 
 def is_new_request(queue_path="/tmp/tt-mobile-queue-results.json",
                    direct_path="/tmp/tt-mobile-issue-result.txt"):
     try:
         entries=json.loads(Path(queue_path).read_text(encoding="utf8"))
         if isinstance(entries,list) and any(
-                x.get("ok") is True and str(x.get("message") or "").startswith(MARKER)
+                x.get("ok") is True and (str(x.get("message") or "").startswith(MARKER)
+                                         or is_rework_message(x.get("message")))
                 for x in entries if isinstance(x,dict)):
             return True
     except (OSError, ValueError, TypeError):
         pass
     try:
         result=Path(direct_path).read_text(encoding="utf8")
-        return result.startswith(MARKER)
+        return result.startswith(MARKER) or is_rework_message(result)
     except OSError:
         return False
 
@@ -98,12 +103,16 @@ def test():
         assert not is_new_request(str(q),str(d))
         d.write_text(MARKER+" Gularte")
         assert is_new_request(str(q),str(d))
+        d.write_text("TTendencias: Ferran vuelve a En elaboración (r2)")
+        assert is_new_request(str(q),str(d))
+        q.write_text(json.dumps([{"ok":True,"message":"TTendencias: Ferran vuelve a En elaboración (r2)"}]))
+        assert is_new_request(str(q),str(d))
     print("TT_TRENDS_MANUAL_PREPARE_TRIGGER_SELFTEST_OK")
 
 if __name__=="__main__":
     if "--selftest" in sys.argv:
         test()
-    elif is_new_request():
+    elif "--trigger" in sys.argv[1:] or is_new_request():
         trigger(os.environ["GH_TOKEN"])
     else:
         print("TT_TRENDS_MANUAL_PREPARE_NO_NEW_REQUEST")
