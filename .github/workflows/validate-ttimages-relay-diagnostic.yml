@@ -1,0 +1,32 @@
+name: TTImages relay diagnostic syntax
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/Diagnosticar-TTImages-Relay.ps1'
+      - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse diagnostic PowerShell and guarantee read only
+        shell: pwsh
+        run: |
+          $path='windows/Diagnosticar-TTImages-Relay.ps1'
+          $tokens=$null
+          $errorsFound=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errorsFound)|Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound|ForEach-Object{Write-Error $_.Message}
+            exit 1
+          }
+          $src=Get-Content -Raw -LiteralPath $path
+          foreach($forbidden in @('Start-ScheduledTask','Enable-ScheduledTask','Disable-ScheduledTask','Set-ScheduledTask','Register-ScheduledTask','Unregister-ScheduledTask','Stop-Process','Start-Process','Remove-Item','Copy-Item','Move-Item')){
+            if($src -match ('(?m)^\\s*(?:&\\s*)?'+[regex]::Escape($forbidden)+'\\b')){throw ('Diagnostic cannot execute '+$forbidden)}
+          }
+          Write-Host 'TTIMAGES_RELAY_DIAGNOSTIC_SAFE_SYNTAX_OK'
