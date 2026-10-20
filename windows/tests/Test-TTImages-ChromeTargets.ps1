@@ -24,6 +24,7 @@ function Invoke-WebRequest {
 $ids=1..8 |ForEach-Object{('{0:X32}' -f $_)}
 $urls=@('https://chatgpt.com/images','https://chatgpt.com/c/aaa','about:blank','https://chatgpt.com/','chrome://newtab/','about:blank','chrome://settings/','chrome://version/')
 $types=@('page','page','iframe','page','browser_ui','worker','browser_ui','worker')
+$urls[5]='' # Chrome workers can report an empty URL
 $rows=@(for($i=0;$i -lt $ids.Count;$i++){[ordered]@{id=$ids[$i];type=$types[$i];url=$urls[$i];webSocketDebuggerUrl=('ws://127.0.0.1:9234/devtools/page/'+$ids[$i])}})
 $global:mockJson=ConvertTo-Json -InputObject $rows -Depth 4 -Compress
 $targets=@(GetChromeTargets)
