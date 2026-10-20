@@ -45,7 +45,8 @@ if($SelfTest){
   if(Test-RepeatedBlock $ok $now){throw 'SELFTEST: a successful capture resets consecutive failures'}
   if(Test-RepeatedBlock @("$($now.AddMinutes(-90).ToString('o')) DETENIDO CON SEGURIDAD: Visor ya abierto al iniciar",
     $twice[1]) $now){throw 'SELFTEST: an old failure must not count'}
-  Write-Host 'TTIMAGES_AUTORECOVERY_SELFTEST_OK'
+  # Return a pipeline value so the installer can verify it (Write-Host is not captured).
+  Write-Output 'TTIMAGES_AUTORECOVERY_SELFTEST_OK'
   return
 }
 $root=Join-Path $env:LOCALAPPDATA 'TTImageRelay'
