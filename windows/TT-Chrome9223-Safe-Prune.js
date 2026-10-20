@@ -7,10 +7,10 @@ const cp=require('node:child_process');
 let BASE='http://127.0.0.1:9223';
 const DIR='C:\\TTiTTulares';
 const APPLY=process.argv.includes('--apply');
-const MIN_AGE=30;
-const MAX_CLOSE=25;
+const MIN_AGE=5;
+const MAX_CLOSE=80;
 const MIN_KEEP_HOME=3;
-const MAX_SCAN=45;
+const MAX_SCAN=250;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function tabPin(file){
   try{return String(JSON.parse(fs.readFileSync(path.join(DIR,file),'utf8')).target_id||'')}
@@ -79,6 +79,8 @@ function checkBusy(){
     while(at<scan.length){const i=at++;checks[i]={id:scan[i].id,result:await inspect(scan[i])}}
   }));
   const unknown=checks.filter(x=>x.result.unknown).length;
+  const inspectedEmpty=checks.filter(x=>x.result.empty).length;
+  const inspectedYoung=checks.filter(x=>x.result.empty && Number(x.result.age)<MIN_AGE).length;
   const qualified=checks.filter(x=>homeUrl(x.result.url)&&x.result.ready==='complete'&&!x.result.busy&&x.result.empty&&x.result.age>=MIN_AGE)
     .sort((a,b)=>b.result.age-a.result.age);
   console.log('\n=== TT CHROME 9223: LIMPIEZA CONSERVADORA ===');
@@ -86,6 +88,7 @@ function checkBusy(){
   console.log('Pestañas totales:',pages.length);
   console.log('Pestañas home no fijas:',homes.length);
   console.log('Verificadas:',checks.length,'| Estado desconocido (protegidas):',unknown);
+  console.log('Home sin borradores/mensajes:',inspectedEmpty,'| De ellas demasiado recientes:',inspectedYoung);
   console.log('Candidatas seguras por criterio (home vacía e inactiva >='+MIN_AGE+' min):',qualified.length);
   console.log('Límite por pasada:',MAX_CLOSE);
   const toClose=qualified.slice(0,MAX_CLOSE);
