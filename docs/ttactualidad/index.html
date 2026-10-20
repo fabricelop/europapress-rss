@@ -290,7 +290,7 @@ function trendRows(){
    const related=[...requests,...explained].filter(x=>String(x.id||x.event_id||'')===id);
    const names=[delivery.name,delivery.title];
    for(const x of related)names.push(x.name,x.display_name,...(x.trend_names||[]),
-      ...(x.trend_context||[]).map(v=>v.name));
+      ...(Array.isArray(x.trend_context)?x.trend_context:[]).map(v=>v.name));
    for(const value of names){
     const normalized=normal(value);if(!normalized)continue;
     const previous=confirmedTelegramByName.get(normalized)||[];
@@ -312,14 +312,14 @@ function trendRows(){
    }
    for(const item of related){
     const values=[item.name,item.display_name,...(item.trend_names||[]),
-       ...(item.trend_context||[]).map(x=>x.name)];
+       ...(Array.isArray(item.trend_context)?item.trend_context:[]).map(x=>x.name)];
     for(const value of values){const name=normal(value);if(name)activeInExplained.add(name)}
    }
   }
   for(const row of [...explained,...requests]){
    const expl=String(row.explanation||'').trim();
    if(!expl)continue;
-   const names=[row.name,row.display_name,...(row.trend_names||[]),...(row.trend_context||[]).map(x=>x.name)];
+   const names=[row.name,row.display_name,...(row.trend_names||[]),...(Array.isArray(row.trend_context)?row.trend_context:[]).map(x=>x.name)];
    for(const value of names){
     const name=normal(value);if(!name)continue;
     const previous=completedByName.get(name);
@@ -359,21 +359,22 @@ function trendRows(){
    const readyText=String(finished.explanation||req.explanation||'').trim();
    // Retain a finished explanation in the Top 30 after its Telegram card
    // leaves Explicadas. Never expose work that is still pending or undelivered.
-   const text=!inExplained&&!working&&!activelyEditing&&(terminal||wasDelivered)?readyText:'';
+   // Top 30 is a persistent editorial lookup: old, finished explanations
+   // remain readable even when a Listas card was closed or not sent to Telegram.
+   // During a NEW revision, never show the obsolete version as current.
+   const text=!working&&!activelyEditing?readyText:'';
    const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
-   const editorialState=terminal?terminalLabel[terminal.status]:
-      inExplained?'PENDIENTE EN EXPLICADAS':
-      activelyEditing?'EN ELABORACIÓN':working?'EN COLA':failure?'REVISIÓN':
-      wasDelivered&&text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
-      Number(x.rank||i+1)>10&&req.auto_queued===true?
-        'NO PUBLICADA · PREPARAR NOVEDAD':
-      readyText?'EXPLICACIÓN SIN ENTREGAR':
+   const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
+      text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
+      failure?'REVISIÓN':
+      terminal?(terminalLabel[terminal.status]||'HISTÓRICO'):
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
-    _status:editorialState,_topOnly:true,_inExplained:inExplained,_manualPending:manualPending,_telegramConfirmed:!!(wasDelivered&&!terminal),
+    _status:editorialState,_topOnly:true,_inExplained:inExplained,_manualPending:manualPending,
+    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!!(readyText&&req.id&&!working&&!activelyEditing),
     rank:Number(x.rank||i+1),
-    explanation:text,closer_text:inExplained||!wasDelivered?'':finished.closer_text||req.closer_text||'',
-    explained_at:latestAt,revision:finished.revision||req.revision||0,
+    explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
+    explained_at:latestAt,revision:Number(req.revision??finished.revision??0),
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
   // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
@@ -871,7 +872,10 @@ function rowCard(x,i){
    out.querySelector('.card-body').insertBefore(note,a);
    btn('Ver en Explicadas',()=>{state.tab='explicadas';render()},true);
   }
-  if(d.editorial&&x._status==='EXPLICADA'&&x._telegramConfirmed){
+  if(x._reworkable){
+   command('Volver a En elaboración','rework');
+  }
+  if(d.editorial&&x.explanation){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
    command('Quitar de Listas','deleted');
@@ -880,7 +884,7 @@ function rowCard(x,i){
   // NOT currently in Explicadas or under editorial processing. A historical
   // explanation without Telegram delivery is not a completed current card.
   if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
-     !['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
+     !x._reworkable&&!['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','POR ACTUALIZAR','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
    command('Preparar novedad','prepare');
   }
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
