@@ -338,7 +338,7 @@ def trend_command(action, element_id, context, instruction, now):
         ready = next((x for x in manual.get("items", []) if str(x.get("id") or "") == target_id
                       and str(x.get("status") or "").lower() == "explained"), None)
         try:
-            if ready and not (decided and str(decided.get("status") or "") in TERMINAL):
+            if ready and str((r or {}).get("status") or "").lower() not in TERMINAL and not (decided and str(decided.get("status") or "") in TERMINAL):
                 next_revision = rework_explained(
                     target_id, None, now, doc, manual, queue, decisions, deliveries,
                     "github_pages_authorized_issue_rework"
