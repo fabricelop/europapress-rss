@@ -9,6 +9,10 @@ src = Path(__file__).resolve().parents[2] / "trends" / "update_trends.py"
 spec = importlib.util.spec_from_file_location("tt_update_trends", src)
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
+# Spelling/accent variants refer to the same real-world topic.
+assert module.term_key("Mazón") == module.term_key("Mazon")
+assert module.term_key("#PSGbarca") == module.term_key("#PSGBarça")
+assert module.unique(["Mazón", "Mazon", "#PSGbarca", "#PSGBarça"]) == ["Mazón", "#PSGbarca"]
 now = datetime.now(ZoneInfo("Europe/Madrid"))
 visible = ["Visible"]
 names = ["Relleno A", "Relleno B", "Emergente", "Conocida"]
