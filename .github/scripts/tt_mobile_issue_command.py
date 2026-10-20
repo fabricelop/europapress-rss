@@ -326,7 +326,7 @@ def trend_command(action, element_id, context, instruction, now):
     if action == "rework":
         # Listas -> En elaboración: borrar tarjeta y fotografía anteriores
         # antes de encolar una revisión completamente nueva.
-        sys.path.insert(0, str(ROOT / "pilot"))
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "pilot"))
         from trends_rework import rework_explained
         manual_path = "trends/telegram-manual-explained.json"
         queue_path = "trends/editorial-queue.json"
