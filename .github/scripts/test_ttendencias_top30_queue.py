@@ -118,3 +118,36 @@ with tempfile.TemporaryDirectory() as foldername:
     assert manual_fixed["status"]=="preparing",manual_fixed
     assert not manual_fixed.get("explanation"),manual_fixed
     print("TT_TOP30_MANUAL_ONLY_OK: Top10 auto, Top11-30 manual, stale group ignored")
+
+
+# A name returning in Top 10 days later must be a new editorial event, not
+# silently suppressed by a deleted delivery from an unrelated old match.
+with tempfile.TemporaryDirectory() as foldername:
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    folder=Path(foldername)
+    shutil.copy2(source, folder/"auto_queue_new.py")
+    old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
+    put(folder/"recent.json",{"selection_method":"consensus","sources_used":["social-A","social-B"],
+        "items":[{"name":"Pubill","rank":1},{"name":"Solo manual","rank":11}]})
+    put(folder/"requests.json",{"requests":[{"id":"pubill-old","name":"Pubill","rank":4,
+        "revision":1,"status":"deleted","auto_queued":True,
+        "explained_at":old,"deleted_at":old,"explanation":"Partido antiguo"}]})
+    put(folder/"telegram-manual-explained.json",{"items":[]})
+    put(folder/"telegram-image-deliveries.json",{"items":[{"event_id":"pubill-old",
+        "name":"Pubill","status":"deleted","deleted_at":old}]})
+    put(folder/"prepared.json",{"items":[]})
+    def update():
+        result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
+            cwd=folder,capture_output=True,text=True)
+        assert result.returncode==0,(result.stdout,result.stderr)
+        return load(folder/"requests.json")["requests"]
+    first=update()
+    assert len(first)==2,first
+    assert first[0]["status"]=="deleted" and first[0]["id"]=="pubill-old",first
+    assert first[1]["name"]=="Pubill" and first[1]["status"]=="preparing",first
+    assert first[1]["id"]!="pubill-old" and first[1]["revision"]==0,first
+    assert "explanation" not in first[1],first
+    assert len(update())==2,"No duplicate Top10 reopen on second refresh"
+    assert load(folder/"editorial-queue.json")["count"]==1
+    print("TT_TOP10_REENTRY_OK: old closure retained, new editorial episode queued")
