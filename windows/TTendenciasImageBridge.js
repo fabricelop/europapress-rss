@@ -599,7 +599,7 @@ function submissionEvidence(st,{triggeredAt=0,promptWasVerified=false,preexistin
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=Number(cdp.promptSubmittedAt||0);
+  let current=cdp,last=null,lastAttemptAt=Number(cdp.promptSubmittedAt||0),reacquires=0,triggeredAt=Number(cdp.promptSubmittedAt||0);
   while(Date.now()<deadline){
     let st=null;
     try{
@@ -627,7 +627,7 @@ async function ensureSubmitted(cdp,job){
       return current
     }
 
-    if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=1200){
+    if(st&&st.composerMarker&&Date.now()-lastAttemptAt>=6000){
       lastAttemptAt=Date.now();
       let triggered=false;
       try{
