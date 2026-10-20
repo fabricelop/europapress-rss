@@ -50,7 +50,7 @@ try {
   }
   $guardCode=[IO.File]::ReadAllText((Join-Path $temp $names[0]),[Text.Encoding]::UTF8)
   $recoverCode=[IO.File]::ReadAllText((Join-Path $temp $names[1]),[Text.Encoding]::UTF8)
-  foreach($marker in @('Test-RepeatedBlock','AutoRecovery-v1','RECOVERY_ATTEMPT','-NoTaskStart','30')){
+  foreach($marker in @('Test-RepeatedBlock','auto-recovery-v1-state.json','RECOVERY_ATTEMPT','-NoTaskStart','30')){
     if(-not $guardCode.Contains($marker)){throw ('Guardian incompleto: '+$marker)}
   }
   foreach($marker in @('GetChromeTargets','GALERIA_NUEVA_CONFIRMADA','RECUPERACION_HTTP_OK')){
