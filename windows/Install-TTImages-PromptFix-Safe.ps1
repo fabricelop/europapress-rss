@@ -4,7 +4,7 @@
 param([switch]$CheckOnly)
 $ErrorActionPreference='Stop'
 $root='C:\TTiTTulares'
-$pin='5693ef6213ef607f47dba00fde0ec69e5724b0a1'
+$pin='5872d9db7473e1eea28cff2b42d8a20f9d777eff'
 $names=@('TTiTTularesImageBridge.js','TTendenciasImageBridge.js')
 $node=Get-Command node.exe -ErrorAction SilentlyContinue
 if(-not $node){$node=Get-Command node -ErrorAction SilentlyContinue}
@@ -30,7 +30,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $download -TimeoutSec 40 -Headers @{'Cache-Control'='no-cache';'User-Agent'='TTImages-safe-prompt-fix'}
     if((Get-Item -LiteralPath $download).Length -lt 15000){throw ('Descarga incompleta: '+$name)}
     $text=[IO.File]::ReadAllText($download,[Text.Encoding]::UTF8)
-    foreach($marker in @('data-tt-image-composer','prompt_not_in_visible_editor','function submissionEvidence(','post-send-generation','async function submitVerifiedDraft(','v55-match-command-across-editors','BRIDGE FIXED TAB UNRESPONSIVE','if(!launchOnly)throw Error','await confirmPromptLaunched()')){
+    foreach($marker in @('data-tt-image-composer','prompt_not_in_visible_editor','function submissionEvidence(','post-send-generation','async function submitVerifiedDraft(','v56-atomic-command-scoped-submit','BRIDGE FIXED TAB UNRESPONSIVE','if(!launchOnly)throw Error','await confirmPromptLaunched()')){
       if(-not $text.Contains($marker)){throw ('Falta garantía '+$marker+' en '+$name)}
     }
     & $node.Source --check $download
