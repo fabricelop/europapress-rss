@@ -188,7 +188,8 @@ function ttiRows(){
 function trendKey(x){return String(x.event_id||x.id||x.term_normalized||x.display_name||x.name||x.title||'').toLocaleLowerCase('es-ES')}
 function trendClosed(x){
  const key=trendKey(x),dec=state.data.mobileDecisions?.items||[];
- return dec.some(z=>['published','deleted','dismissed','removed'].includes(String(z.status||'').toLowerCase())&&trendKey(z)===key)
+ return dec.some(z=>['published','deleted','dismissed','removed'].includes(String(z.status||'').toLowerCase())&&
+    trendKey(z)===key&&Number(z.revision||0)>=Number(x.revision||0))
 }
 function currentTop30(recent){
  const items=Array.isArray(recent?.items)?recent.items:[];
@@ -200,25 +201,47 @@ function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
  if(state.tab==='elaboracion'){
+  // One canonical state per (ID, revision). A stale queue must NEVER
+  // resurrect an item that a newer request or finished explanation closed.
   const active=x=>['preparing','update'].includes(String(x.status||'').toLowerCase());
-  const byId=new Map((state.data.editorialQueue?.items||[]).filter(active)
+  const reqById=new Map(requests.filter(x=>x.id).map(x=>[String(x.id),x]));
+  const manualById=new Map();
+  for(const item of state.data.manual?.items||[]){
+   const id=String(item.id||'');if(!id)continue;
+   const old=manualById.get(id);
+   if(!old||Number(item.revision||0)>Number(old.revision||0)||
+      (Number(item.revision||0)===Number(old.revision||0)&&
+       String(item.explained_at||'')>String(old.explained_at||'')))manualById.set(id,item);
+  }
+  const resolved=entry=>{
+   const id=String(entry.id||''),rev=Number(entry.revision||0);
+   const req=reqById.get(id),ready=manualById.get(id);
+   if(req&&Number(req.revision||0)>=rev&&!active(req))return true;
+   if(ready&&Number(ready.revision||0)>=rev&&
+      String(ready.status||'').toLowerCase()==='explained'&&
+      !!String(ready.explanation||'').trim())return true;
+   return false;
+  };
+  const byId=new Map((state.data.editorialQueue?.items||[]).filter(x=>active(x)&&!resolved(x))
     .map(x=>[String(x.id||''),x]));
   for(const req of requests){
-   if(active(req)&&String(req.id||'')&&!byId.has(String(req.id)))
-    byId.set(String(req.id),req);
+   if(active(req)&&String(req.id||'')&&!byId.has(String(req.id)))byId.set(String(req.id),req);
   }
   const queued=[...byId.values()].filter(x=>!trendClosed(x))
    .map(x=>({...x,title:String(x.name||x.title||x.id),_kind:'tr',_id:String(x.id||''),
-      _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
+     _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
   const seen=new Set(queued.map(x=>String(x._id)));
   const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttendencias'&&
-   ['prepare','rework'].includes(op.decision)&&
-   ['sending','submitted','awaiting_github','confirmed'].includes(op.status)&&!seen.has(String(op.id))&&
-   !(state.data.requests?.requests||[]).some(req=>String(req.id||'')===String(op.id)&&
-      Number(req.revision||0)>Number(op.revision||0)&&!active(req)))
-   .map(op=>({...op.snapshot,id:op.id,title:op.snapshot?.title||op.id,
+    ['prepare','rework'].includes(op.decision)&&
+    ['sending','submitted','awaiting_github','confirmed'].includes(op.status)&&
+    Date.now()-op.at<20*60000&&
+    !seen.has(String(op.target_id||op.id))&&
+    !(reqById.get(String(op.target_id||op.id))&&!active(reqById.get(String(op.target_id||op.id)))))
+   .map(op=>({...op.snapshot,id:String(op.target_id||op.id),
      name:op.snapshot?.trend_name||op.snapshot?.title||op.id,
-     _kind:'tr',_id:String(op.id),_status:op.status==='confirmed'?'EN ELABORACIÓN':'PENDIENTE DE CONFIRMACIÓN',
+     title:op.snapshot?.title||op.id,_kind:'tr',_id:String(op.target_id||op.id),
+     revision:op.revision+1,
+     _status:op.status==='confirmed'?'EN ELABORACIÓN':'PENDIENTE DE GITHUB',
      _queuedAt:new Date(op.at).toISOString(),_working:true}));
   return [...pending,...queued];
  }
