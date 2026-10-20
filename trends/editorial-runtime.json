@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T19:17:37+02:00",
-  "last_completed_at": "2026-10-20T19:17:37+02:00",
-  "updated_at": "2026-10-20T19:17:37+02:00",
+  "last_started_at": "2026-10-20T17:14:38.954Z",
+  "last_completed_at": "2026-10-20T17:18:03.075Z",
+  "updated_at": "2026-10-20T17:18:03.075Z",
   "status": "success",
   "processed_ids": [
     "f97274605e45"
@@ -29,12 +29,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "editorial-20261020170215-trends",
+    "run_id": "editorial-20261020171438-trends",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "done",
-    "started_at": "2026-10-20T17:02:15.540Z",
-    "updated_at": "2026-10-20T17:11:16.125Z",
+    "started_at": "2026-10-20T17:14:38.954Z",
+    "updated_at": "2026-10-20T17:18:03.075Z",
     "current": 1,
     "total": 1,
     "incident_count": 1,
@@ -42,74 +42,50 @@
       {
         "id": "f97274605e45",
         "revision": 2,
-        "result": "problematic",
-        "reason": "No hay detonante organizador verificable; pista nueva no suficiente."
+        "type": "verification_insufficient",
+        "message": "Sin detonante actual verificable; continúa problematic. No se inventa explicación."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-20T17:02:16.398Z",
+        "at": "2026-10-20T17:14:39.837Z",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "TerrorRESHxSelectaPlay r2 vuelve a la cola; se revalidará después de las noticias, sin activar circuito visual."
+        "message": "Sin preparing/update. Se revisará al final la problemática r2 que sigue en Top10, cambiando las consultas y aprovechando la pista @RESHorror."
       },
       {
-        "at": "2026-10-20T17:07:12.038Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": null,
-        "title": null,
-        "message": "TerrorRESHxSelectaPlay r2 está de nuevo en cola preparing, con revisión coincidente. Se inicia revisión textual actual."
-      },
-      {
-        "at": "2026-10-20T17:07:13.245Z",
+        "at": "2026-10-20T17:14:43.397Z",
         "phase": "investigating",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Buscando el detonante de TerrorRESHxSelectaPlay con consultas nuevas hacia cuentas organizadoras y anuncios de octubre; no se deduce una campaña solo del nombre."
+        "message": "TerrorRESHxSelectaPlay r2 continúa problematic y Top9. Buscando la publicación organizadora en @RESHorror y Selecta Play con variantes nuevas, sin repetir una explicación genérica."
       },
       {
-        "at": "2026-10-20T17:07:45.680Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Aparece una pista nueva: respuesta pública dirigida a @RESHorror y @SelectaPlay que menciona LUTO y Dark Atlas. Se busca la publicación organizadora; una respuesta aislada aún no prueba el detonante."
-      },
-      {
-        "at": "2026-10-20T17:08:29.064Z",
+        "at": "2026-10-20T17:16:54.871Z",
         "phase": "persisting",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "La respuesta encontrada solo apunta a dos cuentas y juegos, pero no acredita la acción organizadora; X devuelve 403. Se documenta la pista y se conserva problematic, sin inventar sorteo ni campaña."
+        "message": "Dos búsquedas nuevas completadas. Los hallazgos de junio y 2025 no acreditan el detonante actual; se conserva No comprobada mediante el outbox oficial."
       },
       {
-        "at": "2026-10-20T17:08:39.406Z",
+        "at": "2026-10-20T17:17:24.173Z",
         "phase": "verifying",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Outbox de incidencia r2 guardado; se espera su consumo por Actions y el estado problematic real. No se cuenta como explained."
+        "message": "Outbox r2 releído con ID/revisión/status correctos. Aplicador oficial 39464707454 en ejecución; todavía no se considera persistida la revisión."
       },
       {
-        "at": "2026-10-20T17:09:42.687Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Actions ha aplicado la incidencia r2: requests=problematic, intento 1, razón exacta y fuera de preparing/update. Se verifica el consumo del outbox."
-      },
-      {
-        "at": "2026-10-20T17:11:16.125Z",
+        "at": "2026-10-20T17:18:03.075Z",
         "phase": "done",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "TerrorRESHxSelectaPlay r2 aplicada como problematic con razón exacta e intento 1; preparing/update 1→0, cola compacta 1→1. Sin explicación inventada, imágenes ni Telegram."
+        "message": "Verificado en main: r2 problematic, motivo exacto aplicado, intentos 1→2 y outbox consumido. Sin preparing/update; cola 1→1 porque falta verificación factual. Sin nuevos textos explained, imágenes ni envíos Telegram."
       }
     ],
     "summary": {
@@ -119,64 +95,51 @@
       "initial_compact_queue": 1,
       "problematic_reviewed": 1,
       "explained": 0,
+      "final_compact_queue": 1,
       "remaining_active": 0,
       "remaining_problematic": 1,
-      "final_compact_queue": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 0,
-      "manual_visual_dispatches": 0,
-      "incidents": 1
+      "manual_visual_dispatches": 0
     },
     "processed_ids": [
       "f97274605e45"
-    ],
-    "verifications": [
-      {
-        "id": "f97274605e45",
-        "revision": 2,
-        "status": "problematic",
-        "attempts": 1,
-        "reason_matches": true,
-        "action_run_id": 39463491834,
-        "job_id": 118768644261,
-        "main_head": "c320c80a8810d1d469f2938993ad70a6839464b0",
-        "outbox_consumed": true
-      }
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 5
     },
     "remate_selections": [
       {
-        "trend_id": "f97274605e45",
+        "id": "f97274605e45",
         "revision": 2,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Detonante no verificado: no se redacta explicación ni remate."
+        "candidates_generated": 0,
+        "selected": null,
+        "reason": "Detonante factual no verificado; no se redacta explicación ni remate."
       }
     ],
-    "message": "TerrorRESHxSelectaPlay r2 aplicada como problematic con razón exacta e intento 1; preparing/update 1→0, cola compacta 1→1. Sin explicación inventada, imágenes ni Telegram.",
+    "message": "Verificado en main: r2 problematic, motivo exacto aplicado, intentos 1→2 y outbox consumido. Sin preparing/update; cola 1→1 porque falta verificación factual. Sin nuevos textos explained, imágenes ni envíos Telegram.",
     "trend_id": "f97274605e45",
     "title": "#TerrorRESHxSelectaPlay",
-    "finished_at": "2026-10-20T17:11:14.650Z",
+    "finished_at": "2026-10-20T17:18:03.075Z",
     "partial": false,
     "queue_complete": true,
-    "verification_head": "c7a6a9535a9a00e296313ceb9b6a847ca90f021a",
-    "remaining_ids": [
-      "f97274605e45"
-    ],
-    "remaining_problematic_ids": [
-      "f97274605e45"
-    ],
-    "remaining_active_ids": []
+    "verification": {
+      "main_sha": "e57ef19ca16ecd44a00bbb169dd1cfb1afc22515",
+      "run_id": 39464707454,
+      "job_id": 118772950215,
+      "outbox_consumed": true,
+      "revision": 2,
+      "status": "problematic",
+      "reason_match": true,
+      "attempts_before": 1,
+      "attempts_after": 2
+    }
   },
-  "run_id": "editorial-20261020170215-trends",
+  "run_id": "editorial-20261020171438-trends",
   "summary": {
     "attempted": 1,
     "imagegen_calls": 0,
@@ -184,79 +147,54 @@
     "initial_compact_queue": 1,
     "problematic_reviewed": 1,
     "explained": 0,
+    "final_compact_queue": 1,
     "remaining_active": 0,
     "remaining_problematic": 1,
-    "final_compact_queue": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 0,
-    "manual_visual_dispatches": 0,
-    "incidents": 1
+    "manual_visual_dispatches": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T17:02:16.398Z",
+      "at": "2026-10-20T17:14:39.837Z",
       "phase": "preparing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "TerrorRESHxSelectaPlay r2 vuelve a la cola; se revalidará después de las noticias, sin activar circuito visual."
+      "message": "Sin preparing/update. Se revisará al final la problemática r2 que sigue en Top10, cambiando las consultas y aprovechando la pista @RESHorror."
     },
     {
-      "at": "2026-10-20T17:07:12.038Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": null,
-      "title": null,
-      "message": "TerrorRESHxSelectaPlay r2 está de nuevo en cola preparing, con revisión coincidente. Se inicia revisión textual actual."
-    },
-    {
-      "at": "2026-10-20T17:07:13.245Z",
+      "at": "2026-10-20T17:14:43.397Z",
       "phase": "investigating",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Buscando el detonante de TerrorRESHxSelectaPlay con consultas nuevas hacia cuentas organizadoras y anuncios de octubre; no se deduce una campaña solo del nombre."
+      "message": "TerrorRESHxSelectaPlay r2 continúa problematic y Top9. Buscando la publicación organizadora en @RESHorror y Selecta Play con variantes nuevas, sin repetir una explicación genérica."
     },
     {
-      "at": "2026-10-20T17:07:45.680Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Aparece una pista nueva: respuesta pública dirigida a @RESHorror y @SelectaPlay que menciona LUTO y Dark Atlas. Se busca la publicación organizadora; una respuesta aislada aún no prueba el detonante."
-    },
-    {
-      "at": "2026-10-20T17:08:29.064Z",
+      "at": "2026-10-20T17:16:54.871Z",
       "phase": "persisting",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "La respuesta encontrada solo apunta a dos cuentas y juegos, pero no acredita la acción organizadora; X devuelve 403. Se documenta la pista y se conserva problematic, sin inventar sorteo ni campaña."
+      "message": "Dos búsquedas nuevas completadas. Los hallazgos de junio y 2025 no acreditan el detonante actual; se conserva No comprobada mediante el outbox oficial."
     },
     {
-      "at": "2026-10-20T17:08:39.406Z",
+      "at": "2026-10-20T17:17:24.173Z",
       "phase": "verifying",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Outbox de incidencia r2 guardado; se espera su consumo por Actions y el estado problematic real. No se cuenta como explained."
+      "message": "Outbox r2 releído con ID/revisión/status correctos. Aplicador oficial 39464707454 en ejecución; todavía no se considera persistida la revisión."
     },
     {
-      "at": "2026-10-20T17:09:42.687Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Actions ha aplicado la incidencia r2: requests=problematic, intento 1, razón exacta y fuera de preparing/update. Se verifica el consumo del outbox."
-    },
-    {
-      "at": "2026-10-20T17:11:16.125Z",
+      "at": "2026-10-20T17:18:03.075Z",
       "phase": "done",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "TerrorRESHxSelectaPlay r2 aplicada como problematic con razón exacta e intento 1; preparing/update 1→0, cola compacta 1→1. Sin explicación inventada, imágenes ni Telegram."
+      "message": "Verificado en main: r2 problematic, motivo exacto aplicado, intentos 1→2 y outbox consumido. Sin preparing/update; cola 1→1 porque falta verificación factual. Sin nuevos textos explained, imágenes ni envíos Telegram."
     }
   ],
   "telegram_orphans": 0,
@@ -266,6 +204,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T14:40:57+02:00"
-  },
-  "error": null
+  }
 }
