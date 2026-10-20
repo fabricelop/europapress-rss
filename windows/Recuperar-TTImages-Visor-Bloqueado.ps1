@@ -20,12 +20,12 @@ function ReadCDP([string]$ws,[string]$method,[object]$params){
     if($c.State -ne [System.Net.WebSockets.WebSocketState]::Open){throw 'WebSocket no conectado'}
     $msg=@{id=71;method=$method;params=$params}|ConvertTo-Json -Compress -Depth 5
     $bytes=[Text.Encoding]::UTF8.GetBytes($msg)
-    $chunk=New-Object System.ArraySegment[byte] -ArgumentList (,[byte[]]$bytes)
+    $chunk=[System.ArraySegment[byte]]::new([byte[]]$bytes)
     $c.SendAsync($chunk,[System.Net.WebSockets.WebSocketMessageType]::Text,$true,$timeout.Token).GetAwaiter().GetResult()
     $builder=[Text.StringBuilder]::new()
     do{
       $buffer=New-Object byte[] 32768
-      $segment=New-Object System.ArraySegment[byte] -ArgumentList (,[byte[]]$buffer)
+      $segment=[System.ArraySegment[byte]]::new([byte[]]$buffer)
       $part=$c.ReceiveAsync($segment,$timeout.Token).GetAwaiter().GetResult()
       if($part.MessageType -eq [System.Net.WebSockets.WebSocketMessageType]::Close){throw 'CDP WebSocket cerrado'}
       [void]$builder.Append([Text.Encoding]::UTF8.GetString($buffer,0,$part.Count))
@@ -45,7 +45,7 @@ if(-not(Test-Path -LiteralPath $report)){throw 'No existe el informe de captura;
 $reportFile=Get-Item -LiteralPath $report
 $age=((Get-Date)-$reportFile.LastWriteTime).TotalMinutes
 $doc=Get-Content -LiteralPath $report -Raw -Encoding UTF8|ConvertFrom-Json
-$reason=String $doc.error
+$reason=[string]$doc.error
 Say ('INFORME '+$reportFile.LastWriteTime.ToString('yyyy-MM-dd HH:mm:ss')+' antiguedad_min='+[int]$age+' error='+$reason)
 if($age -lt 0 -or $age -gt 45 -or $reason -notmatch 'Visor ya abierto al iniciar'){
  Say 'SIN_ACCION informe no reciente o ya no indica visor bloqueado'
@@ -68,7 +68,7 @@ $targets=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 
 $gallery=@($targets|Where-Object{
   $_.type -eq 'page' -and
   ([string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)') -and
-  [string]$_.webSocketDebuggerUrl -match '^ws://127\.0\.0\.1:9234/'
+  [string]$_.webSocketDebuggerUrl -match '^ws://(?:127\.0\.0\.1|localhost):9234/'
 })
 Say ('CHROME9234 paginas='+$targets.Count+' galerias='+$gallery.Count)
 if($gallery.Count -ne 1){
@@ -83,7 +83,7 @@ if($InspectOnly){
 # gallery tab: it does not close the browser or modify image-delivery state.
 $result=ReadCDP ([string]$gallery[0].webSocketDebuggerUrl) 'Page.reload' @{ignoreCache=$true}
 Say 'RECUPERACION_EMITIDA Page.reload sobre unica pestaña ChatGPT Images / Chrome 9234'
-Start-Sleep -Milliseconds 1800
+Start-Sleep -Seconds 3
 $after=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 5)
 $still=@($after|Where-Object{ $_.id -eq $gallery[0].id -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
 if(-not $still.Count){
