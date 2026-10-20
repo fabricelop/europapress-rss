@@ -8,6 +8,7 @@ on:
       - 'windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
       - 'windows/TTImages-AutoRecovery-Guardian.ps1'
       - 'windows/Install-TTImages-AutoRecovery.ps1'
+      - 'windows/tests/Test-TTImages-Installer-WindowsPS51.ps1'
       - 'windows/tests/Test-TTImages-ChromeTargets.ps1'
       - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
   workflow_dispatch:
@@ -91,12 +92,9 @@ jobs:
             if($src.Contains($forbidden)){throw ('Guardian must not alter capture or Telegram: '+$forbidden)}
           }
           pwsh -NoProfile -File $p -SelfTest
-          # Regression for the exact bug on Windows: Write-Host wasn't captured.
-          $captured=@(& $p -SelfTest 2>&1)
-          if(-not (($captured|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
-            throw 'Installer self-test output not captured; installation would fail'
-          }
-          Write-Host 'TTIMAGES_INSTALLER_SELFTEST_CAPTURE_OK'
+          # Self-test must throw on a failing assertion; output is intentionally ignored.
+          & $p -SelfTest | Out-Null
+          Write-Host 'TTIMAGES_GUARDIAN_THROW_ONLY_SELFTEST_OK'
       - name: Validate conservative installer syntax
         shell: pwsh
         run: |
@@ -124,3 +122,16 @@ jobs:
             throw 'Recovery must run in the same hidden PowerShell process'
           }
           Write-Host 'TTIMAGES_AUTORECOVERY_INVISIBLE_15MIN_OK'
+
+  windows-ps51:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simulate complete TTImages installer in Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $version=$PSVersionTable.PSVersion
+          Write-Host ('Running on Windows PowerShell '+$version)
+          if($version.Major -ne 5){throw 'Expected Windows PowerShell 5.1'}
+          .\windows\tests\Test-TTImages-Installer-WindowsPS51.ps1
