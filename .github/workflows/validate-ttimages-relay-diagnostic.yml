@@ -45,7 +45,7 @@ jobs:
               'Page.reload','Get-ScheduledTask -TaskName $taskName',
               'Start-ScheduledTask -TaskName $taskName','relay-captura|',
               'RecoverGalleryByHttp','/json/new?','/json/close/',
-              "'$ws=$ws -replace'")){
+              'ws://127.0.0.1:9234/')){
             if(-not $code.Contains($marker)){throw ('Missing viewer guard '+$marker)}
           }
           foreach($forbidden in @('Stop-Process','Kill-Process','Remove-Item','Unregister-ScheduledTask',
