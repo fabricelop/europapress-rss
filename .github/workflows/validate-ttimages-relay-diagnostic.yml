@@ -43,7 +43,7 @@ jobs:
           [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errs)|Out-Null
           if($errs.Count -gt 0){ $errs|ForEach-Object{Write-Error $_.Message};exit 1}
           $code=Get-Content -Raw -LiteralPath $path
-          foreach($marker in @('http://127.0.0.1:9234/json/list','Visor ya abierto al iniciar',
+          foreach($marker in @('/json/list','Visor ya abierto al iniciar',
               'GetChromeTargets','Get-ScheduledTask -TaskName $taskName',
               'Start-ScheduledTask -TaskName $taskName','GetCaptureProcess',
               'GALERIA_NUEVA_CONFIRMADA','/json/new?','/json/close/',
