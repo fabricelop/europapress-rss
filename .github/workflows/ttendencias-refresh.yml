@@ -9,7 +9,9 @@ on:
     paths:
       - "trends/refresh-trigger.txt"
       - "trends/auto_queue_new.py"
+      - "trends/update_trends.py"
       - ".github/scripts/test_ttendencias_top30_queue.py"
+      - ".github/scripts/test_ttendencias_anchor_freshness.py"
       - ".github/workflows/ttendencias-refresh.yml"
 
 permissions:
@@ -36,6 +38,9 @@ jobs:
 
       - name: Instalar dependencias
         run: pip install -r requirements.txt
+
+      - name: Verificar selección de fuentes frescas del Top 10
+        run: python3 .github/scripts/test_ttendencias_anchor_freshness.py
 
       - name: Verificar Top 10 automático y Top 11-30 exclusivamente manual
         run: python3 .github/scripts/test_ttendencias_top30_queue.py
