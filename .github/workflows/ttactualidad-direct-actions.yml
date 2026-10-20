@@ -20,6 +20,7 @@ jobs:
       - name: Aplicar eliminacion, desestimar o preparar con revision
         env:
           TT_ACTUALIDAD_EVENT_JSON: ${{ toJSON(github.event.client_payload) }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
@@ -38,6 +39,15 @@ jobs:
             git commit -m "TTActualidad: aplicar decision editorial"
             if git push origin HEAD:main; then
               echo "Authoritative GitHub state updated."
+              # Solo las órdenes que abren una elaboración provocan trabajo
+              # editorial nuevo. El transporte de imágenes es independiente.
+              if [ "${{ github.event.client_payload.project }}" = "ttendencias" ] &&
+                 { [ "${{ github.event.client_payload.decision }}" = "rework" ] ||
+                   [ "${{ github.event.client_payload.decision }}" = "prepare" ]; }; then
+                python3 trends/request_pc_editorial.py --selftest
+                python3 trends/request_pc_editorial.py --trigger ||
+                  echo "TT_EDITORIAL_TRIGGER_ERROR: solicitud persistida; revisar lanzador PC"
+              fi
               exit 0
             fi
             echo "Concurrent update: retry against fresh main."
