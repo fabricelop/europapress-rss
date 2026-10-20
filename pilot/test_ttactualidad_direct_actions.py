@@ -74,6 +74,8 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(changes["trends/mobile-decisions.json"]["items"][0]["status"], "deleted")
 
     def test_tr_discard_now_live(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id": "tr123", "name": "Tema actual", "revision": 2, "status": "preparing"}]})
         self.write("trends/editorial-queue.json", {
             "items": [{"id": "tr123", "revision": 2, "status": "preparing"}], "count": 1})
         cmd = {"project":"ttendencias","event_id":"tr123","decision":"discard",
@@ -82,6 +84,17 @@ class ActionTests(unittest.TestCase):
             mod.main()
         self.assertEqual(mod.load("trends/mobile-decisions.json", {})["items"][0]["status"], "published")
         self.assertEqual(mod.load("trends/editorial-queue.json", {})["items"][0]["status"], "published")
+
+    def test_tr_discard_cannot_delete_already_ready_same_revision(self):
+        self.write("trends/requests.json", {"requests": [
+            {"id":"tr123","revision":2,"status":"explained","explanation":"Nuevo contexto"}]})
+        self.write("trends/editorial-queue.json", {"items": [
+            {"id":"tr123","revision":2,"status":"preparing"}],"count":1})
+        self.write("trends/telegram-manual-explained.json", {"items": [
+            {"id":"tr123","revision":2,"status":"explained","explanation":"Nuevo contexto"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias","tr123","discard",2)
+        self.assertEqual(mod.load("trends/requests.json",{})["requests"][0]["status"],"explained")
 
     def test_tr_stale_revision(self):
         self.write("trends/editorial-queue.json", {
