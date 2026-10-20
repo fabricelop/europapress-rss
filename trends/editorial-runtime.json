@@ -4,14 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T15:05:47.110Z",
-  "last_completed_at": "2026-10-20T15:08:57.394Z",
-  "updated_at": "2026-10-20T15:08:58.360Z",
-  "status": "success",
+  "last_started_at": "2026-10-20T16:01:42.511Z",
+  "last_completed_at": "2026-10-20T16:02:39.903Z",
+  "updated_at": "2026-10-20T16:02:40.952Z",
+  "status": "waiting",
   "processed_ids": [],
-  "remaining_ids": [],
-  "queue_complete": true,
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f97274605e45"
+  ],
+  "queue_complete": false,
+  "remaining_active_ids": [
+    "f97274605e45"
+  ],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
@@ -23,128 +27,119 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "editorial-20261020150547-trends",
+    "run_id": "editorial-20261020160142-trends",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "done",
-    "started_at": "2026-10-20T15:05:47.110Z",
-    "updated_at": "2026-10-20T15:08:58.360Z",
+    "started_at": "2026-10-20T16:01:42.511Z",
+    "updated_at": "2026-10-20T16:02:40.952Z",
     "current": 0,
-    "total": 1,
+    "total": 0,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-20T15:05:48.453Z",
-        "phase": "preparing",
+        "at": "2026-10-20T16:01:43.413Z",
+        "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Sin preparing/update; una problemática Top10 para revisar después de las noticias. No se activa reparación visual."
+        "message": "Cola compacta vacía, pero requests conserva TerrorRESHxSelectaPlay r2 en preparing fuera del Top10. Se verifica la desincronización antes de declarar el cierre."
       },
       {
-        "at": "2026-10-20T15:08:27.376Z",
-        "phase": "closing",
-        "event_id": null,
-        "trend_id": null,
-        "title": null,
-        "message": "TerrorRESHxSelectaPlay r1 salió del Top10 y quedó inactive; se salta sin investigar. Cola de tendencias vacía, sin preparing/update ni rewrite_pending."
-      },
-      {
-        "at": "2026-10-20T15:08:58.360Z",
+        "at": "2026-10-20T16:02:40.952Z",
         "phase": "done",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cola 1→0 por salida del Top10 de TerrorRESHxSelectaPlay r1 (inactive). Cero explicaciones nuevas; sin preparing/update ni rewrite_pending. Sin imágenes ni Telegram."
+        "message": "Sin explicación nueva: TerrorRESHxSelectaPlay r2 sigue preparing en requests pero fuera de cola y Top10. Cierre parcial por discrepancia; no se marca explained ni se activa imagen o Telegram."
       }
     ],
     "summary": {
       "attempted": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "explained": 0,
       "problematic_reviewed": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 0,
+      "remaining_active": 1,
+      "remaining_compact_queue": 0,
       "final_compact_queue": 0,
-      "skipped_terminal_or_inactive": 1,
+      "consistency_warnings": 1,
+      "incidents": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 0,
-      "manual_visual_dispatches": 0,
-      "incidents": 0
+      "manual_visual_dispatches": 0
     },
     "processed_ids": [],
-    "verifications": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 5
     },
     "remate_selections": [],
-    "message": "Cola 1→0 por salida del Top10 de TerrorRESHxSelectaPlay r1 (inactive). Cero explicaciones nuevas; sin preparing/update ni rewrite_pending. Sin imágenes ni Telegram.",
-    "finished_at": "2026-10-20T15:08:57.394Z",
-    "partial": false,
-    "queue_complete": true,
-    "skipped_ids": [
+    "message": "Sin explicación nueva: TerrorRESHxSelectaPlay r2 sigue preparing en requests pero fuera de cola y Top10. Cierre parcial por discrepancia; no se marca explained ni se activa imagen o Telegram.",
+    "partial": true,
+    "queue_complete": false,
+    "finished_at": "2026-10-20T16:02:39.903Z",
+    "remaining_ids": [
       "f97274605e45"
     ],
-    "remaining_ids": [],
-    "remaining_active_ids": [],
+    "remaining_active_ids": [
+      "f97274605e45"
+    ],
     "remaining_problematic_ids": [],
-    "verification_head": "b7669c88ffc9094037c527eb3aa25ebe8447c610"
+    "consistency_warnings": [
+      {
+        "id": "f97274605e45",
+        "revision": 2,
+        "reason": "requests=preparing, ausente de cola y Top10. auto_queue_new.py excluye la request automática de cola pero solo inactiva problemáticas por salida del Top10, dejando preparing desincronizada. No se investiga fuera de la barrera JIT ni se marca explained."
+      }
+    ],
+    "verification_head": "30ba32f49b0b4b5f28b277f728f1460a7ed83d33"
   },
-  "run_id": "editorial-20261020150547-trends",
+  "run_id": "editorial-20261020160142-trends",
   "summary": {
     "attempted": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "explained": 0,
     "problematic_reviewed": 0,
-    "remaining_active": 0,
-    "remaining_problematic": 0,
+    "remaining_active": 1,
+    "remaining_compact_queue": 0,
     "final_compact_queue": 0,
-    "skipped_terminal_or_inactive": 1,
+    "consistency_warnings": 1,
+    "incidents": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 0,
-    "manual_visual_dispatches": 0,
-    "incidents": 0
+    "manual_visual_dispatches": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T15:05:48.453Z",
-      "phase": "preparing",
+      "at": "2026-10-20T16:01:43.413Z",
+      "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Sin preparing/update; una problemática Top10 para revisar después de las noticias. No se activa reparación visual."
+      "message": "Cola compacta vacía, pero requests conserva TerrorRESHxSelectaPlay r2 en preparing fuera del Top10. Se verifica la desincronización antes de declarar el cierre."
     },
     {
-      "at": "2026-10-20T15:08:27.376Z",
-      "phase": "closing",
-      "event_id": null,
-      "trend_id": null,
-      "title": null,
-      "message": "TerrorRESHxSelectaPlay r1 salió del Top10 y quedó inactive; se salta sin investigar. Cola de tendencias vacía, sin preparing/update ni rewrite_pending."
-    },
-    {
-      "at": "2026-10-20T15:08:58.360Z",
+      "at": "2026-10-20T16:02:40.952Z",
       "phase": "done",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cola 1→0 por salida del Top10 de TerrorRESHxSelectaPlay r1 (inactive). Cero explicaciones nuevas; sin preparing/update ni rewrite_pending. Sin imágenes ni Telegram."
+      "message": "Sin explicación nueva: TerrorRESHxSelectaPlay r2 sigue preparing en requests pero fuera de cola y Top10. Cierre parcial por discrepancia; no se marca explained ni se activa imagen o Telegram."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "previous_concurrent_run_id": "tr-editorial-202610182215-chat",
-  "partial": false,
+  "partial": true,
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T14:40:57+02:00"
