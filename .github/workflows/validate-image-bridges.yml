@@ -12,6 +12,7 @@ on:
       - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
       - "windows/tests/test_image_submission_evidence.cjs"
+      - "windows/tests/test_image_immediate_submit.cjs"
       - "windows/Install-TTImages-PromptFix-Safe.ps1"
       - ".github/workflows/validate-image-bridges.yml"
 
@@ -34,6 +35,7 @@ jobs:
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
             /windows/tests/test_image_submission_evidence.cjs
+            /windows/tests/test_image_immediate_submit.cjs
             /windows/Install-TTImages-PromptFix-Safe.ps1
             /windows/TTendenciasDedicatedListener.ps1
             /windows/Install-ImageBridge-Hotfix.ps1
@@ -83,6 +85,9 @@ jobs:
 
       - name: Probar reconocimiento de generacion activa sin /c/ y sin falsos positivos
         run: node windows/tests/test_image_submission_evidence.cjs
+
+      - name: Comprobar envío inmediato del prompt sin duplicados ni borradores ajenos
+        run: node windows/tests/test_image_immediate_submit.cjs
 
       - name: Validar contrato launch-only sin false ERROR ni raster
         run: |
