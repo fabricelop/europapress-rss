@@ -15,8 +15,8 @@ foreach($name in @('TT Image Relay - Telegram v2','TT Image Relay - Botones v2',
   foreach($act in $task.Actions){
    $exe=Split-Path ([string]$act.Execute) -Leaf
    $args=[string]$act.Arguments
-   if($args.Length -gt 180){$args=$args.Substring(0,180)}
-   Write-Host ('  Action='+$exe+' Args='+$args)
+   $script=if($args -match '(?i)([A-Za-z0-9_.-]+\\.(?:ps1|vbs|cmd|js))'){$matches[1]}else{'no-script-file'}
+   Write-Host ('  Action='+$exe+' Script='+$script)
   }
  }catch{Write-Host ('TASK '+$name+' SIN ENCONTRAR: '+$_.Exception.Message)}
 }
