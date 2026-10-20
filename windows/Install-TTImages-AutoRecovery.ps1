@@ -80,14 +80,14 @@ try {
   $exe=Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
   $args='-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$guardian+'"'
   $action=New-ScheduledTaskAction -Execute $exe -Argument $args -WorkingDirectory $dir
-  $trigger=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Days 3650)
+  $trigger=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
   $principal=New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
   $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 3) -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
   Register-ScheduledTask -TaskName $name -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Description 'TTImages: recupera visor 9234 tras 2 fallos consecutivos; no toca captura ni Telegram' -Force|Out-Null
   $saved=Get-ScheduledTask -TaskName $name -ErrorAction Stop
   if($saved.State -eq 'Disabled'){throw 'Tarea instalada pero deshabilitada'}
   $original=Get-ScheduledTask -TaskName $sourceTask -ErrorAction Stop
-  Info ('GUARDIAN_INSTALADO estado='+$saved.State+' frecuencia=5min; recuperación tras 2 fallos')
+  Info ('GUARDIAN_INSTALADO estado='+$saved.State+' frecuencia=15min; recuperación tras 2 fallos')
   Info ('CAPTURA_ORIGINAL_SIN_CAMBIOS estado='+$original.State)
   Info ('ARCHIVOS '+$dir)
   Info 'La próxima ejecución comprobará el estado; no toca galerías sanas ni reenviará imágenes'
