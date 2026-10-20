@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T07:51:02.471Z",
+  "updated_at": "2026-10-20T07:51:56.702215Z",
   "items": [
     {
       "event_id": "7e222245465b",
@@ -358,16 +358,34 @@
       },
       "prepared_at": "2026-10-20T07:47:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-20T07:51:56.702215Z",
+      "fallback_image_search_attempted_at": "2026-10-20T07:51:56.702215Z",
+      "archive_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/10/lisboa.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/economia/2026-10-20/policia-desaloja-acampadas-lisboa-oporto-detiene-manifestantes/",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La Policía desaloja las acampadas por la vivienda en Lisboa y Oporto y detiene a varios manifestantes"
+      },
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/10/lisboa.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/economia/2026-10-20/policia-desaloja-acampadas-lisboa-oporto-detiene-manifestantes/",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La Policía desaloja las acampadas por la vivienda en Lisboa y Oporto y detiene a varios manifestantes"
+      }
     }
   ],
   "count": 0,
