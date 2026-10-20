@@ -107,4 +107,12 @@ jobs:
             $errorsFound | ForEach-Object { Write-Host $_.Message }
             throw 'PowerShell +Noticia syntax invalid'
           }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Fix-TTActualidad-Top30.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'Top30 deployment PowerShell syntax invalid'
+          }
           Write-Host 'TTActualidad deploy scripts syntax OK'
