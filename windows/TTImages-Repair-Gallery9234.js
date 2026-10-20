@@ -80,6 +80,47 @@ async function startCapture(){
   const r=powershell(script);
   note(r.ok&&r.out.includes('CAPTURE_REQUESTED')?'CAPTURE_REQUESTED via_existing_scheduled_task':'CAPTURE_NOT_REQUESTED will_retry_on_normal_five_minute_schedule')
 }
+// Diagnostic mode: metadata-only fresh gallery in Chrome9234.
+// Inspect the new page and close only its newly-created target. Do not
+// replace the existing gallery or run the capture task.
+async function inspectFreshGallery(old){
+  requireIdle();
+  const initial=await targets();
+  if(initial.filter(t=>t.type==='page').length!==1 ||
+     initial.filter(t=>t.type==='page'&&galleryUrl(t.url)).length!==1)
+     throw Error('Temporary probe deferred: ambiguous gallery state');
+  const made=await requestJson(BASE+'/json/new?'+encodeURIComponent('https://chatgpt.com/images'),'PUT',15000);
+  const id=String(made.id||'');
+  if(!validId(id)||id===old.id)throw Error('Temporary probe could not verify new target');
+  note('DIAG_TEMP_CREATED id_prefix='+id.slice(0,12));
+  try{
+    for(let k=0;k<5;k++){
+      await pause(k===0?1800:k===1?2200:k===2?3300:4300);
+      const all=await targets();
+      const target=all.find(t=>t.type==='page'&&t.id===id);
+      if(!target){note('DIAG_TEMP_GONE');break}
+      const p=await probe(target,6500);
+      const route=typeof p.route==='string'?p.route.slice(0,75):'?';
+      note('DIAG_TEMP_'+(k+1)+' state='+p.state+
+        ' route='+route+' cdptarget_image='+galleryUrl(target.url)+
+        ' ready='+(p.ready||'?')+' children='+(p.bodyChildren??'?')+
+        ' main='+!!p.main+' next='+!!p.next+' root='+!!p.root+
+        ' testIds='+(p.testIds??'?')+' images='+(p.images??'?')+
+        ' challenge='+!!p.challenge+' mounted='+!!p.mounted+' ms='+p.ms);
+    }
+  }finally{
+    try{
+      requireIdle();
+      const all=await targets();
+      const temp=all.find(t=>t.type==='page'&&t.id===id);
+      const original=all.find(t=>t.type==='page'&&t.id===old.id&&galleryUrl(t.url));
+      if(!temp)note('DIAG_TEMP_ALREADY_GONE');
+      else if(!original||!galleryUrl(temp.url))note('DIAG_TEMP_PRESERVED target_changed_or_original_missing');
+      else{await closeTarget(id);note('DIAG_TEMP_CLOSED exact_owned_target original_preserved=true')}
+    }catch(e){note('DIAG_TEMP_CLEANUP_DEFERRED '+String(e.message||e).slice(0,140))}
+  }
+  note('DIAG_COMPLETE no_originals_or_telegram_changed');
+}
 async function run(){
   note('BEGIN apply='+APPLY);
   const version=await requestJson(BASE+'/json/version');
@@ -87,6 +128,11 @@ async function run(){
   const all=await targets(),pages=all.filter(t=>t.type==='page'),gallery=pages.filter(t=>galleryUrl(t.url));
   note('CHROME version='+version.Browser+' pages='+pages.length+' galleries='+gallery.length);
   if(pages.length!==1||gallery.length!==1||!validId(gallery[0].id))throw Error('Multiple/missing gallery pages, no changes');
+  if(process.argv.includes('--inspect-fresh')){
+    note('MODE inspect-fresh no existing gallery replaced');
+    await inspectFreshGallery(gallery[0]);
+    return;
+  }
   const old=gallery[0],first=await probe(old);
   await pause(700);
   const second=await probe(old);
