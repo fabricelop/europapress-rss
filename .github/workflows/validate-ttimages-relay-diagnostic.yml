@@ -43,7 +43,9 @@ jobs:
           $code=Get-Content -Raw -LiteralPath $path
           foreach($marker in @('http://127.0.0.1:9234/json/list','Visor ya abierto al iniciar',
               'Page.reload','Get-ScheduledTask -TaskName $taskName',
-              'Start-ScheduledTask -TaskName $taskName','relay-captura.js')){
+              'Start-ScheduledTask -TaskName $taskName','relay-captura|',
+              'RecoverGalleryByHttp','/json/new?','/json/close/',
+              "'$ws=$ws -replace'")){
             if(-not $code.Contains($marker)){throw ('Missing viewer guard '+$marker)}
           }
           foreach($forbidden in @('Stop-Process','Kill-Process','Remove-Item','Unregister-ScheduledTask',
