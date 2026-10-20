@@ -11,6 +11,7 @@ import hashlib
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
+from trends_rework import rework_explained
 
 ROOT = Path(__file__).resolve().parent.parent
 REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
@@ -336,6 +337,31 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
             queue["updated_at"] = now
             processing["updated_at"] = now
             return {queue_path: queue, processing_path: processing}, "applied"
+    if project == "ttendencias" and decision == "rework":
+        req_path = "trends/requests.json"
+        manual_path = "trends/telegram-manual-explained.json"
+        queue_path = "trends/editorial-queue.json"
+        mobile_path = "trends/mobile-decisions.json"
+        ledger_path = "trends/telegram-image-deliveries.json"
+        prepared_path = "trends/prepared.json"
+        requests = load(req_path, {"requests": []})
+        manual = load(manual_path, {"items": []})
+        queue = load(queue_path, {"items": []})
+        mobile = load(mobile_path, {"items": []})
+        deliveries = load(ledger_path, {"items": []})
+        prepared = load(prepared_path, {"items": []})
+        try:
+            rework_explained(event_id, revision, now, requests, manual, queue,
+                             mobile, deliveries, "ttactualidad_direct_rework")
+        except ValueError as exc:
+            fail(str(exc))
+        prepared["items"] = [row for row in prepared.get("items", [])
+                             if str(row.get("id") or "") != event_id]
+        prepared["updated_at"] = now
+        return {
+            req_path: requests, manual_path: manual, queue_path: queue,
+            mobile_path: mobile, ledger_path: deliveries, prepared_path: prepared,
+        }, "applied"
     if project == "ttendencias":
         queue_path, req_path, mobile_path = "trends/editorial-queue.json", "trends/requests.json", "trends/mobile-decisions.json"
         queue = load(queue_path, {"items": []})
@@ -409,7 +435,7 @@ def main():
     trend_rank = cmd.get("trend_rank")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision not in {"deleted", "discard", "prepare"}:
+    if decision not in {"deleted", "discard", "prepare", "rework"}:
         fail("Decision no admitida")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
