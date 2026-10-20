@@ -127,7 +127,20 @@ async function load(force=false){
    render();
   }catch(e){errors.push(String(e))}
  }
- const wanted=fields[app].filter(path=>path!==radarPath);
+ // Show editorial work before loading large history/requests ledgers.
+ const queuePath=app==='tr'?'trends/editorial-queue.json':null;
+ if(queuePath){
+  try{
+   const queue=await fetchJson(queuePath,force);
+   if(revision!==loadRevision||app!==state.app)return;
+   const old=state.data.editorialQueue;
+   const incomingAt=Date.parse(queue.updated_at||'')||0;
+   const existingAt=Date.parse(old?.updated_at||'')||0;
+   state.data={...state.data,editorialQueue:existingAt>incomingAt?old:queue};
+   render();
+  }catch(e){errors.push(String(e))}
+ }
+ const wanted=fields[app].filter(path=>path!==radarPath&&path!==queuePath);
  const output=await Promise.all(wanted.map(async path=>{
   try{return [aliases[path],await fetchJson(path,force)]}
   catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}
