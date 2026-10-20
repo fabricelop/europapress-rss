@@ -4,116 +4,154 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T20:15:00+02:00",
-  "last_completed_at": "2026-10-20T20:18:30+02:00",
-  "updated_at": "2026-10-20T20:18:30+02:00",
+  "last_started_at": "2026-10-20T20:45:00+02:00",
+  "last_completed_at": "2026-10-20T20:55:00+02:00",
+  "updated_at": "2026-10-20T20:55:00+02:00",
   "status": "success",
   "processed_ids": [
     "f97274605e45"
   ],
-  "remaining_ids": [
-    "f97274605e45"
-  ],
+  "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "f97274605e45"
-  ],
+  "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "editorial-20261020164500-trends",
-    "status": "triggered",
+    "trigger_run_id": "editorial-20261020204500-ttendencias",
+    "status": "triggered_by_explained_push",
+    "source_commit": "e216f0a8fa3a30c1c2747bfe0dd4a7024501c634",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "editorial-20261020201500-ttendencias",
+    "run_id": "editorial-20261020204500-ttendencias",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-20T20:15:00+02:00",
-    "updated_at": "2026-10-20T20:18:30+02:00",
-    "finished_at": "2026-10-20T20:18:30+02:00",
+    "started_at": "2026-10-20T20:45:00+02:00",
+    "updated_at": "2026-10-20T20:55:00+02:00",
+    "finished_at": "2026-10-20T20:55:00+02:00",
     "current": 1,
     "total": 1,
-    "trend_id": "f97274605e45",
-    "title": "#TerrorRESHxSelectaPlay",
+    "trend_id": null,
+    "title": null,
+    "message": "Pasada 1/1 cerrada y verificada. #TerrorRESHxSelectaPlay explicada; cola editorial 0 y reparación visual independiente disparada por el commit de Explicadas.",
     "incident_count": 1,
     "incidents": [
       {
         "id": "f97274605e45",
         "revision": 2,
-        "type": "verification_insufficient",
-        "message": "Cuarto intento sin detonante factual verificable; se mantiene problematic/No comprobada."
+        "type": "github_write_retry",
+        "message": "El primer intento de commit atómico devolvió un error transitorio de GitHub; se releyó main y el reintento sobre HEAD fresco quedó confirmado."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-20T20:15:00+02:00",
+        "at": "2026-10-20T20:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Preparando pasada: 0 preparing/update; 1 problematic Top10 pendiente de reintento."
       },
       {
-        "at": "2026-10-20T20:15:20+02:00",
+        "at": "2026-10-20T20:46:00+02:00",
         "phase": "verifying",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Releyendo estado autoritativo de #TerrorRESHxSelectaPlay r2 antes del reintento."
+        "message": "JIT validado: r2 sigue problematic y Top 8. Releyendo estado autoritativo antes del nuevo intento."
       },
       {
-        "at": "2026-10-20T20:15:45+02:00",
+        "at": "2026-10-20T20:47:00+02:00",
         "phase": "investigating",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "JIT validado: r2 sigue problematic y Top 9. Buscando detonante actual con consultas nuevas y fuentes distintas."
+        "message": "Consulta exacta y variantes completadas: identificado un sorteo de Halloween de RESH y SelectaPlay con 5 juegos físicos de terror para PS5."
       },
       {
-        "at": "2026-10-20T20:16:20+02:00",
+        "at": "2026-10-20T20:47:30+02:00",
         "phase": "investigating",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Consulta exacta completada: confirma la tendencia, no su detonante. Contrastando RESH + Selecta Play y posibles campañas o sorteos."
+        "message": "Contrastado con SelectaPlay y participaciones que usan el hashtag. Hecho esencial verificado."
       },
       {
-        "at": "2026-10-20T20:17:05+02:00",
+        "at": "2026-10-20T20:48:00+02:00",
+        "phase": "drafting",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Redactando explicación factual con dos hashtags específicos y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-20T20:48:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Cinco enfoques de remate evaluados contra ratings recientes; seleccionado uno específico del sorteo físico de Halloween."
+      },
+      {
+        "at": "2026-10-20T20:49:00+02:00",
         "phase": "persisting",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Dos búsquedas independientes sin detonante verificable. Guardando nuevo motivo de No comprobada en el outbox r2."
+        "message": "Guardando ficha editorial verificada y sincronizando la revisión exacta."
       },
       {
-        "at": "2026-10-20T20:17:25+02:00",
+        "at": "2026-10-20T20:51:32+02:00",
+        "phase": "persisting",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Primer intento atómico no confirmado por error transitorio de GitHub; releyendo main antes de reintentar."
+      },
+      {
+        "at": "2026-10-20T20:53:00+02:00",
+        "phase": "persisting",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Ficha Explicada y requests guardados en un único commit; revisión retirada de la cola."
+      },
+      {
+        "at": "2026-10-20T20:54:00+02:00",
         "phase": "verifying",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Outbox r2 persistido en main. Verificando ejecución del aplicador oficial y relectura del estado resultante."
+        "message": "Releyendo main y verificando id+revision, texto, remate y explained_at."
       },
       {
-        "at": "2026-10-20T20:18:30+02:00",
-        "phase": "closing",
+        "at": "2026-10-20T20:54:30+02:00",
+        "phase": "verifying",
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Verificado en main: intento 3→4 aplicado, outbox consumido y sin preparing/update. La tendencia continúa No comprobada/problematic."
+        "message": "Tendencia cerrada y verificada: requests y Explicadas coinciden exactamente; cola final 0."
+      },
+      {
+        "at": "2026-10-20T20:55:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada 1/1 cerrada y verificada. #TerrorRESHxSelectaPlay explicada; cola editorial 0 y reparación visual independiente disparada por el commit de Explicadas."
       }
     ],
     "summary": {
       "attempted": 1,
       "ready": 0,
-      "explained": 0,
+      "explained": 1,
       "problematic_reviewed": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 1,
-      "final_compact_queue": 1,
+      "final_compact_queue": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "manual_visual_dispatches": 0
+      "manual_visual_dispatches": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "remates_omitted": 0,
+      "incidents": 1,
+      "partial": false
     },
     "processed_ids": [
       "f97274605e45"
@@ -123,98 +161,166 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 10
+      "recent_considered": 30
     },
     "remate_selections": [
       {
         "trend_id": "f97274605e45",
         "revision": 2,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "No hay detonante factual verificable; no se redacta explicación ni remate."
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ Este año el susto viene en caja."
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ El terror se ha puesto formato físico."
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ Halloween ha cambiado las chuches por cajas de PS5."
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ Cinco juegos y ni un susto necesita descarga."
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ El sorteo ha metido el miedo en formato físico."
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.6,
+        "no_remate_reason": null
       }
     ],
-    "message": "Verificado en main: intento 3→4 aplicado, outbox consumido y sin preparing/update. La tendencia continúa No comprobada/problematic.",
     "partial": false,
     "queue_complete": true,
     "verification": {
-      "apply_commit": "28d8a050fce0a9f0ecbd9b9c62f4887f315f90fe",
-      "reason_match": true,
+      "apply_commit": "e216f0a8fa3a30c1c2747bfe0dd4a7024501c634",
       "revision": 2,
-      "status": "problematic",
-      "attempts_before": 3,
-      "attempts_after": 4,
-      "outbox_consumed": true
-    }
+      "status": "explained",
+      "request_manual_exact_match": true,
+      "queue_target_absent": true,
+      "final_queue_count": 0
+    },
+    "final_outcomes": [
+      {
+        "id": "f97274605e45",
+        "revision": 2,
+        "name": "#TerrorRESHxSelectaPlay",
+        "status": "explained",
+        "explained_at": "2026-10-20T20:53:00+02:00"
+      }
+    ]
   },
-  "run_id": "editorial-20261020201500-ttendencias",
+  "run_id": "editorial-20261020204500-ttendencias",
   "summary": {
     "attempted": 1,
     "ready": 0,
-    "explained": 0,
+    "explained": 1,
     "problematic_reviewed": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 1,
-    "final_compact_queue": 1,
+    "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
-    "manual_visual_dispatches": 0
+    "manual_visual_dispatches": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
+    "remates_omitted": 0,
+    "incidents": 1,
+    "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T20:15:00+02:00",
+      "at": "2026-10-20T20:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Preparando pasada: 0 preparing/update; 1 problematic Top10 pendiente de reintento."
     },
     {
-      "at": "2026-10-20T20:15:20+02:00",
+      "at": "2026-10-20T20:46:00+02:00",
       "phase": "verifying",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Releyendo estado autoritativo de #TerrorRESHxSelectaPlay r2 antes del reintento."
+      "message": "JIT validado: r2 sigue problematic y Top 8. Releyendo estado autoritativo antes del nuevo intento."
     },
     {
-      "at": "2026-10-20T20:15:45+02:00",
+      "at": "2026-10-20T20:47:00+02:00",
       "phase": "investigating",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "JIT validado: r2 sigue problematic y Top 9. Buscando detonante actual con consultas nuevas y fuentes distintas."
+      "message": "Consulta exacta y variantes completadas: identificado un sorteo de Halloween de RESH y SelectaPlay con 5 juegos físicos de terror para PS5."
     },
     {
-      "at": "2026-10-20T20:16:20+02:00",
+      "at": "2026-10-20T20:47:30+02:00",
       "phase": "investigating",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Consulta exacta completada: confirma la tendencia, no su detonante. Contrastando RESH + Selecta Play y posibles campañas o sorteos."
+      "message": "Contrastado con SelectaPlay y participaciones que usan el hashtag. Hecho esencial verificado."
     },
     {
-      "at": "2026-10-20T20:17:05+02:00",
+      "at": "2026-10-20T20:48:00+02:00",
+      "phase": "drafting",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Redactando explicación factual con dos hashtags específicos y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-20T20:48:30+02:00",
+      "phase": "remate_selection",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Cinco enfoques de remate evaluados contra ratings recientes; seleccionado uno específico del sorteo físico de Halloween."
+    },
+    {
+      "at": "2026-10-20T20:49:00+02:00",
       "phase": "persisting",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Dos búsquedas independientes sin detonante verificable. Guardando nuevo motivo de No comprobada en el outbox r2."
+      "message": "Guardando ficha editorial verificada y sincronizando la revisión exacta."
     },
     {
-      "at": "2026-10-20T20:17:25+02:00",
+      "at": "2026-10-20T20:51:32+02:00",
+      "phase": "persisting",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Primer intento atómico no confirmado por error transitorio de GitHub; releyendo main antes de reintentar."
+    },
+    {
+      "at": "2026-10-20T20:53:00+02:00",
+      "phase": "persisting",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Ficha Explicada y requests guardados en un único commit; revisión retirada de la cola."
+    },
+    {
+      "at": "2026-10-20T20:54:00+02:00",
       "phase": "verifying",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Outbox r2 persistido en main. Verificando ejecución del aplicador oficial y relectura del estado resultante."
+      "message": "Releyendo main y verificando id+revision, texto, remate y explained_at."
     },
     {
-      "at": "2026-10-20T20:18:30+02:00",
-      "phase": "closing",
+      "at": "2026-10-20T20:54:30+02:00",
+      "phase": "verifying",
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Verificado en main: intento 3→4 aplicado, outbox consumido y sin preparing/update. La tendencia continúa No comprobada/problematic."
+      "message": "Tendencia cerrada y verificada: requests y Explicadas coinciden exactamente; cola final 0."
+    },
+    {
+      "at": "2026-10-20T20:55:00+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada 1/1 cerrada y verificada. #TerrorRESHxSelectaPlay explicada; cola editorial 0 y reparación visual independiente disparada por el commit de Explicadas."
     }
   ],
   "telegram_orphans": 0,
