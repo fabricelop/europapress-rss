@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T05:07:26.471520Z",
+  "updated_at": "2026-10-20T05:09:53.611Z",
   "items": [
     {
       "event_id": "0a81570232bc",
@@ -65,7 +65,7 @@
       "editorial_note": "Solo elaboración textual. Sin ImageGen ni envío Telegram. Humor sobre competencia administrativa, no sobre personas solicitantes de asilo.",
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -90,7 +90,10 @@
         "generated": false,
         "alt": "El Supremo establece que las ONG no pueden expulsar a migrantes de los centros de acogida sin autorización de la Administración"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-20T05:09:53.611Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 0,
