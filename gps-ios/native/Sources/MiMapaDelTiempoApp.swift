@@ -276,6 +276,7 @@ struct SavedState: Codable {
     private var cachedPeriodCount = -1
     private var cachedPeriodEnd:Date?
     private var cachedPeriodSince:Date = .distantPast
+    private var cachedPeriodBucket: Int64 = -1
 
     /// Un índice para nombres/contornos. No reconstruir en cada muestra GPS.
     private func ensureZoneCatalog() {
@@ -440,9 +441,8 @@ struct SavedState: Codable {
         let window = TimeAnalytics.window(for:period,now:now)
         let first = data.intervals.first
         let last = data.intervals.last
-        let minuteStart = Int((window?.start.timeIntervalSince1970 ?? 0) / 60)
-        let minuteEnd = Int((window?.end.timeIntervalSince1970 ?? 0) / 60)
-        let fingerprint = "\(data.intervals.count)|\(first?.start.timeIntervalSince1970 ?? 0)|\(last?.start.timeIntervalSince1970 ?? 0)|\(last?.end.timeIntervalSince1970 ?? 0)|\(last?.cell.id ?? "")|\(period.rawValue)|\(minuteStart)|\(minuteEnd)"
+        let bucket = TimeMapPeriodPolicy.refreshBucket(for: period, now: now)
+        let fingerprint = "\(data.intervals.count)|\(first?.start.timeIntervalSince1970 ?? 0)|\(last?.start.timeIntervalSince1970 ?? 0)|\(last?.end.timeIntervalSince1970 ?? 0)|\(last?.cell.id ?? "")|\(period.rawValue)|\(bucket)"
         if fingerprint != mapVisitFingerprint {
             mapVisitFingerprint = fingerprint
             mapVisitCounts.removeAll(keepingCapacity:true)
@@ -476,14 +476,17 @@ struct SavedState: Codable {
             return confirmedTotals(now:now)
         }
         let count=data.intervals.count
-        let changed=cachedPeriod != period || cachedPeriodCount != count ||
+        let bucket=TimeMapPeriodPolicy.refreshBucket(for:period,now:now)
+        let changed=cachedPeriodCount != count ||
                     cachedPeriodEnd != data.intervals.last?.end
-        if cachedPeriod != period || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
+        if cachedPeriod != period || cachedPeriodBucket != bucket ||
+           (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
             cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
             cachedPeriod=period
             cachedPeriodCount=count
             cachedPeriodEnd=data.intervals.last?.end
             cachedPeriodSince=now
+            cachedPeriodBucket=bucket
         }
         return cachedPeriodValues
     }
@@ -501,7 +504,7 @@ struct SavedState: Codable {
             cachedThrough = normalizedCacheLastEnd
         } else {
             // El cálculo de períodos acotados se actualiza en cada consulta.
-            cachedThrough = data.intervals.last?.end
+            cachedThrough = cachedPeriodEnd
         }
         if let rest = data.gpsRest {
             guard cellIDs.contains(rest.cell.id) else { return 0 }
@@ -1922,6 +1925,12 @@ struct TimeMapView: View {
             }
         }
         .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
+        // Lightweight periodic refresh also catches midnight while GPS is
+        // voluntarily paused and no new location events arrive.
+        .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
+            guard model.selectedTab == 0 else { return }
+            refreshMapSnapshot()
+        }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
@@ -2531,7 +2540,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.41 · datos guardados en este iPhone",
+                    Label("Versión 1.0.43 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
