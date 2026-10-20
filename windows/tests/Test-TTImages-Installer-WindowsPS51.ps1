@@ -7,7 +7,7 @@ $installer=Join-Path $repo 'windows\Install-TTImages-AutoRecovery.ps1'
 $fixture=Join-Path $env:TEMP ('TTImages-Installer-Test-'+[Guid]::NewGuid().ToString('N'))
 $previousLocalAppData=$env:LOCALAPPDATA
 $global:TTImagesTestRegistered=$null
-$script:realCaptureReads=0
+$global:TTImagesRealCaptureReads=0
 try {
   New-Item -ItemType Directory -Path $fixture -Force|Out-Null
   $env:LOCALAPPDATA=$fixture
@@ -18,7 +18,7 @@ try {
     [CmdletBinding()]
     param([string]$TaskName)
     if($TaskName -eq 'TT Image Relay - Telegram v2'){
-      $script:realCaptureReads++
+      $global:TTImagesRealCaptureReads++
       return [pscustomobject]@{State='Ready';Actions=@([pscustomobject]@{Execute='wscript.exe';Arguments='trusted-capture.vbs'})}
     }
     if($TaskName -eq 'TTImages - AutoRecovery Viewer'){
@@ -80,7 +80,7 @@ try {
   # Then simulate the full install, still without real TaskScheduler APIs.
   & $installer
   if($null -eq $global:TTImagesTestRegistered){throw 'Installer did not register mock guardian task'}
-  if($script:realCaptureReads -lt 2){throw 'Original capture task status was not verified'}
+  if($global:TTImagesRealCaptureReads -lt 2){throw 'Original capture task status was not verified'}
   $dir=Join-Path $relayRoot 'AutoRecovery-v1'
   $launcher=Join-Path $dir 'TTImages-AutoRecovery-Hidden.vbs'
   if(-not(Test-Path $launcher)){throw 'Invisible launcher not written'}
@@ -94,5 +94,6 @@ try {
 } finally {
   $env:LOCALAPPDATA=$previousLocalAppData
   Remove-Variable -Name TTImagesTestRegistered -Scope Global -ErrorAction SilentlyContinue
+  Remove-Variable -Name TTImagesRealCaptureReads -Scope Global -ErrorAction SilentlyContinue
   if(Test-Path $fixture){Remove-Item -LiteralPath $fixture -Force -Recurse -ErrorAction SilentlyContinue}
 }
