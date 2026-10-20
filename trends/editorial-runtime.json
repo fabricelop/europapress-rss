@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T06:58:57.317Z",
-  "last_completed_at": "2026-10-20T07:01:17.922Z",
-  "updated_at": "2026-10-20T07:01:17.922Z",
+  "last_started_at": "2026-10-20T07:15:00.000Z",
+  "last_completed_at": "2026-10-20T07:16:40.000Z",
+  "updated_at": "2026-10-20T07:16:40.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,12 +23,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020065857",
+    "run_id": "tr-editorial-20261020091500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T06:58:57.317Z",
-    "updated_at": "2026-10-20T07:01:17.922Z",
+    "started_at": "2026-10-20T07:15:00.000Z",
+    "updated_at": "2026-10-20T07:16:40.000Z",
     "current": 0,
     "total": 0,
     "event_id": null,
@@ -50,7 +50,7 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     },
@@ -64,7 +64,23 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T07:01:17.922Z",
+        "at": "2026-10-20T07:15:00.000Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo estado autoritativo antes de cerrar una pasada 0/0."
+      },
+      {
+        "at": "2026-10-20T07:15:30.000Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y verificando cola, requests y reexplicaciones pendientes."
+      },
+      {
+        "at": "2026-10-20T07:16:40.000Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
@@ -72,13 +88,12 @@
         "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
       }
     ],
-    "finished_at": "2026-10-20T07:01:17.922Z",
+    "finished_at": "2026-10-20T07:16:40.000Z",
     "partial": false,
     "queue_complete": true,
-    "remaining_active_ids": [],
-    "verification_head": "e8cce69a799f4ed3ce89457d5aea23bb3b0a1c81"
+    "remaining_active_ids": []
   },
-  "run_id": "tr-editorial-20261020065857",
+  "run_id": "tr-editorial-20261020091500",
   "summary": {
     "initial_compact_queue": 0,
     "final_compact_queue": 0,
@@ -92,14 +107,30 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T07:01:17.922Z",
+      "at": "2026-10-20T07:15:00.000Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo estado autoritativo antes de cerrar una pasada 0/0."
+    },
+    {
+      "at": "2026-10-20T07:15:30.000Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main y verificando cola, requests y reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-10-20T07:16:40.000Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
@@ -113,6 +144,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-20T02:12:01+02:00"
+    "captured_at": "2026-10-20T09:16:22+02:00"
   }
 }
