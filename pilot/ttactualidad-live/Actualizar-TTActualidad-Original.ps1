@@ -42,8 +42,17 @@ function Check-Health($health) {
 function Deploy-SameWorker {
     Push-Location $root
     try {
-        & $wrangler deploy --config $config
-        Ensure ($LASTEXITCODE -eq 0) ('Wrangler deploy fallo: '+$LASTEXITCODE)
+        # Wrangler can emit benign warnings to stderr; do not mistake them
+        # for an error, but require a successful native exit code.
+        $oldErrorPreference = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            & $wrangler deploy --config $config
+            $code = $LASTEXITCODE
+        } finally {
+            $ErrorActionPreference = $oldErrorPreference
+        }
+        Ensure ($code -eq 0) ('Wrangler deploy fallo: '+$code)
     } finally {
         Pop-Location
     }
