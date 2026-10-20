@@ -22,19 +22,23 @@ function ReadCDP([string]$ws,[string]$method,[object]$params){
     $bytes=[Text.Encoding]::UTF8.GetBytes($msg)
     $chunk=[System.ArraySegment[byte]]::new([byte[]]$bytes)
     $c.SendAsync($chunk,[System.Net.WebSockets.WebSocketMessageType]::Text,$true,$timeout.Token).GetAwaiter().GetResult()
-    $builder=[Text.StringBuilder]::new()
-    do{
-      $buffer=New-Object byte[] 32768
-      $segment=[System.ArraySegment[byte]]::new([byte[]]$buffer)
-      $part=$c.ReceiveAsync($segment,$timeout.Token).GetAwaiter().GetResult()
-      if($part.MessageType -eq [System.Net.WebSockets.WebSocketMessageType]::Close){throw 'CDP WebSocket cerrado'}
-      [void]$builder.Append([Text.Encoding]::UTF8.GetString($buffer,0,$part.Count))
-      if($builder.Length -gt 300000){throw 'Respuesta CDP demasiado larga'}
-    }until($part.EndOfMessage)
-    $data=$builder.ToString()|ConvertFrom-Json
-    if([int]$data.id -ne 71){throw 'CDP devolvio evento inesperado'}
-    if($data.error){throw ('CDP Error '+$data.error.message)}
-    return $data.result
+    # Chrome may emit Page events before the response. Ignore those,
+    # and only accept the response for the exact command ID 71.
+    while($true){
+      $builder=[Text.StringBuilder]::new()
+      do{
+        $buffer=New-Object byte[] 32768
+        $segment=[System.ArraySegment[byte]]::new([byte[]]$buffer)
+        $part=$c.ReceiveAsync($segment,$timeout.Token).GetAwaiter().GetResult()
+        if($part.MessageType -eq [System.Net.WebSockets.WebSocketMessageType]::Close){throw 'CDP WebSocket cerrado'}
+        [void]$builder.Append([Text.Encoding]::UTF8.GetString($buffer,0,$part.Count))
+        if($builder.Length -gt 300000){throw 'Respuesta CDP demasiado larga'}
+      }until($part.EndOfMessage)
+      $data=$builder.ToString()|ConvertFrom-Json
+      if($null -eq $data.id -or [int]$data.id -ne 71){continue}
+      if($data.error){throw ('CDP Error '+$data.error.message)}
+      return $data.result
+    }
   }finally{
     try{$c.Dispose()}catch{}
     try{$timeout.Dispose()}catch{}
