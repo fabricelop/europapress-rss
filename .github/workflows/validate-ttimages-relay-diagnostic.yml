@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'windows/Diagnosticar-TTImages-Relay.ps1'
+      - 'windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
       - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
   workflow_dispatch:
 permissions:
@@ -30,3 +31,25 @@ jobs:
             if($src -match ('(?m)^\\s*(?:&\\s*)?'+[regex]::Escape($forbidden)+'\\b')){throw ('Diagnostic cannot execute '+$forbidden)}
           }
           Write-Host 'TTIMAGES_RELAY_DIAGNOSTIC_SAFE_SYNTAX_OK'
+
+      - name: Validate bounded viewer recovery script
+        shell: pwsh
+        run: |
+          $path='windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errs)|Out-Null
+          if($errs.Count -gt 0){ $errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $code=Get-Content -Raw -LiteralPath $path
+          foreach($marker in @('http://127.0.0.1:9234/json/list','Visor ya abierto al iniciar',
+              'Page.reload','Get-ScheduledTask -TaskName $taskName',
+              'Start-ScheduledTask -TaskName $taskName','relay-captura.js')){
+            if(-not $code.Contains($marker)){throw ('Missing viewer guard '+$marker)}
+          }
+          foreach($forbidden in @('Stop-Process','Kill-Process','Remove-Item','Unregister-ScheduledTask',
+              'Disable-ScheduledTask','Set-ScheduledTask','WriteAllText','Remove-Content')){
+            if($code -match ('(?m)^\s*(?:&\s*)?'+[regex]::Escape($forbidden)+'\b')){
+              throw ('Dangerous command in recovery '+$forbidden)
+            }
+          }
+          Write-Host 'TTIMAGES_VIEWER_RECOVERY_SAFE_SYNTAX_OK'
