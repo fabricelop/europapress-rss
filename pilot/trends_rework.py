@@ -103,3 +103,66 @@ def rework_explained(event_id, expected_revision, now, requests, manual, queue, 
                        if str(x.get("id") or x.get("event_id") or "") != event_id]
     mobile["updated_at"] = now
     return next_revision
+
+def rework_top30(event_id, expected_revision, now, current_top30, requests, manual, queue, mobile, source):
+    """Manual fresh investigation of a previously explained Top-30 label.
+
+    Unlike Listas, this also covers an old deleted editorial card or a grouped
+    member with no independent ready card. No prior image/text is reused.
+    """
+    import hashlib
+    import unicodedata
+
+    def key(value):
+        value = unicodedata.normalize("NFD", str(value or "").strip().casefold())
+        return "".join(ch for ch in value if unicodedata.category(ch) != "Mn")
+
+    old = next((x for x in requests.get("requests", []) if str(x.get("id") or "") == event_id), None)
+    if not old:
+        raise ValueError("No existe un registro editorial anterior verificable")
+    if expected_revision is not None and int(old.get("revision") or 0) != expected_revision:
+        raise ValueError("La revisión ha cambiado; actualiza TTActualidad")
+    name = str(old.get("name") or "").strip()
+    rank_row = next((x for x in current_top30 if key(x.get("name")) == key(name)), None)
+    if not rank_row:
+        raise ValueError("La tendencia ya no está en el Top 30 actual")
+    if str(old.get("status") or "").lower() in {"preparing", "update", "problematic"}:
+        raise ValueError("La tendencia ya está en elaboración")
+    eligible = bool(old.get("explanation")) or any(
+        str(x.get("explanation") or "").strip() and
+        (str(x.get("id") or "") == event_id or
+         key(name) in {key(z) for z in x.get("trend_names") or []})
+        for x in manual.get("items", [])
+    )
+    if not eligible:
+        raise ValueError("La tendencia aún no tiene una explicación anterior; usa Preparar novedad")
+    if any(key(x.get("name")) == key(name) and
+           str(x.get("status") or "").lower() in {"preparing", "update"}
+           for x in requests.get("requests", [])):
+        raise ValueError("Ya existe una elaboración más reciente de esta tendencia")
+
+    # A new ID avoids immutable terminal closure by an old deleted package.
+    new_id = hashlib.sha256(("manual-rework|" + event_id + "|" + now).encode("utf-8")).hexdigest()[:12]
+    row = {
+        "id": new_id, "name": name, "rank": int(rank_row.get("rank") or 0),
+        "revision": 0, "status": "preparing",
+        "created_at": now, "requested_at": now, "updated_at": now,
+        "task": "explain", "auto_queued": False, "request_source": source,
+        "with_image": True, "disable_ai_image": False, "rewrite_with_image": True,
+        "image_strategy": "ai_plus_fallback", "fallback_image_status": "pending",
+        "ai_image_status": "pending", "requested_together": [name],
+        "originated_from_prior_id": event_id,
+        "rewrite_instruction": (
+            "Investigación desde cero: verifica el contexto ACTUAL de " + name +
+            ", eventos, marcador y fecha. Redacta texto y remate nuevos y consigue "
+            "una nueva foto de archivo para esta revisión. No reutilices explicaciones "
+            "ni imágenes de una versión ya publicada o cerrada."
+        )
+    }
+    requests.setdefault("requests", []).append(row)
+    requests["updated_at"] = now
+    queue.setdefault("items", []).append(dict(row))
+    queue["count"] = sum(str(x.get("status") or "").lower() in {"preparing", "update"} for x in queue["items"])
+    queue["updated_at"] = now
+    mobile["updated_at"] = now
+    return new_id
