@@ -385,8 +385,20 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
         if decision == "discard":
             if existing and str(existing.get("status") or "").lower() in TERMINAL:
                 return ({}, "already_applied") if existing["status"] in {"published", "dismissed"} else fail("Tendencia ya cerrada")
-            if not working or str(working.get("status") or "").lower() not in {"preparing", "update", "ready", "problematic"}:
-                fail("Esta tendencia ya no esta en elaboracion")
+            # Queued snapshots may outlive a finished explanation. Do not let
+            # the stale "Desestimar" button erase an already finished Listas
+            # card for the same (id, revision).
+            if (not request or str(request.get("status") or "").lower() not in {"preparing", "update"}
+                    or int(request.get("revision") or 0) != revision):
+                fail("La tendencia ya no esta En elaboracion; actualiza TTActualidad")
+            manual = load("trends/telegram-manual-explained.json", {"items": []})
+            if any(str(row.get("id") or "") == event_id and
+                   int(row.get("revision") or 0) >= revision and
+                   str(row.get("status") or "").lower() == "explained"
+                   for row in manual.get("items", [])):
+                fail("La tendencia ya esta en Listas; no se puede borrar desde una cola antigua")
+            if not working or str(working.get("status") or "").lower() not in {"preparing", "update"}:
+                fail("Esta tendencia ya no esta En elaboracion")
             check_revision(working, revision)
             working.update(status="published", published_at=now, decision_source="ttactualidad_direct")
             if request and int(request.get("revision") or 0) <= revision:
