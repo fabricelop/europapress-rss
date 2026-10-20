@@ -72,6 +72,18 @@ jobs:
           node --check /tmp/ttactualidad-v8-ui.js
           cp pilot/ttactualidad-live/worker.js /tmp/ttactualidad-v8-worker.mjs
           node --check /tmp/ttactualidad-v8-worker.mjs
+      - name: Check Windows PowerShell 5.1 safe encoding in original deployer
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('pilot/ttactualidad-live/Actualizar-TTActualidad-Original.ps1')
+          content=p.read_bytes()
+          assert content.isascii(), 'Windows PowerShell 5.1 loads UTF-8 without BOM as legacy ANSI'
+          source=content.decode('ascii')
+          assert source.count('Volver a En elabora') >= 2, 'Missing rework UI preflight or live check'
+          assert 'Deploy-SameWorker' in source
+          print('TT_ACTUALIDAD_ORIGINAL_PS51_ENCODING_OK')
+          PY
       - name: Parse deploy PowerShell without executing
         shell: pwsh
         run: |
