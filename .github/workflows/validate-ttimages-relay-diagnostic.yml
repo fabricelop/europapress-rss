@@ -43,10 +43,10 @@ jobs:
           if($errs.Count -gt 0){ $errs|ForEach-Object{Write-Error $_.Message};exit 1}
           $code=Get-Content -Raw -LiteralPath $path
           foreach($marker in @('http://127.0.0.1:9234/json/list','Visor ya abierto al iniciar',
-              'Page.reload','Get-ScheduledTask -TaskName $taskName',
-              'Start-ScheduledTask -TaskName $taskName','relay-captura|',
-              'RecoverGalleryByHttp','/json/new?','/json/close/',
-              'ws://127.0.0.1:9234/')){
+              'GetChromeTargets','Get-ScheduledTask -TaskName $taskName',
+              'Start-ScheduledTask -TaskName $taskName','GetCaptureProcess',
+              'GALERIA_NUEVA_CONFIRMADA','/json/new?','/json/close/',
+              'ConvertFrom-Json -InputObject','RECUPERACION_HTTP_OK')){
             if(-not $code.Contains($marker)){throw ('Missing viewer guard '+$marker)}
           }
           foreach($forbidden in @('Stop-Process','Kill-Process','Remove-Item','Unregister-ScheduledTask',
