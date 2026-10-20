@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T08:00:40.880Z",
-  "last_completed_at": "2026-10-20T08:09:34.293Z",
-  "updated_at": "2026-10-20T08:09:34.293Z",
+  "last_started_at": "2026-10-20T08:15:00.000Z",
+  "last_completed_at": "2026-10-20T08:15:15.000Z",
+  "updated_at": "2026-10-20T08:15:15.000Z",
   "status": "success",
-  "processed_ids": [
-    "2bba084190e3"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -25,363 +23,131 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020080040",
+    "run_id": "tr-editorial-20261020101500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T08:00:40.880Z",
-    "updated_at": "2026-10-20T08:09:34.293Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-20T08:15:00.000Z",
+    "updated_at": "2026-10-20T08:15:15.000Z",
+    "finished_at": "2026-10-20T08:15:15.000Z",
+    "current": 0,
+    "total": 0,
     "event_id": null,
-    "trend_id": "2bba084190e3",
-    "title": "#LaHora20O",
-    "message": "#LaHora20O r0 cerrada y verificada; cola sobrevenida 1→0. Noticias 2→0. Sin imágenes, envíos Telegram ni activaciones visuales.",
+    "trend_id": null,
+    "title": null,
+    "message": "Pasada 0/0 cerrada y verificada en main; no había trabajo editorial nuevo. Saneamiento visual solicitado de forma independiente.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
       "initial_compact_queue": 0,
-      "discovered_during_run": 1,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
-      "attempted": 1,
-      "explained": 1,
-      "explanation_groups": 1,
-      "processed_ids": [
-        "2bba084190e3"
-      ],
+      "attempted": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "processed_ids": [],
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 0,
+      "pending_repair_triggered": 1,
       "incidents": 0,
       "partial": false
     },
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [
-      {
-        "id": "2bba084190e3",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.4,
-            "ratings_affinity": 2.2,
-            "news_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 7.7,
-            "ratings_affinity": 2,
-            "news_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 5.7,
-            "ratings_affinity": 1.4,
-            "news_specificity": 1.5,
-            "punch": 1.1,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "news_specificity": 2,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 0.8,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 6,
-            "ratings_affinity": 1.6,
-            "news_specificity": 1.3,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T08:02:35.924Z",
+        "at": "2026-10-20T08:15:00.000Z",
+        "phase": "preparing",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada editorial; cola inicial 0. Verificando solicitudes activas, reexplicaciones y estado autoritativo en main."
+      },
+      {
+        "at": "2026-10-20T08:15:03.000Z",
+        "phase": "preparing",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; no bloquea el cierre editorial."
+      },
+      {
+        "at": "2026-10-20T08:15:10.000Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, sin requests preparing/update, sin rewrite_pending y sin Explicadas <24 h con remate pendiente."
+      },
+      {
+        "at": "2026-10-20T08:15:15.000Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cierre 0/0 verificado en main: sin tendencias activas ni reexplicaciones elegibles; sin activar reparaciones visuales."
-      },
-      {
-        "at": "2026-10-20T08:06:53.880Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Relectura final detecta #LaHora20O r0 recién encolada; comprobando identidad y revisión antes de investigar."
-      },
-      {
-        "at": "2026-10-20T08:06:56.720Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Buscando el detonante de #LaHora20O en la emisión de hoy de La hora de La 1."
-      },
-      {
-        "at": "2026-10-20T08:07:12.679Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Fuente oficial localizada: LaHoraTVE inicia #LaHora20O hoy con Silvia Intxaurrondo. Contrastando temas concretos de la emisión."
-      },
-      {
-        "at": "2026-10-20T08:08:06.970Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Detonante verificado: etiqueta oficial de la emisión del 20 de octubre, confirmada por LaHoraTVE y parrilla de RTVE. No se atribuye a una polémica no comprobada."
-      },
-      {
-        "at": "2026-10-20T08:08:07.945Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Redactando explicación de la emisión concreta de hoy y su horario, sin reciclar ediciones anteriores."
-      },
-      {
-        "at": "2026-10-20T08:08:09.150Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Límite comprobado: 194 caracteres; prefijo y dos hashtags sin repetir la etiqueta de cabecera."
-      },
-      {
-        "at": "2026-10-20T08:08:10.199Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Generando cinco candidatos internos sobre el nombre y la duración comprobada del programa."
-      },
-      {
-        "at": "2026-10-20T08:08:11.446Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Evaluación con ratings congelados: se evitan café, despertadores y fórmulas anteriores; c1 seleccionado (8,4/10)."
-      },
-      {
-        "at": "2026-10-20T08:08:56.107Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Guardando ficha Explicada r0 mediante persistencia textual directa; transporte de chat descartado porque despacha Telegram."
-      },
-      {
-        "at": "2026-10-20T08:09:01.417Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Ficha r0 guardada; actualizando requests con idénticos texto, remate, revisión y fecha."
-      },
-      {
-        "at": "2026-10-20T08:09:06.972Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Ficha y request explained verificadas con cinco campos idénticos; retirando solo 2bba084190e3 r0 de la cola."
-      },
-      {
-        "at": "2026-10-20T08:09:33.115Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "Relectura de main: #LaHora20O r0 explained, ficha/request idénticas y revisión ausente de cola."
-      },
-      {
-        "at": "2026-10-20T08:09:34.293Z",
-        "phase": "closing",
-        "event_id": null,
-        "trend_id": "2bba084190e3",
-        "title": "#LaHora20O",
-        "message": "#LaHora20O r0 cerrada y verificada; cola sobrevenida 1→0. Noticias 2→0. Sin imágenes, envíos Telegram ni activaciones visuales."
+        "message": "Pasada 0/0 cerrada y verificada en main; no había trabajo editorial nuevo. Saneamiento visual solicitado de forma independiente."
       }
     ],
     "partial": false,
     "queue_complete": true,
-    "remaining_active_ids": [],
-    "verification_head": "21c3d6d97294f4b4a5aea23e4124ed124350e117",
-    "finished_at": "2026-10-20T08:09:34.293Z"
+    "remaining_active_ids": []
   },
-  "run_id": "tr-editorial-20261020080040",
+  "run_id": "tr-editorial-20261020101500",
   "summary": {
     "initial_compact_queue": 0,
-    "discovered_during_run": 1,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
-    "attempted": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "processed_ids": [
-      "2bba084190e3"
-    ],
+    "attempted": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "processed_ids": [],
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 0,
+    "pending_repair_triggered": 1,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T08:02:35.924Z",
+      "at": "2026-10-20T08:15:00.000Z",
+      "phase": "preparing",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Iniciando pasada editorial; cola inicial 0. Verificando solicitudes activas, reexplicaciones y estado autoritativo en main."
+    },
+    {
+      "at": "2026-10-20T08:15:03.000Z",
+      "phase": "preparing",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; no bloquea el cierre editorial."
+    },
+    {
+      "at": "2026-10-20T08:15:10.000Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, sin requests preparing/update, sin rewrite_pending y sin Explicadas <24 h con remate pendiente."
+    },
+    {
+      "at": "2026-10-20T08:15:15.000Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cierre 0/0 verificado en main: sin tendencias activas ni reexplicaciones elegibles; sin activar reparaciones visuales."
-    },
-    {
-      "at": "2026-10-20T08:06:53.880Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Relectura final detecta #LaHora20O r0 recién encolada; comprobando identidad y revisión antes de investigar."
-    },
-    {
-      "at": "2026-10-20T08:06:56.720Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Buscando el detonante de #LaHora20O en la emisión de hoy de La hora de La 1."
-    },
-    {
-      "at": "2026-10-20T08:07:12.679Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Fuente oficial localizada: LaHoraTVE inicia #LaHora20O hoy con Silvia Intxaurrondo. Contrastando temas concretos de la emisión."
-    },
-    {
-      "at": "2026-10-20T08:08:06.970Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Detonante verificado: etiqueta oficial de la emisión del 20 de octubre, confirmada por LaHoraTVE y parrilla de RTVE. No se atribuye a una polémica no comprobada."
-    },
-    {
-      "at": "2026-10-20T08:08:07.945Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Redactando explicación de la emisión concreta de hoy y su horario, sin reciclar ediciones anteriores."
-    },
-    {
-      "at": "2026-10-20T08:08:09.150Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Límite comprobado: 194 caracteres; prefijo y dos hashtags sin repetir la etiqueta de cabecera."
-    },
-    {
-      "at": "2026-10-20T08:08:10.199Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Generando cinco candidatos internos sobre el nombre y la duración comprobada del programa."
-    },
-    {
-      "at": "2026-10-20T08:08:11.446Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Evaluación con ratings congelados: se evitan café, despertadores y fórmulas anteriores; c1 seleccionado (8,4/10)."
-    },
-    {
-      "at": "2026-10-20T08:08:56.107Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Guardando ficha Explicada r0 mediante persistencia textual directa; transporte de chat descartado porque despacha Telegram."
-    },
-    {
-      "at": "2026-10-20T08:09:01.417Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Ficha r0 guardada; actualizando requests con idénticos texto, remate, revisión y fecha."
-    },
-    {
-      "at": "2026-10-20T08:09:06.972Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Ficha y request explained verificadas con cinco campos idénticos; retirando solo 2bba084190e3 r0 de la cola."
-    },
-    {
-      "at": "2026-10-20T08:09:33.115Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "Relectura de main: #LaHora20O r0 explained, ficha/request idénticas y revisión ausente de cola."
-    },
-    {
-      "at": "2026-10-20T08:09:34.293Z",
-      "phase": "closing",
-      "event_id": null,
-      "trend_id": "2bba084190e3",
-      "title": "#LaHora20O",
-      "message": "#LaHora20O r0 cerrada y verificada; cola sobrevenida 1→0. Noticias 2→0. Sin imágenes, envíos Telegram ni activaciones visuales."
+      "message": "Pasada 0/0 cerrada y verificada en main; no había trabajo editorial nuevo. Saneamiento visual solicitado de forma independiente."
     }
   ],
   "telegram_orphans": 0,
@@ -390,6 +156,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-20T09:32:40+02:00"
+    "captured_at": "2026-10-20T10:12:24+02:00"
   }
 }
