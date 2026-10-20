@@ -440,8 +440,9 @@ if not capture_is_safe(recent):
 current = []
 for item in (recent.get("items") or [])[:10]:
     name = str(item.get("name") or "").strip()
-    if name:
-        current.append({"name": name, "rank": int(item.get("rank") or 0)})
+    rank = int(item.get("rank") or 0)
+    if name and 1 <= rank <= 10:
+        current.append({"name": name, "rank": rank})
 # Top 30 is a DISPLAY, not an automatic editorial queue.
 # Ranks 11-30 enter "preparing" ONLY when explicitly requested by the editor
 # using Preparar novedad; rank <=10 is eligible for automatic investigation.
