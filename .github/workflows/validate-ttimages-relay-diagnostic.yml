@@ -91,6 +91,12 @@ jobs:
             if($src.Contains($forbidden)){throw ('Guardian must not alter capture or Telegram: '+$forbidden)}
           }
           pwsh -NoProfile -File $p -SelfTest
+          # Regression for the exact bug on Windows: Write-Host wasn't captured.
+          $captured=@(& $p -SelfTest 2>&1)
+          if(-not (($captured|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
+            throw 'Installer self-test output not captured; installation would fail'
+          }
+          Write-Host 'TTIMAGES_INSTALLER_SELFTEST_CAPTURE_OK'
       - name: Validate conservative installer syntax
         shell: pwsh
         run: |
@@ -101,6 +107,9 @@ jobs:
           [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
           if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
           $installer=Get-Content -Raw -LiteralPath $p
+          if(-not $installer.Contains("e40621093f166fff673a9d08935f199e0cb68f0f")){
+            throw 'Installer must pin the capturable guardian release'
+          }
           $guardian=Get-Content -Raw -LiteralPath 'windows/TTImages-AutoRecovery-Guardian.ps1'
           foreach($required in @('New-TimeSpan -Minutes 15',
               'System32\wscript.exe','//B //Nologo',
