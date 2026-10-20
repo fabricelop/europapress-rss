@@ -1,14 +1,15 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T14:30:54+02:00",
-  "last_completed_at": "2026-10-20T14:30:55+02:00",
-  "updated_at": "2026-10-20T14:30:55+02:00",
+  "last_started_at": "2026-10-20T12:06:41.254Z",
+  "last_completed_at": "2026-10-20T12:32:14.723Z",
+  "updated_at": "2026-10-20T12:32:14.724Z",
   "status": "success",
   "processed_ids": [
+    "a1d75792e842",
     "f97274605e45"
   ],
   "remaining_ids": [
@@ -28,208 +29,473 @@
   "last_run": {
     "version": 1,
     "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-editorial-20261020110159",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-20T11:01:59.481Z",
-    "updated_at": "2026-10-20T11:17:32.364Z",
-    "current": 1,
-    "total": 1,
-    "trend_id": "f97274605e45",
-    "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual.",
+    "started_at": "2026-10-20T12:06:41.254Z",
+    "updated_at": "2026-10-20T12:32:14.724Z",
+    "current": 2,
     "incident_count": 1,
     "incidents": [
       {
         "trend_id": "f97274605e45",
         "revision": 0,
-        "code": "factual_trigger_unverified",
-        "message": "No se ha podido verificar el detonante actual de #TerrorRESHxSelectaPlay. La captura del 20/10/2026 a las 13:11:18 CEST acredita su posición, no la causa. Se buscaron la etiqueta literal en dos buscadores, variantes RESH/Selecta Play y publicaciones de las webs oficiales; no se encontró una publicación actual que las vincule. X/SelectaPlay devolvió 403. No hay base para afirmar un sorteo, premio, juego o campaña concretos. Pendiente de fuente primaria accesible; no elaborado ni explained."
+        "type": "unverified_trigger",
+        "reason": "Nuevo intento del 20/10/2026: #TerrorRESHxSelectaPlay sigue en el puesto 4 de la captura de las 14:21:10 CEST, pero no se ha verificado su detonante. Se han cambiado las consultas: variantes «TerrorRESH», «RESH Selecta Play Halloween octubre 2026» y búsquedas acotadas de la etiqueta y el posible organizador. Los resultados literales solo acreditan presencia en rankings. El Linktree de Selecta Play enumera perfiles y catálogo, sin explicar esta etiqueta; la web de Selecta Visión devolvió 403. No hay publicación actual accesible que confirme una campaña, sorteo, juego o premio concreto. Sigue pendiente de fuente primaria verificable; no elaborado ni explained."
+      }
+    ],
+    "remate_selections": [
+      {
+        "trend_id": "a1d75792e842",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 3.7,
+            "ratings_affinity": 1.4,
+            "news_specificity": 0.7,
+            "punch": 1,
+            "originality": 0.6,
+            "length_fit": 1,
+            "repetition_penalty": -1,
+            "rejected": true,
+            "rejection_reason": "Escasa especificidad o mecanismo genérico de programa matinal; no mejora la explicación."
+          },
+          {
+            "id": "c2",
+            "total": 4.7,
+            "ratings_affinity": 1.4,
+            "news_specificity": 0.9,
+            "punch": 1.1,
+            "originality": 0.8,
+            "length_fit": 1,
+            "repetition_penalty": -0.5,
+            "rejected": true,
+            "rejection_reason": "Escasa especificidad o mecanismo genérico de programa matinal; no mejora la explicación."
+          },
+          {
+            "id": "c3",
+            "total": 4.2,
+            "ratings_affinity": 1.2,
+            "news_specificity": 0.8,
+            "punch": 0.9,
+            "originality": 0.7,
+            "length_fit": 1,
+            "repetition_penalty": -0.4,
+            "rejected": true,
+            "rejection_reason": "Escasa especificidad o mecanismo genérico de programa matinal; no mejora la explicación."
+          },
+          {
+            "id": "c4",
+            "total": 3.4,
+            "ratings_affinity": 1.1,
+            "news_specificity": 0.7,
+            "punch": 0.8,
+            "originality": 0.6,
+            "length_fit": 1,
+            "repetition_penalty": -0.8,
+            "rejected": true,
+            "rejection_reason": "Escasa especificidad o mecanismo genérico de programa matinal; no mejora la explicación."
+          },
+          {
+            "id": "c5",
+            "total": 4.6,
+            "ratings_affinity": 1.3,
+            "news_specificity": 1,
+            "punch": 1,
+            "originality": 0.7,
+            "length_fit": 1,
+            "repetition_penalty": -0.4,
+            "rejected": true,
+            "rejection_reason": "Escasa especificidad o mecanismo genérico de programa matinal; no mejora la explicación."
+          }
+        ],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Ninguno de los cinco enfoques sobre horario, etiqueta y programa supera el filtro de especificidad. TV no política: explicación factual suficiente, sin humor de relleno."
+      }
+    ],
+    "activity": [
+      {
+        "at": "2026-10-20T12:06:42.101Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Sin preparing/update; #TerrorRESHxSelectaPlay continúa problematic en Top 10 y tendrá un nuevo intento de verificación al final."
+      },
+      {
+        "at": "2026-10-20T12:22:04.180Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Ha entrado #Mañaneros20O en preparing durante la pasada; releyendo id y revisión antes de investigar."
+      },
+      {
+        "at": "2026-10-20T12:22:08.647Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Buscando el detonante verificable de #Mañaneros20O en la emisión del 20 de octubre, sin atribuirle un debate concreto solo por la fecha."
+      },
+      {
+        "at": "2026-10-20T12:23:58.563Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Verificado que la etiqueta acompaña la emisión de hoy: cuenta oficial del programa fechada 20/10/2026 y parrilla de RTVE. Se excluyen resultados homónimos de 2023 y 2025; no se atribuye el auge a una polémica concreta."
+      },
+      {
+        "at": "2026-10-20T12:23:59.704Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Redactando una explicación de TV sobre el seguimiento de la emisión de hoy; no se convierte una intervención política particular en causa exclusiva."
+      },
+      {
+        "at": "2026-10-20T12:24:00.698Z",
+        "phase": "drafting",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Explicación factual suficiente, 162 caracteres; sin remate por decisión editorial permitida en TV. Hashtags específicos sin repetir el literal de cabecera."
+      },
+      {
+        "at": "2026-10-20T12:24:33.653Z",
+        "phase": "remate_selection",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Evaluados cinco enfoques con el snapshot de ratings; se descartan por genéricos. Explicación TV de 152 caracteres, sin remate permitido por contrato."
+      },
+      {
+        "at": "2026-10-20T12:24:38.401Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Guardando el texto verificado en la cola como hand-off admitido por shared/ttendencias_queue_reconcile.py; pendiente de consolidación de ficha y requests, todavía no se cuenta como cerrada."
+      },
+      {
+        "at": "2026-10-20T12:25:11.572Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Hand-off textual guardado en main; esperando a la consolidación programada existente, sin activar el transporte que invoca Telegram. No se cuenta explained hasta releer ficha y requests idénticos."
+      },
+      {
+        "at": "2026-10-20T12:26:22.478Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "La noticia editorial está cerrada; #Mañaneros20O conserva el hand-off verificado, pero requests sigue preparing hasta que el reconciliador materialice ambos registros. No se activa Telegram."
+      },
+      {
+        "at": "2026-10-20T12:27:48.951Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "El hand-off de #Mañaneros20O sigue pendiente de consolidación. Las búsquedas ampliadas del otro item solo acreditan su presencia en rankings, no su causa; se conservará sin explicación inventada."
+      },
+      {
+        "at": "2026-10-20T12:30:00.697Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "a1d75792e842",
+        "title": "#Mañaneros20O",
+        "message": "Mañaneros20O r0 cerrada y verificada: ficha y requests explained, cinco campos idénticos y fuera de cola; Action 39422132947 sin Telegram."
+      },
+      {
+        "at": "2026-10-20T12:30:01.714Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Releyendo la revisión r0 de #TerrorRESHxSelectaPlay y su presencia actual en Top10 antes de registrar el nuevo intento no verificable."
+      },
+      {
+        "at": "2026-10-20T12:30:03.189Z",
+        "phase": "investigating",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Las variantes nuevas de búsqueda y los perfiles/catálogo del posible organizador no aportan una publicación actual que vincule la etiqueta a un evento concreto. No hay base para inventar sorteo o juego."
+      },
+      {
+        "at": "2026-10-20T12:30:04.543Z",
+        "phase": "persisting",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Preparando outbox oficial problematic r0 con el motivo concreto del nuevo intento; no se retira de Top10 ni se convierte en explained."
+      },
+      {
+        "at": "2026-10-20T12:30:20.357Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Outbox problematic r0 releído en main; pendiente de Action, consumo del archivo y aumento del contador de intentos. No se cuenta como explicación terminada."
+      },
+      {
+        "at": "2026-10-20T12:31:31.578Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Reintento registrado por Action 39422769188 sin errores: problematic r0, intentos 1→2 y outbox consumido; se mantiene pendiente por falta de detonante verificable."
+      },
+      {
+        "at": "2026-10-20T12:32:14.724Z",
+        "phase": "closing",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Cierre verificado: Mañaneros20O explained r0 y fuera de cola; TerrorRESHxSelectaPlay permanece problematic tras nuevo intento. Sin preparing/update, Telegram ni ImageGen."
       }
     ],
     "summary": {
-      "initial_compact_queue": 0,
-      "arrived_during_run": 1,
-      "final_compact_queue": 1,
-      "attempted": 1,
-      "explained": 0,
-      "explanation_groups": 0,
-      "processed_ids": [
-        "f97274605e45"
-      ],
-      "remaining_active": 0,
-      "remaining_problematic": 1,
-      "problematic_reviewed": 1,
-      "rewrite_pending": 0,
-      "visual_backlog": 0,
+      "attempted": 2,
       "imagegen_calls": 0,
       "telegram_sends": 0,
+      "initial_compact_queue": 1,
+      "arrived_during_run": 1,
+      "explained": 1,
+      "transport": "verified_compact_queue_reconcile",
+      "problematic_reviewed": 1,
+      "remaining_problematic": 1,
+      "final_compact_queue": 1,
+      "remaining_active": 0,
+      "visual_backlog": 0,
       "pending_repair_triggered": 0,
-      "incidents": 1,
-      "partial": false
+      "incidents": 1
     },
+    "project": "TTendencias",
+    "run_id": "tr-editorial-20261020120641",
+    "event_id": null,
+    "trend_id": "f97274605e45",
+    "total": 2,
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": [
+    "processed_ids": [
+      "a1d75792e842",
+      "f97274605e45"
+    ],
+    "message": "Cierre verificado: Mañaneros20O explained r0 y fuera de cola; TerrorRESHxSelectaPlay permanece problematic tras nuevo intento. Sin preparing/update, Telegram ni ImageGen.",
+    "title": "#TerrorRESHxSelectaPlay",
+    "verifications": [
+      {
+        "id": "a1d75792e842",
+        "revision": 0,
+        "head": "fe88b76503244c7925996879567e327ac06398e1",
+        "checks": {
+          "id": true,
+          "revision": true,
+          "explanation": true,
+          "closer_text": true,
+          "explained_at": true
+        },
+        "text_matches": true,
+        "queue_removed": true,
+        "run_id": 39422132947,
+        "job_id": 118625457407
+      },
       {
         "id": "f97274605e45",
         "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Puerta factual no superada: detonante sin verificar; no se redactan candidatos."
+        "status": "problematic",
+        "attempts": 2,
+        "reason_matches": true,
+        "outbox_consumed": true,
+        "run_id": 39422769188,
+        "job_id": 118627630192,
+        "main_head": "30d187412a751d13b49e26da88ecd0051ce39285"
       }
     ],
-    "activity": [
-      {
-        "at": "2026-10-20T11:06:18.461Z",
-        "phase": "closing",
-        "event_id": null,
-        "trend_id": null,
-        "title": null,
-        "message": "Releídos main, cola y solicitudes: 0 tendencias activas y 0 reelaboraciones; cierre exclusivamente textual, sin Telegram ni imágenes."
-      },
-      {
-        "at": "2026-10-20T11:13:29.729Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "message": "Ha entrado una tendencia nueva tras el diagnóstico inicial vacío; se reabre esta pasada y se valida su ID/revisión antes de elaborarla."
-      },
-      {
-        "at": "2026-10-20T11:14:11.135Z",
-        "phase": "investigating",
-        "trend_id": null,
-        "message": "Buscando el origen exacto de #TerrorRESHxSelectaPlay; la etiqueta no devuelve aún publicaciones verificables en los buscadores, por lo que no se atribuye ningún premio ni sorteo concreto."
-      },
-      {
-        "at": "2026-10-20T11:15:20.785Z",
-        "phase": "investigating",
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Tres enfoques agotados: etiqueta literal en dos buscadores, cuentas/organizador y webs oficiales. Sin publicación que vincule la etiqueta al detonante actual; X devuelve 403. No se redacta una causa supuesta."
-      },
-      {
-        "at": "2026-10-20T11:16:17.918Z",
-        "phase": "persisting",
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Preparando outbox oficial problematic r0 con el motivo de verificación fallida; no contiene explicación, remate ni imagen."
-      },
-      {
-        "at": "2026-10-20T11:16:20.112Z",
-        "phase": "verifying",
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Outbox problematic r0 releído en main; esperando al aplicador oficial, sin invocar el transporte de Telegram."
-      },
-      {
-        "at": "2026-10-20T11:17:32.364Z",
-        "phase": "closing",
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual."
-      }
-    ],
-    "finished_at": "2026-10-20T11:17:32.364Z",
+    "finished_at": "2026-10-20T12:32:14.723Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "90e94204e1f2495bab2cad2cedd393f1249e2a60",
-    "title": "#TerrorRESHxSelectaPlay",
     "remaining_problematic_ids": [
       "f97274605e45"
     ],
-    "verifications": [
-      {
-        "trend_id": "f97274605e45",
-        "revision": 0,
-        "status": "problematic",
-        "run_id": 39413764535,
-        "job_id": 118597666027,
-        "main_head": "90e94204e1f2495bab2cad2cedd393f1249e2a60",
-        "reason_matches": true,
-        "explained": false
-      }
-    ]
+    "verification_head": "6b11786b6dd77780436e76354d9df606f66add2d"
   },
-  "run_id": "tr-editorial-20261020110159",
+  "run_id": "tr-editorial-20261020120641",
   "summary": {
-    "initial_compact_queue": 0,
-    "arrived_during_run": 1,
-    "final_compact_queue": 1,
-    "attempted": 1,
-    "explained": 0,
-    "explanation_groups": 0,
-    "processed_ids": [
-      "f97274605e45"
-    ],
-    "remaining_active": 0,
-    "remaining_problematic": 1,
-    "problematic_reviewed": 1,
-    "rewrite_pending": 0,
-    "visual_backlog": 0,
+    "attempted": 2,
     "imagegen_calls": 0,
     "telegram_sends": 0,
+    "initial_compact_queue": 1,
+    "arrived_during_run": 1,
+    "explained": 1,
+    "transport": "verified_compact_queue_reconcile",
+    "problematic_reviewed": 1,
+    "remaining_problematic": 1,
+    "final_compact_queue": 1,
+    "remaining_active": 0,
+    "visual_backlog": 0,
     "pending_repair_triggered": 0,
-    "incidents": 1,
-    "partial": false
+    "incidents": 1
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T11:06:18.461Z",
-      "phase": "closing",
+      "at": "2026-10-20T12:06:42.101Z",
+      "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Releídos main, cola y solicitudes: 0 tendencias activas y 0 reelaboraciones; cierre exclusivamente textual, sin Telegram ni imágenes."
+      "message": "Sin preparing/update; #TerrorRESHxSelectaPlay continúa problematic en Top 10 y tendrá un nuevo intento de verificación al final."
     },
     {
-      "at": "2026-10-20T11:13:29.729Z",
+      "at": "2026-10-20T12:22:04.180Z",
       "phase": "verifying",
-      "trend_id": null,
-      "message": "Ha entrado una tendencia nueva tras el diagnóstico inicial vacío; se reabre esta pasada y se valida su ID/revisión antes de elaborarla."
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Ha entrado #Mañaneros20O en preparing durante la pasada; releyendo id y revisión antes de investigar."
     },
     {
-      "at": "2026-10-20T11:14:11.135Z",
+      "at": "2026-10-20T12:22:08.647Z",
       "phase": "investigating",
-      "trend_id": null,
-      "message": "Buscando el origen exacto de #TerrorRESHxSelectaPlay; la etiqueta no devuelve aún publicaciones verificables en los buscadores, por lo que no se atribuye ningún premio ni sorteo concreto."
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Buscando el detonante verificable de #Mañaneros20O en la emisión del 20 de octubre, sin atribuirle un debate concreto solo por la fecha."
     },
     {
-      "at": "2026-10-20T11:15:20.785Z",
+      "at": "2026-10-20T12:23:58.563Z",
       "phase": "investigating",
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Tres enfoques agotados: etiqueta literal en dos buscadores, cuentas/organizador y webs oficiales. Sin publicación que vincule la etiqueta al detonante actual; X devuelve 403. No se redacta una causa supuesta."
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Verificado que la etiqueta acompaña la emisión de hoy: cuenta oficial del programa fechada 20/10/2026 y parrilla de RTVE. Se excluyen resultados homónimos de 2023 y 2025; no se atribuye el auge a una polémica concreta."
     },
     {
-      "at": "2026-10-20T11:16:17.918Z",
+      "at": "2026-10-20T12:23:59.704Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Redactando una explicación de TV sobre el seguimiento de la emisión de hoy; no se convierte una intervención política particular en causa exclusiva."
+    },
+    {
+      "at": "2026-10-20T12:24:00.698Z",
+      "phase": "drafting",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Explicación factual suficiente, 162 caracteres; sin remate por decisión editorial permitida en TV. Hashtags específicos sin repetir el literal de cabecera."
+    },
+    {
+      "at": "2026-10-20T12:24:33.653Z",
+      "phase": "remate_selection",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Evaluados cinco enfoques con el snapshot de ratings; se descartan por genéricos. Explicación TV de 152 caracteres, sin remate permitido por contrato."
+    },
+    {
+      "at": "2026-10-20T12:24:38.401Z",
       "phase": "persisting",
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Preparando outbox oficial problematic r0 con el motivo de verificación fallida; no contiene explicación, remate ni imagen."
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Guardando el texto verificado en la cola como hand-off admitido por shared/ttendencias_queue_reconcile.py; pendiente de consolidación de ficha y requests, todavía no se cuenta como cerrada."
     },
     {
-      "at": "2026-10-20T11:16:20.112Z",
+      "at": "2026-10-20T12:25:11.572Z",
       "phase": "verifying",
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Outbox problematic r0 releído en main; esperando al aplicador oficial, sin invocar el transporte de Telegram."
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Hand-off textual guardado en main; esperando a la consolidación programada existente, sin activar el transporte que invoca Telegram. No se cuenta explained hasta releer ficha y requests idénticos."
     },
     {
-      "at": "2026-10-20T11:17:32.364Z",
-      "phase": "closing",
+      "at": "2026-10-20T12:26:22.478Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "La noticia editorial está cerrada; #Mañaneros20O conserva el hand-off verificado, pero requests sigue preparing hasta que el reconciliador materialice ambos registros. No se activa Telegram."
+    },
+    {
+      "at": "2026-10-20T12:27:48.951Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "El hand-off de #Mañaneros20O sigue pendiente de consolidación. Las búsquedas ampliadas del otro item solo acreditan su presencia en rankings, no su causa; se conservará sin explicación inventada."
+    },
+    {
+      "at": "2026-10-20T12:30:00.697Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "a1d75792e842",
+      "title": "#Mañaneros20O",
+      "message": "Mañaneros20O r0 cerrada y verificada: ficha y requests explained, cinco campos idénticos y fuera de cola; Action 39422132947 sin Telegram."
+    },
+    {
+      "at": "2026-10-20T12:30:01.714Z",
+      "phase": "verifying",
+      "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual."
+      "message": "Releyendo la revisión r0 de #TerrorRESHxSelectaPlay y su presencia actual en Top10 antes de registrar el nuevo intento no verificable."
+    },
+    {
+      "at": "2026-10-20T12:30:03.189Z",
+      "phase": "investigating",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Las variantes nuevas de búsqueda y los perfiles/catálogo del posible organizador no aportan una publicación actual que vincule la etiqueta a un evento concreto. No hay base para inventar sorteo o juego."
+    },
+    {
+      "at": "2026-10-20T12:30:04.543Z",
+      "phase": "persisting",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Preparando outbox oficial problematic r0 con el motivo concreto del nuevo intento; no se retira de Top10 ni se convierte en explained."
+    },
+    {
+      "at": "2026-10-20T12:30:20.357Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Outbox problematic r0 releído en main; pendiente de Action, consumo del archivo y aumento del contador de intentos. No se cuenta como explicación terminada."
+    },
+    {
+      "at": "2026-10-20T12:31:31.578Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Reintento registrado por Action 39422769188 sin errores: problematic r0, intentos 1→2 y outbox consumido; se mantiene pendiente por falta de detonante verificable."
+    },
+    {
+      "at": "2026-10-20T12:32:14.724Z",
+      "phase": "closing",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Cierre verificado: Mañaneros20O explained r0 y fuera de cola; TerrorRESHxSelectaPlay permanece problematic tras nuevo intento. Sin preparing/update, Telegram ni ImageGen."
     }
   ],
   "telegram_orphans": 0,
@@ -239,6 +505,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T11:40:56+02:00"
-  },
-  "error": null
+  }
 }
