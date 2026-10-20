@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T13:17:08+02:00",
-  "last_completed_at": "2026-10-20T13:17:08+02:00",
-  "updated_at": "2026-10-20T13:17:08+02:00",
+  "last_started_at": "2026-10-20T11:01:59.481Z",
+  "last_completed_at": "2026-10-20T11:17:32.364Z",
+  "updated_at": "2026-10-20T11:17:32.364Z",
   "status": "success",
   "processed_ids": [
     "f97274605e45"
@@ -31,33 +31,42 @@
     "project": "TTendencias",
     "run_id": "tr-editorial-20261020110159",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-20T11:01:59.481Z",
-    "updated_at": "2026-10-20T11:06:18.461Z",
-    "current": 0,
-    "total": 0,
-    "event_id": null,
-    "trend_id": null,
-    "title": null,
-    "message": "Releídos main, cola y solicitudes: 0 tendencias activas y 0 reelaboraciones; cierre exclusivamente textual, sin Telegram ni imágenes.",
-    "incident_count": 0,
-    "incidents": [],
+    "updated_at": "2026-10-20T11:17:32.364Z",
+    "current": 1,
+    "total": 1,
+    "trend_id": "f97274605e45",
+    "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "trend_id": "f97274605e45",
+        "revision": 0,
+        "code": "factual_trigger_unverified",
+        "message": "No se ha podido verificar el detonante actual de #TerrorRESHxSelectaPlay. La captura del 20/10/2026 a las 13:11:18 CEST acredita su posición, no la causa. Se buscaron la etiqueta literal en dos buscadores, variantes RESH/Selecta Play y publicaciones de las webs oficiales; no se encontró una publicación actual que las vincule. X/SelectaPlay devolvió 403. No hay base para afirmar un sorteo, premio, juego o campaña concretos. Pendiente de fuente primaria accesible; no elaborado ni explained."
+      }
+    ],
     "summary": {
       "initial_compact_queue": 0,
-      "final_compact_queue": 0,
-      "attempted": 0,
+      "arrived_during_run": 1,
+      "final_compact_queue": 1,
+      "attempted": 1,
       "explained": 0,
       "explanation_groups": 0,
-      "processed_ids": [],
+      "processed_ids": [
+        "f97274605e45"
+      ],
       "remaining_active": 0,
-      "problematic_reviewed": 0,
+      "remaining_problematic": 1,
+      "problematic_reviewed": 1,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "pending_repair_triggered": 0,
-      "incidents": 0,
+      "incidents": 1,
       "partial": false
     },
     "ratings_snapshot": {
@@ -67,7 +76,17 @@
       "total_ratings": 154,
       "recent_considered": 0
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "f97274605e45",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Puerta factual no superada: detonante sin verificar; no se redactan candidatos."
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-20T11:06:18.461Z",
@@ -76,30 +95,90 @@
         "trend_id": null,
         "title": null,
         "message": "Releídos main, cola y solicitudes: 0 tendencias activas y 0 reelaboraciones; cierre exclusivamente textual, sin Telegram ni imágenes."
+      },
+      {
+        "at": "2026-10-20T11:13:29.729Z",
+        "phase": "verifying",
+        "trend_id": null,
+        "message": "Ha entrado una tendencia nueva tras el diagnóstico inicial vacío; se reabre esta pasada y se valida su ID/revisión antes de elaborarla."
+      },
+      {
+        "at": "2026-10-20T11:14:11.135Z",
+        "phase": "investigating",
+        "trend_id": null,
+        "message": "Buscando el origen exacto de #TerrorRESHxSelectaPlay; la etiqueta no devuelve aún publicaciones verificables en los buscadores, por lo que no se atribuye ningún premio ni sorteo concreto."
+      },
+      {
+        "at": "2026-10-20T11:15:20.785Z",
+        "phase": "investigating",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Tres enfoques agotados: etiqueta literal en dos buscadores, cuentas/organizador y webs oficiales. Sin publicación que vincule la etiqueta al detonante actual; X devuelve 403. No se redacta una causa supuesta."
+      },
+      {
+        "at": "2026-10-20T11:16:17.918Z",
+        "phase": "persisting",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Preparando outbox oficial problematic r0 con el motivo de verificación fallida; no contiene explicación, remate ni imagen."
+      },
+      {
+        "at": "2026-10-20T11:16:20.112Z",
+        "phase": "verifying",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Outbox problematic r0 releído en main; esperando al aplicador oficial, sin invocar el transporte de Telegram."
+      },
+      {
+        "at": "2026-10-20T11:17:32.364Z",
+        "phase": "closing",
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual."
       }
     ],
-    "finished_at": "2026-10-20T11:06:18.461Z",
+    "finished_at": "2026-10-20T11:17:32.364Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "e053efd1eb2611b6db47c7c02c4fbb911eac9796"
+    "verification_head": "90e94204e1f2495bab2cad2cedd393f1249e2a60",
+    "title": "#TerrorRESHxSelectaPlay",
+    "remaining_problematic_ids": [
+      "f97274605e45"
+    ],
+    "verifications": [
+      {
+        "trend_id": "f97274605e45",
+        "revision": 0,
+        "status": "problematic",
+        "run_id": 39413764535,
+        "job_id": 118597666027,
+        "main_head": "90e94204e1f2495bab2cad2cedd393f1249e2a60",
+        "reason_matches": true,
+        "explained": false
+      }
+    ]
   },
   "run_id": "tr-editorial-20261020110159",
   "summary": {
     "initial_compact_queue": 0,
-    "final_compact_queue": 0,
-    "attempted": 0,
+    "arrived_during_run": 1,
+    "final_compact_queue": 1,
+    "attempted": 1,
     "explained": 0,
     "explanation_groups": 0,
-    "processed_ids": [],
+    "processed_ids": [
+      "f97274605e45"
+    ],
     "remaining_active": 0,
-    "problematic_reviewed": 0,
+    "remaining_problematic": 1,
+    "problematic_reviewed": 1,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "pending_repair_triggered": 0,
-    "incidents": 0,
+    "incidents": 1,
     "partial": false
   },
   "unresolved_orphan_ids": [],
@@ -111,6 +190,46 @@
       "trend_id": null,
       "title": null,
       "message": "Releídos main, cola y solicitudes: 0 tendencias activas y 0 reelaboraciones; cierre exclusivamente textual, sin Telegram ni imágenes."
+    },
+    {
+      "at": "2026-10-20T11:13:29.729Z",
+      "phase": "verifying",
+      "trend_id": null,
+      "message": "Ha entrado una tendencia nueva tras el diagnóstico inicial vacío; se reabre esta pasada y se valida su ID/revisión antes de elaborarla."
+    },
+    {
+      "at": "2026-10-20T11:14:11.135Z",
+      "phase": "investigating",
+      "trend_id": null,
+      "message": "Buscando el origen exacto de #TerrorRESHxSelectaPlay; la etiqueta no devuelve aún publicaciones verificables en los buscadores, por lo que no se atribuye ningún premio ni sorteo concreto."
+    },
+    {
+      "at": "2026-10-20T11:15:20.785Z",
+      "phase": "investigating",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Tres enfoques agotados: etiqueta literal en dos buscadores, cuentas/organizador y webs oficiales. Sin publicación que vincule la etiqueta al detonante actual; X devuelve 403. No se redacta una causa supuesta."
+    },
+    {
+      "at": "2026-10-20T11:16:17.918Z",
+      "phase": "persisting",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Preparando outbox oficial problematic r0 con el motivo de verificación fallida; no contiene explicación, remate ni imagen."
+    },
+    {
+      "at": "2026-10-20T11:16:20.112Z",
+      "phase": "verifying",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Outbox problematic r0 releído en main; esperando al aplicador oficial, sin invocar el transporte de Telegram."
+    },
+    {
+      "at": "2026-10-20T11:17:32.364Z",
+      "phase": "closing",
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Incidencia aplicada por Actions y releída: #TerrorRESHxSelectaPlay r0 queda problematic, visible en cola para otro intento; 0 explained, sin simular cierre factual."
     }
   ],
   "telegram_orphans": 0,
@@ -120,6 +239,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T11:40:56+02:00"
-  },
-  "error": null
+  }
 }
