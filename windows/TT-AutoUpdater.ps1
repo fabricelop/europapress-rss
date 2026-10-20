@@ -117,6 +117,7 @@ function StartListener([string]$Name){
 function CheckOnce {
   try{
     $restart=@()
+    $watcherUpdated=$false
     $downloads=0
     $mainSha=Get-MainSha
     foreach($m in $Managed){
@@ -139,6 +140,7 @@ function CheckOnce {
       }
       Move-Item -LiteralPath $tmp -Destination $local -Force
       Log ("UPDATED "+$m.Path+" sha256="+$remoteSha)
+      if($m.Local -eq "TT-Editorial-Tab-Watch.js"){$watcherUpdated=$true}
       if($m.Pattern){$restart+=$m}
     }
 
@@ -147,8 +149,31 @@ function CheckOnce {
       Start-Sleep -Milliseconds 500
       StartListener ([string]$m.Local)
     }
+    # Node does not reload a JS script already in memory after an update.
+    # Restart ONLY the editorial tab watcher daemon (not Chrome or listeners),
+    # preserving its tracked-job JSON files on disk.
+    if($watcherUpdated){
+      $watcher=Join-Path $BaseDir "TT-Editorial-Tab-Watch.js"
+      $old=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction Stop | Where-Object {
+        [string]$_.CommandLine -match "TT-Editorial-Tab-Watch[.]js" -and
+        [string]$_.CommandLine -match "--daemon"
+      })
+      foreach($p in $old){
+        try { Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop; Log ("TAB WATCHER UPDATED STOP pid="+$p.ProcessId) }
+        catch { Log ("TAB WATCHER UPDATE DEFERRED pid="+$p.ProcessId+" "+$_.Exception.Message) }
+      }
+      $jobsDir=Join-Path $BaseDir "editorial-tab-watch"
+      $pending=if(Test-Path -LiteralPath $jobsDir){@(Get-ChildItem -LiteralPath $jobsDir -Filter "*.json" -File -ErrorAction SilentlyContinue).Count}else{0}
+      $stillRunning=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue | Where-Object {
+        [string]$_.CommandLine -match "TT-Editorial-Tab-Watch[.]js" -and [string]$_.CommandLine -match "--daemon"
+      })
+      if($pending -gt 0 -and $stillRunning.Count -eq 0){
+        $p=Start-Process -FilePath (Get-Command node.exe -ErrorAction Stop).Source -ArgumentList @($watcher,"--daemon") -WindowStyle Hidden -PassThru -ErrorAction Stop
+        Log ("TAB WATCHER UPDATED RESTART pid="+$p.Id+" tracked="+$pending)
+      }
+    }
     $ref=if($mainSha){$mainSha}else{"main"}
-    Log ("CHECK OK raw-v6 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count)
+    Log ("CHECK OK raw-v7 ref="+$ref+" downloads="+$downloads+" restarts="+$restart.Count+" watcherUpdated="+$watcherUpdated)
   }catch{
     Log ("CHECK ERROR :: "+$_.Exception.Message)
   }
