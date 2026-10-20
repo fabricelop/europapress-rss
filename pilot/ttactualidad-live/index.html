@@ -667,14 +667,32 @@ function confirmedAction(op,docs){
    return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase())?'processing':false;
   }
  }else{
-  const [manual,mobile,queue]=docs;
+  const [manual,mobile,queue,requestsDoc]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
-  const q=(queue.items||[]).find(x=>String(x.id||'')===id);
+  const normalize=v=>String(v||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
+  const q=(queue.items||[]).find(x=>String(x.id||'')===id||
+    (op.decision==='prepare'&&normalize(x.name||x.title)===normalize(op.snapshot?.title||id)&&
+     Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
   if(op.decision==='deleted')return state?.status==='deleted';
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
   if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
-  if(op.decision==='rework')return ['preparing','update'].includes(String(q?.status||'').toLowerCase())&&
-   !(manual.items||[]).some(x=>String(x.id||'')===id&&String(x.status||'').toLowerCase()==='explained');
+  if(op.decision==='rework'){
+   // Listas keeps the same ID with a higher revision; Top 30 creates a
+   // NEW ID linked to the old one. Both require a new authoritative request.
+   const candidates=(requestsDoc?.requests||[]).filter(x=>{
+    const same=String(x.id||'')===id&&Number(x.revision||0)>Number(op.revision||0);
+    const linked=String(x.originated_from_prior_id||'')===id&&
+       Date.parse(x.requested_at||'')>=op.at-120000;
+    return same||linked;
+   }).sort((a,b)=>String(b.requested_at||'').localeCompare(String(a.requested_at||'')));
+   const latest=candidates[0];
+   if(!latest)return false;
+   op.target_id=String(latest.id);
+   const status=String(latest.status||'').toLowerCase();
+   if(['preparing','update'].includes(status))return 'processing';
+   if(status==='explained'&&String(latest.explanation||'').trim())return 'ready';
+   return false;
+  }
  }
  return false;
 }
@@ -699,7 +717,7 @@ async function checkPendingDeletes(){
  for(const project of [...new Set(pending.map(x=>x.project))]){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
-   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue']];
+   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests']];
   if(project==='ttittulares'&&pending.some(x=>x.project===project&&x.kind==='tremending'))
    targets.push(['ttittulares/tremending/items.json','tremending']);
   let docs;
