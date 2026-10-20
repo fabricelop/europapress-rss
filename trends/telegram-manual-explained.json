@@ -60444,7 +60444,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -60510,9 +60509,30 @@
           "revision": 0
         }
       ],
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://i.guim.co.uk/img/media/d58e3aac6f0229d8898fb9662f67f64e3d40e5f7/213_0_2915_2333/master/2915.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=f1c00ce6e1b1800de7a2b8cd594dcf12",
+        "source": "The Guardian",
+        "source_url": "https://www.theguardian.com/business/2026/oct/20/revolut-down-app-cards-service-disruption",
+        "alt": "Imagen de archivo relacionada con Revolut",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://i.guim.co.uk/img/media/d58e3aac6f0229d8898fb9662f67f64e3d40e5f7/213_0_2915_2333/master/2915.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&precrop=40:21,offset-x50,offset-y0&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=f1c00ce6e1b1800de7a2b8cd594dcf12",
+        "source": "The Guardian",
+        "source_url": "https://www.theguardian.com/business/2026/oct/20/revolut-down-app-cards-service-disruption",
+        "alt": "Imagen de archivo relacionada con Revolut",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-20T09:47:20.000Z",
+  "updated_at": "2026-10-20T09:53:40.837227Z",
   "count": 1030
 }
