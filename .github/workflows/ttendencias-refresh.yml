@@ -12,6 +12,7 @@ on:
       - "trends/update_trends.py"
       - ".github/scripts/test_ttendencias_top30_queue.py"
       - ".github/scripts/test_ttendencias_anchor_freshness.py"
+      - ".github/scripts/test_ttendencias_radar_history.py"
       - ".github/workflows/ttendencias-refresh.yml"
 
 permissions:
@@ -41,6 +42,9 @@ jobs:
 
       - name: Verificar selección de fuentes frescas del Top 10
         run: python3 .github/scripts/test_ttendencias_anchor_freshness.py
+
+      - name: Verificar radar emergente y continuidad de observaciones
+        run: python3 .github/scripts/test_ttendencias_radar_history.py
 
       - name: Verificar Top 10 automático y Top 11-30 exclusivamente manual
         run: python3 .github/scripts/test_ttendencias_top30_queue.py
