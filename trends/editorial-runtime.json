@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T02:15:00+02:00",
-  "last_completed_at": "2026-10-20T02:16:30+02:00",
-  "updated_at": "2026-10-20T02:16:30+02:00",
+  "last_started_at": "2026-10-20T01:04:09.197Z",
+  "last_completed_at": "2026-10-20T01:04:26.202Z",
+  "updated_at": "2026-10-20T01:04:26.203Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,63 +23,26 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020021500",
+    "run_id": "tr-editorial-20261020010409",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T02:15:00+02:00",
-    "updated_at": "2026-10-20T02:16:30+02:00",
-    "finished_at": "2026-10-20T02:16:30+02:00",
+    "started_at": "2026-10-20T01:04:09.197Z",
+    "updated_at": "2026-10-20T01:04:26.203Z",
     "current": 0,
     "total": 0,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Pasada 0/0 cerrada y verificada. Cola editorial 0, sin cambios en requests ni reexplicaciones; saneamiento visual independiente solicitado. Sin ImageGen ni Telegram editorial.",
+    "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Textos existentes intactos; sin ImageGen, reparación visual ni envíos Telegram.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": null,
-    "remate_selections": [],
-    "activity": [
-      {
-        "at": "2026-10-20T02:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola inicial 0. Revalidando main y reexplicaciones antes de cerrar; saneamiento visual independiente activado, sin ImageGen editorial."
-      },
-      {
-        "at": "2026-10-20T02:16:00+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura de main completada: cola 0; requests y Explicadas conservan exactamente los SHA de la pasada anterior que verificó preparing/update 0 y rewrite_pending 0."
-      },
-      {
-        "at": "2026-10-20T02:16:30+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada 0/0 cerrada y verificada. Cola editorial 0, sin cambios en requests ni reexplicaciones; saneamiento visual independiente solicitado. Sin ImageGen ni Telegram editorial."
-      }
-    ],
-    "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "verification": {
-      "queue_sha": "7ef5be17da2749357de5f861c798c363503c3c1b",
-      "requests_sha": "5c6b37f0800a6e00d566a53f185ba4e4b360d024",
-      "explained_sha": "7b7e46dafedb2d88717e226883dc260bb6085417"
-    },
     "summary": {
       "initial_compact_queue": 0,
-      "initial_active_requests": 0,
       "final_compact_queue": 0,
       "attempted": 0,
       "explained": 0,
       "explanation_groups": 0,
-      "new_explanations": 0,
-      "grouped_into_existing_card": 0,
       "processed_ids": [],
       "remaining_active": 0,
       "problematic_reviewed": 0,
@@ -87,30 +50,49 @@
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "incidents": 0,
-      "partial": false,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_reused": 0
+      "partial": false
     },
-    "final_outcomes": [],
-    "persistence": {
-      "mode": "explanation_only_direct",
-      "imagegen_calls": 0,
-      "telegram_sends": 0
-    }
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
+      "total_ratings": 154,
+      "recent_considered": 0
+    },
+    "remate_selections": [],
+    "activity": [
+      {
+        "at": "2026-10-20T01:04:09.203Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Lectura inicial sin cola activa ni reescrituras. Revalidando main antes de cierre 0/0; no se activa reparación visual, Telegram ni ImageGen."
+      },
+      {
+        "at": "2026-10-20T01:04:26.203Z",
+        "phase": "closing",
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Textos existentes intactos; sin ImageGen, reparación visual ni envíos Telegram."
+      }
+    ],
+    "finished_at": "2026-10-20T01:04:26.202Z",
+    "partial": false,
+    "queue_complete": true,
+    "verification_head": "d69baa5baa90b572f23b7bce404c45f2d6aeb440",
+    "remaining_active_ids": []
   },
-  "run_id": "tr-editorial-20261020021500",
+  "run_id": "tr-editorial-20261020010409",
   "summary": {
     "initial_compact_queue": 0,
-    "initial_active_requests": 0,
     "final_compact_queue": 0,
     "attempted": 0,
     "explained": 0,
     "explanation_groups": 0,
-    "new_explanations": 0,
-    "grouped_into_existing_card": 0,
     "processed_ids": [],
     "remaining_active": 0,
     "problematic_reviewed": 0,
@@ -118,35 +100,27 @@
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
-    "partial": false,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_reused": 0
+    "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T02:15:00+02:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola inicial 0. Revalidando main y reexplicaciones antes de cerrar; saneamiento visual independiente activado, sin ImageGen editorial."
-    },
-    {
-      "at": "2026-10-20T02:16:00+02:00",
+      "at": "2026-10-20T01:04:09.203Z",
       "phase": "verifying",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Relectura de main completada: cola 0; requests y Explicadas conservan exactamente los SHA de la pasada anterior que verificó preparing/update 0 y rewrite_pending 0."
+      "message": "Lectura inicial sin cola activa ni reescrituras. Revalidando main antes de cierre 0/0; no se activa reparación visual, Telegram ni ImageGen."
     },
     {
-      "at": "2026-10-20T02:16:30+02:00",
+      "at": "2026-10-20T01:04:26.203Z",
       "phase": "closing",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Pasada 0/0 cerrada y verificada. Cola editorial 0, sin cambios en requests ni reexplicaciones; saneamiento visual independiente solicitado. Sin ImageGen ni Telegram editorial."
+      "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Textos existentes intactos; sin ImageGen, reparación visual ni envíos Telegram."
     }
   ],
   "telegram_orphans": 0,
