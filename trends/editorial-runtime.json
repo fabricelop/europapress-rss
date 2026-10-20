@@ -1,14 +1,16 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T15:22:38+02:00",
-  "last_completed_at": "2026-10-20T15:22:38+02:00",
-  "updated_at": "2026-10-20T15:22:38+02:00",
+  "last_started_at": "2026-10-20T13:04:05.654Z",
+  "last_completed_at": "2026-10-20T13:25:10.157Z",
+  "updated_at": "2026-10-20T13:25:10.157Z",
   "status": "success",
   "processed_ids": [
+    "manual-3462b6a4be53e2bd97b78055e6ec853c",
+    "manual-8c318a4327b6cf9263180c6b4c3375da",
     "f97274605e45"
   ],
   "remaining_ids": [
@@ -32,37 +34,100 @@
     "run_id": "tr-editorial-20261020130405",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
-    "phase": "closing",
+    "phase": "done",
     "started_at": "2026-10-20T13:04:05.654Z",
-    "updated_at": "2026-10-20T13:19:57.595Z",
-    "finished_at": "2026-10-20T13:19:57.595Z",
+    "updated_at": "2026-10-20T13:25:10.157Z",
     "current": 3,
     "total": 3,
-    "trend_id": "f97274605e45",
-    "title": "#TerrorRESHxSelectaPlay",
-    "message": "Cierre verificado: Oliva y Cruz Roja quedaron explained y reconciliadas; #TerrorRESHxSelectaPlay permanece problematic; no quedan preparing/update.",
     "incident_count": 1,
     "incidents": [
       {
-        "trend_id": "f97274605e45",
+        "id": "f97274605e45",
         "revision": 0,
-        "type": "unverified_trigger",
-        "reason": "El hashtag sigue activo en el Top 10, pero el detonante concreto no se puede verificar con fiabilidad tras búsquedas nuevas y contraste de fuentes. Se mantiene problematic y no se inventa explicación."
+        "reason": "Detonante no verificable tras nuevas consultas; se conserva problematic, no explained.",
+        "retryable": true
       }
     ],
-    "summary": {
-      "attempted": 3,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "explained": 2,
-      "problematic_reviewed": 1,
-      "remaining_problematic": 1,
-      "final_compact_queue": 1,
-      "remaining_active": 0,
-      "visual_backlog": 0,
-      "pending_repair_triggered": 1,
-      "incidents": 1
-    },
+    "remate_selections": [
+      {
+        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Emergencia con víctimas: explicación factual sin chiste político ni remate humorístico."
+      },
+      {
+        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.1,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.3,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 8.1,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 2,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 5.8,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.3,
+            "punch": 1.3,
+            "originality": 0.9,
+            "length_fit": 1,
+            "repetition_penalty": -0.4
+          },
+          {
+            "id": "c4",
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "total": 6.8,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.3,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "f97274605e45",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Detonante no verificado tras búsquedas distintas; no hay texto ni remate publicable."
+      }
+    ],
     "activity": [
       {
         "at": "2026-10-20T13:04:06.617Z",
@@ -177,27 +242,37 @@
         "message": "Reintento de #TerrorRESHxSelectaPlay sin detonante acreditado; se espera la consolidación de los dos textos nuevos antes de aplicar su incidencia para no regenerar la cola sobre hand-offs aún pendientes."
       },
       {
-        "at": "2026-10-20T13:19:57.595Z",
+        "at": "2026-10-20T13:21:53.794Z",
         "phase": "persisting",
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva / Cruz Roja",
-        "message": "Reparando persistencia atómica: sincronizando Explicadas y requests"
-      },
-      {
-        "at": "2026-10-20T13:19:57.595Z",
-        "phase": "verifying",
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Oliva / Cruz Roja",
-        "message": "Relectura de main: id+revision+texto+remate+explained_at coinciden exactamente"
-      },
-      {
-        "at": "2026-10-20T13:19:57.595Z",
-        "phase": "closing",
+        "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Cierre verificado: 2 explicadas y 1 problematic; no quedan preparing/update"
+        "message": "Oliva y Cruz Roja ya están explained con texto, revisión y fecha idénticos en ambos registros, y han salido de la cola. La consolidación apareció concurrentemente antes de localizar una ejecución del reconciliador; no se atribuye a un job sin prueba."
+      },
+      {
+        "at": "2026-10-20T13:25:10.157Z",
+        "phase": "done",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update."
       }
     ],
+    "summary": {
+      "attempted": 3,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
+      "initial_compact_queue": 3,
+      "explained": 2,
+      "problematic_reviewed": 1,
+      "remaining_active": 0,
+      "remaining_problematic": 1,
+      "final_compact_queue": 1,
+      "visual_backlog": 0,
+      "pending_repair_triggered": 0,
+      "manual_visual_dispatches": 0,
+      "incidents": 1
+    },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -205,112 +280,57 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Emergencia con víctimas: explicación factual sin chiste político ni remate humorístico."
-      },
-      {
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.1,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 5.8,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.3,
-            "punch": 1.3,
-            "originality": 0.9,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.1,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "f97274605e45",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Detonante no verificado tras búsquedas distintas; no hay texto ni remate publicable."
-      }
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "remaining_problematic_ids": [
+    "processed_ids": [
+      "manual-3462b6a4be53e2bd97b78055e6ec853c",
+      "manual-8c318a4327b6cf9263180c6b4c3375da",
       "f97274605e45"
     ],
     "verifications": [
       {
         "id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
         "revision": 0,
-        "status": "explained",
-        "exact_match": true,
-        "removed_from_queue": true
+        "main_head": "c0a98a083c5c6bd64465099fc363a4743b438caa",
+        "request_and_manual_match": true,
+        "submitted_text_matches": true,
+        "queue_removed": true,
+        "method": "verified_compact_queue_handoff_then_concurrent_consolidation",
+        "action_run_id": null,
+        "requests_commit": "d1f09caf8c320492fac9135e066fee325d726717"
       },
       {
         "id": "manual-8c318a4327b6cf9263180c6b4c3375da",
         "revision": 0,
-        "status": "explained",
-        "exact_match": true,
-        "removed_from_queue": true
+        "main_head": "c0a98a083c5c6bd64465099fc363a4743b438caa",
+        "request_and_manual_match": true,
+        "submitted_text_matches": true,
+        "queue_removed": true,
+        "method": "verified_compact_queue_handoff_then_concurrent_consolidation",
+        "action_run_id": null,
+        "requests_commit": "d1f09caf8c320492fac9135e066fee325d726717"
       },
       {
         "id": "f97274605e45",
         "revision": 0,
+        "main_head": "1298959c2ab877c141ab5c06497fae522ae0ff1f",
+        "action_run_id": 39429770615,
+        "job_id": 118651461622,
         "status": "problematic",
-        "reason_verified": true
+        "attempts": 4
       }
+    ],
+    "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update.",
+    "trend_id": "f97274605e45",
+    "title": "#TerrorRESHxSelectaPlay",
+    "partial": false,
+    "queue_complete": true,
+    "finished_at": "2026-10-20T13:25:10.157Z",
+    "verification_head": "1298959c2ab877c141ab5c06497fae522ae0ff1f",
+    "remaining_ids": [
+      "f97274605e45"
+    ],
+    "remaining_active_ids": [],
+    "remaining_problematic_ids": [
+      "f97274605e45"
     ]
   },
   "run_id": "tr-editorial-20261020130405",
@@ -318,13 +338,15 @@
     "attempted": 3,
     "imagegen_calls": 0,
     "telegram_sends": 0,
+    "initial_compact_queue": 3,
     "explained": 2,
     "problematic_reviewed": 1,
+    "remaining_active": 0,
     "remaining_problematic": 1,
     "final_compact_queue": 1,
-    "remaining_active": 0,
     "visual_backlog": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
+    "manual_visual_dispatches": 0,
     "incidents": 1
   },
   "unresolved_orphan_ids": [],
@@ -442,25 +464,20 @@
       "message": "Reintento de #TerrorRESHxSelectaPlay sin detonante acreditado; se espera la consolidación de los dos textos nuevos antes de aplicar su incidencia para no regenerar la cola sobre hand-offs aún pendientes."
     },
     {
-      "at": "2026-10-20T13:19:57.595Z",
+      "at": "2026-10-20T13:21:53.794Z",
       "phase": "persisting",
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva / Cruz Roja",
-      "message": "Reparando persistencia atómica: sincronizando Explicadas y requests"
-    },
-    {
-      "at": "2026-10-20T13:19:57.595Z",
-      "phase": "verifying",
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Oliva / Cruz Roja",
-      "message": "Relectura de main: id+revision+texto+remate+explained_at coinciden exactamente"
-    },
-    {
-      "at": "2026-10-20T13:19:57.595Z",
-      "phase": "closing",
+      "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Cierre verificado: 2 explicadas y 1 problematic; no quedan preparing/update"
+      "message": "Oliva y Cruz Roja ya están explained con texto, revisión y fecha idénticos en ambos registros, y han salido de la cola. La consolidación apareció concurrentemente antes de localizar una ejecución del reconciliador; no se atribuye a un job sin prueba."
+    },
+    {
+      "at": "2026-10-20T13:25:10.157Z",
+      "phase": "done",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update."
     }
   ],
   "telegram_orphans": 0,
@@ -470,6 +487,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T14:40:57+02:00"
-  },
-  "error": null
+  }
 }
