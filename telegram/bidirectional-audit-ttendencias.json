@@ -1,12 +1,32 @@
 {
   "project": "ttendencias",
-  "checked_at": "2026-10-20T07:36:23.293232+00:00",
+  "checked_at": "2026-10-20T12:58:30.274685+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 23,
+  "app_open_count": 25,
   "telegram_live_count": 0,
   "matched_count": 0,
-  "issues_count": 23,
+  "issues_count": 25,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
+      "title": "Oliva",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "manual-8c318a4327b6cf9263180c6b4c3375da",
+      "title": "Cruz Roja",
+      "source": [
+        "app_requests",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
     {
       "kind": "app_without_telegram",
       "id": "b8187c2f1a64",
@@ -239,7 +259,9 @@
     "b0858b01041f",
     "b8187c2f1a64",
     "d37f78ec86d1",
-    "dbed6537630d"
+    "dbed6537630d",
+    "manual-3462b6a4be53e2bd97b78055e6ec853c",
+    "manual-8c318a4327b6cf9263180c6b4c3375da"
   ],
   "telegram_ids": []
 }
