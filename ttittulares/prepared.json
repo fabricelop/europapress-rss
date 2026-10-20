@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T10:44:42.081Z",
+  "updated_at": "2026-10-20T10:46:55.857Z",
   "items": [
     {
       "event_id": "a29b48c628d6",
@@ -282,7 +282,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
@@ -306,7 +306,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La Guardia Civil detiene en Almansa a dos presuntos 'cogoteros' especializados en el hurto a personas mayores"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-20T10:46:55.857Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 4,
