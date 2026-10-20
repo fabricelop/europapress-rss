@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T07:51:56.702215Z",
+  "updated_at": "2026-10-20T07:52:12.315Z",
   "items": [
     {
       "event_id": "7e222245465b",
@@ -362,7 +362,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "image_status": "none",
@@ -385,7 +385,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La Policía desaloja las acampadas por la vivienda en Lisboa y Oporto y detiene a varios manifestantes"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-20T07:52:12.315Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":false,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false"
     }
   ],
   "count": 0,
