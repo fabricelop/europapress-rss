@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T07:47:32.107Z",
+  "updated_at": "2026-10-20T07:47:00Z",
   "items": [
     {
       "event_id": "7e222245465b",
@@ -215,9 +215,9 @@
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "ai_image_status": "failed",
-      "image_choice": "fallback",
+      "image_choice": "none",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
@@ -225,14 +225,6 @@
       "archive_image_search_attempted_at": "2026-10-20T07:42:43.425301Z",
       "fallback_image_search_attempted_at": "2026-10-20T07:42:43.425301Z",
       "archive_image": {
-        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/20/6ad7073e597f58-09746022.png",
-        "source": "www.20minutos.es",
-        "source_url": "https://www.20minutos.es/deportes/muere-gustavo-oliva-referente-padel-58-anos-que-se-despidio-con-una-desgarradora-carta-mi-vida-tierra-llega-su-fin_7050802_0.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Muere Gustavo Oliva, el referente del pádel de 58 años que se despidió con una desgarradora carta: \"Mi vida en la tierra llega a su fin\""
-      },
-      "fallback_image": {
         "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/20/6ad7073e597f58-09746022.png",
         "source": "www.20minutos.es",
         "source_url": "https://www.20minutos.es/deportes/muere-gustavo-oliva-referente-padel-58-anos-que-se-despidio-con-una-desgarradora-carta-mi-vida-tierra-llega-su-fin_7050802_0.html",
@@ -301,9 +293,9 @@
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "ai_image_status": "failed",
-      "image_choice": "fallback",
+      "image_choice": "none",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
@@ -318,17 +310,64 @@
         "generated": false,
         "alt": "Elon Musk promete que regalará una acción de SpaceX a cada niño en EE.UU. el año que viene - EFE - Agencia de noticias"
       },
-      "fallback_image": {
-        "url": "https://lh3.googleusercontent.com/J6_coFbogxhRI9iM864NL_liGXvsQp2AupsKei7z0cNNfDvGUmWUy20nuUhkREQyrpY4bEeIBuc=s0-w300",
-        "source": "news.google.com",
-        "source_url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNTVSaVBrcUl1cEZyU0lBcFE4YXVYQnpnZ2hfdmtNaVFlSDRtUnZ1M3lZel94amxBSjVVaWhoRDlPbGl1U0xYMldzQ1JrZ0NrX1lMYnRERTZBSktLX25oU2pPSHJlNnc3U1ZsNkFuclVBZVgxWUxWeWJZVDVpU0ZXeE1ZZ1dHd3dYazRhMUcxQkRQWGdDbTZ1dHRmRTQta0VkcGdXS3JKenFJeWNDcE5Gbg?oc=5&hl=en-US&gl=US&ceid=US:en",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Elon Musk promete que regalará una acción de SpaceX a cada niño en EE.UU. el año que viene - EFE - Agencia de noticias"
-      },
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-20T07:45:12.977Z",
       "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":false,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false"
+    },
+    {
+      "event_id": "c0c61f3aedd1",
+      "revision": 1,
+      "title": "La Policía desaloja las acampadas por la vivienda en Lisboa y Oporto y detiene a varios manifestantes",
+      "url": "https://efe.com/economia/2026-10-20/policia-desaloja-acampadas-lisboa-oporto-detiene-manifestantes/",
+      "selection_mode": "AUTO_WEB",
+      "factual_summary": "La Policía portuguesa puso fin de madrugada a las acampadas por la vivienda instaladas en Lisboa y Oporto. En el Rossio lisboeta hubo varias detenciones después de que manifestantes formaran un cordón humano y se resistieran al desalojo; en Oporto los participantes desmontaron el campamento tras el ultimátum policial.",
+      "explanation": "EFE y RTP coinciden en la intervención simultánea de la PSP sobre las acampadas de Lisboa y Oporto. En Lisboa, la Policía retiró las tiendas y practicó varias detenciones; en Oporto, tras la advertencia de posibles detenciones, los manifestantes acabaron desmontando el campamento. No se fija una cifra de detenidos o heridos porque las primeras informaciones ofrecen balances aún provisionales.",
+      "sources_at_draft": [
+        "EFE",
+        "RTP"
+      ],
+      "drafted_source_count": 2,
+      "source_count": 4,
+      "verified_source_count": 2,
+      "citations": [
+        {
+          "source": "EFE",
+          "title": "La Policía desaloja las acampadas en Lisboa y Oporto y detiene a los manifestantes",
+          "url": "https://efe.com/economia/2026-10-20/policia-desaloja-acampadas-lisboa-oporto-detiene-manifestantes/"
+        },
+        {
+          "source": "RTP",
+          "title": "Polícia retirou tendas dos manifestantes em Lisboa e no Porto. Há dezenas de detidos",
+          "url": "https://www.rtp.pt/noticias/pais/policia-retirou-tendas-dos-manifestantes-em-lisboa-e-no-porto-ha-dezenas-de-detidos_e1772823"
+        }
+      ],
+      "source_evidence": [
+        {
+          "source": "EFE",
+          "url": "https://efe.com/economia/2026-10-20/policia-desaloja-acampadas-lisboa-oporto-detiene-manifestantes/"
+        },
+        {
+          "source": "RTP",
+          "url": "https://www.rtp.pt/noticias/pais/policia-retirou-tendas-dos-manifestantes-em-lisboa-e-no-porto-ha-dezenas-de-detidos_e1772823"
+        }
+      ],
+      "tweet": {
+        "text": "La Policía desalojó las acampadas por la vivienda en Lisboa y Oporto. Hubo varias detenciones en Lisboa; en Oporto desmontaron las tiendas tras el aviso policial.\n\n#Lisboa #Oporto\n🌶️ La crisis de la vivienda ya desahucia hasta las tiendas de campaña.",
+        "remate": "🌶️ La crisis de la vivienda ya desahucia hasta las tiendas de campaña.",
+        "url": "https://twitter.com/intent/tweet?text=La%20Polic%C3%ADa%20desaloj%C3%B3%20las%20acampadas%20por%20la%20vivienda%20en%20Lisboa%20y%20Oporto.%20Hubo%20varias%20detenciones%20en%20Lisboa%3B%20en%20Oporto%20desmontaron%20las%20tiendas%20tras%20el%20aviso%20policial.%0A%0A%23Lisboa%20%23Oporto%0A%F0%9F%8C%B6%EF%B8%8F%20La%20crisis%20de%20la%20vivienda%20ya%20desahucia%20hasta%20las%20tiendas%20de%20campa%C3%B1a."
+      },
+      "prepared_at": "2026-10-20T07:47:00Z",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_strategy": "ai_plus_fallback",
+      "archive_image_status": "none",
+      "fallback_image_status": "none",
+      "ai_image_status": "none",
+      "image_choice": "none",
+      "image_pending": false,
+      "image_status": "none",
+      "image_app_available": false,
+      "image_delivery": "none"
     }
   ],
   "count": 0,
