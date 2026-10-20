@@ -108,8 +108,10 @@ try {
   $output=''
   $exit=0
   try{
-    $allOutput=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $recovery -NoTaskStart 2>&1
-    $exit=$LASTEXITCODE
+    # Invoke the recovery within the same hidden PowerShell host.
+    # Spawning another powershell.exe can briefly flash a visible console.
+    $allOutput=& $recovery -NoTaskStart 2>&1
+    $exit=if($?){0}else{1}
     $output=($allOutput|Out-String)
   }catch{
     $exit=1
