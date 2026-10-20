@@ -8,7 +8,9 @@ $Managed=@(
   @{Path="windows/TTendenciasImageBridge.js";Local="TTendenciasImageBridge.js";Kind="js";Pattern=""},
   @{Path="windows/TTiTTularesDedicatedListener.ps1";Local="TTiTTularesDedicatedListener.ps1";Kind="ps";Pattern="*TTiTTularesDedicatedListener.ps1*"},
   @{Path="windows/TTiTTularesImageBridge.js";Local="TTiTTularesImageBridge.js";Kind="js";Pattern=""},
-  @{Path="windows/TT-LocalWatchdog.ps1";Local="TT-LocalWatchdog.ps1";Kind="ps";Pattern="*TT-LocalWatchdog.ps1*"}
+  @{Path="windows/TT-LocalWatchdog.ps1";Local="TT-LocalWatchdog.ps1";Kind="ps";Pattern="*TT-LocalWatchdog.ps1*"},
+  @{Path="windows/TT-Editorial-Tab-Watch.js";Local="TT-Editorial-Tab-Watch.js";Kind="js";Pattern=""},
+  @{Path="windows/TT-Chrome9223-Safe-Prune.js";Local="TT-Chrome9223-Safe-Prune.js";Kind="js";Pattern=""}
 )
 
 function Log([string]$Text){
