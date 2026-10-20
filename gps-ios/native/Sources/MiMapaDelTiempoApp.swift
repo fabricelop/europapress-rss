@@ -254,6 +254,14 @@ struct SavedState: Codable {
     @Published private var storageLoadFailed = false
     private var lastSafetyCopyAttempt = Date.distantPast
     var storageIsHealthy: Bool { !storageLoadFailed }
+    /// Read the actual timestamp of an existing SQLite snapshot. This never
+    /// creates a new copy and therefore causes no additional battery usage.
+    var mostRecentLocalBackup: Date? {
+        guard let latest = TimeSQLiteStore.safetyCopyURLs(
+            in: fileURL.deletingLastPathComponent()).first else { return nil }
+        return try? latest.resourceValues(
+            forKeys: [.contentModificationDateKey]).contentModificationDate
+    }
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
