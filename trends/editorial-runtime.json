@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T19:45:00Z",
-  "last_completed_at": "2026-10-20T19:46:00Z",
-  "updated_at": "2026-10-20T19:46:00Z",
+  "last_started_at": "2026-10-20T20:00:32.511Z",
+  "last_completed_at": "2026-10-20T20:01:46.400Z",
+  "updated_at": "2026-10-20T20:01:46.400Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -24,60 +24,39 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610202145-chat",
+    "run_id": "editorial-20261020200032-trends",
     "source": "chat",
     "status": "DONE",
     "phase": "done",
-    "started_at": "2026-10-20T19:45:00Z",
-    "updated_at": "2026-10-20T19:46:00Z",
-    "finished_at": "2026-10-20T19:46:00Z",
+    "started_at": "2026-10-20T20:00:32.511Z",
+    "updated_at": "2026-10-20T20:01:46.400Z",
     "current": 0,
     "total": 0,
-    "trend_id": null,
-    "title": null,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-20T19:45:00Z",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial; cola autoritativa 0 y Top 30 fresco."
-      },
-      {
-        "at": "2026-10-20T19:45:30Z",
+        "at": "2026-10-20T20:00:32.514Z",
         "phase": "verifying",
+        "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Verificando requests, reexplicaciones, Top 10 y saneamiento reciente."
+        "message": "Cola 0 y sin preparing/update ni rewrite_pending; no se reabren tendencias cerradas."
       },
       {
-        "at": "2026-10-20T19:46:00Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releído main: cola 0, sin requests activas ni reexplicaciones pendientes; Top 30 capturado a las 21:41."
-      },
-      {
-        "at": "2026-10-20T19:46:00Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cerrando pasada sin trabajo editorial; saneamiento visual de Pendientes solicitado."
-      },
-      {
-        "at": "2026-10-20T19:46:00Z",
+        "at": "2026-10-20T20:01:46.400Z",
         "phase": "done",
+        "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completado: 0 items editoriales y cola final 0."
+        "message": "TTendencias sin trabajo textual activo: cola 0, sin preparing/update ni rewrite_pending; sin cambios de Explicadas, imágenes o Telegram."
       }
     ],
     "summary": {
       "attempted": 0,
       "ready": 0,
       "explained": 0,
+      "duplicates_closed": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -86,7 +65,7 @@
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "manual_visual_dispatches": 0
     },
     "processed_ids": [],
@@ -95,27 +74,20 @@
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 0
+      "recent_considered": 30
     },
     "remate_selections": [],
-    "message": "TTendencias completado: 0 items editoriales y cola final 0.",
+    "message": "TTendencias sin trabajo textual activo: cola 0, sin preparing/update ni rewrite_pending; sin cambios de Explicadas, imágenes o Telegram.",
+    "finished_at": "2026-10-20T20:01:46.400Z",
     "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "verification": {
-      "queue_sha": "66fe5afa39061745c46d9400f9fbd4eaed1f9cec",
-      "recent_sha": "110a9736ecc4fb52d212070f444935f1c2397578",
-      "captured_at": "2026-10-20T21:41:13+02:00",
-      "requests_sha": "1f793d8f856ee2ba4b0aa18e2c09103259ef4ad2",
-      "explained_sha": "b057dcb4c2c6293189ce3b3463470ed18ded4478",
-      "pending_repair_trigger_sha": "3e11bdabb45a98157546612a79dbb718b2e9d224"
-    }
+    "queue_complete": true
   },
-  "run_id": "tr-editorial-202610202145-chat",
+  "run_id": "editorial-20261020200032-trends",
   "summary": {
     "attempted": 0,
     "ready": 0,
     "explained": 0,
+    "duplicates_closed": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -124,45 +96,26 @@
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "manual_visual_dispatches": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T19:45:00Z",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada editorial; cola autoritativa 0 y Top 30 fresco."
-    },
-    {
-      "at": "2026-10-20T19:45:30Z",
+      "at": "2026-10-20T20:00:32.514Z",
       "phase": "verifying",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Verificando requests, reexplicaciones, Top 10 y saneamiento reciente."
+      "message": "Cola 0 y sin preparing/update ni rewrite_pending; no se reabren tendencias cerradas."
     },
     {
-      "at": "2026-10-20T19:46:00Z",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releído main: cola 0, sin requests activas ni reexplicaciones pendientes; Top 30 capturado a las 21:41."
-    },
-    {
-      "at": "2026-10-20T19:46:00Z",
-      "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cerrando pasada sin trabajo editorial; saneamiento visual de Pendientes solicitado."
-    },
-    {
-      "at": "2026-10-20T19:46:00Z",
+      "at": "2026-10-20T20:01:46.400Z",
       "phase": "done",
+      "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completado: 0 items editoriales y cola final 0."
+      "message": "TTendencias sin trabajo textual activo: cola 0, sin preparing/update ni rewrite_pending; sin cambios de Explicadas, imágenes o Telegram."
     }
   ],
   "telegram_orphans": 0,
