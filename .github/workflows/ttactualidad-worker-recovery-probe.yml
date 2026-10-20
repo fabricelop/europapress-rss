@@ -43,6 +43,22 @@ jobs:
               dig +short @8.8.8.8 "$host" "$type" | head -12
             done
           done
+      - name: Detectar botones presentes en la app original (solo lectura)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          url='https://ttactualidad-decisions-pilot.fabricelop.workers.dev/?check=original-rework'
+          try:
+              with urllib.request.urlopen(url,timeout=15) as response:
+                  html=response.read().decode('utf-8','replace')
+                  print('LIVE_UI_HTTP=',response.status)
+                  print('LIVE_HAS_REWORK_BUTTON=', 'Volver a En elaboración' in html)
+                  print('LIVE_HAS_TOP30=', 'Top 30' in html)
+                  print('LIVE_UI_BYTES=',len(html))
+          except Exception as exc:
+              print('LIVE_UI_CHECK_UNAVAILABLE=',type(exc).__name__,str(exc)[:180])
+          PY
       - name: Verify Cloudflare deploy authentication presence (no changes)
         env:
           CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
