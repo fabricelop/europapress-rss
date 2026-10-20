@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-20T20:43:00.662473+00:00",
+  "checked_at": "2026-10-20T20:58:39.564922+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -53,10 +53,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 2.3,
-      "run_id": 39494008166,
+      "age_minutes": 0.6,
+      "run_id": 39496465149,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -78,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 5,
+      "pending_count": 0,
       "overdue_count": 0,
-      "oldest_age_minutes": 1.7,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -88,14 +88,8 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "f5060a515233",
-        "ed0118581088",
-        "9d85e04de81b",
-        "19c05b7e363a",
-        "53043f52bd60"
-      ],
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
