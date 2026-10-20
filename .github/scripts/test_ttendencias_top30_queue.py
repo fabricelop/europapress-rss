@@ -150,4 +150,12 @@ with tempfile.TemporaryDirectory() as foldername:
     assert "explanation" not in first[1],first
     assert len(update())==2,"No duplicate Top10 reopen on second refresh"
     assert load(folder/"editorial-queue.json")["count"]==1
-    print("TT_TOP10_REENTRY_OK: old closure retained, new editorial episode queued")
+    # Rank volatility cannot silently remove an already accepted investigation.
+    snapshot=load(folder/"recent.json")
+    snapshot["items"][0]={"name":"Otra tendencia","rank":1}
+    put(folder/"recent.json",snapshot)
+    after_rank_change=update()
+    assert any(x["id"]==first[1]["id"] and x["status"]=="preparing" for x in after_rank_change)
+    pending=load(folder/"editorial-queue.json")["items"]
+    assert any(x["id"]==first[1]["id"] and x["name"]=="Pubill" for x in pending),pending
+    print("TT_TOP10_REENTRY_OK: old closure retained, new episode and queue continuity")
