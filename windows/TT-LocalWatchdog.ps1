@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-v12-telegram-safe-heal-chat-recovery
+# watchdog-v14-editorial-tab-lifecycle
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -170,7 +170,7 @@ function Test-ChatOperationBusy{
 $script:LastChromeTabHousekeepingAt=[DateTimeOffset]::MinValue
 function EnsureChromeTabHousekeeping{
   $now=[DateTimeOffset]::UtcNow
-  if(($now-$script:LastChromeTabHousekeepingAt).TotalMinutes -lt 20){return}
+  if(($now-$script:LastChromeTabHousekeepingAt).TotalMinutes -lt 5){return}
   $script:LastChromeTabHousekeepingAt=$now
   $helper=Join-Path $BaseDir "TT-Chrome9223-Safe-Prune.js"
   if(-not (Test-Path -LiteralPath $helper)){return}
@@ -187,7 +187,7 @@ function EnsureChromeTabHousekeeping{
   $homes=@($targets | Where-Object {
     [string]$_.type -eq "page" -and [string]$_.url -eq "https://chatgpt.com/"
   })
-  if($homes.Count -lt 15){return}
+  if($homes.Count -lt 8){return}
 
   try{
     $already=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction Stop |
