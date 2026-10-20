@@ -103,7 +103,7 @@ jobs:
           $installer=Get-Content -Raw -LiteralPath $p
           $guardian=Get-Content -Raw -LiteralPath 'windows/TTImages-AutoRecovery-Guardian.ps1'
           foreach($required in @('New-TimeSpan -Minutes 15',
-              "System32\\wscript.exe",'//B //Nologo',
+              'System32\wscript.exe','//B //Nologo',
               'shell.Run command, 0, True','-WindowStyle Hidden',
               'New-ScheduledTaskAction -Execute $exe','TTImages-AutoRecovery-Hidden.vbs')){
             if(-not $installer.Contains($required)){throw ('Invisible scheduled task missing '+$required)}
