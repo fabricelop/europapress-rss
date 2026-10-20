@@ -12,7 +12,7 @@ $root=Join-Path $env:LOCALAPPDATA 'TTImageRelay'
 $dir=Join-Path $root 'AutoRecovery-v1'
 $name='TTImages - AutoRecovery Viewer'
 $sourceTask='TT Image Relay - Telegram v2'
-$pin='5128a800e6a2ac266eee3e0cc796438fb26974a3'
+$pin='e40621093f166fff673a9d08935f199e0cb68f0f'
 $base='https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'
 $names=@('TTImages-AutoRecovery-Guardian.ps1','Recuperar-TTImages-Visor-Bloqueado.ps1')
 function Info([string]$m){Write-Host ('TTIMAGES_INSTALL '+$m)}
@@ -58,7 +58,8 @@ try {
     if(-not $recoverCode.Contains($marker)){throw ('Recuperador incompleto: '+$marker)}
   }
   # Self-test inside the installer process, not a second visible console.
-  $testOutput=& (Join-Path $temp $names[0]) -SelfTest 2>&1
+  # Guardian self-test returns Write-Output so capture works even in Windows PowerShell 5.1.
+  $testOutput=@(& (Join-Path $temp $names[0]) -SelfTest 2>&1)
   if(-not (($testOutput|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
     throw ('Pruebas automáticas del guardián fallidas: '+($testOutput|Out-String))
   }
