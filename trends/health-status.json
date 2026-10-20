@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-20T14:18:39.929351+00:00",
-  "ok": true,
+  "checked_at": "2026-10-20T16:50:36.387703+00:00",
+  "ok": false,
   "modules": {
     "editorial_config": {
       "ok": true,
@@ -55,8 +55,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.1,
-      "run_id": 39437718019,
+      "age_minutes": 2.3,
+      "run_id": 39460640796,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -77,19 +77,28 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 69.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "f97274605e45",
+          "name": "#TerrorRESHxSelectaPlay",
+          "status": "preparing",
+          "age_minutes": 69.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "f97274605e45"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -99,8 +108,10 @@
     }
   },
   "repairs_started": [],
-  "blocking": [],
+  "blocking": [
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 69.4 min"
+  ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": ""
+  "last_alert_signature": "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 69.4 min"
 }
