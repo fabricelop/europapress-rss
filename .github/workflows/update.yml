@@ -13,8 +13,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: ttittulares-repo-write
-  cancel-in-progress: true
+  group: ttittulares-repo-write-v2
+  cancel-in-progress: false
 
 jobs:
   update:
