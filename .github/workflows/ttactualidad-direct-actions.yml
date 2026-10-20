@@ -30,7 +30,7 @@ jobs:
             git fetch --depth=1 origin main
             git reset --hard origin/main
             python3 pilot/apply-ttactualidad-action.py
-            git add -- ttittulares/prepared.json ttittulares/decisions.json ttittulares/editorial-queue.json telegram/editorial-processing.json ttittulares/tremending/items.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/requests.json pilot/ttactualidad-action-receipts.json
+            git add -- ttittulares/prepared.json ttittulares/decisions.json ttittulares/editorial-queue.json telegram/editorial-processing.json ttittulares/tremending/items.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/prepared.json trends/requests.json pilot/ttactualidad-action-receipts.json
             if git diff --cached --quiet; then
               echo "Already processed; no changes to push."
               exit 0
