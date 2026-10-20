@@ -84,6 +84,7 @@ jobs:
           node --check /tmp/tt-site-check.js
           node .github/scripts/test_tt_pages_prompts.mjs
           node .github/scripts/test_tt_mobile_unified_ui.mjs
+          node pilot/ttactualidad-live/test_top30.mjs
           node .github/scripts/test_tt_emergency_direct_api.mjs
           node .github/scripts/test_tt_mobile_photo_page.mjs
           test -s /tmp/tt-pages-site/index.html
