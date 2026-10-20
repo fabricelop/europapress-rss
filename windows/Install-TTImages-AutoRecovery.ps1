@@ -12,7 +12,7 @@ $root=Join-Path $env:LOCALAPPDATA 'TTImageRelay'
 $dir=Join-Path $root 'AutoRecovery-v1'
 $name='TTImages - AutoRecovery Viewer'
 $sourceTask='TT Image Relay - Telegram v2'
-$pin='d52c824524c1f857a1aac110d1e69f8bf8dac500'
+$pin='5128a800e6a2ac266eee3e0cc796438fb26974a3'
 $base='https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$pin+'/windows/'
 $names=@('TTImages-AutoRecovery-Guardian.ps1','Recuperar-TTImages-Visor-Bloqueado.ps1')
 function Info([string]$m){Write-Host ('TTIMAGES_INSTALL '+$m)}
@@ -88,7 +88,7 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 folder = fso.GetParentFolderName(WScript.ScriptFullName)
 guardian = fso.BuildPath(folder, "TTImages-AutoRecovery-Guardian.ps1")
 command = "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File """ & guardian & """"
-shell.Run command, 0, False
+shell.Run command, 0, True
 '@
   [IO.File]::WriteAllText($launcher,$launcherText,[Text.Encoding]::ASCII)
   $exe=Join-Path $env:SystemRoot 'System32\wscript.exe'
