@@ -57,11 +57,13 @@ try {
   foreach($marker in @('GetChromeTargets','GALERIA_NUEVA_CONFIRMADA','RECUPERACION_HTTP_OK')){
     if(-not $recoverCode.Contains($marker)){throw ('Recuperador incompleto: '+$marker)}
   }
-  # Self-test inside the installer process, not a second visible console.
-  # Guardian self-test returns Write-Output so capture works even in Windows PowerShell 5.1.
-  $testOutput=@(& (Join-Path $temp $names[0]) -SelfTest 2>&1)
-  if(-not (($testOutput|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
-    throw ('Pruebas automáticas del guardián fallidas: '+($testOutput|Out-String))
+  # The guardian's SelfTest uses terminating 'throw' on any failure.
+  # Never interpret its informational output: Windows PowerShell 5.1 may send
+  # that output to the host instead of the capture pipeline.
+  try {
+    & (Join-Path $temp $names[0]) -SelfTest | Out-Null
+  } catch {
+    throw ('Pruebas automaticas del guardian fallidas: '+$_.Exception.Message)
   }
   Info 'VALIDADO versiones, Chrome 9234, sintaxis de ambos scripts y pruebas de detección'
   if($PreflightOnly){
