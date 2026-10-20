@@ -61358,14 +61358,16 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
-      "fallback_image_status": "pending",
+      "fallback_image_status": "none",
       "image_choice": "none",
-      "image_status": "pending",
-      "image_pending": true,
+      "image_status": "none",
+      "image_pending": false,
       "rewrite_pending": false,
-      "originated_from_prior_id": "965aa27693ac"
+      "originated_from_prior_id": "965aa27693ac",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-20T22:13:05.068228+00:00",
+  "updated_at": "2026-10-20T22:13:31.168873Z",
   "count": 1044
 }
