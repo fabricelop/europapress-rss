@@ -76,6 +76,10 @@ private struct TimeMapCardLiveRows:View {
         picked.flatMap { model.primaryZone(for:$0) }
     }
     private var isHere:Bool { picked != nil && picked == model.activeCell }
+    private func periodStay(_ completeSeconds: TimeInterval) -> TimeInterval {
+        TimeMapPeriodPolicy.clippedStay(completeSeconds,
+                                      period: model.period, now: now)
+    }
     private var needsGPSAttention:Bool {
         guard isHere,!model.isResting,model.recording else { return false }
         guard let age=model.gpsFixAge(now:now) else { return true }
@@ -108,7 +112,7 @@ private struct TimeMapCardLiveRows:View {
                     Text(TimeMapCardClock.display(model.total(for:zone,now:now)))
                         .fontWeight(.semibold)
                     Text(isHere ? TimeMapCardClock.display(
-                        model.zoneStaySeconds(for:zone,now:now)) : "—")
+                        periodStay(model.zoneStaySeconds(for:zone,now:now))) : "—")
                         .fontWeight(.semibold)
                     Text(String(model.numberOfVisits(for:zone.cells,now:now)))
                         .fontWeight(.semibold)
@@ -120,7 +124,7 @@ private struct TimeMapCardLiveRows:View {
                     Text(TimeMapCardClock.display(model.total(for:picked,now:now)))
                         .fontWeight(.semibold)
                     Text(isHere ? TimeMapCardClock.display(
-                        model.staySeconds(now:now)) : "—")
+                        periodStay(model.staySeconds(now:now))) : "—")
                         .fontWeight(.semibold)
                     Text(String(model.numberOfVisits(for:[picked.id],now:now)))
                         .fontWeight(.semibold)
@@ -143,8 +147,12 @@ private struct TimeMapCardLiveRows:View {
                 TimeMapDetailRow(label:"Tiempo total en la zona",
                                  seconds:model.total(for:zone,now:now))
                 if isHere {
-                    TimeMapDetailRow(label:"Estancia actual en la zona",
-                                     seconds:model.zoneStaySeconds(for:zone,now:now))
+                    TimeMapDetailRow(label:"Estancia en zona · \(model.period.title)",
+                                     seconds:periodStay(model.zoneStaySeconds(for:zone,now:now)))
+                    if model.period != .all {
+                        TimeMapDetailRow(label:"Estancia completa, sin filtro",
+                                         seconds:model.zoneStaySeconds(for:zone,now:now))
+                    }
                 }
                 LabeledContent("N.º visitas",value:String(
                     model.numberOfVisits(for:zone.cells,now:now)))
@@ -159,8 +167,12 @@ private struct TimeMapCardLiveRows:View {
                 TimeMapDetailRow(label:"Tiempo total en esta cuadrícula",
                                  seconds:model.total(for:picked,now:now))
                 if isHere {
-                    TimeMapDetailRow(label:"Estancia actual en esta cuadrícula",
-                                     seconds:model.staySeconds(now:now))
+                    TimeMapDetailRow(label:"Estancia en cuadrícula · \(model.period.title)",
+                                     seconds:periodStay(model.staySeconds(now:now)))
+                    if model.period != .all {
+                        TimeMapDetailRow(label:"Estancia completa, sin filtro",
+                                         seconds:model.staySeconds(now:now))
+                    }
                 }
                 LabeledContent("N.º visitas",value:String(
                     model.numberOfVisits(for:[picked.id],now:now)))

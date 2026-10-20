@@ -1,0 +1,81 @@
+name: Mi Mapa 1.0.43 - coherencia temporal y mapa, IPA
+on:
+  push:
+    branches:
+      - fix/mi-mapa-v43-period-card-map-stability
+    paths:
+      - 'gps-ios/native/**'
+      - '.github/workflows/mi-mapa-v43-ipa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mi-mapa-v43-period-verify
+  cancel-in-progress: true
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preparar proyecto y validar sintaxis Swift
+        run: |
+          set -euo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Ejecutar pruebas en simulador iPhone
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess, os
+          devices=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          phones=[x for runtime,group in devices.items() if "iOS" in runtime for x in group if "iPhone" in x["name"] and x["state"] != "Unavailable"]
+          if not phones:
+              raise SystemExit("No available iPhone simulator")
+          with open("/tmp/mi-mapa-v43-simulator-id","w",encoding="utf8") as f:
+              f.write(phones[0]["udid"])
+          PY
+          SIMULATOR_ID="$(cat /tmp/mi-mapa-v43-simulator-id)"
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Compilar app y extensión iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/mi-mapa-v43-build" CODE_SIGNING_ALLOWED=NO build
+      - name: Verificar bundle y empaquetar sin alterar contenedores
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/mi-mapa-v43-build/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os, plistlib
+          app=Path(os.environ["APP"])
+          m=plistlib.loads((app/"Info.plist").read_bytes())
+          e=plistlib.loads((app/"PlugIns"/"MiMapaWidgets.appex"/"Info.plist").read_bytes())
+          assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba",m["CFBundleIdentifier"]
+          assert m["CFBundleShortVersionString"]=="1.0.43"
+          assert m["CFBundleVersion"]=="44"
+          assert e["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba.widgets"
+          assert e["CFBundleShortVersionString"]=="1.0.43"
+          assert e["CFBundleVersion"]=="44"
+          assert "location" in m["UIBackgroundModes"]
+          print("IPA: mismo identificador, contador derivado y sin migraciones de datos")
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-1.0.43.ipa Payload
+          unzip -t MiMapaDelTiempo-1.0.43.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-1.0.43-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-1.0.43.ipa
+          retention-days: 7
+          if-no-files-found: error

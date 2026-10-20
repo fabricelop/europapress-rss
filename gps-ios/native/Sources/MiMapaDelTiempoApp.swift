@@ -254,6 +254,14 @@ struct SavedState: Codable {
     @Published private var storageLoadFailed = false
     private var lastSafetyCopyAttempt = Date.distantPast
     var storageIsHealthy: Bool { !storageLoadFailed }
+    /// Read the actual timestamp of an existing SQLite snapshot. This never
+    /// creates a new copy and therefore causes no additional battery usage.
+    var mostRecentLocalBackup: Date? {
+        guard let latest = TimeSQLiteStore.safetyCopyURLs(
+            in: fileURL.deletingLastPathComponent()).first else { return nil }
+        return try? latest.resourceValues(
+            forKeys: [.contentModificationDateKey]).contentModificationDate
+    }
     private var lastProcessedSample: GPSPoint?
     private var restContinuationStart: Date?
     private var restContinuationCell: Cell?
@@ -276,6 +284,7 @@ struct SavedState: Codable {
     private var cachedPeriodCount = -1
     private var cachedPeriodEnd:Date?
     private var cachedPeriodSince:Date = .distantPast
+    private var cachedPeriodBucket: Int64 = -1
 
     /// Un índice para nombres/contornos. No reconstruir en cada muestra GPS.
     private func ensureZoneCatalog() {
@@ -440,9 +449,8 @@ struct SavedState: Codable {
         let window = TimeAnalytics.window(for:period,now:now)
         let first = data.intervals.first
         let last = data.intervals.last
-        let minuteStart = Int((window?.start.timeIntervalSince1970 ?? 0) / 60)
-        let minuteEnd = Int((window?.end.timeIntervalSince1970 ?? 0) / 60)
-        let fingerprint = "\(data.intervals.count)|\(first?.start.timeIntervalSince1970 ?? 0)|\(last?.start.timeIntervalSince1970 ?? 0)|\(last?.end.timeIntervalSince1970 ?? 0)|\(last?.cell.id ?? "")|\(period.rawValue)|\(minuteStart)|\(minuteEnd)"
+        let bucket = TimeMapPeriodPolicy.refreshBucket(for: period, now: now)
+        let fingerprint = "\(data.intervals.count)|\(first?.start.timeIntervalSince1970 ?? 0)|\(last?.start.timeIntervalSince1970 ?? 0)|\(last?.end.timeIntervalSince1970 ?? 0)|\(last?.cell.id ?? "")|\(period.rawValue)|\(bucket)"
         if fingerprint != mapVisitFingerprint {
             mapVisitFingerprint = fingerprint
             mapVisitCounts.removeAll(keepingCapacity:true)
@@ -476,14 +484,17 @@ struct SavedState: Codable {
             return confirmedTotals(now:now)
         }
         let count=data.intervals.count
-        let changed=cachedPeriod != period || cachedPeriodCount != count ||
+        let bucket=TimeMapPeriodPolicy.refreshBucket(for:period,now:now)
+        let changed=cachedPeriodCount != count ||
                     cachedPeriodEnd != data.intervals.last?.end
-        if cachedPeriod != period || (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
+        if cachedPeriod != period || cachedPeriodBucket != bucket ||
+           (changed && now.timeIntervalSince(cachedPeriodSince) >= 3) {
             cachedPeriodValues=TimeAttribution.byCell(data.intervals,window:window)
             cachedPeriod=period
             cachedPeriodCount=count
             cachedPeriodEnd=data.intervals.last?.end
             cachedPeriodSince=now
+            cachedPeriodBucket=bucket
         }
         return cachedPeriodValues
     }
@@ -501,7 +512,7 @@ struct SavedState: Codable {
             cachedThrough = normalizedCacheLastEnd
         } else {
             // El cálculo de períodos acotados se actualiza en cada consulta.
-            cachedThrough = data.intervals.last?.end
+            cachedThrough = cachedPeriodEnd
         }
         if let rest = data.gpsRest {
             guard cellIDs.contains(rest.cell.id) else { return 0 }
@@ -1922,6 +1933,12 @@ struct TimeMapView: View {
             }
         }
         .onChange(of:model.period) { _,_ in refreshMapSnapshot(force: true) }
+        // Lightweight periodic refresh also catches midnight while GPS is
+        // voluntarily paused and no new location events arrive.
+        .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
+            guard model.selectedTab == 0 else { return }
+            refreshMapSnapshot()
+        }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.totals.count) { _,_ in refreshMapSnapshot() }
         .onChange(of:model.data.customZones.count) { _,_ in refreshMapSnapshot(force: true) }
@@ -1973,6 +1990,12 @@ struct TimeMapView: View {
     private var mapLayers: some View {
         let visibleCells = renderedCells
         let visibleZones = renderedZones
+        let focusZoneID = (followLocation ? model.activeCell :
+            (model.selected ?? model.activeCell)).flatMap {
+                model.primaryZone(for: $0)?.id
+            }
+        let visibleZoneLabelIDs = TimeZoneLabelLayout.visibleIDs(
+            visibleZones, viewport: region, preferredZoneID: focusZoneID)
         let maximumVisibleTime = renderedMaximumTime
         let useBasicMap = model.forceBasicMap || !connectivity.connected
         return ZStack {
@@ -2008,6 +2031,7 @@ struct TimeMapView: View {
                                         .flatMap { model.primaryZone(for:$0) }?.id ? 5 : 2.5)
                         }
                         if region.span.latitudeDelta < 0.07,
+                           visibleZoneLabelIDs.contains(overlay.id),
                            let center=overlay.center {
                             Annotation("",coordinate:center) {
                                 Button {
@@ -2016,7 +2040,8 @@ struct TimeMapView: View {
                                 } label: {
                                     VStack(spacing:2) {
                                         Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
-                                        Text("\(overlay.zone.cellIDs.count) cuadrículas")
+                                        Text(overlay.zone.cellIDs.count == 1 ? "1 cuadrícula" :
+                                             "\(overlay.zone.cellIDs.count) cuadrículas")
                                             .font(.system(size:9))
                                     }
                                     .padding(.horizontal,8).padding(.vertical,5)
@@ -2228,8 +2253,9 @@ struct TimeMapView: View {
                             Text(zone?.name ?? picked.map { model.label(for:$0) } ?? "Sin cuadrícula actual")
                                 .font(.subheadline.weight(.semibold))
                                 .lineLimit(1)
-                            Label(isConsulting ? "Consultando otra cuadrícula" :
-                                    (picked == nil ? "Sin ubicación" : "Ubicación actual"),
+                            Label((isConsulting ? "Consultando otra cuadrícula" :
+                                    (picked == nil ? "Sin ubicación" : "Ubicación actual")) +
+                                  " · " + model.period.title,
                                   systemImage:isConsulting ? "hand.tap" : "location.fill")
                                 .font(.system(size:10,weight:.medium))
                                 .foregroundStyle(isConsulting ? Color.indigo : Color.secondary)
@@ -2531,7 +2557,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.41 · datos guardados en este iPhone",
+                    Label("Versión 1.0.43 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
