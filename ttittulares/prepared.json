@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T11:28:34.524Z",
+  "updated_at": "2026-10-20T11:32:00.846Z",
   "items": [
     {
       "event_id": "3cf5eb215d23",
@@ -305,7 +305,7 @@
       "editorial_note": "Solo texto. Sin imágenes ni Telegram; resolución nueva del 20/10, no rehabilitación de una tarjeta anterior borrada.",
       "image_mode": "archive_only",
       "image_strategy": "archive_only",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -330,7 +330,10 @@
         "generated": false,
         "alt": "El Supremo amnistía a Junqueras, Romeva, Turull y Bassa y extingue su inhabilitación"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-20T11:32:00.846Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 0,
