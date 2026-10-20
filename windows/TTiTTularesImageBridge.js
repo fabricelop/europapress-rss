@@ -460,7 +460,7 @@ const BRIDGE_FEATURES="v54-submit-generating-transition";
 // compatibility: BRIDGE_MODE="capture-only-v20-command-bound"
 // compatibility: BRIDGE_MODE="capture-only-v21-command-scoped"
 // compatibility: BRIDGE_MODE="capture-only-v22-command-scoped-cdp-recover"
-const BRIDGE_COMPOSER_FIX="v55-match-command-across-editors";
+const BRIDGE_COMPOSER_FIX="v56-atomic-command-scoped-submit";
 const COMPOSER_SELECTOR='[data-tt-image-composer="true"],#prompt-textarea,[data-testid="prompt-textarea"],[contenteditable="true"][data-lexical-editor="true"],[contenteditable="true"][role="textbox"],textarea:not([disabled])';
 
 async function inspectChat(cdp,job){
