@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T07:15:00.000Z",
-  "last_completed_at": "2026-10-20T07:16:40.000Z",
-  "updated_at": "2026-10-20T07:16:40.000Z",
+  "last_started_at": "2026-10-20T07:45:00.000Z",
+  "last_completed_at": "2026-10-20T07:46:00.000Z",
+  "updated_at": "2026-10-20T07:46:00.000Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,18 +23,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020091500",
+    "run_id": "tr-editorial-20261020094500",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T07:15:00.000Z",
-    "updated_at": "2026-10-20T07:16:40.000Z",
+    "started_at": "2026-10-20T07:45:00.000Z",
+    "updated_at": "2026-10-20T07:46:00.000Z",
     "current": 0,
     "total": 0,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes.",
+    "message": "Cierre 0/0 verificado en main: sin work editorial activo; saneamiento de Pendientes solicitado.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -64,7 +64,7 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T07:15:00.000Z",
+        "at": "2026-10-20T07:45:00.000Z",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
@@ -72,28 +72,29 @@
         "message": "Releyendo estado autoritativo antes de cerrar una pasada 0/0."
       },
       {
-        "at": "2026-10-20T07:15:30.000Z",
+        "at": "2026-10-20T07:45:30.000Z",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y verificando cola, requests y reexplicaciones pendientes."
+        "message": "Releyendo main y verificando cola, requests, reexplicaciones y problematic."
       },
       {
-        "at": "2026-10-20T07:16:40.000Z",
+        "at": "2026-10-20T07:46:00.000Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
+        "message": "Cierre 0/0 verificado en main: sin trabajo editorial activo; saneamiento de Pendientes solicitado."
       }
     ],
-    "finished_at": "2026-10-20T07:16:40.000Z",
+    "finished_at": "2026-10-20T07:46:00.000Z",
     "partial": false,
     "queue_complete": true,
-    "remaining_active_ids": []
+    "remaining_active_ids": [],
+    "verification_head": "0e6adb9853f08d38ef38d0e1163afed55254af77"
   },
-  "run_id": "tr-editorial-20261020091500",
+  "run_id": "tr-editorial-20261020094500",
   "summary": {
     "initial_compact_queue": 0,
     "final_compact_queue": 0,
@@ -114,7 +115,7 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T07:15:00.000Z",
+      "at": "2026-10-20T07:45:00.000Z",
       "phase": "verifying",
       "event_id": null,
       "trend_id": null,
@@ -122,20 +123,20 @@
       "message": "Releyendo estado autoritativo antes de cerrar una pasada 0/0."
     },
     {
-      "at": "2026-10-20T07:15:30.000Z",
+      "at": "2026-10-20T07:45:30.000Z",
       "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y verificando cola, requests y reexplicaciones pendientes."
+      "message": "Releyendo main y verificando cola, requests, reexplicaciones y problematic."
     },
     {
-      "at": "2026-10-20T07:16:40.000Z",
+      "at": "2026-10-20T07:46:00.000Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
+      "message": "Cierre 0/0 verificado en main: sin trabajo editorial activo; saneamiento de Pendientes solicitado."
     }
   ],
   "telegram_orphans": 0,
@@ -144,6 +145,6 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-20T09:16:22+02:00"
+    "captured_at": "2026-10-20T09:32:40+02:00"
   }
 }
