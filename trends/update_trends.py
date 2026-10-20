@@ -598,6 +598,7 @@ def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, no
                 "first_detected_at": item.get("first_detected_at"),
                 "last_seen_at": previous_doc.get("captured_at") or now_iso,
                 "inside_top30": False,
+                "radar_qualified": True,
             }
 
     # Un tema que estaba en el Top 30 en la captura anterior no puede
@@ -656,6 +657,7 @@ def build_upcoming(source_data, top30, previous_doc, status_doc, full_events, no
             "first_detected_at": first_detected,
             "last_seen_at": now_iso,
             "inside_top30": False,
+            "radar_qualified": (social_count >= 2 or (social_count >= 1 and news_count >= 4)),
         }
 
         if social_count < 2 and not (social_count >= 1 and news_count >= 4):
@@ -739,10 +741,25 @@ def filter_dismissed_upcoming(rows, requests_doc):
     return kept
 
 def anticipated_entries(top10, previous_doc, now):
-    prior = {term_key(x.get("name")): x for x in (previous_doc.get("upcoming") or []) if x.get("name")}
+    previous_top10 = {term_key(x) for x in (previous_doc.get("top10") or [])}
+    previous_top30 = {term_key(x) for x in (previous_doc.get("top30") or [])}
+    prior = {
+        term_key(x.get("name")): x
+        for x in (previous_doc.get("upcoming") or []) if x.get("name")
+    }
+    # La vista upcoming solo incluye 'new'/'up', de modo que una señal puede
+    # desaparecer de esa vista antes de entrar en el Top 10. Su historial
+    # cualificado permite reconocer una anticipación real sin inventarla.
+    for key, row in (previous_doc.get("radar_history") or {}).items():
+        if (isinstance(row, dict) and row.get("radar_qualified")
+                and not row.get("inside_top30")):
+            prior.setdefault(key, row)
     out = []
     for name in top10:
-        row = prior.get(term_key(name))
+        key = term_key(name)
+        if key in previous_top10 or key in previous_top30:
+            continue
+        row = prior.get(key)
         if not row:
             continue
         detected = row.get("first_detected_at")
@@ -752,7 +769,7 @@ def anticipated_entries(top10, previous_doc, now):
             if start.tzinfo is None:
                 start = start.replace(tzinfo=MADRID)
             lead = max(0, round((now - start.astimezone(MADRID)).total_seconds() / 60))
-        except Exception:
+        except (TypeError, ValueError):
             pass
         out.append({
             "name": name,
