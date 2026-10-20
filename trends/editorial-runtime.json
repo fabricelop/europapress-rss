@@ -4,266 +4,120 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T22:49:54+02:00",
-  "last_completed_at": "2026-10-20T22:57:08+02:00",
-  "updated_at": "2026-10-20T22:57:08+02:00",
+  "last_started_at": "2026-10-20T23:18:00+02:00",
+  "last_completed_at": "2026-10-20T23:20:00+02:00",
+  "updated_at": "2026-10-20T23:20:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "f5060a515233",
-    "ed0118581088",
-    "9d85e04de81b",
-    "19c05b7e363a",
-    "53043f52bd60"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-20261020224954-chat",
+    "trigger_run_id": "tr-editorial-20261020231800-chat",
     "status": "pending-repair-triggered",
-    "source_commit": "93aa01eac78e23eacc4f99095b54c19f75ce21c8",
+    "source_commit": "2ef5c70c3721f27cc919b019696c7bc67cb6a6c4",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020224954-chat",
+    "run_id": "tr-editorial-20261020231800-chat",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-20T22:49:54+02:00",
-    "updated_at": "2026-10-20T22:57:08+02:00",
-    "finished_at": "2026-10-20T22:57:08+02:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-20T23:18:00+02:00",
+    "updated_at": "2026-10-20T23:20:00+02:00",
+    "finished_at": "2026-10-20T23:20:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
-    "incident_count": 0,
-    "incidents": [],
-    "activity": [
+    "incident_count": 1,
+    "incidents": [
       {
-        "at": "2026-10-20T22:49:54+02:00",
+        "at": "2026-10-20T23:18:20+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa: 5 revisiones activas en preparing; comprobando agrupación, estado fresco y ratings."
+        "reason": "No se pudo actualizar el comentario RUNTRACE canónico del PR #7; main seguía escribible y se usó editorial-runtime.json como telemetría durable."
+      }
+    ],
+    "activity": [
+      {
+        "at": "2026-10-20T23:18:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada directa: cola compacta 0; releyendo radar y estado autoritativo antes de cerrar."
       },
       {
-        "at": "2026-10-20T22:50:10+02:00",
-        "phase": "verifying",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Barrera JIT superada: las cinco revisiones siguen activas y el radar está fresco."
+        "at": "2026-10-20T23:18:40+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-20T22:50:25+02:00",
-        "phase": "investigating",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Verificado el detonante común del PSG-Barça y el 2-1 final del PSG."
-      },
-      {
-        "at": "2026-10-20T22:50:40+02:00",
-        "phase": "drafting",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Redactada una sola explicación agrupada para Ferran, Doué, Joan García, Dembele y #PSGbarca; 228 caracteres."
-      },
-      {
-        "at": "2026-10-20T22:50:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Cinco candidatos evaluados; elegido un remate específico del reencuentro de Ferran y las paradas de Joan García."
-      },
-      {
-        "at": "2026-10-20T22:51:00+02:00",
-        "phase": "persisting",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Persistiendo primero la ficha líder y después enlazando las cuatro revisiones restantes al mismo grupo."
-      },
-      {
-        "at": "2026-10-20T22:53:25+02:00",
-        "phase": "persisting",
-        "trend_id": "f5060a515233",
-        "title": "Ferran",
-        "message": "Ficha líder persistida; cola reducida de 5 a 4."
-      },
-      {
-        "at": "2026-10-20T22:56:45+02:00",
-        "phase": "persisting",
-        "trend_id": "53043f52bd60",
-        "title": "#PSGbarca",
-        "message": "Las cuatro revisiones restantes quedaron enlazadas al grupo único del PSG-Barça."
-      },
-      {
-        "at": "2026-10-20T22:57:08+02:00",
+        "at": "2026-10-20T23:19:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura de main completada: las cinco revisiones están explained, el texto y el remate coinciden y la cola está vacía."
+        "message": "Radar fresco de las 23:11 revalidado; Top 10 leído y cola editorial sigue en 0."
       },
       {
-        "at": "2026-10-20T22:57:08+02:00",
+        "at": "2026-10-20T23:20:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada 5/5 cerrada y verificada. Un solo grupo editorial; reparación visual independiente lanzada."
+        "message": "Pasada 0/0 cerrada: no queda trabajo editorial activo en la cola autoritativa."
       }
     ],
     "summary": {
-      "attempted": 5,
+      "attempted": 0,
       "ready": 0,
-      "explained": 5,
-      "explanation_groups": 1,
-      "duplicates_closed": 4,
+      "explained": 0,
+      "explanation_groups": 0,
+      "duplicates_closed": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 5,
+      "initial_compact_queue": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
-      "visual_backlog": 1,
+      "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "processed_ids": [
-      "f5060a515233",
-      "ed0118581088",
-      "9d85e04de81b",
-      "19c05b7e363a",
-      "53043f52bd60"
-    ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [
-      {
-        "trend_id": "f5060a515233",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.8,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0.3
-          },
-          {
-            "id": "c2",
-            "total": 8.1,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": 0.1
-          },
-          {
-            "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c4",
-            "total": 7.2,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.8,
-        "no_remate_reason": null
-      }
-    ],
-    "message": "TTendencias 5/5 cerrada: cinco tendencias del PSG-Barça agrupadas en una sola explicación verificada; cola editorial final 0.",
+    "processed_ids": [],
+    "ratings_snapshot": null,
+    "remate_selections": [],
+    "message": "TTendencias 0/0 cerrada: radar fresco revalidado y cola editorial final 0; saneamiento visual independiente lanzado. RUNTRACE del PR no pudo actualizarse, pero la telemetría durable quedó persistida en main.",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "f5060a515233",
-        "revision": 1,
-        "name": "Ferran",
-        "status": "explained",
-        "explained_at": "2026-10-20T22:51:00+02:00"
-      },
-      {
-        "id": "ed0118581088",
-        "revision": 0,
-        "name": "Doué",
-        "status": "explained",
-        "explained_at": "2026-10-20T22:51:00+02:00"
-      },
-      {
-        "id": "9d85e04de81b",
-        "revision": 0,
-        "name": "Joan García",
-        "status": "explained",
-        "explained_at": "2026-10-20T22:51:00+02:00"
-      },
-      {
-        "id": "19c05b7e363a",
-        "revision": 0,
-        "name": "Dembele",
-        "status": "explained",
-        "explained_at": "2026-10-20T22:51:00+02:00"
-      },
-      {
-        "id": "53043f52bd60",
-        "revision": 0,
-        "name": "#PSGbarca",
-        "status": "explained",
-        "explained_at": "2026-10-20T22:51:00+02:00"
-      }
-    ],
-    "explanation_group": {
-      "group_id": "grp-f5060a515233",
-      "group_title": "PSG–Barcelona de Champions · 20 de octubre de 2026",
-      "leader_id": "f5060a515233",
-      "trend_names": [
+    "final_outcomes": [],
+    "radar": {
+      "captured_at": "2026-10-20T23:11:14+02:00",
+      "queue_count": 0,
+      "top10": [
+        "Pubill",
+        "gordon",
         "Ferran",
         "Doué",
         "Joan García",
         "Dembele",
-        "#PSGbarca"
-      ],
-      "explanation": "TT#3 Ferran es tendencia porque sustituyó al lesionado Dembélé en el PSG-Barça, probó a Joan García y Doué abrió el 2-1 final.\n#PSGBarça #ChampionsLeague\n🌶️ Ferran se reencontró con el Barça y Joan García le cambió la cerradura."
+        "Olmo",
+        "Rodri",
+        "#PSGbarca",
+        "Fermín"
+      ]
     }
   },
   "run_id": "tr-editorial-20261020224954-chat",
