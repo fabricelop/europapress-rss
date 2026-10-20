@@ -323,6 +323,35 @@ def trend_command(action, element_id, context, instruction, now):
         if previous == action:
             return "TTendencias: acción ya realizada anteriormente (" + action + "): " + element_id
         raise ValueError("Tendencia ya cerrada")
+    if action == "rework":
+        # Listas -> En elaboración: borrar tarjeta y fotografía anteriores
+        # antes de encolar una revisión completamente nueva.
+        sys.path.insert(0, str(ROOT / "pilot"))
+        from trends_rework import rework_explained
+        manual_path = "trends/telegram-manual-explained.json"
+        queue_path = "trends/editorial-queue.json"
+        prepared_path = "trends/prepared.json"
+        manual = load(manual_path, {"items": []})
+        queue = load(queue_path, {"items": []})
+        prepared = load(prepared_path, {"items": []})
+        try:
+            next_revision = rework_explained(
+                str(r.get("id") or element_id) if r else element_id,
+                None, now, doc, manual, queue, decisions, deliveries,
+                "github_pages_authorized_issue_rework"
+            )
+        except ValueError as exc:
+            raise ValueError(str(exc)) from exc
+        prepared["items"] = [row for row in prepared.get("items", [])
+                             if str(row.get("id") or "") != str(r.get("id") or element_id)]
+        prepared["updated_at"] = now
+        for location, value in (
+            (p, doc), (manual_path, manual), (queue_path, queue),
+            (dpath, decisions), (deliveries_path, deliveries),
+            (prepared_path, prepared),
+        ):
+            save(location, value)
+        return "TTendencias: " + str(r.get("name") or element_id) + " vuelve a En elaboración (r" + str(next_revision) + ")"
     # Desestimar detiene la elaboración pendiente; nunca equivale a publicar.
     if action == "dismissed":
         queue_path = "trends/editorial-queue.json"
