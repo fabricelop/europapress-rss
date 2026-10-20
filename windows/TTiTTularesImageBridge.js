@@ -492,6 +492,44 @@ async function injectPromptIntoChat(cdp,job){
   throw Error("Fallback no pudo escribir el prompt completo: "+JSON.stringify(last).slice(0,280));
 }
 
+
+async function submitVerifiedDraft(cdp,job){
+  // Only click Send if the CURRENT, complete prompt is still visible
+  // in the same dedicated composer. Never send a stale/manual draft.
+  const message=buildMessage(job);
+  const expression=[
+    "(()=>{",
+    "const command="+JSON.stringify(commandId)+";",
+    "const suffix="+JSON.stringify(message.slice(-65))+";",
+    "const c=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");",
+    "const txt=String(c&&(c.value||c.innerText||c.textContent)||'');",
+    "if(!c||!txt.includes(command)||!txt.includes(suffix)||txt.length<"+Math.floor(message.length*0.8)+")return {triggered:false,reason:'draft_missing_or_changed',draftLength:txt.length};",
+    "const form=c.closest('form');",
+    "const sendSelector="+JSON.stringify('button[data-testid="send-button"],button[data-testid="composer-send-button"],button[data-testid="composer-submit-button"],#composer-submit-button,button[aria-label*="Send" i],button[aria-label*="Enviar" i],button[aria-label*="Submit" i],button[type="submit"]')+";",
+    "const candidates=[...(form?[...form.querySelectorAll(sendSelector)]:[]),...document.querySelectorAll(sendSelector)];",
+    "const seen=new Set();",
+    "const active=b=>{if(!b||seen.has(b))return false;seen.add(b);const r=b.getBoundingClientRect();const v=getComputedStyle(b);return b.isConnected&&!b.disabled&&r.width>1&&r.height>1&&v.display!=='none'&&v.visibility!=='hidden'};",
+    "const btn=candidates.find(active);",
+    "if(btn){btn.click();return {triggered:true,method:'send-button',url:location.href}};",
+    "if(form&&typeof form.requestSubmit==='function'){form.requestSubmit();return {triggered:true,method:'requestSubmit',url:location.href}};",
+    "return {triggered:false,reason:'submit_control_unavailable',url:location.href};",
+    "})()"
+  ].join("");
+  let result;
+  try{result=await cdp.eval(expression)}catch(e){
+    console.log("BRIDGE DIRECT SUBMIT EVAL WARNING "+String(e&&e.message||e).slice(0,120));
+    return false;
+  }
+  if(result&&result.triggered){
+    cdp.promptSubmittedAt=Date.now();
+    console.log("BRIDGE DIRECT SUBMIT TRIGGERED method="+String(result.method||""));
+    return true;
+  }
+  console.log("BRIDGE DIRECT SUBMIT DEFERRED reason="+String(result&&result.reason||"unknown")+" draftLength="+String(result&&result.draftLength||0));
+  return false;
+}
+
+
 async function findFallbackComposerChat(job){
   let list=[];try{list=await targets()}catch{return null}
   const pages=list.filter(x=>x.type==="page"&&String(x.url||"").includes("chatgpt.com")&&x.webSocketDebuggerUrl);
@@ -605,7 +643,7 @@ function submissionEvidence(st,{triggeredAt=0,promptWasVerified=false,preexistin
 
 async function ensureSubmitted(cdp,job){
   const deadline=Date.now()+45000;
-  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=0,startedAt=Date.now();
+  let current=cdp,last=null,lastAttemptAt=0,reacquires=0,triggeredAt=Number(cdp.promptSubmittedAt||0),startedAt=Date.now();
   while(Date.now()<deadline){
     let st=null;
     try{
@@ -870,6 +908,7 @@ async function uploadImage(image){
         console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
       }
       cdp=await injectPromptIntoChat(cdp,job);
+      await submitVerifiedDraft(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
       if(isAutomatic && !automaticImageDeadline)automaticImageDeadline=Date.now()+4*60*1000; // Reserva un minuto para Telegram.
       assertAutomaticInTime();
