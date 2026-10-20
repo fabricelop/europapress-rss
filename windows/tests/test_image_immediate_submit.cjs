@@ -9,6 +9,8 @@ const assert=require('node:assert/strict');
   assert(start>=0 && end>start,path+' missing immediate submit helper');
   assert(source.includes('await submitVerifiedDraft(cdp,job);'),path+' must invoke immediate submit');
   assert.match(source,/triggeredAt=Number\(cdp\.promptSubmittedAt\|\|0\)/,'must retain triggered timestamp');
+  assert.match(source,/lastAttemptAt=Number\(cdp\.promptSubmittedAt\|\|0\)/,'must not re-click immediately');
+  assert.match(source,/Date\.now\(\)-lastAttemptAt>=6000/,'must allow React to process previous click');
   const message='TTITTULARES_IMAGE_JOB_V4 tt-img-test-abcdefg / genera UNA imagen '+ 'hechos '.repeat(45)+'FIN_PROMPT_TEST';
   const submit=new Function('buildMessage','commandId','COMPOSER_SELECTOR',
     source.slice(start,end)+';return submitVerifiedDraft;')(
