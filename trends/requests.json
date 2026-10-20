@@ -68289,9 +68289,9 @@
       "name": "gordon",
       "rank": 8,
       "revision": 1,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-20T22:04:26.300903+00:00",
-      "updated_at": "2026-10-20T22:04:26.300903+00:00",
+      "updated_at": "2026-10-21T00:09:30+02:00",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
@@ -68302,13 +68302,43 @@
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
       "image_choice": "none",
-      "image_pending": true,
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "image_pending": false,
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "gordon"
       ],
-      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores."
+      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores.",
+      "explained_at": "2026-10-21T00:09:30+02:00",
+      "last_attempt_at": "2026-10-21T00:09:30+02:00",
+      "explanation": "TT#8 gordon es tendencia porque Anthony Gordon fue titular ante el PSG, perdió muchos balones y dejó pasar dos ocasiones claras antes del 4-2.\n#AnthonyGordon #PSGBarça\n🌶️ Gordon llegó a dos citas con el gol y dejó ambas en visto.",
+      "closer_text": "🌶️ Gordon llegó a dos citas con el gol y dejó ambas en visto.",
+      "rank_at_explanation": 8,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "editorial_verified": true,
+      "verification_sources": [
+        "https://elpais.com/deportes/futbol/2026-10-20/el-psg-de-luis-enrique-alecciona-al-barcelona-en-la-champions.html",
+        "https://barcauniversal.com/joan-garcia-9-5-gordon-6-psg-4-2-barcelona-player-ratings/"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Anthony Gordon fue titular con el Barcelona ante el PSG. En la derrota 4-2 perdió muchos balones y dejó pasar dos ocasiones claras; una crónica de valoración también señala una mala marca en el segundo gol parisino.",
+      "group_id": "grp-6b775ce5b1ea-r1",
+      "explanation_group_id": "grp-6b775ce5b1ea-r1",
+      "group_title": "gordon",
+      "group_leader_id": "6b775ce5b1ea",
+      "trend_names": [
+        "gordon"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "6b775ce5b1ea",
+          "name": "gordon",
+          "revision": 1
+        }
+      ],
+      "image_status": "none"
     },
     {
       "id": "b0b9b7a7ac75",
@@ -68393,6 +68423,6 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Fabián, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "updated_at": "2026-10-20T22:07:02.357236+00:00",
-  "count": 1133
+  "updated_at": "2026-10-21T00:09:30+02:00",
+  "count": 1134
 }
