@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from trends_rework import rework_explained
+from trends_rework import rework_explained, rework_top30
 
 ROOT = Path(__file__).resolve().parent.parent
 REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
@@ -352,13 +352,22 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
         mobile = load(mobile_path, {"items": []})
         deliveries = load(ledger_path, {"items": []})
         prepared = load(prepared_path, {"items": []})
+        ready = next((x for x in manual.get("items", []) if str(x.get("id") or "") == event_id
+                      and str(x.get("status") or "").lower() == "explained"), None)
         try:
-            rework_explained(event_id, revision, now, requests, manual, queue,
-                             mobile, deliveries, "ttactualidad_direct_rework")
+            if ready and not any(str(x.get("id") or "") == event_id and
+                                 str(x.get("status") or "").lower() in TERMINAL
+                                 for x in mobile.get("items", [])):
+                rework_explained(event_id, revision, now, requests, manual, queue,
+                                 mobile, deliveries, "ttactualidad_direct_rework")
+                prepared["items"] = [row for row in prepared.get("items", [])
+                                     if str(row.get("id") or "") != event_id]
+            else:
+                recent = load("trends/recent.json", {"items": []})
+                rework_top30(event_id, revision, now, recent.get("items") or [],
+                             requests, manual, queue, mobile, "ttactualidad_direct_rework")
         except ValueError as exc:
             fail(str(exc))
-        prepared["items"] = [row for row in prepared.get("items", [])
-                             if str(row.get("id") or "") != event_id]
         prepared["updated_at"] = now
         return {
             req_path: requests, manual_path: manual, queue_path: queue,
