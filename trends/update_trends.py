@@ -400,10 +400,21 @@ def choose_top10(source_data):
             if oname != name
         )
 
+    # No votar con snapshots caducados: aunque el HTML se descargue hoy,
+    # una lista marcada stale puede coincidir con una fuente retrasada y
+    # desbancar a dos fuentes actuales que sí se corroboran entre ellas.
+    non_stale = {n: d for n, d in good.items() if d.get("freshness") != "stale"}
     fresh = {n: d for n, d in good.items() if d.get("freshness") == "fresh"}
     if fresh:
-        # Una fuente fechada y fresca puede anclar el Top 10.
-        anchor_name, anchor = max(fresh.items(), key=lambda item: corroboration(item, good))
+        # Preferir una fuente fresca corroborada por otras NO obsoletas.
+        # En empate, elegir el snapshot con menor antigüedad comprobable.
+        anchor_name, anchor = max(
+            fresh.items(),
+            key=lambda item: (
+                corroboration(item, non_stale),
+                -float(item[1].get("age_minutes") if item[1].get("age_minutes") is not None else 9999),
+            ),
+        )
         supporters = [
             name for name, data in good.items()
             if name == anchor_name
@@ -421,8 +432,8 @@ def choose_top10(source_data):
         anchor_name, anchor = max(
             aging.items(),
             key=lambda item: (
-                corroboration(item, good),
-                -float(item[1].get("age_minutes") or 9999),
+                corroboration(item, non_stale),
+                -float(item[1].get("age_minutes") if item[1].get("age_minutes") is not None else 9999),
             ),
         )
         supporters = [
