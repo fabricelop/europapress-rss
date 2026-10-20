@@ -11,6 +11,13 @@ restored around the restart to prevent concurrent Chrome launches.
 param([switch]$InspectOnly)
 $ErrorActionPreference='Stop'
 $ProgressPreference='SilentlyContinue'
+# Fail before ANY changes unless the shell is elevated. Standard Windows task
+# ACLs reject disabling the TT scheduled tasks without Administrator rights.
+$isAdmin=([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if(-not $isAdmin){
+  Write-Host 'TT9223 PERMISOS: ejecuta PowerShell como administrador y vuelve a lanzar el script. NO se ha modificado nada.' -ForegroundColor Yellow
+  exit 5
+}
 $base='C:\TTiTTulares'
 $stamp=Get-Date -Format 'yyyyMMdd-HHmmss'
 $dir=Join-Path $env:LOCALAPPDATA ('TT_Recuperacion\Chrome9223-'+$stamp)
@@ -67,8 +74,9 @@ function SuspendNamed([string]$name) {
   $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
   if(-not $task){return}
   if([string]$task.State -eq 'Disabled'){return}
-  $script:pausedTasks.Add($name)
   Disable-ScheduledTask -TaskName $name -ErrorAction Stop | Out-Null
+  # Track it only AFTER successful suspension (not before HRESULT 0x80070005).
+  $script:pausedTasks.Add($name)
   # Never stop the Chrome launcher task while its browser is still alive:
   # Task Scheduler could kill Chrome before session protection is ready.
   if($name -ne 'TT Chrome Auto') {
@@ -122,6 +130,10 @@ try {
   Memory
   $rootTask=Get-ScheduledTask -TaskName 'TT Chrome Auto' -ErrorAction Stop
   if([string]$rootTask.State -eq 'Disabled'){throw 'TT Chrome Auto ya está deshabilitada; no modificar su configuración'}
+  # Check task editing rights while everything is still running by reading its
+  # security descriptor. The real Disable is done only after full preflight.
+  $taskAction=([string](($rootTask.Actions | Select-Object -First 1).Execute))
+  Note ('CHROME_TASK execute='+$taskAction)
   if(@($rootTask.Actions).Count -lt 1){throw 'TT Chrome Auto no tiene acción configurada'}
   $roots=@(FindRoots)
   if($roots.Count -ne 1){throw ('Se esperaba 1 Chrome root en 9223; encontrados='+$roots.Count+'; sin cambios')}
@@ -264,7 +276,7 @@ try {
   }
   RestoreTasks
   foreach($name in @('TTiTTularesDedicatedListener.ps1','TTendenciasDedicatedListener.ps1','TT-LocalWatchdog.ps1')){
-    if($script:previousManagers.Contains($name)){
+    if($script:previousManagers.Contains($name) -or $script:chromeWasStopped){
       try{RestartManager $name}catch{Note ('MANAGER RESTART FAILED '+$name+' '+$_.Exception.Message)}
     }
   }
