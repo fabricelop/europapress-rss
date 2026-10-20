@@ -69,7 +69,11 @@ function SuspendNamed([string]$name) {
   if([string]$task.State -eq 'Disabled'){return}
   $script:pausedTasks.Add($name)
   Disable-ScheduledTask -TaskName $name -ErrorAction Stop | Out-Null
-  try { Stop-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue }catch{}
+  # Never stop the Chrome launcher task while its browser is still alive:
+  # Task Scheduler could kill Chrome before session protection is ready.
+  if($name -ne 'TT Chrome Auto') {
+    try { Stop-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue }catch{}
+  }
   Note ('TASK PAUSED '+$name)
 }
 function RestoreTasks {
@@ -187,8 +191,13 @@ try {
   }
   # Controlled termination affects exactly this browser family, never Chrome9234.
   Note ('STOPPING CHROME9223 root_pid='+$chromePid+' and its descendant processes')
-  $killResult=@(& "$env:WINDIR\System32\taskkill.exe" /PID $chromePid /T /F 2>&1)
-  Note ('TASKKILL exit='+$LASTEXITCODE+' messages='+@($killResult).Count)
+  $oldPreference=$ErrorActionPreference
+  try {
+    $ErrorActionPreference='Continue'
+    $killResult=@(& "$env:WINDIR\System32\taskkill.exe" /PID $chromePid /T /F 2>&1)
+    $killExit=$LASTEXITCODE
+  } finally { $ErrorActionPreference=$oldPreference }
+  Note ('TASKKILL exit='+$killExit+' messages='+@($killResult).Count)
   for($i=0;$i -lt 15;$i++){
     if(@(FindRoots).Count -eq 0){break}
     Start-Sleep -Seconds 1
