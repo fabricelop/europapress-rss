@@ -30,8 +30,15 @@ async function probe(t,deadline=8000){
     function end(data){
       if(ended)return;ended=true;clearTimeout(timer);try{ws?.close()}catch{}
       const result={...data,ms:Date.now()-begin};
-      if(result.state==='OK')result.mounted=result.route==='/images'&&result.ready==='complete'&&result.bodyChildren>0&&
-        (result.main||result.next||result.root||result.testIds>0||result.images>0);
+      // The real ChatGPT Images URL is /images/ (trailing slash).
+      // Do not accept a mere HTML shell. Wait for loaded thumbnail images
+      // before replacing the existing viewer.
+      if(result.state==='OK'){
+        result.shellReady=(result.route==='/images'||result.route==='/images/')&&
+          result.ready==='complete'&&result.bodyChildren>0&&
+          (result.main||result.next||result.root);
+        result.mounted=result.shellReady&&Number(result.images)>=3&&!result.challenge;
+      }
       resolve(result)
     }
     try{
@@ -106,7 +113,8 @@ async function inspectFreshGallery(old){
         ' ready='+(p.ready||'?')+' children='+(p.bodyChildren??'?')+
         ' main='+!!p.main+' next='+!!p.next+' root='+!!p.root+
         ' testIds='+(p.testIds??'?')+' images='+(p.images??'?')+
-        ' challenge='+!!p.challenge+' mounted='+!!p.mounted+' ms='+p.ms);
+        ' shellReady='+!!p.shellReady+' challenge='+!!p.challenge+
+        ' mounted='+!!p.mounted+' ms='+p.ms);
     }
   }finally{
     try{
@@ -138,8 +146,9 @@ async function run(){
   const second=await probe(old);
   note('EXISTING_PROBE first='+first.state+' mounted='+!!first.mounted+' ms='+first.ms+
     ' second='+second.state+' mounted='+!!second.mounted+' ms='+second.ms+
+    ' route='+(second.route||'?')+' shellReady='+!!second.shellReady+
     ' ready='+(second.ready||'?')+' body='+String(second.bodyChildren??'?')+
-    ' challenge='+!!second.challenge);
+    ' images='+(second.images??'?')+' challenge='+!!second.challenge);
   if(first.mounted&&second.mounted&&!first.challenge&&!second.challenge){
     note('VIEWER_RESPONDS no_change=true capture_v2_3_evaluation_suspect=true');
     return
@@ -164,7 +173,9 @@ async function run(){
       const original=now.find(t=>t.type==='page'&&t.id===old.id&&galleryUrl(t.url));
       if(!fresh||!original)throw Error('Original or new gallery disappeared during verification');
       const p=await probe(fresh,6500);
-      if(n===1||n%3===0||p.mounted)note('NEW_PROBE pass='+n+' state='+p.state+' mounted='+!!p.mounted+' challenge='+!!p.challenge);
+      if(n===1||n%3===0||p.mounted)note('NEW_PROBE pass='+n+' state='+p.state+' route='+(p.route||'?')+
+        ' shellReady='+!!p.shellReady+' images='+(p.images??'?')+
+        ' mounted='+!!p.mounted+' challenge='+!!p.challenge);
       if(p.mounted&&!p.challenge){
         await pause(600);
         const again=await probe(fresh,6500);
