@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T05:04:07.027Z",
-  "last_completed_at": "2026-10-20T05:06:14.892Z",
-  "updated_at": "2026-10-20T05:06:14.892Z",
+  "last_started_at": "2026-10-20T06:05:12.157Z",
+  "last_completed_at": "2026-10-20T06:05:29.882Z",
+  "updated_at": "2026-10-20T06:05:29.883Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,18 +23,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020050407",
+    "run_id": "tr-editorial-20261020060512",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T05:04:07.027Z",
-    "updated_at": "2026-10-20T05:06:14.892Z",
+    "started_at": "2026-10-20T06:05:12.157Z",
+    "updated_at": "2026-10-20T06:05:29.883Z",
     "current": 0,
     "total": 0,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Cierre 0/0 verificado en main: sin tendencias preparing/update ni reexplicaciones. No se activa reparación visual, imágenes ni Telegram.",
+    "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -64,29 +64,29 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T05:04:07.028Z",
+        "at": "2026-10-20T06:05:12.162Z",
         "phase": "verifying",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cola inicial vacía y sin reexplicaciones; relectura fresca antes del cierre, sin activar reparación visual ni Telegram."
+        "message": "Primera lectura sin cola activa ni reescrituras. Releyendo main antes de cerrar 0/0; sin activar Telegram, ImageGen ni reparación visual."
       },
       {
-        "at": "2026-10-20T05:06:14.892Z",
+        "at": "2026-10-20T06:05:29.883Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cierre 0/0 verificado en main: sin tendencias preparing/update ni reexplicaciones. No se activa reparación visual, imágenes ni Telegram."
+        "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram."
       }
     ],
-    "finished_at": "2026-10-20T05:06:14.892Z",
+    "finished_at": "2026-10-20T06:05:29.882Z",
     "partial": false,
     "queue_complete": true,
-    "verification_head": "d7c4187465ca7d7549da88a7605048f24c723111",
+    "verification_head": "277de2a5911d025a57427576751fff9a144b2d9b",
     "remaining_active_ids": []
   },
-  "run_id": "tr-editorial-20261020050407",
+  "run_id": "tr-editorial-20261020060512",
   "summary": {
     "initial_compact_queue": 0,
     "final_compact_queue": 0,
@@ -107,20 +107,20 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T05:04:07.028Z",
+      "at": "2026-10-20T06:05:12.162Z",
       "phase": "verifying",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cola inicial vacía y sin reexplicaciones; relectura fresca antes del cierre, sin activar reparación visual ni Telegram."
+      "message": "Primera lectura sin cola activa ni reescrituras. Releyendo main antes de cerrar 0/0; sin activar Telegram, ImageGen ni reparación visual."
     },
     {
-      "at": "2026-10-20T05:06:14.892Z",
+      "at": "2026-10-20T06:05:29.883Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cierre 0/0 verificado en main: sin tendencias preparing/update ni reexplicaciones. No se activa reparación visual, imágenes ni Telegram."
+      "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram."
     }
   ],
   "telegram_orphans": 0,
