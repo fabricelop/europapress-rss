@@ -48,6 +48,12 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 </main><div id="toast" class="toast" role="status"></div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
 <script>
 (()=>{'use strict';
+// Use the same authoritative modern UI for both apps on the Pages homepage.
+if(location.origin==='https://fabricelop.github.io' &&
+   /^\/europapress-rss\/(?:index\.html)?$/.test(location.pathname||'')){
+ location.replace('/europapress-rss/ttactualidad/'+location.search+location.hash);
+ return;
+}
 const DIRECT_URL='https://ttactualidad-decisions-pilot.fabricelop.workers.dev/';
 if(location.origin==='https://fabricelop.github.io'&&!new URLSearchParams(location.search).has('emergency')){
  const ac=new AbortController(),timer=setTimeout(()=>ac.abort(),6000);
