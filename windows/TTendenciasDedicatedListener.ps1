@@ -538,7 +538,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
       'function submissionEvidence(',
       'post-send-generation',
       'async function submitVerifiedDraft(',
-      'v55-match-command-across-editors',
+      'v56-atomic-command-scoped-submit',
       'BRIDGE FIXED TAB UNRESPONSIVE'
     )) {
       if (-not $txt.Contains($needle)) { throw "Bridge remoto sin garantía: $needle" }
@@ -557,7 +557,7 @@ function Ensure-ImageBridgeLatest([string]$NodePath) {
   if (Test-Path -LiteralPath $ImageBridge) {
     try {
       $txt = Get-Content -LiteralPath $ImageBridge -Raw -Encoding UTF8
-      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING') -and $txt.Contains('data-tt-image-composer') -and $txt.Contains('prompt_not_in_visible_editor') -and $txt.Contains('function submissionEvidence(') -and $txt.Contains('post-send-generation') -and $txt.Contains('async function submitVerifiedDraft(') -and $txt.Contains('v55-match-command-across-editors') -and $txt.Contains('BRIDGE FIXED TAB UNRESPONSIVE')) {
+      if ($txt.Contains('BRIDGE_MODE="capture-only-v28-dead-submit-retry"') -and $txt.Contains('view=image-job&strong=1&id=') -and $txt.Contains('BRIDGE SUBMIT VERIFY WARNING') -and $txt.Contains('data-tt-image-composer') -and $txt.Contains('prompt_not_in_visible_editor') -and $txt.Contains('function submissionEvidence(') -and $txt.Contains('post-send-generation') -and $txt.Contains('async function submitVerifiedDraft(') -and $txt.Contains('v56-atomic-command-scoped-submit') -and $txt.Contains('BRIDGE FIXED TAB UNRESPONSIVE')) {
         & $NodePath --check $ImageBridge *> $null
         if ($LASTEXITCODE -eq 0) {
           Write-Log "IMAGE BRIDGE USING VALID LOCAL FALLBACK version=v28"
