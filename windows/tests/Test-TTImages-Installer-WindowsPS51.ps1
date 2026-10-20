@@ -6,7 +6,7 @@ $repo=(Resolve-Path '.').Path
 $installer=Join-Path $repo 'windows\Install-TTImages-AutoRecovery.ps1'
 $fixture=Join-Path $env:TEMP ('TTImages-Installer-Test-'+[Guid]::NewGuid().ToString('N'))
 $previousLocalAppData=$env:LOCALAPPDATA
-$script:registered=$null
+$global:TTImagesTestRegistered=$null
 $script:realCaptureReads=0
 try {
   New-Item -ItemType Directory -Path $fixture -Force|Out-Null
@@ -22,7 +22,7 @@ try {
       return [pscustomobject]@{State='Ready';Actions=@([pscustomobject]@{Execute='wscript.exe';Arguments='trusted-capture.vbs'})}
     }
     if($TaskName -eq 'TTImages - AutoRecovery Viewer'){
-      return $script:registered
+      return $global:TTImagesTestRegistered
     }
     throw ('Unexpected scheduled task lookup '+$TaskName)
   }
@@ -71,15 +71,15 @@ try {
     if($Action.Execute -notmatch '(?i)wscript\.exe$'){throw 'Must use hidden wscript host'}
     if($Action.Arguments -notlike '*//B //Nologo*'){throw 'Wscript background flags missing'}
     if($Trigger.RepetitionInterval.TotalMinutes -ne 15){throw '15-minute cadence missing'}
-    $script:registered=[pscustomobject]@{State='Ready';Actions=@($Action)}
-    return $script:registered
+    $global:TTImagesTestRegistered=[pscustomobject]@{State='Ready';Actions=@($Action)}
+    return $global:TTImagesTestRegistered
   }
   # First verify that SelfTest passes WITHOUT creating anything.
   & $installer -PreflightOnly
-  if($null -ne $script:registered){throw 'Preflight unexpectedly created a scheduled task'}
+  if($null -ne $global:TTImagesTestRegistered){throw 'Preflight unexpectedly created a scheduled task'}
   # Then simulate the full install, still without real TaskScheduler APIs.
   & $installer
-  if($null -eq $script:registered){throw 'Installer did not register mock guardian task'}
+  if($null -eq $global:TTImagesTestRegistered){throw 'Installer did not register mock guardian task'}
   if($script:realCaptureReads -lt 2){throw 'Original capture task status was not verified'}
   $dir=Join-Path $relayRoot 'AutoRecovery-v1'
   $launcher=Join-Path $dir 'TTImages-AutoRecovery-Hidden.vbs'
@@ -93,5 +93,6 @@ try {
   Write-Host 'TTIMAGES_INSTALLER_WINDOWS_PS51_MOCK_INSTALL_OK'
 } finally {
   $env:LOCALAPPDATA=$previousLocalAppData
+  Remove-Variable -Name TTImagesTestRegistered -Scope Global -ErrorAction SilentlyContinue
   if(Test-Path $fixture){Remove-Item -LiteralPath $fixture -Force -Recurse -ErrorAction SilentlyContinue}
 }
