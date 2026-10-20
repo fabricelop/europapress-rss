@@ -63,7 +63,12 @@ def save_editorial_queue(requests_doc):
             continue
         # Only positions 1-10 may be automatically prepared. A position
         # 11-30 MUST come from explicit "Preparar novedad" or reexplanation.
-        if req.get("auto_queued") and req_name not in top10_names:
+        # Eligibility is checked WHEN the request enters from Top 10.
+        # It must not disappear from 'En elaboración' just because the live
+        # ranking changes while research or image enrichment is underway.
+        # Legacy requests that originated outside Top 10 remain excluded.
+        if (req.get("auto_queued") and int(req.get("rank") or 999) > 10
+                and req.get("auto_queue_scope") != "top10"):
             continue
         active.append({
             "id": req.get("id"),
