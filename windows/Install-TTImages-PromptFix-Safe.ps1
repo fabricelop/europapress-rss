@@ -4,7 +4,7 @@
 param([switch]$CheckOnly)
 $ErrorActionPreference='Stop'
 $root='C:\TTiTTulares'
-$pin='2c716dea808a1f2261846ab129b9f048172a913e'
+$pin='ada8154710cfffee0f36263a957dca6b6d2c76db'
 $names=@('TTiTTularesImageBridge.js','TTendenciasImageBridge.js')
 $node=Get-Command node.exe -ErrorAction SilentlyContinue
 if(-not $node){$node=Get-Command node -ErrorAction SilentlyContinue}
