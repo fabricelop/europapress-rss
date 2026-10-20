@@ -496,6 +496,15 @@ async function injectPromptIntoChat(cdp,job){
     if(!refocus||!refocus.ok){last={...prep,reason:"editor_replaced_during_focus"};continue}
     await cdp.call("Input.insertText",{text:message});
     await sleep(550);
+    // Atomic in-page operation: verify the complete CURRENT draft and click
+    // Send within ONE CDP Runtime.evaluate. React may remount the editor
+    // between separate validation and click calls.
+    const atomicSend=await submitVerifiedDraft(cdp,job);
+    if(atomicSend){
+      cdp.promptWasVerified=true;
+      console.log("BRIDGE ATOMIC PROMPT VERIFIED AND SENT attempt="+attempt+" chars="+message.length);
+      return cdp;
+    }
     const verify=await cdp.eval("(()=>{const c=document.querySelector('[data-tt-image-composer=\\\"true\\\"]');const t=String(c&&(c.value||c.innerText||c.textContent)||'');return {ok:!!c&&t.includes("+JSON.stringify(commandId)+")&&t.includes("+JSON.stringify(message.slice(-65))+")&&t.length>= "+Math.floor(message.length*0.80)+",len:t.length,tag:c&&c.tagName,url:location.href,focused:document.activeElement===c}})()");
     if(verify&&verify.ok){
       cdp.promptWasVerified=true;
@@ -920,7 +929,7 @@ async function uploadImage(image){
         console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
       }
       cdp=await injectPromptIntoChat(cdp,job);
-      await submitVerifiedDraft(cdp,job);
+      if(!cdp.promptSubmittedAt)await submitVerifiedDraft(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
       if(isAutomatic && !automaticImageDeadline)automaticImageDeadline=Date.now()+4*60*1000; // Reserva un minuto para Telegram.
       assertAutomaticInTime();
