@@ -33,6 +33,8 @@ jobs:
         run: python3 -m unittest discover -s pilot -p 'test_ttactualidad_manual.py' -v
       - name: New live editorial actions
         run: python3 -m unittest discover -s pilot/ttactualidad-live -p 'test_live_actions.py' -v
+      - name: Top 30 survives rapid tab changes and slow editorial files
+        run: node pilot/ttactualidad-live/test_top30.mjs
       - name: Trend card freshness and live interface
         run: node pilot/ttactualidad-live/test_listas.mjs
       - name: Tremending UI deletion regression
