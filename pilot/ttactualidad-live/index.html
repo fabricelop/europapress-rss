@@ -482,9 +482,18 @@ function trendRows(){
    if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
    // A newer revision already in progress invalidates the old Listas card,
    // including when independent GitHub raw files refresh at different times.
+   const readyRevision=Number(row.revision||0);
+   const requestRevision=Number(req.revision||0);
+   const readyAfterRequest=Number.isFinite(explained)&&
+      explained >= (Date.parse(req.requested_at||'')||0)-60000;
+   if(req.id&&requestRevision>readyRevision)return false;
    if(['preparing','update','ready'].includes(String(req.status||'').toLowerCase())&&
-      Number(req.revision||0)>=Number(row.revision||0))return false;
-   if(req.id&&Number(req.revision||0)>Number(row.revision||0))return false;
+      requestRevision>=readyRevision&&!readyAfterRequest)return false;
+   // Queue and requests are downloaded separately. Never show old Listas
+   // when a genuinely NEW queue revision has arrived first.
+   if((state.data.editorialQueue?.items||[]).some(q=>String(q.id||'')===id&&
+      ['preparing','update'].includes(String(q.status||'').toLowerCase())&&
+      Number(q.revision||0)>readyRevision))return false;
    if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
    if(mobileClosed.has(id))return false;
    if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
