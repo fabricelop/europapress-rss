@@ -133,7 +133,9 @@ with tempfile.TemporaryDirectory() as foldername:
     put(folder/"requests.json",{"requests":[{"id":"pubill-old","name":"Pubill","rank":4,
         "revision":1,"status":"deleted","auto_queued":True,
         "explained_at":old,"deleted_at":old,"explanation":"Partido antiguo"}]})
-    put(folder/"telegram-manual-explained.json",{"items":[]})
+    put(folder/"telegram-manual-explained.json",{"items":[{"id":"pubill-old",
+        "name":"Pubill","revision":1,"status":"explained",
+        "explained_at":old,"explanation":"Partido antiguo"}]})
     put(folder/"telegram-image-deliveries.json",{"items":[{"event_id":"pubill-old",
         "name":"Pubill","status":"deleted","deleted_at":old}]})
     put(folder/"prepared.json",{"items":[]})
