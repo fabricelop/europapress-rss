@@ -64,10 +64,10 @@ foreach($port in @(9223,9234)) {
     $response = Invoke-WebRequest -UseBasicParsing -Uri ('http://127.0.0.1:'+ $port +'/json/list') -TimeoutSec 6 -ErrorAction Stop
     $targets = @(ConvertFrom-Json -InputObject ([string]$response.Content))
     $pages = @($targets | Where-Object { [string]$_.type -eq 'page' })
-    $home = @($pages | Where-Object { [string]$_.url -eq 'https://chatgpt.com/' })
+    $homePages = @($pages | Where-Object { [string]$_.url -eq 'https://chatgpt.com/' })
     $conv = @($pages | Where-Object { [string]$_.url -match '^https://chatgpt\.com/c/' })
     $gallery = @($pages | Where-Object { [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)' })
-    Say ('CDP port=' + $port + ' targets=' + $targets.Count + ' pages=' + $pages.Count + ' home=' + $home.Count + ' conversations=' + $conv.Count + ' galleries=' + $gallery.Count)
+    Say ('CDP port=' + $port + ' targets=' + $targets.Count + ' pages=' + $pages.Count + ' home=' + $homePages.Count + ' conversations=' + $conv.Count + ' galleries=' + $gallery.Count)
   } catch { Say ('CDP port=' + $port + ' unavailable=' + $_.Exception.Message) }
 }
 try {
