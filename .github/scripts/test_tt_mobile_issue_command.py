@@ -198,4 +198,32 @@ with tempfile.TemporaryDirectory() as tmp:
         try:m.trend_command("prepare",outside,outside,"","2026-10-18T08:00:10Z");raise AssertionError("Out-of-range trend queued")
         except ValueError:pass
     assert len(get(m.ROOT,"trends/requests.json")["requests"])==1
+# An old Listas card must be erased and its normal photo invalidated
+# when requesting fresh elaboration through authenticated GitHub Pages.
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    eid="ferran-ready"
+    old_image="https://example.test/ferran-old.jpg"
+    put(m.ROOT,"trends/requests.json",{"requests":[{"id":eid,"name":"Ferran",
+        "status":"explained","revision":3,"explanation":"Resultado viejo",
+        "archive_image":{"url":old_image},"explained_at":"2026-10-20T20:00:00Z"}]})
+    put(m.ROOT,"trends/telegram-manual-explained.json",{"items":[{
+        "id":eid,"name":"Ferran","status":"explained","revision":3,
+        "explanation":"Resultado viejo","explained_at":"2026-10-20T20:00:00Z",
+        "fallback_image":{"url":old_image}}]})
+    put(m.ROOT,"trends/prepared.json",{"items":[{"id":eid,"image":{"url":old_image}}]})
+    result=m.trend_command("rework",eid,"","","2026-10-20T23:00:00Z")
+    assert "vuelve a En elaboración" in result
+    assert get(m.ROOT,"trends/telegram-manual-explained.json")["items"]==[]
+    assert get(m.ROOT,"trends/prepared.json")["items"]==[]
+    req=get(m.ROOT,"trends/requests.json")["requests"][0]
+    assert req["revision"]==4 and req["status"]=="preparing"
+    assert "explanation" not in req and "archive_image" not in req
+    assert req["fallback_image_status"]=="pending"
+    rows=get(m.ROOT,"trends/editorial-queue.json")["items"]
+    assert len(rows)==1 and rows[0]["revision"]==4
+    try:
+        m.trend_command("rework",eid,"","","2026-10-20T23:01:00Z")
+        raise AssertionError("Obsolete Listas card unexpectedly reworked again")
+    except ValueError:pass
 print("TT_MOBILE_ISSUE_FIXTURES_OK")
