@@ -67226,7 +67226,7 @@
       "id": "f97274605e45",
       "name": "#TerrorRESHxSelectaPlay",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-20T16:51:13+02:00",
       "revision": 1,
       "reexplain": false,
@@ -67240,7 +67240,11 @@
         "#TerrorRESHxSelectaPlay"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-20T16:54:26+02:00",
+      "problem_reason": "Hashtag confirmado en tendencias de España, pero tras búsquedas exactas y consultas distintas sobre RESH/Selecta Play no se pudo verificar el detonante concreto (campaña, sorteo, colaboración o anuncio). No se inventa explicación.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "a1d75792e842",
@@ -67562,6 +67566,6 @@
       "image_strategy": null
     }
   ],
-  "updated_at": "2026-10-20T16:51:13+02:00",
+  "updated_at": "2026-10-20T16:54:26+02:00",
   "count": 1121
 }
