@@ -4,13 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T09:45:00.000Z",
-  "last_completed_at": "2026-10-20T09:49:30.000Z",
-  "updated_at": "2026-10-20T09:49:30.000Z",
+  "last_started_at": "2026-10-20T10:02:36.675Z",
+  "last_completed_at": "2026-10-20T10:04:03.725Z",
+  "updated_at": "2026-10-20T10:04:03.725Z",
   "status": "success",
-  "processed_ids": [
-    "dd53271a2e06"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -25,271 +23,88 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020114500",
+    "run_id": "tr-editorial-20261020100236",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T09:45:00.000Z",
-    "updated_at": "2026-10-20T09:49:30.000Z",
-    "finished_at": "2026-10-20T09:49:30.000Z",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-20T10:02:36.675Z",
+    "updated_at": "2026-10-20T10:04:03.725Z",
+    "current": 0,
+    "total": 0,
     "event_id": null,
-    "trend_id": "dd53271a2e06",
-    "title": "Revolut",
-    "message": "Pasada completada 1/1: Revolut explicado y verificado; cola 0; saneamiento visual solicitado de forma no bloqueante.",
+    "trend_id": null,
+    "title": null,
+    "message": "Cierre 0/0 tras releer main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "final_compact_queue": 0,
-      "attempted": 1,
-      "explained": 1,
-      "explanation_groups": 1,
-      "processed_ids": [
-        "dd53271a2e06"
-      ],
+      "attempted": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "processed_ids": [],
       "remaining_active": 0,
       "problematic_reviewed": 0,
       "rewrite_pending": 0,
       "visual_backlog": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "pending_repair_triggered": 1,
+      "pending_repair_triggered": 0,
       "incidents": 0,
       "partial": false
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 0
     },
-    "remate_selections": [
-      {
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "candidates": [
-          "🌶️ La nube cayó y el dinero se quedó en tierra.",
-          "🌶️ Revolut descubrió que hasta la banca sin sucursales puede quedarse sin techo.",
-          "🌶️ El banco era digital; el tropiezo, bastante físico.",
-          "🌶️ Google perdió la nube y el datáfono encontró el suelo.",
-          "🌶️ La caída fue en la nube, pero el rebote llegó al datáfono."
-        ],
-        "selected": "🌶️ La caída fue en la nube, pero el rebote llegó al datáfono.",
-        "rationale": "Específico del fallo cloud y de los pagos afectados; no atribuye pérdida de fondos ni exagera el alcance."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T09:45:00.000Z",
-        "phase": "verifying",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Releyendo estado autoritativo de Revolut"
-      },
-      {
-        "at": "2026-10-20T09:46:00.000Z",
-        "phase": "investigating",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Hecho esencial verificado: caída de Google Cloud en Londres vinculada a la interrupción de Revolut."
-      },
-      {
-        "at": "2026-10-20T09:46:20.000Z",
-        "phase": "drafting",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Redactando explicación factual de Revolut."
-      },
-      {
-        "at": "2026-10-20T09:46:35.000Z",
-        "phase": "drafting",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Comprobando límite de X: explicación completa dentro de 280 caracteres."
-      },
-      {
-        "at": "2026-10-20T09:46:50.000Z",
-        "phase": "remate_selection",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Evaluando candidatos de remate con originalidad y rigor factual."
-      },
-      {
-        "at": "2026-10-20T09:47:05.000Z",
-        "phase": "remate_selection",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Remate seleccionado: «La caída fue en la nube, pero el rebote llegó al datáfono.»"
-      },
-      {
-        "at": "2026-10-20T09:47:20.000Z",
-        "phase": "persisting",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-20T09:47:45.000Z",
-        "phase": "persisting",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-20T09:48:10.000Z",
-        "phase": "verifying",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-20T09:48:25.000Z",
-        "phase": "persisting",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-20T09:49:00.000Z",
-        "phase": "verifying",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Verificando id+revision y texto persistido: Revolut r0 coincide en Requests y Explicadas."
-      },
-      {
-        "at": "2026-10-20T09:49:15.000Z",
-        "phase": "verifying",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Tendencia cerrada y verificada; cola editorial vacía."
-      },
-      {
-        "at": "2026-10-20T09:49:30.000Z",
+        "at": "2026-10-20T10:04:03.725Z",
         "phase": "closing",
-        "trend_id": "dd53271a2e06",
-        "title": "Revolut",
-        "message": "Pasada completada 1/1: Revolut explicado y verificado; cola 0; saneamiento visual solicitado de forma no bloqueante."
+        "event_id": null,
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre 0/0 tras releer main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
       }
     ],
+    "finished_at": "2026-10-20T10:04:03.725Z",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "verification_head": "e88376df781c83f66e8eca574fd644f1c7aca365"
+    "verification_head": "d28cbb86ba822640fe9dace7cda51654c9083584"
   },
-  "run_id": "tr-editorial-20261020114500",
+  "run_id": "tr-editorial-20261020100236",
   "summary": {
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "final_compact_queue": 0,
-    "attempted": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "processed_ids": [
-      "dd53271a2e06"
-    ],
+    "attempted": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "processed_ids": [],
     "remaining_active": 0,
     "problematic_reviewed": 0,
     "rewrite_pending": 0,
     "visual_backlog": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "pending_repair_triggered": 1,
+    "pending_repair_triggered": 0,
     "incidents": 0,
     "partial": false
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T09:45:00.000Z",
-      "phase": "verifying",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Releyendo estado autoritativo de Revolut"
-    },
-    {
-      "at": "2026-10-20T09:46:00.000Z",
-      "phase": "investigating",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Hecho esencial verificado: caída de Google Cloud en Londres vinculada a la interrupción de Revolut."
-    },
-    {
-      "at": "2026-10-20T09:46:20.000Z",
-      "phase": "drafting",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Redactando explicación factual de Revolut."
-    },
-    {
-      "at": "2026-10-20T09:46:35.000Z",
-      "phase": "drafting",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Comprobando límite de X: explicación completa dentro de 280 caracteres."
-    },
-    {
-      "at": "2026-10-20T09:46:50.000Z",
-      "phase": "remate_selection",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Evaluando candidatos de remate con originalidad y rigor factual."
-    },
-    {
-      "at": "2026-10-20T09:47:05.000Z",
-      "phase": "remate_selection",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Remate seleccionado: «La caída fue en la nube, pero el rebote llegó al datáfono.»"
-    },
-    {
-      "at": "2026-10-20T09:47:20.000Z",
-      "phase": "persisting",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-20T09:47:45.000Z",
-      "phase": "persisting",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-20T09:48:10.000Z",
-      "phase": "verifying",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-20T09:48:25.000Z",
-      "phase": "persisting",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-20T09:49:00.000Z",
-      "phase": "verifying",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Verificando id+revision y texto persistido: Revolut r0 coincide en Requests y Explicadas."
-    },
-    {
-      "at": "2026-10-20T09:49:15.000Z",
-      "phase": "verifying",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Tendencia cerrada y verificada; cola editorial vacía."
-    },
-    {
-      "at": "2026-10-20T09:49:30.000Z",
+      "at": "2026-10-20T10:04:03.725Z",
       "phase": "closing",
-      "trend_id": "dd53271a2e06",
-      "title": "Revolut",
-      "message": "Pasada completada 1/1: Revolut explicado y verificado; cola 0; saneamiento visual solicitado de forma no bloqueante."
+      "event_id": null,
+      "trend_id": null,
+      "title": null,
+      "message": "Cierre 0/0 tras releer main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
     }
   ],
   "telegram_orphans": 0,
