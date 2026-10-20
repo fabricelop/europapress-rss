@@ -178,7 +178,14 @@ try {
       }
     }
   }
-  # Turn off scheduled triggers first; stop watchdog to prevent auto-relaunch.
+  # Stop watchdog FIRST: otherwise it could re-enable scheduled tasks
+  # while they are being suspended. No Chrome process is touched here.
+  foreach($mgr in @(FindManagers | Where-Object { [string]$_.CommandLine -match 'TT-LocalWatchdog[.]ps1' })){
+    try {
+      Stop-Process -Id ([int]$mgr.ProcessId) -Force -ErrorAction Stop
+      Note ('WATCHDOG PAUSED pid='+$mgr.ProcessId)
+    }catch{throw ('Cannot suspend watchdog pid='+$mgr.ProcessId+' '+$_.Exception.Message)}
+  }
   foreach($name in @('TTiTTulares Local Ready','TTendencias Local Ready','TTiTTulares Local','TTendencias Local','TT Chrome Auto')){
     SuspendNamed $name
   }
