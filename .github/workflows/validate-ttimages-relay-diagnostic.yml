@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'windows/Diagnosticar-TTImages-Relay.ps1'
+      - 'windows/Diagnosticar-TTImages-Targets9234.ps1'
       - 'windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
       - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
   workflow_dispatch:
@@ -55,3 +56,17 @@ jobs:
             }
           }
           Write-Host 'TTIMAGES_VIEWER_RECOVERY_SAFE_SYNTAX_OK'
+
+      - name: Validate read-only Chrome 9234 target inventory
+        shell: pwsh
+        run: |
+          $p='windows/Diagnosticar-TTImages-Targets9234.ps1'
+          $t=$null
+          $errs=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$t,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $s=Get-Content -LiteralPath $p -Raw
+          foreach($forbidden in @('/json/new','/json/close','Page.reload','Start-ScheduledTask','Enable-ScheduledTask','Stop-Process','Remove-Item','Invoke-RestMethod -Method Put')){
+            if($s.Contains($forbidden)){throw ('Read-only audit includes forbidden action: '+$forbidden)}
+          }
+          Write-Host 'TTIMAGES_9234_READONLY_TARGET_INVENTORY_OK'
