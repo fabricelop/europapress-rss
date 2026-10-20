@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T00:07:30+02:00",
-  "last_completed_at": "2026-10-21T00:13:30+02:00",
-  "updated_at": "2026-10-21T00:13:30+02:00",
+  "last_started_at": "2026-10-21T00:06:15+02:00",
+  "last_completed_at": "2026-10-21T00:12:50+02:00",
+  "updated_at": "2026-10-21T00:12:50+02:00",
   "status": "success",
   "processed_ids": [
     "f95a3bca67fd"
@@ -23,98 +23,29 @@
     "editorial_blocking": false
   },
   "last_run": {
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
     "run_id": "tr-1792534024490-manual",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
     "started_at": "2026-10-21T00:07:30+02:00",
-    "updated_at": "2026-10-21T00:13:30+02:00",
-    "finished_at": "2026-10-21T00:13:30+02:00",
+    "updated_at": "2026-10-21T00:12:50+02:00",
     "current": 2,
     "total": 2,
-    "summary": {
-      "attempted": 1,
-      "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
-      "duplicates_closed": 0,
-      "problematic_reviewed": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "initial_compact_queue": 2,
-      "final_compact_queue": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 0,
-      "visual_backlog": 0,
-      "pending_repair_triggered": 1,
-      "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 0,
-      "jit_skipped": 1,
-      "concurrent_completed": 2,
-      "reconciled_requests": 1
-    },
-    "message": "Pasada cerrada: gordon r1 se omitió por JIT al estar ya explained; Fabián r0 se reconcilió y verificó. Cola final 0, sin rewrite_pending. Un conflicto 409 concurrente quedó resuelto por relectura idempotente. Sin ImageGen.",
+    "trend_id": null,
+    "title": null,
     "incident_count": 1,
     "incidents": [
       {
         "phase": "persisting",
         "trend_id": "f95a3bca67fd",
         "title": "Fabián",
-        "reason": "Primer intento de escritura de Explicadas devolvió 409 por actualización concurrente; la relectura confirmó que otra ejecución ya había persistido Fabián r0, por lo que se conserva ese texto y se reconcilia requests."
+        "reason": "Conflicto 409 al escribir Explicadas porque un proceso concurrente actualizó la misma revisión. La relectura confirmó que el proceso concurrente persistió Fabián r0 y requests terminó sincronizado; no hubo pérdida ni duplicado."
       }
     ],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "recent_considered": 30
-    },
-    "remate_selections": [],
     "activity": [
-      {
-        "at": "2026-10-21T00:11:05+02:00",
-        "phase": "drafting",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Comprobando límite de X · 241 caracteres."
-      },
-      {
-        "at": "2026-10-21T00:11:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Generando candidatos de remate y descartando el anterior del «cuarto gol»."
-      },
-      {
-        "at": "2026-10-21T00:11:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Evaluando candidatos con ratings, especificidad y repetición reciente."
-      },
-      {
-        "at": "2026-10-21T00:11:25+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Remate seleccionado: Vitinha rompe el empate y Fabián pone el punto y aparte."
-      },
-      {
-        "at": "2026-10-21T00:11:30+02:00",
-        "phase": "persisting",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Guardando ficha Explicada · relectura JIT y escritura de la revisión 0."
-      },
-      {
-        "at": "2026-10-21T00:10:20+02:00",
-        "phase": "investigating",
-        "trend_id": "f95a3bca67fd",
-        "title": "Fabián",
-        "message": "Contrastando fuente 1/2 · Cadena SER confirma PSG 4-2 Barça y gol final de Fabián."
-      },
       {
         "at": "2026-10-21T00:10:30+02:00",
         "phase": "investigating",
@@ -212,12 +143,122 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada cerrada · cola autoritativa 0 y ninguna reexplicación rewrite_pending."
+      },
+      {
+        "at": "2026-10-21T00:11:40+02:00",
+        "phase": "persisting",
+        "trend_id": "f95a3bca67fd",
+        "title": "Fabián",
+        "message": "Conflicto 409 al persistir: otro proceso modificó Explicadas; releyendo main antes de cualquier reintento."
+      },
+      {
+        "at": "2026-10-21T00:12:00+02:00",
+        "phase": "verifying",
+        "trend_id": "f95a3bca67fd",
+        "title": "Fabián",
+        "message": "Relectura tras conflicto: la cola ya no contenía Fabián; requests estaba ready y la ficha Explicada apareció por el proceso concurrente."
+      },
+      {
+        "at": "2026-10-21T00:12:20+02:00",
+        "phase": "persisting",
+        "trend_id": "f95a3bca67fd",
+        "title": "Fabián",
+        "message": "Reconciliando la revisión concurrente sin duplicarla; requests quedó sincronizado con la ficha Explicada."
+      },
+      {
+        "at": "2026-10-21T00:12:35+02:00",
+        "phase": "verifying",
+        "trend_id": "f95a3bca67fd",
+        "title": "Fabián",
+        "message": "Verificando id+revision y texto persistido · los cinco campos críticos coinciden."
+      },
+      {
+        "at": "2026-10-21T00:12:40+02:00",
+        "phase": "verifying",
+        "trend_id": "f95a3bca67fd",
+        "title": "Fabián",
+        "message": "Tendencia cerrada y verificada · Fabián r0 está explained y fuera de cola."
+      },
+      {
+        "at": "2026-10-21T00:12:50+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: 0 preparing/update y 0 rewrite_pending; cerrando pasada con una incidencia de concurrencia no bloqueante."
       }
     ],
-    "trend_id": null,
-    "title": null,
+    "summary": {
+      "attempted": 2,
+      "ready": 0,
+      "explained": 2,
+      "explanation_groups": 2,
+      "duplicates_closed": 0,
+      "problematic_reviewed": 0,
+      "imagegen_calls": 0,
+      "telegram_sends": 0,
+      "initial_compact_queue": 1,
+      "final_compact_queue": 0,
+      "remaining_active": 0,
+      "remaining_problematic": 0,
+      "visual_backlog": 0,
+      "pending_repair_triggered": 1,
+      "manual_visual_dispatches": 0,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
+      "remates_omitted": 0
+    },
+    "processed_ids": [
+      "6b775ce5b1ea",
+      "f95a3bca67fd"
+    ],
+    "message": "Pasada cerrada 2/2: gordon r1 y Fabián r0 explicados y verificados; cola activa y reexplicaciones pendientes a 0. Un conflicto concurrente 409 quedó reconciliado sin duplicados.",
+    "partial": false,
     "queue_complete": true,
-    "remaining_active_ids": []
+    "remaining_active_ids": [],
+    "remate_selections": [
+      {
+        "trend_id": "6b775ce5b1ea",
+        "revision": 1,
+        "candidate_count": 5,
+        "selected_candidate": "c4",
+        "selected_score": 8.5,
+        "closer_text": "🌶️ Gordon llegó a dos citas con el gol y dejó ambas en visto.",
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "f95a3bca67fd",
+        "revision": 0,
+        "candidate_count": null,
+        "selected_candidate": "concurrent_persisted",
+        "selected_score": null,
+        "closer_text": "🌶️ Fabián llegó al 86' con el punto final bajo el brazo.",
+        "no_remate_reason": null
+      }
+    ],
+    "finished_at": "2026-10-21T00:12:50+02:00",
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "recent_considered": 30
+    },
+    "final_outcomes": [
+      {
+        "id": "6b775ce5b1ea",
+        "name": "gordon",
+        "revision": 1,
+        "rank": 8,
+        "status": "explained",
+        "explained_at": "2026-10-21T00:09:30+02:00"
+      },
+      {
+        "id": "f95a3bca67fd",
+        "name": "Fabián",
+        "revision": 0,
+        "rank": 5,
+        "status": "explained",
+        "explained_at": "2026-10-21T00:11:00+02:00"
+      }
+    ]
   },
   "run_id": "tr-1792534024490-manual",
   "summary": {
@@ -393,6 +434,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T23:50:55+02:00"
-  },
-  "error": null
+  }
 }
