@@ -14,6 +14,7 @@ const SAMPLE_MS=30000;
 const CLOSE_AFTER_MS=12*60000;
 const STABLE_MS=5*60000;
 const MAX_JOB_MS=3*3600000;
+const OLD_JOB_POLL_MS=5*60000;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const log=s=>{try{fs.appendFileSync(LOG,new Date().toISOString()+' '+s+'\n','utf8')}catch{}};
 const pidAlive=pid=>{if(!Number.isInteger(pid)||pid<=0)return false;try{process.kill(pid,0);return true}catch(e){return e?.code==='EPERM'}};
@@ -120,7 +121,16 @@ async function sweep(){
     const f=path.join(JOB_DIR,name),j=readJob(f);
     if(!j||!idOk(j.id)||!safeUrl(j.url)){stopTracking(f,'invalid_job');continue}
     if(pinned.has(j.id)){stopTracking(f,'pinned_image_tab');continue}
-    if(Date.now()-j.created>MAX_JOB_MS){stopTracking(f,'unverified_after_3_hours_LEFT_OPEN');continue}
+    // Never forget a tracked tab solely because it is more than three hours old.
+    // Unverified tabs were previously dropped from tracking and left open forever.
+    // Keep monitoring older jobs at a reduced frequency; close ONLY once the
+    // existing completed-response checks below confirm that it is safe.
+    if(Date.now()-j.created>MAX_JOB_MS){
+      const now=Date.now();
+      if(now-Number(j.lastOldCheck||0)<OLD_JOB_POLL_MS)continue;
+      j.lastOldCheck=now;
+      saveJob(f,j);
+    }
     const t=all.find(x=>x.id===j.id&&x.type==='page');
     if(!t){stopTracking(f,'target_missing');continue}
     if(!safeUrl(t.url)){stopTracking(f,'changed_to_nonconversation_LEFT_OPEN');continue}
