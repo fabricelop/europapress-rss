@@ -1982,6 +1982,12 @@ struct TimeMapView: View {
     private var mapLayers: some View {
         let visibleCells = renderedCells
         let visibleZones = renderedZones
+        let focusZoneID = (followLocation ? model.activeCell :
+            (model.selected ?? model.activeCell)).flatMap {
+                model.primaryZone(for: $0)?.id
+            }
+        let visibleZoneLabelIDs = TimeZoneLabelLayout.visibleIDs(
+            visibleZones, viewport: region, preferredZoneID: focusZoneID)
         let maximumVisibleTime = renderedMaximumTime
         let useBasicMap = model.forceBasicMap || !connectivity.connected
         return ZStack {
@@ -2017,6 +2023,7 @@ struct TimeMapView: View {
                                         .flatMap { model.primaryZone(for:$0) }?.id ? 5 : 2.5)
                         }
                         if region.span.latitudeDelta < 0.07,
+                           visibleZoneLabelIDs.contains(overlay.id),
                            let center=overlay.center {
                             Annotation("",coordinate:center) {
                                 Button {
@@ -2025,7 +2032,8 @@ struct TimeMapView: View {
                                 } label: {
                                     VStack(spacing:2) {
                                         Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
-                                        Text("\(overlay.zone.cellIDs.count) cuadrículas")
+                                        Text(overlay.zone.cellIDs.count == 1 ? "1 cuadrícula" :
+                                             "\(overlay.zone.cellIDs.count) cuadrículas")
                                             .font(.system(size:9))
                                     }
                                     .padding(.horizontal,8).padding(.vertical,5)
