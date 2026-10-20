@@ -47,7 +47,7 @@ function ReadCDP([string]$ws,[string]$method,[object]$params){
 # CDP HTTP fallback: create a clean /images tab before closing the stuck one.
 # Keep all other Chrome 9234 tabs intact. Never touch Chrome 9223.
 function RecoverGalleryByHttp([string]$oldId){
-  if([string]::IsNullOrWhiteSpace($oldId) -or $oldId -notmatch '^[A-Za-z0-9_-]{1,160}$'){throw ('ID no valido para galeria longitud='+$oldId.Length)}
+  if([string]::IsNullOrWhiteSpace($oldId) -or $oldId.Length -gt 256 -or $oldId -match '[\x00-\x1F\x7F]'){throw ('ID no valido para galeria longitud='+$oldId.Length)}
   # Do not rely on Chrome's target-ID format: validate the ID against the
   # live /json/list endpoint before any tab creation or closure.
   $liveBefore=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 5 -ErrorAction Stop)
@@ -58,7 +58,7 @@ function RecoverGalleryByHttp([string]$oldId){
   try {
     $created=Invoke-RestMethod -Method Put -Uri ($base+'/json/new?'+[Uri]::EscapeDataString('https://chatgpt.com/images')) -TimeoutSec 10 -ErrorAction Stop
     $newId=[string]$created.id
-    if($newId -notmatch '^[A-Za-z0-9_-]{1,160}$' -or $newId -eq $oldId){throw 'Nueva galeria sin ID valido'}
+    if([string]::IsNullOrWhiteSpace($newId) -or $newId.Length -gt 256 -or $newId -match '[\x00-\x1F\x7F]' -or $newId -ceq $oldId){throw 'Nueva galeria sin ID valido'}
     # New tabs can briefly report about:blank before /images navigates.
     $old=@();$fresh=@()
     for($probe=0;$probe -lt 8;$probe++){
@@ -86,7 +86,7 @@ function RecoverGalleryByHttp([string]$oldId){
     Say 'RECUPERACION_HTTP_OK galeria nueva disponible y visor viejo cerrado'
     return $newId
   }catch{
-    if($newId -match '^[A-Za-z0-9_-]{1,160}$'){
+    if(-not [string]::IsNullOrWhiteSpace($newId) -and $newId.Length -le 256 -and $newId -notmatch '[\x00-\x1F\x7F]'){
       try {
         $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5)
         $oldAlive=@($list|Where-Object{$_.id -eq $oldId})
