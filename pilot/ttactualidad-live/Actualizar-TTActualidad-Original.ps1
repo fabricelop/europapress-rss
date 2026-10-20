@@ -91,7 +91,7 @@ try {
     Invoke-WebRequest -UseBasicParsing -Uri ($base+'worker.js') -OutFile $nextWorker -TimeoutSec 60
     $html = [IO.File]::ReadAllText($nextHtml,[Text.Encoding]::UTF8)
     $js = [IO.File]::ReadAllText($nextWorker,[Text.Encoding]::UTF8)
-    foreach ($marker in @('Volver a En elaboración','Top 30','Listas','TTImages',
+    foreach ($marker in @('Volver a En elabora','Top 30','Listas','TTImages',
                            'Copiar Foto Archivo','id="manual-open"','function trendRows()')) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
     }
@@ -133,7 +133,7 @@ try {
             if ($after.ok -eq $true -and $after.kind -ceq $before.kind -and
                 $after.session_auth -ceq $before.session_auth -and
                 $after.production_connected -eq $true -and
-                $remote.Contains('Volver a En elaboración') -and
+                $remote.Contains('Volver a En elabora') -and
                 $remote.Contains('function trendRows()') -and
                 $remote.Contains('TTImages')) {
                 $valid = $true
