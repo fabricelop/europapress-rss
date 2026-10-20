@@ -82,6 +82,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 (()=>{'use strict';
 const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
 const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
+let loadRevision=0; // Last navigation/refresh wins; earlier requests never overwrite another tab.
 const pendingManual=new Map();
 let manualRequestId=null;
 const $=id=>document.getElementById(id);
@@ -98,26 +99,58 @@ tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/
 };
 const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
- let errors=[];
+ const key='tt-web-cache-'+path;
  const sources=[RAW+path,SITE_DATA+path];
+ // Original Cloudflare editor may not bundle data/. GitHub Pages publishes a
+ // same-repository snapshot, which keeps Top 30 usable if RAW is blocked on mobile.
+ if(path==='trends/recent.json'){
+  sources.push('https://fabricelop.github.io/europapress-rss/data/'+path);
+ }
+ let errors=[];
  for(const source of sources){
-  const key='tt-web-cache-'+path;
-  try{const r=await fetch(source+(source===RAW+path?'?v='+Date.now():'?v='+Date.now()),{cache:'no-store'});
-   if(!r.ok)throw Error('HTTP '+r.status);const doc=await r.json();if(!doc||typeof doc!=='object')throw Error('JSON inválido');
+  try{
+   const r=await fetch(source+'?v='+Date.now(),{cache:'no-store',signal:AbortSignal.timeout(7000)});
+   if(!r.ok)throw Error('HTTP '+r.status);
+   const doc=await r.json();
+   if(!doc||typeof doc!=='object')throw Error('JSON inválido');
+   if(path==='trends/recent.json'&&!Array.isArray(doc.items)&&!Array.isArray(doc.top30))
+    throw Error('Radar Top 30 sin posiciones');
    try{localStorage.setItem(key,JSON.stringify({doc,at:Date.now()}))}catch{}
-   return doc
+   return doc;
   }catch(e){errors.push(String(e?.message||e))}
  }
- try{const cached=JSON.parse(localStorage.getItem('tt-web-cache-'+path)||'null');if(cached?.doc)return cached.doc}catch{}
- throw Error(path+': '+errors.slice(0,2).join(', '))
+ try{const cached=JSON.parse(localStorage.getItem(key)||'null');if(cached?.doc)return cached.doc}catch{}
+ throw Error(path+': '+errors.slice(0,3).join(', '))
 }
 async function load(force=false){
- if(state.busy)return;state.busy=true;$('refresh').disabled=true;$('status').textContent='Actualizando datos públicos…';
- let errors=[];const wanted=fields[state.app];
- const output=await Promise.all(wanted.map(async path=>{try{return [aliases[path],await fetchJson(path,force)]}catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}}));
- state.data=Object.fromEntries(output);state.updated=Date.now();state.lastError=errors.join(' · ');
+ const app=state.app,revision=++loadRevision;
+ state.busy=true;$('refresh').disabled=true;
+ $('status').textContent='Actualizando datos públicos…';
+ let errors=[];
+ // Give Top 30 its own first, short read. The huge explanation ledger should
+ // not block or erase an already available ranking on iPhone.
+ const radarPath=app==='tr'?'trends/recent.json':null;
+ if(radarPath){
+  try{
+   const radar=await fetchJson(radarPath,force);
+   if(revision!==loadRevision||app!==state.app)return;
+   state.data={...state.data,recent:radar};
+   state.updated=Date.now();
+   render();
+  }catch(e){errors.push(String(e))}
+ }
+ const wanted=fields[app].filter(path=>path!==radarPath);
+ const output=await Promise.all(wanted.map(async path=>{
+  try{return [aliases[path],await fetchJson(path,force)]}
+  catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}
+ }));
+ // A previous load for another app may finish later. It must never override
+ // the new app's data or leave its TOP 30 empty.
+ if(revision!==loadRevision||app!==state.app)return;
+ state.data={...state.data,...Object.fromEntries(output)};
+ state.updated=Date.now();state.lastError=errors.join(' · ');
  state.busy=false;$('refresh').disabled=false;
- try{sessionStorage.setItem('tt-web-snapshot-'+state.app,JSON.stringify(state.data))}catch{}
+ try{sessionStorage.setItem('tt-web-snapshot-'+app,JSON.stringify(state.data))}catch{}
  render();if(pendingDeletes.size)void checkPendingDeletes()
 }
 function setApp(app){
@@ -158,6 +191,12 @@ function trendClosed(x){
  const key=trendKey(x),dec=state.data.mobileDecisions?.items||[];
  return dec.some(z=>['published','deleted','dismissed','removed'].includes(String(z.status||'').toLowerCase())&&trendKey(z)===key)
 }
+function currentTop30(recent){
+ const items=Array.isArray(recent?.items)?recent.items:[];
+ if(items.length)return items.slice(0,30).filter(x=>x&&typeof x==='object'&&String(x.name||'').trim());
+ const names=Array.isArray(recent?.top30)?recent.top30:[];
+ return names.slice(0,30).map((name,i)=>({rank:i+1,name:String(name||'').trim()})).filter(x=>x.name);
+}
 function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
@@ -175,6 +214,7 @@ function trendRows(){
   return [...awaiting,...queued];
  }
  if(state.tab==='top'||state.tab==='pendientes'){
+  try{
   // A single view shows BOTH the rank and the current editorial state.
   // Matching is by normalized literal trend name (including group members),
   // not by mutable ranking or by Telegram delivery alone.
@@ -289,7 +329,7 @@ function trendRows(){
     if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
    }
   }
-  const mapped=(recent.items||[]).slice(0,30).map((x,i)=>{
+  const mapped=currentTop30(recent).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
    const finished=completedByName.get(normal(x.name))||{};
    const status=String(req.status||'').toLowerCase();
@@ -343,6 +383,14 @@ function trendRows(){
    return state.tab==='pendientes'?mapped.filter(x=>
      ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
      (x.rank<=10||x._manualPending)):mapped;
+
+  }catch(e){
+   console.warn('Top 30: metadatos editoriales inválidos; mostrando radar sin bloquear',e);
+   return currentTop30(recent).map((x,i)=>({
+    ...x,rank:Number(x.rank||i+1),title:x.name,_kind:'tr',
+    _id:String(x.name||i),_status:'TENDENCIA DEL RADAR',_topOnly:true
+   }));
+  }
  }
  // TTActualidad direct Listas: editorial explanations are authoritative.
  // A Telegram message is no longer a precondition for a ready trend.
@@ -756,7 +804,7 @@ function render(){
  $('chips').style.display=state.app==='tti'?'none':'flex';
  $('chips').replaceChildren(...tabsList.map(([key,name])=>{
   const b=document.createElement('button');b.type='button';
-  const count=key==='top'?(state.data.recent?.items||[]).slice(0,30).length:trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
+  const count=key==='top'?currentTop30(state.data.recent).length:trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
   b.textContent=name+' · '+count;b.setAttribute('aria-pressed',String(state.tab===key));
   b.onclick=()=>{state.tab=key;render()};return b
  }));
