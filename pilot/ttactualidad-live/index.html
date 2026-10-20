@@ -531,7 +531,7 @@ function isTemporarilyRemoved(item){
  // Prepare moves a card between sections. Only hide its stale source card:
  // after GitHub confirms PROCESSING/READY, the target card must stay visible.
  if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
- if(op.decision==='rework')return item._status==='EXPLICADA';
+ if(op.decision==='rework')return item._status==='EXPLICADA'&&Number(item.revision||0)<=op.revision;
  return true;
 }
 async function refreshPilotConnection(){
