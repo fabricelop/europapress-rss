@@ -2237,8 +2237,9 @@ struct TimeMapView: View {
                             Text(zone?.name ?? picked.map { model.label(for:$0) } ?? "Sin cuadrícula actual")
                                 .font(.subheadline.weight(.semibold))
                                 .lineLimit(1)
-                            Label(isConsulting ? "Consultando otra cuadrícula" :
-                                    (picked == nil ? "Sin ubicación" : "Ubicación actual"),
+                            Label((isConsulting ? "Consultando otra cuadrícula" :
+                                    (picked == nil ? "Sin ubicación" : "Ubicación actual")) +
+                                  " · " + model.period.title,
                                   systemImage:isConsulting ? "hand.tap" : "location.fill")
                                 .font(.system(size:10,weight:.medium))
                                 .foregroundStyle(isConsulting ? Color.indigo : Color.secondary)
