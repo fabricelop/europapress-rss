@@ -60,10 +60,15 @@ with tempfile.TemporaryDirectory() as tmp:
 with tempfile.TemporaryDirectory() as tmp:
     m.ROOT=Path(tmp)
     put(m.ROOT,"trends/requests.json",{"requests":[{"id":"abc123xyz","name":"Tendencia verificada","revision":1,"status":"explained"}]})
+    put(m.ROOT,"trends/telegram-manual-explained.json",{"items":[{
+        "id":"abc123xyz","name":"Tendencia verificada","revision":1,
+        "status":"explained","explanation":"Resultado viejo",
+        "explained_at":"2026-10-10T15:00:00Z"}]})
     m.trend_command("rework","abc123xyz","","Cambiar remate","2026-10-10T16:00:00Z")
     new=get(m.ROOT,"trends/requests.json")["requests"][0]
     assert new["revision"]==2 and new["status"]=="preparing"
-    assert new["reexplain_instructions"]=="Cambiar remate"
+    assert "Investiga hechos" in new["rewrite_instruction"]
+    assert not get(m.ROOT,"trends/telegram-manual-explained.json")["items"]
 with tempfile.TemporaryDirectory() as tmp:
     import os
     m.ROOT=Path(tmp)
