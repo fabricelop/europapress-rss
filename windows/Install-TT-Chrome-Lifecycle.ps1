@@ -158,17 +158,17 @@ try {
       }
     }
   }
-  if($watcherWasRunning){
-    $existing=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue |
-      Where-Object { [string]$_.CommandLine -match 'TT-Editorial-Tab-Watch[.]js' -and [string]$_.CommandLine -match '--daemon' })
-    if($existing.Count -eq 0){
-      $jobs=Join-Path $base 'editorial-tab-watch'
-      if((Test-Path -LiteralPath $jobs) -and @(Get-ChildItem -LiteralPath $jobs -Filter '*.json' -File -ErrorAction SilentlyContinue).Count -gt 0){
-        try {
-          $p=Start-Process -FilePath $node -ArgumentList @((Join-Path $base 'TT-Editorial-Tab-Watch.js'),'--daemon') -WorkingDirectory $base -WindowStyle Hidden -PassThru -ErrorAction Stop
-          Note ('TAB_WATCHER_RESTARTED pid='+$p.Id)
-        }catch{Note ('TAB_WATCHER_RESTART_WARNING '+$_.Exception.Message)}
-      }
+  # Resume pending tracked editorial tabs even if the previous daemon had
+  # crashed or exited before installation. Do not touch Chrome itself.
+  $existing=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { [string]$_.CommandLine -match 'TT-Editorial-Tab-Watch[.]js' -and [string]$_.CommandLine -match '--daemon' })
+  if($existing.Count -eq 0){
+    $jobs=Join-Path $base 'editorial-tab-watch'
+    if((Test-Path -LiteralPath $jobs) -and @(Get-ChildItem -LiteralPath $jobs -Filter '*.json' -File -ErrorAction SilentlyContinue).Count -gt 0){
+      try {
+        $p=Start-Process -FilePath $node -ArgumentList @((Join-Path $base 'TT-Editorial-Tab-Watch.js'),'--daemon') -WorkingDirectory $base -WindowStyle Hidden -PassThru -ErrorAction Stop
+        Note ('TAB_WATCHER_RESTARTED pid='+$p.Id)
+      }catch{Note ('TAB_WATCHER_RESTART_WARNING '+$_.Exception.Message)}
     }
   }
   if($locked){try{$mutex.ReleaseMutex()}catch{}}
