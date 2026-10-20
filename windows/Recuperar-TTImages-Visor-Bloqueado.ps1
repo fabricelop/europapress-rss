@@ -47,13 +47,18 @@ function ReadCDP([string]$ws,[string]$method,[object]$params){
 # CDP HTTP fallback: create a clean /images tab before closing the stuck one.
 # Keep all other Chrome 9234 tabs intact. Never touch Chrome 9223.
 function RecoverGalleryByHttp([string]$oldId){
-  if($oldId -notmatch '^[A-Fa-f0-9-]{8,64}$'){throw 'ID no valido para galeria'}
+  if([string]::IsNullOrWhiteSpace($oldId) -or $oldId -notmatch '^[A-Za-z0-9_-]{1,160}$'){throw ('ID no valido para galeria longitud='+$oldId.Length)}
+  # Do not rely on Chrome's target-ID format: validate the ID against the
+  # live /json/list endpoint before any tab creation or closure.
+  $liveBefore=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 5 -ErrorAction Stop)
+  $exact=@($liveBefore|Where-Object{[string]$_.id -ceq $oldId -and $_.type -eq 'page' -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
+  if($exact.Count -ne 1){throw 'ID de galeria no coincide con Chrome 9234; no se toca ninguna pestana'}
   $base='http://127.0.0.1:9234'
   $newId=''
   try {
     $created=Invoke-RestMethod -Method Put -Uri ($base+'/json/new?'+[Uri]::EscapeDataString('https://chatgpt.com/images')) -TimeoutSec 10 -ErrorAction Stop
     $newId=[string]$created.id
-    if($newId -notmatch '^[A-Fa-f0-9-]{8,64}$' -or $newId -eq $oldId){throw 'Nueva galeria sin ID valido'}
+    if($newId -notmatch '^[A-Za-z0-9_-]{1,160}$' -or $newId -eq $oldId){throw 'Nueva galeria sin ID valido'}
     # New tabs can briefly report about:blank before /images navigates.
     $old=@();$fresh=@()
     for($probe=0;$probe -lt 8;$probe++){
@@ -68,7 +73,7 @@ function RecoverGalleryByHttp([string]$oldId){
        [string]$fresh[0].url -notmatch '^https://chatgpt\.com/images(?:[/?#]|$)'){
       throw 'No se verificaron ambas galerias; la original permanece intacta'
     }
-    [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+$oldId) -TimeoutSec 8 -ErrorAction Stop)
+    [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+[Uri]::EscapeDataString($oldId)) -TimeoutSec 8 -ErrorAction Stop)
     $closed=$false
     for($i=0;$i -lt 5;$i++){
       Start-Sleep -Milliseconds 650
@@ -81,13 +86,13 @@ function RecoverGalleryByHttp([string]$oldId){
     Say 'RECUPERACION_HTTP_OK galeria nueva disponible y visor viejo cerrado'
     return $newId
   }catch{
-    if($newId -match '^[A-Fa-f0-9-]{8,64}$'){
+    if($newId -match '^[A-Za-z0-9_-]{1,160}$'){
       try {
         $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5)
         $oldAlive=@($list|Where-Object{$_.id -eq $oldId})
         $newAlive=@($list|Where-Object{$_.id -eq $newId})
         if($oldAlive.Count -gt 0 -and $newAlive.Count -gt 0){
-          [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+$newId) -TimeoutSec 5)
+          [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+[Uri]::EscapeDataString($newId)) -TimeoutSec 5)
           Say 'ROLLBACK_HTTP nueva pestana cerrada; galeria vieja conservada'
         }
       }catch {Say ('ROLLBACK_HTTP_AVISO '+$_.Exception.Message)}
@@ -147,7 +152,9 @@ try {
 }catch{
   Say ('WEBSOCKET_NO_DISPONIBLE '+$_.Exception.Message.Split([char]10)[0])
   Say 'FALLBACK_HTTP creando galeria nueva en Chrome 9234'
-  $expectedId=RecoverGalleryByHttp ([string]$gallery[0].id)
+  $targetId=[string]$gallery[0].id
+  Say ('FALLBACK_HTTP target-id-longitud='+$targetId.Length)
+  $expectedId=RecoverGalleryByHttp $targetId
 }
 Start-Sleep -Seconds 3
 $after=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 5)
