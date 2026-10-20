@@ -147,8 +147,12 @@ private struct TimeMapCardLiveRows:View {
                 TimeMapDetailRow(label:"Tiempo total en la zona",
                                  seconds:model.total(for:zone,now:now))
                 if isHere {
-                    TimeMapDetailRow(label:"Estancia actual en la zona",
+                    TimeMapDetailRow(label:"Estancia en zona · \(model.period.title)",
                                      seconds:periodStay(model.zoneStaySeconds(for:zone,now:now)))
+                    if model.period != .all {
+                        TimeMapDetailRow(label:"Estancia completa, sin filtro",
+                                         seconds:model.zoneStaySeconds(for:zone,now:now))
+                    }
                 }
                 LabeledContent("N.º visitas",value:String(
                     model.numberOfVisits(for:zone.cells,now:now)))
@@ -163,8 +167,12 @@ private struct TimeMapCardLiveRows:View {
                 TimeMapDetailRow(label:"Tiempo total en esta cuadrícula",
                                  seconds:model.total(for:picked,now:now))
                 if isHere {
-                    TimeMapDetailRow(label:"Estancia actual en esta cuadrícula",
+                    TimeMapDetailRow(label:"Estancia en cuadrícula · \(model.period.title)",
                                      seconds:periodStay(model.staySeconds(now:now)))
+                    if model.period != .all {
+                        TimeMapDetailRow(label:"Estancia completa, sin filtro",
+                                         seconds:model.staySeconds(now:now))
+                    }
                 }
                 LabeledContent("N.º visitas",value:String(
                     model.numberOfVisits(for:[picked.id],now:now)))
