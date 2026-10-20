@@ -2,7 +2,7 @@
 const fs=require('node:fs');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
-for(const path of ['windows/TTiTTularesImageBridge.js','windows/TTendenciasImageBridge.js']){
+(async()=>{for(const path of ['windows/TTiTTularesImageBridge.js','windows/TTendenciasImageBridge.js']){
   const source=fs.readFileSync(path,'utf8');
   const start=source.indexOf('async function submitVerifiedDraft(cdp,job){');
   const end=source.indexOf('async function findFallbackComposerChat(job){',start);
@@ -50,3 +50,4 @@ for(const path of ['windows/TTiTTularesImageBridge.js','windows/TTendenciasImage
   assert.equal(hiddenResult.result,false,'hidden control must not send');
   console.log('PASS immediate command-scoped submission, single-click, no altered drafts:',path);
 }
+})().catch(e=>{console.error(e);process.exitCode=1});
