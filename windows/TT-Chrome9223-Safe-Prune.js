@@ -8,7 +8,9 @@ let BASE='http://127.0.0.1:9223';
 const DIR='C:\\TTiTTulares';
 const APPLY=process.argv.includes('--apply');
 const MIN_AGE=5;
-const MAX_CLOSE=80;
+const MAX_CLOSE=25;
+const VERIFIED_IDLE_MS=8*60000;
+const STATE_FILE=path.join(process.env.LOCALAPPDATA||os.tmpdir(),'TT_Recuperacion','chrome9223-verified-idle-homes.json');
 const MIN_KEEP_HOME=3;
 const MAX_SCAN=250;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -78,10 +80,29 @@ function checkBusy(){
   await Promise.all(Array.from({length:Math.min(6,scan.length)},async()=>{
     while(at<scan.length){const i=at++;checks[i]={id:scan[i].id,result:await inspect(scan[i])}}
   }));
+  // Repeated independent inspections are safer than navigation-time age.
+  // A renderer reload can reset performance.timeOrigin even for an old tab.
+  let previous={};
+  try { previous=JSON.parse(fs.readFileSync(STATE_FILE,'utf8')) } catch {}
+  const now=Date.now();
+  const firstIdle={};
+  for(const {id,result} of checks){
+    if(!homeUrl(result.url)||result.ready!=='complete'||result.busy||!result.empty||result.unknown)continue;
+    const old=previous[id];
+    firstIdle[id]=old&&Number.isFinite(old.since)&&old.since<=now&&old.since>now-24*3600000
+      ?{since:old.since,checked:now}:{since:now,checked:now};
+  }
+  if(APPLY){
+    const output=path.dirname(STATE_FILE);
+    fs.mkdirSync(output,{recursive:true});
+    const staged=STATE_FILE+'.'+process.pid+'.tmp';
+    fs.writeFileSync(staged,JSON.stringify(firstIdle),'utf8');
+    fs.renameSync(staged,STATE_FILE);
+  }
   const unknown=checks.filter(x=>x.result.unknown).length;
   const inspectedEmpty=checks.filter(x=>x.result.empty).length;
   const inspectedYoung=checks.filter(x=>x.result.empty && Number(x.result.age)<MIN_AGE).length;
-  const qualified=checks.filter(x=>homeUrl(x.result.url)&&x.result.ready==='complete'&&!x.result.busy&&x.result.empty&&x.result.age>=MIN_AGE)
+  const qualified=checks.filter(x=>homeUrl(x.result.url)&&x.result.ready==='complete'&&!x.result.busy&&x.result.empty&&firstIdle[x.id]&&now-firstIdle[x.id].since>=VERIFIED_IDLE_MS)
     .sort((a,b)=>b.result.age-a.result.age);
   console.log('\n=== TT CHROME 9223: LIMPIEZA CONSERVADORA ===');
   console.log('Modo:',APPLY?'APLICAR':'SOLO SIMULACION');
@@ -89,7 +110,7 @@ function checkBusy(){
   console.log('Pestañas home no fijas:',homes.length);
   console.log('Verificadas:',checks.length,'| Estado desconocido (protegidas):',unknown);
   console.log('Home sin borradores/mensajes:',inspectedEmpty,'| De ellas demasiado recientes:',inspectedYoung);
-  console.log('Candidatas seguras por criterio (home vacía e inactiva >='+MIN_AGE+' min):',qualified.length);
+  console.log('Verificadas como vacías durante al menos '+Math.round(VERIFIED_IDLE_MS/60000)+' min en pasadas distintas:',qualified.length);
   console.log('Límite por pasada:',MAX_CLOSE);
   const toClose=qualified.slice(0,MAX_CLOSE);
   for(const c of toClose)console.log('  '+String(c.id).slice(0,14)+'  '+c.result.age+' min');
@@ -106,13 +127,14 @@ function checkBusy(){
     if(!cur||!homeUrl(cur.url)||activePins.has(cur.id))continue;
     if(now.filter(t=>t.type==='page'&&homeUrl(t.url)&&!activePins.has(t.id)).length<=MIN_KEEP_HOME)break;
     const state=await inspect(cur);
-    if(state.unknown||!homeUrl(state.url)||state.busy||!state.empty||state.ready!=='complete'||state.age<MIN_AGE)continue;
+    if(state.unknown||!homeUrl(state.url)||state.busy||!state.empty||state.ready!=='complete')continue;
+    if(!firstIdle[c.id]||Date.now()-firstIdle[c.id].since<VERIFIED_IDLE_MS)continue;
     // Fail closed on a pin changed during this run.
     const currentPins=[tabPin('ttittulares-image-tab.json'),tabPin('ttendencias-image-tab.json')];
     if(currentPins.some(id=>id===cur.id)||currentPins.some(id=>id&&!activePins.has(id)&&now.some(t=>t.id===id)))break;
     const response=await fetch(BASE+'/json/close/'+encodeURIComponent(cur.id),{signal:AbortSignal.timeout(5000)});
     if(!response.ok)throw Error('Chrome rechazó cierre '+cur.id+': HTTP '+response.status);
-    closed++;log.push({id:cur.id,ageMin:state.age});
+    closed++;log.push({id:cur.id,observedIdleMin:Math.round((Date.now()-firstIdle[c.id].since)/60000)});
     await sleep(350);
   }
   const dir=path.join(process.env.LOCALAPPDATA||os.tmpdir(),'TT_Recuperacion');
