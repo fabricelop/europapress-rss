@@ -44,6 +44,51 @@ function ReadCDP([string]$ws,[string]$method,[object]$params){
     try{$timeout.Dispose()}catch{}
   }
 }
+# CDP HTTP fallback: create a clean /images tab before closing the stuck one.
+# Keep all other Chrome 9234 tabs intact. Never touch Chrome 9223.
+function RecoverGalleryByHttp([string]$oldId){
+  if($oldId -notmatch '^[A-Fa-f0-9-]{8,64}$'){throw 'ID no valido para galeria'}
+  $base='http://127.0.0.1:9234'
+  $newId=''
+  try {
+    $created=Invoke-RestMethod -Method Put -Uri ($base+'/json/new?'+[Uri]::EscapeDataString('https://chatgpt.com/images')) -TimeoutSec 10 -ErrorAction Stop
+    $newId=[string]$created.id
+    if($newId -notmatch '^[A-Fa-f0-9-]{8,64}$' -or $newId -eq $oldId){throw 'Nueva galeria sin ID valido'}
+    $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5 -ErrorAction Stop)
+    $old=@($list|Where-Object{$_.id -eq $oldId -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
+    $fresh=@($list|Where-Object{$_.id -eq $newId -and $_.type -eq 'page'})
+    if($old.Count -ne 1 -or $fresh.Count -ne 1 -or
+       [string]$fresh[0].url -notmatch '^https://chatgpt\.com/images(?:[/?#]|$)'){
+      throw 'No se verificaron ambas galerias; la original permanece intacta'
+    }
+    [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+$oldId) -TimeoutSec 8 -ErrorAction Stop)
+    $closed=$false
+    for($i=0;$i -lt 5;$i++){
+      Start-Sleep -Milliseconds 650
+      $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5 -ErrorAction Stop)
+      $oldAlive=@($list|Where-Object{$_.id -eq $oldId})
+      $newAlive=@($list|Where-Object{$_.id -eq $newId -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
+      if($oldAlive.Count -eq 0 -and $newAlive.Count -eq 1){$closed=$true;break}
+    }
+    if(-not $closed){throw 'Cierre del visor anterior no confirmado'}
+    Say 'RECUPERACION_HTTP_OK galeria nueva disponible y visor viejo cerrado'
+    return $newId
+  }catch{
+    if($newId -match '^[A-Fa-f0-9-]{8,64}$'){
+      try {
+        $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5)
+        $oldAlive=@($list|Where-Object{$_.id -eq $oldId})
+        $newAlive=@($list|Where-Object{$_.id -eq $newId})
+        if($oldAlive.Count -gt 0 -and $newAlive.Count -gt 0){
+          [void](Invoke-WebRequest -UseBasicParsing -Uri ($base+'/json/close/'+$newId) -TimeoutSec 5)
+          Say 'ROLLBACK_HTTP nueva pestana cerrada; galeria vieja conservada'
+        }
+      }catch {Say ('ROLLBACK_HTTP_AVISO '+$_.Exception.Message)}
+    }
+    throw
+  }
+}
+
 Say ('INICIO '+(Get-Date -Format 'yyyy-MM-dd HH:mm:ss'))
 if(-not(Test-Path -LiteralPath $report)){throw 'No existe el informe de captura; no se puede asegurar el motivo del bloqueo'}
 $reportFile=Get-Item -LiteralPath $report
@@ -56,7 +101,7 @@ if($age -lt 0 -or $age -gt 45 -or $reason -notmatch 'Visor ya abierto al iniciar
  return
 }
 $running=@(Get-CimInstance Win32_Process |Where-Object{
-  $_.Name -match '^node(?:\.exe)?$' -and ([string]$_.CommandLine -like '*relay-captura.js*')
+  $_.Name -match '^node(?:\.exe)?$' -and ([string]$_.CommandLine -match '(?i)(relay-captura|TTImageRelay.*captura|TTImageRelay.*capture)')
 })
 if($running.Count){
  Say ('SIN_ACCION captura en curso PID='+($running.ProcessId -join ','))
@@ -85,22 +130,34 @@ if($InspectOnly){
 }
 # The viewer is a modal inside the /images SPA. Reload ONLY that dedicated
 # gallery tab: it does not close the browser or modify image-delivery state.
-$result=ReadCDP ([string]$gallery[0].webSocketDebuggerUrl) 'Page.reload' @{ignoreCache=$true}
-Say 'RECUPERACION_EMITIDA Page.reload sobre unica pestaña ChatGPT Images / Chrome 9234'
+$ws=[string]$gallery[0].webSocketDebuggerUrl
+# Windows .NET can resolve localhost to IPv6 while Chrome listens on IPv4.
+$ws=$ws -replace '^ws://localhost:9234/','ws://127.0.0.1:9234/'
+$expectedId=[string]$gallery[0].id
+try {
+  [void](ReadCDP $ws 'Page.reload' @{ignoreCache=$true})
+  Say 'RECUPERACION_WS_OK galeria recargada exclusivamente en Chrome 9234'
+}catch{
+  Say ('WEBSOCKET_NO_DISPONIBLE '+$_.Exception.Message.Split([char]10)[0])
+  Say 'FALLBACK_HTTP creando galeria nueva en Chrome 9234'
+  $expectedId=RecoverGalleryByHttp ([string]$gallery[0].id)
+}
 Start-Sleep -Seconds 3
 $after=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9234/json/list' -TimeoutSec 5)
-$still=@($after|Where-Object{ $_.id -eq $gallery[0].id -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
-if(-not $still.Count){
- Say 'AVISO galeria aun no confirmada tras recarga; no se lanza ninguna tarea adicional'
- return
+$still=@($after|Where-Object{
+  $_.id -eq $expectedId -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'
+})
+if($still.Count -ne 1){
+  Say 'AVISO galeria no confirmada; se omite la tarea'
+  return
 }
-Say 'GALERIA9234 PESTANA DISPONIBLE; el visor deberia estar cerrado'
+Say 'GALERIA9234 LIMPIA DISPONIBLE; aun falta comprobar descarga y envio reales'
 if($NoTaskStart){
  Say 'SIN_LANZAR_TAREA espera ciclo programado de 5 minutos'
  return
 }
 $runningAgain=@(Get-CimInstance Win32_Process|Where-Object{
- $_.Name -match '^node(?:\.exe)?$' -and ([string]$_.CommandLine -like '*relay-captura.js*')
+ $_.Name -match '^node(?:\.exe)?$' -and ([string]$_.CommandLine -match '(?i)(relay-captura|TTImageRelay.*captura|TTImageRelay.*capture)')
 })
 $taskAgain=Get-ScheduledTask -TaskName $taskName -ErrorAction Stop
 if($runningAgain.Count -or $taskAgain.State -ne 'Ready'){
