@@ -2,108 +2,101 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-20T02:10:04.909071+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-20T07:36:30.508409+00:00",
+      "issue_count": 5,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "7e222245465b",
+          "title": "Alberta rechaza avanzar hacia la independencia y vota en un referéndum a favor de la unidad de Canad",
+          "seconds": 1424,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "18bbc56426bf",
+          "title": "Enagás gana 204 millones hasta septiembre, un 22 % menos pero en línea con sus objetivos",
+          "seconds": 1424,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d7ae35786592",
+          "title": "Muere Gustavo Oliva, el referente del pádel de 58 años que se despidió con una desgarradora carta: \"",
+          "seconds": 551,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "cb48be8cf3cf",
+          "title": "Elon Musk promete que regalará una acción de SpaceX a cada niño en EE.UU. el año que viene - EFE - A",
+          "seconds": 323,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 317752,
+          "seconds": 337338,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "07fc99e3f12a7985f935b71cb95455b57671c4b49154d4287fbd9b6c924e067d",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 2
     },
     "ttendencias": {
-      "checked_at": "2026-10-20T02:10:04.909071+00:00",
-      "issue_count": 9,
+      "checked_at": "2026-10-20T07:36:30.508409+00:00",
+      "issue_count": 4,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "fc1e4bc8ee32",
-          "title": "#MCCLegends",
-          "seconds": 10028,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "b9fd3c6b62bd",
-          "title": "#FirstDates19O",
-          "seconds": 17750,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "d0b77011bcc7",
-          "title": "#laisladelastentaciones13",
-          "seconds": 13945,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "e9f3f719cfa1",
-          "title": "#GetafeRayo",
-          "seconds": 13945,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "editorial_overdue",
           "id": "ad7a75826c85",
           "title": "djené",
-          "seconds": 13945,
+          "seconds": 33531,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "ade467a17048",
-          "title": "Nacho Gil",
-          "seconds": 13945,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "0c086cdc772a",
           "title": "paula",
-          "seconds": 10028,
+          "seconds": 29614,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "d37f78ec86d1",
           "title": "Kiko",
-          "seconds": 10028,
+          "seconds": 29614,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 317752,
+          "seconds": 337337,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "58f76630623af85a1eeeab2b6e3b2aa74c79d5b787c5ab34619e082d3e40c23e",
+      "open_signature": "362b3c7f7092ebebbe173d3758f7ea6f9dbcdff9031c19b47f9d81a41fe1734d",
       "repair_via_workflow_run": false,
-      "escalation_required": 8
+      "escalation_required": 3
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T21:41:31.957043+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-20T02:10:04.909071+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-20T02:10:04.909071+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-20T07:36:30.508409+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-20T07:36:30.508409+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-20T07:36:30.508409+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-20T02:10:04.909071+00:00"
   },
-  "checked_at": "2026-10-20T02:10:04.909071+00:00"
+  "checked_at": "2026-10-20T07:36:30.508409+00:00"
 }
