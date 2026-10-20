@@ -387,7 +387,13 @@ function trendRows(){
    const staleTop10=Number(x.rank||i+1)<=10&&latestAt&&
       Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
    const queueItem=queued.get(String(req.id||''));
-   const working=!!queueItem||['preparing','update','ready'].includes(status);
+   // An old queued snapshot is not live once the request was finalized.
+   const queueCurrent=!!queueItem&&Number(queueItem.revision||0)>Number(req.revision??-1);
+   const working=queueCurrent||['preparing','update','ready'].includes(status);
+   const op=pendingDeletes.get(removeKey('ttendencias',String(req.id||finished.id||'')));
+   const reworkPending=!!op&&op.decision==='rework'&&
+      ['sending','submitted','awaiting_github'].includes(op.status)&&
+      Date.now()-op.at<20*60000;
    const activelyEditing=!!(activeRun&&running.trend_id&&String(running.trend_id)===String(req.id||''));
    const failure=status==='problematic';
    const nameKey=normal(x.name);
@@ -412,16 +418,16 @@ function trendRows(){
    // Top 30 is a persistent editorial lookup: old, finished explanations
    // remain readable even when a Listas card was closed or not sent to Telegram.
    // During a NEW revision, never show the obsolete version as current.
-   const text=!working&&!activelyEditing?readyText:'';
+   const text=!working&&!activelyEditing&&!reworkPending?readyText:'';
    const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
-   const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
+   const editorialState=reworkPending?'PENDIENTE DE GITHUB':activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
       text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
       failure?'REVISIÓN':
       terminal?(terminalLabel[terminal.status]||'HISTÓRICO'):
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_inExplained:inExplained,_manualPending:manualPending,
-    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!!(readyText&&req.id&&!working&&!activelyEditing),
+    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!!(readyText&&req.id&&!working&&!activelyEditing&&!reworkPending),
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
     explained_at:latestAt,revision:Number(req.revision??finished.revision??0),
@@ -476,8 +482,9 @@ function trendRows(){
    if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
    // A newer revision already in progress invalidates the old Listas card,
    // including when independent GitHub raw files refresh at different times.
-   if(['preparing','update'].includes(String(req.status||'').toLowerCase())&&
-      Number(req.revision||0)>Number(row.revision||0))return false;
+   if(['preparing','update','ready'].includes(String(req.status||'').toLowerCase())&&
+      Number(req.revision||0)>=Number(row.revision||0))return false;
+   if(req.id&&Number(req.revision||0)>Number(row.revision||0))return false;
    if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
    if(mobileClosed.has(id))return false;
    if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
