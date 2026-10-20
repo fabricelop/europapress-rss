@@ -51,5 +51,5 @@ assert.equal(ctx.hideSource,true);
 assert.equal(ctx.hideTarget,false);
 
 assert(page.includes("if((prepared.items||[]).some(x=>String(x.event_id||'')===id))return 'ready';"));
-assert(page.includes("if(decision==='prepare'){state.tab='elaboracion';render();}"));
+assert(page.includes("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}"));
 console.log('TTActualidad V8.5: growing -> pending -> processing -> Listas OK');
