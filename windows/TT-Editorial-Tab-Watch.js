@@ -15,6 +15,9 @@ const CLOSE_AFTER_MS=9*60000;
 const STABLE_MS=5*60000;
 const MAX_JOB_MS=3*3600000;
 const OLD_JOB_POLL_MS=5*60000;
+const LANDING_MIN_AGE_MS=20*60000;
+const LANDING_IDLE_MS=6*60000;
+const LANDING_MIN_SAMPLES=3;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const log=s=>{try{fs.appendFileSync(LOG,new Date().toISOString()+' '+s+'\n','utf8')}catch{}};
 const pidAlive=pid=>{if(!Number.isInteger(pid)||pid<=0)return false;try{process.kill(pid,0);return true}catch(e){return e?.code==='EPERM'}};
@@ -59,7 +62,7 @@ async function inspect(t){
       err?reject(err):resolve(value)
     }
     // Return only status and a numeric fingerprint. Never persist chat contents.
-    const expression=`(()=>{const a=[...document.querySelectorAll('[data-message-author-role="assistant"]')];const last=a.length?a[a.length-1]:null;const s=String(last?.innerText||'');let hash=5381;for(let i=0;i<s.length;i++)hash=((hash<<5)+hash+s.charCodeAt(i))|0;const b=[...document.querySelectorAll('button')];const stop=b.some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');const editor=document.querySelector('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]');const draft=String(editor?.innerText||editor?.value||'').trim();return {url:location.href,ready:document.readyState,assistantCount:a.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy,draftChars:draft.length}})()`;
+    const expression=`(()=>{const allMessages=[...document.querySelectorAll('[data-message-author-role]')];const a=allMessages.filter(x=>x.getAttribute('data-message-author-role')==='assistant');const last=a.length?a[a.length-1]:null;const s=String(last?.innerText||'');let hash=5381;for(let i=0;i<s.length;i++)hash=((hash<<5)+hash+s.charCodeAt(i))|0;const b=[...document.querySelectorAll('button')];const stop=b.some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');const editor=document.querySelector('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]');const draft=String(editor?.innerText||editor?.value||'').trim();return {url:location.href,ready:document.readyState,assistantCount:a.length,messageCount:allMessages.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy,draftChars:draft.length}})()`;
     try{
       ws=new WebSocket(t.webSocketDebuggerUrl);
       ws.addEventListener('open',()=>{
@@ -153,6 +156,45 @@ async function sweep(){
         saveJob(f,j);
         log('ADOPT_CONVERSATION '+j.id.slice(0,18));
       }else{stopTracking(f,'navigated_elsewhere_LEFT_OPEN');continue}
+    }
+    // A temporary project landing may remain at /g/g-p-... after the actual
+    // message was submitted in a new conversation. These tabs never acquire
+    // assistant text. Only consider the launcher's REGISTERED target.
+    const pathname=new URL(s.url).pathname;
+    const ownedLanding=/^\/g\/g-p-[a-z0-9-]+\/?$/i.test(pathname)||
+      /^\/project\/[a-z0-9-]+\/?$/i.test(pathname);
+    if(ownedLanding){
+      const idle=s.ready==='complete'&&!s.busy&&s.draftChars===0&&s.messageCount===0;
+      if(!idle){
+        if(j.landingIdleSince||j.landingSamples){
+          j.landingIdleSince=0;j.landingSamples=0;saveJob(f,j);
+        }
+        continue;
+      }
+      const now=Date.now();
+      if(!j.landingIdleSince)j.landingIdleSince=now;
+      if(!j.lastLandingSampleAt||now-j.lastLandingSampleAt>=60000){
+        j.landingSamples=Number(j.landingSamples||0)+1;
+        j.lastLandingSampleAt=now;
+        saveJob(f,j);
+      }
+      if(now-j.created<LANDING_MIN_AGE_MS||
+         now-j.landingIdleSince<LANDING_IDLE_MS||
+         j.landingSamples<LANDING_MIN_SAMPLES)continue;
+      // Recheck actual target, URL, message state and pins just before closure.
+      const refreshed=(await targets()).find(x=>x.id===j.id&&x.type==='page');
+      if(!refreshed||imagePins().has(j.id)||refreshed.url!==s.url)continue;
+      let verify;
+      try{verify=await inspect(refreshed)}catch{continue}
+      const verifyPath=verify.url?new URL(verify.url).pathname:'';
+      if(verifyPath!==pathname||verify.busy||verify.ready!=='complete'||
+         verify.draftChars!==0||verify.messageCount!==0)continue;
+      const result=await fetch(BASE+'/json/close/'+encodeURIComponent(j.id),{signal:AbortSignal.timeout(6000)});
+      if(result.ok){
+        log('CLOSED_IDLE_PROJECT_LANDING '+j.id.slice(0,18)+' age_min='+Math.floor((now-j.created)/60000));
+        stopTracking(f,'closed_verified_idle_project_landing');
+      }else log('LANDING_CLOSE_RETRY '+j.id.slice(0,18)+' HTTP '+result.status);
+      continue;
     }
     if(s.busy||s.draftChars>0||s.ready!=='complete'||s.assistantCount<1||s.assistantChars<20){
       j.firstStable=0;j.lastFingerprint='';saveJob(f,j);continue
