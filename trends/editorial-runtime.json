@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T01:15:00+02:00",
-  "last_completed_at": "2026-10-21T01:15:30+02:00",
-  "updated_at": "2026-10-21T01:15:30+02:00",
+  "last_started_at": "2026-10-21T01:45:00+02:00",
+  "last_completed_at": "2026-10-21T01:45:40+02:00",
+  "updated_at": "2026-10-21T01:45:40+02:00",
   "status": "success",
   "processed_ids": [
     "05c086bf9e25",
@@ -20,7 +20,7 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-202610210045-chat-e4fe3f9f",
+    "trigger_run_id": "tr-editorial-202610210145-chat-direct",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -28,13 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610210115-chat-direct",
+    "run_id": "tr-editorial-202610210145-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T01:15:00+02:00",
-    "updated_at": "2026-10-21T01:15:30+02:00",
-    "finished_at": "2026-10-21T01:15:30+02:00",
+    "started_at": "2026-10-21T01:45:00+02:00",
+    "updated_at": "2026-10-21T01:45:40+02:00",
+    "finished_at": "2026-10-21T01:45:40+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -43,21 +43,21 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T01:15:00+02:00",
+        "at": "2026-10-21T01:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Releyendo cola, solicitudes y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T01:15:15+02:00",
+        "at": "2026-10-21T01:45:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado fresco: cola 0; sin preparing/update ni rewrite_pending; Top 30 capturado a las 01:12."
+        "message": "Estado fresco: cola 0; sin preparing/update, rewrite_pending ni Explicadas recientes sin remate; Top 30 capturado a las 01:41."
       },
       {
-        "at": "2026-10-21T01:15:30+02:00",
+        "at": "2026-10-21T01:45:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
