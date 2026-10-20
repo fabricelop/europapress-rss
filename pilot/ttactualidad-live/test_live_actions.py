@@ -18,6 +18,7 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('trends/mobile-decisions.json',{'items':[]})
   self.write('trends/telegram-manual-explained.json',{'items':[]})
   self.write('trends/telegram-image-deliveries.json',{'items':[]})
+  self.write('trends/prepared.json',{'items':[]})
  def write(self,p,d):
   f=app.ROOT/p;f.parent.mkdir(parents=True,exist_ok=True);f.write_text(json.dumps(d),encoding='utf8')
  def test_tti_discard_live_prevents_ready(self):
