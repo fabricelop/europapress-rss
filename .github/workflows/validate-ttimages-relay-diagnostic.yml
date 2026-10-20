@@ -6,6 +6,8 @@ on:
       - 'windows/Diagnosticar-TTImages-Relay.ps1'
       - 'windows/Diagnosticar-TTImages-Targets9234.ps1'
       - 'windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
+      - 'windows/TTImages-AutoRecovery-Guardian.ps1'
+      - 'windows/Install-TTImages-AutoRecovery.ps1'
       - 'windows/tests/Test-TTImages-ChromeTargets.ps1'
       - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
   workflow_dispatch:
@@ -75,3 +77,27 @@ jobs:
       - name: Regression - Chrome JSON array contains independent targets
         shell: pwsh
         run: pwsh -NoProfile -File windows/tests/Test-TTImages-ChromeTargets.ps1
+
+      - name: Validate unattended guardian PowerShell and self-test
+        shell: pwsh
+        run: |
+          $p='windows/TTImages-AutoRecovery-Guardian.ps1'
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $src=Get-Content -LiteralPath $p -Raw
+          foreach($forbidden in @('Stop-Process','Stop-ScheduledTask','/json/new?','/json/close/','SendMessage','sendPhoto','Send-Telegram')){
+            if($src.Contains($forbidden)){throw ('Guardian must not alter capture or Telegram: '+$forbidden)}
+          }
+          pwsh -NoProfile -File $p -SelfTest
+      - name: Validate conservative installer syntax
+        shell: pwsh
+        run: |
+          $p='windows/Install-TTImages-AutoRecovery.ps1'
+          if(-not(Test-Path $p)){Write-Host 'Installer not yet committed';exit 0}
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          Write-Host 'TTIMAGES_AUTORECOVERY_INSTALLER_SYNTAX_OK'
