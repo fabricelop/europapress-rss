@@ -44,6 +44,8 @@ jobs:
         run: node pilot/ttactualidad-live/test_creciendo_pending.mjs
       - name: Ferran rework stays visible in En elaboración while editorial queue syncs
         run: node pilot/ttactualidad-live/test_rework_visible.mjs
+      - name: Ferran and Gordon atomic rework state regression
+        run: node pilot/ttactualidad-live/test_rework_visible.mjs
       - name: Worker actions and safe retry
         run: node pilot/ttactualidad-live/test_worker_live.mjs
       - name: Validate browser and Worker JS
