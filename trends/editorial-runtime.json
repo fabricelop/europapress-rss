@@ -1,12 +1,12 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T16:05:42+02:00",
-  "last_completed_at": "2026-10-20T16:05:42+02:00",
-  "updated_at": "2026-10-20T16:05:42+02:00",
+  "last_started_at": "2026-10-20T13:58:20.146Z",
+  "last_completed_at": "2026-10-20T14:07:11.365Z",
+  "updated_at": "2026-10-20T14:07:11.365Z",
   "status": "success",
   "processed_ids": [
     "f97274605e45"
@@ -29,239 +29,70 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020130405",
+    "run_id": "editorial-20261020135820-trends",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
-    "phase": "done",
-    "started_at": "2026-10-20T13:04:05.654Z",
-    "updated_at": "2026-10-20T13:25:10.157Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-20T13:58:20.146Z",
+    "updated_at": "2026-10-20T14:07:11.365Z",
+    "current": 1,
+    "total": 1,
     "incident_count": 1,
     "incidents": [
       {
         "id": "f97274605e45",
         "revision": 0,
-        "reason": "Detonante no verificable tras nuevas consultas; se conserva problematic, no explained.",
-        "retryable": true
-      }
-    ],
-    "remate_selections": [
-      {
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Emergencia con víctimas: explicación factual sin chiste político ni remate humorístico."
-      },
-      {
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.1,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 5.8,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.3,
-            "punch": 1.3,
-            "originality": 0.9,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c4",
-            "total": 7.4,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.3,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.1,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "f97274605e45",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Detonante no verificado tras búsquedas distintas; no hay texto ni remate publicable."
+        "result": "problematic",
+        "reason": "Detonante no verificable después de consultas nuevas; no se inventa explicación."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-20T13:04:06.617Z",
+        "at": "2026-10-20T13:58:21.134Z",
         "phase": "preparing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Estado fresco: dos peticiones manuales activas y una problemática Top10; no se activa el circuito visual."
+        "message": "Sin preparing/update ni rewrite_pending; una problemática Top4 para revisión posterior a las noticias."
       },
       {
-        "at": "2026-10-20T13:13:48.265Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva",
-        "message": "Oliva: se verifica el episodio actual de la DANA y la visita institucional de hoy; no se reutiliza la ficha de ayer, eliminada desde el móvil."
-      },
-      {
-        "at": "2026-10-20T13:14:14.761Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva",
-        "message": "Confirmada la visita de hoy en La Moncloa y la cobertura actual de los daños en Oliva. Texto centrado en la emergencia y la coordinación; no se fija un balance de víctimas cambiante."
-      },
-      {
-        "at": "2026-10-20T13:14:17.574Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva",
-        "message": "Se omite el humor por la emergencia con víctimas; guindilla vacía, sin candidatos."
-      },
-      {
-        "at": "2026-10-20T13:14:30.977Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva",
-        "message": "Revalidando Oliva r0 y entregando solo el texto verificado a la cola compacta del reconciliador; no se usa el outbox antiguo que envía a Telegram."
-      },
-      {
-        "at": "2026-10-20T13:14:42.959Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-        "title": "Oliva",
-        "message": "Oliva tiene texto verificado en la cola compacta; todavía no se cuenta explained hasta su consolidación en ambos registros por Actions."
-      },
-      {
-        "at": "2026-10-20T13:15:00.615Z",
-        "phase": "investigating",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "Mientras Actions consolida Oliva, se contrasta el detonante de Cruz Roja: no se presupone que trate de la DANA por proximidad en el ranking."
-      },
-      {
-        "at": "2026-10-20T13:15:57.922Z",
-        "phase": "drafting",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "elDiario.es documenta la no renovación y Público aporta consultas propias con las tres ONG. Se precisa un programa, no toda la financiación, y se recoge que la Junta niega vincularlo al pacto con Vox."
-      },
-      {
-        "at": "2026-10-20T13:16:01.278Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "Evaluando cinco remates sobre la decisión administrativa; la ironía apunta a la Junta y la caducidad del programa, nunca a las personas sin hogar."
-      },
-      {
-        "at": "2026-10-20T13:16:02.387Z",
-        "phase": "remate_selection",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "Seleccionado c2 (8,1/10): caducidad administrativa de la acogida. Se preserva el matiz factual sobre un programa y la negativa de la Junta."
-      },
-      {
-        "at": "2026-10-20T13:16:19.536Z",
-        "phase": "persisting",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "Revalidando Cruz Roja r0 y entregando su explicación textual al reconciliador; se conserva íntegro el hand-off anterior de Oliva."
-      },
-      {
-        "at": "2026-10-20T13:16:22.452Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "title": "Cruz Roja",
-        "message": "Ambas explicaciones entregadas con revisión exacta; todavía no se cuentan cerradas hasta que Actions consolide requests y manual-explained."
-      },
-      {
-        "at": "2026-10-20T13:16:39.794Z",
+        "at": "2026-10-20T14:03:53.861Z",
         "phase": "investigating",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Sin nuevas preparing/update pendientes de redactar: revisando la problemática #TerrorRESHxSelectaPlay aún Top4 con consultas distintas de los intentos anteriores; no se inventará un sorteo ni campaña."
+        "message": "Nuevo intento Top4 de #TerrorRESHxSelectaPlay: buscando el posible origen de RESH y una acción concreta fechada; no se repetirá una explicación genérica de la editora."
       },
       {
-        "at": "2026-10-20T13:17:52.976Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": "f97274605e45",
-        "title": "#TerrorRESHxSelectaPlay",
-        "message": "Reintento de #TerrorRESHxSelectaPlay sin detonante acreditado; se espera la consolidación de los dos textos nuevos antes de aplicar su incidencia para no regenerar la cola sobre hand-offs aún pendientes."
-      },
-      {
-        "at": "2026-10-20T13:21:53.794Z",
+        "at": "2026-10-20T14:05:01.624Z",
         "phase": "persisting",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Oliva y Cruz Roja ya están explained con texto, revisión y fecha idénticos en ambos registros, y han salido de la cola. La consolidación apareció concurrentemente antes de localizar una ejecución del reconciliador; no se atribuye a un job sin prueba."
+        "message": "Las nuevas consultas y el portal RESH no acreditan una acción concreta vinculada a la etiqueta. Se conserva problemática y se registra el nuevo intento, sin inventar campaña."
       },
       {
-        "at": "2026-10-20T13:25:10.157Z",
+        "at": "2026-10-20T14:05:05.943Z",
+        "phase": "verifying",
+        "event_id": null,
+        "trend_id": "f97274605e45",
+        "title": "#TerrorRESHxSelectaPlay",
+        "message": "Outbox de incidencia guardado; no equivale a explicación terminada. Se espera la aplicación y el incremento real del intento."
+      },
+      {
+        "at": "2026-10-20T14:07:11.365Z",
         "phase": "done",
         "event_id": null,
         "trend_id": "f97274605e45",
         "title": "#TerrorRESHxSelectaPlay",
-        "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update."
+        "message": "Reintento aplicado por Actions y verificado en main: TerrorRESHxSelectaPlay permanece problemática, quinto intento, sin causa acreditada. No hay preparing/update ni reexplicaciones; ninguna explicación nueva se declara terminada."
       }
     ],
     "summary": {
-      "attempted": 3,
+      "attempted": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 3,
-      "explained": 2,
+      "initial_compact_queue": 1,
+      "explained": 0,
       "problematic_reviewed": 1,
       "remaining_active": 0,
       "remaining_problematic": 1,
@@ -271,6 +102,21 @@
       "manual_visual_dispatches": 0,
       "incidents": 1
     },
+    "processed_ids": [
+      "f97274605e45"
+    ],
+    "verifications": [
+      {
+        "id": "f97274605e45",
+        "revision": 0,
+        "action_run_id": 39436056911,
+        "job_id": 118673257310,
+        "main_head": "9313038b1bac283ddcbbaa6f4a533f211bc9e387",
+        "status": "problematic",
+        "attempts": 5,
+        "outbox_consumed": true
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -278,51 +124,25 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "processed_ids": [
-      "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "f97274605e45"
-    ],
-    "verifications": [
+    "remate_selections": [
       {
-        "id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
+        "trend_id": "f97274605e45",
         "revision": 0,
-        "main_head": "c0a98a083c5c6bd64465099fc363a4743b438caa",
-        "request_and_manual_match": true,
-        "submitted_text_matches": true,
-        "queue_removed": true,
-        "method": "verified_compact_queue_handoff_then_concurrent_consolidation",
-        "action_run_id": null,
-        "requests_commit": "d1f09caf8c320492fac9135e066fee325d726717"
-      },
-      {
-        "id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-        "revision": 0,
-        "main_head": "c0a98a083c5c6bd64465099fc363a4743b438caa",
-        "request_and_manual_match": true,
-        "submitted_text_matches": true,
-        "queue_removed": true,
-        "method": "verified_compact_queue_handoff_then_concurrent_consolidation",
-        "action_run_id": null,
-        "requests_commit": "d1f09caf8c320492fac9135e066fee325d726717"
-      },
-      {
-        "id": "f97274605e45",
-        "revision": 0,
-        "main_head": "1298959c2ab877c141ab5c06497fae522ae0ff1f",
-        "action_run_id": 39429770615,
-        "job_id": 118651461622,
-        "status": "problematic",
-        "attempts": 4
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Sin detonante verificable: no se redacta explicación ni remate."
       }
     ],
-    "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update.",
+    "phase": "done",
+    "message": "Reintento aplicado por Actions y verificado en main: TerrorRESHxSelectaPlay permanece problemática, quinto intento, sin causa acreditada. No hay preparing/update ni reexplicaciones; ninguna explicación nueva se declara terminada.",
     "trend_id": "f97274605e45",
     "title": "#TerrorRESHxSelectaPlay",
+    "finished_at": "2026-10-20T14:07:11.365Z",
     "partial": false,
     "queue_complete": true,
-    "finished_at": "2026-10-20T13:25:10.157Z",
-    "verification_head": "1298959c2ab877c141ab5c06497fae522ae0ff1f",
+    "verification_head": "9313038b1bac283ddcbbaa6f4a533f211bc9e387",
     "remaining_ids": [
       "f97274605e45"
     ],
@@ -331,13 +151,13 @@
       "f97274605e45"
     ]
   },
-  "run_id": "tr-editorial-20261020130405",
+  "run_id": "editorial-20261020135820-trends",
   "summary": {
-    "attempted": 3,
+    "attempted": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 3,
-    "explained": 2,
+    "initial_compact_queue": 1,
+    "explained": 0,
     "problematic_reviewed": 1,
     "remaining_active": 0,
     "remaining_problematic": 1,
@@ -350,132 +170,44 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T13:04:06.617Z",
+      "at": "2026-10-20T13:58:21.134Z",
       "phase": "preparing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Estado fresco: dos peticiones manuales activas y una problemática Top10; no se activa el circuito visual."
+      "message": "Sin preparing/update ni rewrite_pending; una problemática Top4 para revisión posterior a las noticias."
     },
     {
-      "at": "2026-10-20T13:13:48.265Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva",
-      "message": "Oliva: se verifica el episodio actual de la DANA y la visita institucional de hoy; no se reutiliza la ficha de ayer, eliminada desde el móvil."
-    },
-    {
-      "at": "2026-10-20T13:14:14.761Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva",
-      "message": "Confirmada la visita de hoy en La Moncloa y la cobertura actual de los daños en Oliva. Texto centrado en la emergencia y la coordinación; no se fija un balance de víctimas cambiante."
-    },
-    {
-      "at": "2026-10-20T13:14:17.574Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva",
-      "message": "Se omite el humor por la emergencia con víctimas; guindilla vacía, sin candidatos."
-    },
-    {
-      "at": "2026-10-20T13:14:30.977Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva",
-      "message": "Revalidando Oliva r0 y entregando solo el texto verificado a la cola compacta del reconciliador; no se usa el outbox antiguo que envía a Telegram."
-    },
-    {
-      "at": "2026-10-20T13:14:42.959Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "manual-3462b6a4be53e2bd97b78055e6ec853c",
-      "title": "Oliva",
-      "message": "Oliva tiene texto verificado en la cola compacta; todavía no se cuenta explained hasta su consolidación en ambos registros por Actions."
-    },
-    {
-      "at": "2026-10-20T13:15:00.615Z",
-      "phase": "investigating",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "Mientras Actions consolida Oliva, se contrasta el detonante de Cruz Roja: no se presupone que trate de la DANA por proximidad en el ranking."
-    },
-    {
-      "at": "2026-10-20T13:15:57.922Z",
-      "phase": "drafting",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "elDiario.es documenta la no renovación y Público aporta consultas propias con las tres ONG. Se precisa un programa, no toda la financiación, y se recoge que la Junta niega vincularlo al pacto con Vox."
-    },
-    {
-      "at": "2026-10-20T13:16:01.278Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "Evaluando cinco remates sobre la decisión administrativa; la ironía apunta a la Junta y la caducidad del programa, nunca a las personas sin hogar."
-    },
-    {
-      "at": "2026-10-20T13:16:02.387Z",
-      "phase": "remate_selection",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "Seleccionado c2 (8,1/10): caducidad administrativa de la acogida. Se preserva el matiz factual sobre un programa y la negativa de la Junta."
-    },
-    {
-      "at": "2026-10-20T13:16:19.536Z",
-      "phase": "persisting",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "Revalidando Cruz Roja r0 y entregando su explicación textual al reconciliador; se conserva íntegro el hand-off anterior de Oliva."
-    },
-    {
-      "at": "2026-10-20T13:16:22.452Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "manual-8c318a4327b6cf9263180c6b4c3375da",
-      "title": "Cruz Roja",
-      "message": "Ambas explicaciones entregadas con revisión exacta; todavía no se cuentan cerradas hasta que Actions consolide requests y manual-explained."
-    },
-    {
-      "at": "2026-10-20T13:16:39.794Z",
+      "at": "2026-10-20T14:03:53.861Z",
       "phase": "investigating",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Sin nuevas preparing/update pendientes de redactar: revisando la problemática #TerrorRESHxSelectaPlay aún Top4 con consultas distintas de los intentos anteriores; no se inventará un sorteo ni campaña."
+      "message": "Nuevo intento Top4 de #TerrorRESHxSelectaPlay: buscando el posible origen de RESH y una acción concreta fechada; no se repetirá una explicación genérica de la editora."
     },
     {
-      "at": "2026-10-20T13:17:52.976Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": "f97274605e45",
-      "title": "#TerrorRESHxSelectaPlay",
-      "message": "Reintento de #TerrorRESHxSelectaPlay sin detonante acreditado; se espera la consolidación de los dos textos nuevos antes de aplicar su incidencia para no regenerar la cola sobre hand-offs aún pendientes."
-    },
-    {
-      "at": "2026-10-20T13:21:53.794Z",
+      "at": "2026-10-20T14:05:01.624Z",
       "phase": "persisting",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Oliva y Cruz Roja ya están explained con texto, revisión y fecha idénticos en ambos registros, y han salido de la cola. La consolidación apareció concurrentemente antes de localizar una ejecución del reconciliador; no se atribuye a un job sin prueba."
+      "message": "Las nuevas consultas y el portal RESH no acreditan una acción concreta vinculada a la etiqueta. Se conserva problemática y se registra el nuevo intento, sin inventar campaña."
     },
     {
-      "at": "2026-10-20T13:25:10.157Z",
+      "at": "2026-10-20T14:05:05.943Z",
+      "phase": "verifying",
+      "event_id": null,
+      "trend_id": "f97274605e45",
+      "title": "#TerrorRESHxSelectaPlay",
+      "message": "Outbox de incidencia guardado; no equivale a explicación terminada. Se espera la aplicación y el incremento real del intento."
+    },
+    {
+      "at": "2026-10-20T14:07:11.365Z",
       "phase": "done",
       "event_id": null,
       "trend_id": "f97274605e45",
       "title": "#TerrorRESHxSelectaPlay",
-      "message": "Oliva y Cruz Roja explained y fuera de cola, con contenido exacto en requests y manual. TerrorRESHxSelectaPlay conserva problematic tras outbox aplicado sin errores. Cola 3→1, sin preparing/update."
+      "message": "Reintento aplicado por Actions y verificado en main: TerrorRESHxSelectaPlay permanece problemática, quinto intento, sin causa acreditada. No hay preparing/update ni reexplicaciones; ninguna explicación nueva se declara terminada."
     }
   ],
   "telegram_orphans": 0,
@@ -485,6 +217,5 @@
   "radar_refresh": {
     "status": "fresh-main",
     "captured_at": "2026-10-20T14:40:57+02:00"
-  },
-  "error": null
+  }
 }
