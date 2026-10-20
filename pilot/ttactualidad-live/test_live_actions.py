@@ -146,6 +146,39 @@ class LiveEditorialTests(unittest.TestCase):
    'id':'ferran-test','revision':2,'status':'preparing'}]})
   with self.assertRaises(app.InvalidAction):
    app.apply_live('ttendencias','ferran-test','rework',2)
+ def test_tr_top30_archived_trend_can_start_a_new_episode(self):
+  self.write('trends/recent.json',{'items':[{'name':'Pubill','rank':1}]})
+  self.write('trends/requests.json',{'requests':[{
+   'id':'pubill-old','name':'Pubill','revision':2,'status':'deleted',
+   'explanation':'Partido anterior','archive_image':{'url':'https://example.test/old.jpg'}}]})
+  self.write('trends/telegram-manual-explained.json',{'items':[{
+   'id':'pubill-old','name':'Pubill','revision':2,'status':'explained',
+   'explanation':'Partido anterior','explained_at':'2026-10-13T22:00:00Z'}]})
+  self.write('trends/mobile-decisions.json',{'items':[{'id':'pubill-old','status':'deleted'}]})
+  changed,result=app.apply_live('ttendencias','pubill-old','rework',2)
+  self.assertEqual(result,'applied')
+  old,new=changed['trends/requests.json']['requests']
+  self.assertEqual((old['id'],old['status']),('pubill-old','deleted'))
+  self.assertNotEqual(new['id'],'pubill-old')
+  self.assertEqual((new['name'],new['status'],new['revision']),('Pubill','preparing',0))
+  self.assertNotIn('explanation',new)
+  self.assertNotIn('archive_image',new)
+  self.assertEqual(changed['trends/editorial-queue.json']['items'][0]['id'],new['id'])
+ def test_tr_top30_group_member_can_rework_independently(self):
+  self.write('trends/recent.json',{'items':[{'name':'Joan García','rank':5}]})
+  self.write('trends/requests.json',{'requests':[{
+   'id':'joan-old','name':'Joan García','revision':0,'status':'explained',
+   'group_leader_id':'ferran-old','explanation':'Explicación compartida'}]})
+  self.write('trends/telegram-manual-explained.json',{'items':[{
+   'id':'ferran-old','name':'Ferran','revision':1,'status':'explained',
+   'explanation':'Explicación compartida','trend_names':['Joan García','Ferran']}]})
+  changed,result=app.apply_live('ttendencias','joan-old','rework',0)
+  self.assertEqual(result,'applied')
+  reqs=changed['trends/requests.json']['requests']
+  self.assertEqual(len(reqs),2)
+  self.assertEqual(reqs[-1]['name'],'Joan García')
+  self.assertEqual(reqs[-1]['status'],'preparing')
+  self.assertEqual(len(changed['trends/telegram-manual-explained.json']['items']),1)
  def test_tremending_remove_one_and_preserve_checkpoint(self):
   url1='https://www.publico.es/tremending/noticia-prueba-1.html'
   url2='https://www.publico.es/tremending/noticia-prueba-2.html'
