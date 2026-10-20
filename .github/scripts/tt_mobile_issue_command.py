@@ -318,7 +318,7 @@ def trend_command(action, element_id, context, instruction, now):
     dpath = "trends/mobile-decisions.json"
     decisions = load(dpath, {"items": []})
     decided = next((x for x in decisions["items"] if matches(x, element_id)), None)
-    if decided and str(decided.get("status") or "") in TERMINAL:
+    if decided and str(decided.get("status") or "") in TERMINAL and action != "rework":
         previous = str(decided.get("status") or "")
         if previous == action:
             return "TTendencias: acción ya realizada anteriormente (" + action + "): " + element_id
@@ -327,23 +327,33 @@ def trend_command(action, element_id, context, instruction, now):
         # Listas -> En elaboración: borrar tarjeta y fotografía anteriores
         # antes de encolar una revisión completamente nueva.
         sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "pilot"))
-        from trends_rework import rework_explained
+        from trends_rework import rework_explained, rework_top30
         manual_path = "trends/telegram-manual-explained.json"
         queue_path = "trends/editorial-queue.json"
         prepared_path = "trends/prepared.json"
         manual = load(manual_path, {"items": []})
         queue = load(queue_path, {"items": []})
         prepared = load(prepared_path, {"items": []})
+        target_id = str(r.get("id") or element_id) if r else element_id
+        ready = next((x for x in manual.get("items", []) if str(x.get("id") or "") == target_id
+                      and str(x.get("status") or "").lower() == "explained"), None)
         try:
-            next_revision = rework_explained(
-                str(r.get("id") or element_id) if r else element_id,
-                None, now, doc, manual, queue, decisions, deliveries,
-                "github_pages_authorized_issue_rework"
-            )
+            if ready and not (decided and str(decided.get("status") or "") in TERMINAL):
+                next_revision = rework_explained(
+                    target_id, None, now, doc, manual, queue, decisions, deliveries,
+                    "github_pages_authorized_issue_rework"
+                )
+                prepared["items"] = [row for row in prepared.get("items", [])
+                                     if str(row.get("id") or "") != target_id]
+            else:
+                recent = load("trends/recent.json", {"items": []})
+                new_id = rework_top30(
+                    target_id, None, now, recent.get("items") or [],
+                    doc, manual, queue, decisions, "github_pages_authorized_issue_rework"
+                )
+                next_revision = 0
         except ValueError as exc:
             raise ValueError(str(exc)) from exc
-        prepared["items"] = [row for row in prepared.get("items", [])
-                             if str(row.get("id") or "") != str(r.get("id") or element_id)]
         prepared["updated_at"] = now
         for location, value in (
             (p, doc), (manual_path, manual), (queue_path, queue),
