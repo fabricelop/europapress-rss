@@ -60,7 +60,7 @@ function Note([string]$line){
   Write-Host ('TTIMAGES_AUTORECOVERY '+$line)
   try{Add-Content -LiteralPath $log -Value $msg -Encoding UTF8 -ErrorAction Stop}catch{}
 }
-$mutex=New-Object System.Threading.Mutex($false,'Local\TTImages_AutoRecovery_9234')
+$mutex=[System.Threading.Mutex]::new($false,'Local\TTImages_AutoRecovery_9234')
 $acquired=$false
 try {
   try{$acquired=$mutex.WaitOne(0)}catch [Threading.AbandonedMutexException]{$acquired=$true}
