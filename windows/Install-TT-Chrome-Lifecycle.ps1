@@ -49,7 +49,7 @@ try {
   foreach($entry in $manifest){
     $name=[string]$entry.Name
     $target=Join-Path $base $name
-    $source=Join-Path $backupDir ($name+'.download')
+    $source=Join-Path $backupDir ($name+'.validated.'+[string]$entry.Type)
     $uri='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/windows/'+$name+'?t='+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
     Invoke-WebRequest -UseBasicParsing -Uri $uri -OutFile $source -TimeoutSec 25 -ErrorAction Stop
     $text=[IO.File]::ReadAllText($source,[Text.Encoding]::UTF8)
@@ -132,7 +132,9 @@ try {
   Note 'INSTALL_OK Chrome 9223/9234 not restarted or killed'
 } catch {
   Note ('INSTALL_ERROR '+$_.Exception.Message)
-  foreach($change in @($replacements | Select-Object -Last 20 | Sort-Object {0} -Descending)){
+  $changes=@($replacements)
+  [array]::Reverse($changes)
+  foreach($change in $changes){
     try{
       if($change.Existed){Copy-Item -LiteralPath $change.Backup -Destination $change.Target -Force -ErrorAction Stop}
       else{Remove-Item -LiteralPath $change.Target -Force -ErrorAction SilentlyContinue}
