@@ -100,4 +100,18 @@ jobs:
           $errs=$null
           [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
           if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
-          Write-Host 'TTIMAGES_AUTORECOVERY_INSTALLER_SYNTAX_OK'
+          $installer=Get-Content -Raw -LiteralPath $p
+          $guardian=Get-Content -Raw -LiteralPath 'windows/TTImages-AutoRecovery-Guardian.ps1'
+          foreach($required in @('New-TimeSpan -Minutes 15',
+              "System32\\wscript.exe",'//B //Nologo',
+              'shell.Run command, 0, True','-WindowStyle Hidden',
+              'New-ScheduledTaskAction -Execute $exe','TTImages-AutoRecovery-Hidden.vbs')){
+            if(-not $installer.Contains($required)){throw ('Invisible scheduled task missing '+$required)}
+          }
+          if($guardian.Contains('$allOutput=& powershell.exe')){
+            throw 'Guardian must not spawn a visible child PowerShell process'
+          }
+          if(-not $guardian.Contains('$allOutput=& $recovery -NoTaskStart')){
+            throw 'Recovery must run in the same hidden PowerShell process'
+          }
+          Write-Host 'TTIMAGES_AUTORECOVERY_INVISIBLE_15MIN_OK'
