@@ -176,18 +176,9 @@ function EnsureChromeTabHousekeeping{
   if(-not (Test-Path -LiteralPath $helper)){return}
   if(Test-ChatOperationBusy){return}
 
-  $targets=$null
-  foreach($endpoint in @("http://127.0.0.1:9223","http://[::1]:9223")){
-    try{
-      $targets=@(Invoke-RestMethod -Uri ($endpoint+"/json/list") -TimeoutSec 5)
-      break
-    }catch{}
-  }
-  if($null -eq $targets){return}
-  $homes=@($targets | Where-Object {
-    [string]$_.type -eq "page" -and [string]$_.url -eq "https://chatgpt.com/"
-  })
-  if($homes.Count -lt 8){return}
+  # Always defer CDP target counting to the Node helper. PowerShell can
+  # flatten Chrome's JSON target array incorrectly, reporting zero pages.
+  # The helper safely keeps three home tabs and refuses while work is active.
 
   try{
     $already=@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction Stop |
@@ -197,7 +188,7 @@ function EnsureChromeTabHousekeeping{
     $stdout=Join-Path $BaseDir "tt-chrome-tab-housekeeping.log"
     $stderr=Join-Path $BaseDir "tt-chrome-tab-housekeeping.err.log"
     $p=Start-Process -FilePath $node.Source -ArgumentList @($helper,"--apply") -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr -PassThru -ErrorAction Stop
-    Log ("CHROME TAB HOUSEKEEPING START pid="+$p.Id+" idle_home_candidates="+$homes.Count)
+    Log ("CHROME TAB HOUSEKEEPING START pid="+$p.Id+" verified_idle_scan=1")
   }catch{
     Log ("CHROME TAB HOUSEKEEPING DEFERRED :: "+$_.Exception.Message)
   }
