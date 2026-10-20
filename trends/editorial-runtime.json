@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-20T06:05:12.157Z",
-  "last_completed_at": "2026-10-20T06:05:29.882Z",
-  "updated_at": "2026-10-20T06:05:29.883Z",
+  "last_started_at": "2026-10-20T06:58:57.317Z",
+  "last_completed_at": "2026-10-20T07:01:17.922Z",
+  "updated_at": "2026-10-20T07:01:17.922Z",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,18 +23,18 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-20261020060512",
+    "run_id": "tr-editorial-20261020065857",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-20T06:05:12.157Z",
-    "updated_at": "2026-10-20T06:05:29.883Z",
+    "started_at": "2026-10-20T06:58:57.317Z",
+    "updated_at": "2026-10-20T07:01:17.922Z",
     "current": 0,
     "total": 0,
     "event_id": null,
     "trend_id": null,
     "title": null,
-    "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram.",
+    "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes.",
     "incident_count": 0,
     "incidents": [],
     "summary": {
@@ -64,29 +64,21 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-20T06:05:12.162Z",
-        "phase": "verifying",
-        "event_id": null,
-        "trend_id": null,
-        "title": null,
-        "message": "Primera lectura sin cola activa ni reescrituras. Releyendo main antes de cerrar 0/0; sin activar Telegram, ImageGen ni reparación visual."
-      },
-      {
-        "at": "2026-10-20T06:05:29.883Z",
+        "at": "2026-10-20T07:01:17.922Z",
         "phase": "closing",
         "event_id": null,
         "trend_id": null,
         "title": null,
-        "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram."
+        "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
       }
     ],
-    "finished_at": "2026-10-20T06:05:29.882Z",
+    "finished_at": "2026-10-20T07:01:17.922Z",
     "partial": false,
     "queue_complete": true,
-    "verification_head": "277de2a5911d025a57427576751fff9a144b2d9b",
-    "remaining_active_ids": []
+    "remaining_active_ids": [],
+    "verification_head": "e8cce69a799f4ed3ce89457d5aea23bb3b0a1c81"
   },
-  "run_id": "tr-editorial-20261020060512",
+  "run_id": "tr-editorial-20261020065857",
   "summary": {
     "initial_compact_queue": 0,
     "final_compact_queue": 0,
@@ -107,20 +99,12 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-20T06:05:12.162Z",
-      "phase": "verifying",
-      "event_id": null,
-      "trend_id": null,
-      "title": null,
-      "message": "Primera lectura sin cola activa ni reescrituras. Releyendo main antes de cerrar 0/0; sin activar Telegram, ImageGen ni reparación visual."
-    },
-    {
-      "at": "2026-10-20T06:05:29.883Z",
+      "at": "2026-10-20T07:01:17.922Z",
       "phase": "closing",
       "event_id": null,
       "trend_id": null,
       "title": null,
-      "message": "Cierre 0/0 verificado tras releer main: sin revisiones activas ni reelaboraciones pendientes. Sin cambios en textos, imágenes ni Telegram."
+      "message": "Cierre 0/0 verificado en main: sin tendencias activas, reexplicaciones elegibles ni remates recientes pendientes."
     }
   ],
   "telegram_orphans": 0,
