@@ -60630,7 +60630,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -60703,7 +60702,28 @@
       "rank_at_explanation": 11,
       "source": "editorial_chat_direct",
       "editorial_engine": "chat-direct",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.lamoncloa.gob.es/multimedia/videos/presidente/PublishingImages/la-moncloa-en-directo.png",
+        "source": "La Moncloa",
+        "source_url": "https://www.lamoncloa.gob.es/presidente/actividades/Paginas/2026/201026-sanchez-dana-oliva-valencia.aspx",
+        "alt": "Imagen de archivo relacionada con Oliva",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://www.lamoncloa.gob.es/multimedia/videos/presidente/PublishingImages/la-moncloa-en-directo.png",
+        "source": "La Moncloa",
+        "source_url": "https://www.lamoncloa.gob.es/presidente/actividades/Paginas/2026/201026-sanchez-dana-oliva-valencia.aspx",
+        "alt": "Imagen de archivo relacionada con Oliva",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     },
     {
       "id": "manual-8c318a4327b6cf9263180c6b4c3375da",
@@ -60716,7 +60736,6 @@
       "reexplain": false,
       "rewrite_with_image": true,
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": null,
       "selected_tweet_image": null,
       "task": "explain",
@@ -60783,9 +60802,30 @@
       "rank_at_explanation": 12,
       "source": "editorial_chat_direct",
       "editorial_engine": "chat-direct",
-      "rewrite_pending": false
+      "rewrite_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/23fd6388-3d85-439e-aa97-c16473893d3c_facebook-aspect-ratio-1200-675_default_0_x1117y344.jpg",
+        "source": "elDiario.es · Daniel Cela",
+        "source_url": "https://www.eldiario.es/andalucia/gobierno-moreno-retira-primeras-ayudas-ong-atienden-inmigrantes-hogar-firmar-prioridad-nacional-vox_1_13556930.html",
+        "alt": "Imagen de archivo relacionada con Cruz Roja",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "fallback_image_status": "ready",
+      "image": {
+        "url": "https://static.eldiario.es/clip/23fd6388-3d85-439e-aa97-c16473893d3c_facebook-aspect-ratio-1200-675_default_0_x1117y344.jpg",
+        "source": "elDiario.es · Daniel Cela",
+        "source_url": "https://www.eldiario.es/andalucia/gobierno-moreno-retira-primeras-ayudas-ong-atienden-inmigrantes-hogar-firmar-prioridad-nacional-vox_1_13556930.html",
+        "alt": "Imagen de archivo relacionada con Cruz Roja",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-20T13:18:42.871Z",
+  "updated_at": "2026-10-20T13:20:52.856564Z",
   "count": 1033
 }
