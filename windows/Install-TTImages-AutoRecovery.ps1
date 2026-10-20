@@ -29,8 +29,9 @@ if([string]$chrome.Browser -notmatch '^Chrome/'){throw 'Chrome independiente 923
 $owned=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
 if($owned){
   $acts=@($owned.Actions)
-  if($acts.Count -ne 1 -or [string]$acts[0].Execute -notmatch '(?i)powershell(\.exe)?$' -or
-     [string]$acts[0].Arguments -notlike '*TTImages-AutoRecovery-Guardian.ps1*'){
+  $isOld=([string]$acts[0].Execute -match '(?i)powershell(\.exe)?$' -and [string]$acts[0].Arguments -like '*TTImages-AutoRecovery-Guardian.ps1*')
+  $isNew=([string]$acts[0].Execute -match '(?i)wscript(\.exe)?$' -and [string]$acts[0].Arguments -like '*TTImages-AutoRecovery-Hidden.vbs*')
+  if($acts.Count -ne 1 -or (-not $isOld -and -not $isNew)){
     throw 'Existe una tarea con el mismo nombre que no pertenece a este instalador. Sin cambios.'
   }
 }
@@ -56,8 +57,9 @@ try {
   foreach($marker in @('GetChromeTargets','GALERIA_NUEVA_CONFIRMADA','RECUPERACION_HTTP_OK')){
     if(-not $recoverCode.Contains($marker)){throw ('Recuperador incompleto: '+$marker)}
   }
-  $testOutput=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $temp $names[0]) -SelfTest 2>&1
-  if($LASTEXITCODE -ne 0 -or -not (($testOutput|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
+  # Self-test inside the installer process, not a second visible console.
+  $testOutput=& (Join-Path $temp $names[0]) -SelfTest 2>&1
+  if(-not (($testOutput|Out-String).Contains('TTIMAGES_AUTORECOVERY_SELFTEST_OK'))){
     throw ('Pruebas automáticas del guardián fallidas: '+($testOutput|Out-String))
   }
   Info 'VALIDADO versiones, Chrome 9234, sintaxis de ambos scripts y pruebas de detección'
@@ -76,9 +78,21 @@ try {
     }
     Copy-Item -LiteralPath (Join-Path $temp $fileName) -Destination $destination -Force
   }
-  $guardian=Join-Path $dir $names[0]
-  $exe=Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
-  $args='-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$guardian+'"'
+  # WScript launches a hidden PowerShell host without a console flash.
+  $launcher=Join-Path $dir 'TTImages-AutoRecovery-Hidden.vbs'
+  $launcherText=@'
+Option Explicit
+Dim shell, fso, folder, guardian, command
+Set shell = CreateObject("WScript.Shell")
+Set fso = CreateObject("Scripting.FileSystemObject")
+folder = fso.GetParentFolderName(WScript.ScriptFullName)
+guardian = fso.BuildPath(folder, "TTImages-AutoRecovery-Guardian.ps1")
+command = "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File """ & guardian & """"
+shell.Run command, 0, False
+'@
+  [IO.File]::WriteAllText($launcher,$launcherText,[Text.Encoding]::ASCII)
+  $exe=Join-Path $env:SystemRoot 'System32\wscript.exe'
+  $args='//B //Nologo "'+$launcher+'"'
   $action=New-ScheduledTaskAction -Execute $exe -Argument $args -WorkingDirectory $dir
   $trigger=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
   $principal=New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
@@ -87,7 +101,7 @@ try {
   $saved=Get-ScheduledTask -TaskName $name -ErrorAction Stop
   if($saved.State -eq 'Disabled'){throw 'Tarea instalada pero deshabilitada'}
   $original=Get-ScheduledTask -TaskName $sourceTask -ErrorAction Stop
-  Info ('GUARDIAN_INSTALADO estado='+$saved.State+' frecuencia=15min; recuperación tras 2 fallos')
+  Info ('GUARDIAN_INSTALADO estado='+$saved.State+' frecuencia=15min; invisible=wscript; recuperacion tras 2 fallos')
   Info ('CAPTURA_ORIGINAL_SIN_CAMBIOS estado='+$original.State)
   Info ('ARCHIVOS '+$dir)
   Info 'La próxima ejecución comprobará el estado; no toca galerías sanas ni reenviará imágenes'
