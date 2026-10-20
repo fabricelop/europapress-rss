@@ -28,5 +28,6 @@ for(const path of paths){
   assert.match(source,/cdp\.promptWasVerified=true/,'prompt verification must be stored');
   assert.match(source,/cdp\.preexistingGenerating=/,'must check generation baseline');
   assert.match(source,/const evidence=submissionEvidence\(st,/,'must use evidence helper');
+  assert.match(source,/const composerMarker=editors\.some\(c=>read\(c\)\.includes\(command\)\)/,'must inspect all editors, not first empty editor');
   console.log('PASS command-scoped generation detection on ChatGPT routes:',path);
 }
