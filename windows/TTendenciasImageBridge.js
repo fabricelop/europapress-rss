@@ -281,10 +281,27 @@ async function openFreshDedicatedConversation(){
       throw e
     }
     if(stillPresent){
-      console.log("BRIDGE FIXED TAB RETAINED AFTER ERROR target="+String(t.id)+" reason="+String(e&&e.message||e).slice(0,180));
-      throw e
+      // Target exists but its renderer cannot evaluate JavaScript. Do not
+      // restart Chrome or touch the separate TTImageRelay/9234 browser.
+      // Recovery is restricted to this bridge's dedicated ChatGPT tab,
+      // before writing any prompt for the new job.
+      const reason=String(e&&e.message||e);
+      if(!/CDP timeout Runtime\.evaluate|La pestaña dedicada no mostró compositor/i.test(reason)){
+        console.log("BRIDGE FIXED TAB RETAINED AFTER ERROR target="+String(t.id)+" reason="+reason.slice(0,180));
+        throw e
+      }
+      console.log("BRIDGE FIXED TAB UNRESPONSIVE target="+String(t.id)+" isolated-tab-recovery");
+      await closeFixedTargetById(t.id);
+      let closed=false;
+      for(let n=0;n<5;n++){
+        await sleep(600);
+        const living=await targets();
+        if(!living.some(x=>x.type==="page"&&String(x.id||"")===String(t.id||""))){closed=true;break}
+      }
+      if(!closed)throw Error("El target dedicado sigue abierto; no se creará otra pestaña");
+      console.log("BRIDGE FIXED TAB ISOLATED RECOVERY CLOSED target="+String(t.id));
     }
-    // Only create a replacement when Chrome confirms the target disappeared.
+    // No new Chrome process, no other tab touched, one replacement maximum.
     t=await createFixedTarget();
     cdp=new CDP(t.webSocketDebuggerUrl);
     await cdp.open();
