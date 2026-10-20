@@ -54,9 +54,16 @@ function RecoverGalleryByHttp([string]$oldId){
     $created=Invoke-RestMethod -Method Put -Uri ($base+'/json/new?'+[Uri]::EscapeDataString('https://chatgpt.com/images')) -TimeoutSec 10 -ErrorAction Stop
     $newId=[string]$created.id
     if($newId -notmatch '^[A-Fa-f0-9-]{8,64}$' -or $newId -eq $oldId){throw 'Nueva galeria sin ID valido'}
-    $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5 -ErrorAction Stop)
-    $old=@($list|Where-Object{$_.id -eq $oldId -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
-    $fresh=@($list|Where-Object{$_.id -eq $newId -and $_.type -eq 'page'})
+    # New tabs can briefly report about:blank before /images navigates.
+    $old=@();$fresh=@()
+    for($probe=0;$probe -lt 8;$probe++){
+      $list=@(Invoke-RestMethod -Uri ($base+'/json/list') -TimeoutSec 5 -ErrorAction Stop)
+      $old=@($list|Where-Object{$_.id -eq $oldId -and [string]$_.url -match '^https://chatgpt\.com/images(?:[/?#]|$)'})
+      $fresh=@($list|Where-Object{$_.id -eq $newId -and $_.type -eq 'page'})
+      if($old.Count -eq 1 -and $fresh.Count -eq 1 -and
+         [string]$fresh[0].url -match '^https://chatgpt\.com/images(?:[/?#]|$)'){break}
+      Start-Sleep -Milliseconds 600
+    }
     if($old.Count -ne 1 -or $fresh.Count -ne 1 -or
        [string]$fresh[0].url -notmatch '^https://chatgpt\.com/images(?:[/?#]|$)'){
       throw 'No se verificaron ambas galerias; la original permanece intacta'
