@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T00:45:00+02:00",
-  "last_completed_at": "2026-10-21T00:52:00+02:00",
-  "updated_at": "2026-10-21T00:52:00+02:00",
+  "last_started_at": "2026-10-21T01:15:00+02:00",
+  "last_completed_at": "2026-10-21T01:15:30+02:00",
+  "updated_at": "2026-10-21T01:15:30+02:00",
   "status": "success",
   "processed_ids": [
     "05c086bf9e25",
@@ -28,172 +28,53 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610210045-chat-e4fe3f9f",
+    "run_id": "tr-editorial-202610210115-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T00:45:00+02:00",
-    "updated_at": "2026-10-21T00:52:00+02:00",
-    "finished_at": "2026-10-21T00:52:00+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-21T01:15:00+02:00",
+    "updated_at": "2026-10-21T01:15:30+02:00",
+    "finished_at": "2026-10-21T01:15:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T00:45:00+02:00",
+        "at": "2026-10-21T01:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, solicitudes y estado autoritativo: 4 revisiones activas."
+        "message": "Releyendo cola, solicitudes y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T00:46:00+02:00",
+        "at": "2026-10-21T01:15:15+02:00",
         "phase": "verifying",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Releyendo estado autoritativo de #TierraDeNadie6."
+        "trend_id": null,
+        "title": null,
+        "message": "Estado fresco: cola 0; sin preparing/update ni rewrite_pending; Top 30 capturado a las 01:12."
       },
       {
-        "at": "2026-10-21T00:46:20+02:00",
-        "phase": "investigating",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Contrastando Mediaset: ruptura Ivana-Arkano y salvación entre Asraf, Damián y Víctor."
-      },
-      {
-        "at": "2026-10-21T00:46:40+02:00",
-        "phase": "drafting",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Redactando explicación factual y comprobando límite de X: 252 caracteres."
-      },
-      {
-        "at": "2026-10-21T00:47:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Remate seleccionado tras contrastar originalidad con ratings recientes."
-      },
-      {
-        "at": "2026-10-21T00:47:50+02:00",
-        "phase": "persisting",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Guardando ficha Explicada y sincronizando requests."
-      },
-      {
-        "at": "2026-10-21T00:48:00+02:00",
-        "phase": "verifying",
-        "trend_id": "05c086bf9e25",
-        "title": "#TierraDeNadie6",
-        "message": "Revisión r0 persistida y retirada de cola con los cinco campos críticos coincidentes."
-      },
-      {
-        "at": "2026-10-21T00:48:05+02:00",
-        "phase": "verifying",
-        "trend_id": "d7bbc6d46128",
-        "title": "Barça",
-        "message": "Releyendo estado autoritativo de Barça."
-      },
-      {
-        "at": "2026-10-21T00:48:10+02:00",
-        "phase": "investigating",
-        "trend_id": "d7bbc6d46128",
-        "title": "Barça",
-        "message": "Resultado final verificado: PSG 4-2 Barça; primera derrota culé del curso."
-      },
-      {
-        "at": "2026-10-21T00:48:20+02:00",
-        "phase": "drafting",
-        "trend_id": "d7bbc6d46128",
-        "title": "Barça",
-        "message": "Explicación factual cerrada y comprobada: 233 caracteres."
-      },
-      {
-        "at": "2026-10-21T00:48:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "d7bbc6d46128",
-        "title": "Barça",
-        "message": "Remate seleccionado sin reutilizar imágenes mentales de los cierres recientes."
-      },
-      {
-        "at": "2026-10-21T00:48:40+02:00",
-        "phase": "verifying",
-        "trend_id": "d7bbc6d46128",
-        "title": "Barça",
-        "message": "Barça r0 persistido, sincronizado y fuera de cola."
-      },
-      {
-        "at": "2026-10-21T00:48:50+02:00",
-        "phase": "verifying",
-        "trend_id": "0934bfed7763",
-        "title": "Champions",
-        "message": "Releyendo estado autoritativo de Champions."
-      },
-      {
-        "at": "2026-10-21T00:49:00+02:00",
-        "phase": "investigating",
-        "trend_id": "0934bfed7763",
-        "title": "Champions",
-        "message": "Resultados contrastados: PSG 4-2 Barça, Stuttgart 1-1 Atlético y Liverpool 4-3 Villarreal."
-      },
-      {
-        "at": "2026-10-21T00:49:10+02:00",
-        "phase": "drafting",
-        "trend_id": "0934bfed7763",
-        "title": "Champions",
-        "message": "Explicación factual cerrada y comprobada: 240 caracteres."
-      },
-      {
-        "at": "2026-10-21T00:49:20+02:00",
-        "phase": "verifying",
-        "trend_id": "0934bfed7763",
-        "title": "Champions",
-        "message": "Champions r0 persistido, sincronizado y fuera de cola."
-      },
-      {
-        "at": "2026-10-21T00:49:30+02:00",
-        "phase": "verifying",
-        "trend_id": "745a40061540",
-        "title": "#codigo10",
-        "message": "Releyendo estado autoritativo de #codigo10."
-      },
-      {
-        "at": "2026-10-21T00:49:40+02:00",
-        "phase": "investigating",
-        "trend_id": "745a40061540",
-        "title": "#codigo10",
-        "message": "Cuatro confirma que Leire Díez rompe 139 días de silencio y niega la trama y los seguimientos atribuidos."
-      },
-      {
-        "at": "2026-10-21T00:49:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "745a40061540",
-        "title": "#codigo10",
-        "message": "Remate político neutral seleccionado; explicación completa comprobada: 255 caracteres."
-      },
-      {
-        "at": "2026-10-21T00:52:00+02:00",
+        "at": "2026-10-21T01:15:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0, sin preparing/update, sin rewrite_pending y sin Explicadas recientes sin remate."
+        "message": "Relectura final de main: cola editorial vacía y sin revisiones activas."
       }
     ],
     "summary": {
-      "attempted": 4,
+      "attempted": 0,
       "ready": 0,
-      "explained": 4,
-      "explanation_groups": 4,
+      "explained": 0,
+      "explanation_groups": 0,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 4,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -201,17 +82,12 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 4,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "processed_ids": [
-      "05c086bf9e25",
-      "d7bbc6d46128",
-      "0934bfed7763",
-      "745a40061540"
-    ],
-    "message": "Pasada cerrada 4/4: #TierraDeNadie6, Barça, Champions y #codigo10 explicados y verificados; cola activa y reexplicaciones pendientes a 0. Sin ImageGen directo.",
+    "processed_ids": [],
+    "message": "Pasada cerrada 0/0: sin preparing/update ni rewrite_pending tras relectura fresca de main. Sin ImageGen directo.",
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -222,78 +98,8 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "05c086bf9e25",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c3",
-        "selected_score": null,
-        "closer_text": "🌶️ Lasaña, ruptura y salvación: menú completo en la isla.",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "d7bbc6d46128",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c2",
-        "selected_score": null,
-        "closer_text": "🌶️ El Barça empató dos veces; París reservó la última palabra.",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "0934bfed7763",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c4",
-        "selected_score": null,
-        "closer_text": "🌶️ Tres maletas, un punto y nueve goles encajados.",
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "745a40061540",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c2",
-        "selected_score": null,
-        "closer_text": "🌶️ Tras 139 días, el silencio llegó al plató con derecho a réplica.",
-        "no_remate_reason": null
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "05c086bf9e25",
-        "name": "#TierraDeNadie6",
-        "revision": 0,
-        "rank": 2,
-        "status": "explained",
-        "explained_at": "2026-10-21T00:47:50+02:00"
-      },
-      {
-        "id": "d7bbc6d46128",
-        "name": "Barça",
-        "revision": 0,
-        "rank": 4,
-        "status": "explained",
-        "explained_at": "2026-10-21T00:48:30+02:00"
-      },
-      {
-        "id": "0934bfed7763",
-        "name": "Champions",
-        "revision": 0,
-        "rank": 5,
-        "status": "explained",
-        "explained_at": "2026-10-21T00:49:10+02:00"
-      },
-      {
-        "id": "745a40061540",
-        "name": "#codigo10",
-        "revision": 0,
-        "rank": 10,
-        "status": "explained",
-        "explained_at": "2026-10-21T00:49:50+02:00"
-      }
-    ]
+    "remate_selections": [],
+    "final_outcomes": []
   },
   "run_id": "tr-editorial-202610210045-chat-e4fe3f9f",
   "summary": {
