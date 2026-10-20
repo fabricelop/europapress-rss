@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-19T23:45:20.743373+00:00",
+      "checked_at": "2026-10-20T02:10:04.909071+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 309068,
+          "seconds": 317752,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,77 +22,70 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-19T23:45:20.743373+00:00",
-      "issue_count": 10,
+      "checked_at": "2026-10-20T02:10:04.909071+00:00",
+      "issue_count": 9,
       "issues": [
         {
-          "kind": "editorial_overdue",
+          "kind": "missing_delivery",
           "id": "fc1e4bc8ee32",
           "title": "#MCCLegends",
-          "seconds": 1344,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "0c086cdc772a",
-          "title": "paula",
-          "seconds": 1344,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "d37f78ec86d1",
-          "title": "Kiko",
-          "seconds": 1344,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "5662169d58be",
-          "title": "Kylie",
-          "seconds": 80738,
-          "workflow": null
+          "seconds": 10028,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "b9fd3c6b62bd",
           "title": "#FirstDates19O",
-          "seconds": 9066,
+          "seconds": 17750,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "d0b77011bcc7",
           "title": "#laisladelastentaciones13",
-          "seconds": 5261,
+          "seconds": 13945,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "e9f3f719cfa1",
           "title": "#GetafeRayo",
-          "seconds": 5261,
+          "seconds": 13945,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "ad7a75826c85",
           "title": "djené",
-          "seconds": 5261,
+          "seconds": 13945,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "ade467a17048",
           "title": "Nacho Gil",
-          "seconds": 5261,
+          "seconds": 13945,
           "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "0c086cdc772a",
+          "title": "paula",
+          "seconds": 10028,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "d37f78ec86d1",
+          "title": "Kiko",
+          "seconds": 10028,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 309067,
+          "seconds": 317752,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -101,16 +94,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "d16e543af8a0167f7738ae8b82abb77ef2b854430d1e171027bcdf174be92067",
+      "open_signature": "58f76630623af85a1eeeab2b6e3b2aa74c79d5b787c5ab34619e082d3e40c23e",
       "repair_via_workflow_run": false,
-      "escalation_required": 9
+      "escalation_required": 8
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-18T21:41:31.957043+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-19T23:45:20.743373+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-19T23:45:20.743373+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-19T23:45:20.743373+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-20T02:10:04.909071+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-20T02:10:04.909071+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-20T02:10:04.909071+00:00"
   },
-  "checked_at": "2026-10-19T23:45:20.743373+00:00"
+  "checked_at": "2026-10-20T02:10:04.909071+00:00"
 }
