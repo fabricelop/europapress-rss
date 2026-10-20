@@ -34,9 +34,10 @@ def rework_explained(event_id, expected_revision, now, requests, manual, queue, 
                    and str(x.get("status") or "").lower() in {"preparing", "update"}), None)
     if active:
         error("Ya hay una reelaboración pendiente para esta tendencia")
-    grouped = current.get("grouped_member_revisions") or []
-    if any(str(x.get("id") or "") != event_id for x in grouped if isinstance(x, dict)):
-        error("Esta tarjeta agrupa varias tendencias; hay que separarlas antes de reelaborarla")
+    # Listas may contain a group leader (for example Ferran also covering
+    # Joan García and Doué). Restarting that leader is valid: the new revision
+    # must research and regroup its context from scratch, never reuse the
+    # previous grouped explanation or its images.
 
     next_revision = revision + 1
     title = str(current.get("name") or request.get("name") or "").strip()
