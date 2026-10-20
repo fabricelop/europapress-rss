@@ -9,7 +9,8 @@ struct GPSDiagnosticsView: View {
         List {
             Section("Seguimiento") {
                 LabeledContent("Estado",value:model.gpsStatus)
-                LabeledContent("Modo",value:model.isResting ? "Pausa voluntaria (tiempo asumido)" : "GPS continuo")
+                LabeledContent("Modo",value:model.isResting ? "Pausa voluntaria (tiempo asumido)" :
+                               (model.recording ? "GPS continuo" : "GPS detenido"))
                 LabeledContent("Última transición de pausa",
                                value:gps.lastPauseTransition)
                 LabeledContent("Reactivaciones automáticas tras pausa",value:String(gps.automaticRestResumptions))
@@ -30,6 +31,12 @@ struct GPSDiagnosticsView: View {
             }
             Section("Datos locales") {
                 LabeledContent("Motor de almacenamiento",value:model.storeStatus)
+                if let backupDate = model.mostRecentLocalBackup {
+                    LabeledContent("Última copia automática local",
+                                   value:backupDate.formatted(date:.abbreviated,time:.shortened))
+                } else {
+                    LabeledContent("Copia automática local",value:"Aún no disponible")
+                }
                 LabeledContent("Posiciones conservadas",value:String(model.retainedFixCount))
                 LabeledContent("Intervalos asignados",value:String(model.data.intervals.count))
                 LabeledContent("Tiempo sin atribución fiable",
