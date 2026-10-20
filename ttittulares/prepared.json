@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-20T18:38:35Z",
+  "updated_at": "2026-10-20T18:42:06.064249Z",
   "items": [
     {
       "event_id": "9ffbbf61c771",
@@ -132,17 +132,35 @@
       },
       "prepared_at": "2026-10-20T18:38:35Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": true,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-20T18:42:06.064249Z",
+      "fallback_image_search_attempted_at": "2026-10-20T18:42:06.064249Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/f1cb89f2-ed41-4d27-965f-a75f0ec32711_facebook-aspect-ratio-1200-675_default_0_x574y495.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/madrid/hallan-muerta-mujer-52-anos-multiples-heridas-arma-blanca-madrid_1_13601362.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Asesinan a una mujer de 52 años en Madrid en un caso que se investiga como violencia de género"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/f1cb89f2-ed41-4d27-965f-a75f0ec32711_facebook-aspect-ratio-1200-675_default_0_x574y495.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/madrid/hallan-muerta-mujer-52-anos-multiples-heridas-arma-blanca-madrid_1_13601362.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Asesinan a una mujer de 52 años en Madrid en un caso que se investiga como violencia de género"
+      }
     }
   ],
   "count": 0,
