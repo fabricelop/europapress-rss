@@ -11,7 +11,7 @@ const JOB_DIR=path.join(HOME,'editorial-tab-watch');
 const LOG=path.join(HOME,'editorial-tab-watch.log');
 const LOCK=path.join(JOB_DIR,'watcher.lock');
 const SAMPLE_MS=30000;
-const CLOSE_AFTER_MS=12*60000;
+const CLOSE_AFTER_MS=9*60000;
 const STABLE_MS=5*60000;
 const MAX_JOB_MS=3*3600000;
 const OLD_JOB_POLL_MS=5*60000;
@@ -21,7 +21,7 @@ const pidAlive=pid=>{if(!Number.isInteger(pid)||pid<=0)return false;try{process.
 const jobFile=id=>path.join(JOB_DIR,id+'.json');
 const idOk=id=>/^[a-f0-9-]{16,80}$/i.test(id);
 function safeUrl(url){
-  try{const u=new URL(url);return u.protocol==='https:'&&u.hostname==='chatgpt.com'&&(u.pathname.includes('/c/')||u.pathname.includes('/project'))}
+  try{const u=new URL(url);return u.protocol==='https:'&&u.hostname==='chatgpt.com'&&(/^\/(?:c|g|project)(?:\/|$)/.test(u.pathname)||u.pathname==='/')}
   catch{return false}
 }
 function imagePins(){
@@ -59,7 +59,7 @@ async function inspect(t){
       err?reject(err):resolve(value)
     }
     // Return only status and a numeric fingerprint. Never persist chat contents.
-    const expression=`(()=>{const a=[...document.querySelectorAll('[data-message-author-role="assistant"]')];const last=a.length?a[a.length-1]:null;const s=String(last?.innerText||'');let hash=5381;for(let i=0;i<s.length;i++)hash=((hash<<5)+hash+s.charCodeAt(i))|0;const b=[...document.querySelectorAll('button')];const stop=b.some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');return {url:location.href,ready:document.readyState,assistantCount:a.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy}})()`;
+    const expression=`(()=>{const a=[...document.querySelectorAll('[data-message-author-role="assistant"]')];const last=a.length?a[a.length-1]:null;const s=String(last?.innerText||'');let hash=5381;for(let i=0;i<s.length;i++)hash=((hash<<5)+hash+s.charCodeAt(i))|0;const b=[...document.querySelectorAll('button')];const stop=b.some(x=>/^(stop|detener|parar|cancelar)(\\b|\\s)/i.test(String(x.getAttribute('aria-label')||x.getAttribute('title')||'')))||!!document.querySelector('button[data-testid="stop-button"]');const busy=stop||!!document.querySelector('[aria-busy="true"]');const editor=document.querySelector('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]');const draft=String(editor?.innerText||editor?.value||'').trim();return {url:location.href,ready:document.readyState,assistantCount:a.length,assistantChars:s.length,fingerprint:s.length+':'+hash,busy,draftChars:draft.length}})()`;
     try{
       ws=new WebSocket(t.webSocketDebuggerUrl);
       ws.addEventListener('open',()=>{
@@ -136,10 +136,25 @@ async function sweep(){
     if(!safeUrl(t.url)){stopTracking(f,'changed_to_nonconversation_LEFT_OPEN');continue}
     let s;
     try{s=await inspect(t)}catch(e){log('INSPECT_RETRY '+j.id.slice(0,18)+' '+String(e.message||e));continue}
-    if(!safeUrl(s.url)||new URL(s.url).pathname!==new URL(j.url).pathname){
-      stopTracking(f,'navigated_elsewhere_LEFT_OPEN');continue
+    // ChatGPT moves a fresh / or /g/ project landing page into a /c/ URL
+    // after submission. Adopt that ONE initial transition for this owned tab.
+    // Subsequent navigation to another chat stops tracking without closing it.
+    if(!safeUrl(s.url)){stopTracking(f,'navigated_outside_chat_LEFT_OPEN');continue}
+    if(new URL(s.url).pathname!==new URL(j.url).pathname){
+      const from=new URL(j.url).pathname;
+      const to=new URL(s.url).pathname;
+      const landing=from==='/'||from.startsWith('/g/')||from.startsWith('/project/');
+      const conversation=/(?:^|\/)c\/[^/]+/.test(to);
+      if(!j.followedRoute&&landing&&conversation&&Date.now()-j.created<30*60000){
+        j.url=s.url;
+        j.followedRoute=true;
+        j.firstStable=0;
+        j.lastFingerprint='';
+        saveJob(f,j);
+        log('ADOPT_CONVERSATION '+j.id.slice(0,18));
+      }else{stopTracking(f,'navigated_elsewhere_LEFT_OPEN');continue}
     }
-    if(s.busy||s.ready!=='complete'||s.assistantCount<1||s.assistantChars<20){
+    if(s.busy||s.draftChars>0||s.ready!=='complete'||s.assistantCount<1||s.assistantChars<20){
       j.firstStable=0;j.lastFingerprint='';saveJob(f,j);continue
     }
     if(j.lastFingerprint!==s.fingerprint){j.lastFingerprint=s.fingerprint;j.firstStable=Date.now();saveJob(f,j);continue}
@@ -150,7 +165,7 @@ async function sweep(){
     if(!refreshed||imagePins().has(j.id)||!safeUrl(refreshed.url))continue;
     let verify;
     try{verify=await inspect(refreshed)}catch{continue}
-    if(verify.busy||verify.ready!=='complete'||verify.assistantChars<20||verify.fingerprint!==s.fingerprint||verify.url!==s.url)continue;
+    if(verify.busy||verify.draftChars>0||verify.ready!=='complete'||verify.assistantChars<20||verify.fingerprint!==s.fingerprint||verify.url!==s.url)continue;
     const response=await fetch(BASE+'/json/close/'+encodeURIComponent(j.id),{signal:AbortSignal.timeout(6000)});
     if(response.ok){
       log('CLOSED_COMPLETED_TAB '+j.id.slice(0,18)+' age_min='+Math.floor(elapsed/60000));
