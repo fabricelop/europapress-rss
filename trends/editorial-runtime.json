@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T19:45:00+02:00",
-  "last_completed_at": "2026-10-21T19:50:30+02:00",
-  "updated_at": "2026-10-21T19:50:30+02:00",
+  "last_started_at": "2026-10-21T20:15:00+02:00",
+  "last_completed_at": "2026-10-21T20:17:00+02:00",
+  "updated_at": "2026-10-21T20:17:00+02:00",
   "status": "success",
   "processed_ids": [
     "e63c35c1e89c",
@@ -23,40 +23,45 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "chat-20261021T1945+0200",
+    "marker": "TTENDENCIAS_RUNTRACE_V1",
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "chat-20261021T2015+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T19:45:00+02:00",
-    "updated_at": "2026-10-21T19:50:30+02:00",
-    "finished_at": "2026-10-21T19:50:30+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-21T20:15:00+02:00",
+    "updated_at": "2026-10-21T20:17:00+02:00",
+    "finished_at": "2026-10-21T20:17:00+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "attempted": 2,
+      "attempted": 0,
       "ready": 0,
-      "explained": 2,
-      "explanation_groups": 2,
+      "explained": 0,
+      "explanation_groups": 0,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 0,
+      "pending_repair_groups_scanned": 9,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 0
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 1
     },
-    "message": "TTendencias 2/2 cerrada y verificada; cola final 0, sin reexplicaciones pendientes. Saneamiento visual solicitado al inicio. Sin ImageGen directo.",
+    "message": "TTendencias 0/0: cola final 0, sin reexplicaciones pendientes. Saneamiento visual solicitado; #TEM21O conserva explicación factual sin remate. Sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -66,160 +71,56 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "id": "e63c35c1e89c",
-        "revision": 0,
-        "name": "Vox al Congreso",
-        "closer_text": "🌶️ Las listas ya han empezado la campaña por su cuenta."
-      },
-      {
-        "id": "fc94a2758b4a",
-        "revision": 0,
-        "name": "Nico Paz",
-        "closer_text": "🌶️ El cronómetro aún estaba calentando y Paz ya había marcado."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-21T19:45:40+02:00",
-        "phase": "investigating",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Contrastando fuente 1/2"
+        "at": "2026-10-21T20:15:10+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola editorial y estado autoritativo"
       },
       {
-        "at": "2026-10-21T19:45:52+02:00",
-        "phase": "investigating",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Contrastando fuente 2/2"
+        "at": "2026-10-21T20:15:20+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola editorial 0; sin requests preparing/update ni rewrite_pending"
       },
       {
-        "at": "2026-10-21T19:46:02+02:00",
-        "phase": "investigating",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Hecho esencial verificado: cierre de listas de Vox al Congreso para el 29-N"
+        "at": "2026-10-21T20:15:30+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes recientes · 9 tarjetas"
       },
       {
-        "at": "2026-10-21T19:46:12+02:00",
-        "phase": "drafting",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-21T19:46:20+02:00",
-        "phase": "drafting",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Comprobando límite de X · 264 caracteres"
-      },
-      {
-        "at": "2026-10-21T19:46:36+02:00",
+        "at": "2026-10-21T20:16:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Evaluando candidatos con ratings y originalidad"
+        "trend_id": "cf8239cbf7b5",
+        "title": "#TEM21O",
+        "message": "Sin remate · explicación factual suficiente"
       },
       {
-        "at": "2026-10-21T19:46:44+02:00",
-        "phase": "remate_selection",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-21T19:46:52+02:00",
-        "phase": "persisting",
-        "trend_id": "e63c35c1e89c",
-        "title": "Vox al Congreso",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-21T19:47:05+02:00",
+        "at": "2026-10-21T20:16:20+02:00",
         "phase": "verifying",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Releyendo estado autoritativo de Nico Paz"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-21T19:47:18+02:00",
-        "phase": "investigating",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-21T19:47:30+02:00",
-        "phase": "investigating",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Contrastando fuente 1/2"
-      },
-      {
-        "at": "2026-10-21T19:47:40+02:00",
-        "phase": "investigating",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Contrastando fuente 2/2"
-      },
-      {
-        "at": "2026-10-21T19:47:50+02:00",
-        "phase": "investigating",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Hecho esencial verificado: gol antes de los dos minutos ante Manchester United"
-      },
-      {
-        "at": "2026-10-21T19:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-21T19:48:08+02:00",
-        "phase": "drafting",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Comprobando límite de X · 244 caracteres"
-      },
-      {
-        "at": "2026-10-21T19:48:16+02:00",
-        "phase": "remate_selection",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Remate seleccionado tras comprobar originalidad"
-      },
-      {
-        "at": "2026-10-21T19:48:24+02:00",
-        "phase": "persisting",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-21T19:49:56+02:00",
+        "at": "2026-10-21T20:16:35+02:00",
         "phase": "verifying",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Releyendo main y verificando id+revision y texto persistido"
+        "trend_id": null,
+        "title": null,
+        "message": "Verificando cola 0 y ausencia de reexplicaciones pendientes"
       },
       {
-        "at": "2026-10-21T19:50:10+02:00",
-        "phase": "verifying",
-        "trend_id": "fc94a2758b4a",
-        "title": "Nico Paz",
-        "message": "Tendencias cerradas y verificadas; cola editorial 0"
-      },
-      {
-        "at": "2026-10-21T19:50:30+02:00",
+        "at": "2026-10-21T20:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 2/2 cerrada y verificada; cola final 0, sin reexplicaciones pendientes y sin ImageGen directo."
+        "message": "TTendencias 0/0 cerrada y verificada; saneamiento visual solicitado y sin ImageGen directo"
       }
     ]
   },
