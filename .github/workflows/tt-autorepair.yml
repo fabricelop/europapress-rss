@@ -1,0 +1,145 @@
+name: TT Autocorrección automática
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Saltar espera entre reintentos desde Telegram
+        required: false
+        type: boolean
+        default: false
+  schedule:
+    - cron: "*/5 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "shared/tt_autoheal.py"
+      - "shared/tt_bidirectional_audit.py"
+      - "shared/tt_editorial_run_guard.py"
+      - "shared/tt_technical_cleanup.py"
+      - ".github/workflows/tt-autorepair.yml"
+permissions:
+  contents: write
+  actions: write
+  issues: read
+  pull-requests: read
+concurrency:
+  group: tt-autorepair-coordinator
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /shared/tt_autoheal.py
+            /shared/tt_bidirectional_audit.py
+            /shared/tt_editorial_run_guard.py
+            /telegram/editorial-run-guard.json
+            /trends/editorial-runtime.json
+            /shared/tt_technical_cleanup.py
+            /telegram/tt-mobile-command-queue.json
+            /telegram/tt-technical-receipts.json
+            /trends/telegram-package-listener-state.json
+            /telegram/technical-cleanup-report.json
+            /trends/telegram-bot-state.json
+            /telegram/bidirectional-audit-ttittulares.json
+            /telegram/bidirectional-audit-ttendencias.json
+            /ttittulares/status.json
+            /ttittulares/prepared.json
+            /ttittulares/decisions.json
+            /trends/requests.json
+            /trends/telegram-manual-explained.json
+            /trends/mobile-decisions.json
+            /trends/recent.json
+            /telegram/lifecycle-baseline.json
+            /telegram/tt-autoheal-state.json
+            /telegram/tt-local-recovery-request.json
+            /ttittulares/editorial-queue.json
+            /telegram/ttittulares-deliveries.json
+            /telegram/pinned-index-ttittulares.json
+            /trends/editorial-queue.json
+            /trends/telegram-image-deliveries.json
+            /telegram/pinned-index-ttendencias.json
+      - name: Verificar salvaguardas y detección
+        run: |
+          python3 -m py_compile shared/tt_autoheal.py
+          python3 shared/tt_autoheal.py selftest
+          python3 -m py_compile shared/tt_bidirectional_audit.py
+          python3 shared/tt_bidirectional_audit.py selftest
+          python3 -m py_compile shared/tt_editorial_run_guard.py
+          python3 shared/tt_editorial_run_guard.py selftest
+          python3 -m py_compile shared/tt_technical_cleanup.py
+          python3 shared/tt_technical_cleanup.py selftest
+      - name: Comprobar anomalías y activar reparadores seguros
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+          TTENDENCIAS_CHAT_ID: ${{ secrets.TTENDENCIAS_CHAT_ID }}
+          FORCE: ${{ inputs.force }}
+          TT_AUTOHEAL_DIRECT_DISPATCH: "1"
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          python3 shared/tt_bidirectional_audit.py
+          python3 shared/tt_editorial_run_guard.py
+          cp telegram/editorial-run-guard.json /tmp/editorial-run-guard.json
+          for project in ttittulares ttendencias; do
+            cp "telegram/bidirectional-audit-$project.json" "/tmp/bidirectional-audit-$project.json"
+          done
+          if test "$FORCE" = "true"; then
+            python3 shared/tt_autoheal.py --force
+          else
+            python3 shared/tt_autoheal.py
+          fi
+          cp telegram/tt-autoheal-state.json /tmp/tt-autoheal-state.json
+          if test "$FORCE" = "true"; then
+            cp telegram/tt-local-recovery-request.json /tmp/tt-local-recovery-request.json
+            echo "TT_MANUAL_LOCAL_RECOVERY_REQUEST_STAGED"
+          fi
+          python3 shared/tt_technical_cleanup.py
+          cp telegram/technical-cleanup-report.json /tmp/technical-cleanup-report.json
+          # Both private Telegram buttons use force=true. Repair BOTH image
+          # queues and refresh the pinned image-status panel without alerts.
+          # No image is generated twice: repairs are idempotent per revision.
+          if test "$FORCE" = "true"; then
+            gh workflow run repair-ttittulares-listas.yml --repo "$GITHUB_REPOSITORY" --ref main
+            echo "TT_MANUAL_HEAL_TTITTULARES_IMAGE_REPAIR_DISPATCHED"
+            gh workflow run repair-ttendencias-explicadas.yml --repo "$GITHUB_REPOSITORY" --ref main
+            echo "TT_MANUAL_HEAL_TTENDENCIAS_IMAGE_REPAIR_DISPATCHED"
+            gh workflow run telegram-pinned-index.yml --repo "$GITHUB_REPOSITORY" --ref main
+            echo "TT_MANUAL_HEAL_IMAGE_STATUS_INDEX_DISPATCHED"
+          fi
+      - name: Registrar diagnósticos y enfriar reintentos
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/tt-autoheal-state.json telegram/tt-autoheal-state.json
+            if test -f /tmp/tt-local-recovery-request.json; then
+              cp /tmp/tt-local-recovery-request.json telegram/tt-local-recovery-request.json
+            fi
+            cp /tmp/editorial-run-guard.json telegram/editorial-run-guard.json
+            cp /tmp/technical-cleanup-report.json telegram/technical-cleanup-report.json
+            for project in ttittulares ttendencias; do
+              cp "/tmp/bidirectional-audit-$project.json" "telegram/bidirectional-audit-$project.json"
+            done
+            git add --sparse telegram/tt-autoheal-state.json telegram/editorial-run-guard.json telegram/bidirectional-audit-ttittulares.json telegram/bidirectional-audit-ttendencias.json telegram/technical-cleanup-report.json
+            if test -f /tmp/tt-local-recovery-request.json; then
+              git add --sparse telegram/tt-local-recovery-request.json
+            fi
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "TT autoheal: verificar colas y registrar intentos"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          exit 1

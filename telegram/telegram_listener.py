@@ -1,0 +1,217 @@
+import datetime as dt
+import json, os, re, subprocess, time, urllib.parse, urllib.request, urllib.error
+from pathlib import Path
+
+TOKEN=os.environ["TELEGRAM_BOT_TOKEN"]
+CHAT=str(os.environ["TELEGRAM_CHAT_ID"])
+BASE=f"https://api.telegram.org/bot{TOKEN}"
+ROOT=Path(".")
+STATE=Path("telegram/telegram-state.json")
+REQ=Path("telegram/emergency-requests.json")
+EVENTS=Path("telegram/events.json")
+PROC=Path("telegram/editorial-processing.json")
+PROCESSED=Path("telegram/processed-events.json")
+SENT=Path("telegram/emergency-sent.json")
+END=time.time()+85*60
+
+def load_json(path, default):
+    if not path.exists(): return default
+    raw=path.read_text(encoding="utf-8").strip()
+    if not raw: return default
+    try: return json.loads(raw)
+    except json.JSONDecodeError:
+        obj,_=json.JSONDecoder().raw_decode(raw)
+        return obj
+
+def write_json(path, obj):
+    path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+
+def api(method,payload=None,timeout=30):
+    data=json.dumps(payload).encode() if payload is not None else None
+    req=urllib.request.Request(f"{BASE}/{method}",data=data,headers={"Content-Type":"application/json"} if data else {})
+    try:
+        with urllib.request.urlopen(req,timeout=timeout) as r:
+            return json.loads(r.read().decode())
+    except urllib.error.HTTPError as e:
+        body=e.read().decode()
+        print("TELEGRAM_HTTP",method,e.code,body,flush=True)
+        return {"ok":False,"description":body}
+
+def safe_ack(cqid,text):
+    if cqid: api("answerCallbackQuery",{"callback_query_id":cqid,"text":text})
+
+def safe_delete(mid):
+    if mid: api("deleteMessage",{"chat_id":CHAT,"message_id":int(mid)})
+
+def git(*args,check=True):
+    return subprocess.run(["git",*args],text=True,capture_output=True,check=check)
+
+def sync_repo():
+    git("pull","--rebase","--autostash","origin","main",check=False)
+
+def commit_paths(paths,message):
+    git("add",*paths,check=False)
+    if git("diff","--cached","--quiet",check=False).returncode==0: return
+    git("commit","-m",message,check=False)
+    p=git("push","origin","HEAD:main",check=False)
+    if p.returncode!=0:
+        git("pull","--rebase","--autostash","origin","main",check=False)
+        git("push","origin","HEAD:main",check=False)
+
+def persist_callback(update):
+    sync_repo()
+    state=load_json(STATE,{})
+    q=load_json(REQ,{"requests":[]}); q.setdefault("requests",[])
+    events_doc=load_json(EVENTS,{"events":[]})
+    events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc
+    proc=load_json(PROC,{"items":[]}); proc.setdefault("items",[])
+    uid=int(update["update_id"])
+    cq=update.get("callback_query") or {}
+    msg=cq.get("message") or {}
+    data=str(cq.get("data") or "")
+    mid=msg.get("message_id")
+    now=dt.datetime.now(dt.timezone.utc).isoformat()
+    state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
+
+    if data.startswith("dg:"):
+        mids=[int(x) for x in data[3:].split(",") if x.isdigit()]
+        if mid and int(mid) not in mids: mids.append(int(mid))
+        for m in mids: safe_delete(m)
+        safe_ack(cq.get("id"),f"🗑️ Borrados {len(mids)} mensajes.")
+    elif data=="delete:message":
+        safe_ack(cq.get("id"),"🗑️ Mensaje borrado.")
+        safe_delete(mid)
+    else:
+        action=idv=""
+        if data.startswith("emergency:"):
+            p=data.split(":"); action=p[1] if len(p)>1 else ""; idv=":".join(p[2:])
+        elif data.startswith("prepare:"):
+            action="prepare"; idv=data.split(":",1)[1]
+        elif data.startswith("dismiss:"):
+            action="dismiss"; idv=data.split(":",1)[1]
+        if action in ("prepare","dismiss") and idv:
+            if not any(int(x.get("update_id",-1))==uid for x in q["requests"]):
+                q["requests"].append({"update_id":uid,"action":action,"id":idv,"at":now,"chat":CHAT,"message_id":mid})
+            ev=next((e for e in events if str(e.get("id"))==idv),None)
+            if ev:
+                ev["status"]="PROCESSING" if action=="prepare" else "DISMISSED"
+                if action=="prepare" and not any(str(x.get("event_id"))==idv for x in proc["items"]):
+                    proc["items"].append({
+                        "event_id":idv,
+                        "title":ev.get("canonical_title") or ev.get("title",""),
+                        "url":ev.get("url",""),
+                        "sources":ev.get("sources",[]),
+                        "sport_sources":ev.get("sport_sources",[]),
+                        "source_count":ev.get("source_count",len(ev.get("sources",[]))),
+                        "sport_source_count":ev.get("sport_source_count",len(ev.get("sport_sources",[]))),
+                        "selected_at":now,
+                        "status":"PROCESSING"
+                    })
+            safe_ack(cq.get("id"),"🧠 Enviada a Elaborando." if action=="prepare" else "🗑️ Desestimada.")
+            safe_delete(mid)
+    q["requests"]=q["requests"][-200:]
+    write_json(STATE,state); write_json(REQ,q); write_json(EVENTS,events_doc); write_json(PROC,proc)
+    commit_paths([str(STATE),str(REQ),str(EVENTS),str(PROC)],"Procesar botón Telegram")
+    return state["offset"]
+
+
+def persist_message(update):
+    sync_repo()
+    state=load_json(STATE,{})
+    proc=load_json(PROC,{"items":[]}); proc.setdefault("items",[])
+    events_doc=load_json(EVENTS,{"events":[]})
+    events=events_doc.get("events",[]) if isinstance(events_doc,dict) else events_doc
+    sent=load_json(SENT,{"messages":[]})
+    uid=int(update["update_id"])
+    msg=update.get("message") or {}
+    mid=msg.get("message_id")
+    text=str(msg.get("text") or "").strip()
+    reply=msg.get("reply_to_message") or {}
+    reply_mid=reply.get("message_id")
+    state["offset"]=max(int(state.get("offset",0) or 0),uid+1)
+
+    matched=None
+    if reply_mid and text:
+        matched=next((x for x in sent.get("messages",[]) if int(x.get("message_id") or -1)==int(reply_mid)),None)
+
+    # Fallback robusto: Telegram incluye el mensaje original completo en
+    # reply_to_message. Si emergency-sent.json perdió el message_id, recuperamos
+    # la noticia por el texto citado y la reencolamos igualmente para REWRITE.
+    if not matched and reply_mid and text:
+        reply_text=str(reply.get("text") or reply.get("caption") or "").strip()
+        def norm(v):
+            v=re.sub(r"[^a-z0-9áéíóúüñ ]+"," ",str(v or "").lower())
+            return " ".join(v.split())
+        nr=norm(reply_text)
+        best=None; best_score=0
+        if nr:
+            for x in reversed(proc.get("items",[])):
+                nt=norm(x.get("title",""))
+                # El mensaje editorial puede ser una redacción distinta del
+                # titular; usamos palabras distintivas para recuperar el evento.
+                words={w for w in nt.split() if len(w)>=5}
+                rwords={w for w in nr.split() if len(w)>=5}
+                score=len(words & rwords)
+                if score>best_score:
+                    best_score=score; best=x
+        if best is not None and best_score>=3:
+            matched={"group":"editorial-"+str(best.get("event_id")),"message_id":reply_mid,"recovered_from_reply":True}
+
+    if not matched:
+        write_json(STATE,state)
+        commit_paths([str(STATE)],"Avanzar offset Telegram")
+        if reply_mid and text:
+            api("sendMessage",{"chat_id":CHAT,"text":"⚠️ He recibido tu cambio, pero no he podido asociarlo con seguridad a la noticia original. No lo he descartado: vuelve a responder sobre el mensaje de la noticia o pulsa PREPARAR para recuperarla.","reply_to_message_id":mid})
+        return state["offset"]
+
+    group=str(matched.get("group") or "")
+    m=re.match(r"^editorial-(.+?)(?:-rewrite-\\d+)?$",group)
+    if not m:
+        write_json(STATE,state)
+        commit_paths([str(STATE)],"Avanzar offset Telegram")
+        return state["offset"]
+    event_id=m.group(1)
+    now=dt.datetime.now(dt.timezone.utc).isoformat()
+    item=next((x for x in reversed(proc["items"]) if str(x.get("event_id"))==event_id),None)
+    if item is None:
+        ev=next((e for e in events if str(e.get("id"))==event_id),None)
+        item={"event_id":event_id,"title":(ev or {}).get("canonical_title") or (ev or {}).get("title",""),
+              "url":(ev or {}).get("url",""),"sources":(ev or {}).get("sources",[]),
+              "source_count":(ev or {}).get("source_count",len((ev or {}).get("sources",[]))),
+              "selected_at":now,"status":"PROCESSING"}
+        proc["items"].append(item)
+    item["previous_status"]=item.get("status")
+    item["status"]="PROCESSING"
+    item["selection_mode"]="REWRITE"
+    item["rewrite_request"]=text
+    item["rewrite_requested_at"]=now
+    item["rewrite_version"]=int(item.get("rewrite_version",0) or 0)+1
+    item["rewrite_reply_to_message_id"]=int(reply_mid)
+    item.pop("delivered_at",None)
+    write_json(STATE,state); write_json(PROC,proc)
+    commit_paths([str(STATE),str(PROC)],"Registrar comentario editorial de Telegram")
+    api("sendMessage",{"chat_id":CHAT,"text":"📝 Cambio recibido. Reescribiré esta noticia en la próxima redacción.","reply_to_message_id":mid})
+    return state["offset"]
+
+# Webhook gestionado por Vercel; no borrarlo desde el listener legacy.
+state=load_json(STATE,{})
+offset=int(state.get("offset",0) or 0)
+print("TT_CONTROL_LISTENER_READY offset",offset,flush=True)
+
+while time.time()<END:
+    params=urllib.parse.urlencode({"offset":offset,"timeout":20,"allowed_updates":json.dumps(["callback_query","message"])})
+    try:
+        with urllib.request.urlopen(f"{BASE}/getUpdates?{params}",timeout=25) as r:
+            updates=json.loads(r.read().decode()).get("result",[])
+    except Exception as e:
+        print("GETUPDATES_ERROR",e,flush=True); time.sleep(2); continue
+    for u in updates:
+        cq=u.get("callback_query") or {}
+        msg=(cq.get("message") or {}) if cq else (u.get("message") or {})
+        if str((msg.get("chat") or {}).get("id",""))!=CHAT:
+            offset=max(offset,int(u["update_id"])+1); continue
+        if cq:
+            offset=persist_callback(u)
+        else:
+            offset=persist_message(u)
+print("TT_CONTROL_LISTENER_RESTART",flush=True)

@@ -1,0 +1,11 @@
+name: TTendencias · notificaciones legacy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flujo retirado
+        run: echo "TTendencias funciona ahora como radar y explicación. Ya no existen tuits ready ni notificaciones de tuits preparados."

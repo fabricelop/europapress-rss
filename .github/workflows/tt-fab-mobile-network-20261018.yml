@@ -1,0 +1,34 @@
+name: Diagnose TTActualidad and FabCalendar mobile endpoints 20261018
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tt-fab-mobile-network-20261018.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Reachability over IPv4 and IPv6 (read-only)
+        shell: bash
+        run: |
+          set +e
+          for url in \
+            "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health" \
+            "https://fabcalendar-bot.fabricelop.workers.dev/healthz" \
+            "https://fabricelop.github.io/europapress-rss/ttactualidad/" \
+            "https://fabricelop.github.io/europapress-rss/fabcalendar/"; do
+            echo "::group::Checking $url"
+            for ip in 4 6; do
+              curl -$ip --location --silent --show-error --connect-timeout 5 --max-time 16 \
+                --output "/tmp/net-$ip.html" \
+                --write-out "IPV$ip HTTP=%{http_code} remote_ip=%{remote_ip} total_seconds=%{time_total} bytes=%{size_download}\\n" \
+                "$url"
+              echo "IPV$ip exit=$?"
+              if [ "$ip" = "4" ]; then head -c 180 "/tmp/net-$ip.html"; echo; fi
+            done
+            echo "::endgroup::"
+          done

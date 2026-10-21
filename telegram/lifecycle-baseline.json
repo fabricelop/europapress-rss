@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "activated_at": "2026-10-12T15:25:23Z",
+  "timezone": "Europe/Madrid",
+  "operator_confirmation": "Both Telegram chats empty at checkpoint; historic entries deemed finished for live delivery/auditing, not user-deleted individually",
+  "project_state": {
+    "ttittulares": {
+      "historic_max_message_id": 3566,
+      "preserve_pending_ids": []
+    },
+    "ttendencias": {
+      "historic_max_message_id": 719,
+      "preserve_pending_ids": [
+        "1a58780acbab",
+        "809578787ffd",
+        "6137377fb82a",
+        "49a799c6beb3"
+      ]
+    }
+  },
+  "policy": {
+    "terminal_decision": "telegram_delete_callback_only_for_new_entries",
+    "historic_status": "closed_by_baseline",
+    "do_not_resend_historic": true,
+    "do_not_close_new_without_telegram_confirmation": true
+  },
+  "baseline_watermark_note": "Upper bounds immediately before first post-reset bot messages: TTendencias 720; TTiTTulares 3567. This includes old bot alerts and removed messages without ledger rows."
+}

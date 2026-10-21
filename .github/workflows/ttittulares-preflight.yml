@@ -1,0 +1,185 @@
+name: Preflight legado TTiTTulares web
+
+# Antiguo preflight de interfaces Vercel; el producto actual es GitHub Pages.
+# Solo ejecución manual de mantenimiento, nunca en cada push.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ttittulares-preflight
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar dependencias de los autodiagnósticos
+        run: python3 -m pip install -r requirements.txt pillow
+
+      - name: Validar Python
+        run: |
+          python3 -m py_compile telegram/radar_no_d1.py telegram/source_telemetry.py telegram/source_publication.py telegram/autocheck_ttittulares.py ttittulares/auto_queue.py ttittulares/build_status.py ttittulares/build_editorial_queue.py ttittulares/apply_editorial_outbox.py ttittulares/apply_ai_image_outbox.py ttittulares/ingest_pr_outbox_comment.py ttittulares/reconcile_confirmed_stale.py ttittulares/tremending/update_tremending.py
+          python3 telegram/radar_no_d1.py --selftest-dedupe
+          python3 telegram/source_telemetry.py
+          python3 telegram/source_publication.py
+          python3 ttittulares/auto_queue.py --selftest
+          python3 ttittulares/apply_editorial_outbox.py --selftest-images
+          python3 ttittulares/apply_ai_image_outbox.py --selftest
+          python3 ttittulares/tremending/update_tremending.py --selftest
+
+      - name: Validar JavaScript
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+          scripts=re.findall(r"<script>([\s\S]*?)</script>",html,re.I)
+          if not scripts:
+              raise SystemExit("No se encontró script inline")
+          Path("/tmp/ttittulares-inline.js").write_text("\n".join(scripts),encoding="utf-8")
+          PY
+          node --check /tmp/ttittulares-inline.js
+          node --check vercel-webhook/api/ttittulares-control.js
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-status-handler.js
+          node --check vercel-webhook/lib/ttittulares-control-handler.js
+          node --check ttittulares/tremending/capture_tweet.mjs
+          node --check vercel-webhook/ttittulares/sw.js
+          node --test vercel-webhook/test/ttittulares-image-ui.test.mjs vercel-webhook/test/ttittulares-source-table.test.mjs vercel-webhook/test/ttittulares-search-x.test.mjs vercel-webhook/test/ttittulares-actions.test.mjs
+
+      - name: Validar JSON y reglas
+        run: |
+          python3 - <<'PY'
+          import json, urllib.parse
+          from pathlib import Path
+
+          def load(p):
+              return json.loads(Path(p).read_text(encoding="utf-8"))
+
+          cfg=load("ttittulares/config.json")
+          mode=load("ttittulares/control-mode.json")
+          prepared=load("ttittulares/prepared.json")
+          processing=load("telegram/editorial-processing.json")
+          status=load("ttittulares/status.json")
+          manifest=load("vercel-webhook/ttittulares/manifest.webmanifest")
+          vercel=load("vercel-webhook/vercel.json")
+          root_vercel=load("vercel.json")
+          html=Path("vercel-webhook/ttittulares/index.html").read_text(encoding="utf-8")
+
+          assert cfg["radar"]["minimum_sources"] == 4
+          assert cfg["radar"]["waiting_ttl_hours"] == 24
+          assert cfg["images"]["mode"] == "ai_plus_fallback"
+          assert cfg["images"]["generate"] is False
+          assert cfg["images"]["ai_attempts_initial"] == 0
+          assert cfg["images"]["generation_mode"] == "manual_selected_jobs"
+          assert cfg["images"]["non_blocking"] is True
+          assert cfg["images"]["fallback_enabled"] is True
+          assert mode["mode"] in {"telegram","parallel","web"}
+          if mode["mode"]=="parallel": assert mode.get("parallel_since"), "parallel_since obligatorio"
+          def autodeploy_off(doc):
+              value=(doc.get("git") or {}).get("deploymentEnabled")
+              return value is False or (isinstance(value,dict) and value.get("main") is False)
+          assert autodeploy_off(vercel), "autodeploy Vercel debe permanecer desactivado"
+          assert autodeploy_off(root_vercel), "autodeploy Vercel raíz debe permanecer desactivado"
+          # La antigua rama de preview ttittulares-release ya no forma parte del
+          # flujo actual; no exigir una clave obsoleta que deja el preflight rojo.
+          assert "Con 3 fuentes" not in html and "threeCount" not in html
+          assert "fuentes funcionando" in html
+          assert "En elaboración" in html and "Listas" in html
+          # La interfaz usada por el usuario está en vercel-webhook, no en el app.js legado.
+          assert "Gag IA" in html and "🖼️ Copiar imagen archivo" in html
+          assert "🔁 Rehacer remate" in html and "✨ Generar IA" in html
+          assert "✨ Generar IA" in html and "🖼️ Copiar imagen archivo" in html
+          assert 'id="imageBar"' not in html and 'id="runImages"' not in html
+          assert "Mensaje confirmado en ChatGPT" in html
+          assert 'provider==="chat-imagegen"' in html and 'origin==="executing_chat"' in html
+          assert "🔁 Rehacer remate" in html and "🔁 Rehacer remate + IA" not in html
+          assert "const imageInFlight=" in html and "imagen pendiente cancelada" in html, "La imagen no debe bloquear la publicación"
+          assert manifest["start_url"] == "/ttittulares/"
+          prompt=Path("ttittulares/editorial-run-prompt.md").read_text(encoding="utf-8")
+          assert "esa misma conversación ejecuta la pasada editorial real" in prompt
+          assert "reparación visual automática" in prompt and "no llama directamente a ImageGen" in prompt
+          assert "no invoques ImageGen" in prompt
+          assert "No uses el ImageGen interno" not in prompt and "crea exactamente UN trabajo visual" not in prompt
+          # Rutas consolidadas en api/ttittulares-control.js: handlers reales en lib/.
+          run_api=Path("vercel-webhook/lib/ttittulares-run-handler.js").read_text(encoding="utf-8")
+          run_status=Path("vercel-webhook/lib/ttittulares-run-status-handler.js").read_text(encoding="utf-8")
+          control_api=Path("vercel-webhook/lib/ttittulares-control-handler.js").read_text(encoding="utf-8")
+          listener=Path("windows/TTiTTularesDedicatedListener.ps1").read_text(encoding="utf-8")
+          installer=Path("windows/Install-TTiTTularesMobileChatTrigger.ps1").read_text(encoding="utf-8")
+          installer_v13=Path("windows/Install-TTiTTulares-v13.ps1").read_text(encoding="utf-8")
+          installer_v14=Path("windows/Install-TTiTTulares-v14.ps1").read_text(encoding="utf-8")
+          installer_v15=Path("windows/Install-TTiTTulares-v15.ps1").read_text(encoding="utf-8")
+          assert "const {doc:trigger}=await readTrigger();" in run_api
+          assert "readControlJson(ACK_PATH)" in run_api
+          assert "latestByRun" in run_api and "El estado autoritativo de cada run" in run_api
+          assert "pc_worker_id" in run_status
+          assert "readJson(PROCESSING)" in control_api
+          assert '$WorkerId = "ttittulares-dedicated-v' in listener
+          assert "$LaunchConfirmSeconds = 30" in listener
+          assert "direct-node" in listener
+          assert "No procesa TTendencias" in listener
+          assert "EDITORIAL PROCESS STARTED direct-node-real-explicit-message" in listener and "MODO:\\s*ENVIO REAL" in listener
+          assert 'ArgumentList @($Runner,"titulares","--enviar")' in listener
+          assert "RedirectStandardOutput" in listener and "ttittulares-launch-" in listener
+          assert "if ($realMode -and ($messageSent -or $executionLaunched -or $responseStarted))" in listener
+          assert "TTITTULARES V15 INSTALADO Y ACTIVO" in installer_v15
+          assert 'node Ejecutar.js titulares --enviar' in installer_v15
+          assert 'Mensaje editorial: Ejecuta TTiTTulares' in installer_v15
+          assert "TTendencias: NO MODIFICADO" in installer_v15
+          assert "Ejecutar.js: validado, NO MODIFICADO" in installer_v15
+          assert "97ada1f9e657e766a83fb375a42bbfe46bb3c588" in installer_v15
+          assert "$listenerPid=[int]$active[0].ProcessId" in installer_v15
+          assert "$pid=[int]$active[0].ProcessId" not in installer_v15
+
+          ids=set()
+          for item in prepared.get("items",[]):
+              eid=str(item.get("event_id") or "")
+              assert eid and eid not in ids, f"event_id duplicado: {eid}"
+              ids.add(eid)
+              ai=item.get("ai_image") or {}
+              if ai:
+                  assert ai.get("provider")=="chat-imagegen" and ai.get("origin")=="executing_chat", f"{eid}: ai_image sin procedencia de chat"
+                  assert int((ai.get("context_guard") or {}).get("version") or 0)==3, f"{eid}: ai_image sin V3"
+              assert not (item.get("image_choice")=="ai" and not ai), f"{eid}: image_choice ai sin ImageGen válido"
+              drafted=int(item.get("drafted_source_count") or 0)
+              # El umbral de 4 rige la selección automática del radar, no la
+              # verificación editorial de una noticia ya preparada.
+              # Publicaciones actuales aportan fuentes verificadas en source_evidence;
+              # las históricas las conservan en citations. Exigir dos medios distintos.
+              evidence=[*(item.get("citations") or []),*(item.get("source_evidence") or [])]
+              cited={str(c.get("source") or c.get("outlet") or "").strip() for c in evidence if isinstance(c,dict)}
+              assert drafted >= 2 and len(cited-{''}) >= 2, f"{eid}: faltan dos fuentes editoriales independientes ({drafted})"
+              tweet=item.get("tweet")
+              # Datos históricos pueden conservar variants; toda escritura nueva
+              # usa un único tweet y el backend mantiene la lectura compatible.
+              if isinstance(tweet,dict):
+                  text=str(tweet.get("text") or "")
+                  remate=str(tweet.get("remate") or "")
+                  assert text and len(text) <= 280, f"{eid}: tuit vacío o >280"
+                  assert remate.startswith("🌶️ "), f"{eid}: remate sin guindilla"
+                  assert text.endswith("\n\n"+remate), f"{eid}: el tuit debe terminar con su remate"
+                  assert "\\n" not in text and "\\n" not in remate, f"{eid}: contiene barra invertida+n literal"
+                  url=str(tweet.get("url") or "")
+                  if url:
+                      q=urllib.parse.urlparse(url)
+                      got=urllib.parse.parse_qs(q.query).get("text",[""])[0]
+                      assert got == text, f"{eid}: enlace X no coincide con el texto"
+              else:
+                  variants=item.get("variants") or []
+                  assert any(str(v.get("label") or "").upper()=="A" and str(v.get("remate") or "").startswith("🌶️ ") for v in variants), f"{eid}: histórico sin variante publicable"
+
+          healthy=status.get("healthy_source_count")
+          total=status.get("configured_sources")
+          if healthy is not None and total is not None:
+              assert 0 <= int(healthy) <= int(total)
+          print("PREFLIGHT_JSON_OK")
+          PY
+
+      - name: Resultado
+        run: echo "TTiTTulares listo para preview técnico sin cambiar control-mode"

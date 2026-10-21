@@ -1,0 +1,57 @@
+name: TTActualidad - decisiones editoriales reales sin Telegram
+on:
+  repository_dispatch:
+    types: [ttactualidad_action_v1]
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-direct-${{ github.event.client_payload.project }}-${{ github.event.client_payload.event_id }}
+  cancel-in-progress: false
+jobs:
+  remove:
+    if: github.event.action == 'ttactualidad_action_v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Aplicar eliminacion, desestimar o preparar con revision
+        env:
+          TT_ACTUALIDAD_EVENT_JSON: ${{ toJSON(github.event.client_payload) }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttactualidad-actions[bot]"
+          git config user.email "ttactualidad-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6 7; do
+            echo "Direct action attempt $attempt (read latest main)"
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/apply-ttactualidad-action.py
+            git add -- ttittulares/prepared.json ttittulares/decisions.json ttittulares/editorial-queue.json telegram/editorial-processing.json ttittulares/tremending/items.json trends/editorial-queue.json trends/mobile-decisions.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/prepared.json trends/requests.json pilot/ttactualidad-action-receipts.json
+            if git diff --cached --quiet; then
+              echo "Already processed; no changes to push."
+              exit 0
+            fi
+            git commit -m "TTActualidad: aplicar decision editorial"
+            if git push origin HEAD:main; then
+              echo "Authoritative GitHub state updated."
+              # Solo las órdenes que abren una elaboración provocan trabajo
+              # editorial nuevo. El transporte de imágenes es independiente.
+              if [ "${{ github.event.client_payload.project }}" = "ttendencias" ] &&
+                 { [ "${{ github.event.client_payload.decision }}" = "rework" ] ||
+                   [ "${{ github.event.client_payload.decision }}" = "prepare" ]; }; then
+                python3 trends/request_pc_editorial.py --selftest
+                python3 trends/request_pc_editorial.py --trigger ||
+                  echo "TT_EDITORIAL_TRIGGER_ERROR: solicitud persistida; revisar lanzador PC"
+              fi
+              exit 0
+            fi
+            echo "Concurrent update: retry against fresh main."
+            sleep $((attempt * 2 + RANDOM % 4))
+          done
+          echo "Could not persist action after seven attempts" >&2
+          exit 1

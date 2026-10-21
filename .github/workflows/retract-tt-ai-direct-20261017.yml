@@ -1,0 +1,65 @@
+name: Retraer dos imágenes enviadas por ruta incorrecta
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retract-tt-ai-direct-20261017.yml'
+permissions:
+  contents: write
+jobs:
+  retract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Retraer exclusivamente mensajes 4138 y 4139
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git checkout -B main origin/main
+          python3 - <<'PY'
+          import json,os,urllib.request
+          from datetime import datetime,timezone
+          from pathlib import Path
+          path=Path('telegram/tt-ai-image-deliveries.json')
+          doc=json.loads(path.read_text(encoding='utf8'))
+          expected={'bb267af6f507':4138,'ca44538a6291':4139}
+          token=os.getenv('TELEGRAM_BOT_TOKEN','')
+          chat=os.getenv('TELEGRAM_CHAT_ID','')
+          if not token or not chat: raise RuntimeError('Faltan credenciales del bot configurado')
+          for row in doc.get('items',[]):
+              eid=str(row.get('event_id') or '')
+              mid=int(row.get('telegram_message_id') or 0)
+              if expected.get(eid)!=mid or row.get('status')!='sent': continue
+              body=json.dumps({'chat_id':chat,'message_id':mid}).encode()
+              req=urllib.request.Request('https://api.telegram.org/bot'+token+'/deleteMessage',data=body,
+                    headers={'Content-Type':'application/json'},method='POST')
+              try:
+                  with urllib.request.urlopen(req,timeout=25) as response:
+                      result=json.loads(response.read())
+              except Exception as exc:
+                  raise RuntimeError('No se pudo retraer mensaje '+str(mid)+': '+type(exc).__name__) from None
+              if result.get('ok') is not True:
+                  raise RuntimeError('Telegram no confirmó borrado '+str(mid))
+              row['status']='retracted'
+              row['retracted_at']=datetime.now(timezone.utc).isoformat()
+              path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+              print('TT_AI_WRONG_ROUTE_RETRACTED',eid,mid)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add telegram/tt-ai-image-deliveries.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Registrar retracción de imágenes IA enviadas por ruta incorrecta'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+            sleep "$attempt"
+          done
+          exit 1

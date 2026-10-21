@@ -1,0 +1,14 @@
+name: "TTendencias Telegram message deletion - disabled TTActualidad"
+# Disabled by request: TTActualidad direct app replaces TTendencias Telegram.
+# Safe rollback: restore this file from git history.
+# Editorial, image jobs, SeLoRecordamos and TTImages continue separately.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Legacy TTendencias Telegram disabled
+        run: echo "Disabled - TTActualidad manages editorial decisions without Telegram"

@@ -1,0 +1,150 @@
+name: TTActualidad V8 safe live rollout
+on:
+  push:
+    branches: ['main', 'fix/ttactualidad-live-actions-20261016', 'fix/ttactualidad-creciendo-manual-20261016', 'fix/ttactualidad-tremending-delete-20261016']
+    paths:
+      - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/trends_rework.py'
+      - 'pilot/submit_ttactualidad_manual.py'
+      - 'pilot/test_ttactualidad_manual.py'
+      - '.github/workflows/ttactualidad-manual-news.yml'
+      - 'pilot/test_ttactualidad_direct_actions.py'
+      - 'pilot/ttactualidad-live/**'
+      - '.github/workflows/ttactualidad-direct-actions.yml'
+      - '.github/workflows/ttactualidad-v8-tests.yml'
+  pull_request:
+    paths:
+      - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/ttactualidad-live/test_live_actions.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttactualidad-v8-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python syntax
+        run: python3 -m py_compile pilot/apply-ttactualidad-action.py pilot/ttactualidad-live/test_live_actions.py
+      - name: Earlier GitHub direct-action regression tests
+        run: python3 -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
+      - name: New +Noticia isolated queue tests
+        run: python3 -m unittest discover -s pilot -p 'test_ttactualidad_manual.py' -v
+      - name: New live editorial actions
+        run: python3 -m unittest discover -s pilot/ttactualidad-live -p 'test_live_actions.py' -v
+      - name: Top 30 survives rapid tab changes and slow editorial files
+        run: node pilot/ttactualidad-live/test_top30.mjs
+      - name: Trend card freshness and live interface
+        run: node pilot/ttactualidad-live/test_listas.mjs
+      - name: Tremending UI deletion regression
+        run: node pilot/ttactualidad-live/test_tremending.mjs
+      - name: Creciendo to En elaboración pending/ready regression
+        run: node pilot/ttactualidad-live/test_creciendo_pending.mjs
+      - name: Ferran rework stays visible in En elaboración while editorial queue syncs
+        run: node pilot/ttactualidad-live/test_rework_visible.mjs
+      - name: Ferran and Gordon atomic rework state regression
+        run: node pilot/ttactualidad-live/test_rework_visible.mjs
+      - name: Worker actions and safe retry
+        run: node pilot/ttactualidad-live/test_worker_live.mjs
+      - name: Validate browser and Worker JS
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          html=Path('pilot/ttactualidad-live/index.html').read_text()
+          a=html.index('<script>')+len('<script>');b=html.index('</script>',a)
+          Path('/tmp/ttactualidad-v8-ui.js').write_text(html[a:b])
+          assert "Pasar a En Elaboración" in html
+          assert 'id="manual-open"' in html and '/api/manual-news' in html
+          assert 'id="manual-headline"' in html and 'id="manual-url"' in html
+          assert 'current-explained>48*3600000' in html
+          assert 'Probar Desestimar' not in html and '¿Cómo funciona este piloto?' not in html
+          for token in ('TTImages','Publicar en X','Copiar GAG Completo','Abrir ChatGPTImages','Copiar Texto','Copiar Foto Archivo','Quitar de Listas','Buscar en X'):
+              assert token in html,token
+          worker=Path('pilot/ttactualidad-live/worker.js').read_text()
+          assert "signed_cookie_v1" in worker
+          assert "ttactualidad_manual_news_v1" in worker
+          assert "editorial_dispatch_unavailable" in worker
+          assert "['deleted','discard','prepare','rework'].includes" in worker
+          assert "Volver a En elaboración" in html
+          assert "crypto.subtle.verify" in worker
+          wf=Path('.github/workflows/ttactualidad-direct-actions.yml').read_text()
+          assert 'ttittulares/editorial-queue.json' in wf and 'trends/editorial-queue.json' in wf
+          assert 'ttittulares/tremending/items.json' in wf
+          PY
+          node --check /tmp/ttactualidad-v8-ui.js
+          cp pilot/ttactualidad-live/worker.js /tmp/ttactualidad-v8-worker.mjs
+          node --check /tmp/ttactualidad-v8-worker.mjs
+      - name: Check Windows PowerShell 5.1 safe encoding in original deployer
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('pilot/ttactualidad-live/Actualizar-TTActualidad-Original.ps1')
+          content=p.read_bytes()
+          assert content.isascii(), 'Windows PowerShell 5.1 loads UTF-8 without BOM as legacy ANSI'
+          source=content.decode('ascii')
+          assert source.count('Volver a En elabora') >= 2, 'Missing rework UI preflight or live check'
+          assert 'Deploy-SameWorker' in source
+          print('TT_ACTUALIDAD_ORIGINAL_PS51_ENCODING_OK')
+          PY
+      - name: Parse deploy PowerShell without executing
+        shell: pwsh
+        run: |
+          $tokens=$null
+          $errorsFound=$null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V8-EnVivo.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8 syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V83-Tremending.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8.3 syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Update-TTActualidad-V85-Creciendo-Pendiente.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell V8.5 syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Deploy-TTActualidad-PlusNoticia.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'PowerShell +Noticia syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Fix-TTActualidad-Top30.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'Top30 deployment PowerShell syntax invalid'
+          }
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'pilot/ttactualidad-live/Actualizar-TTActualidad-Original.ps1'),
+            [ref]$tokens, [ref]$errorsFound
+          ) | Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound | ForEach-Object { Write-Host $_.Message }
+            throw 'Original TTActualidad updater syntax invalid'
+          }
+          Write-Host 'TTActualidad deploy scripts syntax OK'

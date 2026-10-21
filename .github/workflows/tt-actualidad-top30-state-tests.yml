@@ -1,0 +1,24 @@
+name: 'TT Actualidad Top 30: estados y entrega real'
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "docs/index.html"
+      - ".github/scripts/test_tt_actualidad_top30_states.cjs"
+      - ".github/workflows/tt-actualidad-top30-state-tests.yml"
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /docs/index.html
+            /.github/scripts/test_tt_actualidad_top30_states.cjs
+      - name: Simular estado real Top 30 sin llamar Telegram
+        run: node .github/scripts/test_tt_actualidad_top30_states.cjs

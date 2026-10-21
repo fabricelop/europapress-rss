@@ -1,0 +1,15 @@
+name: "Envio antiguo Telegram TTiTTulares — desactivado"
+# Desactivado 16-10-2026 a petición del usuario.
+# Las decisiones de TTActualidad se gestionan directamente en GitHub sin Telegram.
+# No elimina la elaboración editorial, ni toca SeLoRecordamos o TTImages.
+# Restaurar archivo desde historial GitHub si se necesita volver atrás.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Telegram TT sustituido por TTActualidad
+        run: echo "Workflow antiguo sin operaciones; conservado solo para diagnostico manual"

@@ -1,0 +1,48 @@
+name: TT live panel state audit (read-only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tt-live-panel-status-audit-20261009.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect live Cloudflare status APIs for both panels
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,json,datetime
+          now=datetime.datetime.now(datetime.timezone.utc)
+          print("PANEL_AUDIT_TIME_UTC",now.isoformat(),flush=True)
+          bases={
+           "TTENDENCIAS":"https://ttendencias-no-vercel-test.fabricelop.workers.dev/api/ttendencias-run-status",
+           "TTITTULARES":"https://ttittulares-no-vercel-test.fabricelop.workers.dev/api/ttittulares-run-status",
+          }
+          for name,url in bases.items():
+           req=urllib.request.Request(url,headers={"User-Agent":"TTPanelReadOnlyAudit/20261009","Cache-Control":"no-cache"},method="GET")
+           try:
+            with urllib.request.urlopen(req,timeout=45) as r: code=r.status;data=json.loads(r.read(1100000))
+           except urllib.error.HTTPError as e:
+            code=e.code
+            try:data=json.loads(e.read(10000))
+            except Exception:data={"error":"NON_JSON"}
+           except Exception as e:
+            code=0;data={"error_type":type(e).__name__}
+           fields=("ok","enabled","active","status","phase","source","source_label",
+                   "started_at","requested_at","updated_at","finished_at","last_run","message",
+                   "run_id","command_id","pc_ack_stage","pc_failure_detail","heartbeat_age_seconds",
+                   "incident_count","incidents","debug","summary","current","total","error","retry_at")
+           safe={k:data.get(k) for k in fields if k in data}
+           for key in ("last_run",):
+            if isinstance(safe.get(key),dict):
+             sub=safe[key]
+             safe[key]={k:sub.get(k) for k in fields if k in sub and k not in ("last_run","incidents","summary")}
+             safe[key]["incident_count"]=sub.get("incident_count")
+             safe[key]["incidents"]=str(sub.get("incidents") or [])[:650]
+           if isinstance(safe.get("incidents"),list):safe["incidents"]=safe["incidents"][-2:]
+           print("PANEL_AUDIT_"+name,"http="+str(code),json.dumps(safe,ensure_ascii=False,default=str)[:12500],flush=True)
+          PY

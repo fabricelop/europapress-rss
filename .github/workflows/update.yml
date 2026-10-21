@@ -1,0 +1,258 @@
+name: Actualizar RSS Europa Press
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10,40 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - "telegram/radar-trigger.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-repo-write-v2
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Actualizar TTendencias en cada ciclo fiable
+        run: |
+          # Este workflow ya se ejecuta de forma estable cada ~10 minutos.
+          # Lo usamos como reloj principal de captura de TTendencias para no
+          # depender exclusivamente del scheduler nativo de ttendencias-refresh.
+          python3 trends/update_trends.py
+          python3 trends/auto_queue_new.py
+
+      - name: Guardar captura TTendencias inmediatamente
+        run: |
+          set -e
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          for intento in 1 2 3 4; do
+            # No rebasar snapshots de la cola editorial: otro proceso puede
+            # modificarla mientras este ciclo calcula tendencias. Si main avanzó,
+            # recalculamos TTendencias sobre el estado nuevo y evitamos conflictos.
+            git fetch origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then
+              echo "TTendencias cambió en paralelo; recalculando ($intento/4)..."
+              git reset --hard origin/main
+              python3 trends/update_trends.py
+              python3 trends/auto_queue_new.py
+            fi
+
+            git add trends/recent.json trends/checkpoint.json trends/requests.json trends/editorial-queue.json
+            if git diff --cached --quiet; then
+              echo "TTendencias sin cambios."
+              exit 0
+            fi
+
+            git commit -m "Actualizar Top 10 TTendencias"
+            git fetch origin main
+            if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD^)" ]; then
+              echo "Nuevo cambio concurrente en TTendencias; recalculando ($intento/4)..."
+              git reset --hard origin/main
+              sleep $((intento * 2))
+              continue
+            fi
+
+            if git push origin HEAD:main; then
+              echo "TTendencias guardado correctamente (intento $intento)."
+              exit 0
+            fi
+
+            echo "Push concurrente TTendencias; recalculando ($intento/4)..."
+            git reset --hard origin/main
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo guardar TTendencias tras 4 recálculos seguros."
+          exit 1
+
+      - name: Recuperación editorial TTendencias por API
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # No hace nada mientras api_failover.enabled=false o no exista la clave.
+          # Cuando se active, solo recupera solicitudes vencidas tras :10/:40.
+          python3 trends/editorial_api.py
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/requests.json trends/prepared.json trends/editorial-runtime.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Recuperar pase editorial TTendencias"
+            for intento in 1 2 3 4; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Conflicto al guardar recuperación editorial; reintentando desde main."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                echo "Recuperación editorial guardada correctamente."
+                break
+              fi
+              sleep $((intento * 2))
+              if [ "$intento" -eq 4 ]; then exit 1; fi
+            done
+          else
+            echo "Sin recuperación editorial que guardar."
+          fi
+
+      - name: Recorrer Europa Press y actualizar archivo
+        run: python generate_feed.py
+
+      - name: Crear JSON reciente para TTiTTulares
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("latest.json").read_text(encoding="utf-8"))
+          items = data.get("items", [])[:200]
+          recent = {"source": data.get("source"), "generated_at": data.get("generated_at"), "count": len(items), "items": items}
+          Path("recent.json").write_text(json.dumps(recent, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+          print(f"recent.json creado con {len(items)} noticias")
+          PY
+
+      - name: Guardar cambios sin pisar otros procesos
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.xml latest.json recent.json state.json archive/
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizar archivo Europa Press"
+            for intento in 1 2 3 4; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "Conflicto concurrente en archivo Europa Press; reintentando desde main."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                echo "Cambios guardados correctamente (intento $intento)."
+                break
+              fi
+              sleep $((intento * 2))
+              if [ "$intento" -eq 4 ]; then exit 1; fi
+            done
+          else
+            echo "No hay cambios de Europa Press."
+          fi
+
+      - name: Sincronizar main antes del barrido editorial
+        if: always()
+        run: |
+          set -e
+          git fetch origin main
+          git reset --hard origin/main
+
+      - name: Ejecutar y guardar barrido multifuente TTiTTulares
+        if: always()
+        env:
+          # Telegram está fuera del flujo operativo de TTiTTulares.
+          # El autocheck conserva diagnóstico, pero no recibe credenciales de envío.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for intento in 1 2 3 4; do
+            # Siempre recalcular sobre el main más reciente. Así nunca se intenta
+            # fusionar dos snapshots completos de events/processed-events.
+            git fetch origin main
+            git reset --hard origin/main
+            python3 telegram/radar_no_d1.py
+            python3 telegram/prune_events.py
+            python3 ttittulares/auto_queue.py
+            python3 ttittulares/reconcile_state.py
+            python3 ttittulares/build_editorial_queue.py
+            python3 ttittulares/build_status.py
+            python3 telegram/autocheck_ttittulares.py
+            git add telegram/events.json telegram/event-seeds.json telegram/processed-events.json telegram/editorial-processing.json telegram/autocheck-status.json telegram/autocheck-alert-state.json ttittulares/status.json ttittulares/editorial-queue.json
+
+            if git diff --cached --quiet; then
+              echo "Barrido editorial sin cambios."
+              exit 0
+            fi
+
+            git commit -m "Actualizar barrido multifuente TTiTTulares"
+            git fetch origin main
+            BASE="$(git rev-parse HEAD^)"
+            REMOTE="$(git rev-parse origin/main)"
+            if [ "$REMOTE" != "$BASE" ]; then
+              # Solo recalcular si el cambio concurrente toca el estado que este
+              # barrido acaba de reconstruir. Los commits de TTendencias, feeds,
+              # SeLoRecordamos, etc. pueden integrarse de forma segura por rebase.
+              if git diff --quiet "$BASE" "$REMOTE" -- \
+                telegram/events.json \
+                telegram/event-seeds.json \
+                telegram/processed-events.json \
+                telegram/editorial-processing.json \
+                telegram/autocheck-status.json \
+                telegram/autocheck-alert-state.json \
+                ttittulares/status.json; then
+                echo "Cambios concurrentes ajenos a TTiTTulares; integrando sin recalcular."
+                if ! git rebase origin/main; then
+                  git rebase --abort || true
+                  echo "Rebase concurrente falló; recalculando barrido ($intento/4)..."
+                  sleep $((intento * 2))
+                  continue
+                fi
+              else
+                echo "Estado TTiTTulares ya actualizado en paralelo; se descarta este snapshot antiguo."
+                exit 0
+              fi
+            fi
+
+            if git push origin HEAD:main; then
+              echo "Estado editorial guardado correctamente (intento $intento)."
+              exit 0
+            fi
+            echo "Push concurrente; recalculando barrido ($intento/4)..."
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo guardar el estado editorial tras 4 recálculos seguros."
+          exit 1
+
+      - name: Escanear avisos Top 10 TTendencias
+        if: always()
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          curl --fail-with-body --silent --show-error --max-time 25 \
+            --header "Authorization: Bearer $GITHUB_TOKEN" \
+            https://europapress-rss.vercel.app/api/ttendencias-top10-push \
+            --output /tmp/ttendencias-push-result.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          result = json.loads(Path("/tmp/ttendencias-push-result.json").read_text(encoding="utf-8"))
+          print("Resultado avisos TTendencias:", json.dumps(result, ensure_ascii=False))
+          if not result.get("ok"):
+              raise SystemExit("El escáner de avisos TTendencias devolvió un estado no válido")
+          PY

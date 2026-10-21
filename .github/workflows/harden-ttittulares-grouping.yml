@@ -1,0 +1,77 @@
+name: Reforzar agrupación TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "telegram/harden-grouping-trigger.txt"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Endurecer coincidencia y limpiar agrupaciones
+        run: |
+          set -e
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('telegram/radar_no_d1.py')
+          s=p.read_text(encoding='utf-8')
+          old=''' if min(len(A),len(B))<=4 and overlap<0.60:return 0\n return 0.55*overlap+0.45*jaccard'''
+          new=''' if min(len(A),len(B))<=4 and overlap<0.60:return 0\n # Evitar fusionar noticias distintas que solo comparten protagonista/lugar.\n # Exigimos una coincidencia semántica sustancial, no dos o tres tokens comunes.\n if overlap<0.65 and jaccard<0.35:return 0\n return 0.55*overlap+0.45*jaccard'''
+          if old not in s:
+              raise SystemExit('Patrón score no encontrado; no se modifica')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+          python3 - <<'PY'
+          import json,re,unicodedata
+          from pathlib import Path
+          p=Path('telegram/events.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          stop=set('a al algo ante bajo con contra de del desde el ella en entre era es esta este esto ha hay la las lo los mas muy no o para pero por que se sin sobre su sus un una y ya'.split())
+          def fp(s):
+              s=''.join(c for c in unicodedata.normalize('NFKD',str(s).lower()) if not unicodedata.combining(c))
+              return {x for x in re.findall(r'[a-z0-9]+',s) if len(x)>2 and x not in stop}
+          def ok(a,b):
+              A,B=fp(a),fp(b)
+              if not A or not B:return False
+              inter=len(A&B)
+              if inter<2:return False
+              overlap=inter/max(1,min(len(A),len(B))); jac=inter/max(1,len(A|B))
+              if min(len(A),len(B))<=4 and overlap<.60:return False
+              if overlap<.65 and jac<.35:return False
+              return .55*overlap+.45*jac>=.50
+          removed=0
+          for e in d.get('events',[]):
+              title=e.get('canonical_title') or e.get('title','')
+              apps=e.get('appearances',[])
+              kept=[a for a in apps if ok(title,a.get('title',''))]
+              if not kept and apps: kept=[apps[0]]
+              removed += len(apps)-len(kept)
+              e['appearances']=kept
+              e['sources']=sorted({a.get('source') for a in kept if a.get('source') and a.get('source_type','general')!='sport'})
+              e['sport_sources']=sorted({a.get('source') for a in kept if a.get('source') and a.get('source_type')=='sport'})
+              e['source_count']=len(e['sources']); e['sport_source_count']=len(e['sport_sources'])
+              e['percentage']=round(100*e['source_count']/max(1,int(d.get('configured_sources',14))),1)
+          p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('FALSE_APPEARANCES_REMOVED',removed)
+          PY
+      - name: Guardar reparación
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add telegram/radar_no_d1.py telegram/events.json
+          git commit -m "Reforzar agrupación multifuente TTiTTulares" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main

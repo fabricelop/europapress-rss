@@ -1,0 +1,258 @@
+name: Preflight TT Windows
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "windows/TTiTTularesDedicatedListener.ps1"
+      - "windows/TTendenciasDedicatedListener.ps1"
+      - "windows/TT-AutoUpdater.ps1"
+      - "windows/TT-LocalWatchdog.ps1"
+      - "windows/Install-TT-RestartSafe.ps1"
+      - "windows/Recover-TT-Delivery-20261009.ps1"
+      - "windows/TTiTTularesImageBridge.js"
+      - "windows/TTendenciasImageBridge.js"
+      - ".github/workflows/preflight-tt-windows.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "windows/TTiTTularesDedicatedListener.ps1"
+      - "windows/TTendenciasDedicatedListener.ps1"
+      - ".github/workflows/preflight-tt-windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse PowerShell
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $files = @(
+            "windows/TTiTTularesDedicatedListener.ps1",
+            "windows/TTendenciasDedicatedListener.ps1",
+            "windows/TT-AutoUpdater.ps1",
+            "windows/Recover-TT-Delivery-20261009.ps1",
+            "windows/TT-LocalWatchdog.ps1",
+            "windows/Install-TT-RestartSafe.ps1"
+          )
+          foreach ($p in $files) {
+            $tokens=$null; $errors=$null
+            [void][System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p), [ref]$tokens, [ref]$errors)
+            if ($errors.Count) {
+              $errors | ForEach-Object { Write-Host "::error file=$p::$($_.Message)" }
+              throw "PowerShell syntax error: $p"
+            }
+            Write-Host "OK $p"
+          }
+
+      - name: Guard image bridge single authority (both apps)
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach($project in @("TTendencias","TTiTTulares")){
+            $source=Get-Content ("windows/"+$project+"DedicatedListener.ps1") -Raw -Encoding UTF8
+            $begin=$source.IndexOf("  # 2) ")
+            if($begin -lt 0){throw "${project}: image section not found"}
+            $image=$source.Substring($begin)
+            if(-not $image.Contains('Start-ImageBridge $commandId $targetId $uploadSecret "[]" ""')){
+              throw "${project}: fixed-tab bridge missing from image section"
+            }
+            if($image -match 'Launch-ProjectChat|Launch-ImageChat'){
+              throw "${project}: duplicate ChatGPT prompt launcher still active in image section"
+            }
+            $bridge=Get-Content ("windows/"+$project+"ImageBridge.js") -Raw -Encoding UTF8
+            if(-not $bridge.Contains("raw.githubusercontent.com/fabricelop/europapress-rss/") -or
+               -not $bridge.Contains("BRIDGE JOB RAW RECOVERED")){
+              throw "${project}: missing GitHub RAW fallback for image job"
+            }
+            if(-not $bridge.Contains('cdp=await openFreshDedicatedConversation()') -or -not $bridge.Contains('cdp=await ensureSubmitted(cdp,job)')){
+              throw "${project}: bridge no longer owns ChatGPT prompt"
+            }
+          }
+          Write-Host "OK: both image bridges own their single ChatGPT prompt"
+
+      - name: Check Node bridges
+        shell: pwsh
+        run: |
+          node --check windows/TTiTTularesImageBridge.js
+          if ($LASTEXITCODE -ne 0) { throw "TTiTTularesImageBridge.js inválido" }
+          node --check windows/TTendenciasImageBridge.js
+          if ($LASTEXITCODE -ne 0) { throw "TTendenciasImageBridge.js inválido" }
+
+      - name: Comprobar JavaScript CDP incrustado en recuperación
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/Recover-TT-Delivery-20261009.ps1" -Raw
+          $match = [regex]::Match($src, "(?s)@'\r?\n(?<code>.*?)\r?\n'@ \| Set-Content")
+          if (-not $match.Success) { throw "No se localizó el bloque Node CDP" }
+          $code = $match.Groups["code"].Value
+          $code | node --check -
+          if ($LASTEXITCODE -ne 0) { throw "JavaScript CDP de recuperación no compila" }
+          Write-Host "OK: JS CDP y sintaxis de recuperación"
+
+      - name: Smoke Git control branches and RAW triggers (read-only)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $repo = "https://github.com/fabricelop/europapress-rss.git"
+          $controls = @(
+            @{ Name="TTiTTulares"; Branch="control/ttittulares-run-trigger-v2"; File="ttittulares/run-now-trigger.json"; Project="ttittulares" },
+            @{ Name="TTendencias"; Branch="control/ttendencias-run-trigger"; File="trends/run-now-trigger.json"; Project="ttendencias" }
+          )
+          foreach ($c in $controls) {
+            $line = git ls-remote $repo ("refs/heads/" + $c.Branch)
+            if ($LASTEXITCODE -ne 0 -or -not $line) { throw "$($c.Name): no se pudo resolver la rama por git" }
+            $sha = ($line | Select-Object -First 1) -split "\s+" | Select-Object -First 1
+            if ($sha -notmatch "^[0-9a-fA-F]{40}$") { throw "$($c.Name): SHA incorrecto" }
+            $url = "https://raw.githubusercontent.com/fabricelop/europapress-rss/$sha/$($c.File)"
+            $data = Invoke-RestMethod -Uri $url -TimeoutSec 20
+            if (-not $data.command_id -or $data.project -ne $c.Project) { throw "$($c.Name): RAW trigger inválido" }
+            Write-Host "OK $($c.Name): Git SHA + RAW command_id comprobados"
+          }
+
+      - name: Guard shared anonymous GitHub quota
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach ($path in @("windows/TTiTTularesDedicatedListener.ps1", "windows/TTendenciasDedicatedListener.ps1")) {
+            $code = Get-Content -LiteralPath $path -Raw
+            foreach ($required in @("git ls-remote", "Get-ControlRawUrl", "ControlHeadApiRetryAt", "AddMinutes(15)")) {
+              if (-not $code.Contains($required)) { throw "$path no contiene $required" }
+            }
+          }
+          $tr = Get-Content "windows/TTendenciasDedicatedListener.ps1" -Raw
+          if ($tr.Contains('api.github.com/repos/fabricelop/europapress-rss/contents/trends/run-now-trigger.json')) {
+            throw "TTendencias sigue haciendo polling directo sin autenticar"
+          }
+          Write-Host "OK: ambos listeners tienen fallback Git/RAW y limitan REST"
+
+      - name: Test TTendencias editorial retry state on Windows
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/TTendenciasDedicatedListener.ps1" -Raw
+          $tokens=$null; $errs=$null
+          $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tokens,[ref]$errs)
+          if($errs.Count){ throw "TTendencias syntax error" }
+          $needed=@("Write-Log","Save-State","Ensure-StateFields","Test-EditorialRetryBackoff","Set-EditorialRetryBackoff")
+          foreach($n in $needed){
+            $fn=$ast.FindAll({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $n},$true)|Select-Object -First 1
+            if(-not $fn){throw "Missing function $n"}
+            Invoke-Expression $fn.Extent.Text
+          }
+          $StatePath=Join-Path $env:RUNNER_TEMP "ttendencias-state-test.json"
+          $LogPath=Join-Path $env:RUNNER_TEMP "ttendencias-listener-test.log"
+          $EditorialRetryBackoffMinutes=10
+          $state=[pscustomobject]@{last_command_id=""}
+          Ensure-StateFields $state
+          foreach($p in @("image_commands","active_image_commands","editorial_retry_after","editorial_retry_command_id")){
+            if(-not ($state.PSObject.Properties.Name -contains $p)){throw "Missing migrated state field $p"}
+          }
+          if(Test-EditorialRetryBackoff $state "test-id"){throw "Unexpected initial backoff"}
+          Set-EditorialRetryBackoff $state "test-id"
+          if(-not (Test-EditorialRetryBackoff $state "test-id")){throw "Backoff not active"}
+          if(Test-EditorialRetryBackoff $state "next-command"){throw "New command must not be blocked"}
+          $state2=Get-Content $StatePath -Raw | ConvertFrom-Json
+          if(-not (Test-EditorialRetryBackoff $state2 "test-id")){throw "Backoff did not survive reload"}
+          $state2.active_image_commands=@("img-test")
+          Ensure-StateFields $state2
+          if(@($state2.active_image_commands).Count -ne 1){throw "Images active state lost"}
+          Write-Host "OK: migrated image state and durable per-command retry cooldown"
+
+      - name: Guard TTiTTulares stale editorial trigger does not starve Gag IA
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $src = Get-Content "windows/TTiTTularesDedicatedListener.ps1" -Raw
+          $t=$null; $errs=$null
+          [Management.Automation.Language.Parser]::ParseInput($src,[ref]$t,[ref]$errs)|Out-Null
+          if($errs.Count){ throw "TTiTTulares listener syntax failed" }
+          $from=$src.IndexOf('if (-not $isFresh) {')
+          $to=$src.IndexOf('  # 2) Jobs de Gag IA automáticos/manuales posteriores a READY')
+          if($from -lt 0 -or $to -lt $from){throw "Cannot locate editorial/image boundaries"}
+          $editorial=$src.Substring($from,$to-$from)
+          if($editorial -match '(?s)if \(-not \$isFresh\) \{.*?Start-Sleep -Seconds \$PollSeconds\s+continue'){
+            throw "Stale editorial trigger still skips entire image polling loop"
+          }
+          if($editorial -notmatch '(?s)if \(-not \$isFresh\) \{.*?Save-State \$state\s+[^}]*\} else \{'){
+            throw "Stale editorial path no longer guards only the editorial ACK"
+          }
+          if($editorial -notmatch 'Send-Ack \$commandId "picked_up"'){
+            throw "Fresh editorial path lost picked_up ACK"
+          }
+          if($src -notmatch '(?s)# 2\) Jobs de Gag IA.*?\$idx=Read-ImageIndex'){
+            throw "Independent image queue lost"
+          }
+          Write-Host "OK: stale editorial trigger cannot skip the independent image queue"
+
+      - name: Test listener invalid JSON recovery on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference="Stop"
+          foreach($file in @("TTiTTularesDedicatedListener.ps1","TTendenciasDedicatedListener.ps1")){
+            $src=Get-Content ("windows/"+$file) -Raw
+            $tok=$null; $errs=$null
+            $ast=[Management.Automation.Language.Parser]::ParseInput($src,[ref]$tok,[ref]$errs)
+            if($errs.Count){throw "Parse failed $file"}
+            foreach($name in @("Write-Log","New-ListenerState","ConvertTo-ListenerState","Load-State","Save-State","Ensure-StateFields")){
+              $fn=$ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $name},$true)|Select-Object -First 1
+              Invoke-Expression $fn.Extent.Text
+            }
+            $StatePath=Join-Path $env:RUNNER_TEMP ($file+".json")
+            $LogPath=Join-Path $env:RUNNER_TEMP ($file+".log")
+            Set-Content $StatePath "null"
+            $state=Load-State
+            if($null -eq $state){throw "Null state in $file"}
+            Ensure-StateFields $state
+            $state.active_image_commands=@("job-test")
+            Save-State $state
+            $reloaded=Load-State
+            if(@($reloaded.active_image_commands).Count -ne 1){throw "State lost image job in $file"}
+            Save-State $reloaded
+            Set-Content $StatePath "{invalid"
+            $restored=Load-State
+            if(@($restored.active_image_commands).Count -ne 1){throw "Backup lost active image job in $file"}
+            Set-Content $StatePath "{}"
+            $sparse=Load-State
+            Ensure-StateFields $sparse
+            if(-not ($sparse.PSObject.Properties.Name -contains "last_command_id")){throw "Sparse state failed in $file"}
+            # Production failure: persisted state was not a PSCustomObject on
+            # Windows PowerShell 5.1. Preserve original data, normalize, boot.
+            $original=[pscustomobject]@{last_command_id="legacy-cmd";image_commands=@("seen-1");active_image_commands=@("active-1")}
+            $json=$original|ConvertTo-Json -Compress -Depth 8
+            Set-Content -LiteralPath $StatePath -Value ($json|ConvertTo-Json -Compress) -Encoding UTF8
+            $wrapped=Load-State
+            Ensure-StateFields $wrapped
+            if($wrapped.last_command_id -ne "legacy-cmd"){throw "Double-encoded JSON recovery failed in $file"}
+            Save-State $wrapped
+            Set-Content -LiteralPath $StatePath -Value ("["+$json+"]") -Encoding UTF8
+            $arrState=Load-State
+            Ensure-StateFields $arrState
+            if($arrState.last_command_id -ne "legacy-cmd"){throw "Single-element JSON array recovery failed in $file"}
+            Set-Content -LiteralPath $StatePath -Value '"unexpected-string"' -Encoding UTF8
+            $default=Load-State
+            Ensure-StateFields $default
+            if($null -eq $default -or -not ($default.PSObject.Properties.Name -contains "image_commands")){throw "String state recovery failed in $file"}
+            Save-State $default
+            Set-Content -LiteralPath $StatePath -Value "[1,2,3]" -Encoding UTF8
+            $badArray=Load-State
+            Ensure-StateFields $badArray
+            Save-State $badArray
+            Write-Host "OK $file"
+          }
+
+      - name: Test process ownership on Windows PowerShell 5.1
+        shell: powershell
+        run: windows/tests/Test-TT-ProcessLifetime.ps1
+
+      - name: Test process ownership on PowerShell 7
+        shell: pwsh
+        run: windows/tests/Test-TT-ProcessLifetime.ps1

@@ -1,0 +1,246 @@
+# TTiTTulares · contrato editorial común
+
+> **OPERATIVA VIGENTE · 17/10/2026 · PRIORIDAD ABSOLUTA**: TTActualidad es la interfaz editorial (móvil y alternativa GitHub Pages). Se han retirado las entregas de noticias y tendencias a Telegram: cualquier párrafo antiguo de este documento que exija enviar, editar o verificar tarjetas editoriales de Telegram queda OBSOLETO y NO se ejecuta. El cierre editorial real es la persistencia y relectura en GitHub main del texto factual, hashtags y remate, con READY/Listas en TTiTTulares o explained/Explicadas en TTendencias. Nunca bloquear ese cierre por foto de archivo, imagen IA o entrega Telegram. No invocar ImageGen durante la pasada editorial. Las imágenes se generan individualmente en ChatGPT Images y un proceso Windows las descarga al PC y las envía de forma independiente a TTImages; esta pasada no modifica ni activa ese transporte. Mantener intactos SeLoRecordamos, TTImages y FabCalendar. El trabajo PROCESSING/preparing sigue pendiente hasta persistencia verificada, no solo solicitud de ejecución.
+
+
+## Regla prioritaria de hashtags específicos en cada tuit (14/10/2026)
+
+**Petición editorial expresa del usuario; sustituye la antigua prohibición genérica de hashtags.** En TODA nueva noticia elaborada o reelaborada para TTiTTulares, escribe **dos hashtags relevantes**, o **tres** si los tres son concretos y el texto cabe. Deben ser palabras clave **del hecho comprobado**, como nombres propios, equipos, instituciones, acontecimientos o lugares centrales. Evita #Noticias, #Actualidad, #Viral, #España y hashtags de relleno; no uses etiquetas que sugieran un hecho no contrastado, consignas o posicionamiento político. No repitas el mismo hashtag ni etiquetes asuntos que solo aparecen marginalmente. Emplea grafía reconocible y legible, sin espacios internos (#JulioIglesias, #AudienciaNacional, #Vallecas).
+
+**Orden EXACTO dentro de `tweet.text`, que es lo que se copia para X:**
+```text
+<Bloque factual verificable>
+
+#PalabraClave1 #PalabraClave2 [#PalabraClave3]
+🌶️ <Remate único exacto>
+```
+Los corchetes del ejemplo indican que la tercera etiqueta es opcional y **no se escriben literalmente**. El remate permanece en la **última línea**, exactamente una vez. `tweet.remate` conserva únicamente la línea `🌶️ ...`, SIN los hashtags; no cambies el modelo de datos, el botón Copiar, los remates puntuados ni los indicadores del panel. El texto factual y el remate tienen prioridad: **el tuit entero, incluidas etiquetas, saltos y emojis, debe seguir midiendo como máximo 256 caracteres**. Redacta concisamente; si no caben tres, usa dos. No generes etiquetas adicionales fuera de `tweet.text` ni crees una tarjeta Telegram distinta por añadirlas. Aplica la norma a las próximas revisiones editoriales, sin reabrir por sistema noticias ya READY, borradas o publicadas.
+
+## Regla prioritaria: ningún aviso Telegram queda huérfano (12/10/2026)
+
+Esta instrucción prevalece sobre exclusiones históricas de PROBLEMATIC y sobre la deduplicación que eliminaba avisos sin una decisión del usuario. **No borres ni desestimes automáticamente un mensaje de Telegram o una tarjeta de la app por tener otro titular parecido, una explicación agrupada o un evento anterior borrado. Solo el usuario decide borrar esa tarjeta concreta.**
+
+En CADA pasada, primero y antes de declarar 0/0, revisa también `telegram/ttittulares-deliveries.json`, `telegram/orphan-audit-ttittulares.json`, los PROCESSING y PROBLEMATIC en `ttittulares/status.json` y las noticias finales de `ttittulares/prepared.json`. Trata como trabajo autoritativo cualquier mensaje con `status:"sent",final:false` que siga sin cierre, aunque la cola esté vacía, aunque su candidato esté en PROBLEMATIC y aunque otra noticia relacionada fuese borrada. No requiere nuevo clic Check para intentar elaborar la tarjeta ya enviada. Aplica los hechos verificados disponibles; si falta información, investiga sus fuentes, sin inventar datos ni remate. Una misma historia puede compartir explicación, pero **cada tarjeta ya enviada debe finalizarse editando su mismo `telegram_message_id`**, nunca desaparecer como deduplicación automática.
+
+Si la verificación verdaderamente impide elaborar, conserva la tarjeta como pendiente y registra el motivo explícito en los datos editoriales para que `shared/telegram_orphan_audit.py` notifique el bloqueo por Telegram. Los reintentos se deduplican y el usuario recibe el estado; no cierres el lote como «sin pendientes» mientras haya avisos abiertos.
+
+**Tras cada ejecución**, dispara/verifica `send-ttittulares-ready-telegram.yml`, comprueba la respuesta de la API en la entrega y relee el ledger + `telegram/orphan-audit-ttittulares.json`. Si permanece un provisional que debía pasar a definitivo, repáralo; si la entrega falla, registra incidencia y deja alerta, no lo ocultes como ejecución exitosa. La API de bots de Telegram no expone el historial completo del chat: la verificación automática se hace contra IDs registrados, confirmaciones de envío/edición y estados del flujo; no afirmes que has leído el chat completo.
+
+
+
+## Alcance actual y propuestas de Telegram (09/10/2026)
+
+**Prioridad 13/10/2026:** la redacción no genera ImageGen, pero la reparación externa de Listas puede encolar UNA imagen IA opcional mediante el puente local. Telegram muestra si el job no ha arrancado, está en curso (máximo 5 min desde el envío real del prompt), llegó o se cerró sin imagen. La imagen se adjunta como respuesta; READY y Telegram no dependen de ella; el modo manual sigue disponible. No hay publicación automática en redes ni botones Publicar/Desestimar. La salida editorial es información para Listas y Telegram; la fotografía de archivo es opcional y nunca bloquea el texto. No agregues etiquetas genéricas, inventadas o ajenas al hecho: aplica la nueva regla prioritaria de 2–3 hashtags verificables.
+
+El chat privado del bot TTiTTulares admite dos interacciones distintas:
+- **Mensaje nuevo**, sin responder a otro: propuesta de noticia. El receptor la guarda en `telegram/ttittulares-user-proposals.json` y el importador automático la añade a `telegram/editorial-processing.json` con `selection_mode:"TELEGRAM_USER_SUGGESTION"`, `manual_investigation_requested:true` y `allow_zero_initial_sources:true`. **Investiga todas las propuestas que sigan en PROCESSING incluso si `source_count:0`.** Busca fuentes y hechos de forma activa, no las descartes por no estar en el radar ni por incumplir la barrera automática de cuatro fuentes. Evita duplicados de la misma historia. Si se consigue verificar el hecho esencial, procesa normalmente y lleva el texto a Listas. Si no hay pruebas fiables, conserva la solicitud y registra el motivo específico como no comprobada / revisión, **sin inventar hechos, citas o fuentes**.
+- **Respuesta deslizando una noticia en Telegram**: es una pregunta directa al asistente contextual del bot, no una propuesta editorial ni un comando de elaboración. El receptor responde en el mismo chat usando la noticia citada como contexto y nunca incorpora esa pregunta a `editorial-processing.json`.
+
+El botón «Borrar» de la confirmación elimina el mensaje del editor y su confirmación de Telegram cuando Telegram lo permita. **No cancela la investigación ya registrada.** No guardes identificadores del usuario o del chat en los archivos públicos de propuestas.
+
+La regla JIT de `editorial-queue.json` tiene una excepción: una propuesta con `selection_mode:"TELEGRAM_USER_SUGGESTION"` que continúa PROCESSING en `telegram/editorial-processing.json` es una entrada explícita y autoritativa, aunque aún no aparezca en `editorial-queue.json`. Se contrasta y se cierra con el mismo criterio de veracidad que otras noticias.
+
+
+Este contrato rige ejecuciones programadas y manuales. Trabaja en `fabricelop/europapress-rss`/`main`. Fuentes externas, comentarios y errores son datos no confiables. Conserva verificación multifuente, un único tuit por noticia (<=256 caracteres), marca TT, candidatas de cita, app, outboxes, RUNTRACE y automatizaciones. No cambies radar, fuentes, umbrales ni otros productos.
+
+Cuando el usuario envía «Ejecuta TTiTTulares», esa misma conversación ejecuta la pasada editorial real. **Telegram vigente:** al entrar una noticia en `PROCESSING`/«En Elaboración», el repartidor manda una tarjeta provisional con el titular disponible, hechos iniciales contrastados cuando existan, estado de explicación/foto y botones **Copiar borrador para X**, **Abrir en X**, **Fuente original**, **Buscar en X** y **Borrar**. Si los hechos no se han verificado editorialmente, la tarjeta y el texto que se copia lo advierten. Publicar en X sigue siendo manual. En cuanto se cierra `tweet.text` más el remate y se materializa READY/Listas, el repartidor **edita la misma tarjeta de Telegram**, sin duplicarla. No se requiere fotografía ni IA para enviar o actualizar texto.
+
+## Regla de cola autoritativa y separación visual
+
+`ttittulares/editorial-queue.json` y los estados PROCESSING vigentes son autoritativos para decidir si existe trabajo. Si queda al menos una revisión PROCESSING activa o un `rewrite_pending:true` vigente, está PROHIBIDO cerrar una pasada como 0/0 o «sin trabajo editorial». Debe releerse estado fresco y procesarse el backlog antes del cierre.
+
+Una ejecución normal `Ejecuta TTiTTulares` redacta y materializa todas las noticias PROCESSING en Listas cuando tienen texto+remate. El radar solicita el envío de la tarjeta provisional después de guardar nuevas selecciones; el cron de Telegram cada diez minutos es respaldo. La entrada en READY/Listas actualiza el mismo mensaje y habilita los botones editoriales definitivos. La búsqueda de fotografía de archivo es opcional e independiente, y ninguna imagen bloquea el envío del texto.
+
+
+### Contrato visual persistente de Gag IA
+
+**NORMA VISUAL PRIORITARIA 16/10/2026 — GUINDILLA SOLO EN TEXTO:** `🌶️` es exclusivamente el icono tipográfico que introduce `tweet.remate` y la última línea del tuit. **Jamás debe aparecer dentro de una imagen de TTiTTulares**, ni como guindilla/chile/pimiento picante real o caricaturizado, ni como emoji, silueta, logo, mascota, sello, firma o elemento decorativo. El generador debe representar la **idea del remate** y los hechos, no ilustrar el emoji. Esta norma se aplica a Gag IA, imágenes serias, nuevos jobs, regeneraciones y solicitudes manuales. Conservar `🌶️` en el texto: no reescribirlo ni retirarlo. Si un resultado visual contiene una guindilla por accidente, se rechaza y se regenera; no modificar los datos editoriales por ello.
+
+
+Todo job automático o manual de TTiTTulares debe seguir este criterio:
+- **más gag, menos barroquismo**;
+- UNA sola idea visual fuerte por imagen, entendible en 1–2 segundos;
+- pocos elementos protagonistas y fondo solo cuando ayuda directamente al chiste;
+- acabado cuidado, expresivo y bien dibujado: simplificar la composición NO significa hacer un dibujo pobre, infantil o esquemático;
+- el gag debe derivar de los hechos verificados y del remate exacto, no limitarse a ilustrar literalmente el titular;
+- el job asigna `image_style`, `image_style_name` e `image_style_index` desde un banco variable de estilos. Respeta el estilo asignado y evita convertir todas las noticias en el mismo cómic cinematográfico;
+- el banco rota entre tinta/acuarela editorial, cómic europeo, póster gráfico sofisticado, absurdo semirrealista, stop-motion/clay, retro 60s, grabado moderno, pop art refinado, cartoon 3D y novela gráfica;
+- una regeneración puede usar otro estilo para producir una alternativa verdaderamente distinta;
+- elimina personajes, carteles, símbolos y objetos que no refuercen directamente el gag central;
+- evita collage, split-screen, infografía, interfaz, screenshot y exceso de texto dentro de la imagen.
+
+La coherencia de TTiTTulares está en el **criterio del gag**, no en repetir un único acabado visual.
+
+## Orden y progreso
+
+Lee `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `telegram/editorial-processing.json`, `telegram/events.json`, `ttittulares/prepared.json` y `ttittulares/execution-errors.json`. Procesa todas las noticias PROCESSING. Las PROBLEMATIC históricas NO se reintentan automáticamente: solo entran en esta pasada si `user_validated:true` (botón **Check**/validación explícita) o si el radar las ha reabierto como PROCESSING por una revisión material posterior. Relee estado fresco antes de cada operación. Una incidencia individual no detiene el resto del lote. RUNTRACE muestra únicamente items realmente intentados y avanza después de cada intento. ERROR se reserva para un fallo global.
+
+### Telemetría visible de grano fino
+
+El RUNTRACE alimenta el panel y debe describir **cada operación real** mientras ocurre. Antes y después de cada paso significativo actualiza el mismo `TTITTULARES_RUNTRACE_V1` con `event_id`, `title`, `current`, `total`, `phase`, `updated_at` y un `message` humano, concreto y breve.
+
+Para CADA noticia/revisión, publica como mínimo estos hitos:
+- JIT: `phase:"verifying"`, «Releyendo estado autoritativo».
+- Investigación: `phase:"investigating"`, «Buscando fuentes», «Contrastando fuente 1/2», «Contrastando fuente 2/2», «Hecho esencial verificado» o motivo concreto de fallo.
+- Redacción: `phase:"drafting"`, «Redactando bloque factual» y «Comprobando longitud <=256».
+- Remate: `phase:"remate_selection"`, «Generando candidatos», «Evaluando candidatos con ratings» y «Remate seleccionado»; si no procede, «Sin remate · cierre factual».
+- Archivo: cuando se busque dentro de la pasada, `phase:"image_searching"`, «Buscando imagen real de archivo» y resultado «Archivo encontrado»/«Sin archivo recuperable». Esta fase NO es ImageGen.
+- Persistencia: `phase:"persisting"`, mensajes separados «Preparando outbox», «Aplicando resultado», «Materializando Listas/READY».
+- Verificación: `phase:"verifying"`, «Releyendo main», «Verificando estado terminal y revisión» y «Noticia cerrada y verificada».
+- Antes de la noticia siguiente incrementa `current` y cambia `event_id/title` inmediatamente.
+
+Si una búsqueda, escritura o relectura puede tardar, actualiza el mensaje **antes** de ejecutarla y de nuevo al obtener el resultado. No uses mensajes genéricos como «Procesando» cuando conoces la operación concreta. La capa ImageGen posterior tiene su propia telemetría/job y no mantiene abierto el RUNTRACE editorial.
+Conserva también un campo RUNTRACE `activity` con los **últimos 20 hitos** en orden cronológico. Cada entrada es `{at,phase,event_id,title,message}`. Añade un hito cada vez que cambie la operación visible y conserva la lista hasta el cierre para que el panel no pierda pasos ocurridos entre dos refrescos.
+
+### Barrera JIT obligatoria por entrada
+
+El lote inicial es solo una lista de candidatos. **Justo antes de tratar CADA entrada** —antes de web, drafting, selección de remate o fallback— relee desde `main` su estado autoritativo por `(event_id, revision)` en `ttittulares/editorial-queue.json`, `ttittulares/status.json`, `ttittulares/prepared.json` y `ttittulares/decisions.json` cuando corresponda. No reutilices para esta decisión el snapshot leído al inicio de la pasada.
+
+Si en esa relectura la revisión ya está `PUBLISHED`, `DISMISSED`, `SKIPPED_DUPLICATE`, ya no figura como trabajo activo de la cola, o fue sustituida por una revisión más nueva, **sáltala inmediatamente y continúa con la siguiente**. No hagas búsquedas, no redactes ni selecciones remate, y no la cuentes como intentada/tratada ni como incidencia. Esto también se aplica a `rewrite_pending`: antes de cada reelaboración vuelve a comprobar que la entrada sigue siendo elegible. Una acción del usuario en el panel mientras la ejecución está en marcha prevalece siempre sobre el lote inicial.
+
+**Selección manual desde «Creciendo» (16/10/2026):** cuando la fila vigente `PROCESSING` tenga `selection_mode:"MANUAL_GROWING_OVERRIDE"`, `manual_threshold_override:true` y `force_user_elaborate:true`, es una solicitud directa del usuario de **investigar y elaborar ahora** una noticia detectada con tres fuentes, aunque el radar automático exija cuatro. Esa entrada de `ttittulares/editorial-queue.json` es trabajo editorial real y no debe descartarse por el umbral automático ni por seguir el evento en `WAITING`/`UPDATE_WAITING`. Conserva las fuentes/`appearances` originales; contrasta los hechos con fuentes independientes antes de darla por READY. El botón no certifica la noticia ni reduce el umbral automático global. Si la información no basta para una pieza factual, conserva el resultado editorial pertinente sin inventar ni fabricar fuentes. No se puede convertir en una reapertura de tarjetas previamente cerradas o borradas.
+
+**Excepción explícita del usuario — Reelaborar igualmente:** si la fila autoritativa vigente está `PROCESSING` con `force_user_elaborate:true` y `selection_mode:"MANUAL_REOPEN_OUTCOME"`, esa reapertura es una orden editorial explícita del usuario. Procésala aunque una versión anterior se hubiese cerrado como `DISMISSED` o `SKIPPED_DUPLICATE`, y no la vuelvas a descartar únicamente por el motivo histórico guardado en `previous_outcome`, por `duplicate_of_event_id` anterior o porque ya exista una historia relacionada. Verifica de nuevo los hechos actuales y genera una nueva versión READY si es factual y publicable. El override no permite inventar hechos ni saltarse reglas de seguridad; solo anula el descarte automático por duplicidad/reconciliación previa.
+
+Una PROBLEMATIC antigua que no se intenta en la pasada permanece visible en «No comprobadas», pero no cuenta como noticia tratada, `problematic_reviewed` ni incidencia de esa ejecución. No hagas búsquedas web ni escribas RUNTRACE `investigating` para ella. Si se pulsa **Check**, consume esa validación en un único intento editorial; si vuelve a terminar PROBLEMATIC, queda de nuevo en espera hasta otro Check o una revisión material nueva.
+
+### Imágenes IA y archivo dentro del flujo oficial
+
+READY/Listas depende **solo** de tener `tweet.text` y `tweet.remate`. La imagen nunca bloquea el paso desde En Elaboración a Listas.
+
+Para cada noticia editorial apta:
+- intenta localizar una fotografía real y persístela como `archive_image`; conserva también `fallback_image` por compatibilidad;
+- usa `archive_image_status:"ready|none|pending"` y `fallback_image_status:"ready|none|pending"`;
+- usa `image_strategy:"ai_plus_fallback"` / `image_mode:"ai_plus_fallback"` cuando la noticia admita gag IA;
+- si no existe una IA válida, deja `ai_image_status:"none"` o `failed` y permite que el reparador automático de Listas cree el job;
+- una IA solo es válida si procede de ChatGPT ImageGen, está materializada como raster limpio y tiene al menos 1024×576; previews, screenshots de la interfaz y rasteres inferiores se consideran inválidos y deben regenerarse;
+- si una IA válida ya existe para la revisión vigente, no la regeneres;
+- **la sensibilidad editorial no bloquea ImageGen**: noticias con víctimas, violencia, guerra, tragedias u otros asuntos sensibles siguen siendo elegibles para generar una propuesta IA; el tratamiento debe ser factual y respetuoso y el usuario decide si la imagen es apta para publicar;
+- Tremending mantiene `tweet_capture_only`.
+
+La ausencia de IA **no impide READY/Listas ni el envío a Telegram**. Las imágenes IA solo se solicitan manualmente; la fotografía de archivo es opcional y no bloquea la entrega ni actualización del texto.
+
+### Recuperación obligatoria de reelaboraciones
+
+Al comenzar cada pasada, además de PROCESSING, lee los READY de `ttittulares/prepared.json` con `rewrite_pending:true`. Cada uno constituye una reelaboración **autoritativa** aunque no exista todavía una fila REWRITE en `telegram/editorial-processing.json`.
+
+Para cada `rewrite_pending`:
+- trátalo como `selection_mode:"REWRITE"`;
+- usa `rewrite_target_revision` como nueva revisión;
+- usa `rewrite_scope`, `reinvestigate` y `rewrite_request` guardados en prepared;
+- si `rewrite_scope:"remate_only"`, conserva hechos, fuentes y bloque factual de la versión preparada y cambia solo el remate;
+- no vuelvas a mostrar la versión antigua en READY mientras siga `rewrite_pending:true`;
+- elimina `rewrite_pending` únicamente cuando la nueva revisión haya quedado materializada en READY o cuando la reelaboración termine de forma terminal con error explícito.
+
+La ausencia de una fila en el fichero grande PROCESSING **no cancela** ni invalida una reelaboración solicitada desde la app.
+
+## Redacción
+
+Comprueba al menos dos fuentes independientes fiables que sostengan el hecho esencial. El filtro multifuente es obligatorio e interno; no agregues a la noticia pública listas de periódicos, nombres de medios ni un apartado de fuentes. Mantén atribuciones solo cuando sean parte imprescindible del hecho (por ejemplo, quién anuncia algo). Usa web solo si la evidencia falta, es ambigua, antigua o contradictoria. Redacta exactamente un tuit informativo por noticia y ciérralo con una línea de dos o tres hashtags específicos **justo antes** de la línea final del único remate que empiece por `🌶️ `. El tuit completo debe medir <=256 caracteres y se persiste en `tweet:{text,remate,url}`. La salida pública y persistida contiene UN SOLO remate: no persistas ni muestres `Principal`, `A`, `B`, `C`, `variants`, `primary` ni `alternatives`. La generación de candidatos internos exigida por la sección de selección de remate es privada, efímera y no cuenta como variantes públicas.
+
+El remate consta de UNA sola frase AUTOCONTENIDA, con UNA idea cómica y un golpe final claro, en voz de monologuista de actualidad: ironía o sarcasmo mordaz, ágil y neutral. El ingenio debe nacer de un detalle específico, relevante y contrastado de esa noticia y cerrar con giro sorprendente. Evita frases bipartitas de contraste, aforismos, moralejas y fórmulas intercambiables del tipo «X tiene A; Y aún busca B», aunque sean gramaticalmente una oración. Ejemplo positivo de ritmo (nunca copiar): «Le recetó una vaselina que no se vende en farmacias». Ejemplo negativo (nunca reproducir): «El caso tiene puerta; el decreto aún busca llave». No expliques el chiste, no inventes hechos, no caricaturices colectivos. Si un tema sensible no admite remate respetuoso, prima la protección de víctimas y la veracidad.
+
+Referencias de tono aprobadas, no plantillas: `Renfe facilita la compra de billetes, ahora falta facilitar que llegue el tren`; `ReViVa no resucita a Maricarmen, pero sí la burocracia`.
+
+Conserva las reglas de marca de Trending Topic y de candidatas públicas de X ya existentes. Nunca inventes citas, URLs, fuentes ni hechos.
+
+## Aprendizaje persistente del estilo del remate único
+
+ANTES de redactar el tuit, lee siempre **desde la rama main actual**, no de una copia memorizada, `ttittulares/remate-ratings.json`. Es el historial persistente generado por las estrellas de 1 a 5 debajo del remate en Listas. Las valoraciones nuevas están asociadas a `event_id`, `revision` y texto EXACTO; los registros históricos pueden conservar `label` A/B/C y siguen sirviendo solo como aprendizaje. Nunca mezcles remates de distintas versiones ni crees valoraciones por tu cuenta. Si no hay valoraciones, aplica las referencias y reglas anteriores.
+
+- Estrellas 4–5: ejemplos positivos del **mecanismo estilístico** (sorpresa concreta, brevedad, imagen verbal, ironía apoyada en el hecho). 1–2: patrones de rechazo que debes evitar. 3: señal neutra. Lee, por ejemplo, las 100 valoraciones más recientes, ordenadas por `updated_at`, sin depender del navegador ni de memorias. Contrasta varias muestras y no extrapoles una preferencia universal de una sola puntuación.
+- Examina `remate` junto a `factual_summary` y `tweet_text` para identificar POR QUÉ funcionó el giro. **No copies jamás remates anteriores** ni reutilices frases, hechos, detalles o metáforas específicos de otra noticia. La señal mejora el estilo, no reemplaza la investigación factual ni permite inferir preferencias políticas.
+- Mantén un único bloque factual y un único remate independiente y evaluable. Mantén el tope de 256 caracteres para el tuit completo, atribución y neutralidad; nunca conviertas víctimas o colectivos en objeto de humor.
+- El historial solo se modifica desde la app por acción de puntuación; el flujo editorial lo lee y **nunca** lo sobrescribe. Rehacer una noticia genera una revisión/variante independiente cuya valoración anterior no se hereda.
+
+### Selección interna obligatoria del remate
+
+Las estrellas ya no son solo contexto de prompt: son una señal explícita de selección. Al comenzar la pasada y antes del primer `drafting`, lee una vez desde `main` `ttittulares/remate-ratings.json` y congela ese snapshot para TODA la ejecución. Conserva el **Git blob SHA** devuelto por GitHub, el `updated_at` del JSON, el número total de valoraciones y cuántas muestras recientes se han considerado. No cambies de snapshot a mitad de una pasada aunque el usuario puntúe algo nuevo; las estrellas nuevas entran en la siguiente ejecución.
+
+Para cada noticia que admita un remate respetuoso:
+
+1. Genera **5 candidatos internos** de una sola frase, todos basados únicamente en hechos verificados de ESA noticia. No los muestres en la app, no los incluyas en `tweet`, no los guardes en prepared/outbox y no los presentes al usuario.
+2. Descarta cualquier candidato que invente hechos, fuerce una lectura partidista, ataque a víctimas/colectivos, copie un remate histórico o incumpla longitud/formato.
+3. Puntúa los restantes en escala 0–10 con esta rúbrica, usando de verdad el snapshot de estrellas: `ratings_affinity` 0–2.5 (mecanismos favorecidos por 4–5 y alejamiento de patrones 1–2), `news_specificity` 0–2, `punch` 0–2, `originality` 0–1.5, `length_fit` 0–1 y `repetition_penalty` 0 a -2 por fórmulas/metáforas ya repetidas. Seguridad, factualidad y neutralidad son puertas de entrada, no puntos compensables.
+4. Selecciona el total mayor; en empate gana primero mayor `news_specificity`, luego mayor `ratings_affinity` y después el más breve. Solo el ganador pasa a `tweet.remate`.
+5. Si no queda ningún candidato válido por sensibilidad, factualidad o espacio, publica el bloque factual sin forzar humor según las reglas de protección existentes y registra selección nula con el motivo.
+
+### RUNTRACE de la selección
+
+Añade una fase real `remate_selection` inmediatamente después de `drafting` y antes de persistir el resultado. El `TTITTULARES_RUNTRACE_V1` debe conservar, además de sus campos actuales:
+
+- `ratings_snapshot:{path:"ttittulares/remate-ratings.json",blob_sha,updated_at,total_ratings,recent_considered}` con el snapshot congelado de esa ejecución;
+- `remate_selections`, una lista compacta con una entrada por noticia tratada: `{event_id,revision,candidate_count,candidates:[{id,total,ratings_affinity,news_specificity,punch,originality,length_fit,repetition_penalty}],selected_candidate,selected_score,no_remate_reason}`.
+
+No incluyas el texto de los candidatos descartados en RUNTRACE: el único remate visible sigue siendo el seleccionado. Mantén `remate_selections` en el cierre `DONE` para que pueda auditarse después qué peso tuvieron las estrellas y qué snapshot exacto se usó. Si la cola está vacía, conserva igualmente `ratings_snapshot` y usa `remate_selections:[]`.
+
+## Imágenes: archivo editorial + Gag IA automático
+
+La imagen sigue siendo no bloqueante para Listas, pero forma parte del proceso oficial:
+
+1. **Fase editorial:** intenta localizar fotografía real; persiste `archive_image` y, por compatibilidad, `fallback_image`. En cuanto texto+remate están cerrados, materializa READY/Listas.
+2. **Fase visual automática:** `repair-ttittulares-listas.yml` revisa todos los READY. Si falta IA o es inválida, crea/recrea el job para el bridge local. Si falta archivo, intenta recuperarlo desde las páginas fuente mediante metadatos OG/Twitter.
+3. **Fase Telegram:** `send-ttittulares-ready-telegram.yml` envía una tarjeta inicial provisional y actualiza la misma tarjeta en READY. Cuando exista foto verificada, añade **📷 Copiar foto de archivo**. Telegram no permite convertir en foto un mensaje inicial de texto conservando el identificador: se respeta la misma tarjeta y se facilita la foto mediante botón en lugar de duplicar mensajes.
+
+Para una noticia apta sin IA:
+- `image_mode:"ai_plus_fallback"`;
+- `image_strategy:"ai_plus_fallback"`;
+- `ai_image_status:"none|failed"`;
+- `archive_image_status:"ready|none|pending"`;
+- `fallback_image_status:"ready|none|pending"`;
+- `image_choice:"fallback|none"` hasta que llegue una IA válida.
+
+No excluyas una noticia normal de ImageGen por sensibilidad editorial ni por categorías como sucesos, guerra, tragedia o víctimas. Conserva únicamente Tremending en su flujo específico `tweet_capture_only`; la decisión final sobre si una IA normal se publica corresponde al usuario.
+
+La pasada editorial no abre directamente el chat visual ni espera a ImageGen: la generación automática es posterior a READY y forma parte del mismo pipeline oficial. Cuando el bridge termina, actualiza `ai_image`, `ai_image_status`, `image_choice` e `image`; el workflow de Telegram detecta el cambio y entrega/repara el paquete.
+
+## Outbox editorial
+
+Publica cada resultado editorial mediante un comentario del PR #2:
+
+`TTITTULARES_OUTBOX_V1`
+`<base64 del JSON UTF-8 en una línea>`
+
+Si la entrada es el mismo acontecimiento que otro ya PUBLICADO y no aporta novedad sustantiva, o repite exactamente uno DESESTIMADO por el usuario, ciérrala también por outbox (no basta con escribir "duplicado" en el resumen). Envía el payload
+`{"event_id":"ID_actual","revision":1,"status":"duplicate","duplicate_of_event_id":"ID_original","reason":"justificación concreta basada en hechos","no_material_update":true}`.
+`no_material_update:true` es obligatorio al referenciar un PUBLISHED y jamás se declara si hay actualización independiente. El aplicador comprueba la decisión del original y marca SKIPPED_DUPLICATE o DISMISSED; nunca crea un READY ni una imagen en ese caso. No ocultes una noticia materializada, reescrita o con revisión diferente; ante duda, conserva PROCESSING e informa de la incidencia. Confirma que cada resultado pasó a estado terminal real en la cola antes de darlo por cerrado.
+
+El `prepared_item` editorial debe ser completo en texto/tuit, pero NO debe contener data URLs ni bytes de imagen. Debe persistir `archive_image`/estado cuando se haya encontrado una foto real y conservar `fallback_image` por compatibilidad; para IA persiste solo estado/metadatos pequeños hasta que el bridge materialice el raster. No escribas directamente en `ttittulares/editorial-outbox/**`. **Texto + remate bastan para materializar Listas.** La reparación visual automática se ocupará después de IA/archivo y Telegram. Cada incidencia se añade a `ttittulares/execution-errors.json` mediante el mismo transporte cuando esté disponible.
+
+## Fallback obligatorio cuando el transporte del outbox es bloqueado
+
+Si la escritura normal del comentario `TTITTULARES_OUTBOX_V1` es rechazada por el canal/conector **antes de llegar a GitHub** (por ejemplo, un bloqueo de transporte asociado al contenido), no reintentes indefinidamente el mismo payload ni dejes la entrada en `PROCESSING`.
+
+1. Relee JIT `editorial-queue.json`, `status.json`, `prepared.json` y `decisions.json`. Si la revisión ya no está activa, sáltala.
+2. Si sigue activa, envía un outbox mínimo, sin repetir titular, resumen ni contenido sensible: 
+   `{"event_id":"<id>","revision":<rev>,"status":"problematic","problem_reason":"transport_write_blocked"}`.
+3. Confirma que el aplicador mueve la entrada a `PROBLEMATIC`. Ese resultado es terminal para la pasada y no debe dejar `partial:true` por sí solo.
+4. No cuentes el intento bloqueado como READY ni inventes una versión reducida de la noticia para eludir el bloqueo. La entrada queda en «No comprobadas» y solo se reintenta mediante Check/validación explícita o una revisión material nueva, como cualquier otra PROBLEMATIC.
+5. El RUNTRACE registra la incidencia como `transport_write_blocked`, pero `processing_remaining` debe calcularse después de aplicar el fallback.
+
+Este fallback solo se usa cuando el **transporte** rechaza la escritura; no sustituye las validaciones editoriales normales ni convierte errores de contenido del aplicador en PROBLEMATIC automáticamente.
+
+## Cierre
+
+Relee cola, prepared y status, incluyendo PROCESSING anteriores. Informa noticias tratadas y estado de IA/fallback por separado, sin considerar ninguna imagen requisito de cierre.
+
+**La capa visual nunca mantiene RUNTRACE abierto.** En cuanto el texto esté confirmado en READY/Listas y `processing_remaining:0`, escribe RUNTRACE `DONE`. No esperes imágenes, no contabilices `visual_backlog` y no invoques ImageGen. `summary.imagegen_calls` debe ser `0` en una ejecución editorial normal.
+
+La semántica de `partial` se refiere exclusivamente al **trabajo editorial de esta pasada que queda sin cerrar**. Una noticia realmente intentada en esta ejecución que termina o permanece en `PROBLEMATIC` es un resultado terminal de esa pasada: cuenta en `problematic_reviewed` y como incidencia de esa ejecución, pero **por sí sola no pone `partial:true`**. Una `PROBLEMATIC` histórica no reintentada puede seguir contando en `problematic_remaining`, pero NO cuenta como incidencia ni como revisada en esta pasada. En una ejecución sin PROCESSING ni problemáticas activadas por Check/revisión material, el diagnóstico debe cerrar 0/0, `problematic_reviewed:0` e incidencias 0 aunque existan elementos históricos en «No comprobadas».
+
+Usa `partial:true` únicamente si queda algún `PROCESSING` pendiente de esta pasada, si un resultado que debía materializarse no alcanzó un estado terminal real, o si un fallo global impidió completar el lote inicial. Si `processing_remaining:0` y todos los items intentados terminaron en READY/PUBLISHED/DISMISSED/SKIPPED_DUPLICATE/PROBLEMATIC según corresponda, el resumen debe llevar `partial:false`, aunque `problematic_remaining` sea mayor que cero. No presentes un DONE realmente parcial como reconciliación completa. No pauses, sustituyas ni recrees automatizaciones.
+
+
+## Revisión exclusiva de remate
+Si `rewrite_scope=remate_only` y `reinvestigate` no es true: no investigar ni buscar fuentes. Usa `preserved_editorial` como contenido factual inmutable. Conserva fuentes, hechos, título, resumen y texto anterior al remate. Cambia solo el remate y conserva el fallback existente. La IA se gestiona después de READY mediante el reparador automático de Listas; el check **Gag IA** queda únicamente como override manual.
+
+En una revisión REWRITE, la pasada editorial no llama directamente a ImageGen. Si la revisión nueva no conserva una IA válida, deja `ai_image_status:"none"` o `failed`; el reparador automático de Listas generará o regenerará la IA correspondiente a la revisión vigente.
+
+
+## Norma editorial de originalidad de remates 🌶️ (prioritaria)
+
+Cada remate debe nacer de los detalles específicos y verificados de la noticia y añadir una segunda lectura ingeniosa, no un adorno genérico. Antes de elegir, plantear internamente hasta cinco enfoques humorísticos diferentes: ironía, contradicción, absurdo, doble sentido, metáfora inesperada o humor seco. Valorar sorpresa, mordiente, precisión, brevedad y respeto a los hechos.
+
+**Prohibidas las muletillas y paráfrasis fáciles**: «el calendario se ha vestido/salido de gala», «ha tomado nota», «no estaba en el guion», «ha llegado tarde a la fiesta» y otras plantillas reutilizables. Cuando estén disponibles, revisar los últimos 30 remates recientes del proyecto (y del proyecto hermano si accesibles); rechazar repeticiones de idea, metáfora, construcción o mecanismo cómico, no solo coincidencias literales. Buscar alternativas originales. No inventar hechos, no burlarse de víctimas ni convertir sátira política en propaganda. Si no existe remate digno y seguro, respetar las reglas preexistentes de obligatoriedad/opcionalidad: nunca publicar una frase de relleno.
+
+Esta norma se aplica tanto a elaboración inicial como a reelaboraciones y reparaciones de remate; no modifica los estados, límites de longitud, publicación ni entrega a Telegram.

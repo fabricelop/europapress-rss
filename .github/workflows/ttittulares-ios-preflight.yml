@@ -1,0 +1,40 @@
+name: Preflight TTiTTulares iOS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttittulares-ios-preflight.yml"
+      - "ios/TTiTTulares/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+
+      - name: Generar proyecto Xcode
+        working-directory: ios/TTiTTulares
+        run: |
+          xcodegen generate
+          xcodebuild -list -project TTiTTulares.xcodeproj
+
+      - name: Compilar app y WidgetKit
+        working-directory: ios/TTiTTulares
+        run: |
+          xcodebuild \
+            -project TTiTTulares.xcodeproj \
+            -target TTiTTulares \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build

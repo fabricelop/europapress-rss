@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827"><title>Copiar GAG · TTActualidad</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+*{box-sizing:border-box}body{background:#101827;color:#edf2fc;margin:0;padding:16px}main{max-width:720px;margin:0 auto}
+h1{font-size:22px}p{line-height:1.5;color:#cbd5e1}#headline{font-weight:700;color:#fff}
+button,a.action{display:inline-block;border:1px solid #566781;background:#263754;color:#fff;padding:12px 14px;border-radius:12px;font-weight:700;text-decoration:none;cursor:pointer;margin:4px 4px 4px 0;font-size:15px}
+button.primary{background:#29569c}button:disabled{opacity:.45}textarea{width:100%;min-height:220px;background:#090f1b;color:#e0e7ff;border:1px solid #42506b;border-radius:12px;line-height:1.5;padding:14px;resize:vertical;margin-top:12px}
+#result{min-height:28px;color:#b4e4c5}small{color:#a5b4cc}
+</style></head><body><main>
+<h1>GAG IA · Copiar prompt</h1><p id="headline">Cargando noticia o tendencia…</p>
+<p>El prompt incluye el texto editorial y el remate exactos, y alterna el estilo visual cada vez que lo copies. No genera imágenes automáticamente.</p>
+<div><button id="copy" class="primary" disabled>Copiar prompt GAG</button>
+<a class="action" href="https://chatgpt.com/images" target="_blank" rel="noopener noreferrer">Chat Images</a>
+<a class="action" href="https://chatgpt.com/images" target="_blank" rel="noopener noreferrer">Mis imágenes IA</a></div>
+<div><button id="copyX" disabled>Copiar en X</button><a id="openX" class="action" href="https://x.com" target="_blank" rel="noopener noreferrer">Abrir en X</a></div>
+<p id="result" role="status"></p><label for="prompt">Texto exacto del prompt (también puedes copiarlo manualmente):</label><textarea id="prompt" readonly></textarea>
+<small>Fuente: estado editorial vigente de la aplicación. Si la noticia ya fue borrada, no se recupera ni se vuelve a elaborar.</small>
+</main><script src="/tt-shared/gag-actions.js?v=20261009"></script><script>
+(function(){
+ "use strict";
+ const $=id=>document.getElementById(id),params=new URLSearchParams(location.search);
+ const project=params.get("app")==="ttendencias"?"ttendencias":"ttittulares";
+ const id=(params.get("id")||"").trim(),rev=Number(params.get("rev")||0),name=(params.get("name")||"").trim();
+ const permitted=/^[a-zA-Z0-9_.:-]{4,100}$/.test(id);
+ let item=null,xText="",iteration=0;
+ const show=msg=>{$("result").textContent=msg};
+ async function getState(){
+   const endpoint=project==="ttittulares"?"/api/ttittulares-control":"/api/ttendencias-control?view=state";
+   const r=await fetch(endpoint,{cache:"no-store"});
+   if(!r.ok)throw Error("La aplicación no ha podido consultar su estado: HTTP "+r.status);
+   const d=await r.json();if(!d.ok)throw Error(d.error||"Estado no disponible");
+   return d;
+ }
+ function find(data){
+   if(project==="ttittulares"){
+     const found=(data.prepared?.items||[]).find(x=>String(x.event_id||"")===id);
+     if(!found)throw Error("La noticia ya no está en Listas o ha sido borrada.");
+     const text=String(found.tweet?.text||"").trim();
+     if(!text)throw Error("Todavía no hay texto final para esta noticia.");
+     return {entry:found,text,title:found.title||"Noticia"};
+   }
+   const req=(data.requests?.requests||[]).find(x=>String(x.id||"")===id)||{};
+   const candidates=[...(data.explained?.items||[]),...(data.pending_explained?.items||[])];
+   let result=candidates.find(x=>String(x.id||"")===id&&(!rev||Number(x.revision||0)===rev));
+   if(!result&&name)result=candidates.find(x=>String(x.name||x.term_normalized||"").toLocaleLowerCase()===name.toLocaleLowerCase());
+   if(!result&&String(req.explanation||"").trim())result=req;
+   if(!result)throw Error("La tendencia todavía no tiene explicación final disponible.");
+   const text=String(result.explanation||req.explanation||"").trim();
+   if(!text)throw Error("La explicación aún no está disponible.");
+   const label=result.group_title||result.name||req.name||name||"Tendencia";
+   return {entry:{...req,...result,name:label},text,title:label};
+ }
+ function refresh(){
+   $("prompt").value=TTGag.buildPrompt(project==="ttittulares"?"news":"trend",item,xText,iteration);
+ }
+ async function copy(target){
+   const value=target==="prompt"?$("prompt").value:xText;
+   if(await TTGag.copyText(value)){show(target==="prompt"?"Prompt GAG copiado. Pégalo en ChatGPT Images.":"Texto para X copiado.");if(target==="prompt"){iteration++;refresh()}}
+   else show("El navegador no ha permitido copiar automáticamente. Selecciona el texto del cuadro.");
+ }
+ async function init(){
+   if(!permitted)throw Error("Enlace sin identificador válido.");
+   const data=await getState(),found=find(data);item=found.entry;xText=found.text;
+   $("headline").textContent=found.title;
+   $("openX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(xText);
+   refresh();$("copy").disabled=false;$("copyX").disabled=false;show("Preparado para copiar.");
+ }
+ $("copy").addEventListener("click",()=>copy("prompt"));
+ $("copyX").addEventListener("click",()=>copy("x"));
+ init().catch(e=>{show("No disponible: "+String(e.message||e));$("headline").textContent="No se puede cargar el contenido";});
+})();
+</script></body></html>

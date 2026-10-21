@@ -1,0 +1,137 @@
+name: TTImages relay diagnostic syntax
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/Diagnosticar-TTImages-Relay.ps1'
+      - 'windows/Diagnosticar-TTImages-Targets9234.ps1'
+      - 'windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
+      - 'windows/TTImages-AutoRecovery-Guardian.ps1'
+      - 'windows/Install-TTImages-AutoRecovery.ps1'
+      - 'windows/tests/Test-TTImages-Installer-WindowsPS51.ps1'
+      - 'windows/tests/Test-TTImages-ChromeTargets.ps1'
+      - '.github/workflows/validate-ttimages-relay-diagnostic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse diagnostic PowerShell and guarantee read only
+        shell: pwsh
+        run: |
+          $path='windows/Diagnosticar-TTImages-Relay.ps1'
+          $tokens=$null
+          $errorsFound=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errorsFound)|Out-Null
+          if($errorsFound.Count -gt 0){
+            $errorsFound|ForEach-Object{Write-Error $_.Message}
+            exit 1
+          }
+          $src=Get-Content -Raw -LiteralPath $path
+          foreach($forbidden in @('Start-ScheduledTask','Enable-ScheduledTask','Disable-ScheduledTask','Set-ScheduledTask','Register-ScheduledTask','Unregister-ScheduledTask','Stop-Process','Start-Process','Remove-Item','Copy-Item','Move-Item')){
+            if($src -match ('(?m)^\\s*(?:&\\s*)?'+[regex]::Escape($forbidden)+'\\b')){throw ('Diagnostic cannot execute '+$forbidden)}
+          }
+          Write-Host 'TTIMAGES_RELAY_DIAGNOSTIC_SAFE_SYNTAX_OK'
+
+      - name: Validate bounded viewer recovery script
+        shell: pwsh
+        run: |
+          $path='windows/Recuperar-TTImages-Visor-Bloqueado.ps1'
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path),[ref]$tokens,[ref]$errs)|Out-Null
+          if($errs.Count -gt 0){ $errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $code=Get-Content -Raw -LiteralPath $path
+          foreach($marker in @('/json/list','Visor ya abierto al iniciar',
+              'GetChromeTargets','Get-ScheduledTask -TaskName $taskName',
+              'Start-ScheduledTask -TaskName $taskName','GetCaptureProcess',
+              'GALERIA_NUEVA_CONFIRMADA','/json/new?','/json/close/',
+              'ConvertFrom-Json -InputObject','RECUPERACION_HTTP_OK')){
+            if(-not $code.Contains($marker)){throw ('Missing viewer guard '+$marker)}
+          }
+          foreach($forbidden in @('Stop-Process','Kill-Process','Remove-Item','Unregister-ScheduledTask',
+              'Disable-ScheduledTask','Set-ScheduledTask','WriteAllText','Remove-Content')){
+            if($code -match ('(?m)^\s*(?:&\s*)?'+[regex]::Escape($forbidden)+'\b')){
+              throw ('Dangerous command in recovery '+$forbidden)
+            }
+          }
+          Write-Host 'TTIMAGES_VIEWER_RECOVERY_SAFE_SYNTAX_OK'
+
+      - name: Validate read-only Chrome 9234 target inventory
+        shell: pwsh
+        run: |
+          $p='windows/Diagnosticar-TTImages-Targets9234.ps1'
+          $t=$null
+          $errs=$null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$t,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $s=Get-Content -LiteralPath $p -Raw
+          foreach($forbidden in @('/json/new','/json/close','Page.reload','Start-ScheduledTask','Enable-ScheduledTask','Stop-Process','Remove-Item','Invoke-RestMethod -Method Put')){
+            if($s.Contains($forbidden)){throw ('Read-only audit includes forbidden action: '+$forbidden)}
+          }
+          Write-Host 'TTIMAGES_9234_READONLY_TARGET_INVENTORY_OK'
+
+      - name: Regression - Chrome JSON array contains independent targets
+        shell: pwsh
+        run: pwsh -NoProfile -File windows/tests/Test-TTImages-ChromeTargets.ps1
+
+      - name: Validate unattended guardian PowerShell and self-test
+        shell: pwsh
+        run: |
+          $p='windows/TTImages-AutoRecovery-Guardian.ps1'
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $src=Get-Content -LiteralPath $p -Raw
+          foreach($forbidden in @('Stop-Process','Stop-ScheduledTask','/json/new?','/json/close/','SendMessage','sendPhoto','Send-Telegram')){
+            if($src.Contains($forbidden)){throw ('Guardian must not alter capture or Telegram: '+$forbidden)}
+          }
+          pwsh -NoProfile -File $p -SelfTest
+          # Self-test must throw on a failing assertion; output is intentionally ignored.
+          & $p -SelfTest | Out-Null
+          Write-Host 'TTIMAGES_GUARDIAN_THROW_ONLY_SELFTEST_OK'
+      - name: Validate conservative installer syntax
+        shell: pwsh
+        run: |
+          $p='windows/Install-TTImages-AutoRecovery.ps1'
+          if(-not(Test-Path $p)){Write-Host 'Installer not yet committed';exit 0}
+          $tokens=$null
+          $errs=$null
+          [Management.Automation.Language.Parser]::ParseFile((Resolve-Path $p),[ref]$tokens,[ref]$errs) | Out-Null
+          if($errs.Count -gt 0){$errs|ForEach-Object{Write-Error $_.Message};exit 1}
+          $installer=Get-Content -Raw -LiteralPath $p
+          if(-not $installer.Contains("e40621093f166fff673a9d08935f199e0cb68f0f")){
+            throw 'Installer must pin the capturable guardian release'
+          }
+          $guardian=Get-Content -Raw -LiteralPath 'windows/TTImages-AutoRecovery-Guardian.ps1'
+          foreach($required in @('New-TimeSpan -Minutes 15',
+              'System32\wscript.exe','//B //Nologo',
+              'shell.Run command, 0, True','-WindowStyle Hidden',
+              'New-ScheduledTaskAction -Execute $exe','TTImages-AutoRecovery-Hidden.vbs')){
+            if(-not $installer.Contains($required)){throw ('Invisible scheduled task missing '+$required)}
+          }
+          if($guardian.Contains('$allOutput=& powershell.exe')){
+            throw 'Guardian must not spawn a visible child PowerShell process'
+          }
+          if(-not $guardian.Contains('$allOutput=& $recovery -NoTaskStart')){
+            throw 'Recovery must run in the same hidden PowerShell process'
+          }
+          Write-Host 'TTIMAGES_AUTORECOVERY_INVISIBLE_15MIN_OK'
+
+  windows-ps51:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Simulate complete TTImages installer in Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $version=$PSVersionTable.PSVersion
+          Write-Host ('Running on Windows PowerShell '+$version)
+          if($version.Major -ne 5){throw 'Expected Windows PowerShell 5.1'}
+          .\windows\tests\Test-TTImages-Installer-WindowsPS51.ps1

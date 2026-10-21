@@ -1,0 +1,59 @@
+name: Diagnose TTendencias Telegram webhook for mobile (safe)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/diagnose-ttendencias-telegram-webhook-mobile.yml'
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TTENDENCIAS_BOT_TOKEN: ${{ secrets.TTENDENCIAS_BOT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read only Telegram bot status
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,json,datetime,urllib.request,urllib.error
+          token=os.environ.get('TTENDENCIAS_BOT_TOKEN','')
+          out={'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+               'bot_configured':bool(token),'bot_username':'','webhook_url':'',
+               'pending_update_count':None,'last_error_message':'','has_custom_certificate':False}
+          if token:
+            for method in ('getMe','getWebhookInfo'):
+              try:
+                with urllib.request.urlopen('https://api.telegram.org/bot'+token+'/'+method,timeout=20) as response:
+                  doc=json.load(response)
+                d=doc.get('result') or {}
+                if method=='getMe':
+                  out['bot_username']=str(d.get('username') or '')
+                else:
+                  out['webhook_url']=str(d.get('url') or '')
+                  out['pending_update_count']=d.get('pending_update_count')
+                  out['last_error_message']=str(d.get('last_error_message') or '')[:180]
+                  out['has_custom_certificate']=bool(d.get('has_custom_certificate'))
+              except Exception as e:out[method+'_error']=type(e).__name__
+          with open('/tmp/tt-tr-bot.json','w') as f:json.dump(out,f,ensure_ascii=False,indent=2)
+          print('TTENDENCIAS_SAFE_WEBHOOK_DIAGNOSTIC',out)
+          PY
+      - name: Record public-safe diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git checkout -B main origin/main
+            cp /tmp/tt-tr-bot.json docs/ttendencias-mobile-bot-status.json
+            git add docs/ttendencias-mobile-bot-status.json
+            git commit -m "TTendencias Telegram: record safe webhook health and destination" || exit 0
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          exit 1

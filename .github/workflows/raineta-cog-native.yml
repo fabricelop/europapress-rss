@@ -1,0 +1,50 @@
+name: RainETA Native COG Feasibility
+on:
+  push:
+    paths:
+      - 'ios/raineta/tests/cog_native_probe.py'
+      - '.github/workflows/raineta-cog-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  science:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install geo-validation tools
+        run: |
+          python3 -m venv /tmp/raineta-cog-venv
+          /tmp/raineta-cog-venv/bin/pip install --quiet requests numpy rasterio pyproj pillow
+      - name: Download and inspect real OPERA COG (1 km)
+        working-directory: ios/raineta
+        run: /tmp/raineta-cog-venv/bin/python tests/cog_native_probe.py
+      - name: Decode radar TIFF on Apple's native ImageIO
+        working-directory: ios/raineta
+        run: |
+          swift - cog-proof/real-composite.tiff <<'SWIFT'
+          import Foundation
+          import ImageIO
+          import CoreGraphics
+          let path = CommandLine.arguments[1]
+          let bytes = try Data(contentsOf: URL(fileURLWithPath: path))
+          guard let src = CGImageSourceCreateWithData(bytes as CFData, nil) else {
+            fatalError("iOS/macOS native ImageIO cannot decode OPERA COG")
+          }
+          let props = CGImageSourceCopyPropertiesAtIndex(src, 0, nil) as? [String: Any] ?? [:]
+          print("APPLE_IMAGEIO",props)
+          guard let image = CGImageSourceCreateImageAtIndex(src, 0, nil) else {
+            fatalError("ImageIO failed to decode public TIFF band")
+          }
+          print("APPLE_IMAGE",image.width,image.height,image.bitsPerComponent,image.bitsPerPixel)
+          if image.width != 3800 || image.height != 4400 {
+            fatalError("Unexpected OPERA raster geometry")
+          }
+          SWIFT
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: raineta-real-radar-cog-native
+          path: ios/raineta/cog-proof/
+          retention-days: 14

@@ -1,0 +1,68 @@
+name: TTActualidad worker remote recovery probe
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/ttactualidad-worker-recovery-probe.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: DNS and connectivity (no secrets disclosed)
+        shell: bash
+        run: |
+          set +e
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            echo "::group::$host"
+            getent ahostsv4 "$host" | head -3 || true
+            curl -4 -sS --connect-timeout 5 --max-time 12 -o /tmp/probe-body -w 'IPv4 HTTP=%{http_code} DNS=%{time_namelookup}s TLS=%{time_appconnect}s TOTAL=%{time_total}s\n' "https://$host/health" 2>&1
+            echo "IPv4 EXIT=$?"
+            curl -6 -sS --connect-timeout 5 --max-time 12 -o /dev/null -w 'IPv6 HTTP=%{http_code} DNS=%{time_namelookup}s TLS=%{time_appconnect}s TOTAL=%{time_total}s\n' "https://$host/health" 2>&1
+            echo "IPv6 EXIT=$?"
+            echo "::endgroup::"
+          done
+      - name: Check complete application over IPv4 and DNS resolver answers
+        shell: bash
+        run: |
+          set +e
+          for url in "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/" "https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health" "https://fabcalendar-bot.fabricelop.workers.dev/healthz"; do
+            echo "::group::$url"
+            curl -4 -L -sS --connect-timeout 6 --max-time 15 -o /tmp/check.body -D /tmp/check.headers -w 'HTTP=%{http_code} remote=%{remote_ip} total=%{time_total}s bytes=%{size_download}\\n' "$url"
+            grep -Ei '^(HTTP/|cf-ray:|content-type:|server:|location:)' /tmp/check.headers || true
+            head -c 250 /tmp/check.body | tr '\\n' ' '; echo
+            echo "::endgroup::"
+          done
+          echo '=== DNS answers from public resolvers ==='
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            for type in A AAAA; do
+              echo "$host $type"
+              dig +short @1.1.1.1 "$host" "$type" | head -12
+              dig +short @8.8.8.8 "$host" "$type" | head -12
+            done
+          done
+      - name: Detectar botones presentes en la app original (solo lectura)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          url='https://ttactualidad-decisions-pilot.fabricelop.workers.dev/?check=original-rework'
+          try:
+              with urllib.request.urlopen(url,timeout=15) as response:
+                  html=response.read().decode('utf-8','replace')
+                  print('LIVE_UI_HTTP=',response.status)
+                  print('LIVE_HAS_REWORK_BUTTON=', 'Volver a En elaboración' in html)
+                  print('LIVE_HAS_TOP30=', 'Top 30' in html)
+                  print('LIVE_UI_BYTES=',len(html))
+          except Exception as exc:
+              print('LIVE_UI_CHECK_UNAVAILABLE=',type(exc).__name__,str(exc)[:180])
+          PY
+      - name: Verify Cloudflare deploy authentication presence (no changes)
+        env:
+          CF_API: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -n "$CF_API" ]; then echo "CLOUDFLARE_API_TOKEN_PRESENT=yes"; else echo "CLOUDFLARE_API_TOKEN_PRESENT=no"; fi
+          if [ -n "$CF_ACCOUNT" ]; then echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=yes"; else echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=no"; fi

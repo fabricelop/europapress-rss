@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><meta name="description" content="TTActualidad: gestión editorial real de noticias y tendencias">
+<title>TT Actualidad · móvil</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="icon" href="./icon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="TT Actualidad">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--surface:#151d31;--panel:#202a43;--stroke:#35415b;--ink:#f1f5fc;--sub:#a4b3ca;--blue:#6b9cff;--aqua:#63e1d4;--orange:#ffb975;--red:#ff848e}
+*{box-sizing:border-box}body{background:radial-gradient(circle at top right,#1d3153 0%,transparent 400px),var(--bg);color:var(--ink);margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button,a{touch-action:manipulation}
+header{padding:env(safe-area-inset-top) 14px 6px;max-width:1100px;margin:auto}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--aqua);font-weight:800}h1{margin:5px 0 2px;font-size:clamp(25px,5.4vw,36px);letter-spacing:-1px}header p{color:var(--sub);margin:0 0 12px}
+.tabbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:1100px;margin:4px auto 12px;padding:0 14px}.tabbar button,.chips button,.controls button,.action,.refresh{background:var(--panel);border:1px solid var(--stroke);border-radius:12px;color:var(--ink);padding:10px 13px;cursor:pointer}.tabbar button{font-size:16px;font-weight:850;padding:14px}.tabbar button[aria-selected=true]{background:#2b4a81;border-color:var(--blue)}.tabbar button[aria-selected=true] span{color:#a2c3ff}
+main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(--surface);border:1px solid var(--stroke);border-radius:15px;padding:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.search{flex:1;min-width:145px;background:#0d1528;color:var(--ink);border:1px solid #3b4863;border-radius:10px;padding:10px 12px;font-size:16px}.refresh{background:#285b69}.status{font-size:12px;color:var(--sub);margin:8px 2px 15px}.status strong{color:var(--aqua)}.chips{display:flex;gap:7px;overflow:auto;padding:2px 0 11px;scrollbar-width:thin}.chips button{white-space:nowrap;padding:9px 13px;font-size:13px}.chips button[aria-pressed=true]{background:#2b4c5f;color:#d3fff8;border-color:var(--aqua);font-weight:750}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:14px}.stats button{text-align:left;color:var(--ink);cursor:pointer}.stat[aria-pressed=true]{border-color:var(--aqua);background:#234359}.source-counts{display:flex;gap:13px;flex-wrap:wrap;color:var(--sub);margin:-4px 0 14px;font-size:13px}.source-counts b{color:var(--ink)}.photo-sheet[hidden]{display:none}.photo-sheet{position:fixed;inset:0;background:#050912ed;z-index:100;display:flex;align-items:center;justify-content:center;padding:25px 12px;box-sizing:border-box}.photo-box{width:min(570px,100%);max-height:95vh;overflow:auto;text-align:center;background:var(--surface);border:1px solid var(--stroke);border-radius:17px;padding:15px}.photo-box img{display:block;max-width:100%;max-height:65vh;object-fit:contain;margin:10px auto;-webkit-touch-callout:default;user-select:auto}.photo-box p{font-size:13px;color:var(--sub)}.photo-box a{display:inline-block;margin:6px;color:var(--aqua)}.stat{background:var(--surface);border:1px solid var(--stroke);border-radius:13px;padding:10px 12px}.stat b{font-size:22px;display:block}.stat small{color:var(--sub);font-size:11px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:13px}.card{background:var(--surface);border:1px solid var(--stroke);border-radius:17px;overflow:hidden;min-width:0}.card .pic{width:100%;height:173px;object-fit:cover;background:#1d2945}.card-body{padding:13px 14px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.meta span{font-size:11px;padding:2px 7px;border:1px solid #435472;border-radius:99px;color:#bfd4f7}.meta .hot{border-color:#bb8b40;color:var(--orange)}h2{font-size:16px;line-height:1.32;margin:5px 0 9px}.fact{color:#d5dce9;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 8px;font-size:13px}.closer{font-weight:750;color:#fcd19a;white-space:pre-wrap;font-size:13px;margin:9px 0}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding-top:10px}.action{padding:10px 8px;font-size:12px;font-weight:650;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center}.action.primary{background:#245a69;border-color:#4abcb5;color:#eafffa}.action.secondary{background:#283658}.action:disabled{opacity:.5}.empty{padding:32px 20px;text-align:center;color:var(--sub);background:var(--surface);border:1px dashed var(--stroke);border-radius:14px}.notice{border:1px solid #6c5d35;border-radius:12px;background:#29261b;color:#e0d1ab;padding:11px 12px;margin-bottom:11px;font-size:12px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#e0fff7;color:#0b2330;border-radius:12px;padding:12px 17px;font-weight:800;max-width:calc(100% - 30px);z-index:20;box-shadow:0 15px 45px #0008;display:none}.toast.show{display:block}.footer{color:#91a5bf;font-size:12px;line-height:1.6;margin-top:28px}a{color:#aac8ff}details{margin-top:16px;color:var(--sub);font-size:12px}details summary{cursor:pointer}
+@media(max-width:680px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cards{grid-template-columns:minmax(0,1fr)}.card .pic{height:215px}.actions{grid-template-columns:1fr 1fr}header p{font-size:13px}}
+
+/* Vista editorial compacta inspirada en los paneles originales, conservando una sola app. */
+.overview{padding:10px 2px 12px}.overview h2{font-size:22px;letter-spacing:-.35px;margin:0 0 3px}.radar-times{display:flex;gap:13px;flex-wrap:wrap;font-size:12px;color:var(--sub)}.radar-times strong{color:var(--aqua)}
+.stats.five{grid-template-columns:repeat(5,minmax(0,1fr))}.stat small{display:block;line-height:1.3}.stat b{line-height:1.1}
+.card.tremending{border-left:4px solid #d95f8d}.tremending-tweets{margin-top:10px;color:var(--sub)}.tremending-tweets summary{cursor:pointer;color:#ffbed8;font-weight:700}.tremending-tweets a{display:inline-block;margin:4px 8px 4px 0;padding:7px;border:1px solid var(--stroke);border-radius:9px}
+.cards.top30{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.card.trend-top .pic{display:none}.card.trend-top .card-body{padding:11px 13px}.card.trend-top .actions{padding-top:4px}
+/* Top 30 is now the complete editorial view; no separate "Próximas" cards. */
+@media(max-width:680px){.stats.five{grid-template-columns:repeat(3,minmax(0,1fr))}.stats.five .stat{padding:9px 7px}.stats.five .stat b{font-size:21px}.overview h2{font-size:21px}}
+
+.actions.ready-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;align-items:stretch}
+.actions.ready-actions .action{display:flex;align-items:center;justify-content:center;text-align:center;min-height:46px;padding:10px 7px;width:100%;white-space:normal;line-height:1.2;box-sizing:border-box}
+.actions.ready-actions .action.external{background:#205a77;border-color:#4995b6;color:#eefbff;font-weight:750}
+.actions.ready-actions .action.external:active{background:#317b9e}
+.actions.ready-actions .action.remove{border-color:#98616e;color:#ffd8e1}
+@media(max-width:365px){.actions.ready-actions{gap:6px}.actions.ready-actions .action{font-size:12px;padding:8px 5px}}.pilot-settings{padding:10px;margin:8px 0;background:var(--surface);border:1px solid var(--stroke);border-radius:12px}.pilot-settings button{padding:8px 12px;color:var(--ink);background:var(--panel);border:1px solid var(--stroke);border-radius:8px}
+.manual-open{background:#226b68;border:1px solid #6fd9cc;color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}
+.manual-overlay[hidden]{display:none}.manual-overlay{position:fixed;inset:0;z-index:150;background:#050a16e9;display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top) 12px env(safe-area-inset-bottom)}
+.manual-panel{background:var(--surface);color:var(--ink);border:1px solid var(--stroke);border-radius:16px;padding:18px;max-width:530px;width:100%;max-height:93dvh;overflow:auto}
+.manual-panel label{display:block;margin:12px 0 5px;font-size:13px;color:var(--sub);font-weight:750}
+.manual-panel input,.manual-panel textarea{width:100%;background:#0d1528;border:1px solid #3b4863;border-radius:10px;color:var(--ink);padding:12px;font-size:16px}
+.manual-panel textarea{min-height:75px;resize:vertical}.manual-panel .actions{display:flex;justify-content:flex-end;gap:10px}
+.manual-panel .actions button{border:1px solid var(--stroke);border-radius:10px;background:var(--panel);color:var(--ink);padding:12px 15px}
+.manual-panel .actions button[type=submit]{background:#226b68;border-color:#6fd9cc;font-weight:800}
+.manual-panel button:disabled{opacity:.55}.manual-panel h2{font-size:20px}
+.manual-panel .feedback{min-height:20px;font-size:13px;color:var(--orange)}
+</style></head>
+<body>
+<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p></header>
+<div class="tabbar" role="tablist" aria-label="Proyecto">
+<button id="tab-tti" role="tab" aria-selected="true" type="button">TT<span>i</span>TTulares</button>
+<button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
+</div>
+<main>
+<div class="notice" id="warning">Cargando los datos editoriales publicados en GitHub…</div>
+
+<details class="pilot-settings"><summary>Conexión</summary><span id="pilot-status">Comprobando sesión…</span> <button type="button" id="pilot-config">Vincular iPhone</button></details><div class="toolbar"><input id="search" class="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar"><button class="refresh" id="refresh" type="button">↻ Actualizar</button><button class="manual-open" id="manual-open" type="button" hidden>＋ Noticia</button></div>
+<div id="status" class="status" role="status">Leyendo datos…</div>
+<section class="overview"><h2 id="view-title">Noticias listas</h2><div class="radar-times"><span id="last-radar">Último radar: —</span><span id="next-radar">Próximo radar previsto: —</span></div></section>
+<div id="chips" class="chips" aria-label="Secciones"></div>
+<div id="stats" class="stats"></div><div id="source-counts" class="source-counts"></div>
+<div id="cards" class="cards"></div>
+
+
+</main><div id="toast" class="toast" role="status"></div>
+<div id="manual-overlay" class="manual-overlay" role="dialog" aria-modal="true" aria-labelledby="manual-title" hidden>
+ <div class="manual-panel">
+  <h2 id="manual-title">＋ Añadir noticia a En Elaboración</h2>
+  <p class="fact">Pega un enlace, escribe un titular o ambos. La investigación comprobará los hechos antes de preparar el texto y la imagen.</p>
+  <form id="manual-form">
+   <label for="manual-url">Enlace a la noticia (opcional)</label>
+   <input id="manual-url" type="url" inputmode="url" autocomplete="url" placeholder="https://..." maxlength="2000">
+   <label for="manual-headline">Titular o descripción (opcional si hay enlace)</label>
+   <textarea id="manual-headline" maxlength="240" placeholder="¿Qué ha ocurrido?"></textarea>
+   <label for="manual-instructions">Indicaciones para la elaboración (opcional)</label>
+   <textarea id="manual-instructions" maxlength="1000" placeholder="Por ejemplo: comprueba el contexto o prioriza esta declaración"></textarea>
+   <p id="manual-feedback" class="feedback" role="status"></p>
+   <div class="actions"><button id="manual-close" type="button">Cancelar</button><button id="manual-submit" type="submit">Enviar a En Elaboración</button></div>
+  </form>
+ </div>
+</div><div class="photo-sheet" id="photo-sheet" hidden role="dialog" aria-modal="true" aria-label="Copiar foto de archivo"><div class="photo-box"><button type="button" class="action secondary" id="photo-close">Cerrar ×</button><p id="photo-help">Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos».</p><img id="photo-preview" alt="Fotografía de archivo, mantener pulsada para copiar"><div><a id="photo-open" target="_blank" rel="noopener">Abrir fotografía original</a></div></div></div>
+<script>
+(()=>{'use strict';
+const REPO='fabricelop/europapress-rss',RAW='https://raw.githubusercontent.com/'+REPO+'/main/',SITE_DATA='data/';
+const state={app:'tti',tab:'listas',q:'',data:{},updated:0,lastError:'',busy:false};
+let loadRevision=0; // Last navigation/refresh wins; earlier requests never overwrite another tab.
+const pendingManual=new Map();
+let manualRequestId=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const stamp=s=>{if(!s)return '—';const d=new Date(s);return isNaN(d)?'—':new Intl.DateTimeFormat('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Europe/Madrid'}).format(d)};
+const brief=(s,n=600)=>String(s||'').trim().slice(0,n);
+const isHttp=u=>{try{const x=new URL(u);return x.protocol==='https:'?x.href:''}catch{return ''}};
+const avatar=(title)=>title||'Sin título';
+const decisions=()=>new Map((state.data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
+const isClosed=(status)=>['published','dismissed','deleted','removed','delete_pending'].includes(String(status||'').toLowerCase());
+const fields={
+tti:['ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
+tr:['trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
+};
+const aliases={'ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
+async function fetchJson(path,force=false){
+ const key='tt-web-cache-'+path;
+ const sources=[RAW+path,SITE_DATA+path];
+ // Original Cloudflare editor may not bundle data/. GitHub Pages publishes a
+ // same-repository snapshot, which keeps Top 30 usable if RAW is blocked on mobile.
+ if(path==='trends/recent.json'){
+  sources.push('https://fabricelop.github.io/europapress-rss/data/'+path);
+ }
+ let errors=[];
+ for(const source of sources){
+  try{
+   const r=await fetch(source+'?v='+Date.now(),{cache:'no-store',signal:AbortSignal.timeout(7000)});
+   if(!r.ok)throw Error('HTTP '+r.status);
+   const doc=await r.json();
+   if(!doc||typeof doc!=='object')throw Error('JSON inválido');
+   if(path==='trends/recent.json'&&!Array.isArray(doc.items)&&!Array.isArray(doc.top30))
+    throw Error('Radar Top 30 sin posiciones');
+   try{localStorage.setItem(key,JSON.stringify({doc,at:Date.now()}))}catch{}
+   return doc;
+  }catch(e){errors.push(String(e?.message||e))}
+ }
+ try{const cached=JSON.parse(localStorage.getItem(key)||'null');if(cached?.doc)return cached.doc}catch{}
+ throw Error(path+': '+errors.slice(0,3).join(', '))
+}
+async function load(force=false){
+ const app=state.app,revision=++loadRevision;
+ state.busy=true;$('refresh').disabled=true;
+ $('status').textContent='Actualizando datos públicos…';
+ let errors=[];
+ // Give Top 30 its own first, short read. The huge explanation ledger should
+ // not block or erase an already available ranking on iPhone.
+ const radarPath=app==='tr'?'trends/recent.json':null;
+ if(radarPath){
+  try{
+   const radar=await fetchJson(radarPath,force);
+   if(revision!==loadRevision||app!==state.app)return;
+   state.data={...state.data,recent:radar};
+   state.updated=Date.now();
+   render();
+  }catch(e){errors.push(String(e))}
+ }
+ // Display the tiny editorial queue before large explanation ledgers.
+ // This keeps "En elaboración" responsive immediately after a rework.
+ const queuePath=app==='tr'?'trends/editorial-queue.json':null;
+ if(queuePath){
+  try{
+   const queue=await fetchJson(queuePath,force);
+   if(revision!==loadRevision||app!==state.app)return;
+   const old=state.data.editorialQueue;
+   const incomingAt=Date.parse(queue.updated_at||'')||0;
+   const existingAt=Date.parse(old?.updated_at||'')||0;
+   state.data={...state.data,editorialQueue:existingAt>incomingAt?old:queue};
+   render();
+  }catch(e){errors.push(String(e))}
+ }
+ const wanted=fields[app].filter(path=>path!==radarPath&&path!==queuePath);
+ const output=await Promise.all(wanted.map(async path=>{
+  try{return [aliases[path],await fetchJson(path,force)]}
+  catch(e){errors.push(String(e));return [aliases[path],state.data[aliases[path]]||{}]}
+ }));
+ // A previous load for another app may finish later. It must never override
+ // the new app's data or leave its TOP 30 empty.
+ if(revision!==loadRevision||app!==state.app)return;
+ state.data={...state.data,...Object.fromEntries(output)};
+ state.updated=Date.now();state.lastError=errors.join(' · ');
+ state.busy=false;$('refresh').disabled=false;
+ try{sessionStorage.setItem('tt-web-snapshot-'+app,JSON.stringify(state.data))}catch{}
+ render();if(pendingDeletes.size)void checkPendingDeletes()
+}
+function setApp(app){
+ state.app=app;state.tab='listas';state.q='';
+ $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
+ history.replaceState(null,'','#'+(app==='tti'?'ttittulares':'ttendencias'));
+ try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
+ render();load(true)
+}
+function tabs(){return state.app==='tti'?[]:[['listas','Listas'],['elaboracion','En elaboración'],['top','Top 30'],['historico','Histórico']]}
+function ttiRows(){
+ const snap=state.data.status||{}, d=decisions(), queue=state.data.ttiQueue?.items||[];
+ const closed=x=>isClosed(d.get(String(x.event_id)));
+ const isQueued=id=>queue.some(q=>String(q.event_id||'')===String(id)&&['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
+ const prepared=(state.data.prepared?.items||[]).filter(x=>!closed(x));
+ if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
+ if(state.tab==='elaboracion'){
+  const fresh=queue.filter(q=>['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
+  const seen=new Set(fresh.map(q=>String(q.event_id||'')));
+  const rows=Array.isArray(state.data.ttiQueue?.items) ? fresh : [...fresh,...(snap.processing_items||state.data.processing?.items||[]).filter(x=>!seen.has(String(x.event_id||'')))];
+  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttittulares'&&(op.decision==='prepare'||op.decision==='rework')&&
+    ['sending','submitted'].includes(op.status)&&!seen.has(op.id)&&
+    !(state.data.prepared?.items||[]).some(x=>String(x.event_id||'')===op.id))
+   .map(op=>({...op.snapshot,event_id:op.id,title:op.snapshot?.title||op.id,
+     revision:op.revision,_kind:'tti',_id:op.id,_status:'PENDIENTE DE CONFIRMACIÓN',
+     _queuedAt:new Date(op.at).toISOString()}));
+  const manual=(typeof pendingManual==='undefined'?[]:[...pendingManual.values()]).filter(x=>!seen.has(x.event_id))
+   .map(x=>({...x,_kind:'tti',_id:x.event_id,_status:'PENDIENTE DE CONFIRMACIÓN',_queuedAt:x.selected_at}));
+  return [...manual,...pending,...rows.filter(x=>!closed(x)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'EN ELABORACIÓN'}))];
+ }
+ if(state.tab==='problematicas')return (snap.problematic_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'PROBLEMÁTICA'}));
+ if(state.tab==='creciendo')return (snap.three_source_items||[]).filter(x=>!closed(x)&&!isQueued(x.event_id)).map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'CRECIENDO'}));
+ if(state.tab==='tremending')return (state.data.tremending?.items||[]).filter(x=>!['deleted','dismissed'].includes(String(x.status||'').toLowerCase())).map(x=>({...x,_kind:'tremending',_id:String(x.id),_status:'TREMENDING'}));
+ return (snap.source_status||[]).map((x,i)=>({...x,title:x.source,_kind:'fuente',_id:String(i),_status:x.ok?'ACTIVA':'INCIDENCIA'}))
+}
+function trendKey(x){return String(x.event_id||x.id||x.term_normalized||x.display_name||x.name||x.title||'').toLocaleLowerCase('es-ES')}
+function trendClosed(x){
+ const key=trendKey(x),dec=state.data.mobileDecisions?.items||[];
+ return dec.some(z=>['published','deleted','dismissed','removed'].includes(String(z.status||'').toLowerCase())&&
+    trendKey(z)===key&&Number(z.revision||0)>=Number(x.revision||0))
+}
+function currentTop30(recent){
+ const items=Array.isArray(recent?.items)?recent.items:[];
+ if(items.length)return items.slice(0,30).filter(x=>x&&typeof x==='object'&&String(x.name||'').trim());
+ const names=Array.isArray(recent?.top30)?recent.top30:[];
+ return names.slice(0,30).map((name,i)=>({rank:i+1,name:String(name||'').trim()})).filter(x=>x.name);
+}
+function trendRows(){
+ const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
+ const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
+ if(state.tab==='elaboracion'){
+  // One canonical state per (ID, revision). A stale queue must NEVER
+  // resurrect an item that a newer request or finished explanation closed.
+  const active=x=>['preparing','update'].includes(String(x.status||'').toLowerCase());
+  const reqById=new Map(requests.filter(x=>x.id).map(x=>[String(x.id),x]));
+  const manualById=new Map();
+  for(const item of state.data.manual?.items||[]){
+   const id=String(item.id||'');if(!id)continue;
+   const old=manualById.get(id);
+   if(!old||Number(item.revision||0)>Number(old.revision||0)||
+      (Number(item.revision||0)===Number(old.revision||0)&&
+       String(item.explained_at||'')>String(old.explained_at||'')))manualById.set(id,item);
+  }
+  const resolved=entry=>{
+   const id=String(entry.id||''),rev=Number(entry.revision||0);
+   const req=reqById.get(id),ready=manualById.get(id);
+   if(req&&Number(req.revision||0)>=rev&&!active(req))return true;
+   if(ready&&Number(ready.revision||0)>=rev&&
+      String(ready.status||'').toLowerCase()==='explained'&&
+      !!String(ready.explanation||'').trim())return true;
+   return false;
+  };
+  const byId=new Map((state.data.editorialQueue?.items||[]).filter(x=>active(x)&&!resolved(x))
+    .map(x=>[String(x.id||''),x]));
+  for(const req of requests){
+   if(active(req)&&String(req.id||'')&&!byId.has(String(req.id)))byId.set(String(req.id),req);
+  }
+  const queued=[...byId.values()].filter(x=>!trendClosed(x))
+   .map(x=>({...x,title:String(x.name||x.title||x.id),_kind:'tr',_id:String(x.id||''),
+     _status:'EN ELABORACIÓN',_queuedAt:x.requested_at||'',_working:true}));
+  const seen=new Set(queued.map(x=>String(x._id)));
+  const pending=[...pendingDeletes.values()].filter(op=>op.project==='ttendencias'&&
+    ['prepare','rework'].includes(op.decision)&&
+    ['sending','submitted','awaiting_github','confirmed'].includes(op.status)&&
+    Date.now()-op.at<20*60000&&
+    !seen.has(String(op.target_id||op.id))&&
+    !(reqById.get(String(op.target_id||op.id))&&!active(reqById.get(String(op.target_id||op.id)))))
+   .map(op=>({...op.snapshot,id:String(op.target_id||op.id),
+     name:op.snapshot?.trend_name||op.snapshot?.title||op.id,
+     title:op.snapshot?.title||op.id,_kind:'tr',_id:String(op.target_id||op.id),
+     revision:op.revision+1,
+     _status:op.status==='confirmed'?'EN ELABORACIÓN':'PENDIENTE DE GITHUB',
+     _queuedAt:new Date(op.at).toISOString(),_working:true}));
+  return [...pending,...queued];
+ }
+ if(state.tab==='top'||state.tab==='pendientes'){
+  try{
+  // A single view shows BOTH the rank and the current editorial state.
+  // Matching is by normalized literal trend name (including group members),
+  // not by mutable ranking or by Telegram delivery alone.
+  const normal=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES').replace(/\s+/g,' ');
+  const requestsByName=new Map(),completedByName=new Map();
+  const queued=new Map((state.data.editorialQueue?.items||[]).filter(v=>['preparing','update','ready'].includes(String(v.status||'').toLowerCase())).map(v=>[String(v.id||''),v]));
+  const running=state.data.editorialRuntime?.last_run;
+  const activeRun=running?.status==='RUNNING'&&!Number.isNaN(Date.parse(running.updated_at||''))&&Date.now()-Date.parse(running.updated_at)<15*60000;
+  const ts=row=>Date.parse(row.updated_at||row.deleted_at||row.published_at||row.dismissed_at||
+    row.explained_at||row.requested_at||row.delivered_at||'')||0;
+  const closedStatuses=new Set(['deleted','published','dismissed','removed']);
+  const topic=value=>{
+   const name=normal(value).replace(/^#+/,'');
+   return ['hispanidad','feliz dia de la hispanidad','12deoctubre'].includes(name)?'fiesta_nacional_12_oct':'';
+  };
+  const closedByName=new Map(),closedById=new Map(),closedByTopic=new Map();
+  const registerClosed=(name,id,status,at)=>{
+   if(!closedStatuses.has(status))return;
+   const key=normal(name),entry={status,at:Number(at)||0,id:String(id||'')};
+   if(key&&(!closedByName.has(key)||entry.at>=closedByName.get(key).at))
+    closedByName.set(key,entry);
+   if(id&&(!closedById.has(String(id))||entry.at>=closedById.get(String(id)).at))
+    closedById.set(String(id),entry);
+   const group=topic(name);
+   if(group&&(!closedByTopic.has(group)||entry.at>=closedByTopic.get(group).at))
+    closedByTopic.set(group,entry);
+  };
+  for(const row of [...requests,...ledger,...(state.data.mobileDecisions?.items||[])]){
+   const status=String(row.status||row.telegram_package_status||'').toLowerCase();
+   registerClosed(row.name||row.title||row.display_name,row.id||row.event_id,status,ts(row));
+  }
+  // An editorial group has ONE Telegram card. Its followers inherit the
+  // confirmed closure of that card; they must not be shown as "not sent".
+  // Use explicit group IDs only, never fuzzy text matching.
+  const groupLeaders=new Map();
+  for(const row of requests){
+   const leader=String(row.group_leader_id||'');
+   const group=String(row.explanation_group_id||row.group_id||'');
+   if(leader&&group&&leader===String(row.id||'')){
+    groupLeaders.set(group,leader);
+   }
+  }
+  for(const row of requests){
+   const own=String(row.id||''),group=String(row.explanation_group_id||row.group_id||'');
+   const leader=String(row.group_leader_id||groupLeaders.get(group)||'');
+   if(!own||!group||!leader||leader===own)continue;
+   const closure=closedById.get(leader);
+   if(closure&&!closedById.has(own)){
+    // Keep source identity for diagnostic visibility.
+    closedById.set(own,{...closure,groupLeaderId:leader});
+   }
+  }
+  for(const delivery of ledger){
+   const status=String(delivery.status||'').toLowerCase();
+   if(!closedStatuses.has(status))continue;
+   const base=closedById.get(String(delivery.event_id||''));
+   if(!base)continue;
+   for(const member of delivery.group_member_ids||[]){
+    const id=String(member||'');
+    if(id&&!closedById.has(id))
+      closedById.set(id,{...base,groupLeaderId:String(delivery.event_id||'')});
+   }
+  }
+  for(const row of requests){
+   const name=normal(row.name);if(!name)continue;
+   const existing=requestsByName.get(name);
+   if(!existing||ts(row)>=ts(existing))requestsByName.set(name,row);
+  }
+  const activeInExplained=new Set(),confirmedTelegramByName=new Map();
+  // Never show a claim as EXPLICADA in Top 30 until the corresponding
+  // explanation actually reached Telegram/Explicadas at least once.
+  for(const delivery of ledger){
+   if(delivery.final!==true)continue;
+   if(!['sent','deleted','dismissed','published','removed'].includes(String(delivery.status||'').toLowerCase()))continue;
+   const id=String(delivery.event_id||'');
+   const related=[...requests,...explained].filter(x=>String(x.id||x.event_id||'')===id);
+   const names=[delivery.name,delivery.title];
+   for(const x of related)names.push(x.name,x.display_name,...(x.trend_names||[]),
+      ...(Array.isArray(x.trend_context)?x.trend_context:[]).map(v=>v.name));
+   for(const value of names){
+    const normalized=normal(value);if(!normalized)continue;
+    const previous=confirmedTelegramByName.get(normalized)||[];
+    previous.push({id,revision:Number(delivery.revision||0),
+      at:Math.max(Date.parse(delivery.updated_at||'')||0,Date.parse(delivery.delivered_at||'')||0),
+      status:String(delivery.status||'').toLowerCase()});
+    confirmedTelegramByName.set(normalized,previous);
+   }
+  }
+  // Active Telegram "Explicadas" cards take precedence over the Top 30 text.
+  // Closing/Borrar that card hides it in Explicadas but retains its explanation.
+  for(const delivery of ledger){
+   if(String(delivery.status||'').toLowerCase()!=='sent'||delivery.final===false||trendClosed(delivery))continue;
+   const id=String(delivery.event_id||'');
+   const related=[...requests,...explained].filter(x=>String(x.id||x.event_id||'')===id);
+   if(!related.length){
+    const name=normal(delivery.name||delivery.title);
+    if(name)activeInExplained.add(name);
+   }
+   for(const item of related){
+    const values=[item.name,item.display_name,...(item.trend_names||[]),
+       ...(Array.isArray(item.trend_context)?item.trend_context:[]).map(x=>x.name)];
+    for(const value of values){const name=normal(value);if(name)activeInExplained.add(name)}
+   }
+  }
+  for(const row of [...explained,...requests]){
+   const expl=String(row.explanation||'').trim();
+   if(!expl)continue;
+   const names=[row.name,row.display_name,...(row.trend_names||[]),...(Array.isArray(row.trend_context)?row.trend_context:[]).map(x=>x.name)];
+   for(const value of names){
+    const name=normal(value);if(!name)continue;
+    const previous=completedByName.get(name);
+    if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
+   }
+  }
+  const mapped=currentTop30(recent).map((x,i)=>{
+   const req=requestsByName.get(normal(x.name))||{};
+   const finished=completedByName.get(normal(x.name))||{};
+   const status=String(req.status||'').toLowerCase();
+   const latestAt=finished.explained_at||req.explained_at||'';
+   // The 48-hour refresh policy applies only to positions 1-10.
+   // Outside the Top 10, a past explanation remains explained unless a new
+   // revision is explicitly in progress; never label it "por actualizar".
+   const staleTop10=Number(x.rank||i+1)<=10&&latestAt&&
+      Number.isFinite(Date.parse(latestAt))&&Date.now()-Date.parse(latestAt)>48*60*60*1000;
+   const queueItem=queued.get(String(req.id||''));
+   // An old queued snapshot is not live once the request was finalized.
+   const queueCurrent=!!queueItem&&Number(queueItem.revision||0)>Number(req.revision??-1);
+   const working=queueCurrent||['preparing','update','ready'].includes(status);
+   const op=pendingDeletes.get(removeKey('ttendencias',String(req.id||finished.id||'')));
+   const reworkPending=!!op&&op.decision==='rework'&&
+      ['sending','submitted','awaiting_github'].includes(op.status)&&
+      Date.now()-op.at<20*60000;
+   const activelyEditing=!!(activeRun&&running.trend_id&&String(running.trend_id)===String(req.id||''));
+   const failure=status==='problematic';
+   const nameKey=normal(x.name);
+   const currentId=String(req.id||finished.id||'');
+   const manualPending=['preparing','update','ready','problematic'].includes(status)&&
+    req.auto_queued===false&&
+    ['github_pages_authorized_issue','telegram_reexplain','telegram_private_deeplink_native'].includes(String(req.request_source||''));
+   const directClosed=closedById.get(currentId)||closedByName.get(nameKey);
+   const groupedClosed=closedByTopic.get(topic(x.name))||null;
+   const topicClosed=groupedClosed&&groupedClosed.at>Date.now()-7*86400000?groupedClosed:null;
+   const terminal=manualPending?null:(directClosed||topicClosed);
+   const inExplained=!terminal&&activeInExplained.has(nameKey);
+   const currentRevision=Number(finished.revision??req.revision??0);
+   const explainedTime=Date.parse(finished.explained_at||req.explained_at||'')||0;
+   const wasDelivered=(confirmedTelegramByName.get(nameKey)||[]).some(delivery=>
+     (!currentId||delivery.id===currentId)&&
+     delivery.revision===currentRevision&&
+     (!explainedTime||delivery.at+60000>=explainedTime));
+   const readyText=String(finished.explanation||req.explanation||'').trim();
+   // Retain a finished explanation in the Top 30 after its Telegram card
+   // leaves Explicadas. Never expose work that is still pending or undelivered.
+   // Top 30 is a persistent editorial lookup: old, finished explanations
+   // remain readable even when a Listas card was closed or not sent to Telegram.
+   // During a NEW revision, never show the obsolete version as current.
+   const text=!working&&!activelyEditing&&!reworkPending?readyText:'';
+   const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
+   const editorialState=reworkPending?'PENDIENTE DE GITHUB':activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
+      text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
+      failure?'REVISIÓN':
+      terminal?(terminalLabel[terminal.status]||'HISTÓRICO'):
+      Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
+   return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
+    _status:editorialState,_topOnly:true,_inExplained:inExplained,_manualPending:manualPending,
+    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!!(readyText&&req.id&&!working&&!activelyEditing&&!reworkPending),
+    rank:Number(x.rank||i+1),
+    explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
+    explained_at:latestAt,revision:Number(req.revision??finished.revision??0),
+    _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
+  });
+  // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
+   return state.tab==='pendientes'?mapped.filter(x=>
+     ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
+     (x.rank<=10||x._manualPending)):mapped;
+
+  }catch(e){
+   console.warn('Top 30: metadatos editoriales inválidos; mostrando radar sin bloquear',e);
+   return currentTop30(recent).map((x,i)=>({
+    ...x,rank:Number(x.rank||i+1),title:x.name,_kind:'tr',
+    _id:String(x.name||i),_status:'TENDENCIA DEL RADAR',_topOnly:true
+   }));
+  }
+ }
+ // TTActualidad direct Listas: editorial explanations are authoritative.
+ // A Telegram message is no longer a precondition for a ready trend.
+ if(state.tab==='listas'){
+  const lastRequests=new Map(),lastDeliveries=new Map(),lastManual=new Map();
+  const at=row=>Date.parse(row.updated_at||row.deleted_at||row.explained_at||row.requested_at||'')||0;
+  const closed=new Set(['deleted','dismissed','published','removed','delete_pending']);
+  for(const req of requests){
+   const id=String(req.id||'');if(!id)continue;
+   const prev=lastRequests.get(id);
+   if(!prev||Number(req.revision||0)>Number(prev.revision||0)||at(req)>=at(prev))
+    lastRequests.set(id,req);
+  }
+  for(const d of ledger){
+   const id=String(d.event_id||'');if(!id)continue;
+   const prev=lastDeliveries.get(id);
+   if(!prev||Number(d.revision||0)>Number(prev.revision||0)||
+      String(d.updated_at||d.delivered_at||'')>String(prev.updated_at||prev.delivered_at||''))
+    lastDeliveries.set(id,d);
+  }
+  for(const row of state.data.manual?.items||[]){
+   const id=String(row.id||'');if(!id)continue;
+   const prev=lastManual.get(id);
+   if(!prev||Number(row.revision||0)>Number(prev.revision||0)||at(row)>=at(prev))
+    lastManual.set(id,row);
+  }
+  const mobileClosed=new Set((state.data.mobileDecisions?.items||[])
+   .filter(row=>closed.has(String(row.status||'').toLowerCase()))
+   .map(row=>String(row.id||row.event_id||'')));
+  const current=Date.now();
+  return [...lastManual.values()].filter(row=>{
+   const id=String(row.id||''),req=lastRequests.get(id)||{},delivery=lastDeliveries.get(id)||{};
+   const explained=Date.parse(row.explained_at||'');
+   if(!Number.isFinite(explained)||current-explained>48*3600000||explained-current>3600000)return false;
+   if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
+   // A newer revision already in progress invalidates the old Listas card,
+   // including when independent GitHub raw files refresh at different times.
+   const readyRevision=Number(row.revision||0);
+   const requestRevision=Number(req.revision||0);
+   const readyAfterRequest=Number.isFinite(explained)&&
+      explained >= (Date.parse(req.requested_at||'')||0)-60000;
+   if(req.id&&requestRevision>readyRevision)return false;
+   if(['preparing','update','ready'].includes(String(req.status||'').toLowerCase())&&
+      requestRevision>=readyRevision&&!readyAfterRequest)return false;
+   // Queue and requests are downloaded separately. Never show old Listas
+   // when a genuinely NEW queue revision has arrived first.
+   if((state.data.editorialQueue?.items||[]).some(q=>String(q.id||'')===id&&
+      ['preparing','update'].includes(String(q.status||'').toLowerCase())&&
+      Number(q.revision||0)>readyRevision))return false;
+   if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
+   if(mobileClosed.has(id))return false;
+   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
+      delivery.status].some(x=>closed.has(String(x||'').toLowerCase())))return false;
+   return true;
+  }).map(row=>({
+    ...row,title:String(row.name||row.display_name||row.id),
+    _kind:'tr',_id:String(row.id),_status:'EXPLICADA',_last_at:row.explained_at,
+    revision:Number(row.revision||0),
+    image_url:row.archive_image?.url||row.fallback_image?.url||''
+  })).sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,100);
+ }
+ const latest=new Map();
+ for(const x of ledger){
+  const id=String(x.event_id||'');if(!id)continue;
+  const prior=latest.get(id),at=String(x.updated_at||x.deleted_at||x.delivered_at||'');
+  if(!prior||at>=String(prior.updated_at||prior.deleted_at||prior.delivered_at||''))latest.set(id,x);
+ }
+ const history=state.tab==='historico';
+ const selected=[...latest.values()].filter(x=>{
+  const st=String(x.status||'').toLowerCase();
+  return history?['deleted','dismissed','removed','published','delete_pending','delete_failed'].includes(st)||trendClosed(x):
+   st==='sent'&&x.final!==false&&!trendClosed(x);
+ });
+ const byId=new Map();
+ for(const x of [...requests,...explained]){
+  const id=String(x.id||x.event_id||'');if(!id)continue;
+  const arr=byId.get(id)||[];arr.push(x);byId.set(id,arr)
+ }
+ const out=selected.map(x=>{
+  const id=String(x.event_id),rev=Number(x.revision||0);
+  const matches=byId.get(id)||[];
+  const exact=matches.filter(v=>Number(v.revision||0)===rev).sort((a,b)=>String(b.explained_at||b.requested_at||'').localeCompare(String(a.explained_at||a.requested_at||'')));
+  const named=exact.find(v=>String(v.explanation||'').trim())||exact[0]||{};
+  const explanation=String(named.explanation||'').trim();
+  const closer=String(named.closer_text||'').trim();
+  return {...x,...named,title:String(x.name||x.title||named.display_name||named.name||id),
+    explanation,closer_text:closer,rank:Number(named.rank||0),revision:rev,
+    image_url:named.archive_image?.url||named.fallback_image?.url||(/\/generated-images\//.test(String(x.image_url||''))?'':x.image_url)||'',
+    _kind:'tr',_id:id,_status:history?'HISTÓRICO':'EXPLICADA',_historical:history,
+    _ledger_status:x.status,_last_at:x.deleted_at||x.updated_at||x.delivered_at||named.explained_at||''
+  };
+ });
+ return out.sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,history?150:100);
+}
+function dataRows(){const rows=state.app==='tti'?ttiRows():trendRows();const q=state.q.toLocaleLowerCase('es-ES');return rows.filter(x=>!isTemporarilyRemoved(x)&&(!q||[x.title,x.name,x.explanation,x.factual_summary,x.tweet?.text,x.problem_reason,x.reason].some(s=>String(s||'').toLocaleLowerCase('es-ES').includes(q))))}
+function itemData(x){
+ const tweet=String(x.tweet?.text||'').trim();
+ const expl=String(x.explanation||x.factual_summary||x.description||x.detail||'').trim();
+ const source=tweet||expl;
+ // Editorial records commonly include the punchline in the full explanation
+ // AND repeat it in closer_text. Display and copy it exactly once.
+ const pepper=line=>/^🌶(?:\uFE0F)?(?:\s|$)/u.test(String(line||'').trim());
+ const allLines=source.split('\n').map(line=>line.trim()).filter(Boolean);
+ const embedded=allLines.filter(pepper);
+ let closer=String(x.tweet?.remate||x.closer_text||'').trim();
+ if(!closer)closer=embedded.at(-1)||'';
+ const plain=allLines.filter(line=>!pepper(line)).join('\n');
+ const editorial=plain+(closer?(plain?'\n':'')+closer:'');
+ const displayExpl=expl.split('\n').map(line=>line.trim()).filter(line=>line&&!pepper(line)).join('\n');
+ return {tweet,expl,displayExpl,closer,editorial,title:String(x.title||x.name||'Noticia'),factual:String(x.factual_summary||'').trim()};
+}
+function manualPrompt(x){
+ const c=itemData(x),kind=x._kind==='tti'?'TTiTTulares':'TTendencias';
+ const content=c.editorial||c.title,rank=x.rank?'TT#'+x.rank+' ':'';
+ return [
+  'Genera AHORA UNA SOLA imagen GAG IA original para '+kind+'. Usa la herramienta de imágenes de ChatGPT.',
+  'TÍTULO / '+(x._kind==='tti'?'NOTICIA':'TENDENCIA')+':\n'+rank+c.title,
+  'TEXTO EXACTO YA CERRADO (NO LO REESCRIBAS):\n'+content,
+  'REMATE EXACTO (INSPIRA EL GAG, NO LO REESCRIBAS):\n'+(c.closer||'Sin remate separado: utiliza exclusivamente el texto cerrado.'),
+  'EXPLICACIÓN EDITORIAL COMPLETA (NO OMITIR NI REESCRIBIR):\n'+(c.expl||'Utiliza el texto exacto como explicación, sin inventar contexto.'),
+  'CONTEXTO FACTUAL COMPLEMENTARIO (NO INVESTIGUES DE NUEVO):\n'+(c.factual||'Utiliza exclusivamente los hechos del texto exacto, sin completar datos.'),
+  'DIRECCIÓN VISUAL:\nViñeta satírica original, ingeniosa, expresiva y exagerada, con gag visual y metáfora humorística. No ilustrar literalmente la noticia. No inventar hechos ni atribuir acciones no verificadas. Entregar una sola imagen, sin reescribir el texto.'
+ ].join('\n\n')
+}
+async function copyText(value,label){
+ try{await navigator.clipboard.writeText(value)}catch(e){
+  const el=document.createElement('textarea');el.value=value;el.style.cssText='position:fixed;top:0;left:0;opacity:.01';document.body.append(el);el.focus();el.select();const ok=document.execCommand('copy');el.remove();if(!ok){showToast('No se pudo copiar; mantén pulsado el texto');return}
+ }
+ showToast(label+' copiado')
+}
+function showToast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2400)}
+
+const directPilot={connected:false,real:false};
+const PENDING_KEY='ttactualidad-pending-removals-v5';
+function restorePending(){
+ let rows=[];try{rows=JSON.parse(localStorage.getItem(PENDING_KEY)||'[]')}catch{}
+ if(!Array.isArray(rows))return new Map();
+ return new Map(rows.filter(x=>x&&typeof x.key==='string'&&
+   (x.status==='confirmed'?Date.now()-x.at<24*3600000:Date.now()-x.at<20*60000))
+   .map(x=>[x.key,x]));
+}
+const pendingDeletes=restorePending();
+function savePending(){
+ try{localStorage.setItem(PENDING_KEY,JSON.stringify([...pendingDeletes.values()].slice(-100)))}catch{}
+}
+function removeKey(project,id){return project+':'+id}
+function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
+function isTemporarilyRemoved(item){
+ if(item._topOnly||item._historical)return false;
+ const op=pendingDeletes.get(removeKey(itemProject(item),String(item._id)));
+ if(!op)return false;
+ // Prepare moves a card between sections. Only hide its stale source card:
+ // after GitHub confirms PROCESSING/READY, the target card must stay visible.
+ if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
+ if(op.decision==='rework')return item._status==='EXPLICADA'&&Number(item.revision||0)<=op.revision;
+ return true;
+}
+async function refreshPilotConnection(){
+ try{
+  const r=await fetch('/api/auth',{credentials:'same-origin',cache:'no-store',
+   signal:AbortSignal.timeout(10000)});
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok||!data.ok)throw Error('No hay sesión');
+  directPilot.connected=true;directPilot.real=data.production_connected===true;
+  $('pilot-status').textContent=directPilot.real?'Conectado · Edición activa':'Conexión sin edición';
+  $('pilot-config').textContent='Renovar vinculación';
+  return true;
+ }catch{
+  directPilot.connected=false;directPilot.real=false;
+  $('pilot-status').textContent='Vincular una vez para retirar noticias';
+  $('pilot-config').textContent='Vincular iPhone';
+  return false;
+ }
+}
+async function pairPilot(secret){
+ if(location.origin!=='https://ttactualidad-decisions-pilot.fabricelop.workers.dev'){
+  showToast('Abre la versión TTActualidad del Worker');return false;
+ }
+ const token=secret||prompt('Solo una vez: clave privada de TTActualidad (no el token GitHub). No se guardará en el navegador.');
+ if(!token)return false;
+ try{
+  const r=await fetch('/api/session',{method:'POST',
+   credentials:'same-origin',
+   headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},
+   body:'{}',signal:AbortSignal.timeout(12000)});
+  if(!r.ok)throw Error('Clave no autorizada');
+  showToast('iPhone vinculado durante 30 días');
+  return await refreshPilotConnection();
+ }catch(e){showToast('No se ha vinculado: '+String(e.message||e).slice(0,90));return false}
+}
+async function pilotPairFromUrl(){
+ const pair=new URLSearchParams(location.hash.slice(1)).get('ttactualidad-pair');
+ if(!pair)return;
+ history.replaceState(null,'',location.pathname+location.search);
+ if(!/^[A-Za-z0-9_-]{32,100}$/.test(pair)){showToast('Enlace de vinculación inválido');return}
+ await pairPilot(pair);
+}
+async function ensurePilotConnection(){
+ if(directPilot.connected)return true;
+ if(await refreshPilotConnection())return true;
+ return await pairPilot();
+}
+function pilotConfig(){void pairPilot()}
+function hideOptimistically(item,decision){
+ const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
+ const snapshot={title:String(item.title||item.canonical_title||id),source_count:item.source_count,
+   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at,trend_name:item.name||item.title,trend_rank:Number(item.rank||0)};
+ pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),decision,
+  request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending',snapshot});
+ savePending();render();
+ return key;
+}
+function restoreOptimistic(key,message){
+ pendingDeletes.delete(key);savePending();render();showToast(message);
+}
+function confirmedAction(op,docs){
+ const id=op.id;
+ if(op.project==='ttittulares'){
+  const [prepared,decisions,queue,tremending]=docs;
+  const state=(decisions.items||[]).find(x=>String(x.event_id||'')===id);
+  if(op.kind==='tremending')return op.decision==='deleted'&&
+   state?.status==='deleted'&&!(tremending?.items||[]).some(x=>String(x.id||'')===id);
+  const q=(queue.items||[]).find(x=>String(x.event_id||'')===id);
+  if(op.decision==='deleted')
+   return state?.status==='deleted'&&!(prepared.items||[]).some(x=>String(x.event_id||'')===id);
+  if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
+  if(op.decision==='prepare'){
+   if((prepared.items||[]).some(x=>String(x.event_id||'')===id))return 'ready';
+   return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase())?'processing':false;
+  }
+ }else{
+  const [manual,mobile,queue,requestsDoc]=docs;
+  const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
+  const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
+  const q=(queue.items||[]).find(x=>String(x.id||'')===id||
+    (op.decision==='prepare'&&normalize(x.name||x.title)===normalize(op.snapshot?.title||id)&&
+     Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
+  if(op.decision==='deleted')return state?.status==='deleted';
+  if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
+  if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
+  if(op.decision==='rework'){
+   // Listas keeps the same ID with a higher revision; Top 30 creates a
+   // NEW ID linked to the old one. Both require a new authoritative request.
+   const candidates=(requestsDoc?.requests||[]).filter(x=>{
+    const same=String(x.id||'')===id&&Number(x.revision||0)>Number(op.revision||0);
+    const linked=String(x.originated_from_prior_id||'')===id&&
+       Date.parse(x.requested_at||'')>=op.at-120000;
+    return same||linked;
+   }).sort((a,b)=>String(b.requested_at||'').localeCompare(String(a.requested_at||'')));
+   const latest=candidates[0];
+   if(!latest)return false;
+   op.target_id=String(latest.id);
+   const status=String(latest.status||'').toLowerCase();
+   if(['preparing','update'].includes(status))return 'processing';
+   if(status==='explained'&&String(latest.explanation||'').trim())return 'ready';
+   return false;
+  }
+ }
+ return false;
+}
+async function retryAction(op){
+ if(op.tries>=4||Date.now()-op.lastTry<185000)return;
+ op.lastTry=Date.now();op.tries++;
+ savePending();
+ try{
+  const result=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({project:op.project,event_id:op.id,revision:op.revision,
+    decision:op.decision,request_id:op.request_id||crypto.randomUUID(),trend_name:op.snapshot?.trend_name,trend_rank:op.snapshot?.trend_rank}),
+   signal:AbortSignal.timeout(15000)});
+  const data=await result.json().catch(()=>({}));
+  if(!result.ok||!data.routed)console.warn('Reintento de confirmación pendiente',data.error||result.status);
+ }catch(e){console.warn('Reintento pendiente',String(e))}
+}
+async function checkPendingDeletes(){
+ const pending=[...pendingDeletes.values()].filter(x=>x.status==='submitted'||x.status==='sending');
+ if(!pending.length)return;
+ let changed=false,confirmedPrepare=false,readyConfirmed=false,failed=false;
+ for(const project of [...new Set(pending.map(x=>x.project))]){
+  const targets=project==='ttittulares'
+   ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
+   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests']];
+  if(project==='ttittulares'&&pending.some(x=>x.project===project&&x.kind==='tremending'))
+   targets.push(['ttittulares/tremending/items.json','tremending']);
+  let docs;
+  try{
+   docs=await Promise.all(targets.map(async([path])=>{
+    const res=await fetch(RAW+path+'?direct_confirm='+Date.now(),{cache:'no-store',signal:AbortSignal.timeout(20000)});
+    if(!res.ok)throw Error('GitHub HTTP '+res.status);
+    return res.json();
+   }));
+  }catch{continue}
+  for(const op of pending.filter(x=>x.project===project)){
+   const outcome=confirmedAction(op,docs);
+   if(outcome){
+    op.status='confirmed';changed=true;
+    if(op.decision==='prepare'||op.decision==='rework'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
+   }else if(Date.now()-op.at>20*60000){
+    pendingDeletes.delete(op.key);changed=true;failed=true;
+   }else if(Date.now()-op.at>175000){
+    void retryAction(op);
+   }
+  }
+  if(state.app===(project==='ttittulares'?'tti':'tr')){
+   targets.forEach((target,i)=>{state.data[target[1]]=docs[i]});
+  }
+ }
+ if(changed){savePending();render()}
+ if(readyConfirmed&&state.app==='tti'){
+  state.tab='listas';render();showToast('Noticia elaborada: ya está en Listas.');
+ }else if(confirmedPrepare)void load(true);
+ if(failed)showToast('GitHub no confirmó la acción. La noticia vuelve a su sección anterior.');
+}
+function schedulePendingChecks(){
+ [14000,35000,75000,150000,245000,360000,600000,900000,1240000].forEach(ms=>
+  setTimeout(()=>{if(!document.hidden)void checkPendingDeletes()},ms));
+}
+async function pilotSend(item,decision){
+ if(!await ensurePilotConnection())return;
+ if(!directPilot.real){showToast('Edición GitHub no conectada');return}
+ const project=itemProject(item),trend_name=String(item.name||item.title||'').trim(),trend_rank=Number(item.rank||0);
+ let event_id=String(item._id||'');
+ if(decision==='prepare'&&project==='ttendencias'&&trend_rank>=11&&trend_rank<=30){
+  const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===event_id);
+  if(!known){
+   const bytes=new TextEncoder().encode(trend_name.normalize('NFC'));
+   const hash=await crypto.subtle.digest('SHA-256',bytes);
+   event_id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+  }
+ }
+ if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador editorial no válido');return}
+ const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
+ if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
+ const key=hideOptimistically({...item,_id:event_id},decision),op=pendingDeletes.get(key);
+ try{
+  const res=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({project,event_id,decision,revision:op.revision,request_id:op.request_id,trend_name,trend_rank}),
+   signal:AbortSignal.timeout(15000)});
+  const result=await res.json().catch(()=>({}));
+  if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
+  if(!result.routed){restoreOptimistic(key,'GitHub no recibió la orden.');return}
+  op.status='submitted';op.lastTry=Date.now();op.tries=1;savePending();
+  if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}
+  showToast(['prepare','rework'].includes(decision)?'Tendencia pendiente de confirmación en GitHub.':'Orden enviada. Confirmando cambio editorial en GitHub.');
+  schedulePendingChecks();
+  void checkPendingDeletes();
+ }catch(e){restoreOptimistic(key,'Orden no aceptada: '+String(e.message||e).slice(0,80))}
+}
+function rowCard(x,i){
+ const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
+ const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
+ const facts= x._kind==='fuente'?'Última noticia: '+(x.last_article_title||'Sin datos'):x._status==='PROBLEMÁTICA'?x.problem_reason:d.displayExpl;
+ const showClip=!['fuente','tremending'].includes(x._kind)&&!x._topOnly&&!x._historical,showControls=x._kind==='tti'&&x._status==='LISTA',hasPrompt=showClip&&Boolean(d.editorial)&&!(x._kind==='tr'&&!d.expl);
+ const out=document.createElement('article');out.className='card';
+ out.innerHTML=(img?'<img class="pic" loading="lazy" alt="" src="'+esc(img)+'">':'')+
+  '<div class="card-body"><div class="meta"><span'+(x._status==='PROBLEMÁTICA'?' class="hot"':'')+'>'+source+'</span>'+info.map(y=>'<span>'+esc(y)+'</span>').join('')+'</div>'+
+  '<h2>'+esc(d.title)+'</h2>'+(facts?'<p class="fact">'+esc(brief(facts,610))+'</p>':'')+
+  (d.closer?'<p class="closer">'+esc(d.closer)+'</p>':'')+
+  '<div class="actions"></div></div>';
+ const a=out.querySelector('.actions');
+ function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
+ function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
+ function command(label,action){
+  if(['prepare','deleted','discard','published','rework'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
+  return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
+ }
+ if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||x._status==='EXPLICADA')){
+  // Exactly four rows, two buttons each; no Telegram command callbacks.
+  a.classList.add('ready-actions');
+  const external=(label,url)=>{
+   const el=link(label,url,true);el.classList.add('external');return el
+  };
+  external('TTImages','https://t.me/TTImages_bot');
+  external('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial||d.title));
+  btn('Copiar GAG Completo',()=>copyText(manualPrompt(x),'GAG completo'));
+  external('Abrir ChatGPTImages','https://chatgpt.com/images');
+  btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
+  btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
+  if(x._kind==='tr'&&x._status==='EXPLICADA'){
+   const redo=command('Volver a En elaboración','rework');redo.classList.add('rework');
+  }
+  const remove=command('Quitar de Listas','deleted');remove.classList.add('remove');
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  return out;
+ }
+ $('warning').style.display=state.lastError?'block':'none';
+ $('warning').textContent=state.lastError?'No se han podido actualizar todos los archivos. Se muestra la última copia disponible. '+state.lastError:'';
+ if(x._topOnly){
+  out.classList.add('trend-top');
+  if(x._queuedAt&&['EN COLA','EN ELABORACIÓN'].includes(x._status)){
+   const note=document.createElement('p');note.className='fact';note.textContent='En cola desde '+stamp(x._queuedAt)+(x._status==='EN COLA'?' · Aún no consta elaboración activa':' · Elaboración activa confirmada');out.querySelector('.card-body').insertBefore(note,a);
+  }
+  if(x._inExplained){
+   const note=document.createElement('p');
+   note.className='fact';
+   note.textContent='La explicación está en Explicadas. Al cerrar esa tarjeta, se conservará aquí.';
+   out.querySelector('.card-body').insertBefore(note,a);
+   btn('Ver en Explicadas',()=>{state.tab='explicadas';render()},true);
+  }
+  if(x._reworkable){
+   command('Volver a En elaboración','rework');
+  }
+  if(d.editorial&&x.explanation){
+   btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
+   link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
+   command('Quitar de Listas','deleted');
+  }
+  // Manual request always remains available for ranks 11-30 that are
+  // NOT currently in Explicadas or under editorial processing. A historical
+  // explanation without Telegram delivery is not a completed current card.
+  if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
+     !x._reworkable&&!['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','POR ACTUALIZAR','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
+   command('Preparar novedad','prepare');
+  }
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  return out
+ }
+ if(x._kind==='tremending'){
+  out.classList.add('tremending');
+  if(isHttp(x.url))link('Leer en Público',x.url,true);
+  const tweets=(x.tweets||[]).filter(t=>isHttp(t.url));
+  if(tweets.length){const detail=document.createElement('details');detail.className='tremending-tweets';
+   const summary=document.createElement('summary');summary.textContent='Ver '+tweets.length+' tuits relacionados';detail.append(summary);
+   tweets.forEach(t=>{const l=document.createElement('a');l.href=isHttp(t.url);l.target='_blank';l.rel='noopener';l.textContent=t.author||'Ver tuit';detail.append(l)});
+   out.querySelector('.card-body').append(detail);
+  }
+  command('Quitar de Listas','deleted');
+  return out
+ }
+ if(x._historical){return out}
+ if(showClip){
+  btn('📋 Copiar texto',()=>copyText(d.editorial||d.title,'Texto'));
+  if(hasPrompt)btn('🎨 Copiar GAG completo',()=>copyText(manualPrompt(x),'Prompt GAG'),true);
+  if(hasPrompt)link('Abrir ChatGPT Images','https://chatgpt.com/images');
+  if(img)btn('📷 Copiar foto de archivo',()=>copyArchive(img,d.title));
+  if(d.editorial)link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
+  link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  if(showControls){command('Quitar de Listas','deleted')}
+  else if(x._kind==='tti'&&x._status==='PROBLEMÁTICA'){command('Pasar a En Elaboración','prepare');command('Desestimar','discard')}
+  else if(x._kind==='tti'&&x._status==='CRECIENDO'){command('Pasar a En Elaboración','prepare');command('Desestimar','discard')}
+  else if(x._kind==='tti'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard')}
+  else if(x._kind==='tr'&&x._status==='EN ELABORACIÓN'){command('Desestimar','discard')}
+  else if(x._kind==='tr'){command('Quitar de Listas','deleted')}
+ }else{if(x.url&&isHttp(x.url))link('Fuente original',x.url)}
+ return out
+}
+function render(){
+ $('manual-open').hidden=state.app!=='tti';
+ const tabsList=tabs();
+ if(state.app==='tr'&&!tabsList.some(t=>t[0]===state.tab))state.tab='listas';
+ $('chips').style.display=state.app==='tti'?'none':'flex';
+ $('chips').replaceChildren(...tabsList.map(([key,name])=>{
+  const b=document.createElement('button');b.type='button';
+  const count=key==='top'?currentTop30(state.data.recent).length:trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
+  b.textContent=name+' · '+count;b.setAttribute('aria-pressed',String(state.tab===key));
+  b.onclick=()=>{state.tab=key;render()};return b
+ }));
+ const rows=dataRows();$('cards').className='cards'+(state.app==='tr'&&state.tab==='top'?' top30':'');$('cards').replaceChildren(...(rows.length?rows.slice(0,150).map(rowCard):[Object.assign(document.createElement('div'),{className:'empty',textContent:'No hay elementos en esta sección, o no se han podido cargar los datos.'})]));
+ $('stats').style.display=state.app==='tti'?'grid':'none';
+ if(state.app==='tti'){
+  const sections=[['listas','Listas'],['elaboracion','En elaboración'],['problematicas','Revisión'],['creciendo','Creciendo'],['tremending','Tremending']];
+   $('stats').classList.add('five');
+  $('stats').replaceChildren(...sections.map(([section,label])=>{
+   const count=ttiRowsFor(section).filter(x=>!isTemporarilyRemoved(x)).length;
+   const b=document.createElement('button');b.className='stat';b.type='button';
+   b.setAttribute('aria-pressed',String(state.tab===section));
+   b.innerHTML='<b>'+count+'</b><small>'+label+'</small>';
+   b.onclick=()=>{state.tab=section;render()};return b
+  }));
+  const status=state.data.status||{};
+  $('source-counts').innerHTML='<span>Con 1 fuente: <b>'+esc(status.one_source_count??'—')+'</b></span><span>Con 2 fuentes: <b>'+esc(status.two_source_count??'—')+'</b></span>';
+ }else {$('source-counts').replaceChildren();$('stats').classList.remove('five')}
+  const titles=state.app==='tti'?{listas:'Noticias listas',elaboracion:'En elaboración',problematicas:'Revisión y problemáticas',creciendo:'Noticias creciendo',tremending:'Tremending · Público',fuentes:'Fuentes del radar'}:{top:'Top 30 España',explicadas:'Tendencias explicadas',historico:'Histórico de tendencias',pendientes:'Pendientes de elaborar · Top 10'};
+  $('view-title').textContent=titles[state.tab]||'TT Actualidad';
+ const last=state.app==='tti'?(state.data.status?.radar_at||state.data.status?.updated_at):state.data.recent?.captured_at;
+  $('last-radar').textContent='Último radar: '+stamp(last);
+  const next=new Date();next.setSeconds(0,0);
+  if(state.app==='tti')next.setMinutes(60);
+  else {const minute=next.getMinutes();next.setMinutes(minute<15?15:minute<45?45:75)}
+  $('next-radar').textContent='Próximo radar previsto: '+stamp(next.toISOString());
+ const editorialQueue=state.app==='tr'?(state.data.editorialQueue?.items||[]).filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())):[];
+ const oldest=editorialQueue.reduce((n,x)=>Math.min(n,Date.parse(x.requested_at||'')||Date.now()),Date.now());
+ const stalled=editorialQueue.length>0&&Date.now()-oldest>15*60000;
+ $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
+}
+function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
+function trendRowsFor(section){const saved=state.tab;state.tab=section;try{return trendRows()}finally{state.tab=saved}}
+async function archivePng(url){
+ const response=await fetch(url,{mode:'cors',cache:'force-cache'});
+ if(!response.ok)throw Error('Imagen no disponible');
+ const file=await response.blob();
+ if(file.type==='image/png')return file;
+ if(!file.type.startsWith('image/'))throw Error('Formato no disponible');
+ const bitmap=await createImageBitmap(file);
+ const canvas=document.createElement('canvas');
+ canvas.width=bitmap.width;canvas.height=bitmap.height;
+ const context=canvas.getContext('2d');
+ if(!context)throw Error('Lienzo no disponible');
+ context.drawImage(bitmap,0,0);
+ bitmap.close?.();
+ return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('PNG no disponible')),'image/png'));
+}
+function copyArchive(url,title){
+ if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined'){
+  openPhoto(url,title);return
+ }
+ // La promesa se entrega a ClipboardItem DENTRO del gesto del usuario (Safari).
+ const png=archivePng(url);
+ navigator.clipboard.write([new ClipboardItem({'image/png':png})])
+  .then(()=>showToast('Fotografía de archivo copiada'))
+  .catch(()=>openPhoto(url,title));
+}
+function openPhoto(url,title){
+ const sheet=$('photo-sheet'),img=$('photo-preview'),link=$('photo-open');
+ img.src=url;img.alt=title||'Fotografía de archivo';
+ link.href=url;sheet.hidden=false;
+ $('photo-help').textContent='Mantén pulsada la foto y selecciona «Copiar» o «Guardar en Fotos». Si no aparece la opción, abre la fotografía original.';
+}
+function openManualNews(){
+ manualRequestId=null;
+ $('manual-feedback').textContent='';
+ $('manual-submit').disabled=false;
+ $('manual-overlay').hidden=false;
+ $('manual-url').focus();
+}
+function closeManualNews(){$('manual-overlay').hidden=true}
+async function submitManualNews(event){
+ event.preventDefault();
+ const url=$('manual-url').value.trim();
+ const title=$('manual-headline').value.trim();
+ const instructions=$('manual-instructions').value.trim();
+ if(!url&&!title){$('manual-feedback').textContent='Introduce un enlace o una descripción.';return}
+ if(title&&title.length<5){$('manual-feedback').textContent='Escribe al menos 5 caracteres en el titular.';return}
+ if(url){try{const u=new URL(url);if(u.protocol!=='https:'||u.username||u.password)throw Error('invalid')}
+  catch{$('manual-feedback').textContent='Utiliza un enlace HTTPS válido.';return}}
+ if(!manualRequestId)manualRequestId=crypto.randomUUID();
+ $('manual-submit').disabled=true;
+ $('manual-feedback').textContent='Enviando solicitud autenticada…';
+ try{
+  const response=await fetch('/api/manual-news',{method:'POST',credentials:'same-origin',
+   headers:{'Content-Type':'application/json'},body:JSON.stringify({title,url,instructions,request_id:manualRequestId}),
+   signal:AbortSignal.timeout(15000)});
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok||!result.routed||!result.event_id)
+   throw Error(response.status===401?'Conecta primero este iPhone en «Conexión».':
+    result.error==='editorial_dispatch_unavailable'?'La conexión con GitHub no está disponible. No se ha encolado.':
+    'No se pudo registrar la solicitud en GitHub.');
+  const id=String(result.event_id);
+  pendingManual.set(id,{event_id:id,title:title||('Investigar noticia del enlace: '+new URL(url).hostname),
+   url,revision:1,selected_at:new Date().toISOString()});
+  $('manual-form').reset();closeManualNews();manualRequestId=null;
+  state.app='tti';state.tab='elaboracion';render();
+  showToast('Solicitud enviada. Pendiente de confirmación en GitHub.');
+  let attempts=0;
+  const check=async()=>{
+   if(!pendingManual.has(id))return;
+   await load(true);
+   if((state.data.ttiQueue?.items||[]).some(x=>String(x.event_id||'')===id)||
+      (state.data.processing?.items||[]).some(x=>String(x.event_id||'')===id)){
+    pendingManual.delete(id);render();showToast('Noticia confirmada en En Elaboración.');return;
+   }
+   if(++attempts<8)setTimeout(check,5000);
+   else{pendingManual.delete(id);render();showToast('Sin confirmación de GitHub. Comprueba el estado antes de reenviar.')}
+  };
+  setTimeout(check,5000);
+ }catch(error){
+  $('manual-feedback').textContent=String(error.message||error);
+ }finally{$('manual-submit').disabled=false}
+}
+$('manual-open').onclick=openManualNews;
+$('manual-close').onclick=closeManualNews;
+$('manual-form').addEventListener('submit',submitManualNews);
+$('manual-overlay').addEventListener('click',e=>{if(e.target===$('manual-overlay'))closeManualNews()});
+$('pilot-config').onclick=pilotConfig;
+void (async()=>{await pilotPairFromUrl();await refreshPilotConnection();if(pendingDeletes.size){schedulePendingChecks();void checkPendingDeletes()}})();
+$('photo-close').onclick=()=>{$('photo-sheet').hidden=true;$('photo-preview').removeAttribute('src')};
+$('photo-sheet').addEventListener('click',e=>{if(e.target===$('photo-sheet'))$('photo-close').click()});
+
+$('tab-tti').addEventListener('click',()=>setApp('tti'));
+$('tab-tr').addEventListener('click',()=>setApp('tr'));
+$('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()});
+$('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkPendingDeletes()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
+window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
+})();
+</script></body></html>

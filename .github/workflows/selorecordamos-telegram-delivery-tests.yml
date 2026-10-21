@@ -1,0 +1,26 @@
+name: SeLoRecordamos Telegram delivery tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'selorecordamos/telegram_local.js'
+      - 'selorecordamos/assistant_delivery.js'
+      - 'selorecordamos/test_assistant_delivery.js'
+      - '.github/workflows/selorecordamos-telegram-delivery-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar sintaxis y reanudación idempotente
+        run: |
+          node --check selorecordamos/telegram_local.js
+          node --check selorecordamos/assistant_delivery.js
+          node --test selorecordamos/test_assistant_delivery.js

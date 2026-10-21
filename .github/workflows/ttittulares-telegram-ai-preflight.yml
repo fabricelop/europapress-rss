@@ -1,0 +1,44 @@
+name: TTiTTulares native Telegram AI access preflight (no inference)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ttittulares-telegram-ai-preflight.yml"
+permissions:
+  contents: read
+  models: read
+jobs:
+  verify-models:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Test GitHub Models metadata only (no billable inference)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          url='https://models.github.ai/catalog/models'
+          r=urllib.request.Request(url,headers={
+            'authorization':'Bearer '+os.environ['GH_TOKEN'],
+            'accept':'application/vnd.github+json',
+            'user-agent':'ttittulares-no-cloudflare-readiness'})
+          try:
+            with urllib.request.urlopen(r,timeout=25) as resp:
+              raw=resp.read(500000)
+              content_type=resp.headers.get('Content-Type','')
+              status=resp.status
+            print('TTI_GH_MODELS_METADATA_HTTP',status,'CONTENT_TYPE',content_type,'BYTES',len(raw))
+            try:doc=json.loads(raw)
+            except (ValueError,UnicodeError):
+              print('TTI_GH_MODELS_CATALOG_NOT_JSON')
+              raise SystemExit(3)
+            models=doc if isinstance(doc,list) else doc.get('models',[])
+            print('TTI_GH_MODELS_CATALOG_ACCESS',len(models),type(doc).__name__)
+            print('TTI_GH_MODELS_METADATA_ONLY_NO_INFERENCE')
+          except urllib.error.HTTPError as e:
+            print('TTI_GH_MODELS_NOT_AVAILABLE',e.code)
+            raise SystemExit(2)
+          PY

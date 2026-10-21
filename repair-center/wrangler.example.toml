@@ -1,0 +1,25 @@
+name = "centro-reparaciones"
+main = "worker.mjs"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# REEMPLAZAR por el ID real creado con: npx wrangler d1 create centro-reparaciones
+[[d1_databases]]
+binding = "DB"
+database_name = "centro-reparaciones"
+database_id = "REEMPLAZAR_POR_ID_D1"
+
+# Variables publicas; el email NO es un secreto, pero se valida solo en backend.
+[vars]
+GOOGLE_CLIENT_ID = "REEMPLAZAR.apps.googleusercontent.com"
+ALLOWED_EMAIL = "tu-correo@gmail.com"
+
+# Secretos: npx wrangler secret put COOKIE_SECRET
+#           npx wrangler secret put GOOGLE_CLIENT_SECRET
+#           npx wrangler secret put GITHUB_TOKEN
+#           npx wrangler secret put AGENT_KEY

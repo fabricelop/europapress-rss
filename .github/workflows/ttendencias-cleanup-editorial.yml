@@ -1,0 +1,44 @@
+name: Limpiar bloques editoriales TTendencias (sin Telegram)
+on:
+  push:
+    branches: [main]
+    paths:
+      - "trends/cleanup-editorial.json"
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-editorial-cleanup
+  cancel-in-progress: true
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalizar requests editoriales sin mensajes Telegram
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("trends/requests.json")
+          obj=json.loads(path.read_text(encoding="utf-8"))
+          for row in obj.get("requests",[]):
+              if row.get("status")=="ready":
+                  row["status"]="preparing"
+                  row.pop("telegram_message_id",None)
+          path.write_text(json.dumps(obj,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          PY
+            git add trends/requests.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Limpiar estados editoriales TTendencias sin Telegram"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          exit 1

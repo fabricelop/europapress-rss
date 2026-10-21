@@ -1,0 +1,14 @@
+name: "delete ttittulares telegram messages - disabled TTActualidad"
+# TT-only Telegram workflow disabled by request.
+# Editorial, TTImages and SeLoRecordamos remain separate and untouched.
+# Restore from git history if this TT transport is needed again.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Old TT Telegram transport disabled
+        run: echo "TTActualidad handles TT news. No Telegram operation."

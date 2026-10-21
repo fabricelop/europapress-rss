@@ -1,0 +1,45 @@
+name: TTActualidad +Noticia a En elaboración
+on:
+  repository_dispatch:
+    types: [ttactualidad_manual_news_v1]
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-manual-news
+  cancel-in-progress: false
+jobs:
+  enqueue:
+    if: github.event.action == 'ttactualidad_manual_news_v1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Persistir noticia manual sin tocar otros procesos
+        shell: bash
+        env:
+          TT_ACTUALIDAD_MANUAL_JSON: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          set -euo pipefail
+          git config user.name "ttactualidad-actions[bot]"
+          git config user.email "ttactualidad-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6 7; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/submit_ttactualidad_manual.py
+            git add -- telegram/editorial-processing.json ttittulares/editorial-queue.json
+            if git diff --cached --quiet; then
+              echo "Solicitud ya registrada o noticia duplicada; sin cambios."
+              exit 0
+            fi
+            git commit -m "TTActualidad: encolar noticia aportada por usuario"
+            if git push origin HEAD:main; then
+              echo "GitHub confirmado: nueva noticia en En elaboración."
+              exit 0
+            fi
+            sleep "$((attempt * 2))"
+          done
+          echo "Error: no se pudo confirmar la escritura en GitHub" >&2
+          exit 1

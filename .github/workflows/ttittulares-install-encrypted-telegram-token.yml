@@ -1,0 +1,68 @@
+name: Encrypt existing Telegram bot token for TTiTTulares Cloudflare (no cleartext)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttittulares-install-encrypted-telegram-token.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: ttit-encrypted-bot-token
+  cancel-in-progress: false
+jobs:
+  encrypt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/ttittulares-install-encrypted-telegram-token.yml
+            /ttittulares/secure/
+      - name: Encrypt bot token only to Cloudflare-owned RSA public key
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${TELEGRAM_BOT_TOKEN:-}" || { echo 'Telegram token missing'; exit 2; }
+          umask 077
+          curl -fsSL --retry 3 --max-time 25 \
+            https://raw.githubusercontent.com/fabricelop/tt-control/main/tt-control/telegram-keys/ttittulares-callback-public.pem \
+            -o /tmp/ttit-cloudflare-rsa-pub.pem
+          openssl pkey -pubin -in /tmp/ttit-cloudflare-rsa-pub.pem -text -noout >/dev/null
+          printf %s "$TELEGRAM_BOT_TOKEN" >/tmp/ttit-telegram-token
+          openssl pkeyutl -encrypt -pubin -inkey /tmp/ttit-cloudflare-rsa-pub.pem \
+            -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 \
+            -pkeyopt rsa_mgf1_md:sha256 \
+            -in /tmp/ttit-telegram-token -out /tmp/ttit-telegram-opaque.bin
+          python3 - <<'PY'
+          import json,base64,pathlib
+          ciphertext=base64.b64encode(pathlib.Path('/tmp/ttit-telegram-opaque.bin').read_bytes()).decode('ascii')
+          assert len(ciphertext)>=300
+          target=pathlib.Path('ttittulares/secure/telegram-bot-token.enc.json')
+          target.parent.mkdir(parents=True,exist_ok=True)
+          target.write_text(json.dumps({'version':1,'algorithm':'RSA-OAEP-SHA256','ciphertext':ciphertext},indent=2)+'\n')
+          print('TTIT_BOT_CIPHERTEXT_CREATED; NO PLAINTEXT PUBLISHED')
+          PY
+          rm -f /tmp/ttit-telegram-token /tmp/ttit-telegram-opaque.bin
+      - name: Publish encrypted ciphertext only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ttittulares/secure/telegram-bot-token.enc.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Install encrypted TTiTTulares callback bot credential for Cloudflare only"
+          for n in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            if git rebase origin/main; then continue; fi
+            git rebase --abort || true
+            sleep $((n*2))
+          done
+          exit 1

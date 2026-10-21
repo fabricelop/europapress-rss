@@ -1,0 +1,97 @@
+name: Aplicar outbox TTiTTulares
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/editorial-outbox/**"
+      - "ttittulares/apply-trigger.txt"
+      - "ttittulares/normalize_outbox_media.py"
+      - "ttittulares/reconcile_confirmed_stale.py"
+      - ".github/workflows/apply-ttittulares-outbox.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ttittulares-repo-write
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preparar validador de imágenes
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+
+      - name: Aplicar outbox de forma segura
+        run: |
+          set -e
+          git config user.name "ttittulares-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          for intento in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            # Guardrails before modifying repository state; never run editorial.
+            python3 ttittulares/reconcile_confirmed_stale.py --selftest
+            python3 ttittulares/auto_queue.py --selftest
+            python3 ttittulares/apply_editorial_outbox.py --selftest-duplicate
+            python3 ttittulares/normalize_outbox_media.py --selftest
+            python3 ttittulares/normalize_outbox_media.py
+            python3 ttittulares/apply_editorial_outbox.py
+
+            # The reviewed 29 September backlog is one-off and idempotent.
+            # When it changes the queue, refresh the compact queue and status.
+            python3 ttittulares/reconcile_confirmed_stale.py --apply
+            if ! git diff --quiet -- telegram/editorial-processing.json; then
+              python3 ttittulares/apply_editorial_outbox.py
+              python3 ttittulares/build_status.py
+            fi
+
+            git add telegram/editorial-processing.json ttittulares/prepared.json ttittulares/status.json ttittulares/editorial-queue.json ttittulares/execution-errors.json
+            git add -A -- ttittulares/editorial-outbox 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "Sin outbox pendiente."
+              exit 0
+            fi
+
+            git commit -m "Aplicar outbox editorial TTiTTulares"
+            git fetch origin main
+            BASE="$(git rev-parse HEAD^)"
+            REMOTE="$(git rev-parse origin/main)"
+            if [ "$REMOTE" != "$BASE" ]; then
+              echo "Main cambió en paralelo; recalculando sobre el estado actual ($intento/4)."
+              git reset --hard origin/main
+              sleep $((intento * 2))
+              continue
+            fi
+
+            if git push origin HEAD:main; then
+              echo "Outbox aplicado correctamente."
+              exit 0
+            fi
+            sleep $((intento * 2))
+          done
+
+          echo "ERROR: no se pudo aplicar el outbox tras 4 intentos."
+          exit 1
+
+
+      - name: Lanzar reparación visual de Listas
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh workflow run repair-ttittulares-listas.yml --repo "$REPO" --ref main

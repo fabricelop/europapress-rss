@@ -1,0 +1,26 @@
+name: Diagnosticar claim TTiTTulares
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/diagnose-ttittulares-pc-ack.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar claim pc_ack
+        run: |
+          set -euo pipefail
+          HTTP=$(curl --silent --show-error -o /tmp/out.json -w "%{http_code}" \
+            -H 'content-type: application/json' \
+            -d '{"task":"pc_ack","command_id":"tt-official-1791135658792-v1","stage":"picked_up","worker_id":"ttittulares-dedicated-v20","detail":"diagnostic-only"}' \
+            https://europapress-rss.vercel.app/api/ttittulares-run)
+          echo "HTTP=$HTTP"
+          cat /tmp/out.json
+          echo

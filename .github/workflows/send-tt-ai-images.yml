@@ -1,0 +1,12 @@
+name: TT AI image direct Telegram sender disabled
+# La entrega real a TTImages descarga ChatGPT Images en el PC y envía desde allí.
+# Desactivado tras la corrección del usuario 2026-10-17; no usar sendPhoto desde Actions.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'El envío de imágenes IA a TTImages se realiza desde el PC.'
