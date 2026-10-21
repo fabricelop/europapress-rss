@@ -74,22 +74,3 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
  assert.equal(ctxState.busy,false);
  console.log('TOP30_MOBILE_OK',path);
 }
-,'render','pendingDeletes','checkPendingDeletes','sessionStorage','hasBadgeData','syncListasBadge',
-  'let loadRevision=0;'+loadText+'return load;')(
-   ctxState,fields,aliases,fetchJson,$,
-   ()=>{seen.push({app:ctxState.app,hasRadar:currentTop30(ctxState.data.recent).length})},
-   new Map(),()=>{}, {setItem(){}});
- const ttiLoad=load();
- ctxState.app='tr';ctxState.data={};
- const trLoad=load();
- await Promise.resolve();await Promise.resolve();await Promise.resolve();
- assert(seen.some(v=>v.app==='tr'&&v.hasRadar===30),
-  'new app should show Top 30 BEFORE optional files finish');
- unblockTti({items:[{event_id:'old-news'}]});
- await Promise.all([ttiLoad,trLoad]);
- assert.equal(currentTop30(ctxState.data.recent).length,30,
-  'old tti request must not overwrite newer trends');
- assert.equal(ctxState.data.prepared,undefined,'stale tab results must be ignored');
- assert.equal(ctxState.busy,false);
- console.log('TOP30_MOBILE_OK',path);
-}
