@@ -4,18 +4,22 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T05:15:00+02:00",
-  "last_completed_at": "2026-10-21T05:16:00+02:00",
-  "updated_at": "2026-10-21T05:16:00+02:00",
+  "last_started_at": "2026-10-21T05:45:00+02:00",
+  "last_completed_at": "2026-10-21T05:51:00+02:00",
+  "updated_at": "2026-10-21T05:51:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "9d85e04de81b",
+    "06c0b4564b2f",
+    "a3fc6b56c4d6"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-202610210445-chat-direct",
+    "trigger_run_id": "tr-editorial-202610210545-chat-direct",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -23,74 +27,190 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610210515-chat-direct",
+    "run_id": "tr-editorial-202610210545-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T05:15:00+02:00",
-    "updated_at": "2026-10-21T05:16:00+02:00",
-    "finished_at": "2026-10-21T05:16:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-21T05:45:00+02:00",
+    "updated_at": "2026-10-21T05:51:00+02:00",
+    "finished_at": "2026-10-21T05:51:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T05:15:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial 0; revisando estado final y despertando el saneamiento visual de Explicadas recientes."
+        "at": "2026-10-21T05:46:40+02:00",
+        "phase": "investigating",
+        "trend_id": "9d85e04de81b",
+        "title": "Joan García",
+        "message": "Hecho esencial verificado: diez paradas pese al 4-2."
       },
       {
-        "at": "2026-10-21T05:15:25+02:00",
+        "at": "2026-10-21T05:47:00+02:00",
+        "phase": "drafting",
+        "trend_id": "9d85e04de81b",
+        "title": "Joan García",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-21T05:47:15+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9d85e04de81b",
+        "title": "Joan García",
+        "message": "Evaluando candidatos de remate y repetición reciente."
+      },
+      {
+        "at": "2026-10-21T05:47:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "9d85e04de81b",
+        "title": "Joan García",
+        "message": "Remate seleccionado."
+      },
+      {
+        "at": "2026-10-21T05:47:35+02:00",
+        "phase": "verifying",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Releyendo estado autoritativo de Rodri."
+      },
+      {
+        "at": "2026-10-21T05:47:50+02:00",
+        "phase": "investigating",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Contrastando suplencia y gestión de carga ante el PSG."
+      },
+      {
+        "at": "2026-10-21T05:48:05+02:00",
+        "phase": "investigating",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Hecho esencial verificado: descanso inicial tras tres partidos completos; entró después."
+      },
+      {
+        "at": "2026-10-21T05:48:15+02:00",
+        "phase": "drafting",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-21T05:48:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Evaluando candidatos de remate y repetición reciente."
+      },
+      {
+        "at": "2026-10-21T05:48:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "06c0b4564b2f",
+        "title": "Rodri",
+        "message": "Remate seleccionado."
+      },
+      {
+        "at": "2026-10-21T05:48:45+02:00",
+        "phase": "verifying",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Releyendo estado autoritativo de Francia."
+      },
+      {
+        "at": "2026-10-21T05:49:00+02:00",
+        "phase": "investigating",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Contrastando disturbios, toques de queda y refuerzo de seguridad."
+      },
+      {
+        "at": "2026-10-21T05:49:15+02:00",
+        "phase": "investigating",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Hecho esencial verificado: tropas junto a la policía y toques de queda localizados."
+      },
+      {
+        "at": "2026-10-21T05:49:25+02:00",
+        "phase": "drafting",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-21T05:49:35+02:00",
+        "phase": "remate_selection",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Evaluando remate centrado en la gestión de seguridad, sin bromas sobre víctimas."
+      },
+      {
+        "at": "2026-10-21T05:49:45+02:00",
+        "phase": "remate_selection",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Remate seleccionado."
+      },
+      {
+        "at": "2026-10-21T05:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Guardando fichas Explicadas, actualizando requests y retirando revisiones de la cola."
+      },
+      {
+        "at": "2026-10-21T05:50:35+02:00",
+        "phase": "verifying",
+        "trend_id": "a3fc6b56c4d6",
+        "title": "Francia",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-21T05:50:50+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: no hay preparing/update ni reexplicaciones activas; 3 grupos explicados recientes quedan cubiertos por el trigger de reparación visual."
+        "message": "Las tres tendencias están explained y la cola editorial está a 0."
       },
       {
-        "at": "2026-10-21T05:15:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final: cola 0, 0 huérfanos y 0 entregas Telegram provisionales abiertas."
-      },
-      {
-        "at": "2026-10-21T05:16:00+02:00",
+        "at": "2026-10-21T05:51:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 0/0: sin trabajo editorial activo; cola final 0 y trigger de saneamiento visual registrado en main."
+        "message": "Pasada cerrada 3/3: cola final 0 y saneamiento visual solicitado."
       }
     ],
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
+      "explained": 3,
+      "explanation_groups": 3,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 3,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 3,
+      "pending_repair_groups_scanned": 10,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
       "remates_omitted": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "9d85e04de81b",
+      "06c0b4564b2f",
+      "a3fc6b56c4d6"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -101,79 +221,216 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "9d85e04de81b",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c3",
+        "selected_score": 8.6,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "06c0b4564b2f",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c2",
+        "selected_score": 8.4,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "a3fc6b56c4d6",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c4",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      }
+    ],
     "radar": {
-      "captured_at": "2026-10-21T05:10:51+02:00",
+      "captured_at": "2026-10-21T05:41:09+02:00",
       "queue_count": 0,
       "top10": [
         "#TierraDeNadie6",
-        "El PSG",
-        "Barça",
-        "#ChiringuitoChampions",
-        "Asraf",
-        "#codigo10",
-        "Cancelo",
         "Xavi Espart",
-        "Arkano",
-        "Ivana"
+        "El PSG",
+        "Rodri",
+        "Barça",
+        "Cancelo",
+        "Francia",
+        "Joan García",
+        "Fabián",
+        "#codigo10"
       ]
     },
-    "message": "Pasada directa completada 0/0: no hay preparing/update ni reexplicaciones activas. Cola final 0; 3 grupos explicados recientes fueron incluidos en el trigger de saneamiento visual. Sin ImageGen directo ni envíos editoriales a Telegram."
+    "message": "Pasada directa completada 3/3: Joan García, Rodri y Francia quedaron explicadas y verificadas en main. Cola final 0; sin ImageGen directo ni envíos editoriales a Telegram."
   },
-  "run_id": "tr-editorial-202610210515-chat-direct",
+  "run_id": "tr-editorial-202610210545-chat-direct",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
+    "explained": 3,
+    "explanation_groups": 3,
     "concurrent_closed": 0,
     "duplicates_closed": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 3,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
-    "pending_repair_groups_scanned": 3,
+    "pending_repair_groups_scanned": 10,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 3,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T05:15:00+02:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola editorial 0; revisando estado final y despertando el saneamiento visual de Explicadas recientes."
+      "at": "2026-10-21T05:46:40+02:00",
+      "phase": "investigating",
+      "trend_id": "9d85e04de81b",
+      "title": "Joan García",
+      "message": "Hecho esencial verificado: diez paradas pese al 4-2."
     },
     {
-      "at": "2026-10-21T05:15:25+02:00",
+      "at": "2026-10-21T05:47:00+02:00",
+      "phase": "drafting",
+      "trend_id": "9d85e04de81b",
+      "title": "Joan García",
+      "message": "Redactando explicación factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-21T05:47:15+02:00",
+      "phase": "remate_selection",
+      "trend_id": "9d85e04de81b",
+      "title": "Joan García",
+      "message": "Evaluando candidatos de remate y repetición reciente."
+    },
+    {
+      "at": "2026-10-21T05:47:25+02:00",
+      "phase": "remate_selection",
+      "trend_id": "9d85e04de81b",
+      "title": "Joan García",
+      "message": "Remate seleccionado."
+    },
+    {
+      "at": "2026-10-21T05:47:35+02:00",
+      "phase": "verifying",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Releyendo estado autoritativo de Rodri."
+    },
+    {
+      "at": "2026-10-21T05:47:50+02:00",
+      "phase": "investigating",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Contrastando suplencia y gestión de carga ante el PSG."
+    },
+    {
+      "at": "2026-10-21T05:48:05+02:00",
+      "phase": "investigating",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Hecho esencial verificado: descanso inicial tras tres partidos completos; entró después."
+    },
+    {
+      "at": "2026-10-21T05:48:15+02:00",
+      "phase": "drafting",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Redactando explicación factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-21T05:48:25+02:00",
+      "phase": "remate_selection",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Evaluando candidatos de remate y repetición reciente."
+    },
+    {
+      "at": "2026-10-21T05:48:35+02:00",
+      "phase": "remate_selection",
+      "trend_id": "06c0b4564b2f",
+      "title": "Rodri",
+      "message": "Remate seleccionado."
+    },
+    {
+      "at": "2026-10-21T05:48:45+02:00",
+      "phase": "verifying",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Releyendo estado autoritativo de Francia."
+    },
+    {
+      "at": "2026-10-21T05:49:00+02:00",
+      "phase": "investigating",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Contrastando disturbios, toques de queda y refuerzo de seguridad."
+    },
+    {
+      "at": "2026-10-21T05:49:15+02:00",
+      "phase": "investigating",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Hecho esencial verificado: tropas junto a la policía y toques de queda localizados."
+    },
+    {
+      "at": "2026-10-21T05:49:25+02:00",
+      "phase": "drafting",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Redactando explicación factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-21T05:49:35+02:00",
+      "phase": "remate_selection",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Evaluando remate centrado en la gestión de seguridad, sin bromas sobre víctimas."
+    },
+    {
+      "at": "2026-10-21T05:49:45+02:00",
+      "phase": "remate_selection",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Remate seleccionado."
+    },
+    {
+      "at": "2026-10-21T05:50:00+02:00",
+      "phase": "persisting",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Guardando fichas Explicadas, actualizando requests y retirando revisiones de la cola."
+    },
+    {
+      "at": "2026-10-21T05:50:35+02:00",
+      "phase": "verifying",
+      "trend_id": "a3fc6b56c4d6",
+      "title": "Francia",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-21T05:50:50+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: no hay preparing/update ni reexplicaciones activas; 3 grupos explicados recientes quedan cubiertos por el trigger de reparación visual."
+      "message": "Las tres tendencias están explained y la cola editorial está a 0."
     },
     {
-      "at": "2026-10-21T05:15:40+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0, 0 huérfanos y 0 entregas Telegram provisionales abiertas."
-    },
-    {
-      "at": "2026-10-21T05:16:00+02:00",
+      "at": "2026-10-21T05:51:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 0/0: sin trabajo editorial activo; cola final 0 y trigger de saneamiento visual registrado en main."
+      "message": "Pasada cerrada 3/3: cola final 0 y saneamiento visual solicitado."
     }
   ],
   "telegram_orphans": 0,
@@ -185,19 +442,19 @@
     "captured_at": "2026-10-21T04:41:04+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-21T04:41:04+02:00",
+    "captured_at": "2026-10-21T05:41:09+02:00",
     "queue_count": 0,
     "top10": [
       "#TierraDeNadie6",
-      "El PSG",
-      "Barça",
-      "#ChiringuitoChampions",
-      "Asraf",
-      "#codigo10",
-      "Cancelo",
       "Xavi Espart",
-      "Arkano",
-      "Ivana"
+      "El PSG",
+      "Rodri",
+      "Barça",
+      "Cancelo",
+      "Francia",
+      "Joan García",
+      "Fabián",
+      "#codigo10"
     ]
   }
 }
