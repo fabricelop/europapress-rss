@@ -4,14 +4,11 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T09:15:30+02:00",
-  "last_completed_at": "2026-10-21T09:24:10+02:00",
-  "updated_at": "2026-10-21T09:24:10+02:00",
+  "last_started_at": "2026-10-21T09:45:30+02:00",
+  "last_completed_at": "2026-10-21T09:46:30+02:00",
+  "updated_at": "2026-10-21T09:46:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "1c85a4b1e493",
-    "7c95d18d66bb"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -23,29 +20,32 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-editorial-202610210915-chat-direct",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-editorial-202610210945-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T09:15:30+02:00",
-    "updated_at": "2026-10-21T09:24:10+02:00",
-    "finished_at": "2026-10-21T09:24:10+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-21T09:45:30+02:00",
+    "updated_at": "2026-10-21T09:46:30+02:00",
+    "finished_at": "2026-10-21T09:46:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 2,
-      "ready": 2,
-      "explained": 2,
-      "explanation_groups": 2,
+      "attempted": 0,
+      "ready": 0,
+      "explained": 0,
+      "explanation_groups": 0,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -54,152 +54,51 @@
       "pending_repair_triggered": 1,
       "pending_repair_groups_scanned": 0,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "TTendencias 2/2 verificada: Aday Mara y #ZurdasYOrgullosas explicadas, persistidas en main y retiradas de la cola. Sin ImageGen directo; reparación visual independiente activada.",
+    "message": "TTendencias 0/0 verificada: no quedan revisiones preparing/update/problematic ni rewrite_pending. Saneamiento visual de Pendientes activado; sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T09:15:30+02:00",
+        "at": "2026-10-21T09:45:30+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; 2 tendencias activas en preparing."
+        "message": "Pasada iniciada; cola autoritativa 0 y sin revisiones activas detectadas."
       },
       {
-        "at": "2026-10-21T09:15:45+02:00",
+        "at": "2026-10-21T09:45:45+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado al inicio."
       },
       {
-        "at": "2026-10-21T09:17:00+02:00",
+        "at": "2026-10-21T09:46:15+02:00",
         "phase": "verifying",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Releyendo estado autoritativo de Aday Mara."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: editorial-queue, requests y radar actual."
       },
       {
-        "at": "2026-10-21T09:17:30+02:00",
-        "phase": "investigating",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Contrastando debut NBA y resultado ante San Antonio."
-      },
-      {
-        "at": "2026-10-21T09:18:00+02:00",
-        "phase": "investigating",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Hecho esencial verificado: 7 puntos y tapón a Wembanyama en el 116-104."
-      },
-      {
-        "at": "2026-10-21T09:18:15+02:00",
-        "phase": "drafting",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-21T09:18:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Remate seleccionado tras comprobar originalidad frente a los recientes."
-      },
-      {
-        "at": "2026-10-21T09:18:45+02:00",
-        "phase": "persisting",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Outbox editorial enviado; persistencia en GitHub Actions en curso."
-      },
-      {
-        "at": "2026-10-21T09:19:00+02:00",
+        "at": "2026-10-21T09:46:25+02:00",
         "phase": "verifying",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Releyendo estado autoritativo de #ZurdasYOrgullosas."
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación final: 0 preparing/update/problematic y 0 reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T09:19:20+02:00",
-        "phase": "investigating",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Contrastando la campaña del PSOE y la visita de Javier Milei."
-      },
-      {
-        "at": "2026-10-21T09:19:40+02:00",
-        "phase": "investigating",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Hecho esencial verificado: lona en Ferraz y mensajes de Sánchez reivindicando el término «zurdo»."
-      },
-      {
-        "at": "2026-10-21T09:19:55+02:00",
-        "phase": "drafting",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-21T09:20:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Remate político neutral seleccionado tras control de originalidad."
-      },
-      {
-        "at": "2026-10-21T09:20:20+02:00",
-        "phase": "persisting",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Outbox editorial enviado; persistencia en GitHub Actions en curso."
-      },
-      {
-        "at": "2026-10-21T09:22:05+02:00",
-        "phase": "verifying",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Releyendo main; id+revision y texto persistido verificados."
-      },
-      {
-        "at": "2026-10-21T09:22:10+02:00",
-        "phase": "verifying",
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-21T09:24:00+02:00",
-        "phase": "verifying",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Releyendo main; id+revision y texto persistido verificados."
-      },
-      {
-        "at": "2026-10-21T09:24:05+02:00",
-        "phase": "verifying",
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-21T09:24:10+02:00",
+        "at": "2026-10-21T09:46:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 2/2; cola editorial a 0."
+        "message": "Pasada cerrada 0/0; cola editorial verificada a 0."
       }
     ],
-    "processed_ids": [
-      "1c85a4b1e493",
-      "7c95d18d66bb"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -210,48 +109,38 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "1c85a4b1e493",
-        "title": "Aday Mara",
-        "selected": "🌶️ Primer día de oficina y ya dejó el techo un poco más bajo."
-      },
-      {
-        "trend_id": "7c95d18d66bb",
-        "title": "#ZurdasYOrgullosas",
-        "selected": "🌶️ La batalla ideológica hoy también se libra en formato lona."
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "1c85a4b1e493",
-        "name": "Aday Mara",
-        "revision": 0,
-        "status": "explained",
-        "commit_sha": "b45841b64c9f6c669a82f856531abe356d55fe3d"
-      },
-      {
-        "id": "7c95d18d66bb",
-        "name": "#ZurdasYOrgullosas",
-        "revision": 0,
-        "status": "explained",
-        "commit_sha": "b936470d5dd2b3f0095116e60655ad8f897ed422"
-      }
-    ]
+    "remate_selections": [],
+    "final_outcomes": [],
+    "radar": {
+      "captured_at": "2026-10-21T09:40:56+02:00",
+      "queue_count": 0,
+      "top10": [
+        "#FelizMiércoles",
+        "#TierraDeNadie6",
+        "El PSG",
+        "Xavi Espart",
+        "Aday Mara",
+        "Barça",
+        "Rodri",
+        "#ZurdasYOrgullosas",
+        "Cancelo",
+        "Francia"
+      ]
+    }
   },
-  "run_id": "tr-editorial-202610210915-chat-direct",
+  "run_id": "tr-editorial-202610210945-chat-direct",
   "summary": {
-    "attempted": 2,
-    "ready": 2,
-    "explained": 2,
-    "explanation_groups": 2,
+    "attempted": 0,
+    "ready": 0,
+    "explained": 0,
+    "explanation_groups": 0,
     "concurrent_closed": 0,
     "duplicates_closed": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 2,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -260,144 +149,46 @@
     "pending_repair_triggered": 1,
     "pending_repair_groups_scanned": 0,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T09:15:30+02:00",
+      "at": "2026-10-21T09:45:30+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; 2 tendencias activas en preparing."
+      "message": "Pasada iniciada; cola autoritativa 0 y sin revisiones activas detectadas."
     },
     {
-      "at": "2026-10-21T09:15:45+02:00",
+      "at": "2026-10-21T09:45:45+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
       "message": "Saneamiento visual de Pendientes solicitado al inicio."
     },
     {
-      "at": "2026-10-21T09:17:00+02:00",
+      "at": "2026-10-21T09:46:15+02:00",
       "phase": "verifying",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Releyendo estado autoritativo de Aday Mara."
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: editorial-queue, requests y radar actual."
     },
     {
-      "at": "2026-10-21T09:17:30+02:00",
-      "phase": "investigating",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Contrastando debut NBA y resultado ante San Antonio."
-    },
-    {
-      "at": "2026-10-21T09:18:00+02:00",
-      "phase": "investigating",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Hecho esencial verificado: 7 puntos y tapón a Wembanyama en el 116-104."
-    },
-    {
-      "at": "2026-10-21T09:18:15+02:00",
-      "phase": "drafting",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-21T09:18:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Remate seleccionado tras comprobar originalidad frente a los recientes."
-    },
-    {
-      "at": "2026-10-21T09:18:45+02:00",
-      "phase": "persisting",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Outbox editorial enviado; persistencia en GitHub Actions en curso."
-    },
-    {
-      "at": "2026-10-21T09:19:00+02:00",
+      "at": "2026-10-21T09:46:25+02:00",
       "phase": "verifying",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Releyendo estado autoritativo de #ZurdasYOrgullosas."
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación final: 0 preparing/update/problematic y 0 reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-21T09:19:20+02:00",
-      "phase": "investigating",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Contrastando la campaña del PSOE y la visita de Javier Milei."
-    },
-    {
-      "at": "2026-10-21T09:19:40+02:00",
-      "phase": "investigating",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Hecho esencial verificado: lona en Ferraz y mensajes de Sánchez reivindicando el término «zurdo»."
-    },
-    {
-      "at": "2026-10-21T09:19:55+02:00",
-      "phase": "drafting",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-21T09:20:10+02:00",
-      "phase": "remate_selection",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Remate político neutral seleccionado tras control de originalidad."
-    },
-    {
-      "at": "2026-10-21T09:20:20+02:00",
-      "phase": "persisting",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Outbox editorial enviado; persistencia en GitHub Actions en curso."
-    },
-    {
-      "at": "2026-10-21T09:22:05+02:00",
-      "phase": "verifying",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Releyendo main; id+revision y texto persistido verificados."
-    },
-    {
-      "at": "2026-10-21T09:22:10+02:00",
-      "phase": "verifying",
-      "trend_id": "1c85a4b1e493",
-      "title": "Aday Mara",
-      "message": "Tendencia cerrada y verificada."
-    },
-    {
-      "at": "2026-10-21T09:24:00+02:00",
-      "phase": "verifying",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Releyendo main; id+revision y texto persistido verificados."
-    },
-    {
-      "at": "2026-10-21T09:24:05+02:00",
-      "phase": "verifying",
-      "trend_id": "7c95d18d66bb",
-      "title": "#ZurdasYOrgullosas",
-      "message": "Tendencia cerrada y verificada."
-    },
-    {
-      "at": "2026-10-21T09:24:10+02:00",
+      "at": "2026-10-21T09:46:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 2/2; cola editorial a 0."
+      "message": "Pasada cerrada 0/0; cola editorial verificada a 0."
     }
   ],
   "telegram_orphans": 0,
@@ -406,22 +197,22 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-21T08:50:53+02:00"
+    "captured_at": "2026-10-21T09:40:56+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-21T08:50:53+02:00",
+    "captured_at": "2026-10-21T09:40:56+02:00",
     "queue_count": 0,
     "top10": [
-      "#TierraDeNadie6",
       "#FelizMiércoles",
+      "#TierraDeNadie6",
       "El PSG",
       "Xavi Espart",
+      "Aday Mara",
       "Barça",
       "Rodri",
+      "#ZurdasYOrgullosas",
       "Cancelo",
-      "Francia",
-      "Joan García",
-      "Fabián"
+      "Francia"
     ]
   }
 }
