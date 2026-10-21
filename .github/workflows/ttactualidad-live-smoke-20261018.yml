@@ -24,7 +24,7 @@ jobs:
           d=json.load(open('/tmp/tt-health.json'))
           assert d.get('ok') is True, f"Worker health not OK: {d}"
           assert d.get('kind')=='ttactualidad-direct-live',f"Unexpected Worker architecture: {d}"
-          print('LIVE_HEALTH_OK kind=',d['kind'],'version=',d.get('version'))
+          print('LIVE_HEALTH_OK kind=',d['kind'],'version=',d.get('version'),'production_connected=',d.get('production_connected'),'session_auth=',d.get('session_auth'))
           PY
       - name: Normal TTActualidad app active over HTTPS
         shell: bash
@@ -39,5 +39,16 @@ jobs:
           missing=[x for x in wanted if x not in s]
           if missing: raise AssertionError('Unexpected/stale Worker UI missing: '+', '.join(missing))
           assert 'location.origin' in s or '/api/decision' in s
-          print('LIVE_UI_OK bytes=',len(s),'markers=',len(wanted))
+          # Read-only architecture/version probe. A missing NEW marker means
+          # GitHub main is newer than the deployed Worker; never redeploy here.
+          markers={
+              'top30_separates_live_historic':'EXPLICACIÓN HISTÓRICA' in s and "EN LISTAS" in s,
+              'combined_iphone_badge':'function badgeCount()' in s,
+              'manual_news':'id="manual-open"' in s and '/api/manual-news' in s,
+              'original_backend':'/api/decision' in s,
+              'historic_browser_ui':'https://t.me/TTiTTulares_bot' in s
+          }
+          print('LIVE_UI_OK bytes=',len(s),'markers=',len(wanted),'ARCHITECTURE_MARKERS=',markers)
+          if not markers['original_backend'] or not markers['manual_news']:
+              raise AssertionError('Live worker is missing current direct-action controls')
           PY
