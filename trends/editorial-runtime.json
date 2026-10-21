@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T18:45:00+02:00",
-  "last_completed_at": "2026-10-21T18:46:10+02:00",
-  "updated_at": "2026-10-21T18:46:10+02:00",
+  "last_started_at": "2026-10-21T19:15:00+02:00",
+  "last_completed_at": "2026-10-21T19:15:50+02:00",
+  "updated_at": "2026-10-21T19:15:50+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -20,20 +20,15 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "chat-20261021T1845+0200",
+    "run_id": "chat-20261021T1915+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T18:45:00+02:00",
-    "updated_at": "2026-10-21T18:46:10+02:00",
-    "finished_at": "2026-10-21T18:46:10+02:00",
+    "started_at": "2026-10-21T19:15:00+02:00",
+    "updated_at": "2026-10-21T19:15:50+02:00",
+    "finished_at": "2026-10-21T19:15:50+02:00",
     "current": 0,
     "total": 0,
-    "trend_id": null,
-    "title": null,
     "summary": {
       "attempted": 0,
       "ready": 0,
@@ -61,10 +56,6 @@
     "message": "TTendencias 0/0 cerrada y verificada: cola final 0, sin reexplicaciones pendientes. Saneamiento visual de Pendientes solicitado. Sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
-    "processed_ids": [],
-    "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -73,60 +64,43 @@
       "recent_considered": 30
     },
     "remate_selections": [],
-    "final_outcomes": [],
     "activity": [
       {
-        "at": "2026-10-21T18:45:00+02:00",
+        "at": "2026-10-21T19:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Cola editorial inicial 0; iniciando saneamiento visual de Pendientes y verificación final."
       },
       {
-        "at": "2026-10-21T18:45:20+02:00",
+        "at": "2026-10-21T19:15:05+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Solicitando saneamiento visual de Pendientes."
       },
       {
-        "at": "2026-10-21T18:45:40+02:00",
+        "at": "2026-10-21T19:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main y comprobando cola, reexplicaciones y Top 10."
       },
       {
-        "at": "2026-10-21T18:46:00+02:00",
+        "at": "2026-10-21T19:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Cola 0 y sin revisiones activas ni reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T18:46:10+02:00",
+        "at": "2026-10-21T19:15:50+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
         "message": "TTendencias 0/0 cerrada y verificada; saneamiento visual solicitado; sin ImageGen directo."
       }
-    ],
-    "radar": {
-      "captured_at": "2026-10-21T18:41:58+02:00",
-      "queue_count": 0,
-      "top10": [
-        "Milei",
-        "Argentina",
-        "#TEM21O",
-        "Coruña",
-        "Zurdos",
-        "Fascistas",
-        "Risto",
-        "Sofía Puente",
-        "María Pita",
-        "Puerto Rico"
-      ]
-    }
+    ]
   },
   "run_id": "chat-20261021T1845+0200",
   "summary": {
