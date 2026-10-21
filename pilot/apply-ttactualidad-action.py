@@ -113,42 +113,64 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         mobile = load(mobile_path, {"items": []})
 
         existing = find(mobile.get("items", []), "id", event_id)
-        if existing and existing.get("status") in TERMINAL:
-            if existing["status"] == decision:
-                return {}, "already_applied"
-            fail("Esta tendencia ya tiene una decision final diferente")
+        if existing and str(existing.get("status") or "").lower() in TERMINAL:
+            if existing["status"] != decision:
+                fail("Esta tendencia ya tiene una decision final diferente")
+            # A previous delete may have closed mobile only. Reconcile ALL
+            # authoritative mirrors instead of returning early and allowing
+            # the old card to reappear after the next GitHub refresh.
 
-        explained = [row for row in manual.get("items", []) if str(row.get("id") or "") == event_id]
-        explained.sort(key=lambda row: (int(row.get("revision") or 0),
-                                        str(row.get("updated_at") or row.get("explained_at") or "")), reverse=True)
-        target = explained[0] if explained else None
+        all_manual = [row for row in manual.get("items", [])
+                      if str(row.get("id") or "") == event_id]
+        all_requests = [row for row in requests.get("requests", [])
+                        if str(row.get("id") or "") == event_id]
+        all_deliveries = [row for row in deliveries.get("items", [])
+                          if str(row.get("event_id") or "") == event_id]
 
-        old = [row for row in deliveries.get("items", []) if str(row.get("event_id") or "") == event_id]
-        old.sort(key=lambda row: (int(row.get("revision") or 0),
-                                  str(row.get("updated_at") or row.get("delivered_at") or "")), reverse=True)
-        legacy_delivery = old[0] if old else None
+        # The deletion is scoped to the exact editorial revision. A newer
+        # revision that is already preparing must never be overwritten.
+        if any(int(row.get("revision") or 0) > revision
+               for row in all_manual + all_requests):
+            fail("Existe una revision editorial mas reciente; actualiza la app")
 
-        if target:
-            if (str(target.get("status") or "").lower() != "explained"
-                    or not str(target.get("explanation") or "").strip()
-                    or str(target.get("telegram_package_status") or "").lower() in TERMINAL):
-                fail("Esta explicacion ya no esta en Listas")
-            check_revision(target, revision)
-        elif legacy_delivery:
-            # Backward compatibility with old app versions until the editorial view ships.
-            if str(legacy_delivery.get("status") or "").lower() != "sent" or legacy_delivery.get("final") is False:
-                fail("La tendencia ya no esta en Listas")
-            check_revision(legacy_delivery, revision)
-        else:
+        same_manual = [row for row in all_manual
+                       if int(row.get("revision") or 0) == revision]
+        same_requests = [row for row in all_requests
+                         if int(row.get("revision") or 0) == revision]
+        same_delivery = [row for row in all_deliveries
+                         if int(row.get("revision") or 0) == revision]
+        legacy_delivery = next(
+            (row for row in reversed(same_delivery)
+             if str(row.get("status") or "").lower() == "sent"
+             and row.get("final") is not False), None)
+
+        # Do not use the *latest row by updated_at* as the sole authority:
+        # for #FelizMiércoles it was already a tombstone while requests.json
+        # still said explained. That mismatch made every Delete action fail.
+        proof = (
+            any(str(row.get("status") or "").lower() == "explained"
+                and str(row.get("explanation") or "").strip()
+                and str(row.get("telegram_package_status") or "").lower() not in TERMINAL
+                for row in same_manual + same_requests)
+            or any(str(row.get("status") or "").lower() == "deleted"
+                   for row in same_manual + same_requests)
+            or legacy_delivery is not None
+            or (existing is not None and existing.get("status") == "deleted"
+                and int(existing.get("revision") or 0) == revision)
+        )
+        if not proof:
             fail("La tendencia no esta en las Listas editoriales")
 
         now = datetime.now(timezone.utc).isoformat()
         changed = {}
-        if target:
-            target["status"] = "deleted"
-            target["telegram_package_status"] = "deleted"
-            target["deleted_at"] = now
-            target["decision_source"] = "ttactualidad_direct"
+        # Tombstone every duplicate snapshot of this ID+revision. Preserve
+        # text, image and history, but no stale 'explained' row may resurrect
+        # the card after a successful delete.
+        for target in same_manual:
+            target.update(status="deleted", telegram_package_status="deleted",
+                          deleted_at=target.get("deleted_at") or now,
+                          decision_source="ttactualidad_direct")
+        if same_manual:
             manual["updated_at"] = now
             changed[manual_path] = manual
 
@@ -162,9 +184,10 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
             req["telegram_package_status"] = "deleted"
             req["deleted_at"] = now
             req["decision_source"] = "ttactualidad_direct"
+            requests["updated_at"] = now
             changed[requests_path] = requests
 
-        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent" and (not target or int(legacy_delivery.get("revision") or 0) == revision):
+        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent":
             check_revision(legacy_delivery, revision)
             legacy_delivery["status"] = "deleted"
             legacy_delivery["updated_at"] = now
