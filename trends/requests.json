@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-21T15:29:00+02:00",
+  "updated_at": "2026-10-21T15:34:00+02:00",
   "count": 18,
   "requests": [
     {
@@ -1439,7 +1439,7 @@
       "id": "267edd32d0e3",
       "name": "el constitucional",
       "rank": 9,
-      "status": "preparing",
+      "status": "deleted",
       "requested_at": "2026-10-21T15:29:00+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1455,13 +1455,14 @@
         "Sofía Puente"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "telegram_package_status": "deleted"
     },
     {
       "id": "3308803efaac",
       "name": "Sofía Puente",
       "rank": 10,
-      "status": "preparing",
+      "status": "deleted",
       "requested_at": "2026-10-21T15:29:00+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1473,6 +1474,49 @@
       ],
       "captured_with": [
         "María Pita",
+        "el constitucional",
+        "Sofía Puente"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10",
+      "telegram_package_status": "deleted"
+    },
+    {
+      "id": "4ac0a30dae06",
+      "name": "el constitucional",
+      "rank": 9,
+      "status": "preparing",
+      "requested_at": "2026-10-21T15:34:00+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9538d85a559f",
+      "requested_together": [
+        "el constitucional"
+      ],
+      "captured_with": [
+        "el constitucional",
+        "Sofía Puente"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "320afc837d97",
+      "name": "Sofía Puente",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-10-21T15:34:00+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "9538d85a559f",
+      "requested_together": [
+        "Sofía Puente"
+      ],
+      "captured_with": [
         "el constitucional",
         "Sofía Puente"
       ],
