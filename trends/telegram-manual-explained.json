@@ -62803,9 +62803,13 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none"
     },
     {
       "id": "fc94a2758b4a",
@@ -62848,11 +62852,10 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "image_pending": false
     }
   ],
-  "updated_at": "2026-10-21T19:49:56+02:00",
+  "updated_at": "2026-10-21T17:50:02.397209Z",
   "count": 1073
 }
