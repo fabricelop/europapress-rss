@@ -150,6 +150,7 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         proof = (
             any(str(row.get("status") or "").lower() == "explained"
                 and str(row.get("explanation") or "").strip()
+                and str(row.get("telegram_package_status") or "").lower() not in TERMINAL
                 for row in same_manual + same_requests)
             or any(str(row.get("status") or "").lower() == "deleted"
                    for row in same_manual + same_requests)
@@ -186,7 +187,7 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
             requests["updated_at"] = now
             changed[requests_path] = requests
 
-        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent" and (not target or int(legacy_delivery.get("revision") or 0) == revision):
+        if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent":
             check_revision(legacy_delivery, revision)
             legacy_delivery["status"] = "deleted"
             legacy_delivery["updated_at"] = now
