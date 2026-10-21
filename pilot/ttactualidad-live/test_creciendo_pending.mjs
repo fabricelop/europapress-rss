@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
 const page=readFileSync('pilot/ttactualidad-live/index.html','utf8');
-const begin=page.indexOf('function ttiRows(){');
+const begin=page.indexOf('function ttiListasRows(data){');
 const end=page.indexOf('function trendKey(',begin);
 assert(begin>=0&&end>begin,'TTiTTulares rows found');
 const source=page.slice(begin,end);
