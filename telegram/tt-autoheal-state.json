@@ -2,137 +2,121 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-21T18:20:00.201119+00:00",
-      "issue_count": 4,
+      "checked_at": "2026-10-21T21:50:54.352830+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "5081103a913e",
-          "title": "La llegada de Vox al Gobierno andaluz no implica cambios en la cpula de Canal Sur: el Parlamento ree",
-          "seconds": 635,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "0d9a03579708",
-          "title": "Julian Barnes: \"El Brexit ha sido un desastre y los últimos diez años, deprimentes. Y con Trump comp",
-          "seconds": 635,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "f41e3031f358",
-          "title": "Kenichi Yoda, el presidente de Studio Ghibli: «No creo que la inteligencia artificial pueda superar ",
-          "seconds": 273,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 462347,
+          "seconds": 475002,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "279fb18a45ea0a5f7ed502c5b4db8b84554b0b58afe0e6a6bf8d8b940ac879db",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-21T18:20:00.201119+00:00",
-      "issue_count": 10,
+      "checked_at": "2026-10-21T21:50:54.352830+00:00",
+      "issue_count": 11,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "a17df40aeb58",
           "title": "Damián",
-          "seconds": 60518,
+          "seconds": 73172,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5c964cfff54c",
           "title": "Ivana",
-          "seconds": 56329,
+          "seconds": 68983,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "cf8239cbf7b5",
           "title": "#TEM21O",
-          "seconds": 13685,
+          "seconds": 26339,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 13685,
+          "seconds": 26339,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "97a359d802d1",
           "title": "Coruña",
-          "seconds": 9840,
+          "seconds": 22494,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "f1c7e916cf88",
           "title": "Zurdos",
-          "seconds": 9840,
+          "seconds": 22494,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "be98596f4727",
           "title": "Fascistas",
-          "seconds": 9840,
+          "seconds": 22494,
           "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "e63c35c1e89c",
-          "title": "Vox al Congreso",
-          "seconds": 3162,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "6baf2b561567",
+          "title": "Mass Effect",
+          "seconds": 12663,
+          "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "fc94a2758b4a",
-          "title": "Nico Paz",
-          "seconds": 2600,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "79992d9412a6",
+          "title": "Dragon Age",
+          "seconds": 12663,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "f5a7544fb008",
+          "title": "carrick",
+          "seconds": 7788,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 462347,
+          "seconds": 475001,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "c550f37270484cbd74d8cd2c455c872e7c1535ac86f5a275203174d5000719d8",
+      "open_signature": "69aa655f1a8e340790d4a4de88c21b71b5cf293348b1a3e9dc1d354c4d191c08",
       "repair_via_workflow_run": false,
-      "escalation_required": 9
+      "escalation_required": 10
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T18:20:00.201119+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-21T18:20:00.201119+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-21T18:20:00.201119+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-21T21:50:54.352830+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-21T21:50:54.352830+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T18:20:00.201119+00:00"
   },
-  "checked_at": "2026-10-21T18:20:00.201119+00:00"
+  "checked_at": "2026-10-21T21:50:54.352830+00:00"
 }
