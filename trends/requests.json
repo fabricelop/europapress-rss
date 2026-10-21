@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-21T05:21:13+02:00",
+  "updated_at": "2026-10-21T05:31:14+02:00",
   "count": 3,
   "requests": [
     {
@@ -349,7 +349,7 @@
       "id": "e486c2bd83db",
       "name": "Rodri",
       "rank": 4,
-      "status": "preparing",
+      "status": "deleted",
       "requested_at": "2026-10-21T05:21:13+02:00",
       "revision": 0,
       "reexplain": false,
@@ -365,13 +365,14 @@
         "Joan García"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "telegram_package_status": "deleted"
     },
     {
       "id": "6b6251a34bec",
       "name": "Francia",
       "rank": 7,
-      "status": "preparing",
+      "status": "deleted",
       "requested_at": "2026-10-21T05:21:13+02:00",
       "revision": 0,
       "reexplain": false,
@@ -387,7 +388,8 @@
         "Joan García"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "telegram_package_status": "deleted"
     },
     {
       "id": "9d85e04de81b",
@@ -407,6 +409,48 @@
         "Rodri",
         "Francia",
         "Joan García"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "06c0b4564b2f",
+      "name": "Rodri",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-10-21T05:31:14+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "c6ee29cec505",
+      "requested_together": [
+        "Rodri"
+      ],
+      "captured_with": [
+        "Rodri",
+        "Francia"
+      ],
+      "auto_queued": true,
+      "auto_queue_scope": "top10"
+    },
+    {
+      "id": "a3fc6b56c4d6",
+      "name": "Francia",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-10-21T05:31:14+02:00",
+      "revision": 0,
+      "reexplain": false,
+      "with_image": true,
+      "alternatives_target": 0,
+      "batch_id": "c6ee29cec505",
+      "requested_together": [
+        "Francia"
+      ],
+      "captured_with": [
+        "Rodri",
+        "Francia"
       ],
       "auto_queued": true,
       "auto_queue_scope": "top10"
