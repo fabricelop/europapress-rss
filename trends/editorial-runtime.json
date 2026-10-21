@@ -4,23 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T01:45:00+02:00",
-  "last_completed_at": "2026-10-21T01:45:40+02:00",
-  "updated_at": "2026-10-21T01:45:40+02:00",
+  "last_started_at": "2026-10-21T02:15:00+02:00",
+  "last_completed_at": "2026-10-21T02:16:20+02:00",
+  "updated_at": "2026-10-21T02:16:20+02:00",
   "status": "success",
-  "processed_ids": [
-    "05c086bf9e25",
-    "d7bbc6d46128",
-    "0934bfed7763",
-    "745a40061540"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-202610210145-chat-direct",
+    "trigger_run_id": "tr-editorial-202610210215-chat-direct",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -28,42 +23,15 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610210145-chat-direct",
+    "run_id": "tr-editorial-202610210215-chat-direct",
     "source": "chat",
-    "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-10-21T01:45:00+02:00",
-    "updated_at": "2026-10-21T01:45:40+02:00",
-    "finished_at": "2026-10-21T01:45:40+02:00",
+    "started_at": "2026-10-21T02:15:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
-    "activity": [
-      {
-        "at": "2026-10-21T01:45:00+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo cola, solicitudes y reexplicaciones pendientes."
-      },
-      {
-        "at": "2026-10-21T01:45:20+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Estado fresco: cola 0; sin preparing/update, rewrite_pending ni Explicadas recientes sin remate; Top 30 capturado a las 01:41."
-      },
-      {
-        "at": "2026-10-21T01:45:40+02:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: cola editorial vacía y sin revisiones activas."
-      }
-    ],
     "summary": {
       "attempted": 0,
       "ready": 0,
@@ -87,9 +55,7 @@
       "remates_omitted": 0
     },
     "processed_ids": [],
-    "message": "Pasada cerrada 0/0: sin preparing/update ni rewrite_pending tras relectura fresca de main. Sin ImageGen directo.",
     "partial": false,
-    "queue_complete": true,
     "remaining_active_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
@@ -99,20 +65,65 @@
       "recent_considered": 30
     },
     "remate_selections": [],
-    "final_outcomes": []
+    "final_outcomes": [],
+    "radar": {
+      "captured_at": "2026-10-21T02:11:05+02:00",
+      "queue_count": 0,
+      "top10": [
+        "#TierraDeNadie6",
+        "El PSG",
+        "Champions",
+        "Barça",
+        "Cancelo",
+        "Xavi Espart",
+        "#codigo10",
+        "gordon",
+        "Lamine",
+        "Fabián"
+      ]
+    },
+    "status": "DONE",
+    "phase": "closing",
+    "updated_at": "2026-10-21T02:16:20+02:00",
+    "finished_at": "2026-10-21T02:16:20+02:00",
+    "activity": [
+      {
+        "at": "2026-10-21T02:15:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola, solicitudes y reexplicaciones vigentes; cola inicial 0."
+      },
+      {
+        "at": "2026-10-21T02:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Estado fresco: cola 0; sin preparing/update, rewrite_pending ni Explicadas recientes sin remate; Top 30 capturado a las 02:11."
+      },
+      {
+        "at": "2026-10-21T02:16:20+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola editorial vacía y sin revisiones activas."
+      }
+    ],
+    "message": "TTendencias 0/0 verificada: cola final 0, sin preparing/update ni reexplicaciones pendientes. Sin ImageGen directo.",
+    "queue_complete": true
   },
-  "run_id": "tr-editorial-202610210045-chat-e4fe3f9f",
+  "run_id": "tr-editorial-202610210215-chat-direct",
   "summary": {
-    "attempted": 4,
+    "attempted": 0,
     "ready": 0,
-    "explained": 4,
-    "explanation_groups": 4,
+    "explained": 0,
+    "explanation_groups": 0,
     "concurrent_closed": 0,
     "duplicates_closed": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 4,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -120,151 +131,32 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 4,
-    "remates_selected": 4,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T00:45:00+02:00",
+      "at": "2026-10-21T02:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, solicitudes y estado autoritativo: 4 revisiones activas."
+      "message": "Releyendo cola, solicitudes y reexplicaciones vigentes; cola inicial 0."
     },
     {
-      "at": "2026-10-21T00:46:00+02:00",
+      "at": "2026-10-21T02:16:00+02:00",
       "phase": "verifying",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Releyendo estado autoritativo de #TierraDeNadie6."
+      "trend_id": null,
+      "title": null,
+      "message": "Estado fresco: cola 0; sin preparing/update, rewrite_pending ni Explicadas recientes sin remate; Top 30 capturado a las 02:11."
     },
     {
-      "at": "2026-10-21T00:46:20+02:00",
-      "phase": "investigating",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Contrastando Mediaset: ruptura Ivana-Arkano y salvación entre Asraf, Damián y Víctor."
-    },
-    {
-      "at": "2026-10-21T00:46:40+02:00",
-      "phase": "drafting",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Redactando explicación factual y comprobando límite de X: 252 caracteres."
-    },
-    {
-      "at": "2026-10-21T00:47:00+02:00",
-      "phase": "remate_selection",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Remate seleccionado tras contrastar originalidad con ratings recientes."
-    },
-    {
-      "at": "2026-10-21T00:47:50+02:00",
-      "phase": "persisting",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Guardando ficha Explicada y sincronizando requests."
-    },
-    {
-      "at": "2026-10-21T00:48:00+02:00",
-      "phase": "verifying",
-      "trend_id": "05c086bf9e25",
-      "title": "#TierraDeNadie6",
-      "message": "Revisión r0 persistida y retirada de cola con los cinco campos críticos coincidentes."
-    },
-    {
-      "at": "2026-10-21T00:48:05+02:00",
-      "phase": "verifying",
-      "trend_id": "d7bbc6d46128",
-      "title": "Barça",
-      "message": "Releyendo estado autoritativo de Barça."
-    },
-    {
-      "at": "2026-10-21T00:48:10+02:00",
-      "phase": "investigating",
-      "trend_id": "d7bbc6d46128",
-      "title": "Barça",
-      "message": "Resultado final verificado: PSG 4-2 Barça; primera derrota culé del curso."
-    },
-    {
-      "at": "2026-10-21T00:48:20+02:00",
-      "phase": "drafting",
-      "trend_id": "d7bbc6d46128",
-      "title": "Barça",
-      "message": "Explicación factual cerrada y comprobada: 233 caracteres."
-    },
-    {
-      "at": "2026-10-21T00:48:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "d7bbc6d46128",
-      "title": "Barça",
-      "message": "Remate seleccionado sin reutilizar imágenes mentales de los cierres recientes."
-    },
-    {
-      "at": "2026-10-21T00:48:40+02:00",
-      "phase": "verifying",
-      "trend_id": "d7bbc6d46128",
-      "title": "Barça",
-      "message": "Barça r0 persistido, sincronizado y fuera de cola."
-    },
-    {
-      "at": "2026-10-21T00:48:50+02:00",
-      "phase": "verifying",
-      "trend_id": "0934bfed7763",
-      "title": "Champions",
-      "message": "Releyendo estado autoritativo de Champions."
-    },
-    {
-      "at": "2026-10-21T00:49:00+02:00",
-      "phase": "investigating",
-      "trend_id": "0934bfed7763",
-      "title": "Champions",
-      "message": "Resultados contrastados: PSG 4-2 Barça, Stuttgart 1-1 Atlético y Liverpool 4-3 Villarreal."
-    },
-    {
-      "at": "2026-10-21T00:49:10+02:00",
-      "phase": "drafting",
-      "trend_id": "0934bfed7763",
-      "title": "Champions",
-      "message": "Explicación factual cerrada y comprobada: 240 caracteres."
-    },
-    {
-      "at": "2026-10-21T00:49:20+02:00",
-      "phase": "verifying",
-      "trend_id": "0934bfed7763",
-      "title": "Champions",
-      "message": "Champions r0 persistido, sincronizado y fuera de cola."
-    },
-    {
-      "at": "2026-10-21T00:49:30+02:00",
-      "phase": "verifying",
-      "trend_id": "745a40061540",
-      "title": "#codigo10",
-      "message": "Releyendo estado autoritativo de #codigo10."
-    },
-    {
-      "at": "2026-10-21T00:49:40+02:00",
-      "phase": "investigating",
-      "trend_id": "745a40061540",
-      "title": "#codigo10",
-      "message": "Cuatro confirma que Leire Díez rompe 139 días de silencio y niega la trama y los seguimientos atribuidos."
-    },
-    {
-      "at": "2026-10-21T00:49:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "745a40061540",
-      "title": "#codigo10",
-      "message": "Remate político neutral seleccionado; explicación completa comprobada: 255 caracteres."
-    },
-    {
-      "at": "2026-10-21T00:52:00+02:00",
+      "at": "2026-10-21T02:16:20+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola 0, sin preparing/update, sin rewrite_pending y sin Explicadas recientes sin remate."
+      "message": "Relectura final de main: cola editorial vacía y sin revisiones activas."
     }
   ],
   "telegram_orphans": 0,
@@ -273,22 +165,22 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-21T00:46:44+02:00"
+    "captured_at": "2026-10-21T02:11:05+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-21T00:46:44+02:00",
+    "captured_at": "2026-10-21T02:11:05+02:00",
     "queue_count": 0,
     "top10": [
-      "El PSG",
       "#TierraDeNadie6",
-      "Xavi Espart",
-      "Barça",
+      "El PSG",
       "Champions",
+      "Barça",
       "Cancelo",
-      "Lamine",
-      "Fabián",
+      "Xavi Espart",
+      "#codigo10",
       "gordon",
-      "#codigo10"
+      "Lamine",
+      "Fabián"
     ]
   }
 }
