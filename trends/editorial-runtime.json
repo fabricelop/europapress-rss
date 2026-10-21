@@ -4,12 +4,12 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T11:45:00+02:00",
-  "last_completed_at": "2026-10-21T11:52:00+02:00",
-  "updated_at": "2026-10-21T11:52:00+02:00",
+  "last_started_at": "2026-10-21T12:15:00+02:00",
+  "last_completed_at": "2026-10-21T12:18:10+02:00",
+  "updated_at": "2026-10-21T12:18:10+02:00",
   "status": "success",
   "processed_ids": [
-    "ea0b937ea317"
+    "d9aa43ead5f1"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -17,7 +17,7 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-202610211145-chat-direct",
+    "trigger_run_id": "tr-editorial-202610211215-chat-direct",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -25,13 +25,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610211145-chat-direct",
+    "run_id": "tr-editorial-202610211215-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T11:45:00+02:00",
-    "updated_at": "2026-10-21T11:52:00+02:00",
-    "finished_at": "2026-10-21T11:52:00+02:00",
+    "started_at": "2026-10-21T12:15:00+02:00",
+    "updated_at": "2026-10-21T12:18:10+02:00",
+    "finished_at": "2026-10-21T12:18:10+02:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -60,124 +60,131 @@
       "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "TTendencias 1/1 verificada: Argentina r0 queda explained y la cola final está a 0. Sin ImageGen directo.",
+    "message": "TTendencias 1/1 verificada: Puerto Rico r0 queda explained y la cola final está a 0. Sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T11:45:00+02:00",
+        "at": "2026-10-21T12:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; 1 revisión activa en la cola."
       },
       {
-        "at": "2026-10-21T11:45:10+02:00",
+        "at": "2026-10-21T12:15:10+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado al inicio."
       },
       {
-        "at": "2026-10-21T11:45:30+02:00",
+        "at": "2026-10-21T12:15:20+02:00",
         "phase": "verifying",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Releyendo estado autoritativo de Argentina."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Releyendo estado autoritativo de Puerto Rico."
       },
       {
-        "at": "2026-10-21T11:45:40+02:00",
+        "at": "2026-10-21T12:15:30+02:00",
         "phase": "investigating",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Buscando detonante actual de Argentina."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Buscando detonante actual de Puerto Rico."
       },
       {
-        "at": "2026-10-21T11:46:10+02:00",
+        "at": "2026-10-21T12:15:50+02:00",
         "phase": "investigating",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Contrastando fuente 1/2: RTVE sobre la visita de Milei a Madrid."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Contrastando fuente 1/2: RTVE sobre la denegación de entrada a Ada Colau."
       },
       {
-        "at": "2026-10-21T11:46:20+02:00",
+        "at": "2026-10-21T12:16:00+02:00",
         "phase": "investigating",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Contrastando fuente 2/2: El País sobre las declaraciones de Milei."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Contrastando fuente 2/2: El País sobre el viaje previsto a Fearless Cities."
       },
       {
-        "at": "2026-10-21T11:46:30+02:00",
+        "at": "2026-10-21T12:16:10+02:00",
         "phase": "investigating",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Hecho esencial verificado: Argentina se asocia hoy a la visita de Milei a Madrid y su agenda política."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Hecho esencial verificado: EE. UU. denegó a Ada Colau la entrada a Puerto Rico, donde iba a participar en Fearless Cities."
       },
       {
-        "at": "2026-10-21T11:47:00+02:00",
+        "at": "2026-10-21T12:16:20+02:00",
         "phase": "drafting",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
         "message": "Redactando explicación factual."
       },
       {
-        "at": "2026-10-21T11:47:10+02:00",
+        "at": "2026-10-21T12:16:30+02:00",
         "phase": "drafting",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Comprobando límite de X: texto completo 250 caracteres."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Comprobando límite de X: texto completo 262 caracteres."
       },
       {
-        "at": "2026-10-21T11:47:20+02:00",
+        "at": "2026-10-21T12:16:40+02:00",
         "phase": "remate_selection",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
         "message": "Generando candidatos de remate."
       },
       {
-        "at": "2026-10-21T11:47:30+02:00",
+        "at": "2026-10-21T12:16:50+02:00",
         "phase": "remate_selection",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Evaluando candidatos con ratings y evitando repetir los remates recientes sobre Milei."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Evaluando candidatos con ratings y evitando repetir los remates políticos recientes."
       },
       {
-        "at": "2026-10-21T11:47:40+02:00",
+        "at": "2026-10-21T12:17:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
         "message": "Remate seleccionado."
       },
       {
-        "at": "2026-10-21T11:48:40+02:00",
+        "at": "2026-10-21T12:17:10+02:00",
         "phase": "persisting",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Guardando ficha Explicada mediante el outbox editorial vigente."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Guardando ficha Explicada."
       },
       {
-        "at": "2026-10-21T11:48:50+02:00",
+        "at": "2026-10-21T12:17:30+02:00",
         "phase": "persisting",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Outbox editorial publicado; comprobando aplicación en requests y cola."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Actualizando requests y retirando la revisión de la cola."
       },
       {
-        "at": "2026-10-21T11:51:40+02:00",
+        "at": "2026-10-21T12:17:40+02:00",
         "phase": "verifying",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-21T11:51:50+02:00",
+        "at": "2026-10-21T12:17:50+02:00",
         "phase": "verifying",
-        "trend_id": "ea0b937ea317",
-        "title": "Argentina",
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
+        "message": "Verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-21T12:18:00+02:00",
+        "phase": "verifying",
+        "trend_id": "d9aa43ead5f1",
+        "title": "Puerto Rico",
         "message": "Tendencia cerrada y verificada: requests=explained y cola=0."
       },
       {
-        "at": "2026-10-21T11:52:00+02:00",
+        "at": "2026-10-21T12:18:10+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -185,7 +192,7 @@
       }
     ],
     "processed_ids": [
-      "ea0b937ea317"
+      "d9aa43ead5f1"
     ],
     "partial": false,
     "queue_complete": true,
@@ -199,23 +206,23 @@
     },
     "remate_selections": [
       {
-        "trend_id": "ea0b937ea317",
+        "trend_id": "d9aa43ead5f1",
         "revision": 0,
-        "selected_text": "🌶️ La diplomacia cruzó el Atlántico con las mayúsculas puestas.",
+        "selected_text": "🌶️ El municipalismo encontró la frontera antes que la mesa redonda.",
         "candidate_count": 5
       }
     ],
     "final_outcomes": [
       {
-        "id": "ea0b937ea317",
-        "name": "Argentina",
+        "id": "d9aa43ead5f1",
+        "name": "Puerto Rico",
         "revision": 0,
         "status": "explained",
-        "explained_at": "2026-10-21T11:48:00+02:00"
+        "explained_at": "2026-10-21T12:17:20+02:00"
       }
     ],
     "radar": {
-      "captured_at": "2026-10-21T11:41:07+02:00",
+      "captured_at": "2026-10-21T12:11:14+02:00",
       "queue_count": 0,
       "top10": [
         "Milei",
@@ -223,15 +230,15 @@
         "#TierraDeNadie6",
         "El PSG",
         "Xavi Espart",
+        "Argentina",
         "Rodri",
         "Barça",
-        "#LaHora21O",
-        "Cancelo",
-        "Argentina"
+        "Pedri",
+        "Puerto Rico"
       ]
     }
   },
-  "run_id": "tr-editorial-202610211145-chat-direct",
+  "run_id": "tr-editorial-202610211215-chat-direct",
   "summary": {
     "attempted": 1,
     "ready": 0,
@@ -259,119 +266,126 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T11:45:00+02:00",
+      "at": "2026-10-21T12:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; 1 revisión activa en la cola."
     },
     {
-      "at": "2026-10-21T11:45:10+02:00",
+      "at": "2026-10-21T12:15:10+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
       "message": "Saneamiento visual de Pendientes solicitado al inicio."
     },
     {
-      "at": "2026-10-21T11:45:30+02:00",
+      "at": "2026-10-21T12:15:20+02:00",
       "phase": "verifying",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Releyendo estado autoritativo de Argentina."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Releyendo estado autoritativo de Puerto Rico."
     },
     {
-      "at": "2026-10-21T11:45:40+02:00",
+      "at": "2026-10-21T12:15:30+02:00",
       "phase": "investigating",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Buscando detonante actual de Argentina."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Buscando detonante actual de Puerto Rico."
     },
     {
-      "at": "2026-10-21T11:46:10+02:00",
+      "at": "2026-10-21T12:15:50+02:00",
       "phase": "investigating",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Contrastando fuente 1/2: RTVE sobre la visita de Milei a Madrid."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Contrastando fuente 1/2: RTVE sobre la denegación de entrada a Ada Colau."
     },
     {
-      "at": "2026-10-21T11:46:20+02:00",
+      "at": "2026-10-21T12:16:00+02:00",
       "phase": "investigating",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Contrastando fuente 2/2: El País sobre las declaraciones de Milei."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Contrastando fuente 2/2: El País sobre el viaje previsto a Fearless Cities."
     },
     {
-      "at": "2026-10-21T11:46:30+02:00",
+      "at": "2026-10-21T12:16:10+02:00",
       "phase": "investigating",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Hecho esencial verificado: Argentina se asocia hoy a la visita de Milei a Madrid y su agenda política."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Hecho esencial verificado: EE. UU. denegó a Ada Colau la entrada a Puerto Rico, donde iba a participar en Fearless Cities."
     },
     {
-      "at": "2026-10-21T11:47:00+02:00",
+      "at": "2026-10-21T12:16:20+02:00",
       "phase": "drafting",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
       "message": "Redactando explicación factual."
     },
     {
-      "at": "2026-10-21T11:47:10+02:00",
+      "at": "2026-10-21T12:16:30+02:00",
       "phase": "drafting",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Comprobando límite de X: texto completo 250 caracteres."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Comprobando límite de X: texto completo 262 caracteres."
     },
     {
-      "at": "2026-10-21T11:47:20+02:00",
+      "at": "2026-10-21T12:16:40+02:00",
       "phase": "remate_selection",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
       "message": "Generando candidatos de remate."
     },
     {
-      "at": "2026-10-21T11:47:30+02:00",
+      "at": "2026-10-21T12:16:50+02:00",
       "phase": "remate_selection",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Evaluando candidatos con ratings y evitando repetir los remates recientes sobre Milei."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Evaluando candidatos con ratings y evitando repetir los remates políticos recientes."
     },
     {
-      "at": "2026-10-21T11:47:40+02:00",
+      "at": "2026-10-21T12:17:00+02:00",
       "phase": "remate_selection",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
       "message": "Remate seleccionado."
     },
     {
-      "at": "2026-10-21T11:48:40+02:00",
+      "at": "2026-10-21T12:17:10+02:00",
       "phase": "persisting",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Guardando ficha Explicada mediante el outbox editorial vigente."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Guardando ficha Explicada."
     },
     {
-      "at": "2026-10-21T11:48:50+02:00",
+      "at": "2026-10-21T12:17:30+02:00",
       "phase": "persisting",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Outbox editorial publicado; comprobando aplicación en requests y cola."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Actualizando requests y retirando la revisión de la cola."
     },
     {
-      "at": "2026-10-21T11:51:40+02:00",
+      "at": "2026-10-21T12:17:40+02:00",
       "phase": "verifying",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-21T11:51:50+02:00",
+      "at": "2026-10-21T12:17:50+02:00",
       "phase": "verifying",
-      "trend_id": "ea0b937ea317",
-      "title": "Argentina",
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
+      "message": "Verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-21T12:18:00+02:00",
+      "phase": "verifying",
+      "trend_id": "d9aa43ead5f1",
+      "title": "Puerto Rico",
       "message": "Tendencia cerrada y verificada: requests=explained y cola=0."
     },
     {
-      "at": "2026-10-21T11:52:00+02:00",
+      "at": "2026-10-21T12:18:10+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -384,22 +398,22 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-21T10:10:58+02:00"
+    "captured_at": "2026-10-21T12:11:14+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-21T10:10:58+02:00",
+    "captured_at": "2026-10-21T12:11:14+02:00",
     "queue_count": 0,
     "top10": [
-      "#FelizMiércoles",
+      "Milei",
+      "#ZurdosYOrgullosos",
       "#TierraDeNadie6",
       "El PSG",
       "Xavi Espart",
-      "Aday Mara",
-      "Barça",
+      "Argentina",
       "Rodri",
-      "#ZurdasYOrgullosas",
-      "Cancelo",
-      "Francia"
+      "Barça",
+      "Pedri",
+      "Puerto Rico"
     ]
   },
   "error": null
