@@ -219,4 +219,39 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','revision':1}]})
   changed,_=app.apply_live('ttittulares','abc123','prepare',1)
   self.assertEqual(set(changed),{'ttittulares/editorial-queue.json','telegram/editorial-processing.json'})
+ def test_tr_delete_reconciles_stale_manual_tombstone_and_request(self):
+  eid='6cc256e84877'
+  self.write('trends/telegram-manual-explained.json',{'items':[
+   {'id':eid,'revision':0,'status':'deleted','explanation':'Explicación antigua','deleted_at':'2026-10-21T09:00:00Z'}]})
+  self.write('trends/requests.json',{'requests':[
+   {'id':eid,'revision':0,'status':'explained','explanation':'Explicación antigua'}]})
+  changed,status=app.apply_live('ttendencias',eid,'deleted',0)
+  self.assertEqual(status,'applied')
+  self.assertEqual(changed['trends/requests.json']['requests'][0]['status'],'deleted')
+  self.assertEqual(changed['trends/mobile-decisions.json']['items'][0]['status'],'deleted')
+  self.assertEqual(changed['trends/telegram-manual-explained.json']['items'][0]['status'],'deleted')
+ def test_tr_delete_tombstones_all_duplicate_rows_for_revision(self):
+  eid='feliz-test'
+  self.write('trends/telegram-manual-explained.json',{'items':[
+   {'id':eid,'revision':0,'status':'explained','explanation':'Version A'},
+   {'id':eid,'revision':0,'status':'deleted','explanation':'Version B'}]})
+  self.write('trends/requests.json',{'requests':[{'id':eid,'revision':0,'status':'explained','explanation':'Version A'}]})
+  changed,status=app.apply_live('ttendencias',eid,'deleted',0)
+  self.assertEqual(status,'applied')
+  self.assertTrue(all(x['status']=='deleted' for x in changed['trends/telegram-manual-explained.json']['items']))
+  self.write('trends/telegram-manual-explained.json',changed['trends/telegram-manual-explained.json'])
+  self.write('trends/requests.json',changed['trends/requests.json'])
+  self.write('trends/mobile-decisions.json',changed['trends/mobile-decisions.json'])
+  changed2,status2=app.apply_live('ttendencias',eid,'deleted',0)
+  self.assertEqual(status2,'applied')
+  self.assertEqual(changed2['trends/mobile-decisions.json']['items'][0]['status'],'deleted')
+ def test_tr_delete_rejects_future_revision(self):
+  eid='feliz-test'
+  self.write('trends/telegram-manual-explained.json',{'items':[{'id':eid,'revision':0,'status':'explained','explanation':'Old'}]})
+  self.write('trends/requests.json',{'requests':[{'id':eid,'revision':1,'status':'preparing'}]})
+  with self.assertRaises(app.InvalidAction):
+   app.apply_live('ttendencias',eid,'deleted',0)
+ def test_tr_delete_unknown_card_rejected(self):
+  with self.assertRaises(app.InvalidAction):
+   app.apply_live('ttendencias','nonexistent','deleted',0)
 if __name__=='__main__':unittest.main()
