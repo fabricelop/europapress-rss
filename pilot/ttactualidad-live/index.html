@@ -512,6 +512,7 @@ function trendRows(){
     if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
    }
   }
+  const liveListasNames=new Set(trendListasRows(state.data).flatMap(x=>[x.name,x.display_name,x.title,...(x.trend_names||[])].map(normal).filter(Boolean)));
   const mapped=currentTop30(recent).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
    const finished=completedByName.get(normal(x.name))||{};
@@ -556,10 +557,12 @@ function trendRows(){
    // During a NEW revision, never show the obsolete version as current.
    const text=!working&&!activelyEditing&&!reworkPending?readyText:'';
    const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
+   const inListas=liveListasNames.has(nameKey);
    const editorialState=reworkPending?'PENDIENTE DE GITHUB':activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
-      text?(staleTop10?'POR ACTUALIZAR':'EXPLICADA'):
-      failure?'REVISIÓN':
       terminal?(terminalLabel[terminal.status]||'HISTÓRICO'):
+      inListas?(staleTop10?'POR ACTUALIZAR':'EN LISTAS'):
+      text?'EXPLICACIÓN HISTÓRICA':
+      failure?'REVISIÓN':
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_inExplained:inExplained,_manualPending:manualPending,
