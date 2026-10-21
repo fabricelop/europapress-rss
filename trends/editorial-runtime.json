@@ -4,18 +4,22 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T17:15:00+02:00",
-  "last_completed_at": "2026-10-21T17:16:00+02:00",
-  "updated_at": "2026-10-21T17:16:00+02:00",
+  "last_started_at": "2026-10-21T17:45:00+02:00",
+  "last_completed_at": "2026-10-21T17:52:00+02:00",
+  "updated_at": "2026-10-21T17:52:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "97a359d802d1",
+    "f1c7e916cf88",
+    "be98596f4727"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "chat-20261021T1715+0200",
+    "trigger_run_id": "chat-20261021T1745+0200",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -23,45 +27,49 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "chat-20261021T1715+0200",
+    "run_id": "chat-20261021T1745+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T17:15:00+02:00",
-    "updated_at": "2026-10-21T17:16:00+02:00",
-    "finished_at": "2026-10-21T17:16:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-21T17:45:00+02:00",
+    "updated_at": "2026-10-21T17:52:00+02:00",
+    "finished_at": "2026-10-21T17:52:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
+      "explained": 3,
       "explanation_groups": 0,
       "concurrent_closed": 0,
-      "duplicates_closed": 0,
-      "grouped_into_existing_card": 0,
+      "duplicates_closed": 3,
+      "grouped_into_existing_card": 3,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 3,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 39,
+      "pending_repair_groups_scanned": 0,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 3,
       "remates_selected": 0,
       "remates_omitted": 0
     },
-    "message": "TTendencias 0/0 cerrada y verificada; sin trabajo editorial nuevo y sin ImageGen directo.",
+    "message": "TTendencias 3/3 cerrada y verificada; Coruña y Fascistas quedaron agrupadas con María Pita y Zurdos con #ZurdosYOrgullosos. Cola final 0. Sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
-    "processed_ids": [],
+    "processed_ids": [
+      "97a359d802d1",
+      "f1c7e916cf88",
+      "be98596f4727"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -73,92 +81,327 @@
       "recent_considered": 30
     },
     "remate_selections": [],
-    "final_outcomes": [],
+    "final_outcomes": [
+      {
+        "id": "97a359d802d1",
+        "name": "Coruña",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-e7d5f89c99e8-r0-20261021",
+        "grouped_into_existing_card": true
+      },
+      {
+        "id": "f1c7e916cf88",
+        "name": "Zurdos",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-480c58d577c3",
+        "grouped_into_existing_card": true
+      },
+      {
+        "id": "be98596f4727",
+        "name": "Fascistas",
+        "revision": 0,
+        "status": "explained",
+        "group_id": "grp-e7d5f89c99e8-r0-20261021",
+        "grouped_into_existing_card": true
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-21T17:15:00+02:00",
+        "at": "2026-10-21T17:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, requests y reexplicaciones pendientes; cola editorial inicial 0."
+        "message": "Releyendo cola, requests y reexplicaciones pendientes; cola editorial inicial 3."
       },
       {
-        "at": "2026-10-21T17:15:20+02:00",
+        "at": "2026-10-21T17:46:00+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-21T17:15:40+02:00",
+        "at": "2026-10-21T17:47:00+02:00",
+        "phase": "verifying",
+        "trend_id": "97a359d802d1",
+        "title": "Coruña",
+        "message": "Releyendo estado autoritativo de Coruña."
+      },
+      {
+        "at": "2026-10-21T17:47:20+02:00",
+        "phase": "investigating",
+        "trend_id": "97a359d802d1",
+        "title": "Coruña",
+        "message": "Contrastando el detonante con la protesta contra el acto de Abascal en María Pita."
+      },
+      {
+        "at": "2026-10-21T17:48:00+02:00",
+        "phase": "investigating",
+        "trend_id": "97a359d802d1",
+        "title": "Coruña",
+        "message": "Hecho esencial verificado: es el mismo episodio ya explicado como María Pita."
+      },
+      {
+        "at": "2026-10-21T17:48:10+02:00",
+        "phase": "drafting",
+        "trend_id": "97a359d802d1",
+        "title": "Coruña",
+        "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+      },
+      {
+        "at": "2026-10-21T17:48:20+02:00",
+        "phase": "verifying",
+        "trend_id": "f1c7e916cf88",
+        "title": "Zurdos",
+        "message": "Releyendo estado autoritativo de Zurdos."
+      },
+      {
+        "at": "2026-10-21T17:48:40+02:00",
+        "phase": "investigating",
+        "trend_id": "f1c7e916cf88",
+        "title": "Zurdos",
+        "message": "Hecho esencial verificado: es el mismo episodio ya explicado como #ZurdosYOrgullosos por la visita de Milei."
+      },
+      {
+        "at": "2026-10-21T17:48:50+02:00",
+        "phase": "drafting",
+        "trend_id": "f1c7e916cf88",
+        "title": "Zurdos",
+        "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+      },
+      {
+        "at": "2026-10-21T17:49:00+02:00",
+        "phase": "verifying",
+        "trend_id": "be98596f4727",
+        "title": "Fascistas",
+        "message": "Releyendo estado autoritativo de Fascistas."
+      },
+      {
+        "at": "2026-10-21T17:49:20+02:00",
+        "phase": "investigating",
+        "trend_id": "be98596f4727",
+        "title": "Fascistas",
+        "message": "Hecho esencial verificado: corresponde a la misma protesta de María Pita; no se crea una tarjeta duplicada."
+      },
+      {
+        "at": "2026-10-21T17:49:30+02:00",
+        "phase": "drafting",
+        "trend_id": "be98596f4727",
+        "title": "Fascistas",
+        "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+      },
+      {
+        "at": "2026-10-21T17:49:40+02:00",
+        "phase": "persisting",
+        "trend_id": "97a359d802d1",
+        "title": "Coruña",
+        "message": "Vinculando Coruña al grupo existente de María Pita."
+      },
+      {
+        "at": "2026-10-21T17:49:50+02:00",
+        "phase": "persisting",
+        "trend_id": "f1c7e916cf88",
+        "title": "Zurdos",
+        "message": "Vinculando Zurdos al grupo existente de #ZurdosYOrgullosos."
+      },
+      {
+        "at": "2026-10-21T17:50:00+02:00",
+        "phase": "persisting",
+        "trend_id": "be98596f4727",
+        "title": "Fascistas",
+        "message": "Vinculando Fascistas al grupo existente de María Pita."
+      },
+      {
+        "at": "2026-10-21T17:50:30+02:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Retirando las tres revisiones exactas ya reconciliadas de la cola editorial."
+      },
+      {
+        "at": "2026-10-21T17:51:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0; 39 explicadas recientes revisadas."
+        "message": "Releyendo main tras la persistencia."
       },
       {
-        "at": "2026-10-21T17:16:00+02:00",
+        "at": "2026-10-21T17:51:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificados id+revision, grupos y textos persistidos; cola 0."
+      },
+      {
+        "at": "2026-10-21T17:52:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 0/0 cerrada y verificada; sin trabajo editorial nuevo y sin ImageGen directo."
+        "message": "TTendencias 3/3 cerrada y verificada; sin nuevas tarjetas duplicadas y sin ImageGen directo."
       }
     ]
   },
-  "run_id": "chat-20261021T1715+0200",
+  "run_id": "chat-20261021T1745+0200",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "ready": 0,
-    "explained": 0,
+    "explained": 3,
     "explanation_groups": 0,
     "concurrent_closed": 0,
-    "duplicates_closed": 0,
-    "grouped_into_existing_card": 0,
+    "duplicates_closed": 3,
+    "grouped_into_existing_card": 3,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 3,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
-    "pending_repair_groups_scanned": 39,
+    "pending_repair_groups_scanned": 0,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 3,
     "remates_selected": 0,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T17:15:00+02:00",
+      "at": "2026-10-21T17:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, requests y reexplicaciones pendientes; cola editorial inicial 0."
+      "message": "Releyendo cola, requests y reexplicaciones pendientes; cola editorial inicial 3."
     },
     {
-      "at": "2026-10-21T17:15:20+02:00",
+      "at": "2026-10-21T17:46:00+02:00",
       "phase": "persisting",
       "trend_id": null,
       "title": null,
       "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-21T17:15:40+02:00",
+      "at": "2026-10-21T17:47:00+02:00",
+      "phase": "verifying",
+      "trend_id": "97a359d802d1",
+      "title": "Coruña",
+      "message": "Releyendo estado autoritativo de Coruña."
+    },
+    {
+      "at": "2026-10-21T17:47:20+02:00",
+      "phase": "investigating",
+      "trend_id": "97a359d802d1",
+      "title": "Coruña",
+      "message": "Contrastando el detonante con la protesta contra el acto de Abascal en María Pita."
+    },
+    {
+      "at": "2026-10-21T17:48:00+02:00",
+      "phase": "investigating",
+      "trend_id": "97a359d802d1",
+      "title": "Coruña",
+      "message": "Hecho esencial verificado: es el mismo episodio ya explicado como María Pita."
+    },
+    {
+      "at": "2026-10-21T17:48:10+02:00",
+      "phase": "drafting",
+      "trend_id": "97a359d802d1",
+      "title": "Coruña",
+      "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+    },
+    {
+      "at": "2026-10-21T17:48:20+02:00",
+      "phase": "verifying",
+      "trend_id": "f1c7e916cf88",
+      "title": "Zurdos",
+      "message": "Releyendo estado autoritativo de Zurdos."
+    },
+    {
+      "at": "2026-10-21T17:48:40+02:00",
+      "phase": "investigating",
+      "trend_id": "f1c7e916cf88",
+      "title": "Zurdos",
+      "message": "Hecho esencial verificado: es el mismo episodio ya explicado como #ZurdosYOrgullosos por la visita de Milei."
+    },
+    {
+      "at": "2026-10-21T17:48:50+02:00",
+      "phase": "drafting",
+      "trend_id": "f1c7e916cf88",
+      "title": "Zurdos",
+      "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+    },
+    {
+      "at": "2026-10-21T17:49:00+02:00",
+      "phase": "verifying",
+      "trend_id": "be98596f4727",
+      "title": "Fascistas",
+      "message": "Releyendo estado autoritativo de Fascistas."
+    },
+    {
+      "at": "2026-10-21T17:49:20+02:00",
+      "phase": "investigating",
+      "trend_id": "be98596f4727",
+      "title": "Fascistas",
+      "message": "Hecho esencial verificado: corresponde a la misma protesta de María Pita; no se crea una tarjeta duplicada."
+    },
+    {
+      "at": "2026-10-21T17:49:30+02:00",
+      "phase": "drafting",
+      "trend_id": "be98596f4727",
+      "title": "Fascistas",
+      "message": "Sin nueva redacción: reutilizando la explicación verificada del grupo existente."
+    },
+    {
+      "at": "2026-10-21T17:49:40+02:00",
+      "phase": "persisting",
+      "trend_id": "97a359d802d1",
+      "title": "Coruña",
+      "message": "Vinculando Coruña al grupo existente de María Pita."
+    },
+    {
+      "at": "2026-10-21T17:49:50+02:00",
+      "phase": "persisting",
+      "trend_id": "f1c7e916cf88",
+      "title": "Zurdos",
+      "message": "Vinculando Zurdos al grupo existente de #ZurdosYOrgullosos."
+    },
+    {
+      "at": "2026-10-21T17:50:00+02:00",
+      "phase": "persisting",
+      "trend_id": "be98596f4727",
+      "title": "Fascistas",
+      "message": "Vinculando Fascistas al grupo existente de María Pita."
+    },
+    {
+      "at": "2026-10-21T17:50:30+02:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Retirando las tres revisiones exactas ya reconciliadas de la cola editorial."
+    },
+    {
+      "at": "2026-10-21T17:51:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola 0, requests activos 0, rewrite_pending 0; 39 explicadas recientes revisadas."
+      "message": "Releyendo main tras la persistencia."
     },
     {
-      "at": "2026-10-21T17:16:00+02:00",
+      "at": "2026-10-21T17:51:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificados id+revision, grupos y textos persistidos; cola 0."
+    },
+    {
+      "at": "2026-10-21T17:52:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 0/0 cerrada y verificada; sin trabajo editorial nuevo y sin ImageGen directo."
+      "message": "TTendencias 3/3 cerrada y verificada; sin nuevas tarjetas duplicadas y sin ImageGen directo."
     }
   ],
   "telegram_orphans": 0,
