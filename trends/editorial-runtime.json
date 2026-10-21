@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T20:15:00+02:00",
-  "last_completed_at": "2026-10-21T20:17:00+02:00",
-  "updated_at": "2026-10-21T20:17:00+02:00",
+  "last_started_at": "2026-10-21T20:20:00+02:00",
+  "last_completed_at": "2026-10-21T20:25:00+02:00",
+  "updated_at": "2026-10-21T20:25:00+02:00",
   "status": "success",
   "processed_ids": [
     "e63c35c1e89c",
@@ -23,104 +23,183 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "marker": "TTENDENCIAS_RUNTRACE_V1",
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "chat-20261021T2015+0200",
+    "run_id": "tr-1792606796140-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T20:15:00+02:00",
-    "updated_at": "2026-10-21T20:17:00+02:00",
-    "finished_at": "2026-10-21T20:17:00+02:00",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
+    "started_at": "2026-10-21T20:20:00+02:00",
+    "updated_at": "2026-10-21T20:25:00+02:00",
+    "finished_at": "2026-10-21T20:25:00+02:00",
+    "current": 4,
+    "total": 4,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "concurrent_closed": 0,
-      "duplicates_closed": 0,
-      "grouped_into_existing_card": 0,
-      "problematic_reviewed": 0,
-      "imagegen_calls": 0,
-      "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 0,
-      "final_compact_queue": 0,
-      "remaining_active": 0,
-      "remaining_problematic": 0,
-      "visual_backlog": 0,
-      "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 9,
-      "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1
+      "processed": 4,
+      "closed": 4,
+      "problematic": 0,
+      "remaining": 0,
+      "groups": 2,
+      "visual_backlog": 0
     },
-    "message": "TTendencias 0/0: cola final 0, sin reexplicaciones pendientes. Saneamiento visual solicitado; #TEM21O conserva explicación factual sin remate. Sin ImageGen directo.",
+    "message": "Cola editorial completa · 4/4 revisiones cerradas",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [],
+    "ratings_snapshot": [
+      {
+        "trend_id": "5a5a8c1f35df",
+        "selected": "🌶️ Tres décadas de RPG terminan con la pantalla en negro.",
+        "originality": "ok"
+      },
+      {
+        "trend_id": "5435cf0481ed",
+        "selected": "🌶️ El maillot cambia de equipo sin quitarse el rojo del año.",
+        "originality": "ok"
+      }
+    ],
+    "remate_selections": [
+      {
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "closer_text": "🌶️ Tres décadas de RPG terminan con la pantalla en negro."
+      },
+      {
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "closer_text": "🌶️ El maillot cambia de equipo sin quitarse el rojo del año."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-21T20:15:10+02:00",
+        "at": "2026-10-21T20:20:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola editorial y estado autoritativo"
+        "message": "Preparando pasada editorial · 4 entradas activas"
       },
       {
-        "at": "2026-10-21T20:15:20+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola editorial 0; sin requests preparing/update ni rewrite_pending"
+        "at": "2026-10-21T20:21:00+02:00",
+        "phase": "verifying",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Releyendo estado autoritativo del grupo"
       },
       {
-        "at": "2026-10-21T20:15:30+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes recientes · 9 tarjetas"
+        "at": "2026-10-21T20:21:20+02:00",
+        "phase": "investigating",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Detonante verificado: cierre de BioWare y cancelación del próximo Mass Effect"
       },
       {
-        "at": "2026-10-21T20:16:00+02:00",
+        "at": "2026-10-21T20:21:40+02:00",
+        "phase": "drafting",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Redactando explicación factual agrupada"
+      },
+      {
+        "at": "2026-10-21T20:21:50+02:00",
+        "phase": "drafting",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-21T20:22:00+02:00",
         "phase": "remate_selection",
-        "trend_id": "cf8239cbf7b5",
-        "title": "#TEM21O",
-        "message": "Sin remate · explicación factual suficiente"
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Evaluando candidatos de remate y originalidad"
       },
       {
-        "at": "2026-10-21T20:16:20+02:00",
+        "at": "2026-10-21T20:22:10+02:00",
+        "phase": "remate_selection",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-21T20:22:20+02:00",
+        "phase": "persisting",
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Guardando ficha Explicada y sincronizando las tres revisiones"
+      },
+      {
+        "at": "2026-10-21T20:22:40+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main"
+        "trend_id": "5a5a8c1f35df",
+        "title": "Bioware + Mass Effect + Dragon Age",
+        "message": "Tendencia agrupada cerrada y verificada"
       },
       {
-        "at": "2026-10-21T20:16:35+02:00",
+        "at": "2026-10-21T20:22:50+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificando cola 0 y ausencia de reexplicaciones pendientes"
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Releyendo estado autoritativo de Paula Blasi"
       },
       {
-        "at": "2026-10-21T20:17:00+02:00",
+        "at": "2026-10-21T20:23:00+02:00",
+        "phase": "investigating",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Hecho esencial verificado: fichaje por Movistar Team"
+      },
+      {
+        "at": "2026-10-21T20:23:10+02:00",
+        "phase": "drafting",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-21T20:23:20+02:00",
+        "phase": "drafting",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-21T20:23:30+02:00",
+        "phase": "remate_selection",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Evaluando candidatos de remate y originalidad"
+      },
+      {
+        "at": "2026-10-21T20:23:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-21T20:23:50+02:00",
+        "phase": "persisting",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-21T20:24:20+02:00",
+        "phase": "verifying",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Releyendo main y verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-21T20:24:40+02:00",
+        "phase": "verifying",
+        "trend_id": "5435cf0481ed",
+        "title": "Paula Blasi",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-21T20:25:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 0/0 cerrada y verificada; saneamiento visual solicitado y sin ImageGen directo"
+        "message": "Cola editorial completa · 4/4 revisiones cerradas"
       }
     ]
   },
