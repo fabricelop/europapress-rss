@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-21T16:47:00+02:00",
+  "updated_at": "2026-10-21T16:48:40+02:00",
   "count": 18,
   "requests": [
     {
@@ -1743,7 +1743,7 @@
       "id": "5d36de24ff2c",
       "name": "Defensor del Pueblo",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-21T16:31:55+02:00",
       "revision": 0,
       "reexplain": false,
@@ -1758,7 +1758,49 @@
         "Defensor del Pueblo"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-21T16:48:40+02:00",
+      "last_attempt_at": "2026-10-21T16:48:40+02:00",
+      "explanation": "TT#9 el constitucional es tendencia porque el TC rechazó por prematuro el recurso del Defensor del Pueblo contra la suspensión del voto por la ley de nietos.\n#TribunalConstitucional #LeyDeNietos\n🌶️ El TC devolvió el recurso a la escalera judicial.",
+      "closer_text": "🌶️ El TC devolvió el recurso a la escalera judicial.",
+      "rank_at_explanation": 10,
+      "category": "Política/Tribunales",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chat-direct",
+      "verification_sources": [
+        "https://www.defensordelpueblo.es/noticias/recurso-de-amparo-al-tc-voto-nacionalizados/",
+        "https://elpais.com/espana/2026-10-21/el-constitucional-rechaza-el-amparo-por-la-ley-de-nietos-con-el-voto-en-contra-de-dos-magistrados-progresistas.html"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Defensor del Pueblo entra en el Top 10 por el mismo episodio ya explicado en «el constitucional»: el TC inadmitió por prematuro su recurso contra la suspensión cautelar del voto vinculada a la ley de nietos.",
+      "group_id": "grp-4ac0a30dae06-r0-20261021",
+      "explanation_group_id": "grp-4ac0a30dae06-r0-20261021",
+      "group_title": "el constitucional",
+      "group_leader_id": "4ac0a30dae06",
+      "trend_names": [
+        "el constitucional",
+        "Defensor del Pueblo"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "4ac0a30dae06",
+          "name": "el constitucional",
+          "revision": 0
+        },
+        {
+          "id": "5d36de24ff2c",
+          "name": "Defensor del Pueblo",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false,
+      "rewrite_pending": false
     }
   ]
 }
