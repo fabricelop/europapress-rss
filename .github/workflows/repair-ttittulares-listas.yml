@@ -43,6 +43,7 @@ jobs:
           git worktree add -B "$CONTROL" /tmp/tt-control-branch "origin/$CONTROL"
           python3 - <<'PY'
           import hashlib, json, pathlib, subprocess, time
+          from shared.tt_image_idempotency import may_enqueue_image_job
           from datetime import datetime, timezone
 
           MAIN=pathlib.Path(".")
@@ -185,62 +186,13 @@ jobs:
               job_path=CTRL/f"ttittulares/image-runs/jobs/{eid}.json"
               old=load_old(job_path)
               manual_retry_version=int(item.get("ai_image_regenerate_request_version") or 0)
-              consumed_retry_version=int(old.get("manual_retry_version") or 0)
-              force_retry=manual_retry_version>consumed_retry_version
+              # Durable identity: project / ID / editorial revision.
+              # A PC ERROR after pickup can coexist with generating=true.
+              # Do not repeat a prompt on ambiguous evidence or a stale timer.
+              if not may_enqueue_image_job(old, rev, manual_retry_version=manual_retry_version):
+                  continue
               attempt=int(old.get("auto_repair_attempt") or 0)
-              old_status=str(old.get("status") or "").upper()
-              # Automático: una sola generación por identidad y revisión.
-              # Las regeneraciones siguen disponibles mediante el mecanismo manual.
-              # Un único reintento si la orden anterior NUNCA salió del PC.
-              # No reintentar imágenes ya lanzadas ni repetir indefinidamente.
-              stale_unlaunched=(old.get("auto_repair") and old_status in {"CANCELLED","ERROR"}
-                  and not old.get("pc_launched_at") and attempt<3)
-              if old and int(old.get("revision") or rev)==rev and not (force_retry or stale_unlaunched):
-                  continue
-              # Sin bloqueo global ni límite artificial de un job por pasada.
-              finished=str(old.get("finished_at") or old.get("updated_at") or old.get("requested_at") or "")
-              age=999999
-              if finished:
-                  try:
-                      dt=datetime.fromisoformat(finished.replace("Z","+00:00"))
-                      age=(now-dt).total_seconds()
-                  except Exception: pass
-
-              # Un job REQUESTED/RUNNING puede quedar muerto si el bridge o Chat
-              # no devuelve raster. No debe bloquear la reparación para siempre.
-              if (not force_retry and not stale_unlaunched) and int(old.get("revision") or rev)==rev and old_status in active:
-                  active_ttl=45*60 if old_status=="REQUESTED" else 12*60
-                  if age<active_ttl:
-                      continue
-
-              # Los fallos de transporte/CDP no deben dejar Listas sin IA durante
-              # una hora después de que el bridge ya haya sido corregido. Conservamos
-              # el backoff largo para fallos genéricos repetidos, pero los errores de
-              # lanzamiento del navegador se vuelven a intentar pronto.
-              last_message=str(old.get("message") or "").lower()
-              transient_bridge_failure=any(token in last_message for token in (
-                  "cdp timeout page.navigate",
-                  "timeout cdp",
-                  "no se encontró ninguna conversación",
-                  "no se encontro ninguna conversacion",
-                  "pestaña dedicada no mostró compositor",
-                  "pestana dedicada no mostro compositor",
-                  "upload 500",
-                  "does not match",
-                  "shared/image-raster-registry.json",
-                  "ttittulares/prepared.json",
-                  "github control put",
-                  "no hubo evidencia suficiente de envío del prompt imagegen",
-                  "no hubo evidencia suficiente de envio del prompt imagegen",
-                  "fallback no pudo escribir el prompt completo",
-                  "no apareció un raster imagegen capturable",
-                  "no aparecio un raster imagegen capturable",
-                  "imagegen no produjo raster",
-              ))
-              cooldown=60 if transient_bridge_failure else (300 if attempt<3 else 3600)
-              if (not force_retry and not stale_unlaunched) and old and old_status not in active and age<cooldown:
-                  continue
-
+              force_retry=manual_retry_version>int(old.get("manual_retry_version") or 0)
               attempt+=1
               command=f"tt-img-auto-{eid}-r{rev}-a{attempt}-{int(time.time()*1000)}"
               style_index,style_name,style=pick_style(f"ttittulares|{eid}|r{rev}|a{attempt}|{command}")
@@ -373,13 +325,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ttittulares/image-runs
           git commit -m "Reparar automáticamente IA de Listas"
-          for n in 1 2 3 4 5; do
-            git pull --rebase origin "$CONTROL" || { git rebase --abort || true; sleep $((n*2)); continue; }
-            if git push origin HEAD:"$CONTROL"; then exit 0; fi
-            sleep $((n*2))
-          done
-          echo "No se pudo encolar reparación IA" >&2
-          exit 1
+          # Fast-forward push is the atomic claim; NEVER rebase a stale job
+          # over a newer launch ACK or newer revision in the control branch.
+          if ! git push origin HEAD:"$CONTROL"; then
+            echo "TT_IMAGE_CLAIM_CONFLICT: remote moved; next repair pass must re-read latest jobs" >&2
+            exit 1
+          fi
 
 
       - name: Reparar imagen de archivo

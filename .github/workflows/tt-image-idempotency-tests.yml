@@ -1,0 +1,28 @@
+name: TTActualidad - imagen única por revisión
+on:
+  pull_request:
+    paths:
+      - 'shared/tt_image_idempotency.py'
+      - 'tests/test_tt_image_idempotency.py'
+      - '.github/workflows/repair-ttittulares-listas.yml'
+      - '.github/workflows/repair-ttendencias-explicadas.yml'
+      - '.github/workflows/tt-image-idempotency-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'shared/tt_image_idempotency.py'
+      - 'tests/test_tt_image_idempotency.py'
+      - '.github/workflows/repair-ttittulares-listas.yml'
+      - '.github/workflows/repair-ttendencias-explicadas.yml'
+      - '.github/workflows/tt-image-idempotency-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  idempotency:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test state machine and simultaneous Git claims (no ImageGen)
+        run: python3 -m unittest discover -s tests -p test_tt_image_idempotency.py -v
