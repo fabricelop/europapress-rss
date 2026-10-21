@@ -1,63 +1,79 @@
 {
   "version": 1,
-  "checked_at": "2026-10-21T13:55:20.861923+00:00",
+  "checked_at": "2026-10-21T18:19:55.730056+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-10-21T13:55:20.861923+00:00",
-      "pending_count": 1,
+      "checked_at": "2026-10-21T18:19:55.730056+00:00",
+      "pending_count": 3,
       "pending_ids": [
-        "263984f28632"
+        "5081103a913e",
+        "0d9a03579708",
+        "f41e3031f358"
       ],
-      "oldest_at": "2026-10-21T13:44:00.979114Z",
+      "oldest_at": "2026-10-21T18:09:24.296094Z",
       "latest_run": {
-        "id": "tt-chat-20261021-1530",
+        "id": "tt-chat-20261021-1930",
         "status": "DONE",
-        "started_at": "2026-10-21T13:30:00Z",
-        "updated_at": "2026-10-21T13:37:00+00:00",
-        "finished_at": "2026-10-21T13:37:00Z",
+        "started_at": "2026-10-21T17:30:00Z",
+        "updated_at": "2026-10-21T17:40:30+00:00",
+        "finished_at": "2026-10-21T17:40:30Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-1792535136279-01235d",
-      "last_command_at": "2026-10-20T22:25:36.279Z",
+      "control_command": "tt-autoguard-1792590920",
+      "last_command_at": "2026-10-21T13:55:20.861923Z",
       "status": "dispatch_requested_awaiting_run",
       "should_dispatch": true,
       "item_execution": [
         {
-          "id": "263984f28632",
-          "entered_at": "2026-10-21T13:44:00.979114Z",
-          "should_start_by": "2026-10-21T13:49:00.979114+00:00",
+          "id": "5081103a913e",
+          "entered_at": "2026-10-21T18:09:24.296094Z",
+          "should_start_by": "2026-10-21T18:14:24.296094+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "0d9a03579708",
+          "entered_at": "2026-10-21T18:09:24.420198Z",
+          "should_start_by": "2026-10-21T18:14:24.420198+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "f41e3031f358",
+          "entered_at": "2026-10-21T18:15:26.450944Z",
+          "should_start_by": "2026-10-21T18:20:26.450944+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "eabb6fe567dab01d",
-      "expected_start_by": "2026-10-21T13:49:00.979114+00:00",
+      "backlog_signature": "483d597f331a319f",
+      "expected_start_by": "2026-10-21T18:14:24.296094+00:00",
       "attempts": 1,
       "dispatch": {
         "requested": true,
-        "command_id": "tt-autoguard-1792590920",
-        "requested_at": "2026-10-21T13:55:20.861923Z"
+        "command_id": "tt-autoguard-1792606795",
+        "requested_at": "2026-10-21T18:19:55.730056Z"
       },
-      "last_request_at": "2026-10-21T13:55:20.861923+00:00",
-      "last_requested_command_id": "tt-autoguard-1792590920"
+      "last_request_at": "2026-10-21T18:19:55.730056+00:00",
+      "last_requested_command_id": "tt-autoguard-1792606795"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-10-21T13:55:20.861923+00:00",
+      "checked_at": "2026-10-21T18:19:55.730056+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "chat-20261021T1545+0200",
+        "id": "chat-20261021T2015+0200",
         "status": "DONE",
-        "started_at": "2026-10-21T15:45:00+02:00",
-        "updated_at": "2026-10-21T13:53:57.494000+00:00",
-        "finished_at": "2026-10-21T13:53:57.494Z",
+        "started_at": "2026-10-21T20:15:00+02:00",
+        "updated_at": "2026-10-21T18:17:00+00:00",
+        "finished_at": "2026-10-21T20:17:00+02:00",
         "source": "editorial_runtime"
       },
-      "control_command": "tr-1792585044981-manual",
-      "last_command_at": "2026-10-21T12:17:24.981Z",
+      "control_command": "tr-1792606796140-manual",
+      "last_command_at": "2026-10-21T18:19:56.140Z",
       "status": "no_work",
       "should_dispatch": false,
       "attempts": 0,

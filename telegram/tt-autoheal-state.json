@@ -2,21 +2,35 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-21T13:55:26.168320+00:00",
-      "issue_count": 2,
+      "checked_at": "2026-10-21T18:20:00.201119+00:00",
+      "issue_count": 4,
       "issues": [
         {
           "kind": "missing_delivery",
-          "id": "263984f28632",
-          "title": "Anna Bella Geiger, premio Velázquez de las Artes Plásticas 2026",
-          "seconds": 685,
+          "id": "5081103a913e",
+          "title": "La llegada de Vox al Gobierno andaluz no implica cambios en la cpula de Canal Sur: el Parlamento ree",
+          "seconds": 635,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "0d9a03579708",
+          "title": "Julian Barnes: \"El Brexit ha sido un desastre y los últimos diez años, deprimentes. Y con Trump comp",
+          "seconds": 635,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f41e3031f358",
+          "title": "Kenichi Yoda, el presidente de Studio Ghibli: «No creo que la inteligencia artificial pueda superar ",
+          "seconds": 273,
           "workflow": "send-ttittulares-ready-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 446473,
+          "seconds": 462347,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -25,61 +39,82 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "04ef95bc3e106ccb3e0e383473bb4ccb100b19761d21a2f05f1e196dc03426be",
+      "open_signature": "279fb18a45ea0a5f7ed502c5b4db8b84554b0b58afe0e6a6bf8d8b940ac879db",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-21T13:55:26.168320+00:00",
-      "issue_count": 7,
+      "checked_at": "2026-10-21T18:20:00.201119+00:00",
+      "issue_count": 10,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "a17df40aeb58",
           "title": "Damián",
-          "seconds": 44644,
+          "seconds": 60518,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5c964cfff54c",
           "title": "Ivana",
-          "seconds": 40455,
+          "seconds": 56329,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "cf8239cbf7b5",
+          "title": "#TEM21O",
+          "seconds": 13685,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "5d36de24ff2c",
+          "title": "Defensor del Pueblo",
+          "seconds": 13685,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "97a359d802d1",
+          "title": "Coruña",
+          "seconds": 9840,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "f1c7e916cf88",
+          "title": "Zurdos",
+          "seconds": 9840,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "be98596f4727",
+          "title": "Fascistas",
+          "seconds": 9840,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "e7d5f89c99e8",
-          "title": "María Pita",
-          "seconds": 1586,
+          "id": "e63c35c1e89c",
+          "title": "Vox al Congreso",
+          "seconds": 3162,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "4ac0a30dae06",
-          "title": "el constitucional",
-          "seconds": 1286,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "320afc837d97",
-          "title": "Sofía Puente",
-          "seconds": 1286,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "ce329c2b6a1c",
-          "title": "Pacho",
-          "seconds": 619,
+          "id": "fc94a2758b4a",
+          "title": "Nico Paz",
+          "seconds": 2600,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 446473,
+          "seconds": 462347,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -88,16 +123,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "278cd2790e1647ea928b73bafb864609b81b9f3877b49ad323198fb9d83dda59",
+      "open_signature": "c550f37270484cbd74d8cd2c455c872e7c1535ac86f5a275203174d5000719d8",
       "repair_via_workflow_run": false,
-      "escalation_required": 5
+      "escalation_required": 9
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T13:55:26.168320+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-21T13:55:26.168320+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-21T13:55:26.168320+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T13:55:26.168320+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T18:20:00.201119+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-21T18:20:00.201119+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-21T18:20:00.201119+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T18:20:00.201119+00:00"
   },
-  "checked_at": "2026-10-21T13:55:26.168320+00:00"
+  "checked_at": "2026-10-21T18:20:00.201119+00:00"
 }
