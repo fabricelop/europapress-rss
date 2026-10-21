@@ -4,11 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T23:15:00+02:00",
-  "last_completed_at": "2026-10-21T23:16:00+02:00",
-  "updated_at": "2026-10-21T23:16:00+02:00",
+  "last_started_at": "2026-10-21T23:34:45.119+02:00",
+  "last_completed_at": "2026-10-21T23:39:47.435+02:00",
+  "updated_at": "2026-10-21T23:39:47.435+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "ec5b6b4ba7c9",
+    "4323101d4a94",
+    "e7373b5dcd92",
+    "01ae7380f0bf",
+    "manual-815e68ae6b772eb7389de65c53c19d67",
+    "manual-353dd7faf6c625923a3485ecab96f3a0"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
@@ -23,28 +30,36 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261021T2315-chat",
+    "run_id": "tr-1792618335243-manual",
     "source": "chat",
-    "status": "DONE",
-    "phase": "done",
-    "started_at": "2026-10-21T23:15:00+02:00",
-    "updated_at": "2026-10-21T23:16:00+02:00",
-    "finished_at": "2026-10-21T23:16:00+02:00",
-    "current": 0,
-    "total": 0,
+    "status": "DONE_WITH_INCIDENTS",
+    "phase": "closing",
+    "started_at": "2026-10-21T23:34:45.119+02:00",
+    "updated_at": "2026-10-21T23:39:47.435+02:00",
+    "finished_at": "2026-10-21T23:39:47.435+02:00",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "summary": {
-      "processed": 0,
-      "closed": 0,
+      "processed": 6,
+      "closed": 6,
       "problematic": 0,
       "remaining": 0,
       "groups": 0,
       "visual_backlog": 0
     },
-    "message": "Pasada editorial completada · 0/0 nuevas; saneamiento visual solicitado para 10 Pendientes; cola 0",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "Pasada editorial completada · 6/6 explicadas y verificadas · cola 0 · sin reexplicaciones pendientes",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-21T23:38:46.112+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "reason": "Se detectó una ejecución directa anterior concurrente; se revalidaron las revisiones contra main y se verificó la persistencia final tras la carrera."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -55,55 +70,83 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-21T23:15:00+02:00",
+        "at": "2026-10-21T23:34:45.119+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Cola editorial inicial 0 · captura fresca 23:10"
+        "message": "Cola editorial fresca 6 · Doctor Cabrera, Carreras, Diomande, Bernardo, Broncano y #RealMadridLeipzig"
       },
       {
-        "at": "2026-10-21T23:15:10+02:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 10 tarjetas"
+        "at": "2026-10-21T23:36:00+02:00",
+        "phase": "verifying",
+        "trend_id": "ec5b6b4ba7c9",
+        "title": "Doctor Cabrera",
+        "message": "Revisión 0 cerrada concurrentemente y verificada en main"
       },
       {
-        "at": "2026-10-21T23:15:35+02:00",
+        "at": "2026-10-21T23:38:00+02:00",
+        "phase": "persisting",
+        "trend_id": "4323101d4a94",
+        "title": "Carreras",
+        "message": "Lote editorial persistido sobre main fresco"
+      },
+      {
+        "at": "2026-10-21T23:38:00+02:00",
+        "phase": "persisting",
+        "trend_id": "e7373b5dcd92",
+        "title": "Diomande",
+        "message": "Lote editorial persistido sobre main fresco"
+      },
+      {
+        "at": "2026-10-21T23:38:00+02:00",
+        "phase": "persisting",
+        "trend_id": "01ae7380f0bf",
+        "title": "Bernardo",
+        "message": "Lote editorial persistido sobre main fresco"
+      },
+      {
+        "at": "2026-10-21T23:38:00+02:00",
+        "phase": "persisting",
+        "trend_id": "manual-815e68ae6b772eb7389de65c53c19d67",
+        "title": "Broncano",
+        "message": "Lote editorial persistido sobre main fresco"
+      },
+      {
+        "at": "2026-10-21T23:38:00+02:00",
+        "phase": "persisting",
+        "trend_id": "manual-353dd7faf6c625923a3485ecab96f3a0",
+        "title": "#RealMadridLeipzig",
+        "message": "Lote editorial persistido sobre main fresco"
+      },
+      {
+        "at": "2026-10-21T23:39:47.435+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, requests y auditoría de huérfanos"
+        "message": "Segunda relectura de main · cola 0 y sin rewrite_pending"
       },
       {
-        "at": "2026-10-21T23:15:50+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Sin preparing/update, sin rewrite_pending y sin huérfanos"
-      },
-      {
-        "at": "2026-10-21T23:16:00+02:00",
+        "at": "2026-10-21T23:39:47.435+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada completada · cola editorial 0; saneamiento visual solicitado para 10 Pendientes"
+        "message": "Pasada cerrada · 6/6 revisiones explicadas y verificadas"
       }
     ]
   },
-  "run_id": "tr-20261021T2315-chat",
+  "run_id": "tr-1792618335243-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 6,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "concurrent_closed": 0,
+    "explained": 6,
+    "explanation_groups": 6,
+    "concurrent_closed": 1,
     "duplicates_closed": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 6,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -112,46 +155,74 @@
     "pending_repair_triggered": 1,
     "pending_repair_groups_scanned": 10,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 6,
+    "remates_selected": 6,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T23:15:00+02:00",
+      "at": "2026-10-21T23:34:45.119+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Cola editorial inicial 0 · captura fresca 23:10"
+      "message": "Cola editorial fresca 6 · Doctor Cabrera, Carreras, Diomande, Bernardo, Broncano y #RealMadridLeipzig"
     },
     {
-      "at": "2026-10-21T23:15:10+02:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 10 tarjetas"
+      "at": "2026-10-21T23:36:00+02:00",
+      "phase": "verifying",
+      "trend_id": "ec5b6b4ba7c9",
+      "title": "Doctor Cabrera",
+      "message": "Revisión 0 cerrada concurrentemente y verificada en main"
     },
     {
-      "at": "2026-10-21T23:15:35+02:00",
+      "at": "2026-10-21T23:38:00+02:00",
+      "phase": "persisting",
+      "trend_id": "4323101d4a94",
+      "title": "Carreras",
+      "message": "Lote editorial persistido sobre main fresco"
+    },
+    {
+      "at": "2026-10-21T23:38:00+02:00",
+      "phase": "persisting",
+      "trend_id": "e7373b5dcd92",
+      "title": "Diomande",
+      "message": "Lote editorial persistido sobre main fresco"
+    },
+    {
+      "at": "2026-10-21T23:38:00+02:00",
+      "phase": "persisting",
+      "trend_id": "01ae7380f0bf",
+      "title": "Bernardo",
+      "message": "Lote editorial persistido sobre main fresco"
+    },
+    {
+      "at": "2026-10-21T23:38:00+02:00",
+      "phase": "persisting",
+      "trend_id": "manual-815e68ae6b772eb7389de65c53c19d67",
+      "title": "Broncano",
+      "message": "Lote editorial persistido sobre main fresco"
+    },
+    {
+      "at": "2026-10-21T23:38:00+02:00",
+      "phase": "persisting",
+      "trend_id": "manual-353dd7faf6c625923a3485ecab96f3a0",
+      "title": "#RealMadridLeipzig",
+      "message": "Lote editorial persistido sobre main fresco"
+    },
+    {
+      "at": "2026-10-21T23:39:47.435+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, requests y auditoría de huérfanos"
+      "message": "Segunda relectura de main · cola 0 y sin rewrite_pending"
     },
     {
-      "at": "2026-10-21T23:15:50+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Sin preparing/update, sin rewrite_pending y sin huérfanos"
-    },
-    {
-      "at": "2026-10-21T23:16:00+02:00",
+      "at": "2026-10-21T23:39:47.435+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada completada · cola editorial 0; saneamiento visual solicitado para 10 Pendientes"
+      "message": "Pasada cerrada · 6/6 revisiones explicadas y verificadas"
     }
   ],
   "telegram_orphans": 0,
