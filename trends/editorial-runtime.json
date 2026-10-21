@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T12:59:00+02:00",
-  "last_completed_at": "2026-10-21T12:59:40+02:00",
-  "updated_at": "2026-10-21T12:59:40+02:00",
+  "last_started_at": "2026-10-21T13:15:00+02:00",
+  "last_completed_at": "2026-10-21T13:15:25+02:00",
+  "updated_at": "2026-10-21T13:15:25+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,13 +23,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610211259-chat-direct",
+    "run_id": "tr-editorial-202610211315-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T12:59:00+02:00",
-    "updated_at": "2026-10-21T12:59:40+02:00",
-    "finished_at": "2026-10-21T12:59:40+02:00",
+    "started_at": "2026-10-21T13:15:00+02:00",
+    "updated_at": "2026-10-21T13:15:25+02:00",
+    "finished_at": "2026-10-21T13:15:25+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -63,35 +63,35 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T12:59:00+02:00",
+        "at": "2026-10-21T13:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial inicial 0. Verificando requests y reexplicaciones pendientes."
+        "message": "Pasada iniciada; verificando cola, requests, reexplicaciones y estado Top 10."
       },
       {
-        "at": "2026-10-21T12:59:10+02:00",
+        "at": "2026-10-21T13:15:05+02:00",
         "phase": "persisting",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado al inicio."
       },
       {
-        "at": "2026-10-21T12:59:20+02:00",
+        "at": "2026-10-21T13:15:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main para confirmar cola, requests y reexplicaciones antes del cierre."
+        "message": "Releyendo main para confirmar cola, requests, reexplicaciones y problematic del Top 10."
       },
       {
-        "at": "2026-10-21T12:59:30+02:00",
+        "at": "2026-10-21T13:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Main verificado: cola 0, requests activas 0, rewrite_pending 0 y problematic Top 10 igual a 0."
       },
       {
-        "at": "2026-10-21T12:59:40+02:00",
+        "at": "2026-10-21T13:15:25+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -112,7 +112,7 @@
     "remate_selections": [],
     "final_outcomes": [],
     "radar": {
-      "captured_at": "2026-10-21T12:51:00+02:00",
+      "captured_at": "2026-10-21T13:12:42+02:00",
       "queue_count": 0,
       "top10": [
         "Milei",
@@ -214,6 +214,5 @@
       "Puerto Rico",
       "Pedri"
     ]
-  },
-  "error": null
+  }
 }
