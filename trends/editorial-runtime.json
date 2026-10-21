@@ -4,18 +4,20 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T13:15:00+02:00",
-  "last_completed_at": "2026-10-21T13:15:25+02:00",
-  "updated_at": "2026-10-21T13:15:25+02:00",
+  "last_started_at": "2026-10-21T13:45:00+02:00",
+  "last_completed_at": "2026-10-21T13:53:00+02:00",
+  "updated_at": "2026-10-21T13:53:00+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "1735035c24a3"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-editorial-202610211259-chat-direct",
+    "trigger_run_id": "tr-chat-20261021T1345-censura",
     "status": "independent-after-explained",
     "editorial_blocking": false
   },
@@ -23,29 +25,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-editorial-202610211315-chat-direct",
+    "run_id": "tr-chat-20261021T1345-censura",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T13:15:00+02:00",
-    "updated_at": "2026-10-21T13:15:25+02:00",
-    "finished_at": "2026-10-21T13:15:25+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-21T13:45:00+02:00",
+    "updated_at": "2026-10-21T13:53:00+02:00",
+    "finished_at": "2026-10-21T13:53:00+02:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
+      "explained": 1,
+      "explanation_groups": 1,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -54,51 +56,144 @@
       "pending_repair_triggered": 1,
       "pending_repair_groups_scanned": 0,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0
     },
-    "message": "Pasada editorial cerrada 0/0: no había preparing/update, rewrite_pending ni problematic en el Top 10. Saneamiento visual independiente solicitado. Sin ImageGen directo.",
+    "message": "TTendencias 1/1 verificada: Censura r0 quedó explained y sincronizada; cola final 0 y sin rewrite_pending. Sin ImageGen directo.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T13:15:00+02:00",
+        "at": "2026-10-21T13:45:00+02:00",
         "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada iniciada; verificando cola, requests, reexplicaciones y estado Top 10."
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Pasada iniciada; 1 revisión activa en la cola."
       },
       {
-        "at": "2026-10-21T13:15:05+02:00",
+        "at": "2026-10-21T13:46:00+02:00",
+        "phase": "verifying",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Releyendo estado autoritativo de Censura."
+      },
+      {
+        "at": "2026-10-21T13:47:00+02:00",
+        "phase": "investigating",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-21T13:47:40+02:00",
+        "phase": "investigating",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Contrastando fuente 1/2: orden de ayudas al cine de Castilla y León."
+      },
+      {
+        "at": "2026-10-21T13:48:20+02:00",
+        "phase": "investigating",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Contrastando fuente 2/2: reacción y recurso anunciado por Cultura."
+      },
+      {
+        "at": "2026-10-21T13:48:30+02:00",
+        "phase": "investigating",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Hecho esencial verificado: la polémica por las ayudas al cine y el anuncio de recurso de Urtasun explican la tendencia."
+      },
+      {
+        "at": "2026-10-21T13:49:30+02:00",
+        "phase": "drafting",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-21T13:49:45+02:00",
+        "phase": "drafting",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Comprobando límite de X: 267 caracteres."
+      },
+      {
+        "at": "2026-10-21T13:50:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-21T13:50:20+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Evaluando candidatos con ratings y repetición de los últimos cierres."
+      },
+      {
+        "at": "2026-10-21T13:50:40+02:00",
+        "phase": "remate_selection",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Remate seleccionado: El guion ya tiene recurso antes de rodarse."
+      },
+      {
+        "at": "2026-10-21T13:51:00+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado al inicio."
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Guardando ficha Explicada."
       },
       {
-        "at": "2026-10-21T13:15:10+02:00",
+        "at": "2026-10-21T13:51:20+02:00",
+        "phase": "persisting",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-21T13:51:40+02:00",
+        "phase": "persisting",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-21T13:52:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main para confirmar cola, requests, reexplicaciones y problematic del Top 10."
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-21T13:15:20+02:00",
+        "at": "2026-10-21T13:52:30+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Main verificado: cola 0, requests activas 0, rewrite_pending 0 y problematic Top 10 igual a 0."
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-21T13:15:25+02:00",
+        "at": "2026-10-21T13:52:45+02:00",
+        "phase": "verifying",
+        "trend_id": "1735035c24a3",
+        "title": "Censura",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-21T13:53:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada 0/0; estado final consistente en main."
+        "message": "Relectura final de main: cola editorial 0 y sin reexplicaciones pendientes."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "1735035c24a3"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -109,38 +204,55 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "final_outcomes": [],
+    "remate_selections": [
+      {
+        "trend_id": "1735035c24a3",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_score": null,
+        "no_remate_reason": null
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "1735035c24a3",
+        "name": "Censura",
+        "revision": 0,
+        "status": "explained",
+        "explained_at": "2026-10-21T13:51:00+02:00"
+      }
+    ],
     "radar": {
-      "captured_at": "2026-10-21T13:12:42+02:00",
+      "captured_at": "2026-10-21T13:41:08+02:00",
       "queue_count": 0,
       "top10": [
         "Milei",
-        "#ZurdosYOrgullosos",
         "#TierraDeNadie6",
-        "El PSG",
+        "#ZurdosYOrgullosos",
         "Argentina",
+        "El PSG",
         "Xavi Espart",
         "Rodri",
-        "Barça",
         "Puerto Rico",
-        "Pedri"
+        "Barça",
+        "Censura"
       ]
     }
   },
-  "run_id": "tr-editorial-202610211259-chat-direct",
+  "run_id": "tr-chat-20261021T1345-censura",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
+    "explained": 1,
+    "explanation_groups": 1,
     "concurrent_closed": 0,
     "duplicates_closed": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -149,46 +261,137 @@
     "pending_repair_triggered": 1,
     "pending_repair_groups_scanned": 0,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-21T12:59:00+02:00",
+      "at": "2026-10-21T13:45:00+02:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada iniciada; cola editorial inicial 0. Verificando requests y reexplicaciones pendientes."
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Pasada iniciada; 1 revisión activa en la cola."
     },
     {
-      "at": "2026-10-21T12:59:10+02:00",
+      "at": "2026-10-21T13:46:00+02:00",
+      "phase": "verifying",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Releyendo estado autoritativo de Censura."
+    },
+    {
+      "at": "2026-10-21T13:47:00+02:00",
+      "phase": "investigating",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Buscando detonante actual."
+    },
+    {
+      "at": "2026-10-21T13:47:40+02:00",
+      "phase": "investigating",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Contrastando fuente 1/2: orden de ayudas al cine de Castilla y León."
+    },
+    {
+      "at": "2026-10-21T13:48:20+02:00",
+      "phase": "investigating",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Contrastando fuente 2/2: reacción y recurso anunciado por Cultura."
+    },
+    {
+      "at": "2026-10-21T13:48:30+02:00",
+      "phase": "investigating",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Hecho esencial verificado: la polémica por las ayudas al cine y el anuncio de recurso de Urtasun explican la tendencia."
+    },
+    {
+      "at": "2026-10-21T13:49:30+02:00",
+      "phase": "drafting",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Redactando explicación factual."
+    },
+    {
+      "at": "2026-10-21T13:49:45+02:00",
+      "phase": "drafting",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Comprobando límite de X: 267 caracteres."
+    },
+    {
+      "at": "2026-10-21T13:50:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Generando candidatos de remate."
+    },
+    {
+      "at": "2026-10-21T13:50:20+02:00",
+      "phase": "remate_selection",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Evaluando candidatos con ratings y repetición de los últimos cierres."
+    },
+    {
+      "at": "2026-10-21T13:50:40+02:00",
+      "phase": "remate_selection",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Remate seleccionado: El guion ya tiene recurso antes de rodarse."
+    },
+    {
+      "at": "2026-10-21T13:51:00+02:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual de Pendientes solicitado al inicio."
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Guardando ficha Explicada."
     },
     {
-      "at": "2026-10-21T12:59:20+02:00",
+      "at": "2026-10-21T13:51:20+02:00",
+      "phase": "persisting",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-21T13:51:40+02:00",
+      "phase": "persisting",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-21T13:52:10+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main para confirmar cola, requests y reexplicaciones antes del cierre."
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-21T12:59:30+02:00",
+      "at": "2026-10-21T13:52:30+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Main verificado: cola 0, requests activas 0, rewrite_pending 0 y problematic Top 10 igual a 0."
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-21T12:59:40+02:00",
+      "at": "2026-10-21T13:52:45+02:00",
+      "phase": "verifying",
+      "trend_id": "1735035c24a3",
+      "title": "Censura",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-21T13:53:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada editorial cerrada 0/0; estado final consistente en main."
+      "message": "Relectura final de main: cola editorial 0 y sin reexplicaciones pendientes."
     }
   ],
   "telegram_orphans": 0,
@@ -200,19 +403,19 @@
     "captured_at": "2026-10-21T12:51:00+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-21T12:51:00+02:00",
+    "captured_at": "2026-10-21T13:41:08+02:00",
     "queue_count": 0,
     "top10": [
       "Milei",
-      "#ZurdosYOrgullosos",
       "#TierraDeNadie6",
-      "El PSG",
+      "#ZurdosYOrgullosos",
       "Argentina",
+      "El PSG",
       "Xavi Espart",
       "Rodri",
-      "Barça",
       "Puerto Rico",
-      "Pedri"
+      "Barça",
+      "Censura"
     ]
   }
 }
