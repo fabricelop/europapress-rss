@@ -125,8 +125,9 @@ requests = requests_doc.setdefault("requests", [])
 now_dt = datetime.now(MADRID)
 reconciled = False
 
-# Terminal Telegram decisions are authoritative, including across radar IDs.
-# They must be reconciled BEFORE stale explained/ready repair can reopen work.
+# Terminal editor decisions are authoritative only for the request/revision
+# they actually postdate. Historical Telegram ledgers remain readable for
+# compatibility, but must never close a newer radar occurrence that reused an ID.
 CLOSED = {"published", "dismissed", "deleted", "removed",
           "delete_pending", "delete_failed"}
 deliveries = load("telegram-image-deliveries.json", {"items": []})
@@ -134,6 +135,19 @@ mobile_decisions = load("mobile-decisions.json", {"items": []})
 closed_by_id = {}
 recently_closed_names = set()
 recently_closed_topics = {}
+
+def remember_closed_id(item_id, outcome, when, revision=None):
+    item_id = str(item_id or "")
+    if not item_id or outcome not in CLOSED:
+        return
+    current = closed_by_id.get(item_id)
+    if current is None:
+        closed_by_id[item_id] = (outcome, when, revision)
+        return
+    current_when = current[1]
+    if when and (current_when is None or when > current_when):
+        closed_by_id[item_id] = (outcome, when, revision)
+
 def remember_closed_topic(value, when, status):
     group = editorial_topic(value)
     if not group or status not in CLOSED or not when:
@@ -147,11 +161,14 @@ for event in (deliveries.get("items") or []):
     outcome = str(event.get("status") or "").lower()
     if outcome not in CLOSED:
         continue
+    when = parse_timestamp(event.get("deleted_at") or event.get("published_at")
+                           or event.get("dismissed_at") or event.get("delivered_at")
+                           or event.get("updated_at"))
     event_id = str(event.get("event_id") or "")
     if event_id:
-        closed_by_id[event_id] = outcome
-    when = parse_timestamp(event.get("deleted_at") or event.get("published_at")
-                           or event.get("dismissed_at") or event.get("delivered_at"))
+        revision = event.get("revision")
+        revision = int(revision) if revision is not None else None
+        remember_closed_id(event_id, outcome, when, revision)
     if when and timedelta(0) <= now_dt - when < timedelta(days=7):
         for name in (event.get("name"), event.get("title")):
             key = norm(name)
@@ -161,14 +178,28 @@ for event in (deliveries.get("items") or []):
 for decision in (mobile_decisions.get("items") or []):
     outcome = str(decision.get("status") or "").lower()
     if outcome in CLOSED and decision.get("id"):
-        closed_by_id[str(decision["id"])] = outcome
+        when = parse_timestamp(decision.get("deleted_at") or decision.get("published_at")
+                               or decision.get("dismissed_at") or decision.get("updated_at"))
+        revision = decision.get("revision")
+        revision = int(revision) if revision is not None else None
+        remember_closed_id(str(decision["id"]), outcome, when, revision)
 for request in requests:
-    outcome = closed_by_id.get(str(request.get("id") or ""))
-    if outcome and str(request.get("status") or "").lower() not in CLOSED:
-        request["status"] = "deleted" if outcome.startswith("delete_") else outcome
-        request["telegram_package_status"] = request["status"]
-        request["reexplain"] = False
-        reconciled = True
+    closed = closed_by_id.get(str(request.get("id") or ""))
+    if not closed or str(request.get("status") or "").lower() in CLOSED:
+        continue
+    outcome, decision_when, decision_revision = closed
+    request_revision = int(request.get("revision") or 0)
+    requested_at = parse_timestamp(request.get("requested_at"))
+    # A decision from an earlier revision or from before this request belongs
+    # to a historical occurrence, even when deterministic IDs collide.
+    if decision_revision is not None and decision_revision != request_revision:
+        continue
+    if requested_at and (decision_when is None or decision_when < requested_at):
+        continue
+    request["status"] = "deleted" if outcome.startswith("delete_") else outcome
+    request["telegram_package_status"] = request["status"]
+    request["reexplain"] = False
+    reconciled = True
 
 # One Telegram-deleted editorial package may have several narrowly known
 # radar labels. An automatically reopened synonym is not a new story.
