@@ -172,6 +172,13 @@ async function load(force=false){
  render();void syncListasBadge();if(pendingDeletes.size)void checkPendingDeletes()
 }
 
+function setApp(app){
+ state.app=app;state.tab='listas';state.q='';
+ $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
+ history.replaceState(null,'','#'+(app==='tti'?'ttittulares':'ttendencias'));
+ try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
+ render();load(true)
+}
 /* iOS Home Screen badge: exactly the same Listas selectors as the visible UI.
    Nothing runs in the background; do not subscribe to push or poll periodically. */
 const badgePaths={
@@ -237,13 +244,6 @@ $('badge-enable').addEventListener('click',async()=>{
  }catch{showToast('No se pudo activar el badge; revisa Ajustes del iPhone')}
 });
 
-function setApp(app){
- state.app=app;state.tab='listas';state.q='';
- $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
- history.replaceState(null,'','#'+(app==='tti'?'ttittulares':'ttendencias'));
- try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
- render();load(true)
-}
 function tabs(){return state.app==='tti'?[]:[['listas','Listas'],['elaboracion','En elaboración'],['top','Top 30'],['historico','Histórico']]}
 function ttiListasRows(data){
  const statuses=new Map((data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
