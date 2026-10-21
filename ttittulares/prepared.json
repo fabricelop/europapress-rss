@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-21T09:13:19.408Z",
+  "updated_at": "2026-10-21T09:15:38.471Z",
   "items": [
     {
       "event_id": "5f3ec4e880aa",
@@ -193,7 +193,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": true,
@@ -217,7 +217,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Hallado el cadáver de un migrante en el puerto de Ceuta"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-21T09:15:38.471Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false"
     },
     {
       "event_id": "f3f8eb293948",
