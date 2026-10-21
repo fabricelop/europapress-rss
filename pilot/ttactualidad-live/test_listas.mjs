@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const page=readFileSync('pilot/ttactualidad-live/index.html','utf8');
-const start=page.indexOf('function trendRows(){');
+const start=page.indexOf('function trendListasRows(data){');
 const end=page.indexOf('function dataRows(){',start);
 assert(start>=0&&end>start);
 const code=page.slice(start,end);
