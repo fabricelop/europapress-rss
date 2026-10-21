@@ -296,6 +296,7 @@ def score(a,b):
  jaccard=inter/max(1,len(A|B))
  if min(len(A),len(B))<=4 and overlap<0.60:return 0
  if inter==2 and overlap<0.80:return 0
+ if inter==2 and overlap<0.80:return 0
  if overlap<0.65 and jaccard<0.35:return 0
  return 0.55*overlap+0.45*jaccard
 def make_id(title):
