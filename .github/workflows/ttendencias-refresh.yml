@@ -106,6 +106,29 @@ jobs:
           # Solo Top 10 se encola automáticamente. Puestos 11-30 son
           # visuales y solo entran a Explicadas al pulsar Preparar novedad.
 
+      - name: Despertar elaboracion editorial de nuevas Top 10
+        # The radar only populates preparing/update; it does NOT explain.
+        # Reuse the existing dedicated PC Chat editorial listener. One trigger
+        # for a newly enqueued (id, revision), never a periodic blind replay.
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("/tmp/tt-new-explanations.json")
+          pending=json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+          print("TT_TRENDS_NEW_EDITORIAL_REVISIONS",pending)
+          raise SystemExit(0 if pending else 1)
+          PY
+          then
+            python3 trends/request_pc_editorial.py --trigger
+          else
+            echo "TT_TRENDS_NO_NEW_EDITORIAL_TRIGGER"
+          fi
+
       # El panel Cloudflare consulta directamente el estado versionado en GitHub.
       # Sin notificaciones push heredadas ni peticiones a Vercel.
 
