@@ -1,11 +1,16 @@
 {
   "version": 2,
-  "command_id": "tr-1792534024490-manual",
-  "requested_at": "2026-10-20T22:07:04.490Z",
+  "command_id": "tr-autoguard-1792557338",
+  "requested_at": "2026-10-21T04:35:38.520183Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "f58e6c159e64"
+  ]
 }
