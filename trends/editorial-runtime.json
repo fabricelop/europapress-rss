@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T06:36:00+02:00",
-  "last_completed_at": "2026-10-21T06:44:00+02:00",
-  "updated_at": "2026-10-21T06:44:00+02:00",
+  "last_started_at": "2026-10-21T06:45:00+02:00",
+  "last_completed_at": "2026-10-21T06:47:00+02:00",
+  "updated_at": "2026-10-21T06:47:00+02:00",
   "status": "success",
   "processed_ids": [
     "f58e6c159e64"
@@ -25,167 +25,81 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1792557338",
+    "run_id": "tr-editorial-202610210645-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T06:36:00+02:00",
-    "updated_at": "2026-10-21T06:44:00+02:00",
-    "finished_at": "2026-10-21T06:44:00+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-21T06:45:00+02:00",
+    "updated_at": "2026-10-21T06:47:00+02:00",
+    "finished_at": "2026-10-21T06:47:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T06:36:00+02:00",
+        "at": "2026-10-21T06:45:00+02:00",
         "phase": "preparing",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Pasada iniciada; 1 revisión activa en la cola."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada; releyendo cola, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T06:36:00+02:00",
+        "at": "2026-10-21T06:45:20+02:00",
         "phase": "verifying",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Releyendo estado autoritativo de Pedri."
+        "trend_id": null,
+        "title": null,
+        "message": "Estado inicial: cola 0; radar fresco de las 06:41:06; sin preparing/update/problematic en requests."
       },
       {
-        "at": "2026-10-21T06:37:00+02:00",
-        "phase": "investigating",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Buscando detonante actual y contrastando fuente 1/2."
-      },
-      {
-        "at": "2026-10-21T06:38:00+02:00",
-        "phase": "investigating",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Contrastando fuente 2/2: acta del partido y sustitución al minuto 60."
-      },
-      {
-        "at": "2026-10-21T06:38:30+02:00",
-        "phase": "investigating",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Hecho esencial verificado: el Clásico condicionó la gestión de minutos de Pedri."
-      },
-      {
-        "at": "2026-10-21T06:39:00+02:00",
-        "phase": "drafting",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-21T06:40:00+02:00",
-        "phase": "drafting",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Texto completo validado: 266 caracteres."
-      },
-      {
-        "at": "2026-10-21T06:40:10+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-21T06:40:20+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Evaluando candidatos con ratings y repetición de los últimos cierres."
-      },
-      {
-        "at": "2026-10-21T06:40:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Remate seleccionado: una hora en París y el resto del cupo para el Clásico."
-      },
-      {
-        "at": "2026-10-21T06:42:00+02:00",
-        "phase": "persisting",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-21T06:42:20+02:00",
-        "phase": "persisting",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-21T06:42:40+02:00",
-        "phase": "persisting",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-21T06:43:00+02:00",
+        "at": "2026-10-21T06:45:40+02:00",
         "phase": "verifying",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Releyendo main."
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; no se llama a ImageGen desde la pasada editorial."
       },
       {
-        "at": "2026-10-21T06:43:20+02:00",
+        "at": "2026-10-21T06:46:00+02:00",
         "phase": "verifying",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Verificando id+revision y texto persistido."
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main antes del cierre para confirmar cola y revisiones activas."
       },
       {
-        "at": "2026-10-21T06:43:40+02:00",
-        "phase": "verifying",
-        "trend_id": "f58e6c159e64",
-        "title": "Pedri",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-21T06:44:00+02:00",
+        "at": "2026-10-21T06:47:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola editorial 0 y sin reexplicaciones pendientes."
+        "message": "Relectura final de main: cola 0, sin preparing/update/problematic ni rewrite_pending."
       }
     ],
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
+      "explained": 0,
+      "explanation_groups": 0,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 7,
+      "pending_repair_groups_scanned": 9,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0
     },
-    "processed_ids": [
-      "f58e6c159e64"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -196,25 +110,8 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "f58e6c159e64",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c5",
-        "selected_score": 8.7,
-        "no_remate_reason": null
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "f58e6c159e64",
-        "name": "Pedri",
-        "revision": 0,
-        "status": "explained",
-        "explained_at": "2026-10-21T06:42:00+02:00"
-      }
-    ],
+    "remate_selections": [],
+    "final_outcomes": [],
     "radar": {
       "captured_at": "2026-10-21T06:41:06+02:00",
       "queue_count": 0,
@@ -231,7 +128,7 @@
         "Joan García"
       ]
     },
-    "message": "TTendencias 1/1 verificada: Pedri r0 quedó explained y sincronizado; cola final 0 y sin rewrite_pending. Sin ImageGen directo."
+    "message": "TTendencias 0/0 verificada: cola final 0, sin preparing/update/problematic ni reexplicaciones pendientes. Sin ImageGen directo."
   },
   "run_id": "tr-autoguard-1792557338",
   "summary": {
@@ -403,6 +300,5 @@
       "Fabián",
       "#codigo10"
     ]
-  },
-  "error": null
+  }
 }
