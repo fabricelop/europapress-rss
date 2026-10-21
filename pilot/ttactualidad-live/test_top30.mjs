@@ -54,11 +54,12 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
   return {requests:[]};
  };
  const ctxState={app:'tti',tab:'listas',data:{},busy:false,updated:0,lastError:''};
- const load=new Function('state','fields','aliases','fetchJson','$','render','pendingDeletes','checkPendingDeletes','sessionStorage',
+ const load=new Function('state','fields','aliases','fetchJson',String.fromCharCode(36),
+  'render','pendingDeletes','checkPendingDeletes','sessionStorage','hasBadgeData','syncListasBadge',
   'let loadRevision=0;'+loadText+'return load;')(
    ctxState,fields,aliases,fetchJson,$,
    ()=>{seen.push({app:ctxState.app,hasRadar:currentTop30(ctxState.data.recent).length})},
-   new Map(),()=>{}, {setItem(){}});
+   new Map(),()=>{}, {setItem(){}},()=>false,()=>{});
  const ttiLoad=load();
  ctxState.app='tr';ctxState.data={};
  const trLoad=load();

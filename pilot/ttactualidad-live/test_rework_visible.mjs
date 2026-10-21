@@ -4,7 +4,7 @@ import vm from 'node:vm';
 
 for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index.html']){
  const html=readFileSync(path,'utf8');
- const begin=html.indexOf('function trendRows(){');
+ const begin=html.indexOf('function trendListasRows(data){')>=0?html.indexOf('function trendListasRows(data){'):html.indexOf('function trendRows(){');
  const end=html.indexOf('function dataRows(){',begin);
  assert(begin>=0&&end>begin,path+' lacks trendRows');
  const trendCode=html.slice(begin,end);

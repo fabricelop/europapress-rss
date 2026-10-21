@@ -43,9 +43,10 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .manual-panel .actions button[type=submit]{background:#226b68;border-color:#6fd9cc;font-weight:800}
 .manual-panel button:disabled{opacity:.55}.manual-panel h2{font-size:20px}
 .manual-panel .feedback{min-height:20px;font-size:13px;color:var(--orange)}
+.listas-badge-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:2px 0 8px;color:var(--sub);font-size:12px}.listas-badge-line strong{color:var(--ink);font-size:14px}.listas-badge-line button{border:1px solid var(--aqua);border-radius:9px;background:#244b53;color:#eafffa;padding:6px 9px;font-size:12px;cursor:pointer}.listas-badge-line button[hidden]{display:none}
 </style></head>
 <body>
-<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p></header>
+<header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p><div class="listas-badge-line" aria-label="Total de elementos en Listas"><strong id="listas-badge-total" aria-live="polite">Listas: —</strong><span id="listas-badge-detail">Contando noticias y tendencias…</span><button type="button" id="badge-enable" hidden>Activar badge del icono</button></div></header>
 <div class="tabbar" role="tablist" aria-label="Proyecto">
 <button id="tab-tti" role="tab" aria-selected="true" type="button">TT<span>i</span>TTulares</button>
 <button id="tab-tr" role="tab" aria-selected="false" type="button">TTendencias</button>
@@ -165,8 +166,12 @@ async function load(force=false){
  state.updated=Date.now();state.lastError=errors.join(' · ');
  state.busy=false;$('refresh').disabled=false;
  try{sessionStorage.setItem('tt-web-snapshot-'+app,JSON.stringify(state.data))}catch{}
- render();if(pendingDeletes.size)void checkPendingDeletes()
+ if(hasBadgeData(app,state.data)){
+  badgeSnapshots[app]={data:state.data,at:Date.now()};
+ }
+ render();void syncListasBadge();if(pendingDeletes.size)void checkPendingDeletes()
 }
+
 function setApp(app){
  state.app=app;state.tab='listas';state.q='';
  $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
@@ -174,13 +179,84 @@ function setApp(app){
  try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
  render();load(true)
 }
+/* iOS Home Screen badge: exactly the same Listas selectors as the visible UI.
+   Nothing runs in the background; do not subscribe to push or poll periodically. */
+const badgePaths={
+ tti:['ttittulares/prepared.json','ttittulares/decisions.json'],
+ tr:['trends/telegram-manual-explained.json','trends/requests.json',
+     'trends/telegram-image-deliveries.json','trends/mobile-decisions.json',
+     'trends/editorial-queue.json']
+};
+const badgeSnapshots={tti:null,tr:null};
+let badgeFetch=null,badgeApplied=null;
+const hasBadgeData=(app,data)=>badgePaths[app].every(path=>{
+ const doc=data?.[aliases[path]];
+ return doc&&typeof doc==='object'&&Array.isArray(doc[path==='trends/requests.json'?'requests':'items']);
+});
+function badgeCount(){
+ if(!badgeSnapshots.tti||!badgeSnapshots.tr)return null;
+ const news=ttiListasRows(badgeSnapshots.tti.data).filter(x=>!isTemporarilyRemoved(x)).length;
+ const trends=trendListasRows(badgeSnapshots.tr.data).filter(x=>!isTemporarilyRemoved(x)).length;
+ return {news,trends,total:news+trends};
+}
+function badgeActivationUi(){
+ const installed=(typeof window.matchMedia==='function'&&window.matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+ const available=typeof navigator.setAppBadge==='function'&&typeof Notification!=='undefined';
+ $('badge-enable').hidden=!(installed&&available&&Notification.permission==='default');
+}
+function paintListasBadge(){
+ const count=badgeCount();
+ badgeActivationUi();
+ if(!count)return;
+ $('listas-badge-total').textContent='Listas: '+count.total;
+ $('listas-badge-detail').textContent=count.news+' noticias + '+count.trends+' tendencias';
+ const total=count.total;
+ if(typeof navigator.setAppBadge!=='function'||badgeApplied===total)return;
+ badgeApplied=total;
+ const op=total>0?navigator.setAppBadge(total):
+  (typeof navigator.clearAppBadge==='function'?navigator.clearAppBadge():navigator.setAppBadge(0));
+ Promise.resolve(op).catch(()=>{badgeApplied=null;});
+}
+async function syncListasBadge(){
+ if(badgeFetch)return badgeFetch;
+ badgeFetch=(async()=>{
+  await Promise.all(['tti','tr'].map(async app=>{
+   const cached=badgeSnapshots[app];
+   if(cached&&Date.now()-cached.at<180000)return;
+   try{
+    const files=await Promise.all(badgePaths[app].map(async path=>[aliases[path],await fetchJson(path)]));
+    const data=Object.fromEntries(files);
+    if(hasBadgeData(app,data))badgeSnapshots[app]={data,at:Date.now()};
+   }catch(error){console.warn('Badge Listas: datos de '+app+' no disponibles; se mantiene último valor',error);}
+  }));
+  paintListasBadge();
+ })();
+ try{await badgeFetch}finally{badgeFetch=null}
+}
+$('badge-enable').addEventListener('click',async()=>{
+ if(typeof Notification==='undefined'||typeof navigator.setAppBadge!=='function')return;
+ try{
+  const permission=await Notification.requestPermission();
+  badgeApplied=null;
+  badgeActivationUi();
+  if(permission==='granted'){paintListasBadge();showToast('Distintivo del icono activado')}
+  else showToast('Activa las notificaciones de TT Actualidad en Ajustes para mostrar el badge');
+ }catch{showToast('No se pudo activar el badge; revisa Ajustes del iPhone')}
+});
+
 function tabs(){return state.app==='tti'?[]:[['listas','Listas'],['elaboracion','En elaboración'],['top','Top 30'],['historico','Histórico']]}
+function ttiListasRows(data){
+ const statuses=new Map((data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
+ return (data.prepared?.items||[])
+  .filter(x=>!isClosed(statuses.get(String(x.event_id))))
+  .map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
+}
 function ttiRows(){
  const snap=state.data.status||{}, d=decisions(), queue=state.data.ttiQueue?.items||[];
  const closed=x=>isClosed(d.get(String(x.event_id)));
  const isQueued=id=>queue.some(q=>String(q.event_id||'')===String(id)&&['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
  const prepared=(state.data.prepared?.items||[]).filter(x=>!closed(x));
- if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
+ if(state.tab==='listas')return ttiListasRows(state.data);
  if(state.tab==='elaboracion'){
   const fresh=queue.filter(q=>['PROCESSING','UPDATE_PROCESSING'].includes(String(q.status||'').toUpperCase()));
   const seen=new Set(fresh.map(q=>String(q.event_id||'')));
@@ -212,6 +288,66 @@ function currentTop30(recent){
  const names=Array.isArray(recent?.top30)?recent.top30:[];
  return names.slice(0,30).map((name,i)=>({rank:i+1,name:String(name||'').trim()})).filter(x=>x.name);
 }
+
+function trendListasRows(data){
+  const requests=data.requests?.requests||[],ledger=data.deliveries?.items||[];
+  const lastRequests=new Map(),lastDeliveries=new Map(),lastManual=new Map();
+  const at=row=>Date.parse(row.updated_at||row.deleted_at||row.explained_at||row.requested_at||'')||0;
+  const closed=new Set(['deleted','dismissed','published','removed','delete_pending']);
+  for(const req of requests){
+   const id=String(req.id||'');if(!id)continue;
+   const prev=lastRequests.get(id);
+   if(!prev||Number(req.revision||0)>Number(prev.revision||0)||at(req)>=at(prev))
+    lastRequests.set(id,req);
+  }
+  for(const d of ledger){
+   const id=String(d.event_id||'');if(!id)continue;
+   const prev=lastDeliveries.get(id);
+   if(!prev||Number(d.revision||0)>Number(prev.revision||0)||
+      String(d.updated_at||d.delivered_at||'')>String(prev.updated_at||prev.delivered_at||''))
+    lastDeliveries.set(id,d);
+  }
+  for(const row of data.manual?.items||[]){
+   const id=String(row.id||'');if(!id)continue;
+   const prev=lastManual.get(id);
+   if(!prev||Number(row.revision||0)>Number(prev.revision||0)||at(row)>=at(prev))
+    lastManual.set(id,row);
+  }
+  const mobileClosed=new Set((data.mobileDecisions?.items||[])
+   .filter(row=>closed.has(String(row.status||'').toLowerCase()))
+   .map(row=>String(row.id||row.event_id||'')));
+  const current=Date.now();
+  return [...lastManual.values()].filter(row=>{
+   const id=String(row.id||''),req=lastRequests.get(id)||{},delivery=lastDeliveries.get(id)||{};
+   const explained=Date.parse(row.explained_at||'');
+   if(!Number.isFinite(explained)||current-explained>48*3600000||explained-current>3600000)return false;
+   if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
+   // A newer revision already in progress invalidates the old Listas card,
+   // including when independent GitHub raw files refresh at different times.
+   const readyRevision=Number(row.revision||0);
+   const requestRevision=Number(req.revision||0);
+   const readyAfterRequest=Number.isFinite(explained)&&
+      explained >= (Date.parse(req.requested_at||'')||0)-60000;
+   if(req.id&&requestRevision>readyRevision)return false;
+   if(['preparing','update','ready'].includes(String(req.status||'').toLowerCase())&&
+      requestRevision>=readyRevision&&!readyAfterRequest)return false;
+   // Queue and requests are downloaded separately. Never show old Listas
+   // when a genuinely NEW queue revision has arrived first.
+   if((data.editorialQueue?.items||[]).some(q=>String(q.id||'')===id&&
+      ['preparing','update'].includes(String(q.status||'').toLowerCase())&&
+      Number(q.revision||0)>readyRevision))return false;
+   if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
+   if(mobileClosed.has(id))return false;
+   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
+      delivery.status].some(x=>closed.has(String(x||'').toLowerCase())))return false;
+   return true;
+  }).map(row=>({
+    ...row,title:String(row.name||row.display_name||row.id),
+    _kind:'tr',_id:String(row.id),_status:'EXPLICADA',_last_at:row.explained_at,
+    revision:Number(row.revision||0),
+    image_url:row.archive_image?.url||row.fallback_image?.url||''
+  })).sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,100);
+ }
 function trendRows(){
  const recent=state.data.recent||{},ledger=state.data.deliveries?.items||[],requests=state.data.requests?.requests||[];
  const explained=[...(state.data.manual?.items||[]),...(state.data.explained?.items||[])];
@@ -448,64 +584,7 @@ function trendRows(){
  }
  // TTActualidad direct Listas: editorial explanations are authoritative.
  // A Telegram message is no longer a precondition for a ready trend.
- if(state.tab==='listas'){
-  const lastRequests=new Map(),lastDeliveries=new Map(),lastManual=new Map();
-  const at=row=>Date.parse(row.updated_at||row.deleted_at||row.explained_at||row.requested_at||'')||0;
-  const closed=new Set(['deleted','dismissed','published','removed','delete_pending']);
-  for(const req of requests){
-   const id=String(req.id||'');if(!id)continue;
-   const prev=lastRequests.get(id);
-   if(!prev||Number(req.revision||0)>Number(prev.revision||0)||at(req)>=at(prev))
-    lastRequests.set(id,req);
-  }
-  for(const d of ledger){
-   const id=String(d.event_id||'');if(!id)continue;
-   const prev=lastDeliveries.get(id);
-   if(!prev||Number(d.revision||0)>Number(prev.revision||0)||
-      String(d.updated_at||d.delivered_at||'')>String(prev.updated_at||prev.delivered_at||''))
-    lastDeliveries.set(id,d);
-  }
-  for(const row of state.data.manual?.items||[]){
-   const id=String(row.id||'');if(!id)continue;
-   const prev=lastManual.get(id);
-   if(!prev||Number(row.revision||0)>Number(prev.revision||0)||at(row)>=at(prev))
-    lastManual.set(id,row);
-  }
-  const mobileClosed=new Set((state.data.mobileDecisions?.items||[])
-   .filter(row=>closed.has(String(row.status||'').toLowerCase()))
-   .map(row=>String(row.id||row.event_id||'')));
-  const current=Date.now();
-  return [...lastManual.values()].filter(row=>{
-   const id=String(row.id||''),req=lastRequests.get(id)||{},delivery=lastDeliveries.get(id)||{};
-   const explained=Date.parse(row.explained_at||'');
-   if(!Number.isFinite(explained)||current-explained>48*3600000||explained-current>3600000)return false;
-   if(String(row.status||'').toLowerCase()!=='explained'||!String(row.explanation||'').trim())return false;
-   // A newer revision already in progress invalidates the old Listas card,
-   // including when independent GitHub raw files refresh at different times.
-   const readyRevision=Number(row.revision||0);
-   const requestRevision=Number(req.revision||0);
-   const readyAfterRequest=Number.isFinite(explained)&&
-      explained >= (Date.parse(req.requested_at||'')||0)-60000;
-   if(req.id&&requestRevision>readyRevision)return false;
-   if(['preparing','update','ready'].includes(String(req.status||'').toLowerCase())&&
-      requestRevision>=readyRevision&&!readyAfterRequest)return false;
-   // Queue and requests are downloaded separately. Never show old Listas
-   // when a genuinely NEW queue revision has arrived first.
-   if((state.data.editorialQueue?.items||[]).some(q=>String(q.id||'')===id&&
-      ['preparing','update'].includes(String(q.status||'').toLowerCase())&&
-      Number(q.revision||0)>readyRevision))return false;
-   if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
-   if(mobileClosed.has(id))return false;
-   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
-      delivery.status].some(x=>closed.has(String(x||'').toLowerCase())))return false;
-   return true;
-  }).map(row=>({
-    ...row,title:String(row.name||row.display_name||row.id),
-    _kind:'tr',_id:String(row.id),_status:'EXPLICADA',_last_at:row.explained_at,
-    revision:Number(row.revision||0),
-    image_url:row.archive_image?.url||row.fallback_image?.url||''
-  })).sort((a,b)=>String(b._last_at).localeCompare(String(a._last_at))).slice(0,100);
- }
+ if(state.tab==='listas')return trendListasRows(state.data);
  const latest=new Map();
  for(const x of ledger){
   const id=String(x.event_id||'');if(!id)continue;
@@ -930,6 +1009,7 @@ function render(){
  const oldest=editorialQueue.reduce((n,x)=>Math.min(n,Date.parse(x.requested_at||'')||Date.now()),Date.now());
  const stalled=editorialQueue.length>0&&Date.now()-oldest>15*60000;
  $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
+ paintListasBadge();
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
 function trendRowsFor(section){const saved=state.tab;state.tab=section;try{return trendRows()}finally{state.tab=saved}}
@@ -1030,6 +1110,7 @@ $('search').addEventListener('input',e=>{state.q=e.target.value.trim();render()}
 $('refresh').addEventListener('click',()=>{load(true);void checkPendingDeletes()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void checkPendingDeletes()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)void syncListasBadge()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
