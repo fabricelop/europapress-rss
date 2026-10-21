@@ -290,6 +290,7 @@ function currentTop30(recent){
 }
 
 function trendListasRows(data){
+  const requests=data.requests?.requests||[],ledger=data.deliveries?.items||[];
   const lastRequests=new Map(),lastDeliveries=new Map(),lastManual=new Map();
   const at=row=>Date.parse(row.updated_at||row.deleted_at||row.explained_at||row.requested_at||'')||0;
   const closed=new Set(['deleted','dismissed','published','removed','delete_pending']);
