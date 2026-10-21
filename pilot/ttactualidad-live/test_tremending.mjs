@@ -10,7 +10,7 @@ function extract(start,end){
  return html.slice(i,j);
 }
 const code=[
- extract('function ttiRows(){','function trendKey('),
+ extract('function ttiListasRows(data){','function trendKey('),
  extract('function isTemporarilyRemoved(item){','async function refreshPilotConnection'),
  extract('function confirmedAction(op,docs){','async function retryAction(')
 ].join('\n');
