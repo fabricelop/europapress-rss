@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T14:28:00+02:00",
-  "last_completed_at": "2026-10-21T12:37:25.510Z",
-  "updated_at": "2026-10-21T12:37:25.510Z",
+  "last_started_at": "2026-10-21T14:45:00+02:00",
+  "last_completed_at": "2026-10-21T14:46:00+02:00",
+  "updated_at": "2026-10-21T14:46:00+02:00",
   "status": "success",
   "processed_ids": [
     "88ff68989255",
@@ -28,29 +28,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1792585044981-manual",
+    "run_id": "chat-20261021T1445+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T14:28:00+02:00",
-    "updated_at": "2026-10-21T12:37:25.510Z",
-    "finished_at": "2026-10-21T12:37:25.510Z",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-21T14:45:00+02:00",
+    "updated_at": "2026-10-21T14:46:00+02:00",
+    "finished_at": "2026-10-21T14:46:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
+      "attempted": 0,
       "ready": 0,
-      "explained": 4,
-      "explanation_groups": 4,
+      "explained": 0,
+      "explanation_groups": 0,
       "concurrent_closed": 0,
       "duplicates_closed": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 4,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -59,172 +59,17 @@
       "pending_repair_triggered": 1,
       "pending_repair_groups_scanned": 0,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 2,
-      "remates_omitted": 2
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 0
     },
-    "message": "TTendencias 4/4 verificadas: MicroondasDeSILVERCREST, Mañaneros21O, La Coruña y EnBocaDeTodos quedaron explained y sincronizadas; cola final 0 y sin rewrite_pending. Sin ImageGen directo.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-21T12:37:25.510Z",
-        "phase": "persisting",
-        "trend_id": "88ff68989255",
-        "title": "#MicroondasDeSILVERCREST",
-        "reason": "El orquestador alcanzó su máximo de llamadas durante la primera persistencia después de sincronizar Explicadas y requests; la revisión exacta se releyó, se retiró de la cola y quedó verificada antes de continuar."
-      }
-    ],
-    "processed_ids": [
-      "88ff68989255",
-      "8aac1e167474",
-      "2a8cc5d21539",
-      "a5fb5e51b0e4"
-    ],
+    "message": "TTendencias 0/0 verificada: no había revisiones preparing/update/problematic ni reexplicaciones pendientes; cola final 0. Saneamiento de Pendientes disparado. Sin ImageGen directo.",
+    "incident_count": 0,
+    "incidents": [],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "activity": [
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "investigating",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Hecho esencial verificado: la protesta contra el acto de Vox y las cargas explican la tendencia."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "drafting",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "drafting",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Comprobando límite de X: 249 caracteres."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "remate_selection",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "remate_selection",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Evaluando candidatos con ratings y evitando repetir el remate ya usado en TTiTTulares."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "remate_selection",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Remate seleccionado: La plaza terminó contando furgones además de votos."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "persisting",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "verifying",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-21T12:34:47.844Z",
-        "phase": "verifying",
-        "trend_id": "2a8cc5d21539",
-        "title": "La Coruña",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "verifying",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Releyendo estado autoritativo de #EnBocaDeTodos."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "investigating",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Buscando detonante actual."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "investigating",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Contrastando la emisión actual de Cuatro con el radar de tendencias."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "investigating",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Hecho esencial verificado: el hashtag acompaña la conversación durante la emisión de En boca de todos."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "drafting",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "drafting",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Comprobando límite de X: 167 caracteres."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "remate_selection",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Sin remate · explicación factual suficiente."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "persisting",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "verifying",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-21T12:35:44.397Z",
-        "phase": "verifying",
-        "trend_id": "a5fb5e51b0e4",
-        "title": "#EnBocaDeTodos",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-21T12:37:25.510Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: cola editorial 0 y sin reexplicaciones pendientes."
-      }
-    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -232,83 +77,43 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
+    "remate_selections": [],
+    "activity": [
       {
-        "trend_id": "88ff68989255",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
+        "at": "2026-10-21T14:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada; cola editorial inicial 0. Revalidando main y activando saneamiento de Pendientes."
       },
       {
-        "trend_id": "8aac1e167474",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Explicación factual suficiente; tendencia no política."
+        "at": "2026-10-21T14:45:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura de main: cola 0, sin preparing/update/problematic y sin reexplicaciones pendientes en requests."
       },
       {
-        "trend_id": "2a8cc5d21539",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "c1",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "a5fb5e51b0e4",
-        "revision": 0,
-        "candidate_count": 0,
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "Explicación factual suficiente; tendencia no política."
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "88ff68989255",
-        "name": "#MicroondasDeSILVERCREST",
-        "revision": 0,
-        "status": "explained",
-        "explained_at": "2026-10-21T12:32:12.603Z"
-      },
-      {
-        "id": "8aac1e167474",
-        "name": "#Mañaneros21O",
-        "revision": 0,
-        "status": "explained",
-        "explained_at": "2026-10-21T12:33:57.513Z"
-      },
-      {
-        "id": "2a8cc5d21539",
-        "name": "La Coruña",
-        "revision": 0,
-        "status": "explained",
-        "explained_at": "2026-10-21T12:34:47.844Z"
-      },
-      {
-        "id": "a5fb5e51b0e4",
-        "name": "#EnBocaDeTodos",
-        "revision": 0,
-        "status": "explained",
-        "explained_at": "2026-10-21T12:35:44.397Z"
+        "at": "2026-10-21T14:46:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cierre 0/0 verificado; saneamiento de Pendientes disparado y sin ImageGen directo."
       }
     ],
     "radar": {
-      "captured_at": "2026-10-21T14:31:22+02:00",
+      "captured_at": "2026-10-21T14:41:08+02:00",
       "queue_count": 0,
       "top10": [
         "Milei",
-        "#EnBocaDeTodos",
-        "#TierraDeNadie6",
         "Argentina",
+        "La Coruña",
+        "#TierraDeNadie6",
         "#MicroondasDeSILVERCREST",
+        "#ZurdosYOrgullosos",
         "#Mañaneros21O",
         "El PSG",
-        "#ZurdosYOrgullosos",
-        "La Coruña",
+        "#EnBocaDeTodos",
         "Xavi Espart"
       ]
     }
