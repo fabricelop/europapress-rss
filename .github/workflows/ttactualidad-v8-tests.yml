@@ -14,6 +14,7 @@ on:
       - '.github/workflows/ttactualidad-v8-tests.yml'
   pull_request:
     paths:
+      - 'pilot/ttactualidad-live/**'
       - 'pilot/apply-ttactualidad-action.py'
       - 'pilot/ttactualidad-live/test_live_actions.py'
       - '.github/workflows/ttendencias-refresh.yml'
@@ -44,6 +45,8 @@ jobs:
         run: node pilot/ttactualidad-live/test_top30.mjs
       - name: Trend card freshness and live interface
         run: node pilot/ttactualidad-live/test_listas.mjs
+      - name: iPhone combined Listas badge count and permission regression
+        run: node pilot/ttactualidad-live/test_badge.mjs
       - name: Tremending UI deletion regression
         run: node pilot/ttactualidad-live/test_tremending.mjs
       - name: Creciendo to En elaboración pending/ready regression
