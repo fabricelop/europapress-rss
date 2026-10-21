@@ -2,97 +2,77 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-21T04:35:42.414883+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-21T09:37:40.494479+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "a2c339bbaf76",
+          "title": "Apagón eléctrico Ceuta sufre un \"cero energético\" al irse la luz en toda la ciudad por una avería EF",
+          "seconds": 567,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 412890,
+          "seconds": 431008,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "5cd9a16e95fb970e64dba255d8453c6b53387c45bd43c1bf2a1f5e7a3dd6aa7d",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-21T04:35:42.414883+00:00",
-      "issue_count": 10,
+      "checked_at": "2026-10-21T09:37:40.494479+00:00",
+      "issue_count": 6,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "f58e6c159e64",
-          "title": "Pedri",
-          "seconds": 847,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "9cdc3e85d467",
-          "title": "#ChiringuitoChampions",
-          "seconds": 11060,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "0de953697faf",
-          "title": "Asraf",
-          "seconds": 11060,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "editorial_overdue",
           "id": "a17df40aeb58",
           "title": "Damián",
-          "seconds": 11060,
+          "seconds": 29178,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2e70108a529b",
-          "title": "Arkano",
-          "seconds": 9869,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "5c964cfff54c",
           "title": "Ivana",
-          "seconds": 6871,
+          "seconds": 24989,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "9d85e04de81b",
-          "title": "Joan García",
-          "seconds": 4469,
+          "id": "480c58d577c3",
+          "title": "#ZurdosYOrgullosos",
+          "seconds": 4581,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "06c0b4564b2f",
-          "title": "Rodri",
-          "seconds": 3868,
+          "id": "a5409024dd31",
+          "title": "#LaHora21O",
+          "seconds": 4581,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "a3fc6b56c4d6",
-          "title": "Francia",
-          "seconds": 3868,
+          "id": "42180803f78d",
+          "title": "Milei",
+          "seconds": 4581,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 412889,
+          "seconds": 431007,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -101,16 +81,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "2fd9edbd4a3d699faf2d1d84f50178be38f9db582ae5945d6eff327ed5e45f8d",
+      "open_signature": "00242a2920ec3358d84247165c07cd823d28f3ecb3de3a918560113651466828",
       "repair_via_workflow_run": false,
-      "escalation_required": 8
+      "escalation_required": 5
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T00:02:35.670986+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-21T04:35:42.414883+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-21T04:35:42.414883+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T04:35:42.414883+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T09:37:40.494479+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-21T09:37:40.494479+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-21T09:37:40.494479+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T09:37:40.494479+00:00"
   },
-  "checked_at": "2026-10-21T04:35:42.414883+00:00"
+  "checked_at": "2026-10-21T09:37:40.494479+00:00"
 }
