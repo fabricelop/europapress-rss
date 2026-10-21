@@ -12,6 +12,12 @@ on:
       - 'pilot/ttactualidad-live/**'
       - '.github/workflows/ttactualidad-direct-actions.yml'
       - '.github/workflows/ttactualidad-v8-tests.yml'
+  pull_request:
+    paths:
+      - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/ttactualidad-live/test_live_actions.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttactualidad-v8-tests.yml'
   workflow_dispatch:
 permissions:
   contents: read
