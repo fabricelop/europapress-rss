@@ -110,6 +110,7 @@ jobs:
           from datetime import datetime, timezone
           from urllib.parse import unquote
           from PIL import Image
+          from shared.tt_image_idempotency import may_enqueue_image_job
 
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/ttendencias-control")
@@ -251,32 +252,13 @@ jobs:
               job_path=CTRL/f"trends/image-runs/jobs/{tid}.json"
               old=load(job_path)
               manual_retry_version=int(row.get("ai_image_regenerate_request_version") or 0)
-              consumed_retry_version=int(old.get("manual_retry_version") or 0)
-              force_retry=manual_retry_version>consumed_retry_version
-              old_status=str(old.get("status") or "").upper()
-              if old and int(old.get("revision") or revision)==revision and not force_retry and (old.get("pc_launched_at") or old_status=="LAUNCHED" or (old_status in {"ERROR","CANCELLED"} and int(old.get("auto_repair_attempt") or 0)>=3)):
+              # The same side-effect-aware guard is shared by both projects.
+              # In launch_only mode ERROR is not proof ImageGen did not run.
+              if not may_enqueue_image_job(old, revision, manual_retry_version=manual_retry_version):
                   continue
-              old_updated=parse_dt(old.get("updated_at") or old.get("requested_at"))
-              old_age=(now-old_updated).total_seconds() if old_updated else None
-              # Un job activo solo bloquea la reparación mientras tenga actividad reciente.
-              # El bridge trabaja de uno en uno: REQUESTED tolera hasta 45 min de cola;
-              # RUNNING/GENERATING/PERSISTING no puede quedar vivo más de 12 min sin señal.
-              active_ttl=2700 if old_status=="REQUESTED" else 720
-              same_revision=int(old.get("revision") or revision)==revision
-              if (not force_retry) and same_revision and old_status in ACTIVE and old_age is not None and old_age < active_ttl:
-                  continue
-
+              force_retry=manual_retry_version>int(old.get("manual_retry_version") or 0)
               auto_attempt=int(old.get("auto_repair_attempt") or 0)
               previous_attempt=int(old.get("attempt") or row.get("ai_image_attempt") or 0)
-              last=parse_dt(old.get("finished_at") or old.get("updated_at"))
-              # not_pending_explained fue un fallo de lectura del fichero grande
-              # (>1 MB) ya corregido en el backend; debe poder reintentarse al
-              # instante, sin quedar bloqueado una hora por el contador previo.
-              old_message=str(old.get("message") or "")
-              cooldown=0 if "not_pending_explained" in old_message else (300 if auto_attempt<3 else 3600)
-              if (not force_retry) and old and last and (now-last).total_seconds()<cooldown:
-                  continue
-
               auto_attempt+=1
               attempt=max(1,previous_attempt+1)
               command=f"tr-img-auto-{tid}-r{revision}-a{auto_attempt}-{int(time.time()*1000)}"
@@ -399,9 +381,10 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add trends/image-runs
             git commit -m "Reparar automáticamente IA de TTendencias"
-            for n in 1 2 3 4 5; do
-              git pull --rebase origin "$CONTROL" || { git rebase --abort || true; sleep $((n*2)); continue; }
-              if git push origin HEAD:"$CONTROL"; then break; fi
-              sleep $((n*2))
-            done
+            # Fast-forward Git ref claim; a stale commit must never overwrite
+            # a newer ACK or revision. The next pass reads fresh branch state.
+            if ! git push origin HEAD:"$CONTROL"; then
+              echo "TT_IMAGE_CLAIM_CONFLICT: control branch changed" >&2
+              exit 1
+            fi
           fi
