@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-21T06:45:00+02:00",
-  "last_completed_at": "2026-10-21T06:47:00+02:00",
-  "updated_at": "2026-10-21T06:47:00+02:00",
+  "last_started_at": "2026-10-21T07:15:00+02:00",
+  "last_completed_at": "2026-10-21T07:16:20+02:00",
+  "updated_at": "2026-10-21T07:16:20+02:00",
   "status": "success",
   "processed_ids": [
     "f58e6c159e64"
@@ -22,16 +22,13 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-editorial-202610210645-chat-direct",
+    "run_id": "tr-editorial-202610210715-chat-direct",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-21T06:45:00+02:00",
-    "updated_at": "2026-10-21T06:47:00+02:00",
-    "finished_at": "2026-10-21T06:47:00+02:00",
+    "started_at": "2026-10-21T07:15:00+02:00",
+    "updated_at": "2026-10-21T07:16:20+02:00",
+    "finished_at": "2026-10-21T07:16:20+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -40,39 +37,39 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-21T06:45:00+02:00",
+        "at": "2026-10-21T07:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; releyendo cola, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-21T06:45:20+02:00",
+        "at": "2026-10-21T07:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado inicial: cola 0; radar fresco de las 06:41:06; sin preparing/update/problematic en requests."
+        "message": "Estado inicial: cola 0; radar fresco de las 07:11:09; sin preparing/update/problematic en requests."
       },
       {
-        "at": "2026-10-21T06:45:40+02:00",
+        "at": "2026-10-21T07:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; no se llama a ImageGen desde la pasada editorial."
+        "message": "Saneamiento de Pendientes solicitado mediante pending-repair-trigger; sin ImageGen directo."
       },
       {
-        "at": "2026-10-21T06:46:00+02:00",
+        "at": "2026-10-21T07:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main antes del cierre para confirmar cola y revisiones activas."
+        "message": "Releyendo main y buscando rewrite_pending vigente en el estado actual."
       },
       {
-        "at": "2026-10-21T06:47:00+02:00",
+        "at": "2026-10-21T07:16:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0, sin preparing/update/problematic ni rewrite_pending."
+        "message": "Relectura final: cola 0, sin revisiones activas ni rewrite_pending."
       }
     ],
     "summary": {
@@ -93,7 +90,7 @@
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
-      "pending_repair_groups_scanned": 9,
+      "pending_repair_groups_scanned": 5,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
@@ -113,7 +110,7 @@
     "remate_selections": [],
     "final_outcomes": [],
     "radar": {
-      "captured_at": "2026-10-21T06:41:06+02:00",
+      "captured_at": "2026-10-21T07:11:09+02:00",
       "queue_count": 0,
       "top10": [
         "#TierraDeNadie6",
