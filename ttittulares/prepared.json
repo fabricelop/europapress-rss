@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-21T13:05:30Z",
+  "updated_at": "2026-10-21T13:10:58.307182Z",
   "items": [
     {
       "event_id": "6b680fc45c95",
@@ -196,17 +196,35 @@
       },
       "prepared_at": "2026-10-21T13:05:30Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_app_available": false,
       "image_delivery": "none",
       "sensitive_editorial": false,
-      "image_status": "none"
+      "image_status": "none",
+      "archive_image_search_attempted_at": "2026-10-21T13:10:58.307182Z",
+      "fallback_image_search_attempted_at": "2026-10-21T13:10:58.307182Z",
+      "archive_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/jueza-tardon-pregunta-defensa-si-hubo-buques-marroquies-aguas-ceuta-coincidiendo-avalancha-julio/1413475577",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La jueza Tardón pregunta a Defensa si hubo buques marroquíes en aguas de Ceuta coincidiendo con la avalancha de julio"
+      },
+      "fallback_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/jueza-tardon-pregunta-defensa-si-hubo-buques-marroquies-aguas-ceuta-coincidiendo-avalancha-julio/1413475577",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La jueza Tardón pregunta a Defensa si hubo buques marroquíes en aguas de Ceuta coincidiendo con la avalancha de julio"
+      }
     }
   ],
   "count": 3,
