@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-22T13:21:00+02:00",
+  "updated_at": "2026-10-22T11:19:05.375Z",
   "items": [
     {
       "event_id": "23f325c631ed",
@@ -281,7 +281,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "none",
       "image_pending": false,
       "sensitive_editorial": true,
@@ -297,7 +297,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El Consorcio de Compensación de Seguros recibe 6.500 solicitudes de indemnización por la dana Adam"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-22T11:19:05.375Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {}"
     },
     {
       "event_id": "8e7bcb576b8f",
