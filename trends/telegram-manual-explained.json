@@ -886,8 +886,10 @@
       "ai_image_status": "not_requested",
       "fallback_image_status": "none",
       "image_status": "none",
-      "image_choice": null,
-      "image_pending": false
+      "image_choice": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "6edd382e5ca7",
@@ -934,10 +936,12 @@
       "ai_image_status": "not_requested",
       "fallback_image_status": "none",
       "image_status": "none",
-      "image_choice": null,
-      "image_pending": false
+      "image_choice": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-23T01:49:45+02:00",
+  "updated_at": "2026-10-22T23:51:55.666975Z",
   "count": 19
 }
