@@ -120,7 +120,7 @@ async function fetchJson(path,force=false){
    return doc;
   }catch(e){errors.push(String(e?.message||e))}
  }
- try{const cached=JSON.parse(localStorage.getItem(key)||'null');if(cached?.doc)return cached.doc}catch{}
+ try{const cached=JSON.parse(localStorage.getItem(key)||'null');if(cached?.doc)return path==='trends/recent.json'?{...cached.doc,_ttLocalCache:true}:cached.doc}catch{}
  throw Error(path+': '+errors.slice(0,3).join(', '))
 }
 async function load(force=false){
@@ -1006,12 +1006,15 @@ function render(){
   $('last-radar').textContent='Último radar: '+stamp(last);
   const next=new Date();next.setSeconds(0,0);
   if(state.app==='tti')next.setMinutes(60);
-  else {const minute=next.getMinutes();next.setMinutes(minute<15?15:minute<45?45:75)}
+  else {const minute=next.getMinutes(),nextSlot=[7,17,27,37,47,57].find(m=>m>minute);next.setMinutes(nextSlot===undefined?67:nextSlot)}
   $('next-radar').textContent='Próximo radar previsto: '+stamp(next.toISOString());
  const editorialQueue=state.app==='tr'?(state.data.editorialQueue?.items||[]).filter(x=>['preparing','update'].includes(String(x.status||'').toLowerCase())):[];
  const oldest=editorialQueue.reduce((n,x)=>Math.min(n,Date.parse(x.requested_at||'')||Date.now()),Date.now());
  const stalled=editorialQueue.length>0&&Date.now()-oldest>15*60000;
- $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
+ const lastMillis=Date.parse(last||''),radarAgeMinutes=Number.isFinite(lastMillis)?Math.max(0,Math.round((Date.now()-lastMillis)/60000)):null;
+ const oldRadar=state.app==='tr'&&(radarAgeMinutes===null||radarAgeMinutes>25);
+ const localRadarCache=state.app==='tr'&&state.data.recent?._ttLocalCache===true;
+ $('status').innerHTML='Último radar: <strong>'+esc(stamp(last))+'</strong> · Mostrando '+rows.length+' · Datos recibidos '+stamp(state.updated)+(state.lastError?' · <span style="color:var(--orange)">Parte de los datos procede de caché</span>':'')+(localRadarCache?' · <strong style="color:var(--orange)">Radar en caché local</strong>':'')+(oldRadar?' · <strong style="color:var(--orange)">Radar retrasado'+(radarAgeMinutes===null?'':': '+radarAgeMinutes+' min')+'</strong>':'')+(state.app==='tr'?' · Interfaz V8':'')+(stalled?' · <strong style="color:var(--orange)">Atención: '+editorialQueue.length+' tendencias llevan más de 15 min en cola sin cierre editorial confirmado</strong>':'');
  paintListasBadge();
 }
 function ttiRowsFor(section){const saved=state.tab;state.tab=section;try{return ttiRows()}finally{state.tab=saved}}
