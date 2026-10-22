@@ -10,6 +10,21 @@ struct TimeDiscoveryHome:View {
             List {
                 Section {
                     NavigationLink {
+                        BioGridView(model:model)
+                    } label: {
+                        Label {
+                            VStack(alignment:.leading,spacing:4) {
+                                Text("BIOGRID").font(.headline)
+                                Text("Siete familias de bacterias; colonización a partir de tu tiempo GPS.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        } icon: { Image(systemName:"circle.hexagongrid.fill").foregroundStyle(.teal) }
+                    }
+                } header: {
+                    Text("BIOGRID")
+                }
+                Section {
+                    NavigationLink {
                         TimeWhereWasIView(model:model)
                     } label: {
                         Label {
