@@ -12,6 +12,7 @@ on:
       - "trends/update_trends.py"
       - ".github/scripts/test_ttendencias_top30_queue.py"
       - ".github/scripts/test_ttendencias_anchor_freshness.py"
+      - ".github/scripts/test_ttendencias_radar_source_diversity.py"
       - ".github/scripts/test_ttendencias_radar_history.py"
       - ".github/workflows/ttendencias-refresh.yml"
 
@@ -42,6 +43,9 @@ jobs:
 
       - name: Verificar selección de fuentes frescas del Top 10
         run: python3 .github/scripts/test_ttendencias_anchor_freshness.py
+
+      - name: Verificar consenso diverso frente a fuentes duplicadas
+        run: python3 .github/scripts/test_ttendencias_radar_source_diversity.py
 
       - name: Verificar radar emergente y continuidad de observaciones
         run: python3 .github/scripts/test_ttendencias_radar_history.py
