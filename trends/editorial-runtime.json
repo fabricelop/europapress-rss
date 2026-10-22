@@ -4,20 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T07:46:20+02:00",
-  "last_completed_at": "2026-10-22T07:51:14+02:00",
-  "updated_at": "2026-10-22T07:51:14+02:00",
+  "last_started_at": "2026-10-22T08:15:00+02:00",
+  "last_completed_at": "2026-10-22T08:16:00+02:00",
+  "updated_at": "2026-10-22T08:16:00+02:00",
   "status": "success",
-  "processed_ids": [
-    "0824742356b2"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261022T0746+0200",
+    "trigger_run_id": "tr-chat-20261022T0815+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -25,29 +23,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261022T0746+0200",
+    "run_id": "tr-chat-20261022T0815+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T07:46:20+02:00",
-    "updated_at": "2026-10-22T07:51:14+02:00",
-    "finished_at": "2026-10-22T07:51:14+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-22T08:15:00+02:00",
+    "updated_at": "2026-10-22T08:16:00+02:00",
+    "finished_at": "2026-10-22T08:16:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -55,14 +53,14 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates": 0,
+      "pending_visual_candidates": 2,
       "incidents": 0
     },
-    "message": "TTendencias 1/1 completada: #felizjueves r0 explicada y verificada; cola editorial 0, sin preparing/update, problematic ni reexplicaciones pendientes. Sin ImageGen.",
+    "message": "TTendencias 0/0 verificada: sin preparing/update, problematic ni rewrite_pending. Saneamiento visual solicitado por separado; sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,184 +70,49 @@
       "total_ratings": 154,
       "recent_considered": 154
     },
-    "remate_selections": [
-      {
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "selected": "🌶️ El jueves abrió turno y las redes ficharon temprano.",
-        "reason": "Específico del saludo recurrente, breve y sin repetir las imágenes mentales de los remates recientes."
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T07:46:20+02:00",
+        "at": "2026-10-22T08:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial activa 1. Revalidando #felizjueves y disparando saneamiento independiente de Pendientes."
+        "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones y saneamiento independiente de Pendientes."
       },
       {
-        "at": "2026-10-22T07:47:00+02:00",
+        "at": "2026-10-22T08:15:30+02:00",
         "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Releyendo estado autoritativo de #felizjueves"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-22T07:47:25+02:00",
-        "phase": "investigating",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-22T07:47:45+02:00",
-        "phase": "investigating",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Contrastando fuente 1/2"
-      },
-      {
-        "at": "2026-10-22T07:47:55+02:00",
-        "phase": "investigating",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Contrastando fuente 2/2"
-      },
-      {
-        "at": "2026-10-22T07:48:05+02:00",
-        "phase": "investigating",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Hecho esencial verificado: saludo recurrente de los jueves, sin detonante noticioso único"
-      },
-      {
-        "at": "2026-10-22T07:48:15+02:00",
-        "phase": "drafting",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-22T07:48:25+02:00",
-        "phase": "drafting",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-22T07:48:35+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-22T07:48:45+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Evaluando candidatos con ratings y remates recientes"
-      },
-      {
-        "at": "2026-10-22T07:48:55+02:00",
-        "phase": "remate_selection",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Remate seleccionado"
-      },
-      {
-        "at": "2026-10-22T07:49:05+02:00",
-        "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Revalidando id+revision antes de persistir"
-      },
-      {
-        "at": "2026-10-22T07:49:15+02:00",
-        "phase": "persisting",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-22T07:49:25+02:00",
-        "phase": "persisting",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-22T07:49:35+02:00",
-        "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-22T07:49:40+02:00",
-        "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-22T07:49:45+02:00",
-        "phase": "persisting",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-22T07:50:10+02:00",
-        "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-22T07:50:20+02:00",
-        "phase": "verifying",
-        "trend_id": "0824742356b2",
-        "title": "#felizjueves",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-22T07:51:14+02:00",
+        "at": "2026-10-22T08:16:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 1/1 completada: #felizjueves r0 explicada y verificada; cola editorial 0, sin preparing/update, problematic ni reexplicaciones pendientes. Sin ImageGen."
+        "message": "TTendencias 0/0 verificada: sin preparing/update, problematic ni rewrite_pending. Saneamiento visual solicitado por separado; sin ImageGen."
       }
     ],
-    "processed_ids": [
-      "0824742356b2"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "0824742356b2",
-        "name": "#felizjueves",
-        "revision": 0,
-        "status": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261022T0746+0200",
+  "run_id": "tr-chat-20261022T0815+0200",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -257,154 +120,35 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates": 0,
+    "pending_visual_candidates": 2,
     "incidents": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-22T07:46:20+02:00",
+      "at": "2026-10-22T08:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola editorial activa 1. Revalidando #felizjueves y disparando saneamiento independiente de Pendientes."
+      "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones y saneamiento independiente de Pendientes."
     },
     {
-      "at": "2026-10-22T07:47:00+02:00",
+      "at": "2026-10-22T08:15:30+02:00",
       "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Releyendo estado autoritativo de #felizjueves"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: cola, requests y reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-22T07:47:25+02:00",
-      "phase": "investigating",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-22T07:47:45+02:00",
-      "phase": "investigating",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Contrastando fuente 1/2"
-    },
-    {
-      "at": "2026-10-22T07:47:55+02:00",
-      "phase": "investigating",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Contrastando fuente 2/2"
-    },
-    {
-      "at": "2026-10-22T07:48:05+02:00",
-      "phase": "investigating",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Hecho esencial verificado: saludo recurrente de los jueves, sin detonante noticioso único"
-    },
-    {
-      "at": "2026-10-22T07:48:15+02:00",
-      "phase": "drafting",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-22T07:48:25+02:00",
-      "phase": "drafting",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-22T07:48:35+02:00",
-      "phase": "remate_selection",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Generando candidatos de remate"
-    },
-    {
-      "at": "2026-10-22T07:48:45+02:00",
-      "phase": "remate_selection",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Evaluando candidatos con ratings y remates recientes"
-    },
-    {
-      "at": "2026-10-22T07:48:55+02:00",
-      "phase": "remate_selection",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Remate seleccionado"
-    },
-    {
-      "at": "2026-10-22T07:49:05+02:00",
-      "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Revalidando id+revision antes de persistir"
-    },
-    {
-      "at": "2026-10-22T07:49:15+02:00",
-      "phase": "persisting",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-22T07:49:25+02:00",
-      "phase": "persisting",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-22T07:49:35+02:00",
-      "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-22T07:49:40+02:00",
-      "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-22T07:49:45+02:00",
-      "phase": "persisting",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-22T07:50:10+02:00",
-      "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-22T07:50:20+02:00",
-      "phase": "verifying",
-      "trend_id": "0824742356b2",
-      "title": "#felizjueves",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-22T07:51:14+02:00",
+      "at": "2026-10-22T08:16:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 1/1 completada: #felizjueves r0 explicada y verificada; cola editorial 0, sin preparing/update, problematic ni reexplicaciones pendientes. Sin ImageGen."
+      "message": "TTendencias 0/0 verificada: sin preparing/update, problematic ni rewrite_pending. Saneamiento visual solicitado por separado; sin ImageGen."
     }
   ],
   "telegram_orphans": 0,
@@ -413,21 +157,21 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-22T07:40:49+02:00"
+    "captured_at": "2026-10-22T08:10:50+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-22T06:21:00+02:00",
+    "captured_at": "2026-10-22T08:10:50+02:00",
     "queue_count": 0,
     "top10": [
       "Milei",
       "#LaIslaDeLasTentaciones14",
+      "#felizjueves",
       "Argentina",
       "Bioware",
-      "#ZurdosYOrgullosos",
       "La Coruña",
       "Mass Effect",
+      "#ZurdosYOrgullosos",
       "Nico Paz",
-      "Ruben",
       "Abascal"
     ]
   }
