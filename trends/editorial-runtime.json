@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T10:45:00+02:00",
-  "last_completed_at": "2026-10-22T10:47:30+02:00",
-  "updated_at": "2026-10-22T10:47:30+02:00",
+  "last_started_at": "2026-10-22T11:15:00+02:00",
+  "last_completed_at": "2026-10-22T11:17:00+02:00",
+  "updated_at": "2026-10-22T11:17:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,9 +15,9 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261022T1045+0200",
-    "github_run_id": 39750305742,
-    "status": "in_progress",
+    "trigger_run_id": "tr-chat-20261022T111500+0200",
+    "github_run_id": null,
+    "status": "requested",
     "conclusion": null,
     "editorial_blocking": false
   },
@@ -25,13 +25,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261022T1045+0200",
+    "run_id": "tr-chat-20261022T111500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T10:45:00+02:00",
-    "updated_at": "2026-10-22T10:47:30+02:00",
-    "finished_at": "2026-10-22T10:47:30+02:00",
+    "started_at": "2026-10-22T11:15:00+02:00",
+    "updated_at": "2026-10-22T11:17:00+02:00",
+    "finished_at": "2026-10-22T11:17:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,7 +62,7 @@
       "pending_visual_candidates": 2,
       "incidents": 0
     },
-    "message": "TTendencias 0/0 verificada: cola editorial vacía, sin reexplicaciones ni problemáticas activas; saneamiento visual solicitado de forma independiente.",
+    "message": "TTendencias 0/0 verificada: no había trabajo editorial activo; saneamiento visual independiente solicitado para 2 Pendientes recientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,25 +75,32 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T10:45:00+02:00",
+        "at": "2026-10-22T11:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Comprobando reexplicaciones y saneamiento de Pendientes antes del cierre."
       },
       {
-        "at": "2026-10-22T10:47:00+02:00",
+        "at": "2026-10-22T11:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola, requests y reexplicaciones antes de cerrar 0/0."
+        "message": "Releyendo main: cola, requests, reexplicaciones y Pendientes antes de cerrar 0/0."
       },
       {
-        "at": "2026-10-22T10:47:30+02:00",
+        "at": "2026-10-22T11:16:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura de main completada: cola 0, sin requests activas, rewrite_pending ni problemáticas; 2 Pendientes visuales detectadas y saneamiento solicitado."
+      },
+      {
+        "at": "2026-10-22T11:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 0/0 verificada: cola editorial vacía, sin reexplicaciones ni problemáticas activas; saneamiento visual solicitado de forma independiente."
+        "message": "TTendencias 0/0 verificada: no había trabajo editorial activo; saneamiento visual independiente solicitado para 2 Pendientes recientes."
       }
     ],
     "processed_ids": [],
@@ -102,7 +109,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261022T1045+0200",
+  "run_id": "tr-chat-20261022T111500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -132,25 +139,32 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-22T10:45:00+02:00",
+      "at": "2026-10-22T11:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Comprobando reexplicaciones y saneamiento de Pendientes antes del cierre."
     },
     {
-      "at": "2026-10-22T10:47:00+02:00",
+      "at": "2026-10-22T11:16:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola, requests y reexplicaciones antes de cerrar 0/0."
+      "message": "Releyendo main: cola, requests, reexplicaciones y Pendientes antes de cerrar 0/0."
     },
     {
-      "at": "2026-10-22T10:47:30+02:00",
+      "at": "2026-10-22T11:16:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura de main completada: cola 0, sin requests activas, rewrite_pending ni problemáticas; 2 Pendientes visuales detectadas y saneamiento solicitado."
+    },
+    {
+      "at": "2026-10-22T11:17:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 0/0 verificada: cola editorial vacía, sin reexplicaciones ni problemáticas activas; saneamiento visual solicitado de forma independiente."
+      "message": "TTendencias 0/0 verificada: no había trabajo editorial activo; saneamiento visual independiente solicitado para 2 Pendientes recientes."
     }
   ],
   "telegram_orphans": 0,
@@ -159,17 +173,17 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-22T09:10:50+02:00"
+    "captured_at": "2026-10-22T11:10:59+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-22T09:10:50+02:00",
+    "captured_at": "2026-10-22T11:10:59+02:00",
     "queue_count": 0,
     "top10": [
       "Milei",
+      "#FelizJueves",
       "#LaIslaDeLasTentaciones14",
-      "#felizjueves",
       "Argentina",
-      "Bioware",
+      "BioWare",
       "La Coruña",
       "Mass Effect",
       "#ZurdosYOrgullosos",
