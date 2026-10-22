@@ -1,12 +1,30 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-21T21:50:52.109250+00:00",
+  "checked_at": "2026-10-22T00:16:29.649496+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 2,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 15,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "68b0dc7d5219",
+      "title": "Mbappé apoya a Vinícius tras el 4-1 al Leipzig",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "b3c3bfd6fdf4",
+      "title": "Heri Frade elogia a Diomande tras su golazo ante el Leipzig",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +118,10 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "68b0dc7d5219",
+    "b3c3bfd6fdf4"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",

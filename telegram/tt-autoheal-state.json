@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-21T21:50:54.352830+00:00",
+      "checked_at": "2026-10-22T00:16:31.856334+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 475002,
+          "seconds": 483739,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,101 +22,179 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-21T21:50:54.352830+00:00",
-      "issue_count": 11,
+      "checked_at": "2026-10-22T00:16:31.856334+00:00",
+      "issue_count": 22,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "dc46fd96dd39",
+          "title": "Ruben",
+          "seconds": 299,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "7678eeca684f",
+          "title": "GEMA",
+          "seconds": 299,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d48c6c588f9a",
+          "title": "Mara",
+          "seconds": 299,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f3a8feea67d8",
+          "title": "#ElChiringuitoenCuatro",
+          "seconds": 299,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "editorial_overdue",
           "id": "a17df40aeb58",
           "title": "Damián",
-          "seconds": 73172,
+          "seconds": 81909,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5c964cfff54c",
           "title": "Ivana",
-          "seconds": 68983,
+          "seconds": 77720,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "cf8239cbf7b5",
           "title": "#TEM21O",
-          "seconds": 26339,
+          "seconds": 35076,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 26339,
+          "seconds": 35076,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "97a359d802d1",
           "title": "Coruña",
-          "seconds": 22494,
+          "seconds": 31231,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "f1c7e916cf88",
           "title": "Zurdos",
-          "seconds": 22494,
+          "seconds": 31231,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "be98596f4727",
           "title": "Fascistas",
-          "seconds": 22494,
+          "seconds": 31231,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "6baf2b561567",
           "title": "Mass Effect",
-          "seconds": 12663,
+          "seconds": 21400,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "79992d9412a6",
           "title": "Dragon Age",
-          "seconds": 12663,
+          "seconds": 21400,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "f5a7544fb008",
           "title": "carrick",
-          "seconds": 7788,
+          "seconds": 16525,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "55c2e840ebac",
+          "title": "#LaIslaDeLasTentaciones14",
+          "seconds": 6314,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "b17043a931bf",
+          "title": "#Horizonte",
+          "seconds": 6314,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "6eee2ffd2999",
+          "title": "#CaraAlShow",
+          "seconds": 6314,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "6f0904969807",
+          "title": "#FirstDates21O",
+          "seconds": 6314,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "7b880b959d71",
+          "title": "IRINI",
+          "seconds": 2129,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "83ed5207a411",
+          "title": "sandra",
+          "seconds": 2129,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "8191aa70b3fb",
+          "title": "Náyades",
+          "seconds": 2129,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 475001,
+          "seconds": 483739,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "69aa655f1a8e340790d4a4de88c21b71b5cf293348b1a3e9dc1d354c4d191c08",
+      "open_signature": "ad31a3ae94d17a33f48a138da0eac02dc52e0b08a9067c52ce3c3be4fd6b488f",
       "repair_via_workflow_run": false,
-      "escalation_required": 10
+      "escalation_required": 17
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T18:20:00.201119+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-21T21:50:54.352830+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-21T21:50:54.352830+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-21T18:20:00.201119+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-22T00:16:31.856334+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-22T00:16:31.856334+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-22T00:16:31.856334+00:00"
   },
-  "checked_at": "2026-10-21T21:50:54.352830+00:00"
+  "checked_at": "2026-10-22T00:16:31.856334+00:00"
 }
