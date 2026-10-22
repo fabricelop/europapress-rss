@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T05:15:00+02:00",
-  "last_completed_at": "2026-10-22T05:15:40+02:00",
-  "updated_at": "2026-10-22T05:15:40+02:00",
+  "last_started_at": "2026-10-22T05:45:00+02:00",
+  "last_completed_at": "2026-10-22T05:45:50+02:00",
+  "updated_at": "2026-10-22T05:45:50+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,13 +23,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261022T051500+0200",
+    "run_id": "tr-chat-20261022T054500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T05:15:00+02:00",
-    "updated_at": "2026-10-22T05:15:40+02:00",
-    "finished_at": "2026-10-22T05:15:40+02:00",
+    "started_at": "2026-10-22T05:45:00+02:00",
+    "updated_at": "2026-10-22T05:45:50+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -73,21 +72,21 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T05:15:00+02:00",
+        "at": "2026-10-22T05:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Comprobando reexplicaciones, estado fresco y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-22T05:15:25+02:00",
+        "at": "2026-10-22T05:45:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releído main: cola 0, sin requests activas, problematic ni rewrite_pending; radar fresco de las 05:10:50."
+        "message": "Releído main: cola 0, sin requests activas, problematic ni rewrite_pending; radar fresco de las 05:40:52 y trigger visual verificado."
       },
       {
-        "at": "2026-10-22T05:15:40+02:00",
+        "at": "2026-10-22T05:45:50+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -98,7 +97,8 @@
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [],
+    "finished_at": "2026-10-22T05:45:50+02:00"
   },
   "run_id": "tr-chat-20261022T051500+0200",
   "summary": {
@@ -174,6 +174,5 @@
       "#CaraAlShow",
       "Náyades"
     ]
-  },
-  "error": null
+  }
 }
