@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T15:15:00+02:00",
-  "last_completed_at": "2026-10-22T15:17:00+02:00",
-  "updated_at": "2026-10-22T15:17:00+02:00",
+  "last_started_at": "2026-10-22T15:45:00+02:00",
+  "last_completed_at": "2026-10-22T15:45:50+02:00",
+  "updated_at": "2026-10-22T15:45:50+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -15,7 +15,7 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261022T151500+0200",
+    "trigger_run_id": "tr-chat-20261022T154500+0200",
     "github_run_id": null,
     "status": "requested",
     "conclusion": null,
@@ -25,13 +25,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261022T151500+0200",
+    "run_id": "tr-chat-20261022T154500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T15:15:00+02:00",
-    "updated_at": "2026-10-22T15:17:00+02:00",
-    "finished_at": "2026-10-22T15:17:00+02:00",
+    "started_at": "2026-10-22T15:45:00+02:00",
+    "updated_at": "2026-10-22T15:45:50+02:00",
+    "finished_at": "2026-10-22T15:45:50+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -75,28 +75,28 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T15:15:00+02:00",
+        "at": "2026-10-22T15:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Revisando reexplicaciones y saneamiento de Pendientes recientes."
       },
       {
-        "at": "2026-10-22T15:16:00+02:00",
+        "at": "2026-10-22T15:45:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main antes del cierre; verificando cola, requests, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-22T15:16:30+02:00",
+        "at": "2026-10-22T15:45:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura completada: cola 0, requests activas 0, rewrite_pending 0, problemáticas 0 y huérfanos 0; 2 Pendientes recientes quedan en saneamiento visual."
+        "message": "Relectura completada: cola 0, requests activas 0, rewrite_pending 0 y problemáticas 0; 2 Pendientes recientes quedan en saneamiento visual."
       },
       {
-        "at": "2026-10-22T15:17:00+02:00",
+        "at": "2026-10-22T15:45:50+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -109,7 +109,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261022T151500+0200",
+  "run_id": "tr-chat-20261022T154500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -139,28 +139,28 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-22T15:15:00+02:00",
+      "at": "2026-10-22T15:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Revisando reexplicaciones y saneamiento de Pendientes recientes."
     },
     {
-      "at": "2026-10-22T15:16:00+02:00",
+      "at": "2026-10-22T15:45:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main antes del cierre; verificando cola, requests, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-22T15:16:30+02:00",
+      "at": "2026-10-22T15:45:40+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura completada: cola 0, requests activas 0, rewrite_pending 0, problemáticas 0 y huérfanos 0; 2 Pendientes recientes quedan en saneamiento visual."
+      "message": "Relectura completada: cola 0, requests activas 0, rewrite_pending 0 y problemáticas 0; 2 Pendientes recientes quedan en saneamiento visual."
     },
     {
-      "at": "2026-10-22T15:17:00+02:00",
+      "at": "2026-10-22T15:45:50+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -169,14 +169,14 @@
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "previous_concurrent_run_id": "tr-chat-20261022T144500+0200",
+  "previous_concurrent_run_id": "tr-chat-20261022T151500+0200",
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-22T15:11:45+02:00"
+    "captured_at": "2026-10-22T15:41:04+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-22T15:11:45+02:00",
+    "captured_at": "2026-10-22T15:41:04+02:00",
     "queue_count": 0
   }
 }
