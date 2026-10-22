@@ -395,8 +395,13 @@ def choose_top10(source_data):
 
     def corroboration(item, pool):
         name, data = item
+        # Anti-echo: two heavily overlapping aggregators must not drown out
+        # independent, current observations from several other providers.
+        # Cap each peer's contribution; breadth of corroboration matters more
+        # than one nearly duplicated ranked list. Preserve raw overlaps for
+        # the supporter threshold and the remaining selection safeguards.
         return sum(
-            overlap(data["trends"], other["trends"])
+            min(0.30, overlap(data["trends"], other["trends"]))
             for oname, other in pool.items()
             if oname != name
         )
