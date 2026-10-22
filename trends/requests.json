@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-23T01:49:55+02:00",
+  "updated_at": "2026-10-23T01:51:36+02:00",
   "count": 91,
   "requests": [
     {
@@ -5225,7 +5225,7 @@
       "id": "3b8284c54aed",
       "name": "La Peter",
       "rank": 9,
-      "status": "preparing",
+      "status": "problematic",
       "requested_at": "2026-10-23T01:32:01+02:00",
       "revision": 0,
       "reexplain": false,
@@ -5240,7 +5240,11 @@
         "La Peter"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "problematic_at": "2026-10-23T01:51:36+02:00",
+      "problem_reason": "Tras dos búsquedas distintas con el término exacto y su contexto de captura no se ha podido identificar un detonante actual y verificable en España. Los resultados disponibles remiten a referencias antiguas o no relacionadas; no se inventa una explicación.",
+      "problematic_attempts": 1,
+      "editorial_engine": "chatgpt-automation-outbox"
     },
     {
       "id": "6edd382e5ca7",
