@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-22T07:12:54.021Z",
+  "updated_at": "2026-10-22T07:13:36.471217Z",
   "items": [
     {
       "event_id": "manual-9b39c140-7039-48ac-b967-1b741e77ca7f",
@@ -237,16 +237,34 @@
       },
       "prepared_at": "2026-10-22T07:12:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-22T07:13:36.471217Z",
+      "fallback_image_search_attempted_at": "2026-10-22T07:13:36.471217Z",
+      "archive_image": {
+        "url": "https://cadenaser.com/resizer/v2/CBEBX5UAEZEV3GSQM2VBVUUBDY.jpg?auth=66e7256592713cbecb5e1bb07e4ad95031124f7f00450177cf476a8dc5a3f96f&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/cmadrid/2026/10/21/ayuso-estrena-su-despacho-en-chamberi-para-reunirse-con-milei-radio-madrid/",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Ayuso estrena su nuevo despacho en Chamberí para reunirse con Milei"
+      },
+      "fallback_image": {
+        "url": "https://cadenaser.com/resizer/v2/CBEBX5UAEZEV3GSQM2VBVUUBDY.jpg?auth=66e7256592713cbecb5e1bb07e4ad95031124f7f00450177cf476a8dc5a3f96f&quality=70&width=1200&height=675&smart=true",
+        "source": "cadenaser.com",
+        "source_url": "https://cadenaser.com/cmadrid/2026/10/21/ayuso-estrena-su-despacho-en-chamberi-para-reunirse-con-milei-radio-madrid/",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Ayuso estrena su nuevo despacho en Chamberí para reunirse con Milei"
+      }
     }
   ],
   "count": 0,
