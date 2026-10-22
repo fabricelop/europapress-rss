@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-22T13:34:10+02:00",
+  "updated_at": "2026-10-22T11:39:03.727085Z",
   "items": [
     {
       "event_id": "23f325c631ed",
@@ -492,16 +492,34 @@
       },
       "prepared_at": "2026-10-22T13:34:10+02:00",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-22T11:39:03.727085Z",
+      "fallback_image_search_attempted_at": "2026-10-22T11:39:03.727085Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/b64a565d-1e91-40b8-bc30-1dff0c11654f_facebook-aspect-ratio-1200-675_default_0_x1045y516.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/catalunya/toni-comin-junts-vuelve-espana-nueve-anos-belgica-recoger-acta-eurodiputado_1_13603245.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Toni Comín (Junts) vuelve a España tras nueve años en Bélgica para recoger su acta de eurodiputado"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/b64a565d-1e91-40b8-bc30-1dff0c11654f_facebook-aspect-ratio-1200-675_default_0_x1045y516.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/catalunya/toni-comin-junts-vuelve-espana-nueve-anos-belgica-recoger-acta-eurodiputado_1_13603245.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Toni Comín (Junts) vuelve a España tras nueve años en Bélgica para recoger su acta de eurodiputado"
+      }
     }
   ],
   "count": 0,
