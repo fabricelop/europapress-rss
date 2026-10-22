@@ -2,174 +2,182 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-22T05:01:15.934731+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-22T10:01:28.912814+00:00",
+      "issue_count": 4,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "9e84e6d2df0a",
+          "title": "Muere Allen Bailey, el 'Hulk' de la NFL, a los 37 años: su esposa lo encontró sin vida en su casa de",
+          "seconds": 1031,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "7943f83180ca",
+          "title": "El juez procesa a cuatro exdirigentes de ETA por el atentado de Santa Pola de 2002 en el que muriero",
+          "seconds": 1031,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ff43fe596f21",
+          "title": "Cuatro heridos tras saltar al vacío al incendiarse un tercer piso en Los Pajaritos, Sevilla - Teleci",
+          "seconds": 1031,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 500823,
+          "seconds": 518836,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "d1753526175f30779a1c39297c92c08eb873ddfc59d1df5c444172edac6788fd",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-22T05:01:15.934731+00:00",
-      "issue_count": 21,
+      "checked_at": "2026-10-22T10:01:28.912814+00:00",
+      "issue_count": 19,
       "issues": [
         {
           "kind": "editorial_overdue",
           "id": "cf8239cbf7b5",
           "title": "#TEM21O",
-          "seconds": 52160,
+          "seconds": 70173,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "5d36de24ff2c",
           "title": "Defensor del Pueblo",
-          "seconds": 52160,
+          "seconds": 70173,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "97a359d802d1",
           "title": "Coruña",
-          "seconds": 48315,
+          "seconds": 66328,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "f1c7e916cf88",
           "title": "Zurdos",
-          "seconds": 48315,
+          "seconds": 66328,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "be98596f4727",
           "title": "Fascistas",
-          "seconds": 48315,
+          "seconds": 66328,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "6baf2b561567",
           "title": "Mass Effect",
-          "seconds": 38484,
+          "seconds": 56497,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "79992d9412a6",
           "title": "Dragon Age",
-          "seconds": 38484,
+          "seconds": 56497,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "f5a7544fb008",
           "title": "carrick",
-          "seconds": 33609,
+          "seconds": 51622,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "55c2e840ebac",
           "title": "#LaIslaDeLasTentaciones14",
-          "seconds": 23398,
+          "seconds": 41411,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "b17043a931bf",
           "title": "#Horizonte",
-          "seconds": 23398,
+          "seconds": 41411,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "6eee2ffd2999",
           "title": "#CaraAlShow",
-          "seconds": 23398,
+          "seconds": 41411,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "6f0904969807",
           "title": "#FirstDates21O",
-          "seconds": 23398,
+          "seconds": 41411,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "7b880b959d71",
           "title": "IRINI",
-          "seconds": 19213,
+          "seconds": 37226,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "83ed5207a411",
           "title": "sandra",
-          "seconds": 19213,
+          "seconds": 37226,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "8191aa70b3fb",
           "title": "Náyades",
-          "seconds": 19213,
+          "seconds": 37226,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "dc46fd96dd39",
-          "title": "Ruben",
-          "seconds": 17383,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "7678eeca684f",
           "title": "GEMA",
-          "seconds": 17383,
+          "seconds": 35396,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "d48c6c588f9a",
           "title": "Mara",
-          "seconds": 17383,
+          "seconds": 35396,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "f3a8feea67d8",
           "title": "#ElChiringuitoenCuatro",
-          "seconds": 17383,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "97392049c7ee",
-          "title": "Abascal",
-          "seconds": 2609,
+          "seconds": 35396,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 500823,
+          "seconds": 518836,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -178,16 +186,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "bafca2459c92dabc7d7922ceb6a892089237432ace99a37a8993251d40d8fa64",
+      "open_signature": "502293a2d45617c77cb514b94ba5384e82a7cb8f4f88163d1ea45784f3af62b3",
       "repair_via_workflow_run": false,
-      "escalation_required": 20
+      "escalation_required": 18
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-21T18:20:00.201119+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-22T05:01:15.934731+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-22T05:01:15.934731+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-22T05:01:15.934731+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-22T10:01:28.912814+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-22T10:01:28.912814+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-22T10:01:28.912814+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-22T10:01:28.912814+00:00"
   },
-  "checked_at": "2026-10-22T05:01:15.934731+00:00"
+  "checked_at": "2026-10-22T10:01:28.912814+00:00"
 }
