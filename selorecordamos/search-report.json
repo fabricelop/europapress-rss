@@ -1,11 +1,31 @@
 {
-  "generated_at": "2026-10-22T21:05:23.676Z",
-  "fetched_at": "2026-10-22T21:05:08.472Z",
+  "generated_at": "2026-10-22T22:06:53.351Z",
+  "fetched_at": "2026-10-22T22:05:08.674Z",
   "mode": "incremental",
   "query": "\"recordadme\" OR \"que alguien me recuerde\" OR \"alguien que me recuerde\" OR \"alguien me recuerde\" OR \"que me recuerden\" OR \"@SeLoRecordamos\"",
-  "status": "no_new_candidates",
-  "note": "Sin candidatos nuevos. Extraídos: 21; ya vistos: 21; descartados: 0.",
-  "extracted": 21,
-  "already_seen": 21,
-  "new_found": []
+  "status": "ok",
+  "note": "1 candidatos nuevos de 18 tuits extraídos.",
+  "extracted": 18,
+  "already_seen": 16,
+  "new_found": [
+    {
+      "id": "2113388387985957131",
+      "user": "@natxt_",
+      "text": "gracias ",
+      "datetime": "2026-10-22T21:53:51.000Z",
+      "url": "https://x.com/natxt_/status/2113388387985957131",
+      "first_seen_at": "2026-10-22T22:05:08.674Z",
+      "status": "pending",
+      "filter_status": "candidate"
+    },
+    {
+      "id": "2113385776738173368",
+      "user": "@llevant_locura",
+      "text": "Saquen del en vivo a Mike, no quiero que me recuerden a mi Carlitos Álvarez  ",
+      "datetime": "2026-10-22T21:43:28.000Z",
+      "url": "https://x.com/llevant_locura/status/2113385776738173368",
+      "reason": "excluded_phrase_me_recuerden_a",
+      "filter_status": "rejected"
+    }
+  ]
 }
