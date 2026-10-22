@@ -421,6 +421,34 @@ def choose_top10(source_data):
                 -float(item[1].get("age_minutes") if item[1].get("age_minutes") is not None else 9999),
             ),
         )
+        # A timestamped hourly snapshot can be 46-90 min old while several
+        # independent live aggregators have already converged on its topics.
+        # Override a single fresh, echoed source only with a CLEAR and broad
+        # corroboration advantage. This avoids switching away from a valid
+        # fresh anchor merely because one aging provider has one close mirror.
+        aging_candidates = {n: d for n, d in good.items() if d.get("freshness") == "aging"}
+        if aging_candidates:
+            aged_name, aged = max(
+                aging_candidates.items(),
+                key=lambda item: (
+                    corroboration(item, non_stale),
+                    -float(item[1].get("age_minutes") if item[1].get("age_minutes") is not None else 9999),
+                ),
+            )
+            aged_support = corroboration((aged_name, aged), non_stale)
+            fresh_support = corroboration((anchor_name, anchor), non_stale)
+            independent_supporters = [
+                name for name, data in non_stale.items()
+                if name != aged_name
+                and overlap(aged["trends"], data["trends"]) >= 0.15
+            ]
+            if aged_support >= fresh_support + 0.15 and len(independent_supporters) >= 3:
+                return (
+                    aged["trends"][:10],
+                    [aged_name] + independent_supporters,
+                    aged_name,
+                    "aging-anchor",
+                )
         supporters = [
             name for name, data in good.items()
             if name == anchor_name

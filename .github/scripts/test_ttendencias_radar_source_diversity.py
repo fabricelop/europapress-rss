@@ -153,6 +153,21 @@ assert "Javi Rodríguez" in top10 and "#Horizonte" in top10, top10
 sources["old_mirror"] = dict(sources["whatstrends"], freshness="stale", age_minutes=170)
 assert module.choose_top10(sources)[2] == "snaplytics"
 
+# The same hourly source ages past the 45-minute fresh cut-off
+# before its next hourly snapshot. Three or more independent aggregators
+# still corroborate it; a single recent echoed list must not pin Top 10.
+sources["snaplytics"]["freshness"] = "aging"
+sources["snaplytics"]["age_minutes"] = 56.5
+aged_top, aged_supporters, aged_name, aged_method = module.choose_top10(sources)
+assert (aged_name, aged_method) == ("snaplytics", "aging-anchor"), (
+    aged_name, aged_method, aged_supporters, aged_top)
+assert {"getdaytrends", "cyberkendra"}.issubset(set(aged_supporters)), aged_supporters
+
+# The protection is narrow: an isolated aged provider can never replace
+# a fresh source without independent confirmation.
+isolated = {"snaplytics": sources["snaplytics"], "whatstrends": sources["whatstrends"]}
+assert module.choose_top10(isolated)[2] == "whatstrends"
+
 # When two independent current observations split 50/50, the fresher wins.
 fresh_a = {"ok": True, "freshness": "fresh", "age_minutes": 10,
            "trends": [f"A-{i}" for i in range(20)]}
