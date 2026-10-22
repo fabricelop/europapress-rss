@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T06:45:00+02:00",
-  "last_completed_at": "2026-10-22T06:46:45+02:00",
-  "updated_at": "2026-10-22T06:46:45+02:00",
+  "last_started_at": "2026-10-22T07:15:00+02:00",
+  "last_completed_at": "2026-10-22T07:17:00+02:00",
+  "updated_at": "2026-10-22T07:17:00+02:00",
   "status": "success",
   "processed_ids": [
     "97392049c7ee"
@@ -22,13 +22,13 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261022T0645+0200",
+    "run_id": "tr-chat-20261022T0715+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T06:45:00+02:00",
-    "updated_at": "2026-10-22T06:46:45+02:00",
-    "finished_at": "2026-10-22T06:46:45+02:00",
+    "started_at": "2026-10-22T07:15:00+02:00",
+    "updated_at": "2026-10-22T07:17:00+02:00",
+    "finished_at": "2026-10-22T07:17:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -72,28 +72,21 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T06:45:00+02:00",
+        "at": "2026-10-22T07:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial activa 0. Revalidando estado autoritativo y disparando saneamiento independiente de Pendientes."
       },
       {
-        "at": "2026-10-22T06:45:30+02:00",
+        "at": "2026-10-22T07:16:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola, requests y reexplicaciones antes del cierre 0/0."
+        "message": "Relectura final de main: sin preparing/update, problematic, rewrite_pending ni huérfanos editoriales; radar fresco de 07:10:50."
       },
       {
-        "at": "2026-10-22T06:46:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Estado verificado: sin preparing/update, problematic ni rewrite_pending; radar fresco de 06:40:50."
-      },
-      {
-        "at": "2026-10-22T06:46:45+02:00",
+        "at": "2026-10-22T07:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
