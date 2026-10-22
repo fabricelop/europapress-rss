@@ -1,15 +1,17 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T01:51:36+02:00",
-  "last_completed_at": "2026-10-23T01:51:36+02:00",
-  "updated_at": "2026-10-23T01:51:36+02:00",
+  "last_started_at": "2026-10-23T01:45:00+02:00",
+  "last_completed_at": "2026-10-23T01:52:20+02:00",
+  "updated_at": "2026-10-23T01:52:20+02:00",
   "status": "success",
   "processed_ids": [
-    "3b8284c54aed"
+    "d7935a23506b",
+    "3b8284c54aed",
+    "6edd382e5ca7"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -17,7 +19,7 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261023T004500+0200",
+    "trigger_run_id": "tr-chat-20261023T014500+0200",
     "github_run_id": null,
     "status": "requested",
     "conclusion": null,
@@ -27,13 +29,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261023T004500+0200",
+    "run_id": "tr-chat-20261023T014500+0200",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-23T00:45:00+02:00",
-    "updated_at": "2026-10-23T00:54:30+02:00",
-    "finished_at": "2026-10-23T00:54:30+02:00",
+    "started_at": "2026-10-23T01:45:00+02:00",
+    "updated_at": "2026-10-23T01:52:20+02:00",
+    "finished_at": "2026-10-23T01:52:20+02:00",
     "current": 3,
     "total": 3,
     "trend_id": null,
@@ -41,12 +43,13 @@
     "summary": {
       "attempted": 3,
       "ready": 0,
-      "explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 0,
+      "problematic_reviewed": 1,
+      "problematic_marked": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 3,
@@ -57,16 +60,23 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_visual_candidates": 3,
-      "incidents": 0
+      "incidents": 1
     },
-    "message": "TTendencias 3/3 verificada: cola final 0; tres explicaciones persistidas; capa visual separada activada.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "TTendencias 3/3 tratada: 2 explicadas, 1 problematic sin causa inventada; cola final 0.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-23T01:48:20+02:00",
+        "phase": "investigating",
+        "trend_id": "3b8284c54aed",
+        "title": "La Peter",
+        "reason": "No se pudo determinar un detonante actual y verificable tras dos búsquedas distintas; se marcó problematic y, al estar fuera del Top 10, no queda en cola activa."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -76,96 +86,36 @@
     },
     "remate_selections": [
       {
-        "trend_id": "900773dcaecf",
+        "trend_id": "d7935a23506b",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
-            "total": 7.7,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.6,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
             "total": 8.5,
             "ratings_affinity": 2.3,
             "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "total": 6.8,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "7375308f71a9",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.8,
-            "punch": 1.5,
-            "originality": 1.2,
+            "punch": 1.7,
+            "originality": 1.6,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c2",
-            "total": 8.4,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 1.9,
-            "punch": 1.7,
-            "originality": 1.5,
+            "total": 7.8,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.3,
             "length_fit": 1,
             "repetition_penalty": 0
           },
           {
             "id": "c3",
-            "total": 7.8,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.8,
-            "punch": 1.6,
+            "total": 7.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
             "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": 0
@@ -184,24 +134,34 @@
             "id": "c5",
             "total": 6.9,
             "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
+            "trend_specificity": 1.6,
             "punch": 1.4,
-            "originality": 1.1,
+            "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": -0.2
           }
         ],
-        "selected_candidate": "c2",
-        "selected_score": 8.4,
+        "selected_candidate": "c1",
+        "selected_score": 8.5,
         "no_remate_reason": null
       },
       {
-        "trend_id": "eb6aecd7fc97",
+        "trend_id": "6edd382e5ca7",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
           {
             "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.7,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
             "total": 7.8,
             "ratings_affinity": 2.1,
             "trend_specificity": 1.8,
@@ -211,22 +171,12 @@
             "repetition_penalty": 0
           },
           {
-            "id": "c2",
-            "total": 8.6,
-            "ratings_affinity": 2.4,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.5,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
             "id": "c3",
             "total": 7.5,
             "ratings_affinity": 2,
             "trend_specificity": 1.8,
-            "punch": 1.6,
-            "originality": 1.1,
+            "punch": 1.5,
+            "originality": 1.2,
             "length_fit": 1,
             "repetition_penalty": 0
           },
@@ -242,204 +192,205 @@
           },
           {
             "id": "c5",
-            "total": 6.9,
+            "total": 6.8,
             "ratings_affinity": 1.9,
             "trend_specificity": 1.6,
-            "punch": 1.5,
+            "punch": 1.4,
             "originality": 1.1,
             "length_fit": 1,
             "repetition_penalty": -0.2
           }
         ],
-        "selected_candidate": "c2",
-        "selected_score": 8.6,
+        "selected_candidate": "c1",
+        "selected_score": 8.4,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-23T00:48:50+02:00",
-        "phase": "remate_selection",
-        "trend_id": "900773dcaecf",
-        "title": "Candela Peña",
-        "message": "Remate seleccionado; texto final validado con margen conservador."
+        "at": "2026-10-23T01:45:00+02:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada iniciada; releyendo cola y estado vigente."
       },
       {
-        "at": "2026-10-23T00:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": "900773dcaecf",
-        "title": "Candela Peña",
-        "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-23T00:49:40+02:00",
-        "phase": "verifying",
-        "trend_id": "900773dcaecf",
-        "title": "Candela Peña",
-        "message": "Tendencia cerrada y verificada en main."
-      },
-      {
-        "at": "2026-10-23T00:49:50+02:00",
-        "phase": "verifying",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
-        "message": "Releyendo estado autoritativo de Chiqui."
-      },
-      {
-        "at": "2026-10-23T00:50:00+02:00",
+        "at": "2026-10-23T01:45:30+02:00",
         "phase": "investigating",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
-        "message": "Contrastando gala 7 y continuidad tras la repesca."
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
+        "message": "Buscando detonante actual y contraste del directo desde Bilbao."
       },
       {
-        "at": "2026-10-23T00:50:30+02:00",
+        "at": "2026-10-23T01:46:00+02:00",
         "phase": "investigating",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
-        "message": "Hecho esencial verificado sin atribuir una escena no documentada."
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
+        "message": "Hecho esencial verificado en dos fuentes actuales: primera salida de Sevilla, directo desde Campos Elíseos."
       },
       {
-        "at": "2026-10-23T00:50:45+02:00",
+        "at": "2026-10-23T01:46:20+02:00",
+        "phase": "verifying",
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
+        "message": "Releído main: revisión 0 sigue preparing y ocupa el puesto 9 actual."
+      },
+      {
+        "at": "2026-10-23T01:46:35+02:00",
         "phase": "drafting",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
         "message": "Redactando explicación factual y comprobando límite de X."
       },
       {
-        "at": "2026-10-23T00:51:00+02:00",
+        "at": "2026-10-23T01:46:50+02:00",
         "phase": "remate_selection",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
-        "message": "Evaluando cinco candidatos de remate con ratings y originalidad."
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
+        "message": "Remate seleccionado para el traslado del programa a Bilbao."
       },
       {
-        "at": "2026-10-23T00:51:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
-        "message": "Remate seleccionado; texto final validado con margen conservador."
-      },
-      {
-        "at": "2026-10-23T00:51:25+02:00",
+        "at": "2026-10-23T01:47:00+02:00",
         "phase": "persisting",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
         "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola."
       },
       {
-        "at": "2026-10-23T00:52:00+02:00",
+        "at": "2026-10-23T01:47:30+02:00",
         "phase": "verifying",
-        "trend_id": "7375308f71a9",
-        "title": "Chiqui",
+        "trend_id": "d7935a23506b",
+        "title": "#ElPerroEnBilbao",
         "message": "Tendencia cerrada y verificada en main."
       },
       {
-        "at": "2026-10-23T00:52:10+02:00",
+        "at": "2026-10-23T01:47:40+02:00",
         "phase": "verifying",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Releyendo estado autoritativo de #PepaLobaMR."
+        "trend_id": "3b8284c54aed",
+        "title": "La Peter",
+        "message": "Releyendo estado autoritativo de La Peter."
       },
       {
-        "at": "2026-10-23T00:52:20+02:00",
+        "at": "2026-10-23T01:47:50+02:00",
         "phase": "investigating",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Contrastando estreno de Pepa Loba y contexto de la nueva etapa musical."
+        "trend_id": "3b8284c54aed",
+        "title": "La Peter",
+        "message": "Buscando detonante actual con consultas exactas y contexto de las tendencias capturadas."
       },
       {
-        "at": "2026-10-23T00:52:40+02:00",
+        "at": "2026-10-23T01:48:20+02:00",
         "phase": "investigating",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Hecho esencial verificado en dos fuentes actuales."
+        "trend_id": "3b8284c54aed",
+        "title": "La Peter",
+        "message": "Dos búsquedas distintas no aportan un detonante actual verificable; resultado problematic persistido."
       },
       {
-        "at": "2026-10-23T00:52:55+02:00",
+        "at": "2026-10-23T01:48:35+02:00",
+        "phase": "verifying",
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Releyendo estado autoritativo de Yola: sigue preparing y ocupa el puesto 5 actual."
+      },
+      {
+        "at": "2026-10-23T01:48:50+02:00",
+        "phase": "investigating",
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Contrastando la gala 7 y el momento viral de la prueba de barro."
+      },
+      {
+        "at": "2026-10-23T01:49:10+02:00",
+        "phase": "investigating",
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Hecho esencial verificado: sigue en Supervivientes y el momento de barro/bikini continúa circulando durante la gala."
+      },
+      {
+        "at": "2026-10-23T01:49:20+02:00",
         "phase": "drafting",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
         "message": "Redactando explicación factual y comprobando límite de X."
       },
       {
-        "at": "2026-10-23T00:53:10+02:00",
+        "at": "2026-10-23T01:49:35+02:00",
         "phase": "remate_selection",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Evaluando cinco candidatos de remate con ratings y originalidad."
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Remate seleccionado sobre la realización durante la prueba de barro."
       },
       {
-        "at": "2026-10-23T00:53:25+02:00",
+        "at": "2026-10-23T01:49:45+02:00",
         "phase": "persisting",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Remate seleccionado; guardando ficha Explicada y retirando revisión de la cola."
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Guardando ficha Explicada y actualizando request."
       },
       {
-        "at": "2026-10-23T00:54:00+02:00",
+        "at": "2026-10-23T01:51:36+02:00",
         "phase": "verifying",
-        "trend_id": "eb6aecd7fc97",
-        "title": "#PepaLobaMR",
-        "message": "Tendencia cerrada y verificada en main."
+        "trend_id": "6edd382e5ca7",
+        "title": "Yola",
+        "message": "Yola cerrada y verificada; el sincronizador dejó la cola editorial vacía."
       },
       {
-        "at": "2026-10-23T00:54:15+02:00",
+        "at": "2026-10-23T01:52:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, requests y rewrite_pending: estado final limpio."
+        "message": "Releídos main, requests y rewrite_pending: 0 entradas activas y 0 reelaboraciones pendientes."
       },
       {
-        "at": "2026-10-23T00:54:30+02:00",
+        "at": "2026-10-23T01:52:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 3/3 verificada: cola final 0; tres explicaciones persistidas; capa visual separada activada."
+        "message": "TTendencias 3/3 tratada: 2 explicadas, 1 problematic sin causa inventada; cola final 0."
       }
     ],
     "processed_ids": [
-      "900773dcaecf",
-      "7375308f71a9",
-      "eb6aecd7fc97"
+      "d7935a23506b",
+      "3b8284c54aed",
+      "6edd382e5ca7"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "900773dcaecf",
-        "name": "Candela Peña",
+        "id": "d7935a23506b",
+        "name": "#ElPerroEnBilbao",
         "revision": 0,
         "status": "explained",
-        "rank": 4
+        "rank": 9
       },
       {
-        "id": "7375308f71a9",
-        "name": "Chiqui",
+        "id": "3b8284c54aed",
+        "name": "La Peter",
         "revision": 0,
-        "status": "explained",
-        "rank": 7
+        "status": "problematic",
+        "rank": 13
       },
       {
-        "id": "eb6aecd7fc97",
-        "name": "#PepaLobaMR",
+        "id": "6edd382e5ca7",
+        "name": "Yola",
         "revision": 0,
         "status": "explained",
-        "rank": 8
+        "rank": 5
       }
     ]
   },
-  "run_id": "tr-chat-20261023T004500+0200",
+  "run_id": "tr-chat-20261023T014500+0200",
   "summary": {
     "attempted": 3,
     "ready": 0,
-    "explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
+    "explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 0,
+    "problematic_reviewed": 1,
+    "problematic_marked": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 3,
@@ -450,154 +401,153 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_visual_candidates": 3,
-    "incidents": 0
+    "incidents": 1
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-23T00:48:50+02:00",
-      "phase": "remate_selection",
-      "trend_id": "900773dcaecf",
-      "title": "Candela Peña",
-      "message": "Remate seleccionado; texto final validado con margen conservador."
+      "at": "2026-10-23T01:45:00+02:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada iniciada; releyendo cola y estado vigente."
     },
     {
-      "at": "2026-10-23T00:49:00+02:00",
-      "phase": "persisting",
-      "trend_id": "900773dcaecf",
-      "title": "Candela Peña",
-      "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola."
-    },
-    {
-      "at": "2026-10-23T00:49:40+02:00",
-      "phase": "verifying",
-      "trend_id": "900773dcaecf",
-      "title": "Candela Peña",
-      "message": "Tendencia cerrada y verificada en main."
-    },
-    {
-      "at": "2026-10-23T00:49:50+02:00",
-      "phase": "verifying",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
-      "message": "Releyendo estado autoritativo de Chiqui."
-    },
-    {
-      "at": "2026-10-23T00:50:00+02:00",
+      "at": "2026-10-23T01:45:30+02:00",
       "phase": "investigating",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
-      "message": "Contrastando gala 7 y continuidad tras la repesca."
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
+      "message": "Buscando detonante actual y contraste del directo desde Bilbao."
     },
     {
-      "at": "2026-10-23T00:50:30+02:00",
+      "at": "2026-10-23T01:46:00+02:00",
       "phase": "investigating",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
-      "message": "Hecho esencial verificado sin atribuir una escena no documentada."
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
+      "message": "Hecho esencial verificado en dos fuentes actuales: primera salida de Sevilla, directo desde Campos Elíseos."
     },
     {
-      "at": "2026-10-23T00:50:45+02:00",
+      "at": "2026-10-23T01:46:20+02:00",
+      "phase": "verifying",
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
+      "message": "Releído main: revisión 0 sigue preparing y ocupa el puesto 9 actual."
+    },
+    {
+      "at": "2026-10-23T01:46:35+02:00",
       "phase": "drafting",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
       "message": "Redactando explicación factual y comprobando límite de X."
     },
     {
-      "at": "2026-10-23T00:51:00+02:00",
+      "at": "2026-10-23T01:46:50+02:00",
       "phase": "remate_selection",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
-      "message": "Evaluando cinco candidatos de remate con ratings y originalidad."
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
+      "message": "Remate seleccionado para el traslado del programa a Bilbao."
     },
     {
-      "at": "2026-10-23T00:51:15+02:00",
-      "phase": "remate_selection",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
-      "message": "Remate seleccionado; texto final validado con margen conservador."
-    },
-    {
-      "at": "2026-10-23T00:51:25+02:00",
+      "at": "2026-10-23T01:47:00+02:00",
       "phase": "persisting",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
       "message": "Guardando ficha Explicada, actualizando request y retirando revisión de la cola."
     },
     {
-      "at": "2026-10-23T00:52:00+02:00",
+      "at": "2026-10-23T01:47:30+02:00",
       "phase": "verifying",
-      "trend_id": "7375308f71a9",
-      "title": "Chiqui",
+      "trend_id": "d7935a23506b",
+      "title": "#ElPerroEnBilbao",
       "message": "Tendencia cerrada y verificada en main."
     },
     {
-      "at": "2026-10-23T00:52:10+02:00",
+      "at": "2026-10-23T01:47:40+02:00",
       "phase": "verifying",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Releyendo estado autoritativo de #PepaLobaMR."
+      "trend_id": "3b8284c54aed",
+      "title": "La Peter",
+      "message": "Releyendo estado autoritativo de La Peter."
     },
     {
-      "at": "2026-10-23T00:52:20+02:00",
+      "at": "2026-10-23T01:47:50+02:00",
       "phase": "investigating",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Contrastando estreno de Pepa Loba y contexto de la nueva etapa musical."
+      "trend_id": "3b8284c54aed",
+      "title": "La Peter",
+      "message": "Buscando detonante actual con consultas exactas y contexto de las tendencias capturadas."
     },
     {
-      "at": "2026-10-23T00:52:40+02:00",
+      "at": "2026-10-23T01:48:20+02:00",
       "phase": "investigating",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Hecho esencial verificado en dos fuentes actuales."
+      "trend_id": "3b8284c54aed",
+      "title": "La Peter",
+      "message": "Dos búsquedas distintas no aportan un detonante actual verificable; resultado problematic persistido."
     },
     {
-      "at": "2026-10-23T00:52:55+02:00",
+      "at": "2026-10-23T01:48:35+02:00",
+      "phase": "verifying",
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Releyendo estado autoritativo de Yola: sigue preparing y ocupa el puesto 5 actual."
+    },
+    {
+      "at": "2026-10-23T01:48:50+02:00",
+      "phase": "investigating",
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Contrastando la gala 7 y el momento viral de la prueba de barro."
+    },
+    {
+      "at": "2026-10-23T01:49:10+02:00",
+      "phase": "investigating",
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Hecho esencial verificado: sigue en Supervivientes y el momento de barro/bikini continúa circulando durante la gala."
+    },
+    {
+      "at": "2026-10-23T01:49:20+02:00",
       "phase": "drafting",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
       "message": "Redactando explicación factual y comprobando límite de X."
     },
     {
-      "at": "2026-10-23T00:53:10+02:00",
+      "at": "2026-10-23T01:49:35+02:00",
       "phase": "remate_selection",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Evaluando cinco candidatos de remate con ratings y originalidad."
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Remate seleccionado sobre la realización durante la prueba de barro."
     },
     {
-      "at": "2026-10-23T00:53:25+02:00",
+      "at": "2026-10-23T01:49:45+02:00",
       "phase": "persisting",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Remate seleccionado; guardando ficha Explicada y retirando revisión de la cola."
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Guardando ficha Explicada y actualizando request."
     },
     {
-      "at": "2026-10-23T00:54:00+02:00",
+      "at": "2026-10-23T01:51:36+02:00",
       "phase": "verifying",
-      "trend_id": "eb6aecd7fc97",
-      "title": "#PepaLobaMR",
-      "message": "Tendencia cerrada y verificada en main."
+      "trend_id": "6edd382e5ca7",
+      "title": "Yola",
+      "message": "Yola cerrada y verificada; el sincronizador dejó la cola editorial vacía."
     },
     {
-      "at": "2026-10-23T00:54:15+02:00",
+      "at": "2026-10-23T01:52:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, requests y rewrite_pending: estado final limpio."
+      "message": "Releídos main, requests y rewrite_pending: 0 entradas activas y 0 reelaboraciones pendientes."
     },
     {
-      "at": "2026-10-23T00:54:30+02:00",
+      "at": "2026-10-23T01:52:20+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 3/3 verificada: cola final 0; tres explicaciones persistidas; capa visual separada activada."
+      "message": "TTendencias 3/3 tratada: 2 explicadas, 1 problematic sin causa inventada; cola final 0."
     }
   ],
   "telegram_orphans": 0,
@@ -606,12 +556,12 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-23T00:47:08+02:00"
+    "captured_at": "2026-10-23T01:50:57+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-23T00:47:08+02:00",
+    "captured_at": "2026-10-23T01:50:57+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261022T234500+0200",
+  "previous_run_id": "tr-chat-20261023T004500+0200",
   "error": null
 }
