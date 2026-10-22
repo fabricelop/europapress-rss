@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T19:45:00+02:00",
-  "last_completed_at": "2026-10-22T19:46:05+02:00",
-  "updated_at": "2026-10-22T19:46:05+02:00",
+  "last_started_at": "2026-10-22T20:15:00+02:00",
+  "last_completed_at": "2026-10-22T20:15:55+02:00",
+  "updated_at": "2026-10-22T20:15:55+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -22,16 +22,13 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-chat-20261022T194500+0200",
+    "run_id": "tr-chat-20261022T201500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T19:45:00+02:00",
-    "updated_at": "2026-10-22T19:46:05+02:00",
-    "finished_at": "2026-10-22T19:46:05+02:00",
+    "started_at": "2026-10-22T20:15:00+02:00",
+    "updated_at": "2026-10-22T20:15:55+02:00",
+    "finished_at": "2026-10-22T20:15:55+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -69,34 +66,34 @@
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
+      "total_ratings": null,
       "recent_considered": 100
     },
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-22T19:45:00+02:00",
+        "at": "2026-10-22T20:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; releyendo cola, Top 10 vigente y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-22T19:45:30+02:00",
+        "at": "2026-10-22T20:15:25+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Top 10 reconciliado con requests y explicaciones; comprobando trabajo activo, huérfanos y saneamiento."
       },
       {
-        "at": "2026-10-22T19:45:50+02:00",
+        "at": "2026-10-22T20:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura completada: cola 0, 0 requests activas, 0 rewrite_pending y 0 huérfanos; 2 Pendientes visuales vigentes."
       },
       {
-        "at": "2026-10-22T19:46:05+02:00",
+        "at": "2026-10-22T20:15:55+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -109,7 +106,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261022T194500+0200",
+  "run_id": "tr-chat-20261022T201500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -139,28 +136,28 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-22T19:45:00+02:00",
+      "at": "2026-10-22T20:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; releyendo cola, Top 10 vigente y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-22T19:45:30+02:00",
+      "at": "2026-10-22T20:15:25+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Top 10 reconciliado con requests y explicaciones; comprobando trabajo activo, huérfanos y saneamiento."
     },
     {
-      "at": "2026-10-22T19:45:50+02:00",
+      "at": "2026-10-22T20:15:40+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura completada: cola 0, 0 requests activas, 0 rewrite_pending y 0 huérfanos; 2 Pendientes visuales vigentes."
     },
     {
-      "at": "2026-10-22T19:46:05+02:00",
+      "at": "2026-10-22T20:15:55+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -173,11 +170,11 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-22T19:41:03+02:00"
+    "captured_at": "2026-10-22T20:13:03+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-22T19:41:03+02:00",
+    "captured_at": "2026-10-22T20:13:03+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261022T191500+0200"
+  "previous_run_id": "tr-chat-20261022T194500+0200"
 }
