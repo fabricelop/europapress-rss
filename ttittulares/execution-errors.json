@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:03.797485Z",
-      "event_id": "3e4fa144266f-r1",
-      "phase": "outbox",
-      "reason": "3e4fa144266f-r1.json: ValueError: remate sin guindilla",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 3e4fa144266f-r1: 3e4fa144266f-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:03.797485Z",
       "event_id": "4da79a83822c-r1",
       "phase": "outbox",
       "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "telegram-218638732-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento telegram-218638732-r1: telegram-218638732-r1.json: ValueError: el tweet debe terminar con dos saltos y su remate 🌶️. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-22T04:00:33.385087Z",
+      "event_id": "bb02896ea619-r1",
+      "phase": "outbox",
+      "reason": "bb02896ea619-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento bb02896ea619-r1: bb02896ea619-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
