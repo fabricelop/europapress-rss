@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-22T13:35:30+02:00",
+  "updated_at": "2026-10-22T11:40:27.460282Z",
   "items": [
     {
       "event_id": "23f325c631ed",
@@ -567,17 +567,35 @@
       },
       "prepared_at": "2026-10-22T13:35:30+02:00",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": true,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-22T11:40:27.460282Z",
+      "fallback_image_search_attempted_at": "2026-10-22T11:40:27.460282Z",
+      "archive_image": {
+        "url": "https://s1.abcstatics.com/abc/www/multimedia/espana/2026/10/22/1491610474-U41130617664LHq-1200x630@diario_abc.JPG",
+        "source": "www.abc.es",
+        "source_url": "https://www.abc.es/espana/andalucia/cordoba/muere-militar-atropellado-base-cerro-muriano-20261022125524-nts.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere un militar atropellado en la base de Cerro Muriano"
+      },
+      "fallback_image": {
+        "url": "https://s1.abcstatics.com/abc/www/multimedia/espana/2026/10/22/1491610474-U41130617664LHq-1200x630@diario_abc.JPG",
+        "source": "www.abc.es",
+        "source_url": "https://www.abc.es/espana/andalucia/cordoba/muere-militar-atropellado-base-cerro-muriano-20261022125524-nts.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere un militar atropellado en la base de Cerro Muriano"
+      }
     }
   ],
   "count": 0,
