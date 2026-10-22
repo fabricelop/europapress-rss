@@ -1,0 +1,34 @@
+name: TTendencias radar regressions (read only)
+
+on:
+  pull_request:
+    paths:
+      - 'trends/update_trends.py'
+      - '.github/scripts/test_ttendencias_anchor_freshness.py'
+      - '.github/scripts/test_ttendencias_radar_source_diversity.py'
+      - '.github/scripts/test_ttendencias_radar_history.py'
+      - '.github/workflows/ttendencias-refresh.yml'
+      - '.github/workflows/ttendencias-radar-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: pip install -r requirements.txt
+      - name: Compile and run freshness regression tests
+        run: |
+          python3 -m py_compile trends/update_trends.py
+          python3 .github/scripts/test_ttendencias_anchor_freshness.py
+          python3 .github/scripts/test_ttendencias_radar_source_diversity.py
+          python3 .github/scripts/test_ttendencias_radar_history.py
+          python3 .github/scripts/test_ttendencias_top30_queue.py
