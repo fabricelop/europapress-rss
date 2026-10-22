@@ -4,15 +4,15 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-22T01:45:00+02:00",
-  "last_completed_at": "2026-10-22T01:55:00+02:00",
-  "updated_at": "2026-10-22T01:55:00+02:00",
+  "last_started_at": "2026-10-22T02:15:00+02:00",
+  "last_completed_at": "2026-10-22T02:25:00+02:00",
+  "updated_at": "2026-10-22T02:25:00+02:00",
   "status": "success",
   "processed_ids": [
-    "9bcbdfa04fb5",
-    "7b880b959d71",
-    "83ed5207a411",
-    "8191aa70b3fb"
+    "dc46fd96dd39",
+    "7678eeca684f",
+    "d48c6c588f9a",
+    "f3a8feea67d8"
   ],
   "remaining_ids": [],
   "queue_complete": true,
@@ -20,22 +20,21 @@
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261022T014500+0200",
-    "action_run_id": 39695810972,
-    "status": "success",
+    "trigger_run_id": "tr-chat-20261022T021500+0200",
+    "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261022T014500+0200",
+    "run_id": "tr-chat-20261022T021500+0200",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-22T01:45:00+02:00",
-    "updated_at": "2026-10-22T01:55:00+02:00",
-    "finished_at": "2026-10-22T01:55:00+02:00",
+    "started_at": "2026-10-22T02:15:00+02:00",
+    "updated_at": "2026-10-22T02:25:00+02:00",
+    "finished_at": "2026-10-22T02:25:00+02:00",
     "current": 4,
     "total": 4,
     "trend_id": null,
@@ -44,10 +43,10 @@
       "attempted": 4,
       "ready": 0,
       "explained": 4,
-      "explanation_groups": 0,
-      "concurrent_closed": 0,
-      "duplicates_closed": 0,
-      "grouped_into_existing_card": 4,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 0,
+      "grouped_into_existing_card": 1,
       "problematic_reviewed": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
@@ -60,156 +59,186 @@
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 4,
-      "remates_selected": 0,
+      "remates_selected": 3,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_visual_candidates": 0,
-      "incidents": 1
+      "incidents": 0
     },
-    "message": "TTendencias 4/4 verificada: Sergio, IRINI, sandra y Náyades enlazadas a #LaIslaDeLasTentaciones14; cola 0. Corregida una colisión con borrados históricos.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "legacy_terminal_decision_collision",
-        "resolved": true,
-        "message": "Dos IDs reutilizados (Sergio y Náyades) heredaron borrados antiguos de Telegram. Se añadió barrera por revisión y fecha de solicitud y se restauraron ambas ocurrencias nuevas."
-      }
-    ],
+    "message": "TTendencias 4/4 verificada: Ruben+GEMA, Mara y #ElChiringuitoenCuatro explicadas; cola editorial 0.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "dc46fd96dd39",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c4",
+        "selected_text": "🌶️ La cuarta hoguera repartió sobresaltos a ambos lados."
+      },
+      {
+        "trend_id": "d48c6c588f9a",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c2",
+        "selected_text": "🌶️ El dron llegó antes; la hoguera entregó el resto del mensaje."
+      },
+      {
+        "trend_id": "f3a8feea67d8",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c3",
+        "selected_text": "🌶️ La Champions cambió el césped por la mesa de debate."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-22T01:45:00+02:00",
+        "at": "2026-10-22T02:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial 4. Reconciliando estado y comprobando posible agrupación de Sergio, IRINI, sandra y Náyades."
+        "message": "Pasada iniciada; cola editorial 4. Releyendo estado autoritativo y comprobando posibles agrupaciones."
       },
       {
-        "at": "2026-10-22T01:46:00+02:00",
+        "at": "2026-10-22T02:16:00+02:00",
         "phase": "investigating",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio",
-        "message": "Buscando detonante actual y relación con la emisión de La isla de las tentaciones."
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben",
+        "message": "Buscando detonante actual de Ruben y su posible relación con GEMA, Mara y #ElChiringuitoenCuatro."
       },
       {
-        "at": "2026-10-22T01:47:30+02:00",
+        "at": "2026-10-22T02:17:00+02:00",
         "phase": "investigating",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio",
-        "message": "Hecho esencial verificado: las cuatro entradas pertenecen a la entrega ya cubierta por #LaIslaDeLasTentaciones14."
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA",
+        "message": "Hecho esencial verificado con Mediaset: cuarta hoguera, Nataly y nuevas imágenes de Gema con Javi."
       },
       {
-        "at": "2026-10-22T01:49:30+02:00",
+        "at": "2026-10-22T02:18:00+02:00",
+        "phase": "drafting",
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA",
+        "message": "Redactando explicación conjunta; Mara y #ElChiringuitoenCuatro quedan como fichas separadas."
+      },
+      {
+        "at": "2026-10-22T02:19:00+02:00",
+        "phase": "investigating",
+        "trend_id": "d48c6c588f9a",
+        "title": "Mara",
+        "message": "Verificado el mensaje por dron de Miguel y la cuarta hoguera con imágenes de Mara y Juanpi."
+      },
+      {
+        "at": "2026-10-22T02:19:30+02:00",
+        "phase": "investigating",
+        "trend_id": "f3a8feea67d8",
+        "title": "#ElChiringuitoenCuatro",
+        "message": "Verificada la parrilla de Cuatro: especial Champions de El Chiringuito tras Horizonte."
+      },
+      {
+        "at": "2026-10-22T02:20:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA",
+        "message": "Evaluados candidatos y repetición frente al historial de remates; seleccionados tres remates distintos."
+      },
+      {
+        "at": "2026-10-22T02:21:00+02:00",
+        "phase": "persisting",
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA",
+        "message": "Guardado comando transaccional para 3 fichas y 4 revisiones; textos validados bajo 280 caracteres."
+      },
+      {
+        "at": "2026-10-22T02:22:00+02:00",
         "phase": "verifying",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio",
-        "message": "Releyendo estado autoritativo de las cuatro revisiones antes de enlazarlas al grupo existente."
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA",
+        "message": "Relectura de main: el consumidor aún no había aplicado el comando; las cuatro revisiones seguían preparing."
       },
       {
-        "at": "2026-10-22T01:50:00+02:00",
+        "at": "2026-10-22T02:23:00+02:00",
         "phase": "persisting",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio / IRINI / sandra / Náyades",
-        "message": "Guardando vínculo con la ficha Explicada existente y actualizando requests."
+        "trend_id": "dc46fd96dd39",
+        "title": "Ruben / GEMA / Mara / #ElChiringuitoenCuatro",
+        "message": "Aplicada reconciliación directa idempotente: fichas Explicadas, requests y retirada exacta de cola."
       },
       {
-        "at": "2026-10-22T01:50:47+02:00",
-        "phase": "persisting",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio / IRINI / sandra / Náyades",
-        "message": "Reconciliador directo aplicó 4 revisiones y retiró las cuatro de la cola."
-      },
-      {
-        "at": "2026-10-22T01:51:13+02:00",
-        "phase": "verifying",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio / IRINI / sandra / Náyades",
-        "message": "Detectado cierre histórico heredado: Sergio y Náyades fueron marcados deleted por IDs reutilizados."
-      },
-      {
-        "at": "2026-10-22T01:53:04+02:00",
-        "phase": "persisting",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio / Náyades",
-        "message": "Corregida la reconciliación para ignorar decisiones anteriores a la nueva solicitud o de otra revisión."
-      },
-      {
-        "at": "2026-10-22T01:53:11+02:00",
-        "phase": "persisting",
-        "trend_id": "9bcbdfa04fb5",
-        "title": "Sergio / Náyades",
-        "message": "Restauradas las dos ocurrencias nuevas a explained sin tocar las decisiones históricas."
-      },
-      {
-        "at": "2026-10-22T01:55:00+02:00",
+        "at": "2026-10-22T02:24:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: 4/4 explained, mismo grupo, texto persistido y cola editorial 0."
+        "message": "Releyendo main y comparando id+revision, texto y closer_text en los estados autoritativos."
       },
       {
-        "at": "2026-10-22T01:55:00+02:00",
+        "at": "2026-10-22T02:24:30+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación completa: 4/4 explained, 3 fichas, todos los textos coinciden y cola editorial 0."
+      },
+      {
+        "at": "2026-10-22T02:25:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada cerrada 4/4; incidencia heredada corregida y cola verificada en 0."
+        "message": "Pasada cerrada 4/4 sin incidencias editoriales; capa visual queda independiente."
       }
     ],
     "processed_ids": [
-      "9bcbdfa04fb5",
-      "7b880b959d71",
-      "83ed5207a411",
-      "8191aa70b3fb"
+      "dc46fd96dd39",
+      "7678eeca684f",
+      "d48c6c588f9a",
+      "f3a8feea67d8"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "9bcbdfa04fb5",
+        "id": "dc46fd96dd39",
         "revision": 0,
-        "name": "Sergio",
+        "name": "Ruben",
         "status": "explained",
-        "group_id": "grp-55c2e840ebac"
+        "group_id": "grp-dc46fd96dd39"
       },
       {
-        "id": "7b880b959d71",
+        "id": "7678eeca684f",
         "revision": 0,
-        "name": "IRINI",
+        "name": "GEMA",
         "status": "explained",
-        "group_id": "grp-55c2e840ebac"
+        "group_id": "grp-dc46fd96dd39"
       },
       {
-        "id": "83ed5207a411",
+        "id": "d48c6c588f9a",
         "revision": 0,
-        "name": "sandra",
+        "name": "Mara",
         "status": "explained",
-        "group_id": "grp-55c2e840ebac"
+        "group_id": "grp-d48c6c588f9a"
       },
       {
-        "id": "8191aa70b3fb",
+        "id": "f3a8feea67d8",
         "revision": 0,
-        "name": "Náyades",
+        "name": "#ElChiringuitoenCuatro",
         "status": "explained",
-        "group_id": "grp-55c2e840ebac"
+        "group_id": "grp-f3a8feea67d8"
       }
     ]
   },
-  "run_id": "tr-chat-20261022T014500+0200",
+  "run_id": "tr-chat-20261022T021500+0200",
   "summary": {
     "attempted": 4,
     "ready": 0,
     "explained": 4,
-    "explanation_groups": 0,
-    "concurrent_closed": 0,
-    "duplicates_closed": 0,
-    "grouped_into_existing_card": 4,
+    "explanation_groups": 3,
+    "new_cards": 3,
+    "revisions_updated": 0,
+    "grouped_into_existing_card": 1,
     "problematic_reviewed": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
@@ -222,90 +251,104 @@
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 4,
-    "remates_selected": 0,
+    "remates_selected": 3,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_visual_candidates": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-22T01:45:00+02:00",
+      "at": "2026-10-22T02:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola editorial 4. Reconciliando estado y comprobando posible agrupación de Sergio, IRINI, sandra y Náyades."
+      "message": "Pasada iniciada; cola editorial 4. Releyendo estado autoritativo y comprobando posibles agrupaciones."
     },
     {
-      "at": "2026-10-22T01:46:00+02:00",
+      "at": "2026-10-22T02:16:00+02:00",
       "phase": "investigating",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio",
-      "message": "Buscando detonante actual y relación con la emisión de La isla de las tentaciones."
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben",
+      "message": "Buscando detonante actual de Ruben y su posible relación con GEMA, Mara y #ElChiringuitoenCuatro."
     },
     {
-      "at": "2026-10-22T01:47:30+02:00",
+      "at": "2026-10-22T02:17:00+02:00",
       "phase": "investigating",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio",
-      "message": "Hecho esencial verificado: las cuatro entradas pertenecen a la entrega ya cubierta por #LaIslaDeLasTentaciones14."
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA",
+      "message": "Hecho esencial verificado con Mediaset: cuarta hoguera, Nataly y nuevas imágenes de Gema con Javi."
     },
     {
-      "at": "2026-10-22T01:49:30+02:00",
+      "at": "2026-10-22T02:18:00+02:00",
+      "phase": "drafting",
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA",
+      "message": "Redactando explicación conjunta; Mara y #ElChiringuitoenCuatro quedan como fichas separadas."
+    },
+    {
+      "at": "2026-10-22T02:19:00+02:00",
+      "phase": "investigating",
+      "trend_id": "d48c6c588f9a",
+      "title": "Mara",
+      "message": "Verificado el mensaje por dron de Miguel y la cuarta hoguera con imágenes de Mara y Juanpi."
+    },
+    {
+      "at": "2026-10-22T02:19:30+02:00",
+      "phase": "investigating",
+      "trend_id": "f3a8feea67d8",
+      "title": "#ElChiringuitoenCuatro",
+      "message": "Verificada la parrilla de Cuatro: especial Champions de El Chiringuito tras Horizonte."
+    },
+    {
+      "at": "2026-10-22T02:20:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA",
+      "message": "Evaluados candidatos y repetición frente al historial de remates; seleccionados tres remates distintos."
+    },
+    {
+      "at": "2026-10-22T02:21:00+02:00",
+      "phase": "persisting",
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA",
+      "message": "Guardado comando transaccional para 3 fichas y 4 revisiones; textos validados bajo 280 caracteres."
+    },
+    {
+      "at": "2026-10-22T02:22:00+02:00",
       "phase": "verifying",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio",
-      "message": "Releyendo estado autoritativo de las cuatro revisiones antes de enlazarlas al grupo existente."
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA",
+      "message": "Relectura de main: el consumidor aún no había aplicado el comando; las cuatro revisiones seguían preparing."
     },
     {
-      "at": "2026-10-22T01:50:00+02:00",
+      "at": "2026-10-22T02:23:00+02:00",
       "phase": "persisting",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio / IRINI / sandra / Náyades",
-      "message": "Guardando vínculo con la ficha Explicada existente y actualizando requests."
+      "trend_id": "dc46fd96dd39",
+      "title": "Ruben / GEMA / Mara / #ElChiringuitoenCuatro",
+      "message": "Aplicada reconciliación directa idempotente: fichas Explicadas, requests y retirada exacta de cola."
     },
     {
-      "at": "2026-10-22T01:50:47+02:00",
-      "phase": "persisting",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio / IRINI / sandra / Náyades",
-      "message": "Reconciliador directo aplicó 4 revisiones y retiró las cuatro de la cola."
-    },
-    {
-      "at": "2026-10-22T01:51:13+02:00",
-      "phase": "verifying",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio / IRINI / sandra / Náyades",
-      "message": "Detectado cierre histórico heredado: Sergio y Náyades fueron marcados deleted por IDs reutilizados."
-    },
-    {
-      "at": "2026-10-22T01:53:04+02:00",
-      "phase": "persisting",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio / Náyades",
-      "message": "Corregida la reconciliación para ignorar decisiones anteriores a la nueva solicitud o de otra revisión."
-    },
-    {
-      "at": "2026-10-22T01:53:11+02:00",
-      "phase": "persisting",
-      "trend_id": "9bcbdfa04fb5",
-      "title": "Sergio / Náyades",
-      "message": "Restauradas las dos ocurrencias nuevas a explained sin tocar las decisiones históricas."
-    },
-    {
-      "at": "2026-10-22T01:55:00+02:00",
+      "at": "2026-10-22T02:24:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: 4/4 explained, mismo grupo, texto persistido y cola editorial 0."
+      "message": "Releyendo main y comparando id+revision, texto y closer_text en los estados autoritativos."
     },
     {
-      "at": "2026-10-22T01:55:00+02:00",
+      "at": "2026-10-22T02:24:30+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación completa: 4/4 explained, 3 fichas, todos los textos coinciden y cola editorial 0."
+    },
+    {
+      "at": "2026-10-22T02:25:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada cerrada 4/4; incidencia heredada corregida y cola verificada en 0."
+      "message": "Pasada cerrada 4/4 sin incidencias editoriales; capa visual queda independiente."
     }
   ],
   "telegram_orphans": 0,
@@ -314,22 +357,22 @@
   "partial": false,
   "radar_refresh": {
     "status": "fresh-main",
-    "captured_at": "2026-10-22T01:11:02+02:00"
+    "captured_at": "2026-10-22T02:18:25+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-22T01:11:02+02:00",
+    "captured_at": "2026-10-22T02:18:25+02:00",
     "queue_count": 0,
     "top10": [
       "#LaIslaDeLasTentaciones14",
+      "Ruben",
       "Diomande",
-      "#Horizonte",
-      "Milei",
-      "Bernardo",
-      "Courtois",
-      "Broncano",
+      "sandra",
+      "GEMA",
+      "Paola",
+      "Mara",
       "#CaraAlShow",
-      "BioWare",
-      "Paola"
+      "Náyades",
+      "#ElChiringuitoenCuatro"
     ]
   },
   "error": null
