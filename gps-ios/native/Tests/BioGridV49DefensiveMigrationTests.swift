@@ -23,19 +23,20 @@ final class BioGridV49DefensiveMigrationTests: XCTestCase {
         XCTAssertEqual(large?.maximum,80)
     }
 
-    func testOnlySoleLeaderMayLeaveAndMustKeepThirtyPercentAdvantage() {
+    func testOnlySoleLeaderMayLeaveAndMustKeepDoublePopulation() {
         XCTAssertNil(BioGridEngine.defensiveMigrationLimit([40,40,0,0,0,0,0]))
         XCTAssertNil(BioGridEngine.defensiveMigrationLimit([100,90,0,0,0,0,0]))
-        XCTAssertNil(BioGridEngine.defensiveMigrationLimit([130,100,0,0,0,0,0]))
-        let one = BioGridEngine.defensiveMigrationLimit([131,100,0,0,0,0,0])
+        XCTAssertNil(BioGridEngine.defensiveMigrationLimit([199,100,0,0,0,0,0]))
+        XCTAssertNil(BioGridEngine.defensiveMigrationLimit([200,100,0,0,0,0,0]))
+        let one = BioGridEngine.defensiveMigrationLimit([201,100,0,0,0,0,0])
         XCTAssertEqual(one?.family,0)
         XCTAssertEqual(one?.maximum,1)
-        let reserve = BioGridEngine.defensiveMigrationLimit([150,100,80,0,0,0,0])
+        let reserve = BioGridEngine.defensiveMigrationLimit([250,100,80,0,0,0,0])
         XCTAssertEqual(reserve?.family,0)
-        XCTAssertEqual(reserve?.maximum,20)
-        let leaderNotFirst = BioGridEngine.defensiveMigrationLimit([120,160,0,0,0,0,0])
+        XCTAssertEqual(reserve?.maximum,50)
+        let leaderNotFirst = BioGridEngine.defensiveMigrationLimit([120,260,0,0,0,0,0])
         XCTAssertEqual(leaderNotFirst?.family,1)
-        XCTAssertEqual(leaderNotFirst?.maximum,4)
+        XCTAssertEqual(leaderNotFirst?.maximum,20)
         XCTAssertNil(BioGridEngine.defensiveMigrationLimit([130,130,0,0,0,0,0]))
     }
 
