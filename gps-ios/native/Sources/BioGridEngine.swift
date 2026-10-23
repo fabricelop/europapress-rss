@@ -36,6 +36,19 @@ struct BioGridCellDay: Codable, Identifiable {
     }
 }
 
+/// Éxodo excepcional: una familia minoritaria sale COMPLETA tras cinco
+/// noches de bloqueo, sin estar sujeta al 20 % ni al doble de dominio.
+/// Queda en el registro direccional como una emigración normal, pero este
+/// evento adicional permite distinguirlo de las expediciones ordinarias.
+struct BioGridExodusEvent: Codable, Identifiable {
+    let date: Date
+    let source: String
+    let destination: String
+    let family: Int
+    let amount: Int64
+    var id: String { "\(date.timeIntervalSince1970)|\(source)|\(family)|exodus" }
+}
+
 struct BioGridHistoryPoint: Codable, Identifiable {
     let date: Date
     let population: [Int64]
@@ -73,6 +86,7 @@ struct BioGridSnapshot: Codable {
     var cellHistory: [String: [BioGridCellPoint]] = [:]
     var cellDays: [String: [BioGridCellDay]] = [:]
     var territoryEvents: [BioGridTerritoryEvent] = []
+    var exodusEvents: [BioGridExodusEvent] = []
     var rulers: [String: Int] = [:]
 
     func ranking() -> [(family: Int, population: Int64, territory: Int)] {
@@ -164,6 +178,41 @@ enum BioGridEngine {
         if !expand.isEmpty { return expand }
         guard let lowest = reinforce.map(\.population).min() else { return [] }
         return reinforce.filter { $0.population == lowest }.map(\.direction)
+    }
+
+    /// Cinco noches sin ninguna salida desde una cuadrícula habitada por
+    /// varias familias constituyen un bloqueo. Cualquier salida lo reinicia.
+    /// Se satura a cinco porque al alcanzarlo se dispara un único éxodo.
+    static func nextBlockadeDays(_ current: Int, counts: [Int64],
+                                 outgoing: Int64) -> Int {
+        guard outgoing == 0, counts.filter({ $0 > 0 }).count >= 2 else {
+            return 0
+        }
+        return min(5, current + 1)
+    }
+
+    /// Familia que ocupa el SEGUNDO puesto, siempre distinta de la
+    /// dominante persistida cuando hay empate. Empates secundarios por
+    /// orden L/M/X/J/V/S/D para preservar repetibilidad del historial.
+    static func exodusFamily(_ counts: [Int64], priorDominant: Int?) -> Int? {
+        guard let leader = dominant(counts,prior:priorDominant) else { return nil }
+        return counts.indices.filter { $0 != leader && counts[$0] > 0 }
+            .sorted {
+                counts[$0] == counts[$1] ? $0 < $1 : counts[$0] > counts[$1]
+            }.first
+    }
+
+    /// El éxodo prefiere el vecino con menos población total al cierre
+    /// anterior. Los empates se resuelven siempre N, S, E, O.
+    static func exodusDestination(cell: Cell,
+                                  populations: [String:[Int64]]) -> Int {
+        (0..<4).min {
+            let left = populations[neighbor(cell,direction:$0).id]?
+                .reduce(Int64(0),+) ?? 0
+            let right = populations[neighbor(cell,direction:$1).id]?
+                .reduce(Int64(0),+) ?? 0
+            return left == right ? $0 < $1 : left < right
+        }!
     }
 
     /// Defensa territorial antes de emigrar:
@@ -305,6 +354,8 @@ enum BioGridEngine {
         var lastCellPopulations: [String: [Int64]] = [:]
         var territoryEvents: [BioGridTerritoryEvent] = []
         var cellDays: [String: [BioGridCellDay]] = [:]
+        var exodusEvents: [BioGridExodusEvent] = []
+        var blockadeDays: [String: Int] = [:]
         var day = start
         var firstDay = true
 
@@ -373,6 +424,64 @@ enum BioGridEngine {
                         }
                         ledger[key] = from
                     }
+                }
+
+                // ÉXODO POR BLOQUEO: tras cinco noches consecutivas SIN
+                // salidas y con varias familias al cierre anterior, la
+                // segunda abandona íntegramente su cuadrícula. Se calcula
+                // después de las emigraciones normales, pero utilizando
+                // solo las poblaciones "old": todas las salidas son
+                // simultáneas y ninguna bacteria recorre dos casillas.
+                for key in old.keys.sorted() {
+                    guard let counts = old[key], let cell = parseCell(key) else {
+                        continue
+                    }
+                    let currentOutbound = ledger[key]?.departures
+                        .flatMap { $0 }.reduce(Int64(0),+) ?? 0
+                    let stalled = nextBlockadeDays(
+                        blockadeDays[key] ?? 0,counts:counts,
+                        outgoing:currentOutbound)
+                    guard stalled >= 5,
+                          let family = exodusFamily(counts,
+                            priorDominant:previousDominant[key]),
+                          counts[family] > 0 else {
+                        if stalled == 0 {
+                            blockadeDays.removeValue(forKey:key)
+                        } else {
+                            blockadeDays[key] = stalled
+                        }
+                        continue
+                    }
+                    blockadeDays.removeValue(forKey:key)
+                    let direction = exodusDestination(cell:cell,populations:old)
+                    let destination = neighbor(cell,direction:direction).id
+                    let amount = counts[family]
+
+                    // Se descuenta exactamente la población ORIGINARIA de
+                    // esa familia; los inmigrantes que hayan llegado esta
+                    // misma noche nunca pueden salir de nuevo.
+                    next[key]![family] -= amount
+                    if next[destination] == nil {
+                        next[destination] = Array(repeating:0,count:7)
+                    }
+                    next[destination]![family] += amount
+                    report.migrated[family] += amount
+
+                    var departure = ledger[key] ?? BioGridCellDay(date:day)
+                    departure.departures[family][direction] += amount
+                    ledger[key] = departure
+                    var arrival = ledger[destination] ?? BioGridCellDay(date:day)
+                    arrival.arrivals[family][[1,0,3,2][direction]] += amount
+                    ledger[destination] = arrival
+                    exodusEvents.append(BioGridExodusEvent(date:day,
+                        source:key,destination:destination,
+                        family:family,amount:amount))
+                }
+
+                // Los contadores de casillas que quedaron despobladas
+                // dejan de existir hasta una eventual recolonización.
+                for key in blockadeDays.keys where old[key] == nil {
+                    blockadeDays.removeValue(forKey:key)
                 }
 
                 for key in next.keys.sorted() {
@@ -538,7 +647,8 @@ enum BioGridEngine {
             todayBirths:events[today] ?? [:],remainingSeconds:remainder,
             lastIntervalEnds:lastIntervalEnds,
             historical:historical,cellHistory:cellHistory,cellDays:cellDays,
-            territoryEvents:territoryEvents,rulers:previousDominant)
+            territoryEvents:territoryEvents,exodusEvents:exodusEvents,
+            rulers:previousDominant)
     }
 
     private static func dominant(_ counts: [Int64], prior: Int?) -> Int? {
