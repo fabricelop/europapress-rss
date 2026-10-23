@@ -11,6 +11,31 @@ struct BioGridDay: Codable, Identifiable {
     var id: Date { date }
 }
 
+/// Actividad de UNA cuadrícula durante UNA jornada local de Madrid.
+/// Llegan/salen/mueren = ciclo de medianoche que inicia la fecha indicada.
+/// Nacen = bloques de cinco minutos completados durante esa misma fecha.
+/// Matrices por familia L M X J V S D y dirección N S E O, relativas a la cuadrícula.
+struct BioGridCellDay: Codable, Identifiable {
+    let date: Date
+    var births = [Int64](repeating: 0, count: 7)
+    var arrivals = Array(repeating: [Int64](repeating: 0, count: 4), count: 7)
+    var departures = Array(repeating: [Int64](repeating: 0, count: 4), count: 7)
+    var deaths = [Int64](repeating: 0, count: 7)
+    var id: Date { date }
+
+    func arrived(_ family: Int) -> Int64 { arrivals[family].reduce(0,+) }
+    func departed(_ family: Int) -> Int64 { departures[family].reduce(0,+) }
+    func delta(_ family: Int) -> Int64 {
+        births[family] + arrived(family) - departed(family) - deaths[family]
+    }
+    var hasActivity: Bool {
+        births.contains(where: { $0 != 0 }) ||
+        deaths.contains(where: { $0 != 0 }) ||
+        arrivals.contains(where: { $0.contains(where: { $0 != 0 }) }) ||
+        departures.contains(where: { $0.contains(where: { $0 != 0 }) })
+    }
+}
+
 struct BioGridHistoryPoint: Codable, Identifiable {
     let date: Date
     let population: [Int64]
@@ -46,6 +71,7 @@ struct BioGridSnapshot: Codable {
     var lastIntervalEnds: [String: Date] = [:]
     var historical: [BioGridHistoryPoint] = []
     var cellHistory: [String: [BioGridCellPoint]] = [:]
+    var cellDays: [String: [BioGridCellDay]] = [:]
     var territoryEvents: [BioGridTerritoryEvent] = []
     var rulers: [String: Int] = [:]
 
@@ -167,122 +193,171 @@ enum BioGridEngine {
         var cellHistory: [String: [BioGridCellPoint]] = [:]
         var lastCellPopulations: [String: [Int64]] = [:]
         var territoryEvents: [BioGridTerritoryEvent] = []
+        var cellDays: [String: [BioGridCellDay]] = [:]
         var day = start
+        var firstDay = true
+
         while day <= today {
             var report = BioGridDay(date: day)
-            let births = events[day] ?? [:]
-            for key in births.keys.sorted() {
-                let incoming = births[key]!
-                var counts = living[key] ?? Array(repeating: 0, count: 7)
-                for i in 0..<7 { counts[i] += incoming[i]; report.births[i] += incoming[i] }
-                if (living[key]?.reduce(0,+) ?? 0) == 0,
-                   let family = incoming.firstIndex(where: { $0 > 0 }) {
+            var ledger: [String: BioGridCellDay] = [:]
+
+            // 00:00 MADRID: la noche anterior termina, migraciones simultáneas
+            // (cada bacteria recorre como máximo UNA casilla) y después combate.
+            // Para preservar las secuencias deterministas anteriores se emplea
+            // la fecha del día que acaba de terminar como semilla de azar.
+            if !firstDay {
+                let priorDay = calendar.date(byAdding: .day, value: -1, to: day)!
+                let old = living
+                var next = old
+                for key in old.keys.sorted() {
+                    guard let counts = old[key], let cell = parseCell(key) else { continue }
+                    let total = counts.reduce(0,+)
+                    let probability = 0.30 * Double(total) / (Double(total) + 130)
+                    var rng = Random(state: seed(priorDay, cell: key, salt: 0x47c23))
+                    // N, S, E, O: cada dirección es relativa a la cuadrícula.
+                    let neighbors = [
+                        Cell(row:cell.row + 1,column:cell.column),
+                        Cell(row:cell.row - 1,column:cell.column),
+                        Cell(row:cell.row,column:cell.column + 1),
+                        Cell(row:cell.row,column:cell.column - 1)
+                    ]
+                    let opposite = [1,0,3,2]
+                    for family in 0..<7 {
+                        let moved = rng.binomial(counts[family], probability)
+                        guard moved > 0 else { continue }
+                        next[key]![family] -= moved
+                        report.migrated[family] += moved
+                        var remaining = moved
+                        var from = ledger[key] ?? BioGridCellDay(date:day)
+                        for direction in 0..<4 {
+                            let count = direction == 3 ? remaining :
+                                rng.binomial(remaining,1.0 / Double(4 - direction))
+                            remaining -= count
+                            if count == 0 { continue }
+                            from.departures[family][direction] += count
+                            let target = neighbors[direction].id
+                            if next[target] == nil {
+                                next[target] = Array(repeating: 0, count: 7)
+                            }
+                            next[target]![family] += count
+                            var to = ledger[target] ?? BioGridCellDay(date:day)
+                            to.arrivals[family][opposite[direction]] += count
+                            ledger[target] = to
+                        }
+                        ledger[key] = from
+                    }
+                }
+
+                for key in next.keys.sorted() {
+                    guard var counts = next[key] else { continue }
+                    let prior = previousDominant[key] ?? dominant(old[key] ?? [], prior:nil)
+                    var ruler = dominant(counts,prior:prior)
+                    if (old[key]?.reduce(0,+) ?? 0) == 0, let ruler {
+                        let oldSite = visited.contains(key)
+                        if !oldSite { report.newCells[ruler] += 1 }
+                        territoryEvents.append(BioGridTerritoryEvent(
+                            date:day,cellKey:key,family:ruler,previousFamily:nil,
+                            kind:oldSite ? .recolonization : .first))
+                        visited.insert(key)
+                    }
+
+                    let active = counts.indices.filter { counts[$0] > 0 }
+                    if active.count > 1, let strongest = ruler {
+                        let enemy = active.filter { $0 != strongest }
+                            .reduce(Int64(0)) { $0 + counts[$1] }
+                        var fighters = counts
+                        fighters[strongest] = min(counts[strongest], enemy * 2)
+                        let participants = fighters.reduce(Int64(0),+)
+                        var rng = Random(state:seed(priorDay,cell:key,salt:0xba761))
+                        let intensity = 0.05 + 0.10 * rng.next()
+                        var record = ledger[key] ?? BioGridCellDay(date:day)
+                        for family in active {
+                            let share = Double(fighters[family]) / Double(max(1,participants))
+                            let risk = intensity * (1.0 + 0.30 * (1.0 - 2.0 * share))
+                            let dead = rng.binomial(fighters[family],risk)
+                            counts[family] -= dead
+                            report.deaths[family] += dead
+                            record.deaths[family] += dead
+                        }
+                        ledger[key] = record
+                        ruler = dominant(counts,prior:prior)
+                    }
+                    if let before = prior, let after = ruler, before != after {
+                        report.conquests[after] += 1
+                        territoryEvents.append(BioGridTerritoryEvent(
+                            date:day,cellKey:key,family:after,
+                            previousFamily:before,kind:.conquest))
+                    }
+                    if counts.reduce(0,+) == 0 {
+                        next.removeValue(forKey:key)
+                        previousDominant.removeValue(forKey:key)
+                    } else {
+                        next[key] = counts
+                        if let ruler { previousDominant[key] = ruler }
+                    }
+                }
+                living = next
+            }
+            firstDay = false
+
+            // NACIMIENTOS del día (sin migración ni combate hasta la próxima
+            // medianoche). Los minutos restantes sobreviven entre días.
+            for key in (events[day] ?? [:]).keys.sorted() {
+                guard let incoming = events[day]?[key] else { continue }
+                var counts = living[key] ?? Array(repeating:0,count:7)
+                let wasEmpty = counts.reduce(0,+) == 0
+                for family in 0..<7 {
+                    counts[family] += incoming[family]
+                    report.births[family] += incoming[family]
+                }
+                var record = ledger[key] ?? BioGridCellDay(date:day)
+                for family in 0..<7 { record.births[family] += incoming[family] }
+                ledger[key] = record
+                if wasEmpty, let family = incoming.firstIndex(where: { $0 > 0 }) {
                     let oldSite = visited.contains(key)
                     if !oldSite { report.newCells[family] += 1 }
-                    territoryEvents.append(BioGridTerritoryEvent(date:day,
-                        cellKey:key,family:family,previousFamily:nil,
+                    territoryEvents.append(BioGridTerritoryEvent(
+                        date:day,cellKey:key,family:family,previousFamily:nil,
                         kind:oldSite ? .recolonization : .first))
                     visited.insert(key)
                 }
                 living[key] = counts
             }
-            if day < today {
-                // Emigración simultánea: los recién llegados no vuelven a migrar hoy.
-                let old = living
-                var new = old
-                for key in old.keys.sorted() {
-                    guard let counts = old[key], let cell = parseCell(key) else { continue }
-                    let total = counts.reduce(0, +)
-                    let probability = 0.30 * Double(total) / (Double(total) + 130)
-                    var rng = Random(state: seed(day, cell: key, salt: 0x47c23))
-                    for f in 0..<7 {
-                        let moved = rng.binomial(counts[f], probability)
-                        guard moved > 0 else { continue }
-                        new[key]![f] -= moved
-                        report.migrated[f] += moved
-                        let neighbors = [Cell(row: cell.row - 1, column: cell.column),
-                                         Cell(row: cell.row + 1, column: cell.column),
-                                         Cell(row: cell.row, column: cell.column - 1),
-                                         Cell(row: cell.row, column: cell.column + 1)]
-                        var pending = moved
-                        for i in 0..<4 {
-                            let portion = i == 3 ? pending : rng.binomial(pending, 1.0 / Double(4 - i))
-                            pending -= portion
-                            if portion == 0 { continue }
-                            let target = neighbors[i].id
-                            if new[target] == nil { new[target] = Array(repeating: 0, count: 7) }
-                            new[target]![f] += portion
-                        }
-                    }
-                }
-                // Familias nuevas, conquistas y batallas generales por cuadrícula.
-                for key in new.keys.sorted() {
-                    guard var counts = new[key] else { continue }
-                    let prior = previousDominant[key] ?? dominant(old[key] ?? [], prior: nil)
-                    var ruler = dominant(counts, prior: prior)
-                    if (old[key]?.reduce(0,+) ?? 0) == 0, let ruler {
-                        let oldSite = visited.contains(key)
-                        if !oldSite { report.newCells[ruler] += 1 }
-                        territoryEvents.append(BioGridTerritoryEvent(date:day,
-                            cellKey:key,family:ruler,previousFamily:nil,
-                            kind:oldSite ? .recolonization : .first))
-                        visited.insert(key)
-                    }
-                    let active = counts.indices.filter { counts[$0] > 0 }
-                    if active.count > 1, let strongest = ruler {
-                        let enemy = active.filter { $0 != strongest }.reduce(Int64(0)) { $0 + counts[$1] }
-                        var fighters = counts
-                        fighters[strongest] = min(counts[strongest], enemy * 2)
-                        let participants = fighters.reduce(Int64(0), +)
-                        var rng = Random(state: seed(day, cell: key, salt: 0xba761))
-                        let intensity = 0.05 + 0.10 * rng.next()
-                        for f in active {
-                            let share = Double(fighters[f]) / Double(max(1, participants))
-                            let risk = intensity * (1.0 + 0.30 * (1.0 - 2.0 * share))
-                            let dead = rng.binomial(fighters[f], risk)
-                            counts[f] -= dead
-                            report.deaths[f] += dead
-                        }
-                        ruler = dominant(counts, prior: prior)
-                    }
-                    if let before = prior, let after = ruler, before != after {
-                        report.conquests[after] += 1
-                        territoryEvents.append(BioGridTerritoryEvent(date:day,
-                            cellKey:key,family:after,previousFamily:before,kind:.conquest))
-                    }
-                    if counts.reduce(0, +) == 0 { new.removeValue(forKey: key); previousDominant.removeValue(forKey: key) }
-                    else { new[key] = counts; if let ruler { previousDominant[key] = ruler } }
-                }
-                living = new
+
+            for key in ledger.keys.sorted() {
+                guard let entry = ledger[key], entry.hasActivity else { continue }
+                cellDays[key,default:[]].append(entry)
             }
             daily.append(report)
             var total = [Int64](repeating:0,count:7)
             var territories = [Int](repeating:0,count:7)
-            for (key, counts) in living {
-                guard let maximum = counts.max(), maximum > 0 else { continue }
-                for i in 0..<7 { total[i] += counts[i] }
-                let ruler = dominant(counts, prior:previousDominant[key])!
+            for (key,counts) in living {
+                guard counts.contains(where:{ $0 > 0 }) else { continue }
+                for family in 0..<7 { total[family] += counts[family] }
+                let ruler = dominant(counts,prior:previousDominant[key])!
                 previousDominant[key] = ruler
                 territories[ruler] += 1
                 if lastCellPopulations[key] != counts {
-                    cellHistory[key,default:[]].append(BioGridCellPoint(date:day,counts:counts))
+                    cellHistory[key,default:[]].append(BioGridCellPoint(
+                        date:day,counts:counts))
                 }
             }
             for key in lastCellPopulations.keys where living[key] == nil {
-                cellHistory[key,default:[]].append(BioGridCellPoint(date:day,
-                    counts:Array(repeating:0,count:7)))
+                cellHistory[key,default:[]].append(BioGridCellPoint(
+                    date:day,counts:Array(repeating:0,count:7)))
             }
             lastCellPopulations = living
-            historical.append(BioGridHistoryPoint(date:day,
-                population:total,territory:territories))
-            guard let next = calendar.date(byAdding: .day, value: 1, to: day), next > day else { break }
-            day = next
+            historical.append(BioGridHistoryPoint(
+                date:day,population:total,territory:territories))
+            guard let following = calendar.date(byAdding:.day,value:1,to:day),
+                  following > day else { break }
+            day = following
         }
         return BioGridSnapshot(populations: living,days:daily,latestProcessed:today,
             sourceFingerprint:fingerprint(intervals),
             todayBirths:events[today] ?? [:],remainingSeconds:remainder,
             lastIntervalEnds:lastIntervalEnds,
-            historical:historical,cellHistory:cellHistory,
+            historical:historical,cellHistory:cellHistory,cellDays:cellDays,
             territoryEvents:territoryEvents,rulers:previousDominant)
     }
 
