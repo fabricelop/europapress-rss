@@ -169,12 +169,12 @@ enum BioGridEngine {
     /// Defensa territorial antes de emigrar:
     /// - únicamente una familia líder sin empate;
     /// - mínimo de 10 bacterias para optar a emigrar;
-    /// - la guarnición restante debe conservar una ventaja del 30 %
-    ///   frente a la segunda familia, o al menos 10 si no hay rivales.
+    /// - la guarnición restante debe conservar AL MENOS EL DOBLE
+    ///   que la segunda familia, o al menos 10 si no hay rivales.
     ///
-    /// La capacidad es un techo, no una emigración obligatoria: después
-    /// se aplica la misma probabilidad estocástica que en BIOGRID 1.0.48.
-    /// Se calcula sobre el estado del cierre anterior al movimiento simultáneo.
+    /// Esta capacidad es un límite DEFENSIVO: la emigración efectiva
+    /// está limitada adicionalmente al 20 % de la familia y al sorteo
+    /// estocástico. Se evalúa el cierre anterior al movimiento simultáneo.
     static func defensiveMigrationLimit(_ counts: [Int64]) -> (family: Int, maximum: Int64)? {
         guard let family = counts.indices.max(by: {
             counts[$0] < counts[$1]
@@ -183,15 +183,25 @@ enum BioGridEngine {
         guard leader >= 10 else { return nil }
         let second = counts.indices.filter { $0 != family }
             .map { counts[$0] }.max() ?? 0
-        guard leader > second else { return nil }
-
-        // ceil(second * 0.30), usando aritmética entera para evitar
-        // errores de redondeo en los límites exactos del 30 %.
-        let extra = (second / 10) * 3 + ((second % 10) * 3 + 9) / 10
-        guard second <= Int64.max - extra else { return nil }
-        let garrison = max(Int64(10), second + extra)
+        // Doble dominio seguro, sin overflow cuando hay grandes cifras.
+        // Si la líder solo iguala el doble, no existe excedente emigrable.
+        guard second <= Int64.max / 2 else { return nil }
+        let garrison = max(Int64(10), second * 2)
         guard leader > garrison else { return nil }
         return (family: family, maximum: leader - garrison)
+    }
+
+    /// La migración real no puede superar el 20 % de la familia,
+    /// incluso si una muestra binomial excepcional fuera mayor.
+    static func migrationTwentyPercentCap(_ dominantPopulation: Int64) -> Int64 {
+        max(0, dominantPopulation / 5)
+    }
+
+    /// Probabilidad individual (siempre inferior al 20 %) que mantiene
+    /// el comportamiento de menor emigración en cuadrículas pequeñas.
+    static func migrationProbability(totalPopulation: Int64) -> Double {
+        let total = Double(totalPopulation)
+        return 0.20 * total / (total + 130.0)
     }
 
     private static var madrid: Calendar {
@@ -316,7 +326,7 @@ enum BioGridEngine {
                     // bacterias. Las minorías permanecen defendiendo.
                     guard let permission = defensiveMigrationLimit(counts) else { continue }
                     let total = counts.reduce(0,+)
-                    let probability = 0.30 * Double(total) / (Double(total) + 130)
+                    let probability = migrationProbability(totalPopulation:total)
                     var rng = Random(state: seed(priorDay, cell: key, salt: 0x47c23))
                     // Orden histórico de reparto: S, N, O, E.
                     // Las columnas se registran siempre N, S, E, O.
@@ -334,7 +344,8 @@ enum BioGridEngine {
                         populations:old,rulers:previousDominant)
                     guard !validTargets.isEmpty else { continue }
                     let stochastic = rng.binomial(counts[family], probability)
-                    let moved = min(stochastic, permission.maximum)
+                    let moved = min(stochastic, permission.maximum,
+                                    migrationTwentyPercentCap(counts[family]))
                     if moved > 0 {
                         next[key]![family] -= moved
                         report.migrated[family] += moved
