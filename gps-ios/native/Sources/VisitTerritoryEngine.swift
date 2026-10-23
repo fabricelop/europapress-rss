@@ -172,10 +172,12 @@ enum VisitTerritoryEngine {
         var components: [String: [String]] = [:]
         var peaks: [String: Cell] = [:]
 
-        // BFS de componentes conectados. El orden se estabiliza a propósito:
-        // el mismo historial produce las mismas regiones en cada lanzamiento.
-        while let begin = pending.sorted().first {
-            pending.remove(begin)
+        // Ordenar UNA vez. Ordenar todo el conjunto pendiente en cada
+        // componente era cuadrático para miles de visitas aisladas (viajes,
+        // paseos), y podía bloquear el mapa incluso fuera del hilo principal.
+        // Se mantiene exactamente el mismo orden y resultado determinista.
+        for begin in eligible.sorted() {
+            guard pending.remove(begin) != nil else { continue }
             var queue = [begin]
             var index = 0
             var members: [String] = []
