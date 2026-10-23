@@ -1,0 +1,94 @@
+name: "Mi Mapa Territorios 1.0.54 - pruebas focalizadas + IPA"
+on:
+  push:
+    branches:
+      - feature/territorios-v54-visits
+    paths:
+      - 'gps-ios/native/Sources/BioGrid*.swift'
+      - 'gps-ios/native/Sources/VisitTerritor*.swift'
+      - 'gps-ios/native/Sources/TimeDiscoveryViews.swift'
+      - 'gps-ios/native/project.yml'
+      - 'gps-ios/native/Tests/BioGridV46Tests.swift'
+      - 'gps-ios/native/Tests/BioGridV47Tests.swift'
+      - 'gps-ios/native/Tests/BioGridV48LedgerTests.swift'
+      - 'gps-ios/native/Tests/BioGridV49DefensiveMigrationTests.swift'
+      - 'gps-ios/native/Tests/BioGridV50FrontierBattleTests.swift'
+      - 'gps-ios/native/Tests/BioGridV51DoubleDominanceTests.swift'
+      - 'gps-ios/native/Tests/BioGridV52BlockadeExodusTests.swift'
+      - 'gps-ios/native/Tests/BioGridV53GeographicExodusTests.swift'
+      - 'gps-ios/native/Tests/VisitTerritoriesV54Tests.swift'
+      - '.github/workflows/mi-mapa-territorios-v54-quick.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: mi-mapa-territorios-v54-quick
+  cancel-in-progress: true
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar fuentes Territorios y preparar proyecto
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas Territorios iPhone simulator
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          devices=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          phones=[d for rt, ds in devices.items() if "iOS" in rt for d in ds if "iPhone" in d["name"] and d["state"] != "Unavailable"]
+          assert phones, "No iPhone simulator available"
+          open("/tmp/territorios_simulator","w").write(phones[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/territorios_simulator)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO \
+            -only-testing:MiMapaDelTiempoTests/BioGridV46Tests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV47Tests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV48LedgerTests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV49DefensiveMigrationTests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV50FrontierBattleTests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV51DoubleDominanceTests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV52BlockadeExodusTests \
+            -only-testing:MiMapaDelTiempoTests/BioGridV53GeographicExodusTests \
+            -only-testing:MiMapaDelTiempoTests/TimeMapVisitCounterTests \
+            -only-testing:MiMapaDelTiempoTests/VisitTerritoriesV54Tests
+      - name: Compilar IPA sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/territorios_v54_build" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/territorios_v54_build/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          assert app.exists()
+          m=plistlib.loads((app/"Info.plist").read_bytes())
+          assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert m["CFBundleShortVersionString"]=="1.0.54"
+          assert m["CFBundleVersion"]=="55"
+          assert m["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"], "La app debe mantenerse vertical"
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").exists()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Territorios-1.0.54.ipa Payload
+          unzip -t MiMapaDelTiempo-Territorios-1.0.54.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Territorios-1.0.54-quick-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Territorios-1.0.54.ipa
+          retention-days: 14
+          if-no-files-found: error
