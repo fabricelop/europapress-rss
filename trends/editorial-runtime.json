@@ -5,8 +5,8 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-23T18:45:00+02:00",
-  "last_completed_at": "2026-10-23T18:49:30+02:00",
-  "updated_at": "2026-10-23T18:49:30+02:00",
+  "last_completed_at": "2026-10-23T18:50:27+02:00",
+  "updated_at": "2026-10-23T18:50:27+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -28,8 +28,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-23T18:45:00+02:00",
-    "updated_at": "2026-10-23T18:49:30+02:00",
-    "finished_at": "2026-10-23T18:49:30+02:00",
+    "updated_at": "2026-10-23T18:50:27+02:00",
+    "finished_at": "2026-10-23T18:50:27+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,7 +61,7 @@
       "pending_cards_reviewed": 6,
       "incidents": 0
     },
-    "message": "TTendencias 0/0: no había trabajo editorial nuevo; cola editorial verificada en 0.",
+    "message": "TTendencias 0/0: refresco confirmado; no había trabajo editorial nuevo y la cola queda en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
@@ -108,6 +108,20 @@
         "trend_id": null,
         "title": null,
         "message": "TTendencias 0/0: no había trabajo editorial nuevo; cola editorial verificada en 0."
+      },
+      {
+        "at": "2026-10-23T18:50:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Refresco confirmado en main: radar 18:49:47 y cola 18:49:57, sin nuevas entradas."
+      },
+      {
+        "at": "2026-10-23T18:50:27+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias 0/0: refresco confirmado; no había trabajo editorial nuevo y la cola queda en 0."
       }
     ],
     "processed_ids": [],
@@ -187,17 +201,31 @@
       "trend_id": null,
       "title": null,
       "message": "TTendencias 0/0: no había trabajo editorial nuevo; cola editorial verificada en 0."
+    },
+    {
+      "at": "2026-10-23T18:50:20+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Refresco confirmado en main: radar 18:49:47 y cola 18:49:57, sin nuevas entradas."
+    },
+    {
+      "at": "2026-10-23T18:50:27+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias 0/0: refresco confirmado; no había trabajo editorial nuevo y la cola queda en 0."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "partial": false,
   "radar_refresh": {
-    "status": "trigger_persisted",
-    "reason": "Se persistió señal manual; el radar de main capturado a las 18:41 seguía fresco y no apareció trabajo editorial nuevo antes del cierre."
+    "status": "completed",
+    "reason": "Refresco manual confirmado en main; no generó trabajo editorial nuevo."
   },
   "radar": {
-    "captured_at": "2026-10-23T18:41:02+02:00",
+    "captured_at": "2026-10-23T18:49:47+02:00",
     "queue_count": 0
   },
   "previous_run_id": "tr-chat-20261023T174500+0200"
