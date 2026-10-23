@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T14:45:00+02:00",
-  "last_completed_at": "2026-10-23T14:47:00+02:00",
-  "updated_at": "2026-10-23T14:47:00+02:00",
+  "last_started_at": "2026-10-23T15:15:00+02:00",
+  "last_completed_at": "2026-10-23T15:17:00+02:00",
+  "updated_at": "2026-10-23T15:17:00+02:00",
   "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
@@ -23,13 +23,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261023T144500+0200",
+    "run_id": "tr-chat-20261023T151500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-23T14:45:00+02:00",
-    "updated_at": "2026-10-23T14:47:00+02:00",
-    "finished_at": "2026-10-23T14:47:00+02:00",
+    "started_at": "2026-10-23T15:15:00+02:00",
+    "updated_at": "2026-10-23T15:17:00+02:00",
+    "finished_at": "2026-10-23T15:17:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -58,10 +58,10 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 5,
+      "pending_cards_reviewed": 4,
       "incidents": 0
     },
-    "message": "TTendencias 0/0: no había trabajo editorial activo; 5 Explicadas recientes verificadas y saneamiento visual solicitado.",
+    "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -74,32 +74,32 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-23T14:45:00+02:00",
+        "at": "2026-10-23T15:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y saneando Pendientes recientes."
+        "message": "Pasada iniciada; cola editorial previa 0. Verificando radar y estado autoritativo."
       },
       {
-        "at": "2026-10-23T14:46:00+02:00",
+        "at": "2026-10-23T15:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura autoritativa: cola 0, requests activas 0, rewrite_pending 0 y problematic 0; Top 10 fresco capturado a las 14:41."
+        "message": "Radar fresco confirmado: captured_at 15:11; cola 0 y requests activas 0."
       },
       {
-        "at": "2026-10-23T14:46:10+02:00",
+        "at": "2026-10-23T15:16:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Explicadas recientes: 5 fichas vigentes, todas con remate; saneamiento visual solicitado al inicio."
+        "message": "Revisando Explicadas recientes: 4 tarjetas vigentes en Pendientes, todas con remate; saneamiento visual solicitado."
       },
       {
-        "at": "2026-10-23T14:47:00+02:00",
+        "at": "2026-10-23T15:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 0/0: no había trabajo editorial activo; 5 Explicadas recientes verificadas y saneamiento visual solicitado."
+        "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [],
@@ -108,7 +108,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261023T144500+0200",
+  "run_id": "tr-chat-20261023T151500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -133,38 +133,38 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 5,
+    "pending_cards_reviewed": 4,
     "incidents": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-23T14:45:00+02:00",
+      "at": "2026-10-23T15:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y saneando Pendientes recientes."
+      "message": "Pasada iniciada; cola editorial previa 0. Verificando radar y estado autoritativo."
     },
     {
-      "at": "2026-10-23T14:46:00+02:00",
+      "at": "2026-10-23T15:16:00+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura autoritativa: cola 0, requests activas 0, rewrite_pending 0 y problematic 0; Top 10 fresco capturado a las 14:41."
+      "message": "Radar fresco confirmado: captured_at 15:11; cola 0 y requests activas 0."
     },
     {
-      "at": "2026-10-23T14:46:10+02:00",
+      "at": "2026-10-23T15:16:20+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Explicadas recientes: 5 fichas vigentes, todas con remate; saneamiento visual solicitado al inicio."
+      "message": "Revisando Explicadas recientes: 4 tarjetas vigentes en Pendientes, todas con remate; saneamiento visual solicitado."
     },
     {
-      "at": "2026-10-23T14:47:00+02:00",
+      "at": "2026-10-23T15:17:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 0/0: no había trabajo editorial activo; 5 Explicadas recientes verificadas y saneamiento visual solicitado."
+      "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado."
     }
   ],
   "telegram_orphans": 0,
@@ -175,8 +175,8 @@
     "reason": "recent captured_at within 20 minutes"
   },
   "radar": {
-    "captured_at": "2026-10-23T14:41:04+02:00",
+    "captured_at": "2026-10-23T15:11:04+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261023T141500+0200"
+  "previous_run_id": "tr-chat-20261023T144500+0200"
 }
