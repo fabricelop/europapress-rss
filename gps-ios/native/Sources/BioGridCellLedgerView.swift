@@ -164,6 +164,15 @@ struct BioGridCellLedgerView: View {
     /// Los éxodos ya figuran en las columnas de entradas/salidas de
     /// cada familia. Este aviso distingue el abandono total de una
     /// emigración ordinaria, sin duplicar las cifras del balance.
+    private func cellFromKey(_ id:String) -> Cell? {
+        let parts=id.split(separator:":")
+        guard parts.count==2,
+              let row=Int(parts[0]),let column=Int(parts[1]) else {
+            return nil
+        }
+        return Cell(row:row,column:column)
+    }
+
     private var exodusNotices: some View {
         let events = snapshot?.exodusEvents.filter {
             calendar.isDate($0.date,inSameDayAs:day) &&
@@ -172,15 +181,35 @@ struct BioGridCellLedgerView: View {
         return VStack(alignment:.leading,spacing:6) {
             ForEach(events) { event in
                 let departure = event.source == cell.id
-                Label {
-                    Text(departure ?
-                         "Éxodo por bloqueo: la familia \(BioGridEngine.letters[event.family]) abandonó esta cuadrícula con sus \(event.amount.formatted()) bacterias. Se trasladó a la vecina menos poblada." :
-                         "Éxodo recibido: llegaron \(event.amount.formatted()) bacterias de la familia \(BioGridEngine.letters[event.family]) desde una cuadrícula vecina.")
-                        .font(.caption)
-                        .fixedSize(horizontal:false,vertical:true)
-                } icon: {
-                    Image(systemName:departure ?
-                        "arrow.up.right.square.fill" : "arrow.down.left.square.fill")
+                let otherKey = departure ? event.destination : event.source
+                let currentDestination = snapshot?.populations[event.destination] ??
+                    Array(repeating:Int64(0),count:7)
+                let familyNow = currentDestination[event.family]
+                let totalNow = currentDestination.reduce(Int64(0),+)
+                VStack(alignment:.leading,spacing:7) {
+                    Label {
+                        Text(departure ?
+                             "Éxodo por bloqueo: salieron \(event.amount.formatted()) bacterias de la familia \(BioGridEngine.letters[event.family]) hacia la cuadrícula vecina menos poblada." :
+                             "Éxodo recibido: llegaron \(event.amount.formatted()) bacterias de \(BioGridEngine.letters[event.family]) desde la cuadrícula vecina.")
+                            .font(.caption)
+                            .fixedSize(horizontal:false,vertical:true)
+                    } icon: {
+                        Image(systemName:departure ?
+                            "arrow.up.right.square.fill" : "arrow.down.left.square.fill")
+                    }
+                    Text("Destino en el mapa actual: \(totalNow.formatted()) bacterias; \(familyNow.formatted()) de \(BioGridEngine.letters[event.family]).")
+                        .font(.caption2).foregroundStyle(.secondary)
+                    if let adjacent = cellFromKey(otherKey) {
+                        Button {
+                            openNeighbor(adjacent)
+                        } label: {
+                            Label(departure ? "Abrir cuadrícula de destino" :
+                                "Abrir cuadrícula de origen",
+                                systemImage:"arrow.up.right.square")
+                                .font(.caption.weight(.semibold))
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
                 .foregroundStyle(.orange)
                 .padding(9)
