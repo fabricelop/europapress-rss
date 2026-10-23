@@ -18,7 +18,7 @@ final class BioGridV48LedgerTests: XCTestCase {
             interval("2026-10-19T08:00:00Z","2026-10-19T16:00:00Z",center),
             interval("2026-10-20T08:00:00Z","2026-10-20T16:00:00Z",center),
             interval("2026-10-21T08:00:00Z","2026-10-21T14:00:00Z",
-                     Cell(row:center.row+1,column:center.column)),
+                     BioGridEngine.neighbor(center,direction:0)),
             interval("2026-10-22T08:00:00Z","2026-10-22T14:00:00Z",center)
         ]
     }
@@ -51,8 +51,6 @@ final class BioGridV48LedgerTests: XCTestCase {
     func testDirectionalDeparturesAreExactlyNeighborsOppositeArrivals() {
         let sim = simulate()
         let reverse = [1,0,3,2]
-        let dr = [1,-1,0,0]
-        let dc = [0,0,1,-1]
         var checkedMoves:Int64 = 0
         for (key,entries) in sim.cellDays {
             let parts = key.split(separator:":")
@@ -66,7 +64,8 @@ final class BioGridV48LedgerTests: XCTestCase {
                     for d in 0..<4 {
                         let out = record.departures[f][d]
                         guard out > 0 else { continue }
-                        let neighbor = Cell(row:row+dr[d],column:col+dc[d]).id
+                        let neighbor = BioGridEngine.neighbor(
+                            Cell(row:row,column:col),direction:d).id
                         let target = sim.cellDays[neighbor]?.first(where:{
                             $0.date==record.date
                         })
