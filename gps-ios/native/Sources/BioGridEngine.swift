@@ -143,13 +143,23 @@ enum BioGridEngine {
         return .skirmish
     }
 
-    /// Direcciones N, S, E, O (0,1,2,3) relativas a la casilla de origen.
+    /// Direcciones N, S, E, O (0,1,2,3).
+    /// IMPORTANTE: la longitud de 100 m cambia con la latitud en Grid.
+    /// Por eso la misma columna numérica NO está necesariamente al norte
+    /// ni al sur: en Madrid supone aproximadamente 200 m de error lateral
+    /// por cada fila. Proyectamos el CENTRO geográfico de la origen a la
+    /// latitud de la fila adyacente y resolvemos la cuadrícula real.
     static func neighbor(_ cell: Cell, direction: Int) -> Cell {
         switch direction {
-        case 0: return Cell(row:cell.row + 1,column:cell.column)
-        case 1: return Cell(row:cell.row - 1,column:cell.column)
-        case 2: return Cell(row:cell.row,column:cell.column + 1)
-        default: return Cell(row:cell.row,column:cell.column - 1)
+        case 0, 1:
+            let origin = Grid.center(cell)
+            let offset = direction == 0 ? Grid.latitudeStep : -Grid.latitudeStep
+            return Grid.cell(latitude:origin.latitude + offset,
+                             longitude:origin.longitude)
+        case 2:
+            return Cell(row:cell.row,column:cell.column + 1)
+        default:
+            return Cell(row:cell.row,column:cell.column - 1)
         }
     }
 
@@ -383,10 +393,10 @@ enum BioGridEngine {
                     // Las columnas se registran siempre N, S, E, O.
                     // Conservar el orden evita alterar la evolución ya conocida.
                     let neighbors = [
-                        Cell(row:cell.row - 1,column:cell.column),
-                        Cell(row:cell.row + 1,column:cell.column),
-                        Cell(row:cell.row,column:cell.column - 1),
-                        Cell(row:cell.row,column:cell.column + 1)
+                        neighbor(cell,direction:1), // S
+                        neighbor(cell,direction:0), // N
+                        neighbor(cell,direction:3), // O
+                        neighbor(cell,direction:2)  // E
                     ]
                     let directions = [1,0,3,2]
                     let opposite = [1,0,3,2]
