@@ -117,6 +117,7 @@ struct BioGridCellLedgerView: View {
                         heading(at:now)
                         dateSelector
                         summary(at:now)
+                        exodusNotices
                         table(at:now)
                         if let family = expandedFamily {
                             directionalDetail(family)
@@ -156,6 +157,36 @@ struct BioGridCellLedgerView: View {
                         expandedFamily = nil
                         showChart = false
                     }
+            }
+        }
+    }
+
+    /// Los éxodos ya figuran en las columnas de entradas/salidas de
+    /// cada familia. Este aviso distingue el abandono total de una
+    /// emigración ordinaria, sin duplicar las cifras del balance.
+    private var exodusNotices: some View {
+        let events = snapshot?.exodusEvents.filter {
+            calendar.isDate($0.date,inSameDayAs:day) &&
+                ($0.source == cell.id || $0.destination == cell.id)
+        } ?? []
+        return VStack(alignment:.leading,spacing:6) {
+            ForEach(events) { event in
+                let departure = event.source == cell.id
+                Label {
+                    Text(departure ?
+                         "Éxodo por bloqueo: la familia \(BioGridEngine.letters[event.family]) abandonó esta cuadrícula con sus \(event.amount.formatted()) bacterias. Se trasladó a la vecina menos poblada." :
+                         "Éxodo recibido: llegaron \(event.amount.formatted()) bacterias de la familia \(BioGridEngine.letters[event.family]) desde una cuadrícula vecina.")
+                        .font(.caption)
+                        .fixedSize(horizontal:false,vertical:true)
+                } icon: {
+                    Image(systemName:departure ?
+                        "arrow.up.right.square.fill" : "arrow.down.left.square.fill")
+                }
+                .foregroundStyle(.orange)
+                .padding(9)
+                .frame(maxWidth:.infinity,alignment:.leading)
+                .background(Color.orange.opacity(0.09),
+                            in:RoundedRectangle(cornerRadius:10))
             }
         }
     }
