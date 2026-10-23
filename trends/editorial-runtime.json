@@ -5,8 +5,8 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-23T16:45:00+02:00",
-  "last_completed_at": "2026-10-23T16:54:00+02:00",
-  "updated_at": "2026-10-23T16:54:00+02:00",
+  "last_completed_at": "2026-10-23T16:55:30+02:00",
+  "updated_at": "2026-10-23T16:55:30+02:00",
   "status": "success",
   "processed_ids": [
     "0001ffa46d2b",
@@ -31,7 +31,7 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-23T16:45:00+02:00",
-    "updated_at": "2026-10-23T16:54:00+02:00",
+    "updated_at": "2026-10-23T16:55:30+02:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
@@ -197,27 +197,6 @@
     ],
     "activity": [
       {
-        "at": "2026-10-23T16:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": "0001ffa46d2b",
-        "title": "La Revuelta",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-23T16:49:20+02:00",
-        "phase": "persisting",
-        "trend_id": "0001ffa46d2b",
-        "title": "La Revuelta",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-23T16:49:35+02:00",
-        "phase": "verifying",
-        "trend_id": "0001ffa46d2b",
-        "title": "La Revuelta",
-        "message": "Releyendo main."
-      },
-      {
         "at": "2026-10-23T16:49:50+02:00",
         "phase": "verifying",
         "trend_id": "0001ffa46d2b",
@@ -335,6 +314,27 @@
         "trend_id": null,
         "title": null,
         "message": "Relectura final: cola activa 0, rewrite_pending 0 y 4 Pendientes recientes con remate; saneamiento visual ya solicitado."
+      },
+      {
+        "at": "2026-10-23T16:54:20+02:00",
+        "phase": "persisting",
+        "trend_id": "134af8815725",
+        "title": "#TEM23O",
+        "message": "Normalizando sintaxis final a «es tendencia porque» y sincronizando ambos registros."
+      },
+      {
+        "at": "2026-10-23T16:55:10+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final: textos idénticos en Explicadas y requests; cola 0, problematic 0 y rewrite_pending 0."
+      },
+      {
+        "at": "2026-10-23T16:55:30+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias 2/2: La Revuelta y #TEM23O explicadas y verificadas; cola final 0."
       }
     ],
     "processed_ids": [
@@ -358,7 +358,7 @@
         "status": "explained"
       }
     ],
-    "finished_at": "2026-10-23T16:54:00+02:00"
+    "finished_at": "2026-10-23T16:55:30+02:00"
   },
   "run_id": "tr-chat-20261023T164500+0200",
   "summary": {
@@ -390,27 +390,6 @@
   },
   "unresolved_orphan_ids": [],
   "activity": [
-    {
-      "at": "2026-10-23T16:49:00+02:00",
-      "phase": "persisting",
-      "trend_id": "0001ffa46d2b",
-      "title": "La Revuelta",
-      "message": "Actualizando requests."
-    },
-    {
-      "at": "2026-10-23T16:49:20+02:00",
-      "phase": "persisting",
-      "trend_id": "0001ffa46d2b",
-      "title": "La Revuelta",
-      "message": "Retirando revisión de la cola."
-    },
-    {
-      "at": "2026-10-23T16:49:35+02:00",
-      "phase": "verifying",
-      "trend_id": "0001ffa46d2b",
-      "title": "La Revuelta",
-      "message": "Releyendo main."
-    },
     {
       "at": "2026-10-23T16:49:50+02:00",
       "phase": "verifying",
@@ -529,6 +508,27 @@
       "trend_id": null,
       "title": null,
       "message": "Relectura final: cola activa 0, rewrite_pending 0 y 4 Pendientes recientes con remate; saneamiento visual ya solicitado."
+    },
+    {
+      "at": "2026-10-23T16:54:20+02:00",
+      "phase": "persisting",
+      "trend_id": "134af8815725",
+      "title": "#TEM23O",
+      "message": "Normalizando sintaxis final a «es tendencia porque» y sincronizando ambos registros."
+    },
+    {
+      "at": "2026-10-23T16:55:10+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final: textos idénticos en Explicadas y requests; cola 0, problematic 0 y rewrite_pending 0."
+    },
+    {
+      "at": "2026-10-23T16:55:30+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias 2/2: La Revuelta y #TEM23O explicadas y verificadas; cola final 0."
     }
   ],
   "telegram_orphans": 0,
