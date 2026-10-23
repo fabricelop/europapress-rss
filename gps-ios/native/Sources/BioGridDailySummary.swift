@@ -32,9 +32,9 @@ struct BioGridDailySummary:View {
                 : "Nacimientos de la fecha histórica; el resto corresponde al ciclo anterior.")
                 .font(.caption2).foregroundStyle(.secondary)
             ForEach(Array(BioGridDailyInsights.headlines(snapshot:snapshot,
-                      report:lastCycle).enumerated()),id:\.offset) { _, headline in
+                      report:lastCycle).enumerated()),id:\.offset) { item in
                 Label {
-                    Text(headline)
+                    Text(item.element)
                         .font(.subheadline)
                         .fixedSize(horizontal:false,vertical:true)
                 } icon: {
