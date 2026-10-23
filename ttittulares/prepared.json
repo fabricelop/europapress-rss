@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-23T08:12:35.230Z",
+  "updated_at": "2026-10-23T08:14:42.951801Z",
   "items": [
     {
       "event_id": "3418baa1c880",
@@ -278,16 +278,34 @@
       },
       "prepared_at": "2026-10-23T08:12:35.230Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
       "image_status": "none",
-      "image_app_available": false
+      "image_app_available": false,
+      "archive_image_search_attempted_at": "2026-10-23T08:14:42.951801Z",
+      "fallback_image_search_attempted_at": "2026-10-23T08:14:42.951801Z",
+      "archive_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261023081742_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/andalucia/noticia-muerto-herida-chocar-moto-cabra-340-gualchos-granada-20261023081742.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Un muerto y una herida al chocar su moto con una cabra en la N-340 en Gualchos (Granada)"
+      },
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261023081742_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/andalucia/noticia-muerto-herida-chocar-moto-cabra-340-gualchos-granada-20261023081742.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Un muerto y una herida al chocar su moto con una cabra en la N-340 en Gualchos (Granada)"
+      }
     }
   ],
   "count": 0,
