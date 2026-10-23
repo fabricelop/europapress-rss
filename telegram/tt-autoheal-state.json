@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-23T19:20:28.970297+00:00",
+      "checked_at": "2026-10-23T22:23:26.953315+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 638776,
+          "seconds": 649754,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,63 +22,49 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-23T19:20:28.970297+00:00",
-      "issue_count": 8,
+      "checked_at": "2026-10-23T22:23:26.953315+00:00",
+      "issue_count": 6,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "2c9325fabd78",
-          "title": "Javi Rodríguez",
-          "seconds": 76738,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "2dd1283eb26c",
-          "title": "Omar",
-          "seconds": 76738,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "4b5c7e7d5b37",
-          "title": "Jordi Wild",
-          "seconds": 76738,
-          "workflow": null
-        },
         {
           "kind": "missing_delivery",
           "id": "7375308f71a9",
           "title": "Chiqui",
-          "seconds": 74368,
+          "seconds": 85346,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "f85562cd249a",
           "title": "Arkano",
-          "seconds": 49758,
+          "seconds": 60736,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "42355ce8b20d",
           "title": "Feijóo",
-          "seconds": 28150,
+          "seconds": 39128,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74a31fe68bb7",
           "title": "IRPF",
-          "seconds": 28150,
+          "seconds": 39128,
           "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "3653323c16ba",
+          "title": "Alavés",
+          "seconds": 2546,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 638776,
+          "seconds": 649754,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -87,16 +73,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "bbeca85478a49cc328e621b05868fe2595197d84a4f12db47b7248a9f4e16443",
+      "open_signature": "09564986d77b14025403402c34757e86b826b150de13b40af5bba59234c19197",
       "repair_via_workflow_run": false,
-      "escalation_required": 7
+      "escalation_required": 5
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-23T10:23:45.122775+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-23T19:20:28.970297+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-23T19:20:28.970297+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-23T19:20:28.970297+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-23T22:23:26.953315+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-23T22:23:26.953315+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-23T22:23:26.953315+00:00"
   },
-  "checked_at": "2026-10-23T19:20:28.970297+00:00"
+  "checked_at": "2026-10-23T22:23:26.953315+00:00"
 }
