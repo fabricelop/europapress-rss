@@ -148,7 +148,7 @@ struct BioGridNeighborsView: View {
             if canEmigrate {
                 Text(validTargets.isEmpty ?
                     "La familia dominante tiene reserva suficiente, pero ninguna vecina necesita refuerzo ni es un objetivo de conquista." :
-                    "En verde: destinos preferentes de la próxima emigración, si la ventaja del 30 % se mantiene.")
+                    "En verde: destinos preferentes de la próxima emigración, si se mantiene el doble de bacterias que la segunda familia (máximo 20 % emigrante).")
                     .font(.caption2).foregroundStyle(.secondary)
             }
         }
