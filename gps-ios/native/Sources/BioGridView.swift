@@ -16,7 +16,7 @@ import Combine
             in: .userDomainMask).first!
         try? FileManager.default.createDirectory(at:base,
             withIntermediateDirectories:true)
-        return base.appendingPathComponent("biogrid-derived-v3.json")
+        return base.appendingPathComponent("biogrid-derived-v4.json")
     }
     static var madrid: Calendar {
         var cal = Calendar(identifier:.gregorian)
@@ -84,16 +84,6 @@ import Combine
     }
 }
 
-private struct BioGridFront: Identifiable {
-    let cell:Cell
-    let leader:Int
-    let opponent:Int
-    let leaderCount:Int64
-    let opponentCount:Int64
-    var id:String { cell.id }
-    var closeness:Double { Double(opponentCount) / Double(max(1,leaderCount)) }
-}
-
 struct BioGridView: View {
     @ObservedObject var model: TimeModel
     @StateObject private var engine = BioGridController()
@@ -107,8 +97,6 @@ struct BioGridView: View {
     @State private var highlighted:Int?
     @State private var territoryRanking = false
     @State private var showReport = false
-    @State private var showEvents = false
-    @State private var showRivalries = false
     @State private var showClassification = false
     @State private var showCharts = false
 
@@ -184,31 +172,12 @@ struct BioGridView: View {
     private func cycle(_ snapshot:BioGridSnapshot) -> BioGridDay? {
         let today = BioGridController.madrid.startOfDay(for:
             engine.historicalDate ?? clock)
-        return snapshot.days.last(where: { $0.date < today })
+        return snapshot.days.last(where: { $0.date <= today })
     }
 
     private func cycleEvents(_ snapshot:BioGridSnapshot) -> [BioGridTerritoryEvent] {
         guard let day = cycle(snapshot)?.date else { return [] }
         return snapshot.territoryEvents.filter { $0.date == day }
-    }
-
-    private func hotspots(_ snapshot:BioGridSnapshot) -> [BioGridFront] {
-        var result:[BioGridFront] = []
-        for (key, counts) in snapshot.populations {
-            let order = (0..<min(counts.count,7)).filter { counts[$0] > 0 }
-                .sorted { counts[$0] == counts[$1] ? $0 < $1 : counts[$0] > counts[$1] }
-            guard order.count > 1 else { continue }
-            let p = key.split(separator:":")
-            guard p.count == 2,let r = Int(p[0]),let c = Int(p[1]) else { continue }
-            result.append(BioGridFront(cell:Cell(row:r,column:c),
-                leader:order[0],opponent:order[1],
-                leaderCount:counts[order[0]],opponentCount:counts[order[1]]))
-        }
-        return result.sorted {
-            $0.closeness == $1.closeness ?
-                $0.leaderCount+$0.opponentCount > $1.leaderCount+$1.opponentCount :
-                $0.closeness > $1.closeness
-        }
     }
 
     private func jump(_ cell:Cell) {
@@ -267,11 +236,9 @@ struct BioGridView: View {
         .sheet(item:$chosen) { cell in
             let selected = displayed ?? engine.snapshot
             if let snapshot = selected {
-                BioGridCellSheet(cell:cell,
-                    populations:mapPopulations(snapshot)[cell.id] ?? Array(repeating:0,count:7),
-                    bornToday:birthsForMap(snapshot)[cell.id] ?? Array(repeating:0,count:7),
-                    history:engine.snapshot?.cellHistory[cell.id] ?? [],
-                    colors:palette)
+                BioGridCellLedgerView(model:model,engine:engine,
+                    cell:cell,colors:palette,
+                    initialDate:engine.historicalDate ?? .now)
                     .presentationDetents([.medium,.large])
             }
         }
@@ -279,21 +246,6 @@ struct BioGridView: View {
             if let snapshot = displayed {
                 BioGridReportSheet(report:cycle(snapshot) ?? snapshot.days.last,colors:palette)
                     .presentationDetents([.medium,.large])
-            }
-        }
-        .sheet(isPresented:$showEvents) {
-            if let snapshot = displayed {
-                BioGridEventsSheet(events:cycleEvents(snapshot),colors:palette,
-                    placeName:{ key in self.readablePlace(key) },
-                    populationAfter:{ event in self.eventPopulation(event,snapshot:snapshot) }) { cell in
-                        showEvents = false
-                        jump(cell)
-                    }
-            }
-        }
-        .sheet(isPresented:$showRivalries) {
-            if let snapshot = displayed {
-                rivalriesSheet(snapshot)
             }
         }
         .sheet(isPresented:$showCharts) {
@@ -475,22 +427,12 @@ struct BioGridView: View {
                         $0 + $1.reduce(0,+)
                     } + (activeCell.flatMap { predictedBirths(cell:$0,snapshot:snapshot) } ?? 0),
                     historicalDate:engine.historicalDate)
-                HStack(spacing:7) {
-                    Button { showEvents = true } label: {
-                        Label("Crónica",systemImage:"newspaper")
-                            .frame(maxWidth:.infinity)
-                    }
-                    Button { showRivalries = true } label: {
-                        Label("Rivalidades",systemImage:"flag.2.crossed")
-                            .frame(maxWidth:.infinity)
-                    }
-                    Button { showCharts = true } label: {
-                        Label("Evolución",systemImage:"chart.xyaxis.line")
-                            .frame(maxWidth:.infinity)
-                    }
+                Button { showCharts = true } label: {
+                    Label("Evolución de las siete familias",systemImage:"chart.xyaxis.line")
+                        .frame(maxWidth:.infinity)
                 }
-                .font(.caption.weight(.medium))
                 .buttonStyle(.bordered)
+                .tint(.indigo)
                 DisclosureGroup("Clasificación de las siete familias",
                                 isExpanded:$showClassification) {
                     Picker("Orden",selection:$territoryRanking) {
@@ -537,131 +479,7 @@ struct BioGridView: View {
         .frame(maxHeight:350)
     }
 
-    private func metric(_ name:String,value:Int64,icon:String) -> some View {
-        VStack(alignment:.leading,spacing:3) {
-            Label(name,systemImage:icon)
-                .font(.caption2).foregroundStyle(.secondary)
-            Text(value.formatted()).font(.headline.monospacedDigit())
-        }
-        .frame(maxWidth:.infinity,alignment:.leading)
-    }
 
-    private func cell(from key:String) -> Cell {
-        let values = key.split(separator:":")
-        return Cell(row:Int(values.first ?? "") ?? 0,
-                    column:Int(values.last ?? "") ?? 0)
-    }
-
-    private func readablePlace(_ key:String)->String {
-        let cell = self.cell(from:key)
-        return BioGridDailyInsights.location(cell,
-            zoneName:model.primaryZone(for:cell)?.name,
-            explicitName:model.data.names[key],
-            near:model.current?.coordinate)
-    }
-
-    private func eventPopulation(_ event:BioGridTerritoryEvent,
-                                 snapshot:BioGridSnapshot)->Int64 {
-        let history = snapshot.cellHistory[event.cellKey] ?? []
-        let counts = history.last(where: { $0.date <= event.date })?.counts
-            ?? snapshot.populations[event.cellKey] ?? Array(repeating:0,count:7)
-        return counts.indices.contains(event.family) ? counts[event.family] : 0
-    }
-
-    private func rivalriesSheet(_ snapshot:BioGridSnapshot)->some View {
-        let hotspots = hotspots(snapshot)
-        return NavigationStack {
-            List {
-                Section {
-                    Text("Cada frente es una cuadrícula con dos o más familias. Se muestran primero los enfrentamientos más igualados.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                }
-                if hotspots.isEmpty {
-                    ContentUnavailableView("Sin rivalidades",systemImage:"flag.2.crossed",
-                        description:Text("Todavía no hay cuadrículas donde convivan varias familias."))
-                }
-                Section("\(hotspots.count) territorios disputados") {
-                    ForEach(hotspots.prefix(100)) { front in
-                        Button {
-                            showRivalries = false
-                            jump(front.cell)
-                        } label: {
-                            VStack(alignment:.leading,spacing:6) {
-                                HStack {
-                                    Text(readablePlace(front.cell.id))
-                                        .font(.subheadline.weight(.semibold))
-                                        .fixedSize(horizontal:false,vertical:true)
-                                    Spacer()
-                                    Image(systemName:"scope").foregroundStyle(.indigo)
-                                }
-                                HStack(spacing:7) {
-                                    Text(BioGridEngine.letters[front.leader])
-                                        .bold().foregroundStyle(palette[front.leader])
-                                    Text("\(front.leaderCount.formatted())")
-                                        .monospacedDigit()
-                                    Text("contra").foregroundStyle(.secondary)
-                                    Text(BioGridEngine.letters[front.opponent])
-                                        .bold().foregroundStyle(palette[front.opponent])
-                                    Text("\(front.opponentCount.formatted())")
-                                        .monospacedDigit()
-                                    Spacer()
-                                }.font(.subheadline)
-                                Text("Diferencia: \((front.leaderCount-front.opponentCount).formatted()) bacterias · sin resultado predeterminado")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }.padding(.vertical,3)
-                        }.buttonStyle(.plain)
-                    }
-                }
-            }
-            .navigationTitle("Rivalidades")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement:.topBarTrailing) {
-                    Button("Cerrar") { showRivalries = false }
-                }
-            }
-        }
-    }
-
-}
-
-private struct BioGridCellSheet: View {
-    let cell:Cell
-    let populations:[Int64]
-    let bornToday:[Int64]
-    let history:[BioGridCellPoint]
-    let colors:[Color]
-    @State private var showHistory = false
-    var body:some View {
-        NavigationStack {
-            List {
-                Section("Población actual y nacimientos de hoy") {
-                    ForEach(0..<7,id:\.self) { i in
-                        HStack {
-                            Circle().fill(colors[i]).frame(width:15,height:15)
-                            Text(BioGridEngine.letters[i]).font(.headline)
-                            Spacer()
-                            Text(populations[i].formatted()).monospacedDigit()
-                            if bornToday[i] > 0 {
-                                Text("+\(bornToday[i])").foregroundStyle(.green)
-                                    .font(.caption.monospacedDigit())
-                            }
-                        }
-                    }
-                }
-                Section {
-                    Button { showHistory = true } label: {
-                        Label("Ver evolución de esta cuadrícula",systemImage:"chart.xyaxis.line")
-                    }
-                }
-            }
-            .navigationTitle("Cuadrícula \(cell.id)")
-            .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented:$showHistory) {
-                BioGridCellChartView(cell:cell,history:history,colors:colors)
-            }
-        }
-    }
 }
 
 private struct BioGridReportSheet:View {
