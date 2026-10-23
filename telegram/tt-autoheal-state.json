@@ -2,98 +2,83 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-23T10:23:45.122775+00:00",
-      "issue_count": 5,
+      "checked_at": "2026-10-23T15:16:52.608809+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "334d5ada16b7",
-          "title": "Investigan un tiroteo con dos mujeres heridas de bala en Granada",
-          "seconds": 1028,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "64cd59518bb9",
-          "title": "Leire Díez se querella contra el PP por el vídeo con IA que le atribuye «haber contratado a matones»",
-          "seconds": 1028,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4d2efadb1622",
-          "title": "Thomas, padre de Meghan Markle, investigado por supuesta posesión de pornografía infantil, según 'Th",
-          "seconds": 1027,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "f1b9c1955ae8",
-          "title": "La frase de Pedro Sánchez sobre lo que supone un gobierno con Vox que no está dejando de compartirse",
-          "seconds": 582,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 606572,
+          "seconds": 624160,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "6e266a34bcd8e12177269acf9dcaf3685a0fbf24d2e610dc8e843fb91be31560",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-23T10:23:45.122775+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-10-23T15:16:52.608809+00:00",
+      "issue_count": 8,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "2c9325fabd78",
           "title": "Javi Rodríguez",
-          "seconds": 44535,
+          "seconds": 62122,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "2dd1283eb26c",
           "title": "Omar",
-          "seconds": 44535,
+          "seconds": 62122,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "4b5c7e7d5b37",
           "title": "Jordi Wild",
-          "seconds": 44535,
+          "seconds": 62122,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "7375308f71a9",
           "title": "Chiqui",
-          "seconds": 42165,
+          "seconds": 59752,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "f85562cd249a",
           "title": "Arkano",
-          "seconds": 17555,
+          "seconds": 35142,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "42355ce8b20d",
+          "title": "Feijóo",
+          "seconds": 13534,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "74a31fe68bb7",
+          "title": "IRPF",
+          "seconds": 13534,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 606572,
+          "seconds": 624159,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -102,16 +87,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "bc17968a4bbdda06a4da2849faa1ba9bb88ea34e834305bfa2aa5a7267433882",
+      "open_signature": "bbeca85478a49cc328e621b05868fe2595197d84a4f12db47b7248a9f4e16443",
       "repair_via_workflow_run": false,
-      "escalation_required": 5
+      "escalation_required": 7
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-23T10:23:45.122775+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-23T10:23:45.122775+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-23T10:23:45.122775+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-23T10:23:45.122775+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-23T15:16:52.608809+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-23T15:16:52.608809+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-23T15:16:52.608809+00:00"
   },
-  "checked_at": "2026-10-23T10:23:45.122775+00:00"
+  "checked_at": "2026-10-23T15:16:52.608809+00:00"
 }
