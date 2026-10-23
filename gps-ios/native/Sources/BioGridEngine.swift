@@ -414,14 +414,38 @@ enum BioGridEngine {
                             }
                             // Límite TOTAL de bajas: 2 % en rencillas y
                             // 6/7/15 % en conflictos con novedades.
-                            var capacity = Int64(
+                            let capacity = Int64(
                                 (Double(participants) * upper).rounded(.down))
+                            var actual = proposed
+                            let proposedTotal = proposed.reduce(Int64(0),+)
+                            if proposedTotal > capacity {
+                                // Reducción proporcional para no perjudicar
+                                // a las primeras letras L/M/X al aplicar techo.
+                                let ratio = Double(capacity) / Double(proposedTotal)
+                                var granted:Int64 = 0
+                                for family in active {
+                                    actual[family] = Int64((Double(proposed[family]) *
+                                        ratio).rounded(.down))
+                                    granted += actual[family]
+                                }
+                                let priorities = active.sorted { a,b in
+                                    let fractionA = Double(proposed[a])*ratio -
+                                        Double(actual[a])
+                                    let fractionB = Double(proposed[b])*ratio -
+                                        Double(actual[b])
+                                    return fractionA == fractionB ? a < b :
+                                        fractionA > fractionB
+                                }
+                                for family in priorities where granted < capacity {
+                                    guard actual[family] < proposed[family] else { continue }
+                                    actual[family] += 1
+                                    granted += 1
+                                }
+                            }
                             for family in active {
-                                let dead = min(proposed[family],capacity)
-                                capacity -= dead
-                                counts[family] -= dead
-                                report.deaths[family] += dead
-                                record.deaths[family] += dead
+                                counts[family] -= actual[family]
+                                report.deaths[family] += actual[family]
+                                record.deaths[family] += actual[family]
                             }
                         }
                         ledger[key] = record
