@@ -16,7 +16,7 @@ import Combine
             in: .userDomainMask).first!
         try? FileManager.default.createDirectory(at:base,
             withIntermediateDirectories:true)
-        return base.appendingPathComponent("biogrid-derived-v5.json")
+        return base.appendingPathComponent("biogrid-derived-v6.json")
     }
     static var madrid: Calendar {
         var cal = Calendar(identifier:.gregorian)
@@ -472,7 +472,7 @@ struct BioGridView: View {
                 }
                 Button("Consultar informe completo") { showReport = true }
                     .font(.caption)
-                Text("Emigración: solo la familia dominante con al menos 10 bacterias y una ventaja del 30 % que conserva tras salir. Simulación local.")
+                Text("Expansión: conquista vecinas o refuerza la propia más débil. Batallas nocturnas: rencillas 0–2 %; con nacimientos o llegadas, hasta 15 %.")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(11)
         }
