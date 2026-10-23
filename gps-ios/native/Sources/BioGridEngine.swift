@@ -115,8 +115,9 @@ enum BioGridEngine {
 
         // ceil(second * 0.30), usando aritmética entera para evitar
         // errores de redondeo en los límites exactos del 30 %.
-        let reserveAgainstRival = second + (second * 3 + 9) / 10
-        let garrison = max(Int64(10), reserveAgainstRival)
+        let extra = (second / 10) * 3 + ((second % 10) * 3 + 9) / 10
+        guard second <= Int64.max - extra else { return nil }
+        let garrison = max(Int64(10), second + extra)
         guard leader > garrison else { return nil }
         return (family: family, maximum: leader - garrison)
     }
