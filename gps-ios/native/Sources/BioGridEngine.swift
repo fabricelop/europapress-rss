@@ -471,7 +471,9 @@ enum BioGridEngine {
                     departure.departures[family][direction] += amount
                     ledger[key] = departure
                     var arrival = ledger[destination] ?? BioGridCellDay(date:day)
-                    arrival.arrivals[family][opposite[direction]] += amount
+                    // Orientación recíproca: N⇄S y E⇄O.
+                    let reverseDirection = [1,0,3,2][direction]
+                    arrival.arrivals[family][reverseDirection] += amount
                     ledger[destination] = arrival
                     exodusEvents.append(BioGridExodusEvent(date:day,
                         source:key,destination:destination,
