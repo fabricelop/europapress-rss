@@ -74,6 +74,7 @@ jobs:
           assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
           assert m["CFBundleShortVersionString"]=="1.0.53"
           assert m["CFBundleVersion"]=="54"
+          assert m["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"], "La app debe mantenerse vertical"
           assert (app/"PlugIns"/"MiMapaWidgets.appex").exists()
           PY
           mkdir -p Payload
