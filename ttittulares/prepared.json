@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-23T17:02:02.716Z",
+  "updated_at": "2026-10-23T17:03:27.762552Z",
   "items": [
     {
       "event_id": "41b558adaff8",
@@ -42,17 +42,35 @@
       },
       "prepared_at": "2026-10-23T17:02:02.716Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
       "image_status": "none",
       "image_app_available": false,
-      "sensitive_editorial": true
+      "sensitive_editorial": true,
+      "archive_image_search_attempted_at": "2026-10-23T17:03:27.762552Z",
+      "fallback_image_search_attempted_at": "2026-10-23T17:03:27.762552Z",
+      "archive_image": {
+        "url": "https://static.eldiario.es/clip/1d99ad62-1f32-4658-8880-18cebb9484a5_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/sevilla/afectados-brote-listeriosis-culpan-ayuntamiento-sevilla-impedir-acuerdo-evite-juicio_1_13608674.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Los afectados por el brote de listeriosis culpan al Ayuntamiento de Sevilla de impedir el acuerdo que evite el juicio"
+      },
+      "fallback_image": {
+        "url": "https://static.eldiario.es/clip/1d99ad62-1f32-4658-8880-18cebb9484a5_facebook-aspect-ratio-1200-675_default_0.jpg",
+        "source": "www.eldiario.es",
+        "source_url": "https://www.eldiario.es/sevilla/afectados-brote-listeriosis-culpan-ayuntamiento-sevilla-impedir-acuerdo-evite-juicio_1_13608674.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Los afectados por el brote de listeriosis culpan al Ayuntamiento de Sevilla de impedir el acuerdo que evite el juicio"
+      }
     }
   ],
   "count": 0,
