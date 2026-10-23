@@ -279,7 +279,9 @@ struct BioGridCellLedgerView: View {
     private func columnsRow(_ entries:[String], header:Bool,
                             bold:Bool=false) -> some View {
         HStack(spacing:4) {
-            ForEach(Array(entries.enumerated()),id:\.offset) { index,text in
+            ForEach(Array(entries.enumerated()),id:\.offset) { entry in
+                let index = entry.offset
+                let text = entry.element
                 Text(text)
                     .font(header ? .caption2.weight(.semibold) :
                           bold ? .caption.weight(.semibold) : .caption)
