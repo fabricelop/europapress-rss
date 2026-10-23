@@ -11,20 +11,54 @@ struct BioGridDay: Codable, Identifiable {
     var id: Date { date }
 }
 
+struct BioGridHistoryPoint: Codable, Identifiable {
+    let date: Date
+    let population: [Int64]
+    let territory: [Int]
+    var id: Date { date }
+}
+
+struct BioGridCellPoint: Codable {
+    let date: Date
+    let counts: [Int64]
+}
+
+struct BioGridTerritoryEvent: Codable, Identifiable {
+    enum Kind: String, Codable {
+        case first, conquest, recolonization
+    }
+    let date: Date
+    let cellKey: String
+    let family: Int
+    let previousFamily: Int?
+    let kind: Kind
+    var id: String { "\(date.timeIntervalSince1970)|\(cellKey)|\(kind.rawValue)|\(family)" }
+}
+
 struct BioGridSnapshot: Codable {
     var populations: [String: [Int64]] = [:]
     var days: [BioGridDay] = []
     var latestProcessed: Date?
     var sourceFingerprint: String = ""
+    // Datos calculados: nunca se escribe en los intervalos GPS originales.
+    var todayBirths: [String: [Int64]] = [:]
+    var remainingSeconds: [String: Double] = [:]
+    var historical: [BioGridHistoryPoint] = []
+    var cellHistory: [String: [BioGridCellPoint]] = [:]
+    var territoryEvents: [BioGridTerritoryEvent] = []
+    var rulers: [String: Int] = [:]
 
     func ranking() -> [(family: Int, population: Int64, territory: Int)] {
         var population = [Int64](repeating: 0, count: 7)
         var territory = [Int](repeating: 0, count: 7)
-        for counts in populations.values {
+        for (key, counts) in populations {
             guard let maxCount = counts.max(), maxCount > 0 else { continue }
             for i in 0..<7 { population[i] += counts[i] }
             // Solo los empates sin dominante persistido usan este orden fijo.
-            if let i = counts.firstIndex(of: maxCount) { territory[i] += 1 }
+            let winner = rulers[key].flatMap { i in
+                counts.indices.contains(i) && counts[i] == maxCount ? i : nil
+            } ?? counts.firstIndex(of: maxCount)!
+            territory[winner] += 1
         }
         return (0..<7).map { ($0, population[$0], territory[$0]) }
     }
@@ -124,6 +158,10 @@ enum BioGridEngine {
         var previousDominant: [String: Int] = [:]
         var visited: Set<String> = []
         var daily: [BioGridDay] = []
+        var historical: [BioGridHistoryPoint] = []
+        var cellHistory: [String: [BioGridCellPoint]] = [:]
+        var lastCellPopulations: [String: [Int64]] = [:]
+        var territoryEvents: [BioGridTerritoryEvent] = []
         var day = start
         while day <= today {
             var report = BioGridDay(date: day)
@@ -132,8 +170,14 @@ enum BioGridEngine {
                 let incoming = births[key]!
                 var counts = living[key] ?? Array(repeating: 0, count: 7)
                 for i in 0..<7 { counts[i] += incoming[i]; report.births[i] += incoming[i] }
-                if !visited.contains(key), let family = incoming.firstIndex(where: { $0 > 0 }) {
-                    report.newCells[family] += 1; visited.insert(key)
+                if (living[key]?.reduce(0,+) ?? 0) == 0,
+                   let family = incoming.firstIndex(where: { $0 > 0 }) {
+                    let oldSite = visited.contains(key)
+                    if !oldSite { report.newCells[family] += 1 }
+                    territoryEvents.append(BioGridTerritoryEvent(date:day,
+                        cellKey:key,family:family,previousFamily:nil,
+                        kind:oldSite ? .recolonization : .first))
+                    visited.insert(key)
                 }
                 living[key] = counts
             }
@@ -171,7 +215,14 @@ enum BioGridEngine {
                     guard var counts = new[key] else { continue }
                     let prior = previousDominant[key] ?? dominant(old[key] ?? [], prior: nil)
                     var ruler = dominant(counts, prior: prior)
-                    if !visited.contains(key), let ruler { report.newCells[ruler] += 1; visited.insert(key) }
+                    if (old[key]?.reduce(0,+) ?? 0) == 0, let ruler {
+                        let oldSite = visited.contains(key)
+                        if !oldSite { report.newCells[ruler] += 1 }
+                        territoryEvents.append(BioGridTerritoryEvent(date:day,
+                            cellKey:key,family:ruler,previousFamily:nil,
+                            kind:oldSite ? .recolonization : .first))
+                        visited.insert(key)
+                    }
                     let active = counts.indices.filter { counts[$0] > 0 }
                     if active.count > 1, let strongest = ruler {
                         let enemy = active.filter { $0 != strongest }.reduce(Int64(0)) { $0 + counts[$1] }
@@ -191,6 +242,8 @@ enum BioGridEngine {
                     }
                     if let before = prior, let after = ruler, before != after {
                         report.conquests[after] += 1
+                        territoryEvents.append(BioGridTerritoryEvent(date:day,
+                            cellKey:key,family:after,previousFamily:before,kind:.conquest))
                     }
                     if counts.reduce(0, +) == 0 { new.removeValue(forKey: key); previousDominant.removeValue(forKey: key) }
                     else { new[key] = counts; if let ruler { previousDominant[key] = ruler } }
@@ -198,11 +251,33 @@ enum BioGridEngine {
                 living = new
             }
             daily.append(report)
+            var total = [Int64](repeating:0,count:7)
+            var territories = [Int](repeating:0,count:7)
+            for (key, counts) in living {
+                guard let maximum = counts.max(), maximum > 0 else { continue }
+                for i in 0..<7 { total[i] += counts[i] }
+                let ruler = dominant(counts, prior:previousDominant[key])!
+                previousDominant[key] = ruler
+                territories[ruler] += 1
+                if lastCellPopulations[key] != counts {
+                    cellHistory[key,default:[]].append(BioGridCellPoint(date:day,counts:counts))
+                }
+            }
+            for key in lastCellPopulations.keys where living[key] == nil {
+                cellHistory[key,default:[]].append(BioGridCellPoint(date:day,
+                    counts:Array(repeating:0,count:7)))
+            }
+            lastCellPopulations = living
+            historical.append(BioGridHistoryPoint(date:day,
+                population:total,territory:territories))
             guard let next = calendar.date(byAdding: .day, value: 1, to: day), next > day else { break }
             day = next
         }
-        return BioGridSnapshot(populations: living, days: daily, latestProcessed: today,
-                               sourceFingerprint: fingerprint(intervals))
+        return BioGridSnapshot(populations: living,days:daily,latestProcessed:today,
+            sourceFingerprint:fingerprint(intervals),
+            todayBirths:events[today] ?? [:],remainingSeconds:remainder,
+            historical:historical,cellHistory:cellHistory,
+            territoryEvents:territoryEvents,rulers:previousDominant)
     }
 
     private static func dominant(_ counts: [Int64], prior: Int?) -> Int? {
