@@ -94,6 +94,78 @@ struct BioGridSnapshot: Codable {
 enum BioGridEngine {
     static let letters = ["L", "M", "X", "J", "V", "S", "D"]
 
+    /// Ninguna de estas probabilidades es mortalidad natural: solo hay
+    /// víctimas durante combates con al menos dos familias.
+    enum Conflict: String, Equatable {
+        case skirmish, births, reinforcement, invasion
+
+        var risk: ClosedRange<Double> {
+            switch self {
+            case .skirmish:      return 0.0...0.02
+            case .births:        return 0.02...0.06
+            case .reinforcement: return 0.03...0.07
+            case .invasion:      return 0.05...0.15
+            }
+        }
+    }
+
+    /// Los nacimientos pertenecen al DÍA ANTERIOR: provocan tensión
+    /// en el combate de la medianoche siguiente. Las llegadas son nocturnas.
+    static func conflictType(previousBirths: [Int64],
+                             arrivals: [Int64],
+                             defendingFamily: Int?) -> Conflict {
+        let arrived = arrivals.enumerated().filter { $0.element > 0 }.map(\.offset)
+        if !arrived.isEmpty {
+            if let defendingFamily {
+                if arrived.contains(where: { $0 != defendingFamily }) {
+                    return .invasion
+                }
+            } else if arrived.count > 1 {
+                return .invasion
+            }
+            return .reinforcement
+        }
+        if previousBirths.contains(where: { $0 > 0 }) { return .births }
+        return .skirmish
+    }
+
+    /// Direcciones N, S, E, O (0,1,2,3) relativas a la casilla de origen.
+    static func neighbor(_ cell: Cell, direction: Int) -> Cell {
+        switch direction {
+        case 0: return Cell(row:cell.row + 1,column:cell.column)
+        case 1: return Cell(row:cell.row - 1,column:cell.column)
+        case 2: return Cell(row:cell.row,column:cell.column + 1)
+        default: return Cell(row:cell.row,column:cell.column - 1)
+        }
+    }
+
+    /// Priorizamos casillas vacías o rivales. Si todas las vecinas ya
+    /// son de la familia propia, solamente reforzamos la(s) menos
+    /// poblada(s), si tienen menos individuos TOTALES que el origen.
+    /// Todo se evalúa sobre la fotografía anterior a las emigraciones.
+    static func migrationTargets(cell: Cell, family: Int,
+                                 populations: [String:[Int64]],
+                                 rulers: [String:Int]) -> [Int] {
+        let sourceTotal = populations[cell.id]?.reduce(Int64(0),+) ?? 0
+        var expand:[Int] = []
+        var reinforce:[(direction:Int,population:Int64)] = []
+        for direction in 0..<4 {
+            let adjacent = neighbor(cell,direction:direction)
+            let key = adjacent.id
+            let inhabitants = populations[key] ?? Array(repeating:0,count:7)
+            let total = inhabitants.reduce(Int64(0),+)
+            let dominantNeighbor = dominant(inhabitants,prior:rulers[key])
+            if dominantNeighbor != family {
+                expand.append(direction)
+            } else if total < sourceTotal {
+                reinforce.append((direction,total))
+            }
+        }
+        if !expand.isEmpty { return expand }
+        guard let lowest = reinforce.map(\.population).min() else { return [] }
+        return reinforce.filter { $0.population == lowest }.map(\.direction)
+    }
+
     /// Defensa territorial antes de emigrar:
     /// - únicamente una familia líder sin empate;
     /// - mínimo de 10 bacterias para optar a emigrar;
@@ -258,6 +330,9 @@ enum BioGridEngine {
                     let directions = [1,0,3,2]
                     let opposite = [1,0,3,2]
                     let family = permission.family
+                    let validTargets = migrationTargets(cell:cell,family:family,
+                        populations:old,rulers:previousDominant)
+                    guard !validTargets.isEmpty else { continue }
                     let stochastic = rng.binomial(counts[family], probability)
                     let moved = min(stochastic, permission.maximum)
                     if moved > 0 {
@@ -265,15 +340,20 @@ enum BioGridEngine {
                         report.migrated[family] += moved
                         var remaining = moved
                         var from = ledger[key] ?? BioGridCellDay(date:day)
-                        for direction in 0..<4 {
-                            let count = direction == 3 ? remaining :
-                                rng.binomial(remaining,1.0 / Double(4 - direction))
+                        // Conservamos el orden determinista de vecinos S,N,O,E.
+                        let selected = (0..<4).filter {
+                            validTargets.contains(directions[$0])
+                        }
+                        for (index,direction) in selected.enumerated() {
+                            let count = index == selected.count - 1 ? remaining :
+                                rng.binomial(remaining,
+                                    1.0 / Double(selected.count - index))
                             remaining -= count
                             if count == 0 { continue }
                             from.departures[family][directions[direction]] += count
                             let target = neighbors[direction].id
                             if next[target] == nil {
-                                next[target] = Array(repeating: 0, count: 7)
+                                next[target] = Array(repeating:0,count:7)
                             }
                             next[target]![family] += count
                             var to = ledger[target] ?? BioGridCellDay(date:day)
@@ -299,21 +379,50 @@ enum BioGridEngine {
 
                     let active = counts.indices.filter { counts[$0] > 0 }
                     if active.count > 1, let strongest = ruler {
-                        let enemy = active.filter { $0 != strongest }
-                            .reduce(Int64(0)) { $0 + counts[$1] }
-                        var fighters = counts
-                        fighters[strongest] = min(counts[strongest], enemy * 2)
-                        let participants = fighters.reduce(Int64(0),+)
-                        var rng = Random(state:seed(priorDay,cell:key,salt:0xba761))
-                        let intensity = 0.05 + 0.10 * rng.next()
                         var record = ledger[key] ?? BioGridCellDay(date:day)
-                        for family in active {
-                            let share = Double(fighters[family]) / Double(max(1,participants))
-                            let risk = intensity * (1.0 + 0.30 * (1.0 - 2.0 * share))
-                            let dead = rng.binomial(fighters[family],risk)
-                            counts[family] -= dead
-                            report.deaths[family] += dead
-                            record.deaths[family] += dead
+                        let incoming:[Int64] = (0..<7).map { record.arrived($0) }
+                        let priorBirths = events[priorDay]?[key] ??
+                            Array(repeating:0,count:7)
+                        let conflict = conflictType(previousBirths:priorBirths,
+                            arrivals:incoming,defendingFamily:prior)
+                        var rng = Random(state:seed(priorDay,cell:key,salt:0xba761))
+                        var fighters = counts
+
+                        if conflict == .skirmish {
+                            // Rencillas de pequeños grupos, elegidos al azar.
+                            // 5-10 % de cada familia; a menudo nadie muere.
+                            let share = 0.05 + 0.05 * rng.next()
+                            for family in active {
+                                fighters[family] = rng.binomial(counts[family],share)
+                            }
+                        }
+                        let enemy = active.filter { $0 != strongest }
+                            .reduce(Int64(0)) { $0 + fighters[$1] }
+                        // La dominante no moviliza más de 2 por cada enemigo.
+                        fighters[strongest] = min(fighters[strongest],enemy * 2)
+                        let participants = fighters.reduce(Int64(0),+)
+                        if participants > 0 {
+                            let lower = conflict.risk.lowerBound
+                            let upper = conflict.risk.upperBound
+                            let intensity = lower + (upper - lower) * rng.next()
+                            var proposed = [Int64](repeating:0,count:7)
+                            for family in active {
+                                let share = Double(fighters[family]) / Double(participants)
+                                let risk = min(upper,max(0,
+                                    intensity * (1.0 + 0.30 * (1.0 - 2.0 * share))))
+                                proposed[family] = rng.binomial(fighters[family],risk)
+                            }
+                            // Límite TOTAL de bajas: 2 % en rencillas y
+                            // 6/7/15 % en conflictos con novedades.
+                            var capacity = Int64(
+                                (Double(participants) * upper).rounded(.down))
+                            for family in active {
+                                let dead = min(proposed[family],capacity)
+                                capacity -= dead
+                                counts[family] -= dead
+                                report.deaths[family] += dead
+                                record.deaths[family] += dead
+                            }
                         }
                         ledger[key] = record
                         ruler = dominant(counts,prior:prior)
