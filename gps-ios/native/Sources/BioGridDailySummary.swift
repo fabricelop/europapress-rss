@@ -6,11 +6,14 @@ struct BioGridDailySummary:View {
     let snapshot:BioGridSnapshot
     let lastCycle:BioGridDay?
     let birthsToday:Int64
+    let historicalDate:Date?
 
     var body:some View {
         VStack(alignment:.leading,spacing:10) {
             HStack {
-                Label("BIOGRID hoy",systemImage:"sun.max.fill")
+                Label(historicalDate == nil ? "BIOGRID hoy" :
+                    "BIOGRID · \(historicalDate!.formatted(date:.abbreviated,time:.omitted))",
+                    systemImage:"sun.max.fill")
                     .font(.headline)
                 Spacer()
                 if let report = lastCycle {
@@ -24,7 +27,9 @@ struct BioGridDailySummary:View {
                 metric("Bajas",lastCycle?.deaths.reduce(0,+) ?? 0,"cross")
                 metric("Nuevas",lastCycle?.newCells.reduce(0,+) ?? 0,"square.grid.2x2")
             }
-            Text("Los nacimientos son de hoy; las otras cifras corresponden al último ciclo completo.")
+            Text(historicalDate == nil
+                ? "Nacimientos de hoy; el resto corresponde al último ciclo completo."
+                : "Nacimientos de la fecha histórica; el resto corresponde al ciclo anterior.")
                 .font(.caption2).foregroundStyle(.secondary)
             ForEach(Array(BioGridDailyInsights.headlines(snapshot:snapshot,
                       report:lastCycle).enumerated()),id:\.offset) { _, headline in
