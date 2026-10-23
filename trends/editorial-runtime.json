@@ -4,18 +4,20 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T15:15:00+02:00",
-  "last_completed_at": "2026-10-23T15:17:00+02:00",
-  "updated_at": "2026-10-23T15:17:00+02:00",
+  "last_started_at": "2026-10-23T15:45:00+02:00",
+  "last_completed_at": "2026-10-23T15:53:10+02:00",
+  "updated_at": "2026-10-23T15:53:10+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "be352155af60"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261023T144500+0200",
+    "trigger_run_id": "tr-chat-20261023T154500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -23,30 +25,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261023T151500+0200",
+    "run_id": "tr-chat-20261023T154500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-23T15:15:00+02:00",
-    "updated_at": "2026-10-23T15:17:00+02:00",
-    "finished_at": "2026-10-23T15:17:00+02:00",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
+    "started_at": "2026-10-23T15:45:00+02:00",
+    "updated_at": "2026-10-23T15:53:10+02:00",
+    "current": 1,
+    "total": 1,
+    "trend_id": "be352155af60",
+    "title": "Peter Lim",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -54,14 +55,14 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 4,
+      "pending_cards_reviewed": 3,
       "incidents": 0
     },
-    "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado.",
+    "message": "TTendencias 1/1: Peter Lim explicado y verificado en main; cola final 0 y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -71,57 +72,233 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "be352155af60",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "A",
+            "total": 8.8,
+            "ratings_affinity": 2.3,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "B",
+            "total": 8.1,
+            "ratings_affinity": 2.1,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0.5
+          },
+          {
+            "id": "C",
+            "total": 7.6,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 0.9,
+            "repetition_penalty": 0.8
+          },
+          {
+            "id": "D",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0.9
+          },
+          {
+            "id": "E",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0.8
+          }
+        ],
+        "selected_candidate": "A",
+        "selected_score": 8.8,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-23T15:15:00+02:00",
+        "at": "2026-10-23T15:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial previa 0. Verificando radar y estado autoritativo."
+        "message": "Pasada iniciada; cola editorial previa 1. Verificando radar y estado autoritativo."
       },
       {
-        "at": "2026-10-23T15:16:00+02:00",
+        "at": "2026-10-23T15:45:30+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Radar fresco confirmado: captured_at 15:11; cola 0 y requests activas 0."
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Releyendo estado autoritativo de Peter Lim: revisión 0 sigue preparing y no existe ficha explicada."
       },
       {
-        "at": "2026-10-23T15:16:20+02:00",
+        "at": "2026-10-23T15:45:40+02:00",
+        "phase": "investigating",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Buscando detonante actual de Peter Lim."
+      },
+      {
+        "at": "2026-10-23T15:46:10+02:00",
+        "phase": "investigating",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Contrastando fuente 1/2: comunicado oficial del Valencia CF."
+      },
+      {
+        "at": "2026-10-23T15:46:25+02:00",
+        "phase": "investigating",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Contrastando fuente 2/2: Reuters confirma participación, capital nuevo y mayoría de Meriton."
+      },
+      {
+        "at": "2026-10-23T15:46:35+02:00",
+        "phase": "investigating",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Hecho esencial verificado: Pitchwise entra con el 42%, 100 M€ nuevos y Meriton mantiene la mayoría."
+      },
+      {
+        "at": "2026-10-23T15:46:45+02:00",
+        "phase": "drafting",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Redactando explicación factual de Peter Lim."
+      },
+      {
+        "at": "2026-10-23T15:46:55+02:00",
+        "phase": "drafting",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Comprobando límite de X para texto completo con hashtags y remate."
+      },
+      {
+        "at": "2026-10-23T15:47:05+02:00",
+        "phase": "remate_selection",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-23T15:47:15+02:00",
+        "phase": "remate_selection",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Evaluando candidatos con ratings."
+      },
+      {
+        "at": "2026-10-23T15:47:25+02:00",
+        "phase": "remate_selection",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Remate seleccionado; texto final comprobado en 273 caracteres."
+      },
+      {
+        "at": "2026-10-23T15:47:35+02:00",
+        "phase": "persisting",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Guardando ficha Explicada mediante outbox transaccional del chat."
+      },
+      {
+        "at": "2026-10-23T15:51:50+02:00",
+        "phase": "persisting",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Outbox aplicado a main: ficha Explicada, request y cola sincronizados."
+      },
+      {
+        "at": "2026-10-23T15:52:00+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Explicadas recientes: 4 tarjetas vigentes en Pendientes, todas con remate; saneamiento visual solicitado."
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-23T15:17:00+02:00",
+        "at": "2026-10-23T15:52:10+02:00",
+        "phase": "verifying",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-23T15:52:20+02:00",
+        "phase": "verifying",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-23T15:52:35+02:00",
+        "phase": "verifying",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Radar 15:51 revalidado: cola 0, sin nuevas revisiones activas ni problematic Top 10."
+      },
+      {
+        "at": "2026-10-23T15:52:45+02:00",
+        "phase": "verifying",
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "Revisando Pendientes recientes: 3 tarjetas vigentes, todas con remate; saneamiento visual solicitado."
+      },
+      {
+        "at": "2026-10-23T15:53:10+02:00",
         "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado."
+        "trend_id": "be352155af60",
+        "title": "Peter Lim",
+        "message": "TTendencias 1/1: Peter Lim explicado y verificado en main; cola final 0 y saneamiento visual solicitado."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "be352155af60"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "be352155af60",
+        "name": "Peter Lim",
+        "revision": 0,
+        "status": "explained"
+      }
+    ],
+    "finished_at": "2026-10-23T15:53:10+02:00"
   },
-  "run_id": "tr-chat-20261023T151500+0200",
+  "run_id": "tr-chat-20261023T154500+0200",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -129,42 +306,147 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 4,
+    "pending_cards_reviewed": 3,
     "incidents": 0
   },
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-23T15:15:00+02:00",
+      "at": "2026-10-23T15:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola editorial previa 0. Verificando radar y estado autoritativo."
+      "message": "Pasada iniciada; cola editorial previa 1. Verificando radar y estado autoritativo."
     },
     {
-      "at": "2026-10-23T15:16:00+02:00",
+      "at": "2026-10-23T15:45:30+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Radar fresco confirmado: captured_at 15:11; cola 0 y requests activas 0."
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Releyendo estado autoritativo de Peter Lim: revisión 0 sigue preparing y no existe ficha explicada."
     },
     {
-      "at": "2026-10-23T15:16:20+02:00",
+      "at": "2026-10-23T15:45:40+02:00",
+      "phase": "investigating",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Buscando detonante actual de Peter Lim."
+    },
+    {
+      "at": "2026-10-23T15:46:10+02:00",
+      "phase": "investigating",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Contrastando fuente 1/2: comunicado oficial del Valencia CF."
+    },
+    {
+      "at": "2026-10-23T15:46:25+02:00",
+      "phase": "investigating",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Contrastando fuente 2/2: Reuters confirma participación, capital nuevo y mayoría de Meriton."
+    },
+    {
+      "at": "2026-10-23T15:46:35+02:00",
+      "phase": "investigating",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Hecho esencial verificado: Pitchwise entra con el 42%, 100 M€ nuevos y Meriton mantiene la mayoría."
+    },
+    {
+      "at": "2026-10-23T15:46:45+02:00",
+      "phase": "drafting",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Redactando explicación factual de Peter Lim."
+    },
+    {
+      "at": "2026-10-23T15:46:55+02:00",
+      "phase": "drafting",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Comprobando límite de X para texto completo con hashtags y remate."
+    },
+    {
+      "at": "2026-10-23T15:47:05+02:00",
+      "phase": "remate_selection",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Generando candidatos de remate."
+    },
+    {
+      "at": "2026-10-23T15:47:15+02:00",
+      "phase": "remate_selection",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Evaluando candidatos con ratings."
+    },
+    {
+      "at": "2026-10-23T15:47:25+02:00",
+      "phase": "remate_selection",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Remate seleccionado; texto final comprobado en 273 caracteres."
+    },
+    {
+      "at": "2026-10-23T15:47:35+02:00",
+      "phase": "persisting",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Guardando ficha Explicada mediante outbox transaccional del chat."
+    },
+    {
+      "at": "2026-10-23T15:51:50+02:00",
+      "phase": "persisting",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Outbox aplicado a main: ficha Explicada, request y cola sincronizados."
+    },
+    {
+      "at": "2026-10-23T15:52:00+02:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Explicadas recientes: 4 tarjetas vigentes en Pendientes, todas con remate; saneamiento visual solicitado."
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Releyendo main."
     },
     {
-      "at": "2026-10-23T15:17:00+02:00",
+      "at": "2026-10-23T15:52:10+02:00",
+      "phase": "verifying",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-23T15:52:20+02:00",
+      "phase": "verifying",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-23T15:52:35+02:00",
+      "phase": "verifying",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Radar 15:51 revalidado: cola 0, sin nuevas revisiones activas ni problematic Top 10."
+    },
+    {
+      "at": "2026-10-23T15:52:45+02:00",
+      "phase": "verifying",
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "Revisando Pendientes recientes: 3 tarjetas vigentes, todas con remate; saneamiento visual solicitado."
+    },
+    {
+      "at": "2026-10-23T15:53:10+02:00",
       "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "TTendencias 0/0: radar fresco de las 15:11, sin trabajo editorial activo; 4 Explicadas recientes verificadas y saneamiento visual solicitado."
+      "trend_id": "be352155af60",
+      "title": "Peter Lim",
+      "message": "TTendencias 1/1: Peter Lim explicado y verificado en main; cola final 0 y saneamiento visual solicitado."
     }
   ],
   "telegram_orphans": 0,
@@ -175,8 +457,8 @@
     "reason": "recent captured_at within 20 minutes"
   },
   "radar": {
-    "captured_at": "2026-10-23T15:11:04+02:00",
+    "captured_at": "2026-10-23T15:51:00+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261023T144500+0200"
+  "previous_run_id": "tr-chat-20261023T151500+0200"
 }
