@@ -91,7 +91,9 @@ final class BioGridV52BlockadeExodusTests: XCTestCase {
         XCTAssertEqual(event.destination,north.id)
         XCTAssertEqual(event.family,1)
         XCTAssertEqual(event.amount,9)
-        XCTAssertEqual(event.date,BioGridController.madrid.startOfDay(
+        var localCalendar = Calendar(identifier:.gregorian)
+        localCalendar.timeZone = zone
+        XCTAssertEqual(event.date,localCalendar.startOfDay(
             for:date("2026-10-25T12:00:00Z")))
 
         let departure=fifth.cellDays[origin.id]?.first {
