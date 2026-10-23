@@ -27,6 +27,9 @@ targets:
           - CFBundleURLSchemes:
               - mimapadeltiempoprueba
         UILaunchScreen: {}
+        # iPhone: solo vertical, incluidas BIOGRID y todas las pantallas.
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
         UIBackgroundModes:
           - location
         NSSupportsLiveActivities: true
