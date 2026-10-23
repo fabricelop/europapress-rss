@@ -8,9 +8,9 @@ final class BioGridV53GeographicExodusTests: XCTestCase {
     private func instant(_ raw:String)->Date {
         ISO8601DateFormatter().date(from:raw)!
     }
-    private func visit(_ start:String,_ end:String,_ at:Cell)->AssignedInterval {
+    private func visit(_ start:String,_ end:String,at cell:Cell)->AssignedInterval {
         AssignedInterval(start:instant(start),end:instant(end),
-                         cell:at,quality:"confirmed",source:"test")
+                         cell:cell,quality:"confirmed",source:"test")
     }
 
     func testNorthAndSouthArePhysicallyAboveAndBelowOnRealMap() {
