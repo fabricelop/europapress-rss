@@ -473,7 +473,8 @@ struct BioGridView: View {
                     lastCycle:cycle(snapshot),
                     birthsToday:snapshot.todayBirths.values.reduce(Int64(0)) {
                         $0 + $1.reduce(0,+)
-                    } + (activeCell.flatMap { predictedBirths(cell:$0,snapshot:snapshot) } ?? 0))
+                    } + (activeCell.flatMap { predictedBirths(cell:$0,snapshot:snapshot) } ?? 0),
+                    historicalDate:engine.historicalDate)
                 HStack(spacing:7) {
                     Button { showEvents = true } label: {
                         Label("Crónica",systemImage:"newspaper")
