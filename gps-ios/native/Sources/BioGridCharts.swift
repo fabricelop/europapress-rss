@@ -59,17 +59,24 @@ struct BioGridChartsView:View {
         }
     }
 
+    private var selectionValues:[Int64] {
+        guard let current = chosen.last else { return Array(repeating:0,count:7) }
+        return metric == .population ? current.population : current.territory.map(Int64.init)
+    }
+
+    private var initialValues:[Int64] {
+        guard let original = chosen.first else { return Array(repeating:0,count:7) }
+        return metric == .population ? original.population : original.territory.map(Int64.init)
+    }
+
     private var story:String {
-        guard let last = history.last,
-              let first = history.first else { return "Sin evolución disponible" }
-        let current = metric == .population ? last.population.map(Double.init) :
-            last.territory.map(Double.init)
-        let original = metric == .population ? first.population.map(Double.init) :
-            first.territory.map(Double.init)
-        let ranking = (0..<7).sorted { current[$0] > current[$1] }
-        guard let leader = ranking.first else { return "Sin evolución disponible" }
-        let change = Int64(current[leader]-original[leader])
-        return "\(BioGridEngine.letters[leader]) lidera en \(metric.rawValue.lowercased()) · \(change >= 0 ? "+" : "")\(change.formatted()) desde el inicio."
+        guard !chosen.isEmpty else { return "Sin evolución disponible" }
+        let values = selectionValues
+        let leader = (0..<7).max { values[$0] < values[$1] } ?? 0
+        let growth = (0..<7).max {
+            (values[$0]-initialValues[$0]) < (values[$1]-initialValues[$1])
+        } ?? 0
+        return "\(BioGridEngine.letters[leader]) lidera con \(values[leader].formatted()) \(metric == .population ? "bacterias" : "cuadrículas"). \(BioGridEngine.letters[growth]) es la familia que más ha crecido en este período."
     }
 
     var body:some View {
@@ -80,6 +87,7 @@ struct BioGridChartsView:View {
                         .font(.headline)
                     Text(story)
                         .font(.subheadline).foregroundStyle(.secondary)
+                        .fixedSize(horizontal:false,vertical:true)
                     Picker("Qué comparar",selection:$metric) {
                         ForEach(BioGridChartMetric.allCases) { value in
                             Text(value.rawValue).tag(value)
@@ -102,7 +110,8 @@ struct BioGridChartsView:View {
                         Chart(lines) { item in
                             LineMark(
                                 x:.value("Fecha",item.date),
-                                y:.value(metric.rawValue,item.value)
+                                y:.value(metric.rawValue,item.value),
+                                series:.value("Familia",BioGridEngine.letters[item.family])
                             )
                             .interpolationMethod(.stepEnd)
                             .foregroundStyle(colors[item.family])
@@ -112,7 +121,7 @@ struct BioGridChartsView:View {
                         .chartXSelection(value:$selectedDate)
                         .frame(height:250)
                         .padding(.vertical,4)
-                        Text("Toca la gráfica para seleccionar una fecha. El mapa y la clasificación podrán volver a aquel día.")
+                        Text("Una línea por familia: su color se mantiene siempre. Eje horizontal: fechas; eje vertical: \(metric == .population ? "bacterias" : "cuadrículas dominadas").")
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     if let selectedDate {
@@ -127,6 +136,33 @@ struct BioGridChartsView:View {
                             }
                             .buttonStyle(.borderedProminent)
                         }
+                    }
+                    if !chosen.isEmpty {
+                        VStack(alignment:.leading,spacing:9) {
+                            Text("Valores al final del período").font(.headline)
+                            ForEach(0..<7,id:\.self) { family in
+                                HStack(spacing:9) {
+                                    Text(BioGridEngine.letters[family]).bold()
+                                        .frame(width:26,height:26)
+                                        .background(colors[family],
+                                                    in:RoundedRectangle(cornerRadius:5))
+                                        .foregroundStyle(.black)
+                                    Text(selectionValues[family].formatted())
+                                        .monospacedDigit()
+                                    Spacer()
+                                    let diff = selectionValues[family]-initialValues[family]
+                                    Text("\(diff >= 0 ? "+" : "")\(diff.formatted())")
+                                        .font(.caption.monospacedDigit())
+                                        .foregroundStyle(diff > 0 ? Color.green :
+                                            diff < 0 ? Color.red : Color.secondary)
+                                }
+                            }
+                            Text("La variación compara el primer y último día del período seleccionado.")
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
+                        .padding(12)
+                        .background(Color(.secondarySystemGroupedBackground),
+                                    in:RoundedRectangle(cornerRadius:12))
                     }
                     Text("Sin agrupación de cuadrículas. Datos calculados en el iPhone a partir del tiempo GPS.")
                         .font(.caption2).foregroundStyle(.secondary)
@@ -226,7 +262,8 @@ struct BioGridCellChartView:View {
                     } else {
                         Chart(points) { point in
                             LineMark(x:.value("Fecha",point.date),
-                                     y:.value("Bacterias",point.value))
+                                     y:.value("Bacterias",point.value),
+                                     series:.value("Familia",BioGridEngine.letters[point.family]))
                                 .interpolationMethod(.stepEnd)
                                 .foregroundStyle(colors[point.family])
                                 .lineStyle(StrokeStyle(lineWidth:2))
@@ -252,6 +289,8 @@ struct BioGridCellChartView:View {
 struct BioGridEventsSheet:View {
     let events:[BioGridTerritoryEvent]
     let colors:[Color]
+    let placeName:(String)->String
+    let populationAfter:(BioGridTerritoryEvent)->Int64
     let onLocate:(Cell)->Void
     @Environment(\.dismiss) private var dismiss
     @State private var kind:BioGridTerritoryEvent.Kind? = nil
@@ -280,6 +319,11 @@ struct BioGridEventsSheet:View {
                         filterButton("Recolonizadas",value:.recolonization)
                     }.padding(12)
                 }
+                HStack {
+                    Text("\(events.filter { $0.kind == .conquest }.count) conquistas · \(events.filter { $0.kind == .first }.count) primeras colonizaciones")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Spacer()
+                }.padding(.horizontal,16).padding(.bottom,7)
                 if filtered.isEmpty {
                     ContentUnavailableView("Sin cambios de este tipo",
                         systemImage:"flag",
@@ -287,27 +331,35 @@ struct BioGridEventsSheet:View {
                 } else {
                     List(filtered) { event in
                         Button { locate(event.cellKey) } label: {
-                            HStack {
-                                Text(event.kind == .conquest ? "⚑" :
-                                    event.kind == .recolonization ? "○" : "●")
-                                    .font(.title3)
-                                Text(BioGridEngine.letters[event.family])
-                                    .bold().frame(width:27,height:27)
-                                    .background(colors[event.family],in:RoundedRectangle(cornerRadius:5))
-                                    .foregroundStyle(.black)
-                                VStack(alignment:.leading) {
+                            HStack(alignment:.top,spacing:12) {
+                                Image(systemName:event.kind == .conquest ? "flag.fill" :
+                                     event.kind == .recolonization ? "circle.dotted" : "circle.fill")
+                                    .foregroundStyle(colors[event.family])
+                                    .frame(width:25)
+                                    .padding(.top,3)
+                                VStack(alignment:.leading,spacing:5) {
                                     Text(event.kind == .conquest ? "Conquista" :
-                                        event.kind == .first ? "Primera colonización" :
-                                        "Recolonización")
+                                         event.kind == .first ? "Primera colonización" :
+                                         "Recolonización")
+                                        .font(.headline)
+                                    Text(placeName(event.cellKey))
                                         .font(.subheadline.weight(.medium))
-                                    Text(event.cellKey)
-                                        .font(.caption.monospacedDigit())
-                                        .foregroundStyle(.secondary)
+                                        .fixedSize(horizontal:false,vertical:true)
+                                    HStack(spacing:7) {
+                                        if let previous = event.previousFamily {
+                                            Text(BioGridEngine.letters[previous])
+                                                .foregroundStyle(colors[previous]).bold()
+                                            Image(systemName:"arrow.right")
+                                        }
+                                        Text("Familia \(BioGridEngine.letters[event.family])")
+                                            .foregroundStyle(colors[event.family]).bold()
+                                    }.font(.caption)
+                                    Text("\(populationAfter(event).formatted()) bacterias de la familia \(BioGridEngine.letters[event.family]) al cierre del ciclo")
+                                        .font(.caption).foregroundStyle(.secondary)
                                 }
-                                Spacer()
-                                Image(systemName:"scope")
-                                    .foregroundStyle(.indigo)
-                            }
+                                Spacer(minLength:0)
+                                Image(systemName:"scope").foregroundStyle(.indigo)
+                            }.padding(.vertical,6)
                         }.buttonStyle(.plain)
                     }
                 }
