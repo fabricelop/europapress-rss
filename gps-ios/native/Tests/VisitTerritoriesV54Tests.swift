@@ -181,8 +181,8 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         let second = VisitTerritoryEngine.build(counts: counts)
         XCTAssertEqual(first.territories.count, 600)
         XCTAssertEqual(first.tiles.count, 600)
-        XCTAssertEqual(first.territories.map(\\.id),
-                       second.territories.map(\\.id))
+        XCTAssertEqual(first.territories.map(\.id),
+                       second.territories.map(\.id))
         XCTAssertEqual(first.territories.reduce(0) { $0 + $1.visits },
                        counts.values.reduce(0, +))
     }
