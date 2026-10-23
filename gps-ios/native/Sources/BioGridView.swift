@@ -16,7 +16,7 @@ import Combine
             in: .userDomainMask).first!
         try? FileManager.default.createDirectory(at:base,
             withIntermediateDirectories:true)
-        return base.appendingPathComponent("biogrid-derived-v7.json")
+        return base.appendingPathComponent("biogrid-derived-v8.json")
     }
     static var madrid: Calendar {
         var cal = Calendar(identifier:.gregorian)
@@ -472,7 +472,7 @@ struct BioGridView: View {
                 }
                 Button("Consultar informe completo") { showReport = true }
                     .font(.caption)
-                Text("Expansión: requiere conservar el doble de la segunda familia; emigración máxima 20 %. Conquista vecinas o refuerza la propia más débil.")
+                Text("Emigración normal: dominio doble y máximo 20 %. Si una cuadrícula con varias familias lleva 5 noches sin salidas, la segunda emigra por completo hacia la vecina menos poblada.")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(11)
         }
