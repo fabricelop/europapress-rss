@@ -4,9 +4,9 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T07:45:00+02:00",
-  "last_completed_at": "2026-10-23T07:53:00+02:00",
-  "updated_at": "2026-10-23T07:53:00+02:00",
+  "last_started_at": "2026-10-23T08:15:00+02:00",
+  "last_completed_at": "2026-10-23T08:17:00+02:00",
+  "updated_at": "2026-10-23T08:17:00+02:00",
   "status": "success",
   "processed_ids": [
     "3fe48c254fa0",
@@ -23,30 +23,30 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261023T074500+0200",
+    "run_id": "tr-chat-20261023T081500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-23T07:45:00+02:00",
-    "updated_at": "2026-10-23T07:53:00+02:00",
-    "finished_at": "2026-10-23T07:53:00+02:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-23T08:15:00+02:00",
+    "updated_at": "2026-10-23T08:17:00+02:00",
+    "finished_at": "2026-10-23T08:17:00+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 2,
+      "attempted": 0,
       "ready": 0,
-      "explained": 2,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 2,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -54,14 +54,14 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 3,
       "incidents": 0
     },
-    "message": "TTendencias 2/2 verificada: Asraf y Arkano cerrados en una explicación agrupada; cola final 0.",
+    "message": "TTendencias 0/0 verificada: cola final 0; saneamiento visual solicitado para 3 Pendientes recientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -71,122 +71,35 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "group_id": "grp-svgala7-nominaciones-20261023",
-        "trend_names": [
-          "Asraf",
-          "Arkano"
-        ],
-        "remate": "🌶️ La palapa pasó lista y sobraron tres nombres.",
-        "originality_check": "passed"
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-23T07:45:00+02:00",
+        "at": "2026-10-23T08:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; 2 entradas activas (Asraf y Arkano). Releyendo estado autoritativo y saneamiento de Pendientes."
+        "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y solicitando saneamiento visual de Pendientes recientes."
       },
       {
-        "at": "2026-10-23T07:46:00+02:00",
+        "at": "2026-10-23T08:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf",
-        "message": "Releyendo estado autoritativo de Asraf"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola editorial, requests activas y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-23T07:47:00+02:00",
-        "phase": "investigating",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Contrastando fuentes sobre el detonante común de la gala 7"
-      },
-      {
-        "at": "2026-10-23T07:48:00+02:00",
-        "phase": "investigating",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Hecho esencial verificado: ambos quedaron nominados junto a Omar; se agrupan por el mismo acontecimiento"
-      },
-      {
-        "at": "2026-10-23T07:49:00+02:00",
-        "phase": "drafting",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-23T07:49:20+02:00",
-        "phase": "drafting",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-23T07:49:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Evaluando candidatos de remate con ratings y filtro antimuletillas"
-      },
-      {
-        "at": "2026-10-23T07:50:00+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Remate seleccionado: La palapa pasó lista y sobraron tres nombres."
-      },
-      {
-        "at": "2026-10-23T07:50:10+02:00",
-        "phase": "persisting",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Guardando ficha Explicada agrupada"
-      },
-      {
-        "at": "2026-10-23T07:51:00+02:00",
-        "phase": "persisting",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Actualizando requests de Asraf y Arkano"
-      },
-      {
-        "at": "2026-10-23T07:51:20+02:00",
-        "phase": "persisting",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Retirando ambas revisiones de la cola"
-      },
-      {
-        "at": "2026-10-23T07:52:00+02:00",
+        "at": "2026-10-23T08:16:40+02:00",
         "phase": "verifying",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura completada: cola 0, 0 requests activas y 0 reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-23T07:52:20+02:00",
-        "phase": "verifying",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-23T07:52:40+02:00",
-        "phase": "verifying",
-        "trend_id": "3fe48c254fa0",
-        "title": "Asraf + Arkano",
-        "message": "Tendencia cerrada y verificada; cola activa 0"
-      },
-      {
-        "at": "2026-10-23T07:53:00+02:00",
+        "at": "2026-10-23T08:17:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 2/2 verificada: Asraf y Arkano cerrados en una explicación agrupada; cola final 0."
+        "message": "TTendencias 0/0 verificada: cola final 0; saneamiento visual solicitado para 3 Pendientes recientes."
       }
     ]
   },
