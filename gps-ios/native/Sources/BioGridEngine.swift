@@ -471,7 +471,7 @@ enum BioGridEngine {
                     departure.departures[family][direction] += amount
                     ledger[key] = departure
                     var arrival = ledger[destination] ?? BioGridCellDay(date:day)
-                    arrival.arrivals[family][[1,0,3,2][direction]] += amount
+                    arrival.arrivals[family][opposite[direction]] += amount
                     ledger[destination] = arrival
                     exodusEvents.append(BioGridExodusEvent(date:day,
                         source:key,destination:destination,
@@ -480,7 +480,7 @@ enum BioGridEngine {
 
                 // Los contadores de casillas que quedaron despobladas
                 // dejan de existir hasta una eventual recolonización.
-                for key in blockadeDays.keys where old[key] == nil {
+                for key in Array(blockadeDays.keys) where old[key] == nil {
                     blockadeDays.removeValue(forKey:key)
                 }
 
