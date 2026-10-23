@@ -167,6 +167,26 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         XCTAssertEqual(result.totalVisits, 3)
     }
 
+    func testManySeparatedVisitClustersRemainDeterministic() {
+        // Un historial con numerosos lugares aislados no debe requerir
+        // reordenar todo el conjunto restante por cada componente.
+        // Saltar tres filas garantiza que los núcleos no se toquen.
+        var counts: [String: Int] = [:]
+        for index in 0..<600 {
+            let cell = Cell(row: a.row + index * 3,
+                            column: a.column + 12)
+            counts[cell.id] = index.isMultiple(of: 2) ? 2 : 5
+        }
+        let first = VisitTerritoryEngine.build(counts: counts)
+        let second = VisitTerritoryEngine.build(counts: counts)
+        XCTAssertEqual(first.territories.count, 600)
+        XCTAssertEqual(first.tiles.count, 600)
+        XCTAssertEqual(first.territories.map(\\.id),
+                       second.territories.map(\\.id))
+        XCTAssertEqual(first.territories.reduce(0) { $0 + $1.visits },
+                       counts.values.reduce(0, +))
+    }
+
     func testNoMutationsToInputVisitHistoryOrCounts() throws {
         let start = date("2026-10-20T08:00:00Z")
         let visits = [
