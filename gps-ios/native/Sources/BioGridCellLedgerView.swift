@@ -6,8 +6,9 @@ import Charts
 struct BioGridCellLedgerView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var engine: BioGridController
-    let cell: Cell
+    @State private var cell: Cell
     let colors: [Color]
+    @State private var trail: [Cell] = []
     @State private var selectedDate: Date
     @State private var expandedFamily: Int? = nil
     @State private var showChart = false
@@ -17,7 +18,7 @@ struct BioGridCellLedgerView: View {
          colors: [Color], initialDate: Date) {
         self.model = model
         self.engine = engine
-        self.cell = cell
+        _cell = State(initialValue:cell)
         self.colors = colors
         _selectedDate = State(initialValue:
             BioGridController.madrid.startOfDay(for:initialDate))
@@ -88,6 +89,18 @@ struct BioGridCellLedgerView: View {
         return sign && number > 0 ? "+\(number.formatted())" : number.formatted()
     }
 
+    private func openNeighbor(_ neighbor:Cell) {
+        trail.append(cell)
+        cell = neighbor
+        expandedFamily = nil
+    }
+
+    private func returnToPrevious() {
+        guard let previous = trail.popLast() else { return }
+        cell = previous
+        expandedFamily = nil
+    }
+
     private func step(_ offset: Int) {
         guard let newDay = calendar.date(byAdding:.day,value:offset,to:day),
               newDay >= first, newDay <= today else { return }
@@ -108,6 +121,10 @@ struct BioGridCellLedgerView: View {
                         if let family = expandedFamily {
                             directionalDetail(family)
                         }
+                        BioGridNeighborsView(cell:cell,date:day,
+                            snapshot:snapshot,colors:colors) { next in
+                                openNeighbor(next)
+                            }
                         Button {
                             showChart = true
                         } label: {
@@ -144,7 +161,16 @@ struct BioGridCellLedgerView: View {
     }
 
     private func heading(at now:Date) -> some View {
-        VStack(alignment:.leading,spacing:4) {
+        VStack(alignment:.leading,spacing:5) {
+            if !trail.isEmpty {
+                Button {
+                    returnToPrevious()
+                } label: {
+                    Label("Volver a la cuadrícula anterior",systemImage:"arrow.left")
+                        .font(.caption.weight(.semibold))
+                }
+                .padding(.bottom,4)
+            }
             Text(model.label(for:cell))
                 .font(.title3.bold())
             let coordinate = Grid.center(cell)
