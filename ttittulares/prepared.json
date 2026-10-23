@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-23T09:11:53.192Z",
+  "updated_at": "2026-10-23T09:13:59.526621Z",
   "items": [
     {
       "event_id": "c14d792f2a4b",
@@ -197,16 +197,34 @@
       },
       "prepared_at": "2026-10-23T09:11:53.192Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
       "image_status": "none",
-      "image_app_available": false
+      "image_app_available": false,
+      "archive_image_search_attempted_at": "2026-10-23T09:13:59.526621Z",
+      "fallback_image_search_attempted_at": "2026-10-23T09:13:59.526621Z",
+      "archive_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413476941-1.jpg",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-sobre-si-compromete-gobierne-lista-mas-votada-primer-objetivo-es-sanchez-vaya/1413476941",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo, sobre si se compromete a que gobierne la lista más votada: \"Mi primer objetivo es que Sánchez se vaya\""
+      },
+      "fallback_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413476941-1.jpg",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-sobre-si-compromete-gobierne-lista-mas-votada-primer-objetivo-es-sanchez-vaya/1413476941",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo, sobre si se compromete a que gobierne la lista más votada: \"Mi primer objetivo es que Sánchez se vaya\""
+      }
     }
   ],
   "count": 0,
