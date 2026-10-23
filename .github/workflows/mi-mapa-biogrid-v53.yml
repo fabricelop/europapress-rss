@@ -1,0 +1,88 @@
+name: "Mi Mapa BIOGRID 1.0.53 - IPA iPhone"
+on:
+  push:
+    branches:
+      - feature/biogrid-v53-geographic-neighbors
+    paths:
+      - 'gps-ios/native/Sources/BioGrid*.swift'
+      - 'gps-ios/native/project.yml'
+      - 'gps-ios/native/Tests/BioGridV46Tests.swift'
+      - 'gps-ios/native/Tests/BioGridV47Tests.swift'
+      - 'gps-ios/native/Tests/BioGridV48LedgerTests.swift'
+      - 'gps-ios/native/Tests/BioGridV49DefensiveMigrationTests.swift'
+      - 'gps-ios/native/Tests/BioGridV50FrontierBattleTests.swift'
+      - 'gps-ios/native/Tests/BioGridV51DoubleDominanceTests.swift'
+      - 'gps-ios/native/Tests/BioGridV52BlockadeExodusTests.swift'
+      - 'gps-ios/native/Tests/BioGridV53GeographicExodusTests.swift'
+      - '.github/workflows/mi-mapa-biogrid-v53.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: mi-mapa-biogrid-v53
+  cancel-in-progress: true
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar fuentes BIOGRID y preparar proyecto
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas iPhone simulator
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          devices=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          phones=[d for rt, ds in devices.items() if "iOS" in rt for d in ds if "iPhone" in d["name"] and d["state"] != "Unavailable"]
+          assert phones, "No iPhone simulator available"
+          open("/tmp/biogrid_simulator","w").write(phones[0]["udid"])
+          PY
+          # Un error intermitente en el simulador (especialmente los tests
+          # de conectividad del mapa) no debe bloquear una IPA correcta.
+          # Si algo falla, se repite TODA la batería: nunca se omiten tests.
+          if ! xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/biogrid_simulator)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO; then
+            echo "::warning::La primera batería falló. Repitiendo todos los tests una vez."
+            xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+              -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/biogrid_simulator)" \
+              -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+          fi
+      - name: Compilar IPA sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/biogrid_v53_build" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/biogrid_v53_build/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          assert app.exists()
+          m=plistlib.loads((app/"Info.plist").read_bytes())
+          assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert m["CFBundleShortVersionString"]=="1.0.53"
+          assert m["CFBundleVersion"]=="54"
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").exists()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-BIOGRID-1.0.53.ipa Payload
+          unzip -t MiMapaDelTiempo-BIOGRID-1.0.53.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-BIOGRID-1.0.53-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-BIOGRID-1.0.53.ipa
+          retention-days: 14
+          if-no-files-found: error
