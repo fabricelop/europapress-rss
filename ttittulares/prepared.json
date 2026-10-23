@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-23T04:58:53.406Z",
+  "updated_at": "2026-10-23T05:00:26.121347Z",
   "items": [
     {
       "event_id": "b2cedcaed7ec",
@@ -528,16 +528,34 @@
       },
       "prepared_at": "2026-10-23T04:58:53.406Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
       "image_status": "none",
-      "image_app_available": false
+      "image_app_available": false,
+      "archive_image_search_attempted_at": "2026-10-23T05:00:26.121347Z",
+      "fallback_image_search_attempted_at": "2026-10-23T05:00:26.121347Z",
+      "archive_image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/22/6ada0c0ba31776-90275415.png",
+        "source": "www.20minutos.es",
+        "source_url": "https://www.20minutos.es/nacional/borrasca-austen-llega-espana-con-fuertes-vientos-que-podrian-superar-los-100-km-h-olas-hasta-10-metros-altura-norte_7052105_0.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La borrasca Austen llega a España con fuertes vientos que podrían superar los 100 km/h y olas de hasta 10 metros de altura en el norte"
+      },
+      "fallback_image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/10/22/6ada0c0ba31776-90275415.png",
+        "source": "www.20minutos.es",
+        "source_url": "https://www.20minutos.es/nacional/borrasca-austen-llega-espana-con-fuertes-vientos-que-podrian-superar-los-100-km-h-olas-hasta-10-metros-altura-norte_7052105_0.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "La borrasca Austen llega a España con fuertes vientos que podrían superar los 100 km/h y olas de hasta 10 metros de altura en el norte"
+      }
     }
   ],
   "count": 0,
