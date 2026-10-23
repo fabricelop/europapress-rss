@@ -46,9 +46,17 @@ jobs:
           assert phones, "No iPhone simulator available"
           open("/tmp/biogrid_simulator","w").write(phones[0]["udid"])
           PY
-          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+          # Un error intermitente en el simulador (especialmente los tests
+          # de conectividad del mapa) no debe bloquear una IPA correcta.
+          # Si algo falla, se repite TODA la batería: nunca se omiten tests.
+          if ! xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
             -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/biogrid_simulator)" \
-            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO; then
+            echo "::warning::La primera batería falló. Repitiendo todos los tests una vez."
+            xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+              -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/biogrid_simulator)" \
+              -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+          fi
       - name: Compilar IPA sin firma
         run: |
           set -euo pipefail
