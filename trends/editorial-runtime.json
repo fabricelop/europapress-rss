@@ -5,12 +5,12 @@
   "canonical": true,
   "api_failover_enabled": false,
   "last_started_at": "2026-10-23T14:15:00+02:00",
-  "last_completed_at": "2026-10-23T13:52:00+02:00",
-  "updated_at": "2026-10-23T14:15:00+02:00",
-  "status": "running",
+  "last_completed_at": "2026-10-23T14:18:00+02:00",
+  "updated_at": "2026-10-23T14:18:00+02:00",
+  "status": "success",
   "processed_ids": [],
   "remaining_ids": [],
-  "queue_complete": false,
+  "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
@@ -25,11 +25,11 @@
     "project": "TTendencias",
     "run_id": "tr-chat-20261023T141500+0200",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-23T14:15:00+02:00",
-    "updated_at": "2026-10-23T14:15:00+02:00",
-    "finished_at": null,
+    "updated_at": "2026-10-23T14:18:00+02:00",
+    "finished_at": "2026-10-23T14:18:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -58,10 +58,10 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 5,
       "incidents": 0
     },
-    "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y saneando Pendientes recientes.",
+    "message": "TTendencias 0/0: no había trabajo editorial nuevo; 5 revisiones recientes verificadas y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,11 +79,32 @@
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y saneando Pendientes recientes."
+      },
+      {
+        "at": "2026-10-23T14:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura autoritativa de main: cola 0, requests activas 0, rewrite_pending 0 y problematic 0."
+      },
+      {
+        "at": "2026-10-23T14:17:20+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes recientes · 5 revisiones; todas tienen remate y el saneamiento visual ya fue solicitado."
+      },
+      {
+        "at": "2026-10-23T14:18:00+02:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias 0/0: no había trabajo editorial nuevo; 5 revisiones recientes verificadas y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [],
     "partial": false,
-    "queue_complete": false,
+    "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": []
   },
@@ -112,7 +133,7 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "pending_cards_reviewed": 5,
     "incidents": 0
   },
   "unresolved_orphan_ids": [],
@@ -123,6 +144,27 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Releyendo estado autoritativo y saneando Pendientes recientes."
+    },
+    {
+      "at": "2026-10-23T14:17:00+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura autoritativa de main: cola 0, requests activas 0, rewrite_pending 0 y problematic 0."
+    },
+    {
+      "at": "2026-10-23T14:17:20+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes recientes · 5 revisiones; todas tienen remate y el saneamiento visual ya fue solicitado."
+    },
+    {
+      "at": "2026-10-23T14:18:00+02:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias 0/0: no había trabajo editorial nuevo; 5 revisiones recientes verificadas y saneamiento visual solicitado."
     }
   ],
   "telegram_orphans": 0,
