@@ -4,20 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T02:45:00+02:00",
-  "last_completed_at": "2026-10-23T02:48:26+02:00",
-  "updated_at": "2026-10-23T02:48:26+02:00",
+  "last_started_at": "2026-10-23T03:15:00+02:00",
+  "last_completed_at": "2026-10-23T03:17:30+02:00",
+  "updated_at": "2026-10-23T03:17:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "3b8284c54aed"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261023T024500+0200",
+    "trigger_run_id": "tr-chat-20261023T031500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -25,30 +23,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261023T024500+0200",
+    "run_id": "tr-chat-20261023T031500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-23T02:45:00+02:00",
-    "updated_at": "2026-10-23T02:48:26+02:00",
-    "finished_at": "2026-10-23T02:48:26+02:00",
-    "current": 1,
-    "total": 1,
-    "trend_id": "3b8284c54aed",
-    "title": "La Peter",
+    "started_at": "2026-10-23T03:15:00+02:00",
+    "updated_at": "2026-10-23T03:17:30+02:00",
+    "finished_at": "2026-10-23T03:17:30+02:00",
+    "current": 0,
+    "total": 0,
+    "trend_id": null,
+    "title": null,
     "summary": {
-      "attempted": 1,
-      "ready": 1,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "attempted": 0,
+      "ready": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -56,13 +54,13 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "incidents": 0
     },
-    "message": "La Peter r1 cerrada y verificada; cola editorial final 0.",
+    "message": "Pasada cerrada y verificada sin trabajo editorial nuevo; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,170 +70,57 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "3b8284c54aed",
-        "revision": 1,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 9,
-            "ratings_affinity": 8.5,
-            "trend_specificity": 9.5,
-            "punch": 9,
-            "originality": 9,
-            "length_fit": 10,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "total": 8.5,
-            "ratings_affinity": 8.5,
-            "trend_specificity": 9,
-            "punch": 8.5,
-            "originality": 8.5,
-            "length_fit": 8.5,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c3",
-            "total": 7.8,
-            "ratings_affinity": 8,
-            "trend_specificity": 8.5,
-            "punch": 8,
-            "originality": 8,
-            "length_fit": 6.5,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c4",
-            "total": 8,
-            "ratings_affinity": 8,
-            "trend_specificity": 8.5,
-            "punch": 8,
-            "originality": 8.5,
-            "length_fit": 7,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c5",
-            "total": 8.2,
-            "ratings_affinity": 8,
-            "trend_specificity": 9,
-            "punch": 8.5,
-            "originality": 8,
-            "length_fit": 8,
-            "repetition_penalty": 0
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 9,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-23T02:45:00+02:00",
+        "at": "2026-10-23T03:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; releyendo estado autoritativo y preparando La Peter."
+        "message": "Pasada iniciada; cola textual 0. Revisando reexplicaciones, Explicadas recientes y estado autoritativo."
       },
       {
-        "at": "2026-10-23T02:45:40+02:00",
+        "at": "2026-10-23T03:16:00+02:00",
         "phase": "verifying",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Releyendo estado autoritativo de La Peter."
+        "trend_id": null,
+        "title": null,
+        "message": "Top 10 revisado; Ivana ya está explicada en el grupo Arkano/Ivana y no supera 48 h."
       },
       {
-        "at": "2026-10-23T02:46:00+02:00",
-        "phase": "investigating",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Buscando detonante actual."
-      },
-      {
-        "at": "2026-10-23T02:46:35+02:00",
-        "phase": "investigating",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Contrastando RTVE y la publicación posterior de Pedro Sánchez."
-      },
-      {
-        "at": "2026-10-23T02:47:00+02:00",
-        "phase": "drafting",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-23T02:47:15+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Evaluando cinco candidatos con ratings y repetición reciente."
-      },
-      {
-        "at": "2026-10-23T02:47:30+02:00",
-        "phase": "remate_selection",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Remate seleccionado; texto completo dentro del límite."
-      },
-      {
-        "at": "2026-10-23T02:47:38+02:00",
-        "phase": "persisting",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Guardando ficha Explicada y sincronizando la revisión 1."
-      },
-      {
-        "at": "2026-10-23T02:48:05+02:00",
+        "at": "2026-10-23T03:17:00+02:00",
         "phase": "verifying",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
+        "trend_id": null,
+        "title": null,
+        "message": "Releídos cola y requests en main: 0 preparing/update, 0 problematic y 0 reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-23T02:48:26+02:00",
+        "at": "2026-10-23T03:17:30+02:00",
         "phase": "closing",
-        "trend_id": "3b8284c54aed",
-        "title": "La Peter",
-        "message": "La Peter r1 cerrada y verificada; cola editorial final 0."
+        "trend_id": null,
+        "title": null,
+        "message": "Pasada cerrada y verificada sin trabajo editorial nuevo; cola final 0."
       }
     ],
-    "processed_ids": [
-      "3b8284c54aed"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "3b8284c54aed",
-        "name": "La Peter",
-        "revision": 1,
-        "status": "explained",
-        "verified": true
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261023T024500+0200",
+  "run_id": "tr-chat-20261023T031500+0200",
   "summary": {
-    "attempted": 1,
-    "ready": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "attempted": 0,
+    "ready": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -243,8 +128,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "incidents": 0
@@ -252,74 +137,32 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-23T02:45:00+02:00",
+      "at": "2026-10-23T03:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; releyendo estado autoritativo y preparando La Peter."
+      "message": "Pasada iniciada; cola textual 0. Revisando reexplicaciones, Explicadas recientes y estado autoritativo."
     },
     {
-      "at": "2026-10-23T02:45:40+02:00",
+      "at": "2026-10-23T03:16:00+02:00",
       "phase": "verifying",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Releyendo estado autoritativo de La Peter."
+      "trend_id": null,
+      "title": null,
+      "message": "Top 10 revisado; Ivana ya está explicada en el grupo Arkano/Ivana y no supera 48 h."
     },
     {
-      "at": "2026-10-23T02:46:00+02:00",
-      "phase": "investigating",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Buscando detonante actual."
-    },
-    {
-      "at": "2026-10-23T02:46:35+02:00",
-      "phase": "investigating",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Contrastando RTVE y la publicación posterior de Pedro Sánchez."
-    },
-    {
-      "at": "2026-10-23T02:47:00+02:00",
-      "phase": "drafting",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-23T02:47:15+02:00",
-      "phase": "remate_selection",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Evaluando cinco candidatos con ratings y repetición reciente."
-    },
-    {
-      "at": "2026-10-23T02:47:30+02:00",
-      "phase": "remate_selection",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Remate seleccionado; texto completo dentro del límite."
-    },
-    {
-      "at": "2026-10-23T02:47:38+02:00",
-      "phase": "persisting",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Guardando ficha Explicada y sincronizando la revisión 1."
-    },
-    {
-      "at": "2026-10-23T02:48:05+02:00",
+      "at": "2026-10-23T03:17:00+02:00",
       "phase": "verifying",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
+      "trend_id": null,
+      "title": null,
+      "message": "Releídos cola y requests en main: 0 preparing/update, 0 problematic y 0 reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-23T02:48:26+02:00",
+      "at": "2026-10-23T03:17:30+02:00",
       "phase": "closing",
-      "trend_id": "3b8284c54aed",
-      "title": "La Peter",
-      "message": "La Peter r1 cerrada y verificada; cola editorial final 0."
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada y verificada sin trabajo editorial nuevo; cola final 0."
     }
   ],
   "telegram_orphans": 0,
@@ -333,7 +176,7 @@
     "captured_at": "2026-10-23T02:17:39+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-23T02:17:39+02:00",
+    "captured_at": "2026-10-23T03:10:52+02:00",
     "queue_count": 0
   },
   "previous_run_id": "tr-chat-20261023T014500+0200",
