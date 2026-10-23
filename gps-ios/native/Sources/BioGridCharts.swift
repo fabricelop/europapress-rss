@@ -206,6 +206,8 @@ struct BioGridCellChartView:View {
     let cell:Cell
     let history:[BioGridCellPoint]
     let colors:[Color]
+    let onSelectDate:(Date)->Void
+    @State private var selectedDate:Date?
     @State private var range:BioGridChartRange = .month
     @State private var visible:Set<Int> = Set(0..<7)
     @Environment(\.dismiss) private var dismiss
@@ -269,9 +271,22 @@ struct BioGridCellChartView:View {
                                 .lineStyle(StrokeStyle(lineWidth:2))
                         }
                         .chartLegend(.hidden)
+                        .chartXSelection(value:$selectedDate)
                         .frame(height:260)
+                        if let selectedDate {
+                            HStack {
+                                Label(selectedDate.formatted(date:.abbreviated,time:.omitted),
+                                      systemImage:"calendar")
+                                Spacer()
+                                Button("Ver en la tabla") {
+                                    onSelectDate(selectedDate)
+                                    dismiss()
+                                }
+                                .buttonStyle(.borderedProminent)
+                            }
+                        }
                     }
-                    Text("Cada línea indica los individuos de una familia dentro de esta cuadrícula, sin agregarlos con otras.")
+                    Text("Cada línea indica los individuos de una familia en esta cuadrícula. Toca una fecha de la gráfica para consultar su tabla detallada.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.padding(16)
             }
