@@ -214,13 +214,16 @@ enum BioGridEngine {
                     let total = counts.reduce(0,+)
                     let probability = 0.30 * Double(total) / (Double(total) + 130)
                     var rng = Random(state: seed(priorDay, cell: key, salt: 0x47c23))
-                    // N, S, E, O: cada dirección es relativa a la cuadrícula.
+                    // Orden histórico de reparto: S, N, O, E.
+                    // Las columnas se registran siempre N, S, E, O.
+                    // Conservar el orden evita alterar la evolución ya conocida.
                     let neighbors = [
-                        Cell(row:cell.row + 1,column:cell.column),
                         Cell(row:cell.row - 1,column:cell.column),
-                        Cell(row:cell.row,column:cell.column + 1),
-                        Cell(row:cell.row,column:cell.column - 1)
+                        Cell(row:cell.row + 1,column:cell.column),
+                        Cell(row:cell.row,column:cell.column - 1),
+                        Cell(row:cell.row,column:cell.column + 1)
                     ]
+                    let directions = [1,0,3,2]
                     let opposite = [1,0,3,2]
                     for family in 0..<7 {
                         let moved = rng.binomial(counts[family], probability)
@@ -234,14 +237,14 @@ enum BioGridEngine {
                                 rng.binomial(remaining,1.0 / Double(4 - direction))
                             remaining -= count
                             if count == 0 { continue }
-                            from.departures[family][direction] += count
+                            from.departures[family][directions[direction]] += count
                             let target = neighbors[direction].id
                             if next[target] == nil {
                                 next[target] = Array(repeating: 0, count: 7)
                             }
                             next[target]![family] += count
                             var to = ledger[target] ?? BioGridCellDay(date:day)
-                            to.arrivals[family][opposite[direction]] += count
+                            to.arrivals[family][opposite[directions[direction]]] += count
                             ledger[target] = to
                         }
                         ledger[key] = from
