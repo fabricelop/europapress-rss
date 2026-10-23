@@ -43,6 +43,7 @@ struct BioGridSnapshot: Codable {
     // Datos calculados: nunca se escribe en los intervalos GPS originales.
     var todayBirths: [String: [Int64]] = [:]
     var remainingSeconds: [String: Double] = [:]
+    var lastIntervalEnds: [String: Date] = [:]
     var historical: [BioGridHistoryPoint] = []
     var cellHistory: [String: [BioGridCellPoint]] = [:]
     var territoryEvents: [BioGridTerritoryEvent] = []
@@ -125,6 +126,7 @@ enum BioGridEngine {
         let canonical = TimeAttribution.canonical(intervals).sorted { $0.start < $1.start }
         var events: [Date: [String: [Int64]]] = [:]
         var remainder: [String: Double] = [:]
+        var lastIntervalEnds: [String: Date] = [:]
         var first: Date?
         var local = Calendar(identifier: .gregorian)
         local.timeZone = timezone
@@ -134,6 +136,9 @@ enum BioGridEngine {
             let end = min(interval.end, now)
             guard end > cursor else { continue }
             let key = interval.cell.id
+            if end > (lastIntervalEnds[key] ?? .distantPast) {
+                lastIntervalEnds[key] = end
+            }
             var rest = remainder[key, default: 0]
             while cursor < end {
                 let needed = max(0.000001, 300 - rest)
@@ -276,6 +281,7 @@ enum BioGridEngine {
         return BioGridSnapshot(populations: living,days:daily,latestProcessed:today,
             sourceFingerprint:fingerprint(intervals),
             todayBirths:events[today] ?? [:],remainingSeconds:remainder,
+            lastIntervalEnds:lastIntervalEnds,
             historical:historical,cellHistory:cellHistory,
             territoryEvents:territoryEvents,rulers:previousDominant)
     }
