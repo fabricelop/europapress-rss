@@ -16,7 +16,7 @@ import Combine
             in: .userDomainMask).first!
         try? FileManager.default.createDirectory(at:base,
             withIntermediateDirectories:true)
-        return base.appendingPathComponent("biogrid-derived-v6.json")
+        return base.appendingPathComponent("biogrid-derived-v7.json")
     }
     static var madrid: Calendar {
         var cal = Calendar(identifier:.gregorian)
@@ -472,7 +472,7 @@ struct BioGridView: View {
                 }
                 Button("Consultar informe completo") { showReport = true }
                     .font(.caption)
-                Text("Expansión: conquista vecinas o refuerza la propia más débil. Batallas nocturnas: rencillas 0–2 %; con nacimientos o llegadas, hasta 15 %.")
+                Text("Expansión: requiere conservar el doble de la segunda familia; emigración máxima 20 %. Conquista vecinas o refuerza la propia más débil.")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(11)
         }
