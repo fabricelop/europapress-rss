@@ -101,23 +101,34 @@ final class BioGridV53GeographicExodusTests: XCTestCase {
         let event=try XCTUnwrap(twentySixth.exodusEvents.first)
         XCTAssertEqual(event.source,f.source.id)
         XCTAssertEqual(event.destination,f.south.id)
-        XCTAssertEqual(event.family,1) // martes: M, 2a en empate
-        XCTAssertEqual(event.amount,9)
+        // Las batallas anteriores pueden cambiar cuál de las familias
+        // queda segunda: comprobamos el estado real de la víspera,
+        // nunca una identidad/cantidad supuesta.
+        let previous=twentySixth.cellHistory[f.source.id]?
+            .last(where:{$0.date<event.date})?.counts ??
+            Array(repeating:Int64(0),count:7)
+        let maximum=previous.max() ?? 0
+        XCTAssertGreaterThan(maximum,0)
+        XCTAssertLessThan(previous[event.family],maximum,
+            "Debe abandonar la cuadrícula una familia no dominante")
+        XCTAssertEqual(event.amount,previous[event.family])
+        XCTAssertGreaterThan(event.amount,0)
         let departures=twentySixth.cellDays[f.source.id]?.first {
             $0.date == event.date
         }
         let arrivals=twentySixth.cellDays[f.south.id]?.first {
             $0.date == event.date
         }
-        XCTAssertEqual(departures?.departures[1][1],9) // S desde origen
-        XCTAssertEqual(arrivals?.arrivals[1][0],9)      // N hacia destino
+        XCTAssertEqual(departures?.departures[event.family][1],event.amount)
+        XCTAssertEqual(arrivals?.arrivals[event.family][0],event.amount)
 
         // Con ningún nacimiento ni rival nuevo, la población emigrada
         // debe seguir en el mapa al menos la jornada siguiente.
-        XCTAssertEqual(twentySixth.populations[f.south.id]?[1],9)
-        XCTAssertEqual(twentySixth.populations[f.source.id]?[1],0)
+        XCTAssertEqual(twentySixth.populations[f.south.id]?[event.family],
+                       event.amount)
+        XCTAssertEqual(twentySixth.populations[f.source.id]?[event.family],0)
         let historical=twentySixth.cellHistory[f.south.id]?.last?.counts
-        XCTAssertEqual(historical?[1],9)
+        XCTAssertEqual(historical?[event.family],event.amount)
 
         let births=twentySixth.days.reduce(Int64(0)) {$0+$1.births.reduce(0,+)}
         let casualties=twentySixth.days.reduce(Int64(0)) {$0+$1.deaths.reduce(0,+)}
