@@ -4,18 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-23T17:15:00+02:00",
-  "last_completed_at": "2026-10-23T17:15:50+02:00",
-  "updated_at": "2026-10-23T17:15:50+02:00",
+  "last_started_at": "2026-10-23T17:45:00+02:00",
+  "last_completed_at": "2026-10-23T17:49:20+02:00",
+  "updated_at": "2026-10-23T17:49:20+02:00",
   "status": "success",
-  "processed_ids": [],
+  "processed_ids": [
+    "44f495fcc2f1",
+    "493fef894a34",
+    "98a3afb36dc6",
+    "6c7caf6e4716"
+  ],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261023T164500+0200",
+    "trigger_run_id": "tr-chat-20261023T174500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -23,30 +28,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261023T171500+0200",
+    "run_id": "tr-chat-20261023T174500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-23T17:15:00+02:00",
-    "updated_at": "2026-10-23T17:15:50+02:00",
-    "finished_at": "2026-10-23T17:15:50+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-23T17:45:00+02:00",
+    "updated_at": "2026-10-23T17:49:20+02:00",
+    "finished_at": "2026-10-23T17:49:20+02:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 4,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 4,
+      "explanation_groups": 4,
+      "new_cards": 4,
+      "revisions_updated": 4,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 4,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -54,75 +59,196 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 2,
       "incidents": 0
     },
-    "message": "TTendencias 0/0: no había trabajo editorial nuevo; 2 Pendientes recientes revisados y saneamiento visual solicitado.",
+    "message": "TTendencias 4/4: cuatro tendencias explicadas y verificadas; cola editorial 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "44f495fcc2f1",
+        "revision": 0,
+        "closer_text": "🌶️ Cambia el 42%; el sillón principal, de momento, no."
+      },
+      {
+        "id": "493fef894a34",
+        "revision": 0,
+        "closer_text": "🌶️ Cinco días para que los abstracts salgan del laboratorio."
+      },
+      {
+        "id": "98a3afb36dc6",
+        "revision": 0,
+        "closer_text": "🌶️ Palou tendrá por fin una curva de casa."
+      },
+      {
+        "id": "6c7caf6e4716",
+        "revision": 0,
+        "closer_text": "🌶️ El mercado aún no abre y el despacho ya está fichando."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-23T17:15:00+02:00",
+        "at": "2026-10-23T17:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola editorial 0. Verificando Top 10, solicitudes activas, reexplicaciones y Pendientes recientes."
+        "message": "Pasada iniciada; 4 tendencias activas. Releyendo estado autoritativo antes de investigar."
       },
       {
-        "at": "2026-10-23T17:15:30+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo estado autoritativo: cola, requests, Top 10 y Explicadas recientes."
+        "at": "2026-10-23T17:45:20+02:00",
+        "phase": "investigating",
+        "trend_id": "44f495fcc2f1",
+        "title": "Pitchwise Holdings",
+        "message": "Buscando detonante actual de Pitchwise Holdings."
       },
       {
-        "at": "2026-10-23T17:15:40+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura: cola 0, requests activas 0, rewrite_pending 0; Top 10 cubierto por explicaciones vigentes o históricas recientes."
+        "at": "2026-10-23T17:45:50+02:00",
+        "phase": "investigating",
+        "trend_id": "44f495fcc2f1",
+        "title": "Pitchwise Holdings",
+        "message": "Hecho esencial verificado: entrada en Valencia CF con 42% y 100 M€ de capital nuevo; Meriton mantiene la mayoría."
       },
       {
-        "at": "2026-10-23T17:15:45+02:00",
+        "at": "2026-10-23T17:46:00+02:00",
+        "phase": "investigating",
+        "trend_id": "493fef894a34",
+        "title": "#ESMO26",
+        "message": "Buscando detonante actual de #ESMO26."
+      },
+      {
+        "at": "2026-10-23T17:46:30+02:00",
+        "phase": "investigating",
+        "trend_id": "493fef894a34",
+        "title": "#ESMO26",
+        "message": "Hecho esencial verificado: comienza hoy en IFEMA Madrid el Congreso ESMO 2026, del 23 al 27 de octubre, con resultados oncológicos y #ESMO26 activo."
+      },
+      {
+        "at": "2026-10-23T17:46:40+02:00",
+        "phase": "investigating",
+        "trend_id": "98a3afb36dc6",
+        "title": "IndyCar",
+        "message": "Buscando detonante actual de IndyCar."
+      },
+      {
+        "at": "2026-10-23T17:47:10+02:00",
+        "phase": "investigating",
+        "trend_id": "98a3afb36dc6",
+        "title": "IndyCar",
+        "message": "Hecho esencial verificado: IndyCar correrá en Barcelona el 18 de julio de 2027, regreso a Europa y carrera en casa para Álex Palou."
+      },
+      {
+        "at": "2026-10-23T17:47:20+02:00",
+        "phase": "investigating",
+        "trend_id": "6c7caf6e4716",
+        "title": "Braulio",
+        "message": "Buscando detonante actual de Braulio."
+      },
+      {
+        "at": "2026-10-23T17:47:45+02:00",
+        "phase": "investigating",
+        "trend_id": "6c7caf6e4716",
+        "title": "Braulio",
+        "message": "Hecho esencial verificado: Braulio Vázquez cerró la ampliación de David Otorbi hasta 2031 y reforzó la estructura deportiva con Pachu Martínez."
+      },
+      {
+        "at": "2026-10-23T17:47:55+02:00",
+        "phase": "drafting",
+        "trend_id": "6c7caf6e4716",
+        "title": "Braulio",
+        "message": "Redacción factual cerrada para las 4 tendencias; comprobando límite de X y remates."
+      },
+      {
+        "at": "2026-10-23T17:48:00+02:00",
+        "phase": "remate_selection",
+        "trend_id": "6c7caf6e4716",
+        "title": "Braulio",
+        "message": "Remates seleccionados para las 4 tendencias; preparando persistencia atómica."
+      },
+      {
+        "at": "2026-10-23T17:48:40+02:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual solicitado para 2 Pendientes recientes: Javi Rodríguez y Chiqui."
+        "trend_id": "6c7caf6e4716",
+        "title": "Braulio",
+        "message": "Guardadas 4 fichas Explicadas y sincronizadas sus revisiones exactas en requests."
       },
       {
-        "at": "2026-10-23T17:15:50+02:00",
+        "at": "2026-10-23T17:49:05+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main y verificando id+revision, texto, remate y cola editorial."
+      },
+      {
+        "at": "2026-10-23T17:49:15+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación correcta: 4/4 consistentes; cola 0; requests activas 0."
+      },
+      {
+        "at": "2026-10-23T17:49:20+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias 0/0: no había trabajo editorial nuevo; 2 Pendientes recientes revisados y saneamiento visual solicitado."
+        "message": "TTendencias 4/4: cuatro tendencias explicadas y verificadas; cola editorial 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "44f495fcc2f1",
+      "493fef894a34",
+      "98a3afb36dc6",
+      "6c7caf6e4716"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "44f495fcc2f1",
+        "revision": 0,
+        "name": "Pitchwise Holdings",
+        "status": "explained"
+      },
+      {
+        "id": "493fef894a34",
+        "revision": 0,
+        "name": "#ESMO26",
+        "status": "explained"
+      },
+      {
+        "id": "98a3afb36dc6",
+        "revision": 0,
+        "name": "IndyCar",
+        "status": "explained"
+      },
+      {
+        "id": "6c7caf6e4716",
+        "revision": 0,
+        "name": "Braulio",
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261023T171500+0200",
+  "run_id": "tr-chat-20261023T174500+0200",
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "explained": 4,
+    "explanation_groups": 4,
+    "new_cards": 4,
+    "revisions_updated": 4,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 4,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -130,8 +256,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 4,
+    "remates_selected": 4,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 2,
@@ -140,39 +266,109 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-23T17:15:00+02:00",
+      "at": "2026-10-23T17:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola editorial 0. Verificando Top 10, solicitudes activas, reexplicaciones y Pendientes recientes."
+      "message": "Pasada iniciada; 4 tendencias activas. Releyendo estado autoritativo antes de investigar."
     },
     {
-      "at": "2026-10-23T17:15:30+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo estado autoritativo: cola, requests, Top 10 y Explicadas recientes."
+      "at": "2026-10-23T17:45:20+02:00",
+      "phase": "investigating",
+      "trend_id": "44f495fcc2f1",
+      "title": "Pitchwise Holdings",
+      "message": "Buscando detonante actual de Pitchwise Holdings."
     },
     {
-      "at": "2026-10-23T17:15:40+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura: cola 0, requests activas 0, rewrite_pending 0; Top 10 cubierto por explicaciones vigentes o históricas recientes."
+      "at": "2026-10-23T17:45:50+02:00",
+      "phase": "investigating",
+      "trend_id": "44f495fcc2f1",
+      "title": "Pitchwise Holdings",
+      "message": "Hecho esencial verificado: entrada en Valencia CF con 42% y 100 M€ de capital nuevo; Meriton mantiene la mayoría."
     },
     {
-      "at": "2026-10-23T17:15:45+02:00",
+      "at": "2026-10-23T17:46:00+02:00",
+      "phase": "investigating",
+      "trend_id": "493fef894a34",
+      "title": "#ESMO26",
+      "message": "Buscando detonante actual de #ESMO26."
+    },
+    {
+      "at": "2026-10-23T17:46:30+02:00",
+      "phase": "investigating",
+      "trend_id": "493fef894a34",
+      "title": "#ESMO26",
+      "message": "Hecho esencial verificado: comienza hoy en IFEMA Madrid el Congreso ESMO 2026, del 23 al 27 de octubre, con resultados oncológicos y #ESMO26 activo."
+    },
+    {
+      "at": "2026-10-23T17:46:40+02:00",
+      "phase": "investigating",
+      "trend_id": "98a3afb36dc6",
+      "title": "IndyCar",
+      "message": "Buscando detonante actual de IndyCar."
+    },
+    {
+      "at": "2026-10-23T17:47:10+02:00",
+      "phase": "investigating",
+      "trend_id": "98a3afb36dc6",
+      "title": "IndyCar",
+      "message": "Hecho esencial verificado: IndyCar correrá en Barcelona el 18 de julio de 2027, regreso a Europa y carrera en casa para Álex Palou."
+    },
+    {
+      "at": "2026-10-23T17:47:20+02:00",
+      "phase": "investigating",
+      "trend_id": "6c7caf6e4716",
+      "title": "Braulio",
+      "message": "Buscando detonante actual de Braulio."
+    },
+    {
+      "at": "2026-10-23T17:47:45+02:00",
+      "phase": "investigating",
+      "trend_id": "6c7caf6e4716",
+      "title": "Braulio",
+      "message": "Hecho esencial verificado: Braulio Vázquez cerró la ampliación de David Otorbi hasta 2031 y reforzó la estructura deportiva con Pachu Martínez."
+    },
+    {
+      "at": "2026-10-23T17:47:55+02:00",
+      "phase": "drafting",
+      "trend_id": "6c7caf6e4716",
+      "title": "Braulio",
+      "message": "Redacción factual cerrada para las 4 tendencias; comprobando límite de X y remates."
+    },
+    {
+      "at": "2026-10-23T17:48:00+02:00",
+      "phase": "remate_selection",
+      "trend_id": "6c7caf6e4716",
+      "title": "Braulio",
+      "message": "Remates seleccionados para las 4 tendencias; preparando persistencia atómica."
+    },
+    {
+      "at": "2026-10-23T17:48:40+02:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual solicitado para 2 Pendientes recientes: Javi Rodríguez y Chiqui."
+      "trend_id": "6c7caf6e4716",
+      "title": "Braulio",
+      "message": "Guardadas 4 fichas Explicadas y sincronizadas sus revisiones exactas en requests."
     },
     {
-      "at": "2026-10-23T17:15:50+02:00",
+      "at": "2026-10-23T17:49:05+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main y verificando id+revision, texto, remate y cola editorial."
+    },
+    {
+      "at": "2026-10-23T17:49:15+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación correcta: 4/4 consistentes; cola 0; requests activas 0."
+    },
+    {
+      "at": "2026-10-23T17:49:20+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias 0/0: no había trabajo editorial nuevo; 2 Pendientes recientes revisados y saneamiento visual solicitado."
+      "message": "TTendencias 4/4: cuatro tendencias explicadas y verificadas; cola editorial 0."
     }
   ],
   "telegram_orphans": 0,
@@ -180,11 +376,11 @@
   "partial": false,
   "radar_refresh": {
     "status": "not_needed",
-    "reason": "recent captured_at within 20 minutes"
+    "reason": "current editorial queue already processed from fresh main state"
   },
   "radar": {
-    "captured_at": "2026-10-23T16:51:01+02:00",
+    "captured_at": "2026-10-23T17:31:16+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261023T164500+0200"
+  "previous_run_id": "tr-chat-20261023T171500+0200"
 }
