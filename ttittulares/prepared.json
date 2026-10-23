@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-23T19:04:58.100Z",
+  "updated_at": "2026-10-23T19:06:33.452846Z",
   "items": [
     {
       "event_id": "bee9ca155463",
@@ -42,17 +42,35 @@
       },
       "prepared_at": "2026-10-23T19:04:58.100Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
       "image_status": "none",
       "image_app_available": false,
-      "sensitive_editorial": true
+      "sensitive_editorial": true,
+      "archive_image_search_attempted_at": "2026-10-23T19:06:33.452846Z",
+      "fallback_image_search_attempted_at": "2026-10-23T19:06:33.452846Z",
+      "archive_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/NBVNNTRTU5LW5CBWXYH7Y7U5AQ.jpg?auth=976ca314990b3f8aef91e4dad016a9ca62699bfa0a0e73492781574073da510b&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/comunidad-valenciana/2026-10-23/fallece-un-nino-de-20-meses-en-una-piscina-privada-en-tous-y-logran-reanimar-a-otro-menor-de-3-anos.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere ahogado un niño de un año y medio en una piscina particular de Tous, en Valencia: un guardia civil rescató con vida a su hermano de tres años - Telecinco"
+      },
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/NBVNNTRTU5LW5CBWXYH7Y7U5AQ.jpg?auth=976ca314990b3f8aef91e4dad016a9ca62699bfa0a0e73492781574073da510b&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/espana/comunidad-valenciana/2026-10-23/fallece-un-nino-de-20-meses-en-una-piscina-privada-en-tous-y-logran-reanimar-a-otro-menor-de-3-anos.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Muere ahogado un niño de un año y medio en una piscina particular de Tous, en Valencia: un guardia civil rescató con vida a su hermano de tres años - Telecinco"
+      }
     }
   ],
   "count": 0,
