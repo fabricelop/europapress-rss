@@ -236,8 +236,9 @@ struct VisitTerritoriesView: View {
         HStack(spacing: 3) {
             RoundedRectangle(cornerRadius: 2)
                 .fill(tint.opacity(alpha))
-                .strokeBorder(tint.opacity(0.8), lineWidth: 0.7)
                 .frame(width: 11, height: 11)
+                .overlay(RoundedRectangle(cornerRadius: 2)
+                    .strokeBorder(tint.opacity(0.8), lineWidth: 0.7))
             Text(name).lineLimit(1)
         }
     }
