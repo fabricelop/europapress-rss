@@ -16,7 +16,7 @@ import Combine
             in: .userDomainMask).first!
         try? FileManager.default.createDirectory(at:base,
             withIntermediateDirectories:true)
-        return base.appendingPathComponent("biogrid-derived-v2.json")
+        return base.appendingPathComponent("biogrid-derived-v3.json")
     }
     static var madrid: Calendar {
         var cal = Calendar(identifier:.gregorian)
@@ -108,6 +108,8 @@ struct BioGridView: View {
     @State private var territoryRanking = false
     @State private var showReport = false
     @State private var showEvents = false
+    @State private var showRivalries = false
+    @State private var showClassification = false
     @State private var showCharts = false
 
     private let palette:[Color] = [
@@ -136,44 +138,21 @@ struct BioGridView: View {
         return (weekday+5)%7
     }
 
-    // El contador visible puede interpolar hasta la siguiente posición GPS:
-    // es provisional y nunca modifica los intervalos originales.
-    private func predictedBirths(cell:Cell,snapshot:BioGridSnapshot) -> Int64 {
-        guard engine.historicalDate == nil,activeCell == cell else { return 0 }
-        let rest = snapshot.remainingSeconds[cell.id,default:0]
-        let last = model.data.intervals.last
-        let lastConfirmed = last?.cell == cell ? last?.end : nil
-        let visitStart = model.currentVisitStart ?? model.data.gpsRest?.startedAt
-        let anchor = max(lastConfirmed ?? visitStart ?? clock,
-                         visitStart ?? .distantPast)
-        let allowedThrough:Date
-        if model.isResting {
-            allowedThrough = clock
-        } else {
-            guard let fix = model.lastGPSFix else { return 0 }
-            allowedThrough = min(clock,fix.addingTimeInterval(120))
-        }
-        let provisional = max(0,allowedThrough.timeIntervalSince(anchor))
-        return Int64(floor((rest + provisional) / 300.0))
+    /// La fuente es el GPS existente. El segundo vivo es una proyección
+    /// visual hasta la siguiente confirmación GPS, nunca una escritura.
+    private func birthProgress(cell:Cell,snapshot:BioGridSnapshot,now:Date) -> BioGridLiveBirth {
+        BioGridBirthTicker.project(
+            remainder:snapshot.remainingSeconds[cell.id] ?? 0,
+            sourceEnd:snapshot.lastIntervalEnds[cell.id],
+            visitStart:model.currentVisitStart ?? model.data.gpsRest?.startedAt,
+            latestFix:model.lastGPSFix,
+            now:now,
+            resting:model.isResting)
     }
 
-    private func birthCountdown(cell:Cell,snapshot:BioGridSnapshot) -> (seconds:Int,elapsed:Double) {
-        let rest = snapshot.remainingSeconds[cell.id,default:0]
-        let predicted = predictedBirths(cell:cell,snapshot:snapshot)
-        // Predicción + fracción acumulada. Mantener el contador quieto cuando
-        // el GPS se interrumpe en lugar de inventar tiempo indefinidamente.
-        let last = model.data.intervals.last
-        let anchor = max(last?.cell == cell ? last!.end : model.currentVisitStart ?? clock,
-                         model.currentVisitStart ?? .distantPast)
-        let through:Date
-        if model.isResting { through = clock }
-        else if let fix = model.lastGPSFix { through = min(clock,fix.addingTimeInterval(120)) }
-        else { through = clock }
-        let projected = max(0,through.timeIntervalSince(anchor))
-        let accumulated = rest + projected
-        let elapsed = accumulated.truncatingRemainder(dividingBy:300)
-        _ = predicted
-        return (max(0,Int(ceil(300 - elapsed))),elapsed)
+    private func predictedBirths(cell:Cell,snapshot:BioGridSnapshot) -> Int64 {
+        guard engine.historicalDate == nil, activeCell == cell else { return 0 }
+        return birthProgress(cell:cell,snapshot:snapshot,now:clock).provisionalBirths
     }
 
     private func mapPopulations(_ snapshot:BioGridSnapshot) -> [String:[Int64]] {
@@ -273,7 +252,7 @@ struct BioGridView: View {
             clock = .now
             engine.refresh(model.data.intervals)
         }
-        .onReceive(Timer.publish(every:1,on:.main,in:.common).autoconnect()) { date in
+        .onReceive(Timer.publish(every:5,on:.main,in:.common).autoconnect()) { date in
             clock = date
         }
         .onReceive(Timer.publish(every:15,on:.main,in:.common).autoconnect()) { _ in
@@ -304,10 +283,17 @@ struct BioGridView: View {
         }
         .sheet(isPresented:$showEvents) {
             if let snapshot = displayed {
-                BioGridEventsSheet(events:cycleEvents(snapshot),colors:palette) { cell in
-                    showEvents = false
-                    jump(cell)
-                }
+                BioGridEventsSheet(events:cycleEvents(snapshot),colors:palette,
+                    placeName:{ key in self.readablePlace(key) },
+                    populationAfter:{ event in self.eventPopulation(event,snapshot:snapshot) }) { cell in
+                        showEvents = false
+                        jump(cell)
+                    }
+            }
+        }
+        .sheet(isPresented:$showRivalries) {
+            if let snapshot = displayed {
+                rivalriesSheet(snapshot)
             }
         }
         .sheet(isPresented:$showCharts) {
@@ -403,54 +389,70 @@ struct BioGridView: View {
     }
 
     private func liveSection(_ snapshot:BioGridSnapshot) -> some View {
-        VStack(alignment:.leading,spacing:7) {
-            HStack {
-                Label("Mi cuadrícula",systemImage:"location.circle.fill")
-                    .font(.headline)
-                Spacer()
-                if let cell = activeCell {
-                    Button("Centrar") { jump(cell) }.font(.caption)
-                } else {
-                    Text("Sin posición reciente").font(.caption).foregroundStyle(.secondary)
-                }
-            }
-            if let cell = activeCell {
-                let next = birthCountdown(cell:cell,snapshot:snapshot)
-                let confirmed = snapshot.todayBirths[cell.id]?.reduce(Int64(0),+) ?? 0
-                let extra = predictedBirths(cell:cell,snapshot:snapshot)
-                let counts = mapPopulations(snapshot)[cell.id] ?? Array(repeating:0,count:7)
-                let winner = counts.max() ?? 0
-                let leader = counts.firstIndex(of:winner) ?? activeFamily
-                HStack(spacing:9) {
-                    Text(BioGridEngine.letters[leader])
-                        .bold().frame(width:28,height:28)
-                        .background(palette[leader],in:RoundedRectangle(cornerRadius:5))
-                        .foregroundStyle(.black)
-                    Text("\(winner.formatted()) bacterias").font(.headline)
-                    Spacer()
-                    Text("+\(confirmed+extra) hoy")
-                        .font(.subheadline.bold()).foregroundStyle(.green)
-                }
+        TimelineView(.periodic(from:.now,by:1)) { timeline in
+            let now = timeline.date
+            VStack(alignment:.leading,spacing:7) {
                 HStack {
-                    Text("Siguiente \(BioGridEngine.letters[activeFamily]) +1")
-                        .font(.caption)
+                    Label("Mi cuadrícula",systemImage:"location.circle.fill")
+                        .font(.headline)
                     Spacer()
-                    Text(String(format:"%02d:%02d",next.seconds/60,next.seconds%60))
-                        .font(.subheadline.monospacedDigit().bold())
+                    if let cell = activeCell {
+                        Button("Centrar") { jump(cell) }.font(.caption)
+                    } else {
+                        Text("Ubicación no disponible")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
-                ProgressView(value:next.elapsed,total:300)
-                    .tint(palette[activeFamily])
-                if extra > 0 {
-                    Text("\(extra) nacimiento(s) provisional(es) hasta confirmar GPS")
-                        .font(.caption2).foregroundStyle(.orange)
+                if let cell = activeCell {
+                    let progress = birthProgress(cell:cell,snapshot:snapshot,now:now)
+                    let provisional = progress.provisionalBirths
+                    let countsBase = snapshot.populations[cell.id] ?? Array(repeating:0,count:7)
+                    let totalToday = snapshot.todayBirths[cell.id]?.reduce(0,+) ?? 0
+                    let projectedCounts = countsBase.enumerated().map { index, amount -> Int64 in
+                        amount + (index == activeFamily ? provisional : 0)
+                    }
+                    let highest = projectedCounts.max() ?? 0
+                    let winner = projectedCounts.firstIndex(of:highest) ?? activeFamily
+                    let currentLetter = BioGridEngine.letters[activeFamily]
+                    HStack(spacing:9) {
+                        Text(BioGridEngine.letters[winner])
+                            .bold().frame(width:28,height:28)
+                            .background(palette[winner],in:RoundedRectangle(cornerRadius:5))
+                            .foregroundStyle(.black)
+                        VStack(alignment:.leading,spacing:2) {
+                            Text("\(highest.formatted()) bacterias · familia dominante")
+                                .font(.subheadline.weight(.semibold))
+                            Text("+\(totalToday + provisional) nacidas hoy · familia \(currentLetter)")
+                                .font(.caption).foregroundStyle(.green)
+                        }
+                        Spacer(minLength:0)
+                    }
+                    HStack {
+                        Text(progress.running ? "Próxima bacteria \(currentLetter) +1" :
+                            "Cronómetro detenido · sin GPS reciente")
+                            .font(.caption)
+                        Spacer()
+                        Text(String(format:"%02d:%02d",
+                            progress.secondsRemaining/60,progress.secondsRemaining%60))
+                            .font(.system(.headline,design:.rounded).monospacedDigit())
+                    }
+                    ProgressView(value:progress.secondsAccumulated,total:300)
+                        .tint(palette[activeFamily])
+                    if provisional > 0 {
+                        Text("+\(provisional) nacimiento\(provisional == 1 ? "" : "s") pendiente\(provisional == 1 ? "" : "s") de confirmación GPS")
+                            .font(.caption2).foregroundStyle(.orange)
+                    } else {
+                        Text("El contador avanza en directo; el tiempo definitivo lo confirma el GPS.")
+                            .font(.caption2).foregroundStyle(.secondary)
+                    }
+                } else {
+                    Text("Se utiliza el seguimiento de Mi Mapa del Tiempo, sin activar un GPS adicional.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
-            } else {
-                Text("Activa el seguimiento GPS habitual y vuelve a BIOGRID. No se inicia otro GPS.")
-                    .font(.caption).foregroundStyle(.secondary)
             }
+            .padding(11)
+            .background(Color.blue.opacity(0.08),in:RoundedRectangle(cornerRadius:12))
         }
-        .padding(11)
-        .background(Color.blue.opacity(0.08),in:RoundedRectangle(cornerRadius:12))
     }
 
     private func controls(_ snapshot:BioGridSnapshot) -> some View {
@@ -460,135 +462,78 @@ struct BioGridView: View {
                     liveSection(snapshot)
                 } else {
                     HStack {
-                        Text("Consultando un día histórico")
+                        Text("Estado histórico: \(engine.historicalDate!.formatted(date:.abbreviated,time:.omitted))")
                             .font(.caption).foregroundStyle(.secondary)
                         Spacer()
                         Button("Volver a hoy") { engine.showPresent() }
                     }
                 }
-                activitySection(snapshot)
-                HStack {
-                    Button { showCharts = true } label: {
-                        Label("Gráficas y rivalidades",systemImage:"chart.xyaxis.line")
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.indigo)
-                    Spacer()
+                BioGridDailySummary(
+                    snapshot:snapshot,
+                    lastCycle:cycle(snapshot),
+                    birthsToday:snapshot.todayBirths.values.reduce(Int64(0)) {
+                        $0 + $1.reduce(0,+)
+                    } + (activeCell.flatMap { predictedBirths(cell:$0,snapshot:snapshot) } ?? 0))
+                HStack(spacing:7) {
                     Button { showEvents = true } label: {
-                        Label("Conquistas",systemImage:"flag")
+                        Label("Crónica",systemImage:"newspaper")
+                            .frame(maxWidth:.infinity)
                     }
-                    .buttonStyle(.bordered)
+                    Button { showRivalries = true } label: {
+                        Label("Rivalidades",systemImage:"flag.2.crossed")
+                            .frame(maxWidth:.infinity)
+                    }
+                    Button { showCharts = true } label: {
+                        Label("Evolución",systemImage:"chart.xyaxis.line")
+                            .frame(maxWidth:.infinity)
+                    }
+                }
+                .font(.caption.weight(.medium))
+                .buttonStyle(.bordered)
+                DisclosureGroup("Clasificación de las siete familias",
+                                isExpanded:$showClassification) {
+                    Picker("Orden",selection:$territoryRanking) {
+                        Text("Población").tag(false)
+                        Text("Territorio").tag(true)
+                    }.pickerStyle(.segmented)
+                    let rank = snapshot.ranking().sorted {
+                        territoryRanking ? ($0.territory == $1.territory
+                            ? $0.population > $1.population : $0.territory > $1.territory)
+                            : ($0.population == $1.population
+                            ? $0.territory > $1.territory : $0.population > $1.population)
+                    }
+                    ForEach(rank,id:\.family) { family in
+                        Button {
+                            highlighted = highlighted == family.family ? nil : family.family
+                        } label: {
+                            HStack(spacing:8) {
+                                Text(BioGridEngine.letters[family.family]).bold()
+                                    .frame(width:25,height:25)
+                                    .background(palette[family.family],
+                                                in:RoundedRectangle(cornerRadius:5))
+                                    .foregroundStyle(.black)
+                                Text("\(family.population.formatted()) bacterias")
+                                Spacer()
+                                Text("\(family.territory.formatted()) casillas")
+                                    .foregroundStyle(.secondary)
+                            }.font(.subheadline)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
                 HStack {
-                    Text("Opacidad").font(.caption)
+                    Text("Transparencia").font(.caption)
                     Slider(value:$opacity,in:0.3...1.0)
                     Text("\(Int(opacity*100)) %")
-                        .font(.caption.monospacedDigit()).frame(width:42)
+                        .font(.caption.monospacedDigit()).frame(width:40)
                 }
-                HStack {
-                    Text("Clasificación").font(.headline)
-                    Spacer()
-                    Button("Informe diario") { showReport = true }.font(.caption)
-                }
-                Picker("Orden",selection:$territoryRanking) {
-                    Text("Población").tag(false)
-                    Text("Territorio").tag(true)
-                }.pickerStyle(.segmented)
-                let rank = snapshot.ranking().sorted {
-                    territoryRanking ? ($0.territory == $1.territory
-                        ? $0.population > $1.population : $0.territory > $1.territory)
-                        : ($0.population == $1.population
-                        ? $0.territory > $1.territory : $0.population > $1.population)
-                }
-                ForEach(rank,id:\.family) { family in
-                    Button { highlighted = highlighted == family.family ? nil : family.family } label: {
-                        HStack {
-                            Text(BioGridEngine.letters[family.family]).bold()
-                                .frame(width:25,height:25)
-                                .background(palette[family.family],in:RoundedRectangle(cornerRadius:5))
-                                .foregroundStyle(.black)
-                            Text("\(family.population.formatted()) bacterias")
-                            Spacer()
-                            Text("\(family.territory.formatted()) casillas")
-                                .foregroundStyle(.secondary)
-                        }.font(.subheadline)
-                    }
-                    .buttonStyle(.plain)
-                    .opacity(highlighted == nil || highlighted == family.family ? 1 : 0.45)
-                }
-                Text("Simulación local, sin GPS adicional. Las cuadrículas nunca se agrupan.")
+                Button("Consultar informe completo") { showReport = true }
+                    .font(.caption)
+                Text("Simulación local · solo usa el GPS existente · cuadrículas independientes.")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(11)
         }
-        .frame(maxHeight:370)
-    }
-
-    private func activitySection(_ snapshot:BioGridSnapshot) -> some View {
-        let fronts = hotspots(snapshot)
-        let report = cycle(snapshot)
-        let events = cycleEvents(snapshot)
-        return VStack(alignment:.leading,spacing:8) {
-            HStack {
-                Label("Actividad territorial",systemImage:"bolt.heart.fill").font(.headline)
-                Spacer()
-                Text("\(fronts.count) frentes").font(.caption.bold()).foregroundStyle(.orange)
-            }
-            if let report {
-                HStack(spacing:8) {
-                    metric("Conquistas",value:report.conquests.reduce(0,+),icon:"flag.fill")
-                    metric("Bajas",value:report.deaths.reduce(0,+),icon:"cross.fill")
-                    metric("Colonizaciones",value:report.newCells.reduce(0,+),icon:"square.grid.2x2")
-                }
-                if !events.isEmpty {
-                    HStack {
-                        Text("Últimos cambios territoriales").font(.caption.weight(.semibold))
-                        Spacer()
-                        Button("Ver todos") { showEvents = true }.font(.caption2)
-                    }
-                    ForEach(Array(events.prefix(3))) { event in
-                        Button {
-                            jump(cell(from:event.cellKey))
-                        } label: {
-                            HStack {
-                                Image(systemName:event.kind == .conquest ? "flag.fill" :
-                                    event.kind == .recolonization ? "circle.dotted" : "circle.fill")
-                                    .foregroundStyle(palette[event.family])
-                                Text(event.kind == .conquest ? "Conquista" :
-                                    event.kind == .recolonization ? "Recolonización" : "Nueva colonia")
-                                Spacer()
-                                Text("\(BioGridEngine.letters[event.family]) · \(event.cellKey)")
-                                    .font(.caption.monospacedDigit())
-                                Image(systemName:"scope")
-                            }
-                        }.buttonStyle(.plain).font(.caption)
-                    }
-                }
-            }
-            Text("Frentes con rivalidades más equilibradas")
-                .font(.caption.weight(.semibold))
-            ForEach(fronts.prefix(3)) { front in
-                Button { jump(front.cell) } label: {
-                    HStack {
-                        Text(BioGridEngine.letters[front.leader])
-                            .bold().foregroundStyle(palette[front.leader])
-                        Text("\(front.leaderCount) contra \(front.opponentCount)")
-                            .font(.subheadline.monospacedDigit())
-                        Text(BioGridEngine.letters[front.opponent])
-                            .bold().foregroundStyle(palette[front.opponent])
-                        Spacer()
-                        Text("\(Int(front.closeness*100)) %")
-                            .foregroundStyle(.secondary)
-                        Image(systemName:"scope").foregroundStyle(.orange)
-                    }
-                }.buttonStyle(.plain)
-            }
-            if fronts.isEmpty {
-                Text("Todavía no hay frentes disputados.")
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-        }
-        .padding(11)
-        .background(Color.orange.opacity(0.08),in:RoundedRectangle(cornerRadius:12))
+        .frame(maxHeight:350)
     }
 
     private func metric(_ name:String,value:Int64,icon:String) -> some View {
@@ -605,6 +550,78 @@ struct BioGridView: View {
         return Cell(row:Int(values.first ?? "") ?? 0,
                     column:Int(values.last ?? "") ?? 0)
     }
+
+    private func readablePlace(_ key:String)->String {
+        let cell = self.cell(from:key)
+        return BioGridDailyInsights.location(cell,
+            zoneName:model.primaryZone(for:cell)?.name,
+            explicitName:model.data.names[key],
+            near:model.current?.coordinate)
+    }
+
+    private func eventPopulation(_ event:BioGridTerritoryEvent,
+                                 snapshot:BioGridSnapshot)->Int64 {
+        let history = snapshot.cellHistory[event.cellKey] ?? []
+        let counts = history.last(where: { $0.date <= event.date })?.counts
+            ?? snapshot.populations[event.cellKey] ?? Array(repeating:0,count:7)
+        return counts.indices.contains(event.family) ? counts[event.family] : 0
+    }
+
+    private func rivalriesSheet(_ snapshot:BioGridSnapshot)->some View {
+        let hotspots = hotspots(snapshot)
+        return NavigationStack {
+            List {
+                Section {
+                    Text("Cada frente es una cuadrícula con dos o más familias. Se muestran primero los enfrentamientos más igualados.")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                if hotspots.isEmpty {
+                    ContentUnavailableView("Sin rivalidades",systemImage:"flag.2.crossed",
+                        description:Text("Todavía no hay cuadrículas donde convivan varias familias."))
+                }
+                Section("\(hotspots.count) territorios disputados") {
+                    ForEach(hotspots.prefix(100)) { front in
+                        Button {
+                            showRivalries = false
+                            jump(front.cell)
+                        } label: {
+                            VStack(alignment:.leading,spacing:6) {
+                                HStack {
+                                    Text(readablePlace(front.cell.id))
+                                        .font(.subheadline.weight(.semibold))
+                                        .fixedSize(horizontal:false,vertical:true)
+                                    Spacer()
+                                    Image(systemName:"scope").foregroundStyle(.indigo)
+                                }
+                                HStack(spacing:7) {
+                                    Text(BioGridEngine.letters[front.leader])
+                                        .bold().foregroundStyle(palette[front.leader])
+                                    Text("\(front.leaderCount.formatted())")
+                                        .monospacedDigit()
+                                    Text("contra").foregroundStyle(.secondary)
+                                    Text(BioGridEngine.letters[front.opponent])
+                                        .bold().foregroundStyle(palette[front.opponent])
+                                    Text("\(front.opponentCount.formatted())")
+                                        .monospacedDigit()
+                                    Spacer()
+                                }.font(.subheadline)
+                                Text("Diferencia: \((front.leaderCount-front.opponentCount).formatted()) bacterias · sin resultado predeterminado")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }.padding(.vertical,3)
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+            .navigationTitle("Rivalidades")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement:.topBarTrailing) {
+                    Button("Cerrar") { showRivalries = false }
+                }
+            }
+        }
+    }
+
 }
 
 private struct BioGridCellSheet: View {
