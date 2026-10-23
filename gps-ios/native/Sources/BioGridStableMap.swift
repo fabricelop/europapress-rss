@@ -6,6 +6,10 @@ import MapKit
 struct BioGridStableMap: UIViewRepresentable {
     let populations: [String: [Int64]]
     let fingerprint: String
+    let todayBirths: [String: [Int64]]
+    let todayMode: Bool
+    let recentEvents: [String: String]
+    let currentPosition: CLLocationCoordinate2D?
     let palette: [Color]
     let opacity: Double
     let highlighted: Int?
@@ -53,6 +57,7 @@ struct BioGridStableMap: UIViewRepresentable {
         private var lastFingerprint = ""
         private var lastOpacity = -1.0
         private var lastHighlighted: Int?
+        private var locationMarker: BioGridUserMarker?
         private var polygons: [String: BioGridPolygon] = [:]
         private var labels: [String: BioGridMapLabel] = [:]
         private let names = ["L", "M", "X", "J", "V", "S", "D"]
@@ -100,6 +105,7 @@ struct BioGridStableMap: UIViewRepresentable {
                 || lastHighlighted != configuration.highlighted
             // El mapa gestiona su propia cámara y solo reconstruye las piezas
             // que salen o entran en la pantalla.
+            synchronizeLocation(map)
             if !force && !changedSource && !changedStyle { return }
             lastFingerprint = configuration.fingerprint
             lastOpacity = configuration.opacity
@@ -142,20 +148,25 @@ struct BioGridStableMap: UIViewRepresentable {
                 var points = Grid.polygon(cell)
                 let polygon = BioGridPolygon(coordinates: &points, count: points.count)
                 polygon.family = family
+                polygon.cellKey = key
                 polygons[key] = polygon
                 additions.append(polygon)
             }
             if !additions.isEmpty { map.addOverlays(additions, level: .aboveRoads) }
 
             let showText = region.span.latitudeDelta < 0.012
-            let labelKeys = showText ? desired : Set<String>()
+            let eventKeys = Set(configuration.recentEvents.keys)
+            let labelKeys = showText ? desired : desired.intersection(eventKeys)
             let staleLabels = labels.filter { !labelKeys.contains($0.key) }
             for (key, _) in staleLabels { labels.removeValue(forKey: key) }
             if !staleLabels.isEmpty { map.removeAnnotations(staleLabels.map { $0.value }) }
 
             var addedLabels: [MKAnnotation] = []
             for (key, cell, family, maximum, _) in candidates where showText {
-                let title = "\(names[family]) \(compact(maximum))"
+                let marker = configuration.recentEvents[key] ?? ""
+                let born = configuration.todayBirths[key]?.reduce(Int64(0),+) ?? 0
+                let increase = configuration.todayMode && born > 0 ? " (+\(compact(born)))" : ""
+                let title = showText ? "\(names[family]) \(compact(maximum))\(increase)\(marker)" : marker
                 if let label = labels[key] {
                     if label.display != title {
                         label.display = title
@@ -174,7 +185,7 @@ struct BioGridStableMap: UIViewRepresentable {
             }
             if !addedLabels.isEmpty { map.addAnnotations(addedLabels) }
 
-            if changedStyle {
+            if changedStyle || changedSource {
                 for poly in polygons.values {
                     if let renderer = map.renderer(for: poly) as? MKPolygonRenderer {
                         applyStyle(to: renderer, family: poly.family)
@@ -184,12 +195,36 @@ struct BioGridStableMap: UIViewRepresentable {
             }
         }
 
+        private func synchronizeLocation(_ map: MKMapView) {
+            guard let coordinate = configuration.currentPosition else {
+                if let marker = locationMarker {
+                    map.removeAnnotation(marker)
+                    locationMarker = nil
+                }
+                return
+            }
+            if let marker = locationMarker {
+                marker.coordinate = coordinate
+            } else {
+                let marker = BioGridUserMarker()
+                marker.coordinate = coordinate
+                locationMarker = marker
+                map.addAnnotation(marker)
+            }
+        }
+
         private func applyStyle(to renderer: MKPolygonRenderer, family: Int) {
             guard configuration.palette.indices.contains(family) else { return }
             let base = UIColor(configuration.palette[family])
-            let intensity = configuration.highlighted == nil ||
-                configuration.highlighted == family ? configuration.opacity : configuration.opacity * 0.16
-            renderer.fillColor = base.withAlphaComponent(intensity)
+            let isHighlighted = configuration.highlighted == nil ||
+                configuration.highlighted == family
+            let intensity = isHighlighted ? configuration.opacity : configuration.opacity * 0.16
+            // Hoy es un filtro de contraste: no oculta a ninguna colonia antigua.
+            let key = (renderer.polygon as? BioGridPolygon)?.cellKey ?? ""
+            let todayFactor = configuration.todayMode
+                ? (configuration.todayBirths[key]?.contains(where: { $0 > 0 }) == true ? 1.0 : 0.30)
+                : 1.0
+            renderer.fillColor = base.withAlphaComponent(intensity * todayFactor)
             renderer.strokeColor = UIColor.black.withAlphaComponent(0.28)
             renderer.lineWidth = 0.5
         }
@@ -204,12 +239,26 @@ struct BioGridStableMap: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            if annotation is BioGridUserMarker {
+                let reuseID = "biogrid-position"
+                let view = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
+                    ?? MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+                view.annotation = annotation
+                view.canShowCallout = false
+                view.isEnabled = false
+                view.frame = CGRect(x:0,y:0,width:21,height:21)
+                view.layer.cornerRadius = 10.5
+                view.layer.borderWidth = 3
+                view.layer.borderColor = UIColor.white.cgColor
+                view.backgroundColor = .systemBlue
+                return view
+            }
             guard let textAnnotation = annotation as? BioGridMapLabel else { return nil }
             let reuseID = "biogrid-label"
             let view = mapView.dequeueReusableAnnotationView(withIdentifier: reuseID)
                 ?? MKAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             view.annotation = annotation
-            view.frame = CGRect(x: 0, y: 0, width: 72, height: 16)
+            view.frame = CGRect(x: 0, y: 0, width: 106, height: 17)
             view.backgroundColor = .clear
             view.canShowCallout = false
             view.isEnabled = false
@@ -237,8 +286,11 @@ struct BioGridStableMap: UIViewRepresentable {
 
 private final class BioGridPolygon: MKPolygon {
     var family = 0
+    var cellKey = ""
 }
 
 private final class BioGridMapLabel: MKPointAnnotation {
     var display = ""
 }
+
+private final class BioGridUserMarker: MKPointAnnotation {}
