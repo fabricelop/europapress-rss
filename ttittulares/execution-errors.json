@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:03.797485Z",
-      "event_id": "4da79a83822c-r1",
-      "phase": "outbox",
-      "reason": "4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 4da79a83822c-r1: 4da79a83822c-r1.json: AttributeError: 'str' object has no attribute 'get'. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:03.797485Z",
       "event_id": "5d1e980f4304-r1",
       "phase": "outbox",
       "reason": "5d1e980f4304-r1.json: ValueError: text alternativo no coincide",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "bb02896ea619-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento bb02896ea619-r1: bb02896ea619-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-23T04:00:12.408410Z",
+      "event_id": "fa9a920ca40b-r1",
+      "phase": "outbox",
+      "reason": "fa9a920ca40b-r1.json: ValueError: el remate único debe empezar por 🌶️ ",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento fa9a920ca40b-r1: fa9a920ca40b-r1.json: ValueError: el remate único debe empezar por 🌶️ . Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
