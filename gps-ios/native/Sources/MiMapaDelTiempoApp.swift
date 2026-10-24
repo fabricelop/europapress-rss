@@ -719,6 +719,43 @@ struct SavedState: Codable {
         return createOrReuseSite(name:name,latitude:coordinate.latitude,
                                  longitude:coordinate.longitude,origin:"private")
     }
+    /// Save edits to a user-created site. Existing stay references keep the
+    /// same UUID, so all history instantly adopts its corrected name and pin.
+    @discardableResult
+    func updatePrivateSite(id:UUID,name:String,latitude:Double,longitude:Double) -> Bool {
+        guard storageIsHealthy else { return false }
+        let succeeded=SitePrivateManagement.update(id:id,name:name,latitude:latitude,
+                                         longitude:longitude,sites:&data.identifiedSites)
+        guard succeeded else { return false }
+        save(force:true)
+        objectWillChange.send()
+        return true
+    }
+
+    func privateSiteLinkedStayCount(_ id:UUID) -> Int {
+        SitePrivateManagement.linkedStays(id:id,assignments:data.siteStayAssignments,
+                                          parts:data.siteStayParts)
+    }
+
+    /// Remove ONLY the private-place identity and links to that identity.
+    /// Keep all GPS observations, intervals, grid cells, recorded minutes and
+    /// independently assigned sites for other sub-periods unchanged.
+    @discardableResult
+    func deletePrivateSite(_ id:UUID) -> Bool {
+        guard storageIsHealthy else { return false }
+        var sites=data.identifiedSites
+        var assignments=data.siteStayAssignments
+        var parts=data.siteStayParts
+        guard SitePrivateManagement.delete(id:id,sites:&sites,
+                   assignments:&assignments,parts:&parts) else { return false }
+        data.identifiedSites=sites
+        data.siteStayAssignments=assignments
+        data.siteStayParts=parts
+        save(force:true)
+        objectWillChange.send()
+        return true
+    }
+
     func siteNamed(_ id: UUID) -> IdentifiedSite? {
         data.identifiedSites.first { $0.id == id }
     }
@@ -2870,7 +2907,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.69 · datos guardados en este iPhone",
+                    Label("Versión 1.0.70 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
