@@ -33,7 +33,7 @@ final class SiteCrossGridPolicyTests: XCTestCase {
         let options=SiteCrossGridPolicy.candidates(for:c,sites:[park],
                                             assignments:past,parts:[])
         XCTAssertEqual(options.first?.siteID,park.id)
-        XCTAssertEqual(SiteCrossGridPolicy.safeAutomaticChoice(options),park.id)
+        XCTAssertNil(SiteCrossGridPolicy.safeAutomaticChoice(options))
     }
 
     func testCompetingPlacePreventsCrossSquareAuto() {
