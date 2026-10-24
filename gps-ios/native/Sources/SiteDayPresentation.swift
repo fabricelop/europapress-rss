@@ -5,7 +5,9 @@ import Foundation
 enum SiteCalendarDay {
     static func normalized(_ date: Date, calendar: Calendar = .current) -> Date {
         let start = calendar.startOfDay(for: date)
-        return calendar.date(byAdding: .hour, value: 12, to: start) ?? start
+        // Set 12:00 CIVIL time, not "12 elapsed hours since midnight".
+        // On autumn DST changeover, the latter becomes 11:00 local.
+        return calendar.date(bySettingHour: 12, minute: 0, second: 0, of: start) ?? start
     }
 
     static func addingDays(_ offset: Int, to date: Date,
