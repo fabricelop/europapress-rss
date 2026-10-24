@@ -16,7 +16,10 @@ struct TimeSiteCalendarView: View {
         DateInterval(start:selectedDay,end:selectedDay.addingTimeInterval(86400))
     }
     private var visible: [SiteGridStay] {
+        // From earliest at the top to latest at the bottom, regardless of
+        // how the full-history index is internally arranged.
         allStays.filter { $0.start < day.end && $0.end > day.start }
+               .sorted { $0.start == $1.start ? $0.end < $1.end : $0.start < $1.start }
     }
     private var firstDate: Date? { allStays.last?.start }
 
