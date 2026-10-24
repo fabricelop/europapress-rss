@@ -76,53 +76,121 @@ enum SitePOISearch {
         }
     }
 
+    /// Build server-side POI queries. The old implementation downloaded at
+    /// most 180 unfiltered nearby records and then filtered them locally.
+    /// Schools, offices and long-named places were often never in that page.
+    static func overpassQuery(center: CLLocationCoordinate2D,
+                              query: String?) -> String {
+        let typed=query?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
+        let matcher=strongPlaceTerm(in:typed)
+        let typedSearch = !typed.isEmpty
+        let radius = typedSearch ? (matcher == nil ? 2600 : 5000) : 350
+        let point="\(radius),\(center.latitude),\(center.longitude)"
+        let categories=["amenity","shop","office","leisure","tourism","craft"]
+        var clauses:[String]=[]
+        if let matcher {
+            for type in categories {
+                // Match the establishment NAME at Overpass, not after an
+                // arbitrary truncated list of unfiltered POIs.
+                clauses.append("nwr(around:\(point))[\"\(type)\"][\"name\"~\"\(matcher)\",i];")
+            }
+            // Some education and civic buildings have only a building tag.
+            clauses.append("nwr(around:\(point))[\"building\"~\"^(school|university|public|civic)$\"][\"name\"~\"\(matcher)\",i];")
+        } else if typedSearch {
+            let normalized=typed.folding(options:[.caseInsensitive,.diacriticInsensitive],
+                                          locale:Locale(identifier:"es_ES")).lowercased()
+            let schoolWords=["colegio","escuela","instituto","educacion","educación","universidad"]
+            let sportsWords=["polideportivo","gimnasio","deportivo","deportes"]
+            if schoolWords.contains(where:{ normalized.contains($0) }) {
+                clauses.append("nwr(around:\(point))[\"amenity\"~\"^(school|college|university|kindergarten)$\"][name];")
+                clauses.append("nwr(around:\(point))[\"building\"=\"school\"][name];")
+            } else if sportsWords.contains(where:{normalized.contains($0)}) {
+                clauses.append("nwr(around:\(point))[\"leisure\"~\"^(sports_centre|fitness_centre|stadium|pitch)$\"][name];")
+                clauses.append("nwr(around:\(point))[\"sport\"][name];")
+            } else {
+                let safe=escapedOverpassRegex(typed)
+                for type in categories {
+                    clauses.append("nwr(around:\(point))[\"\(type)\"][\"name\"~\"\(safe)\",i];")
+                }
+            }
+        } else {
+            for type in categories {
+                clauses.append("nwr(around:\(point))[\"\(type)\"][name];")
+            }
+        }
+        // Bound server output even for popular generic categories.
+        return "[out:json][timeout:12];(" + clauses.joined() + ");out center 260;"
+    }
+
+    /// Pick a meaningful, venue-identifying word instead of looking for an
+    /// exact complete phrase. This is generic language handling, not a
+    /// database of manually added business names.
+    static func strongPlaceTerm(in query:String) -> String? {
+        let generic:Set<String>=["el","la","los","las","de","del","en","un","una",
+          "colegio","escuela","instituto","centro","academia","universidad",
+          "polideportivo","deportivo","gimnasio","restaurante","cafeteria",
+          "cafetería","hotel","oficina","tienda","museo","parque","plaza",
+          "calle","avenida","paseo"]
+        let words=query.split(whereSeparator:{ $0.isWhitespace || $0.isPunctuation })
+                       .map(String.init)
+        guard let candidate=words.first(where: {
+            $0.count >= 3 &&
+            !generic.contains($0.folding(options:[.caseInsensitive,.diacriticInsensitive],
+                                            locale:Locale(identifier:"es_ES")).lowercased())
+        }) else { return nil }
+        return escapedOverpassRegex(candidate)
+    }
+
+    private static func escapedOverpassRegex(_ word:String) -> String {
+        // Overpass matches POSIX regex, but user text is not regex syntax.
+        // Accept unaccented Spanish searches for accented venue names.
+        var pattern=""
+        for char in word.folding(options:.diacriticInsensitive,
+                                 locale:Locale(identifier:"es_ES")).lowercased() {
+            switch char {
+            case "a": pattern += "[aáàäâ]"
+            case "e": pattern += "[eéèëê]"
+            case "i": pattern += "[iíìïî]"
+            case "o": pattern += "[oóòöô]"
+            case "u": pattern += "[uúùüû]"
+            case "n": pattern += "[nñ]"
+            case "c": pattern += "[cç]"
+            default:
+                pattern += NSRegularExpression.escapedPattern(for:String(char))
+            }
+        }
+        // Overpass QL string quoting requires escaped slash and quote.
+        return pattern.replacingOccurrences(of:"\\",with:"\\\\")
+                      .replacingOccurrences(of:"\"",with:"\\\"")
+    }
+
     static func openStreetMap(center: CLLocationCoordinate2D,
                               cell: Cell,
                               query: String?) async throws -> [SitePlaceResult] {
-        // Public Overpass is called ONLY on explicit opening/search of the
-        // chooser, never from the GPS pipeline. Small bounded request.
-        let radius=query == nil ? 340 : 650
-        let point="\(radius),\(center.latitude),\(center.longitude)"
-        let q="[out:json][timeout:7];(" +
-            "nwr(around:\(point))[name][amenity];" +
-            "nwr(around:\(point))[name][shop];" +
-            "nwr(around:\(point))[name][office];" +
-            "nwr(around:\(point))[name][leisure];" +
-            "nwr(around:\(point))[name][tourism];" +
-            "nwr(around:\(point))[name][building=public];" +
-            ");out center 180;"
+        let statement=overpassQuery(center:center,query:query)
         var request=URLRequest(url:URL(string:"https://overpass-api.de/api/interpreter")!)
         request.httpMethod="POST"
-        request.timeoutInterval=9
-        request.setValue("MiMapaDelTiempo/1.0.67 (iOS personal place search)",forHTTPHeaderField:"User-Agent")
+        request.timeoutInterval=15
+        request.setValue("MiMapaDelTiempo/1.0.69 (user-triggered OSM search)",forHTTPHeaderField:"User-Agent")
         request.setValue("application/x-www-form-urlencoded; charset=utf-8",
                          forHTTPHeaderField:"Content-Type")
         var body=URLComponents()
-        body.queryItems=[URLQueryItem(name:"data",value:q)]
+        body.queryItems=[URLQueryItem(name:"data",value:statement)]
         request.httpBody=body.percentEncodedQuery?.data(using:.utf8)
         let (data,response)=try await URLSession.shared.data(for:request)
         guard let status=(response as? HTTPURLResponse)?.statusCode,status == 200 else {
             throw SitePlacesError.unavailable
         }
         let result=try JSONDecoder().decode(OverpassPayload.self,from:data)
-        let normalized=query?.folding(options:[.caseInsensitive,.diacriticInsensitive],
-                                      locale:.current).trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
+        // The query was already filtered by tag / place name by Overpass.
+        // Keep titles exactly as stored there; never construct POI names.
         return result.elements.compactMap { item -> SitePlaceResult? in
-            guard let title=item.tags?["name"],!title.isEmpty else { return nil }
-            if !normalized.isEmpty {
-                let lowered=title.folding(options:[.caseInsensitive,.diacriticInsensitive],
-                                           locale:.current)
-                let terms=normalized.split(separator:" ").filter { $0.count > 1 }
-                if !lowered.contains(normalized) &&
-                   !(!terms.isEmpty && terms.allSatisfy({ lowered.contains($0) })) {
-                    return nil
-                }
-            }
-            guard let lat=item.lat ?? item.center?.lat,
+            guard let title=item.tags?["name"],!title.isEmpty,
+                  let lat=item.lat ?? item.center?.lat,
                   let lon=item.lon ?? item.center?.lon else { return nil }
             return makeResult(id:"osm:\(item.type):\(item.id)",name:title,
-                         latitude:lat,longitude:lon,source:.openStreetMap,
-                         center:center,cell:cell)
+                              latitude:lat,longitude:lon,source:.openStreetMap,
+                              center:center,cell:cell)
         }
     }
 
@@ -144,7 +212,8 @@ enum SitePOISearch {
             let request=MKLocalSearch.Request()
             request.naturalLanguageQuery=terms
             request.region=region
-            request.resultTypes=[.pointOfInterest,.address]
+            // Do not return cities/streets as if they were businesses.
+            request.resultTypes=[.pointOfInterest]
             search=MKLocalSearch(request:request)
         }
         let response=try await search.start()
@@ -180,6 +249,16 @@ enum SitePOISearch {
         let ordered=values.sorted { left,right in
             let la=queryScore(left.name,query:query)
             let lb=queryScore(right.name,query:query)
+            // A nearby school whose name contains "Osuna" must win over
+            // the distant locality "Osuna" despite a perfect exact match.
+            if query != nil && (la > 0 || lb > 0) {
+                let localA=left.distance <= 3500
+                let localB=right.distance <= 3500
+                if localA != localB && (la > 0 && lb > 0 ||
+                                       max(left.distance,right.distance) > 8000) {
+                    return localA
+                }
+            }
             if la != lb { return la > lb }
             if left.inGrid != right.inGrid { return left.inGrid }
             // Prefer established source when candidates are roughly in the
