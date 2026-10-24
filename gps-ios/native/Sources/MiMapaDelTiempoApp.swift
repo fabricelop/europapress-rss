@@ -126,6 +126,7 @@ struct SavedState: Codable {
     // Private place identities and per-stay choices; original GPS history unchanged.
     var identifiedSites: [IdentifiedSite] = []
     var siteStayAssignments: [SiteStayAssignment] = []
+    var siteStayParts: [SiteStayPart] = []
     var dismissedSiteStayKeys: [String] = []
     var powerEvents: [GPSPowerEvent] = []
     var shortIDs: [String:Int] = [:]
@@ -155,6 +156,7 @@ struct SavedState: Codable {
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
         identifiedSites = try box.decodeIfPresent([IdentifiedSite].self,forKey:.identifiedSites) ?? []
         siteStayAssignments = try box.decodeIfPresent([SiteStayAssignment].self,forKey:.siteStayAssignments) ?? []
+        siteStayParts = try box.decodeIfPresent([SiteStayPart].self,forKey:.siteStayParts) ?? []
         dismissedSiteStayKeys = try box.decodeIfPresent([String].self,forKey:.dismissedSiteStayKeys) ?? []
         powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
         shortIDs = try box.decodeIfPresent([String:Int].self,forKey:.shortIDs) ?? [:]
@@ -627,16 +629,60 @@ struct SavedState: Codable {
         return SiteStayPolicy.decision(cellID: cell.id, entered: start,
                     elapsed: elapsed, thresholdMinutes: siteThresholdMinutes,
                     sites: data.identifiedSites, assignments: data.siteStayAssignments,
-                    dismissedKeys: Set(data.dismissedSiteStayKeys))
+                    dismissedKeys: Set(data.dismissedSiteStayKeys),
+                    parts: data.siteStayParts)
+    }
+    func preferredSiteID(for cellID: String) -> UUID? {
+        SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,cellID:cellID,
+                    validIDs:Set(data.identifiedSites.map(\.id)),
+                    parts:data.siteStayParts).first
+    }
+    func siteParts(for stay: SiteGridStay) -> [SiteStayPart] {
+        let explicit = data.siteStayParts.filter { $0.stayID == stay.id }
+        if SiteStayHistory.valid(explicit,for:stay) { return explicit.sorted { $0.from < $1.from } }
+        let legacy = data.siteStayAssignments.first { $0.id == stay.id && $0.confirmed }
+        return [SiteStayHistory.defaultPart(for:stay,
+                suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))]
+    }
+    func writeSiteParts(_ parts: [SiteStayPart], stay: SiteGridStay) {
+        guard SiteStayHistory.valid(parts,for:stay), storageIsHealthy else { return }
+        data.siteStayParts.removeAll { $0.stayID == stay.id }
+        data.siteStayParts.append(contentsOf:parts)
+        // Historic edits replace this stay's older single-site assignment.
+        data.siteStayAssignments.removeAll { $0.id == stay.id }
+        save(force:true)
+        objectWillChange.send()
+    }
+    func createOrReuseSite(name:String, latitude:Double, longitude:Double,
+                           origin:String) -> IdentifiedSite? {
+        let title=name.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !title.isEmpty, latitude.isFinite, longitude.isFinite,
+              abs(latitude)<=90, abs(longitude)<=180,storageIsHealthy else { return nil }
+        let coordinate=CLLocation(latitude:latitude,longitude:longitude)
+        if let previous=data.identifiedSites.first(where: {
+            $0.name.compare(title,options:[.caseInsensitive,.diacriticInsensitive]) == .orderedSame &&
+            CLLocation(latitude:$0.latitude,longitude:$0.longitude)
+              .distance(from:coordinate)<60
+        }) { return previous }
+        let created=IdentifiedSite(name:title,latitude:latitude,longitude:longitude,origin:origin)
+        data.identifiedSites.append(created)
+        save(force:true)
+        return created
+    }
+    func createPrivateSite(name:String,cell:Cell) -> IdentifiedSite? {
+        let coordinate=Grid.center(cell)
+        return createOrReuseSite(name:name,latitude:coordinate.latitude,
+                                 longitude:coordinate.longitude,origin:"private")
     }
     func siteNamed(_ id: UUID) -> IdentifiedSite? {
         data.identifiedSites.first { $0.id == id }
     }
     func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int)] {
         let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
-                                                   cellID: cell.id)
+                                cellID: cell.id, parts: data.siteStayParts)
         let ordered = SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,
-                           cellID: cell.id, validIDs: Set(data.identifiedSites.map(\.id)))
+                           cellID: cell.id, validIDs: Set(data.identifiedSites.map(\.id)),
+                           parts: data.siteStayParts)
         let already = Set(ordered)
         let extras = data.identifiedSites.filter { site in
             guard !already.contains(site.id) else { return false }
@@ -661,7 +707,8 @@ struct SavedState: Codable {
               thresholdMinutes: siteThresholdMinutes,
               sites: data.identifiedSites,
               assignments: data.siteStayAssignments,
-              dismissedKeys: Set(data.dismissedSiteStayKeys)) else { return }
+              dismissedKeys: Set(data.dismissedSiteStayKeys),
+              parts: data.siteStayParts) else { return }
         let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
         data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
                        startedAt: start, siteID: chosen, confirmed: false))
