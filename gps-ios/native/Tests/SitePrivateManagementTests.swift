@@ -76,6 +76,28 @@ final class SitePrivateManagementTests:XCTestCase {
             latitude:40.4,longitude:-3.7,sites:&sites))
         XCTAssertEqual(sites,original)
     }
+    func testDeleteLegacyAssignmentCreatesUnidentifiedPartAndKeepsGPS() {
+        let site=privateSite()
+        let from=Date(timeIntervalSince1970:1000)
+        let to=Date(timeIntervalSince1970:1700)
+        let cell=Cell(row:100,column:500)
+        let start=SiteStayPolicy.visitKey(cellID:cell.id,entered:from)
+        let assigned=SiteStayAssignment(id:start,cellID:cell.id,
+                         startedAt:from,siteID:site.id,confirmed:true)
+        let intervals=[AssignedInterval(start:from,end:to,cell:cell,
+                                       quality:"observado",source:"gps")]
+        let newParts=SitePrivateManagement.unassignedPartsForDeletedLegacy(
+            id:site.id,assignments:[assigned],intervals:intervals,existingParts:[])
+        XCTAssertEqual(newParts.count,1)
+        XCTAssertEqual(newParts[0].kind,.unassigned)
+        XCTAssertEqual(newParts[0].from,from)
+        XCTAssertEqual(newParts[0].to,to)
+        XCTAssertNil(newParts[0].siteID)
+        XCTAssertEqual(intervals[0].seconds,700)
+        XCTAssertTrue(SiteStayHistory.valid(newParts,
+                  for:SiteStayHistory.extract(intervals)[0]))
+    }
+
     func testDeleteSamePrivateSiteTwiceIsSafe() {
         let site=privateSite()
         var sites=[site]
