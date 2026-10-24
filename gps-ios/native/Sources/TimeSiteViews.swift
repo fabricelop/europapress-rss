@@ -316,6 +316,18 @@ struct TimeMySitesView: View {
     @State private var totalsBySite:[UUID:SiteTimeTotal] = [:]
     @State private var computing = false
     @State private var generation = UUID()
+    @State private var editingSite: IdentifiedSite?
+    @State private var deletingSite: IdentifiedSite?
+    @State private var warningText: String?
+
+    private var privateSites:[IdentifiedSite] {
+        model.data.identifiedSites.filter { $0.origin == "private" }
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+    private var mapSites:[IdentifiedSite] {
+        model.data.identifiedSites.filter { $0.origin != "private" }
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
 
     var body: some View {
         List {
@@ -328,33 +340,114 @@ struct TimeMySitesView: View {
                 }
             }
             Section {
-                Text("Los sitios confirmados y propuestos se contabilizan por separado. Si divides una estancia, cada establecimiento suma solo los minutos de su tramo.")
+                Text("Puedes cambiar el nombre y la ubicación de tus sitios privados o eliminarlos. Las modificaciones se reflejan en todas las estancias que tengan asociado ese sitio.")
                     .font(.footnote).foregroundStyle(.secondary)
-                LabeledContent("Sitios identificados",value:"\(model.data.identifiedSites.count)")
-                LabeledContent("Estancias editadas",value:
-                    "\(Set(model.data.siteStayParts.map(\.stayID)).count)")
+                LabeledContent("Sitios creados por mí",value:"\(privateSites.count)")
+                LabeledContent("Sitios de mapas",value:"\(mapSites.count)")
                 if computing { ProgressView("Calculando tiempos históricos…") }
             }
-            Section("Mis sitios") {
-                ForEach(model.data.identifiedSites) { site in
-                    let total = totalsBySite[site.id] ?? SiteTimeTotal()
-                    VStack(alignment:.leading,spacing:5) {
-                        Label(site.name,systemImage:site.origin == "private" ? "house" : "mappin")
-                            .font(.headline)
-                        Text("\(total.verifiedVisits) estancias confirmadas · \(DurationFormat.full(total.verifiedSeconds))")
-                            .font(.caption).foregroundStyle(.teal)
-                        if total.suggestedVisits > 0 {
-                            Text("\(total.suggestedVisits) propuestas sin confirmar · \(DurationFormat.full(total.suggestedSeconds))")
-                                .font(.caption2).foregroundStyle(.secondary)
+            Section {
+                if privateSites.isEmpty {
+                    Text("Los lugares que crees manualmente aparecerán aquí con opciones para editarlos o eliminarlos.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                ForEach(privateSites) { site in
+                    HStack(alignment:.center,spacing:10) {
+                        siteSummary(site)
+                        Spacer(minLength:4)
+                        Menu {
+                            Button {
+                                editingSite = site
+                            } label: {
+                                Label("Editar nombre y ubicación",systemImage:"pencil")
+                            }
+                            Button(role:.destructive) {
+                                deletingSite = site
+                            } label: {
+                                Label("Eliminar sitio",systemImage:"trash")
+                            }
+                        } label: {
+                            Image(systemName:"ellipsis.circle")
+                                .font(.title3)
+                                .frame(minWidth:42,minHeight:44)
+                                .contentShape(Rectangle())
                         }
-                    }.padding(.vertical,3)
+                        .accessibilityLabel("Opciones de \(site.name)")
+                    }
+                    .swipeActions(edge:.trailing,allowsFullSwipe:false) {
+                        Button("Editar") { editingSite=site }.tint(.blue)
+                        Button("Eliminar",role:.destructive) { deletingSite=site }
+                    }
+                }
+            } header: {
+                Text("Sitios creados por mí")
+            } footer: {
+                Text("Eliminar un sitio no elimina las estancias ni sus minutos GPS: solo borra su identificación y deja esos tramos como «Sin identificar».")
+            }
+            if !mapSites.isEmpty {
+                Section("Sitios guardados desde mapas") {
+                    ForEach(mapSites) { site in
+                        siteSummary(site)
+                    }
                 }
             }
         }
         .navigationTitle("Mis Sitios")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item:$editingSite) { site in
+            NavigationStack {
+                TimePrivateSiteEditView(model:model,site:site)
+            }
+        }
+        .confirmationDialog(
+            deletingSite.map { "¿Eliminar «\($0.name)»?" } ?? "Eliminar sitio privado",
+            isPresented:Binding(
+                get: { deletingSite != nil },
+                set: { if !$0 { deletingSite=nil } }
+            ),
+            titleVisibility:.visible
+        ) {
+            Button("Eliminar sitio",role:.destructive) {
+                if let site=deletingSite {
+                    if !model.deletePrivateSite(site.id) {
+                        warningText="No se pudo eliminar el sitio. Los datos permanecen intactos."
+                    }
+                }
+                deletingSite=nil
+                rebuild()
+            }
+            Button("Cancelar",role:.cancel) { deletingSite=nil }
+        } message: {
+            if let site=deletingSite {
+                Text("Hay \(model.privateSiteLinkedStayCount(site.id)) estancias asociadas. Sus tramos quedarán sin identificar; las fechas, las cuadrículas y el tiempo seguirán guardados.")
+            }
+        }
+        .alert("No se pudo completar",isPresented:Binding(
+            get:{ warningText != nil },set:{ if !$0 { warningText=nil } }
+        )) {
+            Button("Aceptar",role:.cancel) { warningText=nil }
+        } message: {
+            Text(warningText ?? "")
+        }
         .onAppear { rebuild() }
         .onChange(of:model.data.siteStayParts.count) { _,_ in rebuild() }
+        .onChange(of:model.data.siteStayAssignments.count) { _,_ in rebuild() }
+        .onChange(of:model.data.identifiedSites.count) { _,_ in rebuild() }
+    }
+
+    @ViewBuilder private func siteSummary(_ site:IdentifiedSite) -> some View {
+        let total = totalsBySite[site.id] ?? SiteTimeTotal()
+        VStack(alignment:.leading,spacing:5) {
+            Label(site.name,systemImage:site.origin == "private" ? "house.fill" : "mappin")
+                .font(.subheadline.weight(.semibold))
+            Text("\(total.verifiedVisits) estancias confirmadas · \(DurationFormat.full(total.verifiedSeconds))")
+                .font(.caption).foregroundStyle(.teal)
+            if total.suggestedVisits > 0 {
+                Text("\(total.suggestedVisits) propuestas · \(DurationFormat.full(total.suggestedSeconds))")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical,5)
     }
 
     private func rebuild() {
@@ -371,6 +464,97 @@ struct TimeMySitesView: View {
                 guard generation==id else { return }
                 totalsBySite=statistics
                 computing=false
+            }
+        }
+    }
+}
+
+/// Editing a private site's name keeps its identity (UUID), so all linked
+/// historic stays adopt it without writing to GPS or changing durations.
+/// The map can be tapped to correct the site's saved pin.
+private struct TimePrivateSiteEditView: View {
+    @ObservedObject var model:TimeModel
+    let site:IdentifiedSite
+    @Environment(\.dismiss) private var dismiss
+    @State private var name:String
+    @State private var latitude:Double
+    @State private var longitude:Double
+    @State private var camera:MapCameraPosition
+    @State private var errorMessage:String?
+
+    init(model:TimeModel,site:IdentifiedSite) {
+        self.model=model
+        self.site=site
+        _name=State(initialValue:site.name)
+        _latitude=State(initialValue:site.latitude)
+        _longitude=State(initialValue:site.longitude)
+        _camera=State(initialValue:.region(MKCoordinateRegion(
+            center:CLLocationCoordinate2D(latitude:site.latitude,longitude:site.longitude),
+            latitudinalMeters:800,longitudinalMeters:800)))
+    }
+
+    var body: some View {
+        Form {
+            Section("Nombre del sitio") {
+                TextField("Nombre",text:$name)
+                    .textInputAutocapitalization(.words)
+                Text("El nombre corregido se mostrará en todas las estancias de este sitio.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Section("Ubicación del sitio") {
+                MapReader { proxy in
+                    Map(position:$camera) {
+                        Annotation("Ubicación guardada",coordinate:CLLocationCoordinate2D(
+                            latitude:latitude,longitude:longitude)) {
+                            Image(systemName:"mappin.circle.fill")
+                                .font(.system(size:28))
+                                .foregroundStyle(.teal)
+                        }
+                    }
+                    .mapStyle(.standard(elevation:.flat))
+                    .frame(height:220)
+                    .clipShape(RoundedRectangle(cornerRadius:12))
+                    .onTapGesture { point in
+                        if let coordinate=proxy.convert(point,from:.local) {
+                            latitude=coordinate.latitude
+                            longitude=coordinate.longitude
+                        }
+                    }
+                }
+                Text("Toca el mapa para mover el marcador. Esto solo corrige la ficha del sitio; nunca mueve las posiciones GPS ya registradas.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Button("Restaurar posición original") {
+                    latitude=site.latitude
+                    longitude=site.longitude
+                    camera = .region(MKCoordinateRegion(
+                        center:CLLocationCoordinate2D(latitude:site.latitude,longitude:site.longitude),
+                        latitudinalMeters:800,longitudinalMeters:800))
+                }
+                .font(.caption)
+            }
+            if let errorMessage {
+                Section {
+                    Text(errorMessage).foregroundStyle(.red).font(.caption)
+                }
+            }
+        }
+        .navigationTitle("Editar sitio privado")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement:.cancellationAction) {
+                Button("Cancelar") { dismiss() }
+            }
+            ToolbarItem(placement:.confirmationAction) {
+                Button("Guardar") {
+                    if model.updatePrivateSite(id:site.id,name:name,
+                                               latitude:latitude,longitude:longitude) {
+                        dismiss()
+                    } else {
+                        errorMessage="Comprueba el nombre y la ubicación. No se puede duplicar otro sitio del mismo nombre en esta zona."
+                    }
+                }
+                .fontWeight(.semibold)
+                .disabled(name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
             }
         }
     }
