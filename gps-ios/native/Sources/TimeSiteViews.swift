@@ -92,7 +92,8 @@ struct TimeSitePickerView: View {
             let known = model.siteOptions(for:cell)
             if !known.isEmpty {
                 Section("Tus sitios · más confirmados primero") {
-                    ForEach(known, id:\.site.id) { row in
+                    ForEach(known.indices, id: \.self) { index in
+                        let row = known[index]
                         Button {
                             model.confirmSite(row.site, cell:cell)
                             dismiss()
@@ -232,7 +233,7 @@ struct TimeMySitesView: View {
                         HStack {
                             Text("\(stays.count) estancias asignadas")
                             Spacer()
-                            Text("\(stays.filter(\.confirmed).count) confirmadas")
+                            Text("\(stays.filter { $0.confirmed }.count) confirmadas")
                         }
                         .font(.caption).foregroundStyle(.secondary)
                     }.padding(.vertical,3)
