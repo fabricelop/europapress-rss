@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-24T10:15:00+02:00",
-  "last_completed_at": "2026-10-24T10:16:30+02:00",
-  "updated_at": "2026-10-24T10:16:30+02:00",
+  "last_started_at": "2026-10-24T10:45:00+02:00",
+  "last_completed_at": "2026-10-24T10:46:00+02:00",
+  "updated_at": "2026-10-24T10:46:00+02:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261024T101500+0200",
+    "trigger_run_id": "tr-chat-20261024T104500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,12 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T101500+0200",
+    "run_id": "tr-chat-20261024T104500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T10:15:00+02:00",
-    "updated_at": "2026-10-24T10:16:30+02:00",
-    "finished_at": "2026-10-24T10:16:30+02:00",
+    "started_at": "2026-10-24T10:45:00+02:00",
+    "updated_at": "2026-10-24T10:46:00+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -59,14 +58,14 @@
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 0,
       "remates_selected": 0,
-      "remates_omitted": 2,
-      "recent_missing_closer_reviewed": 2,
-      "pending_cards_reviewed": 8,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 5,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0.",
+    "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 5 fichas recientes revisadas y cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,76 +78,70 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T10:15:00+02:00",
+        "at": "2026-10-24T10:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones, Top 10 y fichas recientes antes del cierre."
       },
       {
-        "at": "2026-10-24T10:15:25+02:00",
+        "at": "2026-10-24T10:45:15+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending y radar reciente."
+        "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending, Top 10 y fichas recientes."
       },
       {
-        "at": "2026-10-24T10:15:45+02:00",
+        "at": "2026-10-24T10:45:30+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 10:10."
+        "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 10:31."
       },
       {
-        "at": "2026-10-24T10:15:58+02:00",
+        "at": "2026-10-24T10:45:38+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 revisado: cobertura editorial vigente en los 10 puestos y ninguna explicación activa supera 48 h."
+        "message": "Top 10 revisado: cubierto por fichas/grupos vigentes o acciones terminales del panel; ninguna explicación activa supera 48 h."
       },
       {
-        "at": "2026-10-24T10:16:08+02:00",
+        "at": "2026-10-24T10:45:44+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 8 fichas explicadas recientes; saneamiento visual solicitado al inicio."
+        "message": "Revisando Pendientes · 5 fichas explicadas recientes; saneamiento visual solicitado al inicio."
       },
       {
-        "at": "2026-10-24T10:16:16+02:00",
+        "at": "2026-10-24T10:45:49+02:00",
         "phase": "verifying",
         "trend_id": "413c73f54712",
         "title": "#DeViernes",
-        "message": "Remate vacío revisado; se conserva sin chiste por sensibilidad editorial."
+        "message": "Remate vacío revisado en #DeViernes; se conserva sin chiste por sensibilidad del contenido."
       },
       {
-        "at": "2026-10-24T10:16:21+02:00",
-        "phase": "verifying",
-        "trend_id": "571192c0381d",
-        "title": "#AgropopularDana2026",
-        "message": "Remate vacío revisado; se conserva factual por contexto de daños de la DANA."
-      },
-      {
-        "at": "2026-10-24T10:16:25+02:00",
+        "at": "2026-10-24T10:45:55+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0."
       },
       {
-        "at": "2026-10-24T10:16:30+02:00",
+        "at": "2026-10-24T10:46:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0."
+        "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 5 fichas recientes revisadas y cola final 0."
       }
     ],
     "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [],
+    "finished_at": "2026-10-24T10:46:00+02:00"
   },
-  "run_id": "tr-chat-20261024T101500+0200",
+  "run_id": "tr-chat-20261024T104500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -171,76 +164,69 @@
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 0,
     "remates_selected": 0,
-    "remates_omitted": 2,
-    "recent_missing_closer_reviewed": 2,
-    "pending_cards_reviewed": 8,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 5,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-24T10:15:00+02:00",
+      "at": "2026-10-24T10:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones, Top 10 y fichas recientes antes del cierre."
     },
     {
-      "at": "2026-10-24T10:15:25+02:00",
+      "at": "2026-10-24T10:45:15+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending y radar reciente."
+      "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending, Top 10 y fichas recientes."
     },
     {
-      "at": "2026-10-24T10:15:45+02:00",
+      "at": "2026-10-24T10:45:30+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 10:10."
+      "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 10:31."
     },
     {
-      "at": "2026-10-24T10:15:58+02:00",
+      "at": "2026-10-24T10:45:38+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 revisado: cobertura editorial vigente en los 10 puestos y ninguna explicación activa supera 48 h."
+      "message": "Top 10 revisado: cubierto por fichas/grupos vigentes o acciones terminales del panel; ninguna explicación activa supera 48 h."
     },
     {
-      "at": "2026-10-24T10:16:08+02:00",
+      "at": "2026-10-24T10:45:44+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 8 fichas explicadas recientes; saneamiento visual solicitado al inicio."
+      "message": "Revisando Pendientes · 5 fichas explicadas recientes; saneamiento visual solicitado al inicio."
     },
     {
-      "at": "2026-10-24T10:16:16+02:00",
+      "at": "2026-10-24T10:45:49+02:00",
       "phase": "verifying",
       "trend_id": "413c73f54712",
       "title": "#DeViernes",
-      "message": "Remate vacío revisado; se conserva sin chiste por sensibilidad editorial."
+      "message": "Remate vacío revisado en #DeViernes; se conserva sin chiste por sensibilidad del contenido."
     },
     {
-      "at": "2026-10-24T10:16:21+02:00",
-      "phase": "verifying",
-      "trend_id": "571192c0381d",
-      "title": "#AgropopularDana2026",
-      "message": "Remate vacío revisado; se conserva factual por contexto de daños de la DANA."
-    },
-    {
-      "at": "2026-10-24T10:16:25+02:00",
+      "at": "2026-10-24T10:45:55+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0."
     },
     {
-      "at": "2026-10-24T10:16:30+02:00",
+      "at": "2026-10-24T10:46:00+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0."
+      "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 5 fichas recientes revisadas y cola final 0."
     }
   ],
   "partial": false,
@@ -249,10 +235,10 @@
     "reason": "trends/recent.json estaba fresco durante la ejecución."
   },
   "radar": {
-    "captured_at": "2026-10-24T10:10:49+02:00",
+    "captured_at": "2026-10-24T10:31:01+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261024T094500+0200",
+  "previous_run_id": "tr-chat-20261024T101500+0200",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
