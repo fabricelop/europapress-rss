@@ -94,6 +94,17 @@ struct VisitTerritoriesView: View {
         .navigationTitle("Territorios")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            // El historial puede corregirse sin cambiar el número de intervalos.
+            // Permite reconstruir los territorios manualmente en ese caso.
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    refresh()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .disabled(loading)
+                .accessibilityLabel("Actualizar territorios")
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showHelp = true
