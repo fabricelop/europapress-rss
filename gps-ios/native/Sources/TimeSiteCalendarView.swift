@@ -524,6 +524,7 @@ struct TimeSiteStayEditor: View {
             }
         }
         .onAppear { parts=model.siteParts(for:stay) }
+        .scrollDismissesKeyboard(.interactively)
     }
 
     private func assignAssociatedSite(_ site:IdentifiedSite) {
