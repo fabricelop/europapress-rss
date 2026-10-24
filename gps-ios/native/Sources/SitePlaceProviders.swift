@@ -60,7 +60,7 @@ enum SitePOISearch {
         ]
         if !text.isEmpty { components.queryItems?.append(URLQueryItem(name:"query",value:text)) }
         var request=URLRequest(url:components.url!)
-        request.timeoutInterval=12
+        request.timeoutInterval=9
         request.setValue("Bearer \(serviceKey)",forHTTPHeaderField:"Authorization")
         request.setValue("2025-06-17",forHTTPHeaderField:"X-Places-Api-Version")
         request.setValue("application/json",forHTTPHeaderField:"Accept")
@@ -81,9 +81,9 @@ enum SitePOISearch {
                               query: String?) async throws -> [SitePlaceResult] {
         // Public Overpass is called ONLY on explicit opening/search of the
         // chooser, never from the GPS pipeline. Small bounded request.
-        let radius=query == nil ? 420 : 850
+        let radius=query == nil ? 340 : 650
         let point="\(radius),\(center.latitude),\(center.longitude)"
-        let q="[out:json][timeout:12];(" +
+        let q="[out:json][timeout:7];(" +
             "nwr(around:\(point))[name][amenity];" +
             "nwr(around:\(point))[name][shop];" +
             "nwr(around:\(point))[name][office];" +
@@ -93,8 +93,8 @@ enum SitePOISearch {
             ");out center 180;"
         var request=URLRequest(url:URL(string:"https://overpass-api.de/api/interpreter")!)
         request.httpMethod="POST"
-        request.timeoutInterval=18
-        request.setValue("MiMapaDelTiempo/1.0.63 (iOS personal place search)",forHTTPHeaderField:"User-Agent")
+        request.timeoutInterval=9
+        request.setValue("MiMapaDelTiempo/1.0.66 (iOS personal place search)",forHTTPHeaderField:"User-Agent")
         request.setValue("application/x-www-form-urlencoded; charset=utf-8",
                          forHTTPHeaderField:"Content-Type")
         var body=URLComponents()
