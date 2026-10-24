@@ -2,146 +2,161 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-24T05:12:24.377126+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-24T09:33:17.894548+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "e76acae2d964",
+          "title": "Maldini y el Clásico: \"Veo bastante favorito al Barcelona y el Real Madrid solo puede ganar si es co",
+          "seconds": 1564,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "017829b639b3",
+          "title": "Detenido por violar y retener a una mujer a la que ofreció trabajo limpiando su vivienda en Palma",
+          "seconds": 464,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 674292,
+          "seconds": 689945,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "687d910c336178c05ee9442ec20055aa13b9f166ce491dd671b3f75bfc7d551f",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-10-24T05:12:24.377126+00:00",
+      "checked_at": "2026-10-24T09:33:17.894548+00:00",
       "issue_count": 17,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "42180803f78d",
           "title": "Milei",
-          "seconds": 5244,
+          "seconds": 20897,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "manual-815e68ae6b772eb7389de65c53c19d67",
           "title": "Broncano",
-          "seconds": 5244,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "f85562cd249a",
-          "title": "Arkano",
-          "seconds": 85274,
+          "seconds": 20897,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "42355ce8b20d",
           "title": "Feijóo",
-          "seconds": 63666,
+          "seconds": 79319,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "74a31fe68bb7",
           "title": "IRPF",
-          "seconds": 63666,
+          "seconds": 79319,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "3653323c16ba",
           "title": "Alavés",
-          "seconds": 27084,
+          "seconds": 42737,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "1a5eed26f2e0",
           "title": "#LaVozAudiciones",
-          "seconds": 19882,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4674513543ed",
-          "title": "Jordi",
-          "seconds": 19275,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "73f517ae52f9",
-          "title": "Funes",
-          "seconds": 19275,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "33a26621a5a0",
-          "title": "Mahón",
-          "seconds": 19275,
+          "seconds": 35535,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "4c937a96fa19",
           "title": "Escribá",
-          "seconds": 19275,
+          "seconds": 34928,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "19b8e054e055",
           "title": "Adrián Niño",
-          "seconds": 19275,
+          "seconds": 34928,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "413c73f54712",
           "title": "#DeViernes",
-          "seconds": 16286,
+          "seconds": 31939,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "12e9cc81373d",
           "title": "Jorge Martín",
-          "seconds": 788,
+          "seconds": 16441,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
-          "kind": "missing_delivery",
+          "kind": "editorial_overdue",
           "id": "f58e4fd0095c",
           "title": "#AustralianGP",
-          "seconds": 788,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "seconds": 16441,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ea998e8ec0b7",
+          "title": "Marc Márquez",
+          "seconds": 16441,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "be9528cda13e",
+          "title": "Pego",
+          "seconds": 6629,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "88c3cf364123",
+          "title": "Marc",
+          "seconds": 6629,
+          "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "ea998e8ec0b7",
-          "title": "Marc Márquez",
-          "seconds": 788,
+          "id": "772cda27031c",
+          "title": "#FelizSábado",
+          "seconds": 6629,
           "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "6311e2faf08c",
+          "title": "Martín",
+          "seconds": 1912,
+          "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 674291,
+          "seconds": 689945,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -150,16 +165,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "73ad7a3a5cdf63b2c39aa032e68591ce89e1a8ec3f504f8acd816009533c281c",
+      "open_signature": "64d67c992d7c9b255222d820fcb773d2ce63895ef14806379de75e973a623ac1",
       "repair_via_workflow_run": false,
-      "escalation_required": 13
+      "escalation_required": 16
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-23T10:23:45.122775+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-24T05:12:24.377126+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-24T05:12:24.377126+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-24T05:12:24.377126+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-24T09:33:17.894548+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-24T09:33:17.894548+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-24T09:33:17.894548+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-24T09:33:17.894548+00:00"
   },
-  "checked_at": "2026-10-24T05:12:24.377126+00:00"
+  "checked_at": "2026-10-24T09:33:17.894548+00:00"
 }
