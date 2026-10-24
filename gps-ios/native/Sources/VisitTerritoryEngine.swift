@@ -299,11 +299,16 @@ enum VisitTerritoryEngine {
                 ? .nucleus : .periphery
         }
 
-        // Casillas visitadas una vez no fusionan dos países. Una sola
-        // visita puede producir periferia, nunca un corredor de fusión.
+        // La periferia de una sola visita solo puede tocar núcleos activos
+        // (>= 2 visitas), nunca otra periferia añadida durante este bucle.
+        // Sin esta instantánea, el orden de los IDs propagaba países por
+        // cadenas arbitrariamente largas de cuadrículas visitadas una vez.
+        // También podía convertir en disputada una casilla que solo tocaba
+        // directamente al segundo país.
+        let activeOwnership = ownership
         for key in valid.keys.sorted() where ownership[key] == nil {
             guard let cell = TimeAnalytics.cell(key) else { continue }
-            let touching = Set(neighbors(cell).compactMap { ownership[$0.id] })
+            let touching = Set(neighbors(cell).compactMap { activeOwnership[$0.id] })
             if touching.count == 1, let only = touching.first {
                 ownership[key] = only
                 components[only, default: []].append(key)
