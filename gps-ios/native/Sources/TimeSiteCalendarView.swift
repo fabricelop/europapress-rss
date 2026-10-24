@@ -352,6 +352,7 @@ struct TimeSiteStayEditor: View {
     let stay: SiteGridStay
     @State private var parts: [SiteStayPart]
     @State private var choosingPart: UUID?
+    @State private var selectedAssociatedSite: IdentifiedSite?
     @State private var splittingPart: UUID?
     @State private var splitMoment: Date
 
@@ -374,6 +375,50 @@ struct TimeSiteStayEditor: View {
                 Text("Puedes identificar varios lugares durante una misma estancia. Las divisiones son manuales y nunca duplican tiempo.")
                     .font(.caption).foregroundStyle(.secondary)
             } header: { Text("Estancia continua") }
+
+            Section("Sitios asociados a esta cuadrícula") {
+                let associated = model.siteOptions(for:stay.cell)
+                if associated.isEmpty {
+                    Text("Todavía no has asociado ningún sitio. Usa «Elegir / cambiar» para buscarlo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                } else {
+                    Text("Toca un lugar para asignarlo directamente a esta estancia. Si la dividiste, podrás elegir el tramo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    ForEach(associated.indices,id:\.self) { index in
+                        let row=associated[index]
+                        Button {
+                            assignAssociatedSite(row.site)
+                        } label: {
+                            HStack(spacing:10) {
+                                Image(systemName: row.site.origin == "private" ? "house" : "mappin.circle")
+                                    .foregroundStyle(.teal)
+                                    .frame(width:20)
+                                VStack(alignment:.leading,spacing:3) {
+                                    Text(row.site.name)
+                                        .font(.subheadline.weight(.medium))
+                                        .foregroundStyle(.primary)
+                                    Text(row.confirmations > 0 ?
+                                         "\(row.confirmations) confirmaciones aquí" :
+                                         row.fromOtherSquares > 0 ?
+                                         "Identificado en otra cuadrícula" :
+                                         "Sitio guardado")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer(minLength:4)
+                                Text("Usar")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.teal)
+                                Image(systemName:"checkmark.circle")
+                                    .foregroundStyle(.teal)
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("site-associated-select-\(index)")
+                    }
+                }
+            }
 
             Section("¿Dónde estaba?") {
                 TimeSiteStayLocationMap(model:model,stay:stay)
@@ -447,21 +492,23 @@ struct TimeSiteStayEditor: View {
                     .padding(.vertical,7)
                 }
             }
-            Section {
-                Text("Las sugerencias para nuevas visitas se ordenan por el número de estancias en que hayas confirmado cada sitio. Las asignaciones automáticas no suman votos.")
-                    .font(.caption).foregroundStyle(.secondary)
-                let associated = model.siteOptions(for:stay.cell)
-                ForEach(associated.indices,id:\.self) { index in
-                    let row=associated[index]
-                    HStack {
-                        Label(row.site.name,systemImage:row.site.origin == "private" ? "house" : "mappin")
-                        Spacer()
-                        Text("\(row.confirmations)").monospacedDigit()
-                            .foregroundStyle(.secondary)
+
+        }
+        .confirmationDialog("Seleccionar tramo de la estancia",
+            isPresented: Binding(get: { selectedAssociatedSite != nil },
+                                 set: { if !$0 { selectedAssociatedSite = nil } }),
+            titleVisibility: .visible) {
+            if let site=selectedAssociatedSite {
+                ForEach(parts.sorted { $0.from < $1.from }) { part in
+                    Button("\(part.from.formatted(date:.omitted,time:.shortened)) – \(part.to.formatted(date:.omitted,time:.shortened))") {
+                        replace(part,kind:.place,siteID:site.id)
+                        selectedAssociatedSite=nil
                     }
-                    .font(.caption)
                 }
-            } header: { Text("Sitios asociados a esta cuadrícula") }
+            }
+            Button("Cancelar",role:.cancel) { selectedAssociatedSite=nil }
+        } message: {
+            Text("Esta estancia está dividida. Elige qué tramo corresponde al sitio.")
         }
         .navigationTitle("Detalle de estancia")
         .navigationBarTitleDisplayMode(.inline)
@@ -477,6 +524,15 @@ struct TimeSiteStayEditor: View {
             }
         }
         .onAppear { parts=model.siteParts(for:stay) }
+    }
+
+    private func assignAssociatedSite(_ site:IdentifiedSite) {
+        let ordered=parts.sorted { $0.from < $1.from }
+        if ordered.count == 1, let part=ordered.first {
+            replace(part,kind:.place,siteID:site.id)
+        } else {
+            selectedAssociatedSite=site
+        }
     }
 
     private func label(for part:SiteStayPart) -> String {
