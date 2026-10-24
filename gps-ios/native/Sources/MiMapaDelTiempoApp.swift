@@ -715,9 +715,24 @@ struct SavedState: Codable {
         return created
     }
     func createPrivateSite(name:String,cell:Cell) -> IdentifiedSite? {
+        guard storageIsHealthy else { return nil }
+        let title=name.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !title.isEmpty else { return nil }
         let coordinate=Grid.center(cell)
-        return createOrReuseSite(name:name,latitude:coordinate.latitude,
-                                 longitude:coordinate.longitude,origin:"private")
+        let position=CLLocation(latitude:coordinate.latitude,longitude:coordinate.longitude)
+        if let saved=data.identifiedSites.first(where:{
+            $0.origin == "private" &&
+            $0.name.compare(title,options:[.caseInsensitive,.diacriticInsensitive]) == .orderedSame &&
+            CLLocation(latitude:$0.latitude,longitude:$0.longitude)
+                .distance(from:position) < 60
+        }) { return saved }
+        // Do not re-use a map-provider record as a "private" place:
+        // the user's own place must remain editable and removable.
+        let site=IdentifiedSite(name:title,latitude:coordinate.latitude,
+                                longitude:coordinate.longitude,origin:"private")
+        data.identifiedSites.append(site)
+        save(force:true)
+        return site
     }
     /// Save edits to a user-created site. Existing stay references keep the
     /// same UUID, so all history instantly adopts its corrected name and pin.
@@ -746,8 +761,17 @@ struct SavedState: Codable {
         var sites=data.identifiedSites
         var assignments=data.siteStayAssignments
         var parts=data.siteStayParts
+        guard sites.contains(where:{ $0.id == id && $0.origin == "private" }) else {
+            return false
+        }
+        // Only affected legacy stays get explicit "Sin identificar".
+        // Existing edited multi-site splits are preserved as-is.
+        let unassigned=SitePrivateManagement.unassignedPartsForDeletedLegacy(
+            id:id,assignments:assignments,intervals:data.intervals,
+            existingParts:parts)
         guard SitePrivateManagement.delete(id:id,sites:&sites,
                    assignments:&assignments,parts:&parts) else { return false }
+        parts.append(contentsOf:unassigned)
         data.identifiedSites=sites
         data.siteStayAssignments=assignments
         data.siteStayParts=parts
