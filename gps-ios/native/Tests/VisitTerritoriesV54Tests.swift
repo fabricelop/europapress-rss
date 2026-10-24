@@ -100,6 +100,37 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         XCTAssertEqual(model.totalVisits, 29)
     }
 
+    func testDisputedBorderCountriesAlwaysHaveDifferentColors() {
+        // A - disputa de una visita - B: la pertenencia sigue separada,
+        // pero nunca deben compartir el mismo color en el mapa político.
+        let snapshot = VisitTerritoryEngine.build(counts:
+            [a.id: 20, b.id: 1, c.id: 8])
+        XCTAssertEqual(snapshot.disputedCount, 1)
+        XCTAssertEqual(snapshot.territories.count, 2)
+        XCTAssertNotEqual(snapshot.region(a.id)?.colorIndex,
+                          snapshot.region(c.id)?.colorIndex)
+    }
+
+    func testFourCountriesAroundSharedDisputeUseDifferentColors() {
+        // Una cuadrícula visitada una vez puede tocar a cuatro países
+        // independientes: todos son vecinos visuales en la frontera.
+        let directions = (0..<4).map {
+            VisitTerritoryEngine.neighbor(a, direction: $0)
+        }
+        var visits = [a.id: 1]
+        for (index, cell) in directions.enumerated() {
+            visits[cell.id] = 7 + index
+        }
+        let first = VisitTerritoryEngine.build(counts: visits)
+        let second = VisitTerritoryEngine.build(counts: visits)
+        XCTAssertEqual(first.territories.count, 4)
+        XCTAssertEqual(first.disputedCount, 1)
+        XCTAssertEqual(Set(first.territories.map(\\.colorIndex)).count, 4)
+        XCTAssertEqual(first.territories.map(\\.colorIndex),
+                       second.territories.map(\\.colorIndex))
+        XCTAssertEqual(first.totalVisits, visits.values.reduce(0,+))
+    }
+
     func testSecondVisitOnBridgeMergesBothCountries() {
         let before = VisitTerritoryEngine.build(counts:
             [a.id: 20, b.id: 1, c.id: 8])
