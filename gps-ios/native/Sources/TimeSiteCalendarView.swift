@@ -12,16 +12,24 @@ struct TimeSiteCalendarView: View {
     @State private var generation = UUID()
 
     private var day: DateInterval {
-        Calendar.current.dateInterval(of:.day,for:selectedDay) ??
-        DateInterval(start:selectedDay,end:selectedDay.addingTimeInterval(86400))
+        SiteCalendarDay.interval(for: selectedDay)
     }
     private var visible: [SiteGridStay] {
-        // From earliest at the top to latest at the bottom, regardless of
-        // how the full-history index is internally arranged.
         allStays.filter { $0.start < day.end && $0.end > day.start }
-               .sorted { $0.start == $1.start ? $0.end < $1.end : $0.start < $1.start }
+                .sorted { $0.start < $1.start }
+    }
+    private var report: SiteDayReport {
+        SiteDayPresentation.build(visible.map {
+            SiteDaySource(stay:$0,parts:model.siteParts(for:$0))
+        },on:selectedDay)
     }
     private var firstDate: Date? { allStays.last?.start }
+    @State private var expandedGroups: Set<String> = []
+
+    private func changeDay(_ delta: Int) {
+        selectedDay = SiteCalendarDay.addingDays(delta, to: selectedDay)
+        expandedGroups.removeAll()
+    }
 
     var body: some View {
         List {
@@ -29,13 +37,13 @@ struct TimeSiteCalendarView: View {
                 VStack(spacing: 10) {
                     HStack {
                         Button {
-                            selectedDay = Calendar.current.date(byAdding:.day,value:-1,to:selectedDay) ?? selectedDay
+                            changeDay(-1)
                         } label: { Label("Anterior",systemImage:"chevron.left") }
                         Spacer()
-                        Button("Hoy") { selectedDay = Date() }
+                        Button("Hoy") { selectedDay = SiteCalendarDay.normalized(.now) }
                         Spacer()
                         Button {
-                            selectedDay = Calendar.current.date(byAdding:.day,value:1,to:selectedDay) ?? selectedDay
+                            changeDay(1)
                         } label: { Label("Siguiente",systemImage:"chevron.right") }
                     }
                     .font(.caption)
@@ -52,7 +60,7 @@ struct TimeSiteCalendarView: View {
                         }
                         Spacer()
                         if let firstDate {
-                            Button("Ir al principio") { selectedDay = firstDate }
+                            Button("Ir al principio") { selectedDay = SiteCalendarDay.normalized(firstDate) }
                         }
                     }
                     .font(.caption)
@@ -62,6 +70,59 @@ struct TimeSiteCalendarView: View {
             } footer: {
                 Text("Se muestran todas las estancias continuas con más de cinco minutos GPS confirmados en una sola cuadrícula. No se incluye el tiempo sin mediciones.")
             }
+            if !preparing && !visible.isEmpty {
+                Section("Resumen del día") {
+                    VStack(alignment:.leading,spacing:7) {
+                        HStack {
+                            Text("\(Int((report.reviewedFraction*100).rounded())) % revisado")
+                                .font(.headline)
+                            Spacer()
+                            Text(report.isFullyReviewed ? "Todo clasificado" : "Pendiente de revisar")
+                                .font(.caption)
+                                .foregroundStyle(report.isFullyReviewed ? .teal : .secondary)
+                        }
+                        ProgressView(value:report.reviewedFraction)
+                            .tint(.teal)
+                        LabeledContent("Tiempo confirmado en sitios",
+                                       value:DurationFormat.full(report.confirmedGPS))
+                        LabeledContent("De paso",
+                                       value:DurationFormat.full(report.passingGPS))
+                        if report.suggestedGPS > 0 {
+                            LabeledContent("Solo propuesto",
+                                           value:DurationFormat.full(report.suggestedGPS))
+                        }
+                        if report.unidentifiedGPS > 0 {
+                            LabeledContent("Sin identificar",
+                                           value:DurationFormat.full(report.unidentifiedGPS))
+                        }
+                        LabeledContent("Tiempo GPS registrado",
+                                       value:DurationFormat.full(report.totalGPS))
+                    }
+                    .font(.caption)
+                }
+                if !report.siteTotals.isEmpty {
+                    Section("Tiempo por lugar") {
+                        ForEach(report.siteTotals) { value in
+                            if let site=model.siteNamed(value.id) {
+                                VStack(alignment:.leading,spacing:3) {
+                                    Text(site.name).font(.subheadline.weight(.medium))
+                                    HStack {
+                                        if value.confirmedSeconds > 0 {
+                                            Text(DurationFormat.full(value.confirmedSeconds))
+                                                .foregroundStyle(.teal)
+                                        }
+                                        if value.proposedSeconds > 0 {
+                                            Text("Propuesto: \(DurationFormat.full(value.proposedSeconds))")
+                                                .foregroundStyle(.secondary)
+                                        }
+                                    }
+                                    .font(.caption)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             Section {
                 if preparing {
                     ProgressView("Reconstruyendo histórico completo…")
@@ -70,17 +131,35 @@ struct TimeSiteCalendarView: View {
                         systemImage:"calendar.badge.exclamationmark",
                         description:Text("Prueba otra fecha. El histórico incluye registros desde el inicio de Mi Mapa del Tiempo."))
                 } else {
-                    ForEach(visible) { stay in
-                        NavigationLink {
-                            TimeSiteStayEditor(model:model,stay:stay)
-                        } label: {
-                            stayRow(stay)
+                    ForEach(report.groups) { group in
+                        if group.isExpandable {
+                            DisclosureGroup(isExpanded:Binding(
+                                get:{ expandedGroups.contains(group.id) },
+                                set:{ if $0 { expandedGroups.insert(group.id) }
+                                       else { expandedGroups.remove(group.id) } }
+                            )) {
+                                ForEach(group.entries,id:\.stay.id) { item in
+                                    NavigationLink {
+                                        TimeSiteStayEditor(model:model,stay:item.stay)
+                                    } label: {
+                                        stayRow(item.stay)
+                                    }
+                                }
+                            } label: {
+                                groupRow(group)
+                            }
+                        } else if let item=group.entries.first {
+                            NavigationLink {
+                                TimeSiteStayEditor(model:model,stay:item.stay)
+                            } label: {
+                                stayRow(item.stay)
+                            }
                         }
                     }
                 }
             } header: {
                 HStack {
-                    Text("\(visible.count) estancias")
+                    Text("\(report.groups.count) entradas · \(visible.count) estancias")
                     Spacer()
                     Text(DateFormatter.localizedString(from:selectedDay,dateStyle:.medium,timeStyle:.none))
                 }
@@ -104,7 +183,31 @@ struct TimeSiteCalendarView: View {
             }
         }
         .onAppear { if allStays.isEmpty { rebuild() } }
+        .onChange(of:selectedDay) { _, chosen in
+            let normalized=SiteCalendarDay.normalized(chosen)
+            if selectedDay != normalized { selectedDay=normalized }
+            expandedGroups.removeAll()
+        }
         .onChange(of:model.data.intervals.count) { _,_ in rebuild() }
+    }
+
+    private func groupRow(_ group: SiteDayGroup) -> some View {
+        VStack(alignment:.leading,spacing:5) {
+            HStack(spacing:6) {
+                Text(group.firstStart,format:.dateTime.hour().minute())
+                Text("–")
+                Text(group.lastEnd,format:.dateTime.hour().minute())
+                Spacer()
+                Text(DurationFormat.full(group.recordedSeconds))
+                    .foregroundStyle(.teal).fontWeight(.semibold)
+            }
+            .font(.caption.monospacedDigit())
+            Text(group.siteID.flatMap { model.siteNamed($0)?.name } ?? "Lugar por revisar")
+                .font(.subheadline.weight(.semibold))
+            Text("\(group.entries.count) estancias · \(group.uniqueCells) cuadrículas · \(group.confirmed ? "Confirmadas" : "Propuestas")")
+                .font(.caption2).foregroundStyle(.secondary)
+        }
+        .padding(.vertical,4)
     }
 
     private func stayRow(_ stay: SiteGridStay) -> some View {
