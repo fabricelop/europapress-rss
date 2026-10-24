@@ -2050,10 +2050,15 @@ struct RootView: View {
     }
     var body: some View {
         ZStack {
-            selectedScreen
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    TimeSixTabBar(selectedTab: $model.selectedTab)
-                }
+            // The custom six-tab bar must take REAL layout height, not be
+            // painted over a NavigationStack/List through safeAreaInset.
+            // A vertical stack guarantees pushed detail screens end above
+            // the bar, including after an interactive scroll stops.
+            VStack(spacing: 0) {
+                selectedScreen
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                TimeSixTabBar(selectedTab: $model.selectedTab)
+            }
                 .tint(.teal)
                 .onAppear { openGPSGapHistoryIfRequested() }
             .onReceive(NotificationCenter.default.publisher(
@@ -2865,7 +2870,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.67 · datos guardados en este iPhone",
+                    Label("Versión 1.0.68 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
