@@ -42,6 +42,45 @@ final class SitePlaceProviderTests:XCTestCase {
                                                query:"biblioteca"),0)
     }
 
+    func testOsunaServerSearchIncludesSchoolNamesWithoutDownloadTruncation() {
+        let center=CLLocationCoordinate2D(latitude:40.455,longitude:-3.594)
+        let q=SitePOISearch.overpassQuery(center:center,query:"Osuna")
+        XCTAssertTrue(q.contains("[\"amenity\"][\"name\"~"))
+        XCTAssertTrue(q.contains("[\"office\"][\"name\"~"))
+        XCTAssertTrue(q.contains("5000,40.455,-3.594"))
+        // The name matcher goes into Overpass itself, not after fetching
+        // a truncated list of unrelated nearby objects.
+        XCTAssertFalse(q.contains("out center 180"))
+        XCTAssertTrue(q.contains("out center 260"))
+    }
+
+    func testColegioSearchFindsSchoolTagsEvenWhenTitleDoesNotSayColegio() {
+        let center=CLLocationCoordinate2D(latitude:40.455,longitude:-3.594)
+        let q=SitePOISearch.overpassQuery(center:center,query:"Colegio")
+        XCTAssertTrue(q.contains("school|college|university|kindergarten"))
+        XCTAssertTrue(q.contains("[\"building\"=\"school\"]"))
+    }
+
+    func testNearSchoolNamedOsunaPrecedesFarLocalityOsuna() {
+        let school=SitePlaceResult(id:"school",name:
+            "Centro Privado de Educación Infantil, Primaria y Secundaria Alameda de Osuna",
+            latitude:40.45514,longitude:-3.59412,source:.openStreetMap,
+            distance:320,inGrid:false)
+        let town=SitePlaceResult(id:"town",name:"Osuna",
+            latitude:37.2,longitude:-5.1,source:.apple,
+            distance:350000,inGrid:false)
+        let ranked=SitePOISearch.ranked([town,school],query:"Osuna")
+        XCTAssertEqual(ranked.first?.id,"school")
+        XCTAssertEqual(ranked.count,2)
+    }
+
+    func testNoBusinessNamesHardcodedInNameMatcher() {
+        let matcher=SitePOISearch.strongPlaceTerm(in:"Colegio Alameda de Osuna")
+        XCTAssertNotNil(matcher)
+        XCTAssertNil(SitePOISearch.strongPlaceTerm(in:"Colegio"))
+        XCTAssertNil(SitePOISearch.strongPlaceTerm(in:"Polideportivo"))
+    }
+
     func testUnfilteredNearbyPrefersGridAndNearbyLocation() {
         let outside=SitePlaceResult(id:"far",name:"Centro lejano",
               latitude:40,longitude:-3,source:.foursquare,
