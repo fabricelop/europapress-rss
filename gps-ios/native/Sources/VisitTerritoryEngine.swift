@@ -75,6 +75,9 @@ struct VisitTerritorySnapshot {
     // Se ordenan una sola vez las 2200 cuadrículas más visitadas.
     // SwiftUI puede redibujar el mapa muchas veces por cambios de cámara.
     let renderTiles: [VisitTerritoryCell]
+    // Prioridad completa: al mover la cámara no deben desaparecer cuadrículas
+    // próximas solo porque existan 2200 más visitadas en otras ciudades.
+    private let priorityTiles: [VisitTerritoryCell]
 
     init(period: VisitTerritoryPeriod,
          counts: [String: Int],
@@ -88,9 +91,32 @@ struct VisitTerritorySnapshot {
             territories.enumerated().map { ($0.element.id, $0.offset) })
         self.tileIndex = Dictionary(uniqueKeysWithValues:
             tiles.enumerated().map { ($0.element.id, $0.offset) })
-        self.renderTiles = Array(tiles.sorted {
+        let ordered = tiles.sorted {
             $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
-        }.prefix(2200))
+        }
+        self.priorityTiles = ordered
+        self.renderTiles = Array(ordered.prefix(2200))
+    }
+
+    /// Selección espacial de cuadrículas visibles, manteniendo el límite de
+    /// polígonos de MapKit. El margen evita huecos durante pequeños movimientos.
+    /// Los cálculos solo leen datos; nunca alteran el historial GPS.
+    func renderTiles(near latitude: Double, longitude: Double,
+                     latitudeDelta: Double, longitudeDelta: Double,
+                     limit: Int = 2200) -> [VisitTerritoryCell] {
+        guard limit > 0, latitudeDelta > 0, longitudeDelta > 0 else { return [] }
+        let halfLat = latitudeDelta * 0.75
+        let halfLon = longitudeDelta * 0.75
+        var result: [VisitTerritoryCell] = []
+        result.reserveCapacity(min(limit, priorityTiles.count))
+        for tile in priorityTiles {
+            let point = Grid.center(tile.cell)
+            guard abs(point.latitude - latitude) <= halfLat,
+                  abs(point.longitude - longitude) <= halfLon else { continue }
+            result.append(tile)
+            if result.count == limit { break }
+        }
+        return result
     }
 
     var disputedCount: Int {
