@@ -1,28 +1,31 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-24T13:30:12.276107Z",
+  "updated_at": "2026-10-24T13:33:32.023664Z",
   "radar_at": "2026-10-24T13:26:53.575735Z",
-  "processing_count": 1,
-  "processing_items": [
+  "processing_count": 0,
+  "processing_items": [],
+  "ready_count": 0,
+  "problematic_count": 3,
+  "problematic_items": [
     {
       "event_id": "f8a0fd7e9bb4",
       "title": "Detenidos tres menores por el apuñalamiento de otro, de 14 años, en Madrid",
       "url": "https://www.lavanguardia.com/local/madrid/20261024/11667186/detenidos-tres-menores-apunalamiento-14-anos-madrid.html",
       "selected_at": "2026-10-24T13:15:14.623810Z",
-      "selection_mode": "AUTO_WEB",
-      "rewrite_version": null,
+      "problematic_at": "2026-10-24T13:33:32.023664Z",
+      "problem_reason": "transport_write_blocked",
+      "problematic_attempts": 1,
+      "user_validated": false,
+      "user_validated_at": null,
+      "revision": 1,
       "source_count": 4,
       "sources": [
-        "Antena 3 Noticias",
-        "Cadena SER",
+        "La Vanguardia",
         "EFE",
-        "La Vanguardia"
+        "Antena 3 Noticias",
+        "Cadena SER"
       ]
-    }
-  ],
-  "ready_count": 4,
-  "problematic_count": 2,
-  "problematic_items": [
+    },
     {
       "event_id": "16ab5e312b4d",
       "title": "Sigue en directo el mitin de Pedro Sánchez y en Granada, Rufián e Irene Montero en Barcelona y Feijóo en Vigo",
@@ -57,9 +60,9 @@
       "revision": 1,
       "source_count": 4,
       "sources": [
+        "Público",
         "20minutos",
         "La Vanguardia",
-        "Público",
         "Servimedia"
       ]
     }
