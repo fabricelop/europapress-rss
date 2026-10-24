@@ -190,6 +190,10 @@ struct TimeSiteStayEditor: View {
                     .font(.caption).foregroundStyle(.secondary)
             } header: { Text("Estancia continua") }
 
+            Section("¿Dónde estaba?") {
+                TimeSiteStayLocationMap(model:model,stay:stay)
+            }
+
             Section("Lugares y tramos") {
                 ForEach(parts.sorted { $0.from < $1.from }) { part in
                     VStack(alignment:.leading,spacing:8) {
@@ -314,4 +318,107 @@ struct TimeSiteStayEditor: View {
 
 private struct SitePartSelection:Identifiable {
     let id:UUID
+}
+
+
+/// Read-only map for one historical stay. Green border is the 100m grid
+/// square. Blue dots are real, retained GPS fixes; if none exists, the
+/// square is displayed alone rather than inventing an exact position.
+private struct TimeSiteStayLocationMap: View {
+    @ObservedObject var model: TimeModel
+    let stay: SiteGridStay
+
+    @State private var camera: MapCameraPosition
+    @State private var retainedSamples: [GPSPoint] = []
+
+    init(model: TimeModel, stay: SiteGridStay) {
+        self.model = model
+        self.stay = stay
+        _camera = State(initialValue: .region(Self.mapRegion(for: stay.cell)))
+    }
+
+    private static func mapRegion(for cell: Cell) -> MKCoordinateRegion {
+        MKCoordinateRegion(center: Grid.center(cell),
+                           span: MKCoordinateSpan(latitudeDelta: 0.003,
+                                                  longitudeDelta: 0.004))
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Map(position: $camera) {
+                MapPolygon(coordinates: Grid.polygon(stay.cell))
+                    .foregroundStyle(Color.teal.opacity(0.24))
+                    .stroke(Color.teal, lineWidth: 2.5)
+
+                ForEach(retainedSamples) { fix in
+                    Annotation("", coordinate: CLLocationCoordinate2D(
+                        latitude: fix.latitude, longitude: fix.longitude)) {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 9, height: 9)
+                            .overlay(Circle().strokeBorder(.white, lineWidth: 1.5))
+                    }
+                    .annotationTitles(.hidden)
+                }
+            }
+            .mapStyle(.standard(elevation: .flat))
+            .frame(height: 235)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    camera = .region(Self.mapRegion(for: stay.cell))
+                } label: {
+                    Image(systemName: "scope")
+                        .foregroundStyle(.teal)
+                        .frame(width: 38, height: 38)
+                        .background(.regularMaterial, in: Circle())
+                }
+                .accessibilityLabel("Centrar en la cuadrícula")
+                .padding(9)
+            }
+            if retainedSamples.isEmpty {
+                Text("Contorno verde: cuadrícula registrada. No hay posiciones GPS individuales conservadas durante esta estancia; no se puede precisar el establecimiento solo con el mapa.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            } else {
+                HStack(spacing: 5) {
+                    Circle().fill(.teal).frame(width: 8, height: 8)
+                    Text("Cuadrícula")
+                    Spacer(minLength: 6)
+                    Circle().fill(.blue).frame(width: 8, height: 8)
+                    Text("GPS registrado (\(retainedSamples.count))")
+                }
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                Text("Puedes ampliar y mover el mapa. Los puntos son mediciones GPS, no una identificación segura del local.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 4)
+        .onAppear { loadFixes() }
+    }
+
+    private func loadFixes() {
+        let center = Grid.center(stay.cell)
+        let reference = CLLocation(latitude: center.latitude,
+                                   longitude: center.longitude)
+        let candidates = model.data.fixes.filter { fix in
+            guard fix.date >= stay.start, fix.date <= stay.end,
+                  fix.accuracy >= 0, fix.accuracy <= 80 else { return false }
+            return reference.distance(from: CLLocation(
+                latitude: fix.latitude, longitude: fix.longitude)) <= 220
+        }
+        // Historical stays may contain hundreds of retained fixes. The map
+        // renders at most 24 measured samples evenly across the visit.
+        guard candidates.count > 24 else {
+            retainedSamples = candidates
+            return
+        }
+        let count = 24
+        retainedSamples = (0..<count).map { index in
+            let position = index * (candidates.count - 1) / (count - 1)
+            return candidates[position]
+        }
+    }
 }
