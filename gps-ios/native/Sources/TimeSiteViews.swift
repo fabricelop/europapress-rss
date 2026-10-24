@@ -78,6 +78,8 @@ struct TimeSitePickerView: View {
     @ObservedObject var model: TimeModel
     let cell: Cell
     @Environment(\.dismiss) private var dismiss
+    var onPicked: ((IdentifiedSite) -> Void)? = nil
+    @State private var searchText = ""
     @State private var appleResults: [ApplePOICandidate] = []
     @State private var loading = false
     @State private var errorText: String?
@@ -95,7 +97,8 @@ struct TimeSitePickerView: View {
                     ForEach(known.indices, id: \.self) { index in
                         let row = known[index]
                         Button {
-                            model.confirmSite(row.site, cell:cell)
+                            if let onPicked { onPicked(row.site) }
+                            else { model.confirmSite(row.site, cell:cell) }
                             dismiss()
                         } label: {
                             HStack(spacing: 11) {
@@ -114,6 +117,18 @@ struct TimeSitePickerView: View {
                     }
                 }
             }
+            Section("Buscar cualquier sitio en Apple Maps") {
+                HStack {
+                    TextField("Nombre, calle, localidad…",text:$searchText)
+                        .textInputAutocapitalization(.words)
+                        .submitLabel(.search)
+                        .onSubmit { Task { await searchAnywhere() } }
+                    Button("Buscar") { Task { await searchAnywhere() } }
+                        .disabled(searchText.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                }
+                Text("No se limita a sitios dentro de la cuadrícula. Al confirmar un resultado, quedará asociado a esta cuadrícula para próximas visitas.")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
             Section("Lugares en Apple Maps") {
                 if loading {
                     ProgressView("Buscando lugares al abrir esta pantalla…")
@@ -125,8 +140,11 @@ struct TimeSitePickerView: View {
                 } else {
                     ForEach(appleResults) { item in
                         Button {
-                            model.confirmAppleSite(name:item.name,latitude:item.latitude,
-                                                   longitude:item.longitude,cell:cell)
+                            if let site = model.createOrReuseSite(name:item.name,
+                               latitude:item.latitude,longitude:item.longitude,origin:"apple") {
+                                if let onPicked { onPicked(site) }
+                                else { model.confirmSite(site,cell:cell) }
+                            }
                             dismiss()
                         } label: {
                             HStack(spacing: 9) {
@@ -150,7 +168,10 @@ struct TimeSitePickerView: View {
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
                 Button {
-                    model.confirmPrivateSite(name:privateName,cell:cell)
+                    if let site = model.createPrivateSite(name:privateName,cell:cell) {
+                        if let onPicked { onPicked(site) }
+                        else { model.confirmSite(site,cell:cell) }
+                    }
                     dismiss()
                 } label: {
                     Label("Guardar y confirmar lugar privado",systemImage:"house")
@@ -168,6 +189,37 @@ struct TimeSitePickerView: View {
             }
         }
         .task(id:cell.id) { await searchNearby() }
+    }
+
+    private func searchAnywhere() async {
+        let query = searchText.trimmingCharacters(in:.whitespacesAndNewlines)
+        guard !query.isEmpty else { return }
+        loading = true
+        errorText = nil
+        defer { loading = false }
+        let center = Grid.center(cell)
+        let origin = CLLocation(latitude:center.latitude,longitude:center.longitude)
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        // This is a ranking hint, not a restriction to the 100m grid.
+        request.region = MKCoordinateRegion(center:center,
+                        span:MKCoordinateSpan(latitudeDelta:3,longitudeDelta:3))
+        do {
+            let result = try await MKLocalSearch(request:request).start()
+            appleResults = Array(result.mapItems.prefix(40)).compactMap { item in
+                guard let name=item.name,!name.isEmpty else { return nil }
+                let coordinate=item.placemark.coordinate
+                let distance=origin.distance(from:CLLocation(
+                    latitude:coordinate.latitude,longitude:coordinate.longitude))
+                return ApplePOICandidate(id:"\(name)|\(coordinate.latitude)|\(coordinate.longitude)",
+                      name:name,latitude:coordinate.latitude,longitude:coordinate.longitude,
+                      distance:distance,inside:Grid.cell(latitude:coordinate.latitude,
+                      longitude:coordinate.longitude)==cell)
+            }
+            if appleResults.isEmpty { errorText = "Sin resultados: prueba otra búsqueda o introduce un sitio privado." }
+        } catch {
+            errorText = "No se pudo buscar en Apple Maps. Prueba con otra consulta o crea un sitio privado."
+        }
     }
 
     private func searchNearby() async {
