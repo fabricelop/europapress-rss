@@ -282,7 +282,7 @@ final class VisitTerritoriesV54Tests: XCTestCase {
                 latitudeDelta: latDelta, longitudeDelta: lonDelta,
                 limit: limit).map(\.id)
             XCTAssertEqual(actual, expected,
-                "La vista espacial no coincide en zoom \\(latDelta), \\(lonDelta)")
+                "La vista espacial no coincide en zoom \(latDelta), \(lonDelta)")
         }
     }
 
