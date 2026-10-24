@@ -21,17 +21,17 @@ struct TimeDiscoveryHome:View {
                         } icon: { Image(systemName:"circle.hexagongrid.fill").foregroundStyle(.teal) }
                     }
                     NavigationLink {
-                        VisitTerritoriesView(model:model)
+                        GridAverageMapView(model:model)
                     } label: {
                         Label {
                             VStack(alignment:.leading,spacing:4) {
-                                Text("Territorios").font(.headline)
-                                Text("Países y fronteras que se forman con tus visitas a las cuadrículas.")
+                                Text("Medias por cuadrícula").font(.headline)
+                                Text("Tiempo medio, desviación y consistencia de las visitas.")
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                         } icon: {
-                            Image(systemName:"square.3.layers.3d")
-                                .foregroundStyle(.orange)
+                            Image(systemName:"chart.bar.xaxis")
+                                .foregroundStyle(.indigo)
                         }
                     }
                 } header: {
