@@ -1,4 +1,5 @@
 import XCTest
+import CoreLocation
 @testable import MiMapaDelTiempo
 
 final class SitePlaceProviderTests:XCTestCase {
