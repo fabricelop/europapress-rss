@@ -1926,18 +1926,23 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
 private struct TimeSixTabBar: View {
     @Binding var selectedTab: Int
 
-    private let tabs: [(id: Int, title: String, icon: String)] = [
-        (0, "Mapa", "map"),
-        (1, "Estad.", "chart.bar.fill"),
-        (2, "Histórico", "clock.arrow.circlepath"),
-        (5, "Descubrir", "globe.europe.africa.fill"),
-        (3, "Sitios", "mappin.circle.fill"),
-        (4, "Ajustes", "gearshape")
+    private struct Entry: Identifiable {
+        let id: Int
+        let title: String
+        let icon: String
+    }
+    private let tabs: [Entry] = [
+        Entry(id: 0, title: "Mapa", icon: "map"),
+        Entry(id: 1, title: "Estad.", icon: "chart.bar.fill"),
+        Entry(id: 2, title: "Histórico", icon: "clock.arrow.circlepath"),
+        Entry(id: 5, title: "Descubrir", icon: "globe.europe.africa.fill"),
+        Entry(id: 3, title: "Sitios", icon: "mappin.circle.fill"),
+        Entry(id: 4, title: "Ajustes", icon: "gearshape")
     ]
 
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
-            ForEach(tabs, id: \.id) { tab in
+            ForEach(tabs) { tab in
                 let active = selectedTab == tab.id
                 Button {
                     selectedTab = tab.id
@@ -1958,7 +1963,7 @@ private struct TimeSixTabBar: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(tab.title == "Estad." ? "Estadísticas" : tab.title)
-                .accessibilityAddTraits(active ? [.isSelected] : [])
+                .accessibilityAddTraits(active ? .isSelected : [])
             }
         }
         .padding(.horizontal, 2)
