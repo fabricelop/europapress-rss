@@ -7,6 +7,7 @@ struct TimeSiteCalendarView: View {
     @ObservedObject var model: TimeModel
     @State private var selectedDay = Date()
     @State private var expandedCalendar = false
+    @State private var onlyUnclassified = false
     @State private var allStays: [SiteGridStay] = []
     @State private var preparing = false
     @State private var generation = UUID()
@@ -24,6 +25,12 @@ struct TimeSiteCalendarView: View {
         },on:selectedDay)
     }
     private var firstDate: Date? { allStays.last?.start }
+    private var displayedGroups: [SiteDayGroup] {
+        guard onlyUnclassified else { return report.groups }
+        return report.groups.filter { group in
+            group.entries.contains { report.pendingStayIDs.contains($0.stay.id) }
+        }
+    }
     @State private var expandedGroups: Set<String> = []
 
     private func changeDay(_ delta: Int) {
@@ -130,29 +137,42 @@ struct TimeSiteCalendarView: View {
                 Section("Resumen del día") {
                     VStack(alignment:.leading,spacing:7) {
                         HStack {
-                            Text("\(Int((report.reviewedFraction*100).rounded())) % revisado")
+                            Text("\(Int((report.classifiedFraction*100).rounded())) % clasificado")
                                 .font(.headline)
                             Spacer()
-                            Text(report.isFullyReviewed ? "Todo clasificado" : "Pendiente de revisar")
+                            Text(report.isFullyClassified ? "Todo clasificado" : "Quedan sitios por asignar")
                                 .font(.caption)
-                                .foregroundStyle(report.isFullyReviewed ? .teal : .secondary)
+                                .foregroundStyle(report.isFullyClassified ? .teal : .secondary)
                         }
-                        ProgressView(value:report.reviewedFraction)
+                        ProgressView(value:report.classifiedFraction)
                             .tint(.teal)
-                        LabeledContent("Tiempo confirmado en sitios",
+                        LabeledContent("Estancias sin identificar",
+                                       value:"\(report.pendingStaysCount)")
+                            .fontWeight(.semibold)
+                        LabeledContent("Tiempo sin identificar",
+                                       value:DurationFormat.full(report.unidentifiedGPS))
+                        if report.pendingStaysCount > 0 {
+                            Button(onlyUnclassified ? "Mostrar todas las estancias" :
+                                   "Mostrar solo las pendientes (\(report.pendingStaysCount))") {
+                                onlyUnclassified.toggle()
+                            }
+                            .buttonStyle(.borderless)
+                            .foregroundStyle(.teal)
+                        } else if onlyUnclassified {
+                            Button("Mostrar todas las estancias") { onlyUnclassified=false }
+                                .buttonStyle(.borderless)
+                        }
+                        LabeledContent("Confirmado por ti",
                                        value:DurationFormat.full(report.confirmedGPS))
+                        LabeledContent("Propuestas automáticas",
+                                       value:"\(report.proposedStaysCount) estancias · \(DurationFormat.full(report.suggestedGPS))")
                         LabeledContent("De paso",
                                        value:DurationFormat.full(report.passingGPS))
-                        if report.suggestedGPS > 0 {
-                            LabeledContent("Solo propuesto",
-                                           value:DurationFormat.full(report.suggestedGPS))
-                        }
-                        if report.unidentifiedGPS > 0 {
-                            LabeledContent("Sin identificar",
-                                           value:DurationFormat.full(report.unidentifiedGPS))
-                        }
                         LabeledContent("Tiempo GPS registrado",
                                        value:DurationFormat.full(report.totalGPS))
+                        Text("Las propuestas cuentan como clasificadas sin que tengas que confirmarlas. Siguen siendo corregibles y no cuentan como confirmaciones manuales.")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                     }
                     .font(.caption)
                 }
@@ -187,7 +207,7 @@ struct TimeSiteCalendarView: View {
                         systemImage:"calendar.badge.exclamationmark",
                         description:Text("Prueba otra fecha. El histórico incluye registros desde el inicio de Mi Mapa del Tiempo."))
                 } else {
-                    ForEach(report.groups) { group in
+                    ForEach(displayedGroups) { group in
                         if group.isExpandable {
                             DisclosureGroup(isExpanded:Binding(
                                 get:{ expandedGroups.contains(group.id) },
@@ -215,7 +235,8 @@ struct TimeSiteCalendarView: View {
                 }
             } header: {
                 HStack {
-                    Text("\(report.groups.count) entradas · \(visible.count) estancias")
+                    Text(onlyUnclassified ? "\(displayedGroups.count) entradas pendientes" :
+                         "\(report.groups.count) entradas · \(visible.count) estancias")
                     Spacer()
                     Text(DateFormatter.localizedString(from:selectedDay,dateStyle:.medium,timeStyle:.none))
                 }
@@ -244,6 +265,7 @@ struct TimeSiteCalendarView: View {
             let normalized=SiteCalendarDay.normalized(chosen)
             if selectedDay != normalized { selectedDay=normalized }
             expandedGroups.removeAll()
+            onlyUnclassified=false
         }
         .onChange(of:model.data.intervals.count) { _,_ in rebuild() }
     }
