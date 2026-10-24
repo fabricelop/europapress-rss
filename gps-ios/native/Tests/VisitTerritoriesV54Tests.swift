@@ -208,7 +208,7 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         XCTAssertEqual(snapshot.renderTiles.count, 2200)
         XCTAssertEqual(snapshot.renderTiles.first?.visits, 2300)
         XCTAssertEqual(snapshot.renderTiles.last?.visits, 101)
-        XCTAssertEqual(snapshot.renderTiles.map(\\.visits),
+        XCTAssertEqual(snapshot.renderTiles.map(\.visits),
                        Array((101...2300).reversed()))
         for tile in snapshot.tiles {
             XCTAssertEqual(snapshot.tile(tile.id)?.visits, tile.visits)
