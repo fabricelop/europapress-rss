@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-24T11:11:05.904Z",
+  "updated_at": "2026-10-24T11:12:50.883Z",
   "items": [
     {
       "event_id": "e080d6c19a2a",
@@ -390,7 +390,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "image_delivery": "none",
@@ -413,7 +413,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Francia refuerza la seguridad ante una nueva jornada de protestas"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-24T11:12:50.883Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false"
     }
   ],
   "count": 0,
