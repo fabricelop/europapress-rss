@@ -94,7 +94,7 @@ enum SitePOISearch {
         var request=URLRequest(url:URL(string:"https://overpass-api.de/api/interpreter")!)
         request.httpMethod="POST"
         request.timeoutInterval=9
-        request.setValue("MiMapaDelTiempo/1.0.66 (iOS personal place search)",forHTTPHeaderField:"User-Agent")
+        request.setValue("MiMapaDelTiempo/1.0.67 (iOS personal place search)",forHTTPHeaderField:"User-Agent")
         request.setValue("application/x-www-form-urlencoded; charset=utf-8",
                          forHTTPHeaderField:"Content-Type")
         var body=URLComponents()
