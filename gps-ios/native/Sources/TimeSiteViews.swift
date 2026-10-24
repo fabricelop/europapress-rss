@@ -268,6 +268,10 @@ struct TimeSitePickerView: View {
 
 struct TimeMySitesView: View {
     @ObservedObject var model: TimeModel
+    @State private var totalsBySite:[UUID:SiteTimeTotal] = [:]
+    @State private var computing = false
+    @State private var generation = UUID()
+
     var body: some View {
         List {
             Section {
@@ -279,28 +283,50 @@ struct TimeMySitesView: View {
                 }
             }
             Section {
-                Text("Sitios identificados a partir de estancias en las cuadrículas. Los confirmados cuentan para las próximas asignaciones automáticas; las suposiciones automáticas no votan.")
+                Text("Los sitios confirmados y propuestos se contabilizan por separado. Si divides una estancia, cada establecimiento suma solo los minutos de su tramo.")
                     .font(.footnote).foregroundStyle(.secondary)
                 LabeledContent("Sitios identificados",value:"\(model.data.identifiedSites.count)")
-                LabeledContent("Estancias asignadas",value:"\(model.data.siteStayAssignments.count)")
+                LabeledContent("Estancias editadas",value:
+                    "\(Set(model.data.siteStayParts.map(\.stayID)).count)")
+                if computing { ProgressView("Calculando tiempos históricos…") }
             }
             Section("Mis sitios") {
                 ForEach(model.data.identifiedSites) { site in
-                    let stays = model.data.siteStayAssignments.filter { $0.siteID == site.id }
+                    let total = totalsBySite[site.id] ?? SiteTimeTotal()
                     VStack(alignment:.leading,spacing:5) {
                         Label(site.name,systemImage:site.origin == "private" ? "house" : "mappin")
                             .font(.headline)
-                        HStack {
-                            Text("\(stays.count) estancias asignadas")
-                            Spacer()
-                            Text("\(stays.filter { $0.confirmed }.count) confirmadas")
+                        Text("\(total.verifiedVisits) estancias confirmadas · \(DurationFormat.full(total.verifiedSeconds))")
+                            .font(.caption).foregroundStyle(.teal)
+                        if total.suggestedVisits > 0 {
+                            Text("\(total.suggestedVisits) propuestas sin confirmar · \(DurationFormat.full(total.suggestedSeconds))")
+                                .font(.caption2).foregroundStyle(.secondary)
                         }
-                        .font(.caption).foregroundStyle(.secondary)
                     }.padding(.vertical,3)
                 }
             }
         }
         .navigationTitle("Mis Sitios")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear { rebuild() }
+        .onChange(of:model.data.siteStayParts.count) { _,_ in rebuild() }
+    }
+
+    private func rebuild() {
+        let id=UUID()
+        generation=id
+        computing=true
+        let raw=model.data.intervals
+        let parts=model.data.siteStayParts
+        let legacy=model.data.siteStayAssignments
+        DispatchQueue.global(qos:.userInitiated).async {
+            let statistics=SiteStayTotals.calculate(intervals:raw,parts:parts,
+                                                   assignments:legacy)
+            DispatchQueue.main.async {
+                guard generation==id else { return }
+                totalsBySite=statistics
+                computing=false
+            }
+        }
     }
 }
