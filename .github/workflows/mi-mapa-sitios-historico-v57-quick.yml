@@ -1,0 +1,49 @@
+name: "Mi Mapa Histórico Mis Sitios v57 - IPA rápida"
+on:
+  push:
+    branches: [feature/mis-sitios-historico-v57]
+    paths: ['.github/workflows/mi-mapa-sitios-historico-v57-quick.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ipa:
+    runs-on: macos-15
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaxis y paquete iPhone
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/sitehistory57" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/sitehistory57/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"]);assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.57"
+          assert info["CFBundleVersion"]=="58"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Sitios-Historico-1.0.57.ipa Payload
+          unzip -t MiMapaDelTiempo-Sitios-Historico-1.0.57.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Sitios-Historico-1.0.57-build58-quick-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Sitios-Historico-1.0.57.ipa
+          retention-days: 14
+          if-no-files-found: error
