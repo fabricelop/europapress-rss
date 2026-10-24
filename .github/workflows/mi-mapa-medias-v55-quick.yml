@@ -1,0 +1,50 @@
+name: "Mi Mapa Medias 1.0.55 - IPA rápida"
+on:
+  push:
+    branches: [feature/mapa-medias-v55]
+    paths: ['.github/workflows/mi-mapa-medias-v55-quick.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ipa:
+    runs-on: macos-15
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaxis, proyecto e IPA sin firma
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/medias_v55_quick" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/medias_v55_quick/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.55"
+          assert info["CFBundleVersion"]=="56"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").exists()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Medias-1.0.55.ipa Payload
+          unzip -t MiMapaDelTiempo-Medias-1.0.55.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Medias-1.0.55-build56-quick-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Medias-1.0.55.ipa
+          retention-days: 14
+          if-no-files-found: error
