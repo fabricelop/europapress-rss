@@ -36,8 +36,13 @@ struct TimeSiteCalendarView: View {
                         } label: { Label("Siguiente",systemImage:"chevron.right") }
                     }
                     .font(.caption)
-                    DatePicker("Fecha",selection:$selectedDay,displayedComponents:.date)
-                        .datePickerStyle(expandedCalendar ? .graphical : .compact)
+                    if expandedCalendar {
+                        DatePicker("Fecha",selection:$selectedDay,displayedComponents:.date)
+                            .datePickerStyle(.graphical)
+                    } else {
+                        DatePicker("Fecha",selection:$selectedDay,displayedComponents:.date)
+                            .datePickerStyle(.compact)
+                    }
                     HStack {
                         Button(expandedCalendar ? "Ocultar calendario" : "Ver calendario") {
                             expandedCalendar.toggle()
