@@ -29,8 +29,9 @@ struct GridAverageSnapshot {
     let byID: [String: GridAverageStat]
 
     init(cells: [GridAverageStat]) {
-        self.cells = cells.sorted { $0.id < $1.id }
-        byID = Dictionary(uniqueKeysWithValues: self.cells.map { ($0.id, $0) })
+        let ordered = cells.sorted { $0.id < $1.id }
+        self.cells = ordered
+        byID = Dictionary(uniqueKeysWithValues: ordered.map { ($0.id, $0) })
         totalVisits = cells.reduce(0) { $0 + $1.visits }
         totalSeconds = cells.reduce(0) { $0 + $1.seconds }
         globalAverage = totalVisits > 0 ? totalSeconds / Double(totalVisits) : 0
