@@ -248,6 +248,44 @@ final class VisitTerritoriesV54Tests: XCTestCase {
             limit: 0).isEmpty)
     }
 
+    func testSpatialViewportIndexMatchesFullScanAtDifferentZooms() {
+        // La optimización espacial no puede cambiar ni una casilla ni su
+        // prioridad de dibujo, incluso con empates y límites pequeños.
+        var counts: [String: Int] = [:]
+        for row in 0..<75 {
+            for column in 0..<45 {
+                let cell = Cell(row: a.row + row, column: a.column + column)
+                counts[cell.id] = 1 + (row * 17 + column * 23) % 21
+            }
+        }
+        let snapshot = VisitTerritoryEngine.build(counts: counts)
+        XCTAssertEqual(snapshot.tiles.count, 3375)
+        let byPriority = snapshot.tiles.sorted {
+            $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
+        }
+
+        for (row, column, latDelta, lonDelta, limit) in [
+            (4, 3, 0.004, 0.004, 7),
+            (38, 21, 0.016, 0.018, 50),
+            (70, 42, 0.010, 0.012, 2200),
+            (38, 21, 0.3, 0.3, 100)
+        ] {
+            let center = Grid.center(Cell(row: a.row + row,
+                                          column: a.column + column))
+            let expected = Array(byPriority.filter { tile in
+                let point = Grid.center(tile.cell)
+                return abs(point.latitude - center.latitude) <= latDelta * 0.75
+                    && abs(point.longitude - center.longitude) <= lonDelta * 0.75
+            }.prefix(limit)).map(\.id)
+            let actual = snapshot.renderTiles(
+                near: center.latitude, longitude: center.longitude,
+                latitudeDelta: latDelta, longitudeDelta: lonDelta,
+                limit: limit).map(\.id)
+            XCTAssertEqual(actual, expected,
+                "La vista espacial no coincide en zoom \\(latDelta), \\(lonDelta)")
+        }
+    }
+
     func testNoMutationsToInputVisitHistoryOrCounts() throws {
         let start = date("2026-10-20T08:00:00Z")
         let visits = [
