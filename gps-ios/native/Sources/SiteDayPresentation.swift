@@ -26,7 +26,7 @@ enum SiteCalendarDay {
 
 struct SiteDaySource {
     let stay: SiteGridStay
-    let parts: [SiteStayPart]
+    var parts: [SiteStayPart]
 }
 
 struct SiteDayGroup: Identifiable {
