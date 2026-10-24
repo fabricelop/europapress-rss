@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-24T14:45:00+02:00",
-  "last_completed_at": "2026-10-24T14:47:00+02:00",
-  "updated_at": "2026-10-24T14:47:00+02:00",
+  "last_started_at": "2026-10-24T15:15:00+02:00",
+  "last_completed_at": "2026-10-24T15:19:00+02:00",
+  "updated_at": "2026-10-24T15:19:00+02:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,47 +26,49 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T144500+0200",
+    "run_id": "tr-chat-20261024T151500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T14:45:00+02:00",
-    "updated_at": "2026-10-24T14:47:00+02:00",
-    "finished_at": "2026-10-24T14:47:00+02:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-24T15:15:00+02:00",
+    "updated_at": "2026-10-24T15:19:00+02:00",
+    "finished_at": "2026-10-24T15:19:00+02:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "discovered_during_run": 3,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 3,
       "remates_selected": 0,
+      "remates_preserved": 3,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 8,
+      "pending_cards_reviewed": 11,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
+      "legacy_ready_repaired": 3,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial nuevo; 8 fichas recientes revisadas y cola final 0.",
+    "message": "TTendencias completada: 3 fichas legacy ready reparadas (Guernica, Lorca y Aprilia); cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,74 +81,156 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T14:45:00+02:00",
+        "at": "2026-10-24T15:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones, Top 10 y fichas recientes antes del cierre."
       },
       {
-        "at": "2026-10-24T14:45:20+02:00",
+        "at": "2026-10-24T15:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado al inicio mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-24T14:45:50+02:00",
+        "at": "2026-10-24T15:15:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending y radar reciente."
+        "message": "Relectura autoritativa: cola 0, requests preparing/update/problematic 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-24T14:46:10+02:00",
+        "at": "2026-10-24T15:16:00+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 14:40."
+        "message": "Detectadas 3 fichas Top 10 en estado legacy ready sin materialización en Explicadas."
       },
       {
-        "at": "2026-10-24T14:46:20+02:00",
+        "at": "2026-10-24T15:16:10+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Top 10 revalidado contra requests: no queda ninguna revisión preparing/update ni problematic activa."
+        "trend_id": "ba910c6663c6",
+        "title": "Guernica",
+        "message": "Releyendo estado autoritativo de Guernica."
       },
       {
-        "at": "2026-10-24T14:46:25+02:00",
+        "at": "2026-10-24T15:16:20+02:00",
+        "phase": "investigating",
+        "trend_id": "ba910c6663c6",
+        "title": "Guernica",
+        "message": "Hecho esencial revalidado con fuente actual; se conserva el texto preparado existente."
+      },
+      {
+        "at": "2026-10-24T15:16:30+02:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 8 fichas explicadas recientes; saneamiento visual solicitado al inicio."
+        "trend_id": "3cb8dc50ad56",
+        "title": "Lorca",
+        "message": "Releyendo estado autoritativo de Lorca."
       },
       {
-        "at": "2026-10-24T14:46:30+02:00",
+        "at": "2026-10-24T15:16:40+02:00",
+        "phase": "investigating",
+        "trend_id": "3cb8dc50ad56",
+        "title": "Lorca",
+        "message": "Hecho esencial revalidado con fuente actual; se conserva el texto preparado existente."
+      },
+      {
+        "at": "2026-10-24T15:16:50+02:00",
+        "phase": "verifying",
+        "trend_id": "7b238f268321",
+        "title": "Aprilia",
+        "message": "Releyendo estado autoritativo de Aprilia."
+      },
+      {
+        "at": "2026-10-24T15:17:00+02:00",
+        "phase": "investigating",
+        "trend_id": "7b238f268321",
+        "title": "Aprilia",
+        "message": "Estado deportivo revalidado; la ficha preparada sigue vigente."
+      },
+      {
+        "at": "2026-10-24T15:17:10+02:00",
+        "phase": "persisting",
+        "trend_id": "ba910c6663c6",
+        "title": "Guernica",
+        "message": "Guardando fichas legacy ready en Explicadas y sincronizando requests por id+revision."
+      },
+      {
+        "at": "2026-10-24T15:18:00+02:00",
+        "phase": "verifying",
+        "trend_id": "ba910c6663c6",
+        "title": "Guernica",
+        "message": "Guernica verificada: Explicadas y requests coinciden exactamente."
+      },
+      {
+        "at": "2026-10-24T15:18:05+02:00",
+        "phase": "verifying",
+        "trend_id": "3cb8dc50ad56",
+        "title": "Lorca",
+        "message": "Lorca verificada: Explicadas y requests coinciden exactamente."
+      },
+      {
+        "at": "2026-10-24T15:18:10+02:00",
+        "phase": "verifying",
+        "trend_id": "7b238f268321",
+        "title": "Aprilia",
+        "message": "Aprilia verificada: Explicadas y requests coinciden exactamente."
+      },
+      {
+        "at": "2026-10-24T15:18:20+02:00",
         "phase": "verifying",
         "trend_id": "413c73f54712",
         "title": "#DeViernes",
         "message": "Remate vacío revisado; se conserva sin chiste por incluir el relato de un asalto sufrido en domicilio."
       },
       {
-        "at": "2026-10-24T14:46:50+02:00",
+        "at": "2026-10-24T15:18:40+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0; trigger de reparación persistido."
+        "message": "Relectura final de main: cola 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-24T14:47:00+02:00",
+        "at": "2026-10-24T15:19:00+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: sin trabajo editorial nuevo; 8 fichas recientes revisadas y cola final 0."
+        "message": "TTendencias completada: 3 fichas legacy ready reparadas y cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "ba910c6663c6",
+      "3cb8dc50ad56",
+      "7b238f268321"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "ba910c6663c6",
+        "name": "Guernica",
+        "revision": 0,
+        "status": "explained",
+        "outcome": "legacy_ready_repaired"
+      },
+      {
+        "id": "3cb8dc50ad56",
+        "name": "Lorca",
+        "revision": 0,
+        "status": "explained",
+        "outcome": "legacy_ready_repaired"
+      },
+      {
+        "id": "7b238f268321",
+        "name": "Aprilia",
+        "revision": 0,
+        "status": "explained",
+        "outcome": "legacy_ready_repaired"
+      }
+    ]
   },
   "run_id": "tr-chat-20261024T144500+0200",
   "summary": {
@@ -261,6 +345,5 @@
     "total_ratings": 154,
     "recent_considered": 100
   },
-  "remate_selections": [],
-  "error": null
+  "remate_selections": []
 }
