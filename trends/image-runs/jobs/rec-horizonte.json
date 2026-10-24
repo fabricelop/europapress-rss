@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-rec-horizonte-r3-a1-1791492626627",
+  "requested_at": "2026-10-08T20:50:26.619543Z",
+  "updated_at": "2026-10-08T20:52:17.072Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "rec-horizonte",
+  "trend_id": "rec-horizonte",
+  "target_name": "#Horizonte",
+  "revision": 3,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "#Horizonte",
+    "revision": 3,
+    "explanation": "TT#1 #Horizonte es tendencia porque el programa de Iker Jiménez vuelve al centro de la conversación tras la muerte de Maricarmen y las críticas por cómo abordó su desahucio; anoche abrió con condolencias y defendió su cobertura.",
+    "closer_text": "",
+    "trend_names": [
+      "#Horizonte"
+    ],
+    "group_title": "Horizonte · muerte de Maricarmen y reacción del programa",
+    "rank_at_explanation": 1,
+    "explained_at": "2026-10-08T22:48:45+02:00",
+    "verification_sources": [
+      {
+        "source": "FormulaTV · 08/10/2026",
+        "url": "https://www.formulatv.com/noticias/intermedio-horizonte-reaccionan-muerte-maricarmen-138446/"
+      },
+      {
+        "source": "verTele / elDiario.es · 08/10/2026",
+        "url": "https://www.eldiario.es/vertele/noticias/horizonte-pide-ahora-cuidadosos-dice-maricarmen-dias-ataques-cuatro-mediaset_1_13570701.html"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
+    "image_style_name": "cartoon_3d",
+    "image_style_index": 8
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "ab9f9c7f4c3cf85a09bbc8f09008c1d793b1ed4f6a9ab335817ab5d7ab293d9c",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-08T20:50:49.740Z",
+  "bridge_version": null,
+  "target_handoff_id": "BED4516120C017B05CF4807FA5521512",
+  "target_handoff_at": "2026-10-08T20:51:04.750Z",
+  "pc_launched_at": "2026-10-08T20:51:06.264Z",
+  "upload_received_at": "2026-10-08T20:52:07.684Z",
+  "upload_sha256": "ccce44d1d90b8252c2f0413e439c9d16885a716f4f18fd2777e986e680d64f64",
+  "upload_bytes": 2193469,
+  "finished_at": "2026-10-08T20:52:17.072Z"
+}

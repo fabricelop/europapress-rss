@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791011332001-f417c2",
+  "requested_at": "2026-10-03T07:08:52.001Z",
+  "updated_at": "2026-10-03T07:12:33.030Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "1a5eed26f2e0",
+  "trend_id": "1a5eed26f2e0",
+  "target_name": "#LaVozAudiciones",
+  "revision": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "#LaVozAudiciones",
+    "revision": 1,
+    "explanation": "TT#7 #LaVozAudiciones es tendencia por la tercera noche de Audiciones a ciegas de La Voz: Beltrán consiguió entrar tras una segunda audición y hubo reencuentros con antiguos talents.\n🌶️ Esta vez hasta el botón concedió repesca.",
+    "closer_text": "🌶️ Esta vez hasta el botón concedió repesca.",
+    "trend_names": [
+      "#LaVozAudiciones"
+    ],
+    "group_title": "#LaVozAudiciones · tercera noche de Audiciones",
+    "rank_at_explanation": 7,
+    "explained_at": "2026-10-03T08:35:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Antena 3 · 2/10/2026",
+        "url": "https://amp.antena3.com/programas/la-voz/quedarse-fuera-cumplir-sueno-beltran-hace-historia-segunda-audicion_202610026ac01398f7f8f566d14bf4e9.html"
+      },
+      {
+        "source": "Atresmedia · 2/10/2026",
+        "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programacion-viernes-2-octubre_202610016abe44d9bcc72875c67a55fb.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "No apareció un raster capturable en 2 minutos; {\"marker\":true,\"turns\":0,\"afterTurns\":0,\"generating\":false,\"imagesAfterMarker\":0,\"candidates\":0,\"canvases\":0,\"assistantTail\":\"\"}",
+  "pc_upload_secret_hash": "e16d25bcd7dbf5b686a09455a8bc36826f90e93e8e0b6ff22b0ce1b69954fbc6",
+  "pc_worker_id": "ttendencias-image-bridge-v1",
+  "pc_picked_up_at": "2026-10-03T07:10:19.489Z",
+  "pc_launched_at": "2026-10-03T07:10:30.332Z",
+  "finished_at": "2026-10-03T07:12:33.030Z"
+}

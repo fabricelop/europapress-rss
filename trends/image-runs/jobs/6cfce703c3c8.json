@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-6cfce703c3c8-r0-a1-1791273224497",
+  "requested_at": "2026-10-06T07:53:44.496760Z",
+  "updated_at": "2026-10-06T08:10:29.521Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "6cfce703c3c8",
+  "trend_id": "6cfce703c3c8",
+  "target_name": "#LaHora6O",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
+  "context_snapshot": {
+    "name": "#LaHora6O",
+    "revision": 0,
+    "explanation": "TT#7 #LaHora6O es tendencia porque usuarios comentan la edición de este martes de La Hora de La 1, en RTVE, con la actualidad política marcada por el adelanto electoral al 29-N.",
+    "closer_text": "",
+    "trend_names": [
+      "#LaHora6O"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 7,
+    "explained_at": "2026-10-06T09:51:41.932+02:00",
+    "verification_sources": [
+      "https://www.rtve.es/play/guia-tve/",
+      "https://www.eldiario.es/vertele/audiencias-tv/lunes-5-octubre-2026-la-hora-de-la-1-despunta-anuncio-pedro-sanchez-llega-81-3-cuota-canales_1_13564964.html"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Grabado/linograbado moderno de alta calidad con textura rica, contraste controlado y un único foco narrativo.",
+    "image_style_name": "grabado_moderno",
+    "image_style_index": 6
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "1be2ce519e8858ff6162dfefb364a27d512fbad3bae759900b7645c0c410be4a",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-06T08:08:58.941Z",
+  "pc_launched_at": "2026-10-06T08:09:32.662Z",
+  "upload_received_at": "2026-10-06T08:10:25.051Z",
+  "upload_sha256": "331fe0cf7cf3b9a8956b1ae234817a9bda0bed76a01fd7632290f26cd7ab42da",
+  "upload_bytes": 656953,
+  "finished_at": "2026-10-06T08:10:29.521Z"
+}

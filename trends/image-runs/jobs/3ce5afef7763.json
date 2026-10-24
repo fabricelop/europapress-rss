@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-3ce5afef7763-r1-a1-1791146486125",
+  "requested_at": "2026-10-04T20:41:26.124699Z",
+  "updated_at": "2026-10-04T20:49:02.056Z",
+  "status": "RUNNING",
+  "phase": "capture_wait",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "3ce5afef7763",
+  "trend_id": "3ce5afef7763",
+  "target_name": "Latasa",
+  "revision": 1,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Latasa",
+    "revision": 1,
+    "explanation": "TT#8 Latasa es tendencia porque marcó el 1-1 del Valladolid ante Las Palmas en el minuto 10; el partido acabó 2-2 en Gran Canaria.\n🌶️ El dorsal 9 tardó diez minutos en dejar su firma.",
+    "closer_text": "🌶️ El dorsal 9 tardó diez minutos en dejar su firma.",
+    "trend_names": [
+      "Latasa"
+    ],
+    "group_title": "Latasa marca en el 2-2 Las Palmas-Valladolid",
+    "rank_at_explanation": 8,
+    "explained_at": "2026-10-04T22:16:00+02:00",
+    "verification_sources": [
+      {
+        "source": "Real Valladolid · 4/10/2026",
+        "url": "https://www.realvalladolid.es/noticias/cronica-j8-las-palmas-real-valladolid-26-27"
+      },
+      {
+        "source": "Cadena SER · 4/10/2026",
+        "url": "https://cadenaser.com/canarias/2026/10/04/la-ud-las-palmas-sobrevive-a-la-visita-del-real-valladolid-con-los-goles-de-pezzolesi-y-elias-romero-2-2-ser-las-palmas/"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Esperando el raster generado por ImageGen en la misma pestaña. Intento 1/2.",
+  "pc_upload_secret_hash": "79293526c7e58f55eb164517887db26372b798d07a6d68d5c80bef0e81dd7ce8",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-04T20:48:47.481Z",
+  "pc_launched_at": "2026-10-04T20:49:00.735Z"
+}
