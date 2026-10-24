@@ -632,14 +632,30 @@ struct SavedState: Codable {
                     dismissedKeys: Set(data.dismissedSiteStayKeys),
                     parts: data.siteStayParts)
     }
+    func spatialSiteCandidates(for cell: Cell) -> [SiteSpatialCandidate] {
+        SiteCrossGridPolicy.candidates(for:cell,sites:data.identifiedSites,
+                  assignments:data.siteStayAssignments,parts:data.siteStayParts)
+    }
     func preferredSiteID(for cellID: String) -> UUID? {
-        SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,cellID:cellID,
-                    validIDs:Set(data.identifiedSites.map(\.id)),
-                    parts:data.siteStayParts).first
+        guard let cell=TimeAnalytics.cell(cellID) else { return nil }
+        return spatialSiteCandidates(for:cell).first?.siteID
     }
     func siteParts(for stay: SiteGridStay) -> [SiteStayPart] {
         let explicit = data.siteStayParts.filter { $0.stayID == stay.id }
-        if SiteStayHistory.valid(explicit,for:stay) { return explicit.sorted { $0.from < $1.from } }
+        if SiteStayHistory.valid(explicit,for:stay) {
+            // Only historical labels that were NEVER confirmed may be updated
+            // when the same place is confirmed in another square. A manual
+            // multi-site division, a passing marker and all confirmations stay.
+            if explicit.count == 1, let only=explicit.first,
+               only.kind == .place && !only.confirmed,
+               let candidate=preferredSiteID(for:stay.cell.id),
+               candidate != only.siteID {
+                var proposed=only
+                proposed.siteID=candidate
+                return [proposed]
+            }
+            return explicit.sorted { $0.from < $1.from }
+        }
         let legacy = data.siteStayAssignments.first { $0.id == stay.id && $0.confirmed }
         return [SiteStayHistory.defaultPart(for:stay,
                 suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))]
@@ -677,22 +693,28 @@ struct SavedState: Codable {
     func siteNamed(_ id: UUID) -> IdentifiedSite? {
         data.identifiedSites.first { $0.id == id }
     }
-    func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int)] {
+    func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int, fromOtherSquares: Int)] {
         let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
                                 cellID: cell.id, parts: data.siteStayParts)
-        let ordered = SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,
-                           cellID: cell.id, validIDs: Set(data.identifiedSites.map(\.id)),
-                           parts: data.siteStayParts)
-        let already = Set(ordered)
+        let ranked = spatialSiteCandidates(for:cell)
+        let already = Set(ranked.map(\.siteID))
+        let center = Grid.center(cell)
+        let origin = CLLocation(latitude:center.latitude,longitude:center.longitude)
         let extras = data.identifiedSites.filter { site in
             guard !already.contains(site.id) else { return false }
-            let center = Grid.center(cell)
-            let near = CLLocation(latitude: center.latitude, longitude: center.longitude)
-                 .distance(from: CLLocation(latitude: site.latitude, longitude: site.longitude))
-            return near < 100
+            return origin.distance(from:CLLocation(
+                latitude:site.latitude,longitude:site.longitude)) < 120
         }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
-        return (ordered.compactMap { siteNamed($0) } + extras)
-             .map { (site: $0, confirmations: votes[$0.id] ?? 0) }
+        let known:[(site:IdentifiedSite,confirmations:Int,fromOtherSquares:Int)] =
+            ranked.compactMap { candidate in
+                guard let site=siteNamed(candidate.siteID) else { return nil }
+                return (site:site,confirmations:votes[site.id] ?? 0,
+                        fromOtherSquares:candidate.confirmedCells
+                            .filter { $0 != cell.id }.count)
+            }
+        return known + extras.map {
+            (site:$0,confirmations:0,fromOtherSquares:0)
+        }
     }
     /// Automatic choice is a lightweight local operation called after GPS
     /// callbacks and while the map is active. No network query or notification.
@@ -702,13 +724,21 @@ struct SavedState: Codable {
               isResting || ((lastAccuracy ?? 999) <= 75 &&
                   (lastGPSFix.map { now.timeIntervalSince($0) < 120 } ?? false))
               else { return }
-        guard let chosen = SiteStayPolicy.automaticChoice(
+        let localChoice = SiteStayPolicy.automaticChoice(
               cellID: cell.id, entered: start, elapsed: elapsed,
               thresholdMinutes: siteThresholdMinutes,
               sites: data.identifiedSites,
               assignments: data.siteStayAssignments,
               dismissedKeys: Set(data.dismissedSiteStayKeys),
-              parts: data.siteStayParts) else { return }
+              parts: data.siteStayParts)
+        let crossSquareChoice: UUID?
+        if localChoice == nil, elapsed >= Double(siteThresholdMinutes)*60 {
+            crossSquareChoice = SiteCrossGridPolicy.safeAutomaticChoice(
+                spatialSiteCandidates(for:cell))
+        } else {
+            crossSquareChoice = nil
+        }
+        guard let chosen = localChoice ?? crossSquareChoice else { return }
         let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
         data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
                        startedAt: start, siteID: chosen, confirmed: false))
@@ -2804,7 +2834,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.60 · datos guardados en este iPhone",
+                    Label("Versión 1.0.61 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
