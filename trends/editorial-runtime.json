@@ -4,20 +4,18 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "last_started_at": "2026-10-24T02:45:00+02:00",
-  "last_completed_at": "2026-10-24T02:50:30+02:00",
-  "updated_at": "2026-10-24T02:50:30+02:00",
+  "last_started_at": "2026-10-24T03:15:00+02:00",
+  "last_completed_at": "2026-10-24T03:18:30+02:00",
+  "updated_at": "2026-10-24T03:18:30+02:00",
   "status": "success",
-  "processed_ids": [
-    "413c73f54712"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "queue_complete": true,
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "visual_repair": {
     "workflow": "repair-ttendencias-explicadas.yml",
-    "trigger_run_id": "tr-chat-20261024T024500+0200",
+    "trigger_run_id": "tr-chat-20261024T031500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -25,30 +23,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T024500+0200",
+    "run_id": "tr-chat-20261024T031500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T02:45:00+02:00",
-    "updated_at": "2026-10-24T02:50:30+02:00",
-    "finished_at": "2026-10-24T02:50:30+02:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-24T03:15:00+02:00",
+    "updated_at": "2026-10-24T03:18:30+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -56,16 +53,16 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
+      "explanations_verified_under_280": 0,
       "remates_selected": 0,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 7,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: #DeViernes explicada y verificada; cola final 0.",
+    "message": "TTendencias completada: 0 trabajos editoriales; 7 Pendientes revisadas; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -78,141 +75,69 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T02:45:00+02:00",
+        "at": "2026-10-24T03:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; 1 tendencia en cola. Activando saneamiento visual de Pendientes."
+        "message": "Pasada iniciada; cola editorial 0. Activando saneamiento visual de Pendientes."
       },
       {
-        "at": "2026-10-24T02:45:35+02:00",
+        "at": "2026-10-24T03:16:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Radar con más de 20 minutos; solicitando captura fresca antes de cerrar 0/0."
+      },
+      {
+        "at": "2026-10-24T03:17:00+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 7 tarjetas recientes."
+      },
+      {
+        "at": "2026-10-24T03:17:20+02:00",
         "phase": "verifying",
         "trend_id": "413c73f54712",
         "title": "#DeViernes",
-        "message": "Releyendo estado autoritativo de #DeViernes"
+        "message": "Pendiente reciente sin remate · se mantiene sin chiste por sensibilidad."
       },
       {
-        "at": "2026-10-24T02:46:00+02:00",
-        "phase": "investigating",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-24T02:46:30+02:00",
-        "phase": "investigating",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Contrastando fuente 1/2"
-      },
-      {
-        "at": "2026-10-24T02:47:05+02:00",
-        "phase": "investigating",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Contrastando fuente 2/2"
-      },
-      {
-        "at": "2026-10-24T02:47:30+02:00",
-        "phase": "investigating",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-24T02:47:45+02:00",
-        "phase": "drafting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-24T02:48:00+02:00",
-        "phase": "drafting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Comprobando límite de X · 215 caracteres"
-      },
-      {
-        "at": "2026-10-24T02:48:15+02:00",
-        "phase": "drafting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Sin remate · tema sensible con víctimas"
-      },
-      {
-        "at": "2026-10-24T02:49:00+02:00",
-        "phase": "persisting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-24T02:49:25+02:00",
-        "phase": "persisting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-24T02:49:50+02:00",
-        "phase": "persisting",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-24T02:50:10+02:00",
+        "at": "2026-10-24T03:17:40+02:00",
         "phase": "verifying",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual solicitado para las 7 tarjetas; sin ImageGen en la pasada editorial."
       },
       {
-        "at": "2026-10-24T02:50:20+02:00",
-        "phase": "verifying",
-        "trend_id": "413c73f54712",
-        "title": "#DeViernes",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-24T02:50:30+02:00",
+        "at": "2026-10-24T03:18:30+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: #DeViernes explicada y verificada; cola final 0."
+        "message": "TTendencias completada: 0 trabajos editoriales; 7 Pendientes revisadas; cola final 0."
       }
     ],
-    "processed_ids": [
-      "413c73f54712"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "413c73f54712",
-        "revision": 0,
-        "status": "explained",
-        "name": "#DeViernes",
-        "repair": null
-      }
-    ]
+    "final_outcomes": [],
+    "finished_at": "2026-10-24T03:18:30+02:00"
   },
-  "run_id": "tr-chat-20261024T024500+0200",
+  "run_id": "tr-chat-20261024T031500+0200",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -220,11 +145,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
+    "explanations_verified_under_280": 0,
     "remates_selected": 0,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 7,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "incidents": 0
@@ -232,123 +157,60 @@
   "unresolved_orphan_ids": [],
   "activity": [
     {
-      "at": "2026-10-24T02:45:00+02:00",
+      "at": "2026-10-24T03:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; 1 tendencia en cola. Activando saneamiento visual de Pendientes."
+      "message": "Pasada iniciada; cola editorial 0. Activando saneamiento visual de Pendientes."
     },
     {
-      "at": "2026-10-24T02:45:35+02:00",
+      "at": "2026-10-24T03:16:00+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Radar con más de 20 minutos; solicitando captura fresca antes de cerrar 0/0."
+    },
+    {
+      "at": "2026-10-24T03:17:00+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 7 tarjetas recientes."
+    },
+    {
+      "at": "2026-10-24T03:17:20+02:00",
       "phase": "verifying",
       "trend_id": "413c73f54712",
       "title": "#DeViernes",
-      "message": "Releyendo estado autoritativo de #DeViernes"
+      "message": "Pendiente reciente sin remate · se mantiene sin chiste por sensibilidad."
     },
     {
-      "at": "2026-10-24T02:46:00+02:00",
-      "phase": "investigating",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-24T02:46:30+02:00",
-      "phase": "investigating",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Contrastando fuente 1/2"
-    },
-    {
-      "at": "2026-10-24T02:47:05+02:00",
-      "phase": "investigating",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Contrastando fuente 2/2"
-    },
-    {
-      "at": "2026-10-24T02:47:30+02:00",
-      "phase": "investigating",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-24T02:47:45+02:00",
-      "phase": "drafting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-24T02:48:00+02:00",
-      "phase": "drafting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Comprobando límite de X · 215 caracteres"
-    },
-    {
-      "at": "2026-10-24T02:48:15+02:00",
-      "phase": "drafting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Sin remate · tema sensible con víctimas"
-    },
-    {
-      "at": "2026-10-24T02:49:00+02:00",
-      "phase": "persisting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-24T02:49:25+02:00",
-      "phase": "persisting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-24T02:49:50+02:00",
-      "phase": "persisting",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-24T02:50:10+02:00",
+      "at": "2026-10-24T03:17:40+02:00",
       "phase": "verifying",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Releyendo main"
+      "trend_id": null,
+      "title": null,
+      "message": "Saneamiento visual solicitado para las 7 tarjetas; sin ImageGen en la pasada editorial."
     },
     {
-      "at": "2026-10-24T02:50:20+02:00",
-      "phase": "verifying",
-      "trend_id": "413c73f54712",
-      "title": "#DeViernes",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-24T02:50:30+02:00",
+      "at": "2026-10-24T03:18:30+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: #DeViernes explicada y verificada; cola final 0."
+      "message": "TTendencias completada: 0 trabajos editoriales; 7 Pendientes revisadas; cola final 0."
     }
   ],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "partial": false,
   "radar_refresh": {
-    "status": "not_needed",
-    "reason": "Radar fresco al inicio de la ejecución."
+    "status": "requested_and_fresh",
+    "reason": "El radar superaba 20 minutos; se actualizó refresh-trigger y recent.json quedó fresco."
   },
   "radar": {
-    "captured_at": "2026-10-24T02:40:50+02:00",
+    "captured_at": "2026-10-24T03:10:50+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261024T021500+0200",
+  "previous_run_id": "tr-chat-20261024T024500+0200",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
