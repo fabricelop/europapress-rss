@@ -143,3 +143,59 @@ enum SiteStayHistory {
         return result
     }
 }
+
+
+/// Aggregate real attributed seconds for multiple sites, without assigning
+/// any portion of the same GPS interval to two different places.
+struct SiteTimeTotal {
+    var verifiedVisits = 0
+    var verifiedSeconds: TimeInterval = 0
+    var suggestedVisits = 0
+    var suggestedSeconds: TimeInterval = 0
+}
+
+enum SiteStayTotals {
+    static func calculate(intervals:[AssignedInterval],
+                          parts:[SiteStayPart],
+                          assignments:[SiteStayAssignment]) -> [UUID:SiteTimeTotal] {
+        let portions=Dictionary(grouping:parts,by:\.stayID)
+        let older=Dictionary(uniqueKeysWithValues:assignments.map { ($0.id,$0) })
+        var result:[UUID:SiteTimeTotal]=[:]
+        for stay in SiteStayHistory.extract(intervals) {
+            let explicit=portions[stay.id] ?? []
+            var verified:Set<UUID>=[]
+            var suggestions:Set<UUID>=[]
+            if SiteStayHistory.valid(explicit,for:stay) {
+                for part in explicit where part.kind == .place {
+                    guard let id=part.siteID else { continue }
+                    var current=result[id] ?? SiteTimeTotal()
+                    if part.confirmed {
+                        current.verifiedSeconds += stay.confirmed(from:part.from,to:part.to)
+                        verified.insert(id)
+                    } else {
+                        current.suggestedSeconds += stay.confirmed(from:part.from,to:part.to)
+                        suggestions.insert(id)
+                    }
+                    result[id]=current
+                }
+            } else if let legacy=older[stay.id] {
+                var current=result[legacy.siteID] ?? SiteTimeTotal()
+                if legacy.confirmed {
+                    current.verifiedSeconds += stay.confirmedSeconds
+                    verified.insert(legacy.siteID)
+                } else {
+                    current.suggestedSeconds += stay.confirmedSeconds
+                    suggestions.insert(legacy.siteID)
+                }
+                result[legacy.siteID]=current
+            }
+            for id in verified {
+                result[id,default:SiteTimeTotal()].verifiedVisits += 1
+            }
+            for id in suggestions.subtracting(verified) {
+                result[id,default:SiteTimeTotal()].suggestedVisits += 1
+            }
+        }
+        return result
+    }
+}
