@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-24T18:06:31.397Z",
+  "updated_at": "2026-10-24T18:07:43.692495Z",
   "items": [
     {
       "event_id": "f92941992608",
@@ -284,17 +284,35 @@
       },
       "prepared_at": "2026-10-24T18:03:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-24T18:07:43.692495Z",
+      "fallback_image_search_attempted_at": "2026-10-24T18:07:43.692495Z",
+      "archive_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261024160837_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/internacional/noticia-melenchon-emplaza-macron-ceder-porque-contrario-no-le-quedara-mas-remedio-dimitir-20261024160837.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Francia vuelve a salir a la calle entre cargas y detenciones y Mélenchon avisa a Macron: \"Aún tiene tiempo de ceder\""
+      },
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261024160837_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/internacional/noticia-melenchon-emplaza-macron-ceder-porque-contrario-no-le-quedara-mas-remedio-dimitir-20261024160837.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Francia vuelve a salir a la calle entre cargas y detenciones y Mélenchon avisa a Macron: \"Aún tiene tiempo de ceder\""
+      }
     },
     {
       "event_id": "752a11f6c594",
@@ -365,12 +383,12 @@
       },
       "prepared_at": "2026-10-24T18:04:30Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "failed",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
@@ -378,7 +396,25 @@
       "image_delivery": "none",
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-24T18:06:31.397Z",
-      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false"
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":false,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false",
+      "archive_image_search_attempted_at": "2026-10-24T18:07:43.692495Z",
+      "fallback_image_search_attempted_at": "2026-10-24T18:07:43.692495Z",
+      "archive_image": {
+        "url": "https://www.publico.es/files/og_thumbnail/uploads/2026/10/24/6adce225bfd57.jpeg",
+        "source": "www.publico.es",
+        "source_url": "https://www.publico.es/internacional/europa/miles-jovenes-protestan-milan-encarecimiento-vida.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Miles de jóvenes protestan en Milán por el encarecimiento de la vida"
+      },
+      "fallback_image": {
+        "url": "https://www.publico.es/files/og_thumbnail/uploads/2026/10/24/6adce225bfd57.jpeg",
+        "source": "www.publico.es",
+        "source_url": "https://www.publico.es/internacional/europa/miles-jovenes-protestan-milan-encarecimiento-vida.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Miles de jóvenes protestan en Milán por el encarecimiento de la vida"
+      }
     }
   ],
   "count": 1,
