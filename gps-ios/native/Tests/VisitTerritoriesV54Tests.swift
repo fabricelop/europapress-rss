@@ -195,6 +195,29 @@ final class VisitTerritoriesV54Tests: XCTestCase {
                        counts.values.reduce(0, +))
     }
 
+
+    func testIndexedTileLookupAndStableRenderingPriority() {
+        var counts: [String: Int] = [:]
+        for index in 0..<2300 {
+            let cell = Cell(row: a.row + index * 3,
+                            column: a.column + 12)
+            counts[cell.id] = index + 1
+        }
+        let snapshot = VisitTerritoryEngine.build(counts: counts)
+        XCTAssertEqual(snapshot.tiles.count, 2300)
+        XCTAssertEqual(snapshot.renderTiles.count, 2200)
+        XCTAssertEqual(snapshot.renderTiles.first?.visits, 2300)
+        XCTAssertEqual(snapshot.renderTiles.last?.visits, 101)
+        XCTAssertEqual(snapshot.renderTiles.map(\\.visits),
+                       Array((101...2300).reversed()))
+        for tile in snapshot.tiles {
+            XCTAssertEqual(snapshot.tile(tile.id)?.visits, tile.visits)
+            XCTAssertEqual(snapshot.tile(tile.id)?.territoryID,
+                           tile.territoryID)
+        }
+        XCTAssertNil(snapshot.tile("cuadricula_inexistente"))
+    }
+
     func testNoMutationsToInputVisitHistoryOrCounts() throws {
         let start = date("2026-10-20T08:00:00Z")
         let visits = [
