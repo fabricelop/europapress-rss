@@ -225,9 +225,14 @@ final class VisitTerritoriesV54Tests: XCTestCase {
             slice(start.addingTimeInterval(120),
                   start.addingTimeInterval(180), b)
         ]
-        let original = try JSONEncoder().encode(visits)
+        // JSONEncoder no garantiza el orden de claves por defecto: dos
+        // codificaciones del MISMO objeto pueden diferir en bytes.
+        // Orden estable para comprobar que el motor no modifica el historial.
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let original = try encoder.encode(visits)
         _ = VisitTerritoryEngine.calculate(visits, period: .all)
-        XCTAssertEqual(try JSONEncoder().encode(visits), original)
+        XCTAssertEqual(try encoder.encode(visits), original)
         let counts = [a.id: 10, b.id: 1]
         let copy = counts
         _ = VisitTerritoryEngine.build(counts: counts)
