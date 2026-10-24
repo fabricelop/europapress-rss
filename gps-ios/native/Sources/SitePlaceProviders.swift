@@ -165,10 +165,10 @@ enum SitePOISearch {
         let priority:[SitePlaceOrigin:Int]=[.foursquare:0,.openStreetMap:1,.apple:2]
         var unique:[SitePlaceResult]=[]
         for item in values.sorted(by:{
+            if $0.inGrid != $1.inGrid { return $0.inGrid }
             if priority[$0.source] != priority[$1.source] {
                 return priority[$0.source,default:99] < priority[$1.source,default:99]
             }
-            if $0.inGrid != $1.inGrid { return $0.inGrid }
             return $0.distance < $1.distance
         }) {
             let key=item.name.folding(options:[.caseInsensitive,.diacriticInsensitive],locale:.current)
