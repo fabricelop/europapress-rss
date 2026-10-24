@@ -271,7 +271,8 @@ struct TimeSitePickerView: View {
         guard requestID == id else { return }
         pendingProviders=max(0,pendingProviders-1)
         if !results.isEmpty {
-            externalResults=SitePOISearch.ranked(externalResults + results)
+            externalResults=SitePOISearch.ranked(externalResults + results,
+                                               query:searchedText.isEmpty ? nil : searchedText)
             errorText=nil
             loading=false
         }
