@@ -65,24 +65,16 @@ struct TimeSiteInlineView: View {
     }
 }
 
-private struct ApplePOICandidate: Identifiable {
-    var id: String
-    var name: String
-    var latitude: Double
-    var longitude: Double
-    var distance: Double
-    var inside: Bool
-}
-
 struct TimeSitePickerView: View {
     @ObservedObject var model: TimeModel
     let cell: Cell
     @Environment(\.dismiss) private var dismiss
     var onPicked: ((IdentifiedSite) -> Void)? = nil
     @State private var searchText = ""
-    @State private var appleResults: [ApplePOICandidate] = []
+    @State private var externalResults: [SitePlaceResult] = []
     @State private var loading = false
     @State private var errorText: String?
+    @State private var searchedText = ""
     @State private var privateName = ""
 
     var body: some View {
@@ -120,7 +112,7 @@ struct TimeSitePickerView: View {
                     }
                 }
             }
-            Section("Buscar cualquier sitio en Apple Maps") {
+            Section("Buscar un lugar por su nombre") {
                 HStack {
                     TextField("Nombre, calle, localidad…",text:$searchText)
                         .textInputAutocapitalization(.words)
@@ -129,41 +121,56 @@ struct TimeSitePickerView: View {
                     Button("Buscar") { Task { await searchAnywhere() } }
                         .disabled(searchText.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
                 }
-                Text("No se limita a sitios dentro de la cuadrícula. Al confirmar un resultado, quedará asociado a esta cuadrícula para próximas visitas.")
+                Text("Consulta Foursquare si está activado y también OpenStreetMap y Apple. Puedes buscar un establecimiento aunque quede fuera de la cuadrícula.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
-            Section("Lugares en Apple Maps") {
+            Section("Sitios encontrados en mapas") {
                 if loading {
-                    ProgressView("Buscando lugares al abrir esta pantalla…")
+                    ProgressView("Buscando en los proveedores de lugares…")
                 } else if let errorText {
                     Text(errorText).font(.caption).foregroundStyle(.secondary)
-                } else if appleResults.isEmpty {
-                    Text("No se encontraron establecimientos próximos. Puedes añadir un lugar privado.")
+                } else if externalResults.isEmpty {
+                    Text("No hay lugares disponibles en las fuentes consultadas. Prueba otro nombre o crea un sitio privado.")
                         .font(.caption).foregroundStyle(.secondary)
                 } else {
-                    ForEach(appleResults) { item in
+                    ForEach(externalResults.prefix(35)) { item in
                         Button {
-                            if let site = model.createOrReuseSite(name:item.name,
-                               latitude:item.latitude,longitude:item.longitude,origin:"apple") {
-                                if let onPicked { onPicked(site) }
-                                else { model.confirmSite(site,cell:cell) }
-                            }
+                            guard let site=model.createOrReuseSite(
+                                name:item.name,latitude:item.latitude,
+                                longitude:item.longitude,
+                                origin:item.source == .foursquare ? "foursquare" :
+                                       item.source == .openStreetMap ? "openstreetmap" : "apple"
+                            ) else { return }
+                            if let onPicked { onPicked(site) }
+                            else { model.confirmSite(site,cell:cell) }
                             dismiss()
                         } label: {
-                            HStack(spacing: 9) {
-                                Image(systemName:"mappin").foregroundStyle(.indigo)
-                                VStack(alignment:.leading,spacing:2) {
+                            HStack(spacing:9) {
+                                Image(systemName:"mappin.circle").foregroundStyle(.indigo)
+                                VStack(alignment:.leading,spacing:3) {
                                     Text(item.name).foregroundStyle(.primary)
-                                    Text(item.inside ? "Dentro de la cuadrícula" :
-                                         "Cerca · aprox. \(Int(item.distance)) m")
-                                        .font(.caption2).foregroundStyle(.secondary)
+                                        .fontWeight(item.inGrid ? .semibold : .regular)
+                                    HStack(spacing:6) {
+                                        Text(item.source.rawValue)
+                                        Text("·")
+                                        Text(item.inGrid ? "Dentro de la cuadrícula" :
+                                             "Aprox. \(Int(item.distance.rounded())) m")
+                                    }
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
                                 }
                                 Spacer()
-                                Image(systemName:"plus.circle")
-                                    .foregroundStyle(.indigo)
+                                Image(systemName:"plus.circle").foregroundStyle(.indigo)
                             }
                         }
                     }
+                }
+                Text("Las ubicaciones son puntos de referencia de sus respectivos mapas. Estar cerca no confirma que hayas entrado en un establecimiento.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                if externalResults.contains(where:{$0.source == .openStreetMap}) {
+                    Link("Datos © OpenStreetMap colaboradores",
+                         destination:URL(string:"https://www.openstreetmap.org/copyright")!)
+                        .font(.caption2)
                 }
             }
             Section("Lugar privado o no encontrado") {
@@ -191,82 +198,44 @@ struct TimeSitePickerView: View {
                 Button("Cerrar") { dismiss() }
             }
         }
-        .task(id:cell.id) { await searchNearby() }
+        .task(id:cell.id) { await searchPlaces(query:nil) }
     }
 
     private func searchAnywhere() async {
-        let query = searchText.trimmingCharacters(in:.whitespacesAndNewlines)
+        let query=searchText.trimmingCharacters(in:.whitespacesAndNewlines)
         guard !query.isEmpty else { return }
-        loading = true
-        errorText = nil
-        defer { loading = false }
-        let center = Grid.center(cell)
-        let origin = CLLocation(latitude:center.latitude,longitude:center.longitude)
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = query
-        // This is a ranking hint, not a restriction to the 100m grid.
-        request.region = MKCoordinateRegion(center:center,
-                        span:MKCoordinateSpan(latitudeDelta:3,longitudeDelta:3))
-        do {
-            let result = try await MKLocalSearch(request:request).start()
-            appleResults = Array(result.mapItems.prefix(40)).compactMap { item in
-                guard let name=item.name,!name.isEmpty else { return nil }
-                let coordinate=item.placemark.coordinate
-                let distance=origin.distance(from:CLLocation(
-                    latitude:coordinate.latitude,longitude:coordinate.longitude))
-                return ApplePOICandidate(id:"\(name)|\(coordinate.latitude)|\(coordinate.longitude)",
-                      name:name,latitude:coordinate.latitude,longitude:coordinate.longitude,
-                      distance:distance,inside:Grid.cell(latitude:coordinate.latitude,
-                      longitude:coordinate.longitude)==cell)
-            }
-            if appleResults.isEmpty { errorText = "Sin resultados: prueba otra búsqueda o introduce un sitio privado." }
-        } catch {
-            errorText = "No se pudo buscar en Apple Maps. Prueba con otra consulta o crea un sitio privado."
-        }
+        await searchPlaces(query:query)
     }
 
-    private func searchNearby() async {
-        // Never make POI network requests in the background or on GPS changes.
-        // Apple Maps is consulted only after the user opens this chooser.
-        loading = true
-        errorText = nil
-        defer { loading = false }
-        let center = Grid.center(cell)
-        let origin = CLLocation(latitude:center.latitude,longitude:center.longitude)
-        let request = MKLocalPointsOfInterestRequest(center:center,radius:130)
-        do {
-            let results = try await MKLocalSearch(request:request).start()
-            let known = model.siteOptions(for:cell).map(\.site)
-            var found: [ApplePOICandidate] = []
-            for item in results.mapItems {
-                guard let name = item.name?.trimmingCharacters(in:.whitespacesAndNewlines),
-                      !name.isEmpty else { continue }
-                let coordinate = item.placemark.coordinate
-                let dist = origin.distance(from:CLLocation(latitude:coordinate.latitude,
-                                                           longitude:coordinate.longitude))
-                guard dist <= 130 else { continue }
-                let inside = Grid.cell(latitude:coordinate.latitude,
-                                       longitude:coordinate.longitude) == cell
-                let duplicate = known.contains { saved in
-                    saved.name.compare(name,options:[.caseInsensitive,.diacriticInsensitive]) == .orderedSame &&
-                    CLLocation(latitude:saved.latitude,longitude:saved.longitude)
-                        .distance(from:CLLocation(latitude:coordinate.latitude,
-                                                   longitude:coordinate.longitude)) < 60
-                }
-                if duplicate { continue }
-                let key = "\(name.lowercased())|\(Int(coordinate.latitude * 100_000))|\(Int(coordinate.longitude * 100_000))"
-                if found.contains(where: { $0.id == key }) { continue }
-                found.append(ApplePOICandidate(id:key,name:name,latitude:coordinate.latitude,
-                                longitude:coordinate.longitude,distance:dist,inside:inside))
-            }
-            appleResults = found.sorted {
-                if $0.inside != $1.inside { return $0.inside }
-                return $0.distance < $1.distance
-            }
-        } catch {
-            errorText = "Apple Maps no está disponible ahora. Puedes usar un sitio guardado o uno privado."
-        }
+    private func foursquareResults(center:CLLocationCoordinate2D,
+                                   query:String?) async -> [SitePlaceResult] {
+        guard let key=SiteFoursquareCredentials.load(),!key.isEmpty else { return [] }
+        return (try? await SitePOISearch.foursquare(center:center,cell:cell,
+                                      query:query,serviceKey:key)) ?? []
     }
+
+    private func searchPlaces(query:String?) async {
+        let center=Grid.center(cell)
+        loading=true
+        errorText=nil
+        let text=query?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
+        searchedText=text
+        async let fsq = foursquareResults(center:center,query:text.isEmpty ? nil : text)
+        async let osm = SitePOISearch.openStreetMap(center:center,cell:cell,
+                                                    query:text.isEmpty ? nil : text)
+        async let apple = SitePOISearch.apple(center:center,cell:cell,
+                                              query:text.isEmpty ? nil : text)
+        let (f,osmResponse,appleResponse)=await (fsq,try? osm,try? apple)
+        let values=f + (osmResponse ?? []) + (appleResponse ?? [])
+        // Explicit named searches retain provider relevance rather than
+        // restricting results to the exact 100m grid.
+        externalResults=SitePOISearch.ranked(values)
+        if externalResults.isEmpty {
+            errorText="Ninguna fuente ha devuelto resultados. Comprueba la conexión o escribe otro nombre."
+        }
+        loading=false
+    }
+
 }
 
 struct TimeMySitesView: View {
