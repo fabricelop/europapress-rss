@@ -514,12 +514,14 @@ private struct TimePrivateSiteEditView: View {
                     .mapStyle(.standard(elevation:.flat))
                     .frame(height:220)
                     .clipShape(RoundedRectangle(cornerRadius:12))
-                    .onTapGesture { point in
-                        if let coordinate=proxy.convert(point,from:.local) {
-                            latitude=coordinate.latitude
-                            longitude=coordinate.longitude
+                    .simultaneousGesture(
+                        SpatialTapGesture().onEnded { tap in
+                            if let coordinate=proxy.convert(tap.location,from:.local) {
+                                latitude=coordinate.latitude
+                                longitude=coordinate.longitude
+                            }
                         }
-                    }
+                    )
                 }
                 Text("Toca el mapa para mover el marcador. Esto solo corrige la ficha del sitio; nunca mueve las posiciones GPS ya registradas.")
                     .font(.caption).foregroundStyle(.secondary)
