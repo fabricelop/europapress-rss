@@ -75,9 +75,16 @@ struct VisitTerritorySnapshot {
     // Se ordenan una sola vez las 2200 cuadrículas más visitadas.
     // SwiftUI puede redibujar el mapa muchas veces por cambios de cámara.
     let renderTiles: [VisitTerritoryCell]
-    // Prioridad completa: al mover la cámara no deben desaparecer cuadrículas
-    // próximas solo porque existan 2200 más visitadas en otras ciudades.
-    private let priorityTiles: [VisitTerritoryCell]
+    // Índice espacial ordenado por latitud: los movimientos del mapa solo
+    // examinan las filas cercanas, no todas las cuadrículas del historial.
+    // rank conserva exactamente la prioridad visitas DESC / id ASC.
+    private struct PositionedTile {
+        let latitude: Double
+        let longitude: Double
+        let rank: Int
+        let tile: VisitTerritoryCell
+    }
+    private let latitudeIndex: [PositionedTile]
 
     init(period: VisitTerritoryPeriod,
          counts: [String: Int],
@@ -94,8 +101,13 @@ struct VisitTerritorySnapshot {
         let ordered = tiles.sorted {
             $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
         }
-        self.priorityTiles = ordered
         self.renderTiles = Array(ordered.prefix(2200))
+        self.latitudeIndex = ordered.enumerated().map { rank, tile in
+            let center = Grid.center(tile.cell)
+            return PositionedTile(latitude: center.latitude,
+                                  longitude: center.longitude,
+                                  rank: rank, tile: tile)
+        }.sorted { $0.latitude < $1.latitude }
     }
 
     /// Selección espacial de cuadrículas visibles, manteniendo el límite de
@@ -107,16 +119,37 @@ struct VisitTerritorySnapshot {
         guard limit > 0, latitudeDelta > 0, longitudeDelta > 0 else { return [] }
         let halfLat = latitudeDelta * 0.75
         let halfLon = longitudeDelta * 0.75
-        var result: [VisitTerritoryCell] = []
-        result.reserveCapacity(min(limit, priorityTiles.count))
-        for tile in priorityTiles {
-            let point = Grid.center(tile.cell)
-            guard abs(point.latitude - latitude) <= halfLat,
-                  abs(point.longitude - longitude) <= halfLon else { continue }
-            result.append(tile)
-            if result.count == limit { break }
+        // Búsqueda binaria del primer centro dentro de la banda de latitud.
+        // Antes se recorrían todas las cuadrículas y se recalculaba su centro
+        // geográfico cada vez que el usuario movía o ampliaba el mapa.
+        let minLat = latitude - halfLat
+        let maxLat = latitude + halfLat
+        var low = 0
+        var high = latitudeIndex.count
+        while low < high {
+            let middle = low + (high - low) / 2
+            if latitudeIndex[middle].latitude < minLat {
+                low = middle + 1
+            } else {
+                high = middle
+            }
         }
-        return result
+        var candidates: [PositionedTile] = []
+        var index = low
+        while index < latitudeIndex.count {
+            let item = latitudeIndex[index]
+            if item.latitude > maxLat { break }
+            // Distancia circular para mapas próximos al antimeridiano.
+            let longitudeDistance = abs(item.longitude - longitude)
+            if min(longitudeDistance, 360 - longitudeDistance) <= halfLon {
+                candidates.append(item)
+            }
+            index += 1
+        }
+        // El índice espacial altera el orden de búsqueda, no la prioridad
+        // de dibujo: se conservan primero las cuadrículas más visitadas.
+        candidates.sort { $0.rank < $1.rank }
+        return Array(candidates.prefix(limit).map(\.tile))
     }
 
     var disputedCount: Int {
