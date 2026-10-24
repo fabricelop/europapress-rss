@@ -190,3 +190,18 @@ enum TimeZoneOutline {
             longitude:coords.map(\.longitude).reduce(0,+)/Double(coords.count))
     }
 }
+
+
+/// Compact, presentation-only map badges for named zones. Never changes
+/// the saved name or the zone's cell geometry and GPS records.
+enum TimeZoneLabelText {
+    static func initials(_ title:String) -> String {
+        let ignored:Set<String>=["de","del","la","las","los","el","en","y","a"]
+        let words=title.split(whereSeparator:{ !$0.isLetter && !$0.isNumber })
+                       .map(String.init)
+        let important=words.filter { !ignored.contains($0.lowercased()) }
+        let chosen=important.isEmpty ? words : important
+        let letters=chosen.prefix(4).compactMap { $0.first.map(String.init) }
+        return letters.joined().uppercased().isEmpty ? "Z" : letters.joined().uppercased()
+    }
+}
