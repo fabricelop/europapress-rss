@@ -61,8 +61,8 @@ final class SiteStayHistoryTests: XCTestCase {
         let s = SiteStayHistory.extract([segment(0, 900, a)])[0]
         let site = UUID()
         let parts = [
-            SiteStayPart(stayID:s.id,from:s.start,to:Date(timeIntervalSince1970:400),kind:.place,siteID:site),
-            SiteStayPart(stayID:s.id,from:Date(timeIntervalSince1970:400),to:s.end,kind:.place,siteID:site)
+            SiteStayPart(stayID:s.id,from:s.start,to:Date(timeIntervalSince1970:400),kind:.place,siteID:site,confirmed:true),
+            SiteStayPart(stayID:s.id,from:Date(timeIntervalSince1970:400),to:s.end,kind:.place,siteID:site,confirmed:true)
         ]
         let votes = SiteStayHistory.confirmedSiteCounts(parts,
                          stayIDsByCell:[s.id:s.cell.id],cellID:s.cell.id)
