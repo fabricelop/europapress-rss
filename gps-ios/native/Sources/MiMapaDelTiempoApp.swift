@@ -731,6 +731,10 @@ struct SavedState: Codable {
               assignments: data.siteStayAssignments,
               dismissedKeys: Set(data.dismissedSiteStayKeys),
               parts: data.siteStayParts)
+        // An existing assignment for this visit must never be appended again,
+        // even if another nearby venue later becomes a candidate.
+        let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
+        guard !data.siteStayAssignments.contains(where: { $0.id == key }) else { return }
         let crossSquareChoice: UUID?
         if localChoice == nil, elapsed >= Double(siteThresholdMinutes)*60 {
             crossSquareChoice = SiteCrossGridPolicy.safeAutomaticChoice(
@@ -739,7 +743,6 @@ struct SavedState: Codable {
             crossSquareChoice = nil
         }
         guard let chosen = localChoice ?? crossSquareChoice else { return }
-        let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
         data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
                        startedAt: start, siteID: chosen, confirmed: false))
         save(force: true)
