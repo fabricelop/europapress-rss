@@ -2202,6 +2202,7 @@ struct TimeMapView: View {
     @State private var namingCell: Cell?
     @State private var historyCell: Cell?
     @State private var inspectedZone: TimeCustomZone?
+    @State private var expandedZoneLabelID: UUID?
     @State private var searchOpen = false
     @State private var queuedCellForMap: Cell?
     @State private var followLocation = false
@@ -2402,18 +2403,45 @@ struct TimeMapView: View {
                             Annotation("",coordinate:center) {
                                 Button {
                                     followLocation=false
-                                    inspectedZone=overlay.zone
-                                } label: {
-                                    VStack(spacing:2) {
-                                        Text(overlay.zone.name).font(.caption2.bold()).lineLimit(1)
-                                        Text(overlay.zone.cellIDs.count == 1 ? "1 cuadrícula" :
-                                             "\(overlay.zone.cellIDs.count) cuadrículas")
-                                            .font(.system(size:9))
+                                    if expandedZoneLabelID == overlay.zone.id {
+                                        // Second tap keeps the existing Zone Details
+                                        // functionality available.
+                                        inspectedZone=overlay.zone
+                                    } else {
+                                        withAnimation(.easeOut(duration:0.17)) {
+                                            expandedZoneLabelID=overlay.zone.id
+                                        }
                                     }
-                                    .padding(.horizontal,8).padding(.vertical,5)
-                                    .foregroundStyle(.white)
-                                    .background(Color.teal.opacity(0.91),in:Capsule())
-                                }.buttonStyle(.plain)
+                                } label: {
+                                    if expandedZoneLabelID == overlay.zone.id {
+                                        VStack(spacing:3) {
+                                            Text(overlay.zone.name)
+                                                .font(.system(size:11,weight:.semibold))
+                                                .multilineTextAlignment(.center)
+                                                .fixedSize(horizontal:false,vertical:true)
+                                            Text("Toca para ver detalles")
+                                                .font(.system(size:8))
+                                                .opacity(0.85)
+                                        }
+                                        .frame(maxWidth:168)
+                                        .padding(.horizontal,8)
+                                        .padding(.vertical,6)
+                                        .foregroundStyle(.white)
+                                        .background(Color.teal.opacity(0.94),in:RoundedRectangle(cornerRadius:9))
+                                    } else {
+                                        Text(TimeZoneLabelText.initials(overlay.zone.name))
+                                            .font(.system(size:8,weight:.semibold))
+                                            .lineLimit(1)
+                                            .padding(.horizontal,4)
+                                            .padding(.vertical,3)
+                                            .foregroundStyle(.white)
+                                            .background(Color.teal.opacity(0.91),in:RoundedRectangle(cornerRadius:5))
+                                    }
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(expandedZoneLabelID == overlay.zone.id ?
+                                    "Ver detalles de zona \(overlay.zone.name)" :
+                                    "Expandir nombre de zona \(overlay.zone.name)")
                             }
                         }
                     }
@@ -2931,7 +2959,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.70 · datos guardados en este iPhone",
+                    Label("Versión 1.0.71 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
