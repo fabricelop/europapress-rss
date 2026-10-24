@@ -637,8 +637,32 @@ struct SavedState: Codable {
                   assignments:data.siteStayAssignments,parts:data.siteStayParts)
     }
     func preferredSiteID(for cellID: String) -> UUID? {
-        guard let cell=TimeAnalytics.cell(cellID) else { return nil }
-        return spatialSiteCandidates(for:cell).first?.siteID
+        // Strict rule: ONLY confirmations in this exact 100m grid square.
+        // A venue suggested from another square must never silently inherit
+        // its time, even if the establishment is large or the pin is nearby.
+        SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,cellID:cellID,
+                      validIDs:Set(data.identifiedSites.map(\.id)),
+                      parts:data.siteStayParts).first
+    }
+    /// One-time cleanup of cross-grid guesses recorded by older builds.
+    /// Human confirmations and GPS intervals are strictly preserved.
+    func discardUnsupportedAutomaticSiteAssignments() {
+        guard storageIsHealthy else { return }
+        var permitted:Set<String> = []
+        for entry in data.siteStayAssignments where entry.confirmed {
+            permitted.insert(entry.cellID + "|" + entry.siteID.uuidString)
+        }
+        for part in data.siteStayParts where part.confirmed && part.kind == .place {
+            guard let id=part.siteID,let separator=part.stayID.firstIndex(of:"|") else { continue }
+            permitted.insert(String(part.stayID[..<separator]) + "|" + id.uuidString)
+        }
+        let before=data.siteStayAssignments.count
+        data.siteStayAssignments.removeAll {
+            !$0.confirmed && !permitted.contains($0.cellID + "|" + $0.siteID.uuidString)
+        }
+        guard before != data.siteStayAssignments.count else { return }
+        save(force:true)
+        objectWillChange.send()
     }
     func siteParts(for stay: SiteGridStay) -> [SiteStayPart] {
         let explicit = data.siteStayParts.filter { $0.stayID == stay.id }
@@ -735,14 +759,9 @@ struct SavedState: Codable {
         // even if another nearby venue later becomes a candidate.
         let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
         guard !data.siteStayAssignments.contains(where: { $0.id == key }) else { return }
-        let crossSquareChoice: UUID?
-        if localChoice == nil, elapsed >= Double(siteThresholdMinutes)*60 {
-            crossSquareChoice = SiteCrossGridPolicy.safeAutomaticChoice(
-                spatialSiteCandidates(for:cell))
-        } else {
-            crossSquareChoice = nil
-        }
-        guard let chosen = localChoice ?? crossSquareChoice else { return }
+        // Nearby POIs are only suggestions; automatic decisions require
+        // an explicit confirmation in the exact current grid square.
+        guard let chosen = localChoice else { return }
         data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
                        startedAt: start, siteID: chosen, confirmed: false))
         save(force: true)
@@ -2053,7 +2072,7 @@ struct RootView: View {
                 .background(Color(.systemBackground).ignoresSafeArea())
             }
         }
-        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() }; model.refreshLive() }
+        .onAppear { unlocked = !faceIDEnabled; if faceIDEnabled { checkFaceID() }; model.discardUnsupportedAutomaticSiteAssignments(); model.refreshLive() }
         .onChange(of:faceIDEnabled) { _, enabled in
             unlocked = !enabled
             if enabled { checkFaceID() }
@@ -2829,6 +2848,10 @@ struct TimeSettingsView: View {
     @State private var pendingBackup: Data?
     @State private var confirmRestore = false
     @State private var backupPassword = ""
+    @State private var foursquareKeyEntry = ""
+    @State private var foursquareConfigured = false
+    @State private var foursquareStatus = ""
+
     @State private var secureExportFile: URL?
     @State private var message = ""
     @State private var exportFile: URL?
@@ -2837,7 +2860,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.61 · datos guardados en este iPhone",
+                    Label("Versión 1.0.63 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
@@ -2914,6 +2937,49 @@ struct TimeSettingsView: View {
                     NavigationLink("Ver Mis Sitios") {
                         TimeMySitesView(model:model)
                     }
+                }
+                Section("Fuentes de lugares") {
+                    Text("Foursquare es prioritario cuando está configurado. Sin clave se consultan OpenStreetMap y Apple, en ese orden. Las búsquedas solo ocurren al abrir el selector.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    HStack {
+                        Image(systemName:foursquareConfigured ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(foursquareConfigured ? .teal : .secondary)
+                        Text(foursquareConfigured ? "Foursquare activado" : "Foursquare sin configurar")
+                            .font(.subheadline)
+                    }
+                    SecureField("Clave personal de Foursquare Places",text:$foursquareKeyEntry)
+                        .textContentType(.password)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                    HStack {
+                        Button("Guardar de forma segura") {
+                            if SiteFoursquareCredentials.save(foursquareKeyEntry) {
+                                foursquareConfigured=true
+                                foursquareStatus="Configuración guardada en el llavero de este iPhone."
+                                foursquareKeyEntry=""
+                            } else {
+                                foursquareStatus="No se pudo guardar la configuración."
+                            }
+                        }
+                        .disabled(foursquareKeyEntry.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
+                        Spacer()
+                        if foursquareConfigured {
+                            Button("Desactivar") {
+                                _ = SiteFoursquareCredentials.save("")
+                                foursquareConfigured=false
+                                foursquareKeyEntry=""
+                                foursquareStatus="Foursquare desactivado."
+                            }
+                        }
+                    }
+                    if !foursquareStatus.isEmpty {
+                        Text(foursquareStatus).font(.caption2).foregroundStyle(.secondary)
+                    }
+                    Text("La API de Foursquare requiere una clave de desarrollador y puede facturar consultas. No hay claves insertadas en la aplicación. La clave personal no se incluye en la copia de datos ni en el repositorio.")
+                        .font(.caption2).foregroundStyle(.secondary)
+                }
+                .onAppear {
+                    foursquareConfigured = SiteFoursquareCredentials.load() != nil
                 }
                 Section("Pantalla de bloqueo") {
                     NavigationLink("En vivo · pantalla bloqueada") {
