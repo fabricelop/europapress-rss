@@ -35,6 +35,17 @@ struct TimeDiscoveryHome:View {
                         }
                     }
                     NavigationLink {
+                        TimeSiteCalendarView(model:model)
+                    } label: {
+                        Label {
+                            VStack(alignment:.leading,spacing:4) {
+                                Text("Histórico de sitios").font(.headline)
+                                Text("Calendario completo, estancias de más de 5 minutos, varios sitios por cuadrícula.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        } icon: { Image(systemName:"calendar.badge.clock").foregroundStyle(.indigo) }
+                    }
+                    NavigationLink {
                         TimeMySitesView(model:model)
                     } label: {
                         Label {
