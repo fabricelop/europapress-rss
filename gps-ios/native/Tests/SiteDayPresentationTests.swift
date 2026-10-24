@@ -36,6 +36,25 @@ final class SiteDayPresentationTests: XCTestCase {
         XCTAssertEqual(SiteCalendarDay.interval(for:march28,calendar:cal).duration,82800)
     }
 
+    func testRepeatedNextPreviousDoesNotToggleOrResetDate() {
+        let start=cal.date(from:DateComponents(year:2026,month:10,day:11,hour:16,
+                                                minute:17))!
+        var chosen=SiteCalendarDay.normalized(start,calendar:cal)
+        for day in 12...25 {
+            chosen=SiteCalendarDay.addingDays(1,to:chosen,calendar:cal)
+            XCTAssertEqual(cal.component(.day,from:chosen),day)
+            XCTAssertEqual(cal.component(.month,from:chosen),10)
+        }
+        // This crosses the 25 October daylight-saving clock change.
+        for day in (11...24).reversed() {
+            chosen=SiteCalendarDay.addingDays(-1,to:chosen,calendar:cal)
+            XCTAssertEqual(cal.component(.day,from:chosen),day)
+        }
+        XCTAssertEqual(cal.component(.hour,from:chosen),12)
+        let last=SiteCalendarDay.addingDays(-1,to:chosen,calendar:cal)
+        XCTAssertEqual(cal.component(.day,from:last),10)
+    }
+
     func testSameSiteAcrossSquaresCollapsesWithoutLosingMinutes() {
         let base=cal.date(from:DateComponents(year:2026,month:10,day:24,hour:10))!
                  .timeIntervalSince1970
