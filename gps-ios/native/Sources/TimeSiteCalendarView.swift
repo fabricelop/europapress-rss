@@ -31,45 +31,101 @@ struct TimeSiteCalendarView: View {
         expandedGroups.removeAll()
     }
 
-    var body: some View {
-        List {
-            Section {
-                VStack(spacing: 10) {
-                    HStack {
-                        Button {
-                            changeDay(-1)
-                        } label: { Label("Anterior",systemImage:"chevron.left") }
-                        Spacer()
-                        Button("Hoy") { selectedDay = SiteCalendarDay.normalized(.now) }
-                        Spacer()
-                        Button {
-                            changeDay(1)
-                        } label: { Label("Siguiente",systemImage:"chevron.right") }
-                    }
-                    .font(.caption)
-                    if expandedCalendar {
-                        DatePicker("Fecha",selection:$selectedDay,displayedComponents:.date)
-                            .datePickerStyle(.graphical)
-                    } else {
-                        DatePicker("Fecha",selection:$selectedDay,displayedComponents:.date)
-                            .datePickerStyle(.compact)
-                    }
-                    HStack {
-                        Button(expandedCalendar ? "Ocultar calendario" : "Ver calendario") {
-                            expandedCalendar.toggle()
-                        }
-                        Spacer()
-                        if let firstDate {
-                            Button("Ir al principio") { selectedDay = SiteCalendarDay.normalized(firstDate) }
-                        }
-                    }
-                    .font(.caption)
-                }
-            } header: {
-                Text("Calendario de estancias")
-            } footer: {
-                Text("Se muestran todas las estancias continuas con más de cinco minutos GPS confirmados en una sola cuadrícula. No se incluye el tiempo sin mediciones.")
+    /// Keeping every date control OUTSIDE List avoids the SwiftUI List-row
+    /// automatic Button style, which can trigger multiple buttons at once
+    /// (Anterior, Hoy, Siguiente and Mostrar calendario).
+    private var daySelection: Binding<Date> {
+        Binding(
+            get: { selectedDay },
+            set: { chosen in
+                selectedDay = SiteCalendarDay.normalized(chosen)
+                expandedGroups.removeAll()
             }
+        )
+    }
+
+    private var calendarControls: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            Text("CALENDARIO DE ESTANCIAS")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.top, 5)
+
+            HStack(spacing: 8) {
+                Button {
+                    changeDay(-1)
+                } label: {
+                    Label("Anterior",systemImage:"chevron.left")
+                        .frame(maxWidth:.infinity)
+                }
+                .accessibilityIdentifier("site-day-previous")
+                Button("Hoy") {
+                    selectedDay = SiteCalendarDay.normalized(.now)
+                    expandedGroups.removeAll()
+                }
+                .accessibilityIdentifier("site-day-today")
+                Button {
+                    changeDay(1)
+                } label: {
+                    Label("Siguiente",systemImage:"chevron.right")
+                        .frame(maxWidth:.infinity)
+                }
+                .accessibilityIdentifier("site-day-next")
+            }
+            .font(.subheadline)
+            .buttonStyle(.bordered)
+
+            HStack {
+                Text(selectedDay,format:.dateTime.weekday(.wide).day().month(.wide).year())
+                    .font(.subheadline.weight(.semibold))
+                    .accessibilityIdentifier("site-day-selected-date")
+                Spacer(minLength:4)
+                DatePicker("Seleccionar fecha",selection:daySelection,
+                           displayedComponents:.date)
+                    .labelsHidden()
+                    .datePickerStyle(.compact)
+                    .fixedSize(horizontal:true,vertical:false)
+                    .accessibilityIdentifier("site-day-picker")
+            }
+
+            if expandedCalendar {
+                DatePicker("Calendario",selection:daySelection,
+                           displayedComponents:.date)
+                    .datePickerStyle(.graphical)
+                    .accessibilityIdentifier("site-day-graphical-calendar")
+            }
+
+            HStack {
+                Button(expandedCalendar ? "Ocultar calendario" : "Ver calendario") {
+                    expandedCalendar.toggle()
+                }
+                .accessibilityIdentifier("site-day-toggle-calendar")
+                Spacer()
+                if let firstDate {
+                    Button("Ir al principio") {
+                        selectedDay = SiteCalendarDay.normalized(firstDate)
+                        expandedGroups.removeAll()
+                    }
+                }
+            }
+            .font(.caption)
+            .buttonStyle(.borderless)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .frame(maxWidth:.infinity,alignment:.leading)
+        .background(Color(.secondarySystemGroupedBackground))
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            calendarControls
+            List {
+                Section {
+                    Text("Se muestran estancias continuas de más de cinco minutos GPS confirmados por cuadrícula. No se contabiliza el tiempo sin mediciones.")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             if !preparing && !visible.isEmpty {
                 Section("Resumen del día") {
                     VStack(alignment:.leading,spacing:7) {
@@ -163,6 +219,7 @@ struct TimeSiteCalendarView: View {
                     Spacer()
                     Text(DateFormatter.localizedString(from:selectedDay,dateStyle:.medium,timeStyle:.none))
                 }
+            }
             }
         }
         .navigationTitle("Histórico de sitios")
