@@ -1,0 +1,50 @@
+name: "Mi Mapa Mis Sitios 1.0.56 - IPA rápida"
+on:
+  push:
+    branches: [feature/mis-sitios-v56]
+    paths: ['.github/workflows/mi-mapa-sitios-v56-quick.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ipa:
+    runs-on: macos-15
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaxis, Xcode e IPA
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/sitios_v56_quick" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/sitios_v56_quick/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          assert app.exists()
+          m=plistlib.loads((app/"Info.plist").read_bytes())
+          assert m["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert m["CFBundleShortVersionString"]=="1.0.56"
+          assert m["CFBundleVersion"]=="57"
+          assert m["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").exists()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-MisSitios-1.0.56.ipa Payload
+          unzip -t MiMapaDelTiempo-MisSitios-1.0.56.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-MisSitios-1.0.56-build57-quick-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-MisSitios-1.0.56.ipa
+          retention-days: 14
+          if-no-files-found: error
