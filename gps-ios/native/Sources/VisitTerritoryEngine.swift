@@ -69,6 +69,12 @@ struct VisitTerritorySnapshot {
     // Un índice evita buscar linealmente entre todos los países en cada
     // polígono (O(cuadrículas × países) en historiales extensos).
     private let regionIndex: [String: Int]
+    // Acceso directo al polígono seleccionado: evita recorrer todas las
+    // cuadrículas del historial cada vez que se toca el mapa.
+    private let tileIndex: [String: Int]
+    // Se ordenan una sola vez las 2200 cuadrículas más visitadas.
+    // SwiftUI puede redibujar el mapa muchas veces por cambios de cámara.
+    let renderTiles: [VisitTerritoryCell]
 
     init(period: VisitTerritoryPeriod,
          counts: [String: Int],
@@ -80,6 +86,11 @@ struct VisitTerritorySnapshot {
         self.territories = territories
         self.regionIndex = Dictionary(uniqueKeysWithValues:
             territories.enumerated().map { ($0.element.id, $0.offset) })
+        self.tileIndex = Dictionary(uniqueKeysWithValues:
+            tiles.enumerated().map { ($0.element.id, $0.offset) })
+        self.renderTiles = Array(tiles.sorted {
+            $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
+        }.prefix(2200))
     }
 
     var disputedCount: Int {
@@ -94,6 +105,11 @@ struct VisitTerritorySnapshot {
     func region(_ id: String?) -> VisitTerritoryRegion? {
         guard let id, let index = regionIndex[id] else { return nil }
         return territories[index]
+    }
+
+    func tile(_ id: String) -> VisitTerritoryCell? {
+        guard let index = tileIndex[id] else { return nil }
+        return tiles[index]
     }
 }
 
