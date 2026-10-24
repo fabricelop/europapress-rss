@@ -73,16 +73,15 @@ struct TimeSitePickerView: View {
     @State private var searchText = ""
     @State private var externalResults: [SitePlaceResult] = []
     @State private var loading = false
+    @State private var pendingProviders = 0
+    @State private var requestID = UUID()
+    @State private var searchWasLimited = false
     @State private var errorText: String?
     @State private var searchedText = ""
     @State private var privateName = ""
 
     var body: some View {
         List {
-            Section {
-                Text("Primero aparecen los sitios confirmados en esta cuadrícula y los que ya has identificado en otras cercanas. Puedes corregir una propuesta sin modificar el GPS.")
-                    .font(.footnote).foregroundStyle(.secondary)
-            }
             let known = model.siteOptions(for:cell)
             if !known.isEmpty {
                 Section("Sitios conocidos · ordenados por probabilidad") {
@@ -117,22 +116,18 @@ struct TimeSitePickerView: View {
                     TextField("Nombre, calle, localidad…",text:$searchText)
                         .textInputAutocapitalization(.words)
                         .submitLabel(.search)
-                        .onSubmit { Task { await searchAnywhere() } }
-                    Button("Buscar") { Task { await searchAnywhere() } }
+                        .onSubmit { searchAnywhere() }
+                    Button("Buscar") { searchAnywhere() }
                         .disabled(searchText.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty)
                 }
-                Text("Consulta Foursquare si está activado y también OpenStreetMap y Apple. Puedes buscar un establecimiento aunque quede fuera de la cuadrícula.")
+                Text("La búsqueda consulta las fuentes por separado y enseña los resultados en cuanto aparecen.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             Section("Sitios encontrados en mapas") {
-                if loading {
-                    ProgressView("Buscando en los proveedores de lugares…")
-                } else if let errorText {
-                    Text(errorText).font(.caption).foregroundStyle(.secondary)
-                } else if externalResults.isEmpty {
-                    Text("No hay lugares disponibles en las fuentes consultadas. Prueba otro nombre o crea un sitio privado.")
-                        .font(.caption).foregroundStyle(.secondary)
-                } else {
+                if loading && externalResults.isEmpty {
+                    ProgressView("Consultando mapas…")
+                }
+                if !externalResults.isEmpty {
                     ForEach(externalResults.prefix(35)) { item in
                         Button {
                             guard let site=model.createOrReuseSite(
@@ -164,6 +159,19 @@ struct TimeSitePickerView: View {
                             }
                         }
                     }
+                }
+                if pendingProviders > 0 && !searchWasLimited {
+                    HStack {
+                        ProgressView().controlSize(.small)
+                        Text("Comprobando otras fuentes en segundo plano…")
+                            .font(.caption2).foregroundStyle(.secondary)
+                    }
+                }
+                if let errorText {
+                    Text(errorText).font(.caption2).foregroundStyle(.secondary)
+                } else if externalResults.isEmpty && !loading {
+                    Text("Sin resultados por ahora. Puedes buscar otro nombre o utilizar un sitio conocido o privado.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Text("Las ubicaciones son puntos de referencia de sus respectivos mapas. Estar cerca no confirma que hayas entrado en un establecimiento.")
                     .font(.caption2).foregroundStyle(.secondary)
@@ -198,42 +206,82 @@ struct TimeSitePickerView: View {
                 Button("Cerrar") { dismiss() }
             }
         }
-        .task(id:cell.id) { await searchPlaces(query:nil) }
+        .task(id:cell.id) { searchPlaces(query:nil) }
+        .scrollDismissesKeyboard(.interactively)
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
     }
 
-    private func searchAnywhere() async {
+    private func searchAnywhere() {
         let query=searchText.trimmingCharacters(in:.whitespacesAndNewlines)
         guard !query.isEmpty else { return }
-        await searchPlaces(query:query)
+        searchPlaces(query:query)
     }
 
-    private func foursquareResults(center:CLLocationCoordinate2D,
-                                   query:String?) async -> [SitePlaceResult] {
-        guard let key=SiteFoursquareCredentials.load(),!key.isEmpty else { return [] }
-        return (try? await SitePOISearch.foursquare(center:center,cell:cell,
-                                      query:query,serviceKey:key)) ?? []
-    }
-
-    private func searchPlaces(query:String?) async {
+    /// These three provider calls are independent. A slow Overpass request
+    /// must never prevent Apple or Foursquare results from being displayed.
+    /// Waiting indicators stop after eight seconds, even if a public service
+    /// is throttled or unavailable. Known local places remain actionable.
+    private func searchPlaces(query:String?) {
         let center=Grid.center(cell)
-        loading=true
-        errorText=nil
+        let id=UUID()
+        requestID=id
         let text=query?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
         searchedText=text
-        async let fsq = foursquareResults(center:center,query:text.isEmpty ? nil : text)
-        async let osm = SitePOISearch.openStreetMap(center:center,cell:cell,
-                                                    query:text.isEmpty ? nil : text)
-        async let apple = SitePOISearch.apple(center:center,cell:cell,
-                                              query:text.isEmpty ? nil : text)
-        let (f,osmResponse,appleResponse)=await (fsq,try? osm,try? apple)
-        let values=f + (osmResponse ?? []) + (appleResponse ?? [])
-        // Explicit named searches retain provider relevance rather than
-        // restricting results to the exact 100m grid.
-        externalResults=SitePOISearch.ranked(values)
-        if externalResults.isEmpty {
-            errorText="Ninguna fuente ha devuelto resultados. Comprueba la conexión o escribe otro nombre."
+        externalResults=[]
+        errorText=nil
+        loading=true
+        searchWasLimited=false
+        let effectiveQuery:String?=text.isEmpty ? nil : text
+        let foursquareKey=SiteFoursquareCredentials.load()
+        pendingProviders=foursquareKey == nil ? 2 : 3
+
+        Task {
+            let response=(try? await SitePOISearch.apple(center:center,cell:cell,
+                                                         query:effectiveQuery)) ?? []
+            await receive(response,for:id)
         }
-        loading=false
+        Task {
+            let response=(try? await SitePOISearch.openStreetMap(center:center,
+                                     cell:cell,query:effectiveQuery)) ?? []
+            await receive(response,for:id)
+        }
+        if let foursquareKey,!foursquareKey.isEmpty {
+            Task {
+                let response=(try? await SitePOISearch.foursquare(center:center,
+                             cell:cell,query:effectiveQuery,
+                             serviceKey:foursquareKey)) ?? []
+                await receive(response,for:id)
+            }
+        }
+        Task {
+            try? await Task.sleep(nanoseconds:8_000_000_000)
+            await MainActor.run {
+                guard requestID == id else { return }
+                loading=false
+                searchWasLimited=true
+                if externalResults.isEmpty {
+                    errorText="La consulta está tardando. Puedes elegir ya un sitio guardado, buscar otro nombre o crear uno privado."
+                }
+            }
+        }
+    }
+
+    @MainActor private func receive(_ results:[SitePlaceResult],for id:UUID) {
+        guard requestID == id else { return }
+        pendingProviders=max(0,pendingProviders-1)
+        if !results.isEmpty {
+            externalResults=SitePOISearch.ranked(externalResults + results)
+            errorText=nil
+            loading=false
+        }
+        if pendingProviders == 0 {
+            loading=false
+            searchWasLimited=false
+            if externalResults.isEmpty {
+                errorText="Los servicios de mapas no han devuelto resultados. Prueba por nombre o usa un sitio guardado."
+            }
+        }
     }
 
 }
