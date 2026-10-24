@@ -54,6 +54,27 @@ enum SitePrivateManagement {
         return true
     }
 
+    /// When an older stay is represented only by a single-site assignment,
+    /// create an explicit unassigned period before deleting that assignment.
+    /// Otherwise the calendar could immediately guess a DIFFERENT saved site
+    /// in the same square, making the deletion appear ineffective.
+    static func unassignedPartsForDeletedLegacy(
+        id:UUID,
+        assignments:[SiteStayAssignment],
+        intervals:[AssignedInterval],
+        existingParts:[SiteStayPart]
+    ) -> [SiteStayPart] {
+        let keys=Set(assignments.filter { $0.siteID == id }.map(\.id))
+        guard !keys.isEmpty else { return [] }
+        let alreadyPartitioned=Set(existingParts.map(\.stayID))
+        return SiteStayHistory.extract(intervals).compactMap { stay in
+            guard keys.contains(stay.id), !alreadyPartitioned.contains(stay.id) else {
+                return nil
+            }
+            return SiteStayHistory.defaultPart(for:stay,suggested:nil)
+        }
+    }
+
     static func linkedStays(
         id: UUID, assignments: [SiteStayAssignment],
         parts: [SiteStayPart]
