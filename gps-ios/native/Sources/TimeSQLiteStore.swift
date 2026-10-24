@@ -14,6 +14,9 @@ struct TimeStoreHeader: Codable {
     var places: [UserPlace]?
     var customZones: [TimeCustomZone]?
     var territoryCache: [String:TerritoryRecord]?
+    var identifiedSites: [IdentifiedSite]?
+    var siteStayAssignments: [SiteStayAssignment]?
+    var dismissedSiteStayKeys: [String]?
     var powerEvents: [GPSPowerEvent]?
     var shortIDs: [String:Int]?
     var gpsRest: GPSRestSession?
@@ -30,6 +33,9 @@ struct TimeStoreHeader: Codable {
         places = state.places
         customZones = state.customZones
         territoryCache = state.territoryCache
+        identifiedSites = state.identifiedSites
+        siteStayAssignments = state.siteStayAssignments
+        dismissedSiteStayKeys = state.dismissedSiteStayKeys
         powerEvents = state.powerEvents
         shortIDs = state.shortIDs
         gpsRest = state.gpsRest
@@ -281,6 +287,9 @@ final class TimeSQLiteStore {
                 data.places = header.places ?? []
                 data.customZones = header.customZones ?? []
                 data.territoryCache = header.territoryCache ?? [:]
+                data.identifiedSites = header.identifiedSites ?? []
+                data.siteStayAssignments = header.siteStayAssignments ?? []
+                data.dismissedSiteStayKeys = header.dismissedSiteStayKeys ?? []
                 data.powerEvents = header.powerEvents ?? []
                 data.shortIDs = header.shortIDs ?? [:]
                 data.gpsRest = header.gpsRest
