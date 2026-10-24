@@ -86,9 +86,18 @@ struct TimeSiteCalendarView: View {
         .navigationTitle("Histórico de sitios")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement:.topBarLeading) {
+                NavigationLink {
+                    TimeMySitesView(model:model)
+                } label: {
+                    Label("Mis sitios",systemImage:"list.bullet")
+                }
+                .accessibilityLabel("Ver sitios y tiempos")
+            }
             ToolbarItem(placement:.topBarTrailing) {
                 Button { rebuild() } label: { Image(systemName:"arrow.clockwise") }
                     .disabled(preparing)
+                    .accessibilityLabel("Actualizar histórico")
             }
         }
         .onAppear { if allStays.isEmpty { rebuild() } }
