@@ -271,6 +271,14 @@ struct TimeMySitesView: View {
     var body: some View {
         List {
             Section {
+                NavigationLink {
+                    TimeSiteCalendarView(model:model)
+                } label: {
+                    Label("Ver todo el histórico en calendario",
+                          systemImage:"calendar.badge.clock")
+                }
+            }
+            Section {
                 Text("Sitios identificados a partir de estancias en las cuadrículas. Los confirmados cuentan para las próximas asignaciones automáticas; las suposiciones automáticas no votan.")
                     .font(.footnote).foregroundStyle(.secondary)
                 LabeledContent("Sitios identificados",value:"\(model.data.identifiedSites.count)")
