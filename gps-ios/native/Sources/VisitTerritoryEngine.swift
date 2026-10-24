@@ -65,6 +65,22 @@ struct VisitTerritorySnapshot {
     let counts: [String: Int]
     let tiles: [VisitTerritoryCell]
     let territories: [VisitTerritoryRegion]
+    // El mapa consulta la región de cada cuadrícula varias veces.
+    // Un índice evita buscar linealmente entre todos los países en cada
+    // polígono (O(cuadrículas × países) en historiales extensos).
+    private let regionIndex: [String: Int]
+
+    init(period: VisitTerritoryPeriod,
+         counts: [String: Int],
+         tiles: [VisitTerritoryCell],
+         territories: [VisitTerritoryRegion]) {
+        self.period = period
+        self.counts = counts
+        self.tiles = tiles
+        self.territories = territories
+        self.regionIndex = Dictionary(uniqueKeysWithValues:
+            territories.enumerated().map { ($0.element.id, $0.offset) })
+    }
 
     var disputedCount: Int {
         tiles.filter { $0.classification == .disputed }.count
@@ -76,8 +92,8 @@ struct VisitTerritorySnapshot {
     var occupied: Int { counts.count }
 
     func region(_ id: String?) -> VisitTerritoryRegion? {
-        guard let id else { return nil }
-        return territories.first(where: { $0.id == id })
+        guard let id, let index = regionIndex[id] else { return nil }
+        return territories[index]
     }
 }
 
