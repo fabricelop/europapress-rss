@@ -1,12 +1,41 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-24T13:33:50.103975+00:00",
+  "checked_at": "2026-10-24T16:54:59.239494+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 3,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 16,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "f92941992608",
+      "title": "La estación de Plaza de Armas recupera la normalidad tras el incendio de un autobús",
+      "source": [
+        "app_processing",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "9a2f6c34406f",
+      "title": "Muere un hombre de 34 años al volcar una máquina de recoger aceitunas en Osuna",
+      "source": [
+        "app_processing",
+        "editorial_queue"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "ade7c3ccfbe1",
+      "title": "Gases lacrimógenos y cientos de detenidos: la tensión por las protestas vuelve a estallar en las calles de Francia con cargas policiales en París, Marsella y Lyon",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +129,11 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "9a2f6c34406f",
+    "ade7c3ccfbe1",
+    "f92941992608"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",
