@@ -93,18 +93,10 @@ enum SiteCrossGridPolicy {
         }
     }
 
-    /// Never assume a site covers a different square solely because a place
-    /// pin is nearby. Cross-grid autoselection requires multiple independent
-    /// confirmed squares, a local anchor and no competing nearby candidates.
+    /// A different grid can be displayed as a candidate but not selected
+    /// automatically. Only an explicit local confirmation enables autofill.
     static func safeAutomaticChoice(_ candidates: [SiteSpatialCandidate]) -> UUID? {
-        guard let first = candidates.first else { return nil }
-        if first.localConfirmations > 0 { return first.siteID }
-        guard first.confirmedCells.count >= 2,
-              first.closestConfirmedCellMeters <= 145,
-              first.closestEvidenceMeters <= 145 else { return nil }
-        if candidates.dropFirst().contains(where: {
-            $0.localConfirmations > 0 || $0.closestEvidenceMeters <= 160
-        }) { return nil }
-        return first.siteID
+        candidates.first(where: { $0.localConfirmations > 0 })?.siteID
     }
+
 }
