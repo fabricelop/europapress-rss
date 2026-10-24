@@ -4,26 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "df4a07918bda",
-    "ea3625e55ffd",
-    "9eacfd9c1d46",
-    "01f02bd2c41d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-24T21:45:00+02:00",
-  "last_completed_at": "2026-10-24T21:46:20+02:00",
-  "updated_at": "2026-10-24T21:46:20+02:00",
+  "last_started_at": "2026-10-24T22:15:00+02:00",
+  "last_completed_at": "2026-10-24T22:16:40+02:00",
+  "updated_at": "2026-10-24T22:16:40+02:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261024T214500+0200",
+    "trigger_run_id": "tr-chat-20261024T221500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -31,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T214500+0200",
+    "run_id": "tr-chat-20261024T221500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T21:45:00+02:00",
-    "updated_at": "2026-10-24T21:46:20+02:00",
-    "finished_at": "2026-10-24T21:46:20+02:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-24T22:15:00+02:00",
+    "updated_at": "2026-10-24T22:16:40+02:00",
+    "finished_at": "2026-10-24T22:16:40+02:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
+      "attempted": 0,
       "ready": 0,
-      "explained": 4,
-      "explanation_groups": 2,
-      "new_cards": 2,
-      "revisions_updated": 4,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 4,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -62,18 +57,18 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 2,
-      "recent_missing_closer_reviewed": 2,
-      "pending_cards_reviewed": 15,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 17,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
       "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: 4/4 revisiones cerradas en 2 grupos; cola 0; sin ImageGen.",
+    "message": "TTendencias completada: 0/0 pendientes editoriales; saneamiento revisado y cola verificada vacía; sin ImageGen.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -83,170 +78,57 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "df4a07918bda",
-        "title": "#JESC2026",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [],
-        "selected_candidate": "🌶️ España canta la última antes de contar.",
-        "selected_score": 4
-      },
-      {
-        "trend_id": "ea3625e55ffd",
-        "title": "Aguirre · Mestalla · Elliot",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [],
-        "selected_candidate": "🌶️ Mestalla pasó del empate al descuento más caro.",
-        "selected_score": 4
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T21:45:00+02:00",
+        "at": "2026-10-24T22:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada iniciada; cola autoritativa 4. Preparando investigación y saneamiento de Pendientes."
+        "message": "Pasada iniciada; cola autoritativa 0. Revisando Pendientes y estado final antes de cerrar."
       },
       {
-        "at": "2026-10-24T21:45:08+02:00",
-        "phase": "verifying",
-        "trend_id": "df4a07918bda",
-        "title": "#JESC2026",
-        "message": "Releyendo estado autoritativo de #JESC2026."
-      },
-      {
-        "at": "2026-10-24T21:45:12+02:00",
-        "phase": "investigating",
-        "trend_id": "df4a07918bda",
-        "title": "#JESC2026",
-        "message": "Contrastando RTVE y cobertura del festival; final en directo en Malta."
-      },
-      {
-        "at": "2026-10-24T21:45:18+02:00",
-        "phase": "drafting",
-        "trend_id": "df4a07918bda",
-        "title": "#JESC2026",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-24T21:45:22+02:00",
-        "phase": "remate_selection",
-        "trend_id": "df4a07918bda",
-        "title": "#JESC2026",
-        "message": "Remate seleccionado tras filtro de originalidad."
-      },
-      {
-        "at": "2026-10-24T21:45:26+02:00",
-        "phase": "verifying",
-        "trend_id": "ea3625e55ffd",
-        "title": "Aguirre · Mestalla · Elliot",
-        "message": "Releyendo estado autoritativo de Aguirre, Mestalla y Elliot."
-      },
-      {
-        "at": "2026-10-24T21:45:30+02:00",
-        "phase": "investigating",
-        "trend_id": "ea3625e55ffd",
-        "title": "Aguirre · Mestalla · Elliot",
-        "message": "Contrastando crónicas del Valencia-Villarreal y la expulsión de Elliott."
-      },
-      {
-        "at": "2026-10-24T21:45:36+02:00",
-        "phase": "drafting",
-        "trend_id": "ea3625e55ffd",
-        "title": "Aguirre · Mestalla · Elliot",
-        "message": "Redactando explicación conjunta y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-24T21:45:40+02:00",
-        "phase": "remate_selection",
-        "trend_id": "ea3625e55ffd",
-        "title": "Aguirre · Mestalla · Elliot",
-        "message": "Remate seleccionado tras filtro de originalidad."
-      },
-      {
-        "at": "2026-10-24T21:45:44+02:00",
+        "at": "2026-10-24T22:15:35+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual ya solicitada. Dos explicadas sin remate se mantienen sin humor por sensibilidad."
+        "message": "Revisando Pendientes · 17 explicadas recientes; una sin remate se mantiene sin humor por tratar un asalto. Reparación visual solicitada."
       },
       {
-        "at": "2026-10-24T21:45:48+02:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando fichas Explicadas y sincronizando requests; después se retirarán las revisiones de la cola."
-      },
-      {
-        "at": "2026-10-24T21:46:05+02:00",
+        "at": "2026-10-24T22:16:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y verificando id+revision, texto persistido y retirada exacta de cola."
+        "message": "Releyendo main: cola 0, preparing/update 0, rewrite_pending 0 y problematic 0; recent.json capturado a las 22:10:50."
       },
       {
-        "at": "2026-10-24T21:46:12+02:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final correcta: 4 revisiones explained, 2 fichas editoriales, cola activa 0 y rewrite_pending 0."
-      },
-      {
-        "at": "2026-10-24T21:46:20+02:00",
+        "at": "2026-10-24T22:16:40+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 4/4 revisiones cerradas en 2 grupos; cola 0; sin ImageGen."
+        "message": "TTendencias completada: 0/0 pendientes editoriales; saneamiento revisado y cola verificada vacía; sin ImageGen."
       }
     ],
-    "processed_ids": [
-      "df4a07918bda",
-      "ea3625e55ffd",
-      "9eacfd9c1d46",
-      "01f02bd2c41d"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "group_id": "grp-jesc2026-final-20261024",
-        "leader_id": "df4a07918bda",
-        "members": [
-          "df4a07918bda"
-        ],
-        "status": "explained"
-      },
-      {
-        "group_id": "grp-aguirre-mestalla-elliot-20261024",
-        "leader_id": "ea3625e55ffd",
-        "members": [
-          "ea3625e55ffd",
-          "9eacfd9c1d46",
-          "01f02bd2c41d"
-        ],
-        "status": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261024T214500+0200",
+  "run_id": "tr-chat-20261024T221500+0200",
   "summary": {
-    "attempted": 4,
+    "attempted": 0,
     "ready": 0,
-    "explained": 4,
-    "explanation_groups": 2,
-    "new_cards": 2,
-    "revisions_updated": 4,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 4,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -254,11 +136,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
-    "remates_omitted": 2,
-    "recent_missing_closer_reviewed": 2,
-    "pending_cards_reviewed": 15,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 17,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -267,115 +149,45 @@
   },
   "activity": [
     {
-      "at": "2026-10-24T21:45:00+02:00",
+      "at": "2026-10-24T22:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Pasada iniciada; cola autoritativa 4. Preparando investigación y saneamiento de Pendientes."
+      "message": "Pasada iniciada; cola autoritativa 0. Revisando Pendientes y estado final antes de cerrar."
     },
     {
-      "at": "2026-10-24T21:45:08+02:00",
-      "phase": "verifying",
-      "trend_id": "df4a07918bda",
-      "title": "#JESC2026",
-      "message": "Releyendo estado autoritativo de #JESC2026."
-    },
-    {
-      "at": "2026-10-24T21:45:12+02:00",
-      "phase": "investigating",
-      "trend_id": "df4a07918bda",
-      "title": "#JESC2026",
-      "message": "Contrastando RTVE y cobertura del festival; final en directo en Malta."
-    },
-    {
-      "at": "2026-10-24T21:45:18+02:00",
-      "phase": "drafting",
-      "trend_id": "df4a07918bda",
-      "title": "#JESC2026",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-24T21:45:22+02:00",
-      "phase": "remate_selection",
-      "trend_id": "df4a07918bda",
-      "title": "#JESC2026",
-      "message": "Remate seleccionado tras filtro de originalidad."
-    },
-    {
-      "at": "2026-10-24T21:45:26+02:00",
-      "phase": "verifying",
-      "trend_id": "ea3625e55ffd",
-      "title": "Aguirre · Mestalla · Elliot",
-      "message": "Releyendo estado autoritativo de Aguirre, Mestalla y Elliot."
-    },
-    {
-      "at": "2026-10-24T21:45:30+02:00",
-      "phase": "investigating",
-      "trend_id": "ea3625e55ffd",
-      "title": "Aguirre · Mestalla · Elliot",
-      "message": "Contrastando crónicas del Valencia-Villarreal y la expulsión de Elliott."
-    },
-    {
-      "at": "2026-10-24T21:45:36+02:00",
-      "phase": "drafting",
-      "trend_id": "ea3625e55ffd",
-      "title": "Aguirre · Mestalla · Elliot",
-      "message": "Redactando explicación conjunta y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-24T21:45:40+02:00",
-      "phase": "remate_selection",
-      "trend_id": "ea3625e55ffd",
-      "title": "Aguirre · Mestalla · Elliot",
-      "message": "Remate seleccionado tras filtro de originalidad."
-    },
-    {
-      "at": "2026-10-24T21:45:44+02:00",
+      "at": "2026-10-24T22:15:35+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual ya solicitada. Dos explicadas sin remate se mantienen sin humor por sensibilidad."
+      "message": "Revisando Pendientes · 17 explicadas recientes; una sin remate se mantiene sin humor por tratar un asalto. Reparación visual solicitada."
     },
     {
-      "at": "2026-10-24T21:45:48+02:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Guardando fichas Explicadas y sincronizando requests; después se retirarán las revisiones de la cola."
-    },
-    {
-      "at": "2026-10-24T21:46:05+02:00",
+      "at": "2026-10-24T22:16:20+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y verificando id+revision, texto persistido y retirada exacta de cola."
+      "message": "Releyendo main: cola 0, preparing/update 0, rewrite_pending 0 y problematic 0; recent.json capturado a las 22:10:50."
     },
     {
-      "at": "2026-10-24T21:46:12+02:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final correcta: 4 revisiones explained, 2 fichas editoriales, cola activa 0 y rewrite_pending 0."
-    },
-    {
-      "at": "2026-10-24T21:46:20+02:00",
+      "at": "2026-10-24T22:16:40+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 4/4 revisiones cerradas en 2 grupos; cola 0; sin ImageGen."
+      "message": "TTendencias completada: 0/0 pendientes editoriales; saneamiento revisado y cola verificada vacía; sin ImageGen."
     }
   ],
   "partial": false,
   "radar_refresh": {
-    "status": "not_needed",
-    "reason": "trends/recent.json estaba fresco durante la ejecución.",
-    "captured_at": "2026-10-24T21:11:05+02:00"
+    "status": "requested",
+    "reason": "refresh-trigger actualizado durante la comprobación; la relectura mostró recent.json ya fresco.",
+    "captured_at": "2026-10-24T22:10:50+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-24T21:11:05+02:00",
+    "captured_at": "2026-10-24T22:10:50+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261024T204500+0200",
+  "previous_run_id": "tr-chat-20261024T214500+0200",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -383,24 +195,5 @@
     "total_ratings": 154,
     "recent_considered": 100
   },
-  "remate_selections": [
-    {
-      "trend_id": "df4a07918bda",
-      "title": "#JESC2026",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [],
-      "selected_candidate": "🌶️ España canta la última antes de contar.",
-      "selected_score": 4
-    },
-    {
-      "trend_id": "ea3625e55ffd",
-      "title": "Aguirre · Mestalla · Elliot",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [],
-      "selected_candidate": "🌶️ Mestalla pasó del empate al descuento más caro.",
-      "selected_score": 4
-    }
-  ]
+  "remate_selections": []
 }
