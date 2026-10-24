@@ -1942,8 +1942,10 @@ struct RootView: View {
                     .tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }.tag(1)
                 GPSDiaryShell(model: model)
                     .tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }.tag(2)
-                TimeDiscoveryHome(model:model)
-                    .tabItem { Label("Descubrir", systemImage:"globe.europe.africa.fill") }.tag(3)
+                NavigationStack {
+                    TimeSiteCalendarView(model:model)
+                }
+                    .tabItem { Label("Sitios", systemImage:"mappin.circle.fill") }.tag(3)
                 TimeSettingsView(model: model, gps: gps)
                     .tabItem { Label("Ajustes", systemImage: "gearshape") }.tag(4)
             }
@@ -2732,7 +2734,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.57 · datos guardados en este iPhone",
+                    Label("Versión 1.0.58 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
@@ -2809,6 +2811,15 @@ struct TimeSettingsView: View {
                     NavigationLink("Ver Mis Sitios") {
                         TimeMySitesView(model:model)
                     }
+                }
+                Section("Descubrir") {
+                    NavigationLink {
+                        TimeDiscoveryHome(model:model)
+                    } label: {
+                        Label("Descubrir y BIOGRID",systemImage:"globe.europe.africa.fill")
+                    }
+                    Text("BIOGRID, mapas de medias, pasaporte, hitos y otras funciones siguen disponibles aquí.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Pantalla de bloqueo") {
                     NavigationLink("En vivo · pantalla bloqueada") {
