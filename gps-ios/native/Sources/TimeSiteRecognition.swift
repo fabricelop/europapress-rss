@@ -47,7 +47,7 @@ enum SiteStayPolicy {
             result[assignment.siteID, default: 0] += 1
         }
         var counted: Set<String> = []
-        for part in parts where part.kind == .place &&
+        for part in parts where part.kind == .place && part.confirmed &&
              part.stayID.hasPrefix(cellID + "|") {
             guard let id = part.siteID else { continue }
             let key = part.stayID + "|" + id.uuidString
