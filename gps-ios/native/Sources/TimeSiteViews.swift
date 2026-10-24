@@ -88,12 +88,12 @@ struct TimeSitePickerView: View {
     var body: some View {
         List {
             Section {
-                Text("Elige el lugar real de esta estancia. Las próximas visitas a la misma cuadrícula se asignarán al sitio que hayas confirmado más veces.")
+                Text("Primero aparecen los sitios confirmados en esta cuadrícula y los que ya has identificado en otras cercanas. Puedes corregir una propuesta sin modificar el GPS.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
             let known = model.siteOptions(for:cell)
             if !known.isEmpty {
-                Section("Tus sitios · más confirmados primero") {
+                Section("Sitios conocidos · ordenados por probabilidad") {
                     ForEach(known.indices, id: \.self) { index in
                         let row = known[index]
                         Button {
@@ -107,8 +107,11 @@ struct TimeSitePickerView: View {
                                 Text(row.site.name).foregroundStyle(.primary)
                                 Spacer()
                                 if row.confirmations > 0 {
-                                    Text("\(row.confirmations) confirmaciones")
+                                    Text("\(row.confirmations) aquí")
                                         .font(.caption).foregroundStyle(.secondary)
+                                } else if row.fromOtherSquares > 0 {
+                                    Text("Ya confirmado cerca")
+                                        .font(.caption2).foregroundStyle(.teal)
                                 }
                                 Image(systemName:"checkmark.circle")
                                     .foregroundStyle(.indigo)
