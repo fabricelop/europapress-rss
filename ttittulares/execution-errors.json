@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:03.797485Z",
-      "event_id": "8fd0789c3798-r1",
-      "phase": "outbox",
-      "reason": "8fd0789c3798-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 8fd0789c3798-r1: 8fd0789c3798-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:03.797485Z",
       "event_id": "af49af5583b9-r1",
       "phase": "outbox",
       "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "c14d792f2a4b-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento c14d792f2a4b-r1: c14d792f2a4b-r1.json: ValueError: el tweet debe terminar con 2-3 hashtags y su remate 🌶️, o conservar el formato histórico. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-24T05:03:37.742744Z",
+      "event_id": "e3bcb9c5eb93-r1",
+      "phase": "outbox",
+      "reason": "e3bcb9c5eb93-r1.json: ValueError: tweet vacío o >256",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e3bcb9c5eb93-r1: e3bcb9c5eb93-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
