@@ -72,6 +72,9 @@ struct TimeSitePickerView: View {
     var onPicked: ((IdentifiedSite) -> Void)? = nil
     @State private var searchText = ""
     @State private var externalResults: [SitePlaceResult] = []
+    @State private var showDistantResults = false
+    private var nearbyResults: [SitePlaceResult] { externalResults.filter { $0.distance <= 3500 } }
+    private var distantResults: [SitePlaceResult] { externalResults.filter { $0.distance > 3500 } }
     @State private var loading = false
     @State private var pendingProviders = 0
     @State private var requestID = UUID()
@@ -123,59 +126,48 @@ struct TimeSitePickerView: View {
                 Text("La búsqueda consulta las fuentes por separado y enseña los resultados en cuanto aparecen.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
-            Section("Sitios encontrados en mapas") {
-                if loading && externalResults.isEmpty {
-                    ProgressView("Consultando mapas…")
+            Section("Establecimientos próximos a la cuadrícula") {
+                if loading && nearbyResults.isEmpty {
+                    ProgressView("Consultando establecimientos de la zona…")
                 }
-                if !externalResults.isEmpty {
-                    ForEach(externalResults.prefix(35)) { item in
-                        Button {
-                            guard let site=model.createOrReuseSite(
-                                name:item.name,latitude:item.latitude,
-                                longitude:item.longitude,
-                                origin:item.source == .foursquare ? "foursquare" :
-                                       item.source == .openStreetMap ? "openstreetmap" : "apple"
-                            ) else { return }
-                            if let onPicked { onPicked(site) }
-                            else { model.confirmSite(site,cell:cell) }
-                            dismiss()
-                        } label: {
-                            HStack(spacing:9) {
-                                Image(systemName:"mappin.circle").foregroundStyle(.indigo)
-                                VStack(alignment:.leading,spacing:3) {
-                                    Text(item.name).foregroundStyle(.primary)
-                                        .fontWeight(item.inGrid ? .semibold : .regular)
-                                    HStack(spacing:6) {
-                                        Text(item.source.rawValue)
-                                        Text("·")
-                                        Text(item.inGrid ? "Dentro de la cuadrícula" :
-                                             "Aprox. \(Int(item.distance.rounded())) m")
-                                    }
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                                }
-                                Spacer()
-                                Image(systemName:"plus.circle").foregroundStyle(.indigo)
-                            }
-                        }
+                if !nearbyResults.isEmpty {
+                    ForEach(nearbyResults.prefix(35)) { item in
+                        providerRow(item)
                     }
                 }
+                if nearbyResults.isEmpty && !loading {
+                    Text("No se han encontrado establecimientos próximos con este nombre. Puedes probar otra búsqueda o consultar resultados más alejados.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 if pendingProviders > 0 && !searchWasLimited {
-                    HStack {
+                    HStack(spacing:8) {
                         ProgressView().controlSize(.small)
-                        Text("Comprobando otras fuentes en segundo plano…")
+                        Text("Comprobando otras fuentes…")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
                 }
                 if let errorText {
                     Text(errorText).font(.caption2).foregroundStyle(.secondary)
-                } else if externalResults.isEmpty && !loading {
-                    Text("Sin resultados por ahora. Puedes buscar otro nombre o utilizar un sitio conocido o privado.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
-                Text("Las ubicaciones son puntos de referencia de sus respectivos mapas. Estar cerca no confirma que hayas entrado en un establecimiento.")
+                Text("Se priorizan los locales de la zona; una localidad con el mismo nombre pero distante no sustituirá a un establecimiento próximo.")
                     .font(.caption2).foregroundStyle(.secondary)
-                if externalResults.contains(where:{$0.source == .openStreetMap}) {
+            }
+            if !distantResults.isEmpty {
+                Section("Resultados alejados") {
+                    Button(showDistantResults ? "Ocultar resultados alejados" :
+                           "Mostrar \(distantResults.count) resultados a más de 3,5 km") {
+                        showDistantResults.toggle()
+                    }
+                    .buttonStyle(.borderless)
+                    if showDistantResults {
+                        ForEach(distantResults.prefix(20)) { item in
+                            providerRow(item)
+                        }
+                    }
+                }
+            }
+            if externalResults.contains(where:{$0.source == .openStreetMap}) {
+                Section {
                     Link("Datos © OpenStreetMap colaboradores",
                          destination:URL(string:"https://www.openstreetmap.org/copyright")!)
                         .font(.caption2)
@@ -212,6 +204,37 @@ struct TimeSitePickerView: View {
         .presentationDragIndicator(.visible)
     }
 
+    private func providerRow(_ item:SitePlaceResult) -> some View {
+        Button {
+            guard let site=model.createOrReuseSite(
+                name:item.name, latitude:item.latitude,
+                longitude:item.longitude,
+                origin:item.source == .foursquare ? "foursquare" :
+                       item.source == .openStreetMap ? "openstreetmap" : "apple"
+            ) else { return }
+            if let onPicked { onPicked(site) }
+            else { model.confirmSite(site,cell:cell) }
+            dismiss()
+        } label: {
+            HStack(spacing:9) {
+                Image(systemName:"mappin.circle").foregroundStyle(.indigo)
+                VStack(alignment:.leading,spacing:3) {
+                    Text(item.name).foregroundStyle(.primary)
+                        .fontWeight(item.inGrid ? .semibold : .regular)
+                    HStack(spacing:6) {
+                        Text(item.source.rawValue)
+                        Text("·")
+                        Text(item.inGrid ? "Dentro de la cuadrícula" :
+                             "Aprox. \(Int(item.distance.rounded())) m")
+                    }
+                    .font(.caption2).foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName:"plus.circle").foregroundStyle(.indigo)
+            }
+        }
+    }
+
     private func searchAnywhere() {
         let query=searchText.trimmingCharacters(in:.whitespacesAndNewlines)
         guard !query.isEmpty else { return }
@@ -229,6 +252,7 @@ struct TimeSitePickerView: View {
         let text=query?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
         searchedText=text
         externalResults=[]
+        showDistantResults=false
         errorText=nil
         loading=true
         searchWasLimited=false
