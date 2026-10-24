@@ -1,0 +1,74 @@
+name: "Mi Mapa Medias 1.0.55 - IPA iPhone"
+on:
+  push:
+    branches:
+      - feature/mapa-medias-v55
+    paths:
+      - 'gps-ios/native/Sources/**'
+      - 'gps-ios/native/Tests/**'
+      - 'gps-ios/native/project.yml'
+      - '.github/workflows/mi-mapa-medias-v55.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mi-mapa-medias-v55
+  cancel-in-progress: true
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 50
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar sintaxis y generar proyecto iOS
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas en simulador iPhone
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          data=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          devices=[d for runtime,items in data.items() if "iOS" in runtime for d in items if "iPhone" in d["name"] and d["state"] != "Unavailable"]
+          assert devices, "No iPhone simulator available"
+          open("/tmp/medias_simulator","w").write(devices[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/medias_simulator)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Compilar IPA iPhone sin firma
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/medias_v55_build" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/medias_v55_build/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          from pathlib import Path
+          import os,plistlib
+          app=Path(os.environ["APP"])
+          assert app.is_dir(), "App package missing"
+          meta=plistlib.loads((app/"Info.plist").read_bytes())
+          assert meta["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert meta["CFBundleShortVersionString"]=="1.0.55"
+          assert meta["CFBundleVersion"]=="56"
+          assert meta["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").exists(), "Live Activity extension missing"
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Medias-1.0.55.ipa Payload
+          unzip -t MiMapaDelTiempo-Medias-1.0.55.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Medias-1.0.55-build56-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Medias-1.0.55.ipa
+          retention-days: 14
+          if-no-files-found: error
