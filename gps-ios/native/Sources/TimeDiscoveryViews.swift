@@ -6,8 +6,7 @@ import MapKit
 struct TimeDiscoveryHome:View {
     @ObservedObject var model:TimeModel
     var body:some View {
-        NavigationStack {
-            List {
+        List {
                 Section {
                     NavigationLink {
                         BioGridView(model:model)
@@ -31,31 +30,6 @@ struct TimeDiscoveryHome:View {
                             }
                         } icon: {
                             Image(systemName:"chart.bar.xaxis")
-                                .foregroundStyle(.indigo)
-                        }
-                    }
-                    NavigationLink {
-                        TimeSiteCalendarView(model:model)
-                    } label: {
-                        Label {
-                            VStack(alignment:.leading,spacing:4) {
-                                Text("Histórico de sitios").font(.headline)
-                                Text("Calendario completo, estancias de más de 5 minutos, varios sitios por cuadrícula.")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: { Image(systemName:"calendar.badge.clock").foregroundStyle(.indigo) }
-                    }
-                    NavigationLink {
-                        TimeMySitesView(model:model)
-                    } label: {
-                        Label {
-                            VStack(alignment:.leading,spacing:4) {
-                                Text("Mis Sitios").font(.headline)
-                                Text("Lugares reconocidos y visitas asignadas automáticamente.")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }
-                        } icon: {
-                            Image(systemName:"mappin.and.ellipse")
                                 .foregroundStyle(.indigo)
                         }
                     }
@@ -116,7 +90,6 @@ struct TimeDiscoveryHome:View {
                 }
             }
             .navigationTitle("Descubrir")
-        }
     }
 }
 
