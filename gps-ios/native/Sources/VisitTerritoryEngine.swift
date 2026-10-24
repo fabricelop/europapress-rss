@@ -60,6 +60,14 @@ struct VisitTerritoryRegion: Identifiable {
     let colorIndex: Int
 }
 
+/// Etiqueta de país situada en una cuadrícula que está realmente dibujada.
+/// El núcleo principal puede quedar fuera de pantalla al explorar un país grande.
+struct VisitTerritoryAnnotationAnchor: Identifiable {
+    let region: VisitTerritoryRegion
+    let cell: Cell
+    var id: String { region.id }
+}
+
 struct VisitTerritorySnapshot {
     let period: VisitTerritoryPeriod
     let counts: [String: Int]
@@ -150,6 +158,27 @@ struct VisitTerritorySnapshot {
         // de dibujo: se conservan primero las cuadrículas más visitadas.
         candidates.sort { $0.rank < $1.rank }
         return Array(candidates.prefix(limit).map(\.tile))
+    }
+
+    /// Sitúa la etiqueta dentro del mapa aunque el núcleo esté fuera de vista.
+    /// Prioriza la casilla visible con más visitas y conserva el orden estable.
+    func annotationAnchors(for visible: [VisitTerritoryCell],
+                           limit: Int = 40) -> [VisitTerritoryAnnotationAnchor] {
+        guard limit > 0 else { return [] }
+        var bestByRegion: [String: VisitTerritoryCell] = [:]
+        for tile in visible {
+            guard let id = tile.territoryID else { continue }
+            if let previous = bestByRegion[id],
+               tile.visits < previous.visits ||
+               (tile.visits == previous.visits && tile.id > previous.id) {
+                continue
+            }
+            bestByRegion[id] = tile
+        }
+        return Array(territories.compactMap { region in
+            guard let tile = bestByRegion[region.id] else { return nil }
+            return VisitTerritoryAnnotationAnchor(region: region, cell: tile.cell)
+        }.prefix(limit))
     }
 
     var disputedCount: Int {
