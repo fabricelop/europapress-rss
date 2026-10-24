@@ -320,6 +320,37 @@ enum VisitTerritoryEngine {
             }
         }
 
+        // Un color asignado con un hash independiente puede ser idéntico
+        // al del país contiguo. Eso oculta fronteras, sobre todo cuando
+        // una sola casilla disputada separa dos núcleos muy visitados.
+        // Construimos el grafo de países vecinos y elegimos un color libre,
+        // empezando siempre por el color estable del identificador.
+        // El proceso es determinista e independiente del orden del diccionario.
+        var adjacentRegions: [String: Set<String>] = [:]
+        for key in valid.keys.sorted() {
+            guard let cell = TimeAnalytics.cell(key) else { continue }
+            var touching = Set<String>()
+            if let owner = ownership[key] { touching.insert(owner) }
+            for next in neighbors(cell) {
+                if let owner = ownership[next.id] { touching.insert(owner) }
+            }
+            guard touching.count > 1 else { continue }
+            for id in touching {
+                adjacentRegions[id, default: []].formUnion(
+                    touching.subtracting([id]))
+            }
+        }
+        var regionColors: [String: Int] = [:]
+        for id in components.keys.sorted() {
+            let taken = Set((adjacentRegions[id] ?? []).compactMap {
+                regionColors[$0]
+            })
+            let preferred = colorIndex(id)
+            regionColors[id] = (0..<8)
+                .map { (preferred + $0) % 8 }
+                .first(where: { !taken.contains($0) }) ?? preferred
+        }
+
         // Toda región solo tiene sus propias casillas; la frontera es
         // la casilla que linda con neutral/disputada/otro país.
         var regionBorders: [String: Int] = [:]
@@ -346,7 +377,7 @@ enum VisitTerritoryEngine {
                 visits: ids.reduce(0) { $0 + (valid[$1] ?? 0) },
                 cells: ids.count, nuclei: nuclei, periphery: periphery,
                 frontiers: regionBorders[id] ?? 0,
-                colorIndex: colorIndex(id))
+                colorIndex: regionColors[id] ?? colorIndex(id))
         }.sorted {
             $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
         }
