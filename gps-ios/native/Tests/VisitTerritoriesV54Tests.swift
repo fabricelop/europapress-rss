@@ -349,6 +349,29 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         }
     }
 
+    func testTerritoryAnnotationStaysVisibleWhenPeakIsOutsideViewport() {
+        // Un país extenso puede tener su máximo fuera de la pantalla.
+        // La etiqueta se sitúa en su casilla visible más visitada.
+        let snapshot = VisitTerritoryEngine.build(counts: [
+            a.id: 20, b.id: 3, c.id: 4, isolated.id: 7
+        ])
+        let viewport = snapshot.tiles.filter {
+            [b.id, c.id, isolated.id].contains($0.id)
+        }
+        let anchors = snapshot.annotationAnchors(for: viewport)
+        XCTAssertEqual(anchors.count, 2)
+        XCTAssertEqual(anchors.first?.region.id, a.id)
+        XCTAssertEqual(anchors.first?.cell.id, c.id)
+        XCTAssertEqual(anchors.last?.cell.id, isolated.id)
+        // Al volver a ver el núcleo, recupera su posición original.
+        XCTAssertEqual(snapshot.annotationAnchors(for: snapshot.tiles)
+            .first?.cell.id, a.id)
+        XCTAssertEqual(snapshot.annotationAnchors(for: viewport, limit: 1)
+            .map { $0.region.id }, [a.id])
+        XCTAssertTrue(snapshot.annotationAnchors(for: viewport, limit: 0).isEmpty)
+        XCTAssertTrue(snapshot.annotationAnchors(for: []).isEmpty)
+    }
+
     func testNoMutationsToInputVisitHistoryOrCounts() throws {
         let start = date("2026-10-20T08:00:00Z")
         let visits = [
