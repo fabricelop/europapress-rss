@@ -215,7 +215,9 @@ struct TimeSiteStayEditor: View {
                             Text(label(for:part)).font(.subheadline.bold())
                             Spacer()
                             if part.kind == .place {
-                                Text("Sitio").font(.caption2).foregroundStyle(.secondary)
+                                Text(part.confirmed ? "Confirmado" : "Propuesto")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
                             }
                         }
                         .foregroundStyle(part.kind == .passing ? Color.orange : Color.primary)
