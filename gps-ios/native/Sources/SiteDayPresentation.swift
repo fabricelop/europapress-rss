@@ -60,15 +60,28 @@ struct SiteDayReport {
     let suggestedGPS: TimeInterval
     let passingGPS: TimeInterval
     let unidentifiedGPS: TimeInterval
+    /// Distinct historical stays (not map cells) with unclassified recorded
+    /// time. A single multi-place stay remains one pending item.
+    let pendingStayIDs: Set<String>
+    let proposedStayIDs: Set<String>
 
-    var reviewedGPS: TimeInterval { confirmedGPS + passingGPS }
-    var reviewedFraction: Double {
+    /// Classification is NOT the same as manual verification. An untouched,
+    /// automatically proposed place counts as classified, but never gets
+    /// promoted into an explicit confirmation or a ranking vote.
+    var classifiedGPS: TimeInterval { confirmedGPS + suggestedGPS + passingGPS }
+    var classifiedFraction: Double {
         guard totalGPS > 0 else { return 0 }
-        return min(1, reviewedGPS / totalGPS)
+        return min(1, max(0, classifiedGPS / totalGPS))
     }
-    var isFullyReviewed: Bool {
-        totalGPS > 0 && suggestedGPS < 0.1 && unidentifiedGPS < 0.1
+    var pendingStaysCount: Int { pendingStayIDs.count }
+    var proposedStaysCount: Int { proposedStayIDs.count }
+    var isFullyClassified: Bool {
+        totalGPS > 0 && unidentifiedGPS < 0.1 && pendingStaysCount == 0
     }
+    // Compatibility for existing code that references the previous label.
+    var reviewedGPS: TimeInterval { classifiedGPS }
+    var reviewedFraction: Double { classifiedFraction }
+    var isFullyReviewed: Bool { isFullyClassified }
     var confirmedSiteCount: Int {
         siteTotals.filter { $0.confirmedSeconds > 0 }.count
     }
@@ -93,6 +106,8 @@ enum SiteDayPresentation {
         var suggested: TimeInterval = 0
         var passing: TimeInterval = 0
         var unidentified: TimeInterval = 0
+        var pendingStays: Set<String> = []
+        var proposedStays: Set<String> = []
 
         for entry in ordered {
             let stay = entry.stay
@@ -108,6 +123,8 @@ enum SiteDayPresentation {
             guard end > start else { continue }
             let recorded = stay.confirmed(from: start, to: end)
             total += recorded
+            var thisStayUnidentified = false
+            var thisStayProposed = false
 
             for part in fullParts {
                 let pieceStart = max(start, part.from)
@@ -123,14 +140,22 @@ enum SiteDayPresentation {
                             value.confirmedSeconds += seconds
                         } else {
                             suggested += seconds
+                            thisStayProposed = true
                             value.proposedSeconds += seconds
                         }
                         bySite[id] = value
-                    } else { unidentified += seconds }
+                    } else {
+                        unidentified += seconds
+                        thisStayUnidentified = true
+                    }
                 case .passing: passing += seconds
-                case .unassigned: unidentified += seconds
+                case .unassigned:
+                    unidentified += seconds
+                    thisStayUnidentified = true
                 }
             }
+            if thisStayUnidentified { pendingStays.insert(stay.id) }
+            if thisStayProposed { proposedStays.insert(stay.id) }
 
             // A stay with more than one site is not collapsed with either
             // neighbor; the expandable detail retains its original subperiods.
@@ -162,6 +187,8 @@ enum SiteDayPresentation {
             confirmedGPS: confirmed,
             suggestedGPS: suggested,
             passingGPS: passing,
-            unidentifiedGPS: unidentified)
+            unidentifiedGPS: unidentified,
+            pendingStayIDs: pendingStays,
+            proposedStayIDs: proposedStays)
     }
 }
