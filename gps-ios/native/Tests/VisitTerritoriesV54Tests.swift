@@ -124,6 +124,38 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         XCTAssertEqual(model.counts.count, 3)
     }
 
+    func testOneVisitChainCannotPropagatePeripheryBeyondActiveNeighbor() {
+        // Solo la casilla inmediatamente contigua al núcleo puede pasar
+        // a periferia: las siguientes visitas aisladas son neutrales.
+        let d = Cell(row: a.row, column: a.column + 3)
+        let snapshot = VisitTerritoryEngine.build(counts:
+            [a.id: 9, b.id: 1, c.id: 1, d.id: 1])
+        XCTAssertEqual(snapshot.territories.count, 1)
+        XCTAssertEqual(snapshot.territories[0].cells, 2)
+        XCTAssertEqual(snapshot.territories[0].visits, 10)
+        XCTAssertEqual(snapshot.tile(b.id)?.classification, .periphery)
+        XCTAssertEqual(snapshot.tile(b.id)?.territoryID, a.id)
+        XCTAssertEqual(snapshot.tile(c.id)?.classification, .neutral)
+        XCTAssertNil(snapshot.tile(c.id)?.territoryID)
+        XCTAssertEqual(snapshot.tile(d.id)?.classification, .neutral)
+        XCTAssertNil(snapshot.tile(d.id)?.territoryID)
+    }
+
+    func testOneVisitFringesBetweenCountriesUseOnlyDirectActiveNeighbors() {
+        // A(9) - b(1) - c(1) - D(8): cada franja de una visita
+        // pertenece a su propio núcleo; ninguna invade la otra.
+        let d = Cell(row: a.row, column: a.column + 3)
+        let snapshot = VisitTerritoryEngine.build(counts:
+            [a.id: 9, b.id: 1, c.id: 1, d.id: 8])
+        XCTAssertEqual(snapshot.territories.count, 2)
+        XCTAssertEqual(snapshot.disputedCount, 0)
+        XCTAssertEqual(snapshot.tile(b.id)?.classification, .periphery)
+        XCTAssertEqual(snapshot.tile(c.id)?.classification, .periphery)
+        XCTAssertEqual(snapshot.tile(b.id)?.territoryID, a.id)
+        XCTAssertEqual(snapshot.tile(c.id)?.territoryID, d.id)
+        XCTAssertEqual(snapshot.totalVisits, 19)
+    }
+
     func testNorthSouthNeighborsAreGeographicallyAligned() {
         let madrid = Grid.cell(latitude: 40.4168, longitude: -3.7038)
         let base = Grid.center(madrid)
