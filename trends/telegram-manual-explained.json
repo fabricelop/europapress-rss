@@ -2557,7 +2557,9 @@
       "fallback_image_status": "none",
       "image_status": "none",
       "image_choice": "none",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "3cb8dc50ad56",
@@ -2604,7 +2606,9 @@
       "fallback_image_status": "none",
       "image_status": "none",
       "image_choice": "none",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "7b238f268321",
@@ -2652,9 +2656,11 @@
       "image_status": "none",
       "image_choice": "none",
       "image_pending": false,
-      "sensitive_editorial": true
+      "sensitive_editorial": true,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-24T15:17:40+02:00",
+  "updated_at": "2026-10-24T13:18:37.445625Z",
   "count": 52
 }
