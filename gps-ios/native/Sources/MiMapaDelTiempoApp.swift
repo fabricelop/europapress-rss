@@ -2060,6 +2060,7 @@ struct TimeMapView: View {
         // voluntarily paused and no new location events arrive.
         .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { _ in
             guard model.selectedTab == 0 else { return }
+            model.evaluateCurrentSite()
             refreshMapSnapshot()
         }
         .onChange(of:model.data.intervals.count) { _,_ in refreshMapSnapshot() }
@@ -2413,6 +2414,10 @@ struct TimeMapView: View {
                     .buttonStyle(.plain)
                     if cardSize != .minimized {
                         TimeMapCardContents(model:model,picked:picked,mode:cardSize)
+                        if let cell=picked,cell == model.activeCell {
+                            TimeSiteInlineView(model:model,cell:cell)
+                                .padding(.top,4)
+                        }
                         if let cell=picked {
                             HStack(spacing:18) {
                                 Button("Histórico") { historyCell=cell }
@@ -2680,7 +2685,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.43 · datos guardados en este iPhone",
+                    Label("Versión 1.0.56 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
@@ -2742,6 +2747,21 @@ struct TimeSettingsView: View {
                         .onChange(of:model.adaptive) { _,value in
                             UserDefaults.standard.set(value,forKey:"mapAdaptiveV5")
                         }
+                }
+                Section("Mis Sitios") {
+                    Picker("Reconocer después de", selection: Binding(
+                        get: { model.siteThresholdMinutes },
+                        set: { model.setSiteThresholdMinutes($0) }
+                    )) {
+                        ForEach(SiteStayPolicy.allowedThresholds, id:\.self) { minutes in
+                            Text("\(minutes) minutos").tag(minutes)
+                        }
+                    }
+                    Text("La primera estancia te propone elegir un sitio sin interrumpirte. En visitas posteriores se asigna automáticamente el lugar más confirmado de esa cuadrícula; puedes corregirlo con un toque.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    NavigationLink("Ver Mis Sitios") {
+                        TimeMySitesView(model:model)
+                    }
                 }
                 Section("Pantalla de bloqueo") {
                     NavigationLink("En vivo · pantalla bloqueada") {
