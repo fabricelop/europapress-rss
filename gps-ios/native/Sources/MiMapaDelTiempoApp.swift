@@ -2865,7 +2865,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.66 · datos guardados en este iPhone",
+                    Label("Versión 1.0.67 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
