@@ -218,6 +218,36 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         XCTAssertNil(snapshot.tile("cuadricula_inexistente"))
     }
 
+    func testViewportRendersNearbyLowVisitCellsBeyondGlobalLimit() {
+        // 2300 países alejados entre sí. Una casilla de una visita,
+        // fuera del top global, debe aparecer al acercar el mapa a ella.
+        var counts: [String: Int] = [:]
+        for index in 0..<2300 {
+            let cell = Cell(row: a.row + index * 3,
+                            column: a.column + 12)
+            counts[cell.id] = index + 2
+        }
+        let local = Cell(row: a.row - 30, column: a.column)
+        counts[local.id] = 1
+        let snapshot = VisitTerritoryEngine.build(counts: counts)
+        XCTAssertEqual(snapshot.renderTiles.count, 2200)
+        XCTAssertFalse(snapshot.renderTiles.contains { $0.id == local.id })
+
+        let point = Grid.center(local)
+        let visible = snapshot.renderTiles(
+            near: point.latitude, longitude: point.longitude,
+            latitudeDelta: 0.004, longitudeDelta: 0.004)
+        XCTAssertTrue(visible.contains { $0.id == local.id })
+        XCTAssertFalse(visible.contains { $0.visits == 2301 })
+        XCTAssertEqual(visible.map(\.id), snapshot.renderTiles(
+            near: point.latitude, longitude: point.longitude,
+            latitudeDelta: 0.004, longitudeDelta: 0.004).map(\.id))
+        XCTAssertTrue(snapshot.renderTiles(
+            near: point.latitude, longitude: point.longitude,
+            latitudeDelta: 0.004, longitudeDelta: 0.004,
+            limit: 0).isEmpty)
+    }
+
     func testNoMutationsToInputVisitHistoryOrCounts() throws {
         let start = date("2026-10-20T08:00:00Z")
         let visits = [
