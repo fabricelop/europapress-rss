@@ -153,8 +153,7 @@ struct VisitTerritoriesView: View {
         } else {
             visible = snapshot.renderTiles
         }
-        let visibleIDs = Set(visible.compactMap(\.territoryID))
-        let shownRegions = snapshot.territories.filter { visibleIDs.contains($0.id) }
+        let anchors = snapshot.annotationAnchors(for: visible)
         return MapReader { proxy in
             Map(position: $camera) {
                 ForEach(visible) { tile in
@@ -163,17 +162,17 @@ struct VisitTerritoriesView: View {
                         .stroke(border(tile, snapshot: snapshot),
                                 lineWidth: tile.frontier ? 1.35 : 0.5)
                 }
-                ForEach(Array(shownRegions.prefix(40))) { region in
-                    Annotation("", coordinate: Grid.center(region.peak)) {
+                ForEach(anchors) { anchor in
+                    Annotation("", coordinate: Grid.center(anchor.cell)) {
                         Button {
-                            selected = region
+                            selected = anchor.region
                         } label: {
                             HStack(spacing: 4) {
                                 Image(systemName: "circle.hexagongrid.fill")
-                                    .foregroundStyle(color(region))
-                                Text(model.label(for: region.peak))
+                                    .foregroundStyle(color(anchor.region))
+                                Text(model.label(for: anchor.region.peak))
                                     .lineLimit(1)
-                                Text("\(region.visits)")
+                                Text("\(anchor.region.visits)")
                                     .monospacedDigit()
                                     .foregroundStyle(.secondary)
                             }
@@ -184,7 +183,7 @@ struct VisitTerritoriesView: View {
                                         in: RoundedRectangle(cornerRadius: 9))
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Abrir territorio \(model.label(for: region.peak))")
+                        .accessibilityLabel("Abrir territorio \(model.label(for: anchor.region.peak))")
                     }
                     .annotationTitles(.hidden)
                 }
