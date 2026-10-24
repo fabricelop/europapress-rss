@@ -1,0 +1,74 @@
+name: "Mi Mapa Sitios Compartidos 1.0.61 - IPA iPhone"
+on:
+  push:
+    branches:
+      - feature/sitios-compartidos-v61
+    paths:
+      - 'gps-ios/native/Sources/**'
+      - 'gps-ios/native/Tests/**'
+      - 'gps-ios/native/project.yml'
+      - '.github/workflows/mi-mapa-sitios-compartidos-v61.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mi-mapa-sitios-compartidos-v61
+  cancel-in-progress: true
+jobs:
+  test-and-ipa:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar sintaxis y generar proyecto
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas en simulador iPhone
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          all=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          phones=[d for rt,ds in all.items() if "iOS" in rt for d in ds if "iPhone" in d["name"] and d["state"]!="Unavailable"]
+          assert phones
+          open("/tmp/sites61-simulator","w").write(phones[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/sites61-simulator)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Compilar IPA sin firma y validar integridad
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/sitios61" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/sitios61/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.61"
+          assert info["CFBundleVersion"]=="62"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Sitios-Compartidos-1.0.61.ipa Payload
+          unzip -t MiMapaDelTiempo-Sitios-Compartidos-1.0.61.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Sitios-Compartidos-1.0.61-build62-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Sitios-Compartidos-1.0.61.ipa
+          retention-days: 14
+          if-no-files-found: error
