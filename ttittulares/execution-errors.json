@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-27T22:16:03.797485Z",
-      "event_id": "af49af5583b9-r1",
-      "phase": "outbox",
-      "reason": "af49af5583b9-r1.json: ValueError: remate sin guindilla",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento af49af5583b9-r1: af49af5583b9-r1.json: ValueError: remate sin guindilla. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-27T22:16:03.797485Z",
       "event_id": "d5dd0d45c380-r1",
       "phase": "outbox",
       "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
@@ -1395,6 +1388,13 @@
     },
     {
       "at": "2026-10-24T05:03:37.742744Z",
+      "event_id": "e3bcb9c5eb93-r1",
+      "phase": "outbox",
+      "reason": "e3bcb9c5eb93-r1.json: ValueError: tweet vacío o >256",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e3bcb9c5eb93-r1: e3bcb9c5eb93-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-10-24T05:04:06.451492Z",
       "event_id": "e3bcb9c5eb93-r1",
       "phase": "outbox",
       "reason": "e3bcb9c5eb93-r1.json: ValueError: tweet vacío o >256",
