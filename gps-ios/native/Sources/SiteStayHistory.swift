@@ -32,6 +32,7 @@ struct SiteStayPart: Codable, Identifiable, Equatable {
     var to: Date
     var kind: SiteStayPartKind
     var siteID: UUID?
+    var confirmed: Bool = false
 
     var duration: TimeInterval { to.timeIntervalSince(from) }
 }
@@ -134,7 +135,7 @@ enum SiteStayHistory {
                                     cellID: String) -> [UUID: Int] {
         var unique: Set<String> = []
         var result: [UUID: Int] = [:]
-        for part in parts where part.kind == .place {
+        for part in parts where part.kind == .place && part.confirmed {
             guard stayIDsByCell[part.stayID] == cellID, let id = part.siteID else { continue }
             let key = part.stayID + "|" + id.uuidString
             if unique.insert(key).inserted { result[id, default: 0] += 1 }
