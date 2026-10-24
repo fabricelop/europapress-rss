@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-24T11:15:00+02:00",
-  "last_completed_at": "2026-10-24T11:16:12+02:00",
-  "updated_at": "2026-10-24T11:16:12+02:00",
+  "last_started_at": "2026-10-24T11:45:00+02:00",
+  "last_completed_at": "2026-10-24T11:45:52+02:00",
+  "updated_at": "2026-10-24T11:45:52+02:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T111500+0200",
+    "run_id": "tr-chat-20261024T114500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T11:15:00+02:00",
-    "updated_at": "2026-10-24T11:16:12+02:00",
-    "finished_at": "2026-10-24T11:16:12+02:00",
+    "started_at": "2026-10-24T11:45:00+02:00",
+    "updated_at": "2026-10-24T11:45:52+02:00",
+    "finished_at": "2026-10-24T11:45:52+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,12 +61,12 @@
       "remates_selected": 0,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 2,
-      "pending_cards_reviewed": 7,
+      "pending_cards_reviewed": 8,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 7 fichas recientes revisadas y cola final 0.",
+    "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,67 +79,67 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T11:15:00+02:00",
+        "at": "2026-10-24T11:45:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones, Top 10 y fichas recientes antes del cierre."
       },
       {
-        "at": "2026-10-24T11:15:12+02:00",
+        "at": "2026-10-24T11:45:08+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending, Top 10 y fichas recientes."
+        "message": "Saneamiento visual de Pendientes solicitado al inicio mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-24T11:15:24+02:00",
+        "at": "2026-10-24T11:45:16+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 11:10."
+        "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar capturado a las 11:40."
       },
       {
-        "at": "2026-10-24T11:15:36+02:00",
+        "at": "2026-10-24T11:45:24+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 revisado: cubierto por fichas/grupos vigentes o acciones terminales del panel; ninguna revisión activa requiere elaboración."
+        "message": "Top 10 revisado: todas las entradas están cubiertas por revisiones explicadas o acciones terminales; ninguna supera 48 h pendiente de revisión."
       },
       {
-        "at": "2026-10-24T11:15:46+02:00",
+        "at": "2026-10-24T11:45:32+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 7 fichas explicadas recientes; saneamiento visual solicitado al inicio."
+        "message": "Revisando Pendientes · 8 fichas explicadas recientes; la reparación visual queda desacoplada del cierre editorial."
       },
       {
-        "at": "2026-10-24T11:15:54+02:00",
+        "at": "2026-10-24T11:45:38+02:00",
         "phase": "verifying",
         "trend_id": "413c73f54712",
         "title": "#DeViernes",
         "message": "Remate vacío revisado en #DeViernes; se conserva sin humor por el contenido sensible del relato de un asalto."
       },
       {
-        "at": "2026-10-24T11:16:00+02:00",
+        "at": "2026-10-24T11:45:42+02:00",
         "phase": "verifying",
         "trend_id": "571192c0381d",
         "title": "#AgropopularDana2026",
-        "message": "Ficha sin remate revisada; ya figura eliminada por acción terminal del panel y no se modifica."
+        "message": "Ficha sin remate revisada; figura eliminada por acción terminal del panel y no se modifica."
       },
       {
-        "at": "2026-10-24T11:16:06+02:00",
+        "at": "2026-10-24T11:45:48+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0."
+        "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0; trigger de reparación persistido."
       },
       {
-        "at": "2026-10-24T11:16:12+02:00",
+        "at": "2026-10-24T11:45:52+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 7 fichas recientes revisadas y cola final 0."
+        "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0."
       }
     ],
     "processed_ids": [],
@@ -148,7 +148,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261024T111500+0200",
+  "run_id": "tr-chat-20261024T114500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -173,74 +173,74 @@
     "remates_selected": 0,
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 2,
-    "pending_cards_reviewed": 7,
+    "pending_cards_reviewed": 8,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-24T11:15:00+02:00",
+      "at": "2026-10-24T11:45:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Verificando reexplicaciones, Top 10 y fichas recientes antes del cierre."
     },
     {
-      "at": "2026-10-24T11:15:12+02:00",
+      "at": "2026-10-24T11:45:08+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo estado autoritativo: cola, requests activas, rewrite_pending, Top 10 y fichas recientes."
+      "message": "Saneamiento visual de Pendientes solicitado al inicio mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-24T11:15:24+02:00",
+      "at": "2026-10-24T11:45:16+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar actualizado a las 11:10."
+      "message": "Estado autoritativo confirmado: cola 0; requests activas 0; rewrite_pending 0; radar capturado a las 11:40."
     },
     {
-      "at": "2026-10-24T11:15:36+02:00",
+      "at": "2026-10-24T11:45:24+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 revisado: cubierto por fichas/grupos vigentes o acciones terminales del panel; ninguna revisión activa requiere elaboración."
+      "message": "Top 10 revisado: todas las entradas están cubiertas por revisiones explicadas o acciones terminales; ninguna supera 48 h pendiente de revisión."
     },
     {
-      "at": "2026-10-24T11:15:46+02:00",
+      "at": "2026-10-24T11:45:32+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 7 fichas explicadas recientes; saneamiento visual solicitado al inicio."
+      "message": "Revisando Pendientes · 8 fichas explicadas recientes; la reparación visual queda desacoplada del cierre editorial."
     },
     {
-      "at": "2026-10-24T11:15:54+02:00",
+      "at": "2026-10-24T11:45:38+02:00",
       "phase": "verifying",
       "trend_id": "413c73f54712",
       "title": "#DeViernes",
       "message": "Remate vacío revisado en #DeViernes; se conserva sin humor por el contenido sensible del relato de un asalto."
     },
     {
-      "at": "2026-10-24T11:16:00+02:00",
+      "at": "2026-10-24T11:45:42+02:00",
       "phase": "verifying",
       "trend_id": "571192c0381d",
       "title": "#AgropopularDana2026",
-      "message": "Ficha sin remate revisada; ya figura eliminada por acción terminal del panel y no se modifica."
+      "message": "Ficha sin remate revisada; figura eliminada por acción terminal del panel y no se modifica."
     },
     {
-      "at": "2026-10-24T11:16:06+02:00",
+      "at": "2026-10-24T11:45:48+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0."
+      "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0; trigger de reparación persistido."
     },
     {
-      "at": "2026-10-24T11:16:12+02:00",
+      "at": "2026-10-24T11:45:52+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 7 fichas recientes revisadas y cola final 0."
+      "message": "TTendencias completada: sin trabajo editorial nuevo; Top 10 cubierto, 8 fichas recientes revisadas y cola final 0."
     }
   ],
   "partial": false,
@@ -253,7 +253,7 @@
     "captured_at": "2026-10-24T10:31:01+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261024T104500+0200",
+  "previous_run_id": "tr-chat-20261024T111500+0200",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
