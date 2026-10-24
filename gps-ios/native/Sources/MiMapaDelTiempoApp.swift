@@ -1921,6 +1921,59 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
         }
     }
 }
+/// Compact six-tab bar designed for iPhone portrait. All six destinations
+/// remain one tap away; unlike the stock TabView no tab is hidden in "Más".
+private struct TimeSixTabBar: View {
+    @Binding var selectedTab: Int
+
+    private let tabs: [(id: Int, title: String, icon: String)] = [
+        (0, "Mapa", "map"),
+        (1, "Estad.", "chart.bar.fill"),
+        (2, "Histórico", "clock.arrow.circlepath"),
+        (5, "Descubrir", "globe.europe.africa.fill"),
+        (3, "Sitios", "mappin.circle.fill"),
+        (4, "Ajustes", "gearshape")
+    ]
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 0) {
+            ForEach(tabs, id: \.id) { tab in
+                let active = selectedTab == tab.id
+                Button {
+                    selectedTab = tab.id
+                } label: {
+                    VStack(spacing: 3) {
+                        Image(systemName: tab.icon)
+                            .font(.system(size: 19, weight: active ? .semibold : .regular))
+                            .frame(height: 24)
+                        Text(tab.title)
+                            .font(.system(size: 10, weight: active ? .semibold : .medium))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.72)
+                    }
+                    .foregroundStyle(active ? Color.teal : Color.secondary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 49)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(tab.title == "Estad." ? "Estadísticas" : tab.title)
+                .accessibilityAddTraits(active ? [.isSelected] : [])
+            }
+        }
+        .padding(.horizontal, 2)
+        .padding(.top, 4)
+        .background {
+            Rectangle()
+                .fill(.regularMaterial)
+                .ignoresSafeArea(edges: .bottom)
+                .overlay(alignment: .top) {
+                    Rectangle().fill(Color.primary.opacity(0.12)).frame(height: 0.5)
+                }
+        }
+    }
+}
+
 struct RootView: View {
     @ObservedObject var model: TimeModel
     @ObservedObject var gps: GPSService
@@ -1935,22 +1988,12 @@ struct RootView: View {
     }
     var body: some View {
         ZStack {
-            TabView(selection:$model.selectedTab) {
-                TimeMapView(model: model, gps: gps)
-                    .tabItem { Label("Mapa", systemImage: "map") }.tag(0)
-                TimeStatsDashboard(model: model)
-                    .tabItem { Label("Estadísticas", systemImage: "chart.bar.fill") }.tag(1)
-                GPSDiaryShell(model: model)
-                    .tabItem { Label("Histórico", systemImage: "clock.arrow.circlepath") }.tag(2)
-                NavigationStack {
-                    TimeSiteCalendarView(model:model)
+            selectedScreen
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    TimeSixTabBar(selectedTab: $model.selectedTab)
                 }
-                    .tabItem { Label("Sitios", systemImage:"mappin.circle.fill") }.tag(3)
-                TimeSettingsView(model: model, gps: gps)
-                    .tabItem { Label("Ajustes", systemImage: "gearshape") }.tag(4)
-            }
-            .tint(.teal)
-            .onAppear { openGPSGapHistoryIfRequested() }
+                .tint(.teal)
+                .onAppear { openGPSGapHistoryIfRequested() }
             .onReceive(NotificationCenter.default.publisher(
                 for:Notification.Name("gpsWatchdogOpenHistory"))) { _ in
                 openGPSGapHistoryIfRequested()
@@ -1984,6 +2027,28 @@ struct RootView: View {
             }
         }
     }
+    // Six real, directly visible tabs. Native iOS TabView moves the sixth
+    // into "Más"; the lightweight local bar avoids hiding Descubrir or Sitios.
+    // TimeModel owns GPS, history, BIOGRID and Live Activity independently.
+    @ViewBuilder private var selectedScreen: some View {
+        switch model.selectedTab {
+        case 0:
+            TimeMapView(model: model, gps: gps)
+        case 1:
+            TimeStatsDashboard(model: model)
+        case 2:
+            GPSDiaryShell(model: model)
+        case 3:
+            NavigationStack { TimeSiteCalendarView(model: model) }
+        case 4:
+            TimeSettingsView(model: model, gps: gps)
+        case 5:
+            NavigationStack { TimeDiscoveryHome(model: model) }
+        default:
+            TimeMapView(model: model, gps: gps)
+        }
+    }
+
     private func checkFaceID() {
         guard faceIDEnabled, !checking else { return }
         checking = true
@@ -2734,7 +2799,7 @@ struct TimeSettingsView: View {
         NavigationStack {
             Form {
                 Section("Mi Mapa del Tiempo") {
-                    Label("Versión 1.0.58 · datos guardados en este iPhone",
+                    Label("Versión 1.0.59 · datos guardados en este iPhone",
                           systemImage:"checkmark.shield")
                         .foregroundStyle(.teal)
                     Text("Tus visitas y zonas se conservan localmente. Puedes hacer una copia cifrada y recuperarla desde el apartado Copia de seguridad.")
@@ -2811,15 +2876,6 @@ struct TimeSettingsView: View {
                     NavigationLink("Ver Mis Sitios") {
                         TimeMySitesView(model:model)
                     }
-                }
-                Section("Descubrir") {
-                    NavigationLink {
-                        TimeDiscoveryHome(model:model)
-                    } label: {
-                        Label("Descubrir y BIOGRID",systemImage:"globe.europe.africa.fill")
-                    }
-                    Text("BIOGRID, mapas de medias, pasaporte, hitos y otras funciones siguen disponibles aquí.")
-                        .font(.caption).foregroundStyle(.secondary)
                 }
                 Section("Pantalla de bloqueo") {
                     NavigationLink("En vivo · pantalla bloqueada") {
