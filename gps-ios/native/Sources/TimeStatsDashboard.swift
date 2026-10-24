@@ -1,7 +1,7 @@
 import SwiftUI
 
 private enum StatisticsPage: String, CaseIterable, Identifiable {
-    case cells = "Cuadrículas", zones = "Zonas", territories = "Territorios"
+    case cells = "Cuadrículas", zones = "Zonas"
     var id: String { rawValue }
 }
 private struct TimeRankEntry:Identifiable {
@@ -92,6 +92,18 @@ struct TimeStatsDashboard: View {
                         tile("Tiempo asignado",value:DurationFormat.full(TimeAnalytics.sum(values)),icon:"clock")
                     }
 
+                    NavigationLink {
+                        GridAverageMapView(model:model)
+                    } label: {
+                        Label("Analizar medias por cuadrícula",systemImage:"chart.bar.xaxis")
+                            .font(.subheadline.weight(.semibold))
+                            .frame(maxWidth:.infinity,alignment:.leading)
+                            .padding(13)
+                            .background(Color.indigo.opacity(0.09),
+                                        in:RoundedRectangle(cornerRadius:13))
+                    }
+                    .foregroundStyle(.indigo)
+
                     Picker("Vista de estadísticas",selection:$page) {
                         ForEach(StatisticsPage.allCases) { page in Text(page.rawValue).tag(page) }
                     }.pickerStyle(.segmented)
@@ -101,8 +113,6 @@ struct TimeStatsDashboard: View {
                         cellList
                     case .zones:
                         TimeZonesPanel(model:model)
-                    case .territories:
-                        TerritoryStatsView(model:model)
                     }
                 }
                 .padding(14)
@@ -120,7 +130,7 @@ struct TimeStatsDashboard: View {
                 ToolbarItem(placement:.topBarTrailing) {
                     Button { searchOpen=true } label: {
                         Image(systemName:"magnifyingglass")
-                    }.accessibilityLabel("Buscar zonas, cuadrículas y territorios")
+                    }.accessibilityLabel("Buscar zonas y cuadrículas")
                 }
             }
             .sheet(isPresented:$searchOpen) {
