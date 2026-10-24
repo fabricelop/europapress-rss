@@ -123,6 +123,10 @@ struct SavedState: Codable {
     var places: [UserPlace] = []
     var customZones: [TimeCustomZone] = []
     var territoryCache: [String:TerritoryRecord] = [:]
+    // Private place identities and per-stay choices; original GPS history unchanged.
+    var identifiedSites: [IdentifiedSite] = []
+    var siteStayAssignments: [SiteStayAssignment] = []
+    var dismissedSiteStayKeys: [String] = []
     var powerEvents: [GPSPowerEvent] = []
     var shortIDs: [String:Int] = [:]
     // Persiste la intención de grabar para reanudar el seguimiento al abrir la app.
@@ -149,6 +153,9 @@ struct SavedState: Codable {
         places = try box.decodeIfPresent([UserPlace].self,forKey:.places) ?? []
         customZones = try box.decodeIfPresent([TimeCustomZone].self,forKey:.customZones) ?? []
         territoryCache = try box.decodeIfPresent([String:TerritoryRecord].self,forKey:.territoryCache) ?? [:]
+        identifiedSites = try box.decodeIfPresent([IdentifiedSite].self,forKey:.identifiedSites) ?? []
+        siteStayAssignments = try box.decodeIfPresent([SiteStayAssignment].self,forKey:.siteStayAssignments) ?? []
+        dismissedSiteStayKeys = try box.decodeIfPresent([String].self,forKey:.dismissedSiteStayKeys) ?? []
         powerEvents = try box.decodeIfPresent([GPSPowerEvent].self,forKey:.powerEvents) ?? []
         shortIDs = try box.decodeIfPresent([String:Int].self,forKey:.shortIDs) ?? [:]
         dismissedGPSGapIDs = try box.decodeIfPresent([String].self,forKey:.dismissedGPSGapIDs) ?? []
@@ -593,6 +600,121 @@ struct SavedState: Codable {
         return max(0, provisionalEnd.timeIntervalSince(start))
     }
     var activeCell: Cell? { data.gpsRest?.cell ?? stableCell ?? current?.cell }
+
+    var siteThresholdMinutes: Int {
+        let setting = UserDefaults.standard.integer(forKey: "siteRecognitionMinutesV56")
+        return SiteStayPolicy.allowedThresholds.contains(setting)
+               ? setting : SiteStayPolicy.defaultThresholdMinutes
+    }
+    func setSiteThresholdMinutes(_ minutes: Int) {
+        guard SiteStayPolicy.allowedThresholds.contains(minutes) else { return }
+        UserDefaults.standard.set(minutes, forKey: "siteRecognitionMinutesV56")
+        evaluateCurrentSite()
+        objectWillChange.send()
+    }
+    private func currentSiteVisit(for cell: Cell, now: Date) -> (Date, TimeInterval)? {
+        guard activeCell == cell, let start = currentVisitStart,
+              start <= now, storageIsHealthy else { return nil }
+        // This already enforces the 120-second stale-GPS cap and rest policy.
+        let elapsed = staySeconds(now: now)
+        guard elapsed > 0 else { return nil }
+        return (start, elapsed)
+    }
+    func siteDecision(for cell: Cell, now: Date = .now) -> SiteStayDecision {
+        guard let (start, elapsed) = currentSiteVisit(for: cell, now: now) else {
+            return .tooEarly
+        }
+        return SiteStayPolicy.decision(cellID: cell.id, entered: start,
+                    elapsed: elapsed, thresholdMinutes: siteThresholdMinutes,
+                    sites: data.identifiedSites, assignments: data.siteStayAssignments,
+                    dismissedKeys: Set(data.dismissedSiteStayKeys))
+    }
+    func siteNamed(_ id: UUID) -> IdentifiedSite? {
+        data.identifiedSites.first { $0.id == id }
+    }
+    func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int)] {
+        let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
+                                                   cellID: cell.id)
+        let ordered = SiteStayPolicy.rankedSiteIDs(data.siteStayAssignments,
+                           cellID: cell.id, validIDs: Set(data.identifiedSites.map(\.id)))
+        let already = Set(ordered)
+        let extras = data.identifiedSites.filter { site in
+            guard !already.contains(site.id) else { return false }
+            let center = Grid.center(cell)
+            let near = CLLocation(latitude: center.latitude, longitude: center.longitude)
+                 .distance(from: CLLocation(latitude: site.latitude, longitude: site.longitude))
+            return near < 100
+        }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        return (ordered.compactMap { siteNamed($0) } + extras)
+             .map { (site: $0, confirmations: votes[$0.id] ?? 0) }
+    }
+    /// Automatic choice is a lightweight local operation called after GPS
+    /// callbacks and while the map is active. No network query or notification.
+    func evaluateCurrentSite(now: Date = .now) {
+        guard let cell = activeCell,
+              let (start, elapsed) = currentSiteVisit(for: cell, now: now),
+              isResting || ((lastAccuracy ?? 999) <= 75 &&
+                  (lastGPSFix.map { now.timeIntervalSince($0) < 120 } ?? false))
+              else { return }
+        guard let chosen = SiteStayPolicy.automaticChoice(
+              cellID: cell.id, entered: start, elapsed: elapsed,
+              thresholdMinutes: siteThresholdMinutes,
+              sites: data.identifiedSites,
+              assignments: data.siteStayAssignments,
+              dismissedKeys: Set(data.dismissedSiteStayKeys)) else { return }
+        let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
+        data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
+                       startedAt: start, siteID: chosen, confirmed: false))
+        save(force: true)
+    }
+    func dismissSitePrompt(in cell: Cell) {
+        guard let (start, _) = currentSiteVisit(for: cell, now: .now) else { return }
+        let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
+        guard !data.dismissedSiteStayKeys.contains(key) else { return }
+        data.dismissedSiteStayKeys.append(key)
+        if data.dismissedSiteStayKeys.count > 500 {
+            data.dismissedSiteStayKeys.removeFirst(data.dismissedSiteStayKeys.count - 500)
+        }
+        save(force: true)
+    }
+    func confirmSite(_ site: IdentifiedSite, cell: Cell, now: Date = .now) {
+        guard let (start, _) = currentSiteVisit(for: cell, now: now) else { return }
+        guard !site.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        if !data.identifiedSites.contains(where: { $0.id == site.id }) {
+            data.identifiedSites.append(site)
+        }
+        let key = SiteStayPolicy.visitKey(cellID: cell.id, entered: start)
+        data.siteStayAssignments = SiteStayPolicy.select(siteID: site.id,
+                           cellID: cell.id, entered: start,
+                           assignments: data.siteStayAssignments)
+        data.dismissedSiteStayKeys.removeAll { $0 == key }
+        save(force: true)
+    }
+    func confirmAppleSite(name: String, latitude: Double, longitude: Double, cell: Cell) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, latitude.isFinite, longitude.isFinite else { return }
+        let coordinate = CLLocation(latitude: latitude, longitude: longitude)
+        let match = data.identifiedSites.first { old in
+            guard old.name.compare(trimmed, options:[.caseInsensitive,.diacriticInsensitive]) == .orderedSame else {
+                return false
+            }
+            return CLLocation(latitude:old.latitude,longitude:old.longitude).distance(from:coordinate) < 60
+        }
+        confirmSite(match ?? IdentifiedSite(name:trimmed,latitude:latitude,
+                                   longitude:longitude,origin:"apple"),cell:cell)
+    }
+    func confirmPrivateSite(name: String, cell: Cell) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        let point = activeCell == cell ? (current?.coordinate ?? Grid.center(cell)) : Grid.center(cell)
+        let same = data.identifiedSites.first {
+            $0.origin == "private" &&
+            $0.name.compare(trimmed, options:[.caseInsensitive,.diacriticInsensitive]) == .orderedSame &&
+            Grid.cell(latitude:$0.latitude,longitude:$0.longitude) == cell
+        }
+        confirmSite(same ?? IdentifiedSite(name:trimmed,latitude:point.latitude,
+                                          longitude:point.longitude,origin:"private"),cell:cell)
+    }
     func reactivateLiveActivity() { activityPublisher.reactivate(from:self) }
     func restoreLiveActivityIfNeeded() { activityPublisher.restoreIfNeeded(from:self) }
     func checkLockScreen() { activityPublisher.check(from:self) }
@@ -1134,6 +1256,7 @@ struct SavedState: Codable {
         gpsStatus = "GPS activo · ±\(Int(sample.accuracy)) m"
         save(force: delta > GPSHistoryGrouping.gapLimit)
         activityPublisher.refresh(from:self)
+        evaluateCurrentSite(now: sample.date)
         GPSPersonalAlerts.shared.evaluate(model:self)
         objectWillChange.send()
     }
