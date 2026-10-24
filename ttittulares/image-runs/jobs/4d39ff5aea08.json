@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-4d39ff5aea08-r1-a1-1792109126902",
+  "requested_at": "2026-10-16T00:05:26.865660Z",
+  "updated_at": "2026-10-16T00:09:07.848770Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "4d39ff5aea08",
+  "event_id": "4d39ff5aea08",
+  "target_name": "Óscar López ordenó el desahucio de un inquilino de Muface que vive enfrente de Maricarmen: \"¿El ministerio sí puede y un propietario no?\"",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Óscar López ordenó el desahucio de un inquilino de Muface que vive enfrente de Maricarmen: \"¿El ministerio sí puede y un propietario no?\"",
+    "revision": 1,
+    "factual_summary": "Muface rechazó prolongar la subrogación del alquiler de un inquilino tras la muerte de su madre. La resolución se tramitó por delegación ministerial y Óscar López negó haber pedido o firmado personalmente el desahucio.",
+    "tweet_text": "Muface rechazó prolongar la subrogación del alquiler de un inquilino. La resolución se dictó por delegación; Óscar López niega haber pedido o firmado el desahucio.\n\n#Muface #ÓscarLópez\n🌶️ El expediente ya tiene más versiones que llaves.",
+    "remate": "🌶️ El expediente ya tiene más versiones que llaves.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nMuface rechazó prolongar la subrogación del alquiler de un inquilino. La resolución se dictó por delegación; Óscar López niega haber pedido o firmado el desahucio.\n\n#Muface #ÓscarLópez\n🌶️ El expediente ya tiene más versiones que llaves.\n\nREMATE EXACTO:\n🌶️ El expediente ya tiene más versiones que llaves.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nMuface rechazó prolongar la subrogación del alquiler de un inquilino tras la muerte de su madre. La resolución se tramitó por delegación ministerial y Óscar López negó haber pedido o firmado personalmente el desahucio.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.ondacero.es/noticias/espana/oscar-lopez-ordeno-desahucio-inquilino-muface-que-vive-enfrente-maricarmen-ministerio-puede-propietario_202610156ad0bcbdfb06971aad039b6b.html",
+    "citations": [
+      {
+        "source": "Onda Cero",
+        "title": "Óscar López ordenó el desahucio de un inquilino de Muface que vive enfrente de Maricarmen: \"¿El ministerio sí puede y un propietario no?\"",
+        "url": "https://www.ondacero.es/noticias/espana/oscar-lopez-ordeno-desahucio-inquilino-muface-que-vive-enfrente-maricarmen-ministerio-puede-propietario_202610156ad0bcbdfb06971aad039b6b.html"
+      },
+      {
+        "source": "Antena 3 Noticias",
+        "title": "Óscar López desmiente haber \"pedido o firmado\" el desahucio de un vecino de Maricarmen: \"Basta de bulos\"",
+        "url": "https://www.antena3.com/noticias/espana/oscar-lopez-desmiente-haber-pedido-firmado-desahucio-vecino-maricarmen-basta-bulos_202610156ad0d51bcfd4076f0c7be991.html"
+      },
+      {
+        "source": "El HuffPost",
+        "title": "Un abogado explica por qué Óscar López no firmó el desahucio del vecino de Maricarmen: \"El ministro tiene razón\"",
+        "url": "https://www.huffingtonpost.es/virales/la-razon-oscar-lopez-firmo-polemico-desahucio-le-acusan-es-caso-delegacion-competencias-f202610.html"
+      },
+      {
+        "source": "20minutos",
+        "title": "'La Mesa' de Cristina Pardo señala a Óscar López por un desahucio en Muface: \"La persona que firma ese recurso es el ministro\"",
+        "url": "https://www.20minutos.es/television/mesa-cristina-pardo-senala-oscar-lopez-por-un-desahucio-muface-persona-que-firma-ese-recurso-es-ministro_7048930_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "25da8369aa9f4d0dbed2d8cadf8f160bde9bc903fcba63d253615f70084d4c04",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T00:07:47.327Z",
+  "pc_launched_at": "2026-10-16T00:07:58.045Z",
+  "finished_at": "2026-10-16T00:07:58.045Z"
+}

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-d55b4b5bf266-r1-a1-1792383153786",
+  "requested_at": "2026-10-19T04:12:33.741170Z",
+  "updated_at": "2026-10-19T06:05:03.908941Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "d55b4b5bf266",
+  "event_id": "d55b4b5bf266",
+  "target_name": "Un dron provoca alertas en Lituania y Letonia y se estrella en territorio lituano",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Un dron provoca alertas en Lituania y Letonia y se estrella en territorio lituano",
+    "revision": 1,
+    "factual_summary": "Un dron no identificado entró en el espacio aéreo lituano, activó alertas en Lituania y también en zonas de Letonia y terminó en el distrito de Pasvalys, cerca de la frontera letona. La OTAN desplegó cazas; restos del aparato dañaron un coche sin causar heridos. Las autoridades investigan su origen.",
+    "tweet_text": "Un dron no identificado cruzó Lituania, activó alertas en Letonia y cayó en Pasvalys. La OTAN desplegó cazas; restos dañaron un coche, sin heridos. Se investiga su origen.\n\n#Lituania #Letonia #OTAN\n🌶️ El dron cayó; las preguntas siguen en el aire.",
+    "remate": "🌶️ El dron cayó; las preguntas siguen en el aire.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nUn dron no identificado cruzó Lituania, activó alertas en Letonia y cayó en Pasvalys. La OTAN desplegó cazas; restos dañaron un coche, sin heridos. Se investiga su origen.\n\n#Lituania #Letonia #OTAN\n🌶️ El dron cayó; las preguntas siguen en el aire.\n\nREMATE EXACTO:\n🌶️ El dron cayó; las preguntas siguen en el aire.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn dron no identificado entró en el espacio aéreo lituano, activó alertas en Lituania y también en zonas de Letonia y terminó en el distrito de Pasvalys, cerca de la frontera letona. La OTAN desplegó cazas; restos del aparato dañaron un coche sin causar heridos. Las autoridades investigan su origen.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lavanguardia.com/internacional/20261018/11661947/dron-provoca-alertas-lituania-letonia-estrella-territorio-lituano.html",
+    "citations": [
+      {
+        "source": "Reuters",
+        "title": "Lithuanians forced to take shelter after suspected drone enters airspace",
+        "url": "https://www.reuters.com/world/lithuania-told-residents-go-shelters-after-detecting-flying-object-2026-10-18/"
+      },
+      {
+        "source": "LRT",
+        "title": "Kaunas – apie tai, kodėl įspėjimus gavo tik šiaurės Lietuva: keista ir nepriimtina",
+        "url": "https://www.lrt.lt/naujienos/lietuvoje/2/3086038/kaunas-apie-tai-kodel-ispejimus-gavo-tik-siaures-lietuva-keista-ir-nepriimtina"
+      },
+      {
+        "source": "LSM",
+        "title": "Suspected drone destroyed in Lithuania as it approached Latvia",
+        "url": "https://eng.lsm.lv/article/society/defence/18.10.2026-suspected-drone-destroyed-in-lithuania-as-it-approached-latvia.a664326/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "d0e7634dc527fc31ebd02c7c3f2fa33e7405cf932fc36838c6f015e0aa4b758b",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-19T04:13:59.677Z",
+  "pc_launched_at": "2026-10-19T04:14:15.432Z",
+  "finished_at": "2026-10-19T04:14:15.432Z"
+}

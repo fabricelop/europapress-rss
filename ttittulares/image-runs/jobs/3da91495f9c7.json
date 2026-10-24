@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-3da91495f9c7-r1-a1-1791994315483",
+  "requested_at": "2026-10-14T16:11:55.453895Z",
+  "updated_at": "2026-10-14T16:55:21.190332Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "3da91495f9c7",
+  "event_id": "3da91495f9c7",
+  "target_name": "Page acepta que la ministra Milagros Tolón encabece la lista a las elecciones por Toledo - Servimedia",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Page acepta que la ministra Milagros Tolón encabece la lista a las elecciones por Toledo - Servimedia",
+    "revision": 1,
+    "factual_summary": "La Ejecutiva Provincial del PSOE de Toledo propone a la ministra Milagros Tolón como número uno de la lista al Congreso para las elecciones generales del 29 de noviembre y al diputado Sergio Gutiérrez como número dos. La candidatura debe completar todavía los trámites internos regionales y federales antes de quedar definitivamente ratificada.",
+    "tweet_text": "El PSOE de Toledo propone a Milagros Tolón como cabeza de lista al Congreso para el 29-N y a Sergio Gutiérrez como número dos. La candidatura aún debe pasar por los órganos regional y federal del partido.\n\n🌶️ La lista ya tiene orden antes de tener sello.",
+    "remate": "🌶️ La lista ya tiene orden antes de tener sello.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl PSOE de Toledo propone a Milagros Tolón como cabeza de lista al Congreso para el 29-N y a Sergio Gutiérrez como número dos. La candidatura aún debe pasar por los órganos regional y federal del partido.\n\n🌶️ La lista ya tiene orden antes de tener sello.\n\nREMATE EXACTO:\n🌶️ La lista ya tiene orden antes de tener sello.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Ejecutiva Provincial del PSOE de Toledo propone a la ministra Milagros Tolón como número uno de la lista al Congreso para las elecciones generales del 29 de noviembre y al diputado Sergio Gutiérrez como número dos. La candidatura debe completar todavía los trámites internos regionales y federales antes de quedar definitivamente ratificada.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNYTZkNDJ3NF9zV1hrekVxNE5hQTlZbFNBQ0dPQURuR01GVDVXd0JqWmsyalRyZEx5aXM4QmVwcWV1T1AtRUpKQ1l6elhfNnlQVGNPSW53dTUyRlZfRURLNUl6dmJUa0pKbFh2TFl1MU44WDF0eF9PN3JINE81bVJwSXFoZlAySmgzcEFxWmctRFRhTDFqel82dGJVOU5WWmswUHBRNWxHaUZmRTNSS1NqekRqN3M?oc=5",
+    "citations": [
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/14/sanchez-se-rodeara-de-hasta-once-ministros-en-las-listas-del-29-n-cadena-ser/"
+      },
+      {
+        "source": "El Español Castilla-La Mancha",
+        "url": "https://www.elespanol.com/eldigitalcastillalamancha/region/toledo/20261014/ministra-tolon-encabezara-lista-psoe-toledo-congreso-pese-tener-solo-apoyo-bases/1003744420296_0.amp.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/elecciones-generales/2026-10-14/margarita-robles-sera-la-numero-dos-de-pedro-sanchez-en-las-listas-del-psoe.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "d80b6d999fb936b7a3ca4b5b72359e84181d307bb1c3d0723bd5a2822124f6bb",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-14T16:14:14.404Z",
+  "pc_launched_at": "2026-10-14T16:14:28.721Z",
+  "finished_at": "2026-10-14T16:14:28.721Z"
+}

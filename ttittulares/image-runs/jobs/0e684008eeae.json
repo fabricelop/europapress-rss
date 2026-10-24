@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-0e684008eeae-r1-a2-1791967504863",
+  "requested_at": "2026-10-14T08:45:04.861942Z",
+  "updated_at": "2026-10-14T09:18:24.358Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "0e684008eeae",
+  "event_id": "0e684008eeae",
+  "target_name": "La «casi rabona» de Lamine Yamal acaba en asistencia ante el Galatasaray",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 2,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "La «casi rabona» de Lamine Yamal acaba en asistencia ante el Galatasaray",
+    "revision": 1,
+    "factual_summary": "El Barcelona venció 1-4 al Galatasaray en la Champions. Lamine Yamal dio dos asistencias; en el tercer gol realizó una filigrana que después describió como «casi rabona» antes de servir el balón a Anthony Gordon.",
+    "tweet_text": "El Barça ganó 1-4 al Galatasaray y Lamine Yamal dio dos asistencias. En el 1-3 desbordó con una filigrana que él llamó «casi rabona» antes de servir el gol a Anthony Gordon.\n\n🌶️ Si eso era «casi rabona», la rabona completa necesita matrícula.",
+    "remate": "🌶️ Si eso era «casi rabona», la rabona completa necesita matrícula.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "retro_60s",
+    "image_style_index": 5,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Ilustración publicitaria retro de los años 60 reinterpretada con acabado moderno, dibujo elegante, ironía visual y composición limpia.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl Barça ganó 1-4 al Galatasaray y Lamine Yamal dio dos asistencias. En el 1-3 desbordó con una filigrana que él llamó «casi rabona» antes de servir el gol a Anthony Gordon.\n\n🌶️ Si eso era «casi rabona», la rabona completa necesita matrícula.\n\nREMATE EXACTO:\n🌶️ Si eso era «casi rabona», la rabona completa necesita matrícula.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl Barcelona venció 1-4 al Galatasaray en la Champions. Lamine Yamal dio dos asistencias; en el tercer gol realizó una filigrana que después describió como «casi rabona» antes de servir el balón a Anthony Gordon.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/deportes/futbol/lamine-yamal-desata-locura-con-un-regate-ensueno-casi-rabona-que-acaba-gol_7048443_0.html",
+    "citations": [
+      {
+        "source": "FC Barcelona",
+        "title": "Galatasaray 1-4 FC Barcelona: Heaven in hell",
+        "url": "https://www.fcbarcelona.com/en/news/4591863/galatasaray-1-4-fc-barcelona-heaven-in-hell"
+      },
+      {
+        "source": "UEFA",
+        "title": "Resumen y vídeos del martes de la jornada 2 de la UEFA Champions League",
+        "url": "https://es.uefa.com/uefachampionsleague/news/02aa-21d1f75b9f35-4b52faf0cfcf-1000--resumen-del-martes-de-la-jornada-2-de-la-uefa-champions-leag/"
+      },
+      {
+        "source": "20minutos",
+        "title": "Lamine Yamal desata la locura con un regate de ensueño: \"casi rabona\" que acaba en gol",
+        "url": "https://www.20minutos.es/deportes/futbol/lamine-yamal-desata-locura-con-un-regate-ensueno-casi-rabona-que-acaba-gol_7048443_0.html"
+      },
+      {
+        "source": "Cadena SER",
+        "title": "El nuevo 'truco de magia' de Lamine Yamal que silenció el infierno turco y regaló el gol a Anthony Gordon",
+        "url": "https://cadenaser.com/nacional/2026/10/13/el-nuevo-truco-de-magia-de-lamine-yamal-que-silencio-el-infierno-turco-y-regalo-el-gol-a-anthony-gordon-cadena-ser/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt verificado en ChatGPT Images; sin descargar ni persistir la imagen.",
+  "pc_upload_secret_hash": "7aedcdab57a4504cfda40f704bf0a1ecc4c5cb4b6224373aa5235eca29db9d08",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-14T09:11:11.334Z",
+  "pc_launched_at": "2026-10-14T09:11:20.005Z",
+  "finished_at": "2026-10-14T09:11:20.005Z"
+}

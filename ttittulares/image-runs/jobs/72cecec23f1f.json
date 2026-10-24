@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-72cecec23f1f-r1-a11-1791352970278",
+  "requested_at": "2026-10-07T06:02:50.277458Z",
+  "updated_at": "2026-10-07T07:12:47.873Z",
+  "status": "CANCELLED",
+  "phase": "stale_target",
+  "mode": "automatic_ready_repair",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "72cecec23f1f",
+  "event_id": "72cecec23f1f",
+  "target_name": "Cristiano Ronaldo pide perdón por abandonar la concentración de Portugal y acusa a Jorge Jesus de incumplir lo acordado",
+  "revision": 1,
+  "regenerate": true,
+  "auto_repair": true,
+  "auto_repair_attempt": 11,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Cristiano Ronaldo pide perdón por abandonar la concentración de Portugal y acusa a Jorge Jesus de incumplir lo acordado",
+    "revision": 1,
+    "factual_summary": "Cristiano Ronaldo pidió disculpas a aficionados y compañeros por abandonar la concentración de Portugal. Explicó que Jorge Jesus incumplió el plan acordado al no darle minutos ante Noruega y afirmó que, tras asumir una eventual sanción, sigue disponible para la selección.",
+    "tweet_text": "Cristiano Ronaldo pide perdón por abandonar la concentración de Portugal, pero acusa a Jorge Jesus de incumplir el plan acordado tras dejarle sin jugar ante Noruega; dice que sigue disponible.\n\n🌶️ El comunicado llegó con más minutos que el partido.",
+    "remate": "🌶️ El comunicado llegó con más minutos que el partido.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.",
+    "image_style_name": "comic_europeo",
+    "image_style_index": 1,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cómic europeo contemporáneo, entintado preciso, volumen sólido, expresiones fuertes y composición cinematográfica pero despejada.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nCristiano Ronaldo pide perdón por abandonar la concentración de Portugal, pero acusa a Jorge Jesus de incumplir el plan acordado tras dejarle sin jugar ante Noruega; dice que sigue disponible.\n\n🌶️ El comunicado llegó con más minutos que el partido.\n\nREMATE EXACTO:\n🌶️ El comunicado llegó con más minutos que el partido.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nCristiano Ronaldo pidió disculpas a aficionados y compañeros por abandonar la concentración de Portugal. Explicó que Jorge Jesus incumplió el plan acordado al no darle minutos ante Noruega y afirmó que, tras asumir una eventual sanción, sigue disponible para la selección.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://cadenaser.com/nacional/2026/10/06/cristiano-ronaldo-pide-perdon-a-los-portugueses-y-acusa-a-jorge-jesus-falto-a-su-palabra-cadena-ser/",
+    "citations": [
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/deportes/futbol/durisimo-comunicado-cristiano-ronaldo-tras-su-salida-seleccion-portuguesa-si-no-me-querian-alli-solo-debian-decirmelo_7045726_0.html"
+      },
+      {
+        "source": "Cadena SER",
+        "url": "https://cadenaser.com/nacional/2026/10/06/cristiano-ronaldo-pide-perdon-a-los-portugueses-y-acusa-a-jorge-jesus-falto-a-su-palabra-cadena-ser/"
+      },
+      {
+        "source": "laSexta Noticias",
+        "url": "https://www.lasexta.com/noticias/deportes/futbol/cristiano-senala-jorge-jesus-aclara-que-retira-seleccion-esta-pura-verdad_202610066ac54464f7f8f566d14ea53c.html"
+      },
+      {
+        "source": "COPE",
+        "url": "https://www.cope.es/programas/tiempo-de-juego/noticias/comunicado-cristiano-ronaldo-explicar-polemica-seleccionador-jorge-jesus-20261006_3450978.html"
+      },
+      {
+        "source": "El Mundo",
+        "url": "https://www.elmundo.es/deportes/futbol/uefa-nations-league/2026/10/06/6ac54537e85ece25678b45b4.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio; Listas; Telegram."
+  },
+  "message": "Cancelado antes de abrir chat: not_ready",
+  "pc_upload_secret_hash": "1c5fbd8db0521c20e7c017848ee1f5d48e28f172e36ca8baa34414380480dd00",
+  "finished_at": "2026-10-07T07:12:47.873Z",
+  "pc_worker_id": "ttittulares-dedicated-v47"
+}

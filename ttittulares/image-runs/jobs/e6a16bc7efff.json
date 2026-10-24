@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-e6a16bc7efff-r1-a1-1792140008078",
+  "requested_at": "2026-10-16T08:40:08.040412Z",
+  "updated_at": "2026-10-16T08:42:31.610762Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "e6a16bc7efff",
+  "event_id": "e6a16bc7efff",
+  "target_name": "Dos heridos tras caer su vehículo por un desnivel de unos 50 metros en Málaga",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Dos heridos tras caer su vehículo por un desnivel de unos 50 metros en Málaga",
+    "revision": 1,
+    "factual_summary": "Dos personas de unos 75 a 80 años resultaron heridas después de que su vehículo cayera por un desnivel de unos 50 metros en el Camino de Colmenar, en Málaga. Un árbol detuvo la caída y ambos ocupantes fueron trasladados a un hospital.",
+    "tweet_text": "Dos personas de unos 75-80 años resultaron heridas tras caer su coche por un desnivel de 50 metros en el Camino de Colmenar (Málaga); un árbol frenó la caída.\n\n#Málaga #CaminoDeColmenar #Bomberos\n🌶️ El árbol terminó haciendo de freno de emergencia.",
+    "remate": "🌶️ El árbol terminó haciendo de freno de emergencia.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nDos personas de unos 75-80 años resultaron heridas tras caer su coche por un desnivel de 50 metros en el Camino de Colmenar (Málaga); un árbol frenó la caída.\n\n#Málaga #CaminoDeColmenar #Bomberos\n🌶️ El árbol terminó haciendo de freno de emergencia.\n\nREMATE EXACTO:\n🌶️ El árbol terminó haciendo de freno de emergencia.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nDos personas de unos 75 a 80 años resultaron heridas después de que su vehículo cayera por un desnivel de unos 50 metros en el Camino de Colmenar, en Málaga. Un árbol detuvo la caída y ambos ocupantes fueron trasladados a un hospital.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/andalucia/malaga-00356/noticia-dos-heridos-caer-vehiculo-desnivel-50-metros-malaga-20261015153347.html",
+    "citations": [
+      {
+        "source": "El Español",
+        "title": "Dos heridos tras caer con su vehículo por un desnivel de 50 metros en Málaga capital",
+        "url": "https://www.elespanol.com/malaga/malaga-ciudad/20261015/heridos-caer-vehiculo-desnivel-metros-malaga-capital/1003744421849_0.html"
+      },
+      {
+        "source": "Cadena SER",
+        "title": "Rescatan a dos personas que cayeron en un vehículo por un desnivel de 50 metros en Málaga",
+        "url": "https://cadenaser.com/andalucia/2026/10/16/rescatan-a-dos-personas-que-cayeron-en-un-vehiculo-por-un-desnivel-de-50-metros-en-malaga-ser-malaga/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "6d7649cf914ba93ccd12cd507bfb27f6a28d393937248a4a4f3415bf78d0393e",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T08:41:13.306Z",
+  "pc_launched_at": "2026-10-16T08:41:21.097Z",
+  "finished_at": "2026-10-16T08:41:21.097Z"
+}

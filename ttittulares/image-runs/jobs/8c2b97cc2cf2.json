@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-8c2b97cc2cf2-r1-a1-1792747321499",
+  "requested_at": "2026-10-23T09:22:01.455963Z",
+  "updated_at": "2026-10-23T09:40:31.307489Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "8c2b97cc2cf2",
+  "event_id": "8c2b97cc2cf2",
+  "target_name": "Emergencia meteorológica Al menos un muerto, 171 heridos y casi 1.000 vuelos cancelados en Taiwán por tifón Champi laSexta.com 23 de octubre de 2026, 10:33",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Emergencia meteorológica Al menos un muerto, 171 heridos y casi 1.000 vuelos cancelados en Taiwán por tifón Champi laSexta.com 23 de octubre de 2026, 10:33",
+    "revision": 1,
+    "factual_summary": "El tifón Champi dejó en Taiwán al menos una persona muerta, 171 heridas y 2.639 evacuadas, según el balance más reciente citado por Reuters. Las autoridades cancelaron 262 vuelos domésticos y 717 internacionales, suspendieron clases y oficinas en gran parte de la isla y cerraron los mercados financieros ante el riesgo de vientos intensos y lluvias torrenciales.",
+    "tweet_text": "El tifón Champi deja en Taiwán un muerto, 171 heridos y 2.639 evacuados. La isla cerró escuelas, oficinas y mercados y canceló 979 vuelos ante vientos y lluvias intensas.\n\n#Taiwán #TifónChampi #Meteorología\n🌶️ La agenda entera terminó en modo avión.",
+    "remate": "🌶️ La agenda entera terminó en modo avión.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nEl tifón Champi deja en Taiwán un muerto, 171 heridos y 2.639 evacuados. La isla cerró escuelas, oficinas y mercados y canceló 979 vuelos ante vientos y lluvias intensas.\n\n#Taiwán #TifónChampi #Meteorología\n🌶️ La agenda entera terminó en modo avión.\n\nREMATE EXACTO:\n🌶️ La agenda entera terminó en modo avión.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nEl tifón Champi dejó en Taiwán al menos una persona muerta, 171 heridas y 2.639 evacuadas, según el balance más reciente citado por Reuters. Las autoridades cancelaron 262 vuelos domésticos y 717 internacionales, suspendieron clases y oficinas en gran parte de la isla y cerraron los mercados financieros ante el riesgo de vientos intensos y lluvias torrenciales.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.lasexta.com/noticias/internacional/menos-muerto-171-heridos-casi-1000-vuelos-cancelados-taiwan-tifon-champi_202610236adb1bf1f655b65cc385e9eb.html",
+    "citations": [
+      {
+        "name": "Reuters",
+        "url": "https://www.reuters.com/business/environment/taiwan-shuts-down-ahead-weakening-typhoon-champi-hundreds-flights-cancelled-2026-10-22/"
+      },
+      {
+        "name": "Associated Press",
+        "url": "https://apnews.com/article/typhoon-champi-taiwan-japan-8cf1c88611fc6ede98ebac11201f91cb"
+      },
+      {
+        "name": "Central Weather Administration de Taiwán",
+        "url": "https://www.cwa.gov.tw/V8/E/P/Typhoon/TY_NEWS.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "fd4693ca1e15f9ace53b09109e06ee3e79067ec335c307d8595de3a493fa9a2d",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-23T09:24:06.252Z",
+  "pc_launched_at": "2026-10-23T09:24:14.329Z",
+  "finished_at": "2026-10-23T09:24:14.329Z"
+}

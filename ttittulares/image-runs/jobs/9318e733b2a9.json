@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-9318e733b2a9-r1-a1-1792183041690",
+  "requested_at": "2026-10-16T20:37:21.650334Z",
+  "updated_at": "2026-10-16T21:20:11.287235Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "9318e733b2a9",
+  "event_id": "9318e733b2a9",
+  "target_name": "Los Mossos investigan la muerte a tiros de un hombre en Badalona",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Los Mossos investigan la muerte a tiros de un hombre en Badalona",
+    "revision": 1,
+    "factual_summary": "Un hombre murió tras recibir varios disparos en el interior de un estudio de tatuajes de Badalona. Los Mossos d'Esquadra investigan el ataque y la División de Investigación Criminal trata de esclarecer las circunstancias.",
+    "tweet_text": "Los Mossos investigan la muerte a tiros de un hombre en un estudio de tatuajes de Badalona. La División de Investigación Criminal trata de esclarecer el ataque.\n\n#Badalona #Mossos\n🌶️ La investigación sigue abierta y bajo secreto de actuaciones.",
+    "remate": "🌶️ La investigación sigue abierta y bajo secreto de actuaciones.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLos Mossos investigan la muerte a tiros de un hombre en un estudio de tatuajes de Badalona. La División de Investigación Criminal trata de esclarecer el ataque.\n\n#Badalona #Mossos\n🌶️ La investigación sigue abierta y bajo secreto de actuaciones.\n\nREMATE EXACTO:\n🌶️ La investigación sigue abierta y bajo secreto de actuaciones.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nUn hombre murió tras recibir varios disparos en el interior de un estudio de tatuajes de Badalona. Los Mossos d'Esquadra investigan el ataque y la División de Investigación Criminal trata de esclarecer las circunstancias.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/catalunya/2026-10-16/los-mossos-investigan-la-muerte-a-tiros-de-un-hombre-en-badalona.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "Los Mossos investigan la muerte a tiros de un hombre en Badalona",
+        "url": "https://elpais.com/espana/catalunya/2026-10-16/los-mossos-investigan-la-muerte-a-tiros-de-un-hombre-en-badalona.html"
+      },
+      {
+        "source": "La Vanguardia",
+        "title": "Dos pistoleros matan a tiros a un hombre en un estudio de tatuajes de Badalona",
+        "url": "https://www.lavanguardia.com/local/barcelones-nord/20261016/11661048/dos-pistoleros-matan-tiros-hombre-estudio-tatuajes-badalona.html"
+      },
+      {
+        "source": "RAC1",
+        "title": "Maten a trets un home en un local de tatuatges de Badalona",
+        "url": "https://www.rac1.cat/successos/20261016/379128/maten-trets-home-local-tatuatges-badalona.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "0a64a7ee65ea402fb25c0f124b9d358c1f216748dd04a06228765328a3c9ec92",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T20:39:12.579Z",
+  "pc_launched_at": "2026-10-16T20:39:31.533Z",
+  "finished_at": "2026-10-16T20:39:31.533Z"
+}

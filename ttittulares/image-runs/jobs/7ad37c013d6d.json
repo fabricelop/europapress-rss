@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-7ad37c013d6d-r1-a1-1792159747916",
+  "requested_at": "2026-10-16T14:09:07.888704Z",
+  "updated_at": "2026-10-16T14:11:21.304136Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "7ad37c013d6d",
+  "event_id": "7ad37c013d6d",
+  "target_name": "VOTA ¿Debería comparecer Pedro Sánchez en la Diputación Permanente del Congreso para explicar la incursión de buques de guerra marroquíes en aguas españolas?",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "VOTA ¿Debería comparecer Pedro Sánchez en la Diputación Permanente del Congreso para explicar la incursión de buques de guerra marroquíes en aguas españolas?",
+    "revision": 1,
+    "factual_summary": "Alberto Núñez Feijóo reclama que Pedro Sánchez comparezca en la Diputación Permanente del Congreso para explicar la entrada de buques militares marroquíes en aguas españolas cerca de Ceuta a finales de julio. El Gobierno ha reconocido aquel episodio y lo califica de puntual.",
+    "tweet_text": "Feijóo reclama que Sánchez comparezca en el Congreso por la entrada de buques militares marroquíes en aguas de Ceuta a finales de julio, reconocida por el Gobierno.\n\n#Ceuta #PedroSánchez\n🌶️ El incidente ya tiene escala parlamentaria.",
+    "remate": "🌶️ El incidente ya tiene escala parlamentaria.",
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
+    "editorial_image_mode": "humor",
+    "image_style_name": "cartoon_3d",
+    "image_style_index": 8,
+    "image_prompt": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.\n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nFeijóo reclama que Sánchez comparezca en el Congreso por la entrada de buques militares marroquíes en aguas de Ceuta a finales de julio, reconocida por el Gobierno.\n\n#Ceuta #PedroSánchez\n🌶️ El incidente ya tiene escala parlamentaria.\n\nREMATE EXACTO:\n🌶️ El incidente ya tiene escala parlamentaria.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nAlberto Núñez Feijóo reclama que Pedro Sánchez comparezca en la Diputación Permanente del Congreso para explicar la entrada de buques militares marroquíes en aguas españolas cerca de Ceuta a finales de julio. El Gobierno ha reconocido aquel episodio y lo califica de puntual.\n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.ondacero.es/noticias/vota-deberia-comparecer-pedro-sanchez-diputacion-permanente-congreso-explicar-incursion-buques-guerra-marroquies-aguas-espanolas_202610156ad09619b79b18452fc50800.html",
+    "citations": [
+      {
+        "source": "EL PAÍS",
+        "title": "Feijóo exige a Sánchez que dé explicaciones en el Congreso sobre la entrada de buques marroquíes en aguas españolas",
+        "url": "https://elpais.com/espana/2026-10-14/feijoo-exige-a-sanchez-que-de-explicaciones-en-el-congreso-sobre-la-entrada-de-buques-marroquies-en-aguas-espanolas.html"
+      },
+      {
+        "source": "Europa Press",
+        "title": "PP exige a Sánchez que deje de \"mentir\" e informe en Diputación Permanente del Congreso sobre buques marroquíes en Ceuta",
+        "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-pp-exige-sanchez-deje-mentir-informe-diputacion-permanente-congreso-buques-marroquies-ceuta-20261015144031.html"
+      },
+      {
+        "source": "EFE",
+        "title": "El Gobierno dice que la entrada en Ceuta de buques de guerra marroquíes fue un hecho puntual",
+        "url": "https://efe.com/espana/2026-10-13/gobierno-entrada-buques-guerra-marruecos-ceuta/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot.",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "d4aca16d4b32b5d832c81626e92e5c581cafe6df7044d3303b527f3e8c4ed36c",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-16T14:10:09.304Z",
+  "pc_launched_at": "2026-10-16T14:10:22.580Z",
+  "finished_at": "2026-10-16T14:10:22.580Z"
+}
