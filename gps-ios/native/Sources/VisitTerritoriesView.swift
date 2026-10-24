@@ -11,6 +11,7 @@ struct VisitTerritoriesView: View {
     @State private var loading = false
     @State private var selected: VisitTerritoryRegion?
     @State private var camera: MapCameraPosition = .automatic
+    @State private var visibleRegion: MKCoordinateRegion?
     @State private var request = UUID()
     @State private var followUser = false
     @State private var showHelp = false
@@ -143,7 +144,17 @@ struct VisitTerritoriesView: View {
     }
 
     private func territoryMap(_ snapshot: VisitTerritorySnapshot) -> some View {
-        let visible = snapshot.renderTiles
+        let visible: [VisitTerritoryCell]
+        if let region = visibleRegion {
+            visible = snapshot.renderTiles(
+                near: region.center.latitude, longitude: region.center.longitude,
+                latitudeDelta: region.span.latitudeDelta,
+                longitudeDelta: region.span.longitudeDelta)
+        } else {
+            visible = snapshot.renderTiles
+        }
+        let visibleIDs = Set(visible.compactMap(\.territoryID))
+        let shownRegions = snapshot.territories.filter { visibleIDs.contains($0.id) }
         return MapReader { proxy in
             Map(position: $camera) {
                 ForEach(visible) { tile in
@@ -152,7 +163,7 @@ struct VisitTerritoriesView: View {
                         .stroke(border(tile, snapshot: snapshot),
                                 lineWidth: tile.frontier ? 1.35 : 0.5)
                 }
-                ForEach(Array(snapshot.territories.prefix(40))) { region in
+                ForEach(Array(shownRegions.prefix(40))) { region in
                     Annotation("", coordinate: Grid.center(region.peak)) {
                         Button {
                             selected = region
@@ -179,6 +190,9 @@ struct VisitTerritoriesView: View {
                 }
             }
             .mapStyle(.standard(elevation: .flat))
+            .onMapCameraChange(frequency: .onEnd) { context in
+                visibleRegion = context.region
+            }
             .onTapGesture { point in
                 guard let coordinate = proxy.convert(point, from: .local) else {
                     return
@@ -218,7 +232,7 @@ struct VisitTerritoriesView: View {
             }
             .overlay(alignment: .topLeading) {
                 if visible.count < snapshot.tiles.count {
-                    Text("Mostradas \(visible.count.formatted()) de \(snapshot.tiles.count.formatted()) cuadrículas")
+                    Text("En esta zona: \(visible.count.formatted()) de \(snapshot.tiles.count.formatted()) cuadrículas")
                         .font(.caption2)
                         .padding(5)
                         .background(.regularMaterial,
