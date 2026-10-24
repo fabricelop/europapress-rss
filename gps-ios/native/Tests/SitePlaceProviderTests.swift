@@ -20,4 +20,36 @@ final class SitePlaceProviderTests:XCTestCase {
                               latitude:40,longitude:-3,source:.apple,distance:10,inGrid:true)
         XCTAssertEqual(SitePOISearch.ranked([a,b]).count,2)
     }
+    func testTypedVenueOutranksUnrelatedItemsWithinCurrentCell() {
+        let falseNearby=SitePlaceResult(id:"statue",name:"Escultura central",
+             latitude:40.11,longitude:-3.71,source:.openStreetMap,
+             distance:12,inGrid:true)
+        let searchedVenue=SitePlaceResult(id:"library",name:"Biblioteca Municipal",
+             latitude:40.12,longitude:-3.72,source:.apple,
+             distance:190,inGrid:false)
+        let ranked=SitePOISearch.ranked([falseNearby,searchedVenue],
+                                        query:"Biblioteca Municipal")
+        XCTAssertEqual(ranked.first?.id,"library")
+        XCTAssertEqual(ranked.count,2)
+    }
+
+    func testAccentInsensitiveSearchAndTokenOrder() {
+        XCTAssertEqual(SitePOISearch.queryScore("Polideportivo La Masó",
+                                               query:"polideportivo la maso"),5)
+        XCTAssertEqual(SitePOISearch.queryScore("Centro Deportivo del Barrio",
+                                               query:"deportivo centro"),2)
+        XCTAssertEqual(SitePOISearch.queryScore("Monumento",
+                                               query:"biblioteca"),0)
+    }
+
+    func testUnfilteredNearbyPrefersGridAndNearbyLocation() {
+        let outside=SitePlaceResult(id:"far",name:"Centro lejano",
+              latitude:40,longitude:-3,source:.foursquare,
+              distance:950,inGrid:false)
+        let local=SitePlaceResult(id:"here",name:"Centro local",
+              latitude:40,longitude:-3,source:.apple,
+              distance:27,inGrid:true)
+        XCTAssertEqual(SitePOISearch.ranked([outside,local]).first?.id,"here")
+    }
+
 }
