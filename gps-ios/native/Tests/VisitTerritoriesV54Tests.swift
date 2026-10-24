@@ -181,6 +181,14 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         let second = VisitTerritoryEngine.build(counts: counts)
         XCTAssertEqual(first.territories.count, 600)
         XCTAssertEqual(first.tiles.count, 600)
+        // Cada polígono consulta su región al colorear relleno y borde.
+        // El índice debe resolver todos los países sin alterar la asignación.
+        for region in first.territories {
+            XCTAssertEqual(first.region(region.id)?.id, region.id)
+            XCTAssertEqual(first.region(region.id)?.visits, region.visits)
+        }
+        XCTAssertNil(first.region(nil))
+        XCTAssertNil(first.region("inexistente"))
         XCTAssertEqual(first.territories.map(\.id),
                        second.territories.map(\.id))
         XCTAssertEqual(first.territories.reduce(0) { $0 + $1.visits },
