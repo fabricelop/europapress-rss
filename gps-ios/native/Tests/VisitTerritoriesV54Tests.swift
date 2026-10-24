@@ -125,9 +125,9 @@ final class VisitTerritoriesV54Tests: XCTestCase {
         let second = VisitTerritoryEngine.build(counts: visits)
         XCTAssertEqual(first.territories.count, 4)
         XCTAssertEqual(first.disputedCount, 1)
-        XCTAssertEqual(Set(first.territories.map(\\.colorIndex)).count, 4)
-        XCTAssertEqual(first.territories.map(\\.colorIndex),
-                       second.territories.map(\\.colorIndex))
+        XCTAssertEqual(Set(first.territories.map(\.colorIndex)).count, 4)
+        XCTAssertEqual(first.territories.map(\.colorIndex),
+                       second.territories.map(\.colorIndex))
         XCTAssertEqual(first.totalVisits, visits.values.reduce(0,+))
     }
 
