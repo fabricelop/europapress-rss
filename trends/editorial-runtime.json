@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-24T23:45:00+02:00",
-  "last_completed_at": "2026-10-24T23:46:00+02:00",
-  "updated_at": "2026-10-24T23:46:00+02:00",
+  "last_started_at": "2026-10-25T00:15:00+02:00",
+  "last_completed_at": "2026-10-25T00:15:50+02:00",
+  "updated_at": "2026-10-25T00:15:50+02:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261024T234500+0200",
+    "trigger_run_id": "tr-chat-20261025T001500+0200",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261024T234500+0200",
+    "run_id": "tr-chat-20261025T001500+0200",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-24T23:45:00+02:00",
-    "updated_at": "2026-10-24T23:46:00+02:00",
-    "finished_at": "2026-10-24T23:46:00+02:00",
+    "started_at": "2026-10-25T00:15:00+02:00",
+    "updated_at": "2026-10-25T00:15:50+02:00",
+    "finished_at": "2026-10-25T00:15:50+02:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,14 +61,14 @@
       "remates_selected": 0,
       "remates_omitted": 2,
       "recent_missing_closer_reviewed": 2,
-      "pending_cards_reviewed": 18,
+      "pending_cards_reviewed": 16,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 0,
+      "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial nuevo; 18 fichas recientes revisadas, 2 remates sensibles omitidos y cola final 0.",
+    "message": "TTendencias completada: sin trabajo editorial nuevo; 16 fichas recientes revisadas, 2 remates sensibles omitidos y cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -81,56 +81,63 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-24T23:45:00+02:00",
+        "at": "2026-10-25T00:15:00+02:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Pasada iniciada; cola editorial 0. Verificando revisiones activas, reexplicaciones y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-24T23:45:15+02:00",
+        "at": "2026-10-25T00:15:05+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-24T23:45:25+02:00",
+        "at": "2026-10-25T00:15:10+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura autoritativa: cola 0; requests activas 0; rewrite_pending 0."
       },
       {
-        "at": "2026-10-24T23:45:35+02:00",
+        "at": "2026-10-25T00:15:20+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 18 fichas explicadas de menos de 24 h; reparación visual solicitada."
+        "message": "Revisando Pendientes · 16 fichas explicadas de menos de 24 h; reparación visual solicitada."
       },
       {
-        "at": "2026-10-24T23:45:45+02:00",
+        "at": "2026-10-25T00:15:25+02:00",
         "phase": "verifying",
         "trend_id": "413c73f54712",
         "title": "#DeViernes",
         "message": "Remate vacío revisado; se conserva factual por incluir el relato de un asalto sufrido en domicilio."
       },
       {
-        "at": "2026-10-24T23:45:50+02:00",
+        "at": "2026-10-25T00:15:30+02:00",
         "phase": "verifying",
         "trend_id": "d438ccc039cc",
         "title": "#laSextaXplica",
-        "message": "Remate vacío revisado; se conserva factual por tratar disturbios y saqueo en Barcelona."
+        "message": "Remate vacío revisado; se conserva factual por tratar disturbios y saqueos en Barcelona."
       },
       {
-        "at": "2026-10-24T23:45:55+02:00",
+        "at": "2026-10-25T00:15:35+02:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Top 10 actual revisado: sin explicaciones vencidas de más de 48 h; las retiradas por decisión del panel no se reabren."
+      },
+      {
+        "at": "2026-10-25T00:15:45+02:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0; trigger persistido."
       },
       {
-        "at": "2026-10-24T23:46:00+02:00",
+        "at": "2026-10-25T00:15:50+02:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -143,7 +150,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-chat-20261024T234500+0200",
+  "run_id": "tr-chat-20261025T001500+0200",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -168,65 +175,72 @@
     "remates_selected": 0,
     "remates_omitted": 2,
     "recent_missing_closer_reviewed": 2,
-    "pending_cards_reviewed": 18,
+    "pending_cards_reviewed": 16,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 10,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-24T23:45:00+02:00",
+      "at": "2026-10-25T00:15:00+02:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Pasada iniciada; cola editorial 0. Verificando revisiones activas, reexplicaciones y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-24T23:45:15+02:00",
+      "at": "2026-10-25T00:15:05+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-24T23:45:25+02:00",
+      "at": "2026-10-25T00:15:10+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura autoritativa: cola 0; requests activas 0; rewrite_pending 0."
     },
     {
-      "at": "2026-10-24T23:45:35+02:00",
+      "at": "2026-10-25T00:15:20+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 18 fichas explicadas de menos de 24 h; reparación visual solicitada."
+      "message": "Revisando Pendientes · 16 fichas explicadas de menos de 24 h; reparación visual solicitada."
     },
     {
-      "at": "2026-10-24T23:45:45+02:00",
+      "at": "2026-10-25T00:15:25+02:00",
       "phase": "verifying",
       "trend_id": "413c73f54712",
       "title": "#DeViernes",
       "message": "Remate vacío revisado; se conserva factual por incluir el relato de un asalto sufrido en domicilio."
     },
     {
-      "at": "2026-10-24T23:45:50+02:00",
+      "at": "2026-10-25T00:15:30+02:00",
       "phase": "verifying",
       "trend_id": "d438ccc039cc",
       "title": "#laSextaXplica",
-      "message": "Remate vacío revisado; se conserva factual por tratar disturbios y saqueo en Barcelona."
+      "message": "Remate vacío revisado; se conserva factual por tratar disturbios y saqueos en Barcelona."
     },
     {
-      "at": "2026-10-24T23:45:55+02:00",
+      "at": "2026-10-25T00:15:35+02:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Top 10 actual revisado: sin explicaciones vencidas de más de 48 h; las retiradas por decisión del panel no se reabren."
+    },
+    {
+      "at": "2026-10-25T00:15:45+02:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Relectura final de main: cola 0; requests activas 0; rewrite_pending 0; trigger persistido."
     },
     {
-      "at": "2026-10-24T23:46:00+02:00",
+      "at": "2026-10-25T00:15:50+02:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -236,14 +250,14 @@
   "partial": false,
   "radar_refresh": {
     "status": "observed",
-    "reason": "Captura reciente de las 23:43:20; no fue necesario solicitar refresh adicional.",
-    "captured_at": "2026-10-24T23:43:20+02:00"
+    "reason": "Captura reciente de las 00:10:49; no fue necesario solicitar refresh adicional.",
+    "captured_at": "2026-10-25T00:10:49+02:00"
   },
   "radar": {
-    "captured_at": "2026-10-24T23:43:20+02:00",
+    "captured_at": "2026-10-25T00:10:49+02:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1792877982785-manual",
+  "previous_run_id": "tr-chat-20261024T234500+0200",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
