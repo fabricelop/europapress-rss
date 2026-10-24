@@ -143,9 +143,7 @@ struct VisitTerritoriesView: View {
     }
 
     private func territoryMap(_ snapshot: VisitTerritorySnapshot) -> some View {
-        let visible = Array(snapshot.tiles.sorted {
-            $0.visits == $1.visits ? $0.id < $1.id : $0.visits > $1.visits
-        }.prefix(2200))
+        let visible = snapshot.renderTiles
         return MapReader { proxy in
             Map(position: $camera) {
                 ForEach(visible) { tile in
@@ -187,7 +185,7 @@ struct VisitTerritoriesView: View {
                 }
                 let cell = Grid.cell(latitude: coordinate.latitude,
                                      longitude: coordinate.longitude)
-                if let tile = snapshot.tiles.first(where: { $0.id == cell.id }),
+                if let tile = snapshot.tile(cell.id),
                    let region = snapshot.region(tile.territoryID) {
                     selected = region
                 }
