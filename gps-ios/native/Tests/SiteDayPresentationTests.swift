@@ -102,10 +102,66 @@ final class SiteDayPresentationTests: XCTestCase {
                                               on:Date(timeIntervalSince1970:base),
                                               calendar:cal)
         XCTAssertEqual(report.groups.count,3)
-        XCTAssertFalse(report.isFullyReviewed)
+        XCTAssertTrue(report.isFullyClassified)
+        XCTAssertEqual(report.classifiedFraction,1,accuracy:0.00001)
+        XCTAssertEqual(report.pendingStaysCount,0)
+        XCTAssertEqual(report.proposedStaysCount,1)
         XCTAssertEqual(report.confirmedGPS,350)
         XCTAssertEqual(report.suggestedGPS,500)
         XCTAssertEqual(report.passingGPS,400)
+    }
+
+    func testOnlyProposedSiteIsOneHundredPercentClassifiedButNotConfirmed() {
+        let base=cal.date(from:DateComponents(year:2026,month:10,day:11,hour:8))!
+                    .timeIntervalSince1970
+        let site=UUID()
+        let item=stay(base,base+720,a,siteID:site,confirmed:false)
+        let report=SiteDayPresentation.build([item],
+              on:Date(timeIntervalSince1970:base),calendar:cal)
+        XCTAssertEqual(report.classifiedFraction,1,accuracy:0.00001)
+        XCTAssertTrue(report.isFullyClassified)
+        XCTAssertEqual(report.pendingStaysCount,0)
+        XCTAssertEqual(report.proposedStaysCount,1)
+        XCTAssertEqual(report.confirmedGPS,0)
+        XCTAssertEqual(report.suggestedGPS,720)
+        XCTAssertEqual(report.siteTotals.first?.confirmedSeconds,0)
+        XCTAssertEqual(report.siteTotals.first?.proposedSeconds,720)
+    }
+
+    func testUnassignedSubperiodKeepsStayPendingEvenWithAnotherProposedSite() {
+        let base=cal.date(from:DateComponents(year:2026,month:10,day:11,hour:12))!
+                    .timeIntervalSince1970
+        var item=stay(base,base+900,a)
+        let site=UUID()
+        item.parts=[
+            SiteStayPart(stayID:item.stay.id,from:item.stay.start,
+                         to:item.stay.start.addingTimeInterval(600),kind:.place,
+                         siteID:site,confirmed:false),
+            SiteStayPart(stayID:item.stay.id,
+                         from:item.stay.start.addingTimeInterval(600),
+                         to:item.stay.end,kind:.unassigned,siteID:nil)
+        ]
+        let report=SiteDayPresentation.build([item],
+              on:Date(timeIntervalSince1970:base),calendar:cal)
+        XCTAssertEqual(report.classifiedFraction,2.0/3.0,accuracy:0.00001)
+        XCTAssertFalse(report.isFullyClassified)
+        XCTAssertEqual(report.pendingStaysCount,1)
+        XCTAssertTrue(report.pendingStayIDs.contains(item.stay.id))
+        XCTAssertEqual(report.proposedStaysCount,1)
+        XCTAssertEqual(report.unidentifiedGPS,300)
+    }
+
+    func testProposedStayDoesNotBecomeManualConfirmation() {
+        let base=cal.date(from:DateComponents(year:2026,month:10,day:11,hour:17))!
+                    .timeIntervalSince1970
+        let site=UUID()
+        let item=stay(base,base+360,a,siteID:site,confirmed:false)
+        let original=item.parts
+        let report=SiteDayPresentation.build([item],
+              on:Date(timeIntervalSince1970:base),calendar:cal)
+        XCTAssertTrue(report.isFullyClassified)
+        XCTAssertEqual(item.parts,original)
+        XCTAssertFalse(item.parts[0].confirmed)
     }
 
     func testPartsCanAssignTwoSitesWithoutDuplicatingRecordedTime() {
