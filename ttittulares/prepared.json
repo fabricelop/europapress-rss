@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-24T18:46:08.019Z",
+  "updated_at": "2026-10-24T18:47:15.328Z",
   "items": [
     {
       "event_id": "f92941992608",
@@ -784,7 +784,7 @@
       "image_strategy": "archive_only",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
@@ -808,7 +808,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Detenido en Milán un investigado por la organización de las protestas juveniles"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-10-24T18:47:15.328Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,"
     }
   ],
   "count": 1,
