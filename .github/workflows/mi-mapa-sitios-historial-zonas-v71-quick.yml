@@ -1,0 +1,61 @@
+name: "Mi Mapa Historial Zonas v71 - IPA rápida"
+on:
+  push:
+    branches: [feature/sitios-historial-zonas-v71]
+    paths: ['.github/workflows/mi-mapa-sitios-historial-zonas-v71-quick.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ipa:
+    runs-on: macos-15
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sintaxis y paquete iPhone
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/sitehistory71" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/sitehistory71/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"]);assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.71"
+          assert info["CFBundleVersion"]=="72"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Historial-Zonas-1.0.71.ipa Payload
+          unzip -t MiMapaDelTiempo-Historial-Zonas-1.0.71.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Historial-Zonas-1.0.71-build72-quick-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Historial-Zonas-1.0.71.ipa
+          retention-days: 14
+          if-no-files-found: error
+
+# SwiftUI DatePicker style compatibility checked
+
+# Verify segmented time totals for multiple confirmed places
+
+# Rebuild with robust civil-day normalization during DST transitions.
+
+# Verify compatible MapKit text search initializer in build72.
+
+# Recompile after CoreLocation import in local-name search regression tests.
+
+# Final IPA includes safe legacy unlinking, private-only identity, edit and delete.
