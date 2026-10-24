@@ -314,6 +314,8 @@ struct TimeSitePickerView: View {
 struct TimeMySitesView: View {
     @ObservedObject var model: TimeModel
     @State private var totalsBySite:[UUID:SiteTimeTotal] = [:]
+    @State private var searchText = ""
+    @State private var visitsBySite:[UUID:[SiteVisitRecord]] = [:]
     @State private var computing = false
     @State private var generation = UUID()
     @State private var editingSite: IdentifiedSite?
@@ -321,11 +323,15 @@ struct TimeMySitesView: View {
     @State private var warningText: String?
 
     private var privateSites:[IdentifiedSite] {
-        model.data.identifiedSites.filter { $0.origin == "private" }
+        SiteVisitLookup.search(
+            model.data.identifiedSites.filter { $0.origin == "private" },
+            text:searchText)
             .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
     private var mapSites:[IdentifiedSite] {
-        model.data.identifiedSites.filter { $0.origin != "private" }
+        SiteVisitLookup.search(
+            model.data.identifiedSites.filter { $0.origin != "private" },
+            text:searchText)
             .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
@@ -340,7 +346,7 @@ struct TimeMySitesView: View {
                 }
             }
             Section {
-                Text("Puedes cambiar el nombre y la ubicación de tus sitios privados o eliminarlos. Las modificaciones se reflejan en todas las estancias que tengan asociado ese sitio.")
+                Text("Busca un sitio y tócalo para ver todos los días y horarios en los que has estado allí, con el tiempo registrado y acceso al mapa de cada estancia.")
                     .font(.footnote).foregroundStyle(.secondary)
                 LabeledContent("Sitios creados por mí",value:"\(privateSites.count)")
                 LabeledContent("Sitios de mapas",value:"\(mapSites.count)")
@@ -353,7 +359,12 @@ struct TimeMySitesView: View {
                 }
                 ForEach(privateSites) { site in
                     HStack(alignment:.center,spacing:10) {
-                        siteSummary(site)
+                        NavigationLink {
+                            TimeSiteVisitHistoryView(model:model,site:site,
+                                      visits:visitsBySite[site.id] ?? [])
+                        } label: {
+                            siteSummary(site)
+                        }
                         Spacer(minLength:4)
                         Menu {
                             Button {
@@ -387,11 +398,17 @@ struct TimeMySitesView: View {
             if !mapSites.isEmpty {
                 Section("Sitios guardados desde mapas") {
                     ForEach(mapSites) { site in
-                        siteSummary(site)
+                        NavigationLink {
+                            TimeSiteVisitHistoryView(model:model,site:site,
+                                      visits:visitsBySite[site.id] ?? [])
+                        } label: {
+                            siteSummary(site)
+                        }
                     }
                 }
             }
         }
+        .searchable(text:$searchText,prompt:"Buscar por nombre del sitio")
         .navigationTitle("Mis Sitios")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item:$editingSite) { site in
@@ -440,6 +457,8 @@ struct TimeMySitesView: View {
         VStack(alignment:.leading,spacing:5) {
             Label(site.name,systemImage:site.origin == "private" ? "house.fill" : "mappin")
                 .font(.subheadline.weight(.semibold))
+            Text("\(visitsBySite[site.id]?.count ?? 0) períodos en el histórico · ver días y horarios")
+                .font(.caption2).foregroundStyle(.secondary)
             Text("\(total.verifiedVisits) estancias confirmadas · \(DurationFormat.full(total.verifiedSeconds))")
                 .font(.caption).foregroundStyle(.teal)
             if total.suggestedVisits > 0 {
@@ -457,12 +476,16 @@ struct TimeMySitesView: View {
         let raw=model.data.intervals
         let parts=model.data.siteStayParts
         let legacy=model.data.siteStayAssignments
+        let sites=model.data.identifiedSites
         DispatchQueue.global(qos:.userInitiated).async {
             let statistics=SiteStayTotals.calculate(intervals:raw,parts:parts,
                                                    assignments:legacy)
+            let records=SiteVisitLookup.index(intervals:raw,parts:parts,
+                                              assignments:legacy,sites:sites)
             DispatchQueue.main.async {
                 guard generation==id else { return }
                 totalsBySite=statistics
+                visitsBySite=records
                 computing=false
             }
         }
