@@ -112,7 +112,11 @@ enum SitePOISearch {
             if !normalized.isEmpty {
                 let lowered=title.folding(options:[.caseInsensitive,.diacriticInsensitive],
                                            locale:.current)
-                if !lowered.contains(normalized) { return nil }
+                let terms=normalized.split(separator:" ").filter { $0.count > 1 }
+                if !lowered.contains(normalized) &&
+                   !(!terms.isEmpty && terms.allSatisfy({ lowered.contains($0) })) {
+                    return nil
+                }
             }
             guard let lat=item.lat ?? item.center?.lat,
                   let lon=item.lon ?? item.center?.lon else { return nil }
@@ -125,18 +129,23 @@ enum SitePOISearch {
     static func apple(center: CLLocationCoordinate2D,cell:Cell,
                       query:String?) async throws -> [SitePlaceResult] {
         let terms=query?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
-        let req: MKLocalSearch.Request
+        let search: MKLocalSearch
         if terms.isEmpty {
-            req=MKLocalSearch.Request()
-            req.region=MKCoordinateRegion(center:center,latitudinalMeters:850,longitudinalMeters:850)
-            req.resultTypes = [.pointOfInterest]
+            // A generic MKLocalSearch.Request() with NO text query is not a
+            // nearby-POI search. It caused the regression that returned few
+            // or no places. Restore Apple's dedicated POI API.
+            let poi=MKLocalPointsOfInterestRequest(center:center,radius:260)
+            search=MKLocalSearch(request:poi)
         } else {
-            req=MKLocalSearch.Request()
-            req.naturalLanguageQuery=terms
-            req.region=MKCoordinateRegion(center:center,latitudinalMeters:20000,longitudinalMeters:20000)
-            req.resultTypes=[.pointOfInterest,.address]
+            // Explicit text search is different: use natural language and
+            // a broad geographic hint, never a hard 100m grid restriction.
+            let region=MKCoordinateRegion(center:center,latitudinalMeters:25000,
+                                          longitudinalMeters:25000)
+            let request=MKLocalSearch.Request(naturalLanguageQuery:terms,region:region)
+            request.resultTypes=[.pointOfInterest,.address]
+            search=MKLocalSearch(request:request)
         }
-        let response=try await MKLocalSearch(request:req).start()
+        let response=try await search.start()
         return response.mapItems.compactMap { item in
             guard let name=item.name,!name.isEmpty else { return nil }
             let point=item.placemark.coordinate
@@ -159,21 +168,34 @@ enum SitePOISearch {
                                inGrid:Grid.cell(latitude:latitude,longitude:longitude)==cell)
     }
 
-    /// Exact source priority, then same grid and distance; deduplicate
-    /// overlapping records with a similar name within 60 m.
-    static func ranked(_ values:[SitePlaceResult], maxCount:Int=40) -> [SitePlaceResult] {
+    /// Search results remain grounded in each provider's actual POI names.
+    /// For explicit text searches name relevance comes first; otherwise
+    /// same-square matches, proximity and source precedence win. This avoids
+    /// putting unrelated near-grid names above the business the user typed.
+    static func ranked(_ values:[SitePlaceResult], query:String?=nil,
+                       maxCount:Int=40) -> [SitePlaceResult] {
         let priority:[SitePlaceOrigin:Int]=[.foursquare:0,.openStreetMap:1,.apple:2]
-        var unique:[SitePlaceResult]=[]
-        for item in values.sorted(by:{
-            if $0.inGrid != $1.inGrid { return $0.inGrid }
-            if priority[$0.source] != priority[$1.source] {
-                return priority[$0.source,default:99] < priority[$1.source,default:99]
+        let ordered=values.sorted { left,right in
+            let la=queryScore(left.name,query:query)
+            let lb=queryScore(right.name,query:query)
+            if la != lb { return la > lb }
+            if left.inGrid != right.inGrid { return left.inGrid }
+            // Prefer established source when candidates are roughly in the
+            // same locality. Distance remains dominant for distant pins.
+            if abs(left.distance-right.distance)>90 {
+                return left.distance < right.distance
             }
-            return $0.distance < $1.distance
-        }) {
-            let key=item.name.folding(options:[.caseInsensitive,.diacriticInsensitive],locale:.current)
+            let pa=priority[left.source,default:99]
+            let pb=priority[right.source,default:99]
+            if pa != pb { return pa < pb }
+            if left.distance != right.distance { return left.distance < right.distance }
+            return left.id < right.id
+        }
+        var unique:[SitePlaceResult]=[]
+        for item in ordered {
+            let key=folded(item.name)
             let repeated=unique.contains { previous in
-                previous.name.folding(options:[.caseInsensitive,.diacriticInsensitive],locale:.current) == key &&
+                folded(previous.name) == key &&
                 CLLocation(latitude:previous.latitude,longitude:previous.longitude)
                     .distance(from:CLLocation(latitude:item.latitude,longitude:item.longitude)) < 60
             }
@@ -182,6 +204,26 @@ enum SitePOISearch {
         }
         return unique
     }
+
+    static func queryScore(_ title:String,query:String?) -> Int {
+        let q=folded(query ?? "")
+        guard !q.isEmpty else { return 0 }
+        let name=folded(title)
+        if name == q { return 5 }
+        if name.hasPrefix(q) { return 4 }
+        if name.contains(q) { return 3 }
+        let tokens=q.split(separator:" ").map(String.init).filter { $0.count > 1 }
+        if !tokens.isEmpty && tokens.allSatisfy({ name.contains($0) }) { return 2 }
+        if tokens.count > 1 && tokens.filter({ name.contains($0) }).count >= 2 { return 1 }
+        return 0
+    }
+
+    private static func folded(_ string:String) -> String {
+        string.folding(options:[.caseInsensitive,.diacriticInsensitive],
+                       locale:Locale(identifier:"es_ES"))
+            .trimmingCharacters(in:.whitespacesAndNewlines)
+    }
+
 }
 
 enum SitePlacesError: Error { case unavailable }
