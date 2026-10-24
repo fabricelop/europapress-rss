@@ -1,12 +1,21 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-10-23T22:23:24.160442+00:00",
+  "checked_at": "2026-10-24T00:52:41.856805+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 1,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 14,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "64fd8a9289ee",
+      "title": "Brasil se juega su futuro este domingo en la segunda vuelta de las elecciones presidenciales entre Flávio Bolsonaro y Lula da Silva",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +109,9 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "64fd8a9289ee"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",
