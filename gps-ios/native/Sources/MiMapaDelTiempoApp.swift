@@ -671,11 +671,16 @@ struct SavedState: Codable {
             // when the same place is confirmed in another square. A manual
             // multi-site division, a passing marker and all confirmations stay.
             if explicit.count == 1, let only=explicit.first,
-               only.kind == .place && !only.confirmed,
-               let candidate=preferredSiteID(for:stay.cell.id),
-               candidate != only.siteID {
+               only.kind == .place && !only.confirmed {
                 var proposed=only
-                proposed.siteID=candidate
+                if let candidate=preferredSiteID(for:stay.cell.id) {
+                    proposed.siteID=candidate
+                } else {
+                    // A suggested place without evidence from this square
+                    // is not displayed as if the user had visited it.
+                    proposed.siteID=nil
+                    proposed.kind = .unassigned
+                }
                 return [proposed]
             }
             return explicit.sorted { $0.from < $1.from }
