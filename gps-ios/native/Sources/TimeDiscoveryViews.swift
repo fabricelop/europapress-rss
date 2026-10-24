@@ -34,6 +34,20 @@ struct TimeDiscoveryHome:View {
                                 .foregroundStyle(.indigo)
                         }
                     }
+                    NavigationLink {
+                        TimeMySitesView(model:model)
+                    } label: {
+                        Label {
+                            VStack(alignment:.leading,spacing:4) {
+                                Text("Mis Sitios").font(.headline)
+                                Text("Lugares reconocidos y visitas asignadas automáticamente.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                        } icon: {
+                            Image(systemName:"mappin.and.ellipse")
+                                .foregroundStyle(.indigo)
+                        }
+                    }
                 } header: {
                     Text("Simulaciones")
                 }
