@@ -287,6 +287,7 @@ struct TimeSiteStayEditor: View {
         guard let i=copy.firstIndex(where:{$0.id == part.id}) else { return }
         copy[i].kind=kind
         copy[i].siteID=siteID
+        copy[i].confirmed = kind == .place && siteID != nil
         save(copy)
     }
 
