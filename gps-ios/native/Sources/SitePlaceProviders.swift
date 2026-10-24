@@ -141,7 +141,9 @@ enum SitePOISearch {
             // a broad geographic hint, never a hard 100m grid restriction.
             let region=MKCoordinateRegion(center:center,latitudinalMeters:25000,
                                           longitudinalMeters:25000)
-            let request=MKLocalSearch.Request(naturalLanguageQuery:terms,region:region)
+            let request=MKLocalSearch.Request()
+            request.naturalLanguageQuery=terms
+            request.region=region
             request.resultTypes=[.pointOfInterest,.address]
             search=MKLocalSearch(request:request)
         }
