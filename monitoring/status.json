@@ -1,13 +1,12 @@
 {
-  "generated_at": "2026-10-25T12:30:48.382628Z",
+  "generated_at": "2026-10-25T16:45:55.482178Z",
   "repository": "fabricelop/europapress-rss",
   "projects": {
     "TTiTTulares": {
       "status": "red",
       "anomalies": [
-        "Sin ejecución correcta desde hace 13375.5 min",
-        "Última ejecución terminó en cancelled",
-        "Sin ejecución correcta desde hace 13375.5 min"
+        "Sin ejecución correcta desde hace 13630.6 min",
+        "Sin ejecución correcta desde hace 13630.6 min"
       ],
       "modules": {
         "radar_noticias": {
@@ -19,24 +18,24 @@
           "last_ok": "2026-10-16T05:35:19Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 13375.5,
+          "age_minutes": 13630.6,
           "expected_minutes": 60,
-          "anomaly": "Sin ejecución correcta desde hace 13375.5 min",
+          "anomaly": "Sin ejecución correcta desde hace 13630.6 min",
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38856412689"
         },
         "radar_manual": {
           "label": "Barrido manual de radar",
           "kind": "workflow",
           "workflow": "radar-no-d1.yml",
-          "status": "orange",
-          "last_run": "2026-10-25T12:16:31Z",
-          "last_ok": "2026-10-25T07:58:49Z",
+          "status": "green",
+          "last_run": "2026-10-25T16:13:03Z",
+          "last_ok": "2026-10-25T16:13:03Z",
           "last_error": "2026-10-25T12:16:31Z",
-          "last_conclusion": "cancelled",
-          "age_minutes": 272.0,
+          "last_conclusion": "success",
+          "age_minutes": 32.9,
           "expected_minutes": null,
-          "anomaly": "Última ejecución terminó en cancelled",
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/40191654008",
+          "anomaly": null,
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/40210346943",
           "affects_project": false
         },
         "entrada_telegram": {
@@ -48,9 +47,9 @@
           "last_ok": "2026-10-16T05:35:19Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 13375.5,
+          "age_minutes": 13630.6,
           "expected_minutes": 60,
-          "anomaly": "Sin ejecución correcta desde hace 13375.5 min",
+          "anomaly": "Sin ejecución correcta desde hace 13630.6 min",
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38856412689"
         },
         "envio_candidatos": {
@@ -62,7 +61,7 @@
           "last_ok": "2026-09-22T07:06:47Z",
           "last_error": "2026-09-22T07:06:21Z",
           "last_conclusion": "success",
-          "age_minutes": 47844.0,
+          "age_minutes": 48099.1,
           "expected_minutes": null,
           "anomaly": null,
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35697961112"
@@ -75,7 +74,7 @@
           "last_run": "2026-10-21T13:53:22Z",
           "last_ok": "2026-10-21T13:53:22Z",
           "last_error": null,
-          "age_minutes": 5677.4,
+          "age_minutes": 5932.6,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -88,7 +87,7 @@
           "last_ok": "2026-09-22T20:17:22Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 47053.4,
+          "age_minutes": 47308.6,
           "expected_minutes": null,
           "anomaly": null,
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/35779276120"
@@ -98,7 +97,7 @@
     "TTendencias": {
       "status": "red",
       "anomalies": [
-        "Sin ejecución correcta desde hace 13027.7 min",
+        "Sin ejecución correcta desde hace 13282.8 min",
         "Última ejecución terminó en failure"
       ],
       "modules": {
@@ -107,10 +106,10 @@
           "kind": "activity",
           "path": "trends/recent.json",
           "status": "green",
-          "last_run": "2026-10-25T12:27:19Z",
-          "last_ok": "2026-10-25T12:27:19Z",
+          "last_run": "2026-10-25T16:41:06Z",
+          "last_ok": "2026-10-25T16:41:06Z",
           "last_error": null,
-          "age_minutes": 3.5,
+          "age_minutes": 4.8,
           "expected_minutes": 15,
           "anomaly": null
         },
@@ -123,9 +122,9 @@
           "last_ok": "2026-10-16T11:23:08Z",
           "last_error": null,
           "last_conclusion": "success",
-          "age_minutes": 13027.7,
+          "age_minutes": 13282.8,
           "expected_minutes": 30,
-          "anomaly": "Sin ejecución correcta desde hace 13027.7 min",
+          "anomaly": "Sin ejecución correcta desde hace 13282.8 min",
           "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/38893403408"
         },
         "redactor": {
@@ -136,7 +135,7 @@
           "last_run": "2026-10-21T13:53:22Z",
           "last_ok": "2026-10-21T13:53:22Z",
           "last_error": null,
-          "age_minutes": 5677.4,
+          "age_minutes": 5932.6,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -145,14 +144,14 @@
           "kind": "workflow",
           "workflow": "send-trends-telegram.yml",
           "status": "red",
-          "last_run": "2026-10-25T12:29:38Z",
+          "last_run": "2026-10-25T14:49:17Z",
           "last_ok": null,
-          "last_error": "2026-10-25T12:29:38Z",
+          "last_error": "2026-10-25T14:49:17Z",
           "last_conclusion": "failure",
           "age_minutes": null,
           "expected_minutes": null,
           "anomaly": "Última ejecución terminó en failure",
-          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/40193338077"
+          "run_url": "https://github.com/fabricelop/europapress-rss/actions/runs/40204025719"
         }
       }
     },
@@ -165,10 +164,10 @@
           "kind": "file",
           "path": "selorecordamos/search-report.json",
           "status": "green",
-          "last_run": "2026-10-25T12:05:39.544000Z",
-          "last_ok": "2026-10-25T12:05:39.544000Z",
+          "last_run": "2026-10-25T16:05:28.283000Z",
+          "last_ok": "2026-10-25T16:05:28.283000Z",
           "last_error": null,
-          "age_minutes": 25.1,
+          "age_minutes": 40.5,
           "expected_minutes": 60,
           "anomaly": null
         },
@@ -177,10 +176,10 @@
           "kind": "file",
           "path": "selorecordamos/search-report.json",
           "status": "green",
-          "last_run": "2026-10-25T12:05:39.544000Z",
-          "last_ok": "2026-10-25T12:05:39.544000Z",
+          "last_run": "2026-10-25T16:05:28.283000Z",
+          "last_ok": "2026-10-25T16:05:28.283000Z",
           "last_error": null,
-          "age_minutes": 25.1,
+          "age_minutes": 40.5,
           "expected_minutes": 60,
           "anomaly": null
         },
@@ -192,7 +191,7 @@
           "last_run": "2026-10-25T08:03:23Z",
           "last_ok": "2026-10-25T08:03:23Z",
           "last_error": null,
-          "age_minutes": 267.4,
+          "age_minutes": 522.5,
           "expected_minutes": null,
           "anomaly": null
         },
@@ -204,7 +203,7 @@
           "last_run": "2026-10-25T07:46:44Z",
           "last_ok": "2026-10-25T07:46:44Z",
           "last_error": null,
-          "age_minutes": 284.1,
+          "age_minutes": 539.2,
           "expected_minutes": null,
           "anomaly": null
         }
