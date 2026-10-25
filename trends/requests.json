@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-25T18:01:26+01:00",
-  "count": 165,
+  "updated_at": "2026-10-25T18:06:00+01:00",
+  "count": 171,
   "requests": [
     {
       "id": "9cdc3e85d467",
@@ -2796,7 +2796,7 @@
       "id": "f5a7544fb008",
       "name": "carrick",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-25T18:01:26+01:00",
       "revision": 1,
       "reexplain": true,
@@ -2820,26 +2820,25 @@
       ],
       "auto_queued": true,
       "auto_queue_scope": "top10",
-      "last_attempt_at": "2026-10-21T21:47:20+02:00",
-      "explanation": "TT#7 Manchester United es tendencia porque cayó 4-1 ante el Como en Champions; Nico Paz hizo dos goles y una asistencia y Michael Carrick suma siete partidos sin ganar.\n#ManchesterUnited #MichaelCarrick\n🌶️ El Como convirtió la crisis en excursión por el lago.",
-      "closer_text": "🌶️ El Como convirtió la crisis en excursión por el lago.",
-      "rank_at_explanation": 8,
+      "last_attempt_at": "2026-10-25T18:06:00+01:00",
+      "explanation": "TT#4 Carrick es tendencia porque el Manchester United perdió 0-3 en casa ante el Bournemouth, enlaza ocho partidos sin ganar y aumenta la presión sobre Michael Carrick.\n#ManchesterUnited #Bournemouth #PremierLeague\n🌶️ Old Trafford ya cuenta la paciencia en goles encajados.",
+      "closer_text": "🌶️ Old Trafford ya cuenta la paciencia en goles encajados.",
+      "rank_at_explanation": 4,
       "category": "Deportes",
       "source": "editorial_chat_direct",
       "editorial_engine": "chat-direct",
       "verification_sources": [
-        "https://www.reuters.com/sports/soccer/paz-dazzles-como-thrash-manchester-united-4-1-2026-10-21/",
-        "https://www.skysports.com/football/news/13600997/como-4-1-man-utd-michael-carricks-side-ripped-apart-in-italy-during-champions-league-hammering"
+        "https://www.reuters.com/sports/soccer/liverpool-grab-home-win-man-united-slump-another-defeat-pressure-mounts-carrick-2026-10-25/",
+        "https://indianexpress.com/article/sports/football/michael-carrick-dropped-bruno-fernandes-manchester-united-10936441/"
       ],
       "news_disposition": "ignored",
-      "news_note": "El Como derrotó 4-1 al Manchester United; Nico Paz marcó dos goles y dio una asistencia. El equipo de Michael Carrick enlaza siete partidos sin ganar.",
-      "group_id": "grp-como-manchester-united-carrick-20261021",
-      "explanation_group_id": "grp-como-manchester-united-carrick-20261021",
-      "group_title": "Como 4-1 Manchester United",
-      "group_leader_id": "2a3b62cd7af2",
+      "news_note": "El Manchester United perdió 0-3 en Old Trafford ante el Bournemouth, encadenó ocho partidos sin ganar y aumentó la presión sobre Michael Carrick.",
+      "group_id": "grp-f5a7544fb008",
+      "explanation_group_id": "grp-f5a7544fb008",
+      "group_title": "Carrick",
+      "group_leader_id": "f5a7544fb008",
       "trend_names": [
-        "Manchester United",
-        "carrick"
+        "Carrick"
       ],
       "trend_context": [
         {
@@ -2857,22 +2856,21 @@
       ],
       "grouped_member_revisions": [
         {
-          "id": "2a3b62cd7af2",
-          "name": "Manchester United",
-          "revision": 0
-        },
-        {
           "id": "f5a7544fb008",
-          "name": "carrick",
-          "revision": 0
+          "name": "Carrick",
+          "revision": 1
         }
       ],
       "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "image_pending": true,
+      "ai_image_status": "not_requested",
+      "image_pending": false,
       "rewrite_pending": false,
-      "grouped_into_existing_card": true
+      "grouped_into_existing_card": true,
+      "explained_at": "2026-10-25T18:06:00+01:00",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none"
     },
     {
       "id": "2164f6994ed8",
@@ -10174,7 +10172,7 @@
       "id": "2d446f938ebb",
       "name": "Mario Martín",
       "rank": 5,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-25T18:01:26+01:00",
       "revision": 0,
       "reexplain": false,
@@ -10190,13 +10188,59 @@
         "Berenguer"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-25T18:06:00+01:00",
+      "last_attempt_at": "2026-10-25T18:06:00+01:00",
+      "explanation": "TT#5 Mario Martín es tendencia porque fue expulsado en el 86 tras pisar a Gerenabarrena en el Athletic-Getafe, que terminó 4-0.\n#MarioMartín #GetafeCF #AthleticClub\n🌶️ La goleada acabó enseñando una roja extra.",
+      "closer_text": "🌶️ La goleada acabó enseñando una roja extra.",
+      "rank_at_explanation": 5,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://as.com/futbol/primera/athletic-club-getafe-en-directo-laliga-ea-sports-en-vivo-hoy-f202610-d/",
+        "https://www.espn.com/soccer/match/_/gameId/401882835/getafe-athletic-club"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Mario Martín fue expulsado en el minuto 86 del Athletic-Getafe, que terminó 4-0.",
+      "group_id": "grp-getafe-athletic-0-4-20261025-r0",
+      "explanation_group_id": "grp-getafe-athletic-0-4-20261025-r0",
+      "group_title": "Getafe · derrota 0-4 ante el Athletic",
+      "group_leader_id": "d62b113bc862",
+      "trend_names": [
+        "Getafe",
+        "Mario Martín",
+        "Berenguer"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "d62b113bc862",
+          "name": "Getafe",
+          "revision": 0
+        },
+        {
+          "id": "2d446f938ebb",
+          "name": "Mario Martín",
+          "revision": 0
+        },
+        {
+          "id": "f56078d88ba4",
+          "name": "Berenguer",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "21957106f222",
       "name": "Parrot",
       "rank": 8,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-25T18:01:26+01:00",
       "revision": 0,
       "reexplain": false,
@@ -10212,13 +10256,53 @@
         "Berenguer"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-25T18:06:00+01:00",
+      "last_attempt_at": "2026-10-25T18:06:00+01:00",
+      "explanation": "TT#8 Parrot es tendencia porque Troy Parrott empezó en el banquillo ante el Celta: Pellegrini usó a Nelson Deossa como delantero centro del Betis.\n#TroyParrott #NelsonDeossa #RealBetis\n🌶️ El nueve apareció en la alineación con otro nombre.",
+      "closer_text": "🌶️ El nueve apareció en la alineación con otro nombre.",
+      "rank_at_explanation": 8,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://www.infobae.com/espana/agencias/2026/10/25/yoel-lago-vuelve-en-el-celta-pellegrini-sorprende-con-nelson-deossa-en-punta/",
+        "https://www.eldesmarque.com/futbol/liga-1a-division/20261025/alineaciones-celta-betis-laliga-lesionados-bajas-novedades_18_020530756.html"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Manuel Pellegrini dejó a Troy Parrott en el banquillo ante el Celta y alineó a Nelson Deossa como delantero centro.",
+      "group_id": "grp-deossa-celta-betis-20261025-r0",
+      "explanation_group_id": "grp-deossa-celta-betis-20261025-r0",
+      "group_title": "Deossa · delantero centro ante el Celta",
+      "group_leader_id": "03e76ed184c4",
+      "trend_names": [
+        "Deossa",
+        "Parrot"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "03e76ed184c4",
+          "name": "Deossa",
+          "revision": 0
+        },
+        {
+          "id": "21957106f222",
+          "name": "Parrot",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "f56078d88ba4",
       "name": "Berenguer",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-10-25T18:01:26+01:00",
       "revision": 0,
       "reexplain": false,
@@ -10234,7 +10318,53 @@
         "Berenguer"
       ],
       "auto_queued": true,
-      "auto_queue_scope": "top10"
+      "auto_queue_scope": "top10",
+      "explained_at": "2026-10-25T18:06:00+01:00",
+      "last_attempt_at": "2026-10-25T18:06:00+01:00",
+      "explanation": "TT#10 Berenguer es tendencia porque abrió el 4-0 del Athletic al Getafe y además asistió a Iñaki Williams y Paredes en San Mamés.\n#ÁlexBerenguer #AthleticClub #LaLiga\n🌶️ Firmó el acta con un gol y dos pases.",
+      "closer_text": "🌶️ Firmó el acta con un gol y dos pases.",
+      "rank_at_explanation": 10,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://elpais.com/deportes/futbol/2026-10-25/el-athletic-golea-al-getafe-y-se-reencuentra-con-la-victoria-tras-cuatro-jornadas-sin-ganar.html",
+        "https://cadenaser.com/euskadi/2026/10/25/athletic-getafe-en-directo-el-partido-de-la-jornada-10-de-laliga-en-vivo-radio-bilbao/"
+      ],
+      "news_disposition": "ignored_duplicate",
+      "news_note": "Álex Berenguer abrió el 4-0 del Athletic al Getafe y asistió en los goles de Iñaki Williams y Paredes.",
+      "group_id": "grp-getafe-athletic-0-4-20261025-r0",
+      "explanation_group_id": "grp-getafe-athletic-0-4-20261025-r0",
+      "group_title": "Getafe · derrota 0-4 ante el Athletic",
+      "group_leader_id": "d62b113bc862",
+      "trend_names": [
+        "Getafe",
+        "Mario Martín",
+        "Berenguer"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "d62b113bc862",
+          "name": "Getafe",
+          "revision": 0
+        },
+        {
+          "id": "2d446f938ebb",
+          "name": "Mario Martín",
+          "revision": 0
+        },
+        {
+          "id": "f56078d88ba4",
+          "name": "Berenguer",
+          "revision": 0
+        }
+      ],
+      "disable_ai_image": false,
+      "image_strategy": "group_existing",
+      "ai_image_status": "not_requested",
+      "fallback_image_status": "none",
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     }
   ],
   "items": [
