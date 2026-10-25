@@ -32,6 +32,46 @@ for(const [project,id,action] of [
  assert(body.includes('### ID del elemento\n\n'+id));
  assert(route.searchParams.get('title').startsWith('[TT-MOVIL]'));
 }
+// Regression: Cancelo's October 4 r0 Telegram card was deleted October 9,
+// then October 26 r0 explained a different football match. The October 9
+// tombstone must not hide the October 26 card from Listas.
+const liveHtml=fs.readFileSync('pilot/ttactualidad-live/index.html','utf8');
+const liveStart=liveHtml.indexOf('function trendListasRows(data)');
+const liveEnd=liveHtml.indexOf('function trendRows()',liveStart);
+assert(liveStart>0&&liveEnd>liveStart,'Live Listas function missing');
+const activeListas=vm.runInNewContext(liveHtml.slice(liveStart,liveEnd)+
+  '\\ntrendListasRows', {Date});
+const newEvent={
+  id:'cd03f22f4fb4',name:'Cancelo',status:'explained',revision:0,
+  explained_at:new Date().toISOString(),explanation:'Cancelo en el Clásico.',
+  telegram_package_status:'pending'
+};
+const oldDeleted={
+  event_id:newEvent.id,revision:0,status:'deleted',final:true,
+  updated_at:'2026-10-09T14:48:48Z',deleted_at:'2026-10-09T14:49:00Z'
+};
+const listasFixture={
+  manual:{items:[newEvent]},
+  requests:{requests:[{id:newEvent.id,revision:0,status:'explained',
+    requested_at:newEvent.explained_at,explained_at:newEvent.explained_at}]},
+  deliveries:{items:[oldDeleted]},
+  editorialQueue:{items:[]},mobileDecisions:{items:[]}
+};
+assert.equal(activeListas(listasFixture).length,1,
+  'An old deleted football episode must not hide a new explained trend');
+listasFixture.mobileDecisions.items=[{id:newEvent.id,revision:0,
+  status:'deleted',updated_at:'2026-10-09T14:49:00Z'}];
+assert.equal(activeListas(listasFixture).length,1,
+  'Old mobile decisions must not hide a newer story with reused revision zero');
+listasFixture.deliveries.items=[{...oldDeleted,updated_at:new Date(Date.now()+1000).toISOString(),
+ deleted_at:new Date(Date.now()+1000).toISOString()}];
+assert.equal(activeListas(listasFixture).length,0,
+  'A real new deletion must still remove the current Listas card');
+listasFixture.deliveries.items=[oldDeleted];
+listasFixture.mobileDecisions.items=[];
+assert.equal(activeListas(listasFixture).length,1,
+  'Removing a new deletion must recover the current Listas card');
+
 const mobileHtml=fs.readFileSync('docs/ttactualidad/index.html','utf8');
 const mobileMatch=mobileHtml.match(/<script>([\s\S]*?)<\/script>/i);
 assert(mobileMatch,'Dedicated TTActualidad mobile JavaScript absent');
@@ -45,6 +85,7 @@ vm.runInNewContext(mobileMatch[1].slice(start,end)+
 const dedicatedUrl=new URL(linkContext.__mobileUrl);
 assert.equal(dedicatedUrl.searchParams.get('template'),null);
 assert(dedicatedUrl.searchParams.get('body').includes('### Acción\n\ndeleted'));
+assert(mobileHtml.includes('closureApplies(row,delivery)'), 'GitHub Pages Listas must use episode-scoped closure checks');
 assert(mobileHtml.includes("if(ON_PAGES)return btn(label,()=>sendEmergencyDirect(x,action)"),'Emergency controls must be in-page buttons');
 assert(mobileHtml.includes("fetch('https://api.github.com/repos/fabricelop/europapress-rss/issues'"),'Emergency must submit authenticated commands without navigation');
 assert(!mobileHtml.includes("location.href=url;"),'Emergency must not redirect to GitHub');
