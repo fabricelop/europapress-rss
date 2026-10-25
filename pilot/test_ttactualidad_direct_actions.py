@@ -25,6 +25,7 @@ class ActionTests(unittest.TestCase):
             "ttittulares/decisions.json": {"items": []},
             "trends/telegram-image-deliveries.json": {"items": []},
             "trends/telegram-manual-explained.json": {"items": []},
+            "trends/prepared.json": {"items": []},
             "trends/requests.json": {"requests": []},
             "trends/editorial-queue.json": {"items": [], "count": 0},
             "trends/mobile-decisions.json": {"items": []},
