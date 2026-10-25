@@ -61,3 +61,23 @@ enum TimeLiveDuration {
         return "\(safe)s"
     }
 }
+
+
+/// View text only: no location inference and no mutation. An assigned place
+/// is the main title when available; otherwise keep the existing grid/zone
+/// name. Identifiers and GPS recording are unchanged.
+enum TimeLiveCompactPresentation {
+    static func title(site:String?,fallback:String)->String {
+        let clean=site?.trimmingCharacters(in:.whitespacesAndNewlines) ?? ""
+        return clean.isEmpty ? fallback : clean
+    }
+    static func isProposed(site:String?,confirmed:Bool?)->Bool {
+        guard let site,!site.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty
+        else { return false }
+        return confirmed != true
+    }
+    static func families(_ counts:[Int64]?)->[Int64]? {
+        guard let counts,counts.count == 7 else { return nil }
+        return counts.map { max(0,$0) }
+    }
+}
