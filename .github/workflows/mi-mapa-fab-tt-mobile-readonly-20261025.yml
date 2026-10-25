@@ -1,0 +1,72 @@
+name: "Read-only mobile connectivity diagnostic: TTActualidad + FabCalendar"
+on:
+  push:
+    branches:
+      - feature/sitios-calendario-agil-v75
+    paths:
+      - .github/workflows/mi-mapa-fab-tt-mobile-readonly-20261025.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: DNS A/AAAA, TLS, IPv4/IPv6, HTTPS and redirects (read only)
+        shell: bash
+        run: |
+          set +e
+          for host in ttactualidad-decisions-pilot.fabricelop.workers.dev fabcalendar-bot.fabricelop.workers.dev; do
+            echo "::group::DNS $host"
+            for resolver in 1.1.1.1 8.8.8.8; do
+              echo "resolver=$resolver"
+              for type in A AAAA; do
+                echo "$type:"
+                dig +time=3 +tries=1 +short "@$resolver" "$host" "$type" | head -6
+              done
+            done
+            echo "::endgroup::"
+          done
+          for url in \
+            https://ttactualidad-decisions-pilot.fabricelop.workers.dev/health \
+            https://ttactualidad-decisions-pilot.fabricelop.workers.dev/ \
+            https://fabcalendar-bot.fabricelop.workers.dev/healthz \
+            https://fabcalendar-bot.fabricelop.workers.dev/app \
+            https://fabricelop.github.io/europapress-rss/ttactualidad/ \
+            https://fabricelop.github.io/europapress-rss/fabcalendar/; do
+            echo "::group::URL $url"
+            for family in 4 6; do
+              out="/tmp/fab-tt-${family}.body"
+              headers="/tmp/fab-tt-${family}.hdr"
+              curl -"$family" --location --silent --show-error --connect-timeout 5 --max-time 18 \
+                --user-agent 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 Version/18.7 Mobile/15E148 Safari/604.1' \
+                -o "$out" -D "$headers" \
+                -w "IPv$family HTTP=%{http_code} remote=%{remote_ip} DNS=%{time_namelookup} TLS=%{time_appconnect} TOTAL=%{time_total} redirects=%{num_redirects} url=%{url_effective} bytes=%{size_download} SSL=%{ssl_verify_result}\\n" \
+                "$url"
+              echo "IPV$family exit=$?"
+              if test -f "$headers"; then grep -Ei '^(HTTP/|location:|content-type:|server:|cf-ray:|access-control-allow-origin:|cache-control:)' "$headers" | tail -13; fi
+              if [ "$family" = 4 ] && test -f "$out"; then
+                python3 - "$out" <<'PY'
+          import sys
+          raw=open(sys.argv[1],'rb').read()
+          text=raw.decode('utf8','replace')
+          print('BODY_SNIPPET',repr(text[:180]))
+          print('BUTTON_MARKERS', {k:k in text for k in ['TTActualidad','/api/decision','En elaboración','Lugares de este día','FabCalendar']})
+          PY
+              fi
+            done
+            echo "::endgroup::"
+          done
+      - name: TTActualidad CORS preflight without decisions
+        shell: bash
+        run: |
+          set +e
+          for origin in https://ttactualidad-decisions-pilot.fabricelop.workers.dev https://fabricelop.github.io; do
+            echo "::group::OPTIONS origin=$origin"
+            curl -4 -sS --connect-timeout 5 --max-time 15 -o /dev/null -D - -X OPTIONS \
+              -H "Origin: $origin" -H 'Access-Control-Request-Method: POST' \
+              -H 'Access-Control-Request-Headers: content-type' \
+              https://ttactualidad-decisions-pilot.fabricelop.workers.dev/api/decision | grep -Ei '^(HTTP/|access-control|vary:|server:|cf-ray:)'
+            echo "::endgroup::"
+          done
