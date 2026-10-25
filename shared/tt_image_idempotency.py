@@ -21,6 +21,41 @@ def _revision(job: dict, fallback: int) -> int:
         return fallback + 1
 
 
+
+def is_new_editorial_episode(old: dict | None, revision: int, candidate: dict) -> bool:
+    """Recognize genuinely different episodes when a trend ID/revision is reused.
+
+    TTendencias can auto-queue the same trend weeks later as revision zero.
+    Its old image job may be LAUNCHED/ERROR: blocking that *new* story is wrong,
+    but replaying a prompt for the *same* story would be unsafe. Require both
+    a strictly newer explained_at and different factual text from the job's
+    durable context snapshot. Missing evidence fails closed.
+    """
+    from datetime import datetime, timezone
+
+    if not old or _revision(old, revision) != revision:
+        return False
+    context = old.get("context_snapshot")
+    if not isinstance(context, dict):
+        return False
+    previous_text = str(context.get("explanation") or "").strip()
+    current_text = str(candidate.get("explanation") or "").strip()
+    previous_at = context.get("explained_at")
+    current_at = candidate.get("explained_at")
+    if not (previous_text and current_text and previous_text != current_text
+            and previous_at and current_at):
+        return False
+    try:
+        def moment(value):
+            parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                return None
+            return parsed.astimezone(timezone.utc)
+        old_dt, new_dt = moment(previous_at), moment(current_at)
+        return bool(old_dt and new_dt and new_dt > old_dt)
+    except (ValueError, TypeError):
+        return False
+
 def may_enqueue_image_job(
     old: dict | None,
     revision: int,
