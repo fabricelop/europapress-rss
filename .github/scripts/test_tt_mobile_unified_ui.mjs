@@ -40,7 +40,7 @@ const liveStart=liveHtml.indexOf('function trendListasRows(data)');
 const liveEnd=liveHtml.indexOf('function trendRows()',liveStart);
 assert(liveStart>0&&liveEnd>liveStart,'Live Listas function missing');
 const activeListas=vm.runInNewContext(liveHtml.slice(liveStart,liveEnd)+
-  '\\ntrendListasRows', {Date});
+  '\ntrendListasRows', {Date});
 const newEvent={
   id:'cd03f22f4fb4',name:'Cancelo',status:'explained',revision:0,
   explained_at:new Date().toISOString(),explanation:'Cancelo en el Clásico.',
