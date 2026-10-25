@@ -399,8 +399,9 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         row["list_unchanged_minutes"] = round(elapsed_minutes(last_change), 1)
 
         # A relative timestamp should advance when nothing is refreshed.
-        # A frozen timestamp AND frozen ranking across >=20 minutes makes
-        # the claimed freshness unreliable, even if the HTML was just fetched.
+        # A frozen timestamp AND unchanged ranking across a whole refresh
+        # cycle (>=10 min) makes the claimed freshness unreliable. A freshly
+        # downloaded HTML page is not proof that its source ranking is fresh.
         hint = str(row.get("update_hint") or "")
         same_relative_hint = bool(
             same_list and prior.get("update_hint") == hint
@@ -411,7 +412,7 @@ def reconcile_source_freshness(source_data, previous_doc, now):
             if same_relative_hint else now_iso
         )
         row["relative_hint_unchanged_since"] = hint_since
-        if same_relative_hint and elapsed_minutes(hint_since) >= 15:
+        if same_relative_hint and elapsed_minutes(hint_since) >= 10:
             if row.get("freshness") == "fresh":
                 row["freshness"] = "stale"
                 row["freshness_note"] = "frozen-relative-update-label"
