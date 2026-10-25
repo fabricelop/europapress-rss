@@ -213,7 +213,6 @@ struct MiMapaRestLiveActivity:Widget {
                     }
                     LiveBIOGRIDFamilies(counts:context.state.bioGridCounts,
                                         updatedAt:context.state.bioGridUpdatedAt)
-                    }
                 }
             } compactLeading: {
                 Image(systemName:context.isStale ? "exclamationmark.triangle" :
