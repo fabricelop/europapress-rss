@@ -923,6 +923,30 @@ def main():
     # Mantener la fuente elegida como referencia para las posiciones,
     # sin presentar las señales de otras fuentes como posiciones verificadas.
     primary_ranked = (source_data.get(chosen_name) or {}).get("trends") or []
+    # In hold-last-good the anchor name is "previous": there is no provider
+    # called "previous". Preserve the real 1-10 ranking and complete 11-30
+    # from an actual source that currently repeats at least 6 of those ten
+    # names. Do not confuse unavailable anchor metadata with absent trends.
+    if not primary_ranked:
+        current_keys = {term_key(name) for name in top10}
+        aligned = []
+        for source_name, source_row in source_data.items():
+            source_terms = source_row.get("trends") or []
+            if not source_row.get("ok") or len(source_terms) < 30:
+                continue
+            aligned_count = len(current_keys & {term_key(name) for name in source_terms[:20]})
+            if aligned_count < 6:
+                continue
+            aligned.append((aligned_count, source_name, source_row))
+        if aligned:
+            aligned.sort(key=lambda entry: (
+                -entry[0],
+                -int(entry[2].get("freshness") in {"fresh", "aging", "corroborated-change"}),
+                float(entry[2].get("age_minutes") if entry[2].get("age_minutes") is not None else 9999),
+            ))
+            primary_ranked = aligned[0][2]["trends"]
+            print("Top 30: puestos 11-30 observados en", aligned[0][1],
+                  "con", aligned[0][0], "coincidencias actuales de Top 10")
     extend_ranked(primary_ranked[:30])
     if len(top30) < 30:
         # Prefer related, dated secondary snapshots. A disconnected
