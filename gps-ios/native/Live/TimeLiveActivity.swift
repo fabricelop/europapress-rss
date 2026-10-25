@@ -3,140 +3,69 @@ import WidgetKit
 import ActivityKit
 
 // Solo extensión para la Live Activity. No se publica widget de escritorio.
-private struct LiveGeoTile:View {
-    let level:Int
-    let selected:Bool
-    let inTrail:Bool
-    let headingDegrees:Double?
+/// Compact seven-family BIOGRID ledger replacing the old mini-map and the
+/// last-six-hours bar graph. Counts are for the CURRENT 100m square only.
+private struct LiveBIOGRIDFamilies:View {
+    let counts:[Int64]?
+    let updatedAt:Date?
+    private let names=["L","M","X","J","V","S","D"]
+    private let palette:[Color]=[
+        Color(red:0.88,green:0.16,blue:0.18),
+        Color(red:0.12,green:0.36,blue:0.92),
+        Color(red:0.12,green:0.65,blue:0.23),
+        Color(red:1.00,green:0.56,blue:0.02),
+        Color(red:0.61,green:0.23,blue:0.78),
+        Color(red:0.90,green:0.73,blue:0.00),
+        Color(red:0.02,green:0.72,blue:0.79)
+    ]
+
     var body:some View {
-        RoundedRectangle(cornerRadius:2)
-            .fill(selected ? Color.teal :
-                  level>0 ? Color.teal.opacity(0.12+Double(level)*0.17) :
-                  Color.gray.opacity(0.16))
-            .frame(width:15,height:13)
-            .overlay {
-                if selected {
-                    Image(systemName:headingDegrees == nil ? "location.fill" : "location.north.fill")
-                        .font(.system(size:8,weight:.bold))
-                        .rotationEffect(.degrees(headingDegrees ?? 0))
-                        .foregroundStyle(.white)
-                } else if inTrail {
-                    Circle().fill(.orange).frame(width:4,height:4)
-                }
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius:2)
-                    .stroke(selected ? Color.orange : .clear,lineWidth:1.6)
-            }
-    }
-}
-private struct LiveGeoMiniMap:View {
-    let levels:[Int]
-    let trail:[Int]
-    let heading:Double?
-    let moving:Bool
-    var body:some View {
-        VStack(alignment:.leading,spacing:3) {
-            Text(moving ? "Rastro reciente" : "Cuadrículas")
-                .font(.system(size:9,weight:.medium))
-                .foregroundStyle(.secondary)
-            ZStack {
-                VStack(spacing:2) {
-                    ForEach(0..<3,id:\.self) { row in
-                        HStack(spacing:2) {
-                            ForEach(0..<3,id:\.self) { col in
-                                let index=row*3+col
-                                LiveGeoTile(level:index<levels.count ? levels[index] : 0,
-                                    selected:index==4,
-                                    inTrail:trail.contains(index),
-                                    headingDegrees:moving ? heading : nil)
-                            }
-                        }
-                    }
-                }
-                if moving,trail.count>1 {
-                    Path { path in
-                        for (i,index) in trail.enumerated() where (0..<9).contains(index) {
-                            let point=CGPoint(x:CGFloat(index%3)*17+7.5,
-                                              y:CGFloat(index/3)*15+6.5)
-                            if i==0 { path.move(to:point) }
-                            else { path.addLine(to:point) }
-                        }
-                    }
-                    .stroke(Color.orange.opacity(0.95),
-                            style:StrokeStyle(lineWidth:1.4,lineCap:.round,lineJoin:.round))
-                    .frame(width:49,height:43)
-                    .allowsHitTesting(false)
-                }
-            }
-            .frame(width:49,height:43)
-        }
-        .accessibilityElement(children:.combine)
-        .accessibilityLabel(moving ? "Rastro GPS por cuadrículas recientes" :
-            "Minimapa de nueve cuadrículas con la posición actual al centro")
-    }
-}
-private struct LiveHoursGraph:View {
-    let percentages:[Int]
-    let minutes:[Int]
-    let isZone:Bool
-    var body:some View {
-        VStack(alignment:.leading,spacing:3) {
-            Text(isZone ? "Permanencia · zona" : "Permanencia · cuadrícula")
-                .font(.system(size:9,weight:.medium)).foregroundStyle(.secondary)
-            HStack(alignment:.bottom,spacing:3) {
-                ForEach(0..<6,id:\.self) { index in
-                    let percent=index<percentages.count ? max(0,min(100,percentages[index])) : 0
-                    let minute=index<minutes.count ? minutes[index] : 0
-                    VStack(spacing:1) {
-                        Text("\(minute)m").font(.system(size:8,weight:.medium))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1).minimumScaleFactor(0.6)
-                        RoundedRectangle(cornerRadius:2)
-                            .fill(index==5 ? Color.teal : Color.teal.opacity(0.5))
-                            .frame(height:max(2,CGFloat(percent)*0.30))
-                            .frame(height:30,alignment:.bottom)
-                    }
-                    .frame(maxWidth:.infinity,alignment:.bottom)
-                }
-            }
-            HStack {
-                Text("Hace 6 h")
-                Spacer()
-                Text("Últimos 60 min")
-            }
-            .font(.system(size:8)).foregroundStyle(.secondary)
-        }
-    }
-}
-private struct LiveRecentRoute:View {
-    let state:TimeMapActivityAttributes.ContentState
-    var body:some View {
-        HStack(alignment:.center,spacing:12) {
-            LiveGeoMiniMap(levels:state.nearbyIntensity,
-                           trail:state.trailIndices,
-                           heading:state.headingDegrees,moving:true)
-                .frame(width:65,alignment:.leading)
-            VStack(alignment:.leading,spacing:4) {
-                HStack {
-                    Label("Últimos 15 min",systemImage:"figure.walk")
-                        .font(.system(size:10,weight:.medium))
+        VStack(alignment:.leading,spacing:5) {
+            HStack(spacing:5) {
+                Image(systemName:"circle.hexagongrid.fill")
+                    .foregroundStyle(.teal)
+                Text("BIOGRID · bacterias en esta cuadrícula")
+                    .font(.system(size:10,weight:.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                Spacer(minLength:0)
+                if let counts,counts.count==7 {
+                    Text("Total: \(counts.reduce(Int64(0),+).formatted())")
+                        .font(.system(size:9,weight:.medium))
                         .foregroundStyle(.secondary)
-                    Spacer(minLength:0)
                 }
-                HStack(alignment:.firstTextBaseline,spacing:10) {
-                    Text(state.recentDistanceMeters>=1000 ?
-                         String(format:"%.1f km",Double(state.recentDistanceMeters)/1000) :
-                         "\(state.recentDistanceMeters) m")
-                        .font(.title3.weight(.bold))
-                    Text("\(state.crossedCells) cuadrículas")
-                        .font(.caption2).foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-                Text("Rastro de muestras GPS válidas")
-                    .font(.system(size:9)).foregroundStyle(.secondary)
             }
-            .frame(maxWidth:.infinity,alignment:.leading)
+            if let counts,counts.count==7 {
+                HStack(spacing:4) {
+                    ForEach(0..<7,id:\.self) { index in
+                        VStack(spacing:3) {
+                            HStack(spacing:2) {
+                                Circle().fill(palette[index]).frame(width:6,height:6)
+                                Text(names[index])
+                                    .font(.system(size:9,weight:.semibold))
+                            }
+                            Text(counts[index].formatted(.number.notation(.compactName)))
+                                .font(.system(size:11,weight:.bold,design:.rounded))
+                                .monospacedDigit()
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.65)
+                        }
+                        .frame(maxWidth:.infinity,minHeight:35)
+                        .background(palette[index].opacity(0.10),
+                                    in:RoundedRectangle(cornerRadius:5))
+                        .accessibilityElement(children:.ignore)
+                        .accessibilityLabel("Familia \(names[index]): \(counts[index]) bacterias")
+                    }
+                }
+            } else {
+                Text("Calculando población de las siete familias…")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+            if let updatedAt {
+                Text("Recuento de la simulación · \(updatedAt.formatted(date:.omitted,time:.shortened))")
+                    .font(.system(size:8)).foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
         }
     }
 }
@@ -163,6 +92,19 @@ private struct MiMapaLivePanel:View {
                         .monospacedDigit().frame(minWidth:90,alignment:.trailing)
                 }
             }
+            if let site=state.siteName {
+                HStack(spacing:5) {
+                    Image(systemName:"mappin.and.ellipse").foregroundStyle(.teal)
+                    Text("Sitio: (site)")
+                        .font(.system(size:11,weight:.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.72)
+                    if state.siteConfirmed != true {
+                        Text("Propuesto").font(.system(size:8))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
             HStack(spacing:8) {
                 VStack(alignment:.leading,spacing:1) {
                     Text("Total cuadrícula").font(.system(size:9)).foregroundStyle(.secondary)
@@ -187,19 +129,8 @@ private struct MiMapaLivePanel:View {
                 .font(.system(size:10))
                 .foregroundStyle(.secondary)
             }
-            if state.moving {
-                LiveRecentRoute(state:state)
-            } else {
-                HStack(alignment:.center,spacing:12) {
-                    LiveGeoMiniMap(levels:state.nearbyIntensity,
-                                   trail:[],heading:nil,moving:false)
-                        .frame(width:65,alignment:.leading)
-                    LiveHoursGraph(percentages:state.lastSixHours,
-                                   minutes:state.lastSixMinutes,
-                                   isZone:state.chartIsZone)
-                        .frame(maxWidth:.infinity)
-                }
-            }
+            LiveBIOGRIDFamilies(counts:state.bioGridCounts,
+                                updatedAt:state.bioGridUpdatedAt)
             if let milestone=state.milestone {
                 Label(milestone,systemImage:"flag.fill")
                     .font(.system(size:10,weight:.medium))
@@ -240,6 +171,10 @@ struct MiMapaRestLiveActivity:Widget {
                         Text(context.state.cellName).font(.headline).lineLimit(2)
                         Text(context.state.moving ? "En movimiento" : context.state.cellNumber)
                             .font(.caption2).foregroundStyle(.secondary)
+                        if let site=context.state.siteName {
+                            Text("Sitio: \(site)")
+                                .font(.caption2).lineLimit(1)
+                        }
                     }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
@@ -275,10 +210,9 @@ struct MiMapaRestLiveActivity:Widget {
                         }
                         .font(.caption2)
                         Spacer(minLength:0)
-                        LiveGeoMiniMap(levels:context.state.nearbyIntensity,
-                                       trail:context.state.trailIndices,
-                                       heading:context.state.headingDegrees,
-                                       moving:context.state.moving)
+                    }
+                    LiveBIOGRIDFamilies(counts:context.state.bioGridCounts,
+                                        updatedAt:context.state.bioGridUpdatedAt)
                     }
                 }
             } compactLeading: {
