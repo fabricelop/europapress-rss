@@ -10,7 +10,7 @@ const begin=html.indexOf('function trendKey(x)');
 const end=html.indexOf('function dataRows()',begin);
 assert.ok(begin>=0&&end>begin,'Could not locate Top 30 implementation');
 const code=html.slice(begin,end);
-const latest='2026-10-12T07:00:00Z';
+const latest=new Date().toISOString(); // Within seven-day terminal closure window.
 const recent={items:[
  {rank:1,name:'Hispanidad'},
  {rank:2,name:'#FelizLunes'},
@@ -83,6 +83,6 @@ assert.ok(pendingNames.includes('Tendencia manual'));
 assert.ok(pendingNames.includes('Tendencia sin entrega'));
 assert.ok(!pendingNames.includes('Tendencia nueva'));
 assert.ok(!pendingNames.includes('Tendencia cerrada'));
-assert.ok(html.includes("command('Preparar novedad','prepare')"),
- 'Ranks 11-30 must retain Prepare button');
+assert.ok(html.includes("command('Volver a elaborar','rework')"),
+  'Every current Top 30 trend must provide fresh elaboration on demand');
 console.log('TT_ACTUALIDAD_TOP30_TERMINAL_GROUP_MANUAL_AND_DELIVERY_TEST_OK');
