@@ -313,6 +313,17 @@ def trend_command(action, element_id, context, instruction, now):
     if not existing:
         recent = load("trends/recent.json", {"items": []})
         existing = any(matches(x, element_id) for x in recent.get("items", []))
+    if not existing and action == "rework":
+        # A trend that has never been explained has no request ID yet.
+        # Accept only its current radar name and deterministic manual ID.
+        import hashlib
+        recent = load("trends/recent.json", {"items": []})
+        title = str(context or "").strip()
+        expected = "manual-" + hashlib.sha256(title.encode("utf-8")).hexdigest()[:32]
+        existing = bool(title and element_id == expected and any(
+            str(row.get("name") or "").casefold() == title.casefold()
+            for row in (recent.get("items") or [])[:30]
+        ))
     if not existing:
         raise ValueError("Tendencia inexistente")
     dpath = "trends/mobile-decisions.json"
@@ -349,7 +360,8 @@ def trend_command(action, element_id, context, instruction, now):
                 recent = load("trends/recent.json", {"items": []})
                 new_id = rework_top30(
                     target_id, None, now, recent.get("items") or [],
-                    doc, manual, queue, decisions, "github_pages_authorized_issue_rework"
+                    doc, manual, queue, decisions, "github_pages_authorized_issue_rework",
+                    trend_name=context
                 )
                 next_revision = 0
         except ValueError as exc:
