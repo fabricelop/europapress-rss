@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-1791071364085-1a7506",
-  "requested_at": "2026-10-03T23:49:24.085Z",
-  "updated_at": "2026-10-03T23:52:36.606Z",
-  "status": "ERROR",
-  "phase": "pc_launch_failed",
-  "mode": "manual_pc_chat_image",
+  "command_id": "tr-img-auto-1de7f60793e4-r0-a1-1792971566063",
+  "requested_at": "2026-10-25T23:39:26.035551Z",
+  "updated_at": "2026-10-25T23:39:26.035551Z",
+  "status": "REQUESTED",
+  "phase": "queued",
+  "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -13,44 +15,39 @@
   "target_id": "1de7f60793e4",
   "trend_id": "1de7f60793e4",
   "target_name": "Lamine",
-  "revision": 2,
+  "revision": 0,
   "attempt": 1,
-  "chat_command_version": 3,
-  "instruction_profile": "ttendencias_gag_v1",
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Lamine",
-    "revision": 2,
-    "explanation": "TT#3 Lamine es tendencia porque abrió con un golazo el 3-1 de España a República Checa en Oviedo y marcó por tercer partido seguido el primer tanto de la Roja en esta ventana.\n🌶️ Lamine ha convertido el minuto cinco en hora punta.",
-    "closer_text": "🌶️ Lamine ha convertido el minuto cinco en hora punta.",
+    "revision": 0,
+    "explanation": "TT#2 Lamine es tendencia por su noche en el Clásico: fue titular con el Barça, no pudo superar a Cucurella y desperdició una ocasión clara; el Madrid ganó 1-2.\n#LamineYamal #ElClásico #FCBarcelona\n🌶️ El empate pasó por su bota y siguió de largo.",
+    "closer_text": "🌶️ El empate pasó por su bota y siguió de largo.",
     "trend_names": [
       "Lamine"
     ],
-    "group_title": "",
-    "rank_at_explanation": 3,
-    "explained_at": "2026-10-03T23:36:00+02:00",
+    "group_title": "Lamine · Clásico ante el Real Madrid",
+    "rank_at_explanation": 2,
+    "explained_at": "2026-10-26T00:38:00+01:00",
     "verification_sources": [
-      {
-        "source": "Cadena SER · 3/10/2026",
-        "url": "https://cadenaser.com/nacional/2026/10/03/para-echarse-las-manos-a-la-cabeza-la-reaccion-de-luis-de-la-fuente-al-golazo-de-lamine-yamal-a-republica-checa-cadena-ser/"
-      },
-      {
-        "source": "The Guardian · 3/10/2026",
-        "url": "https://www.theguardian.com/football/2026/oct/03/lamine-yamal-stars-again-as-spain-see-off-czechia-and-maintain-perfect-start"
-      }
-    ]
+      "https://cadenaser.com/nacional/2026/10/25/fc-barcelona-1-2-real-madrid-resumen-resultado-y-goles-del-partido-de-la-jornada-10-en-laliga-ea-sports-cadena-ser/",
+      "https://www.noticiascaracol.com/golcaracol/lamine-yamal-perdio-gol-insolito-en-barcelona-vs-real-madrid-ni-el-podia-creer-su-mala-definicion-rg10"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Diorama editorial tipo stop-motion/clay, personajes y objetos con volumen artesanal, iluminación de estudio y detalle selectivo. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "stop_motion",
+    "image_style_index": 4
   },
   "instructions": {
-    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
-    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
-    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
-    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
-    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
-    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "No se encontró el chat lanzado con el command_id en 60 segundos; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":false,\"imageTitle\":true,\"generating\":false,\"turns\":0,\"images\":1,\"title\":\"Genera",
-  "pc_upload_secret_hash": "e2d2173bf49559dae2e4c41edda37a274ec6c39e17ce0acbbead8dec3bfdefb6",
-  "pc_worker_id": "ttendencias-image-bridge-v1",
-  "pc_picked_up_at": "2026-10-03T23:51:24.890Z",
-  "pc_launched_at": "2026-10-03T23:51:33.877Z",
-  "finished_at": "2026-10-03T23:52:36.606Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
