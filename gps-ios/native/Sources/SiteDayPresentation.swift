@@ -101,6 +101,7 @@ enum SiteDayPresentation {
 
         var groups: [SiteDayGroup] = []
         var bySite: [UUID: SiteDaySiteTotal] = [:]
+        var firstSeenBySite: [UUID:Date] = [:]
         var total: TimeInterval = 0
         var confirmed: TimeInterval = 0
         var suggested: TimeInterval = 0
@@ -134,6 +135,9 @@ enum SiteDayPresentation {
                 switch part.kind {
                 case .place:
                     if let id = part.siteID {
+                        if seconds > 0, pieceStart < (firstSeenBySite[id] ?? .distantFuture) {
+                            firstSeenBySite[id]=pieceStart
+                        }
                         var value = bySite[id] ?? SiteDaySiteTotal(id: id)
                         if part.confirmed {
                             confirmed += seconds
@@ -178,9 +182,9 @@ enum SiteDayPresentation {
         return SiteDayReport(
             groups: groups,
             siteTotals: bySite.values.sorted {
-                let left = $0.confirmedSeconds + $0.proposedSeconds
-                let right = $1.confirmedSeconds + $1.proposedSeconds
-                return left == right ? $0.id.uuidString < $1.id.uuidString : left > right
+                let left = firstSeenBySite[$0.id] ?? .distantFuture
+                let right = firstSeenBySite[$1.id] ?? .distantFuture
+                return left == right ? $0.id.uuidString < $1.id.uuidString : left < right
             },
             staysCount: ordered.count,
             totalGPS: total,
