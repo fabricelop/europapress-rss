@@ -5,26 +5,25 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "3947a38f094f",
-    "3af2a81110b7",
-    "7eca9d45da25",
-    "19215c9e7cd9",
-    "ad3c0ee3015b"
+    "4305be0d33f1",
+    "manual-825a16b970bd878edec305a33756ebe0",
+    "manual-073a0eb7ec5d4011b33635d803f8fb8d",
+    "manual-d0c592875e05dbbead0505e8f9b82d53"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T21:45:00+01:00",
-  "last_completed_at": "2026-10-25T21:53:20+01:00",
-  "updated_at": "2026-10-25T21:53:20+01:00",
+  "last_started_at": "2026-10-25T22:00:05+01:00",
+  "last_completed_at": "2026-10-25T22:06:20+01:00",
+  "updated_at": "2026-10-25T22:06:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T214500+0100",
+    "trigger_run_id": "tr-1792962005941-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,49 +31,49 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T214500+0100",
+    "run_id": "tr-1792962005941-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T21:45:00+01:00",
-    "updated_at": "2026-10-25T21:53:20+01:00",
-    "finished_at": "2026-10-25T21:53:20+01:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-25T22:00:05+01:00",
+    "updated_at": "2026-10-25T22:06:20+01:00",
+    "finished_at": "2026-10-25T22:06:20+01:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 5,
+      "attempted": 4,
       "ready": 0,
-      "explained": 5,
-      "explanation_groups": 4,
-      "new_cards": 3,
+      "explained": 4,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 2,
+      "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 5,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 2,
+      "discovered_during_run": 2,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 5,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0.",
+    "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -86,378 +85,362 @@
     },
     "remate_selections": [
       {
-        "trend_id": "3947a38f094f",
+        "trend_id": "4305be0d33f1",
         "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ El Snatch Game volvió a repartir famosos sin pedir permiso.",
+        "candidate_count": 4,
+        "selected_candidate": "🌶️ La sorpresa del once llegó al descanso por delante.",
         "selected_score": null,
         "no_remate_reason": null
       },
       {
-        "trend_id": "3af2a81110b7",
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
         "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ Se quedó fuera de la lista y acabó saliendo del despacho.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "ad3c0ee3015b",
-        "revision": 0,
-        "candidate_count": 5,
-        "selected_candidate": "🌶️ Doscientos cincuenta domingos dan para mucha sobremesa.",
+        "candidate_count": 1,
+        "selected_candidate": "🌶️ El primer asalto se lo llevó el rebote de Mbappé.",
         "selected_score": null,
         "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-25T21:45:00+01:00",
+        "at": "2026-10-25T22:00:05+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 5; preparando verificación JIT."
+        "message": "Inicio de pasada: 2 revisiones activas; preparando verificación JIT."
       },
       {
-        "at": "2026-10-25T21:46:00+01:00",
+        "at": "2026-10-25T22:01:00+01:00",
         "phase": "verifying",
-        "trend_id": "3947a38f094f",
-        "title": "#DragRaceEs",
-        "message": "Releyendo estado autoritativo de #DragRaceEs."
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Releyendo estado autoritativo de Bernardo."
       },
       {
-        "at": "2026-10-25T21:46:20+01:00",
+        "at": "2026-10-25T22:02:00+01:00",
         "phase": "investigating",
-        "trend_id": "3947a38f094f",
-        "title": "#DragRaceEs",
-        "message": "Hecho esencial verificado: el programa 5 de Drag Race España 6 es el Snatch Game emitido hoy."
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Hecho esencial verificado: Bernardo Silva es titular como principal novedad del Madrid; 0-1 al descanso con gol de Mbappé."
       },
       {
-        "at": "2026-10-25T21:46:40+01:00",
-        "phase": "verifying",
-        "trend_id": "3af2a81110b7",
-        "title": "Francisco Martín",
-        "message": "Releyendo estado autoritativo de Francisco Martín."
-      },
-      {
-        "at": "2026-10-25T21:47:00+01:00",
-        "phase": "investigating",
-        "trend_id": "3af2a81110b7",
-        "title": "Francisco Martín",
-        "message": "Hecho esencial verificado: dimitió como delegado del Gobierno en Madrid tras quedar fuera de las listas del PSOE."
-      },
-      {
-        "at": "2026-10-25T21:47:20+01:00",
-        "phase": "verifying",
-        "trend_id": "7eca9d45da25",
-        "title": "Castellón",
-        "message": "Releyendo Castellón y Sporting frente a la ficha ya explicada de Gularte."
-      },
-      {
-        "at": "2026-10-25T21:47:40+01:00",
-        "phase": "investigating",
-        "trend_id": "19215c9e7cd9",
-        "title": "Sporting",
-        "message": "Detonante compartido verificado: Castellón 4-0 Sporting; se agrupan en la ficha existente de Gularte."
-      },
-      {
-        "at": "2026-10-25T21:48:00+01:00",
-        "phase": "verifying",
-        "trend_id": "ad3c0ee3015b",
-        "title": "#LaRoca250",
-        "message": "Releyendo estado autoritativo de #LaRoca250."
-      },
-      {
-        "at": "2026-10-25T21:48:20+01:00",
-        "phase": "investigating",
-        "trend_id": "ad3c0ee3015b",
-        "title": "#LaRoca250",
-        "message": "Hecho esencial verificado: La Roca emitió hoy su episodio 250 en laSexta."
-      },
-      {
-        "at": "2026-10-25T21:48:40+01:00",
+        "at": "2026-10-25T22:02:15+01:00",
         "phase": "drafting",
-        "trend_id": "3947a38f094f",
-        "title": "#DragRaceEs",
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
         "message": "Redactando explicación factual y comprobando límite de X."
       },
       {
-        "at": "2026-10-25T21:49:20+01:00",
+        "at": "2026-10-25T22:02:30+01:00",
         "phase": "remate_selection",
-        "trend_id": "3947a38f094f",
-        "title": "#DragRaceEs",
-        "message": "Remate seleccionado para #DragRaceEs."
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Evaluando candidatos y originalidad del remate."
       },
       {
-        "at": "2026-10-25T21:50:15+01:00",
+        "at": "2026-10-25T22:02:45+01:00",
         "phase": "remate_selection",
-        "trend_id": "3af2a81110b7",
-        "title": "Francisco Martín",
-        "message": "Remate político neutral seleccionado para Francisco Martín."
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Remate seleccionado para Bernardo."
       },
       {
-        "at": "2026-10-25T21:50:50+01:00",
+        "at": "2026-10-25T22:03:00+01:00",
         "phase": "persisting",
-        "trend_id": "7eca9d45da25",
-        "title": "Castellón · Sporting",
-        "message": "Vinculando Castellón y Sporting al grupo existente de Gularte."
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Guardando ficha Explicada de Bernardo."
       },
       {
-        "at": "2026-10-25T21:51:10+01:00",
+        "at": "2026-10-25T22:03:20+01:00",
+        "phase": "persisting",
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Actualizando requests de Bernardo."
+      },
+      {
+        "at": "2026-10-25T22:03:40+01:00",
+        "phase": "persisting",
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Retirando revisión de Bernardo de la cola."
+      },
+      {
+        "at": "2026-10-25T22:04:00+01:00",
+        "phase": "verifying",
+        "trend_id": "4305be0d33f1",
+        "title": "Bernardo",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-25T22:04:10+01:00",
+        "phase": "verifying",
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Releyendo estado autoritativo del grupo del Clásico."
+      },
+      {
+        "at": "2026-10-25T22:04:20+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Hecho esencial verificado: los tres términos remiten al Barça-Real Madrid en juego en el Camp Nou; 0-1 al descanso."
+      },
+      {
+        "at": "2026-10-25T22:04:30+01:00",
+        "phase": "drafting",
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Redactando explicación factual conjunta y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-25T22:04:40+01:00",
         "phase": "remate_selection",
-        "trend_id": "ad3c0ee3015b",
-        "title": "#LaRoca250",
-        "message": "Remate seleccionado para #LaRoca250."
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Evaluando candidatos con control de originalidad."
       },
       {
-        "at": "2026-10-25T21:51:30+01:00",
+        "at": "2026-10-25T22:04:50+01:00",
+        "phase": "remate_selection",
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Remate seleccionado para el grupo del Clásico."
+      },
+      {
+        "at": "2026-10-25T22:05:05+01:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Guardando fichas Explicadas y sincronizando requests."
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Guardando ficha Explicada y sincronizando las tres requests."
       },
       {
-        "at": "2026-10-25T21:52:00+01:00",
+        "at": "2026-10-25T22:05:40+01:00",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Retirando las cinco revisiones cerradas de la cola."
+        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+        "title": "#ElClasico · Hala Madrid · Camp Nou",
+        "message": "Retirando las tres revisiones del grupo de la cola."
       },
       {
-        "at": "2026-10-25T21:52:30+01:00",
+        "at": "2026-10-25T22:06:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y verificando id, revisión, texto y grupos persistidos."
+        "message": "Releyendo main: cola activa 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-25T21:53:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final: cola 0, solicitudes activas 0 y Top 10 cubierto por explicadas o decisiones explícitas."
-      },
-      {
-        "at": "2026-10-25T21:53:20+01:00",
+        "at": "2026-10-25T22:06:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0."
+        "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0."
       }
     ],
     "processed_ids": [
-      "3947a38f094f",
-      "3af2a81110b7",
-      "7eca9d45da25",
-      "19215c9e7cd9",
-      "ad3c0ee3015b"
+      "4305be0d33f1",
+      "manual-825a16b970bd878edec305a33756ebe0",
+      "manual-073a0eb7ec5d4011b33635d803f8fb8d",
+      "manual-d0c592875e05dbbead0505e8f9b82d53"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "3947a38f094f",
-        "name": "#DragRaceEs",
+        "id": "4305be0d33f1",
+        "name": "Bernardo",
         "revision": 0,
         "outcome": "explained",
-        "group_id": "grp-3947a38f094f"
+        "group_id": "grp-4305be0d33f1"
       },
       {
-        "id": "3af2a81110b7",
-        "name": "Francisco Martín",
+        "id": "manual-825a16b970bd878edec305a33756ebe0",
+        "name": "#ElClasico",
         "revision": 0,
         "outcome": "explained",
-        "group_id": "grp-3af2a81110b7"
+        "group_id": "grp-elclasico-20261025-r0"
       },
       {
-        "id": "7eca9d45da25",
-        "name": "Castellón",
+        "id": "manual-073a0eb7ec5d4011b33635d803f8fb8d",
+        "name": "Hala Madrid",
         "revision": 0,
-        "outcome": "grouped_into_existing_card",
-        "group_id": "grp-843944da89a6"
+        "outcome": "grouped_into_new_card",
+        "group_id": "grp-elclasico-20261025-r0"
       },
       {
-        "id": "19215c9e7cd9",
-        "name": "Sporting",
+        "id": "manual-d0c592875e05dbbead0505e8f9b82d53",
+        "name": "Camp Nou",
         "revision": 0,
-        "outcome": "grouped_into_existing_card",
-        "group_id": "grp-843944da89a6"
-      },
-      {
-        "id": "ad3c0ee3015b",
-        "name": "#LaRoca250",
-        "revision": 0,
-        "outcome": "explained",
-        "group_id": "grp-ad3c0ee3015b"
+        "outcome": "grouped_into_new_card",
+        "group_id": "grp-elclasico-20261025-r0"
       }
     ]
   },
-  "run_id": "tr-chat-20261025T214500+0100",
+  "run_id": "tr-1792962005941-manual",
   "summary": {
-    "attempted": 5,
+    "attempted": 4,
     "ready": 0,
-    "explained": 5,
-    "explanation_groups": 4,
-    "new_cards": 3,
+    "explained": 4,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 2,
+    "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 5,
-    "discovered_during_run": 0,
+    "initial_compact_queue": 2,
+    "discovered_during_run": 2,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 5,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "top10_reviewed": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T21:45:00+01:00",
+      "at": "2026-10-25T22:00:05+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 5; preparando verificación JIT."
+      "message": "Inicio de pasada: 2 revisiones activas; preparando verificación JIT."
     },
     {
-      "at": "2026-10-25T21:46:00+01:00",
+      "at": "2026-10-25T22:01:00+01:00",
       "phase": "verifying",
-      "trend_id": "3947a38f094f",
-      "title": "#DragRaceEs",
-      "message": "Releyendo estado autoritativo de #DragRaceEs."
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Releyendo estado autoritativo de Bernardo."
     },
     {
-      "at": "2026-10-25T21:46:20+01:00",
+      "at": "2026-10-25T22:02:00+01:00",
       "phase": "investigating",
-      "trend_id": "3947a38f094f",
-      "title": "#DragRaceEs",
-      "message": "Hecho esencial verificado: el programa 5 de Drag Race España 6 es el Snatch Game emitido hoy."
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Hecho esencial verificado: Bernardo Silva es titular como principal novedad del Madrid; 0-1 al descanso con gol de Mbappé."
     },
     {
-      "at": "2026-10-25T21:46:40+01:00",
-      "phase": "verifying",
-      "trend_id": "3af2a81110b7",
-      "title": "Francisco Martín",
-      "message": "Releyendo estado autoritativo de Francisco Martín."
-    },
-    {
-      "at": "2026-10-25T21:47:00+01:00",
-      "phase": "investigating",
-      "trend_id": "3af2a81110b7",
-      "title": "Francisco Martín",
-      "message": "Hecho esencial verificado: dimitió como delegado del Gobierno en Madrid tras quedar fuera de las listas del PSOE."
-    },
-    {
-      "at": "2026-10-25T21:47:20+01:00",
-      "phase": "verifying",
-      "trend_id": "7eca9d45da25",
-      "title": "Castellón",
-      "message": "Releyendo Castellón y Sporting frente a la ficha ya explicada de Gularte."
-    },
-    {
-      "at": "2026-10-25T21:47:40+01:00",
-      "phase": "investigating",
-      "trend_id": "19215c9e7cd9",
-      "title": "Sporting",
-      "message": "Detonante compartido verificado: Castellón 4-0 Sporting; se agrupan en la ficha existente de Gularte."
-    },
-    {
-      "at": "2026-10-25T21:48:00+01:00",
-      "phase": "verifying",
-      "trend_id": "ad3c0ee3015b",
-      "title": "#LaRoca250",
-      "message": "Releyendo estado autoritativo de #LaRoca250."
-    },
-    {
-      "at": "2026-10-25T21:48:20+01:00",
-      "phase": "investigating",
-      "trend_id": "ad3c0ee3015b",
-      "title": "#LaRoca250",
-      "message": "Hecho esencial verificado: La Roca emitió hoy su episodio 250 en laSexta."
-    },
-    {
-      "at": "2026-10-25T21:48:40+01:00",
+      "at": "2026-10-25T22:02:15+01:00",
       "phase": "drafting",
-      "trend_id": "3947a38f094f",
-      "title": "#DragRaceEs",
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
       "message": "Redactando explicación factual y comprobando límite de X."
     },
     {
-      "at": "2026-10-25T21:49:20+01:00",
+      "at": "2026-10-25T22:02:30+01:00",
       "phase": "remate_selection",
-      "trend_id": "3947a38f094f",
-      "title": "#DragRaceEs",
-      "message": "Remate seleccionado para #DragRaceEs."
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Evaluando candidatos y originalidad del remate."
     },
     {
-      "at": "2026-10-25T21:50:15+01:00",
+      "at": "2026-10-25T22:02:45+01:00",
       "phase": "remate_selection",
-      "trend_id": "3af2a81110b7",
-      "title": "Francisco Martín",
-      "message": "Remate político neutral seleccionado para Francisco Martín."
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Remate seleccionado para Bernardo."
     },
     {
-      "at": "2026-10-25T21:50:50+01:00",
+      "at": "2026-10-25T22:03:00+01:00",
       "phase": "persisting",
-      "trend_id": "7eca9d45da25",
-      "title": "Castellón · Sporting",
-      "message": "Vinculando Castellón y Sporting al grupo existente de Gularte."
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Guardando ficha Explicada de Bernardo."
     },
     {
-      "at": "2026-10-25T21:51:10+01:00",
+      "at": "2026-10-25T22:03:20+01:00",
+      "phase": "persisting",
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Actualizando requests de Bernardo."
+    },
+    {
+      "at": "2026-10-25T22:03:40+01:00",
+      "phase": "persisting",
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Retirando revisión de Bernardo de la cola."
+    },
+    {
+      "at": "2026-10-25T22:04:00+01:00",
+      "phase": "verifying",
+      "trend_id": "4305be0d33f1",
+      "title": "Bernardo",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-25T22:04:10+01:00",
+      "phase": "verifying",
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Releyendo estado autoritativo del grupo del Clásico."
+    },
+    {
+      "at": "2026-10-25T22:04:20+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Hecho esencial verificado: los tres términos remiten al Barça-Real Madrid en juego en el Camp Nou; 0-1 al descanso."
+    },
+    {
+      "at": "2026-10-25T22:04:30+01:00",
+      "phase": "drafting",
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Redactando explicación factual conjunta y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-25T22:04:40+01:00",
       "phase": "remate_selection",
-      "trend_id": "ad3c0ee3015b",
-      "title": "#LaRoca250",
-      "message": "Remate seleccionado para #LaRoca250."
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Evaluando candidatos con control de originalidad."
     },
     {
-      "at": "2026-10-25T21:51:30+01:00",
+      "at": "2026-10-25T22:04:50+01:00",
+      "phase": "remate_selection",
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Remate seleccionado para el grupo del Clásico."
+    },
+    {
+      "at": "2026-10-25T22:05:05+01:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Guardando fichas Explicadas y sincronizando requests."
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Guardando ficha Explicada y sincronizando las tres requests."
     },
     {
-      "at": "2026-10-25T21:52:00+01:00",
+      "at": "2026-10-25T22:05:40+01:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Retirando las cinco revisiones cerradas de la cola."
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
+      "title": "#ElClasico · Hala Madrid · Camp Nou",
+      "message": "Retirando las tres revisiones del grupo de la cola."
     },
     {
-      "at": "2026-10-25T21:52:30+01:00",
+      "at": "2026-10-25T22:06:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y verificando id, revisión, texto y grupos persistidos."
+      "message": "Releyendo main: cola activa 0, requests activas 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-25T21:53:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0, solicitudes activas 0 y Top 10 cubierto por explicadas o decisiones explícitas."
-    },
-    {
-      "at": "2026-10-25T21:53:20+01:00",
+      "at": "2026-10-25T22:06:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0."
+      "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0."
     }
   ],
   "partial": false,
@@ -470,7 +453,7 @@
     "captured_at": "2026-10-25T21:41:13+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T211500+0100",
+  "previous_run_id": "tr-chat-20261025T214500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -480,26 +463,18 @@
   },
   "remate_selections": [
     {
-      "trend_id": "3947a38f094f",
+      "trend_id": "4305be0d33f1",
       "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "🌶️ El Snatch Game volvió a repartir famosos sin pedir permiso.",
+      "candidate_count": 4,
+      "selected_candidate": "🌶️ La sorpresa del once llegó al descanso por delante.",
       "selected_score": null,
       "no_remate_reason": null
     },
     {
-      "trend_id": "3af2a81110b7",
+      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
       "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "🌶️ Se quedó fuera de la lista y acabó saliendo del despacho.",
-      "selected_score": null,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "ad3c0ee3015b",
-      "revision": 0,
-      "candidate_count": 5,
-      "selected_candidate": "🌶️ Doscientos cincuenta domingos dan para mucha sobremesa.",
+      "candidate_count": 1,
+      "selected_candidate": "🌶️ El primer asalto se lo llevó el rebote de Mbappé.",
       "selected_score": null,
       "no_remate_reason": null
     }
