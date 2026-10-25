@@ -69,3 +69,28 @@ assert source_data["changing"]["freshness"] == "corroborated-change", source_dat
 top10, _, chosen, method = module.choose_top10(source_data)
 assert chosen == "changing" and method == "corroborated-anchor" and top10 == current[:10], (chosen, method, top10)
 print("TT_SOURCE_CONTINUITY_OK: frozen feed excluded, corroborated changing feed selected")
+
+# A stuck "11 minutes ago" label must be rejected on the next full refresh.
+# An independent hourly source, even if just >90min old, may corroborate
+# the VISUAL list, but the editorial queue must still require fresher proof.
+now2 = datetime(2026, 10, 25, 23, 35, tzinfo=module.MADRID)
+frozen2 = {**row(old, "fresh", 11), "update_hint": "Last updated: 11 minutes ago"}
+live2 = {**row(current, "unknown"), "update_hint": None}
+hourly2 = {**row(current, "stale", 95), "update_hint": "Trending now Oct 25, 2026 21:00 UTC"}
+prev2 = {
+    "captured_at": (now2 - timedelta(minutes=12)).isoformat(),
+    "sources": {
+        "whatstrends": {**frozen2, "last_list_change_at": (now2 - timedelta(minutes=52)).isoformat(),
+                        "relative_hint_unchanged_since": (now2 - timedelta(minutes=12)).isoformat()},
+        "getdaytrends": row(old, "unknown"),
+        "snaplytics": hourly2,
+    },
+}
+actual2 = {"whatstrends": frozen2, "getdaytrends": live2, "snaplytics": hourly2}
+module.reconcile_source_freshness(actual2, prev2, now2)
+assert actual2["whatstrends"]["freshness"] == "stale", actual2["whatstrends"]
+assert actual2["getdaytrends"]["freshness"] == "corroborated-change", actual2["getdaytrends"]
+top10, supporters, chosen, method = module.choose_top10(actual2)
+assert chosen == "getdaytrends" and method == "corroborated-anchor", (chosen, method, supporters)
+assert top10 == current[:10], top10
+print("TT_FAST_FROZEN_FEED_OK: repeated relative label cannot pin the visual Top 30")
