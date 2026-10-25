@@ -45,8 +45,7 @@ enum SiteDailyClock {
                     guard end>start else { continue }
                     let kind=part.kind == .place && part.siteID == nil ?
                              SiteStayPartKind.unassigned : part.kind
-                    let id=stay.id+"|\(Int(start.timeIntervalSince1970*1000))|"+
-                           "\(Int(end.timeIntervalSince1970*1000))|\(part.id)"
+                    let id="\(stay.id)|\(Int(start.timeIntervalSince1970*1000))|\(Int(end.timeIntervalSince1970*1000))|\(part.id)"
                     segments.append(SiteClockSegment(
                         id:id,from:start,to:end,stay:stay,kind:kind,
                         siteID:kind == .place ? part.siteID : nil,
