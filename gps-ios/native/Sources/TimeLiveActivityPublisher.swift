@@ -16,7 +16,7 @@ import ActivityKit
 
     // BIOGRID computation is cached and always runs off the main thread.
     // Rebuild at most once per ten minutes to protect background battery.
-    private var bioSnapshot:BioGridSnapshot?
+    private var bioPopulations:[String:[Int64]]?
     private var bioLastComputed:Date?
     private var bioLastAttempt:Date = .distantPast
     private var bioComputing=false
@@ -36,7 +36,10 @@ import ActivityKit
                let saved=try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
                let date=saved.latestProcessed,
                Calendar(identifier:.gregorian).isDate(date,inSameDayAs:now) {
-                bioSnapshot=saved
+                // Retain only the seven counts per square. The BIOGRID
+                // snapshot also contains complete per-day history and
+                // significantly increases memory pressure if kept alive.
+                bioPopulations=saved.populations
                 let attributes=try? FileManager.default.attributesOfItem(atPath:path.path)
                 bioLastComputed=attributes?[.modificationDate] as? Date
             }
@@ -45,24 +48,19 @@ import ActivityKit
         bioLastAttempt=now
         bioComputing=true
         let intervals=model.data.intervals
-        let destination=bioCacheURL
         let timezone=TimeZone.current
         Task {
-            let result=await Task.detached(priority:.utility) { () -> BioGridSnapshot in
-                let next=BioGridEngine.simulate(intervals,now:now,timezone:timezone)
-                if let encoded=try? JSONEncoder().encode(next) {
-                    try? FileManager.default.createDirectory(
-                        at:destination.deletingLastPathComponent(),
-                        withIntermediateDirectories:true)
-                    try? encoded.write(to:destination,options:.atomic)
-                }
-                return next
+            let populations=await Task.detached(priority:.utility) { () -> [String:[Int64]] in
+                // Do not compete with BIOGRID's own cache writer. Recompute
+                // off the main thread, project only the current populations
+                // and discard the rest of the heavy historical simulation.
+                BioGridEngine.simulate(intervals,now:now,timezone:timezone).populations
             }.value
-            bioSnapshot=result
+            bioPopulations=populations
             bioLastComputed=Date()
             bioComputing=false
-            // A fresh snapshot should immediately replace the initial
-            // "calculando" label when the OS lets the app run.
+            // Only an authorized live activity will be updated.
+            guard !Task.isCancelled else { return }
             refresh(from:model,force:true,now:.now)
         }
     }
@@ -84,6 +82,15 @@ import ActivityKit
                 $0.id == key && valid.contains($0.siteID)
             }),let name=model.siteNamed(assignment.siteID)?.name {
                 return (name,assignment.confirmed)
+            }
+        }
+        // Never override a manually marked "De paso" or "Sin identificar"
+        // with an automatic guess from another visit to the same square.
+        if let start=model.currentVisitStart {
+            let key=SiteStayPolicy.visitKey(cellID:cell.id,entered:start)
+            if model.data.siteStayParts.contains(where:{ $0.stayID == key }) ||
+               model.data.dismissedSiteStayKeys.contains(key) {
+                return nil
             }
         }
         if let best=model.preferredSiteID(for:cell.id),
@@ -262,7 +269,7 @@ import ActivityKit
             siteName:namedSite?.name,
             siteConfirmed:namedSite?.confirmed,
             bioGridCounts:LiveBioGridPopulation.counts(cellID:cell.id,
-                                                         snapshot:bioSnapshot),
+                                                         populations:bioPopulations),
             bioGridUpdatedAt:bioLastComputed)
         let content=ActivityContent(
             state:state,
