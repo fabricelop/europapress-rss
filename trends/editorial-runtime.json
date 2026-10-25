@@ -4,21 +4,27 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "3947a38f094f",
+    "3af2a81110b7",
+    "7eca9d45da25",
+    "19215c9e7cd9",
+    "ad3c0ee3015b"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T21:15:00+01:00",
-  "last_completed_at": "2026-10-25T21:16:45+01:00",
-  "updated_at": "2026-10-25T21:16:45+01:00",
+  "last_started_at": "2026-10-25T21:45:00+01:00",
+  "last_completed_at": "2026-10-25T21:53:20+01:00",
+  "updated_at": "2026-10-25T21:53:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T211500+0100",
+    "trigger_run_id": "tr-chat-20261025T214500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +32,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T211500+0100",
+    "run_id": "tr-chat-20261025T214500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T21:15:00+01:00",
-    "updated_at": "2026-10-25T21:16:45+01:00",
-    "finished_at": "2026-10-25T21:16:45+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T21:45:00+01:00",
+    "updated_at": "2026-10-25T21:53:20+01:00",
+    "finished_at": "2026-10-25T21:53:20+01:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 5,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 5,
+      "explanation_groups": 4,
+      "new_cards": 3,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "grouped_into_existing_card": 2,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 5,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,18 +63,18 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 15,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 3,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
       "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes.",
+    "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -80,93 +86,227 @@
     },
     "remate_selections": [
       {
-        "trend_id": "d438ccc039cc",
+        "trend_id": "3947a38f094f",
         "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
+        "candidate_count": 5,
+        "selected_candidate": "🌶️ El Snatch Game volvió a repartir famosos sin pedir permiso.",
         "selected_score": null,
-        "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "3af2a81110b7",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "🌶️ Se quedó fuera de la lista y acabó saliendo del despacho.",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ad3c0ee3015b",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "🌶️ Doscientos cincuenta domingos dan para mucha sobremesa.",
+        "selected_score": null,
+        "no_remate_reason": null
       }
     ],
     "activity": [
       {
-        "at": "2026-10-25T21:15:00+01:00",
+        "at": "2026-10-25T21:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 0; verificando Top 10 y saneamiento de Pendientes."
+        "message": "Inicio de pasada: cola editorial 5; preparando verificación JIT."
       },
       {
-        "at": "2026-10-25T21:15:20+01:00",
+        "at": "2026-10-25T21:46:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
+        "trend_id": "3947a38f094f",
+        "title": "#DragRaceEs",
+        "message": "Releyendo estado autoritativo de #DragRaceEs."
       },
       {
-        "at": "2026-10-25T21:15:35+01:00",
+        "at": "2026-10-25T21:46:20+01:00",
+        "phase": "investigating",
+        "trend_id": "3947a38f094f",
+        "title": "#DragRaceEs",
+        "message": "Hecho esencial verificado: el programa 5 de Drag Race España 6 es el Snatch Game emitido hoy."
+      },
+      {
+        "at": "2026-10-25T21:46:40+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
+        "trend_id": "3af2a81110b7",
+        "title": "Francisco Martín",
+        "message": "Releyendo estado autoritativo de Francisco Martín."
       },
       {
-        "at": "2026-10-25T21:15:50+01:00",
+        "at": "2026-10-25T21:47:00+01:00",
+        "phase": "investigating",
+        "trend_id": "3af2a81110b7",
+        "title": "Francisco Martín",
+        "message": "Hecho esencial verificado: dimitió como delegado del Gobierno en Madrid tras quedar fuera de las listas del PSOE."
+      },
+      {
+        "at": "2026-10-25T21:47:20+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
+        "trend_id": "7eca9d45da25",
+        "title": "Castellón",
+        "message": "Releyendo Castellón y Sporting frente a la ficha ya explicada de Gularte."
       },
       {
-        "at": "2026-10-25T21:16:05+01:00",
+        "at": "2026-10-25T21:47:40+01:00",
+        "phase": "investigating",
+        "trend_id": "19215c9e7cd9",
+        "title": "Sporting",
+        "message": "Detonante compartido verificado: Castellón 4-0 Sporting; se agrupan en la ficha existente de Gularte."
+      },
+      {
+        "at": "2026-10-25T21:48:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
+        "trend_id": "ad3c0ee3015b",
+        "title": "#LaRoca250",
+        "message": "Releyendo estado autoritativo de #LaRoca250."
       },
       {
-        "at": "2026-10-25T21:16:15+01:00",
+        "at": "2026-10-25T21:48:20+01:00",
+        "phase": "investigating",
+        "trend_id": "ad3c0ee3015b",
+        "title": "#LaRoca250",
+        "message": "Hecho esencial verificado: La Roca emitió hoy su episodio 250 en laSexta."
+      },
+      {
+        "at": "2026-10-25T21:48:40+01:00",
+        "phase": "drafting",
+        "trend_id": "3947a38f094f",
+        "title": "#DragRaceEs",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-25T21:49:20+01:00",
         "phase": "remate_selection",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
+        "trend_id": "3947a38f094f",
+        "title": "#DragRaceEs",
+        "message": "Remate seleccionado para #DragRaceEs."
       },
       {
-        "at": "2026-10-25T21:16:30+01:00",
+        "at": "2026-10-25T21:50:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "3af2a81110b7",
+        "title": "Francisco Martín",
+        "message": "Remate político neutral seleccionado para Francisco Martín."
+      },
+      {
+        "at": "2026-10-25T21:50:50+01:00",
+        "phase": "persisting",
+        "trend_id": "7eca9d45da25",
+        "title": "Castellón · Sporting",
+        "message": "Vinculando Castellón y Sporting al grupo existente de Gularte."
+      },
+      {
+        "at": "2026-10-25T21:51:10+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ad3c0ee3015b",
+        "title": "#LaRoca250",
+        "message": "Remate seleccionado para #LaRoca250."
+      },
+      {
+        "at": "2026-10-25T21:51:30+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Guardando fichas Explicadas y sincronizando requests."
+      },
+      {
+        "at": "2026-10-25T21:52:00+01:00",
+        "phase": "persisting",
+        "trend_id": null,
+        "title": null,
+        "message": "Retirando las cinco revisiones cerradas de la cola."
+      },
+      {
+        "at": "2026-10-25T21:52:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
+        "message": "Releyendo main y verificando id, revisión, texto y grupos persistidos."
       },
       {
-        "at": "2026-10-25T21:16:45+01:00",
+        "at": "2026-10-25T21:53:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Verificación final: cola 0, solicitudes activas 0 y Top 10 cubierto por explicadas o decisiones explícitas."
+      },
+      {
+        "at": "2026-10-25T21:53:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
+        "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "3947a38f094f",
+      "3af2a81110b7",
+      "7eca9d45da25",
+      "19215c9e7cd9",
+      "ad3c0ee3015b"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "3947a38f094f",
+        "name": "#DragRaceEs",
+        "revision": 0,
+        "outcome": "explained",
+        "group_id": "grp-3947a38f094f"
+      },
+      {
+        "id": "3af2a81110b7",
+        "name": "Francisco Martín",
+        "revision": 0,
+        "outcome": "explained",
+        "group_id": "grp-3af2a81110b7"
+      },
+      {
+        "id": "7eca9d45da25",
+        "name": "Castellón",
+        "revision": 0,
+        "outcome": "grouped_into_existing_card",
+        "group_id": "grp-843944da89a6"
+      },
+      {
+        "id": "19215c9e7cd9",
+        "name": "Sporting",
+        "revision": 0,
+        "outcome": "grouped_into_existing_card",
+        "group_id": "grp-843944da89a6"
+      },
+      {
+        "id": "ad3c0ee3015b",
+        "name": "#LaRoca250",
+        "revision": 0,
+        "outcome": "explained",
+        "group_id": "grp-ad3c0ee3015b"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261025T211500+0100",
+  "run_id": "tr-chat-20261025T214500+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 5,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 5,
+    "explanation_groups": 4,
+    "new_cards": 3,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "grouped_into_existing_card": 2,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 5,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -174,11 +314,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 15,
+    "explanations_verified_under_280": 5,
+    "remates_selected": 3,
+    "remates_omitted": 0,
+    "recent_missing_closer_reviewed": 0,
+    "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -187,73 +327,150 @@
   },
   "activity": [
     {
-      "at": "2026-10-25T21:15:00+01:00",
+      "at": "2026-10-25T21:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 0; verificando Top 10 y saneamiento de Pendientes."
+      "message": "Inicio de pasada: cola editorial 5; preparando verificación JIT."
     },
     {
-      "at": "2026-10-25T21:15:20+01:00",
+      "at": "2026-10-25T21:46:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
+      "trend_id": "3947a38f094f",
+      "title": "#DragRaceEs",
+      "message": "Releyendo estado autoritativo de #DragRaceEs."
     },
     {
-      "at": "2026-10-25T21:15:35+01:00",
+      "at": "2026-10-25T21:46:20+01:00",
+      "phase": "investigating",
+      "trend_id": "3947a38f094f",
+      "title": "#DragRaceEs",
+      "message": "Hecho esencial verificado: el programa 5 de Drag Race España 6 es el Snatch Game emitido hoy."
+    },
+    {
+      "at": "2026-10-25T21:46:40+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
+      "trend_id": "3af2a81110b7",
+      "title": "Francisco Martín",
+      "message": "Releyendo estado autoritativo de Francisco Martín."
     },
     {
-      "at": "2026-10-25T21:15:50+01:00",
+      "at": "2026-10-25T21:47:00+01:00",
+      "phase": "investigating",
+      "trend_id": "3af2a81110b7",
+      "title": "Francisco Martín",
+      "message": "Hecho esencial verificado: dimitió como delegado del Gobierno en Madrid tras quedar fuera de las listas del PSOE."
+    },
+    {
+      "at": "2026-10-25T21:47:20+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
+      "trend_id": "7eca9d45da25",
+      "title": "Castellón",
+      "message": "Releyendo Castellón y Sporting frente a la ficha ya explicada de Gularte."
     },
     {
-      "at": "2026-10-25T21:16:05+01:00",
+      "at": "2026-10-25T21:47:40+01:00",
+      "phase": "investigating",
+      "trend_id": "19215c9e7cd9",
+      "title": "Sporting",
+      "message": "Detonante compartido verificado: Castellón 4-0 Sporting; se agrupan en la ficha existente de Gularte."
+    },
+    {
+      "at": "2026-10-25T21:48:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
+      "trend_id": "ad3c0ee3015b",
+      "title": "#LaRoca250",
+      "message": "Releyendo estado autoritativo de #LaRoca250."
     },
     {
-      "at": "2026-10-25T21:16:15+01:00",
+      "at": "2026-10-25T21:48:20+01:00",
+      "phase": "investigating",
+      "trend_id": "ad3c0ee3015b",
+      "title": "#LaRoca250",
+      "message": "Hecho esencial verificado: La Roca emitió hoy su episodio 250 en laSexta."
+    },
+    {
+      "at": "2026-10-25T21:48:40+01:00",
+      "phase": "drafting",
+      "trend_id": "3947a38f094f",
+      "title": "#DragRaceEs",
+      "message": "Redactando explicación factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-25T21:49:20+01:00",
       "phase": "remate_selection",
-      "trend_id": "d438ccc039cc",
-      "title": "#laSextaXplica",
-      "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
+      "trend_id": "3947a38f094f",
+      "title": "#DragRaceEs",
+      "message": "Remate seleccionado para #DragRaceEs."
     },
     {
-      "at": "2026-10-25T21:16:30+01:00",
+      "at": "2026-10-25T21:50:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3af2a81110b7",
+      "title": "Francisco Martín",
+      "message": "Remate político neutral seleccionado para Francisco Martín."
+    },
+    {
+      "at": "2026-10-25T21:50:50+01:00",
+      "phase": "persisting",
+      "trend_id": "7eca9d45da25",
+      "title": "Castellón · Sporting",
+      "message": "Vinculando Castellón y Sporting al grupo existente de Gularte."
+    },
+    {
+      "at": "2026-10-25T21:51:10+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ad3c0ee3015b",
+      "title": "#LaRoca250",
+      "message": "Remate seleccionado para #LaRoca250."
+    },
+    {
+      "at": "2026-10-25T21:51:30+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Guardando fichas Explicadas y sincronizando requests."
+    },
+    {
+      "at": "2026-10-25T21:52:00+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": null,
+      "message": "Retirando las cinco revisiones cerradas de la cola."
+    },
+    {
+      "at": "2026-10-25T21:52:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
+      "message": "Releyendo main y verificando id, revisión, texto y grupos persistidos."
     },
     {
-      "at": "2026-10-25T21:16:45+01:00",
+      "at": "2026-10-25T21:53:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación final: cola 0, solicitudes activas 0 y Top 10 cubierto por explicadas o decisiones explícitas."
+    },
+    {
+      "at": "2026-10-25T21:53:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
+      "message": "TTendencias completada: 5 revisiones cerradas; 3 fichas nuevas y 2 agrupadas; cola final 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Captura reciente disponible; no fue necesario solicitar refresh adicional.",
-    "captured_at": "2026-10-25T21:10:51+01:00"
+    "captured_at": "2026-10-25T21:41:13+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-25T21:10:51+01:00",
+    "captured_at": "2026-10-25T21:41:13+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T204500+0100",
+  "previous_run_id": "tr-chat-20261025T211500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -263,13 +480,28 @@
   },
   "remate_selections": [
     {
-      "trend_id": "d438ccc039cc",
+      "trend_id": "3947a38f094f",
       "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
+      "candidate_count": 5,
+      "selected_candidate": "🌶️ El Snatch Game volvió a repartir famosos sin pedir permiso.",
       "selected_score": null,
-      "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "3af2a81110b7",
+      "revision": 0,
+      "candidate_count": 5,
+      "selected_candidate": "🌶️ Se quedó fuera de la lista y acabó saliendo del despacho.",
+      "selected_score": null,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "ad3c0ee3015b",
+      "revision": 0,
+      "candidate_count": 5,
+      "selected_candidate": "🌶️ Doscientos cincuenta domingos dan para mucha sobremesa.",
+      "selected_score": null,
+      "no_remate_reason": null
     }
   ]
 }
