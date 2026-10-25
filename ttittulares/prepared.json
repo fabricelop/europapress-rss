@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-25T13:06:39.085Z",
+  "updated_at": "2026-10-25T13:08:12.306693Z",
   "items": [
     {
       "event_id": "manual-2b73af6f-2233-4e4d-ac1f-691923f9fe96",
@@ -158,17 +158,35 @@
       "source": "scheduled_editorial_chat",
       "prepared_at": "2026-10-25T13:06:39.085Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_delivery": "none",
-      "image_app_available": false
+      "image_app_available": false,
+      "archive_image_search_attempted_at": "2026-10-25T13:08:12.306693Z",
+      "fallback_image_search_attempted_at": "2026-10-25T13:08:12.306693Z",
+      "archive_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-culpa-sanchez-discipulos-muro-disturbios-barcelona-como-han-perdido-calle-quieren-incendiarla/1413488627",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo atribuye a Sánchez y a «los discípulos del muro» los disturbios de Barcelona"
+      },
+      "fallback_image": {
+        "url": "https://www.servimedia.es/sites/default/files/noticias/img-servimedia-default.png",
+        "source": "www.servimedia.es",
+        "source_url": "https://www.servimedia.es/noticias/feijoo-culpa-sanchez-discipulos-muro-disturbios-barcelona-como-han-perdido-calle-quieren-incendiarla/1413488627",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Feijóo atribuye a Sánchez y a «los discípulos del muro» los disturbios de Barcelona"
+      }
     }
   ],
   "count": 1,
