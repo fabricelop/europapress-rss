@@ -4,21 +4,24 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "a10e26e19ada",
+    "f315b3bfcc1e"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T23:15:00+01:00",
-  "last_completed_at": "2026-10-25T23:16:00+01:00",
-  "updated_at": "2026-10-25T23:16:00+01:00",
+  "last_started_at": "2026-10-25T23:41:55+01:00",
+  "last_completed_at": "2026-10-25T23:50:30+01:00",
+  "updated_at": "2026-10-25T23:50:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T231500+0100",
+    "trigger_run_id": "tr-1792968104694-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,102 +29,244 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T231500+0100",
+    "run_id": "tr-1792968104694-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T23:15:00+01:00",
-    "updated_at": "2026-10-25T23:16:00+01:00",
-    "finished_at": "2026-10-25T23:16:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T23:41:55+01:00",
+    "updated_at": "2026-10-25T23:50:30+01:00",
+    "finished_at": "2026-10-25T23:50:30+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 2,
+      "ready": 2,
+      "explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 1,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 8,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
+      "remates_omitted": 0,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 2,
       "incidents": 0
     },
-    "message": "TTendencias completada: 0 revisiones editoriales pendientes; cola final 0.",
+    "message": "TTendencias completada: 2 revisiones explicadas y verificadas; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 100
+      "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "a10e26e19ada",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "🌶️ Un autopase cambió el empate por tres puntos.",
+        "selected_score": 5
+      },
+      {
+        "trend_id": "f315b3bfcc1e",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "🌶️ El centro no encontró rematador; encontró el 0-1.",
+        "selected_score": 5
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-25T23:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: verificando cola autoritativa y estado editorial."
+        "at": "2026-10-25T23:42:35+01:00",
+        "phase": "investigating",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Buscando detonante actual"
       },
       {
-        "at": "2026-10-25T23:15:30+01:00",
+        "at": "2026-10-25T23:43:10+01:00",
+        "phase": "investigating",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Contrastando fuente 1/2 · Reuters y Europa Press sobre el 1-2 del Clásico"
+      },
+      {
+        "at": "2026-10-25T23:43:40+01:00",
+        "phase": "investigating",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Contrastando fuente 2/2 · Libertad Digital y Cadena SER sobre la asistencia decisiva"
+      },
+      {
+        "at": "2026-10-25T23:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-25T23:44:30+01:00",
+        "phase": "drafting",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-25T23:44:45+01:00",
+        "phase": "drafting",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-25T23:45:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Evaluando candidatos con ratings y remates recientes"
+      },
+      {
+        "at": "2026-10-25T23:45:30+01:00",
+        "phase": "remate_selection",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Remate seleccionado · «Un autopase cambió el empate por tres puntos.»"
+      },
+      {
+        "at": "2026-10-25T23:46:35+01:00",
+        "phase": "persisting",
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-25T23:46:50+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes: 8 tarjetas recientes; saneamiento visual solicitado."
+        "trend_id": "a10e26e19ada",
+        "title": "Camavinga",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-25T23:15:50+01:00",
+        "at": "2026-10-25T23:47:00+01:00",
+        "phase": "verifying",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Releyendo estado autoritativo de Diomande"
+      },
+      {
+        "at": "2026-10-25T23:47:20+01:00",
+        "phase": "investigating",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-25T23:47:50+01:00",
+        "phase": "investigating",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Contrastando fuente 1/2 · Real Madrid y El País sobre titularidad y 0-1"
+      },
+      {
+        "at": "2026-10-25T23:48:10+01:00",
+        "phase": "investigating",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Contrastando fuente 2/2 · Cadena SER sobre el centro previo al 0-1"
+      },
+      {
+        "at": "2026-10-25T23:48:25+01:00",
+        "phase": "investigating",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-25T23:48:40+01:00",
+        "phase": "drafting",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-25T23:49:20+01:00",
+        "phase": "remate_selection",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Remate seleccionado · «El centro no encontró rematador; encontró el 0-1.»"
+      },
+      {
+        "at": "2026-10-25T23:49:50+01:00",
+        "phase": "verifying",
+        "trend_id": "f315b3bfcc1e",
+        "title": "Diomande",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-25T23:50:10+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: cola 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-25T23:16:00+01:00",
+        "at": "2026-10-25T23:50:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: cola final 0."
+        "message": "TTendencias completada: 2 revisiones explicadas y verificadas; cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "a10e26e19ada",
+      "f315b3bfcc1e"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "a10e26e19ada",
+        "name": "Camavinga",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "f315b3bfcc1e",
+        "name": "Diomande",
+        "revision": 0,
+        "status": "explained"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261025T230430+0100",
+  "run_id": "tr-1792968104694-manual",
   "summary": {
-    "attempted": 1,
-    "ready": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "attempted": 2,
+    "ready": 2,
+    "explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
@@ -129,136 +274,164 @@
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 1,
-    "discovered_during_run": 0,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 0,
-    "remates_omitted": 1,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
+    "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 2,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T23:04:30+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada: cola autoritativa 1; preparando validación JIT y saneamiento de Pendientes."
-    },
-    {
-      "at": "2026-10-25T23:05:00+01:00",
-      "phase": "verifying",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Releyendo estado autoritativo de Blocus"
-    },
-    {
-      "at": "2026-10-25T23:05:20+01:00",
+      "at": "2026-10-25T23:42:35+01:00",
       "phase": "investigating",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Buscando detonante actual"
     },
     {
-      "at": "2026-10-25T23:05:45+01:00",
+      "at": "2026-10-25T23:43:10+01:00",
       "phase": "investigating",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Contrastando fuente 1/2 · EFE y RTVE sobre la convocatoria de Blocus"
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
+      "message": "Contrastando fuente 1/2 · Reuters y Europa Press sobre el 1-2 del Clásico"
     },
     {
-      "at": "2026-10-25T23:06:00+01:00",
+      "at": "2026-10-25T23:43:40+01:00",
       "phase": "investigating",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Contrastando fuente 2/2 · Newtral sobre nuevas convocatorias del 31 de octubre"
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
+      "message": "Contrastando fuente 2/2 · Libertad Digital y Cadena SER sobre la asistencia decisiva"
     },
     {
-      "at": "2026-10-25T23:06:10+01:00",
+      "at": "2026-10-25T23:44:00+01:00",
       "phase": "investigating",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Hecho esencial verificado"
     },
     {
-      "at": "2026-10-25T23:06:20+01:00",
+      "at": "2026-10-25T23:44:30+01:00",
       "phase": "drafting",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-25T23:06:30+01:00",
+      "at": "2026-10-25T23:44:45+01:00",
       "phase": "drafting",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Comprobando límite de X"
     },
     {
-      "at": "2026-10-25T23:06:40+01:00",
+      "at": "2026-10-25T23:45:15+01:00",
       "phase": "remate_selection",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Sin remate · disturbios y violencia; explicación factual suficiente"
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
+      "message": "Evaluando candidatos con ratings y remates recientes"
     },
     {
-      "at": "2026-10-25T23:07:05+01:00",
-      "phase": "persisting",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Guardando ficha Explicada"
+      "at": "2026-10-25T23:45:30+01:00",
+      "phase": "remate_selection",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
+      "message": "Remate seleccionado · «Un autopase cambió el empate por tres puntos.»"
     },
     {
-      "at": "2026-10-25T23:07:20+01:00",
+      "at": "2026-10-25T23:46:35+01:00",
       "phase": "persisting",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-25T23:07:35+01:00",
-      "phase": "persisting",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Retirando revisión de la cola"
     },
     {
-      "at": "2026-10-25T23:08:00+01:00",
+      "at": "2026-10-25T23:46:50+01:00",
       "phase": "verifying",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-25T23:08:20+01:00",
-      "phase": "verifying",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-25T23:08:35+01:00",
-      "phase": "verifying",
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
-      "title": "Blocus",
+      "trend_id": "a10e26e19ada",
+      "title": "Camavinga",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-25T23:09:00+01:00",
+      "at": "2026-10-25T23:47:00+01:00",
+      "phase": "verifying",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Releyendo estado autoritativo de Diomande"
+    },
+    {
+      "at": "2026-10-25T23:47:20+01:00",
+      "phase": "investigating",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-25T23:47:50+01:00",
+      "phase": "investigating",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Contrastando fuente 1/2 · Real Madrid y El País sobre titularidad y 0-1"
+    },
+    {
+      "at": "2026-10-25T23:48:10+01:00",
+      "phase": "investigating",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Contrastando fuente 2/2 · Cadena SER sobre el centro previo al 0-1"
+    },
+    {
+      "at": "2026-10-25T23:48:25+01:00",
+      "phase": "investigating",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-25T23:48:40+01:00",
+      "phase": "drafting",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-25T23:49:20+01:00",
+      "phase": "remate_selection",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Remate seleccionado · «El centro no encontró rematador; encontró el 0-1.»"
+    },
+    {
+      "at": "2026-10-25T23:49:50+01:00",
+      "phase": "verifying",
+      "trend_id": "f315b3bfcc1e",
+      "title": "Diomande",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-25T23:50:10+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main: cola 0, requests activas 0 y rewrite_pending 0."
+    },
+    {
+      "at": "2026-10-25T23:50:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Blocus explicada y verificada; cola final 0."
+      "message": "TTendencias completada: 2 revisiones explicadas y verificadas; cola final 0."
     }
   ],
   "partial": false,
@@ -276,18 +449,22 @@
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
-    "total_ratings": 154,
-    "recent_considered": 100
+    "recent_considered": 30
   },
   "remate_selections": [
     {
-      "trend_id": "manual-fc627fd7f19d081e82afaee6c7b689ab",
+      "trend_id": "a10e26e19ada",
       "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "Disturbios y violencia; se conserva tratamiento factual sin humor."
+      "candidate_count": 5,
+      "selected_candidate": "🌶️ Un autopase cambió el empate por tres puntos.",
+      "selected_score": 5
+    },
+    {
+      "trend_id": "f315b3bfcc1e",
+      "revision": 0,
+      "candidate_count": 5,
+      "selected_candidate": "🌶️ El centro no encontró rematador; encontró el 0-1.",
+      "selected_score": 5
     }
   ]
 }
