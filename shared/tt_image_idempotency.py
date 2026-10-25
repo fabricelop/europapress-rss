@@ -84,6 +84,15 @@ def may_enqueue_image_job(
         return False
     if status in TERMINAL or status in ACTIVE:
         return False
+    # The server explicitly cancelled BEFORE opening ChatGPT Images because a
+    # stale historical archive was mistaken for the current episode. Unlike a
+    # CDP timeout/ERROR, this outcome proves that no prompt was submitted.
+    if (status == "CANCELLED" and str(old.get("phase") or "").lower() == "stale_target"
+            and str(old.get("message") or "").startswith("Cancelado antes de abrir chat:")
+            and not old.get("pc_picked_up_at") and not old.get("pc_submitted_at")):
+        attempts = int(old.get("auto_repair_attempt") or 0)
+        consumed = int(old.get("manual_retry_version") or 0)
+        return attempts < max_automatic_safe_retries or int(manual_retry_version or 0) > consumed
     if status not in FAILED:
         return False  # Unknown phases fail closed.
 
