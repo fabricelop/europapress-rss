@@ -30,6 +30,21 @@ class ImageIdempotencyTests(unittest.TestCase):
         self.assertFalse(may_enqueue_image_job(incident, 1))
         self.assertFalse(may_enqueue_image_job(incident, 1, manual_retry_version=2))
 
+    def test_stale_archive_cancelled_before_chat_can_be_safely_requeued(self):
+        job = {
+            "revision": 0, "status": "CANCELLED", "phase": "stale_target",
+            "message": "Cancelado antes de abrir chat: archived",
+            "auto_repair_attempt": 1,
+        }
+        self.assertTrue(may_enqueue_image_job(job, 0))
+        job["auto_repair_attempt"] = 3
+        self.assertFalse(may_enqueue_image_job(job, 0))
+        job["pc_launched_at"] = "2026-10-26T00:49:00Z"
+        self.assertFalse(may_enqueue_image_job(job, 0))
+        job.pop("pc_launched_at")
+        job["status"] = "ERROR"
+        self.assertFalse(may_enqueue_image_job(job, 0))
+
     def test_generic_errors_not_automatically_retried(self):
         for phase in ("pc_launch_failed", "expired", "pc_progress", "failed"):
             self.assertFalse(may_enqueue_image_job({"revision": 0, "status": "ERROR", "phase": phase}, 0))
