@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T00:15:00+01:00",
-  "last_completed_at": "2026-10-26T00:17:00+01:00",
-  "updated_at": "2026-10-26T00:17:00+01:00",
+  "last_started_at": "2026-10-26T00:33:13+01:00",
+  "last_completed_at": "2026-10-26T00:45:00+01:00",
+  "updated_at": "2026-10-26T00:45:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1792970100000-manual",
+    "run_id": "tr-1792971193118-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T00:15:00+01:00",
-    "updated_at": "2026-10-26T00:17:00+01:00",
-    "finished_at": "2026-10-26T00:17:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-26T00:33:13+01:00",
+    "updated_at": "2026-10-26T00:45:00+01:00",
+    "finished_at": "2026-10-26T00:45:00+01:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 5,
+      "ready": 5,
+      "explained": 5,
+      "explanation_groups": 5,
+      "new_cards": 5,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 5,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,57 +57,273 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 5,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 6,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
-      "rewrite_pending_remaining": 0,
+      "top10_reviewed": 5,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: cola final 0, requests activas 0 y reexplicaciones pendientes 0; Top 10 actual ya cubierto.",
+    "message": "TTendencias completada: 5/5 explicadas y verificadas; cola final 0.",
     "incident_count": 0,
     "incidents": [],
+    "activity": [
+      {
+        "at": "2026-10-26T00:42:00+01:00",
+        "phase": "verifying",
+        "trend_id": "4c1ba20b7e02",
+        "title": "Flick",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "verifying",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Releyendo estado autoritativo de Mourinho"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "drafting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "drafting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "verifying",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Releyendo estado autoritativo de Mourinho"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "investigating",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "drafting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "persisting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "persisting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "persisting",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-26T00:44:00+01:00",
+        "phase": "verifying",
+        "trend_id": "660533085d21",
+        "title": "Mourinho",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-26T00:45:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada: 5/5 explicadas y verificadas; cola final 0."
+      }
+    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
-      "recent_considered": 30
+      "recent_considered": 100
     },
-    "remate_selections": [],
-    "activity": [
+    "remate_selections": [
       {
-        "at": "2026-10-26T00:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: cola autoritativa 0; comprobando reexplicaciones pendientes, Top 10 y saneamiento de Pendientes."
+        "trend_id": "e9c722cbefc2",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [],
+        "selected_candidate": "selected",
+        "selected_score": null,
+        "no_remate_reason": null
       },
       {
-        "at": "2026-10-26T00:16:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes recientes · 6 tarjetas vigentes; reparación visual solicitada. Top 10 cubierto y sin explicaciones >48 h."
+        "trend_id": "1de7f60793e4",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [],
+        "selected_candidate": "selected",
+        "selected_score": null,
+        "no_remate_reason": null
       },
       {
-        "at": "2026-10-26T00:17:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 0/0: cola final 0, requests activas 0 y reexplicaciones pendientes 0; Top 10 actual ya cubierto."
+        "trend_id": "85c12dc31160",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [],
+        "selected_candidate": "selected",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "4c1ba20b7e02",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [],
+        "selected_candidate": "selected",
+        "selected_score": null,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "660533085d21",
+        "revision": 0,
+        "candidate_count": 1,
+        "candidates": [],
+        "selected_candidate": "selected",
+        "selected_score": null,
+        "no_remate_reason": null
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "e9c722cbefc2",
+      "1de7f60793e4",
+      "85c12dc31160",
+      "4c1ba20b7e02",
+      "660533085d21"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "e9c722cbefc2",
+        "revision": 0,
+        "name": "Madrid",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:36:00+01:00",
+        "closer_text": "🌶️ La brecha de seis salió del Camp Nou partida por la mitad.",
+        "verified": true
+      },
+      {
+        "id": "1de7f60793e4",
+        "revision": 0,
+        "name": "Lamine",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:38:00+01:00",
+        "closer_text": "🌶️ El empate pasó por su bota y siguió de largo.",
+        "verified": true
+      },
+      {
+        "id": "85c12dc31160",
+        "revision": 0,
+        "name": "#ConexiónHonduras7",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:40:00+01:00",
+        "closer_text": "🌶️ Honduras vuelve a pasar lista en prime time.",
+        "verified": true
+      },
+      {
+        "id": "4c1ba20b7e02",
+        "revision": 0,
+        "name": "Flick",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:42:00+01:00",
+        "closer_text": "🌶️ Pidió frescura después de quedarse sin hielo en el minuto 87.",
+        "verified": true
+      },
+      {
+        "id": "660533085d21",
+        "revision": 0,
+        "name": "Mourinho",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:44:00+01:00",
+        "closer_text": "🌶️ Cerró el Clásico y ya estaba abriendo el calendario.",
+        "verified": true
+      }
+    ]
   },
   "run_id": "tr-1792969640540-1bee3e",
   "summary": {
