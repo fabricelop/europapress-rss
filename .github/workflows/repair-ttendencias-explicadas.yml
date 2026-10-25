@@ -119,16 +119,16 @@ jobs:
               copy_state=json.loads((MAIN/"trends/explained-copy-state.json").read_text(encoding="utf-8"))
           except Exception:
               copy_state={"items":[]}
-          archived_ids=set()
-          archived_names_legacy=set()
+          archived_by_id={}
+          archived_names_legacy={}
           for x in copy_state.get("items",[]):
               rev=int(x.get("revision") or 0)
               item_id=str(x.get("item_id") or x.get("id") or "").strip()
               if item_id:
-                  archived_ids.add((item_id,rev))
+                  archived_by_id.setdefault((item_id,rev),[]).append(x)
               else:
                   for name in x.get("trend_names") or []:
-                      archived_names_legacy.add((str(name or "").strip().casefold(),rev))
+                      archived_names_legacy.setdefault((str(name or "").strip().casefold(),rev),[]).append(x)
           index_path=CTRL/"trends/image-runs/index.json"
           index=json.loads(index_path.read_text(encoding="utf-8")) if index_path.exists() else {"version":1,"jobs":[]}
           now=datetime.now(timezone.utc)
@@ -162,6 +162,26 @@ jobs:
           def parse_dt(v):
               try:return datetime.fromisoformat(str(v).replace("Z","+00:00")).astimezone(timezone.utc)
               except Exception:return None
+
+          def archived_this_episode(row):
+              # Archive decisions cover an editorial EPISODE, not every future
+              # football match assigned the same ID and revision 0.
+              item_id=str(row.get("id") or "")
+              rev=int(row.get("revision") or 0)
+              archives=(archived_by_id.get((item_id,rev),[]) if item_id
+                        else archived_names_legacy.get((str(row.get("name") or "").strip().casefold(),rev),[]))
+              current_at=parse_dt(row.get("explained_at"))
+              for entry in archives:
+                  archived_at=parse_dt(entry.get("explained_at"))
+                  if archived_at and current_at:
+                      if archived_at == current_at:
+                          return True
+                      continue
+                  copied_at=parse_dt(entry.get("copied_at"))
+                  if copied_at and current_at and current_at > copied_at:
+                      continue
+                  return True  # Unknown archive epoch: fail closed.
+              return False
 
           def valid_ai(row):
               ai=row.get("ai_image") or {}
@@ -222,10 +242,7 @@ jobs:
           for row in explained.get("items",[]):
               if str(row.get("status") or "").lower()!="explained":
                   continue
-              row_id=str(row.get("id") or "").strip()
-              row_rev=int(row.get("revision") or 0)
-              if ((row_id and (row_id,row_rev) in archived_ids) or
-                  (not row_id and (str(row.get("name") or "").strip().casefold(),row_rev) in archived_names_legacy)):
+              if archived_this_episode(row):
                   continue
               if not str(row.get("explanation") or "").strip():
                   continue
