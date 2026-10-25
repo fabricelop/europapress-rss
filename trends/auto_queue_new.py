@@ -443,6 +443,22 @@ def capture_is_safe(doc):
 
     if method in {"hold-last-good", "stale-fallback", "none"}:
         return False
+    if method == "continuity-anchor":
+        primary = str(doc.get("primary_source") or "")
+        row = source_data.get(primary) or {}
+        peers = list(row.get("continuity_peers") or [])
+        try:
+            unchanged = float(row.get("list_unchanged_minutes", 9999))
+        except (TypeError, ValueError):
+            return False
+        return bool(
+            row.get("ok") and row.get("continuity_verified")
+            and 0 <= unchanged <= 60 and peers
+            and any((source_data.get(p) or {}).get("ok")
+                    and (source_data.get(p) or {}).get("age_minutes") is not None
+                    and 0 <= float(source_data[p]["age_minutes"]) <= 150
+                    for p in peers)
+        )
     if method in {"fresh-anchor", "aging-anchor", "corroborated-anchor"}:
         primary = str(doc.get("primary_source") or "")
         item = source_data.get(primary) or {}
