@@ -79,6 +79,18 @@ enum SiteDailyClock {
         }
     }
 
+    /// Chronological order is based on the FIRST recorded portion at a
+    /// site, not on its total accumulated time or duration ranking.
+    static func firstSeenBySite(_ segments:[SiteClockSegment]) -> [UUID:Date] {
+        var result:[UUID:Date]=[:]
+        for item in segments where item.kind == .place {
+            guard let id=item.siteID else { continue }
+            let previous=result[id] ?? .distantFuture
+            if item.from < previous { result[id]=item.from }
+        }
+        return result
+    }
+
     static func totalsBySite(_ segments:[SiteClockSegment]) -> [UUID:TimeInterval] {
         var result:[UUID:TimeInterval]=[:]
         for segment in segments where segment.kind == .place {
