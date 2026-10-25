@@ -7,7 +7,7 @@ import tempfile
 import threading
 import unittest
 
-from shared.tt_image_idempotency import may_enqueue_image_job
+from shared.tt_image_idempotency import may_enqueue_image_job, is_new_editorial_episode
 
 
 class ImageIdempotencyTests(unittest.TestCase):
@@ -60,6 +60,30 @@ class ImageIdempotencyTests(unittest.TestCase):
     def test_zero_revision_is_not_treated_as_missing(self):
         self.assertFalse(may_enqueue_image_job({"revision": 1, "status": "ERROR"}, 0))
         self.assertTrue(may_enqueue_image_job({"revision": 0, "status": "LAUNCHED"}, 1))
+
+    def test_same_trend_new_match_is_a_fresh_image_episode(self):
+        old = {"revision": 0, "status": "ERROR", "pc_launched_at": "2026-10-04T21:03:05Z",
+               "context_snapshot": {
+                   "explained_at": "2026-10-04T22:23:30+02:00",
+                   "explanation": "Cancelo marca con Portugal ante Noruega."}}
+        new = {"explained_at": "2026-10-26T00:01:19+01:00",
+               "explanation": "Cancelo entra sobre Diomande en el Clásico."}
+        self.assertFalse(may_enqueue_image_job(old, 0))
+        self.assertTrue(is_new_editorial_episode(old, 0, new))
+        self.assertTrue(may_enqueue_image_job({} if is_new_editorial_episode(old, 0, new) else old, 0))
+
+    def test_same_match_cannot_duplicate_even_after_launched_error(self):
+        old = {"revision": 0, "status": "ERROR", "pc_launched_at": "2026-10-25T21:03:05Z",
+               "context_snapshot": {
+                   "explained_at": "2026-10-25T21:02:00Z",
+                   "explanation": "Explicación revisada."}}
+        same = {"explained_at": "2026-10-25T21:02:00Z", "explanation": "Explicación revisada."}
+        earlier = {"explained_at": "2026-10-24T21:02:00Z", "explanation": "Otro hecho."}
+        just_date = {"explained_at": "2026-10-26T21:02:00Z", "explanation": "Explicación revisada."}
+        for candidate in (same, earlier, just_date, {"explanation": "Texto sin fecha"}, {}):
+            with self.subTest(candidate=candidate):
+                self.assertFalse(is_new_editorial_episode(old, 0, candidate))
+        self.assertFalse(is_new_editorial_episode(old, 1, {"explained_at":"2026-10-26T21:02:00Z", "explanation":"Otra"}))
 
     def test_workflows_use_same_gate_and_no_rebase(self):
         root = Path(__file__).resolve().parents[1]
