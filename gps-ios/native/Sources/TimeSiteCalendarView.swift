@@ -127,22 +127,16 @@ struct TimeSiteCalendarView: View {
         .background(Color(.secondarySystemGroupedBackground))
     }
 
-    var body: some View {
-        VStack(spacing: 0) {
-            calendarControls
-            List {
-                Section {
-                    Text("Se muestran estancias continuas de más de cinco minutos GPS confirmados por cuadrícula. No se contabiliza el tiempo sin mediciones.")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-            if !preparing && !visible.isEmpty {
+    private var dayClockSection: some View {
                 Section {
                     TimeSiteDailyClockView(model:model,day:selectedDay,
                                                segments:dayClockSegments)
                 } header: {
                     Text("Dónde estuve durante el día")
                 }
+    }
+
+    private var dayOverviewSection: some View {
                 Section("Resumen del día") {
                     VStack(alignment:.leading,spacing:7) {
                         HStack {
@@ -185,6 +179,9 @@ struct TimeSiteCalendarView: View {
                     }
                     .font(.caption)
                 }
+    }
+
+    @ViewBuilder private var daySiteTotalsSection: some View {
                 if !report.siteTotals.isEmpty {
                     Section("Tiempo por lugar") {
                         ForEach(report.siteTotals) { value in
@@ -207,7 +204,9 @@ struct TimeSiteCalendarView: View {
                         }
                     }
                 }
-            }
+    }
+
+    private var stayRowsSection: some View {
             Section {
                 if preparing {
                     ProgressView("Reconstruyendo histórico completo…")
@@ -250,7 +249,28 @@ struct TimeSiteCalendarView: View {
                     Text(DateFormatter.localizedString(from:selectedDay,dateStyle:.medium,timeStyle:.none))
                 }
             }
+    }
+
+    private var historyList: some View {
+        List {
+            Section {
+                Text("Se muestran estancias continuas de más de cinco minutos GPS confirmados por cuadrícula. No se contabiliza el tiempo sin mediciones.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
             }
+            if !preparing && !visible.isEmpty {
+                dayClockSection
+                dayOverviewSection
+                daySiteTotalsSection
+            }
+            stayRowsSection
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            calendarControls
+            historyList
         }
         .navigationTitle("Histórico de sitios")
         .navigationBarTitleDisplayMode(.inline)
