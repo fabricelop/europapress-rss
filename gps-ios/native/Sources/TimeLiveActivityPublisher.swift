@@ -208,12 +208,8 @@ import ActivityKit
             end=max(start.addingTimeInterval(1),
                     (fix ?? now).addingTimeInterval(120))
         }
-        let visual=TimeLiveVisualization.neighborhood(center:cell,totals:confirmed)
-        let chartIDs=Set(zone?.cellIDs ?? [cell.id])
-        let sixHours=TimeLiveVisualization.hourlyPresence(
-            intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
-        let sixMinutes=TimeLiveVisualization.hourlyMinutes(
-            intervals:model.data.intervals,cellIDs:chartIDs,endingAt:now)
+        // Graphs were removed from the Live Activity. Avoid spending CPU on
+        // chart windows or neighborhood tiles that will never be displayed.
         let zoneStay=zone.map { model.zoneStaySeconds(for:$0,now:now) }
         // Anunciar un hito únicamente al cruzarlo durante esta sesión; no
         // repetir las horas acumuladas anteriores cuando se abre la app.
@@ -252,8 +248,8 @@ import ActivityKit
             timerValidUntil:end,
             lastGPSAt:fix,
             resting:resting,
-            nearbyIntensity:visual,
-            lastSixHours:sixHours,
+            nearbyIntensity:[],
+            lastSixHours:[],
             chartIsZone:zone != nil,
             moving:motion.moving && !resting,
             recentDistanceMeters:motion.recentDistanceMeters,
@@ -261,7 +257,7 @@ import ActivityKit
             trailIndices:motion.trailIndices,
             headingDegrees:motion.headingDegrees,
             currentZoneStaySeconds:zoneStay,
-            lastSixMinutes:sixMinutes,
+            lastSixMinutes:[],
             milestone:now<=milestoneUntil ? lastMilestone : nil,
             siteName:namedSite?.name,
             siteConfirmed:namedSite?.confirmed,
