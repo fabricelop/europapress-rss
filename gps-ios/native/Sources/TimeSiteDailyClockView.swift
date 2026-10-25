@@ -3,6 +3,11 @@ import SwiftUI
 /// An immediately readable location clock for a selected calendar day.
 /// Four six-hour strips retain the familiar 24-hour scale without reducing
 /// short visits to barely visible slivers on a circular dial.
+private struct SiteClockTotal: Identifiable {
+    let id: UUID
+    let seconds: TimeInterval
+}
+
 struct TimeSiteDailyClockView: View {
     @ObservedObject var model: TimeModel
     let day: Date
@@ -15,9 +20,9 @@ struct TimeSiteDailyClockView: View {
         })
         return SiteDailyClock.segments(stays:stays,partsByStay:parts,on:day)
     }
-    private var siteTotals: [(id:UUID,seconds:TimeInterval)] {
+    private var siteTotals: [SiteClockTotal] {
         SiteDailyClock.totalsBySite(slices)
-            .map{(id:$0.key,seconds:$0.value)}
+            .map{SiteClockTotal(id:$0.key,seconds:$0.value)}
             .sorted{$0.seconds>$1.seconds}
     }
     private var measuredSeconds:TimeInterval {
@@ -38,7 +43,8 @@ struct TimeSiteDailyClockView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
             ForEach(Array(SiteDailyClock.bands(slices,day:day).enumerated()),
-                    id:\.offset) { _, band in
+                    id:\.offset) { item in
+                let band=item.element
                 HStack(spacing:6) {
                     Text(band.label)
                         .font(.system(size:10,weight:.medium,design:.monospaced))
@@ -88,7 +94,7 @@ struct TimeSiteDailyClockView: View {
                 VStack(alignment:.leading,spacing:7) {
                     Text("Lugares de este día")
                         .font(.caption.weight(.semibold))
-                    ForEach(Array(siteTotals.prefix(9)),id:\.id) { entry in
+                    ForEach(Array(siteTotals.prefix(9))) { entry in
                         HStack(spacing:8) {
                             Circle()
                                 .fill(siteColor(entry.id))
