@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-25T23:31:04.946255+00:00",
+  "checked_at": "2026-10-25T23:33:14.725929+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -40,12 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 2,
-      "captured_age_minutes": 0.1,
-      "noise_count": 0,
-      "repair_started": true
+      "non_stale_sources": 3,
+      "captured_age_minutes": 0.2,
+      "noise_count": 0
     },
     "listener": {
       "ok": true,
@@ -54,9 +53,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.0,
+      "age_minutes": 2.0,
       "run_id": 40245123618,
       "reason": null,
       "repairable": true,
@@ -79,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 5,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -89,8 +88,14 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "e9c722cbefc2",
+        "1de7f60793e4",
+        "85c12dc31160",
+        "4c1ba20b7e02",
+        "660533085d21"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -99,9 +104,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "warnings": [],
   "alert_sent": false,
