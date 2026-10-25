@@ -411,7 +411,7 @@ def reconcile_source_freshness(source_data, previous_doc, now):
             if same_relative_hint else now_iso
         )
         row["relative_hint_unchanged_since"] = hint_since
-        if same_relative_hint and elapsed_minutes(hint_since) >= 20:
+        if same_relative_hint and elapsed_minutes(hint_since) >= 15:
             if row.get("freshness") == "fresh":
                 row["freshness"] = "stale"
                 row["freshness_note"] = "frozen-relative-update-label"
@@ -424,14 +424,20 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         prior = previous_sources.get(name) or {}
         if not prior.get("ok") or row.get("list_unchanged_minutes", 9999) > 20:
             continue
-        if [term_key(x) for x in (row.get("trends") or [])[:30]] == [
-            term_key(x) for x in (prior.get("trends") or [])[:30]
-        ]:
-            continue
+        # The first continuity-aware run may only know the preceding
+        # capture time as last change. Accept that recent evidence for the
+        # visual radar if a dated independent feed agrees. Sources older
+        # than 90m can corroborate only the display, never auto-editorial.
         peers = [
             other_name for other_name, other in source_data.items()
             if other_name != name and other.get("ok")
-            and other.get("freshness") in {"fresh", "aging"}
+            and (
+                other.get("freshness") in {"fresh", "aging"}
+                or (
+                    other.get("age_minutes") is not None
+                    and float(other["age_minutes"]) <= 120
+                )
+            )
             and overlap(row.get("trends") or [], other.get("trends") or []) >= 0.25
         ]
         if peers:
@@ -918,10 +924,27 @@ def main():
     primary_ranked = (source_data.get(chosen_name) or {}).get("trends") or []
     extend_ranked(primary_ranked[:30])
     if len(top30) < 30:
-        for name, data in sorted(source_data.items(),
-                                 key=lambda pair: pair[0] != chosen_name):
-            if data.get("ok") and data.get("freshness") != "stale":
-                extend_ranked((data.get("trends") or [])[:50])
+        # Prefer related, dated secondary snapshots. A disconnected
+        # never-updating undated feed must not fill the remaining places.
+        secondary = []
+        for name, data in source_data.items():
+            if name == chosen_name or not data.get("ok"):
+                continue
+            agreement = overlap(primary_ranked, data.get("trends") or [])
+            age = data.get("age_minutes")
+            dated_recent = age is not None and float(age) <= 120
+            if agreement < 0.20:
+                continue
+            if data.get("freshness") == "stale" and not dated_recent:
+                continue
+            secondary.append((name, data, agreement))
+        secondary.sort(key=lambda row: (
+            -row[2],
+            row[1].get("age_minutes") is None,
+            float(row[1].get("age_minutes") or 9999),
+        ))
+        for name, data, _ in secondary:
+            extend_ranked((data.get("trends") or [])[:50])
             if len(top30) >= 30:
                 break
     # Si el radar no alcanza 30 entradas fiables, mostrar las observadas;
