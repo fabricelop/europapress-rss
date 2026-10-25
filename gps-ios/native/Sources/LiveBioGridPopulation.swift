@@ -7,7 +7,11 @@ enum LiveBioGridPopulation {
 
     static func counts(cellID:String,snapshot:BioGridSnapshot?) -> [Int64]? {
         guard let snapshot else { return nil }
-        let existing=snapshot.populations[cellID] ?? []
+        return counts(cellID:cellID,populations:snapshot.populations)
+    }
+    static func counts(cellID:String,populations:[String:[Int64]]?) -> [Int64]? {
+        guard let populations else { return nil }
+        let existing=populations[cellID] ?? []
         return (0..<7).map { index in
             index < existing.count ? max(0,existing[index]) : 0
         }
