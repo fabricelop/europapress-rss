@@ -1,0 +1,64 @@
+name: "Read-only Cloudflare Workers daily quota probe"
+on:
+  push:
+    branches: [feature/sitios-calendario-agil-v75]
+    paths: ['.github/workflows/read-only-cloudflare-daily-cap-check-20261025.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quota:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Read account Workers traffic totals (no deployments or mutations)
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          python3 - <<'PY'
+          import os, json, datetime, urllib.request, urllib.error, collections
+          token=os.environ.get('CF_API_TOKEN','').strip()
+          account=os.environ.get('CF_ACCOUNT_ID','').strip()
+          if not token or not account:
+              print('METRICS_UNAVAILABLE: Cloudflare API credentials are not configured for this repository')
+              raise SystemExit(0)
+          now=datetime.datetime.now(datetime.timezone.utc)
+          midnight=now.replace(hour=0,minute=0,second=0,microsecond=0)
+          windows=[
+            ('previous_UTC_day',midnight-datetime.timedelta(days=1),midnight),
+            ('today_UTC',midnight,now)
+          ]
+          query='query Workers($accountTag: string, $start: string, $end: string) { viewer { accounts(filter: {accountTag:$accountTag}) { workersInvocationsAdaptive(limit:1000, filter: {datetime_geq:$start,datetime_lt:$end}) { dimensions { scriptName } sum { requests errors } } } } }'
+          for name,start,end in windows:
+              obj={'query':query,'variables':{'accountTag':account,'start':start.isoformat(timespec='seconds').replace('+00:00','Z'),'end':end.isoformat(timespec='seconds').replace('+00:00','Z')}}
+              req=urllib.request.Request('https://api.cloudflare.com/client/v4/graphql',data=json.dumps(obj).encode(),headers={'Authorization':'Bearer '+token,'Content-Type':'application/json','Accept':'application/json'},method='POST')
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      data=json.loads(response.read(2000000))
+              except urllib.error.HTTPError as e:
+                  print(name,'GRAPHQL_HTTP_ERROR',e.code,'(token and identifiers not printed)')
+                  continue
+              except Exception as e:
+                  print(name,'NETWORK_ERROR',type(e).__name__)
+                  continue
+              errs=data.get('errors') or []
+              if errs:
+                  print(name,'GRAPHQL_ERROR',[(e.get('message') or '')[:160] for e in errs[:3]])
+                  continue
+              accounts=((data.get('data') or {}).get('viewer') or {}).get('accounts') or []
+              if not accounts:
+                  print(name,'NO_ACCOUNT_DATA (permissions may be insufficient)')
+                  continue
+              rows=accounts[0].get('workersInvocationsAdaptive') or []
+              per=collections.defaultdict(lambda:[0,0])
+              for row in rows:
+                  script=str((row.get('dimensions') or {}).get('scriptName') or 'unknown')
+                  metric=row.get('sum') or {}
+                  per[script][0]+=int(metric.get('requests') or 0)
+                  per[script][1]+=int(metric.get('errors') or 0)
+              print(name,'UTC_WINDOW',start.isoformat(),end.isoformat(),'ROWS',len(rows),'ALL_WORKERS_REQUESTS',sum(v[0] for v in per.values()),'ALL_WORKERS_ERRORS',sum(v[1] for v in per.values()))
+              for name2,(requests,errors) in sorted(per.items(),key=lambda row:-row[1][0])[:25]:
+                  print('  WORKER',name2,'REQUESTS',requests,'ERRORS',errors)
+              if len(rows)>=1000: print('WARNING: row limit reached; aggregate may undercount')
+          PY
