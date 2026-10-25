@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "manual-025d4a403a244fd1e7e54c57e2c19c32"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T08:45:00+01:00",
-  "last_completed_at": "2026-10-25T08:46:20+01:00",
-  "updated_at": "2026-10-25T08:46:20+01:00",
+  "last_started_at": "2026-10-25T08:50:56+01:00",
+  "last_completed_at": "2026-10-25T08:53:20+01:00",
+  "updated_at": "2026-10-25T08:53:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T084500+0100",
+    "trigger_run_id": "tr-1792914607442-411ea7",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +28,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T084500+0100",
+    "run_id": "tr-1792914607442-411ea7",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T08:45:00+01:00",
-    "updated_at": "2026-10-25T08:46:20+01:00",
-    "finished_at": "2026-10-25T08:46:20+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T08:50:56+01:00",
+    "updated_at": "2026-10-25T08:53:20+01:00",
+    "finished_at": "2026-10-25T08:53:20+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,8 +59,8 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
       "pending_cards_reviewed": 12,
@@ -68,7 +70,7 @@
       "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: 0/0 revisiones editoriales, 12 Pendientes revisados, cola final 0 y reparación visual solicitada.",
+    "message": "TTendencias completada: 1/1 revisión editorial, 12 Pendientes revisados, cola final 0 y reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,6 +81,41 @@
       "recent_considered": 100
     },
     "remate_selections": [
+      {
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "text": "🌶️ El cuadro acabó también en el argumentario.",
+            "score": 9.1,
+            "note": "Específico, neutral y ligado al uso político del Guernica."
+          },
+          {
+            "text": "🌶️ El museo abrió la sala y la campaña abrió el debate.",
+            "score": 8.4,
+            "note": "Claro, aunque más previsible."
+          },
+          {
+            "text": "🌶️ El Guernica salió del marco y entró en precampaña.",
+            "score": 8.8,
+            "note": "Muy específico, algo más metafórico."
+          },
+          {
+            "text": "🌶️ La visita acabó con más réplica que audioguía.",
+            "score": 8.2,
+            "note": "Ligero y neutral, menos anclado al hecho central."
+          },
+          {
+            "text": "🌶️ El museo cerró la visita y abrió otro frente electoral.",
+            "score": 8,
+            "note": "Correcto, pero fórmula más habitual."
+          }
+        ],
+        "selected_candidate": "🌶️ El cuadro acabó también en el argumentario.",
+        "selected_score": 9.1,
+        "originality_check": "Sin coincidencia conceptual evidente con los remates recientes revisados."
+      },
       {
         "trend_id": "d438ccc039cc",
         "revision": 0,
@@ -91,75 +128,169 @@
     ],
     "activity": [
       {
-        "at": "2026-10-25T08:45:00+01:00",
+        "at": "2026-10-25T08:50:56+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · cola inicial 0."
+        "message": "Preparando pasada editorial · cola inicial 1."
       },
       {
-        "at": "2026-10-25T08:45:25+01:00",
+        "at": "2026-10-25T08:51:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes y Explicadas recientes."
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Releyendo estado autoritativo de Reina Sofía."
       },
       {
-        "at": "2026-10-25T08:45:35+01:00",
+        "at": "2026-10-25T08:51:05+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Buscando detonante actual y contrastando el contexto Reina Sofía/Guernica."
+      },
+      {
+        "at": "2026-10-25T08:51:35+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Contrastando fuente 1/2 · Europa Press confirma la crítica del PP por el uso del museo en precampaña."
+      },
+      {
+        "at": "2026-10-25T08:51:45+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Contrastando fuente 2/2 · EFE confirma el vídeo ante el Guernica y la acusación de uso de recursos públicos."
+      },
+      {
+        "at": "2026-10-25T08:51:50+01:00",
+        "phase": "investigating",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Hecho esencial verificado."
+      },
+      {
+        "at": "2026-10-25T08:51:55+01:00",
+        "phase": "drafting",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-25T08:52:00+01:00",
+        "phase": "drafting",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Comprobando límite de X · texto completo 240 caracteres Unicode y dentro del máximo."
+      },
+      {
+        "at": "2026-10-25T08:52:05+01:00",
         "phase": "remate_selection",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 12 fichas vigentes de menos de 24 h; 1 carece de remate."
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Generando candidatos de remate."
       },
       {
-        "at": "2026-10-25T08:45:45+01:00",
+        "at": "2026-10-25T08:52:10+01:00",
         "phase": "remate_selection",
-        "trend_id": "d438ccc039cc",
-        "title": "#laSextaXplica",
-        "message": "Sin remate · se conserva tratamiento factual por disturbios y saqueos; no se fuerza humor."
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Evaluando candidatos con ratings y control de originalidad."
       },
       {
-        "at": "2026-10-25T08:46:00+01:00",
+        "at": "2026-10-25T08:52:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Remate seleccionado · «El cuadro acabó también en el argumentario»."
+      },
+      {
+        "at": "2026-10-25T08:52:20+01:00",
+        "phase": "persisting",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-25T08:52:30+01:00",
+        "phase": "persisting",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-25T08:52:45+01:00",
+        "phase": "persisting",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-25T08:53:00+01:00",
+        "phase": "verifying",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Releyendo main."
+      },
+      {
+        "at": "2026-10-25T08:53:05+01:00",
+        "phase": "verifying",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-25T08:53:10+01:00",
+        "phase": "verifying",
+        "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "title": "Reina Sofía",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-25T08:53:12+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 revisado · cobertura vigente, agrupaciones previas o decisiones explícitas; ninguna explicación activa supera 48 h."
+        "message": "Revisando Pendientes · 12 fichas vigentes de menos de 24 h; 1 sin remate se conserva factual por sensibilidad."
       },
       {
-        "at": "2026-10-25T08:46:10+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final · cola 0, requests activas 0, rewrite_pending 0; trigger persistido."
-      },
-      {
-        "at": "2026-10-25T08:46:20+01:00",
+        "at": "2026-10-25T08:53:15+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 0/0 revisiones editoriales, 12 Pendientes revisados, cola final 0 y reparación visual solicitada."
+        "message": "Relectura final · cola 0, requests activas 0 y rewrite_pending 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "manual-025d4a403a244fd1e7e54c57e2c19c32"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+        "revision": 0,
+        "name": "Reina Sofía",
+        "status": "explained",
+        "explained_at": "2026-10-25T08:52:20+01:00"
+      }
+    ]
   },
-  "run_id": "tr-chat-20261025T084500+0100",
+  "run_id": "tr-1792914607442-411ea7",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -167,8 +298,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 1,
     "pending_cards_reviewed": 12,
@@ -180,66 +311,150 @@
   },
   "activity": [
     {
-      "at": "2026-10-25T08:45:00+01:00",
+      "at": "2026-10-25T08:50:56+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Preparando pasada editorial · cola inicial 0."
+      "message": "Preparando pasada editorial · cola inicial 1."
     },
     {
-      "at": "2026-10-25T08:45:25+01:00",
+      "at": "2026-10-25T08:51:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes y Explicadas recientes."
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Releyendo estado autoritativo de Reina Sofía."
     },
     {
-      "at": "2026-10-25T08:45:35+01:00",
+      "at": "2026-10-25T08:51:05+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Buscando detonante actual y contrastando el contexto Reina Sofía/Guernica."
+    },
+    {
+      "at": "2026-10-25T08:51:35+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Contrastando fuente 1/2 · Europa Press confirma la crítica del PP por el uso del museo en precampaña."
+    },
+    {
+      "at": "2026-10-25T08:51:45+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Contrastando fuente 2/2 · EFE confirma el vídeo ante el Guernica y la acusación de uso de recursos públicos."
+    },
+    {
+      "at": "2026-10-25T08:51:50+01:00",
+      "phase": "investigating",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Hecho esencial verificado."
+    },
+    {
+      "at": "2026-10-25T08:51:55+01:00",
+      "phase": "drafting",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Redactando explicación factual."
+    },
+    {
+      "at": "2026-10-25T08:52:00+01:00",
+      "phase": "drafting",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Comprobando límite de X · texto completo 240 caracteres Unicode y dentro del máximo."
+    },
+    {
+      "at": "2026-10-25T08:52:05+01:00",
       "phase": "remate_selection",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 12 fichas vigentes de menos de 24 h; 1 carece de remate."
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Generando candidatos de remate."
     },
     {
-      "at": "2026-10-25T08:45:45+01:00",
+      "at": "2026-10-25T08:52:10+01:00",
       "phase": "remate_selection",
-      "trend_id": "d438ccc039cc",
-      "title": "#laSextaXplica",
-      "message": "Sin remate · se conserva tratamiento factual por disturbios y saqueos; no se fuerza humor."
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Evaluando candidatos con ratings y control de originalidad."
     },
     {
-      "at": "2026-10-25T08:46:00+01:00",
+      "at": "2026-10-25T08:52:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Remate seleccionado · «El cuadro acabó también en el argumentario»."
+    },
+    {
+      "at": "2026-10-25T08:52:20+01:00",
+      "phase": "persisting",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-25T08:52:30+01:00",
+      "phase": "persisting",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-25T08:52:45+01:00",
+      "phase": "persisting",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-25T08:53:00+01:00",
+      "phase": "verifying",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Releyendo main."
+    },
+    {
+      "at": "2026-10-25T08:53:05+01:00",
+      "phase": "verifying",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-25T08:53:10+01:00",
+      "phase": "verifying",
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "title": "Reina Sofía",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-25T08:53:12+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 revisado · cobertura vigente, agrupaciones previas o decisiones explícitas; ninguna explicación activa supera 48 h."
+      "message": "Revisando Pendientes · 12 fichas vigentes de menos de 24 h; 1 sin remate se conserva factual por sensibilidad."
     },
     {
-      "at": "2026-10-25T08:46:10+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final · cola 0, requests activas 0, rewrite_pending 0; trigger persistido."
-    },
-    {
-      "at": "2026-10-25T08:46:20+01:00",
+      "at": "2026-10-25T08:53:15+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 0/0 revisiones editoriales, 12 Pendientes revisados, cola final 0 y reparación visual solicitada."
+      "message": "Relectura final · cola 0, requests activas 0 y rewrite_pending 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Captura reciente disponible; no fue necesario solicitar refresh adicional.",
-    "captured_at": "2026-10-25T08:40:51+01:00"
+    "captured_at": "2026-10-25T08:50:48+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-25T08:40:51+01:00",
+    "captured_at": "2026-10-25T08:50:48+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T081500+0100",
+  "previous_run_id": "tr-chat-20261025T084500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -248,6 +463,41 @@
     "recent_considered": 100
   },
   "remate_selections": [
+    {
+      "trend_id": "manual-025d4a403a244fd1e7e54c57e2c19c32",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "text": "🌶️ El cuadro acabó también en el argumentario.",
+          "score": 9.1,
+          "note": "Específico, neutral y ligado al uso político del Guernica."
+        },
+        {
+          "text": "🌶️ El museo abrió la sala y la campaña abrió el debate.",
+          "score": 8.4,
+          "note": "Claro, aunque más previsible."
+        },
+        {
+          "text": "🌶️ El Guernica salió del marco y entró en precampaña.",
+          "score": 8.8,
+          "note": "Muy específico, algo más metafórico."
+        },
+        {
+          "text": "🌶️ La visita acabó con más réplica que audioguía.",
+          "score": 8.2,
+          "note": "Ligero y neutral, menos anclado al hecho central."
+        },
+        {
+          "text": "🌶️ El museo cerró la visita y abrió otro frente electoral.",
+          "score": 8,
+          "note": "Correcto, pero fórmula más habitual."
+        }
+      ],
+      "selected_candidate": "🌶️ El cuadro acabó también en el argumentario.",
+      "selected_score": 9.1,
+      "originality_check": "Sin coincidencia conceptual evidente con los remates recientes revisados."
+    },
     {
       "trend_id": "d438ccc039cc",
       "revision": 0,
