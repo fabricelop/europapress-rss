@@ -37,8 +37,8 @@ import ActivityKit
                let date=saved.latestProcessed,
                Calendar(identifier:.gregorian).isDate(date,inSameDayAs:now) {
                 bioSnapshot=saved
-                bioLastComputed=(try? FileManager.default.attributesOfItem(atPath:path.path)
-                    [.modificationDate]) as? Date
+                let attributes=try? FileManager.default.attributesOfItem(atPath:path.path)
+                bioLastComputed=attributes?[.modificationDate] as? Date
             }
         }
         guard !bioComputing,now.timeIntervalSince(bioLastAttempt)>=600 else { return }
