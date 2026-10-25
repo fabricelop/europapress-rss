@@ -196,5 +196,26 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(change["trends/telegram-manual-explained.json"]["items"][0]["status"],"deleted")
 
 
+    def test_top30_first_time_rework_creates_clean_active_revision(self):
+        import hashlib
+        name = "Cucurella"
+        self.write("trends/recent.json", {"items": [{"rank": 2, "name": name}]})
+        synthetic = "manual-" + hashlib.sha256(name.encode("utf-8")).hexdigest()[:32]
+        documents, result = mod.apply_live("ttendencias", synthetic, "rework", 0, name, 2)
+        self.assertEqual(result, "applied")
+        req = documents["trends/requests.json"]["requests"][0]
+        self.assertEqual(req["name"], name)
+        self.assertEqual(req["status"], "preparing")
+        self.assertEqual(req["originated_from_prior_id"], synthetic)
+        self.assertNotIn("explanation", req)
+        self.assertEqual(documents["trends/editorial-queue.json"]["count"], 1)
+        self.assertEqual(documents["trends/editorial-queue.json"]["items"][0]["id"], req["id"])
+
+    def test_top30_first_time_rework_rejects_spoofed_identity(self):
+        self.write("trends/recent.json", {"items": [{"rank": 5, "name": "Bellingham"}]})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttendencias", "manual-spoofed", "rework", 0, "Bellingham", 5)
+
+
 if __name__ == "__main__":
     unittest.main()
