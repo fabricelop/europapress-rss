@@ -4,24 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "89b9b6bc34f2",
-    "aecd944b5e7c"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T20:45:00+01:00",
-  "last_completed_at": "2026-10-25T20:54:00+01:00",
-  "updated_at": "2026-10-25T20:54:00+01:00",
+  "last_started_at": "2026-10-25T21:15:00+01:00",
+  "last_completed_at": "2026-10-25T21:16:45+01:00",
+  "updated_at": "2026-10-25T21:16:45+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T204500+0100",
+    "trigger_run_id": "tr-chat-20261025T211500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -29,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T204500+0100",
+    "run_id": "tr-chat-20261025T211500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T20:45:00+01:00",
-    "updated_at": "2026-10-25T20:54:00+01:00",
-    "finished_at": "2026-10-25T20:54:00+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-25T21:15:00+01:00",
+    "updated_at": "2026-10-25T21:16:45+01:00",
+    "finished_at": "2026-10-25T21:16:45+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 2,
+      "attempted": 0,
       "ready": 0,
-      "explained": 2,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
-      "grouped_into_existing_card": 1,
+      "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -60,18 +57,18 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 1,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 15,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 2,
+      "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: Yáñez vinculado al grupo Gularte y #NASCARenDAZN explicado; cola final 0.",
+    "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -83,246 +80,93 @@
     },
     "remate_selections": [
       {
-        "trend_id": "aecd944b5e7c",
+        "trend_id": "d438ccc039cc",
         "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 8.3,
-            "ratings_affinity": 2.3,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c2",
-            "total": 7.6,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.3
-          },
-          {
-            "id": "c3",
-            "total": 7.3,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c4",
-            "total": 6.7,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.7,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c5",
-            "total": 6.3,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 0.9,
-            "repetition_penalty": -0.5
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.3,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-25T20:45:00+01:00",
+        "at": "2026-10-25T21:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 2; preparando Yáñez y #NASCARenDAZN."
+        "message": "Inicio de pasada: cola editorial 0; verificando Top 10 y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-25T20:46:30+01:00",
+        "at": "2026-10-25T21:15:20+01:00",
         "phase": "verifying",
-        "trend_id": "89b9b6bc34f2",
-        "title": "Yáñez",
-        "message": "Releyendo estado autoritativo de Yáñez antes de persistir su agrupación."
+        "trend_id": null,
+        "title": null,
+        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-25T20:47:00+01:00",
-        "phase": "investigating",
-        "trend_id": "89b9b6bc34f2",
-        "title": "Yáñez",
-        "message": "Contrastando el detonante de Yáñez con el Castellón-Sporting."
-      },
-      {
-        "at": "2026-10-25T20:47:30+01:00",
-        "phase": "investigating",
-        "trend_id": "89b9b6bc34f2",
-        "title": "Yáñez",
-        "message": "Hecho esencial verificado: Rubén Yáñez fue el portero titular del Sporting en el mismo 4-0 de Castalia ya explicado con Gularte."
-      },
-      {
-        "at": "2026-10-25T20:48:00+01:00",
-        "phase": "persisting",
-        "trend_id": "89b9b6bc34f2",
-        "title": "Yáñez",
-        "message": "Vinculando Yáñez a la ficha existente de Gularte sin duplicar explicación."
-      },
-      {
-        "at": "2026-10-25T20:49:00+01:00",
+        "at": "2026-10-25T21:15:35+01:00",
         "phase": "verifying",
-        "trend_id": "89b9b6bc34f2",
-        "title": "Yáñez",
-        "message": "Yáñez verificado: request explicada, miembro del grupo Gularte y revisión retirada de la cola."
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-25T20:50:00+01:00",
+        "at": "2026-10-25T21:15:50+01:00",
         "phase": "verifying",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Releyendo estado autoritativo de #NASCARenDAZN antes de redactar."
+        "trend_id": null,
+        "title": null,
+        "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
       },
       {
-        "at": "2026-10-25T20:50:30+01:00",
-        "phase": "investigating",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Contrastando fuente 1/2 · NASCAR confirma la YellaWood 500 de Talladega en curso."
+        "at": "2026-10-25T21:16:05+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
       },
       {
-        "at": "2026-10-25T20:51:00+01:00",
-        "phase": "investigating",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Contrastando fuente 2/2 · DAZN confirma que su oferta incluye todas las carreras de NASCAR."
-      },
-      {
-        "at": "2026-10-25T20:51:15+01:00",
-        "phase": "investigating",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Hecho esencial verificado · el hashtag acompaña la retransmisión de NASCAR coincidiendo con Talladega."
-      },
-      {
-        "at": "2026-10-25T20:51:30+01:00",
-        "phase": "drafting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Redactando explicación factual de #NASCARenDAZN."
-      },
-      {
-        "at": "2026-10-25T20:51:45+01:00",
-        "phase": "drafting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Comprobando límite de X · 233 caracteres."
-      },
-      {
-        "at": "2026-10-25T20:52:00+01:00",
+        "at": "2026-10-25T21:16:15+01:00",
         "phase": "remate_selection",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Generando y evaluando cinco candidatos de remate con el snapshot de estrellas."
+        "trend_id": "d438ccc039cc",
+        "title": "#laSextaXplica",
+        "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
       },
       {
-        "at": "2026-10-25T20:52:15+01:00",
-        "phase": "remate_selection",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Remate seleccionado · «En Talladega hasta el hashtag se puso a rebufo»."
-      },
-      {
-        "at": "2026-10-25T20:52:30+01:00",
-        "phase": "persisting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Guardando ficha Explicada de #NASCARenDAZN."
-      },
-      {
-        "at": "2026-10-25T20:52:40+01:00",
-        "phase": "persisting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Actualizando requests con la revisión exacta."
-      },
-      {
-        "at": "2026-10-25T20:52:50+01:00",
-        "phase": "persisting",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Retirando la revisión 0 de la cola autoritativa."
-      },
-      {
-        "at": "2026-10-25T20:53:00+01:00",
+        "at": "2026-10-25T21:16:30+01:00",
         "phase": "verifying",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Releyendo main y verificando id+revision, texto, remate y fecha."
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
       },
       {
-        "at": "2026-10-25T20:53:30+01:00",
-        "phase": "verifying",
-        "trend_id": "aecd944b5e7c",
-        "title": "#NASCARenDAZN",
-        "message": "Verificación exacta superada para #NASCARenDAZN; cola editorial 0 y sin revisiones activas."
-      },
-      {
-        "at": "2026-10-25T20:54:00+01:00",
+        "at": "2026-10-25T21:16:45+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Yáñez vinculado al grupo Gularte y #NASCARenDAZN explicado; cola final 0."
+        "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
       }
     ],
-    "processed_ids": [
-      "89b9b6bc34f2",
-      "aecd944b5e7c"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "89b9b6bc34f2",
-        "name": "Yáñez",
-        "revision": 0,
-        "outcome": "grouped_into_existing_card",
-        "group_id": "grp-843944da89a6"
-      },
-      {
-        "id": "aecd944b5e7c",
-        "name": "#NASCARenDAZN",
-        "revision": 0,
-        "outcome": "explained",
-        "group_id": "grp-aecd944b5e7c"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261025T204500+0100",
+  "run_id": "tr-chat-20261025T211500+0100",
   "summary": {
-    "attempted": 2,
+    "attempted": 0,
     "ready": 0,
-    "explained": 2,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
-    "grouped_into_existing_card": 1,
+    "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 2,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -330,170 +174,86 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 1,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 15,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 2,
+    "top10_reviewed": 10,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T20:45:00+01:00",
+      "at": "2026-10-25T21:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 2; preparando Yáñez y #NASCARenDAZN."
+      "message": "Inicio de pasada: cola editorial 0; verificando Top 10 y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-25T20:46:30+01:00",
+      "at": "2026-10-25T21:15:20+01:00",
       "phase": "verifying",
-      "trend_id": "89b9b6bc34f2",
-      "title": "Yáñez",
-      "message": "Releyendo estado autoritativo de Yáñez antes de persistir su agrupación."
+      "trend_id": null,
+      "title": null,
+      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-25T20:47:00+01:00",
-      "phase": "investigating",
-      "trend_id": "89b9b6bc34f2",
-      "title": "Yáñez",
-      "message": "Contrastando el detonante de Yáñez con el Castellón-Sporting."
-    },
-    {
-      "at": "2026-10-25T20:47:30+01:00",
-      "phase": "investigating",
-      "trend_id": "89b9b6bc34f2",
-      "title": "Yáñez",
-      "message": "Hecho esencial verificado: Rubén Yáñez fue el portero titular del Sporting en el mismo 4-0 de Castalia ya explicado con Gularte."
-    },
-    {
-      "at": "2026-10-25T20:48:00+01:00",
-      "phase": "persisting",
-      "trend_id": "89b9b6bc34f2",
-      "title": "Yáñez",
-      "message": "Vinculando Yáñez a la ficha existente de Gularte sin duplicar explicación."
-    },
-    {
-      "at": "2026-10-25T20:49:00+01:00",
+      "at": "2026-10-25T21:15:35+01:00",
       "phase": "verifying",
-      "trend_id": "89b9b6bc34f2",
-      "title": "Yáñez",
-      "message": "Yáñez verificado: request explicada, miembro del grupo Gularte y revisión retirada de la cola."
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-25T20:50:00+01:00",
+      "at": "2026-10-25T21:15:50+01:00",
       "phase": "verifying",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Releyendo estado autoritativo de #NASCARenDAZN antes de redactar."
+      "trend_id": null,
+      "title": null,
+      "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
     },
     {
-      "at": "2026-10-25T20:50:30+01:00",
-      "phase": "investigating",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Contrastando fuente 1/2 · NASCAR confirma la YellaWood 500 de Talladega en curso."
+      "at": "2026-10-25T21:16:05+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
     },
     {
-      "at": "2026-10-25T20:51:00+01:00",
-      "phase": "investigating",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Contrastando fuente 2/2 · DAZN confirma que su oferta incluye todas las carreras de NASCAR."
-    },
-    {
-      "at": "2026-10-25T20:51:15+01:00",
-      "phase": "investigating",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Hecho esencial verificado · el hashtag acompaña la retransmisión de NASCAR coincidiendo con Talladega."
-    },
-    {
-      "at": "2026-10-25T20:51:30+01:00",
-      "phase": "drafting",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Redactando explicación factual de #NASCARenDAZN."
-    },
-    {
-      "at": "2026-10-25T20:51:45+01:00",
-      "phase": "drafting",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Comprobando límite de X · 233 caracteres."
-    },
-    {
-      "at": "2026-10-25T20:52:00+01:00",
+      "at": "2026-10-25T21:16:15+01:00",
       "phase": "remate_selection",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Generando y evaluando cinco candidatos de remate con el snapshot de estrellas."
+      "trend_id": "d438ccc039cc",
+      "title": "#laSextaXplica",
+      "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
     },
     {
-      "at": "2026-10-25T20:52:15+01:00",
-      "phase": "remate_selection",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Remate seleccionado · «En Talladega hasta el hashtag se puso a rebufo»."
-    },
-    {
-      "at": "2026-10-25T20:52:30+01:00",
-      "phase": "persisting",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Guardando ficha Explicada de #NASCARenDAZN."
-    },
-    {
-      "at": "2026-10-25T20:52:40+01:00",
-      "phase": "persisting",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Actualizando requests con la revisión exacta."
-    },
-    {
-      "at": "2026-10-25T20:52:50+01:00",
-      "phase": "persisting",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Retirando la revisión 0 de la cola autoritativa."
-    },
-    {
-      "at": "2026-10-25T20:53:00+01:00",
+      "at": "2026-10-25T21:16:30+01:00",
       "phase": "verifying",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Releyendo main y verificando id+revision, texto, remate y fecha."
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
     },
     {
-      "at": "2026-10-25T20:53:30+01:00",
-      "phase": "verifying",
-      "trend_id": "aecd944b5e7c",
-      "title": "#NASCARenDAZN",
-      "message": "Verificación exacta superada para #NASCARenDAZN; cola editorial 0 y sin revisiones activas."
-    },
-    {
-      "at": "2026-10-25T20:54:00+01:00",
+      "at": "2026-10-25T21:16:45+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Yáñez vinculado al grupo Gularte y #NASCARenDAZN explicado; cola final 0."
+      "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Captura reciente disponible; no fue necesario solicitar refresh adicional.",
-    "captured_at": "2026-10-25T20:50:52+01:00"
+    "captured_at": "2026-10-25T21:10:51+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-25T20:50:52+01:00",
+    "captured_at": "2026-10-25T21:10:51+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T201500+0100",
+  "previous_run_id": "tr-chat-20261025T204500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -503,64 +263,13 @@
   },
   "remate_selections": [
     {
-      "trend_id": "aecd944b5e7c",
+      "trend_id": "d438ccc039cc",
       "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "total": 8.3,
-          "ratings_affinity": 2.3,
-          "trend_specificity": 2,
-          "punch": 1.8,
-          "originality": 1.4,
-          "length_fit": 1,
-          "repetition_penalty": -0.2
-        },
-        {
-          "id": "c2",
-          "total": 7.6,
-          "ratings_affinity": 2.1,
-          "trend_specificity": 1.9,
-          "punch": 1.6,
-          "originality": 1.3,
-          "length_fit": 1,
-          "repetition_penalty": -0.3
-        },
-        {
-          "id": "c3",
-          "total": 7.3,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.8,
-          "punch": 1.7,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.4
-        },
-        {
-          "id": "c4",
-          "total": 6.7,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.7,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.4
-        },
-        {
-          "id": "c5",
-          "total": 6.3,
-          "ratings_affinity": 1.9,
-          "trend_specificity": 1.6,
-          "punch": 1.4,
-          "originality": 1,
-          "length_fit": 0.9,
-          "repetition_penalty": -0.5
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8.3,
-      "no_remate_reason": null
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
     }
   ]
 }
