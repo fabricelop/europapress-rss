@@ -11,19 +11,21 @@ private struct SiteClockTotal: Identifiable {
 struct TimeSiteDailyClockView: View {
     @ObservedObject var model: TimeModel
     let day: Date
-    let stays: [SiteGridStay]
+    let segments: [SiteClockSegment]
     @State private var focused: SiteClockSegment?
 
-    private var slices: [SiteClockSegment] {
-        let parts=Dictionary(uniqueKeysWithValues:stays.map {
-            ($0.id,model.siteParts(for:$0))
-        })
-        return SiteDailyClock.segments(stays:stays,partsByStay:parts,on:day)
-    }
+    // All intervals are resolved ONCE by the parent when the day changes.
+    // The clock no longer reopens historical assignments during each redraw.
+    private var slices: [SiteClockSegment] { segments }
     private var siteTotals: [SiteClockTotal] {
-        SiteDailyClock.totalsBySite(slices)
+        let firstSeen=SiteDailyClock.firstSeenBySite(segments)
+        return SiteDailyClock.totalsBySite(segments)
             .map{SiteClockTotal(id:$0.key,seconds:$0.value)}
-            .sorted{$0.seconds>$1.seconds}
+            .sorted {
+                let a=firstSeen[$0.id] ?? .distantFuture
+                let b=firstSeen[$1.id] ?? .distantFuture
+                return a == b ? $0.id.uuidString < $1.id.uuidString : a < b
+            }
     }
     private var measuredSeconds:TimeInterval {
         slices.reduce(0){$0+$1.seconds}
@@ -95,7 +97,7 @@ struct TimeSiteDailyClockView: View {
 
             if !siteTotals.isEmpty {
                 VStack(alignment:.leading,spacing:7) {
-                    Text("Lugares de este día")
+                    Text("Lugares de este día · orden cronológico")
                         .font(.caption.weight(.semibold))
                     ForEach(Array(siteTotals.prefix(9))) { entry in
                         HStack(spacing:8) {
@@ -112,7 +114,7 @@ struct TimeSiteDailyClockView: View {
                         }
                     }
                     if siteTotals.count>9 {
-                        Text("Y \(siteTotals.count-9) lugares más; puedes tocarlos en el reloj.")
+                        Text("Y \(siteTotals.count-9) lugares más; aparecen en el reloj.")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
