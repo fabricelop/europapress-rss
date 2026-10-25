@@ -443,9 +443,16 @@ def capture_is_safe(doc):
 
     if method in {"hold-last-good", "stale-fallback", "none"}:
         return False
-    if method in {"fresh-anchor", "aging-anchor"}:
+    if method in {"fresh-anchor", "aging-anchor", "corroborated-anchor"}:
         primary = str(doc.get("primary_source") or "")
-        freshness = str((source_data.get(primary) or {}).get("freshness") or "")
+        item = source_data.get(primary) or {}
+        freshness = str(item.get("freshness") or "")
+        if method == "corroborated-anchor":
+            peers = item.get("corroborating_sources") or []
+            return freshness == "corroborated-change" and any(
+                (source_data.get(peer) or {}).get("freshness") in {"fresh", "aging"}
+                for peer in peers
+            )
         return freshness in {"fresh", "aging"}
     if method == "consensus":
         return len(sources_used) >= 2
