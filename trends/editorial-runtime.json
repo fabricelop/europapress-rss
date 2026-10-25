@@ -4,21 +4,28 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "cd03f22f4fb4",
+    "ea3aa08d7383",
+    "752ea2bfe52b",
+    "3c4fe1515d56",
+    "9fe934178537",
+    "2b0891de6355"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T23:48:47.254+01:00",
-  "last_completed_at": "2026-10-25T23:51:05+01:00",
-  "updated_at": "2026-10-25T23:51:05+01:00",
+  "last_started_at": "2026-10-25T23:58:00+01:00",
+  "last_completed_at": "2026-10-26T00:06:07.355+01:00",
+  "updated_at": "2026-10-26T00:06:07.355+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1792968527254-f8fa49",
+    "trigger_run_id": "tr-1792969061688-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +33,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1792968527254-f8fa49",
+    "run_id": "tr-1792969061688-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T23:48:47.254+01:00",
-    "updated_at": "2026-10-25T23:51:05+01:00",
-    "finished_at": "2026-10-25T23:51:05+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T23:58:00+01:00",
+    "updated_at": "2026-10-26T00:06:07.355+01:00",
+    "finished_at": "2026-10-26T00:06:07.355+01:00",
+    "current": 6,
+    "total": 6,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 6,
+      "ready": 6,
+      "explained": 6,
+      "explanation_groups": 6,
+      "new_cards": 6,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 6,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,18 +64,19 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 6,
+      "remates_selected": 6,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 10,
+      "pending_cards_reviewed": 14,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 0,
+      "top10_reviewed": 6,
+      "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: no queda trabajo editorial activo ni reexplicación pendiente.",
+    "message": "TTendencias completada 6/6: Cancelo, Cucurella, Bellingham, Gerard Martín, gordon y Guti explicadas y verificadas; cola final 0 y reexplicaciones pendientes 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -77,57 +85,382 @@
       "updated_at": "2026-10-06T21:21:47.927Z",
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "cd03f22f4fb4",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.4,
+            "ratings_affinity": 2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "total": 7.7,
+            "ratings_affinity": 2,
+            "trend_specificity": 2,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.4,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "ea3aa08d7383",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.3
+          },
+          {
+            "id": "c2",
+            "total": 7.8
+          },
+          {
+            "id": "c3",
+            "total": 7.5
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.3,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "752ea2bfe52b",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.7
+          },
+          {
+            "id": "c2",
+            "total": 8.1
+          },
+          {
+            "id": "c3",
+            "total": 7.6
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.7,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "3c4fe1515d56",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.2
+          },
+          {
+            "id": "c2",
+            "total": 7.9
+          },
+          {
+            "id": "c3",
+            "total": 7.4
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "9fe934178537",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8.1
+          },
+          {
+            "id": "c2",
+            "total": 7.8
+          },
+          {
+            "id": "c3",
+            "total": 7.2
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8.1,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "2b0891de6355",
+        "revision": 0,
+        "candidate_count": 3,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 8
+          },
+          {
+            "id": "c2",
+            "total": 7.7
+          },
+          {
+            "id": "c3",
+            "total": 7.5
+          }
+        ],
+        "selected_candidate": "c1",
+        "selected_score": 8,
+        "no_remate_reason": null
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-25T23:50:35+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: cola autoritativa 0; verificando requests y reexplicaciones pendientes."
+        "at": "2026-10-26T00:02:53.630+01:00",
+        "phase": "drafting",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-25T23:50:55+01:00",
+        "at": "2026-10-26T00:02:56.233+01:00",
+        "phase": "drafting",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-26T00:02:58.031+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-26T00:03:00.433+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Evaluando candidatos con ratings y control de originalidad"
+      },
+      {
+        "at": "2026-10-26T00:03:02.942+01:00",
+        "phase": "remate_selection",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-26T00:03:04.740+01:00",
+        "phase": "persisting",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-26T00:03:39.293+01:00",
+        "phase": "persisting",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-26T00:03:49.648+01:00",
+        "phase": "persisting",
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-26T00:03:57.361+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests, reexplicaciones y Pendientes recientes."
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-25T23:51:00+01:00",
+        "at": "2026-10-26T00:04:03.471+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final: cola 0, requests activas 0, rewrite_pending 0 y ningún Pendiente reciente sin remate."
+        "trend_id": "ea3aa08d7383",
+        "title": "Cucurella",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-25T23:51:05+01:00",
+        "at": "2026-10-26T00:04:22.663+01:00",
+        "phase": "verifying",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Releyendo estado autoritativo de Bellingham"
+      },
+      {
+        "at": "2026-10-26T00:04:27.947+01:00",
+        "phase": "investigating",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Hecho esencial verificado · ruleta de Bellingham en el inicio de la jugada del 1-2"
+      },
+      {
+        "at": "2026-10-26T00:04:33.157+01:00",
+        "phase": "drafting",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Redactando explicación factual y comprobando límite de X"
+      },
+      {
+        "at": "2026-10-26T00:04:39.323+01:00",
+        "phase": "remate_selection",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Remate seleccionado tras control de originalidad"
+      },
+      {
+        "at": "2026-10-26T00:04:45.068+01:00",
+        "phase": "persisting",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-26T00:06:07.355+01:00",
+        "phase": "verifying",
+        "trend_id": "752ea2bfe52b",
+        "title": "Bellingham",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T00:06:07.355+01:00",
+        "phase": "verifying",
+        "trend_id": "3c4fe1515d56",
+        "title": "Gerard Martín",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T00:06:07.355+01:00",
+        "phase": "verifying",
+        "trend_id": "9fe934178537",
+        "title": "gordon",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T00:06:07.355+01:00",
+        "phase": "verifying",
+        "trend_id": "2b0891de6355",
+        "title": "Guti",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T00:06:07.355+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0: no queda trabajo editorial activo ni reexplicación pendiente."
+        "message": "TTendencias completada 6/6: Cancelo, Cucurella, Bellingham, Gerard Martín, gordon y Guti explicadas y verificadas; cola final 0 y reexplicaciones pendientes 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "cd03f22f4fb4",
+      "ea3aa08d7383",
+      "752ea2bfe52b",
+      "3c4fe1515d56",
+      "9fe934178537",
+      "2b0891de6355"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "cd03f22f4fb4",
+        "revision": 0,
+        "name": "Cancelo",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:01:19.419+01:00",
+        "closer_text": "🌶️ El VAR se quedó mirando el césped.",
+        "verified": true
+      },
+      {
+        "id": "ea3aa08d7383",
+        "revision": 0,
+        "name": "Cucurella",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:03:04.740+01:00",
+        "closer_text": "🌶️ Le conocía el regate; llevó la llave.",
+        "verified": true
+      },
+      {
+        "id": "752ea2bfe52b",
+        "revision": 0,
+        "name": "Bellingham",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:05:23.998+01:00",
+        "closer_text": "🌶️ La ruleta no fue adorno: abrió la salida del gol.",
+        "verified": true
+      },
+      {
+        "id": "3c4fe1515d56",
+        "revision": 0,
+        "name": "Gerard Martín",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:05:23.998+01:00",
+        "closer_text": "🌶️ Del rebote en contra al cabezazo sin premio.",
+        "verified": true
+      },
+      {
+        "id": "9fe934178537",
+        "revision": 0,
+        "name": "gordon",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:05:23.998+01:00",
+        "closer_text": "🌶️ Probó varias puertas y Lunin tenía todas las llaves.",
+        "verified": true
+      },
+      {
+        "id": "2b0891de6355",
+        "revision": 0,
+        "name": "Guti",
+        "status": "explained",
+        "explained_at": "2026-10-26T00:05:23.998+01:00",
+        "closer_text": "🌶️ La repetición dio más conversación que la decisión.",
+        "verified": true
+      }
+    ]
   },
-  "run_id": "tr-1792968527254-f8fa49",
+  "run_id": "tr-1792969061688-manual",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "attempted": 6,
+    "ready": 6,
+    "explained": 6,
+    "explanation_groups": 6,
+    "new_cards": 6,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 6,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -135,45 +468,158 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 6,
+    "remates_selected": 6,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 10,
+    "pending_cards_reviewed": 14,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 6,
+    "rewrite_pending_remaining": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T23:50:35+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada: cola autoritativa 0; verificando requests y reexplicaciones pendientes."
+      "at": "2026-10-26T00:02:53.630+01:00",
+      "phase": "drafting",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-25T23:50:55+01:00",
+      "at": "2026-10-26T00:02:56.233+01:00",
+      "phase": "drafting",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-26T00:02:58.031+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-26T00:03:00.433+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Evaluando candidatos con ratings y control de originalidad"
+    },
+    {
+      "at": "2026-10-26T00:03:02.942+01:00",
+      "phase": "remate_selection",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-26T00:03:04.740+01:00",
+      "phase": "persisting",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-26T00:03:39.293+01:00",
+      "phase": "persisting",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-26T00:03:49.648+01:00",
+      "phase": "persisting",
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-26T00:03:57.361+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola, requests, reexplicaciones y Pendientes recientes."
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Verificando id+revision y texto persistido"
     },
     {
-      "at": "2026-10-25T23:51:00+01:00",
+      "at": "2026-10-26T00:04:03.471+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final: cola 0, requests activas 0, rewrite_pending 0 y ningún Pendiente reciente sin remate."
+      "trend_id": "ea3aa08d7383",
+      "title": "Cucurella",
+      "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-25T23:51:05+01:00",
+      "at": "2026-10-26T00:04:22.663+01:00",
+      "phase": "verifying",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Releyendo estado autoritativo de Bellingham"
+    },
+    {
+      "at": "2026-10-26T00:04:27.947+01:00",
+      "phase": "investigating",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Hecho esencial verificado · ruleta de Bellingham en el inicio de la jugada del 1-2"
+    },
+    {
+      "at": "2026-10-26T00:04:33.157+01:00",
+      "phase": "drafting",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Redactando explicación factual y comprobando límite de X"
+    },
+    {
+      "at": "2026-10-26T00:04:39.323+01:00",
+      "phase": "remate_selection",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Remate seleccionado tras control de originalidad"
+    },
+    {
+      "at": "2026-10-26T00:04:45.068+01:00",
+      "phase": "persisting",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-26T00:06:07.355+01:00",
+      "phase": "verifying",
+      "trend_id": "752ea2bfe52b",
+      "title": "Bellingham",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T00:06:07.355+01:00",
+      "phase": "verifying",
+      "trend_id": "3c4fe1515d56",
+      "title": "Gerard Martín",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T00:06:07.355+01:00",
+      "phase": "verifying",
+      "trend_id": "9fe934178537",
+      "title": "gordon",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T00:06:07.355+01:00",
+      "phase": "verifying",
+      "trend_id": "2b0891de6355",
+      "title": "Guti",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T00:06:07.355+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0: no queda trabajo editorial activo ni reexplicación pendiente."
+      "message": "TTendencias completada 6/6: Cancelo, Cucurella, Bellingham, Gerard Martín, gordon y Guti explicadas y verificadas; cola final 0 y reexplicaciones pendientes 0."
     }
   ],
   "partial": false,
@@ -186,12 +632,163 @@
     "captured_at": "2026-10-25T23:49:02+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1792968104694-manual",
+  "previous_run_id": "tr-1792968527254-f8fa49",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
     "recent_considered": 30
   },
-  "remate_selections": []
+  "remate_selections": [
+    {
+      "trend_id": "cd03f22f4fb4",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8.4,
+          "ratings_affinity": 2,
+          "trend_specificity": 2,
+          "punch": 1.8,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        },
+        {
+          "id": "c2",
+          "total": 8,
+          "ratings_affinity": 2,
+          "trend_specificity": 2,
+          "punch": 1.8,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        },
+        {
+          "id": "c3",
+          "total": 7.7,
+          "ratings_affinity": 2,
+          "trend_specificity": 2,
+          "punch": 1.8,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.4,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "ea3aa08d7383",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8.3
+        },
+        {
+          "id": "c2",
+          "total": 7.8
+        },
+        {
+          "id": "c3",
+          "total": 7.5
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.3,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "752ea2bfe52b",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8.7
+        },
+        {
+          "id": "c2",
+          "total": 8.1
+        },
+        {
+          "id": "c3",
+          "total": 7.6
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.7,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "3c4fe1515d56",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8.2
+        },
+        {
+          "id": "c2",
+          "total": 7.9
+        },
+        {
+          "id": "c3",
+          "total": 7.4
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.2,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "9fe934178537",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8.1
+        },
+        {
+          "id": "c2",
+          "total": 7.8
+        },
+        {
+          "id": "c3",
+          "total": 7.2
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8.1,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "2b0891de6355",
+      "revision": 0,
+      "candidate_count": 3,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 8
+        },
+        {
+          "id": "c2",
+          "total": 7.7
+        },
+        {
+          "id": "c3",
+          "total": 7.5
+        }
+      ],
+      "selected_candidate": "c1",
+      "selected_score": 8,
+      "no_remate_reason": null
+    }
+  ]
 }
