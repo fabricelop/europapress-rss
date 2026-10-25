@@ -2,153 +2,182 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-25T21:48:27.862626+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-10-25T23:37:02.183373+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "8a759dbe8b18",
+          "title": "Donald Trump vota por adelantado en Florida y critica a los demócratas antes de las elecciones legis",
+          "seconds": 184,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 820455,
+          "seconds": 826969,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "72bb7758ce2b8dfc42d9aed6e033eb5af2f2284b952507058d8c2a40889b292d",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-25T21:48:27.862626+00:00",
-      "issue_count": 18,
+      "checked_at": "2026-10-25T23:37:02.183373+00:00",
+      "issue_count": 21,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "e9c722cbefc2",
+          "title": "Madrid",
+          "seconds": 232,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "1de7f60793e4",
+          "title": "Lamine",
+          "seconds": 232,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "85c12dc31160",
+          "title": "#ConexiónHonduras7",
+          "seconds": 232,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "4c1ba20b7e02",
+          "title": "Flick",
+          "seconds": 232,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "660533085d21",
+          "title": "Mourinho",
+          "seconds": 232,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "missing_delivery",
           "id": "88c3cf364123",
           "title": "Marc",
-          "seconds": 45107,
+          "seconds": 51622,
           "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "03e6546dc5f6",
-          "title": "#MalasLenguasN",
-          "seconds": 83247,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "52d7d8604bf7",
-          "title": "Lucas",
-          "seconds": 83247,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "fad643728921",
-          "title": "Julián Álvarez",
-          "seconds": 83247,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "e399446d2db8",
-          "title": "Depor",
-          "seconds": 83247,
-          "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "0f5bfb8acfe4",
           "title": "Julián",
-          "seconds": 77248,
+          "seconds": 83763,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "88badc81e464",
           "title": "#FelizDomingo",
-          "seconds": 54446,
+          "seconds": 60961,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "d62b113bc862",
           "title": "Getafe",
-          "seconds": 18441,
+          "seconds": 24956,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "2d446f938ebb",
           "title": "Mario Martín",
-          "seconds": 17221,
+          "seconds": 23736,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "21957106f222",
           "title": "Parrot",
-          "seconds": 17221,
+          "seconds": 23736,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "f56078d88ba4",
           "title": "Berenguer",
-          "seconds": 17221,
+          "seconds": 23736,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "4fa75451fa6d",
           "title": "Celta",
-          "seconds": 11252,
+          "seconds": 17767,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "89b9b6bc34f2",
           "title": "Yáñez",
-          "seconds": 7638,
+          "seconds": 14153,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "7eca9d45da25",
           "title": "Castellón",
-          "seconds": 4027,
+          "seconds": 10542,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "19215c9e7cd9",
           "title": "Sporting",
-          "seconds": 4027,
+          "seconds": 10542,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "manual-073a0eb7ec5d4011b33635d803f8fb8d",
           "title": "Hala Madrid",
-          "seconds": 2870,
+          "seconds": 9385,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "manual-d0c592875e05dbbead0505e8f9b82d53",
           "title": "Camp Nou",
-          "seconds": 2834,
+          "seconds": 9349,
           "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "cd03f22f4fb4",
+          "title": "Cancelo",
+          "seconds": 2363,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ea3aa08d7383",
+          "title": "Cucurella",
+          "seconds": 2363,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 820455,
+          "seconds": 826969,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -157,16 +186,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "3e31d97c6403098ecdb869f966ef74ca44db3911d8de39b989c7cab81ce174e2",
+      "open_signature": "0b81d3cda67e22da23b8f5f7dc5df39aba134514f6466b16ffc663da74db7ba0",
       "repair_via_workflow_run": false,
-      "escalation_required": 17
+      "escalation_required": 15
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-25T16:28:48.358475+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-25T21:48:27.862626+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-25T21:48:27.862626+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-25T21:48:27.862626+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-25T23:37:02.183373+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-10-25T23:37:02.183373+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-25T23:37:02.183373+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-25T23:37:02.183373+00:00"
   },
-  "checked_at": "2026-10-25T21:48:27.862626+00:00"
+  "checked_at": "2026-10-25T23:37:02.183373+00:00"
 }
