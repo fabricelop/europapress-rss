@@ -26,6 +26,29 @@ final class LiveActivityPresentationTests:XCTestCase {
         XCTAssertEqual(decoded.siteName,"Casa Montevalle")
         XCTAssertEqual(decoded.bioGridCounts,[2,3,5,7,11,13,17])
     }
+    func testLiveHeadlineShowsSavedPlaceInsteadOfTechnicalCellLabel() {
+        XCTAssertEqual(TimeLiveCompactPresentation.title(
+            site:"Casa Montevalle",fallback:"Cuadrícula 1"),"Casa Montevalle")
+        XCTAssertEqual(TimeLiveCompactPresentation.title(
+            site:nil,fallback:"Cuadrícula 1"),"Cuadrícula 1")
+        XCTAssertEqual(TimeLiveCompactPresentation.title(
+            site:"  ",fallback:"Cuadrícula 1"),"Cuadrícula 1")
+    }
+    func testProposedPlaceIsClearlyDistinctFromManualConfirmation() {
+        XCTAssertTrue(TimeLiveCompactPresentation.isProposed(
+            site:"SAP España",confirmed:false))
+        XCTAssertFalse(TimeLiveCompactPresentation.isProposed(
+            site:"SAP España",confirmed:true))
+        XCTAssertFalse(TimeLiveCompactPresentation.isProposed(
+            site:nil,confirmed:nil))
+    }
+    func testCompactLiveRequiresExactlySevenNonnegativeFamilies() {
+        XCTAssertNil(TimeLiveCompactPresentation.families(nil))
+        XCTAssertNil(TimeLiveCompactPresentation.families([1,2,3]))
+        XCTAssertEqual(TimeLiveCompactPresentation.families(
+            [3,-5,2,0,1,10,6]),[3,0,2,0,1,10,6])
+    }
+
     func testUnavailableZoneIsNotFalselyReported() {
         let start=Date(timeIntervalSince1970:10000)
         let state=TimeMapActivityAttributes.ContentState(
