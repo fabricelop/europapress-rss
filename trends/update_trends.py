@@ -908,6 +908,42 @@ def main():
     if len(top10) < 10:
         raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
 
+    # A trusted previous Top-10 may stay unchanged after an hourly dated
+    # provider crosses 90m. Keep automatic INVESTIGATION moving for up to
+    # 60m after the actual source last changed, but only when its names still
+    # overlap a separately timestamped independent source. Never treat an
+    # unrelated, frozen relative-time page as supporting evidence.
+    if method == "hold-last-good":
+        current_keys = {term_key(x) for x in top10}
+        continuity = []
+        for source_name, row in source_data.items():
+            ranked = row.get("trends") or []
+            if not row.get("ok") or len(ranked) < 10:
+                continue
+            agreeing = len(current_keys & {term_key(x) for x in ranked[:20]})
+            try:
+                unchanged_minutes = float(row.get("list_unchanged_minutes", 9999))
+            except (TypeError, ValueError):
+                unchanged_minutes = 9999
+            if agreeing < 8 or unchanged_minutes > 60:
+                continue
+            peers = [
+                peer_name for peer_name, peer in source_data.items()
+                if peer_name != source_name and peer.get("ok")
+                and peer.get("age_minutes") is not None
+                and 0 <= float(peer["age_minutes"]) <= 150
+                and overlap(ranked, peer.get("trends") or []) >= 0.20
+            ]
+            if peers:
+                continuity.append((agreeing, -unchanged_minutes, source_name, peers))
+        if continuity:
+            continuity.sort(reverse=True)
+            _, _, chosen_name, peers = continuity[0]
+            method = "continuity-anchor"
+            sources_used = [chosen_name] + peers
+            source_data[chosen_name]["continuity_verified"] = True
+            source_data[chosen_name]["continuity_peers"] = peers
+
     # Mostrar un Top 30, pero conservar top10 como única entrada a la
     # cola editorial automática. Los puestos 11-30 son opt-in.
     top30 = list(top10)
