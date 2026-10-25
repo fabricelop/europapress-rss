@@ -584,7 +584,7 @@ function trendRows(){
     _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
-    explained_at:latestAt,revision:Number(req.revision??finished.revision??0),
+    explained_at:inListas?latestAt:'',revision:Number(req.revision??finished.revision??0),
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
   // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
@@ -941,7 +941,9 @@ function rowCard(x,i){
   }
   if(x._priorReason){
    const note=document.createElement('p');note.className='fact';
-   note.textContent='El motivo explicado anteriormente puede corresponder a otro partido o acontecimiento. Pulsa Volver a elaborar para investigar el actual.';
+   note.textContent=['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)
+    ?'La explicación anterior es histórica. La causa actual ya está En elaboración.'
+    :'La explicación anterior es histórica. Usa Volver a elaborar para investigar el motivo actual.';
    out.querySelector('.card-body').insertBefore(note,a);
   }
   if(x._inExplained){
