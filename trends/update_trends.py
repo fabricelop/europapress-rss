@@ -404,7 +404,7 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         hint = str(row.get("update_hint") or "")
         same_relative_hint = bool(
             same_list and prior.get("update_hint") == hint
-            and re.search(r"\\b\\d+\\s+(?:minutes?|hours?)\\s+ago\\b", hint, flags=re.I)
+            and re.search(r"\b\d+\s+(?:minutes?|hours?)\s+ago\b", hint, flags=re.I)
         )
         hint_since = (
             prior.get("relative_hint_unchanged_since") or previous_doc.get("captured_at")
