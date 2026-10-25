@@ -63,6 +63,29 @@ final class SiteDailyClockTests: XCTestCase {
         XCTAssertEqual(bands.map(\.endLabel),["06:00","12:00","18:00","24:00"])
         XCTAssertEqual(bands.map{$0.to.timeIntervalSince($0.from)}.reduce(0,+),90000)
     }
+    func testChronologicalSiteOrderUsesFirstVisitNotDuration() {
+        let start=date(2026,10,24,9)
+        let shorter=UUID(),longer=UUID()
+        let first=SiteClockSegment(id:"first",from:start,
+                     to:start.addingTimeInterval(300),
+                     stay:SiteStayHistory.extract([sample(start,start.addingTimeInterval(300))]).first ??
+                        SiteGridStay(cell:a,start:start,end:start.addingTimeInterval(300),
+                                    confirmedSeconds:300,fragments:[]),
+                     kind:.place,siteID:shorter,manuallyConfirmed:true)
+        let later=start.addingTimeInterval(1200)
+        let second=SiteClockSegment(id:"second",from:later,
+                     to:later.addingTimeInterval(7200),stay:first.stay,
+                     kind:.place,siteID:longer,manuallyConfirmed:true)
+        let seen=SiteDailyClock.firstSeenBySite([second,first])
+        XCTAssertEqual(seen[shorter],start)
+        XCTAssertEqual(seen[longer],later)
+        let totals=SiteDailyClock.totalsBySite([second,first])
+        let chronological=totals.keys.sorted {
+            (seen[$0] ?? .distantFuture) < (seen[$1] ?? .distantFuture)
+        }
+        XCTAssertEqual(chronological,[shorter,longer])
+        XCTAssertTrue((totals[longer] ?? 0) > (totals[shorter] ?? 0))
+    }
     func testPassingIsDistinctAndProposalsNotConfirmed() {
         let from=date(2026,10,24,10), to=from.addingTimeInterval(600)
         let stay=SiteStayHistory.extract([sample(from,to)])[0]
