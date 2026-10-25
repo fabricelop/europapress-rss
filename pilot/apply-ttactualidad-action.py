@@ -388,8 +388,9 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
                                      if str(row.get("id") or "") != event_id]
             else:
                 recent = load("trends/recent.json", {"items": []})
-                rework_top30(event_id, revision, now, recent.get("items") or [],
-                             requests, manual, queue, mobile, "ttactualidad_direct_rework")
+                rework_top30(event_id, revision, now, (recent.get("items") or [])[:30],
+                             requests, manual, queue, mobile, "ttactualidad_direct_rework",
+                             trend_name=trend_name)
         except ValueError as exc:
             fail(str(exc))
         prepared["updated_at"] = now
