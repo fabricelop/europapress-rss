@@ -4,26 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "4305be0d33f1",
-    "manual-825a16b970bd878edec305a33756ebe0",
-    "manual-073a0eb7ec5d4011b33635d803f8fb8d",
-    "manual-d0c592875e05dbbead0505e8f9b82d53"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T22:00:05+01:00",
-  "last_completed_at": "2026-10-25T22:06:20+01:00",
-  "updated_at": "2026-10-25T22:06:20+01:00",
+  "last_started_at": "2026-10-25T22:15:00+01:00",
+  "last_completed_at": "2026-10-25T22:16:30+01:00",
+  "updated_at": "2026-10-25T22:16:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1792962005941-manual",
+    "trigger_run_id": "tr-chat-20261025T221500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -31,49 +26,49 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1792962005941-manual",
+    "run_id": "tr-chat-20261025T221500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T22:00:05+01:00",
-    "updated_at": "2026-10-25T22:06:20+01:00",
-    "finished_at": "2026-10-25T22:06:20+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-25T22:15:00+01:00",
+    "updated_at": "2026-10-25T22:16:30+01:00",
+    "finished_at": "2026-10-25T22:16:30+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 4,
+      "attempted": 0,
       "ready": 0,
-      "explained": 4,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
-      "discovered_during_run": 2,
+      "initial_compact_queue": 0,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "pending_cards_reviewed": 8,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 0,
+      "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0.",
+    "message": "TTendencias completada: 0 revisiones editoriales pendientes; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -83,377 +78,116 @@
       "total_ratings": 154,
       "recent_considered": 100
     },
-    "remate_selections": [
-      {
-        "trend_id": "4305be0d33f1",
-        "revision": 0,
-        "candidate_count": 4,
-        "selected_candidate": "🌶️ La sorpresa del once llegó al descanso por delante.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "revision": 0,
-        "candidate_count": 1,
-        "selected_candidate": "🌶️ El primer asalto se lo llevó el rebote de Mbappé.",
-        "selected_score": null,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-25T22:00:05+01:00",
+        "at": "2026-10-25T22:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: 2 revisiones activas; preparando verificación JIT."
+        "message": "Inicio de pasada: verificando cola autoritativa, requests y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-25T22:01:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Releyendo estado autoritativo de Bernardo."
-      },
-      {
-        "at": "2026-10-25T22:02:00+01:00",
-        "phase": "investigating",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Hecho esencial verificado: Bernardo Silva es titular como principal novedad del Madrid; 0-1 al descanso con gol de Mbappé."
-      },
-      {
-        "at": "2026-10-25T22:02:15+01:00",
-        "phase": "drafting",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-25T22:02:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Evaluando candidatos y originalidad del remate."
-      },
-      {
-        "at": "2026-10-25T22:02:45+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Remate seleccionado para Bernardo."
-      },
-      {
-        "at": "2026-10-25T22:03:00+01:00",
-        "phase": "persisting",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Guardando ficha Explicada de Bernardo."
-      },
-      {
-        "at": "2026-10-25T22:03:20+01:00",
-        "phase": "persisting",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Actualizando requests de Bernardo."
-      },
-      {
-        "at": "2026-10-25T22:03:40+01:00",
-        "phase": "persisting",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Retirando revisión de Bernardo de la cola."
-      },
-      {
-        "at": "2026-10-25T22:04:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4305be0d33f1",
-        "title": "Bernardo",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-25T22:04:10+01:00",
-        "phase": "verifying",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Releyendo estado autoritativo del grupo del Clásico."
-      },
-      {
-        "at": "2026-10-25T22:04:20+01:00",
-        "phase": "investigating",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Hecho esencial verificado: los tres términos remiten al Barça-Real Madrid en juego en el Camp Nou; 0-1 al descanso."
-      },
-      {
-        "at": "2026-10-25T22:04:30+01:00",
-        "phase": "drafting",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Redactando explicación factual conjunta y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-25T22:04:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Evaluando candidatos con control de originalidad."
-      },
-      {
-        "at": "2026-10-25T22:04:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Remate seleccionado para el grupo del Clásico."
-      },
-      {
-        "at": "2026-10-25T22:05:05+01:00",
-        "phase": "persisting",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Guardando ficha Explicada y sincronizando las tres requests."
-      },
-      {
-        "at": "2026-10-25T22:05:40+01:00",
-        "phase": "persisting",
-        "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-        "title": "#ElClasico · Hala Madrid · Camp Nou",
-        "message": "Retirando las tres revisiones del grupo de la cola."
-      },
-      {
-        "at": "2026-10-25T22:06:00+01:00",
+        "at": "2026-10-25T22:15:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola activa 0, requests activas 0 y rewrite_pending 0."
+        "message": "Revisando Pendientes: 8 tarjetas recientes; saneamiento visual solicitado, sin bloqueo editorial."
       },
       {
-        "at": "2026-10-25T22:06:20+01:00",
+        "at": "2026-10-25T22:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura de main: cola 0, requests activas 0 y rewrite_pending 0."
+      },
+      {
+        "at": "2026-10-25T22:16:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0."
+        "message": "TTendencias completada: 0 revisiones editoriales pendientes; cola final 0."
       }
     ],
-    "processed_ids": [
-      "4305be0d33f1",
-      "manual-825a16b970bd878edec305a33756ebe0",
-      "manual-073a0eb7ec5d4011b33635d803f8fb8d",
-      "manual-d0c592875e05dbbead0505e8f9b82d53"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "4305be0d33f1",
-        "name": "Bernardo",
-        "revision": 0,
-        "outcome": "explained",
-        "group_id": "grp-4305be0d33f1"
-      },
-      {
-        "id": "manual-825a16b970bd878edec305a33756ebe0",
-        "name": "#ElClasico",
-        "revision": 0,
-        "outcome": "explained",
-        "group_id": "grp-elclasico-20261025-r0"
-      },
-      {
-        "id": "manual-073a0eb7ec5d4011b33635d803f8fb8d",
-        "name": "Hala Madrid",
-        "revision": 0,
-        "outcome": "grouped_into_new_card",
-        "group_id": "grp-elclasico-20261025-r0"
-      },
-      {
-        "id": "manual-d0c592875e05dbbead0505e8f9b82d53",
-        "name": "Camp Nou",
-        "revision": 0,
-        "outcome": "grouped_into_new_card",
-        "group_id": "grp-elclasico-20261025-r0"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-1792962005941-manual",
+  "run_id": "tr-chat-20261025T221500+0100",
   "summary": {
-    "attempted": 4,
+    "attempted": 0,
     "ready": 0,
-    "explained": 4,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 2,
-    "discovered_during_run": 2,
+    "initial_compact_queue": 0,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "pending_cards_reviewed": 8,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 10,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T22:00:05+01:00",
+      "at": "2026-10-25T22:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: 2 revisiones activas; preparando verificación JIT."
+      "message": "Inicio de pasada: verificando cola autoritativa, requests y reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-25T22:01:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Releyendo estado autoritativo de Bernardo."
-    },
-    {
-      "at": "2026-10-25T22:02:00+01:00",
-      "phase": "investigating",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Hecho esencial verificado: Bernardo Silva es titular como principal novedad del Madrid; 0-1 al descanso con gol de Mbappé."
-    },
-    {
-      "at": "2026-10-25T22:02:15+01:00",
-      "phase": "drafting",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-25T22:02:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Evaluando candidatos y originalidad del remate."
-    },
-    {
-      "at": "2026-10-25T22:02:45+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Remate seleccionado para Bernardo."
-    },
-    {
-      "at": "2026-10-25T22:03:00+01:00",
-      "phase": "persisting",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Guardando ficha Explicada de Bernardo."
-    },
-    {
-      "at": "2026-10-25T22:03:20+01:00",
-      "phase": "persisting",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Actualizando requests de Bernardo."
-    },
-    {
-      "at": "2026-10-25T22:03:40+01:00",
-      "phase": "persisting",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Retirando revisión de Bernardo de la cola."
-    },
-    {
-      "at": "2026-10-25T22:04:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4305be0d33f1",
-      "title": "Bernardo",
-      "message": "Tendencia cerrada y verificada."
-    },
-    {
-      "at": "2026-10-25T22:04:10+01:00",
-      "phase": "verifying",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Releyendo estado autoritativo del grupo del Clásico."
-    },
-    {
-      "at": "2026-10-25T22:04:20+01:00",
-      "phase": "investigating",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Hecho esencial verificado: los tres términos remiten al Barça-Real Madrid en juego en el Camp Nou; 0-1 al descanso."
-    },
-    {
-      "at": "2026-10-25T22:04:30+01:00",
-      "phase": "drafting",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Redactando explicación factual conjunta y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-25T22:04:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Evaluando candidatos con control de originalidad."
-    },
-    {
-      "at": "2026-10-25T22:04:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Remate seleccionado para el grupo del Clásico."
-    },
-    {
-      "at": "2026-10-25T22:05:05+01:00",
-      "phase": "persisting",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Guardando ficha Explicada y sincronizando las tres requests."
-    },
-    {
-      "at": "2026-10-25T22:05:40+01:00",
-      "phase": "persisting",
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "title": "#ElClasico · Hala Madrid · Camp Nou",
-      "message": "Retirando las tres revisiones del grupo de la cola."
-    },
-    {
-      "at": "2026-10-25T22:06:00+01:00",
+      "at": "2026-10-25T22:15:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola activa 0, requests activas 0 y rewrite_pending 0."
+      "message": "Revisando Pendientes: 8 tarjetas recientes; saneamiento visual solicitado, sin bloqueo editorial."
     },
     {
-      "at": "2026-10-25T22:06:20+01:00",
+      "at": "2026-10-25T22:16:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura de main: cola 0, requests activas 0 y rewrite_pending 0."
+    },
+    {
+      "at": "2026-10-25T22:16:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 4 revisiones cerradas en 2 grupos; cola final 0."
+      "message": "TTendencias completada: 0 revisiones editoriales pendientes; cola final 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Captura reciente disponible; no fue necesario solicitar refresh adicional.",
-    "captured_at": "2026-10-25T21:41:13+01:00"
+    "captured_at": "2026-10-25T22:10:55+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-25T21:41:13+01:00",
+    "captured_at": "2026-10-25T22:10:55+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T214500+0100",
+  "previous_run_id": "tr-1792962005941-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -461,22 +195,5 @@
     "total_ratings": 154,
     "recent_considered": 100
   },
-  "remate_selections": [
-    {
-      "trend_id": "4305be0d33f1",
-      "revision": 0,
-      "candidate_count": 4,
-      "selected_candidate": "🌶️ La sorpresa del once llegó al descanso por delante.",
-      "selected_score": null,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "manual-825a16b970bd878edec305a33756ebe0",
-      "revision": 0,
-      "candidate_count": 1,
-      "selected_candidate": "🌶️ El primer asalto se lo llevó el rebote de Mbappé.",
-      "selected_score": null,
-      "no_remate_reason": null
-    }
-  ]
+  "remate_selections": []
 }
