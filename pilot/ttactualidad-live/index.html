@@ -566,23 +566,22 @@ function trendRows(){
    const priorReason=!!latestAt&&Number.isFinite(Date.parse(latestAt))&&
     Number.isFinite(Date.parse(recent.captured_at||''))&&
     Date.parse(recent.captured_at)-Date.parse(latestAt)>90*60*1000;
-   // Retain a finished explanation in the Top 30 after its Telegram card
-   // leaves Explicadas. Never expose work that is still pending or undelivered.
-   // Top 30 is a persistent editorial lookup: old, finished explanations
-   // remain readable even when a Listas card was closed or not sent to Telegram.
-   // During a NEW revision, never show the obsolete version as current.
-   const text=!priorReason&&!working&&!activelyEditing&&!reworkPending?readyText:'';
-   const terminalLabel={deleted:'BORRADA',published:'PUBLICADA',dismissed:'DESESTIMADA',removed:'RETIRADA'};
+   // Top 30 only shows editorial state, NEVER a newly completed text.
+   // Publication lives in Listas; old September explanations stay historical.
+   const text='';
    const inListas=liveListasNames.has(nameKey);
+   const hasNewExplanation=String(req.status||'').toLowerCase()==='explained'&&
+     !!String(req.explanation||finished.explanation||'').trim()&&
+     !!Date.parse(req.explained_at||'')&&
+     (!Date.parse(req.requested_at||'')||
+      Date.parse(req.explained_at)>=Date.parse(req.requested_at)-60000);
    const editorialState=reworkPending?'PENDIENTE DE GITHUB':activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
-      terminal?(terminalLabel[terminal.status]||'HISTÓRICO'):
-      inListas?(staleTop10?'POR ACTUALIZAR':'EN LISTAS'):
-      priorReason?'MOTIVO ANTERIOR':text?'EXPLICACIÓN HISTÓRICA':
-      failure?'REVISIÓN':
+      inListas?'EN LISTAS':hasNewExplanation?'PENDIENTE DE LISTAS':
+      priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,
-    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!!(readyText&&req.id&&!working&&!activelyEditing&&!reworkPending),
+    _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
     explained_at:latestAt,revision:Number(req.revision??finished.revision??0),
@@ -923,6 +922,10 @@ function rowCard(x,i){
   btn('Copiar Texto',()=>copyText(d.editorial||d.title,'Texto'));
   btn('Copiar Foto Archivo',()=>img?copyArchive(img,d.title):showToast('Esta tarjeta todavía no tiene foto de archivo'));
   if(x._kind==='tr'&&x._status==='EXPLICADA'){
+   const ai=String(x.ai_image_status||'').toLowerCase();
+   const line=document.createElement('p');line.className='fact';
+   line.textContent=ai==='ready'?'Imagen IA disponible':ai==='pending'?'Imagen IA solicitada; pendiente de generación':'Imagen IA pendiente de reparación automática';
+   out.querySelector('.card-body').insertBefore(line,a);
    const redo=command('Volver a En elaboración','rework');redo.classList.add('rework');
   }
   const remove=command('Quitar de Listas','deleted');remove.classList.add('remove');
@@ -951,7 +954,7 @@ function rowCard(x,i){
   // The action is available for every Top-30 rank, with or without
   // an older explanation. Requests already in progress are not duplicated.
   if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
-   const busy=btn('Volver a elaborar · en curso',()=>{});busy.disabled=true;
+   btn('Volver a elaborar',()=>showToast('Ya está en En elaboración: terminará en Listas y pedirá su imagen IA.'));
   }else command('Volver a elaborar','rework');
   if(d.editorial&&x.explanation){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
