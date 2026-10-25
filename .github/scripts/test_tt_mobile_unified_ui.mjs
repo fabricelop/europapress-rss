@@ -125,8 +125,8 @@ assert.equal(topRows[2].explanation,'',
   'Grouped explanations may not bypass Explicadas');
 assert.equal(topRows[3]._status,'PENDIENTE','Unexplained Top 10 positions remain pending');
 assert.equal(topRows[10]._status,'PREPARACIÓN MANUAL','Top 11-30 should not be auto-explained');
-assert(html.includes("command('Preparar novedad','prepare');"),
-  'Top 11-30 must offer the explicit Prepare novelty command');
+assert(html.includes("command('Volver a elaborar','rework');"),
+  'Every Top 30 trend must offer the same fresh-elaboration command');
 // A completed trend is visible only in Explicadas until the actual delivery is
 // closed/deleted. The exact historical explanation then reappears in Top 30.
 st.data.deliveries.items.push({event_id:'test-ready',revision:0,
