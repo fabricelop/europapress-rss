@@ -42,3 +42,30 @@ assert chosen == "newer" and top10 == current[:10], (chosen, top10)
 # policy; stale evidence alone must not be promoted as fresh.
 assert module.overlap(old, current) == 0.0
 print("TT_FRESH_ANCHOR_OK: stale votes excluded and fresher anchor preferred")
+
+# Regression: frozen relative hint must not repeatedly reset source freshness.
+from datetime import datetime, timedelta
+now = datetime(2026, 10, 25, 23, 20, tzinfo=module.MADRID)
+frozen = row(old, "fresh", 11)
+frozen["update_hint"] = "Last updated: 11 minutes ago"
+changing = row(current, "unknown")
+changing["update_hint"] = None
+dated = row(current, "aging", 70)
+dated["update_hint"] = "Trending now Oct 25, 2026 21:00 UTC"
+source_data = {"frozen": frozen, "changing": changing, "dated": dated}
+previous = {
+    "captured_at": (now - timedelta(minutes=10)).isoformat(),
+    "sources": {
+        "frozen": {**row(old, "fresh", 11), "update_hint": frozen["update_hint"],
+                   "last_list_change_at": (now - timedelta(minutes=70)).isoformat(),
+                   "relative_hint_unchanged_since": (now - timedelta(minutes=40)).isoformat()},
+        "changing": row(old, "unknown"),
+        "dated": row(current, "aging", 60),
+    },
+}
+module.reconcile_source_freshness(source_data, previous, now)
+assert source_data["frozen"]["freshness"] == "stale", source_data["frozen"]
+assert source_data["changing"]["freshness"] == "corroborated-change", source_data["changing"]
+top10, _, chosen, method = module.choose_top10(source_data)
+assert chosen == "changing" and method == "corroborated-anchor" and top10 == current[:10], (chosen, method, top10)
+print("TT_SOURCE_CONTINUITY_OK: frozen feed excluded, corroborated changing feed selected")
