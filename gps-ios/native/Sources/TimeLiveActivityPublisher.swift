@@ -14,6 +14,86 @@ import ActivityKit
     private var lastMilestone:String?
     private var milestoneUntil:Date = .distantPast
 
+    // BIOGRID computation is cached and always runs off the main thread.
+    // Rebuild at most once per ten minutes to protect background battery.
+    private var bioSnapshot:BioGridSnapshot?
+    private var bioLastComputed:Date?
+    private var bioLastAttempt:Date = .distantPast
+    private var bioComputing=false
+    private var bioLoadedCache=false
+
+    private var bioCacheURL:URL {
+        let base=FileManager.default.urls(for:.applicationSupportDirectory,
+                                           in:.userDomainMask).first!
+        return base.appendingPathComponent("biogrid-derived-v9.json")
+    }
+
+    private func ensureBioGrid(from model:TimeModel,now:Date) {
+        if !bioLoadedCache {
+            bioLoadedCache=true
+            let path=bioCacheURL
+            if let data=try? Data(contentsOf:path),
+               let saved=try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
+               let date=saved.latestProcessed,
+               Calendar(identifier:.gregorian).isDate(date,inSameDayAs:now) {
+                bioSnapshot=saved
+                bioLastComputed=(try? FileManager.default.attributesOfItem(atPath:path.path)
+                    [.modificationDate]) as? Date
+            }
+        }
+        guard !bioComputing,now.timeIntervalSince(bioLastAttempt)>=600 else { return }
+        bioLastAttempt=now
+        bioComputing=true
+        let intervals=model.data.intervals
+        let destination=bioCacheURL
+        let timezone=TimeZone.current
+        Task {
+            let result=await Task.detached(priority:.utility) { () -> BioGridSnapshot in
+                let next=BioGridEngine.simulate(intervals,now:now,timezone:timezone)
+                if let encoded=try? JSONEncoder().encode(next) {
+                    try? FileManager.default.createDirectory(
+                        at:destination.deletingLastPathComponent(),
+                        withIntermediateDirectories:true)
+                    try? encoded.write(to:destination,options:.atomic)
+                }
+                return next
+            }.value
+            bioSnapshot=result
+            bioLastComputed=Date()
+            bioComputing=false
+            // A fresh snapshot should immediately replace the initial
+            // "calculando" label when the OS lets the app run.
+            refresh(from:model,force:true,now:.now)
+        }
+    }
+
+    private func liveSite(for cell:Cell,model:TimeModel,now:Date)
+       -> (name:String,confirmed:Bool)? {
+        let valid=Set(model.data.identifiedSites.map(\.id))
+        if let start=model.currentVisitStart {
+            let key=SiteStayPolicy.visitKey(cellID:cell.id,entered:start)
+            // Current, explicitly split periods have precedence.
+            if let part=model.data.siteStayParts.first(where:{
+                $0.stayID == key && $0.kind == .place && $0.siteID != nil &&
+                $0.from <= now && now < $0.to
+            }),let id=part.siteID,valid.contains(id),
+                let label=model.siteNamed(id)?.name {
+                return (label,part.confirmed)
+            }
+            if let assignment=model.data.siteStayAssignments.first(where:{
+                $0.id == key && valid.contains($0.siteID)
+            }),let name=model.siteNamed(assignment.siteID)?.name {
+                return (name,assignment.confirmed)
+            }
+        }
+        if let best=model.preferredSiteID(for:cell.id),
+            let name=model.siteNamed(best)?.name {
+            return (name,false)
+        }
+        return nil
+    }
+
+
     private func ongoingActivities()->[Activity<TimeMapActivityAttributes>] {
         Activity<TimeMapActivityAttributes>.activities.filter {
             $0.activityState == .active || $0.activityState == .stale
@@ -99,6 +179,8 @@ import ActivityKit
             model.liveActivityDiagnostic="En vivo activado · esperando nueva posición GPS."
             return
         }
+        ensureBioGrid(from:model,now:now)
+        let namedSite=liveSite(for:cell,model:model,now:now)
         let name=model.label(for:cell)
         let fingerprint=TimeActivityFingerprint(cellID:cell.id,
             visibleName:name,startedAt:start,resting:resting)
@@ -180,7 +262,12 @@ import ActivityKit
             headingDegrees:motion.headingDegrees,
             currentZoneStaySeconds:zoneStay,
             lastSixMinutes:sixMinutes,
-            milestone:now<=milestoneUntil ? lastMilestone : nil)
+            milestone:now<=milestoneUntil ? lastMilestone : nil,
+            siteName:namedSite?.name,
+            siteConfirmed:namedSite?.confirmed,
+            bioGridCounts:LiveBioGridPopulation.counts(cellID:cell.id,
+                                                         snapshot:bioSnapshot),
+            bioGridUpdatedAt:bioLastComputed)
         let content=ActivityContent(
             state:state,
             staleDate:resting ? nil : fix?.addingTimeInterval(90),
