@@ -5700,7 +5700,6 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "fallback_image_status": "pending",
@@ -5753,17 +5752,17 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
+      "fallback_image_status": "none",
       "image_status": "none",
-      "image_choice": null,
-      "image_pending": true,
+      "image_choice": "none",
+      "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "telegram_package_status": "pending"
+      "telegram_package_status": "pending",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-26T00:03:07.593+01:00",
+  "updated_at": "2026-10-25T23:03:13.779965Z",
   "count": 104
 }
