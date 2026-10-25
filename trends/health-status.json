@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-25T22:56:05.231130+00:00",
+  "checked_at": "2026-10-25T22:57:44.069528+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -43,7 +43,7 @@
       "ok": false,
       "count": 10,
       "non_stale_sources": 2,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0,
       "repair_started": true
     },
@@ -57,7 +57,7 @@
       "status": "queued",
       "conclusion": null,
       "age_minutes": 0.0,
-      "run_id": 40242453406,
+      "run_id": 40242570660,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -79,9 +79,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 6,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -89,8 +89,15 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "cd03f22f4fb4",
+        "ea3aa08d7383",
+        "752ea2bfe52b",
+        "3c4fe1515d56",
+        "9fe934178537",
+        "2b0891de6355"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
