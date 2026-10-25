@@ -32,16 +32,27 @@ import ActivityKit
         if !bioLoadedCache {
             bioLoadedCache=true
             let path=bioCacheURL
-            if let data=try? Data(contentsOf:path),
-               let saved=try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
-               let date=saved.latestProcessed,
-               Calendar(identifier:.gregorian).isDate(date,inSameDayAs:now) {
-                // Retain only the seven counts per square. The BIOGRID
-                // snapshot also contains complete per-day history and
-                // significantly increases memory pressure if kept alive.
-                bioPopulations=saved.populations
-                let attributes=try? FileManager.default.attributesOfItem(atPath:path.path)
-                bioLastComputed=attributes?[.modificationDate] as? Date
+            Task {
+                // File I/O and potentially large JSON decode do NOT belong
+                // on the main thread that handles GPS and SwiftUI.
+                let cached=await Task.detached(priority:.utility) {
+                    () -> (populations:[String:[Int64]],modified:Date?)? in
+                    guard let data=try? Data(contentsOf:path),
+                          let saved=try? JSONDecoder().decode(BioGridSnapshot.self,from:data),
+                          let date=saved.latestProcessed else { return nil }
+                    var local=Calendar(identifier:.gregorian)
+                    local.timeZone=TimeZone(identifier:"Europe/Madrid")!
+                    guard local.isDate(date,inSameDayAs:now) else { return nil }
+                    let attributes=try? FileManager.default.attributesOfItem(
+                        atPath:path.path)
+                    return (saved.populations,attributes?[.modificationDate] as? Date)
+                }.value
+                // Do not overwrite a newer recomputation that finished first.
+                if let cached,bioPopulations == nil {
+                    bioPopulations=cached.populations
+                    bioLastComputed=cached.modified
+                    refresh(from:model,force:true,now:.now)
+                }
             }
         }
         guard !bioComputing,now.timeIntervalSince(bioLastAttempt)>=600 else { return }
