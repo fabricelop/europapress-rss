@@ -696,6 +696,7 @@ struct SavedState: Codable {
         // Historic edits replace this stay's older single-site assignment.
         data.siteStayAssignments.removeAll { $0.id == stay.id }
         save(force:true)
+        activityPublisher.refresh(from:self,force:true)
         objectWillChange.send()
     }
     func createOrReuseSite(name:String, latitude:Double, longitude:Double,
@@ -743,6 +744,7 @@ struct SavedState: Codable {
                                          longitude:longitude,sites:&data.identifiedSites)
         guard succeeded else { return false }
         save(force:true)
+        activityPublisher.refresh(from:self,force:true)
         objectWillChange.send()
         return true
     }
@@ -776,6 +778,7 @@ struct SavedState: Codable {
         data.siteStayAssignments=assignments
         data.siteStayParts=parts
         save(force:true)
+        activityPublisher.refresh(from:self,force:true)
         objectWillChange.send()
         return true
     }
@@ -831,6 +834,7 @@ struct SavedState: Codable {
         data.siteStayAssignments.append(SiteStayAssignment(id: key, cellID: cell.id,
                        startedAt: start, siteID: chosen, confirmed: false))
         save(force: true)
+        activityPublisher.refresh(from:self,force:true)
     }
     func dismissSitePrompt(in cell: Cell) {
         guard let (start, _) = currentSiteVisit(for: cell, now: .now) else { return }
@@ -854,6 +858,7 @@ struct SavedState: Codable {
                            assignments: data.siteStayAssignments)
         data.dismissedSiteStayKeys.removeAll { $0 == key }
         save(force: true)
+        activityPublisher.refresh(from:self,force:true)
     }
     func confirmAppleSite(name: String, latitude: Double, longitude: Double, cell: Cell) {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
