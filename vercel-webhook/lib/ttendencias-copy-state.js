@@ -81,8 +81,7 @@ export function explanationIsCopied(item, copyState) {
   if (groupId) {
     const groupedRecord = records.find(entry =>
       String(entry?.explanation_group_id || "").trim() === groupId &&
-      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision &&
-      sameEditorialEpisode(item, entry)
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision
     );
     if (groupedRecord) return { copied: true, copied_at: groupedRecord.copied_at || null, source: groupedRecord.source || "group-copy" };
   }
@@ -92,8 +91,7 @@ export function explanationIsCopied(item, copyState) {
   if (groupTitle) {
     const groupRecord = records.find(entry =>
       normalizeTrendName(entry?.group_title || "") === groupTitle &&
-      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === revision &&
-      sameEditorialEpisode(item, entry)
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === revision
     );
     if (groupRecord) return { copied: true, copied_at: groupRecord.copied_at || null, source: groupRecord.source || "group-copy" };
   }
