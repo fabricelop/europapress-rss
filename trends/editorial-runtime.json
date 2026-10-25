@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "210db623486f"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T13:15:00+01:00",
-  "last_completed_at": "2026-10-25T13:15:55+01:00",
-  "updated_at": "2026-10-25T13:15:55+01:00",
+  "last_started_at": "2026-10-25T13:45:00+01:00",
+  "last_completed_at": "2026-10-25T13:50:00+01:00",
+  "updated_at": "2026-10-25T13:50:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T131500+0100",
+    "trigger_run_id": "tr-chat-20261025T134500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +28,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T131500+0100",
+    "run_id": "tr-chat-20261025T134500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T13:15:00+01:00",
-    "updated_at": "2026-10-25T13:15:55+01:00",
-    "finished_at": "2026-10-25T13:15:55+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T13:45:00+01:00",
+    "updated_at": "2026-10-25T13:50:00+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 1,
+      "ready": 1,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,18 +58,18 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 12,
+      "pending_cards_reviewed": 23,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
       "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: 0 revisiones editoriales nuevas, 12 Pendientes revisados y cola final 0.",
+    "message": "TTendencias completada: Lunin explicado y verificado; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -79,6 +80,41 @@
       "recent_considered": 100
     },
     "remate_selections": [
+      {
+        "trend_id": "210db623486f",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "text": "🌶️ La gripe cambió el turno; el Clásico no cambió de hora.",
+            "score": 9.1,
+            "reason": "Específico, conciso y ligado al cambio de portero sin banalizar la enfermedad."
+          },
+          {
+            "text": "🌶️ El Clásico llamó al segundo portero sin pedir cita.",
+            "score": 8.4,
+            "reason": "Claro y visual, aunque algo más genérico."
+          },
+          {
+            "text": "🌶️ El banquillo abrió la puerta y detrás estaba el Clásico.",
+            "score": 8.1,
+            "reason": "Buena imagen, menos factual."
+          },
+          {
+            "text": "🌶️ Lunin pasó de suplente a guardia del Camp Nou en una mañana.",
+            "score": 7.8,
+            "reason": "Específico, pero más largo y metafórico."
+          },
+          {
+            "text": "🌶️ La portería cambió de dueño por un termómetro.",
+            "score": 7.2,
+            "reason": "Breve, pero exagera el concepto de dueño."
+          }
+        ],
+        "selected_candidate": "🌶️ La gripe cambió el turno; el Clásico no cambió de hora.",
+        "selected_score": 9.1,
+        "originality_note": "Sin coincidencia conceptual relevante con los últimos 30 remates revisados."
+      },
       {
         "trend_id": "d438ccc039cc",
         "revision": 0,
@@ -91,68 +127,177 @@
     ],
     "activity": [
       {
-        "at": "2026-10-25T13:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Pasada iniciada; cola editorial 0. Verificando requests, reexplicaciones, Top 10 y Pendientes recientes."
+        "at": "2026-10-25T13:46:00+01:00",
+        "phase": "verifying",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Releyendo estado autoritativo de Lunin."
       },
       {
-        "at": "2026-10-25T13:15:15+01:00",
+        "at": "2026-10-25T13:46:20+01:00",
+        "phase": "investigating",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-25T13:46:35+01:00",
+        "phase": "investigating",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Contrastando fuente 1/2: comunicado oficial del Real Madrid."
+      },
+      {
+        "at": "2026-10-25T13:46:50+01:00",
+        "phase": "investigating",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Contrastando fuente 2/2: Europa Press y prensa deportiva."
+      },
+      {
+        "at": "2026-10-25T13:47:00+01:00",
+        "phase": "investigating",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Hecho esencial verificado: Courtois es baja por gripe y Lunin queda como sustituto previsto para el Clásico."
+      },
+      {
+        "at": "2026-10-25T13:47:15+01:00",
+        "phase": "drafting",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-25T13:47:25+01:00",
+        "phase": "drafting",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Comprobando límite de X: 265 caracteres."
+      },
+      {
+        "at": "2026-10-25T13:47:35+01:00",
+        "phase": "remate_selection",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-25T13:47:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Evaluando candidatos con ratings y últimos 30 remates."
+      },
+      {
+        "at": "2026-10-25T13:47:55+01:00",
+        "phase": "remate_selection",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Remate seleccionado: originalidad comprobada y 265 caracteres totales."
+      },
+      {
+        "at": "2026-10-25T13:48:05+01:00",
+        "phase": "persisting",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-25T13:48:20+01:00",
+        "phase": "persisting",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-25T13:48:35+01:00",
+        "phase": "persisting",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-25T13:49:00+01:00",
+        "phase": "verifying",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Releyendo main."
+      },
+      {
+        "at": "2026-10-25T13:49:10+01:00",
+        "phase": "verifying",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-25T13:49:20+01:00",
+        "phase": "verifying",
+        "trend_id": "210db623486f",
+        "title": "Lunin",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-25T13:49:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; 12 tarjetas recientes vigentes revisadas."
+        "message": "Revisando Pendientes: 23 tarjetas recientes; saneamiento visual solicitado para esta ejecución."
       },
       {
-        "at": "2026-10-25T13:15:25+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Top 10 revisado: 10/10 con explicación reciente; preparing/update 0 y rewrite_pending 0."
-      },
-      {
-        "at": "2026-10-25T13:15:30+01:00",
+        "at": "2026-10-25T13:49:40+01:00",
         "phase": "remate_selection",
         "trend_id": "d438ccc039cc",
         "title": "#laSextaXplica",
         "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
       },
       {
-        "at": "2026-10-25T13:15:45+01:00",
+        "at": "2026-10-25T13:49:50+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura final de main: cola 0, preparing/update 0, rewrite_pending 0; trigger confirmado para esta ejecución."
+        "message": "Relectura final de main: cola 0, preparing/update 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-25T13:15:55+01:00",
+        "at": "2026-10-25T13:50:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 0 revisiones editoriales nuevas, 12 Pendientes revisados y cola final 0."
+        "message": "TTendencias completada: Lunin explicado y verificado; cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "210db623486f"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "210db623486f",
+        "name": "Lunin",
+        "revision": 0,
+        "status": "explained",
+        "verified": true
+      }
+    ],
+    "finished_at": "2026-10-25T13:50:00+01:00"
   },
-  "run_id": "tr-chat-20261025T131500+0100",
+  "run_id": "tr-chat-20261025T134500+0100",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "attempted": 1,
+    "ready": 1,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -160,11 +305,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 1,
     "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 12,
+    "pending_cards_reviewed": 23,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -173,46 +318,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-25T13:15:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Pasada iniciada; cola editorial 0. Verificando requests, reexplicaciones, Top 10 y Pendientes recientes."
+      "at": "2026-10-25T13:46:00+01:00",
+      "phase": "verifying",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Releyendo estado autoritativo de Lunin."
     },
     {
-      "at": "2026-10-25T13:15:15+01:00",
+      "at": "2026-10-25T13:46:20+01:00",
+      "phase": "investigating",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Buscando detonante actual."
+    },
+    {
+      "at": "2026-10-25T13:46:35+01:00",
+      "phase": "investigating",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Contrastando fuente 1/2: comunicado oficial del Real Madrid."
+    },
+    {
+      "at": "2026-10-25T13:46:50+01:00",
+      "phase": "investigating",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Contrastando fuente 2/2: Europa Press y prensa deportiva."
+    },
+    {
+      "at": "2026-10-25T13:47:00+01:00",
+      "phase": "investigating",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Hecho esencial verificado: Courtois es baja por gripe y Lunin queda como sustituto previsto para el Clásico."
+    },
+    {
+      "at": "2026-10-25T13:47:15+01:00",
+      "phase": "drafting",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Redactando explicación factual."
+    },
+    {
+      "at": "2026-10-25T13:47:25+01:00",
+      "phase": "drafting",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Comprobando límite de X: 265 caracteres."
+    },
+    {
+      "at": "2026-10-25T13:47:35+01:00",
+      "phase": "remate_selection",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Generando candidatos de remate."
+    },
+    {
+      "at": "2026-10-25T13:47:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Evaluando candidatos con ratings y últimos 30 remates."
+    },
+    {
+      "at": "2026-10-25T13:47:55+01:00",
+      "phase": "remate_selection",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Remate seleccionado: originalidad comprobada y 265 caracteres totales."
+    },
+    {
+      "at": "2026-10-25T13:48:05+01:00",
+      "phase": "persisting",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-25T13:48:20+01:00",
+      "phase": "persisting",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-25T13:48:35+01:00",
+      "phase": "persisting",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-25T13:49:00+01:00",
+      "phase": "verifying",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Releyendo main."
+    },
+    {
+      "at": "2026-10-25T13:49:10+01:00",
+      "phase": "verifying",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-25T13:49:20+01:00",
+      "phase": "verifying",
+      "trend_id": "210db623486f",
+      "title": "Lunin",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-25T13:49:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger; 12 tarjetas recientes vigentes revisadas."
+      "message": "Revisando Pendientes: 23 tarjetas recientes; saneamiento visual solicitado para esta ejecución."
     },
     {
-      "at": "2026-10-25T13:15:25+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Top 10 revisado: 10/10 con explicación reciente; preparing/update 0 y rewrite_pending 0."
-    },
-    {
-      "at": "2026-10-25T13:15:30+01:00",
+      "at": "2026-10-25T13:49:40+01:00",
       "phase": "remate_selection",
       "trend_id": "d438ccc039cc",
       "title": "#laSextaXplica",
       "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
     },
     {
-      "at": "2026-10-25T13:15:45+01:00",
+      "at": "2026-10-25T13:49:50+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura final de main: cola 0, preparing/update 0, rewrite_pending 0; trigger confirmado para esta ejecución."
+      "message": "Relectura final de main: cola 0, preparing/update 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-25T13:15:55+01:00",
+      "at": "2026-10-25T13:50:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: 0 revisiones editoriales nuevas, 12 Pendientes revisados y cola final 0."
+      "message": "TTendencias completada: Lunin explicado y verificado; cola final 0."
     }
   ],
   "partial": false,
@@ -225,7 +468,7 @@
     "captured_at": "2026-10-25T13:11:59+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T124500+0100",
+  "previous_run_id": "tr-chat-20261025T131500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -234,6 +477,41 @@
     "recent_considered": 100
   },
   "remate_selections": [
+    {
+      "trend_id": "210db623486f",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "text": "🌶️ La gripe cambió el turno; el Clásico no cambió de hora.",
+          "score": 9.1,
+          "reason": "Específico, conciso y ligado al cambio de portero sin banalizar la enfermedad."
+        },
+        {
+          "text": "🌶️ El Clásico llamó al segundo portero sin pedir cita.",
+          "score": 8.4,
+          "reason": "Claro y visual, aunque algo más genérico."
+        },
+        {
+          "text": "🌶️ El banquillo abrió la puerta y detrás estaba el Clásico.",
+          "score": 8.1,
+          "reason": "Buena imagen, menos factual."
+        },
+        {
+          "text": "🌶️ Lunin pasó de suplente a guardia del Camp Nou en una mañana.",
+          "score": 7.8,
+          "reason": "Específico, pero más largo y metafórico."
+        },
+        {
+          "text": "🌶️ La portería cambió de dueño por un termómetro.",
+          "score": 7.2,
+          "reason": "Breve, pero exagera el concepto de dueño."
+        }
+      ],
+      "selected_candidate": "🌶️ La gripe cambió el turno; el Clásico no cambió de hora.",
+      "selected_score": 9.1,
+      "originality_note": "Sin coincidencia conceptual relevante con los últimos 30 remates revisados."
+    },
     {
       "trend_id": "d438ccc039cc",
       "revision": 0,
