@@ -28,6 +28,9 @@ struct TimeSiteDailyClockView: View {
     private var measuredSeconds:TimeInterval {
         slices.reduce(0){$0+$1.seconds}
     }
+    private var dailyColorIndexes:[UUID:Int] {
+        SiteDailyColorPalette.indexes(SiteDailyClock.totalsBySite(slices))
+    }
 
     var body: some View {
         VStack(alignment:.leading,spacing:12) {
@@ -183,13 +186,26 @@ struct TimeSiteDailyClockView: View {
         return segment.siteID.map(siteColor) ?? .orange
     }
 
-    /// Stable across launches, unlike Swift's randomized hashValue.
+    // Twelve deliberately separated hues plus differing brightnesses.
+    // Within one day the mapping follows dwell totals, and may change on
+    // another day to avoid very similar neighboring colors.
     private func siteColor(_ id:UUID) -> Color {
-        let bytes=Array(id.uuidString.utf8)
-        let code=bytes.enumerated().reduce(0) { value,part in
-            (value*31+Int(part.element)+part.offset) % 65521
-        }
-        return Color(hue:Double(code%360)/360,
-                     saturation:0.62,brightness:0.78)
+        let palette:[Color] = [
+            Color(red:0.00,green:0.79,blue:0.88), // cyan
+            Color(red:0.99,green:0.82,blue:0.14), // yellow
+            Color(red:0.78,green:0.35,blue:0.98), // purple
+            Color(red:0.96,green:0.30,blue:0.36), // red
+            Color(red:0.37,green:0.92,blue:0.24), // vivid green
+            Color(red:0.21,green:0.51,blue:1.00), // blue
+            Color(red:1.00,green:0.36,blue:0.75), // magenta
+            Color(red:0.84,green:0.95,blue:0.32), // lime yellow
+            Color(red:0.48,green:0.37,blue:0.87), // indigo
+            Color(red:0.00,green:0.95,blue:0.64), // mint
+            Color(red:0.98,green:0.66,blue:0.43), // peach
+            Color(red:0.40,green:0.74,blue:1.00)  // sky blue
+        ]
+        let index=dailyColorIndexes[id] ?? 0
+        return palette[index % palette.count]
     }
+
 }
