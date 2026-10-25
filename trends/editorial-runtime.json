@@ -4,25 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "020e438bafc3",
-    "843944da89a6",
-    "4fa75451fa6d"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T19:45:00+01:00",
-  "last_completed_at": "2026-10-25T19:51:40+01:00",
-  "updated_at": "2026-10-25T19:51:40+01:00",
+  "last_started_at": "2026-10-25T20:15:00+01:00",
+  "last_completed_at": "2026-10-25T20:16:45+01:00",
+  "updated_at": "2026-10-25T20:16:45+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261025T194500+0100",
+    "trigger_run_id": "tr-chat-20261025T201500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -30,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T194500+0100",
+    "run_id": "tr-chat-20261025T201500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T19:45:00+01:00",
-    "updated_at": "2026-10-25T19:51:40+01:00",
-    "finished_at": "2026-10-25T19:51:40+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-25T20:15:00+01:00",
+    "updated_at": "2026-10-25T20:16:45+01:00",
+    "finished_at": "2026-10-25T20:16:45+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 3,
+      "attempted": 0,
       "ready": 0,
-      "explained": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 3,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -61,18 +57,18 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 15,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 3,
+      "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: Venezuela, Gularte y Celta explicadas y verificadas; cola final 0.",
+    "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -84,276 +80,93 @@
     },
     "remate_selections": [
       {
-        "trend_id": "020e438bafc3",
+        "trend_id": "d438ccc039cc",
         "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ El regreso volvió a mover el tablero venezolano.",
-            "total": 8.3
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ Diez meses fuera y la política volvió a tenerla dentro.",
-            "total": 7.4
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ El regreso añadió otra casilla al calendario político.",
-            "total": 7.2
-          },
-          {
-            "id": "c4",
-            "text": "🌶️ La vuelta reabrió una puerta que llevaba meses en titulares.",
-            "total": 6.8
-          },
-          {
-            "id": "c5",
-            "text": "🌶️ Venezuela volvió a poner un regreso en primera línea.",
-            "total": 6.6
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.3,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "843944da89a6",
-        "revision": 0,
-        "candidate_count": 3,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ Castalia convirtió la zaga en tema de conversación.",
-            "total": 8
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ El marcador abrió más debates que huecos en la defensa.",
-            "total": 7
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ Tres goles y la zaga acabó en el foco.",
-            "total": 6.8
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "4fa75451fa6d",
-        "revision": 0,
-        "candidate_count": 3,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ Hubo ocasiones para todos y gol para nadie.",
-            "total": 8.4
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ Balaídos repartió puntos y guardó los goles.",
-            "total": 7.7
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ El cero fue el único que no falló.",
-            "total": 7.4
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.4,
-        "no_remate_reason": null
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-25T19:48:30+01:00",
-        "phase": "drafting",
-        "trend_id": "843944da89a6",
-        "title": "Gularte",
-        "message": "Comprobando límite de X · 254 caracteres."
-      },
-      {
-        "at": "2026-10-25T19:48:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "843944da89a6",
-        "title": "Gularte",
-        "message": "Generando candidatos de remate deportivo."
-      },
-      {
-        "at": "2026-10-25T19:48:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "843944da89a6",
-        "title": "Gularte",
-        "message": "Remate seleccionado · «Castalia convirtió la zaga en tema de conversación»."
-      },
-      {
-        "at": "2026-10-25T19:49:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Releyendo estado autoritativo de Celta."
-      },
-      {
-        "at": "2026-10-25T19:49:10+01:00",
-        "phase": "investigating",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Buscando detonante actual de Celta."
-      },
-      {
-        "at": "2026-10-25T19:49:20+01:00",
-        "phase": "investigating",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Contrastando fuente 1/2 · AS confirma el 0-0 final ante el Betis."
-      },
-      {
-        "at": "2026-10-25T19:49:30+01:00",
-        "phase": "investigating",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Contrastando fuente 2/2 · Europa Press confirma el empate sin goles en Balaídos."
-      },
-      {
-        "at": "2026-10-25T19:49:40+01:00",
-        "phase": "investigating",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Hecho esencial verificado · 0-0, intervenciones de Valles y larguero de Deossa."
-      },
-      {
-        "at": "2026-10-25T19:49:50+01:00",
-        "phase": "drafting",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Redactando explicación factual de Celta."
-      },
-      {
-        "at": "2026-10-25T19:50:00+01:00",
-        "phase": "drafting",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Comprobando límite de X · 224 caracteres."
-      },
-      {
-        "at": "2026-10-25T19:50:10+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Generando candidatos de remate deportivo."
-      },
-      {
-        "at": "2026-10-25T19:50:20+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Remate seleccionado · «Hubo ocasiones para todos y gol para nadie»."
-      },
-      {
-        "at": "2026-10-25T19:50:30+01:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": "Venezuela · Gularte · Celta",
-        "message": "Guardando fichas Explicadas de Venezuela, Gularte y Celta."
-      },
-      {
-        "at": "2026-10-25T19:50:35+01:00",
-        "phase": "persisting",
-        "trend_id": "020e438bafc3",
-        "title": "Venezuela",
-        "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-      },
-      {
-        "at": "2026-10-25T19:50:40+01:00",
-        "phase": "persisting",
-        "trend_id": "843944da89a6",
-        "title": "Gularte",
-        "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-      },
-      {
-        "at": "2026-10-25T19:50:45+01:00",
-        "phase": "persisting",
-        "trend_id": "4fa75451fa6d",
-        "title": "Celta",
-        "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-      },
-      {
-        "at": "2026-10-25T19:51:00+01:00",
-        "phase": "persisting",
+        "at": "2026-10-25T20:15:00+01:00",
+        "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Actualizando requests y retirando las tres revisiones cerradas de la cola."
+        "message": "Inicio de pasada: cola editorial 0; verificando estado autoritativo, Top 10 y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-25T19:51:20+01:00",
+        "at": "2026-10-25T20:15:15+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main y comparando id+revision, explicación, remate y fecha."
+        "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
       },
       {
-        "at": "2026-10-25T19:51:30+01:00",
+        "at": "2026-10-25T20:15:35+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación exacta superada para Venezuela, Gularte y Celta; cola editorial 0."
+        "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-25T19:51:40+01:00",
+        "at": "2026-10-25T20:15:50+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
+      },
+      {
+        "at": "2026-10-25T20:16:05+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
+      },
+      {
+        "at": "2026-10-25T20:16:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "d438ccc039cc",
+        "title": "#laSextaXplica",
+        "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
+      },
+      {
+        "at": "2026-10-25T20:16:35+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
+      },
+      {
+        "at": "2026-10-25T20:16:45+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Venezuela, Gularte y Celta explicadas y verificadas; cola final 0."
+        "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
       }
     ],
-    "processed_ids": [
-      "020e438bafc3",
-      "843944da89a6",
-      "4fa75451fa6d"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "020e438bafc3",
-        "name": "Venezuela",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "843944da89a6",
-        "name": "Gularte",
-        "revision": 0,
-        "outcome": "explained"
-      },
-      {
-        "id": "4fa75451fa6d",
-        "name": "Celta",
-        "revision": 0,
-        "outcome": "explained"
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-chat-20261025T194500+0100",
+  "run_id": "tr-chat-20261025T201500+0100",
   "summary": {
-    "attempted": 3,
+    "attempted": 0,
     "ready": 0,
-    "explained": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 3,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -361,157 +174,73 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 15,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 3,
+    "top10_reviewed": 10,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-25T19:48:30+01:00",
-      "phase": "drafting",
-      "trend_id": "843944da89a6",
-      "title": "Gularte",
-      "message": "Comprobando límite de X · 254 caracteres."
-    },
-    {
-      "at": "2026-10-25T19:48:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "843944da89a6",
-      "title": "Gularte",
-      "message": "Generando candidatos de remate deportivo."
-    },
-    {
-      "at": "2026-10-25T19:48:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "843944da89a6",
-      "title": "Gularte",
-      "message": "Remate seleccionado · «Castalia convirtió la zaga en tema de conversación»."
-    },
-    {
-      "at": "2026-10-25T19:49:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Releyendo estado autoritativo de Celta."
-    },
-    {
-      "at": "2026-10-25T19:49:10+01:00",
-      "phase": "investigating",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Buscando detonante actual de Celta."
-    },
-    {
-      "at": "2026-10-25T19:49:20+01:00",
-      "phase": "investigating",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Contrastando fuente 1/2 · AS confirma el 0-0 final ante el Betis."
-    },
-    {
-      "at": "2026-10-25T19:49:30+01:00",
-      "phase": "investigating",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Contrastando fuente 2/2 · Europa Press confirma el empate sin goles en Balaídos."
-    },
-    {
-      "at": "2026-10-25T19:49:40+01:00",
-      "phase": "investigating",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Hecho esencial verificado · 0-0, intervenciones de Valles y larguero de Deossa."
-    },
-    {
-      "at": "2026-10-25T19:49:50+01:00",
-      "phase": "drafting",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Redactando explicación factual de Celta."
-    },
-    {
-      "at": "2026-10-25T19:50:00+01:00",
-      "phase": "drafting",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Comprobando límite de X · 224 caracteres."
-    },
-    {
-      "at": "2026-10-25T19:50:10+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Generando candidatos de remate deportivo."
-    },
-    {
-      "at": "2026-10-25T19:50:20+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Remate seleccionado · «Hubo ocasiones para todos y gol para nadie»."
-    },
-    {
-      "at": "2026-10-25T19:50:30+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": "Venezuela · Gularte · Celta",
-      "message": "Guardando fichas Explicadas de Venezuela, Gularte y Celta."
-    },
-    {
-      "at": "2026-10-25T19:50:35+01:00",
-      "phase": "persisting",
-      "trend_id": "020e438bafc3",
-      "title": "Venezuela",
-      "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-    },
-    {
-      "at": "2026-10-25T19:50:40+01:00",
-      "phase": "persisting",
-      "trend_id": "843944da89a6",
-      "title": "Gularte",
-      "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-    },
-    {
-      "at": "2026-10-25T19:50:45+01:00",
-      "phase": "persisting",
-      "trend_id": "4fa75451fa6d",
-      "title": "Celta",
-      "message": "Guardando ficha Explicada y sincronizando revisión exacta."
-    },
-    {
-      "at": "2026-10-25T19:51:00+01:00",
-      "phase": "persisting",
+      "at": "2026-10-25T20:15:00+01:00",
+      "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Actualizando requests y retirando las tres revisiones cerradas de la cola."
+      "message": "Inicio de pasada: cola editorial 0; verificando estado autoritativo, Top 10 y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-25T19:51:20+01:00",
+      "at": "2026-10-25T20:15:15+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main y comparando id+revision, explicación, remate y fecha."
+      "message": "Saneamiento visual de Pendientes solicitado mediante pending-repair-trigger."
     },
     {
-      "at": "2026-10-25T19:51:30+01:00",
+      "at": "2026-10-25T20:15:35+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación exacta superada para Venezuela, Gularte y Celta; cola editorial 0."
+      "message": "Relectura autoritativa: cola 0, revisiones activas 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-25T19:51:40+01:00",
+      "at": "2026-10-25T20:15:50+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Top 10 revisado: explicaciones vigentes o decisiones explícitas; no entra trabajo editorial nuevo."
+    },
+    {
+      "at": "2026-10-25T20:16:05+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual solicitada."
+    },
+    {
+      "at": "2026-10-25T20:16:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "d438ccc039cc",
+      "title": "#laSextaXplica",
+      "message": "Sin remate · la explicación trata disturbios y saqueos; se conserva factual y no se fuerza humor."
+    },
+    {
+      "at": "2026-10-25T20:16:35+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Relectura final de main: cola 0, revisiones activas 0, rewrite_pending 0 y trigger de saneamiento confirmado."
+    },
+    {
+      "at": "2026-10-25T20:16:45+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Venezuela, Gularte y Celta explicadas y verificadas; cola final 0."
+      "message": "TTendencias completada: sin trabajo editorial nuevo; saneamiento visual solicitado para 15 Pendientes."
     }
   ],
   "partial": false,
@@ -524,7 +253,7 @@
     "captured_at": "2026-10-25T19:10:52+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261025T191500+0100",
+  "previous_run_id": "tr-chat-20261025T194500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -534,89 +263,13 @@
   },
   "remate_selections": [
     {
-      "trend_id": "020e438bafc3",
+      "trend_id": "d438ccc039cc",
       "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "text": "🌶️ El regreso volvió a mover el tablero venezolano.",
-          "total": 8.3
-        },
-        {
-          "id": "c2",
-          "text": "🌶️ Diez meses fuera y la política volvió a tenerla dentro.",
-          "total": 7.4
-        },
-        {
-          "id": "c3",
-          "text": "🌶️ El regreso añadió otra casilla al calendario político.",
-          "total": 7.2
-        },
-        {
-          "id": "c4",
-          "text": "🌶️ La vuelta reabrió una puerta que llevaba meses en titulares.",
-          "total": 6.8
-        },
-        {
-          "id": "c5",
-          "text": "🌶️ Venezuela volvió a poner un regreso en primera línea.",
-          "total": 6.6
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8.3,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "843944da89a6",
-      "revision": 0,
-      "candidate_count": 3,
-      "candidates": [
-        {
-          "id": "c1",
-          "text": "🌶️ Castalia convirtió la zaga en tema de conversación.",
-          "total": 8
-        },
-        {
-          "id": "c2",
-          "text": "🌶️ El marcador abrió más debates que huecos en la defensa.",
-          "total": 7
-        },
-        {
-          "id": "c3",
-          "text": "🌶️ Tres goles y la zaga acabó en el foco.",
-          "total": 6.8
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "4fa75451fa6d",
-      "revision": 0,
-      "candidate_count": 3,
-      "candidates": [
-        {
-          "id": "c1",
-          "text": "🌶️ Hubo ocasiones para todos y gol para nadie.",
-          "total": 8.4
-        },
-        {
-          "id": "c2",
-          "text": "🌶️ Balaídos repartió puntos y guardó los goles.",
-          "total": 7.7
-        },
-        {
-          "id": "c3",
-          "text": "🌶️ El cero fue el único que no falló.",
-          "total": 7.4
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8.4,
-      "no_remate_reason": null
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "Se conserva factual: la explicación trata disturbios y saqueos; no se fuerza humor."
     }
   ]
 }
