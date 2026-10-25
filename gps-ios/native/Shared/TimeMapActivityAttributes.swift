@@ -31,6 +31,14 @@ struct TimeMapActivityAttributes:ActivityAttributes {
         var lastSixMinutes:[Int]
         // Hitos discretos; no se envían notificaciones adicionales.
         var milestone:String?
+        // Separate identified establishment, not merely the zone's label.
+        // Optional for backwards decoding of Live Activities from old builds.
+        var siteName:String?
+        var siteConfirmed:Bool?
+        // L, M, X, J, V, S, D in fixed order. Derived from BIOGRID's
+        // current-cell snapshot; no game simulation inside the extension.
+        var bioGridCounts:[Int64]?
+        var bioGridUpdatedAt:Date?
     }
     var title="Mi Mapa del Tiempo"
 }
