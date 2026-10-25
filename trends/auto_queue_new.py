@@ -448,10 +448,30 @@ def capture_is_safe(doc):
         item = source_data.get(primary) or {}
         freshness = str(item.get("freshness") or "")
         if method == "corroborated-anchor":
+            # El Top puede ser actual aun cuando el agregador horario de
+            # corroboración haya cruzado el límite de 90 minutos. Aceptar
+            # hasta 120 minutos SOLO cuando otra lista independiente coincide
+            # y la fuente elegida ha cambiado recientemente. Esto habilita
+            # INVESTIGACIÓN editorial, no publicación sin verificar los hechos.
             peers = item.get("corroborating_sources") or []
-            return freshness == "corroborated-change" and any(
-                (source_data.get(peer) or {}).get("freshness") in {"fresh", "aging"}
-                for peer in peers
+            try:
+                last_change_age = float(item.get("list_unchanged_minutes", 9999))
+            except (TypeError, ValueError):
+                last_change_age = 9999.0
+            return (
+                freshness == "corroborated-change"
+                and last_change_age <= 45
+                and any(
+                    (source_data.get(peer) or {}).get("ok")
+                    and (
+                        (source_data.get(peer) or {}).get("freshness") in {"fresh", "aging"}
+                        or (
+                            (source_data.get(peer) or {}).get("age_minutes") is not None
+                            and 0 <= float((source_data.get(peer) or {})["age_minutes"]) <= 120
+                        )
+                    )
+                    for peer in peers
+                )
             )
         return freshness in {"fresh", "aging"}
     if method == "consensus":
