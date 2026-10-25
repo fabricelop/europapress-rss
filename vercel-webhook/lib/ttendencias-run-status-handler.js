@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import {explanationIsCopied} from "./ttendencias-copy-state.js";
 
 const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
@@ -459,14 +460,7 @@ export default async function handler(req,res){
       const row=rows[0]||null;
       if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return res.status(200).json({ok:true,eligible:false,reason:"not_pending_explained"});
       const name=String(row.name||"").trim(),rev=Number(row.revision||0);
-  const rowId=String(row.id||"").trim();
-  const archived=(copyState.items||[]).some(x=>{
-    if(Number(x.revision||0)!==rev)return false;
-    const archivedId=String(x.item_id||x.id||"").trim();
-    if(rowId&&archivedId)return archivedId===rowId;
-    if(archivedId)return false;
-    return Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase())
-  });
+      const archived=explanationIsCopied(row,copyState).copied;
       const blockReason=String(row.ai_image_block_reason||row.image_block_reason||"").trim().toLowerCase();
       const advisoryOnlyBlock=["political_actor","political_context","safety_sensitive_weather"].includes(blockReason);
       const blocked=Boolean(row.tremending_origin)||Boolean(blockReason&&!advisoryOnlyBlock);
