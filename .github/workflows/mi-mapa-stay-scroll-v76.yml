@@ -1,0 +1,85 @@
+name: "Mi Mapa 1.0.76 - stay editor scroll y orden"
+on:
+  push:
+    branches:
+      - feature/site-stay-scroll-order-v76
+    paths:
+      - 'gps-ios/native/Sources/**'
+      - 'gps-ios/native/Tests/**'
+      - 'gps-ios/native/project.yml'
+      - '.github/workflows/mi-mapa-stay-scroll-v76.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mi-mapa-stay-scroll-v76
+  cancel-in-progress: true
+jobs:
+  test-and-ipa:
+    runs-on: macos-15
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: gps-ios/native
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar sintaxis y generar proyecto
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          src=Path("Sources/TimeSiteCalendarView.swift").read_text()
+          editor=src.split("struct TimeSiteStayEditor: View {",1)[1].split("private struct SitePartSelection:",1)[0]
+          assert editor.index('Section("Lugares y tramos")') < editor.index('Section("Sitios asociados a esta cuadrícula")') < editor.index('Section("¿Dónde estaba?")')
+          assert "let model: TimeModel" in editor and "@ObservedObject var model: TimeModel" not in editor
+          assert "let model: TimeModel" in src.split("private struct TimeSiteStayLocationMap: View {",1)[1]
+          assert "selectedStay = item.stay" in src and "TimeSiteStayEditor(model:model,stay:selectedStay)" in src
+          assert src.count("stayEditorRow(item)") == 2
+          print("STAY_EDITOR_STABLE_NAVIGATION_AND_SECTION_ORDER_OK")
+          PY
+          swiftc -frontend -parse Sources/*.swift Shared/*.swift Live/*.swift Tests/*.swift
+          command -v xcodegen >/dev/null || brew install xcodegen
+          python3 tools/make_icon.py
+          xcodegen generate --spec project.yml
+      - name: Pruebas en simulador iPhone
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,subprocess
+          all=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))["devices"]
+          phones=[d for rt,ds in all.items() if "iOS" in rt for d in ds if "iPhone" in d["name"] and d["state"]!="Unavailable"]
+          assert phones
+          open("/tmp/sites76-simulator","w").write(phones[0]["udid"])
+          PY
+          xcodebuild test -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Debug -destination "platform=iOS Simulator,id=$(cat /tmp/sites76-simulator)" \
+            -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
+      - name: Compilar IPA sin firma y validar integridad
+        run: |
+          set -euo pipefail
+          xcodebuild -project MiMapaDelTiempo.xcodeproj -scheme MiMapaDelTiempo \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/sitios76" CODE_SIGNING_ALLOWED=NO build
+          APP="$RUNNER_TEMP/sitios76/Build/Products/Release-iphoneos/MiMapaDelTiempo.app"
+          APP="$APP" python3 - <<'PY'
+          import os,plistlib
+          from pathlib import Path
+          app=Path(os.environ["APP"])
+          assert app.is_dir()
+          info=plistlib.loads((app/"Info.plist").read_bytes())
+          assert info["CFBundleIdentifier"]=="es.mimapadeltiempo.appprueba"
+          assert info["CFBundleShortVersionString"]=="1.0.76"
+          assert info["CFBundleVersion"]=="77"
+          assert info["UISupportedInterfaceOrientations"]==["UIInterfaceOrientationPortrait"]
+          assert (app/"PlugIns"/"MiMapaWidgets.appex").is_dir()
+          PY
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          /usr/bin/zip -q -r MiMapaDelTiempo-Sitios-Agil-1.0.76.ipa Payload
+          unzip -t MiMapaDelTiempo-Sitios-Agil-1.0.76.ipa >/dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MiMapaDelTiempo-Sitios-Agil-1.0.76-build77-unsigned
+          path: gps-ios/native/MiMapaDelTiempo-Sitios-Agil-1.0.76.ipa
+          retention-days: 14
+          if-no-files-found: error
