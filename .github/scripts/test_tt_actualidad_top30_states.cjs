@@ -61,28 +61,29 @@ const state={app:'tr',tab:'top',data:{recent,requests,
  manual:{items:[]},explained:{items:[]},deliveries,mobileDecisions:{items:[]}}};
 const rows=vm.runInNewContext(code+'\ntrendRows()', {state, Date, Intl, console});
 const status=name=>rows.find(row=>row.name===name)?._status;
-assert.equal(status('Hispanidad'),'BORRADA');
-assert.equal(status('#FelizLunes'),'PUBLICADA');
-assert.equal(status('Hugo Duro'),'BORRADA');
-assert.equal(status('#EstrenoJotalent5'),'BORRADA');
-assert.equal(status('Feliz 12'),'EN COLA'); // No active editorial run was supplied
-assert.equal(status('Tendencia sin entrega'),'EXPLICACIÓN SIN ENTREGAR');
-assert.equal(status('Tendencia entregada'),'PENDIENTE EN EXPLICADAS');
+// Top 30 is an index of current work, never a publication surface.
+assert.equal(status('Hispanidad'),'PENDIENTE');
+assert.equal(status('Feliz 12'),'EN COLA');
+assert.equal(status('Tendencia sin entrega'),'EN LISTAS · IMAGEN IA EN CURSO');
+assert.equal(status('Tendencia entregada'),'EN LISTAS · IMAGEN IA EN CURSO');
 assert.equal(status('Tendencia nueva'),'PREPARACIÓN MANUAL');
 assert.equal(status('Tendencia manual'),'EN COLA');
 assert.equal(status('Top diez sin elaborar'),'PENDIENTE');
-assert.equal(rows.find(row=>row.name==='Hispanidad').explanation,
- 'Explicación histórica de la Hispanidad.');
-assert.equal(rows.find(row=>row.name==='Tendencia cerrada').explanation,
- 'Explicación conservada tras borrar Telegram.');
+assert.ok(rows.every(row=>row.explanation===''),
+  'No explanation, including September historical text, may appear in Top 30');
+assert.ok(rows.every(row=>!row.closer_text),
+  'No remate may bypass En elaboración and Listas');
 const pending=vm.runInNewContext(code+'\ntrendRows()', {
  state:{...state,tab:'pendientes'},Date,Intl,console});
 const pendingNames=pending.map(row=>row.name);
 assert.ok(pendingNames.includes('Top diez sin elaborar'));
 assert.ok(pendingNames.includes('Tendencia manual'));
-assert.ok(pendingNames.includes('Tendencia sin entrega'));
+assert.ok(!pendingNames.includes('Tendencia sin entrega'));
+assert.ok(pendingNames.includes('Hispanidad'));
 assert.ok(!pendingNames.includes('Tendencia nueva'));
 assert.ok(!pendingNames.includes('Tendencia cerrada'));
 assert.ok(html.includes("command('Volver a elaborar','rework')"),
   'Every current Top 30 trend must provide fresh elaboration on demand');
+assert.ok(html.includes("btn('Volver a elaborar',()=>showToast("),
+  'In-progress trends such as Lamine must retain the same visible button label');
 console.log('TT_ACTUALIDAD_TOP30_TERMINAL_GROUP_MANUAL_AND_DELIVERY_TEST_OK');
