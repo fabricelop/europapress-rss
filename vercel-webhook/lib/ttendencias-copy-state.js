@@ -35,6 +35,25 @@ export function explanationCopyIdentity(item) {
   return `explanation-v1:${digest}`;
 }
 
+// A persistent trend ID/revision may represent different matches on
+// different dates. Historical archive/deletion marks apply only to the
+// editorial event they closed, never to a later explanation.
+export function sameEditorialEpisode(current, historical) {
+  const currentAt = Date.parse(current?.explained_at || "");
+  const previousAt = Date.parse(historical?.explained_at || "");
+  if (Number.isFinite(currentAt) && Number.isFinite(previousAt)) {
+    return Math.abs(currentAt - previousAt) <= 60_000;
+  }
+  const historicalAt = Date.parse(historical?.deleted_at ||
+    historical?.dismissed_at || historical?.published_at ||
+    historical?.removed_at || historical?.updated_at ||
+    historical?.delivered_at || historical?.copied_at || "");
+  if (Number.isFinite(currentAt) && Number.isFinite(historicalAt) &&
+      historicalAt + 60_000 < currentAt) return false;
+  // Missing reliable chronology: do not resurrect closed work speculatively.
+  return true;
+}
+
 export function explanationIsCopied(item, copyState) {
   const key = explanationCopyIdentity(item);
   const records = copyState?.items || [];
@@ -49,7 +68,8 @@ export function explanationIsCopied(item, copyState) {
   if (itemId) {
     const idRecord = records.find(entry =>
       String(entry?.item_id || "").trim() === itemId &&
-      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision &&
+      sameEditorialEpisode(item, entry)
     );
     if (idRecord) return { copied: true, copied_at: idRecord.copied_at || null, source: idRecord.source || "id-copy" };
   }
@@ -61,7 +81,8 @@ export function explanationIsCopied(item, copyState) {
   if (groupId) {
     const groupedRecord = records.find(entry =>
       String(entry?.explanation_group_id || "").trim() === groupId &&
-      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === itemRevision &&
+      sameEditorialEpisode(item, entry)
     );
     if (groupedRecord) return { copied: true, copied_at: groupedRecord.copied_at || null, source: groupedRecord.source || "group-copy" };
   }
@@ -71,7 +92,8 @@ export function explanationIsCopied(item, copyState) {
   if (groupTitle) {
     const groupRecord = records.find(entry =>
       normalizeTrendName(entry?.group_title || "") === groupTitle &&
-      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === revision
+      (Number.isFinite(Number(entry?.revision)) ? Number(entry.revision) : 0) === revision &&
+      sameEditorialEpisode(item, entry)
     );
     if (groupRecord) return { copied: true, copied_at: groupRecord.copied_at || null, source: groupRecord.source || "group-copy" };
   }
