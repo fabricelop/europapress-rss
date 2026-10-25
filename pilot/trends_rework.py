@@ -105,11 +105,11 @@ def rework_explained(event_id, expected_revision, now, requests, manual, queue, 
     mobile["updated_at"] = now
     return next_revision
 
-def rework_top30(event_id, expected_revision, now, current_top30, requests, manual, queue, mobile, source):
-    """Manual fresh investigation of a previously explained Top-30 label.
+def rework_top30(event_id, expected_revision, now, current_top30, requests, manual, queue, mobile, source, trend_name=None):
+    """Open a fresh investigation of ANY current Top-30 label.
 
-    Unlike Listas, this also covers an old deleted editorial card or a grouped
-    member with no independent ready card. No prior image/text is reused.
+    The previous explanation, when present, is retained as history; the new
+    event has its own ID, review, sources, images and editorial queue entry.
     """
     import hashlib
     import unicodedata
@@ -119,26 +119,26 @@ def rework_top30(event_id, expected_revision, now, current_top30, requests, manu
         return "".join(ch for ch in value if unicodedata.category(ch) != "Mn")
 
     old = next((x for x in requests.get("requests", []) if str(x.get("id") or "") == event_id), None)
-    if not old:
-        raise ValueError("No existe un registro editorial anterior verificable")
-    if expected_revision is not None and int(old.get("revision") or 0) != expected_revision:
-        raise ValueError("La revisión ha cambiado; actualiza TTActualidad")
-    name = str(old.get("name") or "").strip()
+    name = str((old or {}).get("name") or trend_name or "").strip()
     rank_row = next((x for x in current_top30 if key(x.get("name")) == key(name)), None)
-    if not rank_row:
+    if not rank_row or not name:
         raise ValueError("La tendencia ya no está en el Top 30 actual")
-    if str(old.get("status") or "").lower() in {"preparing", "update", "problematic"}:
-        raise ValueError("La tendencia ya está en elaboración")
-    eligible = bool(old.get("explanation")) or any(
-        str(x.get("explanation") or "").strip() and
-        (str(x.get("id") or "") == event_id or
-         key(name) in {key(z) for z in x.get("trend_names") or []})
-        for x in manual.get("items", [])
-    )
-    if not eligible:
-        raise ValueError("La tendencia aún no tiene una explicación anterior; usa Preparar novedad")
+    name = str(rank_row["name"]).strip()
+    if old:
+        if expected_revision is not None and int(old.get("revision") or 0) != expected_revision:
+            raise ValueError("La revisión ha cambiado; actualiza TTActualidad")
+        if str(old.get("status") or "").lower() in {"preparing", "update", "problematic"}:
+            raise ValueError("La tendencia ya está en elaboración")
+    else:
+        # No previous explanation is required. The client must reference
+        # the EXACT current radar name via its deterministic manual ID.
+        expected_id = "manual-" + hashlib.sha256(name.encode("utf-8")).hexdigest()[:32]
+        if str(event_id) != expected_id and key(event_id) != key(name):
+            raise ValueError("El identificador no corresponde a esta tendencia")
+        if expected_revision not in (None, 0):
+            raise ValueError("Revisión inesperada para una tendencia nueva")
     if any(key(x.get("name")) == key(name) and
-           str(x.get("status") or "").lower() in {"preparing", "update"}
+           str(x.get("status") or "").lower() in {"preparing", "update", "problematic"}
            for x in requests.get("requests", [])):
         raise ValueError("Ya existe una elaboración más reciente de esta tendencia")
 
