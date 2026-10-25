@@ -460,9 +460,20 @@ function trendRows(){
    if(!prev||Number(row.revision||0)>Number(prev.revision||0)||at(row)>=at(prev))
     lastManual.set(id,row);
   }
-  const mobileClosed=new Set((state.data.mobileDecisions?.items||[])
-   .filter(row=>closed.has(String(row.status||'').toLowerCase()))
-   .map(row=>String(row.id||row.event_id||'')));
+  // An old terminal record must not close a new story reusing ID and r0.
+  const mobileClosures=(state.data.mobileDecisions?.items||[])
+   .filter(item=>closed.has(String(item.status||'').toLowerCase()));
+  const closureApplies=(row,event)=>{
+   if(!closed.has(String(event?.status||'').toLowerCase()))return false;
+   const newRev=Number(row.revision||0),oldRev=Number(event.revision||0);
+   if(oldRev!==newRev)return oldRev>newRev;
+   const closedAt=Date.parse(event.deleted_at||event.dismissed_at||
+      event.published_at||event.removed_at||event.updated_at||
+      event.delivered_at||event.decided_at||'');
+   const explainedAt=Date.parse(row.explained_at||'');
+   return !(Number.isFinite(closedAt)&&Number.isFinite(explainedAt)&&
+      closedAt+60000<explainedAt);
+  };
   const current=Date.now();
   return [...lastManual.values()].filter(row=>{
    const id=String(row.id||''),req=lastRequests.get(id)||{},delivery=lastDeliveries.get(id)||{};
@@ -484,9 +495,10 @@ function trendRows(){
       ['preparing','update'].includes(String(q.status||'').toLowerCase())&&
       Number(q.revision||0)>readyRevision))return false;
    if(row.group_leader_id&&String(row.group_leader_id)!==id)return false;
-   if(mobileClosed.has(id))return false;
-   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status,
-      delivery.status].some(x=>closed.has(String(x||'').toLowerCase())))return false;
+   if(mobileClosures.some(item=>String(item.id||item.event_id||'')===id&&closureApplies(row,item)))return false;
+   if([row.status,row.telegram_package_status,req.status,req.telegram_package_status]
+      .some(x=>closed.has(String(x||'').toLowerCase())))return false;
+   if(closureApplies(row,delivery))return false;
    return true;
   }).map(row=>({
     ...row,title:String(row.name||row.display_name||row.id),
