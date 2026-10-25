@@ -295,15 +295,22 @@ function trendRows(){
       Boolean(req.explained_at)&&
       (!Date.parse(req.requested_at||'')||
         Date.parse(req.explained_at)>=Date.parse(req.requested_at)-60000);
+   const listasRow=(state.data.manual?.items||[]).find(item=>
+      String(item.id||'')===String(req.id||'')&&
+      String(item.status||'').toLowerCase()==='explained'&&
+      String(item.explanation||'').trim()&&
+      Date.parse(item.explained_at||'')>=Date.now()-48*3600000&&
+      (!req.explained_at||Math.abs(Date.parse(item.explained_at)-Date.parse(req.explained_at))<60000));
    const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
-      hasFreshExplained?'EN LISTAS · IMAGEN IA EN CURSO':
+      hasFreshExplained&&listasRow?'EN LISTAS':
+      hasFreshExplained?'PENDIENTE DE LISTAS':
       priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||x.name||i),
     _status:editorialState,_topOnly:true,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,_telegramConfirmed:!!(wasDelivered&&!terminal),
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:'',
-    explained_at:latestAt,revision:finished.revision||req.revision||0,
+    explained_at:listasRow?latestAt:'',revision:finished.revision||req.revision||0,
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
   // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
