@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-25T18:15:00+01:00",
-  "last_completed_at": "2026-10-25T18:17:00+01:00",
-  "updated_at": "2026-10-25T18:17:00+01:00",
+  "last_started_at": "2026-10-25T18:45:00+01:00",
+  "last_completed_at": "2026-10-25T18:48:00+01:00",
+  "updated_at": "2026-10-25T18:48:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,15 +26,15 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261025T181500+0100",
+    "run_id": "tr-chat-20261025T184500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-25T18:15:00+01:00",
-    "updated_at": "2026-10-25T18:17:00+01:00",
-    "finished_at": "2026-10-25T18:17:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-25T18:45:00+01:00",
+    "updated_at": "2026-10-25T18:48:00+01:00",
+    "finished_at": "2026-10-25T18:48:00+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
@@ -50,25 +50,25 @@
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "discovered_during_run": 3,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 3,
       "remates_selected": 0,
       "remates_omitted": 1,
       "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 13,
+      "pending_cards_reviewed": 16,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
-      "legacy_ready_repaired": 0,
+      "legacy_ready_repaired": 3,
       "top10_reviewed": 10,
       "incidents": 0
     },
-    "message": "TTendencias completada: 0 nuevas revisiones; cola final 0; Top 10 revalidado y saneamiento visual solicitado para 13 Pendientes recientes.",
+    "message": "TTendencias completada: cola final 0; reparadas y verificadas 3 fichas Explicadas ausentes (Mario Martín, Parrot y Berenguer); saneamiento visual solicitado para 16 Pendientes recientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -81,39 +81,90 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-25T18:15:00+01:00",
+        "at": "2026-10-25T18:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 0; revalidando Top 10 y Pendientes recientes."
+        "message": "Inicio de pasada: cola editorial 0; revalidando Top 10, Explicadas y Pendientes recientes."
       },
       {
-        "at": "2026-10-25T18:16:00+01:00",
+        "at": "2026-10-25T18:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Estado autoritativo revalidado: cola 0; Carrick rev. 1 sincronizada en Explicadas y requests."
+        "message": "Detectadas 3 fichas Explicadas ausentes: Mario Martín, Parrot y Berenguer."
       },
       {
-        "at": "2026-10-25T18:16:30+01:00",
+        "at": "2026-10-25T18:46:00+01:00",
+        "phase": "persisting",
+        "trend_id": "2d446f938ebb",
+        "title": "Mario Martín",
+        "message": "Guardando ficha Explicada existente sin reescribir su texto."
+      },
+      {
+        "at": "2026-10-25T18:46:20+01:00",
+        "phase": "persisting",
+        "trend_id": "21957106f222",
+        "title": "Parrot",
+        "message": "Guardando ficha Explicada existente sin reescribir su texto."
+      },
+      {
+        "at": "2026-10-25T18:46:40+01:00",
+        "phase": "persisting",
+        "trend_id": "f56078d88ba4",
+        "title": "Berenguer",
+        "message": "Guardando ficha Explicada existente sin reescribir su texto."
+      },
+      {
+        "at": "2026-10-25T18:47:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisados 13 Pendientes recientes; saneamiento visual solicitado mediante trigger independiente."
+        "message": "Releyendo main y comparando id+revision+texto entre Explicadas y requests."
       },
       {
-        "at": "2026-10-25T18:17:00+01:00",
+        "at": "2026-10-25T18:47:30+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Las 3 fichas coinciden exactamente; cola editorial 0 y sin revisiones activas."
+      },
+      {
+        "at": "2026-10-25T18:48:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: 0 nuevas revisiones; cola final 0; Top 10 revalidado."
+        "message": "TTendencias completada: 3 reparaciones transaccionales verificadas y cola final 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "2d446f938ebb",
+      "21957106f222",
+      "f56078d88ba4"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "2d446f938ebb",
+        "name": "Mario Martín",
+        "revision": 0,
+        "outcome": "reconciled"
+      },
+      {
+        "id": "21957106f222",
+        "name": "Parrot",
+        "revision": 0,
+        "outcome": "reconciled"
+      },
+      {
+        "id": "f56078d88ba4",
+        "name": "Berenguer",
+        "revision": 0,
+        "outcome": "reconciled"
+      }
+    ]
   },
   "run_id": "tr-chat-20261025T174500+0100",
   "summary": {
