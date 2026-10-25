@@ -362,6 +362,83 @@ def fetch_source(name):
             "fetched_at": fetched_at.isoformat(timespec="seconds"),
         }
 
+def reconcile_source_freshness(source_data, previous_doc, now):
+    """Detect stale relative timestamps and corroborated live changes.
+
+    Some aggregators repeatedly serve the identical list with the same
+    'updated N minutes ago' label. A new fetch must not reset that age.
+    Conversely, an un-timestamped provider that changes between captures
+    can be used if an independent, dated source corroborates its list.
+    """
+    previous_sources = previous_doc.get("sources") or {}
+    now_iso = now.isoformat(timespec="seconds")
+
+    def elapsed_minutes(value):
+        try:
+            dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=MADRID)
+            return max(0.0, (now - dt.astimezone(MADRID)).total_seconds() / 60)
+        except (TypeError, ValueError):
+            return float("inf")
+
+    for name, row in source_data.items():
+        if not row.get("ok"):
+            continue
+        prior = previous_sources.get(name) or {}
+        same_list = bool(
+            prior.get("ok")
+            and [term_key(x) for x in (row.get("trends") or [])[:30]]
+            == [term_key(x) for x in (prior.get("trends") or [])[:30]]
+        )
+        last_change = (
+            prior.get("last_list_change_at") or previous_doc.get("captured_at")
+            if same_list else now_iso
+        )
+        row["last_list_change_at"] = last_change
+        row["list_unchanged_minutes"] = round(elapsed_minutes(last_change), 1)
+
+        # A relative timestamp should advance when nothing is refreshed.
+        # A frozen timestamp AND frozen ranking across >=20 minutes makes
+        # the claimed freshness unreliable, even if the HTML was just fetched.
+        hint = str(row.get("update_hint") or "")
+        same_relative_hint = bool(
+            same_list and prior.get("update_hint") == hint
+            and re.search(r"\\b\\d+\\s+(?:minutes?|hours?)\\s+ago\\b", hint, flags=re.I)
+        )
+        hint_since = (
+            prior.get("relative_hint_unchanged_since") or previous_doc.get("captured_at")
+            if same_relative_hint else now_iso
+        )
+        row["relative_hint_unchanged_since"] = hint_since
+        if same_relative_hint and elapsed_minutes(hint_since) >= 20:
+            if row.get("freshness") == "fresh":
+                row["freshness"] = "stale"
+                row["freshness_note"] = "frozen-relative-update-label"
+
+    # A live, changing, undated snapshot may be treated as corroborated
+    # only if it agrees with a separate source that has a known age <=90m.
+    for name, row in source_data.items():
+        if not row.get("ok") or row.get("freshness") != "unknown":
+            continue
+        prior = previous_sources.get(name) or {}
+        if not prior.get("ok") or row.get("list_unchanged_minutes", 9999) > 20:
+            continue
+        if [term_key(x) for x in (row.get("trends") or [])[:30]] == [
+            term_key(x) for x in (prior.get("trends") or [])[:30]
+        ]:
+            continue
+        peers = [
+            other_name for other_name, other in source_data.items()
+            if other_name != name and other.get("ok")
+            and other.get("freshness") in {"fresh", "aging"}
+            and overlap(row.get("trends") or [], other.get("trends") or []) >= 0.25
+        ]
+        if peers:
+            row["freshness"] = "corroborated-change"
+            row["corroborating_sources"] = peers
+
+
 def previous_top10():
     try:
         return json.loads(RECENT.read_text(encoding="utf-8")).get("top10", [])
@@ -410,7 +487,7 @@ def choose_top10(source_data):
     # una lista marcada stale puede coincidir con una fuente retrasada y
     # desbancar a dos fuentes actuales que sí se corroboran entre ellas.
     non_stale = {n: d for n, d in good.items() if d.get("freshness") != "stale"}
-    fresh = {n: d for n, d in good.items() if d.get("freshness") == "fresh"}
+    fresh = {n: d for n, d in good.items() if d.get("freshness") in {"fresh", "corroborated-change"}}
     if fresh:
         # Preferir una fuente fresca corroborada por otras NO obsoletas.
         # En empate, elegir el snapshot con menor antigüedad comprobable.
@@ -457,7 +534,7 @@ def choose_top10(source_data):
                 and overlap(anchor["trends"], data["trends"]) >= 0.35
             )
         ]
-        return anchor["trends"][:10], supporters, anchor_name, "fresh-anchor"
+        return anchor["trends"][:10], supporters, anchor_name, ("corroborated-anchor" if anchor.get("freshness") == "corroborated-change" else "fresh-anchor")
 
     aging = {n: d for n, d in good.items() if d.get("freshness") == "aging"}
     if aging:
@@ -818,6 +895,7 @@ def main():
     previous_doc = load_json(RECENT, {})
     previous = previous_doc.get("top10", [])
     source_data = {name: fetch_source(name) for name in SOURCES}
+    reconcile_source_freshness(source_data, previous_doc, now)
 
     top10, sources_used, chosen_name, method = choose_top10(source_data)
     if len(top10) < 10:
