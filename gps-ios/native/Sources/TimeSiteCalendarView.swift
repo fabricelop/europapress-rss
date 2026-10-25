@@ -9,6 +9,12 @@ struct TimeSiteCalendarView: View {
     @State private var expandedCalendar = false
     @State private var onlyUnclassified = false
     @State private var allStays: [SiteGridStay] = []
+    @State private var staysByDay: [Date:[SiteGridStay]] = [:]
+    @State private var indexedIntervalCount = -1
+    @State private var partsIndex: SiteDayPartsIndex?
+    @State private var dayParts: [String:[SiteStayPart]] = [:]
+    @State private var dayClockSegments: [SiteClockSegment] = []
+    @State private var dayReport: SiteDayReport?
     @State private var preparing = false
     @State private var generation = UUID()
 
@@ -16,13 +22,10 @@ struct TimeSiteCalendarView: View {
         SiteCalendarDay.interval(for: selectedDay)
     }
     private var visible: [SiteGridStay] {
-        allStays.filter { $0.start < day.end && $0.end > day.start }
-                .sorted { $0.start < $1.start }
+        staysByDay[Calendar.current.startOfDay(for:selectedDay)] ?? []
     }
     private var report: SiteDayReport {
-        SiteDayPresentation.build(visible.map {
-            SiteDaySource(stay:$0,parts:model.siteParts(for:$0))
-        },on:selectedDay)
+        dayReport ?? SiteDayPresentation.build([],on:selectedDay)
     }
     private var firstDate: Date? { allStays.last?.start }
     private var displayedGroups: [SiteDayGroup] {
@@ -135,7 +138,8 @@ struct TimeSiteCalendarView: View {
                 }
             if !preparing && !visible.isEmpty {
                 Section {
-                    TimeSiteDailyClockView(model:model,day:selectedDay,stays:visible)
+                    TimeSiteDailyClockView(model:model,day:selectedDay,
+                                               segments:dayClockSegments)
                 } header: {
                     Text("Dónde estuve durante el día")
                 }
@@ -265,14 +269,24 @@ struct TimeSiteCalendarView: View {
                     .accessibilityLabel("Actualizar histórico")
             }
         }
-        .onAppear { if allStays.isEmpty { rebuild() } }
+        .onAppear {
+            if allStays.isEmpty || indexedIntervalCount != model.data.intervals.count {
+                rebuild()
+            } else {
+                refreshPartsIndex()
+            }
+        }
         .onChange(of:selectedDay) { _, chosen in
             let normalized=SiteCalendarDay.normalized(chosen)
             if selectedDay != normalized { selectedDay=normalized }
             expandedGroups.removeAll()
             onlyUnclassified=false
+            refreshDay()
         }
         .onChange(of:model.data.intervals.count) { _,_ in rebuild() }
+        .onChange(of:model.data.siteStayParts) { _,_ in refreshPartsIndex() }
+        .onChange(of:model.data.siteStayAssignments) { _,_ in refreshPartsIndex() }
+        .onChange(of:model.data.identifiedSites) { _,_ in refreshPartsIndex() }
     }
 
     private func groupRow(_ group: SiteDayGroup) -> some View {
@@ -295,7 +309,7 @@ struct TimeSiteCalendarView: View {
     }
 
     private func stayRow(_ stay: SiteGridStay) -> some View {
-        let parts = model.siteParts(for:stay)
+        let parts = dayParts[stay.id] ?? model.siteParts(for:stay)
         let distinct = Array(Set(parts.compactMap { $0.kind == .place ? $0.siteID : nil }))
         let hasPassing = parts.contains { $0.kind == .passing }
         let title: String
@@ -323,7 +337,8 @@ struct TimeSiteCalendarView: View {
             HStack(spacing:6) {
                 Image(systemName:"square.dashed")
                 Text(model.label(for:stay.cell))
-                if model.data.siteStayParts.contains(where:{$0.stayID == stay.id}) {
+                if dayParts[stay.id]?.contains(where:{$0.confirmed}) == true ||
+                   model.data.siteStayParts.contains(where:{$0.stayID == stay.id}) {
                     Text("· Revisada")
                 } else if !distinct.isEmpty {
                     Text("· Propuesta")
@@ -334,17 +349,45 @@ struct TimeSiteCalendarView: View {
         .padding(.vertical,4)
     }
 
+    /// Called when a saved site/part changes, not on every tap or redraw.
+    private func refreshPartsIndex() {
+        partsIndex=SiteDayPartsIndex(
+            assignments:model.data.siteStayAssignments,
+            parts:model.data.siteStayParts,
+            sites:model.data.identifiedSites)
+        refreshDay()
+    }
+
+    /// O(number of stays in the selected day), rather than O(all historical
+    /// stays × all historical votes) on every Anterior/Siguiente tap.
+    private func refreshDay() {
+        guard let lookup=partsIndex else { return }
+        let entries=visible.map { stay in
+            SiteDaySource(stay:stay,parts:lookup.parts(for:stay))
+        }
+        dayParts=Dictionary(uniqueKeysWithValues:
+            entries.map{($0.stay.id,$0.parts)})
+        dayReport=SiteDayPresentation.build(entries,on:selectedDay)
+        dayClockSegments=SiteDailyClock.segments(
+            stays:visible,partsByStay:dayParts,on:selectedDay)
+    }
+
     private func rebuild() {
-        let id = UUID()
-        generation = id
-        preparing = true
-        let original = model.data.intervals
+        let id=UUID()
+        generation=id
+        preparing=true
+        let original=model.data.intervals
+        let calendar=Calendar.current
         DispatchQueue.global(qos:.userInitiated).async {
-            let computed = SiteStayHistory.extract(original)
+            let computed=SiteStayHistory.extract(original)
+            let indexed=SiteDayIndex.build(computed,calendar:calendar)
             DispatchQueue.main.async {
                 guard generation == id else { return }
-                allStays = computed
-                preparing = false
+                allStays=computed
+                staysByDay=indexed
+                indexedIntervalCount=original.count
+                refreshPartsIndex()
+                preparing=false
             }
         }
     }
