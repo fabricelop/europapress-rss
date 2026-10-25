@@ -81,36 +81,35 @@ import ActivityKit
         let valid=Set(model.data.identifiedSites.map(\.id))
         if let start=model.currentVisitStart {
             let key=SiteStayPolicy.visitKey(cellID:cell.id,entered:start)
-            // Current, explicitly split periods have precedence.
-            if let part=model.data.siteStayParts.first(where:{
-                $0.stayID == key && $0.kind == .place && $0.siteID != nil &&
-                $0.from <= now && now < $0.to
-            }),let id=part.siteID,valid.contains(id),
-                let label=model.siteNamed(id)?.name {
-                return (label,part.confirmed)
+            let parts=model.data.siteStayParts.filter { $0.stayID == key }
+            if !parts.isEmpty {
+                // Explicit split / "De paso" / "Sin identificar" takes
+                // precedence over ALL automatic and legacy assignments.
+                guard let current=parts.first(where:{
+                    $0.from <= now && now < $0.to
+                }),current.kind == .place,
+                    let id=current.siteID,valid.contains(id),
+                    let label=model.siteNamed(id)?.name
+                else { return nil }
+                return (label,current.confirmed)
             }
             if let assignment=model.data.siteStayAssignments.first(where:{
                 $0.id == key && valid.contains($0.siteID)
             }),let name=model.siteNamed(assignment.siteID)?.name {
                 return (name,assignment.confirmed)
             }
-        }
-        // Never override a manually marked "De paso" or "Sin identificar"
-        // with an automatic guess from another visit to the same square.
-        if let start=model.currentVisitStart {
-            let key=SiteStayPolicy.visitKey(cellID:cell.id,entered:start)
-            if model.data.siteStayParts.contains(where:{ $0.stayID == key }) ||
-               model.data.dismissedSiteStayKeys.contains(key) {
+            if model.data.dismissedSiteStayKeys.contains(key) {
                 return nil
             }
         }
+        // Display a suggestion only if its ranking comes from user-confirmed
+        // visits to THIS exact square; never guess a neighboring POI.
         if let best=model.preferredSiteID(for:cell.id),
             let name=model.siteNamed(best)?.name {
             return (name,false)
         }
         return nil
     }
-
 
     private func ongoingActivities()->[Activity<TimeMapActivityAttributes>] {
         Activity<TimeMapActivityAttributes>.activities.filter {
