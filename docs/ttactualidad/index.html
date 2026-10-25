@@ -807,7 +807,18 @@ async function emergencyPair(){
  }finally{if(b)b.disabled=false}
 }
 async function sendEmergencyDirect(item,decision){
- const project=itemProject(item),id=String(item._id||''),key=removeKey(project,id);
+ const project=itemProject(item);
+ let id=String(item._id||'');
+ if(decision==='rework'&&project==='ttendencias'&&Number(item.rank||0)<=30){
+  const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===id);
+  if(!known){
+   const title=String(item.name||item.title||'').trim();
+   const bytes=new TextEncoder().encode(title.normalize('NFC'));
+   const hash=await crypto.subtle.digest('SHA-256',bytes);
+   id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+  }
+ }
+ const key=removeKey(project,id);
  if(decision==='rework'&&!confirm('¿Retirar esta tendencia de Listas y elaborar de cero un texto, remate y foto de archivo nuevos?'))return;
  const issueURL=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
  if(!issueURL){showToast('No se puede ejecutar: identificador no admitido');return}
@@ -862,15 +873,25 @@ async function pilotSend(item,decision){
  }
  if(!await ensurePilotConnection())return;
  if(!directPilot.real){showToast('Edición GitHub no conectada');return}
- const project=itemProject(item),event_id=String(item._id||'');
+ const project=itemProject(item);
+ let event_id=String(item._id||'');
+ if(decision==='rework'&&project==='ttendencias'&&Number(item.rank||0)<=30){
+  const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===event_id);
+  if(!known){
+   const title=String(item.name||item.title||'').trim();
+   const bytes=new TextEncoder().encode(title.normalize('NFC'));
+   const hash=await crypto.subtle.digest('SHA-256',bytes);
+   event_id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+  }
+ }
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador no válido');return}
  const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
- const key=hideOptimistically(item,decision),op=pendingDeletes.get(key);
+ const key=hideOptimistically({...item,_id:event_id},decision),op=pendingDeletes.get(key);
  try{
   const res=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
    headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({project,event_id,decision,revision:op.revision,request_id:op.request_id}),
+   body:JSON.stringify({project,event_id,decision,revision:op.revision,request_id:op.request_id,trend_name:String(item.name||item.title||'').trim(),trend_rank:Number(item.rank||0)}),
    signal:AbortSignal.timeout(15000)});
   const result=await res.json().catch(()=>({}));
   if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
@@ -936,21 +957,16 @@ function rowCard(x,i){
    out.querySelector('.card-body').insertBefore(note,a);
    btn('Ver en Explicadas',()=>{state.tab='explicadas';render()},true);
   }
-  if(x._reworkable){
-   command('Volver a En elaboración','rework');
-  }
+  // All Top 30 cards can request a new explanation. No concurrent duplicates.
+  if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
+   const busy=btn('Volver a elaborar · en curso',()=>{});busy.disabled=true;
+  }else command('Volver a elaborar','rework');
   if(d.editorial&&x.explanation){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
    command('Quitar de Listas','deleted');
   }
-  // Manual request always remains available for ranks 11-30 that are
-  // NOT currently in Explicadas or under editorial processing. A historical
-  // explanation without Telegram delivery is not a completed current card.
-  if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
-     !x._reworkable&&!['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','POR ACTUALIZAR','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
-   command('Preparar novedad','prepare');
-  }
+  // El mismo botón «Volver a elaborar» también sirve para la primera explicación.
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   return out
  }
