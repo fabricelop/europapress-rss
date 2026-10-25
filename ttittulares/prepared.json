@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-25T23:59:50+01:00",
+  "updated_at": "2026-10-25T23:02:00.200115Z",
   "items": [
     {
       "event_id": "manual-f9176271-47b5-415e-b967-a3e0353feab1",
@@ -33,16 +33,34 @@
       ],
       "source_count": 2,
       "drafted_source_count": 2,
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "ai_image_status": "none",
-      "image_strategy": "ai_plus_fallback",
-      "image_mode": "ai_plus_fallback",
-      "image_choice": "none",
+      "image_strategy": "archive_only",
+      "image_mode": "archive_only",
+      "image_choice": "fallback",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-25T23:02:00.200115Z",
+      "fallback_image_search_attempted_at": "2026-10-25T23:02:00.200115Z",
+      "archive_image": {
+        "url": "https://img.rtve.es/imagenes/heridos-caer-autobus-terraplen-valles-oriental/01792961853213.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261025/heridos-caer-autobus-terraplen-valles-oriental/17282724.shtml",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Accidente autocar terraplén España"
+      },
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/heridos-caer-autobus-terraplen-valles-oriental/01792961853213.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261025/heridos-caer-autobus-terraplen-valles-oriental/17282724.shtml",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Accidente autocar terraplén España"
+      }
     }
   ],
   "count": 0,
