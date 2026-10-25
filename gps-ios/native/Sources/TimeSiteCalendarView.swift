@@ -415,7 +415,10 @@ struct TimeSiteCalendarView: View {
     private func rebuild() {
         let id=UUID()
         generation=id
-        preparing=true
+        // Do not replace populated List sections with a loading placeholder
+        // every time a live GPS interval arrives: that reset the scroll offset.
+        // Show the progress indicator only for the very first history index.
+        if indexedIntervalCount < 0 { preparing=true }
         let original=model.data.intervals
         let calendar=Calendar.current
         DispatchQueue.global(qos:.userInitiated).async {
