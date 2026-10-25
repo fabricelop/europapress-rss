@@ -33,8 +33,10 @@ def is_new_editorial_episode(old: dict | None, revision: int, candidate: dict) -
     """
     from datetime import datetime, timezone
 
-    if not old or _revision(old, revision) != revision:
+    if not old:
         return False
+    # New automated episodes may restart at r0 after a prior event reached r1
+    # or r2. Compare immutable editorial timestamps and text, not counters.
     context = old.get("context_snapshot")
     if not isinstance(context, dict):
         return False
