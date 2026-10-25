@@ -1,6 +1,7 @@
 // deploy-sync: mobile-run-worker-contract-v13-20261004
 import crypto from "node:crypto";
 import sharp from "sharp";
+import {explanationIsCopied, sameEditorialEpisode} from "./ttendencias-copy-state.js";
 
 const CONTROL_TOKEN_HASHES=[
   "2663da5223c2313c3670a7843a0cdfabfd2dd7c8fad1ed168247866a3b1262e5",
@@ -147,17 +148,12 @@ async function imageEligibility(targetId){
   if(!row||row.status==="grouped"||!String(row.explanation||"").trim())return {eligible:false,reason:"not_pending_explained",row};
   const name=String(row.name||"").trim(),rev=Number(row.revision||0);
   const telegram=await readMainJson("trends/telegram-image-deliveries.json");
-  const latestDelivery=(telegram.items||[]).filter(x=>String(x.event_id||"")===String(targetId)&&Number(x.revision||0)===rev).at(-1);
+  const latestDelivery=(telegram.items||[]).filter(x=>
+    String(x.event_id||"")===String(targetId)&&
+    Number(x.revision||0)===rev&&sameEditorialEpisode(row,x)).at(-1);
   if(latestDelivery&&["deleted","dismissed","published","removed","delete_pending"].includes(String(latestDelivery.status||"").toLowerCase()))
     return {eligible:false,reason:"telegram_card_closed",row};
-  const rowId=String(row.id||"").trim();
-  const archived=(copyState.items||[]).some(x=>{
-    if(Number(x.revision||0)!==rev)return false;
-    const archivedId=String(x.item_id||x.id||"").trim();
-    if(rowId&&archivedId)return archivedId===rowId;
-    if(archivedId)return false;
-    return Array.isArray(x.trend_names)&&x.trend_names.some(n=>String(n||"").trim().toLowerCase()===name.toLowerCase())
-  });
+  const archived=explanationIsCopied(row,copyState).copied;
   // La sensibilidad editorial no bloquea ImageGen. Tremending conserva su
   // flujo específico de captura real del tuit y no entra en este endpoint.
   const blocked=Boolean(row.tremending_origin);
