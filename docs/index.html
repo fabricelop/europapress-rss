@@ -430,13 +430,10 @@ function rowCard(x,i){
    btn('📋 Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Abrir en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial));
   }
-  // Manual request always remains available for ranks 11-30 that are
-  // NOT currently in Explicadas or under editorial processing. A historical
-  // explanation without Telegram delivery is not a completed current card.
-  if(Number(x.rank)>=11&&Number(x.rank)<=30&&!x._inExplained&&
-     !['EN COLA','EN ELABORACIÓN','REVISIÓN','EXPLICADA','BORRADA','PUBLICADA','DESESTIMADA','RETIRADA'].includes(x._status)){
-   command('Preparar novedad','prepare');
-  }
+   // Every current trend can be sent for fresh research, even without an old card.
+   if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
+    const busy=btn('Volver a elaborar · en curso',()=>{});busy.disabled=true;
+   }else command('Volver a elaborar','rework');
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
   return out
  }
