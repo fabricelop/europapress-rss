@@ -134,6 +134,11 @@ struct TimeSiteCalendarView: View {
                         .foregroundStyle(.secondary)
                 }
             if !preparing && !visible.isEmpty {
+                Section {
+                    TimeSiteDailyClockView(model:model,day:selectedDay,stays:visible)
+                } header: {
+                    Text("Dónde estuve durante el día")
+                }
                 Section("Resumen del día") {
                     VStack(alignment:.leading,spacing:7) {
                         HStack {
