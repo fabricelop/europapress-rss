@@ -83,7 +83,14 @@ class ImageIdempotencyTests(unittest.TestCase):
         for candidate in (same, earlier, just_date, {"explanation": "Texto sin fecha"}, {}):
             with self.subTest(candidate=candidate):
                 self.assertFalse(is_new_editorial_episode(old, 0, candidate))
-        self.assertFalse(is_new_editorial_episode(old, 1, {"explained_at":"2026-10-26T21:02:00Z", "explanation":"Otra"}))
+        self.assertTrue(is_new_editorial_episode(old, 1, {"explained_at":"2026-10-26T21:02:00Z", "explanation":"Otra"}))
+        # New sports match starts at r0, but the old match reached r1.
+        old["revision"] = 1
+        self.assertTrue(is_new_editorial_episode(old, 0,
+            {"explained_at":"2026-10-26T21:02:00Z", "explanation":"Nuevo encuentro."}))
+        # The side-effect guard still rejects the old r1 job for r0 if
+        # there is no proven separate episode.
+        self.assertFalse(may_enqueue_image_job(old, 0))
 
     def test_workflows_use_same_gate_and_no_rebase(self):
         root = Path(__file__).resolve().parents[1]
