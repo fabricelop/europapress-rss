@@ -616,17 +616,26 @@ for item in current:
     if req:
         if item["rank"] <= 10 and status == "explained" and explanation_expired(key):
             reopened_at = now_dt.isoformat(timespec="seconds")
-            req["rank"] = item["rank"]
-            req["status"] = "preparing"
-            req["requested_at"] = reopened_at
-            req["revision"] = int(req.get("revision") or 0) + 1
-            req["reexplain"] = True
-            req["with_image"] = True
-            req["requested_together"] = [item["name"]]
-            req["captured_with"] = [x["name"] for x in current]
-            req.pop("explained_at", None)
+            # Every new sports match / event needs an independent editorial ID.
+            # Reusing a historical ID or incrementing its revision can cause
+            # the AI bridge to treat a brand-new story as deleted/archived.
+            new_id = hashlib.sha256(
+                ("top10-fresh-episode|" + key + "|" + reopened_at + "|" + str(req.get("id") or "")).encode("utf-8")
+            ).hexdigest()[:12]
+            fresh = {
+                "id": new_id, "name": item["name"], "rank": item["rank"],
+                "status": "preparing", "revision": 0, "requested_at": reopened_at,
+                "updated_at": reopened_at, "reexplain": False, "with_image": True,
+                "disable_ai_image": False, "image_strategy": "ai_plus_fallback",
+                "ai_image_status": "pending", "auto_queued": True,
+                "auto_queue_scope": "top10", "originated_from_prior_id": req.get("id"),
+                "requested_together": [item["name"]],
+                "captured_with": [x["name"] for x in current],
+            }
+            requests.append(fresh)
+            by_name[key] = fresh
             reconciled = True
-            print("Reabierta explicación con más de 48 h:", item["name"])
+            print("Nuevo episodio Top 10 en elaboración:", item["name"], new_id)
             continue
         # Una solicitud ready sin tarjeta prepared es un estado imposible:
         # normalmente indica una carrera o borrado parcial. Se reabre de forma
@@ -678,6 +687,8 @@ for item in current:
         if status in {"preparing", "update", "explained", "dismissed",
                       "published", "removed", "deleted"}:
             continue
+        if status == "inactive" and key in explained and not explanation_expired(key):
+            continue
     elif key in explained and not explanation_expired(key):
         continue
     to_queue.append(item)
@@ -701,9 +712,12 @@ for item in to_queue:
     key = norm(name)
     req = by_name.get(key)
     closed_reentry = closed_name_eligible_for_new_event(req, item)
+    inactive_reentry = bool(req and str(req.get("status") or "") == "inactive")
+    independent_episode = closed_reentry or inactive_reentry
     req_id = (
-        hashlib.sha256(("top10-reentry|" + key + "|" + now_dt.date().isoformat()).encode("utf-8")).hexdigest()[:12]
-        if closed_reentry else
+        hashlib.sha256(("top10-reentry|" + key + "|" + now + "|" +
+                        str((req or {}).get("id") or "")).encode("utf-8")).hexdigest()[:12]
+        if independent_episode else
         str((req or {}).get("id") or hashlib.sha256(name.encode("utf-8")).hexdigest()[:12])
     )
     new_req = {
@@ -712,7 +726,7 @@ for item in to_queue:
         "rank": item["rank"],
         "status": "preparing",
         "requested_at": now,
-        "revision": 0 if closed_reentry else int((req or {}).get("revision") or 0) + (1 if req and str(req.get("status") or "") == "inactive" else 0),
+        "revision": 0 if independent_episode else int((req or {}).get("revision") or 0),
         "reexplain": False,
         "with_image": True,
         "alternatives_target": 0,
@@ -724,8 +738,8 @@ for item in to_queue:
         "auto_queued": True,
         "auto_queue_scope": "top10",
     }
-    if req is None or closed_reentry:
-        # Keep closed historical IDs, append a separate current occurrence.
+    if req is None or independent_episode:
+        # Keep historical episodes, their decisions and image jobs untouched.
         requests.append(new_req)
         by_name[key] = new_req
     else:
