@@ -14,13 +14,17 @@ final class LiveActivityPresentationTests:XCTestCase {
             lastSixHours:[0,25,65,100,100,20],chartIsZone:true,
             moving:false,recentDistanceMeters:0,crossedCells:0,
             trailIndices:[],headingDegrees:nil,currentZoneStaySeconds:300,
-            lastSixMinutes:[0,15,39,60,60,12],milestone:nil)
+            lastSixMinutes:[0,15,39,60,60,12],milestone:nil,
+            siteName:"Casa Montevalle",siteConfirmed:true,
+            bioGridCounts:[2,3,5,7,11,13,17],bioGridUpdatedAt:start)
         let bytes=try! JSONEncoder().encode(state)
         let decoded=try! JSONDecoder().decode(TimeMapActivityAttributes.ContentState.self,from:bytes)
         XCTAssertEqual(decoded,state)
         XCTAssertEqual(decoded.confirmedZoneSeconds,1800)
         XCTAssertEqual(decoded.nearbyIntensity.count,9)
         XCTAssertEqual(decoded.lastSixHours.count,6)
+        XCTAssertEqual(decoded.siteName,"Casa Montevalle")
+        XCTAssertEqual(decoded.bioGridCounts,[2,3,5,7,11,13,17])
     }
     func testUnavailableZoneIsNotFalselyReported() {
         let start=Date(timeIntervalSince1970:10000)
@@ -33,7 +37,8 @@ final class LiveActivityPresentationTests:XCTestCase {
             lastSixHours:Array(repeating:0,count:6),chartIsZone:false,
             moving:false,recentDistanceMeters:0,crossedCells:0,
             trailIndices:[],headingDegrees:nil,currentZoneStaySeconds:nil,
-            lastSixMinutes:Array(repeating:0,count:6),milestone:nil)
+            lastSixMinutes:Array(repeating:0,count:6),milestone:nil,
+            siteName:nil,siteConfirmed:nil,bioGridCounts:nil,bioGridUpdatedAt:nil)
         XCTAssertNil(state.confirmedZoneSeconds)
         XCTAssertNil(state.zoneName)
     }
