@@ -110,7 +110,7 @@ jobs:
           from datetime import datetime, timezone
           from urllib.parse import unquote
           from PIL import Image
-          from shared.tt_image_idempotency import may_enqueue_image_job
+          from shared.tt_image_idempotency import may_enqueue_image_job, is_new_editorial_episode
 
           MAIN=pathlib.Path(".")
           CTRL=pathlib.Path("/tmp/ttendencias-control")
@@ -252,13 +252,20 @@ jobs:
               job_path=CTRL/f"trends/image-runs/jobs/{tid}.json"
               old=load(job_path)
               manual_retry_version=int(row.get("ai_image_regenerate_request_version") or 0)
-              # The same side-effect-aware guard is shared by both projects.
-              # In launch_only mode ERROR is not proof ImageGen did not run.
-              if not may_enqueue_image_job(old, revision, manual_retry_version=manual_retry_version):
+              # A trend ID can be reused at revision 0 for an entirely NEW
+              # match/event. Its October 4 prompt cannot block October 26.
+              # Keep the conservative no-duplicate gate for the SAME story.
+              new_episode=is_new_editorial_episode(old, revision, row)
+              prior={} if new_episode else old
+              if new_episode:
+                  print("TTENDENCIAS_NEW_EDITORIAL_EPISODE",tid,
+                        (old.get("context_snapshot") or {}).get("explained_at"),
+                        "->",row.get("explained_at"))
+              if not may_enqueue_image_job(prior, revision, manual_retry_version=manual_retry_version):
                   continue
-              force_retry=manual_retry_version>int(old.get("manual_retry_version") or 0)
-              auto_attempt=int(old.get("auto_repair_attempt") or 0)
-              previous_attempt=int(old.get("attempt") or row.get("ai_image_attempt") or 0)
+              force_retry=manual_retry_version>int(prior.get("manual_retry_version") or 0)
+              auto_attempt=int(prior.get("auto_repair_attempt") or 0)
+              previous_attempt=int(prior.get("attempt") or row.get("ai_image_attempt") or 0)
               auto_attempt+=1
               attempt=max(1,previous_attempt+1)
               command=f"tr-img-auto-{tid}-r{revision}-a{auto_attempt}-{int(time.time()*1000)}"
