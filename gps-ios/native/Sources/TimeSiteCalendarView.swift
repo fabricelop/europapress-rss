@@ -35,6 +35,9 @@ struct TimeSiteCalendarView: View {
         }
     }
     @State private var expandedGroups: Set<String> = []
+    // Pin the opened historical stay outside the live-recomputed day rows.
+    // GPS updates can rebuild the calendar without recreating the editor.
+    @State private var selectedStay: SiteGridStay?
 
     private func changeDay(_ delta: Int) {
         selectedDay = SiteCalendarDay.addingDays(delta, to: selectedDay)
@@ -223,21 +226,13 @@ struct TimeSiteCalendarView: View {
                                        else { expandedGroups.remove(group.id) } }
                             )) {
                                 ForEach(group.entries,id:\.stay.id) { item in
-                                    NavigationLink {
-                                        TimeSiteStayEditor(model:model,stay:item.stay)
-                                    } label: {
-                                        stayRow(item.stay)
-                                    }
+                                    stayEditorRow(item)
                                 }
                             } label: {
                                 groupRow(group)
                             }
                         } else if let item=group.entries.first {
-                            NavigationLink {
-                                TimeSiteStayEditor(model:model,stay:item.stay)
-                            } label: {
-                                stayRow(item.stay)
-                            }
+                            stayEditorRow(item)
                         }
                     }
                 }
@@ -249,6 +244,23 @@ struct TimeSiteCalendarView: View {
                     Text(DateFormatter.localizedString(from:selectedDay,dateStyle:.medium,timeStyle:.none))
                 }
             }
+    }
+
+    // A stable navigation destination prevents a GPS-driven List diff from
+    // destroying the scroll offset of the detail screen while it is open.
+    private func stayEditorRow(_ item: SiteDaySource) -> some View {
+        Button {
+            selectedStay = item.stay
+        } label: {
+            HStack(spacing: 8) {
+                stayRow(item.stay)
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     private var historyList: some View {
@@ -271,6 +283,14 @@ struct TimeSiteCalendarView: View {
         VStack(spacing: 0) {
             calendarControls
             historyList
+        }
+        .navigationDestination(isPresented: Binding(
+            get: { selectedStay != nil },
+            set: { if !$0 { selectedStay = nil } }
+        )) {
+            if let selectedStay {
+                TimeSiteStayEditor(model:model,stay:selectedStay)
+            }
         }
         .navigationTitle("Histórico de sitios")
         .navigationBarTitleDisplayMode(.inline)
@@ -416,7 +436,9 @@ struct TimeSiteCalendarView: View {
 /// The user's manually chosen sub-periods are authoritative; automatic labels
 /// are only suggestions and never split a stay or invent its timeline.
 struct TimeSiteStayEditor: View {
-    @ObservedObject var model: TimeModel
+    // Keep the editor independent of continuous GPS/objectWillChange ticks.
+    // Only explicit edits to `parts` should recompute its List layout.
+    let model: TimeModel
     let stay: SiteGridStay
     @State private var parts: [SiteStayPart]
     @State private var choosingPart: UUID?
@@ -443,54 +465,6 @@ struct TimeSiteStayEditor: View {
                 Text("Puedes identificar varios lugares durante una misma estancia. Las divisiones son manuales y nunca duplican tiempo.")
                     .font(.caption).foregroundStyle(.secondary)
             } header: { Text("Estancia continua") }
-
-            Section("Sitios asociados a esta cuadrícula") {
-                let associated = model.siteOptions(for:stay.cell)
-                if associated.isEmpty {
-                    Text("Todavía no has asociado ningún sitio. Usa «Elegir / cambiar» para buscarlo.")
-                        .font(.caption).foregroundStyle(.secondary)
-                } else {
-                    Text("Toca un lugar para asignarlo directamente a esta estancia. Si la dividiste, podrás elegir el tramo.")
-                        .font(.caption).foregroundStyle(.secondary)
-                    ForEach(associated.indices,id:\.self) { index in
-                        let row=associated[index]
-                        Button {
-                            assignAssociatedSite(row.site)
-                        } label: {
-                            HStack(spacing:10) {
-                                Image(systemName: row.site.origin == "private" ? "house" : "mappin.circle")
-                                    .foregroundStyle(.teal)
-                                    .frame(width:20)
-                                VStack(alignment:.leading,spacing:3) {
-                                    Text(row.site.name)
-                                        .font(.subheadline.weight(.medium))
-                                        .foregroundStyle(.primary)
-                                    Text(row.confirmations > 0 ?
-                                         "\(row.confirmations) confirmaciones aquí" :
-                                         row.fromOtherSquares > 0 ?
-                                         "Identificado en otra cuadrícula" :
-                                         "Sitio guardado")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
-                                }
-                                Spacer(minLength:4)
-                                Text("Usar")
-                                    .font(.caption.weight(.semibold))
-                                    .foregroundStyle(.teal)
-                                Image(systemName:"checkmark.circle")
-                                    .foregroundStyle(.teal)
-                            }
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("site-associated-select-\(index)")
-                    }
-                }
-            }
-
-            Section("¿Dónde estaba?") {
-                TimeSiteStayLocationMap(model:model,stay:stay)
-            }
 
             Section("Lugares y tramos") {
                 ForEach(parts.sorted { $0.from < $1.from }) { part in
@@ -559,6 +533,54 @@ struct TimeSiteStayEditor: View {
                     }
                     .padding(.vertical,7)
                 }
+            }
+
+            Section("Sitios asociados a esta cuadrícula") {
+                let associated = model.siteOptions(for:stay.cell)
+                if associated.isEmpty {
+                    Text("Todavía no has asociado ningún sitio. Usa «Elegir / cambiar» para buscarlo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                } else {
+                    Text("Toca un lugar para asignarlo directamente a esta estancia. Si la dividiste, podrás elegir el tramo.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    ForEach(associated.indices,id:\.self) { index in
+                        let row=associated[index]
+                        Button {
+                            assignAssociatedSite(row.site)
+                        } label: {
+                            HStack(spacing:10) {
+                                Image(systemName: row.site.origin == "private" ? "house" : "mappin.circle")
+                                    .foregroundStyle(.teal)
+                                    .frame(width:20)
+                                VStack(alignment:.leading,spacing:3) {
+                                    Text(row.site.name)
+                                        .font(.subheadline.weight(.medium))
+                                        .foregroundStyle(.primary)
+                                    Text(row.confirmations > 0 ?
+                                         "\(row.confirmations) confirmaciones aquí" :
+                                         row.fromOtherSquares > 0 ?
+                                         "Identificado en otra cuadrícula" :
+                                         "Sitio guardado")
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer(minLength:4)
+                                Text("Usar")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundStyle(.teal)
+                                Image(systemName:"checkmark.circle")
+                                    .foregroundStyle(.teal)
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("site-associated-select-\(index)")
+                    }
+                }
+            }
+
+            Section("¿Dónde estaba?") {
+                TimeSiteStayLocationMap(model:model,stay:stay)
             }
 
         }
@@ -637,7 +659,8 @@ private struct SitePartSelection:Identifiable {
 /// square. Blue dots are real, retained GPS fixes; if none exists, the
 /// square is displayed alone rather than inventing an exact position.
 private struct TimeSiteStayLocationMap: View {
-    @ObservedObject var model: TimeModel
+    // Read-only historical map: live GPS updates must not recreate the map.
+    let model: TimeModel
     let stay: SiteGridStay
 
     @State private var camera: MapCameraPosition
