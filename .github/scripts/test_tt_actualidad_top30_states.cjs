@@ -64,8 +64,8 @@ const status=name=>rows.find(row=>row.name===name)?._status;
 // Top 30 is an index of current work, never a publication surface.
 assert.equal(status('Hispanidad'),'PENDIENTE');
 assert.equal(status('Feliz 12'),'EN COLA');
-assert.equal(status('Tendencia sin entrega'),'EN LISTAS · IMAGEN IA EN CURSO');
-assert.equal(status('Tendencia entregada'),'EN LISTAS · IMAGEN IA EN CURSO');
+assert.equal(status('Tendencia sin entrega'),'PENDIENTE DE LISTAS');
+assert.equal(status('Tendencia entregada'),'PENDIENTE DE LISTAS');
 assert.equal(status('Tendencia nueva'),'PREPARACIÓN MANUAL');
 assert.equal(status('Tendencia manual'),'EN COLA');
 assert.equal(status('Top diez sin elaborar'),'PENDIENTE');
