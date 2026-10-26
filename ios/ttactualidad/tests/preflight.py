@@ -26,7 +26,7 @@ for name in ("trends/telegram-manual-explained.json", "trends/requests.json",
              "trends/editorial-queue.json", "trends/recent.json"):
     assert name in store, name
 for source in (project, store, activity, shared, app):
-    assert not re.search(r"workers\.dev|cloudflare|vercel\.app", source, re.IGNORECASE), "Cloudflare/Vercel dependency"
+    assert not re.search(r"workers\.dev|pages\.dev|cloudflare\.com|vercel\.app", source, re.IGNORECASE), "Cloudflare/Vercel dependency"
 assert "BGTaskScheduler" not in store
 assert "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" in store
 assert "partialData: partial" in store
