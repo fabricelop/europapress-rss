@@ -7,7 +7,7 @@ struct TTActualidadApp: App {
 
     var body: some Scene {
         WindowGroup {
-            EditorialView()
+            TTDashboard()
                 .environmentObject(store)
                 .task { await store.refresh() }
                 .onOpenURL { url in
