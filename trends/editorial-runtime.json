@@ -12,9 +12,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T02:15:30+01:00",
-  "last_completed_at": "2026-10-26T02:22:40+01:00",
-  "updated_at": "2026-10-26T02:22:40+01:00",
+  "last_started_at": "2026-10-26T02:45:00+01:00",
+  "last_completed_at": "2026-10-26T02:46:30+01:00",
+  "updated_at": "2026-10-26T02:46:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -25,33 +25,30 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261026T0215-manual",
+    "run_id": "tr-20261026T0245-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T02:15:30+01:00",
-    "updated_at": "2026-10-26T02:22:40+01:00",
-    "finished_at": "2026-10-26T02:22:40+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-26T02:45:00+01:00",
+    "updated_at": "2026-10-26T02:46:30+01:00",
+    "finished_at": "2026-10-26T02:46:30+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
-      "ready": 1,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "attempted": 0,
+      "ready": 0,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -59,154 +56,56 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 19,
+      "pending_cards_reviewed": 16,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 1,
+      "top10_reviewed": 10,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: Yola explicada y verificada; cola final 0.",
+    "message": "TTendencias completada: no había trabajo editorial nuevo; estado verificado y saneamiento visual solicitado.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T02:15:30+01:00",
+        "at": "2026-10-26T02:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: comprobando Yola y saneamiento editorial vigente."
+        "message": "Inicio de pasada: cola textual vacía; verificando Top 10, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-26T02:16:10+01:00",
-        "phase": "verifying",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Releyendo estado autoritativo de Yola"
-      },
-      {
-        "at": "2026-10-26T02:16:25+01:00",
-        "phase": "investigating",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-26T02:17:10+01:00",
-        "phase": "investigating",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Contrastando fuente 1/2 · Mediaset Infinity"
-      },
-      {
-        "at": "2026-10-26T02:17:35+01:00",
-        "phase": "investigating",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Contrastando fuente 2/2 · cobertura actual del programa"
-      },
-      {
-        "at": "2026-10-26T02:18:00+01:00",
-        "phase": "investigating",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Hecho esencial verificado: nuevo enfrentamiento con Rosa Benito emitido el 25 de octubre en Supervivientes All Stars."
-      },
-      {
-        "at": "2026-10-26T02:18:20+01:00",
-        "phase": "drafting",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-26T02:18:45+01:00",
-        "phase": "drafting",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Comprobando límite de X · 260 caracteres"
-      },
-      {
-        "at": "2026-10-26T02:19:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-26T02:19:25+01:00",
-        "phase": "remate_selection",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates"
-      },
-      {
-        "at": "2026-10-26T02:19:45+01:00",
-        "phase": "remate_selection",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Remate seleccionado · original y específico del choque"
-      },
-      {
-        "at": "2026-10-26T02:20:10+01:00",
-        "phase": "persisting",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-26T02:20:35+01:00",
-        "phase": "persisting",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-26T02:21:05+01:00",
-        "phase": "persisting",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-26T02:21:35+01:00",
-        "phase": "verifying",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Releyendo main"
-      },
-      {
-        "at": "2026-10-26T02:22:00+01:00",
-        "phase": "verifying",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-26T02:22:15+01:00",
-        "phase": "verifying",
-        "trend_id": "82f5e0081259",
-        "title": "Yola",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-26T02:22:30+01:00",
+        "at": "2026-10-26T02:45:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 19 tarjetas recientes; sin remates faltantes"
+        "message": "Top 10 revisado · 10/10 con explicación vigente; ninguna revisión supera el umbral de reelaboración."
       },
       {
-        "at": "2026-10-26T02:22:40+01:00",
+        "at": "2026-10-26T02:45:45+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 16 tarjetas recientes; todas tienen remate."
+      },
+      {
+        "at": "2026-10-26T02:46:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0."
+      },
+      {
+        "at": "2026-10-26T02:46:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Yola explicada y verificada; cola final 0."
+        "message": "TTendencias completada: no había trabajo editorial nuevo; estado verificado y saneamiento visual solicitado."
       }
     ],
     "ratings_snapshot": {
@@ -215,49 +114,27 @@
       "updated_at": "2026-10-06T21:21:47.927Z",
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "82f5e0081259",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [],
-        "selected_candidate": "🌶️ En Honduras también hay aduana para los reproches.",
-        "selected_score": null,
-        "no_remate_reason": null
-      }
-    ],
-    "processed_ids": [
-      "82f5e0081259"
-    ],
+    "remate_selections": [],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "82f5e0081259",
-        "revision": 0,
-        "name": "Yola",
-        "status": "explained",
-        "explained_at": "2026-10-26T02:20:20+01:00",
-        "closer_text": "🌶️ En Honduras también hay aduana para los reproches.",
-        "verified": true
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-20261026T0215-manual",
+  "run_id": "tr-20261026T0245-manual",
   "summary": {
-    "attempted": 1,
-    "ready": 1,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "attempted": 0,
+    "ready": 0,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -265,151 +142,53 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 19,
+    "pending_cards_reviewed": 16,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 1,
+    "top10_reviewed": 10,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T02:15:30+01:00",
+      "at": "2026-10-26T02:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: comprobando Yola y saneamiento editorial vigente."
+      "message": "Inicio de pasada: cola textual vacía; verificando Top 10, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-26T02:16:10+01:00",
-      "phase": "verifying",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Releyendo estado autoritativo de Yola"
-    },
-    {
-      "at": "2026-10-26T02:16:25+01:00",
-      "phase": "investigating",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-26T02:17:10+01:00",
-      "phase": "investigating",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Contrastando fuente 1/2 · Mediaset Infinity"
-    },
-    {
-      "at": "2026-10-26T02:17:35+01:00",
-      "phase": "investigating",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Contrastando fuente 2/2 · cobertura actual del programa"
-    },
-    {
-      "at": "2026-10-26T02:18:00+01:00",
-      "phase": "investigating",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Hecho esencial verificado: nuevo enfrentamiento con Rosa Benito emitido el 25 de octubre en Supervivientes All Stars."
-    },
-    {
-      "at": "2026-10-26T02:18:20+01:00",
-      "phase": "drafting",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-26T02:18:45+01:00",
-      "phase": "drafting",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Comprobando límite de X · 260 caracteres"
-    },
-    {
-      "at": "2026-10-26T02:19:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Generando candidatos de remate"
-    },
-    {
-      "at": "2026-10-26T02:19:25+01:00",
-      "phase": "remate_selection",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Evaluando candidatos con ratings y últimos 30 remates"
-    },
-    {
-      "at": "2026-10-26T02:19:45+01:00",
-      "phase": "remate_selection",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Remate seleccionado · original y específico del choque"
-    },
-    {
-      "at": "2026-10-26T02:20:10+01:00",
-      "phase": "persisting",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-26T02:20:35+01:00",
-      "phase": "persisting",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-26T02:21:05+01:00",
-      "phase": "persisting",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-26T02:21:35+01:00",
-      "phase": "verifying",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Releyendo main"
-    },
-    {
-      "at": "2026-10-26T02:22:00+01:00",
-      "phase": "verifying",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-26T02:22:15+01:00",
-      "phase": "verifying",
-      "trend_id": "82f5e0081259",
-      "title": "Yola",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-26T02:22:30+01:00",
+      "at": "2026-10-26T02:45:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 19 tarjetas recientes; sin remates faltantes"
+      "message": "Top 10 revisado · 10/10 con explicación vigente; ninguna revisión supera el umbral de reelaboración."
     },
     {
-      "at": "2026-10-26T02:22:40+01:00",
+      "at": "2026-10-26T02:45:45+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 16 tarjetas recientes; todas tienen remate."
+    },
+    {
+      "at": "2026-10-26T02:46:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0."
+    },
+    {
+      "at": "2026-10-26T02:46:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Yola explicada y verificada; cola final 0."
+      "message": "TTendencias completada: no había trabajo editorial nuevo; estado verificado y saneamiento visual solicitado."
     }
   ],
   "partial": false,
@@ -429,26 +208,6 @@
     "updated_at": "2026-10-06T21:21:47.927Z",
     "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "trend_id": "82f5e0081259",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [],
-      "selected_candidate": "🌶️ En Honduras también hay aduana para los reproches.",
-      "selected_score": null,
-      "no_remate_reason": null
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "82f5e0081259",
-      "revision": 0,
-      "name": "Yola",
-      "status": "explained",
-      "explained_at": "2026-10-26T02:20:20+01:00",
-      "closer_text": "🌶️ En Honduras también hay aduana para los reproches.",
-      "verified": true
-    }
-  ]
+  "remate_selections": [],
+  "final_outcomes": []
 }
