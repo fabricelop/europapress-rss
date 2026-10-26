@@ -31,6 +31,29 @@ struct EditorialActions: View {
 
     var body: some View {
         VStack(spacing: 7) {
+            if let news, news.status != "LISTA" {
+                HStack(spacing: 7) {
+                    quickButton("Copiar título", "doc.on.doc") { copy(news.title) }
+                    quickButton("Buscar en X", "magnifyingglass") {
+                        var parts = URLComponents(string: "https://x.com/search")
+                        parts?.queryItems = [URLQueryItem(name: "q", value: news.title),
+                                             URLQueryItem(name: "f", value: "live")]
+                        if let link = parts?.url { openURL(link) }
+                    }
+                }
+                if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
+                    HStack(spacing: 7) {
+                        quickButton("Preparar", "sparkles") { request("prepare") }
+                        quickButton("Desestimar", "xmark.circle", danger: true) { request("discard") }
+                    }
+                } else if news.status == "TREMENDING" {
+                    quickButton("Quitar", "trash", danger: true) { request("deleted") }
+                }
+            } else if trend?.status == "EN ELABORACIÓN" {
+                Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
+                    .font(.caption).foregroundStyle(TTTheme.muted)
+                quickButton("Copiar nombre", "doc.on.doc") { copy(title) }
+            } else {
             HStack(spacing: 7) {
                 quickLink("TTImages", "photo.stack", "https://t.me/TTImages_bot")
                 quickButton("Publicar en X", "square.and.arrow.up") {
@@ -64,6 +87,7 @@ struct EditorialActions: View {
                         if let url = parts?.url { openURL(url) }
                     }
                 }
+            }
             }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
