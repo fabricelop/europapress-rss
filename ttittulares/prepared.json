@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-26T11:09:38.742728Z",
+  "updated_at": "2026-10-26T11:12:02.789382Z",
   "items": [
     {
       "event_id": "746f0e2617b7",
@@ -500,8 +500,8 @@
       "image_status": "none",
       "image_app_available": false,
       "image_delivery": "none",
-      "archive_image_search_attempted_at": "2026-10-26T10:40:44.427735Z",
-      "fallback_image_search_attempted_at": "2026-10-26T10:40:44.427735Z",
+      "archive_image_search_attempted_at": "2026-10-26T11:12:02.789382Z",
+      "fallback_image_search_attempted_at": "2026-10-26T11:12:02.789382Z",
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-26T10:42:21.269Z",
       "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,"
@@ -759,17 +759,35 @@
         "remate": "🌶️ El censo corre contra el reloj.",
         "url": "https://twitter.com/intent/tweet?text=Albares%20asegura%20que%20Exteriores%20avanza%20%E2%80%9Ca%20buen%20ritmo%E2%80%9D%20para%20entregar%20el%2028%20de%20octubre%20la%20lista%20nominal%20de%20163.020%20nacionalizados%20afectados%20por%20la%20suspensi%C3%B3n%20cautelar%20del%20voto.%0A%0A%23LeyDeNietos%20%23TribunalSupremo%0A%F0%9F%8C%B6%EF%B8%8F%20El%20censo%20corre%20contra%20el%20reloj."
       },
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
-      "archive_image_status": "none",
-      "fallback_image_status": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
       "prepared_at": "2026-10-26T11:09:38.742728Z",
-      "image_choice": "none",
+      "image_choice": "fallback",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-26T11:12:02.789382Z",
+      "fallback_image_search_attempted_at": "2026-10-26T11:12:02.789382Z",
+      "archive_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261026110135_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/nacional/noticia-albares-dice-exteriores-avanza-buen-ritmo-cumplir-plazo-ts-lista-ley-nietos-20261026110135.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Albares dice que Exteriores avanza a \"buen ritmo\" para cumplir con el plazo del TS sobre la lista de la 'Ley de nietos'"
+      },
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261026110135_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/nacional/noticia-albares-dice-exteriores-avanza-buen-ritmo-cumplir-plazo-ts-lista-ley-nietos-20261026110135.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Albares dice que Exteriores avanza a \"buen ritmo\" para cumplir con el plazo del TS sobre la lista de la 'Ley de nietos'"
+      }
     }
   ],
   "count": 0,
