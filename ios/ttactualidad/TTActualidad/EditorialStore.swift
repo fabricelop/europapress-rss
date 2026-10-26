@@ -11,6 +11,15 @@ enum EditorialSection: String, CaseIterable, Identifiable {
 enum TrendFilter: String, CaseIterable, Identifiable {
     case top = "Top 30"
     case listas = "Listas"
+    case elaboracion = "En elaboración"
+    var id: String { rawValue }
+}
+enum NewsFilter: String, CaseIterable, Identifiable {
+    case listas = "Listas"
+    case elaboracion = "En elaboración"
+    case revision = "Revisión"
+    case creciendo = "Creciendo"
+    case tremending = "Tremending"
     var id: String { rawValue }
 }
 
@@ -26,6 +35,8 @@ struct NewsItem: Identifiable {
     let closer: String
     let sources: Int
     var editorial: String { text }
+    var status: String = "LISTA"
+
 }
 
 struct TrendItem: Identifiable {
@@ -50,8 +61,13 @@ struct TrendItem: Identifiable {
 
 struct EditorialSnapshot {
     var news: [NewsItem] = []
+    var newsElaboracion: [NewsItem] = []
+    var newsRevision: [NewsItem] = []
+    var newsCreciendo: [NewsItem] = []
+    var newsTremending: [NewsItem] = []
     var top30: [TrendItem] = []
     var trendListas: [TrendItem] = []
+    var trendsElaboracion: [TrendItem] = []
     var updatedAt: Date?
     var partial: Bool = true
 }
@@ -60,6 +76,7 @@ struct EditorialSnapshot {
 final class EditorialStore: ObservableObject {
     @Published var section: EditorialSection = .trends
     @Published var trendFilter: TrendFilter = .top
+    @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
     @Published private(set) var isLoading = false
     @Published private(set) var message = "Sin sincronizar"
@@ -69,6 +86,9 @@ final class EditorialStore: ObservableObject {
     private let paths = [
         "ttittulares/prepared.json",
         "ttittulares/decisions.json",
+        "ttittulares/status.json",
+        "ttittulares/editorial-queue.json",
+        "ttittulares/tremending/items.json",
         "trends/recent.json",
         "trends/telegram-manual-explained.json",
         "trends/requests.json",
@@ -158,7 +178,54 @@ final class EditorialStore: ObservableObject {
             requests: docs["trends/requests.json"]!,
             ready: ready
         )
-        snapshot = EditorialSnapshot(news: news, top30: top, trendListas: ready,
+        let status = docs["ttittulares/status.json"] ?? [:]
+        let newsQueue = docs["ttittulares/editorial-queue.json"] ?? [:]
+        let newsTremending = docs["ttittulares/tremending/items.json"] ?? [:]
+        let closures = Set(rows(docs["ttittulares/decisions.json"]!, "items").filter {
+            closed.contains(str($0, "status").lowercased())
+        }.map { str($0, "event_id") })
+        let activeIDs = Set(rows(newsQueue, "items").filter {
+            ["PROCESSING", "UPDATE_PROCESSING"].contains(str($0, "status").uppercased())
+        }.map { str($0, "event_id") })
+        func sectionNews(_ list: [[String: Any]], _ kind: String) -> [NewsItem] {
+            list.compactMap { item in
+                let id = Self.str(item, "event_id").isEmpty ? Self.str(item, "id") : Self.str(item, "event_id")
+                guard !id.isEmpty, !closures.contains(id),
+                      !Self.closed.contains(Self.str(item, "status").lowercased())
+                else { return nil }
+                return NewsItem(id: id, title: Self.str(item, "title").isEmpty ?
+                                  Self.str(item, "name") : Self.str(item, "title"),
+                                text: Self.str(item, "explanation"),
+                                publishedAt: Self.when(item, ["selected_at", "requested_at"]),
+                                revision: Self.int(item, "revision"),
+                                sourceURL: URL(string: Self.str(item, "url")),
+                                imageURL: nil,
+                                factual: Self.str(item, "factual_summary"),
+                                closer: "", sources: Self.int(item, "source_count"),
+                                status: kind)
+            }
+        }
+        let processing = rows(newsQueue, "items").filter {
+            ["PROCESSING", "UPDATE_PROCESSING"].contains(Self.str($0, "status").uppercased())
+        }
+        let queueNews = sectionNews(processing.isEmpty ? rows(status, "processing_items") : processing,
+                                    "EN ELABORACIÓN")
+        let problematic = sectionNews(rows(status, "problematic_items").filter {
+            !activeIDs.contains(Self.str($0, "event_id"))
+        }, "REVISIÓN")
+        let growing = sectionNews(rows(status, "three_source_items").filter {
+            !activeIDs.contains(Self.str($0, "event_id"))
+        }, "CRECIENDO")
+        let trending = sectionNews(rows(newsTremending, "items"), "TREMENDING")
+        let trendsQueued = Self.buildTrendsElaboracion(
+            requests: docs["trends/requests.json"]!,
+            queue: docs["trends/editorial-queue.json"]!,
+            ready: ready
+        )
+        snapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
+                                     newsRevision: problematic, newsCreciendo: growing,
+                                     newsTremending: trending,
+                                     top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
                                      updatedAt: now, partial: partial)
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
         if fresh {
@@ -309,6 +376,29 @@ final class EditorialStore: ObservableObject {
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
         .prefix(100)
         .map { $0 }
+    }
+
+    private static func buildTrendsElaboracion(
+        requests: [String: Any], queue: [String: Any], ready: [TrendItem]
+    ) -> [TrendItem] {
+        let readyByID = Dictionary(uniqueKeysWithValues: ready.map { ($0.editorialID, $0.revision) })
+        var result: [String: [String: Any]] = [:]
+        for item in rows(requests, "requests") + rows(queue, "items") {
+            let id = str(item, "id")
+            let status = str(item, "status").lowercased()
+            guard !id.isEmpty, ["preparing", "update"].contains(status),
+                  int(item, "revision") > (readyByID[id] ?? -1) else { continue }
+            if isNewer(item, than: result[id]) { result[id] = item }
+        }
+        return result.values.map { row in
+            TrendItem(id: "work-" + str(row, "id"), rank: int(row, "rank"),
+                      name: str(row, "name").isEmpty ? str(row, "id") : str(row, "name"),
+                      explanation: str(row, "explanation"), lastExplained: when(row, ["explained_at"]),
+                      status: "EN ELABORACIÓN", inListas: false,
+                      editorialID: str(row, "id"), revision: int(row, "revision"),
+                      imageURL: nil, sourceURL: URL(string: str(row, "source_url")))
+        }
+        .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
     }
 
     private static func buildTop30(
