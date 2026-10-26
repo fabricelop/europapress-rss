@@ -1,5 +1,6 @@
 import ActivityKit
 import Combine
+import CryptoKit
 import Foundation
 
 enum EditorialSection: String, CaseIterable, Identifiable {
@@ -549,7 +550,12 @@ final class EditorialStore: ObservableObject {
             let status: String = statuses[key] ??
                 (text.isEmpty ? (rank > 10 ? "PREPARACIÓN MANUAL" : "PENDIENTE") : "EXPLICADA")
             let request = requestByName[key] ?? [:]
-            let editorialID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
+            let knownID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
+            // Backend accepts a stable manual ID for a Top 30 entry without any
+            // previous request. A blank ID would make "Preparar" impossible.
+            let digest = SHA256.hash(data: Data(name.utf8))
+            let manualID = "manual-" + digest.map { String(format: "%02x", $0) }.joined().prefix(32)
+            let editorialID = knownID.isEmpty ? String(manualID) : knownID
             let revision = request.isEmpty ? int(explanation, "revision") : int(request, "revision")
             let archive = explanation["archive_image"] as? [String: Any] ??
                           explanation["fallback_image"] as? [String: Any] ?? [:]
