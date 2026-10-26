@@ -52,3 +52,32 @@ jobs:
           if not markers['original_backend'] or not markers['manual_news']:
               raise AssertionError('Live worker is missing current direct-action controls')
           PY
+
+      - name: Verify iPhone-facing 48h and stay-in-list UI deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          cloud="https://ttactualidad-decisions-pilot.fabricelop.workers.dev/"
+          pages="https://fabricelop.github.io/europapress-rss/ttactualidad/"
+          curl -4 -fsSL --retry 2 --connect-timeout 8 --max-time 35 -o /tmp/tt-iphone-cloud.html "$cloud"
+          curl -4 -fsSL --retry 2 --connect-timeout 8 --max-time 35 -o /tmp/tt-iphone-pages.html "$pages"
+          python3 - <<'PY'
+          from pathlib import Path
+          origin=Path('/tmp/tt-iphone-cloud.html').read_text(encoding='utf-8')
+          backup=Path('/tmp/tt-iphone-pages.html').read_text(encoding='utf-8')
+          markers={
+            'stay_in_current_tab': "// Stay in the list where the action was performed.",
+            'source_card_disappears': 'source_app:state.app,source_tab:state.tab,source_id:',
+            'target_visible_from_other_tab': 'op.source_tab!==state.tab||op.source_app!==state.app',
+            'no_jump_to_listas_on_completion': 'disponible en Listas sin cambiar de sección.',
+            'top30_counter_uses_filtered_items': 'const count=trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;',
+          }
+          overall=True
+          for label,html in [('ORIGINAL_WORKER',origin),('GITHUB_PAGES_FALLBACK',backup)]:
+            found={key:(needle in html) for key,needle in markers.items()}
+            legacy_navigation="if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}" in html
+            ok=all(found.values()) and not legacy_navigation
+            print(label,'bytes=',len(html),'LATEST_BEHAVIOR_PRESENT=',ok,'markers=',found,'old_forced_navigation=',legacy_navigation,flush=True)
+            overall &= ok
+          assert overall,'Some live iPhone entrypoints still serve an old UI; source changes are not proof of deployment'
+          PY
