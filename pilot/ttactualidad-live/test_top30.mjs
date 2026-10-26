@@ -16,6 +16,25 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
  const radar={captured_at:'2026-10-20T11:40:56+02:00',
   items:Array.from({length:30},(_,i)=>({rank:i+1,name:'TOP'+(i+1)})),
   top30:Array.from({length:30},(_,i)=>'TOP'+(i+1))};
+ // Both the production Worker and emergency page must default to Top 30.
+ assert(html.includes("state.app=app;state.tab=app==='tr'?'top':'listas';"),
+  path+': selecting TTendencias must open Top 30; news keep Listas');
+ assert(html.includes("function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['listas','Listas'],['elaboracion','En elaboración']]}"),
+  path+': Trends must have no History navigation');
+ assert(html.includes("if(state.app==='tr'&&!tabsList.some(t=>t[0]===state.tab))state.tab='top';"),
+  path+': invalid or old Trends tab must fall back to Top 30');
+ assert(html.includes("document.querySelector('.toolbar').classList.toggle('tti-compact',isNews);"),
+  path+': TTitulares must use a compact toolbar');
+ assert(html.includes(".toolbar.tti-compact{display:grid;grid-template-columns:minmax(0,1fr) auto auto;"),
+  path+': search, refresh and +Noticia must occupy a single row');
+ assert(html.includes("isNews?'Buscar noticia…':'Buscar tendencia…'"),
+  path+': iPhone search placeholder should be shorter');
+ assert(html.includes('id="manual-open"'),
+  path+': news creation control must be present');
+ if(path.startsWith('docs/')){
+  assert(html.includes('href="https://ttactualidad-decisions-pilot.fabricelop.workers.dev/#ttittulares"'),
+   path+': emergency +Noticia must open the working original editor rather than a no-op');
+ }
  assert.equal(currentTop30(radar).length,30);
  assert.equal(currentTop30({...radar,items:[]}).length,30,'top30 names must be a fallback');
  assert.equal(currentTop30({...radar,items:[]})[29].rank,30);
