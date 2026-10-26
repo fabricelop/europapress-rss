@@ -554,7 +554,7 @@ final class EditorialStore: ObservableObject {
             // Backend accepts a stable manual ID for a Top 30 entry without any
             // previous request. A blank ID would make "Preparar" impossible.
             let digest = SHA256.hash(data: Data(name.utf8))
-            let manualID = "manual-" + digest.map { String(format: "%02x", $0) }.joined().prefix(32)
+            let manualID = "manual-" + String(digest.map { String(format: "%02x", $0) }.joined().prefix(32))
             let editorialID = knownID.isEmpty ? String(manualID) : knownID
             let revision = request.isEmpty ? int(explanation, "revision") : int(request, "revision")
             let archive = explanation["archive_image"] as? [String: Any] ??
