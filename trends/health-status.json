@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
   "checked_at": "2026-10-26T21:53:23.787522+00:00",
+=======
+  "checked_at": "2026-10-26T21:55:01.414674+00:00",
+>>>>>>> Stashed changes
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -42,10 +46,16 @@
     "top10": {
       "ok": false,
       "count": 10,
+<<<<<<< Updated upstream
       "non_stale_sources": 2,
       "captured_age_minutes": 21.4,
       "noise_count": 0,
       "repair_started": true
+=======
+      "non_stale_sources": 3,
+      "captured_age_minutes": 4.2,
+      "noise_count": 0
+>>>>>>> Stashed changes
     },
     "listener": {
       "ok": true,
@@ -56,7 +66,11 @@
       "ok": true,
       "status": "queued",
       "conclusion": null,
+<<<<<<< Updated upstream
       "age_minutes": 0.0,
+=======
+      "age_minutes": 1.5,
+>>>>>>> Stashed changes
       "run_id": 40408096128,
       "reason": null,
       "repairable": true,
@@ -79,9 +93,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 2,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 4.0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -89,8 +103,11 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "cfa98407dd6b",
+        "1bda19f45205"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
