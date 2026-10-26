@@ -1,48 +1,54 @@
 import SwiftUI
 
+/// The screen keeps an immutable snapshot while it is open. New GPS points
+/// must not rebuild a potentially years-long visit tree on every model tick.
 struct CellHistoryView: View {
-    @ObservedObject var model: TimeModel
+    let model: TimeModel
     let cell: Cell
     @Environment(\.dismiss) private var dismiss
     @State private var nameEditor = false
     @State private var goToMapAfterDismiss = false
+    @State private var title = ""
+    @State private var snapshot: CellPresenceSnapshot?
+    @State private var rebuilding = false
+    @State private var generation = UUID()
+    @State private var showGrid = false
+    @State private var showTerritories = false
+    @State private var showHistory = false
 
-    private var visits:[TimeVisit] {
-        TimeVisitIndex.visible(TimeVisitIndex.visits(model.data.intervals,cells:[cell.id],
-            fixes:model.data.fixes,powerEvents:model.data.powerEvents,
-            manualBreaks:model.data.manualBreaks))
-    }
     var body: some View {
         List {
-            Section("Cuadrícula") {
-                LabeledContent("Nombre",value:model.label(for:cell))
-                LabeledContent("Tiempo confirmado",
-                    value:DurationFormat.full(TimeAttribution.totals(model.data.intervals,
-                        cellIDs:[cell.id])))
-                LabeledContent("Visitas",value:String(visits.count))
-                LabeledContent("Días con presencia",
-                    value:String(TimeVisitIndex.daily(visits).count))
-                LabeledContent("Media por visita",
-                    value:DurationFormat.full(visits.isEmpty ? 0 :
-                        visits.reduce(0) { $0+$1.confirmedSeconds }/Double(visits.count)))
-                LabeledContent("Identificador",value:cell.id)
-                if let zone=model.primaryZone(for:cell) {
-                    LabeledContent("Zona",value:zone.name)
-                    LabeledContent("Cuadrículas de la zona",value:String(zone.cellIDs.count))
+            DisclosureGroup("Cuadrícula", isExpanded: $showGrid) {
+                LabeledContent("Nombre", value: title)
+                if let snapshot {
+                    LabeledContent("Tiempo confirmado",
+                        value: DurationFormat.full(snapshot.confirmedSeconds))
+                    LabeledContent("Visitas", value: String(snapshot.visitCount))
+                    LabeledContent("Días con presencia", value: String(snapshot.dayCount))
+                    LabeledContent("Media por visita",
+                        value: DurationFormat.full(snapshot.averageSeconds))
+                } else {
+                    ProgressView("Calculando resumen…")
                 }
-                Button("Cambiar nombre") { nameEditor=true }
+                if let zone = model.primaryZone(for: cell) {
+                    LabeledContent("Zona", value: zone.name)
+                    LabeledContent("Cuadrículas de la zona",
+                                   value: String(zone.cellIDs.count))
+                }
+                Button("Cambiar nombre") { nameEditor = true }
                 Button {
-                    goToMapAfterDismiss=true
+                    goToMapAfterDismiss = true
                     dismiss()
                 } label: {
-                    Label("Ver en el mapa",systemImage:"map")
+                    Label("Ver en el mapa", systemImage: "map")
                 }
             }
-            Section("Territorios") {
-                if let territory=model.data.territoryCache[cell.id] {
+
+            DisclosureGroup("Territorios", isExpanded: $showTerritories) {
+                if let territory = model.data.territoryCache[cell.id] {
                     ForEach(TerritoryLevel.allCases) { level in
-                        if let name=level.value(territory) {
-                            LabeledContent(level.title,value:name)
+                        if let name = level.value(territory) {
+                            LabeledContent(level.title, value: name)
                         }
                     }
                 } else {
@@ -50,22 +56,73 @@ struct CellHistoryView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            Section("Histórico") {
-                TimeVisitCalendar(model:model,cellIDs:[cell.id])
-            }
-            Section {
-                Text("Los intervalos internos se consolidan en visitas. Los segundos registrados permanecen intactos.")
-                    .font(.caption).foregroundStyle(.secondary)
+
+            DisclosureGroup("Histórico", isExpanded: $showHistory) {
+                if let snapshot {
+                    TimeCellPresenceTree(model: model, snapshot: snapshot,
+                                         onEdited: rebuild)
+                } else if rebuilding {
+                    ProgressView("Preparando los días con presencia…")
+                } else {
+                    Text("Sin visitas registradas.")
+                        .foregroundStyle(.secondary)
+                }
             }
         }
-        .navigationTitle(model.label(for:cell))
+        .navigationTitle(title.isEmpty ? model.label(for: cell) : title)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented:$nameEditor) {
-            TimeNameEditor(model:model,cell:cell)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { rebuild() } label: {
+                    Image(systemName: "arrow.clockwise")
+                }
+                .disabled(rebuilding)
+                .accessibilityLabel("Actualizar histórico de cuadrícula")
+            }
+        }
+        .sheet(isPresented: $nameEditor, onDismiss: {
+            title = model.label(for: cell)
+        }) {
+            TimeNameEditor(model: model, cell: cell)
+        }
+        .onAppear {
+            title = model.label(for: cell)
+            if snapshot == nil { rebuild() }
         }
         .onDisappear {
             if goToMapAfterDismiss {
-                model.navigate(to:cell)
+                model.navigate(to: cell)
+            }
+        }
+    }
+
+    private func rebuild() {
+        let request = UUID()
+        generation = request
+        rebuilding = true
+        // Capture the data on the UI thread. Read no mutable TimeModel state in
+        // the worker queue; a live GPS update may arrive during construction.
+        let intervals = model.data.intervals
+        let fixes = model.data.fixes
+        let events = model.data.powerEvents
+        let breaks = model.data.manualBreaks
+        let id = cell.id
+        var calendar = Calendar.current
+        if let identifier = model.data.territoryCache[id]?.timeZoneIdentifier,
+           let zone = TimeZone(identifier: identifier) {
+            calendar.timeZone = zone
+        }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let visits = TimeVisitIndex.visits(
+                intervals, cells: [id], fixes: fixes,
+                powerEvents: events, manualBreaks: breaks)
+            let total = TimeAttribution.totals(intervals, cellIDs: [id])
+            let calculated = CellPresenceIndex.build(visits, total: total,
+                                                      calendar: calendar)
+            DispatchQueue.main.async {
+                guard generation == request else { return }
+                snapshot = calculated
+                rebuilding = false
             }
         }
     }
