@@ -5,8 +5,10 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "240e55497ac8",
-    "f2f937f52c31"
+    "a8d9d7f01c06",
+    "ebc090abd59a",
+    "f6eb455e6356",
+    "025acbe12169"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
@@ -14,19 +16,14 @@
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-26T21:00:00+01:00",
-  "last_completed_at": "2026-10-26T20:54:30+01:00",
-  "updated_at": "2026-10-26T21:00:00+01:00",
-  "status": "running",
-  "remaining_active_ids": [
-    "a8d9d7f01c06",
-    "ebc090abd59a",
-    "f6eb455e6356",
-    "025acbe12169"
-  ],
-  "queue_complete": false,
+  "last_completed_at": "2026-10-26T21:09:30+01:00",
+  "updated_at": "2026-10-26T21:09:30+01:00",
+  "status": "success",
+  "remaining_active_ids": [],
+  "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T2045+0100-chat",
+    "trigger_run_id": "tr-1793044779944-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -36,42 +33,141 @@
     "project": "TTendencias",
     "run_id": "tr-1793044779944-manual",
     "source": "chat",
-    "status": "RUNNING",
-    "phase": "preparing",
+    "status": "DONE",
+    "phase": "closing",
     "started_at": "2026-10-26T21:00:00+01:00",
-    "updated_at": "2026-10-26T21:00:00+01:00",
-    "current": 0,
+    "updated_at": "2026-10-26T21:09:30+01:00",
+    "finished_at": "2026-10-26T21:09:30+01:00",
+    "current": 4,
     "total": 4,
     "trend_id": null,
     "title": null,
-    "message": "Preparando pasada editorial de 4 tendencias.",
+    "message": "TTendencias completada 4/4: Kane, Mbappé, Bildu y Deusto explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T21:00:00+01:00",
-        "phase": "preparing",
+        "at": "2026-10-26T21:01:00+01:00",
+        "phase": "verifying",
+        "trend_id": "a8d9d7f01c06",
+        "title": "Kane",
+        "message": "Releyendo estado autoritativo de Kane r0."
+      },
+      {
+        "at": "2026-10-26T21:01:20+01:00",
+        "phase": "investigating",
+        "trend_id": "a8d9d7f01c06",
+        "title": "Kane",
+        "message": "Hecho esencial verificado: error previo de la web del Balón de Oro."
+      },
+      {
+        "at": "2026-10-26T21:02:20+01:00",
+        "phase": "verifying",
+        "trend_id": "a8d9d7f01c06",
+        "title": "Kane",
+        "message": "Kane r0 persistido, retirado de la cola y verificado en main."
+      },
+      {
+        "at": "2026-10-26T21:03:00+01:00",
+        "phase": "verifying",
+        "trend_id": "ebc090abd59a",
+        "title": "Mbappé",
+        "message": "Releyendo estado autoritativo de Mbappé r0."
+      },
+      {
+        "at": "2026-10-26T21:03:20+01:00",
+        "phase": "investigating",
+        "trend_id": "ebc090abd59a",
+        "title": "Mbappé",
+        "message": "Hecho esencial verificado: doblete del Clásico, gol 100 y error previo de la web del Balón de Oro."
+      },
+      {
+        "at": "2026-10-26T21:04:20+01:00",
+        "phase": "verifying",
+        "trend_id": "ebc090abd59a",
+        "title": "Mbappé",
+        "message": "Mbappé r0 persistido, retirado de la cola y verificado en main."
+      },
+      {
+        "at": "2026-10-26T21:05:00+01:00",
+        "phase": "verifying",
+        "trend_id": "f6eb455e6356",
+        "title": "Bildu",
+        "message": "Releyendo estado autoritativo de Bildu r0."
+      },
+      {
+        "at": "2026-10-26T21:05:20+01:00",
+        "phase": "investigating",
+        "trend_id": "f6eb455e6356",
+        "title": "Bildu",
+        "message": "Hecho esencial verificado: reacción política al cierre preventivo de Deusto y disturbios posteriores."
+      },
+      {
+        "at": "2026-10-26T21:06:20+01:00",
+        "phase": "verifying",
+        "trend_id": "f6eb455e6356",
+        "title": "Bildu",
+        "message": "Bildu r0 persistido, retirado de la cola y verificado en main."
+      },
+      {
+        "at": "2026-10-26T21:07:00+01:00",
+        "phase": "verifying",
+        "trend_id": "025acbe12169",
+        "title": "Deusto",
+        "message": "Releyendo estado autoritativo de Deusto r0."
+      },
+      {
+        "at": "2026-10-26T21:07:20+01:00",
+        "phase": "investigating",
+        "trend_id": "025acbe12169",
+        "title": "Deusto",
+        "message": "Hecho esencial verificado: cierre del campus, cancelación del acto, disturbios y nueve detenidos."
+      },
+      {
+        "at": "2026-10-26T21:08:20+01:00",
+        "phase": "verifying",
+        "trend_id": "025acbe12169",
+        "title": "Deusto",
+        "message": "Deusto r0 persistido, retirado de la cola y verificado en main."
+      },
+      {
+        "at": "2026-10-26T21:09:00+01:00",
+        "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada editorial directa y revalidando cola autoritativa."
+        "message": "Releyendo editorial-queue.json, Requests y Explicadas desde main."
+      },
+      {
+        "at": "2026-10-26T21:09:15+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Cola activa 0, Requests preparing/update 0 y rewrite_pending 0; cuatro revisiones reconciliadas exactamente."
+      },
+      {
+        "at": "2026-10-26T21:09:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada 4/4: Kane, Mbappé, Bildu y Deusto explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes."
       }
     ],
-    "processed_ids": [],
-    "partial": false,
-    "queue_complete": false,
-    "remaining_active_ids": [
+    "processed_ids": [
       "a8d9d7f01c06",
       "ebc090abd59a",
       "f6eb455e6356",
       "025acbe12169"
     ],
+    "partial": false,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "previous_run_id": "tr-20261026T2045+0100-chat",
     "summary": {
-      "attempted": 0,
+      "attempted": 4,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 4,
+      "explanation_groups": 4,
+      "new_cards": 4,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
@@ -80,14 +176,14 @@
       "telegram_sends": 0,
       "initial_compact_queue": 4,
       "discovered_during_run": 0,
-      "final_compact_queue": 4,
-      "remaining_active": 4,
+      "final_compact_queue": 0,
+      "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 0,
@@ -98,15 +194,92 @@
       "rewrite_pending_remaining": 0,
       "user_decisions_after_close": 0,
       "incidents": 0
+    },
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
+    "remate_selections": [
+      {
+        "id": "a8d9d7f01c06",
+        "name": "Kane",
+        "revision": 0,
+        "selected": "🌶️ El trofeo aún no tenía dueño y la web ya tenía tres.",
+        "originality_check": "Sin colisión conceptual evidente con los remates recientes revisados."
+      },
+      {
+        "id": "ebc090abd59a",
+        "name": "Mbappé",
+        "revision": 0,
+        "selected": "🌶️ Cien goles y una web que se adelantó al sobre.",
+        "originality_check": "Remate específico del doblete, el gol 100 y el error previo a la gala; sin reutilizar el anterior."
+      },
+      {
+        "id": "f6eb455e6356",
+        "name": "Bildu",
+        "revision": 0,
+        "selected": "🌶️ El campus cerró antes de que se abriera el debate.",
+        "originality_check": "Sátira situacional neutral sobre el cierre preventivo, sin consigna partidista."
+      },
+      {
+        "id": "025acbe12169",
+        "name": "Deusto",
+        "revision": 0,
+        "selected": "🌶️ La charla se canceló; el barrio acabó hablando por las sirenas.",
+        "originality_check": "Remate sobre la secuencia del acto y los disturbios, sin humor sobre víctimas."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "a8d9d7f01c06",
+        "name": "Kane",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T20:02:20.000Z"
+      },
+      {
+        "id": "ebc090abd59a",
+        "name": "Mbappé",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T20:04:20.000Z"
+      },
+      {
+        "id": "f6eb455e6356",
+        "name": "Bildu",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T20:06:20.000Z"
+      },
+      {
+        "id": "025acbe12169",
+        "name": "Deusto",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T20:08:20.000Z"
+      }
+    ],
+    "radar": {
+      "queue_count": 0
     }
   },
   "run_id": "tr-1793044779944-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 4,
+    "explanation_groups": 4,
+    "new_cards": 4,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
@@ -115,14 +288,14 @@
     "telegram_sends": 0,
     "initial_compact_queue": 4,
     "discovered_during_run": 0,
-    "final_compact_queue": 4,
-    "remaining_active": 4,
+    "final_compact_queue": 0,
+    "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 4,
+    "remates_selected": 4,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
@@ -136,11 +309,109 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T21:00:00+01:00",
-      "phase": "preparing",
+      "at": "2026-10-26T21:01:00+01:00",
+      "phase": "verifying",
+      "trend_id": "a8d9d7f01c06",
+      "title": "Kane",
+      "message": "Releyendo estado autoritativo de Kane r0."
+    },
+    {
+      "at": "2026-10-26T21:01:20+01:00",
+      "phase": "investigating",
+      "trend_id": "a8d9d7f01c06",
+      "title": "Kane",
+      "message": "Hecho esencial verificado: error previo de la web del Balón de Oro."
+    },
+    {
+      "at": "2026-10-26T21:02:20+01:00",
+      "phase": "verifying",
+      "trend_id": "a8d9d7f01c06",
+      "title": "Kane",
+      "message": "Kane r0 persistido, retirado de la cola y verificado en main."
+    },
+    {
+      "at": "2026-10-26T21:03:00+01:00",
+      "phase": "verifying",
+      "trend_id": "ebc090abd59a",
+      "title": "Mbappé",
+      "message": "Releyendo estado autoritativo de Mbappé r0."
+    },
+    {
+      "at": "2026-10-26T21:03:20+01:00",
+      "phase": "investigating",
+      "trend_id": "ebc090abd59a",
+      "title": "Mbappé",
+      "message": "Hecho esencial verificado: doblete del Clásico, gol 100 y error previo de la web del Balón de Oro."
+    },
+    {
+      "at": "2026-10-26T21:04:20+01:00",
+      "phase": "verifying",
+      "trend_id": "ebc090abd59a",
+      "title": "Mbappé",
+      "message": "Mbappé r0 persistido, retirado de la cola y verificado en main."
+    },
+    {
+      "at": "2026-10-26T21:05:00+01:00",
+      "phase": "verifying",
+      "trend_id": "f6eb455e6356",
+      "title": "Bildu",
+      "message": "Releyendo estado autoritativo de Bildu r0."
+    },
+    {
+      "at": "2026-10-26T21:05:20+01:00",
+      "phase": "investigating",
+      "trend_id": "f6eb455e6356",
+      "title": "Bildu",
+      "message": "Hecho esencial verificado: reacción política al cierre preventivo de Deusto y disturbios posteriores."
+    },
+    {
+      "at": "2026-10-26T21:06:20+01:00",
+      "phase": "verifying",
+      "trend_id": "f6eb455e6356",
+      "title": "Bildu",
+      "message": "Bildu r0 persistido, retirado de la cola y verificado en main."
+    },
+    {
+      "at": "2026-10-26T21:07:00+01:00",
+      "phase": "verifying",
+      "trend_id": "025acbe12169",
+      "title": "Deusto",
+      "message": "Releyendo estado autoritativo de Deusto r0."
+    },
+    {
+      "at": "2026-10-26T21:07:20+01:00",
+      "phase": "investigating",
+      "trend_id": "025acbe12169",
+      "title": "Deusto",
+      "message": "Hecho esencial verificado: cierre del campus, cancelación del acto, disturbios y nueve detenidos."
+    },
+    {
+      "at": "2026-10-26T21:08:20+01:00",
+      "phase": "verifying",
+      "trend_id": "025acbe12169",
+      "title": "Deusto",
+      "message": "Deusto r0 persistido, retirado de la cola y verificado en main."
+    },
+    {
+      "at": "2026-10-26T21:09:00+01:00",
+      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada editorial directa y revalidando cola autoritativa."
+      "message": "Releyendo editorial-queue.json, Requests y Explicadas desde main."
+    },
+    {
+      "at": "2026-10-26T21:09:15+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cola activa 0, Requests preparing/update 0 y rewrite_pending 0; cuatro revisiones reconciliadas exactamente."
+    },
+    {
+      "at": "2026-10-26T21:09:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias completada 4/4: Kane, Mbappé, Bildu y Deusto explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes."
     }
   ],
   "partial": false,
@@ -162,38 +433,70 @@
   },
   "remate_selections": [
     {
-      "id": "240e55497ac8",
-      "name": "Bilbao",
+      "id": "a8d9d7f01c06",
+      "name": "Kane",
       "revision": 0,
-      "selected": "🌶️ El acto se cayó del cartel, pero no de la calle.",
-      "originality_check": "Sin coincidencia conceptual evidente con los últimos 30 remates revisados."
+      "selected": "🌶️ El trofeo aún no tenía dueño y la web ya tenía tres.",
+      "originality_check": "Sin colisión conceptual evidente con los remates recientes revisados."
     },
     {
-      "id": "f2f937f52c31",
-      "name": "Vito Quiles",
+      "id": "ebc090abd59a",
+      "name": "Mbappé",
       "revision": 0,
-      "selected": "🌶️ Deusto cerró el acto; el juzgado abrió otro frente.",
-      "originality_check": "Se evitó reutilizar el remate ya empleado en TTiTTulares y no hay coincidencia conceptual evidente en los últimos 30 remates de TTendencias."
+      "selected": "🌶️ Cien goles y una web que se adelantó al sobre.",
+      "originality_check": "Remate específico del doblete, el gol 100 y el error previo a la gala; sin reutilizar el anterior."
+    },
+    {
+      "id": "f6eb455e6356",
+      "name": "Bildu",
+      "revision": 0,
+      "selected": "🌶️ El campus cerró antes de que se abriera el debate.",
+      "originality_check": "Sátira situacional neutral sobre el cierre preventivo, sin consigna partidista."
+    },
+    {
+      "id": "025acbe12169",
+      "name": "Deusto",
+      "revision": 0,
+      "selected": "🌶️ La charla se canceló; el barrio acabó hablando por las sirenas.",
+      "originality_check": "Remate sobre la secuencia del acto y los disturbios, sin humor sobre víctimas."
     }
   ],
   "final_outcomes": [
     {
-      "id": "240e55497ac8",
-      "name": "Bilbao",
+      "id": "a8d9d7f01c06",
+      "name": "Kane",
       "revision": 0,
       "status": "explained",
       "verified": true,
       "queue_removed": true,
-      "explained_at": "2026-10-26T19:48:00.000Z"
+      "explained_at": "2026-10-26T20:02:20.000Z"
     },
     {
-      "id": "f2f937f52c31",
-      "name": "Vito Quiles",
+      "id": "ebc090abd59a",
+      "name": "Mbappé",
       "revision": 0,
       "status": "explained",
       "verified": true,
       "queue_removed": true,
-      "explained_at": "2026-10-26T19:52:15.000Z"
+      "explained_at": "2026-10-26T20:04:20.000Z"
+    },
+    {
+      "id": "f6eb455e6356",
+      "name": "Bildu",
+      "revision": 0,
+      "status": "explained",
+      "verified": true,
+      "queue_removed": true,
+      "explained_at": "2026-10-26T20:06:20.000Z"
+    },
+    {
+      "id": "025acbe12169",
+      "name": "Deusto",
+      "revision": 0,
+      "status": "explained",
+      "verified": true,
+      "queue_removed": true,
+      "explained_at": "2026-10-26T20:08:20.000Z"
     }
   ]
 }
