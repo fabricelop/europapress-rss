@@ -16,7 +16,7 @@
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-26T16:33:16.705Z",
   "last_completed_at": "2026-10-26T16:43:12.158Z",
-  "updated_at": "2026-10-26T16:43:12.158Z",
+  "updated_at": "2026-10-26T16:42:40.000Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -35,7 +35,7 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-26T16:33:16.705Z",
-    "updated_at": "2026-10-26T16:43:12.158Z",
+    "updated_at": "2026-10-26T16:42:40.000Z",
     "current": 4,
     "total": 4,
     "trend_id": null,
@@ -78,13 +78,6 @@
     "incident_count": 0,
     "incidents": [],
     "activity": [
-      {
-        "at": "2026-10-26T16:40:13.000Z",
-        "phase": "remate_selection",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Remate seleccionado: «París cedió el escenario; el suspense viajó en el equipaje.»"
-      },
       {
         "at": "2026-10-26T16:40:20.000Z",
         "phase": "persisting",
@@ -217,6 +210,13 @@
         "trend_id": null,
         "title": null,
         "message": "Cierre verificado: 3 revisiones tratadas por esta pasada y 1 resuelta concurrentemente por barrera JIT."
+      },
+      {
+        "at": "2026-10-26T16:42:40.000Z",
+        "phase": "closing",
+        "trend_id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+        "title": "Alfredo Sánchez Monteseirín",
+        "message": "Post-cierre: la ficha pasó a deleted por decisión del panel; no es una incidencia editorial."
       }
     ],
     "processed_ids": [
@@ -260,54 +260,33 @@
     ],
     "final_outcomes": [
       {
-        "id": "4ae5711de3bd",
-        "name": "Senado",
-        "revision": 0,
-        "status": "deleted",
-        "request_status": "deleted",
-        "explained_at": "2026-10-26T16:31:55.438Z",
-        "chars": 272,
-        "with_image": true,
-        "ai_image_status": "pending",
-        "telegram_package_status": "deleted"
-      },
-      {
         "id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
         "name": "Alfredo Sánchez Monteseirín",
         "revision": 0,
         "status": "deleted",
-        "request_status": "deleted",
         "explained_at": "2026-10-26T16:35:53.406Z",
-        "chars": 201,
-        "with_image": true,
-        "ai_image_status": "pending",
-        "telegram_package_status": "deleted"
+        "deleted_at": "2026-10-26T16:42:28.696385+00:00"
       },
       {
         "id": "manual-6711ee466f89845b1e605905ccef9e7e",
         "name": "Pucherazo",
         "revision": 0,
         "status": "deleted",
-        "request_status": "deleted",
         "explained_at": "2026-10-26T16:38:19.543Z",
-        "chars": 270,
-        "with_image": true,
-        "ai_image_status": "pending",
-        "telegram_package_status": "deleted"
+        "deleted_at": "2026-10-26T16:43:03.965488+00:00"
       },
       {
         "id": "manual-e0208b6025a10ba084db046d1893cfdf",
         "name": "Balón de Oro",
         "revision": 0,
-        "status": "skipped_already_explained",
-        "source_status": "explained",
+        "status": "explained",
         "explained_at": "2026-10-26T16:40:20.000Z",
-        "chars": 277
+        "deleted_at": null
       }
     ],
     "finished_at": "2026-10-26T16:43:12.158Z"
   },
-  "run_id": "tr-1793032077306-manual",
+  "run_id": "tr-1793032396705-manual",
   "summary": {
     "attempted": 3,
     "ready": 0,
