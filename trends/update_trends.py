@@ -33,6 +33,10 @@ SOURCES = {
     "xtrendsiamrohit": "https://xtrends.iamrohit.in/spain",
     "trendswe": "https://trendswe.com/twitter/spain/",
     "xtrendssaroj": "https://xtrends.sarojmeher.com/spain",
+    # Additional independent public rankings. A source only influences the
+    # radar if its parse succeeds and the existing freshness checks pass.
+    "playersells": "https://playersells.com/es/tools/twitter-trends/spain",
+    "fowtools": "https://fowtools.com/x-trends/spain",
 }
 
 def clean(text):
@@ -185,6 +189,20 @@ def parse_superx(html):
     return parse_x_search_links(html)
 
 
+def parse_playersells(html):
+    # Public, ordered X-search links, then ordinary ranked tables as fallback.
+    # Do not infer a ranking from unnumbered recommendation/sidebar links.
+    names = parse_x_search_links(html)
+    return names if len(names) >= 10 else parse_generic_ranked(html)
+
+
+def parse_fowtools(html):
+    # The Spain page presents a 50-row "# | Trend | Type | Actions" table.
+    # Keep its observed ordering; never synthesize missing ranks or keywords.
+    names = parse_ranked_table(html)
+    return names if len(names) >= 10 else parse_x_search_links(html)
+
+
 def parse_snaplytics(html):
     vals = parse_x_search_links(html)
     if len(vals) >= 10:
@@ -216,6 +234,8 @@ def page_update_hint(html):
         # del tipo "updated hourly", que no permiten calcular frescura.
         r"(Trending now\s+[A-Z][a-z]{2}\s+\d{1,2},\s+\d{4}\s+\d{1,2}:\d{2}\s+UTC)",
         r"(updated\s+\d+\s+(?:minutes?|hours?)\s+ago)",
+        r"(Actualizado\s+hace\s+\d+\s+(?:minutos?|horas?))",
+        r"(Updated\s*:\s*[A-Z][a-z]+\s+\d{1,2},\s+\d{4}\s+at\s+\d{1,2}:\d{2}\s+[AP]M)",
         r"(Last updated\s*:?\s*[^|•]{1,80})",
         r"(Updated\s*:?\s*[^|•]{1,80})",
         r"(\d{1,2}\s+[A-Z][a-z]+\s+\d{4},\s+\d{1,2}:\d{2}\s+[AP]M\s+[A-Z]{2,4})",
@@ -233,6 +253,10 @@ def hint_age_minutes(hint, now):
     if m:
         n = int(m.group(1))
         return float(n if m.group(2).lower().startswith("minute") else n * 60)
+    spanish_age = re.search(r"Actualizado\s+hace\s+(\d+)\s+(minutos?|horas?)", hint, flags=re.I)
+    if spanish_age:
+        n = int(spanish_age.group(1))
+        return float(n if spanish_age.group(2).lower().startswith("minut") else n * 60)
 
     value = re.sub(r"^(?:Last\s+)?Updated\s*:?\s*", "", hint, flags=re.I)
     value = re.sub(r"^Trending now\s*", "", value, flags=re.I)
@@ -327,6 +351,8 @@ def fetch_source(name):
             "tweets24": parse_tweets24,
             "superx": parse_superx,
             "snaplytics": parse_snaplytics,
+            "playersells": parse_playersells,
+            "fowtools": parse_fowtools,
         }
         html = get(SOURCES[name])
         parser = parsers.get(name, parse_generic_ranked)
