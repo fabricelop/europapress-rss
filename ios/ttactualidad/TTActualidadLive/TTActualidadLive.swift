@@ -1,4 +1,5 @@
 import ActivityKit
+import AppIntents
 import SwiftUI
 import WidgetKit
 
@@ -13,7 +14,7 @@ struct TTActualidadLiveBundle: WidgetBundle {
 struct TTActualidadLiveWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: LiveCountsAttributes.self) { context in
-            HStack(spacing: 15) {
+            HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 4) {
                     Label("TTActualidad", systemImage: "newspaper")
                         .font(.caption.weight(.semibold))
@@ -28,8 +29,17 @@ struct TTActualidadLiveWidget: Widget {
                 Spacer(minLength: 4)
                 counter(context.state.newsReady, title: "Noticias", tint: .mint)
                 counter(context.state.trendsReady, title: "Tendencias", tint: .cyan)
+                Button(intent: RefreshLiveCountsIntent()) {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 32, height: 40)
+                        .background(.cyan.opacity(0.25), in: RoundedRectangle(cornerRadius: 9))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Actualizar contadores desde GitHub")
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 12)
             .padding(.vertical, 12)
             .widgetURL(URL(string: "ttactualidad://listas"))
             .activityBackgroundTint(Color(red: 0.07, green: 0.12, blue: 0.18))
@@ -51,10 +61,18 @@ struct TTActualidadLiveWidget: Widget {
                     }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.isStale ? "Datos sin actualizar" :
-                         "Comprobado a las " + context.state.checkedAt.formatted(date: .omitted, time: .shortened))
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
+                    HStack {
+                        Text(context.isStale ? "Datos sin actualizar" :
+                             "Comprobado a las " + context.state.checkedAt.formatted(date: .omitted, time: .shortened))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button(intent: RefreshLiveCountsIntent()) {
+                            Label("Actualizar", systemImage: "arrow.clockwise")
+                                .font(.caption2.weight(.semibold))
+                        }
+                        .buttonStyle(.bordered)
+                    }
                 }
             } compactLeading: {
                 Text("N\(context.state.newsReady)")
