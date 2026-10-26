@@ -579,18 +579,11 @@ def closed_name_eligible_for_new_event(req, item):
     Re-entry after 48h opens a separate ID; the old deleted revision stays
     terminal. Holiday aliases remain explicitly protected from auto-reopen.
     """
-    if editorial_topic(item["name"]):
-        return False
     if str((req or {}).get("status") or "").lower() not in CLOSED:
         return False
-    latest = parse_timestamp((req or {}).get("deleted_at") or (req or {}).get("published_at")
-                             or (req or {}).get("dismissed_at") or (req or {}).get("updated_at")
-                             or (req or {}).get("explained_at"))
+    # Apply 48h uniformly; a newer archive/delete time does not renew an
+    # editorial explanation and must not block a genuinely new Top-10 event.
     last_explanation = latest_explanation.get(norm(item["name"]))
-    if latest and timedelta(0) <= now_dt - latest < EXPLANATION_TTL:
-        return False
-    # A current Top-10 appearance, 48h after both last explanation and close,
-    # is evidence of re-entry, not evidence that an older result is still true.
     return bool(last_explanation and now_dt - last_explanation > EXPLANATION_TTL)
 
 to_queue = []
@@ -605,7 +598,8 @@ for item in current:
             (req is None or req.get("auto_queued") is True) and
             str((req or {}).get("request_source") or "") not in {
               "github_pages_authorized_issue", "telegram_reexplain",
-              "telegram_private_deeplink_native"}):
+              "telegram_private_deeplink_native"}
+            and not closed_name_eligible_for_new_event(req, item)):
         continue
     status = str((req or {}).get("status") or "")
     # A genuinely resurfaced Top-10 trend must be researched as a NEW event,
@@ -614,7 +608,7 @@ for item in current:
         print("Nuevo episodio Top 10 tras cierre anterior:", item["name"])
         status = "new_event"
     if req:
-        if item["rank"] <= 10 and status == "explained" and explanation_expired(key):
+        if item["rank"] <= 10 and status in {"explained", "grouped"} and explanation_expired(key):
             reopened_at = now_dt.isoformat(timespec="seconds")
             # Every new sports match / event needs an independent editorial ID.
             # Reusing a historical ID or incrementing its revision can cause
@@ -684,8 +678,8 @@ for item in current:
                 req["rank"] = item["rank"]
                 reconciled = True
             continue
-        if status in {"preparing", "update", "explained", "dismissed",
-                      "published", "removed", "deleted"}:
+        if status in {"preparing", "update", "explained", "grouped", "dismissed",
+                       "published", "removed", "deleted"}:
             continue
         if status == "inactive" and key in explained and not explanation_expired(key):
             continue
