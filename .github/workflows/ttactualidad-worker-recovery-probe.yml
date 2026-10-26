@@ -66,3 +66,30 @@ jobs:
         run: |
           if [ -n "$CF_API" ]; then echo "CLOUDFLARE_API_TOKEN_PRESENT=yes"; else echo "CLOUDFLARE_API_TOKEN_PRESENT=no"; fi
           if [ -n "$CF_ACCOUNT" ]; then echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=yes"; else echo "CLOUDFLARE_ACCOUNT_ID_PRESENT=no"; fi
+
+      - name: Check remote deployment prerequisites without disclosing credentials
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "${CF_TOKEN:-}" ] || [ -z "${CF_ACCOUNT:-}" ]; then
+            echo 'TT_ORIGINAL_DEPLOY_FROM_GITHUB=UNAVAILABLE_MISSING_CREDENTIALS'
+          else
+            echo 'TT_ORIGINAL_DEPLOY_FROM_GITHUB=CREDENTIALS_PRESENT'
+            code=$(curl -sS --connect-timeout 8 --max-time 20 -o /tmp/tt-cf-account.json -w '%{http_code}' \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/ttactualidad-decisions-pilot") || code=000
+            echo "TT_CLOUDFLARE_WORKER_READ_HTTP=$code"
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/tt-cf-account.json')
+          if p.exists():
+              data=p.read_text(errors='replace')
+              try:
+                  result=json.loads(data)
+                  print('TT_CF_WORKER_API_SUCCESS=',result.get('success',False))
+              except Exception:
+                  print('TT_CF_WORKER_API_RESPONSE_NOT_JSON')
+          PY
+          fi
