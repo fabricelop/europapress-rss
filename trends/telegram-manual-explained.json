@@ -7477,13 +7477,14 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "fallback_image_status": "none",
       "image_status": "none",
-      "image_choice": null,
-      "image_pending": false
+      "image_choice": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "1ed3d7191750",
@@ -7527,15 +7528,16 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
       "fallback_image_status": "none",
       "image_status": "none",
-      "image_choice": null,
-      "image_pending": false
+      "image_choice": "none",
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-26T21:51:00+01:00",
+  "updated_at": "2026-10-26T20:50:52.500125Z",
   "count": 138
 }
