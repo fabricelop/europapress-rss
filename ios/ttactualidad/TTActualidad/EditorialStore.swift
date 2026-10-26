@@ -161,22 +161,26 @@ final class EditorialStore: ObservableObject {
         }
         let fresh = !downloaded.isEmpty
         let now = fresh ? Date() : (snapshot.updatedAt ?? Date())
+        // Archive photographs only. This GitHub listing cannot include the AI
+        // directories because ArchivePhotoCatalog only selects archive-images.
+        let archivePhotos = await ArchivePhotoCatalog.load()
         let news = Self.buildNews(prepared: docs["ttittulares/prepared.json"]!,
-                                  decisions: docs["ttittulares/decisions.json"]!)
+                                  decisions: docs["ttittulares/decisions.json"]!,
+                                  archivePhotos: archivePhotos)
         let ready = Self.buildTrendListas(
             manual: docs["trends/telegram-manual-explained.json"]!,
             requests: docs["trends/requests.json"]!,
             deliveries: docs["trends/telegram-image-deliveries.json"]!,
             decisions: docs["trends/mobile-decisions.json"]!,
             queue: docs["trends/editorial-queue.json"]!,
-            now: now
+            now: now, archivePhotos: archivePhotos
         )
         let top = Self.buildTop30(
             recent: docs["trends/recent.json"] ?? [:],
             manual: docs["trends/telegram-manual-explained.json"]!,
             explained: docs["trends/explained.json"] ?? [:],
             requests: docs["trends/requests.json"]!,
-            ready: ready
+            ready: ready, archivePhotos: archivePhotos
         )
         let status = docs["ttittulares/status.json"] ?? [:]
         let newsQueue = docs["ttittulares/editorial-queue.json"] ?? [:]
@@ -280,7 +284,8 @@ final class EditorialStore: ObservableObject {
             (when(previous, ["updated_at", "deleted_at", "explained_at", "requested_at"]) ?? .distantPast)
     }
 
-    private static func buildNews(prepared: [String: Any], decisions: [String: Any]) -> [NewsItem] {
+    private static func buildNews(prepared: [String: Any], decisions: [String: Any],
+                                  archivePhotos: [String: URL]) -> [NewsItem] {
         var statuses: [String: String] = [:]
         for item in rows(decisions, "items") {
             statuses[str(item, "event_id")] = str(item, "status").lowercased()
@@ -299,7 +304,11 @@ final class EditorialStore: ObservableObject {
                             publishedAt: when(item, ["prepared_at", "selected_at"]),
                             revision: int(item, "revision"),
                             sourceURL: URL(string: str(item, "url")),
-                            imageURL: URL(string: str(archive, "url")),
+                            imageURL: ArchivePhotoCatalog.resolved(
+                                project: "ttittulares", id: id,
+                                revision: int(item, "revision"),
+                                image: URL(string: str(archive, "url")),
+                                catalog: archivePhotos),
                             factual: factual,
                             closer: str(tweet, "remate").isEmpty ? str(item, "closer_text") : str(tweet, "remate"),
                             sources: int(item, "source_count"))
@@ -308,7 +317,8 @@ final class EditorialStore: ObservableObject {
 
     private static func buildTrendListas(
         manual: [String: Any], requests: [String: Any], deliveries: [String: Any],
-        decisions: [String: Any], queue: [String: Any], now: Date
+        decisions: [String: Any], queue: [String: Any], now: Date,
+        archivePhotos: [String: URL]
     ) -> [TrendItem] {
         var latestManual: [String: [String: Any]] = [:]
         var latestRequests: [String: [String: Any]] = [:]
@@ -370,7 +380,10 @@ final class EditorialStore: ObservableObject {
                              explanation: str(row, "explanation"), lastExplained: explained,
                              status: "EXPLICADA", inListas: true,
                              editorialID: id, revision: rev,
-                             imageURL: URL(string: str(archive, "url")),
+                             imageURL: ArchivePhotoCatalog.resolved(
+                                 project: "ttendencias", id: id, revision: rev,
+                                 image: URL(string: str(archive, "url")),
+                                 catalog: archivePhotos),
                              sourceURL: URL(string: str(row, "source_url")))
         }
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
@@ -403,7 +416,7 @@ final class EditorialStore: ObservableObject {
 
     private static func buildTop30(
         recent: [String: Any], manual: [String: Any], explained: [String: Any],
-        requests: [String: Any], ready: [TrendItem]
+        requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL]
     ) -> [TrendItem] {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
@@ -465,7 +478,10 @@ final class EditorialStore: ObservableObject {
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
                              status: status, inListas: readyNames.contains(key),
                              editorialID: editorialID, revision: revision,
-                             imageURL: URL(string: str(archive, "url")),
+                             imageURL: ArchivePhotoCatalog.resolved(
+                                 project: "ttendencias", id: editorialID,
+                                 revision: revision, image: URL(string: str(archive, "url")),
+                                 catalog: archivePhotos),
                              sourceURL: URL(string: source))
         }
     }
