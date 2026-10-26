@@ -1055,8 +1055,11 @@ function rowCard(x,i){
   }else command(x._alreadyExplained?'Volver a elaborar':Number(x.rank)>10?'Preparar novedad':'Preparar explicación','rework');
   if(d.editorial&&x.explanation){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
-   link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
-   command('Quitar de Listas','deleted');
+   // Never promote an old explanation as the reason for today's trend.
+   if(x._alreadyExplained&&!x._priorReason){
+    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
+    command('Quitar de Listas','deleted');
+   }
   }
   // El mismo botón «Volver a elaborar» también sirve para la primera explicación.
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
