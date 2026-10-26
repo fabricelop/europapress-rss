@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T04:45:00+01:00",
-  "last_completed_at": "2026-10-26T04:46:30+01:00",
-  "updated_at": "2026-10-26T04:46:30+01:00",
+  "last_started_at": "2026-10-26T05:15:00+01:00",
+  "last_completed_at": "2026-10-26T05:16:00+01:00",
+  "updated_at": "2026-10-26T05:16:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T0415-manual",
+    "trigger_run_id": "tr-20261026T0515-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0445-manual",
+    "run_id": "tr-20261026T0515-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T04:45:00+01:00",
-    "updated_at": "2026-10-26T04:46:30+01:00",
-    "finished_at": "2026-10-26T04:46:30+01:00",
+    "started_at": "2026-10-26T05:15:00+01:00",
+    "updated_at": "2026-10-26T05:16:00+01:00",
+    "finished_at": "2026-10-26T05:16:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -62,7 +62,7 @@
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 17,
-      "stale_top10_reviewed": 10,
+      "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
       "top10_reviewed": 10,
@@ -74,28 +74,35 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T04:45:00+01:00",
+        "at": "2026-10-26T05:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones, Top 10 y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-26T04:45:20+01:00",
+        "at": "2026-10-26T05:15:20+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · validando cola, requests, reexplicaciones y cobertura del Top 10."
+      },
+      {
+        "at": "2026-10-26T05:15:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Revisando Pendientes · 17 tarjetas recientes; ninguna carece de remate."
       },
       {
-        "at": "2026-10-26T04:46:00+01:00",
+        "at": "2026-10-26T05:15:50+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0."
+        "message": "Top 10 revisado · 9 cubiertas por explicación vigente; Camavinga conserva estado deleted y no se reabre sin nueva solicitud."
       },
       {
-        "at": "2026-10-26T04:46:30+01:00",
+        "at": "2026-10-26T05:16:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -116,7 +123,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261026T0445-manual",
+  "run_id": "tr-20261026T0515-manual",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -142,7 +149,7 @@
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 17,
-    "stale_top10_reviewed": 10,
+    "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
     "top10_reviewed": 10,
@@ -151,28 +158,35 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T04:45:00+01:00",
+      "at": "2026-10-26T05:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+      "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones, Top 10 y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-26T04:45:20+01:00",
+      "at": "2026-10-26T05:15:20+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · validando cola, requests, reexplicaciones y cobertura del Top 10."
+    },
+    {
+      "at": "2026-10-26T05:15:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Revisando Pendientes · 17 tarjetas recientes; ninguna carece de remate."
     },
     {
-      "at": "2026-10-26T04:46:00+01:00",
+      "at": "2026-10-26T05:15:50+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0."
+      "message": "Top 10 revisado · 9 cubiertas por explicación vigente; Camavinga conserva estado deleted y no se reabre sin nueva solicitud."
     },
     {
-      "at": "2026-10-26T04:46:30+01:00",
+      "at": "2026-10-26T05:16:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -186,10 +200,10 @@
     "captured_at": "2026-10-26T00:49:07+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T04:11:25+01:00",
+    "captured_at": "2026-10-26T05:10:46+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0415-manual",
+  "previous_run_id": "tr-20261026T0445-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
