@@ -2664,27 +2664,19 @@ struct TimeMapView: View {
                         if cardSize == .minimized {
                             TimeMapMiniClock(model:model,picked:picked)
                         }
-                        if cardSize != .minimized {
-                            Button {
-                                withAnimation(.easeOut(duration:0.18)) { cardSize = .minimized }
-                            } label: {
-                                Image(systemName:"minus.circle")
-                                    .font(.system(size:17))
-                            }
-                            .accessibilityLabel("Minimizar tarjeta")
-                        }
+                        // Only compact and minimized modes remain available.
+                        // Compact already shows total, current stay and visits.
                         Button {
                             withAnimation(.easeOut(duration:0.18)) {
-                                cardSize = cardSize == .minimized ? .compact :
-                                    (cardSize == .compact ? .expanded : .compact)
+                                cardSize = cardSize == .minimized ? .compact : .minimized
                             }
                         } label: {
-                            Image(systemName:cardSize == .minimized ? "chevron.up" :
-                                    (cardSize == .compact ? "arrow.up.left.and.arrow.down.right" : "chevron.down"))
-                                .font(.system(size:16,weight:.semibold))
+                            Image(systemName:cardSize == .minimized ?
+                                  "chevron.up" : "minus.circle")
+                                .font(.system(size:17,weight:.semibold))
                         }
-                        .accessibilityLabel(cardSize == .minimized ? "Mostrar tabla compacta" :
-                            (cardSize == .compact ? "Ampliar detalles" : "Volver a tabla compacta"))
+                        .accessibilityLabel(cardSize == .minimized ?
+                            "Mostrar resumen con tiempo y visitas" : "Minimizar tarjeta")
                     }
                     .buttonStyle(.plain)
                     if cardSize != .minimized {
