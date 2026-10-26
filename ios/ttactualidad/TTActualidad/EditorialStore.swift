@@ -70,6 +70,11 @@ struct EditorialSnapshot {
     var trendsElaboracion: [TrendItem] = []
     var updatedAt: Date?
     var partial: Bool = true
+    var oneSourceCount: Int? = nil
+    var twoSourceCount: Int? = nil
+    var oneSourceDelta: Int? = nil
+    var twoSourceDelta: Int? = nil
+    var radarAt: Date? = nil
 }
 
 @MainActor
@@ -81,6 +86,7 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
+    @Published private(set) var novedades: [String] = []
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
@@ -226,16 +232,55 @@ final class EditorialStore: ObservableObject {
             queue: docs["trends/editorial-queue.json"]!,
             ready: ready
         )
+        if !partial && downloaded.count == paths.count {
+            updateNovedades(news: news, trends: ready, top30: top)
+        }
         snapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
                                      top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
-                                     updatedAt: now, partial: partial)
+                                     updatedAt: now, partial: partial,
+                                     oneSourceCount: status["one_source_count"] as? Int,
+                                     twoSourceCount: status["two_source_count"] as? Int,
+                                     oneSourceDelta: status["one_source_delta"] as? Int,
+                                     twoSourceDelta: status["two_source_delta"] as? Int,
+                                     radarAt: Self.when(status, ["radar_at"]))
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
         if fresh {
             await publishLiveCounts(news: news.count, trends: ready.count, checkedAt: now,
                                     partial: partial)
         }
+    }
+
+    // Only compare successful full snapshots. Never count an offline cache as a new visit.
+    private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem]) {
+        let key = "TTActualidad.editorial.baseline.v1"
+        let defaults = UserDefaults.standard
+        var current: [String: String] = [:]
+        for item in news { current["N:" + item.id] = String(item.revision) }
+        for item in trends { current["T:" + item.editorialID] = String(item.revision) }
+        for item in top30 { current["R:" + item.name] = String(item.rank) }
+        if let before = defaults.dictionary(forKey: key) as? [String: String] {
+            var changes: [String] = []
+            for item in news where before["N:" + item.id] == nil {
+                changes.append("Noticia lista: " + item.title)
+            }
+            for item in trends where before["T:" + item.editorialID] == nil {
+                changes.append("Tendencia lista: " + item.name)
+            }
+            for item in top30 {
+                let original = before["R:" + item.name]
+                if original == nil {
+                    changes.append("Nueva tendencia #" + String(item.rank) + ": " + item.name)
+                } else if let rank = Int(original!), rank != item.rank {
+                    changes.append(item.name + ": #" + String(rank) + " → #" + String(item.rank))
+                }
+            }
+            novedades = Array(changes.prefix(60))
+        } else {
+            novedades = ["Primera sincronización completa: seguimiento de novedades activado."]
+        }
+        defaults.set(current, forKey: key)
     }
 
     private func cacheFile(for path: String) -> URL {
