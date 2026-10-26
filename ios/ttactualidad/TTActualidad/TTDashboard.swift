@@ -243,6 +243,16 @@ struct TTDashboard: View {
                          active: store.trendFilter == .listas) { store.trendFilter = .listas }
                     chip("En elaboración", number: store.snapshot.trendsElaboracion.count,
                          active: store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
+                    chip("Nuevas", number: filteredTrends(.nuevas).count,
+                         active: store.trendFilter == .nuevas) { store.trendFilter = .nuevas }
+                    chip("Recientes", number: filteredTrends(.recientes).count,
+                         active: store.trendFilter == .recientes) { store.trendFilter = .recientes }
+                    chip("Pendientes", number: filteredTrends(.pendientes).count,
+                         active: store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
+                    chip("Antiguas", number: filteredTrends(.antiguas).count,
+                         active: store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
+                    chip("↑↓", number: filteredTrends(.movimientos).count,
+                         active: store.trendFilter == .movimientos) { store.trendFilter = .movimientos }
                     chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
                          active: false) { showArchivePhotos = true }
                 } else {
@@ -359,14 +369,29 @@ struct TTDashboard: View {
         }
     }
 
+    private func filteredTrends(_ filter: TrendFilter) -> [TrendItem] {
+        let items = store.snapshot.top30
+        switch filter {
+        case .top: return items
+        case .listas: return store.snapshot.trendListas
+        case .elaboracion: return store.snapshot.trendsElaboracion
+        case .nuevas:
+            return items.filter { $0.movement == "new" ||
+                ($0.enteredAt.map { Date().timeIntervalSince($0) < 3 * 3600 &&
+                    Date().timeIntervalSince($0) >= 0 } ?? false) }
+        case .recientes:
+            return items.filter { $0.lastExplained.map {
+                Date().timeIntervalSince($0) >= 0 && Date().timeIntervalSince($0) < 12 * 3600
+            } ?? false }
+        case .pendientes: return items.filter { $0.explanation.isEmpty }
+        case .antiguas: return items.filter { $0.ageBand() == 3 }
+        case .movimientos: return items.filter { $0.rankDelta != 0 ||
+            ["up", "down"].contains($0.movement) }
+        }
+    }
+
     @ViewBuilder private var trendsContent: some View {
-        let category: [TrendItem] = {
-            switch store.trendFilter {
-            case .top: return store.snapshot.top30
-            case .listas: return store.snapshot.trendListas
-            case .elaboracion: return store.snapshot.trendsElaboracion
-            }
-        }()
+        let category = filteredTrends(store.trendFilter)
         let visible = category.filter {
                 search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                     || $0.explanation.localizedCaseInsensitiveContains(search)
@@ -510,6 +535,11 @@ private struct TrendTile: View {
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .lineLimit(1).minimumScaleFactor(0.78)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                if showRank && item.rankDelta != 0 {
+                    Text(item.rankDelta > 0 ? "↑\(item.rankDelta)" : "↓\(abs(item.rankDelta))")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(item.rankDelta > 0 ? TTTheme.teal : Color.orange)
+                }
                 Text(shortStatus)
                     .font(.system(size: 9, weight: .heavy))
                     .lineLimit(1)
