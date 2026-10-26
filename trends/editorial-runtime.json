@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "e12fad8424a2"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T10:15:00+01:00",
-  "last_completed_at": "2026-10-26T10:15:55+01:00",
-  "updated_at": "2026-10-26T10:15:55+01:00",
+  "last_started_at": "2026-10-26T10:45:00+01:00",
+  "last_completed_at": "2026-10-26T09:53:20.014Z",
+  "updated_at": "2026-10-26T09:53:20.014Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T0915-chat",
+    "trigger_run_id": "tr-20261026T1045-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +28,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T1015-chat",
+    "run_id": "tr-20261026T1045-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T10:15:00+01:00",
-    "updated_at": "2026-10-26T10:15:55+01:00",
-    "finished_at": "2026-10-26T10:15:55+01:00",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": null,
+    "started_at": "2026-10-26T10:45:00+01:00",
+    "updated_at": "2026-10-26T09:53:20.014Z",
+    "finished_at": "2026-10-26T09:53:20.014Z",
+    "current": 1,
+    "total": 1,
+    "trend_id": "e12fad8424a2",
+    "title": "#TAIGranada2031",
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,8 +59,8 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 6,
@@ -69,37 +71,121 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: no había trabajo editorial activo; estado final verificado en 0.",
+    "message": "TTendencias completada: #TAIGranada2031 cerrada y verificada; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T10:15:00+01:00",
+        "at": "2026-10-26T10:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+        "message": "Inicio de pasada: 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-26T10:15:20+01:00",
+        "at": "2026-10-26T09:46:55.311Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate. Reparación visual solicitada."
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Releyendo estado autoritativo de #TAIGranada2031"
       },
       {
-        "at": "2026-10-26T10:15:40+01:00",
+        "at": "2026-10-26T09:47:35.960Z",
+        "phase": "investigating",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Hecho esencial verificado con programa oficial y cobertura actual de TAI Granada."
+      },
+      {
+        "at": "2026-10-26T09:48:37.508Z",
+        "phase": "drafting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Redactando explicación factual de #TAIGranada2031"
+      },
+      {
+        "at": "2026-10-26T09:48:40.323Z",
+        "phase": "drafting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Comprobando límite de X: 245 caracteres."
+      },
+      {
+        "at": "2026-10-26T09:48:43.012Z",
+        "phase": "remate_selection",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Generando candidatos de remate y contrastando originalidad."
+      },
+      {
+        "at": "2026-10-26T09:48:45.493Z",
+        "phase": "remate_selection",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Remate seleccionado: «La candidatura ya tiene hasta copiloto algorítmico.»"
+      },
+      {
+        "at": "2026-10-26T09:48:47.918Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0, sin preparing/update y sin rewrite_pending."
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Releyendo estado autoritativo antes de persistir."
       },
       {
-        "at": "2026-10-26T10:15:55+01:00",
+        "at": "2026-10-26T09:48:51.325Z",
+        "phase": "persisting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-26T09:49:03.529Z",
+        "phase": "drafting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Redactando explicación factual y comprobando límite de X: 245 caracteres."
+      },
+      {
+        "at": "2026-10-26T09:49:16.995Z",
+        "phase": "remate_selection",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Remate seleccionado tras revisar originalidad: «La candidatura ya tiene hasta copiloto algorítmico.»"
+      },
+      {
+        "at": "2026-10-26T09:49:36.693Z",
+        "phase": "persisting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-26T09:50:02.862Z",
+        "phase": "persisting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-26T09:51:09.369Z",
+        "phase": "persisting",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Aplicando reconciliación transaccional mediante el outbox de chat del repositorio."
+      },
+      {
+        "at": "2026-10-26T09:53:01.997Z",
+        "phase": "verifying",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Releyendo main: revisión persistida, cola 0, sin update/preparing ni reexplicaciones pendientes."
+      },
+      {
+        "at": "2026-10-26T09:53:20.014Z",
         "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada: no había trabajo editorial activo; estado final verificado en 0."
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "TTendencias completada: #TAIGranada2031 cerrada y verificada; cola final 0."
       }
     ],
     "ratings_snapshot": {
@@ -109,27 +195,44 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "processed_ids": [],
+    "remate_selections": [
+      {
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "selected": "🌶️ La candidatura ya tiene hasta copiloto algorítmico.",
+        "reason": "Específico del vínculo IA–Granada 2031 y no repite remates recientes."
+      }
+    ],
+    "processed_ids": [
+      "e12fad8424a2"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "e12fad8424a2",
+        "name": "#TAIGranada2031",
+        "revision": 0,
+        "status": "explained",
+        "rank": 9
+      }
+    ]
   },
-  "run_id": "tr-20261026T1015-chat",
+  "run_id": "tr-20261026T1045-chat",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -137,8 +240,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 6,
@@ -151,45 +254,129 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T10:15:00+01:00",
+      "at": "2026-10-26T10:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+      "message": "Inicio de pasada: 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-26T10:15:20+01:00",
+      "at": "2026-10-26T09:46:55.311Z",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate. Reparación visual solicitada."
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Releyendo estado autoritativo de #TAIGranada2031"
     },
     {
-      "at": "2026-10-26T10:15:40+01:00",
+      "at": "2026-10-26T09:47:35.960Z",
+      "phase": "investigating",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Hecho esencial verificado con programa oficial y cobertura actual de TAI Granada."
+    },
+    {
+      "at": "2026-10-26T09:48:37.508Z",
+      "phase": "drafting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Redactando explicación factual de #TAIGranada2031"
+    },
+    {
+      "at": "2026-10-26T09:48:40.323Z",
+      "phase": "drafting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Comprobando límite de X: 245 caracteres."
+    },
+    {
+      "at": "2026-10-26T09:48:43.012Z",
+      "phase": "remate_selection",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Generando candidatos de remate y contrastando originalidad."
+    },
+    {
+      "at": "2026-10-26T09:48:45.493Z",
+      "phase": "remate_selection",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Remate seleccionado: «La candidatura ya tiene hasta copiloto algorítmico.»"
+    },
+    {
+      "at": "2026-10-26T09:48:47.918Z",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola 0, sin preparing/update y sin rewrite_pending."
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Releyendo estado autoritativo antes de persistir."
     },
     {
-      "at": "2026-10-26T10:15:55+01:00",
+      "at": "2026-10-26T09:48:51.325Z",
+      "phase": "persisting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-26T09:49:03.529Z",
+      "phase": "drafting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Redactando explicación factual y comprobando límite de X: 245 caracteres."
+    },
+    {
+      "at": "2026-10-26T09:49:16.995Z",
+      "phase": "remate_selection",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Remate seleccionado tras revisar originalidad: «La candidatura ya tiene hasta copiloto algorítmico.»"
+    },
+    {
+      "at": "2026-10-26T09:49:36.693Z",
+      "phase": "persisting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-26T09:50:02.862Z",
+      "phase": "persisting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-26T09:51:09.369Z",
+      "phase": "persisting",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Aplicando reconciliación transaccional mediante el outbox de chat del repositorio."
+    },
+    {
+      "at": "2026-10-26T09:53:01.997Z",
+      "phase": "verifying",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Releyendo main: revisión persistida, cola 0, sin update/preparing ni reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-10-26T09:53:20.014Z",
       "phase": "closing",
-      "trend_id": null,
-      "title": null,
-      "message": "TTendencias completada: no había trabajo editorial activo; estado final verificado en 0."
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "TTendencias completada: #TAIGranada2031 cerrada y verificada; cola final 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
-    "reason": "Radar vigente durante la pasada; no fue necesaria recaptura.",
-    "captured_at": "2026-10-26T09:10:50+01:00"
+    "reason": "Radar fresco durante la pasada; no fue necesaria recaptura.",
+    "captured_at": "2026-10-26T10:50:50+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T09:10:50+01:00",
+    "captured_at": "2026-10-26T10:50:50+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0915-chat",
+  "previous_run_id": "tr-20261026T1015-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -197,6 +384,21 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": []
+  "remate_selections": [
+    {
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "selected": "🌶️ La candidatura ya tiene hasta copiloto algorítmico.",
+      "reason": "Específico del vínculo IA–Granada 2031 y no repite remates recientes."
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "e12fad8424a2",
+      "name": "#TAIGranada2031",
+      "revision": 0,
+      "status": "explained",
+      "rank": 9
+    }
+  ]
 }
