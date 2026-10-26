@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-76d87468c3c4-r0-a2-1791180540328",
-  "requested_at": "2026-10-05T06:09:00.327843Z",
-  "updated_at": "2026-10-05T06:12:20.927Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-76d87468c3c4-r0-a1-1792995497562",
+  "requested_at": "2026-10-26T06:18:17.535840Z",
+  "updated_at": "2026-10-26T06:18:17.535840Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -14,51 +16,39 @@
   "trend_id": "76d87468c3c4",
   "target_name": "Flávio Bolsonaro",
   "revision": 0,
-  "attempt": 2,
+  "attempt": 1,
   "auto_repair": true,
-  "auto_repair_attempt": 2,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
-  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Flávio Bolsonaro",
     "revision": 0,
-    "explanation": "TT#17 Flávio Bolsonaro es tendencia tras ganar la primera vuelta presidencial de Brasil con el 47,04% de los votos válidos, frente al 45,15% de Lula; ambos irán a segunda vuelta el 25 de octubre.\n🌶️ Brasil contó casi todo y decidió volver a contar candidatos.",
-    "closer_text": "🌶️ Brasil contó casi todo y decidió volver a contar candidatos.",
+    "explanation": "TT#3 Flávio Bolsonaro es tendencia porque, tras perder la segunda vuelta de Brasil ante Lula (48,21%-51,79%), se negó a conceder y dijo que pedirá anular la elección.\n#FlávioBolsonaro #EleccionesBrasil #Lula\n🌶️ Se acabó la papeleta y empezó el papeleo.",
+    "closer_text": "🌶️ Se acabó la papeleta y empezó el papeleo.",
     "trend_names": [
-      "Flávio Bolsonaro"
+      "Flávio Bolsonaro",
+      "Brazil"
     ],
-    "group_title": "Flávio Bolsonaro y Lula pasan a la segunda vuelta en Brasil",
-    "rank_at_explanation": 17,
-    "explained_at": "2026-10-05T07:53:00+02:00",
+    "group_title": "Flávio Bolsonaro · resultado presidencial de Brasil 2026",
+    "rank_at_explanation": 3,
+    "explained_at": "2026-10-26T07:18:00+01:00",
     "verification_sources": [
-      {
-        "source": "Agência Brasil · 5/10/2026",
-        "url": "https://agenciabrasil.ebc.com.br/es/politica/noticia/2026-10/flavio-bolsonaro-y-lula-disputaran-segunda-vuelta-presidencial"
-      },
-      {
-        "source": "Euronews · 5/10/2026",
-        "url": "https://es.euronews.com/2026/10/05/bolsonaro-lula-iran-segunda-vuelta-tras-unas-renidas-elecciones-presidenciales-brasil"
-      }
+      "https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/presidente-do-tse-anuncia-reeleicao-de-lula-e-faz-balanco-do-2o-turno-das-eleicoes-2026",
+      "https://www.reuters.com/world/americas/bolsonaro-refuses-concede-says-he-will-seek-annulment-brazil-vote-2026-10-26/"
     ],
-    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "6d06b0820db2539f53d5ad994ad4f4f173f018f1df99f615d2da4bd720f34242",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-05T06:10:47.059Z",
-  "bridge_version": null,
-  "target_handoff_id": "77DEDA26F5B468BD4EEDBA34105FFCE8",
-  "target_handoff_at": "2026-10-05T06:11:04.928Z",
-  "pc_launched_at": "2026-10-05T06:11:05.979Z",
-  "upload_received_at": "2026-10-05T06:12:15.578Z",
-  "upload_sha256": "01043e753fb5768fb27b9b59602bf82412aef0cf68aa952e3674a89e7c2b7a34",
-  "upload_bytes": 2327577,
-  "finished_at": "2026-10-05T06:12:20.927Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
