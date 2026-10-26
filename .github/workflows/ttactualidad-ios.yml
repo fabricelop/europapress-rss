@@ -22,7 +22,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install XcodeGen
-        run: brew install xcodegen
+        run: brew install xcodegen librsvg
+      - name: Render AppIcon asset
+        working-directory: ios/ttactualidad
+        run: |
+          mkdir -p TTActualidad/Assets.xcassets/AppIcon.appiconset
+          rsvg-convert --width 1024 --height 1024 --format png --output TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png art/AppIcon.svg
+          file TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
       - name: Validate Live Activity contract and GitHub data sources
         run: python3 ios/ttactualidad/tests/preflight.py
       - name: Generate Xcode project
@@ -47,17 +53,18 @@ jobs:
           APP=".build/Build/Products/Release-iphoneos/TTActualidad.app"
           test -d "$APP"
           test -d "$APP/PlugIns/TTActualidadLive.appex"
+          test -s "$APP/Assets.car"
           /usr/libexec/PlistBuddy -c "Print :NSSupportsLiveActivities" "$APP/Info.plist" | grep -qi true
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa Payload
-          unzip -l TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa
+          zip -qr TTActualidad-0.2.0-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.2.0-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.2.0-PlumeImpactor-unsigned.ipa
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.1.0-PlumeImpactor-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa
+          name: TTActualidad-0.2.0-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.2.0-PlumeImpactor-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
