@@ -10,26 +10,29 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T11:45:00+01:00",
-  "last_completed_at": "2026-10-26T11:48:00+01:00",
-  "updated_at": "2026-10-26T11:48:00+01:00",
+  "last_started_at": "2026-10-26T12:15:00+01:00",
+  "last_completed_at": "2026-10-26T12:18:00+01:00",
+  "updated_at": "2026-10-26T12:18:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T1115-chat",
+    "trigger_run_id": "tr-20261026T1215-chat",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-20261026T1145-chat",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-20261026T1215-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T11:45:00+01:00",
-    "updated_at": "2026-10-26T11:48:00+01:00",
-    "finished_at": "2026-10-26T11:48:00+01:00",
+    "started_at": "2026-10-26T12:15:00+01:00",
+    "updated_at": "2026-10-26T12:18:00+01:00",
+    "finished_at": "2026-10-26T12:18:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -58,7 +61,7 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 5,
+      "pending_cards_reviewed": 6,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
@@ -66,9 +69,85 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada.",
+    "message": "TTendencias completada: sin trabajo editorial activo; 6 Pendientes recientes revisadas y reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
+    "activity": [
+      {
+        "at": "2026-10-26T12:15:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+      },
+      {
+        "at": "2026-10-26T12:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 6 tarjetas recientes"
+      },
+      {
+        "at": "2026-10-26T12:16:10+01:00",
+        "phase": "verifying",
+        "trend_id": "d62b113bc862",
+        "title": "Getafe",
+        "message": "Pendiente 1/6 · explicación y remate completos; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:16:20+01:00",
+        "phase": "verifying",
+        "trend_id": "21957106f222",
+        "title": "Parrot",
+        "message": "Pendiente 2/6 · explicación y remate completos; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:16:30+01:00",
+        "phase": "verifying",
+        "trend_id": "4fa75451fa6d",
+        "title": "Celta",
+        "message": "Pendiente 3/6 · explicación y remate completos; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:16:40+01:00",
+        "phase": "verifying",
+        "trend_id": "3c4fe1515d56",
+        "title": "Gerard Martín",
+        "message": "Pendiente 4/6 · paquete pendiente; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:16:50+01:00",
+        "phase": "verifying",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Pendiente 5/6 · explicación y remate completos; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:17:00+01:00",
+        "phase": "verifying",
+        "trend_id": "e12fad8424a2",
+        "title": "#TAIGranada2031",
+        "message": "Pendiente 6/6 · explicación y remate completos; reparación visual solicitada"
+      },
+      {
+        "at": "2026-10-26T12:17:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, requests y reexplicaciones antes del cierre."
+      },
+      {
+        "at": "2026-10-26T12:18:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada: sin trabajo editorial activo; 6 Pendientes recientes revisadas y reparación visual solicitada."
+      }
+    ],
+    "processed_ids": [],
+    "partial": false,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -77,43 +156,9 @@
       "recent_considered": 30
     },
     "remate_selections": [],
-    "processed_ids": [],
-    "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "final_outcomes": [],
-    "activity": [
-      {
-        "at": "2026-10-26T11:45:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-26T11:46:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo Top 10, reexplicaciones y Pendientes recientes antes del cierre."
-      },
-      {
-        "at": "2026-10-26T11:47:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests, reexplicaciones y runtime antes del cierre."
-      },
-      {
-        "at": "2026-10-26T11:48:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada."
-      }
-    ]
+    "final_outcomes": []
   },
-  "run_id": "tr-20261026T1115-chat",
+  "run_id": "tr-20261026T1215-chat",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -138,7 +183,7 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 5,
+    "pending_cards_reviewed": 6,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -148,45 +193,87 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T11:15:00+01:00",
+      "at": "2026-10-26T12:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-26T11:16:00+01:00",
+      "at": "2026-10-26T12:16:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo Pendientes recientes y estados de entrega/copias."
+      "message": "Revisando Pendientes · 6 tarjetas recientes"
     },
     {
-      "at": "2026-10-26T11:17:00+01:00",
+      "at": "2026-10-26T12:16:10+01:00",
+      "phase": "verifying",
+      "trend_id": "d62b113bc862",
+      "title": "Getafe",
+      "message": "Pendiente 1/6 · explicación y remate completos; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:16:20+01:00",
+      "phase": "verifying",
+      "trend_id": "21957106f222",
+      "title": "Parrot",
+      "message": "Pendiente 2/6 · explicación y remate completos; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:16:30+01:00",
+      "phase": "verifying",
+      "trend_id": "4fa75451fa6d",
+      "title": "Celta",
+      "message": "Pendiente 3/6 · explicación y remate completos; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:16:40+01:00",
+      "phase": "verifying",
+      "trend_id": "3c4fe1515d56",
+      "title": "Gerard Martín",
+      "message": "Pendiente 4/6 · paquete pendiente; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:16:50+01:00",
+      "phase": "verifying",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Pendiente 5/6 · explicación y remate completos; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:17:00+01:00",
+      "phase": "verifying",
+      "trend_id": "e12fad8424a2",
+      "title": "#TAIGranada2031",
+      "message": "Pendiente 6/6 · explicación y remate completos; reparación visual solicitada"
+    },
+    {
+      "at": "2026-10-26T12:17:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola, requests, reexplicaciones y runtime antes del cierre."
+      "message": "Releyendo main: cola, requests y reexplicaciones antes del cierre."
     },
     {
-      "at": "2026-10-26T11:18:00+01:00",
+      "at": "2026-10-26T12:18:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada."
+      "message": "TTendencias completada: sin trabajo editorial activo; 6 Pendientes recientes revisadas y reparación visual solicitada."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Radar fresco durante la pasada; no fue necesaria recaptura.",
-    "captured_at": "2026-10-26T11:10:52+01:00"
+    "captured_at": "2026-10-26T12:10:47+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T11:10:52+01:00",
+    "captured_at": "2026-10-26T12:10:47+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T1045-chat",
+  "previous_run_id": "tr-20261026T1145-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
