@@ -5,22 +5,22 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "47513148ae9c"
+    "37b5073e4e9a"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T00:45:30+01:00",
-  "last_completed_at": "2026-10-26T00:50:30+01:00",
-  "updated_at": "2026-10-26T00:50:30+01:00",
+  "last_started_at": "2026-10-26T01:15:00+01:00",
+  "last_completed_at": "2026-10-26T01:23:00+01:00",
+  "updated_at": "2026-10-26T01:23:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T0045-manual",
+    "trigger_run_id": "tr-20261026T0115-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,13 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0045-manual",
+    "run_id": "tr-20261026T0115-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T00:45:30+01:00",
-    "updated_at": "2026-10-26T00:50:30+01:00",
-    "finished_at": "2026-10-26T00:50:30+01:00",
+    "started_at": "2026-10-26T01:15:00+01:00",
+    "updated_at": "2026-10-26T01:23:00+01:00",
+    "finished_at": "2026-10-26T01:23:00+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -51,8 +51,8 @@
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 1,
+      "initial_compact_queue": 1,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -62,127 +62,189 @@
       "explanations_verified_under_280": 1,
       "remates_selected": 1,
       "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 14,
-      "stale_top10_reviewed": 1,
-      "stale_top10_reexplained": 1,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 15,
+      "stale_top10_reviewed": 0,
+      "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 1,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: Rodri pasó por En elaboración y quedó explicado y verificado; cola final 0.",
+    "message": "TTendencias completada: Lula explicada y verificada; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T00:45:30+01:00",
+        "at": "2026-10-26T01:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: comprobando cola autoritativa, reexplicaciones y saneamiento reciente."
+        "message": "Inicio de pasada: comprobando Lula y saneamiento editorial vigente."
       },
       {
-        "at": "2026-10-26T00:47:00+01:00",
+        "at": "2026-10-26T01:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Releyendo estado autoritativo de Lula"
+      },
+      {
+        "at": "2026-10-26T01:16:20+01:00",
+        "phase": "investigating",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-26T01:17:00+01:00",
+        "phase": "investigating",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-26T01:17:30+01:00",
+        "phase": "investigating",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-26T01:18:00+01:00",
+        "phase": "investigating",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Hecho esencial verificado: Lula ganó la segunda vuelta presidencial frente a Flávio Bolsonaro tras quedar segundo en la primera."
+      },
+      {
+        "at": "2026-10-26T01:18:30+01:00",
+        "phase": "drafting",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-26T01:19:00+01:00",
+        "phase": "drafting",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Comprobando límite de X · 248 caracteres"
+      },
+      {
+        "at": "2026-10-26T01:19:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-26T01:19:30+01:00",
+        "phase": "remate_selection",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Evaluando candidatos con ratings y últimos 30 remates"
+      },
+      {
+        "at": "2026-10-26T01:19:45+01:00",
+        "phase": "remate_selection",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Remate seleccionado · neutral y específico del balotaje"
+      },
+      {
+        "at": "2026-10-26T01:20:00+01:00",
+        "phase": "persisting",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-26T01:20:20+01:00",
+        "phase": "persisting",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-26T01:20:40+01:00",
+        "phase": "persisting",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-26T01:21:30+01:00",
+        "phase": "verifying",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-26T01:22:00+01:00",
+        "phase": "verifying",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-26T01:22:20+01:00",
+        "phase": "verifying",
+        "trend_id": "37b5073e4e9a",
+        "title": "Lula",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T01:22:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Solicitando recaptura Top 10 para aplicar la corrección recién integrada de episodios editoriales."
+        "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual ya solicitada al inicio"
       },
       {
-        "at": "2026-10-26T00:48:00+01:00",
-        "phase": "verifying",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Releyendo estado autoritativo de Rodri antes de abrir el nuevo episodio editorial."
-      },
-      {
-        "at": "2026-10-26T00:48:20+01:00",
-        "phase": "investigating",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Hecho esencial verificado: Rodri fue titular en su primer Clásico y el Barça perdió 1-2."
-      },
-      {
-        "at": "2026-10-26T00:48:40+01:00",
-        "phase": "drafting",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Comprobando límite de X para la explicación factual de Rodri."
-      },
-      {
-        "at": "2026-10-26T00:49:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Remate seleccionado tras comparar candidatos y evitar repetir la metáfora de la factura usada antes con Rodri."
-      },
-      {
-        "at": "2026-10-26T00:49:20+01:00",
-        "phase": "persisting",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Guardando ficha Explicada de Rodri y sincronizando su revisión exacta."
-      },
-      {
-        "at": "2026-10-26T00:49:30+01:00",
-        "phase": "persisting",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Actualizando requests y retirando la revisión exacta de la cola."
-      },
-      {
-        "at": "2026-10-26T00:50:00+01:00",
-        "phase": "verifying",
-        "trend_id": "47513148ae9c",
-        "title": "Rodri",
-        "message": "Releyendo main y verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-26T00:50:30+01:00",
+        "at": "2026-10-26T01:23:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Rodri pasó por En elaboración y quedó explicado; cola final 0."
+        "message": "TTendencias completada: Lula explicada y verificada; cola final 0."
       }
     ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
       "recent_considered": 30
     },
     "remate_selections": [
       {
-        "trend_id": "47513148ae9c",
+        "trend_id": "37b5073e4e9a",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [],
-        "selected_candidate": "Debutó en el Clásico y el marcador le dio la bienvenida sin tutorial.",
+        "selected_candidate": " Quedó segundo en la primera y primero cuando ya no quedaban rondas.",
         "selected_score": null,
         "no_remate_reason": null
       }
     ],
     "processed_ids": [
-      "47513148ae9c"
+      "37b5073e4e9a"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "47513148ae9c",
+        "id": "37b5073e4e9a",
         "revision": 0,
-        "name": "Rodri",
+        "name": "Lula",
         "status": "explained",
-        "explained_at": "2026-10-26T00:49:30+01:00",
-        "closer_text": "🌶️ Debutó en el Clásico y el marcador le dio la bienvenida sin tutorial.",
+        "explained_at": "2026-10-26T01:20:00+01:00",
+        "closer_text": "🌶️ Quedó segundo en la primera y primero cuando ya no quedaban rondas.",
         "verified": true
       }
     ]
   },
-  "run_id": "tr-20261026T0045-manual",
+  "run_id": "tr-20261026T0115-manual",
   "summary": {
     "attempted": 1,
     "ready": 1,
@@ -195,8 +257,8 @@
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
-    "discovered_during_run": 1,
+    "initial_compact_queue": 1,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
@@ -206,85 +268,148 @@
     "explanations_verified_under_280": 1,
     "remates_selected": 1,
     "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 14,
-    "stale_top10_reviewed": 1,
-    "stale_top10_reexplained": 1,
+    "recent_missing_closer_reviewed": 0,
+    "pending_cards_reviewed": 15,
+    "stale_top10_reviewed": 0,
+    "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "top10_reviewed": 1,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T00:45:30+01:00",
+      "at": "2026-10-26T01:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: comprobando cola autoritativa, reexplicaciones y saneamiento reciente."
+      "message": "Inicio de pasada: comprobando Lula y saneamiento editorial vigente."
     },
     {
-      "at": "2026-10-26T00:47:00+01:00",
+      "at": "2026-10-26T01:16:00+01:00",
+      "phase": "verifying",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Releyendo estado autoritativo de Lula"
+    },
+    {
+      "at": "2026-10-26T01:16:20+01:00",
+      "phase": "investigating",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-26T01:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-26T01:17:30+01:00",
+      "phase": "investigating",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-26T01:18:00+01:00",
+      "phase": "investigating",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Hecho esencial verificado: Lula ganó la segunda vuelta presidencial frente a Flávio Bolsonaro tras quedar segundo en la primera."
+    },
+    {
+      "at": "2026-10-26T01:18:30+01:00",
+      "phase": "drafting",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-26T01:19:00+01:00",
+      "phase": "drafting",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Comprobando límite de X · 248 caracteres"
+    },
+    {
+      "at": "2026-10-26T01:19:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-26T01:19:30+01:00",
+      "phase": "remate_selection",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Evaluando candidatos con ratings y últimos 30 remates"
+    },
+    {
+      "at": "2026-10-26T01:19:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Remate seleccionado · neutral y específico del balotaje"
+    },
+    {
+      "at": "2026-10-26T01:20:00+01:00",
+      "phase": "persisting",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-26T01:20:20+01:00",
+      "phase": "persisting",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-26T01:20:40+01:00",
+      "phase": "persisting",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-26T01:21:30+01:00",
+      "phase": "verifying",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-26T01:22:00+01:00",
+      "phase": "verifying",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-26T01:22:20+01:00",
+      "phase": "verifying",
+      "trend_id": "37b5073e4e9a",
+      "title": "Lula",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T01:22:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Solicitando recaptura Top 10 para aplicar la corrección recién integrada de episodios editoriales."
+      "message": "Revisando Pendientes · 15 tarjetas recientes; reparación visual ya solicitada al inicio"
     },
     {
-      "at": "2026-10-26T00:48:00+01:00",
-      "phase": "verifying",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Releyendo estado autoritativo de Rodri antes de abrir el nuevo episodio editorial."
-    },
-    {
-      "at": "2026-10-26T00:48:20+01:00",
-      "phase": "investigating",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Hecho esencial verificado: Rodri fue titular en su primer Clásico y el Barça perdió 1-2."
-    },
-    {
-      "at": "2026-10-26T00:48:40+01:00",
-      "phase": "drafting",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Comprobando límite de X para la explicación factual de Rodri."
-    },
-    {
-      "at": "2026-10-26T00:49:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Remate seleccionado tras comparar candidatos y evitar repetir la metáfora de la factura usada antes con Rodri."
-    },
-    {
-      "at": "2026-10-26T00:49:20+01:00",
-      "phase": "persisting",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Guardando ficha Explicada de Rodri y sincronizando su revisión exacta."
-    },
-    {
-      "at": "2026-10-26T00:49:30+01:00",
-      "phase": "persisting",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Actualizando requests y retirando la revisión exacta de la cola."
-    },
-    {
-      "at": "2026-10-26T00:50:00+01:00",
-      "phase": "verifying",
-      "trend_id": "47513148ae9c",
-      "title": "Rodri",
-      "message": "Releyendo main y verificando id+revision y texto persistido."
-    },
-    {
-      "at": "2026-10-26T00:50:30+01:00",
+      "at": "2026-10-26T01:23:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Rodri pasó por En elaboración y quedó explicado; cola final 0."
+      "message": "TTendencias completada: Lula explicada y verificada; cola final 0."
     }
   ],
   "partial": false,
@@ -297,13 +422,33 @@
     "captured_at": "2026-10-26T00:49:07+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1792971193118-manual",
+  "previous_run_id": "tr-20261026T0045-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
-    "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": []
+  "remate_selections": [
+    {
+      "trend_id": "37b5073e4e9a",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [],
+      "selected_candidate": " Quedó segundo en la primera y primero cuando ya no quedaban rondas.",
+      "selected_score": null,
+      "no_remate_reason": null
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "37b5073e4e9a",
+      "revision": 0,
+      "name": "Lula",
+      "status": "explained",
+      "explained_at": "2026-10-26T01:20:00+01:00",
+      "closer_text": "🌶️ Quedó segundo en la primera y primero cuando ya no quedaban rondas.",
+      "verified": true
+    }
+  ]
 }
