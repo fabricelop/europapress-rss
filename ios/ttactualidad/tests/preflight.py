@@ -41,3 +41,13 @@ assert "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" in s
 assert "partialData: partial" in store
 assert "no Home Screen or Lock Screen widgets" in shared
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
+
+# Gallery is explicitly archive-only: no AI retrieval or generated-image fallback.
+catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
+gallery = (root / "TTActualidad/ArchivePhotoGallery.swift").read_text(encoding="utf8")
+assert 'trends/archive-images/' in catalog and 'ttittulares/archive-images/' in catalog
+assert 'generated-images' in catalog and '!image.path.lowercased().contains("generated-images")' in catalog
+assert 'ArchivePhotoCatalog.resolved(' in store
+assert 'ArchivePhotoGallery' in dashboard
+assert 'Copiar foto de archivo' in gallery
+assert 'ChatGPT Images' in actions
