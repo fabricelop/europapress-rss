@@ -8,8 +8,17 @@ store = (root / "TTActualidad/EditorialStore.swift").read_text(encoding="utf8")
 activity = (root / "TTActualidadLive/TTActualidadLive.swift").read_text(encoding="utf8")
 shared = (root / "Shared/LiveCountsAttributes.swift").read_text(encoding="utf8")
 app = (root / "TTActualidad/TTActualidadApp.swift").read_text(encoding="utf8")
+dashboard = (root / "TTActualidad/TTDashboard.swift").read_text(encoding="utf8")
+actions = (root / "TTActualidad/EditorialActionPanels.swift").read_text(encoding="utf8")
+auth = (root / "TTActualidad/GitHubEditor.swift").read_text(encoding="utf8")
 
 assert "NSSupportsLiveActivities: true" in project
+assert "ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon" in project
+assert (root / "art/AppIcon.svg").is_file()
+assert "TTDashboard()" in app
+assert "NewsSubmissionSheet" in dashboard and "EditorialActions" in dashboard
+assert "ttactualidad_manual_news_v1" in auth and "ttactualidad_action_v1" in auth
+assert "kSecClassGenericPassword" in auth and "https://api.github.com/" in auth
 assert "TTActualidadLive:" in project
 assert "type: app-extension" in project
 assert "WidgetBundle" in activity and "ActivityConfiguration(for: LiveCountsAttributes.self)" in activity
