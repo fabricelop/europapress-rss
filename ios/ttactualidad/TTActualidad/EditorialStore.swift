@@ -95,6 +95,7 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
     @Published private(set) var novedades: [String] = []
+    private var currentVisitSnapshot: [String: String]?
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
@@ -241,7 +242,8 @@ final class EditorialStore: ObservableObject {
             ready: ready
         )
         if !partial && downloaded.count == paths.count {
-            updateNovedades(news: news, trends: ready, top30: top)
+            updateNovedades(news: news, trends: ready, top30: top,
+                            newsWorking: queueNews, trendsWorking: trendsQueued)
         }
         snapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
@@ -260,21 +262,45 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    // Only compare successful full snapshots. Never count an offline cache as a new visit.
-    private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem]) {
+    // Snapshot baseline advances when leaving the app, not on every refresh.
+    // This preserves the entire set of changes during a visit.
+    func markVisitComplete() {
+        guard let snapshot = currentVisitSnapshot else { return }
+        UserDefaults.standard.set(snapshot, forKey: "TTActualidad.editorial.baseline.v1")
+    }
+
+    private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem],
+                                 newsWorking: [NewsItem], trendsWorking: [TrendItem]) {
         let key = "TTActualidad.editorial.baseline.v1"
         let defaults = UserDefaults.standard
         var current: [String: String] = [:]
         for item in news { current["N:" + item.id] = String(item.revision) }
         for item in trends { current["T:" + item.editorialID] = String(item.revision) }
         for item in top30 { current["R:" + item.name] = String(item.rank) }
+        for item in newsWorking { current["W:N:" + item.id] = String(item.revision) }
+        for item in trendsWorking { current["W:T:" + item.editorialID] = String(item.revision) }
+        currentVisitSnapshot = current
         if let before = defaults.dictionary(forKey: key) as? [String: String] {
             var changes: [String] = []
-            for item in news where before["N:" + item.id] == nil {
-                changes.append("Noticia lista: " + item.title)
+            for item in news {
+                let old = before["N:" + item.id]
+                if old == nil { changes.append("Noticia lista: " + item.title) }
+                else if old != String(item.revision) {
+                    changes.append("Noticia actualizada: " + item.title)
+                }
             }
-            for item in trends where before["T:" + item.editorialID] == nil {
-                changes.append("Tendencia lista: " + item.name)
+            for item in trends {
+                let old = before["T:" + item.editorialID]
+                if old == nil { changes.append("Tendencia lista: " + item.name) }
+                else if old != String(item.revision) {
+                    changes.append("Tendencia reelaborada: " + item.name)
+                }
+            }
+            for item in newsWorking where before["W:N:" + item.id] == nil {
+                changes.append("Nueva elaboración de noticia: " + item.title)
+            }
+            for item in trendsWorking where before["W:T:" + item.editorialID] == nil {
+                changes.append("Nueva elaboración de tendencia: " + item.name)
             }
             for item in top30 {
                 let original = before["R:" + item.name]
@@ -288,7 +314,6 @@ final class EditorialStore: ObservableObject {
         } else {
             novedades = ["Primera sincronización completa: seguimiento de novedades activado."]
         }
-        defaults.set(current, forKey: key)
     }
 
     private func cacheFile(for path: String) -> URL {
