@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-939c0b5fe525-r0-a10-1791361079696",
-  "requested_at": "2026-10-07T08:17:59.695662Z",
-  "updated_at": "2026-10-07T08:20:12.801Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-939c0b5fe525-r0-a1-1793054769690",
+  "requested_at": "2026-10-26T22:46:09.662233Z",
+  "updated_at": "2026-10-26T22:46:09.662233Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -14,44 +16,38 @@
   "trend_id": "939c0b5fe525",
   "target_name": "Unai Simón",
   "revision": 0,
-  "attempt": 10,
+  "attempt": 1,
   "auto_repair": true,
-  "auto_repair_attempt": 10,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Unai Simón",
     "revision": 0,
-    "explanation": "TT#3 Unai Simón es tendencia porque hizo cinco paradas clave ante Croacia y sostuvo a España hasta la remontada 1-2 que selló el pase a cuartos de la Nations League.\n🌶️ La remontada empezó con el candado puesto.",
-    "closer_text": "🌶️ La remontada empezó con el candado puesto.",
+    "explanation": "TT#4 Unai Simón es tendencia porque ganó el Trofeo Yashin 2026 al mejor portero del mundo, el primero para un español, tras conquistar el Mundial con España.\n#UnaiSimón #TrofeoYashin #AthleticClub\n🌶️ Del Mundial a Londres: el año terminó también bajo palos.",
+    "closer_text": "🌶️ Del Mundial a Londres: el año terminó también bajo palos.",
     "trend_names": [
       "Unai Simón"
     ],
-    "group_title": "",
-    "rank_at_explanation": 3,
-    "explained_at": "2026-10-06T21:50:42.629Z",
-    "verification_sources": [],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Cartoon 3D editorial estilizado, modelado cuidado, expresiones claras, materiales pulidos y escena sencilla pero no simplona.",
-    "image_style_name": "cartoon_3d",
-    "image_style_index": 8
+    "group_title": "Unai Simón · Trofeo Yashin 2026",
+    "rank_at_explanation": 4,
+    "explained_at": "2026-10-26T23:43:30+01:00",
+    "verification_sources": [
+      "https://efe.com/deportes/2026-10-26/unai-simon-ganador-trofeo-yashin-balon-oro-mejor-portero/",
+      "https://www.athletic-club.eus/en/news/2026/10/26/the-world-s-best-goalkeeper-plays-for-athletic/"
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "absurdo_semirrealista",
+    "image_style_index": 3
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "183ad3111b6c2b902b47c44c58b9745cdc0a7ab9672cf5bba47c835125ce691c",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-07T08:18:44.346Z",
-  "bridge_version": null,
-  "target_handoff_id": "FAF6A3537484D8A5B34AF55CE9F16860",
-  "target_handoff_at": "2026-10-07T08:18:55.303Z",
-  "pc_launched_at": "2026-10-07T08:18:56.736Z",
-  "upload_received_at": "2026-10-07T08:20:05.815Z",
-  "upload_sha256": "f5eaaf4e9c4e48b8e17a4de83133dc6e7da109874432582ae0167f328c3ad839",
-  "upload_bytes": 2567738,
-  "finished_at": "2026-10-07T08:20:12.801Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
