@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T11:15:00+01:00",
-  "last_completed_at": "2026-10-26T11:18:00+01:00",
-  "updated_at": "2026-10-26T11:18:00+01:00",
+  "last_started_at": "2026-10-26T11:45:00+01:00",
+  "last_completed_at": "2026-10-26T11:48:00+01:00",
+  "updated_at": "2026-10-26T11:48:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -23,16 +23,13 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-20261026T1115-chat",
+    "run_id": "tr-20261026T1145-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T11:15:00+01:00",
-    "updated_at": "2026-10-26T11:18:00+01:00",
-    "finished_at": "2026-10-26T11:18:00+01:00",
+    "started_at": "2026-10-26T11:45:00+01:00",
+    "updated_at": "2026-10-26T11:48:00+01:00",
+    "finished_at": "2026-10-26T11:48:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -72,36 +69,6 @@
     "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada.",
     "incident_count": 0,
     "incidents": [],
-    "activity": [
-      {
-        "at": "2026-10-26T11:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-26T11:16:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo Pendientes recientes y estados de entrega/copias."
-      },
-      {
-        "at": "2026-10-26T11:17:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola, requests, reexplicaciones y runtime antes del cierre."
-      },
-      {
-        "at": "2026-10-26T11:18:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada."
-      }
-    ],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -114,7 +81,37 @@
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [],
+    "activity": [
+      {
+        "at": "2026-10-26T11:45:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+      },
+      {
+        "at": "2026-10-26T11:46:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo Top 10, reexplicaciones y Pendientes recientes antes del cierre."
+      },
+      {
+        "at": "2026-10-26T11:47:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main: cola, requests, reexplicaciones y runtime antes del cierre."
+      },
+      {
+        "at": "2026-10-26T11:48:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada: sin trabajo editorial activo; 5 Pendientes recientes revisadas y reparación visual solicitada."
+      }
+    ]
   },
   "run_id": "tr-20261026T1115-chat",
   "summary": {
