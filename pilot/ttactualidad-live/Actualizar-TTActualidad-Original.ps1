@@ -98,7 +98,8 @@ try {
                            'disponible en Listas sin cambiar de',
                            'function compactTop30Card(out,x)',
                            '.cards.top30{display:flex;flex-direction:column',
-                           'trend-explained','class="top30-date"',
+                           'trend-age-green','trend-age-yellow','trend-age-red',
+                           'function top30AgeBand(explainedAt','class="top30-date"',
                            '.toolbar.tti-compact{display:grid',
                            "state.tab=app==='tr'?'top':'listas'")) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
@@ -151,7 +152,10 @@ try {
                 $remote.Contains('disponible en Listas sin cambiar de') -and
                 $remote.Contains('function compactTop30Card(out,x)') -and
                 $remote.Contains('.cards.top30{display:flex;flex-direction:column') -and
-                $remote.Contains('trend-explained') -and
+                $remote.Contains('trend-age-green') -and
+                $remote.Contains('trend-age-yellow') -and
+                $remote.Contains('trend-age-red') -and
+                $remote.Contains('function top30AgeBand(explainedAt') -and
                 $remote.Contains('class="top30-date"') -and
                 $remote.Contains('.toolbar.tti-compact{display:grid') -and
                 $remote.Contains("state.tab=app==='tr'?'top':'listas'") -and
