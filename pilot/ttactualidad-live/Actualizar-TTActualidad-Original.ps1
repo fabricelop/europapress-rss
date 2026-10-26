@@ -95,7 +95,10 @@ try {
                            'Copiar Foto Archivo','id="manual-open"','function trendRows()',
                            'source_app:state.app,source_tab:state.tab',
                            'op.source_tab!==state.tab||op.source_app!==state.app',
-                           'disponible en Listas sin cambiar de')) {
+                           'disponible en Listas sin cambiar de',
+                           'function compactTop30Card(out,x)',
+                           '.cards.top30{display:flex;flex-direction:column',
+                           'trend-explained')) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
     }
     Ensure (-not $html.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) (
@@ -144,6 +147,9 @@ try {
                 $remote.Contains('source_app:state.app,source_tab:state.tab') -and
                 $remote.Contains('op.source_tab!==state.tab||op.source_app!==state.app') -and
                 $remote.Contains('disponible en Listas sin cambiar de') -and
+                $remote.Contains('function compactTop30Card(out,x)') -and
+                $remote.Contains('.cards.top30{display:flex;flex-direction:column') -and
+                $remote.Contains('trend-explained') -and
                 -not $remote.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) {
                 $valid = $true
                 break
