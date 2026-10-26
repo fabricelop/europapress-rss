@@ -57,8 +57,10 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
   assert(html.includes('.card.trend-top.trend-age-'+band),
    path+': missing age-dependent background '+band);
  }
- assert(html.includes('setInterval(updateTop30AgeColors,60000)'),
-  path+': colors should update when the 12h and 24h boundary is crossed');
+ assert(html.includes("document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTop30AgeColors()});"),
+  path+': colors must refresh on returning to the app without background polling');
+ assert(!html.includes('setInterval(updateTop30AgeColors'),
+  path+': no recurring background work for age-color refresh');
  const ageCode=pick('function top30AgeBand(explainedAt,now=Date.now()){',
                     'function updateTop30AgeColors(){');
  const top30AgeBand=new Function(ageCode+'return top30AgeBand;')();
