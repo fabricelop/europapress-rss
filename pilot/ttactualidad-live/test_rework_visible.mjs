@@ -45,7 +45,7 @@ for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index
  assert.equal(rows[0]._id,ferran.id);
  assert.equal(rows[0]._status,'EN ELABORACIÓN');
  const completed={...ferran,status:'explained',revision:2,
-  explained_at:'2026-10-21T00:03:00+02:00',
+  explained_at:new Date().toISOString(), // Recent enough for the 48-hour Listas retention policy
   explanation:'TT#6 Ferran: nuevo contexto. Remate nuevo.'};
  rows=run([ferran],[completed],false);
  assert.equal(rows.length,0,path+': old queue cannot display a completed item twice');
