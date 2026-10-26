@@ -110,12 +110,14 @@ struct EditorialActions: View {
                 let requestedTitle = title
                 let requestedRank = rank
                 Task {
-                    _ = await github.decide(project: requestedProject, eventID: requestedID,
-                                            revision: requestedRevision, decision: requestedDecision,
-                                            title: requestedTitle, rank: requestedRank)
+                    let result = await github.decide(project: requestedProject,
+                                                     eventID: requestedID,
+                                                     revision: requestedRevision,
+                                                     decision: requestedDecision,
+                                                     title: requestedTitle, rank: requestedRank)
                     store.completeEditorialAction(project: requestedProject, id: requestedID,
                                                   revision: requestedRevision,
-                                                  result: github.lastWriteResult, detail: github.notice)
+                                                  result: result, detail: github.notice)
                 }
             }
             Button("Cancelar", role: .cancel) {}
@@ -227,10 +229,11 @@ struct NewsSubmissionSheet: View {
                         dismiss()
                         let description = instructions
                         Task {
-                            _ = await github.addNews(title: cleanTitle, url: cleanURL,
-                                                     instructions: description, requestID: requestID)
+                            let result = await github.addNews(title: cleanTitle, url: cleanURL,
+                                                              instructions: description,
+                                                              requestID: requestID)
                             store.completeManualNews(requestID: requestID,
-                                                     result: github.lastWriteResult, detail: github.notice)
+                                                     result: result, detail: github.notice)
                         }
                     } label: {
                         Label("Enviar a En elaboración", systemImage: "paperplane.fill")
