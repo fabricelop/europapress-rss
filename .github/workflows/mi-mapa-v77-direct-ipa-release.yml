@@ -1,0 +1,69 @@
+name: "Mi Mapa v1.0.77 - enlace IPA público"
+on:
+  push:
+    branches:
+      - feature/cell-history-tree-v77
+    paths:
+      - '.github/workflows/mi-mapa-v77-direct-ipa-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish-tested-ipa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RELEASE_TAG: mi-mapa-1.0.77-build78
+      SOURCE_RUN: "40372849990"
+      SOURCE_ARTIFACT: MiMapaDelTiempo-Sitios-Agil-1.0.77-build78-unsigned
+    steps:
+      - name: Download IPA from the fully tested iPhone build
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/mi-mapa-direct-ipa
+          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" \
+            --name "$SOURCE_ARTIFACT" --dir /tmp/mi-mapa-direct-ipa
+          find /tmp/mi-mapa-direct-ipa -maxdepth 2 -type f -name '*.ipa' -print
+          test "$(find /tmp/mi-mapa-direct-ipa -type f -name '*.ipa' | wc -l)" -eq 1
+      - name: Validate IPA archive, binary version and bundle id
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile,plistlib,shutil
+          root=Path('/tmp/mi-mapa-direct-ipa')
+          files=list(root.rglob('*.ipa'))
+          assert len(files)==1
+          ipa=files[0]
+          with zipfile.ZipFile(ipa) as z:
+              assert z.testzip() is None
+              info_paths=[p for p in z.namelist() if p.endswith('MiMapaDelTiempo.app/Info.plist')]
+              assert len(info_paths)==1,info_paths
+              info=plistlib.loads(z.read(info_paths[0]))
+              assert info['CFBundleIdentifier']=='es.mimapadeltiempo.appprueba'
+              assert info['CFBundleShortVersionString']=='1.0.77'
+              assert info['CFBundleVersion']=='78'
+          target=root/'MiMapaDelTiempo-1.0.77-build78.ipa'
+          if ipa != target: shutil.copyfile(ipa,target)
+          assert target.stat().st_size>1000000
+          print('TESTED_IPA_VERIFIED:',target.name,'bytes=',target.stat().st_size)
+          PY
+      - name: Publish publicly downloadable GitHub pre-release
+        run: |
+          set -euo pipefail
+          FILE="/tmp/mi-mapa-direct-ipa/MiMapaDelTiempo-1.0.77-build78.ipa"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$FILE" --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$RELEASE_TAG" "$FILE" \
+              --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "Mi Mapa del Tiempo 1.0.77 (build 78) · iPhone" \
+              --notes "IPA sin firma de la compilación validada por GitHub Actions (pruebas en simulador aprobadas). Cambios: histórico de cuadrículas por año/mes/día/horarios, bloques plegados y vista compacta del mapa. Instalación mediante Sideloadly; no desinstalar antes la app existente para preservar datos." \
+              --prerelease
+          fi
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json url,assets,isPrerelease,name \
+            --jq '{url:.url,assets:[.assets[]|{name:.name,url:.url,size:.size}],isPrerelease:.isPrerelease,name:.name}'
