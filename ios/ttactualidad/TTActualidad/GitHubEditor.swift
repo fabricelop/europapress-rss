@@ -88,26 +88,63 @@ final class GitHubEditor: ObservableObject {
                 let deadline = Date().addingTimeInterval(TimeInterval(duration))
                 while !Task.isCancelled && Date() < deadline {
                     try await Task.sleep(for: .seconds(interval))
-                    let response = try await githubForm(
-                        "https://github.com/login/oauth/access_token",
-                        parameters: ["client_id": id, "device_code": secret,
-                                     "grant_type": "urn:ietf:params:oauth:grant-type:device_code"])
-                    if let access = response["access_token"] as? String {
-                        acceptTokens(response, access: access)
-                        deviceCode = ""
-                        notice = "GitHub conectado. Ya puedes enviar órdenes editoriales."
-                        return
-                    }
-                    switch response["error"] as? String ?? "" {
-                    case "authorization_pending": break
-                    case "slow_down": interval = max(interval + 5, (response["interval"] as? Int) ?? interval + 5)
-                    default: throw GitHubError.message(response["error_description"] as? String ?? "No se pudo autorizar GitHub.")
+                    do {
+                        let response = try await githubForm(
+                            "https://github.com/login/oauth/access_token",
+                            parameters: ["client_id": id, "device_code": secret,
+                                         "grant_type": "urn:ietf:params:oauth:grant-type:device_code"])
+                        if let access = response["access_token"] as? String {
+                            acceptTokens(response, access: access)
+                            deviceCode = ""
+                            notice = "GitHub conectado. Ya puedes enviar órdenes editoriales."
+                            return
+                        }
+                        switch response["error"] as? String ?? "" {
+                        case "authorization_pending":
+                            notice = "Esperando autorización en GitHub. Código: \(code)"
+                        case "slow_down":
+                            interval = max(interval + 5, (response["interval"] as? Int) ?? interval + 5)
+                            notice = "GitHub solicita esperar más entre comprobaciones."
+                        case "expired_token", "access_denied":
+                            deviceCode = ""
+                            throw GitHubError.message("El código caducó o se rechazó. Pulsa Conectar GitHub para obtener otro.")
+                        default:
+                            throw GitHubError.message(response["error_description"] as? String ??
+                                "No se pudo autorizar GitHub.")
+                        }
+                    } catch {
+                        if Task.isCancelled { return }
+                        if Self.isTemporaryNetworkError(error) {
+                            // A single temporary URLSession timeout must NOT stop the
+                            // authorization listener while the GitHub code is valid.
+                            notice = "Conexión lenta con GitHub. Se reintentará automáticamente; conserva el código \(code)."
+                            continue
+                        }
+                        throw error
                     }
                 }
-                if !Task.isCancelled { notice = "Código caducado. Vuelve a conectar GitHub." }
+                if !Task.isCancelled {
+                    deviceCode = ""
+                    notice = "El código caducó (15 minutos). Pulsa Conectar GitHub para obtener otro."
+                }
             } catch {
-                if !Task.isCancelled { notice = error.localizedDescription }
+                if !Task.isCancelled {
+                    notice = Self.isTemporaryNetworkError(error)
+                        ? "La conexión con GitHub agotó el tiempo. Comprueba la red y pulsa Conectar GitHub para reintentar."
+                        : error.localizedDescription
+                }
             }
+        }
+    }
+
+    private static func isTemporaryNetworkError(_ error: Error) -> Bool {
+        guard let urlError = error as? URLError else { return false }
+        switch urlError.code {
+        case .timedOut, .networkConnectionLost, .notConnectedToInternet,
+             .cannotConnectToHost, .cannotFindHost, .dnsLookupFailed:
+            return true
+        default:
+            return false
         }
     }
 
