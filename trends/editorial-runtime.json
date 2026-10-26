@@ -5,22 +5,23 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "4562ce8c4da5"
+    "240e55497ac8",
+    "f2f937f52c31"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T20:24:16+01:00",
-  "last_completed_at": "2026-10-26T20:27:41+01:00",
-  "updated_at": "2026-10-26T20:27:41+01:00",
+  "last_started_at": "2026-10-26T20:45:00+01:00",
+  "last_completed_at": "2026-10-26T20:54:30+01:00",
+  "updated_at": "2026-10-26T20:54:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793042592250-manual",
+    "trigger_run_id": "tr-20261026T2045+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,29 +29,182 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793042592250-manual",
+    "run_id": "tr-20261026T2045+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T20:24:16+01:00",
-    "updated_at": "2026-10-26T20:27:41+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-26T20:45:00+01:00",
+    "updated_at": "2026-10-26T20:54:30+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
+    "message": "TTendencias completada 2/2: Bilbao y Vito Quiles explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes.",
+    "incident_count": 0,
+    "incidents": [],
+    "activity": [
+      {
+        "at": "2026-10-26T20:49:20+01:00",
+        "phase": "verifying",
+        "trend_id": "240e55497ac8",
+        "title": "Bilbao",
+        "message": "Releyendo main tras la persistencia de Bilbao."
+      },
+      {
+        "at": "2026-10-26T20:49:30+01:00",
+        "phase": "verifying",
+        "trend_id": "240e55497ac8",
+        "title": "Bilbao",
+        "message": "Verificando id+revision y texto persistido de Bilbao."
+      },
+      {
+        "at": "2026-10-26T20:49:40+01:00",
+        "phase": "verifying",
+        "trend_id": "240e55497ac8",
+        "title": "Bilbao",
+        "message": "Tendencia Bilbao cerrada y verificada."
+      },
+      {
+        "at": "2026-10-26T20:50:00+01:00",
+        "phase": "verifying",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Releyendo estado autoritativo de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:50:20+01:00",
+        "phase": "investigating",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Buscando detonante actual de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:50:35+01:00",
+        "phase": "investigating",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Contrastando fuente 1/2: orden judicial de búsqueda y detención para notificar la apertura de juicio oral."
+      },
+      {
+        "at": "2026-10-26T20:50:50+01:00",
+        "phase": "investigating",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Contrastando fuente 2/2: suspensión del acto en Bilbao por riesgo de incidentes."
+      },
+      {
+        "at": "2026-10-26T20:51:05+01:00",
+        "phase": "investigating",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Hecho esencial verificado: dos frentes actuales, judicial en Madrid y cancelación del acto en Bilbao."
+      },
+      {
+        "at": "2026-10-26T20:51:20+01:00",
+        "phase": "drafting",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Redactando explicación factual de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:51:30+01:00",
+        "phase": "drafting",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Comprobando límite de X: 276 caracteres."
+      },
+      {
+        "at": "2026-10-26T20:51:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Generando candidatos de remate sobre los dos frentes del día."
+      },
+      {
+        "at": "2026-10-26T20:51:50+01:00",
+        "phase": "remate_selection",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Evaluando candidatos con ratings y evitando el remate usado en TTiTTulares."
+      },
+      {
+        "at": "2026-10-26T20:52:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Remate seleccionado: Deusto cerró el acto; el juzgado abrió otro frente."
+      },
+      {
+        "at": "2026-10-26T20:52:15+01:00",
+        "phase": "persisting",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Guardando ficha Explicada de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:52:35+01:00",
+        "phase": "persisting",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Actualizando requests para Vito Quiles r0."
+      },
+      {
+        "at": "2026-10-26T20:52:55+01:00",
+        "phase": "persisting",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Retirando Vito Quiles r0 de la cola."
+      },
+      {
+        "at": "2026-10-26T20:53:15+01:00",
+        "phase": "verifying",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Releyendo main tras la persistencia de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:53:25+01:00",
+        "phase": "verifying",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Verificando id+revision y texto persistido de Vito Quiles."
+      },
+      {
+        "at": "2026-10-26T20:53:35+01:00",
+        "phase": "verifying",
+        "trend_id": "f2f937f52c31",
+        "title": "Vito Quiles",
+        "message": "Tendencia Vito Quiles cerrada y verificada."
+      },
+      {
+        "at": "2026-10-26T20:54:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada 2/2: Bilbao y Vito Quiles explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes."
+      }
+    ],
+    "processed_ids": [
+      "240e55497ac8",
+      "f2f937f52c31"
+    ],
+    "partial": false,
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "previous_run_id": "tr-1793042592250-manual",
     "summary": {
-      "attempted": 1,
+      "attempted": 2,
       "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "explained": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 2,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -58,157 +212,20 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 3,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 0,
+      "top10_reviewed": 2,
       "rewrite_pending_remaining": 0,
       "user_decisions_after_close": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes.",
-    "incident_count": 0,
-    "incidents": [],
-    "activity": [
-      {
-        "at": "2026-10-26T20:24:16+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: preparando Barcelona y saneamiento visual no bloqueante."
-      },
-      {
-        "at": "2026-10-26T20:24:31+01:00",
-        "phase": "verifying",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Releyendo estado autoritativo de Barcelona."
-      },
-      {
-        "at": "2026-10-26T20:24:47+01:00",
-        "phase": "investigating",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Buscando detonante actual de Barcelona, marcador y fecha."
-      },
-      {
-        "at": "2026-10-26T20:25:24+01:00",
-        "phase": "investigating",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Contrastando fuente 1/2: crónica oficial del Clásico."
-      },
-      {
-        "at": "2026-10-26T20:25:24+01:00",
-        "phase": "investigating",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Contrastando fuente 2/2: prensa del 26-O y efecto en la clasificación."
-      },
-      {
-        "at": "2026-10-26T20:25:24+01:00",
-        "phase": "investigating",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Hecho esencial verificado: Barcelona 1-2 Real Madrid el 25-O en el Camp Nou."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "drafting",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Redactando explicación factual nueva para Barcelona."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "drafting",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Generando candidatos de remate sobre el margen liguero."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Evaluando candidatos con ratings y evitando muletillas recientes."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Remate seleccionado: la ventaja liguera queda reducida a tres puntos."
-      },
-      {
-        "at": "2026-10-26T20:25:57+01:00",
-        "phase": "persisting",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Guardando ficha Explicada de Barcelona."
-      },
-      {
-        "at": "2026-10-26T20:26:46+01:00",
-        "phase": "persisting",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Actualizando requests para Barcelona r0."
-      },
-      {
-        "at": "2026-10-26T20:26:46+01:00",
-        "phase": "persisting",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Retirando Barcelona r0 de la cola."
-      },
-      {
-        "at": "2026-10-26T20:26:46+01:00",
-        "phase": "verifying",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Releyendo main tras la persistencia."
-      },
-      {
-        "at": "2026-10-26T20:26:46+01:00",
-        "phase": "verifying",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-26T20:27:41+01:00",
-        "phase": "verifying",
-        "trend_id": "4562ce8c4da5",
-        "title": "Barcelona",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-26T20:27:41+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes."
-      }
-    ],
-    "processed_ids": [
-      "4562ce8c4da5"
-    ],
-    "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
-    "previous_run_id": "tr-20261026T201500+0100-chat",
+    "finished_at": "2026-10-26T20:54:30+01:00",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -217,49 +234,64 @@
     },
     "remate_selections": [
       {
-        "id": "4562ce8c4da5",
-        "name": "Barcelona",
+        "id": "240e55497ac8",
+        "name": "Bilbao",
         "revision": 0,
-        "selected": "🌶️ La Liga salió del clásico con tres puntos menos de margen.",
-        "originality_check": "Sin coincidencia conceptual evidente con las muletillas y remates recientes revisados."
+        "selected": "🌶️ El acto se cayó del cartel, pero no de la calle.",
+        "originality_check": "Sin coincidencia conceptual evidente con los últimos 30 remates revisados."
+      },
+      {
+        "id": "f2f937f52c31",
+        "name": "Vito Quiles",
+        "revision": 0,
+        "selected": "🌶️ Deusto cerró el acto; el juzgado abrió otro frente.",
+        "originality_check": "Se evitó reutilizar el remate ya empleado en TTiTTulares y no hay coincidencia conceptual evidente en los últimos 30 remates de TTendencias."
       }
     ],
     "final_outcomes": [
       {
-        "id": "4562ce8c4da5",
-        "name": "Barcelona",
+        "id": "240e55497ac8",
+        "name": "Bilbao",
         "revision": 0,
         "status": "explained",
         "verified": true,
         "queue_removed": true,
-        "explained_at": "2026-10-26T19:26:19.833Z"
+        "explained_at": "2026-10-26T19:48:00.000Z"
+      },
+      {
+        "id": "f2f937f52c31",
+        "name": "Vito Quiles",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T19:52:15.000Z"
       }
     ],
-    "finished_at": "2026-10-26T20:27:41+01:00",
     "radar_refresh": {
       "status": "observed",
       "reason": "Radar fresco durante la pasada; no requiere recaptura.",
-      "captured_at": "2026-10-26T20:17:01+01:00"
+      "captured_at": "2026-10-26T20:50:49+01:00"
     },
     "radar": {
-      "captured_at": "2026-10-26T20:17:01+01:00",
+      "captured_at": "2026-10-26T20:50:49+01:00",
       "queue_count": 0
     }
   },
-  "run_id": "tr-1793042592250-manual",
+  "run_id": "tr-20261026T2045+0100-chat",
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "ready": 0,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "explained": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 2,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -267,158 +299,172 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
+    "pending_cards_reviewed": 3,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 2,
     "rewrite_pending_remaining": 0,
     "user_decisions_after_close": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T20:24:16+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada: preparando Barcelona y saneamiento visual no bloqueante."
-    },
-    {
-      "at": "2026-10-26T20:24:31+01:00",
+      "at": "2026-10-26T20:49:20+01:00",
       "phase": "verifying",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Releyendo estado autoritativo de Barcelona."
+      "trend_id": "240e55497ac8",
+      "title": "Bilbao",
+      "message": "Releyendo main tras la persistencia de Bilbao."
     },
     {
-      "at": "2026-10-26T20:24:47+01:00",
+      "at": "2026-10-26T20:49:30+01:00",
+      "phase": "verifying",
+      "trend_id": "240e55497ac8",
+      "title": "Bilbao",
+      "message": "Verificando id+revision y texto persistido de Bilbao."
+    },
+    {
+      "at": "2026-10-26T20:49:40+01:00",
+      "phase": "verifying",
+      "trend_id": "240e55497ac8",
+      "title": "Bilbao",
+      "message": "Tendencia Bilbao cerrada y verificada."
+    },
+    {
+      "at": "2026-10-26T20:50:00+01:00",
+      "phase": "verifying",
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Releyendo estado autoritativo de Vito Quiles."
+    },
+    {
+      "at": "2026-10-26T20:50:20+01:00",
       "phase": "investigating",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Buscando detonante actual de Barcelona, marcador y fecha."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Buscando detonante actual de Vito Quiles."
     },
     {
-      "at": "2026-10-26T20:25:24+01:00",
+      "at": "2026-10-26T20:50:35+01:00",
       "phase": "investigating",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Contrastando fuente 1/2: crónica oficial del Clásico."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Contrastando fuente 1/2: orden judicial de búsqueda y detención para notificar la apertura de juicio oral."
     },
     {
-      "at": "2026-10-26T20:25:24+01:00",
+      "at": "2026-10-26T20:50:50+01:00",
       "phase": "investigating",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Contrastando fuente 2/2: prensa del 26-O y efecto en la clasificación."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Contrastando fuente 2/2: suspensión del acto en Bilbao por riesgo de incidentes."
     },
     {
-      "at": "2026-10-26T20:25:24+01:00",
+      "at": "2026-10-26T20:51:05+01:00",
       "phase": "investigating",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Hecho esencial verificado: Barcelona 1-2 Real Madrid el 25-O en el Camp Nou."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Hecho esencial verificado: dos frentes actuales, judicial en Madrid y cancelación del acto en Bilbao."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:51:20+01:00",
       "phase": "drafting",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Redactando explicación factual nueva para Barcelona."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Redactando explicación factual de Vito Quiles."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:51:30+01:00",
       "phase": "drafting",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Comprobando límite de X: 276 caracteres."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:51:40+01:00",
       "phase": "remate_selection",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Generando candidatos de remate sobre el margen liguero."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Generando candidatos de remate sobre los dos frentes del día."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:51:50+01:00",
       "phase": "remate_selection",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Evaluando candidatos con ratings y evitando muletillas recientes."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Evaluando candidatos con ratings y evitando el remate usado en TTiTTulares."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:52:00+01:00",
       "phase": "remate_selection",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Remate seleccionado: la ventaja liguera queda reducida a tres puntos."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Remate seleccionado: Deusto cerró el acto; el juzgado abrió otro frente."
     },
     {
-      "at": "2026-10-26T20:25:57+01:00",
+      "at": "2026-10-26T20:52:15+01:00",
       "phase": "persisting",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Guardando ficha Explicada de Barcelona."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Guardando ficha Explicada de Vito Quiles."
     },
     {
-      "at": "2026-10-26T20:26:46+01:00",
+      "at": "2026-10-26T20:52:35+01:00",
       "phase": "persisting",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Actualizando requests para Barcelona r0."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Actualizando requests para Vito Quiles r0."
     },
     {
-      "at": "2026-10-26T20:26:46+01:00",
+      "at": "2026-10-26T20:52:55+01:00",
       "phase": "persisting",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Retirando Barcelona r0 de la cola."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Retirando Vito Quiles r0 de la cola."
     },
     {
-      "at": "2026-10-26T20:26:46+01:00",
+      "at": "2026-10-26T20:53:15+01:00",
       "phase": "verifying",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Releyendo main tras la persistencia."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Releyendo main tras la persistencia de Vito Quiles."
     },
     {
-      "at": "2026-10-26T20:26:46+01:00",
+      "at": "2026-10-26T20:53:25+01:00",
       "phase": "verifying",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Verificando id+revision y texto persistido."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Verificando id+revision y texto persistido de Vito Quiles."
     },
     {
-      "at": "2026-10-26T20:27:41+01:00",
+      "at": "2026-10-26T20:53:35+01:00",
       "phase": "verifying",
-      "trend_id": "4562ce8c4da5",
-      "title": "Barcelona",
-      "message": "Tendencia cerrada y verificada."
+      "trend_id": "f2f937f52c31",
+      "title": "Vito Quiles",
+      "message": "Tendencia Vito Quiles cerrada y verificada."
     },
     {
-      "at": "2026-10-26T20:27:41+01:00",
+      "at": "2026-10-26T20:54:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes."
+      "message": "TTendencias completada 2/2: Bilbao y Vito Quiles explicadas y verificadas; cola final 0 y sin reexplicaciones pendientes."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Radar fresco durante la pasada; no requiere recaptura.",
-    "captured_at": "2026-10-26T20:17:01+01:00"
+    "captured_at": "2026-10-26T20:50:49+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T20:17:01+01:00",
+    "captured_at": "2026-10-26T20:50:49+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T201500+0100-chat",
+  "previous_run_id": "tr-1793042592250-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -427,22 +473,38 @@
   },
   "remate_selections": [
     {
-      "id": "4562ce8c4da5",
-      "name": "Barcelona",
+      "id": "240e55497ac8",
+      "name": "Bilbao",
       "revision": 0,
-      "selected": "🌶️ La Liga salió del clásico con tres puntos menos de margen.",
-      "originality_check": "Sin coincidencia conceptual evidente con las muletillas y remates recientes revisados."
+      "selected": "🌶️ El acto se cayó del cartel, pero no de la calle.",
+      "originality_check": "Sin coincidencia conceptual evidente con los últimos 30 remates revisados."
+    },
+    {
+      "id": "f2f937f52c31",
+      "name": "Vito Quiles",
+      "revision": 0,
+      "selected": "🌶️ Deusto cerró el acto; el juzgado abrió otro frente.",
+      "originality_check": "Se evitó reutilizar el remate ya empleado en TTiTTulares y no hay coincidencia conceptual evidente en los últimos 30 remates de TTendencias."
     }
   ],
   "final_outcomes": [
     {
-      "id": "4562ce8c4da5",
-      "name": "Barcelona",
+      "id": "240e55497ac8",
+      "name": "Bilbao",
       "revision": 0,
       "status": "explained",
       "verified": true,
       "queue_removed": true,
-      "explained_at": "2026-10-26T19:26:19.833Z"
+      "explained_at": "2026-10-26T19:48:00.000Z"
+    },
+    {
+      "id": "f2f937f52c31",
+      "name": "Vito Quiles",
+      "revision": 0,
+      "status": "explained",
+      "verified": true,
+      "queue_removed": true,
+      "explained_at": "2026-10-26T19:52:15.000Z"
     }
   ]
 }
