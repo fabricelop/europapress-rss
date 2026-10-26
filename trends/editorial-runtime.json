@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T15:15:00+01:00",
-  "last_completed_at": "2026-10-26T15:16:00+01:00",
-  "updated_at": "2026-10-26T15:16:00+01:00",
+  "last_started_at": "2026-10-26T15:45:00+01:00",
+  "last_completed_at": "2026-10-26T15:47:40+01:00",
+  "updated_at": "2026-10-26T15:47:40+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T151500+0100-chat",
+    "run_id": "tr-20261026T154500+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T15:15:00+01:00",
-    "updated_at": "2026-10-26T15:16:00+01:00",
-    "finished_at": "2026-10-26T15:16:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-26T15:45:00+01:00",
+    "updated_at": "2026-10-26T15:47:40+01:00",
+    "finished_at": "2026-10-26T15:47:40+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 1,
+      "ready": 1,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,11 +57,11 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 6,
+      "pending_cards_reviewed": 9,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
@@ -69,54 +69,126 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: no había preparing/update/problematic ni rewrite_pending; cola final 0. Reparación visual independiente solicitada para 6 fichas recientes.",
+    "message": "TTendencias completada 1/1: Senado explicado y verificado; cola final 0 y sin reexplicaciones activas.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T15:15:00+01:00",
+        "at": "2026-10-26T15:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
+        "message": "Inicio de pasada: 1 revisión activa en cola; preparando saneamiento y barrera JIT."
       },
       {
-        "at": "2026-10-26T15:15:20+01:00",
+        "at": "2026-10-26T15:45:15+01:00",
+        "phase": "verifying",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Releyendo estado autoritativo de Senado."
+      },
+      {
+        "at": "2026-10-26T15:45:25+01:00",
+        "phase": "investigating",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-26T15:45:35+01:00",
+        "phase": "investigating",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Contrastando fuente 1/2 y fuente 2/2 sobre el acuerdo PP-Vox."
+      },
+      {
+        "at": "2026-10-26T15:45:45+01:00",
+        "phase": "investigating",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Hecho esencial verificado: acuerdo de candidaturas al Senado para el 29-N."
+      },
+      {
+        "at": "2026-10-26T15:46:00+01:00",
+        "phase": "drafting",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-26T15:46:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Evaluando candidatos de remate y evitando repetición con el proyecto hermano."
+      },
+      {
+        "at": "2026-10-26T15:46:25+01:00",
+        "phase": "remate_selection",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Remate seleccionado; tuit completo verificado en 249 caracteres."
+      },
+      {
+        "at": "2026-10-26T15:46:30+01:00",
+        "phase": "persisting",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-26T15:46:50+01:00",
+        "phase": "persisting",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-26T15:47:10+01:00",
+        "phase": "persisting",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-26T15:47:20+01:00",
+        "phase": "verifying",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Releyendo main."
+      },
+      {
+        "at": "2026-10-26T15:47:25+01:00",
+        "phase": "verifying",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-26T15:47:30+01:00",
+        "phase": "verifying",
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-26T15:47:35+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
+        "message": "Revisando Pendientes · 9 tarjetas recientes; todas conservan remate y el saneamiento visual está habilitado."
       },
       {
-        "at": "2026-10-26T15:15:30+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 6 tarjetas recientes; todas con remate y reparación visual solicitada por el flujo independiente."
-      },
-      {
-        "at": "2026-10-26T15:15:45+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Top 10 · ninguna explicación vigente supera 48 h y no hay trabajo activo en la cola."
-      },
-      {
-        "at": "2026-10-26T15:15:55+01:00",
+        "at": "2026-10-26T15:47:40+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones 0 antes del cierre."
-      },
-      {
-        "at": "2026-10-26T15:16:00+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 6 fichas recientes."
+        "message": "Relectura final: cola 0, requests activas 0, problematic 0 y rewrite_pending 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "93021157930c"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -127,8 +199,23 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "final_outcomes": []
+    "remate_selections": [
+      {
+        "trend_id": "93021157930c",
+        "title": "Senado",
+        "selected": "🌶️ Para sumar escaños, esta vez el reparto empieza restando candidaturas.",
+        "originality_check": "No repite el remate de TTiTTulares ni los últimos 30 remates valorados."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "93021157930c",
+        "revision": 0,
+        "name": "Senado",
+        "status": "explained",
+        "characters": 249
+      }
+    ]
   },
   "run_id": "tr-20261026T151500+0100-chat",
   "summary": {
