@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-26T06:59:39.718730+00:00",
+      "checked_at": "2026-10-26T14:06:34.142639+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 853527,
+          "seconds": 879141,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,140 +22,112 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-26T06:59:39.718730+00:00",
-      "issue_count": 19,
+      "checked_at": "2026-10-26T14:06:34.142639+00:00",
+      "issue_count": 15,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "88c3cf364123",
-          "title": "Marc",
-          "seconds": 78179,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
         {
           "kind": "missing_delivery",
           "id": "d62b113bc862",
           "title": "Getafe",
-          "seconds": 51513,
+          "seconds": 77128,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "2d446f938ebb",
           "title": "Mario Martín",
-          "seconds": 50293,
+          "seconds": 75908,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "21957106f222",
           "title": "Parrot",
-          "seconds": 50293,
+          "seconds": 75908,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "f56078d88ba4",
           "title": "Berenguer",
-          "seconds": 50293,
+          "seconds": 75908,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "4fa75451fa6d",
           "title": "Celta",
-          "seconds": 44324,
+          "seconds": 69939,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "89b9b6bc34f2",
           "title": "Yáñez",
-          "seconds": 40710,
+          "seconds": 66325,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "7eca9d45da25",
           "title": "Castellón",
-          "seconds": 37099,
+          "seconds": 62714,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "19215c9e7cd9",
           "title": "Sporting",
-          "seconds": 37099,
+          "seconds": 62714,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "manual-073a0eb7ec5d4011b33635d803f8fb8d",
           "title": "Hala Madrid",
-          "seconds": 35942,
+          "seconds": 61556,
           "workflow": null
         },
         {
           "kind": "editorial_overdue",
           "id": "manual-d0c592875e05dbbead0505e8f9b82d53",
           "title": "Camp Nou",
-          "seconds": 35906,
+          "seconds": 61521,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "37b5073e4e9a",
           "title": "Lula",
-          "seconds": 4655,
+          "seconds": 30269,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "d7bbc6d46128",
           "title": "Barça",
-          "seconds": 13687,
+          "seconds": 39302,
           "workflow": null
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-          "title": "Serbia",
-          "seconds": 4625,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "76d87468c3c4",
-          "title": "Flávio Bolsonaro",
-          "seconds": 3113,
-          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "07f62b021771",
           "title": "Brazil",
-          "seconds": 3113,
+          "seconds": 28728,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "3d26c7597620",
-          "title": "#FelizLunes",
-          "seconds": 1113,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "5caee7bd0259",
-          "title": "Komanche",
-          "seconds": 1113,
+          "id": "a4f0e8ff677a",
+          "title": "HALA MADRID",
+          "seconds": 2793,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 853526,
+          "seconds": 879141,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -164,16 +136,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "18a0151608290933da1776445ff5d73fb2afaba3a7531dcbeb7a1daae14d99a7",
+      "open_signature": "5e51617f1f5bd13d0b7d6183cf439176ee147fc4c1e80d3165f91b98ae8a5ebc",
       "repair_via_workflow_run": false,
-      "escalation_required": 16
+      "escalation_required": 14
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-25T23:37:02.183373+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-26T06:59:39.718730+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-26T06:59:39.718730+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-26T06:59:39.718730+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-26T14:06:34.142639+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-26T14:06:34.142639+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-26T14:06:34.142639+00:00"
   },
-  "checked_at": "2026-10-26T06:59:39.718730+00:00"
+  "checked_at": "2026-10-26T14:06:34.142639+00:00"
 }
