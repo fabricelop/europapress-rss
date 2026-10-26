@@ -5,23 +5,23 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "76d87468c3c4",
-    "07f62b021771"
+    "3d26c7597620",
+    "5caee7bd0259"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T07:15:00+01:00",
-  "last_completed_at": "2026-10-26T07:20:00+01:00",
-  "updated_at": "2026-10-26T07:20:00+01:00",
+  "last_started_at": "2026-10-26T07:45:00+01:00",
+  "last_completed_at": "2026-10-26T07:53:00+01:00",
+  "updated_at": "2026-10-26T07:53:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T0715-chat",
+    "trigger_run_id": "tr-20261026T0745-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -29,13 +29,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0715-chat",
+    "run_id": "tr-20261026T0745-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T07:15:00+01:00",
-    "updated_at": "2026-10-26T07:20:00+01:00",
-    "finished_at": "2026-10-26T07:20:00+01:00",
+    "started_at": "2026-10-26T07:45:00+01:00",
+    "updated_at": "2026-10-26T07:53:00+01:00",
+    "finished_at": "2026-10-26T07:53:00+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
@@ -44,8 +44,8 @@
       "attempted": 2,
       "ready": 2,
       "explained": 2,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "explanation_groups": 2,
+      "new_cards": 2,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
@@ -62,9 +62,9 @@
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 2,
       "remates_selected": 1,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 9,
-      "pending_cards_reviewed": 9,
+      "remates_omitted": 1,
+      "recent_missing_closer_reviewed": 1,
+      "pending_cards_reviewed": 12,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
@@ -72,93 +72,149 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0.",
+    "message": "TTendencias completada: #FelizLunes y Komanche explicadas y verificadas; cola editorial final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T07:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: 2 revisiones activas; revalidando agrupación y activando saneamiento de Pendientes."
-      },
-      {
-        "at": "2026-10-26T07:16:00+01:00",
+        "at": "2026-10-26T07:48:50+01:00",
         "phase": "verifying",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Releyendo estado autoritativo de Flávio Bolsonaro y Brazil"
-      },
-      {
-        "at": "2026-10-26T07:16:30+01:00",
-        "phase": "investigating",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Hecho esencial verificado con TSE y Reuters: Lula 51,79%, Flávio 48,21%; Flávio rechaza conceder y anuncia que pedirá anular el resultado."
-      },
-      {
-        "at": "2026-10-26T07:17:00+01:00",
-        "phase": "drafting",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Redactando explicación factual agrupada y comprobando límite de X · 253 caracteres"
-      },
-      {
-        "at": "2026-10-26T07:17:20+01:00",
-        "phase": "remate_selection",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Remate seleccionado tras comparar enfoques y comprobar ausencia de repetición en los últimos 30 remates."
-      },
-      {
-        "at": "2026-10-26T07:17:40+01:00",
-        "phase": "persisting",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Guardando ficha Explicada agrupada"
-      },
-      {
-        "at": "2026-10-26T07:18:05+01:00",
-        "phase": "persisting",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Actualizando requests de las dos revisiones"
-      },
-      {
-        "at": "2026-10-26T07:18:15+01:00",
-        "phase": "persisting",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Retirando las dos revisiones exactas de la cola"
-      },
-      {
-        "at": "2026-10-26T07:18:45+01:00",
-        "phase": "verifying",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
+        "trend_id": "3d26c7597620",
+        "title": "#FelizLunes",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-26T07:19:00+01:00",
+        "at": "2026-10-26T07:49:00+01:00",
         "phase": "verifying",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
+        "trend_id": "3d26c7597620",
+        "title": "#FelizLunes",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-26T07:19:20+01:00",
+        "at": "2026-10-26T07:49:15+01:00",
         "phase": "verifying",
-        "trend_id": "76d87468c3c4",
-        "title": "Flávio Bolsonaro / Brazil",
-        "message": "Tendencia agrupada cerrada y verificada; 9 Pendientes recientes revisados y sin remates vacíos."
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Releyendo estado autoritativo de Komanche"
       },
       {
-        "at": "2026-10-26T07:20:00+01:00",
+        "at": "2026-10-26T07:49:30+01:00",
+        "phase": "investigating",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-26T07:49:45+01:00",
+        "phase": "investigating",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Contrastando fuente 1/2 · ABC Noticias: hallazgo en Monterrey e identidad sin confirmar"
+      },
+      {
+        "at": "2026-10-26T07:50:00+01:00",
+        "phase": "investigating",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Contrastando fuente 2/2 · López-Dóriga/medios locales: relación extraoficial, sin confirmación oficial"
+      },
+      {
+        "at": "2026-10-26T07:50:15+01:00",
+        "phase": "investigating",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Hecho esencial verificado: los reportes relacionan extraoficialmente a Komanche con un fallecido en Monterrey; identidad pendiente de confirmación"
+      },
+      {
+        "at": "2026-10-26T07:50:30+01:00",
+        "phase": "drafting",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-26T07:50:40+01:00",
+        "phase": "drafting",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Comprobando límite de X · 234 caracteres"
+      },
+      {
+        "at": "2026-10-26T07:50:50+01:00",
+        "phase": "remate_selection",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Sin remate · asunto sensible con un fallecimiento y una identidad aún no confirmada"
+      },
+      {
+        "at": "2026-10-26T07:51:00+01:00",
+        "phase": "persisting",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-26T07:51:20+01:00",
+        "phase": "persisting",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-26T07:51:35+01:00",
+        "phase": "persisting",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-26T07:51:50+01:00",
+        "phase": "verifying",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-26T07:52:00+01:00",
+        "phase": "verifying",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-26T07:52:20+01:00",
+        "phase": "verifying",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T07:52:30+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 12 tarjetas recientes"
+      },
+      {
+        "at": "2026-10-26T07:52:40+01:00",
+        "phase": "verifying",
+        "trend_id": "5caee7bd0259",
+        "title": "Komanche",
+        "message": "Pendiente sensible · sin remate; reparación visual ya solicitada al inicio"
+      },
+      {
+        "at": "2026-10-26T07:52:50+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0."
+        "message": "Releyendo cola final y comprobando reexplicaciones pendientes"
+      },
+      {
+        "at": "2026-10-26T07:53:00+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada: #FelizLunes y Komanche explicadas y verificadas; cola editorial final 0."
       }
     ],
     "ratings_snapshot": {
@@ -170,43 +226,51 @@
     },
     "remate_selections": [
       {
-        "trend_id": "76d87468c3c4",
+        "trend_id": "3d26c7597620",
         "revision": 0,
         "candidate_count": 5,
         "selected_candidate": "c1",
-        "selected_text": "🌶️ Se acabó la papeleta y empezó el papeleo.",
-        "originality_check": "sin colisión en los últimos 30 remates"
+        "selected_text": "🌶️ El lunes entró al Top 10 antes que el café.",
+        "originality_check": "sin colisión conceptual en los últimos 30 remates"
+      },
+      {
+        "trend_id": "5caee7bd0259",
+        "revision": 0,
+        "candidate_count": 0,
+        "selected_candidate": null,
+        "selected_text": null,
+        "no_remate_reason": "asunto sensible con fallecimiento e identidad no confirmada"
       }
     ],
     "processed_ids": [
-      "76d87468c3c4",
-      "07f62b021771"
+      "3d26c7597620",
+      "5caee7bd0259"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "76d87468c3c4",
+        "id": "3d26c7597620",
         "revision": 0,
-        "name": "Flávio Bolsonaro",
+        "name": "#FelizLunes",
         "status": "explained"
       },
       {
-        "id": "07f62b021771",
+        "id": "5caee7bd0259",
         "revision": 0,
-        "name": "Brazil",
+        "name": "Komanche",
         "status": "explained"
       }
     ]
   },
-  "run_id": "tr-20261026T0715-chat",
+  "run_id": "tr-20261026T0745-chat",
   "summary": {
     "attempted": 2,
     "ready": 2,
     "explained": 2,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "explanation_groups": 2,
+    "new_cards": 2,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
@@ -223,9 +287,9 @@
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 2,
     "remates_selected": 1,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 9,
-    "pending_cards_reviewed": 9,
+    "remates_omitted": 1,
+    "recent_missing_closer_reviewed": 1,
+    "pending_cards_reviewed": 12,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -235,88 +299,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T07:15:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada: 2 revisiones activas; revalidando agrupación y activando saneamiento de Pendientes."
-    },
-    {
-      "at": "2026-10-26T07:16:00+01:00",
+      "at": "2026-10-26T07:48:50+01:00",
       "phase": "verifying",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Releyendo estado autoritativo de Flávio Bolsonaro y Brazil"
-    },
-    {
-      "at": "2026-10-26T07:16:30+01:00",
-      "phase": "investigating",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Hecho esencial verificado con TSE y Reuters: Lula 51,79%, Flávio 48,21%; Flávio rechaza conceder y anuncia que pedirá anular el resultado."
-    },
-    {
-      "at": "2026-10-26T07:17:00+01:00",
-      "phase": "drafting",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Redactando explicación factual agrupada y comprobando límite de X · 253 caracteres"
-    },
-    {
-      "at": "2026-10-26T07:17:20+01:00",
-      "phase": "remate_selection",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Remate seleccionado tras comparar enfoques y comprobar ausencia de repetición en los últimos 30 remates."
-    },
-    {
-      "at": "2026-10-26T07:17:40+01:00",
-      "phase": "persisting",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Guardando ficha Explicada agrupada"
-    },
-    {
-      "at": "2026-10-26T07:18:05+01:00",
-      "phase": "persisting",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Actualizando requests de las dos revisiones"
-    },
-    {
-      "at": "2026-10-26T07:18:15+01:00",
-      "phase": "persisting",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Retirando las dos revisiones exactas de la cola"
-    },
-    {
-      "at": "2026-10-26T07:18:45+01:00",
-      "phase": "verifying",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
+      "trend_id": "3d26c7597620",
+      "title": "#FelizLunes",
       "message": "Releyendo main"
     },
     {
-      "at": "2026-10-26T07:19:00+01:00",
+      "at": "2026-10-26T07:49:00+01:00",
       "phase": "verifying",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
+      "trend_id": "3d26c7597620",
+      "title": "#FelizLunes",
       "message": "Verificando id+revision y texto persistido"
     },
     {
-      "at": "2026-10-26T07:19:20+01:00",
+      "at": "2026-10-26T07:49:15+01:00",
       "phase": "verifying",
-      "trend_id": "76d87468c3c4",
-      "title": "Flávio Bolsonaro / Brazil",
-      "message": "Tendencia agrupada cerrada y verificada; 9 Pendientes recientes revisados y sin remates vacíos."
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Releyendo estado autoritativo de Komanche"
     },
     {
-      "at": "2026-10-26T07:20:00+01:00",
+      "at": "2026-10-26T07:49:30+01:00",
+      "phase": "investigating",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-26T07:49:45+01:00",
+      "phase": "investigating",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Contrastando fuente 1/2 · ABC Noticias: hallazgo en Monterrey e identidad sin confirmar"
+    },
+    {
+      "at": "2026-10-26T07:50:00+01:00",
+      "phase": "investigating",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Contrastando fuente 2/2 · López-Dóriga/medios locales: relación extraoficial, sin confirmación oficial"
+    },
+    {
+      "at": "2026-10-26T07:50:15+01:00",
+      "phase": "investigating",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Hecho esencial verificado: los reportes relacionan extraoficialmente a Komanche con un fallecido en Monterrey; identidad pendiente de confirmación"
+    },
+    {
+      "at": "2026-10-26T07:50:30+01:00",
+      "phase": "drafting",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-26T07:50:40+01:00",
+      "phase": "drafting",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Comprobando límite de X · 234 caracteres"
+    },
+    {
+      "at": "2026-10-26T07:50:50+01:00",
+      "phase": "remate_selection",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Sin remate · asunto sensible con un fallecimiento y una identidad aún no confirmada"
+    },
+    {
+      "at": "2026-10-26T07:51:00+01:00",
+      "phase": "persisting",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-26T07:51:20+01:00",
+      "phase": "persisting",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-26T07:51:35+01:00",
+      "phase": "persisting",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-26T07:51:50+01:00",
+      "phase": "verifying",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-26T07:52:00+01:00",
+      "phase": "verifying",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-26T07:52:20+01:00",
+      "phase": "verifying",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T07:52:30+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 12 tarjetas recientes"
+    },
+    {
+      "at": "2026-10-26T07:52:40+01:00",
+      "phase": "verifying",
+      "trend_id": "5caee7bd0259",
+      "title": "Komanche",
+      "message": "Pendiente sensible · sin remate; reparación visual ya solicitada al inicio"
+    },
+    {
+      "at": "2026-10-26T07:52:50+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0."
+      "message": "Releyendo cola final y comprobando reexplicaciones pendientes"
+    },
+    {
+      "at": "2026-10-26T07:53:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias completada: #FelizLunes y Komanche explicadas y verificadas; cola editorial final 0."
     }
   ],
   "partial": false,
@@ -339,25 +459,33 @@
   },
   "remate_selections": [
     {
-      "trend_id": "76d87468c3c4",
+      "trend_id": "3d26c7597620",
       "revision": 0,
       "candidate_count": 5,
       "selected_candidate": "c1",
-      "selected_text": "🌶️ Se acabó la papeleta y empezó el papeleo.",
-      "originality_check": "sin colisión en los últimos 30 remates"
+      "selected_text": "🌶️ El lunes entró al Top 10 antes que el café.",
+      "originality_check": "sin colisión conceptual en los últimos 30 remates"
+    },
+    {
+      "trend_id": "5caee7bd0259",
+      "revision": 0,
+      "candidate_count": 0,
+      "selected_candidate": null,
+      "selected_text": null,
+      "no_remate_reason": "asunto sensible con fallecimiento e identidad no confirmada"
     }
   ],
   "final_outcomes": [
     {
-      "id": "76d87468c3c4",
+      "id": "3d26c7597620",
       "revision": 0,
-      "name": "Flávio Bolsonaro",
+      "name": "#FelizLunes",
       "status": "explained"
     },
     {
-      "id": "07f62b021771",
+      "id": "5caee7bd0259",
       "revision": 0,
-      "name": "Brazil",
+      "name": "Komanche",
       "status": "explained"
     }
   ]
