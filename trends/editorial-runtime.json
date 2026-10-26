@@ -5,16 +5,16 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "9fef316a32b2"
+    "82f5e0081259"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T01:45:30+01:00",
-  "last_completed_at": "2026-10-26T01:49:20+01:00",
-  "updated_at": "2026-10-26T01:49:20+01:00",
+  "last_started_at": "2026-10-26T02:15:30+01:00",
+  "last_completed_at": "2026-10-26T02:22:40+01:00",
+  "updated_at": "2026-10-26T02:22:40+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -28,13 +28,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0145-manual",
+    "run_id": "tr-20261026T0215-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T01:45:30+01:00",
-    "updated_at": "2026-10-26T01:49:20+01:00",
-    "finished_at": "2026-10-26T01:49:20+01:00",
+    "started_at": "2026-10-26T02:15:30+01:00",
+    "updated_at": "2026-10-26T02:22:40+01:00",
+    "finished_at": "2026-10-26T02:22:40+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
@@ -63,7 +63,7 @@
       "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 16,
+      "pending_cards_reviewed": 19,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
@@ -71,107 +71,142 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: #ElChiringuitoEnCuatro explicada y verificada; cola final 0.",
+    "message": "TTendencias completada: Yola explicada y verificada; cola final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T01:47:20+01:00",
-        "phase": "investigating",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
-        "message": "Hecho esencial verificado: especial de El Chiringuito en Cuatro tras el Clásico."
+        "at": "2026-10-26T02:15:30+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Inicio de pasada: comprobando Yola y saneamiento editorial vigente."
       },
       {
-        "at": "2026-10-26T01:47:30+01:00",
+        "at": "2026-10-26T02:16:10+01:00",
+        "phase": "verifying",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Releyendo estado autoritativo de Yola"
+      },
+      {
+        "at": "2026-10-26T02:16:25+01:00",
+        "phase": "investigating",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-26T02:17:10+01:00",
+        "phase": "investigating",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Contrastando fuente 1/2 · Mediaset Infinity"
+      },
+      {
+        "at": "2026-10-26T02:17:35+01:00",
+        "phase": "investigating",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Contrastando fuente 2/2 · cobertura actual del programa"
+      },
+      {
+        "at": "2026-10-26T02:18:00+01:00",
+        "phase": "investigating",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Hecho esencial verificado: nuevo enfrentamiento con Rosa Benito emitido el 25 de octubre en Supervivientes All Stars."
+      },
+      {
+        "at": "2026-10-26T02:18:20+01:00",
         "phase": "drafting",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-26T01:47:40+01:00",
+        "at": "2026-10-26T02:18:45+01:00",
         "phase": "drafting",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
-        "message": "Comprobando límite de X · 240 caracteres"
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Comprobando límite de X · 260 caracteres"
       },
       {
-        "at": "2026-10-26T01:47:50+01:00",
+        "at": "2026-10-26T02:19:00+01:00",
         "phase": "remate_selection",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-26T01:48:00+01:00",
+        "at": "2026-10-26T02:19:25+01:00",
         "phase": "remate_selection",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Evaluando candidatos con ratings y últimos 30 remates"
       },
       {
-        "at": "2026-10-26T01:48:10+01:00",
+        "at": "2026-10-26T02:19:45+01:00",
         "phase": "remate_selection",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
-        "message": "Remate seleccionado"
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
+        "message": "Remate seleccionado · original y específico del choque"
       },
       {
-        "at": "2026-10-26T01:48:20+01:00",
+        "at": "2026-10-26T02:20:10+01:00",
         "phase": "persisting",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-26T01:48:30+01:00",
+        "at": "2026-10-26T02:20:35+01:00",
         "phase": "persisting",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-26T01:48:40+01:00",
+        "at": "2026-10-26T02:21:05+01:00",
         "phase": "persisting",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-26T01:48:50+01:00",
+        "at": "2026-10-26T02:21:35+01:00",
         "phase": "verifying",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-26T01:49:00+01:00",
+        "at": "2026-10-26T02:22:00+01:00",
         "phase": "verifying",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-26T01:49:10+01:00",
+        "at": "2026-10-26T02:22:15+01:00",
         "phase": "verifying",
-        "trend_id": "9fef316a32b2",
-        "title": "#ElChiringuitoEnCuatro",
+        "trend_id": "82f5e0081259",
+        "title": "Yola",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-26T01:49:15+01:00",
+        "at": "2026-10-26T02:22:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 16 tarjetas recientes; sin remates faltantes"
+        "message": "Revisando Pendientes · 19 tarjetas recientes; sin remates faltantes"
       },
       {
-        "at": "2026-10-26T01:49:20+01:00",
+        "at": "2026-10-26T02:22:40+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: #ElChiringuitoEnCuatro explicada y verificada; cola final 0."
+        "message": "TTendencias completada: Yola explicada y verificada; cola final 0."
       }
     ],
     "ratings_snapshot": {
@@ -182,34 +217,34 @@
     },
     "remate_selections": [
       {
-        "trend_id": "9fef316a32b2",
+        "trend_id": "82f5e0081259",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [],
-        "selected_candidate": "🌶️ Cuatro abrió 140 minutos de tiempo añadido.",
+        "selected_candidate": "🌶️ En Honduras también hay aduana para los reproches.",
         "selected_score": null,
         "no_remate_reason": null
       }
     ],
     "processed_ids": [
-      "9fef316a32b2"
+      "82f5e0081259"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "9fef316a32b2",
+        "id": "82f5e0081259",
         "revision": 0,
-        "name": "#ElChiringuitoEnCuatro",
+        "name": "Yola",
         "status": "explained",
-        "explained_at": "2026-10-26T01:48:25+01:00",
-        "closer_text": "🌶️ Cuatro abrió 140 minutos de tiempo añadido.",
+        "explained_at": "2026-10-26T02:20:20+01:00",
+        "closer_text": "🌶️ En Honduras también hay aduana para los reproches.",
         "verified": true
       }
     ]
   },
-  "run_id": "tr-20261026T0145-manual",
+  "run_id": "tr-20261026T0215-manual",
   "summary": {
     "attempted": 1,
     "ready": 1,
@@ -234,7 +269,7 @@
     "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 16,
+    "pending_cards_reviewed": 19,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -244,102 +279,137 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T01:47:20+01:00",
-      "phase": "investigating",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
-      "message": "Hecho esencial verificado: especial de El Chiringuito en Cuatro tras el Clásico."
+      "at": "2026-10-26T02:15:30+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Inicio de pasada: comprobando Yola y saneamiento editorial vigente."
     },
     {
-      "at": "2026-10-26T01:47:30+01:00",
+      "at": "2026-10-26T02:16:10+01:00",
+      "phase": "verifying",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Releyendo estado autoritativo de Yola"
+    },
+    {
+      "at": "2026-10-26T02:16:25+01:00",
+      "phase": "investigating",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-26T02:17:10+01:00",
+      "phase": "investigating",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Contrastando fuente 1/2 · Mediaset Infinity"
+    },
+    {
+      "at": "2026-10-26T02:17:35+01:00",
+      "phase": "investigating",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Contrastando fuente 2/2 · cobertura actual del programa"
+    },
+    {
+      "at": "2026-10-26T02:18:00+01:00",
+      "phase": "investigating",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Hecho esencial verificado: nuevo enfrentamiento con Rosa Benito emitido el 25 de octubre en Supervivientes All Stars."
+    },
+    {
+      "at": "2026-10-26T02:18:20+01:00",
       "phase": "drafting",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-26T01:47:40+01:00",
+      "at": "2026-10-26T02:18:45+01:00",
       "phase": "drafting",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
-      "message": "Comprobando límite de X · 240 caracteres"
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Comprobando límite de X · 260 caracteres"
     },
     {
-      "at": "2026-10-26T01:47:50+01:00",
+      "at": "2026-10-26T02:19:00+01:00",
       "phase": "remate_selection",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Generando candidatos de remate"
     },
     {
-      "at": "2026-10-26T01:48:00+01:00",
+      "at": "2026-10-26T02:19:25+01:00",
       "phase": "remate_selection",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Evaluando candidatos con ratings y últimos 30 remates"
     },
     {
-      "at": "2026-10-26T01:48:10+01:00",
+      "at": "2026-10-26T02:19:45+01:00",
       "phase": "remate_selection",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
-      "message": "Remate seleccionado"
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
+      "message": "Remate seleccionado · original y específico del choque"
     },
     {
-      "at": "2026-10-26T01:48:20+01:00",
+      "at": "2026-10-26T02:20:10+01:00",
       "phase": "persisting",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-26T01:48:30+01:00",
+      "at": "2026-10-26T02:20:35+01:00",
       "phase": "persisting",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Actualizando requests"
     },
     {
-      "at": "2026-10-26T01:48:40+01:00",
+      "at": "2026-10-26T02:21:05+01:00",
       "phase": "persisting",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Retirando revisión de la cola"
     },
     {
-      "at": "2026-10-26T01:48:50+01:00",
+      "at": "2026-10-26T02:21:35+01:00",
       "phase": "verifying",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Releyendo main"
     },
     {
-      "at": "2026-10-26T01:49:00+01:00",
+      "at": "2026-10-26T02:22:00+01:00",
       "phase": "verifying",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Verificando id+revision y texto persistido"
     },
     {
-      "at": "2026-10-26T01:49:10+01:00",
+      "at": "2026-10-26T02:22:15+01:00",
       "phase": "verifying",
-      "trend_id": "9fef316a32b2",
-      "title": "#ElChiringuitoEnCuatro",
+      "trend_id": "82f5e0081259",
+      "title": "Yola",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-26T01:49:15+01:00",
+      "at": "2026-10-26T02:22:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 16 tarjetas recientes; sin remates faltantes"
+      "message": "Revisando Pendientes · 19 tarjetas recientes; sin remates faltantes"
     },
     {
-      "at": "2026-10-26T01:49:20+01:00",
+      "at": "2026-10-26T02:22:40+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: #ElChiringuitoEnCuatro explicada y verificada; cola final 0."
+      "message": "TTendencias completada: Yola explicada y verificada; cola final 0."
     }
   ],
   "partial": false,
@@ -352,7 +422,7 @@
     "captured_at": "2026-10-26T00:49:07+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0115-manual",
+  "previous_run_id": "tr-20261026T0145-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -361,23 +431,23 @@
   },
   "remate_selections": [
     {
-      "trend_id": "9fef316a32b2",
+      "trend_id": "82f5e0081259",
       "revision": 0,
       "candidate_count": 5,
       "candidates": [],
-      "selected_candidate": "🌶️ Cuatro abrió 140 minutos de tiempo añadido.",
+      "selected_candidate": "🌶️ En Honduras también hay aduana para los reproches.",
       "selected_score": null,
       "no_remate_reason": null
     }
   ],
   "final_outcomes": [
     {
-      "id": "9fef316a32b2",
+      "id": "82f5e0081259",
       "revision": 0,
-      "name": "#ElChiringuitoEnCuatro",
+      "name": "Yola",
       "status": "explained",
-      "explained_at": "2026-10-26T01:48:25+01:00",
-      "closer_text": "🌶️ Cuatro abrió 140 minutos de tiempo añadido.",
+      "explained_at": "2026-10-26T02:20:20+01:00",
+      "closer_text": "🌶️ En Honduras también hay aduana para los reproches.",
       "verified": true
     }
   ]
