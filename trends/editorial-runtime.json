@@ -14,8 +14,8 @@
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-26T06:42:00+01:00",
-  "last_completed_at": "2026-10-26T06:51:00+01:00",
-  "updated_at": "2026-10-26T06:51:00+01:00",
+  "last_completed_at": "2026-10-26T06:50:00+01:00",
+  "updated_at": "2026-10-26T06:50:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -34,8 +34,8 @@
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-26T06:42:00+01:00",
-    "updated_at": "2026-10-26T06:51:00+01:00",
-    "finished_at": "2026-10-26T06:51:00+01:00",
+    "updated_at": "2026-10-26T06:50:00+01:00",
+    "finished_at": "2026-10-26T06:50:00+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
@@ -64,15 +64,15 @@
       "remates_selected": 2,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 8,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 1,
+      "top10_reviewed": 10,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 2/2: Lula r1 y Serbia r0 explicadas y verificadas; cola final 0.",
+    "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
@@ -165,21 +165,14 @@
         "phase": "verifying",
         "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
         "title": "Serbia",
-        "message": "Tendencia cerrada y verificada en Explicadas + requests; fuera de la cola"
+        "message": "Releyendo main y verificando id+revision y texto persistido"
       },
       {
         "at": "2026-10-26T06:50:00+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura final de main: cola 0, requests activas 0 y rewrite_pending 0; 8 Pendientes recientes revisadas, ninguna sin remate."
-      },
-      {
-        "at": "2026-10-26T06:51:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 2/2: Lula r1 y Serbia r0 explicadas y verificadas; cola final 0."
+        "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0."
       }
     ],
     "ratings_snapshot": {
@@ -189,24 +182,7 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "37b5073e4e9a",
-        "revision": 1,
-        "candidate_count": 1,
-        "selected_candidate": "🌶️ Perdió la primera vuelta y ganó la que entregaba las llaves.",
-        "selected_score": null,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "revision": 0,
-        "candidate_count": 1,
-        "selected_candidate": "🌶️ Las pancartas acabaron haciendo cuentas de escaños.",
-        "selected_score": null,
-        "no_remate_reason": null
-      }
-    ],
+    "remate_selections": [],
     "processed_ids": [
       "37b5073e4e9a",
       "manual-e8739c839576f7acbf1f190c8ac6b69e"
@@ -219,19 +195,13 @@
         "id": "37b5073e4e9a",
         "revision": 1,
         "name": "Lula",
-        "status": "explained",
-        "explained_at": "2026-10-26T06:45:00+01:00",
-        "closer_text": "🌶️ Perdió la primera vuelta y ganó la que entregaba las llaves.",
-        "verified": true
+        "status": "explained"
       },
       {
         "id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
         "revision": 0,
         "name": "Serbia",
-        "status": "explained",
-        "explained_at": "2026-10-26T06:48:00+01:00",
-        "closer_text": "🌶️ Las pancartas acabaron haciendo cuentas de escaños.",
-        "verified": true
+        "status": "explained"
       }
     ]
   },
@@ -260,11 +230,11 @@
     "remates_selected": 2,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 8,
+    "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 1,
+    "top10_reviewed": 10,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
@@ -358,21 +328,14 @@
       "phase": "verifying",
       "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
       "title": "Serbia",
-      "message": "Tendencia cerrada y verificada en Explicadas + requests; fuera de la cola"
+      "message": "Releyendo main y verificando id+revision y texto persistido"
     },
     {
       "at": "2026-10-26T06:50:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Relectura final de main: cola 0, requests activas 0 y rewrite_pending 0; 8 Pendientes recientes revisadas, ninguna sin remate."
-    },
-    {
-      "at": "2026-10-26T06:51:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 2/2: Lula r1 y Serbia r0 explicadas y verificadas; cola final 0."
+      "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0."
     }
   ],
   "partial": false,
@@ -385,7 +348,7 @@
     "captured_at": "2026-10-26T06:10:50+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0615-manual",
+  "previous_run_id": "tr-1792993326299-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -393,42 +356,19 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "trend_id": "37b5073e4e9a",
-      "revision": 1,
-      "candidate_count": 1,
-      "selected_candidate": "🌶️ Perdió la primera vuelta y ganó la que entregaba las llaves.",
-      "selected_score": null,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "revision": 0,
-      "candidate_count": 1,
-      "selected_candidate": "🌶️ Las pancartas acabaron haciendo cuentas de escaños.",
-      "selected_score": null,
-      "no_remate_reason": null
-    }
-  ],
+  "remate_selections": [],
   "final_outcomes": [
     {
       "id": "37b5073e4e9a",
       "revision": 1,
       "name": "Lula",
-      "status": "explained",
-      "explained_at": "2026-10-26T06:45:00+01:00",
-      "closer_text": "🌶️ Perdió la primera vuelta y ganó la que entregaba las llaves.",
-      "verified": true
+      "status": "explained"
     },
     {
       "id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
       "revision": 0,
       "name": "Serbia",
-      "status": "explained",
-      "explained_at": "2026-10-26T06:48:00+01:00",
-      "closer_text": "🌶️ Las pancartas acabaron haciendo cuentas de escaños.",
-      "verified": true
+      "status": "explained"
     }
   ]
 }
