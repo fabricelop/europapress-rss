@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "4562ce8c4da5"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T20:15:00+01:00",
-  "last_completed_at": "2026-10-26T20:17:30+01:00",
-  "updated_at": "2026-10-26T20:17:30+01:00",
+  "last_started_at": "2026-10-26T20:24:16+01:00",
+  "last_completed_at": "2026-10-26T20:27:41+01:00",
+  "updated_at": "2026-10-26T20:27:41+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T194500+0100-chat",
+    "trigger_run_id": "tr-1793042592250-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,30 +28,29 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T201500+0100-chat",
+    "run_id": "tr-1793042592250-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T20:15:00+01:00",
-    "updated_at": "2026-10-26T20:17:30+01:00",
-    "finished_at": "2026-10-26T20:17:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-26T20:24:16+01:00",
+    "updated_at": "2026-10-26T20:27:41+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,63 +58,184 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
-      "stale_top10_reviewed": 10,
+      "pending_cards_reviewed": 1,
+      "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "user_decisions_after_close": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: cola final 0, Top 10 vigente y sin reexplicaciones pendientes.",
+    "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T20:15:00+01:00",
+        "at": "2026-10-26T20:24:16+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: verificando cola, Top 10 y reexplicaciones pendientes."
+        "message": "Inicio de pasada: preparando Barcelona y saneamiento visual no bloqueante."
       },
       {
-        "at": "2026-10-26T20:15:20+01:00",
+        "at": "2026-10-26T20:24:31+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola autoritativa 0; requests activas 0; rewrite_pending 0."
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Releyendo estado autoritativo de Barcelona."
       },
       {
-        "at": "2026-10-26T20:15:35+01:00",
+        "at": "2026-10-26T20:24:47+01:00",
+        "phase": "investigating",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Buscando detonante actual de Barcelona, marcador y fecha."
+      },
+      {
+        "at": "2026-10-26T20:25:24+01:00",
+        "phase": "investigating",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Contrastando fuente 1/2: crónica oficial del Clásico."
+      },
+      {
+        "at": "2026-10-26T20:25:24+01:00",
+        "phase": "investigating",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Contrastando fuente 2/2: prensa del 26-O y efecto en la clasificación."
+      },
+      {
+        "at": "2026-10-26T20:25:24+01:00",
+        "phase": "investigating",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Hecho esencial verificado: Barcelona 1-2 Real Madrid el 25-O en el Camp Nou."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "drafting",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Redactando explicación factual nueva para Barcelona."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "drafting",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "remate_selection",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Generando candidatos de remate sobre el margen liguero."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "remate_selection",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Evaluando candidatos con ratings y evitando muletillas recientes."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "remate_selection",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Remate seleccionado: la ventaja liguera queda reducida a tres puntos."
+      },
+      {
+        "at": "2026-10-26T20:25:57+01:00",
+        "phase": "persisting",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Guardando ficha Explicada de Barcelona."
+      },
+      {
+        "at": "2026-10-26T20:26:46+01:00",
+        "phase": "persisting",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Actualizando requests para Barcelona r0."
+      },
+      {
+        "at": "2026-10-26T20:26:46+01:00",
+        "phase": "persisting",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Retirando Barcelona r0 de la cola."
+      },
+      {
+        "at": "2026-10-26T20:26:46+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Top 10 revisado: 10/10 ya explicadas dentro de 48 h; comprobando estado final de main."
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Releyendo main tras la persistencia."
       },
       {
-        "at": "2026-10-26T20:17:20+01:00",
+        "at": "2026-10-26T20:26:46+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Radar actualizado a 20:17; cola final 0 y ninguna explicación Top 10 supera 48 h."
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-26T20:17:30+01:00",
+        "at": "2026-10-26T20:27:41+01:00",
+        "phase": "verifying",
+        "trend_id": "4562ce8c4da5",
+        "title": "Barcelona",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-26T20:27:41+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0: cola final 0, sin reexplicaciones pendientes."
+        "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "4562ce8c4da5"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
+    "previous_run_id": "tr-20261026T201500+0100-chat",
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "total_ratings": 154,
+      "recent_considered": 30
+    },
+    "remate_selections": [
+      {
+        "id": "4562ce8c4da5",
+        "name": "Barcelona",
+        "revision": 0,
+        "selected": "🌶️ La Liga salió del clásico con tres puntos menos de margen.",
+        "originality_check": "Sin coincidencia conceptual evidente con las muletillas y remates recientes revisados."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "4562ce8c4da5",
+        "name": "Barcelona",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true,
+        "explained_at": "2026-10-26T19:26:19.833Z"
+      }
+    ],
+    "finished_at": "2026-10-26T20:27:41+01:00",
     "radar_refresh": {
       "status": "observed",
       "reason": "Radar fresco durante la pasada; no requiere recaptura.",
@@ -122,31 +244,22 @@
     "radar": {
       "captured_at": "2026-10-26T20:17:01+01:00",
       "queue_count": 0
-    },
-    "previous_run_id": "tr-20261026T194500+0100-chat",
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [],
-    "final_outcomes": []
+    }
   },
-  "run_id": "tr-20261026T201500+0100-chat",
+  "run_id": "tr-1793042592250-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -154,54 +267,145 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
-    "stale_top10_reviewed": 10,
+    "pending_cards_reviewed": 1,
+    "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "top10_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "user_decisions_after_close": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T20:15:00+01:00",
+      "at": "2026-10-26T20:24:16+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: verificando cola, Top 10 y reexplicaciones pendientes."
+      "message": "Inicio de pasada: preparando Barcelona y saneamiento visual no bloqueante."
     },
     {
-      "at": "2026-10-26T20:15:20+01:00",
+      "at": "2026-10-26T20:24:31+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola autoritativa 0; requests activas 0; rewrite_pending 0."
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Releyendo estado autoritativo de Barcelona."
     },
     {
-      "at": "2026-10-26T20:15:35+01:00",
+      "at": "2026-10-26T20:24:47+01:00",
+      "phase": "investigating",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Buscando detonante actual de Barcelona, marcador y fecha."
+    },
+    {
+      "at": "2026-10-26T20:25:24+01:00",
+      "phase": "investigating",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Contrastando fuente 1/2: crónica oficial del Clásico."
+    },
+    {
+      "at": "2026-10-26T20:25:24+01:00",
+      "phase": "investigating",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Contrastando fuente 2/2: prensa del 26-O y efecto en la clasificación."
+    },
+    {
+      "at": "2026-10-26T20:25:24+01:00",
+      "phase": "investigating",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Hecho esencial verificado: Barcelona 1-2 Real Madrid el 25-O en el Camp Nou."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "drafting",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Redactando explicación factual nueva para Barcelona."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "drafting",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Comprobando límite de X: texto completo dentro de 280 caracteres."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "remate_selection",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Generando candidatos de remate sobre el margen liguero."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "remate_selection",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Evaluando candidatos con ratings y evitando muletillas recientes."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "remate_selection",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Remate seleccionado: la ventaja liguera queda reducida a tres puntos."
+    },
+    {
+      "at": "2026-10-26T20:25:57+01:00",
+      "phase": "persisting",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Guardando ficha Explicada de Barcelona."
+    },
+    {
+      "at": "2026-10-26T20:26:46+01:00",
+      "phase": "persisting",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Actualizando requests para Barcelona r0."
+    },
+    {
+      "at": "2026-10-26T20:26:46+01:00",
+      "phase": "persisting",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Retirando Barcelona r0 de la cola."
+    },
+    {
+      "at": "2026-10-26T20:26:46+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Top 10 revisado: 10/10 ya explicadas dentro de 48 h; comprobando estado final de main."
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Releyendo main tras la persistencia."
     },
     {
-      "at": "2026-10-26T20:17:20+01:00",
+      "at": "2026-10-26T20:26:46+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Radar actualizado a 20:17; cola final 0 y ninguna explicación Top 10 supera 48 h."
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-26T20:17:30+01:00",
+      "at": "2026-10-26T20:27:41+01:00",
+      "phase": "verifying",
+      "trend_id": "4562ce8c4da5",
+      "title": "Barcelona",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-26T20:27:41+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0: cola final 0, sin reexplicaciones pendientes."
+      "message": "TTendencias completada 1/1: Barcelona explicada y verificada; cola final 0 y sin reexplicaciones pendientes."
     }
   ],
   "partial": false,
@@ -214,13 +418,31 @@
     "captured_at": "2026-10-26T20:17:01+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T194500+0100-chat",
+  "previous_run_id": "tr-20261026T201500+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": []
+  "remate_selections": [
+    {
+      "id": "4562ce8c4da5",
+      "name": "Barcelona",
+      "revision": 0,
+      "selected": "🌶️ La Liga salió del clásico con tres puntos menos de margen.",
+      "originality_check": "Sin coincidencia conceptual evidente con las muletillas y remates recientes revisados."
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "4562ce8c4da5",
+      "name": "Barcelona",
+      "revision": 0,
+      "status": "explained",
+      "verified": true,
+      "queue_removed": true,
+      "explained_at": "2026-10-26T19:26:19.833Z"
+    }
+  ]
 }
