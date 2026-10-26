@@ -215,6 +215,19 @@ final class GitHubEditor: ObservableObject {
                         notice = "Verificado en GitHub: noticia añadida a En elaboración."
                         return true
                     }
+                } else if event == "ttactualidad_batch_v1" {
+                    let doc = try await readMainJSON("pilot/ttactualidad-batch-receipts.json")
+                    let receipt = (doc["items"] as? [[String: Any]])?.first {
+                        ($0["request_id"] as? String) == requestID
+                    }
+                    if let status = receipt?["status"] as? String {
+                        if status == "applied" {
+                            notice = "Lote verificado: todos los elementos persistidos en GitHub."
+                            return true
+                        }
+                        notice = "Lote registrado con estado \(status)."
+                        return false
+                    }
                 } else if let status = try await actionReceipt(requestID) {
                     if ["applied", "already_applied"].contains(status) {
                         notice = "Verificado en GitHub: «\(label)» aplicado."
@@ -282,6 +295,25 @@ final class GitHubEditor: ObservableObject {
             "received_at": ISO8601DateFormatter().string(from: Date()),
             "trend_name": title, "trend_rank": rank
         ], label: decision == "deleted" ? "Quitar de Listas" : "Reelaborar / preparar")
+    }
+
+    // Batch operations carry the original ID and expected revision of every item.
+    // GitHub applies them atomically and records one verifiable group receipt.
+    func batch(project: String, decision: String,
+               items: [[String: Any]], groupTopic: String = "") async -> Bool {
+        guard (2...12).contains(items.count) else {
+            notice = "Selecciona de 2 a 12 elementos."
+            return false
+        }
+        if decision == "rework" && groupTopic.trimmingCharacters(in: .whitespacesAndNewlines).count < 4 {
+            notice = "Indica un tema común para la reelaboración conjunta."
+            return false
+        }
+        return await dispatch("ttactualidad_batch_v1", payload: [
+            "project": project, "decision": decision,
+            "request_id": UUID().uuidString.lowercased(),
+            "items": items, "group_topic": String(groupTopic.prefix(160))
+        ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple")
     }
 
     func addNews(title: String, url: String, instructions: String) async -> Bool {
