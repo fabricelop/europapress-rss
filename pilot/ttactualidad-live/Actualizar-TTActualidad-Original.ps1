@@ -92,9 +92,14 @@ try {
     $html = [IO.File]::ReadAllText($nextHtml,[Text.Encoding]::UTF8)
     $js = [IO.File]::ReadAllText($nextWorker,[Text.Encoding]::UTF8)
     foreach ($marker in @('Volver a En elabora','Top 30','Listas','TTImages',
-                           'Copiar Foto Archivo','id="manual-open"','function trendRows()')) {
+                           'Copiar Foto Archivo','id="manual-open"','function trendRows()',
+                           'source_app:state.app,source_tab:state.tab',
+                           'op.source_tab!==state.tab||op.source_app!==state.app',
+                           'disponible en Listas sin cambiar de')) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
     }
+    Ensure (-not $html.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) (
+        'La interfaz contiene la navegacion automatica obsoleta. No se despliega.')
     foreach ($marker in @('ttactualidad-direct-live','signed_cookie_v1',
                            'ttactualidad_manual_news_v1',
                            "'prepare','discard','deleted','published','rework'",
@@ -135,7 +140,11 @@ try {
                 $after.production_connected -eq $true -and
                 $remote.Contains('Volver a En elabora') -and
                 $remote.Contains('function trendRows()') -and
-                $remote.Contains('TTImages')) {
+                $remote.Contains('TTImages') -and
+                $remote.Contains('source_app:state.app,source_tab:state.tab') -and
+                $remote.Contains('op.source_tab!==state.tab||op.source_app!==state.app') -and
+                $remote.Contains('disponible en Listas sin cambiar de') -and
+                -not $remote.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) {
                 $valid = $true
                 break
             }
