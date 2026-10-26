@@ -7326,7 +7326,13 @@
           "name": "Kane",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     },
     {
       "id": "025acbe12169",
@@ -7372,12 +7378,13 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "fallback_image_strategy": "existing_web_image",
-      "originated_from_prior_id": "manual-f84912887de2ccf322028934a4c87c21"
+      "originated_from_prior_id": "manual-f84912887de2ccf322028934a4c87c21",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "f6eb455e6356",
@@ -7408,9 +7415,15 @@
           "name": "Bildu",
           "revision": 0
         }
-      ]
+      ],
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_status": "none",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "image_status": "none",
+      "image_choice": "none",
+      "image_pending": false
     }
   ],
-  "updated_at": "2026-10-26T20:06:56.782Z",
+  "updated_at": "2026-10-26T20:09:50.333583Z",
   "count": 136
 }
