@@ -19,6 +19,22 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
  assert.equal(currentTop30(radar).length,30);
  assert.equal(currentTop30({...radar,items:[]}).length,30,'top30 names must be a fallback');
  assert.equal(currentTop30({...radar,items:[]})[29].rank,30);
+ // A partial items array (e.g. 16 of 30) must not truncate the ranking.
+ const partial=currentTop30({...radar,items:radar.items.slice(0,16)});
+ assert.equal(partial.length,30,'16 detailed positions plus 30 names must produce 30 ranks');
+ assert.equal(partial[16].rank,17);
+ assert.equal(partial[29].name,'TOP30');
+ assert(html.includes('.cards.top30{display:flex;flex-direction:column'),
+  path+': Top 30 must render as compact vertical rows');
+ assert(html.includes('function compactTop30Card(out,x){')&&
+        html.includes('detail.append(summary,content);out.replaceChildren(detail)'),
+  path+': rows must expand to show explanation and controls');
+ assert(html.includes("summary.addEventListener('click'")&&html.includes('expandedTop30'),
+  path+': expanded row state must persist across live refreshes');
+ assert(html.includes('out.classList.add(\'trend-explained\')'),
+  path+': explained rows require red styling');
+ assert(html.includes("state.tab==='top'||!isTemporarilyRemoved(x)"),
+  path+': pending editorial actions must never reduce Top 30 ranking');
 
  const trending=pick('function trendRows(){','function dataRows(){');
  const state={app:'tr',tab:'top',q:'',data:{
