@@ -1242,8 +1242,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)void check
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void syncListasBadge()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
-// Refresh the color when time crosses a 12-hour or 24-hour threshold.
-setInterval(updateTop30AgeColors,60000);
+// Recalculate colors on every render and when Safari comes back into view.
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTop30AgeColors()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
