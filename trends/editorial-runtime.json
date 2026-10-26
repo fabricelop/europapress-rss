@@ -5,23 +5,26 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "4c7b0d2b43cb",
-    "1ed3d7191750"
+    "8cb95a16f386",
+    "8cf7dd0d99b2",
+    "f5d3fb9f85cd",
+    "be8da289072a",
+    "f2764b694a52"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T21:45:00+01:00",
-  "last_completed_at": "2026-10-26T21:52:30+01:00",
-  "updated_at": "2026-10-26T21:52:30+01:00",
+  "last_started_at": "2026-10-26T22:08:30+01:00",
+  "last_completed_at": "2026-10-26T22:20:30+01:00",
+  "updated_at": "2026-10-26T22:20:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T2145+0100-chat",
+    "trigger_run_id": "tr-1793048895617-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -29,176 +32,193 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T2145+0100-chat",
+    "run_id": "tr-1793048895617-manual",
     "source": "chat",
     "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-26T21:45:00+01:00",
-    "updated_at": "2026-10-26T21:52:30+01:00",
-    "finished_at": "2026-10-26T21:52:30+01:00",
-    "current": 2,
-    "total": 2,
+    "started_at": "2026-10-26T22:08:30+01:00",
+    "updated_at": "2026-10-26T22:20:30+01:00",
+    "finished_at": "2026-10-26T22:20:30+01:00",
+    "current": 5,
+    "total": 5,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 2/2: #BallonDor y Votarte explicadas y verificadas; cola final 0.",
+    "message": "TTendencias completada 5/5 y verificada; cola final 0.",
     "incident_count": 1,
     "incidents": [
       {
-        "at": "2026-10-26T21:48:25+01:00",
+        "at": "2026-10-26T22:16:25+01:00",
         "phase": "persisting",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "reason": "Primer intento local de componer requests.json agotó la pila antes de cualquier escritura; se releyó main y se reintentó sin pérdida ni conflicto de datos."
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "reason": "Conflicto 409 por escritura concurrente; se releyó main y se completó de forma idempotente sin sobrescribir cambios ajenos."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-26T21:45:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa: 2 revisiones activas; preparando barrera JIT e investigación."
-      },
-      {
-        "at": "2026-10-26T21:45:20+01:00",
+        "at": "2026-10-26T22:14:00+01:00",
         "phase": "verifying",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Releyendo estado autoritativo de #BallonDor r0."
+        "trend_id": "8cf7dd0d99b2",
+        "title": "lamine yamal",
+        "message": "Releyendo estado autoritativo de lamine yamal r0."
       },
       {
-        "at": "2026-10-26T21:47:35+01:00",
+        "at": "2026-10-26T22:14:15+01:00",
         "phase": "investigating",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Contrastando la gala 2026 con fuente oficial y seguimiento en directo."
+        "trend_id": "8cf7dd0d99b2",
+        "title": "lamine yamal",
+        "message": "Hecho actualizado: premio al mejor jugador joven ya anunciado en la gala."
       },
       {
-        "at": "2026-10-26T21:47:45+01:00",
+        "at": "2026-10-26T22:15:20+01:00",
+        "phase": "verifying",
+        "trend_id": "8cf7dd0d99b2",
+        "title": "lamine yamal",
+        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+      },
+      {
+        "at": "2026-10-26T22:15:35+01:00",
+        "phase": "verifying",
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "message": "Releyendo estado autoritativo de Ertzaintza r0."
+      },
+      {
+        "at": "2026-10-26T22:15:50+01:00",
         "phase": "investigating",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Hecho esencial verificado: gala en Londres en curso y ganador masculino aún sin anunciar en la fuente oficial consultada."
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "message": "Contrastando el balance más reciente de los disturbios de Bilbao."
       },
       {
-        "at": "2026-10-26T21:47:55+01:00",
-        "phase": "drafting",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Redactando explicación factual y comprobando límite de X."
-      },
-      {
-        "at": "2026-10-26T21:48:05+01:00",
+        "at": "2026-10-26T22:16:15+01:00",
         "phase": "remate_selection",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Remate seleccionado tras revisar originalidad y encaje factual."
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "message": "Sin remate · disturbios y violencia; explicación factual suficiente."
       },
       {
-        "at": "2026-10-26T21:49:20+01:00",
+        "at": "2026-10-26T22:16:25+01:00",
         "phase": "persisting",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Ficha Explicada, request y retirada de cola guardadas; releyendo main."
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "message": "Conflicto 409 detectado; releyendo main antes de reintentar."
       },
       {
-        "at": "2026-10-26T21:49:30+01:00",
+        "at": "2026-10-26T22:17:00+01:00",
         "phase": "verifying",
-        "trend_id": "4c7b0d2b43cb",
-        "title": "#BallonDor",
-        "message": "Verificando id+revision y texto persistido."
+        "trend_id": "f5d3fb9f85cd",
+        "title": "Ertzaintza",
+        "message": "Tendencia cerrada y verificada tras reintento idempotente."
       },
       {
-        "at": "2026-10-26T21:49:45+01:00",
+        "at": "2026-10-26T22:17:15+01:00",
         "phase": "verifying",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Releyendo estado autoritativo de Votarte r0."
+        "trend_id": "be8da289072a",
+        "title": "Alexia",
+        "message": "Releyendo estado autoritativo de Alexia r0."
       },
       {
-        "at": "2026-10-26T21:50:05+01:00",
+        "at": "2026-10-26T22:17:30+01:00",
         "phase": "investigating",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Contrastando el mensaje viral con el acto de precampaña y el contexto electoral del 29-N."
+        "trend_id": "be8da289072a",
+        "title": "Alexia",
+        "message": "Contrastando Top 10 y estado actual de la categoría femenina en la gala."
       },
       {
-        "at": "2026-10-26T21:50:20+01:00",
-        "phase": "investigating",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Hecho esencial verificado con publicación original y contexto de precampaña."
-      },
-      {
-        "at": "2026-10-26T21:50:35+01:00",
+        "at": "2026-10-26T22:17:50+01:00",
         "phase": "drafting",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Redactando explicación factual y comprobando límite de X."
+        "trend_id": "be8da289072a",
+        "title": "Alexia",
+        "message": "Redactando explicación factual y comprobando límite de X · 251 caracteres."
       },
       {
-        "at": "2026-10-26T21:50:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Remate seleccionado con sátira neutral sobre la campaña, sin instrucción de voto."
-      },
-      {
-        "at": "2026-10-26T21:51:20+01:00",
-        "phase": "persisting",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Ficha Explicada, request y retirada de cola guardadas; releyendo main."
-      },
-      {
-        "at": "2026-10-26T21:51:30+01:00",
+        "at": "2026-10-26T22:18:30+01:00",
         "phase": "verifying",
-        "trend_id": "1ed3d7191750",
-        "title": "Votarte",
-        "message": "Verificando id+revision y texto persistido."
+        "trend_id": "be8da289072a",
+        "title": "Alexia",
+        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
       },
       {
-        "at": "2026-10-26T21:52:10+01:00",
+        "at": "2026-10-26T22:18:40+01:00",
+        "phase": "verifying",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Releyendo estado autoritativo de Votar a Sánchez r0."
+      },
+      {
+        "at": "2026-10-26T22:18:50+01:00",
+        "phase": "investigating",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Investigando desde cero el detonante actual y contrastando la frase de Paco Núñez."
+      },
+      {
+        "at": "2026-10-26T22:19:08+01:00",
+        "phase": "drafting",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Redactando explicación atribuida y neutral · 270 caracteres."
+      },
+      {
+        "at": "2026-10-26T22:19:15+01:00",
+        "phase": "remate_selection",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Remate político neutral seleccionado tras control de originalidad y sin instrucción de voto."
+      },
+      {
+        "at": "2026-10-26T22:19:45+01:00",
+        "phase": "verifying",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+      },
+      {
+        "at": "2026-10-26T22:20:05+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo cola, Requests, Explicadas y Top 10 desde main."
+        "message": "Releyendo cola final, Requests, Explicadas y reexplicaciones pendientes desde main."
       },
       {
-        "at": "2026-10-26T21:52:20+01:00",
+        "at": "2026-10-26T22:20:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 cubierto: 10/10 con explicación de menos de 48 h; sin reexplicaciones pendientes."
+        "message": "Verificación final: cola activa 0, rewrite_pending 0 y 5/5 revisiones con persistencia exacta."
       },
       {
-        "at": "2026-10-26T21:52:30+01:00",
+        "at": "2026-10-26T22:20:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 2/2: #BallonDor y Votarte explicadas y verificadas; cola final 0."
+        "message": "TTendencias completada 5/5 y verificada; cola final 0."
       }
     ],
     "processed_ids": [
-      "4c7b0d2b43cb",
-      "1ed3d7191750"
+      "8cb95a16f386",
+      "8cf7dd0d99b2",
+      "f5d3fb9f85cd",
+      "be8da289072a",
+      "f2764b694a52"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "summary": {
-      "attempted": 2,
+      "attempted": 5,
       "ready": 0,
-      "explained": 2,
-      "explanation_groups": 2,
-      "new_cards": 2,
+      "explained": 5,
+      "explanation_groups": 5,
+      "new_cards": 5,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 2,
+      "initial_compact_queue": 5,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -206,50 +226,112 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 2,
-      "remates_selected": 2,
-      "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
-      "stale_top10_reviewed": 0,
-      "stale_top10_reexplained": 0,
-      "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "explanations_verified_under_280": 5,
+      "remates_selected": 4,
+      "remates_omitted": 1,
       "rewrite_pending_remaining": 0,
-      "user_decisions_after_close": 0,
       "incidents": 1
+    },
+    "ratings_snapshot": {
+      "path": "trends/remate-ratings.json",
+      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "total_ratings": 154,
+      "recent_considered": 30
     },
     "remate_selections": [
       {
-        "id": "4c7b0d2b43cb",
-        "name": "#BallonDor",
+        "id": "8cb95a16f386",
+        "name": "Isaac Romero",
         "revision": 0,
-        "selected": "🌶️ La alfombra roja ya sabe que solo uno pisa el último peldaño.",
-        "originality_check": "Específico de la gala y sin colisión evidente con los remates recientes revisados."
+        "selected": "🌶️ Al marcador le bastaron 24 minutos para aprenderse su apellido.",
+        "originality_check": "Sin colisión evidente con los últimos 30 remates revisados."
       },
       {
-        "id": "1ed3d7191750",
-        "name": "Votarte",
+        "id": "8cf7dd0d99b2",
+        "name": "lamine yamal",
         "revision": 0,
-        "selected": "🌶️ La campaña ya discute hasta los verbos.",
-        "originality_check": "Sátira política neutral sobre la palabra viral; no contiene instrucción de voto."
+        "selected": "🌶️ El premio joven ya empieza a parecerle de propiedad.",
+        "originality_check": "Específico del tercer premio joven consecutivo y distinto de los remates recientes del Balón de Oro."
+      },
+      {
+        "id": "f5d3fb9f85cd",
+        "name": "Ertzaintza",
+        "revision": 0,
+        "selected": null,
+        "no_remate_reason": "Disturbios y violencia; se conserva tratamiento factual."
+      },
+      {
+        "id": "be8da289072a",
+        "name": "Alexia",
+        "revision": 0,
+        "selected": "🌶️ Dos Balones ya tienen sitio; el tercero aún busca peana.",
+        "originality_check": "Referencia específica a sus dos Balones previos; sin repetir el mecanismo de los remates recientes de la gala."
+      },
+      {
+        "id": "f2764b694a52",
+        "name": "Votar a Sánchez",
+        "revision": 0,
+        "selected": "🌶️ Antes del 29-N, hasta el voto de Page tiene rueda de prensa.",
+        "originality_check": "Sátira política neutral sobre la atribución del voto; sin instrucción electoral."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "8cb95a16f386",
+        "name": "Isaac Romero",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true
+      },
+      {
+        "id": "8cf7dd0d99b2",
+        "name": "lamine yamal",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true
+      },
+      {
+        "id": "f5d3fb9f85cd",
+        "name": "Ertzaintza",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true
+      },
+      {
+        "id": "be8da289072a",
+        "name": "Alexia",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true
+      },
+      {
+        "id": "f2764b694a52",
+        "name": "Votar a Sánchez",
+        "revision": 0,
+        "status": "explained",
+        "verified": true,
+        "queue_removed": true
       }
     ]
   },
-  "run_id": "tr-20261026T2145+0100-chat",
+  "run_id": "tr-1793048895617-manual",
   "summary": {
-    "attempted": 2,
+    "attempted": 5,
     "ready": 0,
-    "explained": 2,
-    "explanation_groups": 2,
-    "new_cards": 2,
+    "explained": 5,
+    "explanation_groups": 5,
+    "new_cards": 5,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 2,
+    "initial_compact_queue": 5,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -257,145 +339,152 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 2,
-    "remates_selected": 2,
-    "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
-    "stale_top10_reviewed": 0,
-    "stale_top10_reexplained": 0,
-    "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "explanations_verified_under_280": 5,
+    "remates_selected": 4,
+    "remates_omitted": 1,
     "rewrite_pending_remaining": 0,
-    "user_decisions_after_close": 0,
     "incidents": 1
   },
   "activity": [
     {
-      "at": "2026-10-26T21:45:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada directa: 2 revisiones activas; preparando barrera JIT e investigación."
-    },
-    {
-      "at": "2026-10-26T21:45:20+01:00",
+      "at": "2026-10-26T22:14:00+01:00",
       "phase": "verifying",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Releyendo estado autoritativo de #BallonDor r0."
+      "trend_id": "8cf7dd0d99b2",
+      "title": "lamine yamal",
+      "message": "Releyendo estado autoritativo de lamine yamal r0."
     },
     {
-      "at": "2026-10-26T21:47:35+01:00",
+      "at": "2026-10-26T22:14:15+01:00",
       "phase": "investigating",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Contrastando la gala 2026 con fuente oficial y seguimiento en directo."
+      "trend_id": "8cf7dd0d99b2",
+      "title": "lamine yamal",
+      "message": "Hecho actualizado: premio al mejor jugador joven ya anunciado en la gala."
     },
     {
-      "at": "2026-10-26T21:47:45+01:00",
+      "at": "2026-10-26T22:15:20+01:00",
+      "phase": "verifying",
+      "trend_id": "8cf7dd0d99b2",
+      "title": "lamine yamal",
+      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+    },
+    {
+      "at": "2026-10-26T22:15:35+01:00",
+      "phase": "verifying",
+      "trend_id": "f5d3fb9f85cd",
+      "title": "Ertzaintza",
+      "message": "Releyendo estado autoritativo de Ertzaintza r0."
+    },
+    {
+      "at": "2026-10-26T22:15:50+01:00",
       "phase": "investigating",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Hecho esencial verificado: gala en Londres en curso y ganador masculino aún sin anunciar en la fuente oficial consultada."
+      "trend_id": "f5d3fb9f85cd",
+      "title": "Ertzaintza",
+      "message": "Contrastando el balance más reciente de los disturbios de Bilbao."
     },
     {
-      "at": "2026-10-26T21:47:55+01:00",
-      "phase": "drafting",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Redactando explicación factual y comprobando límite de X."
-    },
-    {
-      "at": "2026-10-26T21:48:05+01:00",
+      "at": "2026-10-26T22:16:15+01:00",
       "phase": "remate_selection",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Remate seleccionado tras revisar originalidad y encaje factual."
+      "trend_id": "f5d3fb9f85cd",
+      "title": "Ertzaintza",
+      "message": "Sin remate · disturbios y violencia; explicación factual suficiente."
     },
     {
-      "at": "2026-10-26T21:49:20+01:00",
+      "at": "2026-10-26T22:16:25+01:00",
       "phase": "persisting",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Ficha Explicada, request y retirada de cola guardadas; releyendo main."
+      "trend_id": "f5d3fb9f85cd",
+      "title": "Ertzaintza",
+      "message": "Conflicto 409 detectado; releyendo main antes de reintentar."
     },
     {
-      "at": "2026-10-26T21:49:30+01:00",
+      "at": "2026-10-26T22:17:00+01:00",
       "phase": "verifying",
-      "trend_id": "4c7b0d2b43cb",
-      "title": "#BallonDor",
-      "message": "Verificando id+revision y texto persistido."
+      "trend_id": "f5d3fb9f85cd",
+      "title": "Ertzaintza",
+      "message": "Tendencia cerrada y verificada tras reintento idempotente."
     },
     {
-      "at": "2026-10-26T21:49:45+01:00",
+      "at": "2026-10-26T22:17:15+01:00",
       "phase": "verifying",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Releyendo estado autoritativo de Votarte r0."
+      "trend_id": "be8da289072a",
+      "title": "Alexia",
+      "message": "Releyendo estado autoritativo de Alexia r0."
     },
     {
-      "at": "2026-10-26T21:50:05+01:00",
+      "at": "2026-10-26T22:17:30+01:00",
       "phase": "investigating",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Contrastando el mensaje viral con el acto de precampaña y el contexto electoral del 29-N."
+      "trend_id": "be8da289072a",
+      "title": "Alexia",
+      "message": "Contrastando Top 10 y estado actual de la categoría femenina en la gala."
     },
     {
-      "at": "2026-10-26T21:50:20+01:00",
-      "phase": "investigating",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Hecho esencial verificado con publicación original y contexto de precampaña."
-    },
-    {
-      "at": "2026-10-26T21:50:35+01:00",
+      "at": "2026-10-26T22:17:50+01:00",
       "phase": "drafting",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Redactando explicación factual y comprobando límite de X."
+      "trend_id": "be8da289072a",
+      "title": "Alexia",
+      "message": "Redactando explicación factual y comprobando límite de X · 251 caracteres."
     },
     {
-      "at": "2026-10-26T21:50:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Remate seleccionado con sátira neutral sobre la campaña, sin instrucción de voto."
-    },
-    {
-      "at": "2026-10-26T21:51:20+01:00",
-      "phase": "persisting",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Ficha Explicada, request y retirada de cola guardadas; releyendo main."
-    },
-    {
-      "at": "2026-10-26T21:51:30+01:00",
+      "at": "2026-10-26T22:18:30+01:00",
       "phase": "verifying",
-      "trend_id": "1ed3d7191750",
-      "title": "Votarte",
-      "message": "Verificando id+revision y texto persistido."
+      "trend_id": "be8da289072a",
+      "title": "Alexia",
+      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
     },
     {
-      "at": "2026-10-26T21:52:10+01:00",
+      "at": "2026-10-26T22:18:40+01:00",
+      "phase": "verifying",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Releyendo estado autoritativo de Votar a Sánchez r0."
+    },
+    {
+      "at": "2026-10-26T22:18:50+01:00",
+      "phase": "investigating",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Investigando desde cero el detonante actual y contrastando la frase de Paco Núñez."
+    },
+    {
+      "at": "2026-10-26T22:19:08+01:00",
+      "phase": "drafting",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Redactando explicación atribuida y neutral · 270 caracteres."
+    },
+    {
+      "at": "2026-10-26T22:19:15+01:00",
+      "phase": "remate_selection",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Remate político neutral seleccionado tras control de originalidad y sin instrucción de voto."
+    },
+    {
+      "at": "2026-10-26T22:19:45+01:00",
+      "phase": "verifying",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+    },
+    {
+      "at": "2026-10-26T22:20:05+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo cola, Requests, Explicadas y Top 10 desde main."
+      "message": "Releyendo cola final, Requests, Explicadas y reexplicaciones pendientes desde main."
     },
     {
-      "at": "2026-10-26T21:52:20+01:00",
+      "at": "2026-10-26T22:20:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 cubierto: 10/10 con explicación de menos de 48 h; sin reexplicaciones pendientes."
+      "message": "Verificación final: cola activa 0, rewrite_pending 0 y 5/5 revisiones con persistencia exacta."
     },
     {
-      "at": "2026-10-26T21:52:30+01:00",
+      "at": "2026-10-26T22:20:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 2/2: #BallonDor y Votarte explicadas y verificadas; cola final 0."
+      "message": "TTendencias completada 5/5 y verificada; cola final 0."
     }
   ],
   "partial": false,
@@ -417,56 +506,81 @@
   },
   "remate_selections": [
     {
-      "id": "4c7b0d2b43cb",
-      "name": "#BallonDor",
+      "id": "8cb95a16f386",
+      "name": "Isaac Romero",
       "revision": 0,
-      "selected": "🌶️ La alfombra roja ya sabe que solo uno pisa el último peldaño.",
-      "originality_check": "Específico de la gala y sin colisión evidente con los remates recientes revisados."
+      "selected": "🌶️ Al marcador le bastaron 24 minutos para aprenderse su apellido.",
+      "originality_check": "Sin colisión evidente con los últimos 30 remates revisados."
     },
     {
-      "id": "1ed3d7191750",
-      "name": "Votarte",
+      "id": "8cf7dd0d99b2",
+      "name": "lamine yamal",
       "revision": 0,
-      "selected": "🌶️ La campaña ya discute hasta los verbos.",
-      "originality_check": "Sátira política neutral sobre la palabra viral; no contiene instrucción de voto."
+      "selected": "🌶️ El premio joven ya empieza a parecerle de propiedad.",
+      "originality_check": "Específico del tercer premio joven consecutivo y distinto de los remates recientes del Balón de Oro."
+    },
+    {
+      "id": "f5d3fb9f85cd",
+      "name": "Ertzaintza",
+      "revision": 0,
+      "selected": null,
+      "no_remate_reason": "Disturbios y violencia; se conserva tratamiento factual."
+    },
+    {
+      "id": "be8da289072a",
+      "name": "Alexia",
+      "revision": 0,
+      "selected": "🌶️ Dos Balones ya tienen sitio; el tercero aún busca peana.",
+      "originality_check": "Referencia específica a sus dos Balones previos; sin repetir el mecanismo de los remates recientes de la gala."
+    },
+    {
+      "id": "f2764b694a52",
+      "name": "Votar a Sánchez",
+      "revision": 0,
+      "selected": "🌶️ Antes del 29-N, hasta el voto de Page tiene rueda de prensa.",
+      "originality_check": "Sátira política neutral sobre la atribución del voto; sin instrucción electoral."
     }
   ],
   "final_outcomes": [
     {
-      "id": "a8d9d7f01c06",
-      "name": "Kane",
+      "id": "8cb95a16f386",
+      "name": "Isaac Romero",
       "revision": 0,
       "status": "explained",
       "verified": true,
-      "queue_removed": true,
-      "explained_at": "2026-10-26T20:02:20.000Z"
+      "queue_removed": true
     },
     {
-      "id": "ebc090abd59a",
-      "name": "Mbappé",
+      "id": "8cf7dd0d99b2",
+      "name": "lamine yamal",
       "revision": 0,
       "status": "explained",
       "verified": true,
-      "queue_removed": true,
-      "explained_at": "2026-10-26T20:04:20.000Z"
+      "queue_removed": true
     },
     {
-      "id": "f6eb455e6356",
-      "name": "Bildu",
+      "id": "f5d3fb9f85cd",
+      "name": "Ertzaintza",
       "revision": 0,
       "status": "explained",
       "verified": true,
-      "queue_removed": true,
-      "explained_at": "2026-10-26T20:06:20.000Z"
+      "queue_removed": true
     },
     {
-      "id": "025acbe12169",
-      "name": "Deusto",
+      "id": "be8da289072a",
+      "name": "Alexia",
       "revision": 0,
       "status": "explained",
       "verified": true,
-      "queue_removed": true,
-      "explained_at": "2026-10-26T20:08:20.000Z"
+      "queue_removed": true
+    },
+    {
+      "id": "f2764b694a52",
+      "name": "Votar a Sánchez",
+      "revision": 0,
+      "status": "explained",
+      "verified": true,
+      "queue_removed": true
     }
   ]
 }
