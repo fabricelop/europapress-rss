@@ -62,6 +62,14 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .manual-panel button:disabled{opacity:.55}.manual-panel h2{font-size:20px}
 .manual-panel .feedback{min-height:20px;font-size:13px;color:var(--orange)}
 .listas-badge-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:2px 0 8px;color:var(--sub);font-size:12px}.listas-badge-line strong{color:var(--ink);font-size:14px}.listas-badge-line button{border:1px solid var(--aqua);border-radius:9px;background:#244b53;color:#eafffa;padding:6px 9px;font-size:12px;cursor:pointer}.listas-badge-line button[hidden]{display:none}
+
+/* Keep iPhone TTiTTulares search and the two actions on exactly one row. */
+.toolbar.tti-compact{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:5px;padding:7px;align-items:center}
+.toolbar.tti-compact .search{min-width:0;width:100%;padding:8px;font-size:16px;line-height:1.3}
+.toolbar.tti-compact .refresh,.toolbar.tti-compact .manual-open{white-space:nowrap;font-size:12px;line-height:1.3;padding:9px 7px;border-radius:9px}
+.toolbar.tti-compact .manual-open{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.toolbar.tti-compact .manual-open[hidden]{display:none}
+@media(max-width:370px){.toolbar.tti-compact{gap:4px;padding:6px}.toolbar.tti-compact .refresh,.toolbar.tti-compact .manual-open{font-size:11px;padding:9px 5px}}
 </style></head>
 <body>
 <header><div class="eyebrow">Control editorial móvil</div><h1>TT Actualidad</h1><p>TTiTTulares + TTendencias · Gestión editorial en vivo</p><div class="listas-badge-line" aria-label="Total de elementos en Listas"><strong id="listas-badge-total" aria-live="polite">Listas: —</strong><span id="listas-badge-detail">Contando noticias y tendencias…</span><button type="button" id="badge-enable" hidden>Activar badge del icono</button></div></header>
@@ -192,7 +200,7 @@ async function load(force=false){
 }
 
 function setApp(app){
- state.app=app;state.tab='listas';state.q='';
+ state.app=app;state.tab=app==='tr'?'top':'listas';state.q='';
  $('search').value='';$('tab-tti').setAttribute('aria-selected',String(app==='tti'));$('tab-tr').setAttribute('aria-selected',String(app==='tr'));
  history.replaceState(null,'','#'+(app==='tti'?'ttittulares':'ttendencias'));
  try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
@@ -263,7 +271,7 @@ $('badge-enable').addEventListener('click',async()=>{
  }catch{showToast('No se pudo activar el badge; revisa Ajustes del iPhone')}
 });
 
-function tabs(){return state.app==='tti'?[]:[['listas','Listas'],['elaboracion','En elaboración'],['top','Top 30'],['historico','Histórico']]}
+function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['listas','Listas'],['elaboracion','En elaboración']]}
 function ttiListasRows(data){
  const statuses=new Map((data.decisions?.items||[]).map(x=>[String(x.event_id),String(x.status||'').toLowerCase()]));
  return (data.prepared?.items||[])
@@ -1065,9 +1073,12 @@ function rowCard(x,i){
  return out
 }
 function render(){
- $('manual-open').hidden=state.app!=='tti';
+ const isNews=state.app==='tti';
+ $('manual-open').hidden=!isNews;
+ document.querySelector('.toolbar').classList.toggle('tti-compact',isNews);
+ $('search').placeholder=isNews?'Buscar noticia…':'Buscar tendencia…';
  const tabsList=tabs();
- if(state.app==='tr'&&!tabsList.some(t=>t[0]===state.tab))state.tab='listas';
+ if(state.app==='tr'&&!tabsList.some(t=>t[0]===state.tab))state.tab='top';
  $('chips').style.display=state.app==='tti'?'none':'flex';
  $('chips').replaceChildren(...tabsList.map(([key,name])=>{
   const b=document.createElement('button');b.type='button';
