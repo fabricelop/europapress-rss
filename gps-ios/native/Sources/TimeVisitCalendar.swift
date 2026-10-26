@@ -216,13 +216,14 @@ struct TimeVisitCalendar: View {
     }
 }
 
-private struct TimeCalendarVisitRow:View {
+struct TimeCalendarVisitRow:View {
     @ObservedObject var model:TimeModel
     let visit:TimeVisit
     let start:Date
     let end:Date
     let seconds:TimeInterval
     let timeZone:TimeZone
+    var onEdited: (() -> Void)? = nil
     @State private var isExpanded=false
     @State private var breakDate:Date=Date()
     @State private var showSplitEditor=false
@@ -316,6 +317,7 @@ private struct TimeCalendarVisitRow:View {
                             Button("Quitar separación anterior") {
                                 model.removeSplit(at:start)
                                 showSplitEditor=false
+                                onEdited?()
                             }
                         }
                     }
@@ -330,6 +332,7 @@ private struct TimeCalendarVisitRow:View {
                         Button("Guardar") {
                             if breakDate>start && breakDate<end {
                                 model.splitEpisode(at:breakDate)
+                                onEdited?()
                             }
                             showSplitEditor=false
                         }
