@@ -35,6 +35,12 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
   path+': explained rows require red styling');
  assert(html.includes("state.tab==='top'||!isTemporarilyRemoved(x)"),
   path+': pending editorial actions must never reduce Top 30 ranking');
+ assert(html.includes("explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:''"),
+  path+': show a valid explanation date for every explained Top 30 item, not just Listas');
+ assert(html.includes("'Exp. '+stamp(x.explained_at)")&&html.includes('class="top30-date"'),
+  path+': the collapsed bar must display the explanation day, month and time');
+ assert(html.includes('.top30-side{display:flex;flex-direction:column'),
+  path+': badge and last explanation date must remain on the right');
 
  const trending=pick('function trendRows(){','function dataRows(){');
  const state={app:'tr',tab:'top',q:'',data:{
