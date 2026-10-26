@@ -4,23 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "a4f0e8ff677a"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T14:31:19+01:00",
-  "last_completed_at": "2026-10-26T14:34:20+01:00",
-  "updated_at": "2026-10-26T14:34:20+01:00",
+  "last_started_at": "2026-10-26T14:45:00+01:00",
+  "last_completed_at": "2026-10-26T14:46:00+01:00",
+  "updated_at": "2026-10-26T14:46:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793020802946-manual",
+    "trigger_run_id": "tr-20261026T144500+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,30 +26,30 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793020802946-manual",
+    "run_id": "tr-20261026T144500+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T14:31:19+01:00",
-    "updated_at": "2026-10-26T14:34:20+01:00",
-    "finished_at": "2026-10-26T14:34:20+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-26T14:45:00+01:00",
+    "updated_at": "2026-10-26T14:46:00+01:00",
+    "finished_at": "2026-10-26T14:46:00+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 0,
       "ready": 0,
-      "explained": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "explained": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -59,11 +57,11 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 8,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
@@ -71,147 +69,47 @@
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: HALA MADRID r0 explicada y verificada; cola 0 y reexplicaciones 0. Reparación visual solicitada por el flujo independiente.",
+    "message": "TTendencias completada 0/0: no había preparing/update/problematic ni rewrite_pending; cola final 0. Reparación visual independiente solicitada para 8 fichas recientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T14:31:19+01:00",
+        "at": "2026-10-26T14:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: 1 revisión activa; preparando revalidación e investigación."
+        "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
       },
       {
-        "at": "2026-10-26T14:31:30+01:00",
+        "at": "2026-10-26T14:45:20+01:00",
         "phase": "verifying",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Releyendo estado autoritativo de HALA MADRID"
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-26T14:31:40+01:00",
-        "phase": "investigating",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-26T14:31:50+01:00",
-        "phase": "investigating",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Contrastando fuente 1/2 · crónica oficial del Real Madrid"
-      },
-      {
-        "at": "2026-10-26T14:32:00+01:00",
-        "phase": "investigating",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Contrastando fuente 2/2 · Reuters"
-      },
-      {
-        "at": "2026-10-26T14:32:10+01:00",
-        "phase": "investigating",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Hecho esencial verificado · 1-2 en el Camp Nou, doblete de Mbappé y gol 100"
-      },
-      {
-        "at": "2026-10-26T14:32:20+01:00",
-        "phase": "drafting",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-26T14:32:30+01:00",
-        "phase": "drafting",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Comprobando límite de X · 266 caracteres"
-      },
-      {
-        "at": "2026-10-26T14:32:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-26T14:32:50+01:00",
-        "phase": "remate_selection",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates"
-      },
-      {
-        "at": "2026-10-26T14:33:00+01:00",
-        "phase": "remate_selection",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Remate seleccionado · mecanismo específico del gol 100, sin repetir cierres recientes"
-      },
-      {
-        "at": "2026-10-26T14:33:10+01:00",
-        "phase": "persisting",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-26T14:33:20+01:00",
-        "phase": "persisting",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Actualizando requests"
-      },
-      {
-        "at": "2026-10-26T14:33:30+01:00",
-        "phase": "persisting",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Retirando revisión de la cola"
-      },
-      {
-        "at": "2026-10-26T14:33:40+01:00",
+        "at": "2026-10-26T14:45:30+01:00",
         "phase": "verifying",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Releyendo main"
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Pendientes · 8 tarjetas recientes; reparación visual solicitada por el flujo independiente."
       },
       {
-        "at": "2026-10-26T14:33:50+01:00",
-        "phase": "verifying",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Verificando id+revision y texto persistido"
-      },
-      {
-        "at": "2026-10-26T14:34:00+01:00",
-        "phase": "verifying",
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "message": "Tendencia cerrada y verificada"
-      },
-      {
-        "at": "2026-10-26T14:34:10+01:00",
+        "at": "2026-10-26T14:45:50+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola y reexplicaciones antes del cierre"
+        "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones 0 antes del cierre."
       },
       {
-        "at": "2026-10-26T14:34:20+01:00",
+        "at": "2026-10-26T14:46:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: HALA MADRID r0 explicada y verificada; cola 0 y reexplicaciones 0. Reparación visual solicitada por el flujo independiente."
+        "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 8 fichas recientes."
       }
     ],
-    "processed_ids": [
-      "a4f0e8ff677a"
-    ],
+    "processed_ids": [],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -222,40 +120,23 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [
-      {
-        "trend_id": "a4f0e8ff677a",
-        "title": "HALA MADRID",
-        "revision": 0,
-        "selected": "🌶️ El gol 100 llegó por duplicado y dejó el Camp Nou contando hasta dos.",
-        "originality_checked": true,
-        "recent_compared": 30
-      }
-    ],
-    "final_outcomes": [
-      {
-        "id": "a4f0e8ff677a",
-        "name": "HALA MADRID",
-        "revision": 0,
-        "status": "explained",
-        "verified": true
-      }
-    ]
+    "remate_selections": [],
+    "final_outcomes": []
   },
-  "run_id": "tr-1793020802946-manual",
+  "run_id": "tr-20261026T144500+0100-chat",
   "summary": {
-    "attempted": 1,
+    "attempted": 0,
     "ready": 0,
-    "explained": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "explained": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -263,11 +144,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
+    "pending_cards_reviewed": 8,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
@@ -277,150 +158,52 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T14:31:19+01:00",
+      "at": "2026-10-26T14:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: 1 revisión activa; preparando revalidación e investigación."
+      "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
     },
     {
-      "at": "2026-10-26T14:31:30+01:00",
+      "at": "2026-10-26T14:45:20+01:00",
       "phase": "verifying",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Releyendo estado autoritativo de HALA MADRID"
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-26T14:31:40+01:00",
-      "phase": "investigating",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-26T14:31:50+01:00",
-      "phase": "investigating",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Contrastando fuente 1/2 · crónica oficial del Real Madrid"
-    },
-    {
-      "at": "2026-10-26T14:32:00+01:00",
-      "phase": "investigating",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Contrastando fuente 2/2 · Reuters"
-    },
-    {
-      "at": "2026-10-26T14:32:10+01:00",
-      "phase": "investigating",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Hecho esencial verificado · 1-2 en el Camp Nou, doblete de Mbappé y gol 100"
-    },
-    {
-      "at": "2026-10-26T14:32:20+01:00",
-      "phase": "drafting",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-26T14:32:30+01:00",
-      "phase": "drafting",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Comprobando límite de X · 266 caracteres"
-    },
-    {
-      "at": "2026-10-26T14:32:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Generando candidatos de remate"
-    },
-    {
-      "at": "2026-10-26T14:32:50+01:00",
-      "phase": "remate_selection",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Evaluando candidatos con ratings y últimos 30 remates"
-    },
-    {
-      "at": "2026-10-26T14:33:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Remate seleccionado · mecanismo específico del gol 100, sin repetir cierres recientes"
-    },
-    {
-      "at": "2026-10-26T14:33:10+01:00",
-      "phase": "persisting",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-26T14:33:20+01:00",
-      "phase": "persisting",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Actualizando requests"
-    },
-    {
-      "at": "2026-10-26T14:33:30+01:00",
-      "phase": "persisting",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Retirando revisión de la cola"
-    },
-    {
-      "at": "2026-10-26T14:33:40+01:00",
+      "at": "2026-10-26T14:45:30+01:00",
       "phase": "verifying",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Releyendo main"
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Pendientes · 8 tarjetas recientes; reparación visual solicitada por el flujo independiente."
     },
     {
-      "at": "2026-10-26T14:33:50+01:00",
-      "phase": "verifying",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Verificando id+revision y texto persistido"
-    },
-    {
-      "at": "2026-10-26T14:34:00+01:00",
-      "phase": "verifying",
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "message": "Tendencia cerrada y verificada"
-    },
-    {
-      "at": "2026-10-26T14:34:10+01:00",
+      "at": "2026-10-26T14:45:50+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main: cola y reexplicaciones antes del cierre"
+      "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones 0 antes del cierre."
     },
     {
-      "at": "2026-10-26T14:34:20+01:00",
+      "at": "2026-10-26T14:46:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: HALA MADRID r0 explicada y verificada; cola 0 y reexplicaciones 0. Reparación visual solicitada por el flujo independiente."
+      "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 8 fichas recientes."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Radar fresco durante la pasada; no fue necesaria recaptura.",
-    "captured_at": "2026-10-26T14:31:11+01:00"
+    "captured_at": "2026-10-26T14:41:00+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T14:31:11+01:00",
+    "captured_at": "2026-10-26T14:41:00+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T1415-chat",
+  "previous_run_id": "tr-1793020802946-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -428,23 +211,6 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "trend_id": "a4f0e8ff677a",
-      "title": "HALA MADRID",
-      "revision": 0,
-      "selected": "🌶️ El gol 100 llegó por duplicado y dejó el Camp Nou contando hasta dos.",
-      "originality_checked": true,
-      "recent_compared": 30
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "a4f0e8ff677a",
-      "name": "HALA MADRID",
-      "revision": 0,
-      "status": "explained",
-      "verified": true
-    }
-  ]
+  "remate_selections": [],
+  "final_outcomes": []
 }
