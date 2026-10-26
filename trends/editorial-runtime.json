@@ -4,21 +4,25 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+    "manual-6711ee466f89845b1e605905ccef9e7e",
+    "manual-e0208b6025a10ba084db046d1893cfdf"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T17:15:00+01:00",
-  "last_completed_at": "2026-10-26T17:16:30+01:00",
-  "updated_at": "2026-10-26T17:16:30+01:00",
+  "last_started_at": "2026-10-26T16:33:16.705Z",
+  "last_completed_at": "2026-10-26T16:41:45.000Z",
+  "updated_at": "2026-10-26T16:41:45.000Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T171500+0100-chat",
+    "trigger_run_id": "tr-1793032396705-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,150 +30,283 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T171500+0100-chat",
+    "run_id": "tr-1793032396705-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T17:15:00+01:00",
-    "updated_at": "2026-10-26T17:16:30+01:00",
-    "finished_at": "2026-10-26T17:16:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-26T16:33:16.705Z",
+    "updated_at": "2026-10-26T16:41:45.000Z",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "explained": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
-      "discovered_during_run": 0,
+      "initial_compact_queue": 2,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 2,
+      "remates_omitted": 1,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 7,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: cola final 0, sin requests activas ni reexplicaciones; saneamiento visual solicitado para 7 fichas recientes.",
+    "message": "TTendencias completada 3/3: cola final 0, sin requests preparing/update ni reexplicaciones pendientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T17:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
+        "at": "2026-10-26T16:40:05.000Z",
+        "phase": "drafting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Comprobando límite de X: 276 caracteres."
       },
       {
-        "at": "2026-10-26T17:15:30+01:00",
+        "at": "2026-10-26T16:40:10.000Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-26T16:40:12.000Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Evaluando candidatos con ratings y remates recientes para evitar repetir mecanismos futbolísticos."
+      },
+      {
+        "at": "2026-10-26T16:40:13.000Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Remate seleccionado: «París cedió el escenario; el suspense viajó en el equipaje.»"
+      },
+      {
+        "at": "2026-10-26T16:40:20.000Z",
+        "phase": "persisting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-26T16:40:35.000Z",
+        "phase": "persisting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "investigating",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Contrastando fuente 1/2: gala hoy a las 21:00 en el London Palladium."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "investigating",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Contrastando fuente 2/2: Kane, Mbappé y Lamine Yamal figuran entre los favoritos; no hay ganador confirmado."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "investigating",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Hecho esencial verificado."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "drafting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Redactando explicación factual."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "drafting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Comprobando límite de X: 277 caracteres."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Generando candidatos de remate."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Evaluando candidatos con ratings y remates recientes."
+      },
+      {
+        "at": "2026-10-26T16:41:14.292Z",
+        "phase": "remate_selection",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Remate seleccionado: las quinielas llevan horas en prórroga."
+      },
+      {
+        "at": "2026-10-26T16:40:50.000Z",
+        "phase": "persisting",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-26T16:41:39.634Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Barrera JIT: revisión ya explicada externamente; estado reconciliado sin sobrescribir."
       },
       {
-        "at": "2026-10-26T17:16:00+01:00",
+        "at": "2026-10-26T16:41:30.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 7 tarjetas recientes; todas conservan remate y la reparación visual independiente ya fue solicitada."
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Releyendo main."
       },
       {
-        "at": "2026-10-26T17:16:15+01:00",
+        "at": "2026-10-26T16:41:35.000Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Top 10 · las 10 tendencias están cubiertas o cerradas por decisión editorial y ninguna explicación vigente supera 48 h."
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-26T17:16:25+01:00",
+        "at": "2026-10-26T16:41:40.000Z",
+        "phase": "verifying",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-26T16:41:45.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main: cola 0, requests activas 0, problematic 0 y reexplicaciones 0 antes del cierre."
-      },
-      {
-        "at": "2026-10-26T17:16:30+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 0/0: cola final 0, sin requests activas ni reexplicaciones; saneamiento visual solicitado para 7 fichas recientes."
+        "message": "TTendencias completada 3/3: cola final 0, sin requests preparing/update ni reexplicaciones pendientes."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+      "manual-6711ee466f89845b1e605905ccef9e7e",
+      "manual-e0208b6025a10ba084db046d1893cfdf"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "radar_refresh": {
       "status": "observed",
-      "reason": "Radar fresco al inicio; no requiere recaptura.",
-      "captured_at": "2026-10-26T17:10:54+01:00"
+      "reason": "Radar fresco al cierre; no requiere recaptura.",
+      "captured_at": "2026-10-26T17:42:07+01:00"
     },
     "radar": {
-      "captured_at": "2026-10-26T17:10:54+01:00",
+      "captured_at": "2026-10-26T17:42:07+01:00",
       "queue_count": 0
     },
-    "previous_run_id": "tr-20261026T164500+0100-chat",
+    "previous_run_id": "tr-1793032077306-manual",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "final_outcomes": []
+    "remate_selections": [
+      {
+        "trend_id": "manual-6711ee466f89845b1e605905ccef9e7e",
+        "title": "Pucherazo",
+        "selected": "🌶️ El censo ha acabado haciendo más recursos que campaña.",
+        "reason": "Remate final persistido, centrado en el trámite y neutral respecto a las acusaciones."
+      },
+      {
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "selected": "🌶️ París cedió el escenario; el suspense viajó en el equipaje.",
+        "reason": "Específico del traslado de la gala a Londres y distinto de remates deportivos recientes."
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+        "status": "incident"
+      },
+      {
+        "id": "manual-6711ee466f89845b1e605905ccef9e7e",
+        "name": "Pucherazo",
+        "revision": 0,
+        "status": "explained",
+        "explained_at": "2026-10-26T16:38:19.543Z"
+      },
+      {
+        "id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "name": "Balón de Oro",
+        "revision": 0,
+        "status": "explained",
+        "explained_at": "2026-10-26T16:40:20.000Z"
+      }
+    ],
+    "finished_at": "2026-10-26T16:41:45.000Z"
   },
-  "run_id": "tr-20261026T171500+0100-chat",
+  "run_id": "tr-1793032396705-manual",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "ready": 0,
-    "explained": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "explained": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
-    "discovered_during_run": 0,
+    "initial_compact_queue": 2,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 2,
+    "remates_omitted": 1,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 7,
+    "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "top10_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
