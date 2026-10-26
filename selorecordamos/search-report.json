@@ -1,11 +1,31 @@
 {
-  "generated_at": "2026-10-26T09:05:22.451Z",
-  "fetched_at": "2026-10-26T09:05:09.048Z",
+  "generated_at": "2026-10-26T10:05:34.831Z",
+  "fetched_at": "2026-10-26T10:05:16.055Z",
   "mode": "incremental",
   "query": "\"recordadme\" OR \"que alguien me recuerde\" OR \"alguien que me recuerde\" OR \"alguien me recuerde\" OR \"que me recuerden\" OR \"@SeLoRecordamos\"",
-  "status": "no_new_candidates",
-  "note": "Sin candidatos nuevos. Extraídos: 23; ya vistos: 23; descartados: 0.",
-  "extracted": 23,
-  "already_seen": 23,
-  "new_found": []
+  "status": "ok",
+  "note": "1 candidatos nuevos de 22 tuits extraídos.",
+  "extracted": 22,
+  "already_seen": 20,
+  "new_found": [
+    {
+      "id": "2114651593316401307",
+      "user": "@ANGELlKAL",
+      "text": "recordadme que nunca más le pida consejos a sara.",
+      "datetime": "2026-10-26T09:33:22.000Z",
+      "url": "https://x.com/ANGELlKAL/status/2114651593316401307",
+      "first_seen_at": "2026-10-26T10:05:16.055Z",
+      "status": "pending",
+      "filter_status": "candidate"
+    },
+    {
+      "id": "2114651488991453603",
+      "user": "@xime_mpx",
+      "text": "Prefiero que me recuerden a que me vean",
+      "datetime": "2026-10-26T09:32:57.000Z",
+      "url": "https://x.com/xime_mpx/status/2114651488991453603",
+      "reason": "excluded_phrase_me_recuerden_a",
+      "filter_status": "rejected"
+    }
+  ]
 }
