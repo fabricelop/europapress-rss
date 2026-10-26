@@ -133,6 +133,18 @@ for event in events_doc.get("events", []):
         "last_seen": event.get("last_seen"),
     })
 
+# Compare two actual radar executions, not iPhone app refreshes.
+previous_status = load(TT / "status.json", {})
+current_radar_at = events_doc.get("last_run")
+if previous_status.get("radar_at") and previous_status.get("radar_at") != current_radar_at:
+    previous_one = previous_status.get("one_source_count")
+    previous_two = previous_status.get("two_source_count")
+    previous_radar_at = previous_status.get("radar_at")
+else:
+    previous_one = previous_status.get("previous_one_source_count")
+    previous_two = previous_status.get("previous_two_source_count")
+    previous_radar_at = previous_status.get("previous_radar_at")
+
 three_source_items.sort(
     key=lambda x: (
         str(x.get("last_seen") or ""),
@@ -155,6 +167,11 @@ out = {
     "trend_candidates":[],
     "one_source_count":one_source_count,
     "two_source_count":two_source_count,
+    "previous_one_source_count":previous_one,
+    "previous_two_source_count":previous_two,
+    "previous_radar_at":previous_radar_at,
+    "one_source_delta":one_source_count - previous_one if isinstance(previous_one, int) else None,
+    "two_source_delta":two_source_count - previous_two if isinstance(previous_two, int) else None,
     "three_source_count":len(three_source_items),
     "three_source_items":three_source_items,
     "healthy_source_count":events_doc.get("healthy_source_count"),
