@@ -116,6 +116,7 @@ final class EditorialStore: ObservableObject {
     private var canonicalSnapshot = EditorialSnapshot()
     private var refreshRequested = false
     private var currentVisitSnapshot: [String: String]?
+    private var draftNews = [String: NewsItem]()
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
@@ -147,14 +148,16 @@ final class EditorialStore: ObservableObject {
             }
         }
         var downloaded: [String: Data] = [:]
+        let freshNonce = String(Int(Date().timeIntervalSince1970 * 1000))
         await withTaskGroup(of: (String, Data?).self) { group in
             for path in paths {
                 group.addTask {
-                    guard let url = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path) else {
+                    guard let url = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path + "?check=" + freshNonce) else {
                         return (path, nil)
                     }
                     var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 16)
                     request.setValue("application/json", forHTTPHeaderField: "Accept")
+                    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
                     do {
                         let (data, response) = try await URLSession.shared.data(for: request)
                         guard (response as? HTTPURLResponse)?.statusCode == 200,
@@ -286,6 +289,7 @@ final class EditorialStore: ObservableObject {
                                      radarAt: Self.when(status, ["radar_at"]))
         if !partial && downloaded.count == paths.count {
             retireSyncedActions()
+            retireSyncedDrafts()
         }
         applyOptimisticOverlay()
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
@@ -293,6 +297,49 @@ final class EditorialStore: ObservableObject {
             await publishLiveCounts(news: snapshot.news.count,
                                     trends: snapshot.trendListas.count, checkedAt: now,
                                     partial: partial || !activeEditorialActions.isEmpty)
+        }
+    }
+
+    // +Noticia appears immediately in En elaboración. The real queue is still
+    // committed asynchronously by GitHub Actions, and verified independently.
+    func beginManualNews(requestID: String, title: String, url: String) {
+        let eventID = "manual-" + requestID
+        let placeholder = NewsItem(id: eventID, title: title.isEmpty ? url : title,
+                                   text: "Solicitud editorial pendiente de confirmación",
+                                   publishedAt: Date(), revision: 1,
+                                   sourceURL: URL(string: url), imageURL: nil,
+                                   factual: "", closer: "", sources: 0,
+                                   status: "EN ELABORACIÓN")
+        draftNews[requestID] = placeholder
+        actionMessage = "Noticia añadida provisionalmente a En elaboración · guardando en GitHub…"
+        actionIsError = false
+        applyOptimisticOverlay()
+    }
+
+    func completeManualNews(requestID: String, result: GitHubEditor.WriteResult,
+                            detail: String) {
+        switch result {
+        case .verified:
+            actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
+            actionIsError = false
+            Task { await self.refresh() }
+        case .pending:
+            actionMessage = "GitHub aún está procesando la noticia. Se mantiene en En elaboración."
+            actionIsError = false
+            Task { await self.refresh() }
+        case .failed:
+            draftNews.removeValue(forKey: requestID)
+            actionMessage = "No se pudo añadir la noticia: " + detail
+            actionIsError = true
+        }
+        applyOptimisticOverlay()
+    }
+
+    private func retireSyncedDrafts() {
+        let authoritativeIDs = Set(canonicalSnapshot.newsElaboracion.map(\.id) +
+                                   canonicalSnapshot.news.map(\.id))
+        for (id, draft) in draftNews where authoritativeIDs.contains(draft.id) {
+            draftNews.removeValue(forKey: id)
         }
     }
 
@@ -419,6 +466,11 @@ final class EditorialStore: ObservableObject {
 
     private func applyOptimisticOverlay() {
         var updated = canonicalSnapshot
+        for draft in draftNews.values where !updated.newsElaboracion.contains(where: {
+            $0.id == draft.id
+        }) {
+            updated.newsElaboracion.insert(draft, at: 0)
+        }
         for action in activeEditorialActions.values {
             let sameNews: (NewsItem) -> Bool = {
                 $0.id == action.id && $0.revision == action.revision
