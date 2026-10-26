@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T03:15:00+01:00",
-  "last_completed_at": "2026-10-26T03:16:30+01:00",
-  "updated_at": "2026-10-26T03:16:30+01:00",
+  "last_started_at": "2026-10-26T03:45:00+01:00",
+  "last_completed_at": "2026-10-26T03:46:30+01:00",
+  "updated_at": "2026-10-26T03:46:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T0315-manual",
+    "trigger_run_id": "tr-20261026T0345-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0315-manual",
+    "run_id": "tr-20261026T0345-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T03:15:00+01:00",
-    "updated_at": "2026-10-26T03:16:30+01:00",
-    "finished_at": "2026-10-26T03:16:30+01:00",
+    "started_at": "2026-10-26T03:45:00+01:00",
+    "updated_at": "2026-10-26T03:46:30+01:00",
+    "finished_at": "2026-10-26T03:46:30+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -74,35 +74,35 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T03:15:00+01:00",
+        "at": "2026-10-26T03:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola textual vacía; verificando Top 10, reexplicaciones y Pendientes recientes."
+        "message": "Inicio de pasada: cola textual vacía; comprobando Top 10, reexplicaciones y Pendientes recientes."
       },
       {
-        "at": "2026-10-26T03:15:30+01:00",
+        "at": "2026-10-26T03:45:25+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Top 10 revisado · 10/10 con explicación reciente; ninguna revisión supera 48 h ni tiene reexplicación pendiente."
       },
       {
-        "at": "2026-10-26T03:15:45+01:00",
+        "at": "2026-10-26T03:45:40+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 17 tarjetas recientes; todas tienen remate y el saneamiento visual fue solicitado al inicio."
+        "message": "Revisando Pendientes · 17 tarjetas recientes; todas tienen remate y el saneamiento visual fue solicitado."
       },
       {
-        "at": "2026-10-26T03:16:10+01:00",
+        "at": "2026-10-26T03:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · cola 0, requests activos 0, problematic 0 y rewrite_pending 0."
+        "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0; Top 10 y Pendientes recientes verificados."
       },
       {
-        "at": "2026-10-26T03:16:30+01:00",
+        "at": "2026-10-26T03:46:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -123,7 +123,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261026T0315-manual",
+  "run_id": "tr-20261026T0345-manual",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -158,35 +158,35 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T03:15:00+01:00",
+      "at": "2026-10-26T03:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola textual vacía; verificando Top 10, reexplicaciones y Pendientes recientes."
+      "message": "Inicio de pasada: cola textual vacía; comprobando Top 10, reexplicaciones y Pendientes recientes."
     },
     {
-      "at": "2026-10-26T03:15:30+01:00",
+      "at": "2026-10-26T03:45:25+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Top 10 revisado · 10/10 con explicación reciente; ninguna revisión supera 48 h ni tiene reexplicación pendiente."
     },
     {
-      "at": "2026-10-26T03:15:45+01:00",
+      "at": "2026-10-26T03:45:40+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 17 tarjetas recientes; todas tienen remate y el saneamiento visual fue solicitado al inicio."
+      "message": "Revisando Pendientes · 17 tarjetas recientes; todas tienen remate y el saneamiento visual fue solicitado."
     },
     {
-      "at": "2026-10-26T03:16:10+01:00",
+      "at": "2026-10-26T03:46:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · cola 0, requests activos 0, problematic 0 y rewrite_pending 0."
+      "message": "Releyendo main · cola 0, requests activos 0 y rewrite_pending 0; Top 10 y Pendientes recientes verificados."
     },
     {
-      "at": "2026-10-26T03:16:30+01:00",
+      "at": "2026-10-26T03:46:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -200,10 +200,10 @@
     "captured_at": "2026-10-26T00:49:07+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T03:10:54+01:00",
+    "captured_at": "2026-10-26T03:40:50+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0245-manual",
+  "previous_run_id": "tr-20261026T0315-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
