@@ -1,0 +1,63 @@
+name: TTActualidad iOS - PlumeImpactor IPA
+
+on:
+  push:
+    paths:
+      - "ios/ttactualidad/**"
+      - ".github/workflows/ttactualidad-ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttactualidad-ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Validate Live Activity contract and GitHub data sources
+        run: python3 ios/ttactualidad/tests/preflight.py
+      - name: Generate Xcode project
+        working-directory: ios/ttactualidad
+        run: xcodegen generate
+      - name: Build native iPhone app and Live Activity
+        working-directory: ios/ttactualidad
+        run: |
+          set -o pipefail
+          xcodebuild -project TTActualidad.xcodeproj \
+            -scheme TTActualidad \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath .build \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tee /tmp/ttactualidad-ios-build.log
+      - name: Package unsigned IPA (sign with PlumeImpactor on Windows)
+        working-directory: ios/ttactualidad
+        run: |
+          set -euo pipefail
+          APP=".build/Build/Products/Release-iphoneos/TTActualidad.app"
+          test -d "$APP"
+          test -d "$APP/PlugIns/TTActualidadLive.appex"
+          /usr/libexec/PlistBuddy -c "Print :NSSupportsLiveActivities" "$APP/Info.plist" | grep -qi true
+          mkdir -p dist/Payload
+          cp -R "$APP" dist/Payload/
+          cd dist
+          zip -qr TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-0.1.0-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.1.0-PlumeImpactor-unsigned.ipa
+          retention-days: 30
+          if-no-files-found: error
