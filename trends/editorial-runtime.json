@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T19:45:00+01:00",
-  "last_completed_at": "2026-10-26T19:45:50+01:00",
-  "updated_at": "2026-10-26T19:45:50+01:00",
+  "last_started_at": "2026-10-26T20:15:00+01:00",
+  "last_completed_at": "2026-10-26T20:17:30+01:00",
+  "updated_at": "2026-10-26T20:17:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -23,13 +23,16 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-20261026T194500+0100-chat",
+    "version": 1,
+    "canonical": true,
+    "project": "TTendencias",
+    "run_id": "tr-20261026T201500+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T19:45:00+01:00",
-    "updated_at": "2026-10-26T19:45:50+01:00",
-    "finished_at": "2026-10-26T19:45:50+01:00",
+    "started_at": "2026-10-26T20:15:00+01:00",
+    "updated_at": "2026-10-26T20:17:30+01:00",
+    "finished_at": "2026-10-26T20:17:30+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -58,8 +61,8 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
-      "stale_top10_reviewed": 0,
+      "pending_cards_reviewed": 0,
+      "stale_top10_reviewed": 10,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
       "top10_reviewed": 10,
@@ -72,53 +75,39 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T19:45:00+01:00",
+        "at": "2026-10-26T20:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: cola editorial 0; activando saneamiento visual de Pendientes."
+        "message": "Inicio de pasada: verificando cola, Top 10 y reexplicaciones pendientes."
       },
       {
-        "at": "2026-10-26T19:45:20+01:00",
+        "at": "2026-10-26T20:15:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 revisado: 10/10 con explicación de menos de 48 h; ninguna reexplicación requerida."
+        "message": "Cola autoritativa 0; requests activas 0; rewrite_pending 0."
       },
       {
-        "at": "2026-10-26T19:45:24+01:00",
+        "at": "2026-10-26T20:15:35+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Comprobadas solicitudes activas y rewrite_pending: 0 pendientes."
+        "message": "Top 10 revisado: 10/10 ya explicadas dentro de 48 h; comprobando estado final de main."
       },
       {
-        "at": "2026-10-26T19:45:28+01:00",
+        "at": "2026-10-26T20:17:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 1 tarjeta reciente; saneamiento visual solicitado al inicio."
+        "message": "Radar actualizado a 20:17; cola final 0 y ninguna explicación Top 10 supera 48 h."
       },
       {
-        "at": "2026-10-26T19:45:32+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Remates recientes sin cerrar revisados: 0 dentro de las últimas 24 h."
-      },
-      {
-        "at": "2026-10-26T19:45:35+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main antes del cierre: cola, requests, explicadas y radar."
-      },
-      {
-        "at": "2026-10-26T19:45:50+01:00",
+        "at": "2026-10-26T20:17:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0: cola final 0, Top 10 vigente y sin reexplicaciones pendientes."
+        "message": "TTendencias completada 0/0: cola final 0, sin reexplicaciones pendientes."
       }
     ],
     "processed_ids": [],
@@ -128,13 +117,13 @@
     "radar_refresh": {
       "status": "observed",
       "reason": "Radar fresco durante la pasada; no requiere recaptura.",
-      "captured_at": "2026-10-26T19:40:55+01:00"
+      "captured_at": "2026-10-26T20:17:01+01:00"
     },
     "radar": {
-      "captured_at": "2026-10-26T19:40:55+01:00",
+      "captured_at": "2026-10-26T20:17:01+01:00",
       "queue_count": 0
     },
-    "previous_run_id": "tr-20261026T191500+0100-chat",
+    "previous_run_id": "tr-20261026T194500+0100-chat",
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -144,7 +133,7 @@
     "remate_selections": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261026T194500+0100-chat",
+  "run_id": "tr-20261026T201500+0100-chat",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -169,8 +158,8 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
-    "stale_top10_reviewed": 0,
+    "pending_cards_reviewed": 0,
+    "stale_top10_reviewed": 10,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
     "top10_reviewed": 10,
@@ -180,66 +169,52 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T19:45:00+01:00",
+      "at": "2026-10-26T20:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: cola editorial 0; activando saneamiento visual de Pendientes."
+      "message": "Inicio de pasada: verificando cola, Top 10 y reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-26T19:45:20+01:00",
+      "at": "2026-10-26T20:15:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 revisado: 10/10 con explicación de menos de 48 h; ninguna reexplicación requerida."
+      "message": "Cola autoritativa 0; requests activas 0; rewrite_pending 0."
     },
     {
-      "at": "2026-10-26T19:45:24+01:00",
+      "at": "2026-10-26T20:15:35+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Comprobadas solicitudes activas y rewrite_pending: 0 pendientes."
+      "message": "Top 10 revisado: 10/10 ya explicadas dentro de 48 h; comprobando estado final de main."
     },
     {
-      "at": "2026-10-26T19:45:28+01:00",
+      "at": "2026-10-26T20:17:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 1 tarjeta reciente; saneamiento visual solicitado al inicio."
+      "message": "Radar actualizado a 20:17; cola final 0 y ninguna explicación Top 10 supera 48 h."
     },
     {
-      "at": "2026-10-26T19:45:32+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Remates recientes sin cerrar revisados: 0 dentro de las últimas 24 h."
-    },
-    {
-      "at": "2026-10-26T19:45:35+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main antes del cierre: cola, requests, explicadas y radar."
-    },
-    {
-      "at": "2026-10-26T19:45:50+01:00",
+      "at": "2026-10-26T20:17:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0: cola final 0, Top 10 vigente y sin reexplicaciones pendientes."
+      "message": "TTendencias completada 0/0: cola final 0, sin reexplicaciones pendientes."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Radar fresco durante la pasada; no requiere recaptura.",
-    "captured_at": "2026-10-26T19:40:55+01:00"
+    "captured_at": "2026-10-26T20:17:01+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T19:40:55+01:00",
+    "captured_at": "2026-10-26T20:17:01+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T191500+0100-chat",
+  "previous_run_id": "tr-20261026T194500+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
