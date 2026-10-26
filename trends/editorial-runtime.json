@@ -10,15 +10,15 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T14:45:00+01:00",
-  "last_completed_at": "2026-10-26T14:46:00+01:00",
-  "updated_at": "2026-10-26T14:46:00+01:00",
+  "last_started_at": "2026-10-26T15:15:00+01:00",
+  "last_completed_at": "2026-10-26T15:16:00+01:00",
+  "updated_at": "2026-10-26T15:16:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-20261026T144500+0100-chat",
+    "trigger_run_id": "tr-20261026T151500+0100-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T144500+0100-chat",
+    "run_id": "tr-20261026T151500+0100-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T14:45:00+01:00",
-    "updated_at": "2026-10-26T14:46:00+01:00",
-    "finished_at": "2026-10-26T14:46:00+01:00",
+    "started_at": "2026-10-26T15:15:00+01:00",
+    "updated_at": "2026-10-26T15:16:00+01:00",
+    "finished_at": "2026-10-26T15:16:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -61,52 +61,59 @@
       "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 8,
+      "pending_cards_reviewed": 6,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 0,
+      "top10_reviewed": 10,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0: no había preparing/update/problematic ni rewrite_pending; cola final 0. Reparación visual independiente solicitada para 8 fichas recientes.",
+    "message": "TTendencias completada 0/0: no había preparing/update/problematic ni rewrite_pending; cola final 0. Reparación visual independiente solicitada para 6 fichas recientes.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T14:45:00+01:00",
+        "at": "2026-10-26T15:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
       },
       {
-        "at": "2026-10-26T14:45:20+01:00",
+        "at": "2026-10-26T15:15:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
       },
       {
-        "at": "2026-10-26T14:45:30+01:00",
+        "at": "2026-10-26T15:15:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 8 tarjetas recientes; reparación visual solicitada por el flujo independiente."
+        "message": "Revisando Pendientes · 6 tarjetas recientes; todas con remate y reparación visual solicitada por el flujo independiente."
       },
       {
-        "at": "2026-10-26T14:45:50+01:00",
+        "at": "2026-10-26T15:15:45+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Revisando Top 10 · ninguna explicación vigente supera 48 h y no hay trabajo activo en la cola."
+      },
+      {
+        "at": "2026-10-26T15:15:55+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
         "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones 0 antes del cierre."
       },
       {
-        "at": "2026-10-26T14:46:00+01:00",
+        "at": "2026-10-26T15:16:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 8 fichas recientes."
+        "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 6 fichas recientes."
       }
     ],
     "processed_ids": [],
@@ -123,7 +130,7 @@
     "remate_selections": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261026T144500+0100-chat",
+  "run_id": "tr-20261026T151500+0100-chat",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -148,62 +155,69 @@
     "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 8,
+    "pending_cards_reviewed": 6,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 0,
+    "top10_reviewed": 10,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T14:45:00+01:00",
+      "at": "2026-10-26T15:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada: cola autoritativa 0; revisando reexplicaciones y saneamiento reciente."
     },
     {
-      "at": "2026-10-26T14:45:20+01:00",
+      "at": "2026-10-26T15:15:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0."
     },
     {
-      "at": "2026-10-26T14:45:30+01:00",
+      "at": "2026-10-26T15:15:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 8 tarjetas recientes; reparación visual solicitada por el flujo independiente."
+      "message": "Revisando Pendientes · 6 tarjetas recientes; todas con remate y reparación visual solicitada por el flujo independiente."
     },
     {
-      "at": "2026-10-26T14:45:50+01:00",
+      "at": "2026-10-26T15:15:45+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Revisando Top 10 · ninguna explicación vigente supera 48 h y no hay trabajo activo en la cola."
+    },
+    {
+      "at": "2026-10-26T15:15:55+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
       "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones 0 antes del cierre."
     },
     {
-      "at": "2026-10-26T14:46:00+01:00",
+      "at": "2026-10-26T15:16:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 8 fichas recientes."
+      "message": "TTendencias completada 0/0: no había trabajo editorial activo; saneamiento visual solicitado para 6 fichas recientes."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
     "reason": "Radar fresco durante la pasada; no fue necesaria recaptura.",
-    "captured_at": "2026-10-26T14:41:00+01:00"
+    "captured_at": "2026-10-26T15:12:02+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T14:41:00+01:00",
+    "captured_at": "2026-10-26T15:12:02+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1793020802946-manual",
+  "previous_run_id": "tr-20261026T144500+0100-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
