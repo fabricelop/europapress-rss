@@ -5,24 +5,22 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "db08048a498f",
-    "939c0b5fe525",
-    "18d74eabde7b"
+    "7730c670ef9c"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T23:36:16.116+01:00",
-  "last_completed_at": "2026-10-26T23:50:30+01:00",
-  "updated_at": "2026-10-26T23:50:30+01:00",
+  "last_started_at": "2026-10-26T23:53:44+01:00",
+  "last_completed_at": "2026-10-26T23:57:53+01:00",
+  "updated_at": "2026-10-26T23:57:53+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793054176116-manual",
+    "trigger_run_id": "tr-1793055124877-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -30,208 +28,191 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793054176116-manual",
+    "run_id": "tr-1793055124877-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T23:36:16.116+01:00",
-    "updated_at": "2026-10-26T23:50:30+01:00",
-    "finished_at": "2026-10-26T23:50:30+01:00",
-    "current": 4,
-    "total": 4,
+    "started_at": "2026-10-26T23:53:44+01:00",
+    "updated_at": "2026-10-26T23:57:53+01:00",
+    "finished_at": "2026-10-26T23:57:53+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada · 4/4 resueltas; 3 cerradas en esta pasada y Cata Coll cerrada concurrentemente. Cola final 0; rewrite_pending 0; 1 conflicto SHA resuelto.",
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-10-26T23:46:00+01:00",
-        "phase": "persisting",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "reason": "Conflicto SHA al guardar Explicadas; resuelto tras releer main y reintentar sobre el SHA vigente."
-      }
-    ],
+    "message": "TTendencias completada · 1/1 cerrada (Kane r0). Cola final 0; requests activas 0; rewrite_pending 0; ImageGen 0.",
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T23:45:15+01:00",
-        "phase": "drafting",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Comprobando límite de X · 242 caracteres"
+        "at": "2026-10-26T23:53:44+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada editorial · 1 revisión activa (Kane r0)."
       },
       {
-        "at": "2026-10-26T23:45:25+01:00",
-        "phase": "remate_selection",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Generando candidatos de remate"
-      },
-      {
-        "at": "2026-10-26T23:45:35+01:00",
-        "phase": "remate_selection",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates"
-      },
-      {
-        "at": "2026-10-26T23:45:45+01:00",
-        "phase": "remate_selection",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Remate seleccionado · «La hoguera ya no pide explicaciones: las cita a las once.»"
-      },
-      {
-        "at": "2026-10-26T23:45:55+01:00",
-        "phase": "persisting",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Guardando ficha Explicada"
-      },
-      {
-        "at": "2026-10-26T23:46:30+01:00",
+        "at": "2026-10-26T23:54:20+01:00",
         "phase": "verifying",
-        "trend_id": "18d74eabde7b",
-        "title": "#LaIslaDeLasTentaciones15",
-        "message": "Tendencia cerrada y verificada tras resolver conflicto SHA"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Releyendo estado autoritativo de Kane"
       },
       {
-        "at": "2026-10-26T23:47:00+01:00",
-        "phase": "verifying",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Releyendo estado autoritativo de Cata Coll"
-      },
-      {
-        "at": "2026-10-26T23:47:10+01:00",
+        "at": "2026-10-26T23:54:45+01:00",
         "phase": "investigating",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Buscando detonante actual de Cata Coll"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Contrastando fuente 1/2 · The Guardian confirma a Harry Kane como Balón de Oro 2026"
       },
       {
-        "at": "2026-10-26T23:47:30+01:00",
+        "at": "2026-10-26T23:55:00+01:00",
         "phase": "investigating",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Contrastando fuente 1/2 · RFEF confirma el Trofeo Yashin de Cata Coll"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Contrastando fuente 2/2 · Europa Press confirma el error previo de publicación con Kane, Yamal y Mbappé"
       },
       {
-        "at": "2026-10-26T23:47:40+01:00",
+        "at": "2026-10-26T23:55:05+01:00",
         "phase": "investigating",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Contrastando fuente 2/2 · Europa Press confirma el premio a la mejor portera"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Hecho esencial verificado · Harry Kane gana el Balón de Oro masculino 2026 en Londres"
       },
       {
-        "at": "2026-10-26T23:47:50+01:00",
-        "phase": "investigating",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Hecho esencial verificado · Cata Coll gana el Trofeo Yashin 2026"
-      },
-      {
-        "at": "2026-10-26T23:48:00+01:00",
+        "at": "2026-10-26T23:55:15+01:00",
         "phase": "drafting",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
         "message": "Redactando explicación factual"
       },
       {
-        "at": "2026-10-26T23:48:10+01:00",
+        "at": "2026-10-26T23:55:25+01:00",
         "phase": "drafting",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Comprobando límite de X · 273 caracteres"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Comprobando límite de X · 245 caracteres"
       },
       {
-        "at": "2026-10-26T23:48:20+01:00",
+        "at": "2026-10-26T23:55:30+01:00",
         "phase": "remate_selection",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
         "message": "Generando candidatos de remate"
       },
       {
-        "at": "2026-10-26T23:48:30+01:00",
+        "at": "2026-10-26T23:55:38+01:00",
         "phase": "remate_selection",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
         "message": "Evaluando candidatos con ratings y últimos 30 remates"
       },
       {
-        "at": "2026-10-26T23:48:40+01:00",
+        "at": "2026-10-26T23:55:45+01:00",
         "phase": "remate_selection",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Remate seleccionado · «Cuatro títulos y un Yashin: la portería también hizo pleno.»"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Remate seleccionado · «La web ensayó con tres ganadores; el escenario dejó solo a Kane.»"
       },
       {
-        "at": "2026-10-26T23:48:50+01:00",
+        "at": "2026-10-26T23:56:53+01:00",
+        "phase": "verifying",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Releyendo estado autoritativo de Kane antes de persistir"
+      },
+      {
+        "at": "2026-10-26T23:56:56+01:00",
         "phase": "persisting",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-26T23:49:35+01:00",
+        "at": "2026-10-26T23:57:01+01:00",
+        "phase": "persisting",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-26T23:57:07+01:00",
+        "phase": "persisting",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-26T23:57:11+01:00",
         "phase": "verifying",
-        "trend_id": "02a046bbc762",
-        "title": "Cata Coll",
-        "message": "Cata Coll cerrada concurrentemente y verificada; no sobrescribo su revisión"
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-26T23:50:10+01:00",
+        "at": "2026-10-26T23:57:14+01:00",
+        "phase": "verifying",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-26T23:57:16+01:00",
+        "phase": "verifying",
+        "trend_id": "7730c670ef9c",
+        "title": "Kane",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-26T23:57:51+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría final · cola 0, requests activas 0, rewrite_pending 0; verificando cierre durable"
+        "message": "Auditoría final · cola 0, requests activas 0, rewrite_pending 0; persistiendo cierre durable"
       },
       {
-        "at": "2026-10-26T23:50:30+01:00",
+        "at": "2026-10-26T23:57:53+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada · 4/4 resueltas; 3 cerradas en esta pasada y Cata Coll cerrada concurrentemente. Cola final 0; rewrite_pending 0; 1 conflicto SHA resuelto."
+        "message": "TTendencias completada · 1/1 cerrada (Kane r0). Cola final 0; requests activas 0; rewrite_pending 0; ImageGen 0."
       }
     ],
     "processed_ids": [
-      "db08048a498f",
-      "939c0b5fe525",
-      "18d74eabde7b"
+      "7730c670ef9c"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "summary": {
-      "attempted": 4,
+      "attempted": 1,
       "ready": 0,
-      "explained": 3,
-      "final_resolved": 4,
+      "explained": 1,
+      "final_resolved": 1,
       "explanation_groups": 0,
-      "new_cards": 3,
-      "revisions_updated": 3,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
       "initial_compact_queue": 1,
-      "discovered_during_run": 3,
+      "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 4,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 6,
+      "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
-      "skipped_concurrent": 1,
+      "skipped_concurrent": 0,
       "trends_dismissed": 0,
-      "incidents": 1
+      "incidents": 0
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
@@ -241,197 +222,178 @@
     },
     "remate_selections": [
       {
-        "id": "db08048a498f",
+        "id": "7730c670ef9c",
         "revision": 0,
-        "title": "Alexia",
-        "closer_text": "🌶️ Alexia salió de Londres con el desempate pendiente: tres a tres."
-      },
-      {
-        "id": "939c0b5fe525",
-        "revision": 0,
-        "title": "Unai Simón",
-        "closer_text": "🌶️ Del Mundial a Londres: el año terminó también bajo palos."
-      },
-      {
-        "id": "18d74eabde7b",
-        "revision": 0,
-        "title": "#LaIslaDeLasTentaciones15",
-        "closer_text": "🌶️ La hoguera ya no pide explicaciones: las cita a las once."
+        "title": "Kane",
+        "closer_text": "🌶️ La web ensayó con tres ganadores; el escenario dejó solo a Kane."
       }
     ]
   },
-  "run_id": "tr-1793054176116-manual",
+  "run_id": "tr-1793055124877-manual",
   "summary": {
-    "attempted": 4,
+    "attempted": 1,
     "ready": 0,
-    "explained": 3,
-    "final_resolved": 4,
+    "explained": 1,
+    "final_resolved": 1,
     "explanation_groups": 0,
-    "new_cards": 3,
-    "revisions_updated": 3,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
     "initial_compact_queue": 1,
-    "discovered_during_run": 3,
+    "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 4,
-    "remates_selected": 3,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 6,
+    "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
-    "skipped_concurrent": 1,
+    "skipped_concurrent": 0,
     "trends_dismissed": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T23:45:15+01:00",
-      "phase": "drafting",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Comprobando límite de X · 242 caracteres"
+      "at": "2026-10-26T23:53:44+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada editorial · 1 revisión activa (Kane r0)."
     },
     {
-      "at": "2026-10-26T23:45:25+01:00",
-      "phase": "remate_selection",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Generando candidatos de remate"
-    },
-    {
-      "at": "2026-10-26T23:45:35+01:00",
-      "phase": "remate_selection",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Evaluando candidatos con ratings y últimos 30 remates"
-    },
-    {
-      "at": "2026-10-26T23:45:45+01:00",
-      "phase": "remate_selection",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Remate seleccionado · «La hoguera ya no pide explicaciones: las cita a las once.»"
-    },
-    {
-      "at": "2026-10-26T23:45:55+01:00",
-      "phase": "persisting",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Guardando ficha Explicada"
-    },
-    {
-      "at": "2026-10-26T23:46:30+01:00",
+      "at": "2026-10-26T23:54:20+01:00",
       "phase": "verifying",
-      "trend_id": "18d74eabde7b",
-      "title": "#LaIslaDeLasTentaciones15",
-      "message": "Tendencia cerrada y verificada tras resolver conflicto SHA"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Releyendo estado autoritativo de Kane"
     },
     {
-      "at": "2026-10-26T23:47:00+01:00",
-      "phase": "verifying",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Releyendo estado autoritativo de Cata Coll"
-    },
-    {
-      "at": "2026-10-26T23:47:10+01:00",
+      "at": "2026-10-26T23:54:45+01:00",
       "phase": "investigating",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Buscando detonante actual de Cata Coll"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Contrastando fuente 1/2 · The Guardian confirma a Harry Kane como Balón de Oro 2026"
     },
     {
-      "at": "2026-10-26T23:47:30+01:00",
+      "at": "2026-10-26T23:55:00+01:00",
       "phase": "investigating",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Contrastando fuente 1/2 · RFEF confirma el Trofeo Yashin de Cata Coll"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Contrastando fuente 2/2 · Europa Press confirma el error previo de publicación con Kane, Yamal y Mbappé"
     },
     {
-      "at": "2026-10-26T23:47:40+01:00",
+      "at": "2026-10-26T23:55:05+01:00",
       "phase": "investigating",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Contrastando fuente 2/2 · Europa Press confirma el premio a la mejor portera"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Hecho esencial verificado · Harry Kane gana el Balón de Oro masculino 2026 en Londres"
     },
     {
-      "at": "2026-10-26T23:47:50+01:00",
-      "phase": "investigating",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Hecho esencial verificado · Cata Coll gana el Trofeo Yashin 2026"
-    },
-    {
-      "at": "2026-10-26T23:48:00+01:00",
+      "at": "2026-10-26T23:55:15+01:00",
       "phase": "drafting",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
       "message": "Redactando explicación factual"
     },
     {
-      "at": "2026-10-26T23:48:10+01:00",
+      "at": "2026-10-26T23:55:25+01:00",
       "phase": "drafting",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Comprobando límite de X · 273 caracteres"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Comprobando límite de X · 245 caracteres"
     },
     {
-      "at": "2026-10-26T23:48:20+01:00",
+      "at": "2026-10-26T23:55:30+01:00",
       "phase": "remate_selection",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
       "message": "Generando candidatos de remate"
     },
     {
-      "at": "2026-10-26T23:48:30+01:00",
+      "at": "2026-10-26T23:55:38+01:00",
       "phase": "remate_selection",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
       "message": "Evaluando candidatos con ratings y últimos 30 remates"
     },
     {
-      "at": "2026-10-26T23:48:40+01:00",
+      "at": "2026-10-26T23:55:45+01:00",
       "phase": "remate_selection",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Remate seleccionado · «Cuatro títulos y un Yashin: la portería también hizo pleno.»"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Remate seleccionado · «La web ensayó con tres ganadores; el escenario dejó solo a Kane.»"
     },
     {
-      "at": "2026-10-26T23:48:50+01:00",
+      "at": "2026-10-26T23:56:53+01:00",
+      "phase": "verifying",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Releyendo estado autoritativo de Kane antes de persistir"
+    },
+    {
+      "at": "2026-10-26T23:56:56+01:00",
       "phase": "persisting",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
       "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-26T23:49:35+01:00",
+      "at": "2026-10-26T23:57:01+01:00",
+      "phase": "persisting",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-26T23:57:07+01:00",
+      "phase": "persisting",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-26T23:57:11+01:00",
       "phase": "verifying",
-      "trend_id": "02a046bbc762",
-      "title": "Cata Coll",
-      "message": "Cata Coll cerrada concurrentemente y verificada; no sobrescribo su revisión"
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-26T23:50:10+01:00",
+      "at": "2026-10-26T23:57:14+01:00",
+      "phase": "verifying",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-26T23:57:16+01:00",
+      "phase": "verifying",
+      "trend_id": "7730c670ef9c",
+      "title": "Kane",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-26T23:57:51+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Auditoría final · cola 0, requests activas 0, rewrite_pending 0; verificando cierre durable"
+      "message": "Auditoría final · cola 0, requests activas 0, rewrite_pending 0; persistiendo cierre durable"
     },
     {
-      "at": "2026-10-26T23:50:30+01:00",
+      "at": "2026-10-26T23:57:53+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada · 4/4 resueltas; 3 cerradas en esta pasada y Cata Coll cerrada concurrentemente. Cola final 0; rewrite_pending 0; 1 conflicto SHA resuelto."
+      "message": "TTendencias completada · 1/1 cerrada (Kane r0). Cola final 0; requests activas 0; rewrite_pending 0; ImageGen 0."
     }
   ],
   "partial": false,
@@ -444,7 +406,7 @@
     "captured_at": "2026-10-26T23:41:03+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261026T231500+0100",
+  "previous_run_id": "tr-1793054176116-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -453,52 +415,19 @@
   },
   "remate_selections": [
     {
-      "id": "db08048a498f",
+      "id": "7730c670ef9c",
       "revision": 0,
-      "title": "Alexia",
-      "closer_text": "🌶️ Alexia salió de Londres con el desempate pendiente: tres a tres."
-    },
-    {
-      "id": "939c0b5fe525",
-      "revision": 0,
-      "title": "Unai Simón",
-      "closer_text": "🌶️ Del Mundial a Londres: el año terminó también bajo palos."
-    },
-    {
-      "id": "18d74eabde7b",
-      "revision": 0,
-      "title": "#LaIslaDeLasTentaciones15",
-      "closer_text": "🌶️ La hoguera ya no pide explicaciones: las cita a las once."
+      "title": "Kane",
+      "closer_text": "🌶️ La web ensayó con tres ganadores; el escenario dejó solo a Kane."
     }
   ],
   "final_outcomes": [
     {
-      "id": "db08048a498f",
-      "name": "Alexia",
+      "id": "7730c670ef9c",
+      "name": "Kane",
       "revision": 0,
       "status": "explained",
       "closed_by": "this_run"
-    },
-    {
-      "id": "939c0b5fe525",
-      "name": "Unai Simón",
-      "revision": 0,
-      "status": "explained",
-      "closed_by": "this_run"
-    },
-    {
-      "id": "18d74eabde7b",
-      "name": "#LaIslaDeLasTentaciones15",
-      "revision": 0,
-      "status": "explained",
-      "closed_by": "this_run"
-    },
-    {
-      "id": "02a046bbc762",
-      "name": "Cata Coll",
-      "revision": 0,
-      "status": "explained",
-      "closed_by": "concurrent_verified"
     }
   ],
   "pending_delivery_count": 0
