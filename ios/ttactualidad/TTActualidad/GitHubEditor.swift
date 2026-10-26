@@ -13,6 +13,14 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var isConnecting = false
     @Published private(set) var notice = "Conecta GitHub una vez para activar las acciones editoriales."
     @Published private(set) var activeAction: String? = nil
+    @Published private(set) var lastWriteResult: WriteResult = .pending
+    private var inFlightKeys = Set<String>()
+
+    enum WriteResult {
+        case verified
+        case pending
+        case failed
+    }
 
     private let repoURL = URL(string: "https://api.github.com/repos/fabricelop/europapress-rss/dispatches")!
     private let service = "com.fabricelop.ttactualidad.github"
@@ -232,20 +240,22 @@ final class GitHubEditor: ObservableObject {
 
     private func manualNewsPersisted(_ requestID: String) async throws -> Bool {
         let eventID = "manual-" + requestID
-        for path in ["ttittulares/editorial-queue.json",
-                     "telegram/editorial-processing.json", "ttittulares/prepared.json"] {
-            let doc = try await readMainJSON(path)
-            let rows = doc["items"] as? [[String: Any]] ?? []
-            if rows.contains(where: { ($0["event_id"] as? String) == eventID }) { return true }
+        // The workflow atomically commits this queue: one fast read for confirmation.
+        let queue = try await readMainJSON("ttittulares/editorial-queue.json")
+        let rows = queue["items"] as? [[String: Any]] ?? []
+        if rows.contains(where: { ($0["event_id"] as? String) == eventID }) { return true }
+        // A fast editorial processor can move the entry to a completed state.
+        let prepared = try await readMainJSON("ttittulares/prepared.json")
+        return (prepared["items"] as? [[String: Any]] ?? []).contains {
+            ($0["event_id"] as? String) == eventID
         }
-        return false
     }
 
     private func confirmPersistence(event: String, requestID: String, label: String) async -> Bool {
         notice = "GitHub recibió «\(label)»; verificando el estado persistido…"
         // Slow GitHub Actions start is not treated as success or failure.
-        for attempt in 0..<22 {
-            if attempt > 0 { try? await Task.sleep(for: .seconds(4)) }
+        for attempt in 0..<32 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(3)) }
             do {
                 if event == "ttactualidad_manual_news_v1" {
                     if try await manualNewsPersisted(requestID) {
@@ -283,12 +293,26 @@ final class GitHubEditor: ObservableObject {
 
     func dispatch(_ event: String, payload: [String: Any], label: String) async -> Bool {
         guard authenticated else {
+            lastWriteResult = .failed
             notice = "Conecta primero tu GitHub App en Ajustes."
             return false
         }
-        guard activeAction == nil else { notice = "Hay otra orden en curso."; return false }
+        let project = payload["project"] as? String ?? event
+        let identifier = payload["event_id"] as? String ??
+                         payload["request_id"] as? String ?? event
+        let key = project + ":" + identifier
+        guard !inFlightKeys.contains(key) else {
+            notice = "Esta orden ya está en curso; no es necesario enviarla otra vez."
+            lastWriteResult = .pending
+            return false
+        }
+        inFlightKeys.insert(key)
         activeAction = label
-        defer { activeAction = nil }
+        lastWriteResult = .pending
+        defer {
+            inFlightKeys.remove(key)
+            if inFlightKeys.isEmpty { activeAction = nil }
+        }
         do {
             let access = try await authorizedToken()
             var request = URLRequest(url: repoURL, timeoutInterval: 25)
@@ -311,11 +335,21 @@ final class GitHubEditor: ObservableObject {
                 return false
             }
             let persisted = await confirmPersistence(event: event, requestID: requestID, label: label)
+            lastWriteResult = persisted ? .verified : .pending
             if persisted { UINotificationFeedbackGenerator().notificationOccurred(.success) }
             return persisted
         } catch {
-            notice = error.localizedDescription
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            let asURL = error as? URLError
+            // A POST timeout has indeterminate outcome. Do not undo its
+            // optimistic state unless GitHub explicitly rejected the write.
+            if asURL?.code == .timedOut || asURL?.code == .networkConnectionLost {
+                lastWriteResult = .pending
+                notice = "La red interrumpió la confirmación. La orden puede estar procesándose en GitHub."
+            } else {
+                lastWriteResult = .failed
+                notice = error.localizedDescription
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+            }
             return false
         }
     }
@@ -353,7 +387,8 @@ final class GitHubEditor: ObservableObject {
         ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple")
     }
 
-    func addNews(title: String, url: String, instructions: String) async -> Bool {
+    func addNews(title: String, url: String, instructions: String,
+                 requestID: String? = nil) async -> Bool {
         guard !title.isEmpty || !url.isEmpty else { notice = "Añade un enlace o una descripción."; return false }
         if !title.isEmpty && title.count < 5 { notice = "La descripción debe tener al menos 5 caracteres."; return false }
         if !url.isEmpty {
@@ -362,7 +397,7 @@ final class GitHubEditor: ObservableObject {
             }
         }
         return await dispatch("ttactualidad_manual_news_v1", payload: [
-            "project": "ttittulares", "request_id": UUID().uuidString.lowercased(),
+            "project": "ttittulares", "request_id": requestID ?? UUID().uuidString.lowercased(),
             "title": String(title.prefix(240)), "url": String(url.prefix(2000)),
             "instructions": String(instructions.prefix(1000))
         ], label: "Añadir noticia")
