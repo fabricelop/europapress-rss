@@ -35,7 +35,7 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .top30-detail summary:focus-visible{outline:2px solid var(--aqua);outline-offset:-2px}
 .top30-number{font-weight:900;color:#9fb8e5;font-variant-numeric:tabular-nums}
 .top30-name{font-weight:750;line-height:1.25;min-width:0;overflow-wrap:anywhere}
-.top30-tag{font-size:10px;line-height:1.2;text-transform:uppercase;letter-spacing:.1px;text-align:right;max-width:128px;color:#d9e4f7;overflow-wrap:anywhere}
+.top30-side{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:0}.top30-tag{font-size:10px;line-height:1.2;text-transform:uppercase;letter-spacing:.1px;text-align:right;max-width:128px;color:#d9e4f7;overflow-wrap:anywhere}.top30-date{font-size:10px;line-height:1.25;color:#c0cee2;font-variant-numeric:tabular-nums;white-space:nowrap}.trend-explained .top30-date{color:#ffe0e3}
 .trend-explained .top30-tag{color:#ffe5e7}
 .top30-chevron{font-size:13px;text-align:right;color:var(--sub);transition:transform .15s ease}
 .top30-detail[open] .top30-chevron{transform:rotate(180deg)}
@@ -612,7 +612,7 @@ function trendRows(){
     _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
-    explained_at:inListas?latestAt:'',revision:Number(req.revision??finished.revision??0),
+    explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:'',revision:Number(req.revision??finished.revision??0),
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
   // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
@@ -943,9 +943,12 @@ function compactTop30Card(out,x){
  const key=String(x.name||x.title||x.rank).normalize('NFD').toLocaleLowerCase('es-ES');
  detail.open=expandedTop30.has(key);
  const summary=document.createElement('summary');
+ const explanationDate=x.explained_at&&Number.isFinite(Date.parse(x.explained_at))?
+  'Exp. '+stamp(x.explained_at):'';
  summary.innerHTML='<span class="top30-number">#'+esc(x.rank)+'</span>'+
   '<span class="top30-name">'+esc(x.name||x.title)+'</span>'+
-  '<span class="top30-tag">'+esc(x._status||'PENDIENTE')+'</span>'+
+  '<span class="top30-side"><span class="top30-tag">'+esc(x._status||'PENDIENTE')+'</span>'+
+  (explanationDate?'<span class="top30-date">'+esc(explanationDate)+'</span>':'')+'</span>'+
   '<span class="top30-chevron" aria-hidden="true">⌄</span>';
  summary.addEventListener('click',()=>{if(detail.open)expandedTop30.delete(key);else expandedTop30.add(key)});
  detail.append(summary,content);out.replaceChildren(detail);
