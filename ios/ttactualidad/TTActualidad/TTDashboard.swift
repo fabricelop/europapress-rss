@@ -9,6 +9,8 @@ struct TTDashboard: View {
     @State private var showNewStory = false
     @State private var showSettings = false
     @State private var showArchivePhotos = false
+    @State private var showCombinedListas = false
+    @State private var showEditorialHub = false
 
     var body: some View {
         ZStack {
@@ -24,10 +26,12 @@ struct TTDashboard: View {
                     LazyVStack(alignment: .leading, spacing: 14) {
                         heading
                         counters
+                        if store.section == .news && !showCombinedListas { sourceCounters }
                         connectedLabel
                         subTabs
                         searchField
-                        if store.section == .trends { trendsContent }
+                        if showCombinedListas { combinedListasContent }
+                        else if store.section == .trends { trendsContent }
                         else { newsContent }
                         Color.clear.frame(height: 18)
                     }
@@ -46,6 +50,9 @@ struct TTDashboard: View {
         }
         .sheet(isPresented: $showArchivePhotos) {
             ArchivePhotoGallery().environmentObject(store)
+        }
+        .sheet(isPresented: $showEditorialHub) {
+            EditorialHub().environmentObject(store)
         }
         .onChange(of: store.section) { _, _ in
             search = ""
@@ -73,6 +80,13 @@ struct TTDashboard: View {
                     .tracking(2.2).foregroundStyle(TTTheme.teal)
             }
             Spacer(minLength: 0)
+            Button { showEditorialHub = true } label: {
+                Image(systemName: "square.grid.2x2.fill")
+                    .foregroundStyle(TTTheme.teal)
+                    .font(.system(size: 19))
+                    .frame(width: 36, height: 42)
+            }
+            .accessibilityLabel("Tablero y novedades")
             Button { showSettings = true } label: {
                 Image(systemName: github.authenticated ? "checkmark.shield.fill" : "person.crop.circle.badge.questionmark")
                     .foregroundStyle(github.authenticated ? TTTheme.teal : TTTheme.muted)
@@ -100,8 +114,13 @@ struct TTDashboard: View {
 
     private var topSections: some View {
         HStack(spacing: 4) {
-            tab("TTiTTulares", active: store.section == .news) { store.section = .news }
-            tab("TTendencias", active: store.section == .trends) { store.section = .trends }
+            tab("TTiTTulares", active: !showCombinedListas && store.section == .news) {
+                showCombinedListas = false; store.section = .news
+            }
+            tab("TTendencias", active: !showCombinedListas && store.section == .trends) {
+                showCombinedListas = false; store.section = .trends
+            }
+            tab("Listas", active: showCombinedListas) { showCombinedListas = true }
         }
         .padding(5)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 16))
@@ -122,14 +141,16 @@ struct TTDashboard: View {
     private var heading: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 3) {
-                Text(store.section == .trends ? "Top 30 España" : "Noticias listas")
+                Text(showCombinedListas ? "Listas editoriales" :
+                     store.section == .trends ? "Top 30 España" : "Noticias listas")
                     .font(.system(size: 25, weight: .bold, design: .rounded))
                     .tracking(-0.6)
-                Text(store.section == .trends ? "Radar · Clasificación editorial" : "Noticias preparadas para publicar")
+                Text(showCombinedListas ? "Publica o gestiona todo desde aquí" :
+                     store.section == .trends ? "Radar · Clasificación editorial" : "Noticias preparadas para publicar")
                     .font(.caption).foregroundStyle(TTTheme.muted)
             }
             Spacer()
-            if store.section == .news {
+            if store.section == .news && !showCombinedListas {
                 Button { showNewStory = true } label: {
                     Label("Noticia", systemImage: "plus")
                         .font(.caption.weight(.bold))
@@ -165,6 +186,33 @@ struct TTDashboard: View {
         .overlay(RoundedRectangle(cornerRadius: 17).stroke(tint.opacity(0.35)))
     }
 
+    private func signedDelta(_ delta: Int?) -> String {
+        guard let delta else { return "(—)" }
+        return "(" + (delta > 0 ? "+" : "") + String(delta) + ")"
+    }
+
+    private var sourceCounters: some View {
+        HStack(spacing: 12) {
+            Label("1 fuente", systemImage: "dot.radiowaves.left.and.right")
+                .foregroundStyle(TTTheme.muted)
+            Text(store.snapshot.oneSourceCount.map(String.init) ?? "—")
+                .fontWeight(.bold).monospacedDigit()
+            Text(signedDelta(store.snapshot.oneSourceDelta))
+                .foregroundStyle(TTTheme.teal)
+            Spacer(minLength: 5)
+            Text("2 fuentes").foregroundStyle(TTTheme.muted)
+            Text(store.snapshot.twoSourceCount.map(String.init) ?? "—")
+                .fontWeight(.bold).monospacedDigit()
+            Text(signedDelta(store.snapshot.twoSourceDelta))
+                .foregroundStyle(TTTheme.teal)
+        }
+        .font(.system(size: 11, weight: .medium))
+        .minimumScaleFactor(0.7).lineLimit(1)
+        .padding(.horizontal, 11).padding(.vertical, 10)
+        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
+        .accessibilityLabel("Radar: noticias con una fuente y dos fuentes, variación respecto al radar anterior")
+    }
+
     private var connectedLabel: some View {
         HStack(spacing: 5) {
             Image(systemName: store.snapshot.partial ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
@@ -180,6 +228,8 @@ struct TTDashboard: View {
     }
 
     private var subTabs: some View {
+        Group {
+        if !showCombinedListas {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 7) {
                 if store.section == .trends {
@@ -207,6 +257,8 @@ struct TTDashboard: View {
                 }
             }
             .padding(.vertical, 2)
+        }
+        }
         }
     }
     private func chip(_ title: String, number: Int, active: Bool, onTap: @escaping () -> Void) -> some View {
@@ -245,6 +297,42 @@ struct TTDashboard: View {
         }
         .padding(.horizontal, 13).padding(.vertical, 12)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private var combinedListasContent: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack {
+                Label("TTiTTulares", systemImage: "newspaper.fill")
+                    .font(.headline).foregroundStyle(TTTheme.teal)
+                Spacer()
+                Text(String(store.snapshot.news.count))
+                    .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.teal)
+            }
+            ForEach(store.snapshot.news.filter {
+                search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
+            }) { story in
+                NewsTile(item: story, github: github, settings: $showSettings)
+            }
+            HStack {
+                Label("TTendencias", systemImage: "chart.bar.fill")
+                    .font(.headline).foregroundStyle(TTTheme.blue)
+                Spacer()
+                Text(String(store.snapshot.trendListas.count))
+                    .font(.headline.monospacedDigit()).foregroundStyle(TTTheme.blue)
+            }
+            .padding(.top, 8)
+            LazyVStack(spacing: 5) {
+                ForEach(store.snapshot.trendListas.filter {
+                    search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
+                }) { item in
+                    TrendTile(item: item, showRank: false,
+                              github: github, settings: $showSettings)
+                }
+            }
+            if store.snapshot.news.isEmpty && store.snapshot.trendListas.isEmpty {
+                emptyNotice("No hay elementos en Listas")
+            }
+        }
     }
 
     @ViewBuilder private var newsContent: some View {
