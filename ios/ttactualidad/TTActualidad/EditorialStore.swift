@@ -181,12 +181,12 @@ final class EditorialStore: ObservableObject {
         let status = docs["ttittulares/status.json"] ?? [:]
         let newsQueue = docs["ttittulares/editorial-queue.json"] ?? [:]
         let newsTremending = docs["ttittulares/tremending/items.json"] ?? [:]
-        let closures = Set(rows(docs["ttittulares/decisions.json"]!, "items").filter {
-            closed.contains(str($0, "status").lowercased())
-        }.map { str($0, "event_id") })
-        let activeIDs = Set(rows(newsQueue, "items").filter {
-            ["PROCESSING", "UPDATE_PROCESSING"].contains(str($0, "status").uppercased())
-        }.map { str($0, "event_id") })
+        let closures = Set(Self.rows(docs["ttittulares/decisions.json"]!, "items").filter {
+            Self.closed.contains(Self.str($0, "status").lowercased())
+        }.map { Self.str($0, "event_id") })
+        let activeIDs = Set(Self.rows(newsQueue, "items").filter {
+            ["PROCESSING", "UPDATE_PROCESSING"].contains(Self.str($0, "status").uppercased())
+        }.map { Self.str($0, "event_id") })
         func sectionNews(_ list: [[String: Any]], _ kind: String) -> [NewsItem] {
             list.compactMap { item in
                 let id = Self.str(item, "event_id").isEmpty ? Self.str(item, "id") : Self.str(item, "event_id")
@@ -205,18 +205,18 @@ final class EditorialStore: ObservableObject {
                                 status: kind)
             }
         }
-        let processing = rows(newsQueue, "items").filter {
+        let processing = Self.rows(newsQueue, "items").filter {
             ["PROCESSING", "UPDATE_PROCESSING"].contains(Self.str($0, "status").uppercased())
         }
-        let queueNews = sectionNews(processing.isEmpty ? rows(status, "processing_items") : processing,
+        let queueNews = sectionNews(processing.isEmpty ? Self.rows(status, "processing_items") : processing,
                                     "EN ELABORACIÓN")
-        let problematic = sectionNews(rows(status, "problematic_items").filter {
+        let problematic = sectionNews(Self.rows(status, "problematic_items").filter {
             !activeIDs.contains(Self.str($0, "event_id"))
         }, "REVISIÓN")
-        let growing = sectionNews(rows(status, "three_source_items").filter {
+        let growing = sectionNews(Self.rows(status, "three_source_items").filter {
             !activeIDs.contains(Self.str($0, "event_id"))
         }, "CRECIENDO")
-        let trending = sectionNews(rows(newsTremending, "items"), "TREMENDING")
+        let trending = sectionNews(Self.rows(newsTremending, "items"), "TREMENDING")
         let trendsQueued = Self.buildTrendsElaboracion(
             requests: docs["trends/requests.json"]!,
             queue: docs["trends/editorial-queue.json"]!,
