@@ -19,6 +19,13 @@ struct NewsItem: Identifiable {
     let title: String
     let text: String
     let publishedAt: Date?
+    let revision: Int
+    let sourceURL: URL?
+    let imageURL: URL?
+    let factual: String
+    let closer: String
+    let sources: Int
+    var editorial: String { text }
 }
 
 struct TrendItem: Identifiable {
@@ -29,6 +36,10 @@ struct TrendItem: Identifiable {
     let lastExplained: Date?
     let status: String
     let inListas: Bool
+    let editorialID: String
+    let revision: Int
+    let imageURL: URL?
+    let sourceURL: URL?
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -212,9 +223,19 @@ final class EditorialStore: ObservableObject {
             guard !id.isEmpty, !closed.contains(statuses[id] ?? "") else { return nil }
             let tweet = item["tweet"] as? [String: Any] ?? [:]
             let text = str(tweet, "text")
+            let factual = str(item, "explanation").isEmpty ? str(item, "factual_summary") : str(item, "explanation")
+            let preferred = text.isEmpty ? factual : text
+            let archive = item["archive_image"] as? [String: Any] ??
+                          item["fallback_image"] as? [String: Any] ?? [:]
             return NewsItem(id: id, title: str(item, "title"),
-                            text: text.isEmpty ? str(item, "factual_summary") : text,
-                            publishedAt: when(item, ["prepared_at", "selected_at"]))
+                            text: preferred,
+                            publishedAt: when(item, ["prepared_at", "selected_at"]),
+                            revision: int(item, "revision"),
+                            sourceURL: URL(string: str(item, "url")),
+                            imageURL: URL(string: str(archive, "url")),
+                            factual: factual,
+                            closer: str(tweet, "remate").isEmpty ? str(item, "closer_text") : str(tweet, "remate"),
+                            sources: int(item, "source_count"))
         }
     }
 
@@ -276,9 +297,14 @@ final class EditorialStore: ObservableObject {
                 [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
             }) || closureApplies(delivery) { return nil }
 
+            let archive = row["archive_image"] as? [String: Any] ??
+                          row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
                              explanation: str(row, "explanation"), lastExplained: explained,
-                             status: "EXPLICADA", inListas: true)
+                             status: "EXPLICADA", inListas: true,
+                             editorialID: id, revision: rev,
+                             imageURL: URL(string: str(archive, "url")),
+                             sourceURL: URL(string: str(row, "source_url")))
         }
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
         .prefix(100)
@@ -321,9 +347,14 @@ final class EditorialStore: ObservableObject {
         }
         let readyNames = Set(ready.flatMap { row in [norm(row.name)] })
         var statuses: [String: String] = [:]
+        var requestByName: [String: [String: Any]] = [:]
         for row in currentRequests {
             let key = norm(str(row, "name"))
-            if !key.isEmpty && ["preparing", "update", "ready"].contains(str(row, "status").lowercased()) {
+            if key.isEmpty { continue }
+            if isNewer(row, than: requestByName[key]) { requestByName[key] = row }
+        }
+        for (key, row) in requestByName {
+            if ["preparing", "update", "ready"].contains(str(row, "status").lowercased()) {
                 statuses[key] = "EN ELABORACIÓN"
             }
         }
@@ -334,9 +365,18 @@ final class EditorialStore: ObservableObject {
             let date = when(explanation, ["explained_at"])
             let status: String = statuses[key] ??
                 (text.isEmpty ? (rank > 10 ? "PREPARACIÓN MANUAL" : "PENDIENTE") : "EXPLICADA")
+            let request = requestByName[key] ?? [:]
+            let editorialID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
+            let revision = request.isEmpty ? int(explanation, "revision") : int(request, "revision")
+            let archive = explanation["archive_image"] as? [String: Any] ??
+                          explanation["fallback_image"] as? [String: Any] ?? [:]
+            let source = str(request, "source_url")
             return TrendItem(id: "rank-\(rank)", rank: rank, name: name,
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
-                             status: status, inListas: readyNames.contains(key))
+                             status: status, inListas: readyNames.contains(key),
+                             editorialID: editorialID, revision: revision,
+                             imageURL: URL(string: str(archive, "url")),
+                             sourceURL: URL(string: source))
         }
     }
 
