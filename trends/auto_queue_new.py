@@ -577,7 +577,7 @@ def closed_name_eligible_for_new_event(req, item):
     """A deleted old package must not block a genuinely new Top-10 occurrence.
 
     Re-entry after 48h opens a separate ID; the old deleted revision stays
-    terminal. Holiday aliases remain explicitly protected from auto-reopen.
+    terminal. The rule also applies to repeated calendar or grouped topics.
     """
     if str((req or {}).get("status") or "").lower() not in CLOSED:
         return False
@@ -590,16 +590,21 @@ to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
-    # A deliberate new manual investigation is separate; routine radar
-    # captures may not resurrect a Telegram-closed subject for seven days.
-    if key in recently_closed_names and (not closed_name_eligible_for_new_event(req, item)):
+    # The user's 48h Top-10 rule overrides old close/topic deduplication.
+    # Never override a newer active preparing/update or a manual correction.
+    status_before = str((req or {}).get("status") or "")
+    renewal_due = (
+        status_before in {"explained", "grouped", "inactive", *CLOSED}
+        and explanation_expired(key)
+    )
+    if key in recently_closed_names and not renewal_due:
         continue
     if (editorial_topic(item["name"]) in recently_closed_topics and
             (req is None or req.get("auto_queued") is True) and
             str((req or {}).get("request_source") or "") not in {
               "github_pages_authorized_issue", "telegram_reexplain",
               "telegram_private_deeplink_native"}
-            and not closed_name_eligible_for_new_event(req, item)):
+            and not renewal_due):
         continue
     status = str((req or {}).get("status") or "")
     # A genuinely resurfaced Top-10 trend must be researched as a NEW event,
