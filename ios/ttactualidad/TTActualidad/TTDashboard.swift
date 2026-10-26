@@ -52,7 +52,11 @@ struct TTDashboard: View {
             ArchivePhotoGallery().environmentObject(store)
         }
         .sheet(isPresented: $showEditorialHub) {
-            EditorialHub().environmentObject(store)
+            EditorialHub(
+                openLists: { showCombinedListas = true },
+                openRadar: { showCombinedListas = false; store.section = .trends; store.trendFilter = .top },
+                openWorking: { showCombinedListas = false; store.section = .news; store.newsFilter = .elaboracion }
+            ).environmentObject(store)
         }
         .onChange(of: store.section) { _, _ in
             search = ""
