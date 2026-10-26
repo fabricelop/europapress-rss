@@ -264,7 +264,7 @@ final class EditorialStore: ObservableObject {
                 str(req, "telegram_package_status")].contains(where: { closed.contains($0.lowercased()) }) {
                 return nil
             }
-            func closureApplies(_ event: [String: Any]) -> Bool {
+            let closureApplies: ([String: Any]) -> Bool = { event in
                 guard closed.contains(Self.str(event, "status").lowercased()) else { return false }
                 let oldRev = Self.int(event, "revision")
                 if oldRev != rev { return oldRev > rev }
