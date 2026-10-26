@@ -8,6 +8,7 @@ struct TTDashboard: View {
     @State private var search = ""
     @State private var showNewStory = false
     @State private var showSettings = false
+    @State private var showArchivePhotos = false
 
     var body: some View {
         ZStack {
@@ -42,6 +43,9 @@ struct TTDashboard: View {
         }
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showArchivePhotos) {
+            ArchivePhotoGallery().environmentObject(store)
         }
         .onChange(of: store.section) { _, _ in
             search = ""
@@ -185,6 +189,8 @@ struct TTDashboard: View {
                          active: store.trendFilter == .listas) { store.trendFilter = .listas }
                     chip("En elaboración", number: store.snapshot.trendsElaboracion.count,
                          active: store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
+                    chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
+                         active: false) { showArchivePhotos = true }
                 } else {
                     chip("Listas", number: store.snapshot.news.count,
                          active: store.newsFilter == .listas) { store.newsFilter = .listas }
@@ -196,6 +202,8 @@ struct TTDashboard: View {
                          active: store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
                     chip("Tremending", number: store.snapshot.newsTremending.count,
                          active: store.newsFilter == .tremending) { store.newsFilter = .tremending }
+                    chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
+                         active: false) { showArchivePhotos = true }
                 }
             }
             .padding(.vertical, 2)
