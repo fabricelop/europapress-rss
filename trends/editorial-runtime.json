@@ -5,23 +5,23 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "37b5073e4e9a",
-    "manual-e8739c839576f7acbf1f190c8ac6b69e"
+    "76d87468c3c4",
+    "07f62b021771"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T06:42:00+01:00",
-  "last_completed_at": "2026-10-26T06:50:00+01:00",
-  "updated_at": "2026-10-26T06:50:00+01:00",
+  "last_started_at": "2026-10-26T07:15:00+01:00",
+  "last_completed_at": "2026-10-26T07:20:00+01:00",
+  "updated_at": "2026-10-26T07:20:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1792993326299-manual",
+    "trigger_run_id": "tr-20261026T0715-chat",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -29,13 +29,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1792993326299-manual",
+    "run_id": "tr-20261026T0715-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T06:42:00+01:00",
-    "updated_at": "2026-10-26T06:50:00+01:00",
-    "finished_at": "2026-10-26T06:50:00+01:00",
+    "started_at": "2026-10-26T07:15:00+01:00",
+    "updated_at": "2026-10-26T07:20:00+01:00",
+    "finished_at": "2026-10-26T07:20:00+01:00",
     "current": 2,
     "total": 2,
     "trend_id": null,
@@ -44,9 +44,9 @@
       "attempted": 2,
       "ready": 2,
       "explained": 2,
-      "explanation_groups": 2,
+      "explanation_groups": 1,
       "new_cards": 1,
-      "revisions_updated": 1,
+      "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
@@ -61,118 +61,104 @@
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
       "explanations_verified_under_280": 2,
-      "remates_selected": 2,
+      "remates_selected": 1,
       "remates_omitted": 0,
-      "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 0,
+      "recent_missing_closer_reviewed": 9,
+      "pending_cards_reviewed": 9,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 10,
+      "top10_reviewed": 2,
       "rewrite_pending_remaining": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0.",
+    "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T06:42:00+01:00",
+        "at": "2026-10-26T07:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada: revalidando Lula r1 y Serbia r0 y activando saneamiento de Pendientes."
+        "message": "Inicio de pasada: 2 revisiones activas; revalidando agrupación y activando saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-26T06:43:00+01:00",
+        "at": "2026-10-26T07:16:00+01:00",
         "phase": "verifying",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Releyendo estado autoritativo de Lula"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Releyendo estado autoritativo de Flávio Bolsonaro y Brazil"
       },
       {
-        "at": "2026-10-26T06:44:00+01:00",
+        "at": "2026-10-26T07:16:30+01:00",
         "phase": "investigating",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Resultado verificado con TSE y Reuters: 51,79% frente a 48,21% y cuarto mandato."
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Hecho esencial verificado con TSE y Reuters: Lula 51,79%, Flávio 48,21%; Flávio rechaza conceder y anuncia que pedirá anular el resultado."
       },
       {
-        "at": "2026-10-26T06:44:30+01:00",
+        "at": "2026-10-26T07:17:00+01:00",
         "phase": "drafting",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Redactando explicación factual y comprobando límite de X · 251 caracteres"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Redactando explicación factual agrupada y comprobando límite de X · 253 caracteres"
       },
       {
-        "at": "2026-10-26T06:44:45+01:00",
+        "at": "2026-10-26T07:17:20+01:00",
         "phase": "remate_selection",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Remate nuevo seleccionado tras filtro de originalidad y neutralidad política"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Remate seleccionado tras comparar enfoques y comprobar ausencia de repetición en los últimos 30 remates."
       },
       {
-        "at": "2026-10-26T06:45:00+01:00",
+        "at": "2026-10-26T07:17:40+01:00",
         "phase": "persisting",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Guardando ficha Explicada agrupada"
       },
       {
-        "at": "2026-10-26T06:46:00+01:00",
-        "phase": "verifying",
-        "trend_id": "37b5073e4e9a",
-        "title": "Lula",
-        "message": "Tendencia cerrada y verificada en Explicadas + requests; fuera de la cola"
-      },
-      {
-        "at": "2026-10-26T06:46:20+01:00",
-        "phase": "verifying",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Releyendo estado autoritativo de Serbia"
-      },
-      {
-        "at": "2026-10-26T06:47:00+01:00",
-        "phase": "investigating",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Hecho esencial verificado con Reuters y Euronews: Vučić admite la derrota y proyecta 135-140 escaños para la Lista Estudiantil frente a 105."
-      },
-      {
-        "at": "2026-10-26T06:47:25+01:00",
-        "phase": "drafting",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Redactando explicación factual y comprobando límite de X · 254 caracteres"
-      },
-      {
-        "at": "2026-10-26T06:47:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Remate seleccionado tras filtro de originalidad y neutralidad política"
-      },
-      {
-        "at": "2026-10-26T06:48:00+01:00",
+        "at": "2026-10-26T07:18:05+01:00",
         "phase": "persisting",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Actualizando requests de las dos revisiones"
       },
       {
-        "at": "2026-10-26T06:49:00+01:00",
+        "at": "2026-10-26T07:18:15+01:00",
+        "phase": "persisting",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Retirando las dos revisiones exactas de la cola"
+      },
+      {
+        "at": "2026-10-26T07:18:45+01:00",
         "phase": "verifying",
-        "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-        "title": "Serbia",
-        "message": "Releyendo main y verificando id+revision y texto persistido"
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-26T06:50:00+01:00",
+        "at": "2026-10-26T07:19:00+01:00",
+        "phase": "verifying",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-26T07:19:20+01:00",
+        "phase": "verifying",
+        "trend_id": "76d87468c3c4",
+        "title": "Flávio Bolsonaro / Brazil",
+        "message": "Tendencia agrupada cerrada y verificada; 9 Pendientes recientes revisados y sin remates vacíos."
+      },
+      {
+        "at": "2026-10-26T07:20:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0."
+        "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0."
       }
     ],
     "ratings_snapshot": {
@@ -182,37 +168,46 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "trend_id": "76d87468c3c4",
+        "revision": 0,
+        "candidate_count": 5,
+        "selected_candidate": "c1",
+        "selected_text": "🌶️ Se acabó la papeleta y empezó el papeleo.",
+        "originality_check": "sin colisión en los últimos 30 remates"
+      }
+    ],
     "processed_ids": [
-      "37b5073e4e9a",
-      "manual-e8739c839576f7acbf1f190c8ac6b69e"
+      "76d87468c3c4",
+      "07f62b021771"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "37b5073e4e9a",
-        "revision": 1,
-        "name": "Lula",
+        "id": "76d87468c3c4",
+        "revision": 0,
+        "name": "Flávio Bolsonaro",
         "status": "explained"
       },
       {
-        "id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
+        "id": "07f62b021771",
         "revision": 0,
-        "name": "Serbia",
+        "name": "Brazil",
         "status": "explained"
       }
     ]
   },
-  "run_id": "tr-1792993326299-manual",
+  "run_id": "tr-20261026T0715-chat",
   "summary": {
     "attempted": 2,
     "ready": 2,
     "explained": 2,
-    "explanation_groups": 2,
+    "explanation_groups": 1,
     "new_cards": 1,
-    "revisions_updated": 1,
+    "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
@@ -227,125 +222,111 @@
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
     "explanations_verified_under_280": 2,
-    "remates_selected": 2,
+    "remates_selected": 1,
     "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 0,
+    "recent_missing_closer_reviewed": 9,
+    "pending_cards_reviewed": 9,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 10,
+    "top10_reviewed": 2,
     "rewrite_pending_remaining": 0,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-26T06:42:00+01:00",
+      "at": "2026-10-26T07:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada: revalidando Lula r1 y Serbia r0 y activando saneamiento de Pendientes."
+      "message": "Inicio de pasada: 2 revisiones activas; revalidando agrupación y activando saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-26T06:43:00+01:00",
+      "at": "2026-10-26T07:16:00+01:00",
       "phase": "verifying",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Releyendo estado autoritativo de Lula"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Releyendo estado autoritativo de Flávio Bolsonaro y Brazil"
     },
     {
-      "at": "2026-10-26T06:44:00+01:00",
+      "at": "2026-10-26T07:16:30+01:00",
       "phase": "investigating",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Resultado verificado con TSE y Reuters: 51,79% frente a 48,21% y cuarto mandato."
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Hecho esencial verificado con TSE y Reuters: Lula 51,79%, Flávio 48,21%; Flávio rechaza conceder y anuncia que pedirá anular el resultado."
     },
     {
-      "at": "2026-10-26T06:44:30+01:00",
+      "at": "2026-10-26T07:17:00+01:00",
       "phase": "drafting",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Redactando explicación factual y comprobando límite de X · 251 caracteres"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Redactando explicación factual agrupada y comprobando límite de X · 253 caracteres"
     },
     {
-      "at": "2026-10-26T06:44:45+01:00",
+      "at": "2026-10-26T07:17:20+01:00",
       "phase": "remate_selection",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Remate nuevo seleccionado tras filtro de originalidad y neutralidad política"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Remate seleccionado tras comparar enfoques y comprobar ausencia de repetición en los últimos 30 remates."
     },
     {
-      "at": "2026-10-26T06:45:00+01:00",
+      "at": "2026-10-26T07:17:40+01:00",
       "phase": "persisting",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Guardando ficha Explicada agrupada"
     },
     {
-      "at": "2026-10-26T06:46:00+01:00",
-      "phase": "verifying",
-      "trend_id": "37b5073e4e9a",
-      "title": "Lula",
-      "message": "Tendencia cerrada y verificada en Explicadas + requests; fuera de la cola"
-    },
-    {
-      "at": "2026-10-26T06:46:20+01:00",
-      "phase": "verifying",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Releyendo estado autoritativo de Serbia"
-    },
-    {
-      "at": "2026-10-26T06:47:00+01:00",
-      "phase": "investigating",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Hecho esencial verificado con Reuters y Euronews: Vučić admite la derrota y proyecta 135-140 escaños para la Lista Estudiantil frente a 105."
-    },
-    {
-      "at": "2026-10-26T06:47:25+01:00",
-      "phase": "drafting",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Redactando explicación factual y comprobando límite de X · 254 caracteres"
-    },
-    {
-      "at": "2026-10-26T06:47:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Remate seleccionado tras filtro de originalidad y neutralidad política"
-    },
-    {
-      "at": "2026-10-26T06:48:00+01:00",
+      "at": "2026-10-26T07:18:05+01:00",
       "phase": "persisting",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Guardando ficha Explicada, actualizando requests y retirando revisión de la cola"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Actualizando requests de las dos revisiones"
     },
     {
-      "at": "2026-10-26T06:49:00+01:00",
+      "at": "2026-10-26T07:18:15+01:00",
+      "phase": "persisting",
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Retirando las dos revisiones exactas de la cola"
+    },
+    {
+      "at": "2026-10-26T07:18:45+01:00",
       "phase": "verifying",
-      "trend_id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
-      "title": "Serbia",
-      "message": "Releyendo main y verificando id+revision y texto persistido"
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-26T06:50:00+01:00",
+      "at": "2026-10-26T07:19:00+01:00",
+      "phase": "verifying",
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-26T07:19:20+01:00",
+      "phase": "verifying",
+      "trend_id": "76d87468c3c4",
+      "title": "Flávio Bolsonaro / Brazil",
+      "message": "Tendencia agrupada cerrada y verificada; 9 Pendientes recientes revisados y sin remates vacíos."
+    },
+    {
+      "at": "2026-10-26T07:20:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada: Lula r1 y Serbia r0 verificadas; cola editorial final 0."
+      "message": "TTendencias completada: Flávio Bolsonaro + Brazil agrupadas y verificadas; cola editorial final 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
-    "reason": "Radar vigente; no fue necesaria recaptura.",
-    "captured_at": "2026-10-26T06:10:50+01:00"
+    "reason": "Radar vigente durante la pasada; no fue necesaria recaptura.",
+    "captured_at": "2026-10-26T07:11:15+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-26T06:10:50+01:00",
+    "captured_at": "2026-10-26T07:11:15+01:00",
     "queue_count": 0
   },
   "previous_run_id": "tr-1792993326299-manual",
@@ -356,18 +337,27 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
+  "remate_selections": [
+    {
+      "trend_id": "76d87468c3c4",
+      "revision": 0,
+      "candidate_count": 5,
+      "selected_candidate": "c1",
+      "selected_text": "🌶️ Se acabó la papeleta y empezó el papeleo.",
+      "originality_check": "sin colisión en los últimos 30 remates"
+    }
+  ],
   "final_outcomes": [
     {
-      "id": "37b5073e4e9a",
-      "revision": 1,
-      "name": "Lula",
+      "id": "76d87468c3c4",
+      "revision": 0,
+      "name": "Flávio Bolsonaro",
       "status": "explained"
     },
     {
-      "id": "manual-e8739c839576f7acbf1f190c8ac6b69e",
+      "id": "07f62b021771",
       "revision": 0,
-      "name": "Serbia",
+      "name": "Brazil",
       "status": "explained"
     }
   ]
