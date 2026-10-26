@@ -10,12 +10,16 @@ enum TTTheme {
     static let red = Color(red: 0.39, green: 0.16, blue: 0.21)
     static let yellow = Color(red: 0.38, green: 0.32, blue: 0.12)
     static let green = Color(red: 0.09, green: 0.35, blue: 0.26)
+    static let cardInterior = Color(red: 0.11, green: 0.17, blue: 0.27)
+    static let cardBorder = Color(red: 0.018, green: 0.032, blue: 0.078)
+    static let cardHighlight = Color(red: 0.19, green: 0.29, blue: 0.40)
 }
 
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
     @ObservedObject var github: GitHubEditor
+    @EnvironmentObject private var store: EditorialStore
     @Binding var showSettings: Bool
     @State private var confirm = false
     @State private var intent = "deleted"
@@ -96,11 +100,22 @@ struct EditorialActions: View {
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" : "¿Preparar otra explicación?",
                             isPresented: $confirm, titleVisibility: .visible) {
             Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
+                guard store.beginEditorialAction(project: project, id: editorialID,
+                                                 revision: revision, decision: intent,
+                                                 title: title, rank: rank) else { return }
+                let requestedDecision = intent
+                let requestedID = editorialID
+                let requestedRevision = revision
+                let requestedProject = project
+                let requestedTitle = title
+                let requestedRank = rank
                 Task {
-                    let dispatched = await github.decide(project: project, eventID: editorialID,
-                                       revision: revision, decision: intent, title: title, rank: rank)
-                    outcome = github.notice
-                    if dispatched { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+                    _ = await github.decide(project: requestedProject, eventID: requestedID,
+                                            revision: requestedRevision, decision: requestedDecision,
+                                            title: requestedTitle, rank: requestedRank)
+                    store.completeEditorialAction(project: requestedProject, id: requestedID,
+                                                  revision: requestedRevision,
+                                                  result: github.lastWriteResult, detail: github.notice)
                 }
             }
             Button("Cancelar", role: .cancel) {}
@@ -112,6 +127,10 @@ struct EditorialActions: View {
     private func request(_ action: String) {
         guard github.authenticated else { showSettings = true; return }
         guard !editorialID.isEmpty else { outcome = "Identificador editorial no disponible. Actualiza antes."; return }
+        guard !store.isActionInProgress(project: project, id: editorialID, revision: revision) else {
+            outcome = "La orden ya está registrada y pendiente de confirmación."
+            return
+        }
         intent = action
         confirm = true
     }
@@ -173,6 +192,8 @@ struct EditorialActions: View {
 
 struct NewsSubmissionSheet: View {
     @ObservedObject var github: GitHubEditor
+    let onQueued: () -> Void
+    @EnvironmentObject private var store: EditorialStore
     @Environment(\.dismiss) private var dismiss
     @State private var headline = ""
     @State private var url = ""
@@ -191,15 +212,32 @@ struct NewsSubmissionSheet: View {
                 }
                 Section {
                     Button {
+                        let cleanTitle = headline.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let cleanURL = url.trimmingCharacters(in: .whitespacesAndNewlines)
+                        guard !cleanTitle.isEmpty || !cleanURL.isEmpty else { return }
+                        if !cleanTitle.isEmpty && cleanTitle.count < 5 { return }
+                        if !cleanURL.isEmpty &&
+                            !(URL(string: cleanURL).map { $0.scheme == "https" && $0.host != nil } ?? false) {
+                            return
+                        }
+                        let requestID = UUID().uuidString.lowercased()
+                        sent = true
+                        store.beginManualNews(requestID: requestID, title: cleanTitle, url: cleanURL)
+                        onQueued()
+                        dismiss()
+                        let description = instructions
                         Task {
-                            sent = await github.addNews(title: headline, url: url, instructions: instructions)
+                            _ = await github.addNews(title: cleanTitle, url: cleanURL,
+                                                     instructions: description, requestID: requestID)
+                            store.completeManualNews(requestID: requestID,
+                                                     result: github.lastWriteResult, detail: github.notice)
                         }
                     } label: {
                         Label("Enviar a En elaboración", systemImage: "paperplane.fill")
                     }
                     .disabled(!github.authenticated || github.activeAction != nil || sent)
                     if sent {
-                        Label("Orden recibida por GitHub; falta verificar la persistencia editorial.", systemImage: "checkmark.circle")
+                        Label("En elaboración (provisional). Confirmando con GitHub…", systemImage: "clock.arrow.circlepath")
                             .font(.caption).foregroundStyle(.orange)
                     }
                     if !github.authenticated {
@@ -238,7 +276,7 @@ struct GitHubConnectionSheet: View {
                             .font(.caption).foregroundStyle(TTTheme.muted)
                         Link("Configuración de GitHub Apps",
                              destination: URL(string: "https://github.com/settings/apps")!)
-                        TextField("Client ID (Iv1...)", text: $github.clientID)
+                        TextField("Client ID (Iv23li...)", text: $github.clientID)
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
                             .padding(12).background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
                         Button("Conectar GitHub") { github.beginLogin() }
