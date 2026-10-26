@@ -161,3 +161,41 @@ with tempfile.TemporaryDirectory() as foldername:
     pending=load(folder/"editorial-queue.json")["items"]
     assert any(x["id"]==first[1]["id"] and x["name"]=="Pubill" for x in pending),pending
     print("TT_TOP10_REENTRY_OK: old closure retained, new episode and queue continuity")
+
+
+# Fresh Top-10 explanation older than 48h must become a distinct, image-enabled
+# episode even if its prior revision was grouped. A 47h explanation stays put.
+with tempfile.TemporaryDirectory() as foldername:
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
+    folder=Path(foldername)
+    shutil.copy2(source, folder/"auto_queue_new.py")
+    now=datetime.now(ZoneInfo("Europe/Madrid"))
+    old=(now-timedelta(hours=49)).isoformat(timespec="seconds")
+    recent=(now-timedelta(hours=47)).isoformat(timespec="seconds")
+    put(folder/"recent.json",{
+      "selection_method":"consensus","sources_used":["social-A","social-B"],
+      "items":[{"name":"Tendencia antigua","rank":1},{"name":"Tendencia vigente","rank":2}]})
+    requests=[
+      {"id":"ancient-r0","name":"Tendencia antigua","status":"grouped",
+       "revision":0,"rank":1,"explained_at":old,"explanation":"Texto de ayer"},
+      {"id":"recent-r0","name":"Tendencia vigente","status":"explained",
+       "revision":0,"rank":2,"explained_at":recent,"explanation":"Texto reciente"},
+    ]
+    put(folder/"requests.json",{"requests":requests})
+    put(folder/"telegram-manual-explained.json",{"items":[
+      {"id":r["id"],"name":r["name"],"revision":0,"status":"explained",
+       "explained_at":r["explained_at"],"explanation":r["explanation"]}
+      for r in requests]})
+    put(folder/"prepared.json",{"items":[]})
+    result=subprocess.run([sys.executable,str(folder/"auto_queue_new.py")],
+      cwd=folder,capture_output=True,text=True)
+    assert result.returncode==0,(result.stdout,result.stderr)
+    current=load(folder/"requests.json")["requests"]
+    fresh=[r for r in current if r["name"]=="Tendencia antigua" and r["id"]!="ancient-r0"]
+    assert len(fresh)==1,current
+    assert fresh[0]["status"]=="preparing" and fresh[0]["revision"]==0,fresh
+    assert fresh[0]["with_image"] is True and fresh[0]["ai_image_status"]=="pending",fresh
+    assert len([r for r in current if r["name"]=="Tendencia vigente"])==1,current
+    assert load(folder/"editorial-queue.json")["count"]==1
+    print("TT_TOP10_48H_NEW_AI_EPISODE_OK")
