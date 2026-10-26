@@ -63,7 +63,8 @@ final class GitHubEditor: ObservableObject {
 
     func beginLogin() {
         let id = clientID.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard id.hasPrefix("Iv") && id.count >= 12 && id.count <= 80 &&\n              id.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0 == ".") }) else {
+        guard id.hasPrefix("Iv") && id.count >= 12 && id.count <= 80 &&
+              id.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0 == ".") }) else {
             notice = "Introduce el Client ID de la GitHub App (no es un token secreto)."
             return
         }
