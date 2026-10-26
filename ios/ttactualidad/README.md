@@ -36,3 +36,7 @@ La compilación Xcode se ha verificado en GitHub Actions, incluida la creación 
 - Live Activity: `com.fabricelop.ttactualidad.native.live`
 
 La instalación no modifica ni sustituye TTActualidad web, MiMapaDelTiempo, FabCalendar ni los procesos de TTImages. GitHub es la fuente editorial; no se ha editado el backend ni las automatizaciones existentes.
+
+## Galería de fotografías de archivo
+
+La sección **Fotos archivo** reúne únicamente las fotografías de archivo actualmente vinculadas a noticias y tendencias. Resuelve archivos guardados en `ttittulares/archive-images/` y `trends/archive-images/` de GitHub por identificador y revisión editorial, y utiliza referencias `archive_image` / `fallback_image` del estado vigente. Un archivo ausente se marca como no disponible; nunca se sustituye por una imagen IA. Permite ampliar, abrir el original y copiar la fotografía desde el iPhone. **No descarga ni indexa imágenes IA** de ChatGPT Images, TTImages ni de `generated-images/`. El acceso a ChatGPT Images continúa mediante su botón independiente.
