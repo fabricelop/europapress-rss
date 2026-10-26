@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-26T10:33:00Z",
+  "updated_at": "2026-10-26T10:36:32.407594Z",
   "items": [
     {
       "event_id": "746f0e2617b7",
@@ -108,8 +108,8 @@
       "image_status": "none",
       "image_app_available": false,
       "image_delivery": "none",
-      "archive_image_search_attempted_at": "2026-10-26T09:58:57.718796Z",
-      "fallback_image_search_attempted_at": "2026-10-26T09:58:57.718796Z"
+      "archive_image_search_attempted_at": "2026-10-26T10:36:32.407594Z",
+      "fallback_image_search_attempted_at": "2026-10-26T10:36:32.407594Z"
     },
     {
       "event_id": "67e6453e8e30",
@@ -160,8 +160,8 @@
       "image_pending": false,
       "image_app_available": false,
       "image_delivery": "none",
-      "archive_image_search_attempted_at": "2026-10-26T09:58:57.718796Z",
-      "fallback_image_search_attempted_at": "2026-10-26T09:58:57.718796Z",
+      "archive_image_search_attempted_at": "2026-10-26T10:36:32.407594Z",
+      "fallback_image_search_attempted_at": "2026-10-26T10:36:32.407594Z",
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-26T10:01:00.569Z",
       "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,"
@@ -341,17 +341,35 @@
       "source": "editorial_chat_direct",
       "prepared_at": "2026-10-26T10:33:00Z",
       "with_image": true,
-      "image_mode": "ai_plus_fallback",
-      "image_strategy": "ai_plus_fallback",
+      "image_mode": "archive_only",
+      "image_strategy": "archive_only",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "sensitive_editorial": false,
       "image_status": "none",
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-10-26T10:36:32.407594Z",
+      "fallback_image_search_attempted_at": "2026-10-26T10:36:32.407594Z",
+      "archive_image": {
+        "url": "https://album.mediaset.es/eimg/2026/10/25/pedro-sanchez-acelera-en-plena-precampana-con-un-video-corriendo-con-carlos-cuerpo-todavia-nos-queda_da39-2.png",
+        "source": "www.telecinco.es",
+        "source_url": "https://www.telecinco.es/noticias/espana/20261025/pedro-sanchez-video-viral-corriendo-carlos-cuerpo-precampana_18_020529664.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Pedro Sánchez publica un vídeo corriendo con Carlos Cuerpo y pide «cuatro más»"
+      },
+      "fallback_image": {
+        "url": "https://album.mediaset.es/eimg/2026/10/25/pedro-sanchez-acelera-en-plena-precampana-con-un-video-corriendo-con-carlos-cuerpo-todavia-nos-queda_da39-2.png",
+        "source": "www.telecinco.es",
+        "source_url": "https://www.telecinco.es/noticias/espana/20261025/pedro-sanchez-video-viral-corriendo-carlos-cuerpo-precampana_18_020529664.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Pedro Sánchez publica un vídeo corriendo con Carlos Cuerpo y pide «cuatro más»"
+      }
     }
   ],
   "count": 0,
