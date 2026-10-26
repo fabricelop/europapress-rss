@@ -25,7 +25,9 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .card.tremending{border-left:4px solid #d95f8d}.tremending-tweets{margin-top:10px;color:var(--sub)}.tremending-tweets summary{cursor:pointer;color:#ffbed8;font-weight:700}.tremending-tweets a{display:inline-block;margin:4px 8px 4px 0;padding:7px;border:1px solid var(--stroke);border-radius:9px}
 .cards.top30{display:flex;flex-direction:column;gap:5px}
 .card.trend-top{border-radius:10px;background:#172036}
-.card.trend-top.trend-explained{background:#53252e;border-color:#ba6470}
+.card.trend-top.trend-age-green{background:#174d37;border-color:#43a779}
+.card.trend-top.trend-age-yellow{background:#5c4c1b;border-color:#d3af43}
+.card.trend-top.trend-age-red{background:#54252d;border-color:#c36b74}
 .card.trend-top .pic,.card.trend-top .meta,.card.trend-top h2{display:none}
 .card.trend-top .card-body{padding:10px 11px}
 .card.trend-top .actions{padding-top:7px}
@@ -36,7 +38,9 @@ main{max-width:1100px;margin:auto;padding:0 14px 100px}.toolbar{background:var(-
 .top30-number{font-weight:900;color:#9fb8e5;font-variant-numeric:tabular-nums}
 .top30-name{font-weight:750;line-height:1.25;min-width:0;overflow-wrap:anywhere}
 .top30-side{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:0}.top30-tag{font-size:10px;line-height:1.2;text-transform:uppercase;letter-spacing:.1px;text-align:right;max-width:128px;color:#d9e4f7;overflow-wrap:anywhere}.top30-date{font-size:10px;line-height:1.25;color:#c0cee2;font-variant-numeric:tabular-nums;white-space:nowrap}.trend-explained .top30-date{color:#ffe0e3}
-.trend-explained .top30-tag{color:#ffe5e7}
+.trend-age-green .top30-tag,.trend-age-green .top30-date{color:#d7ffeb}
+.trend-age-yellow .top30-tag,.trend-age-yellow .top30-date{color:#fff3c4}
+.trend-age-red .top30-tag,.trend-age-red .top30-date{color:#ffe1e5}
 .top30-chevron{font-size:13px;text-align:right;color:var(--sub);transition:transform .15s ease}
 .top30-detail[open] .top30-chevron{transform:rotate(180deg)}
 .top30-expanded{padding:0 11px 11px;border-top:1px solid #435171}
@@ -938,6 +942,22 @@ async function pilotSend(item,decision){
   void checkPendingDeletes();
  }catch(e){restoreOptimistic(key,'Orden no aceptada: '+String(e.message||e).slice(0,80))}
 }
+// Colors are based exclusively on the last recorded explanation timestamp.
+function top30AgeBand(explainedAt,now=Date.now()){
+ const at=Date.parse(String(explainedAt||''));
+ if(!Number.isFinite(at))return '';
+ const hours=Math.max(0,now-at);
+ if(hours<12*3600000)return 'trend-age-green';
+ if(hours<=24*3600000)return 'trend-age-yellow';
+ return 'trend-age-red';
+}
+function updateTop30AgeColors(){
+ document.querySelectorAll('.card.trend-top').forEach(out=>{
+  out.classList.remove('trend-age-green','trend-age-yellow','trend-age-red');
+  const band=top30AgeBand(out.dataset.explainedAt);
+  if(band)out.classList.add(band);
+ });
+}
 function compactTop30Card(out,x){
  const body=out.querySelector('.card-body');
  const content=document.createElement('div');content.className='top30-expanded';
@@ -961,7 +981,9 @@ function compactTop30Card(out,x){
  summary.addEventListener('click',()=>{if(detail.open)expandedTop30.delete(key);else expandedTop30.add(key)});
  detail.append(summary,content);out.replaceChildren(detail);
  out.classList.add('trend-top');
- if(x._alreadyExplained)out.classList.add('trend-explained');
+ out.dataset.explainedAt=x.explained_at||'';
+ const ageBand=top30AgeBand(out.dataset.explainedAt);
+ if(ageBand)out.classList.add(ageBand);
  return out;
 }
 function rowCard(x,i){
@@ -1220,6 +1242,9 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)void check
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-state.updated>180000)load()});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void syncListasBadge()});
 window.addEventListener('online',()=>{if(Date.now()-state.updated>60000)load()});
+// Refresh the color when time crosses a 12-hour or 24-hour threshold.
+setInterval(updateTop30AgeColors,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateTop30AgeColors()});
 const app=location.hash.toLowerCase().includes('ttendencias')?'tr':'tti';setApp(app);
 })();
 </script></body></html>
