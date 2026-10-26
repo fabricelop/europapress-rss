@@ -1,0 +1,70 @@
+name: "Mi Mapa v1.0.77 - archivo IPA público estático"
+on:
+  push:
+    branches: [feature/cell-history-tree-v77]
+    paths: ['.github/workflows/mi-mapa-v77-public-static-download.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download and validate the already-tested build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/mi-mapa-77
+          gh run download 40372849990 -R "$GITHUB_REPOSITORY" \
+            --name MiMapaDelTiempo-Sitios-Agil-1.0.77-build78-unsigned \
+            --dir /tmp/mi-mapa-77
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile,plistlib,shutil
+          source=list(Path('/tmp/mi-mapa-77').rglob('*.ipa'))
+          assert len(source)==1
+          with zipfile.ZipFile(source[0]) as z:
+              assert z.testzip() is None
+              names=[n for n in z.namelist() if n.endswith('MiMapaDelTiempo.app/Info.plist')]
+              assert len(names)==1
+              info=plistlib.loads(z.read(names[0]))
+              assert (info['CFBundleIdentifier'],info['CFBundleShortVersionString'],info['CFBundleVersion'])==('es.mimapadeltiempo.appprueba','1.0.77','78')
+          dest=Path('/tmp/mi-mapa-77/MiMapaDelTiempo-1.0.77-build78.ipa')
+          shutil.copyfile(source[0],dest)
+          print('IPA_VALIDATED',dest.name,dest.stat().st_size)
+          PY
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Publish direct download on public main branch
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git checkout -B main origin/main
+            mkdir -p docs/downloads
+            cp /tmp/mi-mapa-77/MiMapaDelTiempo-1.0.77-build78.ipa docs/downloads/
+            git add docs/downloads/MiMapaDelTiempo-1.0.77-build78.ipa
+            if git diff --cached --quiet; then
+              echo "DIRECT_IPA_ALREADY_PUBLISHED"
+              break
+            fi
+            git commit -m "Mi Mapa: make tested v1.0.77 iPhone IPA downloadable without ChatGPT or Actions login"
+            if git push origin HEAD:main; then
+              echo "DIRECT_IPA_PUBLISHED"
+              break
+            fi
+            if test "$attempt" -eq 5; then
+              echo "DIRECT_IPA_GIT_PUSH_FAILED" >&2
+              exit 1
+            fi
+            sleep "$attempt"
+          done
+          echo "DIRECT_URL=https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/docs/downloads/MiMapaDelTiempo-1.0.77-build78.ipa"
+          git ls-tree -r HEAD docs/downloads/MiMapaDelTiempo-1.0.77-build78.ipa
