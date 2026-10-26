@@ -19,7 +19,7 @@ for(const c of cases){
  requests:{requests:[]},manual:{items:[{id:'testid123',name:'Tema de prueba',
  status:'explained',revision:1,explained_at:dt(c.age),
  explanation:'Explicación cerrada'}]},
- mobileDecisions:{items:c.mobile?[{id:'testid123',status:'deleted'}]:[]}}};
+ mobileDecisions:{items:c.mobile?[{id:'testid123',revision:1,status:'deleted',deleted_at:new Date().toISOString()}]:[]}}};
  const ctx=vm.createContext({state,Date,Set,Map,Number,String,console});
  vm.runInContext(code+';var result=trendRows();',ctx);
  assert.equal(ctx.result.length,c.yes?1:0,c.name);
