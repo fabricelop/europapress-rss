@@ -176,16 +176,29 @@ struct TTDashboard: View {
     }
 
     private var subTabs: some View {
-        HStack(spacing: 7) {
-            if store.section == .trends {
-                chip("Top 30", number: store.snapshot.top30.count,
-                     active: store.trendFilter == .top) { store.trendFilter = .top }
-                chip("Listas", number: store.snapshot.trendListas.count,
-                     active: store.trendFilter == .listas) { store.trendFilter = .listas }
-            } else {
-                chip("Listas", number: store.snapshot.news.count, active: true) {}
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 7) {
+                if store.section == .trends {
+                    chip("Top 30", number: store.snapshot.top30.count,
+                         active: store.trendFilter == .top) { store.trendFilter = .top }
+                    chip("Listas", number: store.snapshot.trendListas.count,
+                         active: store.trendFilter == .listas) { store.trendFilter = .listas }
+                    chip("En elaboración", number: store.snapshot.trendsElaboracion.count,
+                         active: store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
+                } else {
+                    chip("Listas", number: store.snapshot.news.count,
+                         active: store.newsFilter == .listas) { store.newsFilter = .listas }
+                    chip("En elaboración", number: store.snapshot.newsElaboracion.count,
+                         active: store.newsFilter == .elaboracion) { store.newsFilter = .elaboracion }
+                    chip("Revisión", number: store.snapshot.newsRevision.count,
+                         active: store.newsFilter == .revision) { store.newsFilter = .revision }
+                    chip("Creciendo", number: store.snapshot.newsCreciendo.count,
+                         active: store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
+                    chip("Tremending", number: store.snapshot.newsTremending.count,
+                         active: store.newsFilter == .tremending) { store.newsFilter = .tremending }
+                }
             }
-            Spacer(minLength: 0)
+            .padding(.vertical, 2)
         }
     }
     private func chip(_ title: String, number: Int, active: Bool, onTap: @escaping () -> Void) -> some View {
@@ -227,7 +240,16 @@ struct TTDashboard: View {
     }
 
     @ViewBuilder private var newsContent: some View {
-        let visible = store.snapshot.news.filter {
+        let category: [NewsItem] = {
+            switch store.newsFilter {
+            case .listas: return store.snapshot.news
+            case .elaboracion: return store.snapshot.newsElaboracion
+            case .revision: return store.snapshot.newsRevision
+            case .creciendo: return store.snapshot.newsCreciendo
+            case .tremending: return store.snapshot.newsTremending
+            }
+        }()
+        let visible = category.filter {
             search.isEmpty || $0.title.localizedCaseInsensitiveContains(search)
                 || $0.text.localizedCaseInsensitiveContains(search)
         }
@@ -238,8 +260,14 @@ struct TTDashboard: View {
     }
 
     @ViewBuilder private var trendsContent: some View {
-        let visible = (store.trendFilter == .top ?
-            store.snapshot.top30 : store.snapshot.trendListas).filter {
+        let category: [TrendItem] = {
+            switch store.trendFilter {
+            case .top: return store.snapshot.top30
+            case .listas: return store.snapshot.trendListas
+            case .elaboracion: return store.snapshot.trendsElaboracion
+            }
+        }()
+        let visible = category.filter {
                 search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                     || $0.explanation.localizedCaseInsensitiveContains(search)
             }
@@ -267,7 +295,7 @@ private struct NewsTile: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 13) {
             HStack(spacing: 8) {
-                Label("LISTA", systemImage: "checkmark.circle.fill")
+                Label(item.status, systemImage: item.status == "LISTA" ? "checkmark.circle.fill" : "clock.fill")
                     .font(.system(size: 10, weight: .bold)).foregroundStyle(TTTheme.teal)
                 if item.sources > 0 { Text("Fuentes: \(item.sources)").foregroundStyle(TTTheme.muted) }
                 Spacer()
@@ -286,7 +314,7 @@ private struct NewsTile: View {
                 .frame(height: 155).frame(maxWidth: .infinity)
                 .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            Text(item.factual.isEmpty ? item.text : item.factual)
+            Text(item.factual.isEmpty ? (item.text.isEmpty ? "Pendiente de explicación editorial." : item.text) : item.factual)
                 .font(.system(size: 14))
                 .lineSpacing(4).foregroundStyle(Color.white.opacity(0.86))
                 .textSelection(.enabled)
