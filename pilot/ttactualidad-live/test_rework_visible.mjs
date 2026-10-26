@@ -73,7 +73,7 @@ for(const path of ['pilot/ttactualidad-live/index.html','docs/ttactualidad/index
   Date,Array,Map,Set,Number,String,console,
   pendingDeletes:new Map([[op.key,op]]),
   removeKey:(p,id)=>p+':'+id,trendClosed:()=>false,
-  currentTop30:x=>x.items||[]
+  currentTop30:x=>x.items||[],trendRowsFor:()=>[]
  });
  vm.runInContext(trendCode+';var topRows=trendRows();',pendingContext);
  assert.equal(pendingContext.topRows[0]._status,'PENDIENTE DE GITHUB',
