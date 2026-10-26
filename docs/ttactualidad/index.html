@@ -599,13 +599,20 @@ function savePending(){
 function removeKey(project,id){return project+':'+id}
 function itemProject(item){return item._kind==='tr'?'ttendencias':'ttittulares'}
 function isTemporarilyRemoved(item){
- if(item._topOnly||item._historical)return false;
- const op=pendingDeletes.get(removeKey(itemProject(item),String(item._id)));
- if(!op||(op.status==='awaiting_github'&&!op.issue_number))return false;
- // Prepare moves a card between sections. Only hide its stale source card:
- // after GitHub confirms PROCESSING/READY, the target card must stay visible.
- if(op.decision==='prepare')return item._status==='CRECIENDO'||item._status==='PROBLEMÁTICA';
- if(op.decision==='rework')return item._status==='EXPLICADA'&&Number(item.revision||0)<=op.revision;
+ if(item._historical)return false;
+ const project=itemProject(item);
+ const name=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
+ const op=pendingDeletes.get(removeKey(project,String(item._id)))||
+   [...pendingDeletes.values()].find(row=>row.project===project&&row.source_tab===state.tab&&
+     row.source_app===state.app&&
+     (String(row.source_id||'')===String(item._id)||
+      (item._topOnly&&name(row.snapshot?.trend_name)===name(item.name||item.title))));
+ if(!op)return false;
+ if(op.decision==='prepare'||op.decision==='rework'){
+   if(op.source_tab!==state.tab||op.source_app!==state.app)return false;
+   return item._topOnly||(op.decision==='prepare'?
+     ['CRECIENDO','PROBLEMÁTICA'].includes(item._status):item._status==='EXPLICADA');
+ }
  return true;
 }
 async function refreshPilotConnection(){
@@ -657,9 +664,11 @@ function pilotConfig(){void pairPilot()}
 function hideOptimistically(item,decision){
  const project=itemProject(item),id=String(item._id),key=removeKey(project,id);
  const snapshot={title:String(item.title||item.canonical_title||id),source_count:item.source_count,
-   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at};
+   sources:item.sources,revision:Number(item.revision||0),last_article_at:item.last_article_at,
+    trend_name:item.name||item.title,trend_rank:Number(item.rank||0)};
  pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),decision,
-  request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending',snapshot});
+  request_id:crypto.randomUUID(),at:Date.now(),lastTry:0,tries:0,status:'sending',snapshot,
+   source_app:state.app,source_tab:state.tab,source_id:String(item._source_id||item._id)});
  savePending();render();
  return key;
 }
@@ -760,9 +769,8 @@ async function checkPendingDeletes(){
   }
  }
  if(changed){savePending();render()}
- if(readyConfirmed&&state.app==='tti'){
-  state.tab='listas';render();showToast('Noticia elaborada: ya está en Listas.');
- }else if(confirmedPrepare)void load(true);
+ if(readyConfirmed&&state.app==='tti')showToast('Noticia elaborada: disponible en Listas sin cambiar de sección.');
+  if(confirmedPrepare)void load(true);
  if(confirmedDelete)showToast('Quitada de Listas: borrado confirmado en GitHub.');
  if(failed)showToast('GitHub no confirmó la acción. La noticia vuelve a su sección anterior.');
 }
@@ -876,9 +884,9 @@ async function sendEmergencyDirect(item,decision){
   const now=Date.now();
   pendingDeletes.set(key,{key,project,id,kind:item._kind,revision:Number(item.revision||0),
    decision,at:now,lastTry:now,tries:1,issue_number:Number(data.number),
-   status:'awaiting_github',snapshot});
+   status:'awaiting_github',snapshot,source_app:state.app,source_tab:state.tab,source_id:String(item._id)});
   savePending();
-  if(decision==='rework'){state.tab='elaboracion';}
+  // Preserve the originating list after fallback submission.
   render();
   showToast('Orden recibida. Verificando el cambio real…');
   schedulePendingChecks();
@@ -908,7 +916,7 @@ async function pilotSend(item,decision){
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador no válido');return}
  const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
- const key=hideOptimistically({...item,_id:event_id},decision),op=pendingDeletes.get(key);
+ const key=hideOptimistically({...item,_source_id:String(item._id),_id:event_id},decision),op=pendingDeletes.get(key);
  try{
   const res=await fetch('/api/decision',{method:'POST',credentials:'same-origin',
    headers:{'Content-Type':'application/json'},
@@ -918,7 +926,7 @@ async function pilotSend(item,decision){
   if(!res.ok||!result.ok)throw Error(result.error||'HTTP '+res.status);
   if(!result.routed){restoreOptimistic(key,'GitHub no recibió la orden.');return}
   op.status='submitted';op.lastTry=Date.now();op.tries=1;savePending();
-  if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}
+  // Preserve the originating list after sending to En elaboración.
   showToast(decision==='prepare'?'Noticia pendiente de confirmación en GitHub.':'Orden enviada. Confirmando cambio editorial en GitHub.');
   schedulePendingChecks();
   void checkPendingDeletes();
@@ -1037,7 +1045,7 @@ function render(){
  $('chips').style.display=state.app==='tti'?'none':'flex';
  $('chips').replaceChildren(...tabsList.map(([key,name])=>{
   const b=document.createElement('button');b.type='button';
-  const count=key==='top'?currentTop30(state.data.recent).length:trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
+  const count=trendRowsFor(key).filter(x=>!isTemporarilyRemoved(x)).length;
   b.textContent=name+' · '+count;b.setAttribute('aria-pressed',String(state.tab===key));
   b.onclick=()=>{state.tab=key;render()};return b
  }));
