@@ -21,7 +21,7 @@ const elements={
 const sandbox={
  URL,URLSearchParams,AbortSignal,crypto,Date,Number,sessionStorage:{
   getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k)},
- pendingDeletes,removeKey:(p,id)=>p+':'+id,
+ pendingDeletes,state:{app:'tti',tab:'listas'},removeKey:(p,id)=>p+':'+id,
  itemProject:item=>item._kind==='tr'?'ttendencias':'ttittulares',
  $:id=>elements[id],savePending(){},render(){},schedulePendingChecks(){},checkPendingDeletes(){},
  showToast:m=>toasts.push(m),
