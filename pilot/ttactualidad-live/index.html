@@ -930,6 +930,29 @@ async function pilotSend(item,decision){
   void checkPendingDeletes();
  }catch(e){restoreOptimistic(key,'Orden no aceptada: '+String(e.message||e).slice(0,80))}
 }
+function compactTop30Card(out,x){
+ const body=out.querySelector('.card-body');
+ const content=document.createElement('div');content.className='top30-expanded';
+ for(const child of [...body.children])if(!child.matches('.meta,h2'))content.append(child);
+ if(!String(x.explanation||'').trim()){
+  const note=document.createElement('p');note.className='fact';
+  note.textContent='Todavía no hay explicación editorial disponible.';
+  content.prepend(note);
+ }
+ const detail=document.createElement('details');detail.className='top30-detail';
+ const key=String(x.name||x.title||x.rank).normalize('NFD').toLocaleLowerCase('es-ES');
+ detail.open=expandedTop30.has(key);
+ const summary=document.createElement('summary');
+ summary.innerHTML='<span class="top30-number">#'+esc(x.rank)+'</span>'+
+  '<span class="top30-name">'+esc(x.name||x.title)+'</span>'+
+  '<span class="top30-tag">'+esc(x._status||'PENDIENTE')+'</span>'+
+  '<span class="top30-chevron" aria-hidden="true">⌄</span>';
+ summary.addEventListener('click',()=>{if(detail.open)expandedTop30.delete(key);else expandedTop30.add(key)});
+ detail.append(summary,content);out.replaceChildren(detail);
+ out.classList.add('trend-top');
+ if(x._alreadyExplained)out.classList.add('trend-explained');
+ return out;
+}
 function rowCard(x,i){
  const d=itemData(x),source=esc(x._status||''),info=[x.rank?'#'+x.rank:null,x.source_count?'Fuentes: '+x.source_count:null,x.sources?.length?'✓ Verificada':null,x.explained_at||x.prepared_at||x.selected_at||x.last_article_at?stamp(x.explained_at||x.prepared_at||x.selected_at||x.last_article_at):null].filter(Boolean);
  const img=isHttp(x.archive_image?.url||x.fallback_image?.url||x.image_url||'');
@@ -996,7 +1019,7 @@ function rowCard(x,i){
   // an older explanation. Requests already in progress are not duplicated.
   if(['EN COLA','EN ELABORACIÓN','PENDIENTE DE GITHUB'].includes(x._status)){
    btn('Volver a elaborar',()=>showToast('Ya está en En elaboración: terminará en Listas y pedirá su imagen IA.'));
-  }else command('Volver a elaborar','rework');
+  }else command(x._alreadyExplained?'Volver a elaborar':Number(x.rank)>10?'Preparar novedad':'Preparar explicación','rework');
   if(d.editorial&&x.explanation){
    btn('Copiar explicación',()=>copyText(d.editorial,'Explicación'));
    link('Publicar en X','https://twitter.com/intent/tweet?text='+encodeURIComponent(d.editorial),true);
@@ -1004,7 +1027,7 @@ function rowCard(x,i){
   }
   // El botón único anterior también cubre la primera elaboración.
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
-  return out
+  return compactTop30Card(out,x);
  }
  if(x._kind==='tremending'){
   out.classList.add('tremending');
