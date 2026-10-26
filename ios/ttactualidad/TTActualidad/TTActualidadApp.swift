@@ -20,6 +20,8 @@ struct TTActualidadApp: App {
                 .onChange(of: scenePhase) { _, newPhase in
                     if newPhase == .active {
                         Task { await store.refresh() }
+                    } else if newPhase == .background {
+                        store.markVisitComplete()
                     }
                 }
         }
