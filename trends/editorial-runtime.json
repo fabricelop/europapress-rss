@@ -43,7 +43,7 @@
     "total": 5,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 5/5 y verificada; cola final 0.",
+    "message": "TTendencias completada 5/5; cola final 0 y sin rewrite_pending.",
     "incident_count": 1,
     "incidents": [
       {
@@ -55,34 +55,6 @@
       }
     ],
     "activity": [
-      {
-        "at": "2026-10-26T22:14:00+01:00",
-        "phase": "verifying",
-        "trend_id": "8cf7dd0d99b2",
-        "title": "lamine yamal",
-        "message": "Releyendo estado autoritativo de lamine yamal r0."
-      },
-      {
-        "at": "2026-10-26T22:14:15+01:00",
-        "phase": "investigating",
-        "trend_id": "8cf7dd0d99b2",
-        "title": "lamine yamal",
-        "message": "Hecho actualizado: premio al mejor jugador joven ya anunciado en la gala."
-      },
-      {
-        "at": "2026-10-26T22:15:20+01:00",
-        "phase": "verifying",
-        "trend_id": "8cf7dd0d99b2",
-        "title": "lamine yamal",
-        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
-      },
-      {
-        "at": "2026-10-26T22:15:35+01:00",
-        "phase": "verifying",
-        "trend_id": "f5d3fb9f85cd",
-        "title": "Ertzaintza",
-        "message": "Releyendo estado autoritativo de Ertzaintza r0."
-      },
       {
         "at": "2026-10-26T22:15:50+01:00",
         "phase": "investigating",
@@ -194,6 +166,34 @@
         "trend_id": null,
         "title": null,
         "message": "TTendencias completada 5/5 y verificada; cola final 0."
+      },
+      {
+        "at": "2026-10-26T22:19:40+01:00",
+        "phase": "verifying",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-26T22:19:50+01:00",
+        "phase": "verifying",
+        "trend_id": "f2764b694a52",
+        "title": "Votar a Sánchez",
+        "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+      },
+      {
+        "at": "2026-10-26T22:20:10+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo cola final y comprobando reexplicaciones pendientes."
+      },
+      {
+        "at": "2026-10-26T22:20:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada 5/5; cola final 0 y sin rewrite_pending."
       }
     ],
     "processed_ids": [
@@ -347,34 +347,6 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T22:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "8cf7dd0d99b2",
-      "title": "lamine yamal",
-      "message": "Releyendo estado autoritativo de lamine yamal r0."
-    },
-    {
-      "at": "2026-10-26T22:14:15+01:00",
-      "phase": "investigating",
-      "trend_id": "8cf7dd0d99b2",
-      "title": "lamine yamal",
-      "message": "Hecho actualizado: premio al mejor jugador joven ya anunciado en la gala."
-    },
-    {
-      "at": "2026-10-26T22:15:20+01:00",
-      "phase": "verifying",
-      "trend_id": "8cf7dd0d99b2",
-      "title": "lamine yamal",
-      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
-    },
-    {
-      "at": "2026-10-26T22:15:35+01:00",
-      "phase": "verifying",
-      "trend_id": "f5d3fb9f85cd",
-      "title": "Ertzaintza",
-      "message": "Releyendo estado autoritativo de Ertzaintza r0."
-    },
-    {
       "at": "2026-10-26T22:15:50+01:00",
       "phase": "investigating",
       "trend_id": "f5d3fb9f85cd",
@@ -485,6 +457,34 @@
       "trend_id": null,
       "title": null,
       "message": "TTendencias completada 5/5 y verificada; cola final 0."
+    },
+    {
+      "at": "2026-10-26T22:19:40+01:00",
+      "phase": "verifying",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-26T22:19:50+01:00",
+      "phase": "verifying",
+      "trend_id": "f2764b694a52",
+      "title": "Votar a Sánchez",
+      "message": "Tendencia cerrada y verificada en Explicadas, requests y cola."
+    },
+    {
+      "at": "2026-10-26T22:20:10+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo cola final y comprobando reexplicaciones pendientes."
+    },
+    {
+      "at": "2026-10-26T22:20:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "TTendencias completada 5/5; cola final 0 y sin rewrite_pending."
     }
   ],
   "partial": false,
@@ -509,36 +509,32 @@
       "id": "8cb95a16f386",
       "name": "Isaac Romero",
       "revision": 0,
-      "selected": "🌶️ Al marcador le bastaron 24 minutos para aprenderse su apellido.",
-      "originality_check": "Sin colisión evidente con los últimos 30 remates revisados."
+      "selected": "🌶️ Al marcador le bastaron 24 minutos para aprenderse su apellido."
     },
     {
       "id": "8cf7dd0d99b2",
       "name": "lamine yamal",
       "revision": 0,
-      "selected": "🌶️ El premio joven ya empieza a parecerle de propiedad.",
-      "originality_check": "Específico del tercer premio joven consecutivo y distinto de los remates recientes del Balón de Oro."
+      "selected": "🌶️ El premio joven ya empieza a parecerle de propiedad."
     },
     {
       "id": "f5d3fb9f85cd",
       "name": "Ertzaintza",
       "revision": 0,
       "selected": null,
-      "no_remate_reason": "Disturbios y violencia; se conserva tratamiento factual."
+      "no_remate_reason": "disturbios y violencia; explicación factual suficiente"
     },
     {
       "id": "be8da289072a",
       "name": "Alexia",
       "revision": 0,
-      "selected": "🌶️ Dos Balones ya tienen sitio; el tercero aún busca peana.",
-      "originality_check": "Referencia específica a sus dos Balones previos; sin repetir el mecanismo de los remates recientes de la gala."
+      "selected": "🌶️ Dos Balones ya tienen sitio; el tercero aún busca peana."
     },
     {
       "id": "f2764b694a52",
       "name": "Votar a Sánchez",
       "revision": 0,
-      "selected": "🌶️ Antes del 29-N, hasta el voto de Page tiene rueda de prensa.",
-      "originality_check": "Sátira política neutral sobre la atribución del voto; sin instrucción electoral."
+      "selected": "🌶️ Antes del 29-N, hasta el voto de Page tiene rueda de prensa."
     }
   ],
   "final_outcomes": [
