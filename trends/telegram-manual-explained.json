@@ -8284,14 +8284,16 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "originated_from_prior_id": "manual-fc4dc003076914aa629c9218fe778240",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Fofana, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Fofana, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-27T00:26:30+01:00",
+  "updated_at": "2026-10-26T23:26:32.364998Z",
   "count": 152
 }
