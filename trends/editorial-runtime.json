@@ -5,22 +5,24 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "5962ab10ebd8"
+    "a4d4b49f82fd",
+    "965aa27693ac",
+    "aa0c8d12686d"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T00:23:00+01:00",
-  "last_completed_at": "2026-10-27T00:28:00+01:00",
-  "updated_at": "2026-10-27T00:28:00+01:00",
+  "last_started_at": "2026-10-27T00:45:00+01:00",
+  "last_completed_at": "2026-10-27T00:54:00+01:00",
+  "updated_at": "2026-10-27T00:54:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793056971292-manual",
+    "trigger_run_id": "tr-chat-20261027T004500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,168 +30,192 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793056971292-manual",
+    "run_id": "tr-chat-20261027T004500+0100",
     "source": "chat",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-10-27T00:23:00+01:00",
-    "updated_at": "2026-10-27T00:28:00+01:00",
-    "finished_at": "2026-10-27T00:28:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-27T00:45:00+01:00",
+    "updated_at": "2026-10-27T00:54:00+01:00",
+    "finished_at": "2026-10-27T00:54:00+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 1/1 · Fofana explicada y verificada; cola editorial vacía.",
-    "incident_count": 0,
-    "incidents": [],
+    "message": "TTendencias completada 3/3 · cola editorial vacía; 4 Pendientes recientes revisadas y saneamiento visual solicitado.",
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-10-27T00:49:00+01:00",
+        "phase": "persisting",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
+        "reason": "Una escritura agrupada del conector fue bloqueada antes de ejecutarse; se reintentó como escrituras idempotentes separadas y se verificó que no había cambios parciales."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-27T00:23:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Preparando pasada editorial · 1 revisión activa; comprobando reexplicaciones y Pendientes recientes."
-      },
-      {
-        "at": "2026-10-27T00:24:00+01:00",
-        "phase": "verifying",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Releyendo estado autoritativo de Fofana."
-      },
-      {
-        "at": "2026-10-27T00:24:15+01:00",
-        "phase": "investigating",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Buscando detonante actual."
-      },
-      {
-        "at": "2026-10-27T00:24:35+01:00",
-        "phase": "investigating",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Contrastando fuentes: Sevilla 2-0 Osasuna y dos asistencias de Fofana."
-      },
-      {
-        "at": "2026-10-27T00:24:50+01:00",
-        "phase": "investigating",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Hecho esencial verificado."
-      },
-      {
-        "at": "2026-10-27T00:25:00+01:00",
-        "phase": "drafting",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-27T00:25:10+01:00",
-        "phase": "drafting",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Comprobando límite de X · 241 caracteres."
-      },
-      {
-        "at": "2026-10-27T00:25:20+01:00",
-        "phase": "remate_selection",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Evaluando candidatos de remate y originalidad frente a ratings recientes."
-      },
-      {
-        "at": "2026-10-27T00:25:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Remate seleccionado."
-      },
-      {
-        "at": "2026-10-27T00:26:00+01:00",
+        "at": "2026-10-27T00:49:20+01:00",
         "phase": "persisting",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-27T00:26:35+01:00",
-        "phase": "persisting",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "message": "Actualizando requests."
-      },
-      {
-        "at": "2026-10-27T00:26:50+01:00",
-        "phase": "persisting",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
         "message": "Retirando revisión de la cola."
       },
       {
-        "at": "2026-10-27T00:27:00+01:00",
+        "at": "2026-10-27T00:49:30+01:00",
         "phase": "verifying",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
         "message": "Releyendo main."
       },
       {
-        "at": "2026-10-27T00:27:15+01:00",
+        "at": "2026-10-27T00:49:40+01:00",
         "phase": "verifying",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
         "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-27T00:27:25+01:00",
+        "at": "2026-10-27T00:49:50+01:00",
         "phase": "verifying",
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
         "message": "Tendencia cerrada y verificada."
       },
       {
-        "at": "2026-10-27T00:27:35+01:00",
+        "at": "2026-10-27T00:50:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 2 tarjetas recientes; ambas con remate y capa IA pendiente."
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Releyendo estado autoritativo de Fabián."
       },
       {
-        "at": "2026-10-27T00:27:45+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Auditoría final · cola 0, requests activas 0 y rewrite_pending 0."
+        "at": "2026-10-27T00:50:10+01:00",
+        "phase": "investigating",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Buscando detonante actual."
       },
       {
-        "at": "2026-10-27T00:28:00+01:00",
+        "at": "2026-10-27T00:50:25+01:00",
+        "phase": "investigating",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Contrastando clasificación final y doblete Champions-Mundial."
+      },
+      {
+        "at": "2026-10-27T00:50:35+01:00",
+        "phase": "investigating",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Hecho esencial verificado."
+      },
+      {
+        "at": "2026-10-27T00:50:45+01:00",
+        "phase": "drafting",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Redactando explicación factual y comprobando límite de X · 224 caracteres."
+      },
+      {
+        "at": "2026-10-27T00:50:55+01:00",
+        "phase": "remate_selection",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Evaluando candidatos con ratings; remate seleccionado."
+      },
+      {
+        "at": "2026-10-27T00:51:00+01:00",
+        "phase": "persisting",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-27T00:51:10+01:00",
+        "phase": "persisting",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Actualizando requests."
+      },
+      {
+        "at": "2026-10-27T00:51:20+01:00",
+        "phase": "persisting",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Retirando revisión de la cola."
+      },
+      {
+        "at": "2026-10-27T00:51:30+01:00",
+        "phase": "verifying",
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "message": "Tendencia cerrada y verificada."
+      },
+      {
+        "at": "2026-10-27T00:51:40+01:00",
+        "phase": "verifying",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "message": "Releyendo estado autoritativo de Messi."
+      },
+      {
+        "at": "2026-10-27T00:51:50+01:00",
+        "phase": "investigating",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "message": "Buscando detonante actual."
+      },
+      {
+        "at": "2026-10-27T00:52:00+01:00",
+        "phase": "investigating",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "message": "Contrastando clasificación final y contexto de temporada."
+      },
+      {
+        "at": "2026-10-27T00:52:10+01:00",
+        "phase": "drafting",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "message": "Redactando explicación factual y comprobando límite de X · 260 caracteres."
+      },
+      {
+        "at": "2026-10-27T00:52:20+01:00",
+        "phase": "remate_selection",
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "message": "Evaluando candidatos con ratings; remate seleccionado."
+      },
+      {
+        "at": "2026-10-27T00:54:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · Fofana explicada y verificada; cola editorial vacía."
+        "message": "TTendencias completada 3/3 · cola editorial vacía; 4 Pendientes recientes revisadas y saneamiento visual solicitado."
       }
     ],
     "processed_ids": [
-      "5962ab10ebd8"
+      "a4d4b49f82fd",
+      "965aa27693ac",
+      "aa0c8d12686d"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "summary": {
-      "attempted": 1,
+      "attempted": 3,
       "ready": 0,
-      "explained": 1,
-      "final_resolved": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "explained": 3,
+      "final_resolved": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 3,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -197,15 +223,15 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 2,
+      "pending_cards_reviewed": 4,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
-      "incidents": 0
+      "incidents": 1
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
@@ -215,28 +241,40 @@
     },
     "remate_selections": [
       {
-        "trend_id": "5962ab10ebd8",
-        "title": "Fofana",
-        "selected": "🌶️ Isaac y Correia pusieron la firma; Fofana redactó los dos goles.",
+        "trend_id": "a4d4b49f82fd",
+        "title": "Harry Kane",
+        "selected": "🌶️ La noche empezó con premio de delantero y terminó con el balón entero.",
+        "originality": "checked_recent_ratings"
+      },
+      {
+        "trend_id": "965aa27693ac",
+        "title": "Fabián",
+        "selected": "🌶️ Ganó casi todo; la votación le dejó la décima silla.",
+        "originality": "checked_recent_ratings"
+      },
+      {
+        "trend_id": "aa0c8d12686d",
+        "title": "Messi",
+        "selected": "🌶️ El calendario sumó años; la lista siguió guardándole sitio.",
         "originality": "checked_recent_ratings"
       }
     ]
   },
-  "run_id": "tr-1793056971292-manual",
+  "run_id": "tr-chat-20261027T004500+0100",
   "summary": {
-    "attempted": 1,
+    "attempted": 3,
     "ready": 0,
-    "explained": 1,
-    "final_resolved": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "explained": 3,
+    "final_resolved": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
+    "revisions_updated": 3,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 3,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -244,142 +282,156 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 3,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 2,
+    "pending_cards_reviewed": 4,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
-    "incidents": 0
+    "incidents": 1
   },
   "activity": [
     {
-      "at": "2026-10-27T00:23:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Preparando pasada editorial · 1 revisión activa; comprobando reexplicaciones y Pendientes recientes."
-    },
-    {
-      "at": "2026-10-27T00:24:00+01:00",
-      "phase": "verifying",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Releyendo estado autoritativo de Fofana."
-    },
-    {
-      "at": "2026-10-27T00:24:15+01:00",
-      "phase": "investigating",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Buscando detonante actual."
-    },
-    {
-      "at": "2026-10-27T00:24:35+01:00",
-      "phase": "investigating",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Contrastando fuentes: Sevilla 2-0 Osasuna y dos asistencias de Fofana."
-    },
-    {
-      "at": "2026-10-27T00:24:50+01:00",
-      "phase": "investigating",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Hecho esencial verificado."
-    },
-    {
-      "at": "2026-10-27T00:25:00+01:00",
-      "phase": "drafting",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Redactando explicación factual."
-    },
-    {
-      "at": "2026-10-27T00:25:10+01:00",
-      "phase": "drafting",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Comprobando límite de X · 241 caracteres."
-    },
-    {
-      "at": "2026-10-27T00:25:20+01:00",
-      "phase": "remate_selection",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Evaluando candidatos de remate y originalidad frente a ratings recientes."
-    },
-    {
-      "at": "2026-10-27T00:25:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Remate seleccionado."
-    },
-    {
-      "at": "2026-10-27T00:26:00+01:00",
+      "at": "2026-10-27T00:49:20+01:00",
       "phase": "persisting",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Guardando ficha Explicada."
-    },
-    {
-      "at": "2026-10-27T00:26:35+01:00",
-      "phase": "persisting",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "message": "Actualizando requests."
-    },
-    {
-      "at": "2026-10-27T00:26:50+01:00",
-      "phase": "persisting",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
+      "trend_id": "a4d4b49f82fd",
+      "title": "Harry Kane",
       "message": "Retirando revisión de la cola."
     },
     {
-      "at": "2026-10-27T00:27:00+01:00",
+      "at": "2026-10-27T00:49:30+01:00",
       "phase": "verifying",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
+      "trend_id": "a4d4b49f82fd",
+      "title": "Harry Kane",
       "message": "Releyendo main."
     },
     {
-      "at": "2026-10-27T00:27:15+01:00",
+      "at": "2026-10-27T00:49:40+01:00",
       "phase": "verifying",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
+      "trend_id": "a4d4b49f82fd",
+      "title": "Harry Kane",
       "message": "Verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-27T00:27:25+01:00",
+      "at": "2026-10-27T00:49:50+01:00",
       "phase": "verifying",
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
+      "trend_id": "a4d4b49f82fd",
+      "title": "Harry Kane",
       "message": "Tendencia cerrada y verificada."
     },
     {
-      "at": "2026-10-27T00:27:35+01:00",
+      "at": "2026-10-27T00:50:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Revisando Pendientes · 2 tarjetas recientes; ambas con remate y capa IA pendiente."
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Releyendo estado autoritativo de Fabián."
     },
     {
-      "at": "2026-10-27T00:27:45+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Auditoría final · cola 0, requests activas 0 y rewrite_pending 0."
+      "at": "2026-10-27T00:50:10+01:00",
+      "phase": "investigating",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Buscando detonante actual."
     },
     {
-      "at": "2026-10-27T00:28:00+01:00",
+      "at": "2026-10-27T00:50:25+01:00",
+      "phase": "investigating",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Contrastando clasificación final y doblete Champions-Mundial."
+    },
+    {
+      "at": "2026-10-27T00:50:35+01:00",
+      "phase": "investigating",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Hecho esencial verificado."
+    },
+    {
+      "at": "2026-10-27T00:50:45+01:00",
+      "phase": "drafting",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Redactando explicación factual y comprobando límite de X · 224 caracteres."
+    },
+    {
+      "at": "2026-10-27T00:50:55+01:00",
+      "phase": "remate_selection",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Evaluando candidatos con ratings; remate seleccionado."
+    },
+    {
+      "at": "2026-10-27T00:51:00+01:00",
+      "phase": "persisting",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Guardando ficha Explicada."
+    },
+    {
+      "at": "2026-10-27T00:51:10+01:00",
+      "phase": "persisting",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Actualizando requests."
+    },
+    {
+      "at": "2026-10-27T00:51:20+01:00",
+      "phase": "persisting",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Retirando revisión de la cola."
+    },
+    {
+      "at": "2026-10-27T00:51:30+01:00",
+      "phase": "verifying",
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "message": "Tendencia cerrada y verificada."
+    },
+    {
+      "at": "2026-10-27T00:51:40+01:00",
+      "phase": "verifying",
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "message": "Releyendo estado autoritativo de Messi."
+    },
+    {
+      "at": "2026-10-27T00:51:50+01:00",
+      "phase": "investigating",
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "message": "Buscando detonante actual."
+    },
+    {
+      "at": "2026-10-27T00:52:00+01:00",
+      "phase": "investigating",
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "message": "Contrastando clasificación final y contexto de temporada."
+    },
+    {
+      "at": "2026-10-27T00:52:10+01:00",
+      "phase": "drafting",
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "message": "Redactando explicación factual y comprobando límite de X · 260 caracteres."
+    },
+    {
+      "at": "2026-10-27T00:52:20+01:00",
+      "phase": "remate_selection",
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "message": "Evaluando candidatos con ratings; remate seleccionado."
+    },
+    {
+      "at": "2026-10-27T00:54:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · Fofana explicada y verificada; cola editorial vacía."
+      "message": "TTendencias completada 3/3 · cola editorial vacía; 4 Pendientes recientes revisadas y saneamiento visual solicitado."
     }
   ],
   "partial": false,
@@ -401,9 +453,21 @@
   },
   "remate_selections": [
     {
-      "trend_id": "5962ab10ebd8",
-      "title": "Fofana",
-      "selected": "🌶️ Isaac y Correia pusieron la firma; Fofana redactó los dos goles.",
+      "trend_id": "a4d4b49f82fd",
+      "title": "Harry Kane",
+      "selected": "🌶️ La noche empezó con premio de delantero y terminó con el balón entero.",
+      "originality": "checked_recent_ratings"
+    },
+    {
+      "trend_id": "965aa27693ac",
+      "title": "Fabián",
+      "selected": "🌶️ Ganó casi todo; la votación le dejó la décima silla.",
+      "originality": "checked_recent_ratings"
+    },
+    {
+      "trend_id": "aa0c8d12686d",
+      "title": "Messi",
+      "selected": "🌶️ El calendario sumó años; la lista siguió guardándole sitio.",
       "originality": "checked_recent_ratings"
     }
   ],
@@ -416,5 +480,5 @@
       "verified": true
     }
   ],
-  "pending_delivery_count": 1
+  "pending_delivery_count": 4
 }
