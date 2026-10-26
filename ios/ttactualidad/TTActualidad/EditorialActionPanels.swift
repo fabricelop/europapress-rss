@@ -235,7 +235,7 @@ struct NewsSubmissionSheet: View {
                     } label: {
                         Label("Enviar a En elaboración", systemImage: "paperplane.fill")
                     }
-                    .disabled(!github.authenticated || github.activeAction != nil || sent)
+                    .disabled(!github.authenticated || sent)
                     if sent {
                         Label("En elaboración (provisional). Confirmando con GitHub…", systemImage: "clock.arrow.circlepath")
                             .font(.caption).foregroundStyle(.orange)
