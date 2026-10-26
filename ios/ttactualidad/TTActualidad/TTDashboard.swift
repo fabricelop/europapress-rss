@@ -28,6 +28,7 @@ struct TTDashboard: View {
                         counters
                         if store.section == .news && !showCombinedListas { sourceCounters }
                         connectedLabel
+                        if !store.actionMessage.isEmpty { editorialActionBanner }
                         subTabs
                         searchField
                         if showCombinedListas { combinedListasContent }
@@ -43,7 +44,14 @@ struct TTDashboard: View {
         }
         .preferredColorScheme(.dark)
         .sheet(isPresented: $showNewStory) {
-            NewsSubmissionSheet(github: github).presentationDetents([.large])
+            NewsSubmissionSheet(github: github, onQueued: {
+                showCombinedListas = false
+                store.section = .news
+                store.newsFilter = .elaboracion
+                search = ""
+            })
+            .environmentObject(store)
+            .presentationDetents([.large])
         }
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
@@ -215,6 +223,24 @@ struct TTDashboard: View {
         .padding(.horizontal, 11).padding(.vertical, 10)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
         .accessibilityLabel("Radar: noticias con una fuente y dos fuentes, variación respecto al radar anterior")
+    }
+
+    private var editorialActionBanner: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: store.actionIsError ?
+                  "exclamationmark.triangle.fill" : "arrow.triangle.2.circlepath.circle.fill")
+                .font(.system(size: 14))
+                .foregroundStyle(store.actionIsError ? Color.orange : TTTheme.teal)
+            Text(store.actionMessage)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(Color.white.opacity(0.9))
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 11)
+        .background(TTTheme.cardInterior, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(TTTheme.cardBorder, lineWidth: 1.5))
     }
 
     private var connectedLabel: some View {
@@ -415,46 +441,94 @@ struct TTDashboard: View {
     }
 }
 
+// Compact by default. Expand only the chosen story: no long headlines
+// force all other stories off screen, and no editorial buttons are removed.
 private struct NewsTile: View {
     let item: NewsItem
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
-    var body: some View {
-        VStack(alignment: .leading, spacing: 13) {
-            HStack(spacing: 8) {
-                Label(item.status, systemImage: item.status == "LISTA" ? "checkmark.circle.fill" : "clock.fill")
-                    .font(.system(size: 10, weight: .bold)).foregroundStyle(TTTheme.teal)
-                if item.sources > 0 { Text("Fuentes: \(item.sources)").foregroundStyle(TTTheme.muted) }
-                Spacer()
-                if let date = item.publishedAt {
-                    Text(date, format: .dateTime.day().month().hour().minute())
-                }
-            }
-            .font(.system(size: 10))
-            Text(item.title)
-                .font(.system(size: 19, weight: .bold, design: .rounded))
-                .fixedSize(horizontal: false, vertical: true)
-            if let image = item.imageURL {
-                AsyncImage(url: image) { picture in picture.resizable().scaledToFill() } placeholder: {
-                    RoundedRectangle(cornerRadius: 10).fill(TTTheme.panel).overlay(ProgressView())
-                }
-                .frame(height: 155).frame(maxWidth: .infinity)
-                .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-            Text(item.factual.isEmpty ? (item.text.isEmpty ? "Pendiente de explicación editorial." : item.text) : item.factual)
-                .font(.system(size: 14))
-                .lineSpacing(4).foregroundStyle(Color.white.opacity(0.86))
-                .textSelection(.enabled)
-            if !item.closer.isEmpty {
-                Text(item.closer).font(.subheadline.weight(.bold))
-                    .foregroundStyle(Color(red: 1, green: 0.80, blue: 0.55))
-            }
-            Rectangle().fill(Color.white.opacity(0.1)).frame(height: 1)
-            EditorialActions(news: item, github: github, showSettings: $settings)
+    @State private var expanded = false
+
+    private var accent: Color {
+        switch item.status {
+        case "LISTA": return TTTheme.teal
+        case "REVISIÓN": return .orange
+        case "CRECIENDO": return TTTheme.blue
+        default: return TTTheme.muted
         }
-        .padding(15)
-        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 18))
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(TTTheme.muted.opacity(0.25)))
+    }
+
+    var body: some View {
+        DisclosureGroup(isExpanded: $expanded) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 9) {
+                    Label(item.status, systemImage: item.status == "LISTA" ?
+                          "checkmark.seal.fill" : "clock.arrow.circlepath")
+                        .foregroundStyle(accent)
+                    if item.sources > 0 {
+                        Label("\(item.sources) fuentes", systemImage: "link")
+                            .foregroundStyle(TTTheme.muted)
+                    }
+                    Spacer(minLength: 0)
+                    if let date = item.publishedAt {
+                        Text(date, format: .dateTime.day().month().hour().minute())
+                            .foregroundStyle(TTTheme.muted)
+                    }
+                }
+                .font(.system(size: 10, weight: .semibold))
+                if let image = item.imageURL {
+                    AsyncImage(url: image) { picture in
+                        picture.resizable().scaledToFill()
+                    } placeholder: {
+                        RoundedRectangle(cornerRadius: 10).fill(TTTheme.cardInterior)
+                            .overlay(ProgressView().tint(TTTheme.teal))
+                    }
+                    .frame(height: 145).frame(maxWidth: .infinity)
+                    .clipped().clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Label("Sin fotografía de archivo", systemImage: "photo")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
+                }
+                Text(item.factual.isEmpty ?
+                     (item.text.isEmpty ? "Pendiente de explicación editorial." : item.text) :
+                     item.factual)
+                    .font(.system(size: 14)).lineSpacing(3)
+                    .foregroundStyle(Color.white.opacity(0.88))
+                    .textSelection(.enabled)
+                if !item.closer.isEmpty {
+                    Text(item.closer)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Color(red: 1, green: 0.80, blue: 0.55))
+                }
+                Rectangle().fill(Color.white.opacity(0.09)).frame(height: 1)
+                EditorialActions(news: item, github: github, showSettings: $settings)
+            }
+            .padding(.top, 13)
+        } label: {
+            HStack(alignment: .top, spacing: 9) {
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(accent)
+                    .frame(width: 3, height: 33)
+                Text(item.title)
+                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.white)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(minHeight: 36)
+        }
+        .tint(TTTheme.muted)
+        .padding(.horizontal, 13).padding(.vertical, 11)
+        .background(
+            LinearGradient(colors: [TTTheme.cardHighlight.opacity(0.7),
+                                    TTTheme.cardInterior],
+                           startPoint: .topLeading, endPoint: .bottomTrailing),
+            in: RoundedRectangle(cornerRadius: 14)
+        )
+        .overlay(RoundedRectangle(cornerRadius: 14)
+                    .stroke(TTTheme.cardBorder, lineWidth: 1.8))
+        .shadow(color: .black.opacity(0.18), radius: 8, y: 3)
     }
 }
 
@@ -463,21 +537,14 @@ private struct TrendTile: View {
     let showRank: Bool
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
+    @State private var expanded = false
 
-    private var ageColor: Color {
+    private var accent: Color {
         switch item.ageBand() {
-        case 1: return TTTheme.green
-        case 2: return TTTheme.yellow
-        case 3: return TTTheme.red
-        default: return TTTheme.panel
-        }
-    }
-    private var outline: Color {
-        switch item.ageBand() {
-        case 1: return TTTheme.teal.opacity(0.7)
-        case 2: return .yellow.opacity(0.65)
-        case 3: return .red.opacity(0.6)
-        default: return Color.white.opacity(0.16)
+        case 1: return TTTheme.teal
+        case 2: return Color(red: 0.98, green: 0.79, blue: 0.40)
+        case 3: return Color(red: 1.0, green: 0.54, blue: 0.54)
+        default: return TTTheme.blue
         }
     }
 
@@ -492,11 +559,11 @@ private struct TrendTile: View {
     }
 
     var body: some View {
-        DisclosureGroup {
-            VStack(alignment: .leading, spacing: 10) {
+        DisclosureGroup(isExpanded: $expanded) {
+            VStack(alignment: .leading, spacing: 11) {
                 HStack {
                     Text(item.status)
-                        .font(.caption2.weight(.bold)).foregroundStyle(TTTheme.muted)
+                        .font(.caption2.weight(.semibold)).foregroundStyle(accent)
                     Spacer()
                     if let date = item.lastExplained {
                         Text(date, format: .dateTime.day().month().hour().minute())
@@ -509,11 +576,14 @@ private struct TrendTile: View {
                 } else {
                     Text(item.explanation)
                         .font(.system(size: 14)).lineSpacing(3)
+                        .foregroundStyle(Color.white.opacity(0.9))
                         .textSelection(.enabled)
                 }
                 if let image = item.imageURL {
-                    AsyncImage(url: image) { picture in picture.resizable().scaledToFit() } placeholder: {
-                        ProgressView()
+                    AsyncImage(url: image) { picture in
+                        picture.resizable().scaledToFit()
+                    } placeholder: {
+                        ProgressView().tint(TTTheme.teal)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 } else {
@@ -522,18 +592,19 @@ private struct TrendTile: View {
                 }
                 EditorialActions(trend: item, github: github, showSettings: $settings)
             }
-            .padding(.top, 9)
+            .padding(.top, 12)
         } label: {
-            HStack(spacing: 5) {
+            HStack(spacing: 6) {
                 if showRank {
                     Text("#\(item.rank)")
                         .font(.system(size: 12, weight: .heavy, design: .rounded))
-                        .monospacedDigit().foregroundStyle(TTTheme.blue)
-                        .frame(width: 28, alignment: .leading)
+                        .foregroundStyle(accent).monospacedDigit()
+                        .frame(width: 29, alignment: .leading)
                 }
                 Text(item.name)
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
-                    .lineLimit(1).minimumScaleFactor(0.78)
+                    .foregroundStyle(.white)
+                    .lineLimit(1).minimumScaleFactor(0.8)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 if showRank && item.rankDelta != 0 {
                     Text(item.rankDelta > 0 ? "↑\(item.rankDelta)" : "↓\(abs(item.rankDelta))")
@@ -541,23 +612,29 @@ private struct TrendTile: View {
                         .foregroundStyle(item.rankDelta > 0 ? TTTheme.teal : Color.orange)
                 }
                 Text(shortStatus)
-                    .font(.system(size: 9, weight: .heavy))
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(accent)
                     .lineLimit(1)
-                    .foregroundStyle(.white.opacity(0.84))
-                    .frame(width: 50, alignment: .trailing)
+                    .frame(width: 49, alignment: .trailing)
                 if let date = item.lastExplained {
                     Text(date, format: .dateTime.hour().minute())
                         .font(.system(size: 9, weight: .medium, design: .rounded))
                         .monospacedDigit()
-                        .foregroundStyle(.white.opacity(0.65))
+                        .foregroundStyle(TTTheme.muted)
                         .frame(width: 35, alignment: .trailing)
                 }
             }
+            .frame(minHeight: 23)
         }
         .tint(TTTheme.muted)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
-        .background(ageColor, in: RoundedRectangle(cornerRadius: 10))
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(outline.opacity(0.7)))
+        .padding(.horizontal, 10).padding(.vertical, 7)
+        .background(
+            LinearGradient(colors: [accent.opacity(0.18),
+                                    TTTheme.cardInterior],
+                           startPoint: .topLeading, endPoint: .bottomTrailing),
+            in: RoundedRectangle(cornerRadius: 10)
+        )
+        .overlay(RoundedRectangle(cornerRadius: 10)
+                    .stroke(TTTheme.cardBorder, lineWidth: 1.6))
     }
 }
