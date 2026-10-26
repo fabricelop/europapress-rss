@@ -50,8 +50,27 @@ for(const path of ['docs/ttactualidad/index.html','pilot/ttactualidad-live/index
   path+': rows must expand to show explanation and controls');
  assert(html.includes("summary.addEventListener('click'")&&html.includes('expandedTop30'),
   path+': expanded row state must persist across live refreshes');
- assert(html.includes('out.classList.add(\'trend-explained\')'),
-  path+': explained rows require red styling');
+ assert(html.includes("if(ageBand)out.classList.add(ageBand)")&&
+        html.includes('out.dataset.explainedAt=x.explained_at'),
+  path+': each row must color by its own explanation timestamp');
+ for(const band of ['green','yellow','red']){
+  assert(html.includes('.card.trend-top.trend-age-'+band),
+   path+': missing age-dependent background '+band);
+ }
+ assert(html.includes('setInterval(updateTop30AgeColors,60000)'),
+  path+': colors should update when the 12h and 24h boundary is crossed');
+ const ageCode=pick('function top30AgeBand(explainedAt,now=Date.now()){',
+                    'function updateTop30AgeColors(){');
+ const top30AgeBand=new Function(ageCode+'return top30AgeBand;')();
+ const now=Date.parse('2026-10-26T18:00:00.000Z');
+ const ago=milliseconds=>new Date(now-milliseconds).toISOString();
+ assert.equal(top30AgeBand('',now),'','not explained = neutral background');
+ assert.equal(top30AgeBand('invalid-date',now),'','invalid date = neutral');
+ assert.equal(top30AgeBand(ago(11*3600000),now),'trend-age-green');
+ assert.equal(top30AgeBand(ago(12*3600000-1),now),'trend-age-green','less than 12h green');
+ assert.equal(top30AgeBand(ago(12*3600000),now),'trend-age-yellow','12h exactly yellow');
+ assert.equal(top30AgeBand(ago(24*3600000),now),'trend-age-yellow','24h exactly yellow');
+ assert.equal(top30AgeBand(ago(24*3600000+1),now),'trend-age-red','over 24h red');
  assert(html.includes("state.tab==='top'||!isTemporarilyRemoved(x)"),
   path+': pending editorial actions must never reduce Top 30 ranking');
  assert(html.includes("explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:''"),
