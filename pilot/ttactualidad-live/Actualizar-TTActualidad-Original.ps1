@@ -98,7 +98,9 @@ try {
                            'disponible en Listas sin cambiar de',
                            'function compactTop30Card(out,x)',
                            '.cards.top30{display:flex;flex-direction:column',
-                           'trend-explained','class="top30-date"')) {
+                           'trend-explained','class="top30-date"',
+                           '.toolbar.tti-compact{display:grid',
+                           "state.tab=app==='tr'?'top':'listas'")) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
     }
     Ensure (-not $html.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) (
@@ -151,6 +153,8 @@ try {
                 $remote.Contains('.cards.top30{display:flex;flex-direction:column') -and
                 $remote.Contains('trend-explained') -and
                 $remote.Contains('class="top30-date"') -and
+                $remote.Contains('.toolbar.tti-compact{display:grid') -and
+                $remote.Contains("state.tab=app==='tr'?'top':'listas'") -and
                 -not $remote.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) {
                 $valid = $true
                 break
