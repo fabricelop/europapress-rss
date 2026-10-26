@@ -166,7 +166,71 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
-    // 204 means "accepted by GitHub", NOT "the editorial action has been persisted".
+    // HTTP 204 is only a transport acknowledgement. Verify the committed state.
+    private func readMainJSON(_ path: String) async throws -> [String: Any] {
+        var url = URLComponents(string: "https://api.github.com/repos/fabricelop/europapress-rss/contents/" + path)!
+        url.queryItems = [URLQueryItem(name: "ref", value: "main")]
+        var request = URLRequest(url: url.url!, cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 20)
+        request.setValue("application/vnd.github.raw+json", forHTTPHeaderField: "Accept")
+        request.setValue("Bearer " + (try await authorizedToken()), forHTTPHeaderField: "Authorization")
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+            throw GitHubError.message("No se pudo leer la confirmación de GitHub.")
+        }
+        guard let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any] else {
+            throw GitHubError.message("Confirmación de GitHub malformada.")
+        }
+        return object
+    }
+
+    private func actionReceipt(_ requestID: String) async throws -> String? {
+        let doc = try await readMainJSON("pilot/ttactualidad-action-receipts.json")
+        let receipt = (doc["items"] as? [[String: Any]])?.first {
+            ($0["request_id"] as? String) == requestID
+        }
+        return receipt?["status"] as? String
+    }
+
+    private func manualNewsPersisted(_ requestID: String) async throws -> Bool {
+        let eventID = "manual-" + requestID
+        for path in ["ttittulares/editorial-queue.json",
+                     "telegram/editorial-processing.json", "ttittulares/prepared.json"] {
+            let doc = try await readMainJSON(path)
+            let rows = doc["items"] as? [[String: Any]] ?? []
+            if rows.contains(where: { ($0["event_id"] as? String) == eventID }) { return true }
+        }
+        return false
+    }
+
+    private func confirmPersistence(event: String, requestID: String, label: String) async -> Bool {
+        notice = "GitHub recibió «\(label)»; verificando el estado persistido…"
+        // Slow GitHub Actions start is not treated as success or failure.
+        for attempt in 0..<22 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(4)) }
+            do {
+                if event == "ttactualidad_manual_news_v1" {
+                    if try await manualNewsPersisted(requestID) {
+                        notice = "Verificado en GitHub: noticia añadida a En elaboración."
+                        return true
+                    }
+                } else if let status = try await actionReceipt(requestID) {
+                    if ["applied", "already_applied"].contains(status) {
+                        notice = "Verificado en GitHub: «\(label)» aplicado."
+                        return true
+                    }
+                    notice = "GitHub registró «\(label)»: \(status). Revisa el resultado."
+                    return false
+                }
+            } catch {
+                // Transient API errors are retried; no artificial success.
+            }
+        }
+        notice = "Orden aceptada, pero aún sin confirmación de persistencia. Revisa Actions con el identificador \(requestID)."
+        return false
+    }
+
     func dispatch(_ event: String, payload: [String: Any], label: String) async -> Bool {
         guard authenticated else {
             notice = "Conecta primero tu GitHub App en Ajustes."
@@ -192,9 +256,13 @@ final class GitHubEditor: ObservableObject {
                 throw GitHubError.message("GitHub rechazó la orden (\(status)): " +
                                           String(describing: description?["message"] ?? "Comprueba permisos Contents: escritura e instalación de la App."))
             }
-            notice = "GitHub aceptó «\(label)». Falta confirmar su aplicación editorial."
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-            return true
+            guard let requestID = payload["request_id"] as? String else {
+                notice = "Falta identificador para verificar la escritura."
+                return false
+            }
+            let persisted = await confirmPersistence(event: event, requestID: requestID, label: label)
+            if persisted { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+            return persisted
         } catch {
             notice = error.localizedDescription
             UINotificationFeedbackGenerator().notificationOccurred(.error)
