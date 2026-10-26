@@ -1,0 +1,56 @@
+name: TTActualidad - decisiones multiples verificadas
+on:
+  repository_dispatch:
+    types: [ttactualidad_batch_v1]
+permissions:
+  contents: write
+concurrency:
+  group: ttactualidad-direct-batch
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Validar y persistir el lote de forma atomica
+        shell: bash
+        env:
+          TT_ACTUALIDAD_BATCH_JSON: ${{ toJSON(github.event.client_payload) }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "ttactualidad-actions[bot]"
+          git config user.email "ttactualidad-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5 6; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 pilot/ttactualidad_batch.py
+            git add -- pilot/ttactualidad-batch-receipts.json \
+              ttittulares/prepared.json ttittulares/decisions.json \
+              ttittulares/editorial-queue.json telegram/editorial-processing.json \
+              ttittulares/tremending/items.json \
+              trends/editorial-queue.json trends/mobile-decisions.json \
+              trends/telegram-image-deliveries.json trends/telegram-manual-explained.json \
+              trends/prepared.json trends/requests.json
+            if git diff --cached --quiet; then
+              echo "Lote ya aplicado o sin cambios. OK"
+              exit 0
+            fi
+            git commit -m "TTActualidad: aplicar lote editorial con verificacion"
+            if git push origin HEAD:main; then
+              echo "TT_ACTUALIDAD_BATCH_PERSISTED"
+              if [ "${{ github.event.client_payload.project }}" = "ttendencias" ] &&
+                 [ "${{ github.event.client_payload.decision }}" = "rework" ]; then
+                python3 trends/request_pc_editorial.py --trigger ||
+                  echo "Aviso: lote persistido; revisar señal editorial del PC" >&2
+              fi
+              exit 0
+            fi
+            sleep $((attempt * 2))
+          done
+          echo "No se pudo persistir el lote. Ninguna acción parcial ha sido subida." >&2
+          exit 1
