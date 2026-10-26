@@ -280,9 +280,11 @@ struct TTDashboard: View {
                     || $0.explanation.localizedCaseInsensitiveContains(search)
             }
         if visible.isEmpty { emptyNotice("No hay tendencias para mostrar") }
-        ForEach(visible) { item in
-            TrendTile(item: item, showRank: store.trendFilter == .top,
-                      github: github, settings: $showSettings)
+        LazyVStack(spacing: 5) {
+            ForEach(visible) { item in
+                TrendTile(item: item, showRank: store.trendFilter == .top,
+                          github: github, settings: $showSettings)
+            }
         }
     }
     private func emptyNotice(_ label: String) -> some View {
@@ -362,15 +364,34 @@ private struct TrendTile: View {
         }
     }
 
+    private var shortStatus: String {
+        switch item.status {
+        case "EN ELABORACIÓN": return "ELAB."
+        case "PREPARACIÓN MANUAL": return "MANUAL"
+        case "EXPLICADA": return "EXPL."
+        case "PENDIENTE": return "PEND."
+        default: return item.status
+        }
+    }
+
     var body: some View {
         DisclosureGroup {
-            VStack(alignment: .leading, spacing: 13) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text(item.status)
+                        .font(.caption2.weight(.bold)).foregroundStyle(TTTheme.muted)
+                    Spacer()
+                    if let date = item.lastExplained {
+                        Text(date, format: .dateTime.day().month().hour().minute())
+                            .font(.caption2).foregroundStyle(TTTheme.muted)
+                    }
+                }
                 if item.explanation.isEmpty {
                     Text("Aún no hay explicación editorial.")
                         .font(.subheadline).foregroundStyle(TTTheme.muted)
                 } else {
                     Text(item.explanation)
-                        .font(.system(size: 14)).lineSpacing(4)
+                        .font(.system(size: 14)).lineSpacing(3)
                         .textSelection(.enabled)
                 }
                 if let image = item.imageURL {
@@ -378,39 +399,43 @@ private struct TrendTile: View {
                         ProgressView()
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Label("Sin fotografía de archivo", systemImage: "photo")
+                        .font(.caption2).foregroundStyle(TTTheme.muted)
                 }
                 EditorialActions(trend: item, github: github, showSettings: $settings)
             }
-            .padding(.top, 12)
+            .padding(.top, 9)
         } label: {
-            HStack(spacing: 6) {
+            HStack(spacing: 5) {
                 if showRank {
                     Text("#\(item.rank)")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .font(.system(size: 12, weight: .heavy, design: .rounded))
                         .monospacedDigit().foregroundStyle(TTTheme.blue)
-                        .frame(width: 33, alignment: .leading)
+                        .frame(width: 28, alignment: .leading)
                 }
                 Text(item.name)
-                    .font(.system(size: 15, weight: .bold, design: .rounded))
-                    .lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .trailing, spacing: 3) {
-                    Text(item.status)
-                        .font(.system(size: 9, weight: .bold))
-                        .lineLimit(2).multilineTextAlignment(.trailing)
-                    if let date = item.lastExplained {
-                        Text("Exp. " + date.formatted(.dateTime.day().month().hour().minute()))
-                            .font(.system(size: 10))
-                            .monospacedDigit()
-                    }
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .lineLimit(1).minimumScaleFactor(0.78)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(shortStatus)
+                    .font(.system(size: 9, weight: .heavy))
+                    .lineLimit(1)
+                    .foregroundStyle(.white.opacity(0.84))
+                    .frame(width: 50, alignment: .trailing)
+                if let date = item.lastExplained {
+                    Text(date, format: .dateTime.hour().minute())
+                        .font(.system(size: 9, weight: .medium, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.white.opacity(0.65))
+                        .frame(width: 35, alignment: .trailing)
                 }
-                .foregroundStyle(Color.white.opacity(0.85))
-                .frame(maxWidth: 113, alignment: .trailing)
             }
-            .padding(.vertical, 2)
         }
         .tint(TTTheme.muted)
-        .padding(12)
-        .background(ageColor, in: RoundedRectangle(cornerRadius: 13))
-        .overlay(RoundedRectangle(cornerRadius: 13).stroke(outline))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(ageColor, in: RoundedRectangle(cornerRadius: 10))
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(outline.opacity(0.7)))
     }
 }
