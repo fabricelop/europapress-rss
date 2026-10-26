@@ -12,6 +12,11 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case top = "Top 30"
     case listas = "Listas"
     case elaboracion = "En elaboración"
+    case nuevas = "Nuevas"
+    case recientes = "Recientes"
+    case pendientes = "Pendientes"
+    case antiguas = "Antiguas"
+    case movimientos = "Cambios de posición"
     var id: String { rawValue }
 }
 enum NewsFilter: String, CaseIterable, Identifiable {
@@ -51,6 +56,9 @@ struct TrendItem: Identifiable {
     let revision: Int
     let imageURL: URL?
     let sourceURL: URL?
+    var rankDelta: Int = 0
+    var movement: String = ""
+    var enteredAt: Date? = nil
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -466,10 +474,12 @@ final class EditorialStore: ObservableObject {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
         var byRank: [Int: String] = [:]
+        var movementByRank: [Int: [String: Any]] = [:]
         for (index, row) in radar.enumerated() {
             let rank = int(row, "rank") == 0 ? index + 1 : int(row, "rank")
             if (1...30).contains(rank) && !str(row, "name").isEmpty {
                 byRank[rank] = str(row, "name")
+                movementByRank[rank] = row
             }
         }
         for (i, name) in names.prefix(30).enumerated() {
@@ -519,6 +529,7 @@ final class EditorialStore: ObservableObject {
             let archive = explanation["archive_image"] as? [String: Any] ??
                           explanation["fallback_image"] as? [String: Any] ?? [:]
             let source = str(request, "source_url")
+            let trendMovement = movementByRank[rank] ?? [:]
             return TrendItem(id: "rank-\(rank)", rank: rank, name: name,
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
                              status: status, inListas: readyNames.contains(key),
@@ -527,7 +538,10 @@ final class EditorialStore: ObservableObject {
                                  project: "ttendencias", id: editorialID,
                                  revision: revision, image: URL(string: str(archive, "url")),
                                  catalog: archivePhotos),
-                             sourceURL: URL(string: source))
+                             sourceURL: URL(string: source),
+                             rankDelta: int(trendMovement, "rank_delta"),
+                             movement: str(trendMovement, "movement"),
+                             enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]))
         }
     }
 
