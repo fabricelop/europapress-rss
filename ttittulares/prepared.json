@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-10-26T10:05:26.505Z",
+  "updated_at": "2026-10-26T10:33:00Z",
   "items": [
     {
       "event_id": "746f0e2617b7",
@@ -208,9 +208,9 @@
       "image_strategy": "archive_only",
       "ai_image_status": "none",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "prepared_at": "2026-10-26T09:59:27.972281Z",
-      "image_choice": "fallback",
+      "image_choice": "none",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
@@ -218,14 +218,6 @@
       "archive_image_search_attempted_at": "2026-10-26T10:02:08.715760Z",
       "fallback_image_search_attempted_at": "2026-10-26T10:02:08.715760Z",
       "archive_image": {
-        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261025112630_1200.jpg",
-        "source": "www.europapress.es",
-        "source_url": "https://www.europapress.es/chance/gente/noticia-leire-martinez-sale-defensa-amaia-montero-criticas-fisico-zanja-rumores-enfrentamiento-20261025112630.html",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Leire Martínez defiende a Amaia Montero de las críticas a su físico"
-      },
-      "fallback_image": {
         "url": "https://img.europapress.es/fotoweb/fotonoticia_20261025112630_1200.jpg",
         "source": "www.europapress.es",
         "source_url": "https://www.europapress.es/chance/gente/noticia-leire-martinez-sale-defensa-amaia-montero-criticas-fisico-zanja-rumores-enfrentamiento-20261025112630.html",
@@ -276,9 +268,9 @@
       "image_strategy": "archive_only",
       "ai_image_status": "failed",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
+      "fallback_image_status": "none",
       "prepared_at": "2026-10-26T10:01:10.191443Z",
-      "image_choice": "fallback",
+      "image_choice": "none",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
@@ -293,17 +285,73 @@
         "generated": false,
         "alt": "PP y Vox negocian una fórmula conjunta para el Senado antes del cierre de candidaturas"
       },
-      "fallback_image": {
-        "url": "https://img.rtve.es/imagenes/pp-vox-listas-electorales-senado/01793006052011.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/noticias/20261026/pp-vox-listas-electorales-senado/17283133.shtml",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "PP y Vox negocian una fórmula conjunta para el Senado antes del cierre de candidaturas"
-      },
       "ai_image_last_attempt_status": "failed",
       "ai_image_last_attempt_at": "2026-10-26T10:05:26.505Z",
       "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,"
+    },
+    {
+      "event_id": "c5f4fe1937c6",
+      "revision": 1,
+      "title": "Pedro Sánchez publica un vídeo corriendo con Carlos Cuerpo y pide «cuatro más»",
+      "url": "https://www.telecinco.es/noticias/espana/20261025/pedro-sanchez-video-viral-corriendo-carlos-cuerpo-precampana_18_020529664.html",
+      "selection_mode": "AUTO_WEB",
+      "category": "Política",
+      "factual_summary": "Pedro Sánchez publicó un vídeo de precampaña corriendo con el vicepresidente primero y ministro de Economía, Carlos Cuerpo. Ambos juegan con los ocho kilómetros y los años de Sánchez en el Gobierno y plantean «cuatro más». Cuerpo no figura en las listas socialistas para las generales del 29 de noviembre.",
+      "explanation": "20minutos, EL PAÍS, elDiario.es y Telecinco coinciden en que Sánchez difundió el vídeo corriendo con Cuerpo, en el paralelismo entre ocho kilómetros/años y el mensaje de continuidad por cuatro años más. EL PAÍS y Canal Extremadura señalan que Cuerpo no irá en las listas del PSOE para el 29-N.",
+      "sources_at_draft": [
+        "20minutos",
+        "EL PAÍS",
+        "elDiario.es",
+        "Telecinco Noticias"
+      ],
+      "source_evidence": [
+        {
+          "source": "20minutos",
+          "source_type": "general",
+          "title": "Sánchez corre junto a Cuerpo en un vídeo cargado de mensajes sobre su mandato: «Llevamos ocho, ¿hacemos cuatro más?»",
+          "url": "https://www.20minutos.es/nacional/sanchez-corre-junto-carlos-cuerpo-video-cargado-mensajes-sobre-mandato-llevamos-ocho-hacemos-cuatro-mas_7053086_0.html"
+        },
+        {
+          "source": "EL PAÍS",
+          "source_type": "general",
+          "title": "Sánchez publica un vídeo corriendo por una dehesa con el vicepresidente Cuerpo: «¡A por cuatro más!»",
+          "url": "https://elpais.com/espana/elecciones-generales/2026-10-25/sanchez-publica-un-video-con-el-vicepresidente-cuerpo-a-por-cuatro-mas.html"
+        },
+        {
+          "source": "elDiario.es",
+          "source_type": "general",
+          "title": "Sánchez sale a correr con Carlos Cuerpo en un nuevo anuncio electoral: «Todavía nos queda carrera. ¿Cuatro más?»",
+          "url": "https://www.eldiario.es/politica/ultima-hora-actualidad-politica-directo_6_13613071_1126121.html"
+        },
+        {
+          "source": "Telecinco Noticias",
+          "source_type": "general",
+          "title": "Pedro Sánchez acelera en plena precampaña con un vídeo corriendo con Carlos Cuerpo: «Todavía nos queda carrera»",
+          "url": "https://www.telecinco.es/noticias/espana/20261025/pedro-sanchez-video-viral-corriendo-carlos-cuerpo-precampana_18_020529664.html"
+        }
+      ],
+      "drafted_source_count": 4,
+      "verified_source_count": 4,
+      "source_count": 6,
+      "tweet": {
+        "text": "Pedro Sánchez publicó un vídeo corriendo con Carlos Cuerpo: comparan ocho kilómetros con sus años de Gobierno y preguntan «¿cuatro más?». Cuerpo no va en las listas del 29-N.\n\n#PedroSánchez #CarlosCuerpo #29N\n🌶️ La campaña ya mide mandatos en kilómetros.",
+        "remate": "🌶️ La campaña ya mide mandatos en kilómetros.",
+        "url": "https://twitter.com/intent/tweet?text=Pedro%20S%C3%A1nchez%20public%C3%B3%20un%20v%C3%ADdeo%20corriendo%20con%20Carlos%20Cuerpo%3A%20comparan%20ocho%20kil%C3%B3metros%20con%20sus%20a%C3%B1os%20de%20Gobierno%20y%20preguntan%20%C2%AB%C2%BFcuatro%20m%C3%A1s%3F%C2%BB.%20Cuerpo%20no%20va%20en%20las%20listas%20del%2029-N.%0A%0A%23PedroS%C3%A1nchez%20%23CarlosCuerpo%20%2329N%0A%F0%9F%8C%B6%EF%B8%8F%20La%20campa%C3%B1a%20ya%20mide%20mandatos%20en%20kil%C3%B3metros."
+      },
+      "source": "editorial_chat_direct",
+      "prepared_at": "2026-10-26T10:33:00Z",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "none",
+      "archive_image_status": "pending",
+      "fallback_image_status": "none",
+      "image_choice": "none",
+      "image_pending": false,
+      "sensitive_editorial": false,
+      "image_status": "none",
+      "image_app_available": false,
+      "image_delivery": "none"
     }
   ],
   "count": 0,
