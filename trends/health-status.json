@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "checked_at": "2026-10-26T21:53:23.787522+00:00",
-=======
-  "checked_at": "2026-10-26T21:55:01.414674+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-10-26T23:19:05.826466+00:00",
   "ok": true,
   "modules": {
     "editorial_config": {
@@ -44,18 +40,11 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-<<<<<<< Updated upstream
-      "non_stale_sources": 2,
-      "captured_age_minutes": 21.4,
-      "noise_count": 0,
-      "repair_started": true
-=======
-      "non_stale_sources": 3,
-      "captured_age_minutes": 4.2,
+      "non_stale_sources": 4,
+      "captured_age_minutes": 8.2,
       "noise_count": 0
->>>>>>> Stashed changes
     },
     "listener": {
       "ok": true,
@@ -64,14 +53,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
-<<<<<<< Updated upstream
-      "age_minutes": 0.0,
-=======
-      "age_minutes": 1.5,
->>>>>>> Stashed changes
-      "run_id": 40408096128,
+      "age_minutes": 2.1,
+      "run_id": 40418660997,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -93,9 +78,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 2,
+      "pending_count": 0,
       "overdue_count": 0,
-      "oldest_age_minutes": 4.0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -103,11 +88,8 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "cfa98407dd6b",
-        "1bda19f45205"
-      ],
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -116,9 +98,7 @@
       "reason": "control web activo"
     }
   },
-  "repairs_started": [
-    "relanzado refresco Top 10"
-  ],
+  "repairs_started": [],
   "blocking": [],
   "warnings": [],
   "alert_sent": false,
