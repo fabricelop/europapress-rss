@@ -86,6 +86,20 @@ struct EditorialSnapshot {
     var radarAt: Date? = nil
 }
 
+// UI changes immediately; GitHub remains the authority for persisted decisions.
+struct OptimisticEditorialAction {
+    enum Phase { case sending, confirmed, uncertain }
+    let project: String
+    let id: String
+    let revision: Int
+    let decision: String
+    let title: String
+    let rank: Int
+    var phase: Phase = .sending
+
+    var key: String { project + ":" + id + ":r" + String(revision) }
+}
+
 @MainActor
 final class EditorialStore: ObservableObject {
     @Published var section: EditorialSection = .trends
@@ -96,6 +110,11 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
     @Published private(set) var novedades: [String] = []
+    @Published private(set) var actionMessage = ""
+    @Published private(set) var actionIsError = false
+    @Published private(set) var activeEditorialActions: [String: OptimisticEditorialAction] = [:]
+    private var canonicalSnapshot = EditorialSnapshot()
+    private var refreshRequested = false
     private var currentVisitSnapshot: [String: String]?
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
@@ -115,9 +134,18 @@ final class EditorialStore: ObservableObject {
     ]
 
     func refresh() async {
-        guard !isLoading else { return }
+        if isLoading {
+            refreshRequested = true
+            return
+        }
         isLoading = true
-        defer { isLoading = false }
+        defer {
+            isLoading = false
+            if refreshRequested {
+                refreshRequested = false
+                Task { await self.refresh() }
+            }
+        }
         var downloaded: [String: Data] = [:]
         await withTaskGroup(of: (String, Data?).self) { group in
             for path in paths {
@@ -246,7 +274,7 @@ final class EditorialStore: ObservableObject {
             updateNovedades(news: news, trends: ready, top30: top,
                             newsWorking: queueNews, trendsWorking: trendsQueued)
         }
-        snapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
+        canonicalSnapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
                                      top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
@@ -256,10 +284,206 @@ final class EditorialStore: ObservableObject {
                                      oneSourceDelta: status["one_source_delta"] as? Int,
                                      twoSourceDelta: status["two_source_delta"] as? Int,
                                      radarAt: Self.when(status, ["radar_at"]))
+        if !partial && downloaded.count == paths.count {
+            retireSyncedActions()
+        }
+        applyOptimisticOverlay()
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
         if fresh {
-            await publishLiveCounts(news: news.count, trends: ready.count, checkedAt: now,
-                                    partial: partial)
+            await publishLiveCounts(news: snapshot.news.count,
+                                    trends: snapshot.trendListas.count, checkedAt: now,
+                                    partial: partial || !activeEditorialActions.isEmpty)
+        }
+    }
+
+    // A local action instantly changes ALL views using the shared store.
+    // The operation is not marked verified until GitHub supplies its receipt.
+    func beginEditorialAction(project: String, id: String, revision: Int, decision: String,
+                              title: String, rank: Int) -> Bool {
+        guard !id.isEmpty, revision >= 0 else {
+            actionMessage = "No hay identificador editorial válido: actualiza la información."
+            actionIsError = true
+            return false
+        }
+        let action = OptimisticEditorialAction(project: project, id: id,
+                                               revision: revision, decision: decision,
+                                               title: title, rank: rank)
+        guard activeEditorialActions[action.key] == nil else {
+            actionMessage = "Esta orden ya está en curso; no es necesario repetirla."
+            actionIsError = false
+            return false
+        }
+        activeEditorialActions[action.key] = action
+        actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
+                        decision == "discard" ? "Desestimado · guardando en GitHub…" :
+                        "Trasladado a elaboración · guardando en GitHub…"
+        actionIsError = false
+        applyOptimisticOverlay()
+        refreshOptimisticActivity()
+        return true
+    }
+
+    func isActionInProgress(project: String, id: String, revision: Int) -> Bool {
+        activeEditorialActions[project + ":" + id + ":r" + String(revision)] != nil
+    }
+
+    func completeEditorialAction(project: String, id: String, revision: Int,
+                                 result: GitHubEditor.WriteResult, detail: String) {
+        let key = project + ":" + id + ":r" + String(revision)
+        guard var action = activeEditorialActions[key] else { return }
+        switch result {
+        case .verified:
+            action.phase = .confirmed
+            activeEditorialActions[key] = action
+            actionMessage = "Verificado en GitHub: " + action.title
+            actionIsError = false
+            // Read state automatically. The overlay prevents an old CDN snapshot
+            // from resurrecting a card that is already closed on GitHub.
+            Task { await self.refresh() }
+        case .pending:
+            action.phase = .uncertain
+            activeEditorialActions[key] = action
+            actionMessage = "Pendiente de confirmar en GitHub: " + action.title +
+                            ". La vista conserva el cambio provisional."
+            actionIsError = false
+            Task { await self.refresh() }
+        case .failed:
+            activeEditorialActions.removeValue(forKey: key)
+            actionMessage = "No se pudo aplicar «" + action.title + "»: " + detail
+            actionIsError = true
+            // Reconstruct all lists from the original canonical state.
+        }
+        applyOptimisticOverlay()
+        refreshOptimisticActivity()
+    }
+
+    // Reconciliation uses a complete current GitHub snapshot; partial cached
+    // reads never undo an action that was visibly removed moments earlier.
+    private func retireSyncedActions() {
+        for (key, action) in activeEditorialActions {
+            guard action.phase != .sending else { continue }
+            let originalNews: [NewsItem] = canonicalSnapshot.news +
+                canonicalSnapshot.newsElaboracion + canonicalSnapshot.newsRevision +
+                canonicalSnapshot.newsCreciendo + canonicalSnapshot.newsTremending
+            if action.project == "ttittulares" {
+                let stillOriginal = originalNews.contains {
+                    $0.id == action.id && $0.revision == action.revision
+                }
+                if action.decision == "prepare" {
+                    if canonicalSnapshot.newsElaboracion.contains(where: {
+                        $0.id == action.id && $0.revision >= action.revision
+                    }) {
+                        activeEditorialActions.removeValue(forKey: key)
+                    }
+                } else if !stillOriginal {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "deleted" {
+                if !canonicalSnapshot.trendListas.contains(where: {
+                    $0.editorialID == action.id && $0.revision == action.revision
+                }) {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "rework" || action.decision == "prepare" {
+                let newWorking = canonicalSnapshot.trendsElaboracion.contains {
+                    ($0.editorialID == action.id && $0.revision > action.revision) ||
+                    ($0.name == action.title && $0.status == "EN ELABORACIÓN")
+                }
+                if newWorking { activeEditorialActions.removeValue(forKey: key) }
+            } else if action.decision == "discard" {
+                if !canonicalSnapshot.trendsElaboracion.contains(where: {
+                    $0.editorialID == action.id && $0.revision == action.revision
+                }) { activeEditorialActions.removeValue(forKey: key) }
+            }
+        }
+    }
+
+    private func overlayTrend(_ trend: TrendItem, status: String? = nil,
+                              inListas: Bool? = nil) -> TrendItem {
+        TrendItem(id: trend.id, rank: trend.rank, name: trend.name,
+                  explanation: trend.explanation, lastExplained: trend.lastExplained,
+                  status: status ?? trend.status, inListas: inListas ?? trend.inListas,
+                  editorialID: trend.editorialID, revision: trend.revision,
+                  imageURL: trend.imageURL, sourceURL: trend.sourceURL,
+                  rankDelta: trend.rankDelta, movement: trend.movement,
+                  enteredAt: trend.enteredAt)
+    }
+
+    private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
+        NewsItem(id: item.id, title: item.title, text: item.text,
+                 publishedAt: item.publishedAt, revision: item.revision,
+                 sourceURL: item.sourceURL, imageURL: item.imageURL,
+                 factual: item.factual, closer: item.closer, sources: item.sources,
+                 status: status)
+    }
+
+    private func applyOptimisticOverlay() {
+        var updated = canonicalSnapshot
+        for action in activeEditorialActions.values {
+            let sameNews: (NewsItem) -> Bool = {
+                $0.id == action.id && $0.revision == action.revision
+            }
+            let sameTrend: (TrendItem) -> Bool = {
+                $0.editorialID == action.id && $0.revision == action.revision
+            }
+            if action.project == "ttittulares" {
+                if ["deleted", "discard", "published"].contains(action.decision) {
+                    updated.news.removeAll(where: sameNews)
+                    updated.newsElaboracion.removeAll(where: sameNews)
+                    updated.newsRevision.removeAll(where: sameNews)
+                    updated.newsCreciendo.removeAll(where: sameNews)
+                    updated.newsTremending.removeAll(where: sameNews)
+                } else if action.decision == "prepare" {
+                    let original = (updated.newsRevision + updated.newsCreciendo).first(where: sameNews)
+                    updated.newsRevision.removeAll(where: sameNews)
+                    updated.newsCreciendo.removeAll(where: sameNews)
+                    if let original, !updated.newsElaboracion.contains(where: sameNews) {
+                        updated.newsElaboracion.insert(
+                            overlayNews(original, status: "EN ELABORACIÓN"), at: 0)
+                    }
+                }
+            } else {
+                if ["deleted", "discard", "published", "rework", "prepare"].contains(action.decision) {
+                    updated.trendListas.removeAll(where: sameTrend)
+                    if action.decision == "discard" || action.decision == "deleted" {
+                        updated.trendsElaboracion.removeAll(where: sameTrend)
+                    }
+                }
+                updated.top30 = updated.top30.map { original in
+                    guard original.name == action.title ||
+                          original.editorialID == action.id else { return original }
+                    if action.decision == "deleted" {
+                        return overlayTrend(original, inListas: false)
+                    }
+                    if action.decision == "rework" || action.decision == "prepare" {
+                        return overlayTrend(original, status: "EN ELABORACIÓN", inListas: false)
+                    }
+                    return original
+                }
+                if action.decision == "rework" || action.decision == "prepare" {
+                    if !updated.trendsElaboracion.contains(where: {
+                        $0.editorialID == action.id && $0.revision >= action.revision
+                    }) {
+                        updated.trendsElaboracion.insert(
+                            TrendItem(id: "optimistic-" + action.key, rank: action.rank,
+                                      name: action.title, explanation: "",
+                                      lastExplained: nil, status: "EN ELABORACIÓN",
+                                      inListas: false, editorialID: action.id,
+                                      revision: action.revision, imageURL: nil,
+                                      sourceURL: nil), at: 0)
+                    }
+                }
+            }
+        }
+        snapshot = updated
+    }
+
+    private func refreshOptimisticActivity() {
+        Task {
+            await publishLiveCounts(news: snapshot.news.count,
+                                    trends: snapshot.trendListas.count,
+                                    checkedAt: Date(),
+                                    partial: snapshot.partial || !activeEditorialActions.isEmpty)
         }
     }
 
