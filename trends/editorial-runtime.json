@@ -5,9 +5,9 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "4ae5711de3bd",
     "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
-    "manual-6711ee466f89845b1e605905ccef9e7e"
+    "manual-6711ee466f89845b1e605905ccef9e7e",
+    "manual-e0208b6025a10ba084db046d1893cfdf"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
@@ -15,14 +15,14 @@
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
   "last_started_at": "2026-10-26T16:33:16.705Z",
-  "last_completed_at": "2026-10-26T16:43:12.158Z",
-  "updated_at": "2026-10-26T16:42:40.000Z",
+  "last_completed_at": "2026-10-26T16:41:45.000Z",
+  "updated_at": "2026-10-26T16:44:00.000Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793032077306-manual",
+    "trigger_run_id": "tr-1793032396705-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -30,14 +30,15 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793032077306-manual",
+    "run_id": "tr-1793032396705-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-10-26T16:33:16.705Z",
-    "updated_at": "2026-10-26T16:42:40.000Z",
-    "current": 4,
-    "total": 4,
+    "updated_at": "2026-10-26T16:44:00.000Z",
+    "finished_at": "2026-10-26T16:41:45.000Z",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
@@ -52,9 +53,8 @@
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
-      "discovered_during_run": 3,
-      "jit_skipped": 1,
+      "initial_compact_queue": 2,
+      "discovered_during_run": 1,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "remaining_problematic": 0,
@@ -64,20 +64,55 @@
       "explanations_verified_under_280": 3,
       "remates_selected": 2,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 11,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 0,
       "stale_top10_reviewed": 0,
       "stale_top10_reexplained": 0,
       "legacy_ready_repaired": 0,
-      "top10_reviewed": 1,
+      "top10_reviewed": 0,
       "rewrite_pending_remaining": 0,
-      "user_decisions_after_close": 1,
+      "user_decisions_after_close": 2,
       "incidents": 0
     },
-    "message": "TTendencias completada: 3 revisiones tratadas y verificadas; Balón de Oro quedó resuelto concurrentemente y se omitió por JIT. Cola final 0, sin requests activas ni reexplicaciones. Senado fue borrado después desde el panel y esa decisión se conserva.",
+    "message": "TTendencias completada 3/3: cola final 0, sin requests preparing/update ni reexplicaciones pendientes. Las decisiones posteriores del panel se conservan.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
+      {
+        "at": "2026-10-26T16:33:16.705Z",
+        "phase": "preparing",
+        "trend_id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+        "title": "Alfredo Sánchez Monteseirín",
+        "message": "Inicio de pasada: 2 revisiones activas; saneamiento visual solicitado."
+      },
+      {
+        "at": "2026-10-26T16:35:53.406Z",
+        "phase": "verifying",
+        "trend_id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
+        "title": "Alfredo Sánchez Monteseirín",
+        "message": "Revisión cerrada concurrentemente y verificada; no se sobrescribe."
+      },
+      {
+        "at": "2026-10-26T16:36:06.000Z",
+        "phase": "verifying",
+        "trend_id": "manual-6711ee466f89845b1e605905ccef9e7e",
+        "title": "Pucherazo",
+        "message": "Releyendo estado autoritativo de Pucherazo."
+      },
+      {
+        "at": "2026-10-26T16:38:19.543Z",
+        "phase": "verifying",
+        "trend_id": "manual-6711ee466f89845b1e605905ccef9e7e",
+        "title": "Pucherazo",
+        "message": "Texto persistido y reconciliado entre Explicadas y requests; revisión retirada de cola."
+      },
+      {
+        "at": "2026-10-26T16:39:20.000Z",
+        "phase": "verifying",
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "message": "Releyendo estado autoritativo de Balón de Oro."
+      },
       {
         "at": "2026-10-26T16:40:20.000Z",
         "phase": "persisting",
@@ -93,81 +128,11 @@
         "message": "Actualizando requests."
       },
       {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "investigating",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Contrastando fuente 1/2: gala hoy a las 21:00 en el London Palladium."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "investigating",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Contrastando fuente 2/2: Kane, Mbappé y Lamine Yamal figuran entre los favoritos; no hay ganador confirmado."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "investigating",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Hecho esencial verificado."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "drafting",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Redactando explicación factual."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "drafting",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Comprobando límite de X: 277 caracteres."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "remate_selection",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Generando candidatos de remate."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "remate_selection",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Evaluando candidatos con ratings y remates recientes."
-      },
-      {
-        "at": "2026-10-26T16:41:14.292Z",
-        "phase": "remate_selection",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Remate seleccionado: las quinielas llevan horas en prórroga."
-      },
-      {
         "at": "2026-10-26T16:40:50.000Z",
         "phase": "persisting",
         "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
         "title": "Balón de Oro",
         "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-26T16:41:39.634Z",
-        "phase": "verifying",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Barrera JIT: revisión ya explicada externamente; estado reconciliado sin sobrescribir."
-      },
-      {
-        "at": "2026-10-26T16:41:30.000Z",
-        "phase": "verifying",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Releyendo main."
       },
       {
         "at": "2026-10-26T16:41:35.000Z",
@@ -177,59 +142,24 @@
         "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-26T16:41:40.000Z",
-        "phase": "verifying",
-        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
-        "title": "Balón de Oro",
-        "message": "Tendencia cerrada y verificada."
-      },
-      {
-        "at": "2026-10-26T16:41:45.000Z",
+        "at": "2026-10-26T16:44:00.000Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
         "message": "TTendencias completada 3/3: cola final 0, sin requests preparing/update ni reexplicaciones pendientes."
-      },
-      {
-        "at": "2026-10-26T16:43:12.158Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0, requests activas 0 y reexplicaciones pendientes 0."
-      },
-      {
-        "at": "2026-10-26T16:43:12.158Z",
-        "phase": "verifying",
-        "trend_id": "4ae5711de3bd",
-        "title": "Senado",
-        "message": "Acción posterior del usuario detectada: Senado quedó deleted de forma sincronizada; se conserva la decisión."
-      },
-      {
-        "at": "2026-10-26T16:43:12.158Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "Cierre verificado: 3 revisiones tratadas por esta pasada y 1 resuelta concurrentemente por barrera JIT."
-      },
-      {
-        "at": "2026-10-26T16:42:40.000Z",
-        "phase": "closing",
-        "trend_id": "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
-        "title": "Alfredo Sánchez Monteseirín",
-        "message": "Post-cierre: la ficha pasó a deleted por decisión del panel; no es una incidencia editorial."
       }
     ],
     "processed_ids": [
-      "4ae5711de3bd",
       "manual-7b1704c967d91ea9c324c6dcbf8e93e7",
-      "manual-6711ee466f89845b1e605905ccef9e7e"
+      "manual-6711ee466f89845b1e605905ccef9e7e",
+      "manual-e0208b6025a10ba084db046d1893cfdf"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "radar_refresh": {
       "status": "observed",
-      "reason": "Radar fresco durante la pasada; no fue necesaria recaptura.",
+      "reason": "Radar fresco al cierre; no requiere recaptura.",
       "captured_at": "2026-10-26T17:42:07+01:00"
     },
     "radar": {
@@ -240,22 +170,21 @@
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 30
     },
     "remate_selections": [
       {
-        "trend_id": "4ae5711de3bd",
-        "title": "Senado",
-        "selected": "🌶️ Veintitrés provincias y un mismo pasatiempo: encajar candidatos.",
-        "reason": "Específico del acuerdo, neutral y distinto del remate anterior."
-      },
-      {
         "trend_id": "manual-6711ee466f89845b1e605905ccef9e7e",
         "title": "Pucherazo",
         "selected": "🌶️ El censo ha acabado haciendo más recursos que campaña.",
-        "reason": "Neutral y específico del litigio electoral; no presenta fraude como hecho probado."
+        "reason": "Remate final persistido, centrado en el trámite y neutral respecto a las acusaciones."
+      },
+      {
+        "trend_id": "manual-e0208b6025a10ba084db046d1893cfdf",
+        "title": "Balón de Oro",
+        "selected": "🌶️ París cedió el escenario; el suspense viajó en el equipaje.",
+        "reason": "Específico del traslado de la gala a Londres y distinto de remates deportivos recientes."
       }
     ],
     "final_outcomes": [
@@ -283,8 +212,7 @@
         "explained_at": "2026-10-26T16:40:20.000Z",
         "deleted_at": null
       }
-    ],
-    "finished_at": "2026-10-26T16:43:12.158Z"
+    ]
   },
   "run_id": "tr-1793032396705-manual",
   "summary": {
@@ -299,9 +227,8 @@
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
-    "discovered_during_run": 3,
-    "jit_skipped": 1,
+    "initial_compact_queue": 2,
+    "discovered_during_run": 1,
     "final_compact_queue": 0,
     "remaining_active": 0,
     "remaining_problematic": 0,
@@ -311,14 +238,14 @@
     "explanations_verified_under_280": 3,
     "remates_selected": 2,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 11,
+    "recent_missing_closer_reviewed": 0,
+    "pending_cards_reviewed": 0,
     "stale_top10_reviewed": 0,
     "stale_top10_reexplained": 0,
     "legacy_ready_repaired": 0,
-    "top10_reviewed": 1,
+    "top10_reviewed": 0,
     "rewrite_pending_remaining": 0,
-    "user_decisions_after_close": 1,
+    "user_decisions_after_close": 2,
     "incidents": 0
   },
   "activity": [
