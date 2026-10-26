@@ -98,7 +98,7 @@ try {
                            'disponible en Listas sin cambiar de',
                            'function compactTop30Card(out,x)',
                            '.cards.top30{display:flex;flex-direction:column',
-                           'trend-explained')) {
+                           'trend-explained','class="top30-date"')) {
         Ensure ($html.Contains($marker)) ('Interfaz incompleta: '+$marker)
     }
     Ensure (-not $html.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) (
@@ -150,6 +150,7 @@ try {
                 $remote.Contains('function compactTop30Card(out,x)') -and
                 $remote.Contains('.cards.top30{display:flex;flex-direction:column') -and
                 $remote.Contains('trend-explained') -and
+                $remote.Contains('class="top30-date"') -and
                 -not $remote.Contains("if(decision==='prepare'||decision==='rework'){state.tab='elaboracion';render();}")) {
                 $valid = $true
                 break
