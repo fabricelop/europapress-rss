@@ -13,10 +13,11 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var isConnecting = false
     @Published private(set) var notice = "Conecta GitHub una vez para activar las acciones editoriales."
     @Published private(set) var activeAction: String? = nil
-    @Published private(set) var lastWriteResult: WriteResult = .pending
+    // Each async dispatch returns its own result; concurrent requests cannot
+    // accidentally exchange another action's verification status.
     private var inFlightKeys = Set<String>()
 
-    enum WriteResult {
+    enum WriteResult: Equatable {
         case verified
         case pending
         case failed
@@ -291,11 +292,10 @@ final class GitHubEditor: ObservableObject {
         return false
     }
 
-    func dispatch(_ event: String, payload: [String: Any], label: String) async -> Bool {
+    func dispatch(_ event: String, payload: [String: Any], label: String) async -> WriteResult {
         guard authenticated else {
-            lastWriteResult = .failed
             notice = "Conecta primero tu GitHub App en Ajustes."
-            return false
+            return .failed
         }
         let project = payload["project"] as? String ?? event
         let identifier = payload["event_id"] as? String ??
@@ -303,12 +303,10 @@ final class GitHubEditor: ObservableObject {
         let key = project + ":" + identifier
         guard !inFlightKeys.contains(key) else {
             notice = "Esta orden ya está en curso; no es necesario enviarla otra vez."
-            lastWriteResult = .pending
-            return false
+            return .pending
         }
         inFlightKeys.insert(key)
         activeAction = label
-        lastWriteResult = .pending
         defer {
             inFlightKeys.remove(key)
             if inFlightKeys.isEmpty { activeAction = nil }
@@ -332,33 +330,30 @@ final class GitHubEditor: ObservableObject {
             }
             guard let requestID = payload["request_id"] as? String else {
                 notice = "Falta identificador para verificar la escritura."
-                return false
+                return .failed
             }
             let persisted = await confirmPersistence(event: event, requestID: requestID, label: label)
-            lastWriteResult = persisted ? .verified : .pending
             if persisted { UINotificationFeedbackGenerator().notificationOccurred(.success) }
-            return persisted
+            return persisted ? .verified : .pending
         } catch {
             let asURL = error as? URLError
             // A POST timeout has indeterminate outcome. Do not undo its
             // optimistic state unless GitHub explicitly rejected the write.
             if asURL?.code == .timedOut || asURL?.code == .networkConnectionLost {
-                lastWriteResult = .pending
                 notice = "La red interrumpió la confirmación. La orden puede estar procesándose en GitHub."
             } else {
-                lastWriteResult = .failed
                 notice = error.localizedDescription
                 UINotificationFeedbackGenerator().notificationOccurred(.error)
             }
-            return false
+            return (asURL?.code == .timedOut || asURL?.code == .networkConnectionLost) ? .pending : .failed
         }
     }
 
     func decide(project: String, eventID: String, revision: Int, decision: String,
-                title: String, rank: Int = 0) async -> Bool {
+                title: String, rank: Int = 0) async -> WriteResult {
         guard !eventID.isEmpty, revision >= 0 else {
             notice = "La entrada no tiene identificador editorial confirmado. Actualiza primero."
-            return false
+            return .failed
         }
         return await dispatch("ttactualidad_action_v1", payload: [
             "project": project, "event_id": eventID, "revision": revision,
@@ -384,16 +379,16 @@ final class GitHubEditor: ObservableObject {
             "project": project, "decision": decision,
             "request_id": UUID().uuidString.lowercased(),
             "items": items, "group_topic": String(groupTopic.prefix(160))
-        ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple")
+        ], label: decision == "rework" ? "Reelaborar tendencias relacionadas" : "Acción múltiple") == .verified
     }
 
     func addNews(title: String, url: String, instructions: String,
-                 requestID: String? = nil) async -> Bool {
-        guard !title.isEmpty || !url.isEmpty else { notice = "Añade un enlace o una descripción."; return false }
-        if !title.isEmpty && title.count < 5 { notice = "La descripción debe tener al menos 5 caracteres."; return false }
+                 requestID: String? = nil) async -> WriteResult {
+        guard !title.isEmpty || !url.isEmpty else { notice = "Añade un enlace o una descripción."; return .failed }
+        if !title.isEmpty && title.count < 5 { notice = "La descripción debe tener al menos 5 caracteres."; return .failed }
         if !url.isEmpty {
             guard let address = URL(string: url), address.scheme == "https", address.host != nil else {
-                notice = "El enlace debe empezar por https://"; return false
+                notice = "El enlace debe empezar por https://"; return .failed
             }
         }
         return await dispatch("ttactualidad_manual_news_v1", payload: [
