@@ -10,9 +10,9 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-26T08:15:00+01:00",
-  "last_completed_at": "2026-10-26T08:17:00+01:00",
-  "updated_at": "2026-10-26T08:17:00+01:00",
+  "last_started_at": "2026-10-26T08:45:00+01:00",
+  "last_completed_at": "2026-10-26T08:47:00+01:00",
+  "updated_at": "2026-10-26T08:47:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -26,13 +26,13 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-20261026T0815-chat",
+    "run_id": "tr-20261026T0845-chat",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-26T08:15:00+01:00",
-    "updated_at": "2026-10-26T08:17:00+01:00",
-    "finished_at": "2026-10-26T08:17:00+01:00",
+    "started_at": "2026-10-26T08:45:00+01:00",
+    "updated_at": "2026-10-26T08:47:00+01:00",
+    "finished_at": "2026-10-26T08:47:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -74,28 +74,28 @@
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-26T08:15:00+01:00",
+        "at": "2026-10-26T08:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
         "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones, Top 10 y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-26T08:16:00+01:00",
+        "at": "2026-10-26T08:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Top 10 revisado; sin revisiones activas, sin reexplicaciones pendientes y sin explicaciones >48 h."
+        "message": "Top 10 revisado; no hay requests preparing/update ni rewrite_pending activos."
       },
       {
-        "at": "2026-10-26T08:16:30+01:00",
+        "at": "2026-10-26T08:46:30+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 6 tarjetas recientes; ninguna carece de remate. Reparación visual solicitada."
+        "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate. Reparación visual solicitada."
       },
       {
-        "at": "2026-10-26T08:17:00+01:00",
+        "at": "2026-10-26T08:47:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
@@ -116,7 +116,7 @@
     "remaining_active_ids": [],
     "final_outcomes": []
   },
-  "run_id": "tr-20261026T0815-chat",
+  "run_id": "tr-20261026T0845-chat",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -151,28 +151,28 @@
   },
   "activity": [
     {
-      "at": "2026-10-26T08:15:00+01:00",
+      "at": "2026-10-26T08:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
       "message": "Inicio de pasada: cola editorial 0; comprobando reexplicaciones, Top 10 y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-26T08:16:00+01:00",
+      "at": "2026-10-26T08:46:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Top 10 revisado; sin revisiones activas, sin reexplicaciones pendientes y sin explicaciones >48 h."
+      "message": "Top 10 revisado; no hay requests preparing/update ni rewrite_pending activos."
     },
     {
-      "at": "2026-10-26T08:16:30+01:00",
+      "at": "2026-10-26T08:46:30+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 6 tarjetas recientes; ninguna carece de remate. Reparación visual solicitada."
+      "message": "Revisando Pendientes · 6 tarjetas recientes; todas tienen remate. Reparación visual solicitada."
     },
     {
-      "at": "2026-10-26T08:17:00+01:00",
+      "at": "2026-10-26T08:47:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
@@ -189,7 +189,7 @@
     "captured_at": "2026-10-26T08:11:00+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-20261026T0745-chat",
+  "previous_run_id": "tr-20261026T0815-chat",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
