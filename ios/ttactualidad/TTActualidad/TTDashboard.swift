@@ -8,7 +8,6 @@ struct TTDashboard: View {
     @State private var search = ""
     @State private var showNewStory = false
     @State private var showSettings = false
-    @State private var showArchivePhotos = false
     @State private var showCombinedListas = false
     @State private var showEditorialHub = false
 
@@ -55,9 +54,6 @@ struct TTDashboard: View {
         }
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
-        }
-        .sheet(isPresented: $showArchivePhotos) {
-            ArchivePhotoGallery().environmentObject(store)
         }
         .sheet(isPresented: $showEditorialHub) {
             EditorialHub(
@@ -277,10 +273,8 @@ struct TTDashboard: View {
                          active: store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
                     chip("Antiguas", number: filteredTrends(.antiguas).count,
                          active: store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
-                    chip("↑↓", number: filteredTrends(.movimientos).count,
+                    chip("↑↓ Cambios", number: filteredTrends(.movimientos).count,
                          active: store.trendFilter == .movimientos) { store.trendFilter = .movimientos }
-                    chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
-                         active: false) { showArchivePhotos = true }
                 } else {
                     chip("Listas", number: store.snapshot.news.count,
                          active: store.newsFilter == .listas) { store.newsFilter = .listas }
@@ -292,8 +286,6 @@ struct TTDashboard: View {
                          active: store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
                     chip("Tremending", number: store.snapshot.newsTremending.count,
                          active: store.newsFilter == .tremending) { store.newsFilter = .tremending }
-                    chip("Fotos archivo", number: ArchivePhotoGallery.photos(from: store.snapshot).count,
-                         active: false) { showArchivePhotos = true }
                 }
             }
             .padding(.vertical, 2)
@@ -331,9 +323,10 @@ struct TTDashboard: View {
             }
             Divider().frame(height: 18)
             Button { Task { await store.refresh() } } label: {
-                Image(systemName: "arrow.triangle.2.circlepath")
+                Image(systemName: "arrow.clockwise")
             }
             .foregroundStyle(TTTheme.teal)
+            .accessibilityLabel("Actualizar datos desde GitHub")
         }
         .padding(.horizontal, 13).padding(.vertical, 12)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 12))
@@ -510,9 +503,10 @@ private struct NewsTile: View {
                     .fill(accent)
                     .frame(width: 3, height: 33)
                 Text(item.title)
-                    .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    .font(.system(size: expanded ? 16 : 14,
+                                  weight: .semibold, design: .rounded))
                     .foregroundStyle(.white)
-                    .lineLimit(2)
+                    .lineLimit(expanded ? nil : 2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -539,13 +533,19 @@ private struct TrendTile: View {
     @Binding var settings: Bool
     @State private var expanded = false
 
-    private var accent: Color {
+    // Saturated hues are exclusive to the rank plate. The rest of the card
+    // retains its original dark surface to prioritize text legibility.
+    private var rankColor: Color {
         switch item.ageBand() {
-        case 1: return TTTheme.teal
-        case 2: return Color(red: 0.98, green: 0.79, blue: 0.40)
-        case 3: return Color(red: 1.0, green: 0.54, blue: 0.54)
-        default: return TTTheme.blue
+        case 1: return Color(red: 0.06, green: 0.80, blue: 0.52) // green
+        case 2: return Color(red: 1.00, green: 0.77, blue: 0.14) // yellow
+        case 3: return Color(red: 0.95, green: 0.22, blue: 0.34) // red
+        default: return Color(red: 0.20, green: 0.52, blue: 0.98) // blue
         }
+    }
+
+    private var rankTextColor: Color {
+        item.ageBand() == 2 ? TTTheme.base : .white
     }
 
     private var shortStatus: String {
@@ -558,12 +558,26 @@ private struct TrendTile: View {
         }
     }
 
+    private var movementLabel: String {
+        if item.movement == "new" { return "NUEVA" }
+        if item.rankDelta > 0 { return "↑\(item.rankDelta)" }
+        if item.rankDelta < 0 { return "↓\(abs(item.rankDelta))" }
+        return item.movement == "flat" ? "↔0" : "—"
+    }
+
+    private var movementColor: Color {
+        if item.movement == "new" { return TTTheme.blue }
+        if item.rankDelta > 0 { return TTTheme.teal }
+        if item.rankDelta < 0 { return Color(red: 1, green: 0.65, blue: 0.45) }
+        return TTTheme.muted
+    }
+
     var body: some View {
         DisclosureGroup(isExpanded: $expanded) {
             VStack(alignment: .leading, spacing: 11) {
                 HStack {
                     Text(item.status)
-                        .font(.caption2.weight(.semibold)).foregroundStyle(accent)
+                        .font(.caption2.weight(.semibold)).foregroundStyle(rankColor)
                     Spacer()
                     if let date = item.lastExplained {
                         Text(date, format: .dateTime.day().month().hour().minute())
@@ -593,48 +607,62 @@ private struct TrendTile: View {
                 EditorialActions(trend: item, github: github, showSettings: $settings)
             }
             .padding(.top, 12)
+            .padding(.horizontal, 9)
+            .padding(.bottom, 5)
         } label: {
-            HStack(spacing: 6) {
+            HStack(spacing: 7) {
                 if showRank {
                     Text("#\(item.rank)")
-                        .font(.system(size: 12, weight: .heavy, design: .rounded))
-                        .foregroundStyle(accent).monospacedDigit()
-                        .frame(width: 29, alignment: .leading)
+                        .font(.system(size: 14, weight: .heavy, design: .rounded))
+                        .foregroundStyle(rankTextColor)
+                        .monospacedDigit()
+                        .frame(width: 46, height: 43)
+                        .background(rankColor, in: RoundedRectangle(cornerRadius: 8))
+                        .padding(.leading, 5)
+                        .accessibilityLabel("Posición \(item.rank)")
+                } else {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(rankColor)
+                        .frame(width: 4, height: 28)
+                        .padding(.leading, 8)
                 }
                 Text(item.name)
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(.white)
-                    .lineLimit(1).minimumScaleFactor(0.8)
+                    .lineLimit(1).minimumScaleFactor(0.76)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                if showRank && item.rankDelta != 0 {
-                    Text(item.rankDelta > 0 ? "↑\(item.rankDelta)" : "↓\(abs(item.rankDelta))")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(item.rankDelta > 0 ? TTTheme.teal : Color.orange)
+
+                if showRank {
+                    Text(movementLabel)
+                        .font(.system(size: 10, weight: .heavy, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(movementColor)
+                        .lineLimit(1)
+                        .frame(minWidth: 25, alignment: .trailing)
+                        .accessibilityLabel("Movimiento en el ranking: " + movementLabel)
                 }
+
                 Text(shortStatus)
                     .font(.system(size: 9, weight: .bold))
-                    .foregroundStyle(accent)
+                    .foregroundStyle(TTTheme.teal)
                     .lineLimit(1)
-                    .frame(width: 49, alignment: .trailing)
+                    .frame(width: 43, alignment: .trailing)
+
                 if let date = item.lastExplained {
                     Text(date, format: .dateTime.hour().minute())
                         .font(.system(size: 9, weight: .medium, design: .rounded))
                         .monospacedDigit()
                         .foregroundStyle(TTTheme.muted)
-                        .frame(width: 35, alignment: .trailing)
+                        .frame(width: 32, alignment: .trailing)
                 }
             }
-            .frame(minHeight: 23)
+            .frame(minHeight: 43)
         }
         .tint(TTTheme.muted)
-        .padding(.horizontal, 10).padding(.vertical, 7)
-        .background(
-            LinearGradient(colors: [accent.opacity(0.18),
-                                    TTTheme.cardInterior],
-                           startPoint: .topLeading, endPoint: .bottomTrailing),
-            in: RoundedRectangle(cornerRadius: 10)
-        )
+        .padding(.horizontal, 7)
+        .padding(.vertical, 4)
+        .background(TTTheme.cardInterior, in: RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke(TTTheme.cardBorder, lineWidth: 1.6))
+                    .stroke(TTTheme.cardBorder, lineWidth: 1.8))
     }
 }
