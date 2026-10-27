@@ -39,6 +39,18 @@ final class GitHubEditor: ObservableObject {
         let refreshExpiresAt: Double
     }
 
+    var sessionSummary: String {
+        guard authenticated else { return "No hay una autorización activa." }
+        if refreshToken.isEmpty {
+            return "Acceso guardado en el llavero del iPhone. Sin renovación periódica requerida."
+        }
+        if refreshTokenExpires == .distantFuture {
+            return "Renovación automática activa. No es necesario vincular GitHub cada día."
+        }
+        return "Renovación automática activa. Credencial renovable hasta " +
+            refreshTokenExpires.formatted(date: .abbreviated, time: .omitted) + "."
+    }
+
     init() { restoreSession() }
 
     private func credential(_ key: String) -> String {
