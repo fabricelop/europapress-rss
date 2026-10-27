@@ -1,6 +1,12 @@
 import SwiftUI
 import UIKit
 
+// Each counter opens only its own project's confirmed publications.
+private struct PublicationSheetRoute: Identifiable {
+    let project: String
+    var id: String { project }
+}
+
 // Designed natively for the iPhone. No web container.
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
@@ -9,7 +15,7 @@ struct TTDashboard: View {
     @State private var showNewStory = false
     @State private var showSettings = false
     @State private var showCombinedListas = false
-    @State private var showEditorialHub = false
+    @State private var publicationSheet: PublicationSheetRoute?
 
     var body: some View {
         ZStack {
@@ -63,12 +69,10 @@ struct TTDashboard: View {
         .sheet(isPresented: $showSettings) {
             GitHubConnectionSheet(github: github).presentationDetents([.medium, .large])
         }
-        .sheet(isPresented: $showEditorialHub) {
-            EditorialHub(
-                openLists: { showCombinedListas = true },
-                openRadar: { showCombinedListas = false; store.section = .trends; store.trendFilter = .top },
-                openWorking: { showCombinedListas = false; store.section = .news; store.newsFilter = .elaboracion }
-            ).environmentObject(store)
+        .sheet(item: $publicationSheet) { selection in
+            PublishedHistorySheet(project: selection.project)
+                .environmentObject(store)
+                .presentationDetents([.medium, .large])
         }
         .onChange(of: store.section) { _, _ in
             search = ""
@@ -96,13 +100,6 @@ struct TTDashboard: View {
                     .tracking(2.2).foregroundStyle(TTTheme.teal)
             }
             Spacer(minLength: 0)
-            Button { showEditorialHub = true } label: {
-                Image(systemName: "square.grid.2x2.fill")
-                    .foregroundStyle(TTTheme.teal)
-                    .font(.system(size: 19))
-                    .frame(width: 36, height: 42)
-            }
-            .accessibilityLabel("Tablero y novedades")
             Button { showSettings = true } label: {
                 Image(systemName: github.authenticated ? "checkmark.shield.fill" : "person.crop.circle.badge.questionmark")
                     .foregroundStyle(github.authenticated ? TTTheme.teal : TTTheme.muted)
@@ -202,28 +199,33 @@ struct TTDashboard: View {
 
     private func published24hChip(_ label: String, project: String, at now: Date,
                                    compact: Bool) -> some View {
-        VStack(spacing: 1) {
-            Text(label)
-                .font(.system(size: compact ? 9 : 8, weight: .bold))
-                .foregroundStyle(TTTheme.muted)
-                .lineLimit(1)
-                .minimumScaleFactor(0.65)
-            Text(store.publicationsLast24h(project: project, now: now)
-                 .map { String($0) } ?? "—")
-                .font(.system(size: compact ? 17 : 19,
-                              weight: .heavy, design: .rounded))
-                .foregroundStyle(project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
-                .monospacedDigit()
+        Button {
+            publicationSheet = PublicationSheetRoute(project: project)
+        } label: {
+            VStack(spacing: 1) {
+                Text(label)
+                    .font(.system(size: compact ? 9 : 8, weight: .bold))
+                    .foregroundStyle(TTTheme.muted)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.65)
+                Text(store.publicationsLast24h(project: project, now: now)
+                     .map { String($0) } ?? "—")
+                    .font(.system(size: compact ? 17 : 19,
+                                  weight: .heavy, design: .rounded))
+                    .foregroundStyle(project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
+                    .monospacedDigit()
+            }
+            .frame(width: compact ? 51 : 72, height: 44)
+            .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10)
+                        .stroke((project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
+                            .opacity(0.35)))
         }
-        .frame(width: compact ? 51 : 72, height: 44)
-        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
-        .overlay(RoundedRectangle(cornerRadius: 10)
-                    .stroke((project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
-                        .opacity(0.35)))
+        .buttonStyle(.plain)
         .accessibilityLabel("\(label): " +
             (store.publicationsLast24h(project: project, now: now)
                 .map { String($0) } ?? "sin datos") +
-            " publicaciones marcadas y confirmadas en las últimas 24 horas")
+            " publicaciones en las últimas 24 horas. Toca para ver fecha y hora.")
     }
 
     private var trendRadarSubtitle: String {
@@ -329,12 +331,15 @@ struct TTDashboard: View {
 
     private var connectedLabel: some View {
         HStack(spacing: 5) {
-            Image(systemName: store.snapshot.partial ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
-                .foregroundStyle(store.snapshot.partial ? .orange : TTTheme.teal)
-            Text(store.snapshot.partial ? "Copia local disponible" : "GitHub directo · Sin Cloudflare")
+            Image(systemName: store.snapshot.partial ?
+                  "exclamationmark.triangle.fill" : "clock")
+                .foregroundStyle(store.snapshot.partial ? .orange : TTTheme.muted)
+            Text(store.snapshot.partial ? "Últimos datos guardados" : "Última actualización")
             Spacer(minLength: 2)
             if let checked = store.snapshot.updatedAt {
                 Text(checked, format: .dateTime.day().month().hour().minute())
+            } else {
+                Text("Pendiente")
             }
         }
         .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
@@ -531,7 +536,8 @@ struct TTDashboard: View {
         VStack(spacing: 9) {
             Image(systemName: "tray").font(.largeTitle).foregroundStyle(TTTheme.muted)
             Text(label).font(.headline)
-            Text("Desliza para actualizar desde GitHub.").font(.caption).foregroundStyle(TTTheme.muted)
+            Text("Pulsa el botón de actualizar arriba para comprobar las novedades.")
+                .font(.caption).foregroundStyle(TTTheme.muted)
         }
         .frame(maxWidth: .infinity).padding(24)
         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 16))
