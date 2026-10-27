@@ -447,12 +447,21 @@ final class EditorialStore: ObservableObject {
                                                               ["captured_at"]),
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
                                                                       "reliability"))
-        if !partial && downloaded.count == paths.count {
+        // A fresh terminal decision may be applied even if an unrelated
+        // source timed out. Do not keep yesterday's optimistic elaboration
+        // while GitHub already confirms today's deletion.
+        if downloaded["trends/telegram-manual-explained.json"] != nil &&
+           downloaded["trends/mobile-decisions.json"] != nil {
             reconcileOperationHistory(
                 receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
                 manual: docs["trends/telegram-manual-explained.json"]!,
                 requests: docs["trends/requests.json"]!,
                 decisions: docs["trends/mobile-decisions.json"]!)
+            retireClosedTrendOverlays(manual: docs["trends/telegram-manual-explained.json"]!,
+                                      requests: docs["trends/requests.json"]!,
+                                      decisions: docs["trends/mobile-decisions.json"]!)
+        }
+        if !partial && downloaded.count == paths.count {
             retireSyncedActions()
             retireSyncedDrafts()
         }
@@ -485,15 +494,24 @@ final class EditorialStore: ObservableObject {
         let workingNews = canonicalSnapshot.newsElaboracion
         let readyTrends = canonicalSnapshot.trendListas
         let workingTrends = canonicalSnapshot.trendsElaboracion
-        for operation in operationHistory where
-            operation.requestID != nil && operation.status != "Rechazada" {
-            guard let id = operation.eventID, let requestID = operation.requestID else { continue }
+        for operation in operationHistory where operation.status != "Rechazada" {
+            // Migrate operations saved by older IPA builds, which stored the
+            // action ID but not its request_id/project. They must not stay
+            // 'En elaboración' forever after the content is deleted.
+            let id = operation.eventID ?? {
+                guard operation.id.hasPrefix("ttendencias:") else { return "" }
+                return String(operation.id.dropFirst("ttendencias:".count)
+                    .split(separator: ":r").first ?? "")
+            }()
+            let requestID = operation.requestID ?? ""
             let received = byRequest[requestID]
             let stage: String
             let confirmed = received == "applied" || received == "already_applied"
             // A later, authoritative deletion ALWAYS supersedes an earlier
             // optimistic preparation/rework, even if it received its own receipt.
-            let closedAfterRequest = operation.project == "ttendencias" &&
+            let isTrend = operation.project == "ttendencias" ||
+                          operation.id.hasPrefix("ttendencias:")
+            let closedAfterRequest = isTrend &&
                 closedTrends.isClosed(id: id, name: operation.title,
                                      since: operation.createdAt)
             if closedAfterRequest {
@@ -532,16 +550,43 @@ final class EditorialStore: ObservableObject {
                 recordOperation(id: operation.id, title: operation.title,
                                 kind: operation.kind, status: stage)
             }
-            if closedAfterRequest, let index = activeEditorialActions.first(where: {
-                $0.value.requestID == requestID
-            })?.key {
-                activeEditorialActions.removeValue(forKey: index)
+            if closedAfterRequest {
+                for key in activeEditorialActions.keys.filter({
+                    let row = activeEditorialActions[$0]!
+                    return row.requestID == requestID && !requestID.isEmpty ||
+                           row.project == "ttendencias" &&
+                           (row.id == id ||
+                            Self.norm(row.title) == Self.norm(operation.title))
+                }) {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
             }
             if confirmed && !closedAfterRequest, let index = activeEditorialActions.first(where: {
                 $0.value.requestID == requestID
             })?.key, var action = activeEditorialActions[index] {
                 action.phase = .confirmed
                 activeEditorialActions[index] = action
+            }
+        }
+    }
+
+    // Clears orphaned in-memory optimistic reworks even when their local
+    // operation was recorded in an older build without a request_id.
+    private func retireClosedTrendOverlays(manual: [String: Any],
+                                           requests: [String: Any],
+                                           decisions: [String: Any]) {
+        let closures = Self.closedTrends(manual: manual, requests: requests,
+                                         decisions: decisions)
+        for (key, action) in activeEditorialActions where
+            action.project == "ttendencias" &&
+            closures.isClosed(id: action.id, name: action.title,
+                              since: operationHistory.first(where: {
+                                  $0.id == key
+                              })?.createdAt ?? .distantPast) {
+            activeEditorialActions.removeValue(forKey: key)
+            if let old = operationHistory.first(where: { $0.id == key }) {
+                recordOperation(id: old.id, title: old.title, kind: old.kind,
+                                status: "Retirada")
             }
         }
     }
