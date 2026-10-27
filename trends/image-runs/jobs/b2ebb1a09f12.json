@@ -1,11 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-b2ebb1a09f12-r2-a1-1791262297238",
-  "requested_at": "2026-10-06T04:51:37.237971Z",
-  "updated_at": "2026-10-06T05:09:57.482Z",
-  "status": "DONE",
-  "phase": "done",
+  "command_id": "tr-img-auto-b2ebb1a09f12-r0-a1-1793081985606",
+  "requested_at": "2026-10-27T06:19:45.578083Z",
+  "updated_at": "2026-10-27T06:19:45.578083Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "humor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -13,54 +15,39 @@
   "target_id": "b2ebb1a09f12",
   "trend_id": "b2ebb1a09f12",
   "target_name": "#FelizMartes",
-  "revision": 2,
+  "revision": 0,
   "attempt": 1,
   "auto_repair": true,
   "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
   "chat_command_version": 4,
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "#FelizMartes",
-    "revision": 2,
-    "explanation": "TT#7 #FelizMartes es tendencia porque usuarios de X comparten saludos de buenos días y mensajes positivos al arrancar este martes.\n🌶️ El algoritmo también necesita que le den los buenos días.",
-    "closer_text": "🌶️ El algoritmo también necesita que le den los buenos días.",
+    "revision": 0,
+    "explanation": "TT#6 #FelizMartes es tendencia porque usuarios de X comparten saludos y mensajes de buenos días este martes 27 de octubre; es un hashtag recurrente que vuelve al Top 10 de España.\n#Martes #BuenosDías\n🌶️ El calendario ha vuelto a fichar de community manager.",
+    "closer_text": "🌶️ El calendario ha vuelto a fichar de community manager.",
     "trend_names": [
       "#FelizMartes"
     ],
-    "group_title": "#FelizMartes · saludos del martes",
-    "rank_at_explanation": 7,
-    "explained_at": "2026-10-06T06:49:20+02:00",
+    "group_title": "#FelizMartes · saludo recurrente de los martes",
+    "rank_at_explanation": 6,
+    "explained_at": "2026-10-27T07:16:30+01:00",
     "verification_sources": [
-      {
-        "source": "Trends24 · Madrid · 6/10/2026",
-        "url": "https://trends24.in/spain/madrid/"
-      },
-      {
-        "source": "Mundoplus.tv en X · uso de #FelizMartes",
-        "url": "https://03-presentation.twstalker.com/mundoplustv"
-      }
+      "https://twtdata.com/twitter-trends/trend/felizmartes/",
+      "https://twitter-trends.snaplytics.io/spain/2026-10-20/"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. ESTILO ASIGNADO PARA ESTA IMAGEN: Novela gráfica satírica, dibujo detallado, sombras contenidas, gesto expresivo y puesta en escena sobria.",
-    "image_style_name": "novela_grafica",
-    "image_style_index": 9
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "humor",
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte; más gag y menos barroquismo. Respeta image_style del context_snapshot y evita repetir el acabado genérico de otras imágenes.",
-    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
-    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Imagen IA materializada y visible en el estado editorial.",
-  "pc_upload_secret_hash": "cf1b014ca26829101d27e34a1408807ad5a31469c172e4515eec63c2f00a9879",
-  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
-  "pc_picked_up_at": "2026-10-06T05:08:49.611Z",
-  "bridge_version": null,
-  "target_handoff_id": "B6C2E23E8C8A7B9E03C6BD4088658E76",
-  "target_handoff_at": "2026-10-06T05:09:00.602Z",
-  "pc_launched_at": "2026-10-06T05:09:04.179Z",
-  "upload_received_at": "2026-10-06T05:09:52.735Z",
-  "upload_sha256": "6f7ef5292838244d78408d0835c378317080585f1afdb1b04a948f7073208df6",
-  "upload_bytes": 1809110,
-  "finished_at": "2026-10-06T05:09:57.482Z"
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
