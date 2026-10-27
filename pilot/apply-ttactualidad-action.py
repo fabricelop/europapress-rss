@@ -306,26 +306,38 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
                        if str(row.get("event_id") or "") == event_id), None)
         if decision == "discard":
             if existing and str(existing.get("status") or "").lower() in TERMINAL:
-                return ({}, "already_applied") if existing["status"] in {"published", "dismissed"} else fail("La noticia ya tiene otra decision terminal")
-            if not (source or active or ready):
+                if str(existing["status"]).lower() == "dismissed":
+                    return {}, "already_applied"
+                fail("La noticia ya tiene una decision final diferente")
+            if ready:
+                fail("La noticia ya esta en Listas; refresca y usa Quitar de Listas")
+            if not (source or active):
                 fail("La noticia ya no figura en el radar ni en elaboracion")
-            observed = active or source or ready
+            observed = active or source
             if "revision" in observed:
                 check_revision(observed, revision)
-            if active and str(active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
-                active["status"] = "PUBLISHED"
-                active["published_at"] = now
+            if active and str(active.get("status") or "").upper() not in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
+                fail("La noticia ya no esta en elaboracion")
+            if active:
+                active["status"] = "DISMISSED"
+                active["dismissed_at"] = now
                 active["decision_source"] = "ttactualidad_direct"
+            # Prevent a later outbox on the ORIGINAL editorial processing ledger.
+            if processing_active and str(processing_active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
+                check_revision(processing_active, revision)
+                processing_active["status"] = "DISMISSED"
+                processing_active["dismissed_at"] = now
+                processing_active["decision_source"] = "ttactualidad_direct"
+            processing["updated_at"] = now
             queue["count"] = sum(str(row.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING"} for row in queue.get("items", []))
-            prepared["items"] = [row for row in prepared.get("items", []) if str(row.get("event_id") or "") != event_id]
-            prepared["count"] = len(prepared["items"])
             if not existing:
                 existing = {"event_id": event_id}
                 decisions.setdefault("items", []).append(existing)
-            existing.update(status="published", revision=revision, updated_at=now, decision_source="ttactualidad_direct")
+            existing.update(status="dismissed", revision=revision, updated_at=now,
+                            decision_source="ttactualidad_direct")
             decisions["updated_at"] = now
             queue["updated_at"] = now
-            return {queue_path: queue, prepared_path: prepared, state_path: decisions}, "applied"
+            return {queue_path: queue, processing_path: processing, state_path: decisions}, "applied"
         if decision == "prepare":
             in_review = any(str(row.get("event_id") or "") == event_id
                             for row in status_doc.get("problematic_items", []))
