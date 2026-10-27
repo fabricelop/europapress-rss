@@ -88,12 +88,19 @@ struct EditorialActions: View {
                         request("rework")
                     }
                 } else {
-                    quickButton("Buscar en X", "magnifyingglass") {
-                        var parts = URLComponents(string: "https://x.com/search")
-                        parts?.queryItems = [URLQueryItem(name: "q", value: title),
-                                             URLQueryItem(name: "f", value: "live")]
-                        if let url = parts?.url { openURL(url) }
+                    // This action is served by the same authenticated direct
+                    // GitHub dispatch as trend rework, once deployed to main.
+                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
+                        request("rework")
                     }
+                }
+            }
+            if news != nil {
+                quickButton("Buscar en X", "magnifyingglass") {
+                    var parts = URLComponents(string: "https://x.com/search")
+                    parts?.queryItems = [URLQueryItem(name: "q", value: title),
+                                         URLQueryItem(name: "f", value: "live")]
+                    if let url = parts?.url { openURL(url) }
                 }
             }
             }
