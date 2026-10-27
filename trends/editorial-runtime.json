@@ -4,23 +4,21 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [
-    "4d07cea2610b"
-  ],
+  "processed_ids": [],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T17:06:00+01:00",
-  "last_completed_at": "2026-10-27T17:12:00+01:00",
-  "updated_at": "2026-10-27T17:12:00+01:00",
+  "last_started_at": "2026-10-27T17:15:00+01:00",
+  "last_completed_at": "2026-10-27T17:18:15+01:00",
+  "updated_at": "2026-10-27T17:18:15+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-1793117178386-manual",
+    "trigger_run_id": "tr-chat-20261027T171500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,30 +26,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-1793117178386-manual",
+    "run_id": "tr-chat-20261027T171500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T17:06:00+01:00",
-    "updated_at": "2026-10-27T17:12:00+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-27T17:15:00+01:00",
+    "updated_at": "2026-10-27T17:18:15+01:00",
+    "finished_at": "2026-10-27T17:18:15+01:00",
+    "current": 0,
+    "total": 0,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
-      "ready": 1,
-      "explained": 1,
-      "final_resolved": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
+      "attempted": 0,
+      "ready": 0,
+      "explained": 0,
+      "final_resolved": 0,
+      "explanation_groups": 0,
+      "new_cards": 0,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 0,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -59,8 +58,8 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 1,
+      "explanations_verified_under_280": 0,
+      "remates_selected": 0,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 3,
@@ -69,258 +68,70 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · Blocus r0 explicada y verificada; cola editorial 0.",
+    "message": "TTendencias completada 0/0 · no había trabajo editorial pendiente; saneamiento visual solicitado y cola final verificada en 0.",
     "incident_count": 0,
     "incidents": [],
-    "ratings_snapshot": {
-      "path": "trends/remate-ratings.json",
-      "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
-      "updated_at": "2026-10-06T21:21:47.927Z",
-      "total_ratings": 154,
-      "recent_considered": 30
-    },
-    "remate_selections": [
-      {
-        "trend_id": "4d07cea2610b",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "text": "🌶️ La convocatoria se borró en redes; el operativo no encontró el botón.",
-            "total": 8.6,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.6,
-            "length_fit": 1,
-            "repetition_penalty": 0
-          },
-          {
-            "id": "c2",
-            "text": "🌶️ Blocus dijo «cancelado»; la Policía respondió con 80 agentes.",
-            "total": 7.7,
-            "ratings_affinity": 2.1,
-            "trend_specificity": 2,
-            "punch": 1.8,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.4
-          },
-          {
-            "id": "c3",
-            "text": "🌶️ Halloween perdió la cita; el dispositivo conservó la fecha.",
-            "total": 7.8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.8,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          },
-          {
-            "id": "c4",
-            "text": "🌶️ El mensaje apagó la protesta; la vigilancia dejó la luz encendida.",
-            "total": 7.5,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.7,
-            "punch": 1.7,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.2
-          },
-          {
-            "id": "c5",
-            "text": "🌶️ La cancelación corrió por redes; los 80 agentes siguieron en agenda.",
-            "total": 7.6,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.9,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.1
-          }
-        ],
-        "selected_candidate": "c1",
-        "selected_score": 8.6,
-        "no_remate_reason": null
-      }
-    ],
+    "ratings_snapshot": null,
+    "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-27T17:07:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Releyendo estado autoritativo de Blocus."
+        "at": "2026-10-27T17:15:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Preparando pasada · cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-27T17:07:15+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "JIT confirmado: Blocus r0 sigue preparing en cola y preparing en requests; no existe ficha explicada vigente para este id."
-      },
-      {
-        "at": "2026-10-27T17:07:30+01:00",
-        "phase": "investigating",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Buscando detonante actual de Blocus y comprobando convocatoria, desconvocatoria y dispositivo previsto."
-      },
-      {
-        "at": "2026-10-27T17:08:00+01:00",
-        "phase": "investigating",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Contrastando fuente 1/2: 20minutos confirma que la Policía mantiene 80 agentes en Madrid pese a mensajes de cancelación."
-      },
-      {
-        "at": "2026-10-27T17:08:10+01:00",
-        "phase": "investigating",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Contrastando fuente 2/2: EFE Verifica confirma llamamientos activos para el 31-O en varias ciudades y ausencia de promotor claro."
-      },
-      {
-        "at": "2026-10-27T17:08:20+01:00",
-        "phase": "investigating",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Hecho esencial verificado: la novedad es la desconvocatoria dudosa de Madrid, con operativo policial intacto y convocatorias que siguen circulando para el 31-O."
-      },
-      {
-        "at": "2026-10-27T17:09:00+01:00",
-        "phase": "drafting",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Redactando explicación factual con la desconvocatoria dudosa de Madrid como novedad principal."
-      },
-      {
-        "at": "2026-10-27T17:09:10+01:00",
-        "phase": "drafting",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Comprobando límite de X: texto completo con hashtags y remate queda en 273 caracteres."
-      },
-      {
-        "at": "2026-10-27T17:09:20+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Generando candidatos de remate sobre la contradicción entre cancelación en redes y operativo policial."
-      },
-      {
-        "at": "2026-10-27T17:09:30+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Evaluando candidatos con ratings y últimos 30 remates; se descartan fórmulas demasiado parecidas a 'desconvocatoria/dispositivo'."
-      },
-      {
-        "at": "2026-10-27T17:09:40+01:00",
-        "phase": "remate_selection",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Remate seleccionado: «La convocatoria se borró en redes; el operativo no encontró el botón.»"
-      },
-      {
-        "at": "2026-10-27T17:10:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Revalidando Blocus r0 inmediatamente antes de persistir."
-      },
-      {
-        "at": "2026-10-27T17:10:10+01:00",
-        "phase": "persisting",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Guardando ficha Explicada."
-      },
-      {
-        "at": "2026-10-27T17:10:25+01:00",
-        "phase": "persisting",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Actualizando requests con la misma revisión y texto."
-      },
-      {
-        "at": "2026-10-27T17:10:40+01:00",
-        "phase": "persisting",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Retirando revisión de la cola."
-      },
-      {
-        "at": "2026-10-27T17:11:00+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Releyendo main."
-      },
-      {
-        "at": "2026-10-27T17:11:15+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Verificando id+revision y texto persistido."
-      },
-      {
-        "at": "2026-10-27T17:11:30+01:00",
-        "phase": "verifying",
-        "trend_id": "4d07cea2610b",
-        "title": "Blocus",
-        "message": "Tendencia cerrada y verificada: Explicadas y requests coinciden; Blocus r0 ya no está en cola."
-      },
-      {
-        "at": "2026-10-27T17:11:50+01:00",
+        "at": "2026-10-27T17:16:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Auditoría final: cola 0, reexplicaciones 0, 3 Explicadas recientes revisadas y ninguna sin remate; la reparación visual queda en su flujo independiente."
+        "message": "Revisando Pendientes · Vito Quiles, Messi y Blocus están explicadas, con remate y reparación visual pendiente no bloqueante."
       },
       {
-        "at": "2026-10-27T17:12:00+01:00",
+        "at": "2026-10-27T17:17:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0; 3 Pendientes recientes revisadas."
+      },
+      {
+        "at": "2026-10-27T17:18:00+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría final: cola autoritativa 0, ninguna revisión preparing/update, ninguna reexplicación pendiente y ningún problematic activo en Top 10."
+      },
+      {
+        "at": "2026-10-27T17:18:15+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · Blocus r0 explicada y verificada; cola editorial 0."
+        "message": "TTendencias completada 0/0 · no había trabajo editorial pendiente; saneamiento visual solicitado y cola final verificada en 0."
       }
     ],
     "partial": false,
-    "processed_ids": [
-      "4d07cea2610b"
-    ],
+    "processed_ids": [],
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": [
-      {
-        "id": "4d07cea2610b",
-        "name": "Blocus",
-        "revision": 0,
-        "status": "explained",
-        "verified": true
-      }
-    ],
-    "finished_at": "2026-10-27T17:12:00+01:00",
+    "final_outcomes": [],
     "pending_delivery_count": 3
   },
-  "run_id": "tr-1793117178386-manual",
+  "run_id": "tr-chat-20261027T171500+0100",
   "summary": {
-    "attempted": 1,
-    "ready": 1,
-    "explained": 1,
-    "final_resolved": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
+    "attempted": 0,
+    "ready": 0,
+    "explained": 0,
+    "final_resolved": 0,
+    "explanation_groups": 0,
+    "new_cards": 0,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 0,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -328,8 +139,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 1,
+    "explanations_verified_under_280": 0,
+    "remates_selected": 0,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 3,
@@ -340,156 +151,51 @@
   },
   "activity": [
     {
-      "at": "2026-10-27T17:07:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Releyendo estado autoritativo de Blocus."
+      "at": "2026-10-27T17:15:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Preparando pasada · cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-27T17:07:15+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "JIT confirmado: Blocus r0 sigue preparing en cola y preparing en requests; no existe ficha explicada vigente para este id."
-    },
-    {
-      "at": "2026-10-27T17:07:30+01:00",
-      "phase": "investigating",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Buscando detonante actual de Blocus y comprobando convocatoria, desconvocatoria y dispositivo previsto."
-    },
-    {
-      "at": "2026-10-27T17:08:00+01:00",
-      "phase": "investigating",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Contrastando fuente 1/2: 20minutos confirma que la Policía mantiene 80 agentes en Madrid pese a mensajes de cancelación."
-    },
-    {
-      "at": "2026-10-27T17:08:10+01:00",
-      "phase": "investigating",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Contrastando fuente 2/2: EFE Verifica confirma llamamientos activos para el 31-O en varias ciudades y ausencia de promotor claro."
-    },
-    {
-      "at": "2026-10-27T17:08:20+01:00",
-      "phase": "investigating",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Hecho esencial verificado: la novedad es la desconvocatoria dudosa de Madrid, con operativo policial intacto y convocatorias que siguen circulando para el 31-O."
-    },
-    {
-      "at": "2026-10-27T17:09:00+01:00",
-      "phase": "drafting",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Redactando explicación factual con la desconvocatoria dudosa de Madrid como novedad principal."
-    },
-    {
-      "at": "2026-10-27T17:09:10+01:00",
-      "phase": "drafting",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Comprobando límite de X: texto completo con hashtags y remate queda en 273 caracteres."
-    },
-    {
-      "at": "2026-10-27T17:09:20+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Generando candidatos de remate sobre la contradicción entre cancelación en redes y operativo policial."
-    },
-    {
-      "at": "2026-10-27T17:09:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Evaluando candidatos con ratings y últimos 30 remates; se descartan fórmulas demasiado parecidas a 'desconvocatoria/dispositivo'."
-    },
-    {
-      "at": "2026-10-27T17:09:40+01:00",
-      "phase": "remate_selection",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Remate seleccionado: «La convocatoria se borró en redes; el operativo no encontró el botón.»"
-    },
-    {
-      "at": "2026-10-27T17:10:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Revalidando Blocus r0 inmediatamente antes de persistir."
-    },
-    {
-      "at": "2026-10-27T17:10:10+01:00",
-      "phase": "persisting",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Guardando ficha Explicada."
-    },
-    {
-      "at": "2026-10-27T17:10:25+01:00",
-      "phase": "persisting",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Actualizando requests con la misma revisión y texto."
-    },
-    {
-      "at": "2026-10-27T17:10:40+01:00",
-      "phase": "persisting",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Retirando revisión de la cola."
-    },
-    {
-      "at": "2026-10-27T17:11:00+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Releyendo main."
-    },
-    {
-      "at": "2026-10-27T17:11:15+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Verificando id+revision y texto persistido."
-    },
-    {
-      "at": "2026-10-27T17:11:30+01:00",
-      "phase": "verifying",
-      "trend_id": "4d07cea2610b",
-      "title": "Blocus",
-      "message": "Tendencia cerrada y verificada: Explicadas y requests coinciden; Blocus r0 ya no está en cola."
-    },
-    {
-      "at": "2026-10-27T17:11:50+01:00",
+      "at": "2026-10-27T17:16:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Auditoría final: cola 0, reexplicaciones 0, 3 Explicadas recientes revisadas y ninguna sin remate; la reparación visual queda en su flujo independiente."
+      "message": "Revisando Pendientes · Vito Quiles, Messi y Blocus están explicadas, con remate y reparación visual pendiente no bloqueante."
     },
     {
-      "at": "2026-10-27T17:12:00+01:00",
+      "at": "2026-10-27T17:17:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Releyendo main · cola 0, requests activas 0 y rewrite_pending 0; 3 Pendientes recientes revisadas."
+    },
+    {
+      "at": "2026-10-27T17:18:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Auditoría final: cola autoritativa 0, ninguna revisión preparing/update, ninguna reexplicación pendiente y ningún problematic activo en Top 10."
+    },
+    {
+      "at": "2026-10-27T17:18:15+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · Blocus r0 explicada y verificada; cola editorial 0."
+      "message": "TTendencias completada 0/0 · no había trabajo editorial pendiente; saneamiento visual solicitado y cola final verificada en 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "not_needed_fresh",
-    "captured_at": "2026-10-27T16:41:04+01:00"
+    "captured_at": "2026-10-27T17:11:14+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-27T16:41:04+01:00",
+    "captured_at": "2026-10-27T17:11:14+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261027T161500+0100",
+  "previous_run_id": "tr-1793117178386-manual",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -497,81 +203,7 @@
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [
-    {
-      "trend_id": "4d07cea2610b",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "text": "🌶️ La convocatoria se borró en redes; el operativo no encontró el botón.",
-          "total": 8.6,
-          "ratings_affinity": 2.2,
-          "trend_specificity": 2,
-          "punch": 1.8,
-          "originality": 1.6,
-          "length_fit": 1,
-          "repetition_penalty": 0
-        },
-        {
-          "id": "c2",
-          "text": "🌶️ Blocus dijo «cancelado»; la Policía respondió con 80 agentes.",
-          "total": 7.7,
-          "ratings_affinity": 2.1,
-          "trend_specificity": 2,
-          "punch": 1.8,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.4
-        },
-        {
-          "id": "c3",
-          "text": "🌶️ Halloween perdió la cita; el dispositivo conservó la fecha.",
-          "total": 7.8,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.8,
-          "punch": 1.7,
-          "originality": 1.4,
-          "length_fit": 1,
-          "repetition_penalty": -0.1
-        },
-        {
-          "id": "c4",
-          "text": "🌶️ El mensaje apagó la protesta; la vigilancia dejó la luz encendida.",
-          "total": 7.5,
-          "ratings_affinity": 1.9,
-          "trend_specificity": 1.7,
-          "punch": 1.7,
-          "originality": 1.4,
-          "length_fit": 1,
-          "repetition_penalty": -0.2
-        },
-        {
-          "id": "c5",
-          "text": "🌶️ La cancelación corrió por redes; los 80 agentes siguieron en agenda.",
-          "total": 7.6,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.9,
-          "punch": 1.6,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.1
-        }
-      ],
-      "selected_candidate": "c1",
-      "selected_score": 8.6,
-      "no_remate_reason": null
-    }
-  ],
-  "final_outcomes": [
-    {
-      "id": "4d07cea2610b",
-      "name": "Blocus",
-      "revision": 0,
-      "status": "explained",
-      "verified": true
-    }
-  ],
+  "remate_selections": [],
+  "final_outcomes": [],
   "pending_delivery_count": 3
 }
