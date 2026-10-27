@@ -1,0 +1,25 @@
+name: TTiTTulares duplicate and stale news guard
+on:
+  pull_request:
+    paths:
+      - "ttittulares/auto_queue.py"
+      - "ttittulares/treated_news.py"
+      - ".github/workflows/ttittulares-anti-repetition-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/auto_queue.py"
+      - ".github/workflows/ttittulares-anti-repetition-ci.yml"
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and cross-feed duplicate checks
+        run: |
+          python3 -m py_compile ttittulares/auto_queue.py ttittulares/treated_news.py
+          python3 ttittulares/auto_queue.py --selftest
+          python3 ttittulares/treated_news.py --selftest
