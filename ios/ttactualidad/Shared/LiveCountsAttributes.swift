@@ -2,7 +2,7 @@ import ActivityKit
 import Foundation
 
 // Shared by the app and its ActivityKit/WidgetKit extension.
-// Deliberately defines no Home Screen or Lock Screen widgets.
+// Shared by both Live Activities and the new Home/Lock Screen widgets.
 struct LiveCountsAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
         var newsReady: Int
@@ -12,10 +12,11 @@ struct LiveCountsAttributes: ActivityAttributes {
         var pendingActions: Int
         var checkedAt: Date
         var partialData: Bool
+        var recentHeadline: String
 
         init(newsReady: Int, trendsReady: Int, newsWorking: Int = 0,
              trendsWorking: Int = 0, pendingActions: Int = 0,
-             checkedAt: Date, partialData: Bool) {
+             checkedAt: Date, partialData: Bool, recentHeadline: String = "") {
             self.newsReady = newsReady
             self.trendsReady = trendsReady
             self.newsWorking = newsWorking
@@ -23,13 +24,14 @@ struct LiveCountsAttributes: ActivityAttributes {
             self.pendingActions = pendingActions
             self.checkedAt = checkedAt
             self.partialData = partialData
+            self.recentHeadline = String(recentHeadline.prefix(140))
         }
 
         // A Live Activity from 0.3.2 can still be on the Lock Screen
         // during an upgrade. Its old state lacked the new counters.
         private enum CodingKeys: String, CodingKey {
             case newsReady, trendsReady, newsWorking, trendsWorking
-            case pendingActions, checkedAt, partialData
+            case pendingActions, checkedAt, partialData, recentHeadline
         }
 
         init(from decoder: Decoder) throws {
@@ -41,6 +43,7 @@ struct LiveCountsAttributes: ActivityAttributes {
             pendingActions = try values.decodeIfPresent(Int.self, forKey: .pendingActions) ?? 0
             checkedAt = try values.decode(Date.self, forKey: .checkedAt)
             partialData = try values.decode(Bool.self, forKey: .partialData)
+            recentHeadline = try values.decodeIfPresent(String.self, forKey: .recentHeadline) ?? ""
         }
     }
 
