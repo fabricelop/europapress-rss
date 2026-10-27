@@ -35,6 +35,8 @@ jobs:
           file TTActualidad/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
       - name: Validate Live Activity contract and GitHub data sources
         run: python3 ios/ttactualidad/tests/preflight.py
+      - name: Test isolated READY news rework (no editorial writes)
+        run: python3 pilot/test_rework_ttittulares.py
       - name: Generate Xcode project
         working-directory: ios/ttactualidad
         run: xcodegen generate
@@ -62,13 +64,13 @@ jobs:
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.2-PlumeImpactor-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.2-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.2-PlumeImpactor-unsigned.ipa
+          zip -qr TTActualidad-0.4.3-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.3-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.3-PlumeImpactor-unsigned.ipa
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.2-PlumeImpactor-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.2-PlumeImpactor-unsigned.ipa
+          name: TTActualidad-0.4.3-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.3-PlumeImpactor-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
