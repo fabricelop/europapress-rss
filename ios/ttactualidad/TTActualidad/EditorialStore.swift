@@ -458,6 +458,82 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // GitHub's receipt is authoritative. Rendering a provisional change
+    // must NEVER become a success merely because it disappeared locally.
+    private func reconcileOperationHistory(receipts: [String: Any]) {
+        let remote = Self.rows(receipts, "items")
+        let byRequest = Dictionary(
+            remote.compactMap { row -> (String, String)? in
+                let id = Self.str(row, "request_id")
+                guard !id.isEmpty else { return nil }
+                return (id, Self.str(row, "status").lowercased())
+            },
+            uniquingKeysWith: { _, newest in newest }
+        )
+        let readyNews = canonicalSnapshot.news
+        let workingNews = canonicalSnapshot.newsElaboracion
+        let readyTrends = canonicalSnapshot.trendListas
+        let workingTrends = canonicalSnapshot.trendsElaboracion
+        for operation in operationHistory where
+            operation.requestID != nil && operation.status != "Rechazada" {
+            guard let id = operation.eventID, let requestID = operation.requestID else { continue }
+            let received = byRequest[requestID]
+            let stage: String
+            let confirmed = received == "applied" || received == "already_applied"
+            if operation.kind == "Nueva noticia" {
+                if readyNews.contains(where: { $0.id == id }) {
+                    stage = "En Listas"
+                } else if workingNews.contains(where: { $0.id == id }) {
+                    stage = "En elaboración"
+                } else if confirmed {
+                    stage = "En elaboración"
+                } else {
+                    stage = outstandingStage(for: operation)
+                }
+            } else if operation.kind == "rework" || operation.kind == "prepare" {
+                let old = operation.revision ?? 0
+                let finished = operation.project == "ttendencias"
+                    ? readyTrends.contains(where: {
+                        $0.editorialID == id && $0.revision > old
+                    })
+                    : readyNews.contains(where: { $0.id == id && $0.revision > old })
+                let working = operation.project == "ttendencias"
+                    ? workingTrends.contains(where: {
+                        $0.editorialID == id && $0.revision >= old
+                    })
+                    : workingNews.contains(where: { $0.id == id && $0.revision >= old })
+                if finished { stage = "En Listas" }
+                else if confirmed || working { stage = "En elaboración" }
+                else { stage = outstandingStage(for: operation) }
+            } else if confirmed {
+                stage = "Confirmada"
+            } else {
+                stage = outstandingStage(for: operation)
+            }
+            if stage != operation.status {
+                recordOperation(id: operation.id, title: operation.title,
+                                kind: operation.kind, status: stage)
+            }
+            if confirmed, let index = activeEditorialActions.first(where: {
+                $0.value.requestID == requestID
+            })?.key, var action = activeEditorialActions[index] {
+                action.phase = .confirmed
+                activeEditorialActions[index] = action
+            }
+        }
+    }
+
+    private func outstandingStage(for operation: EditorialOperation) -> String {
+        if ["Confirmada", "En Listas", "Rechazada"].contains(operation.status) {
+            return operation.status
+        }
+        if operation.status == "En elaboración" { return operation.status }
+        if Date().timeIntervalSince(operation.createdAt) > 10 * 60 {
+            return "Sin confirmar"
+        }
+        return "Esperando GitHub"
+    }
+
     // +Noticia appears immediately in En elaboración. The real queue is still
     // committed asynchronously by GitHub Actions, and verified independently.
     func beginManualNews(requestID: String, title: String, url: String) {
