@@ -53,7 +53,12 @@ struct TTDashboard: View {
             }
         }
         .onChange(of: scenePhase) { _, next in
-            if next == .active { Task { await github.renewOnForeground() } }
+            if next == .active {
+                Task {
+                    await github.renewOnForeground()
+                    await store.refresh()
+                }
+            }
         }
         .sheet(isPresented: $showNewStory) {
             NewsSubmissionSheet(github: github, onQueued: {
