@@ -108,7 +108,7 @@ struct EditorialHub: View {
                         Spacer()
                         if store.isLoading { ProgressView() }
                         Button {
-                            Task { await store.refresh() }
+                            Task { await store.refresh(manual: true) }
                         } label: {
                             Label("Consultar", systemImage: "arrow.clockwise")
                                 .font(.caption.weight(.semibold))
