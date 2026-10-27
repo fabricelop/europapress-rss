@@ -254,7 +254,7 @@ struct EditorialActions: View {
                                              title: requestedTitle, rank: requestedRank,
                                              requestID: requestID)
             store.completeEditorialAction(project: requestedProject, id: requestedID,
-                                          revision: requestedRevision,
+                                          revision: requestedRevision, requestID: requestID,
                                           result: result, detail: github.notice)
         }
     }
@@ -272,8 +272,22 @@ struct EditorialActions: View {
     private func request(_ action: String) {
         guard github.authenticated else { showSettings = true; return }
         guard !editorialID.isEmpty else { outcome = "Identificador editorial no disponible. Actualiza antes."; return }
-        guard !store.isActionInProgress(project: project, id: editorialID, revision: revision) else {
-            outcome = "La orden ya está registrada y pendiente de confirmación."
+        if store.isActionInProgress(project: project, id: editorialID, revision: revision) {
+            // A stale request was previously a permanent lock. Check the
+            // authoritative remote receipts/decisions before refusing a new
+            // deletion. Never silently issue a duplicate on stale cached data.
+            outcome = "Comprobando la orden anterior en GitHub…"
+            Task {
+                await store.refreshIfStale(minInterval: 0)
+                if !store.isActionInProgress(project: project, id: editorialID,
+                                              revision: revision) {
+                    outcome = ""
+                    intent = action
+                    confirm = true
+                } else {
+                    outcome = "La orden anterior sigue sin resolverse en GitHub. Comprueba Órdenes por confirmar."
+                }
+            }
             return
         }
         intent = action
