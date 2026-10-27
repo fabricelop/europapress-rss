@@ -59,6 +59,7 @@ struct TrendItem: Identifiable {
     var rankDelta: Int = 0
     var movement: String = ""
     var enteredAt: Date? = nil
+    var problemReason: String = ""
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -76,6 +77,7 @@ struct EditorialSnapshot {
     var top30: [TrendItem] = []
     var trendListas: [TrendItem] = []
     var trendsElaboracion: [TrendItem] = []
+    var unexplainedTrends: [TrendItem] = []
     var updatedAt: Date?
     var partial: Bool = true
     var oneSourceCount: Int? = nil
@@ -153,6 +155,7 @@ struct EditorialOperation: Codable, Identifiable {
         case "published": return "Publicado · retirar de Listas"
         case "discard": return "Desestimar"
         case "prepare", "rework": return "Elaborar desde cero"
+        case "hints": return "Aportar pistas e investigar"
         case "Nueva noticia": return "Añadir noticia"
         default: return kind
         }
@@ -396,6 +399,7 @@ final class EditorialStore: ObservableObject {
         clean.trendsElaboracion.removeAll {
             isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision)
         }
+        clean.unexplainedTrends.removeAll { isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision) }
         clean.top30 = clean.top30.map { item in
             guard isTerminal(project: "ttendencias", id: item.editorialID,
                              revision: item.revision) else { return item }
@@ -576,6 +580,9 @@ final class EditorialStore: ObservableObject {
             requests: docs["trends/requests.json"]!,
             ready: ready, archivePhotos: archivePhotos
         )
+        let unexplained = Self.buildUnexplainedTrends(
+            requests: docs["trends/requests.json"]!,
+            decisions: docs["trends/mobile-decisions.json"]!, now: now)
         let status = docs["ttittulares/status.json"] ?? [:]
         let newsQueue = docs["ttittulares/editorial-queue.json"] ?? [:]
         let newsTremending = docs["ttittulares/tremending/items.json"] ?? [:]
@@ -628,6 +635,7 @@ final class EditorialStore: ObservableObject {
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
                                      top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
+                                     unexplainedTrends: unexplained,
                                      updatedAt: now, partial: partial,
                                      oneSourceCount: status["one_source_count"] as? Int,
                                      twoSourceCount: status["two_source_count"] as? Int,
@@ -845,7 +853,7 @@ final class EditorialStore: ObservableObject {
                     stage = "En elaboración"
                 } else if confirmed { stage = "En elaboración" }
                 else { stage = outstandingStage(for: operation) }
-            } else if operation.kind == "rework" || operation.kind == "prepare" {
+            } else if ["rework", "prepare", "hints"].contains(operation.kind) {
                 let old = identity.revision
                 let finished = isTrend
                     ? readyTrends.contains(where: {
@@ -1037,7 +1045,7 @@ final class EditorialStore: ObservableObject {
                 persistTerminals()
             }
             recordOperation(id: key, title: action.title, kind: action.decision,
-                            status: ["prepare", "rework"].contains(action.decision) ?
+                            status: ["prepare", "rework", "hints"].contains(action.decision) ?
                                     "En elaboración" : "Confirmada")
             action.phase = .confirmed
             activeEditorialActions[key] = action
@@ -1108,7 +1116,7 @@ final class EditorialStore: ObservableObject {
                 }) {
                     activeEditorialActions.removeValue(forKey: key)
                 }
-            } else if action.decision == "rework" || action.decision == "prepare" {
+            } else if ["rework", "prepare", "hints"].contains(action.decision) {
                 let newWorking = canonicalSnapshot.trendsElaboracion.contains {
                     ($0.editorialID == action.id && $0.revision > action.revision) ||
                     ($0.name == action.title && $0.status == "EN ELABORACIÓN")
@@ -1130,7 +1138,7 @@ final class EditorialStore: ObservableObject {
                   editorialID: trend.editorialID, revision: trend.revision,
                   imageURL: trend.imageURL, sourceURL: trend.sourceURL,
                   rankDelta: trend.rankDelta, movement: trend.movement,
-                  enteredAt: trend.enteredAt)
+                  enteredAt: trend.enteredAt, problemReason: trend.problemReason)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -1184,7 +1192,7 @@ final class EditorialStore: ObservableObject {
                     }
                 }
             } else {
-                if ["deleted", "discard", "published", "rework", "prepare"].contains(action.decision) {
+                if ["deleted", "discard", "published", "rework", "prepare", "hints"].contains(action.decision) {
                     updated.trendListas.removeAll(where: sameTrend)
                     if ["discard", "deleted", "published"].contains(action.decision) {
                         updated.trendsElaboracion.removeAll(where: sameTrend)
@@ -1197,12 +1205,12 @@ final class EditorialStore: ObservableObject {
                        action.decision == "published" {
                         return overlayTrend(original, inListas: false)
                     }
-                    if action.decision == "rework" || action.decision == "prepare" {
+                    if ["rework", "prepare", "hints"].contains(action.decision) {
                         return overlayTrend(original, status: "EN ELABORACIÓN", inListas: false)
                     }
                     return original
                 }
-                if action.decision == "rework" || action.decision == "prepare" {
+                if ["rework", "prepare", "hints"].contains(action.decision) {
                     if !updated.trendsElaboracion.contains(where: {
                         $0.editorialID == action.id && $0.revision >= action.revision
                     }) {
@@ -1211,7 +1219,7 @@ final class EditorialStore: ObservableObject {
                                       name: action.title, explanation: "",
                                       lastExplained: nil, status: "EN ELABORACIÓN",
                                       inListas: false, editorialID: action.id,
-                                      revision: action.revision, imageURL: nil,
+                                      revision: action.revision + (action.decision == "hints" ? 1 : 0), imageURL: nil,
                                       sourceURL: nil), at: 0)
                     }
                 }
@@ -1582,6 +1590,9 @@ final class EditorialStore: ObservableObject {
         for (key, row) in requestByName {
             if ["preparing", "update", "ready"].contains(str(row, "status").lowercased()) {
                 statuses[key] = "EN ELABORACIÓN"
+            } else if ["problematic", "inactive"].contains(str(row, "status").lowercased()) &&
+                      !str(row, "problem_reason").isEmpty {
+                statuses[key] = "SIN EXPLICACIÓN"
             }
         }
         return (1...30).compactMap { rank -> TrendItem? in
@@ -1614,8 +1625,40 @@ final class EditorialStore: ObservableObject {
                              sourceURL: URL(string: source),
                              rankDelta: int(trendMovement, "rank_delta"),
                              movement: str(trendMovement, "movement"),
-                             enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]))
+                             enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]),
+                             problemReason: str(request, "problem_reason"))
         }
+    }
+
+    // Historical unresolved trends remain visible in Pendientes even after
+    // dropping out of the current Top 30. Never resurrect terminal decisions.
+    private static func buildUnexplainedTrends(
+        requests: [String: Any], decisions: [String: Any], now: Date
+    ) -> [TrendItem] {
+        let closedIDs = Set(rows(decisions, "items").filter {
+            closed.contains(str($0, "status").lowercased())
+        }.map { str($0, "id") })
+        var latest: [String: [String: Any]] = [:]
+        for row in rows(requests, "requests") {
+            let id = str(row, "id")
+            if !id.isEmpty && isNewer(row, than: latest[id]) { latest[id] = row }
+        }
+        return latest.values.compactMap { row -> TrendItem? in
+            let status = str(row, "status").lowercased()
+            let id = str(row, "id")
+            let name = str(row, "name")
+            let reason = str(row, "problem_reason")
+            let last = when(row, ["inactive_at", "last_attempt_at", "requested_at"])
+            guard ["problematic", "inactive"].contains(status),
+                  !closedIDs.contains(id), !name.isEmpty, !reason.isEmpty,
+                  let last, now.timeIntervalSince(last) >= -60 * 60,
+                  now.timeIntervalSince(last) < 7 * 24 * 3600 else { return nil }
+            return TrendItem(id: "unexplained-" + id, rank: int(row, "rank"),
+                             name: name, explanation: "", lastExplained: nil,
+                             status: "SIN EXPLICACIÓN", inListas: false,
+                             editorialID: id, revision: int(row, "revision"),
+                             imageURL: nil, sourceURL: nil, problemReason: reason)
+        }.sorted { $0.name < $1.name }
     }
 
     private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
