@@ -10,26 +10,26 @@
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T15:15:00+01:00",
-  "last_completed_at": "2026-10-27T15:17:00+01:00",
-  "updated_at": "2026-10-27T15:17:00+01:00",
+  "last_started_at": "2026-10-27T15:45:00+01:00",
+  "last_completed_at": "2026-10-27T15:47:00+01:00",
+  "updated_at": "2026-10-27T15:47:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T151500+0100",
+    "trigger_run_id": "tr-chat-20261027T154500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261027T151500+0100",
+    "run_id": "tr-chat-20261027T154500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T15:15:00+01:00",
-    "updated_at": "2026-10-27T15:17:00+01:00",
-    "finished_at": "2026-10-27T15:17:00+01:00",
+    "started_at": "2026-10-27T15:45:00+01:00",
+    "updated_at": "2026-10-27T15:47:00+01:00",
+    "finished_at": "2026-10-27T15:47:00+01:00",
     "current": 0,
     "total": 0,
     "trend_id": null,
@@ -65,7 +65,7 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0; cola editorial verificada a cero. Vito Quiles y Messi quedan solo en reparación visual independiente.",
+    "message": "TTendencias completada 0/0; cola editorial, requests activos y reexplicaciones verificados a cero. Vito Quiles y Messi siguen únicamente en reparación visual independiente.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -78,29 +78,35 @@
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-27T15:15:00+01:00",
+        "at": "2026-10-27T15:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "0 preparing/update; 0 reexplicaciones; revisando 2 Pendientes recientes."
+        "message": "0 preparing/update y 0 reexplicaciones; iniciando auditoría de Pendientes recientes y relectura final de main."
       },
       {
-        "at": "2026-10-27T15:16:30+01:00",
+        "at": "2026-10-27T15:46:00+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Relectura main: cola 0, requests activos 0 y rewrite_pending 0; 2 Pendientes recientes quedan solo en saneamiento visual."
+        "message": "Revisando Pendientes · 2 tarjetas; Vito Quiles y Messi quedan solo en saneamiento visual independiente."
       },
       {
-        "at": "2026-10-27T15:17:00+01:00",
+        "at": "2026-10-27T15:47:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0; cola editorial verificada a cero. Vito Quiles y Messi quedan solo en reparación visual independiente."
+        "message": "TTendencias completada 0/0; cola editorial, requests activos y reexplicaciones verificados a cero. Vito Quiles y Messi siguen únicamente en reparación visual independiente."
       }
-    ]
+    ],
+    "partial": false,
+    "processed_ids": [],
+    "queue_complete": true,
+    "remaining_active_ids": [],
+    "final_outcomes": [],
+    "pending_delivery_count": 2
   },
-  "run_id": "tr-chat-20261027T151500+0100",
+  "run_id": "tr-chat-20261027T154500+0100",
   "summary": {
     "attempted": 0,
     "ready": 0,
@@ -134,37 +140,37 @@
   },
   "activity": [
     {
-      "at": "2026-10-27T15:15:00+01:00",
+      "at": "2026-10-27T15:45:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "0 preparing/update; 0 reexplicaciones; revisando 2 Pendientes recientes."
+      "message": "0 preparing/update y 0 reexplicaciones; iniciando auditoría de Pendientes recientes y relectura final de main."
     },
     {
-      "at": "2026-10-27T15:16:30+01:00",
+      "at": "2026-10-27T15:46:00+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Relectura main: cola 0, requests activos 0 y rewrite_pending 0; 2 Pendientes recientes quedan solo en saneamiento visual."
+      "message": "Revisando Pendientes · 2 tarjetas; Vito Quiles y Messi quedan solo en saneamiento visual independiente."
     },
     {
-      "at": "2026-10-27T15:17:00+01:00",
+      "at": "2026-10-27T15:47:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0; cola editorial verificada a cero. Vito Quiles y Messi quedan solo en reparación visual independiente."
+      "message": "TTendencias completada 0/0; cola editorial, requests activos y reexplicaciones verificados a cero. Vito Quiles y Messi siguen únicamente en reparación visual independiente."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "not_needed_fresh",
-    "captured_at": "2026-10-27T15:11:09+01:00"
+    "captured_at": "2026-10-27T15:41:17+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-27T15:11:09+01:00",
+    "captured_at": "2026-10-27T15:41:17+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-1793107792858-manual",
+  "previous_run_id": "tr-chat-20261027T151500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
