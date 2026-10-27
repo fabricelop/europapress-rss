@@ -5,21 +5,16 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "8c9462005850",
-    "fecc8ec91811",
-    "fd827439f147",
-    "3ddbfd7e26b4"
+    "7d7438a41902"
   ],
   "remaining_ids": [],
-  "remaining_problematic_ids": [
-    "3ddbfd7e26b4"
-  ],
+  "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T14:15:00+01:00",
-  "last_completed_at": "2026-10-27T13:20:34.942Z",
-  "updated_at": "2026-10-27T13:20:34.942Z",
+  "last_started_at": "2026-10-27T14:30:00+01:00",
+  "last_completed_at": "2026-10-27T13:38:00Z",
+  "updated_at": "2026-10-27T13:38:00Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
@@ -30,108 +25,49 @@
     "editorial_blocking": false
   },
   "last_run": {
-    "version": 1,
-    "canonical": true,
-    "project": "TTendencias",
-    "run_id": "tr-chat-20261027T141500+0100",
+    "run_id": "tr-1793107792858-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T14:15:00+01:00",
-    "updated_at": "2026-10-27T13:20:34.942Z",
-    "finished_at": "2026-10-27T13:20:34.942Z",
-    "current": 4,
-    "total": 4,
-    "trend_id": null,
-    "title": null,
-    "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10.",
-    "incident_count": 0,
-    "incidents": [],
-    "partial": false,
-    "activity": [
-      {
-        "at": "2026-10-27T14:15:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa · 4 revisiones activas; preparando saneamiento visual y snapshot editorial."
-      },
-      {
-        "at": "2026-10-27T13:19:04.591Z",
-        "phase": "persisting",
-        "trend_id": "8c9462005850",
-        "title": "#Mañaneros27O",
-        "message": "Persistidas las explicaciones verificadas de #Mañaneros27O, LaLiga y Copa del Rey; requests actualizado."
-      },
-      {
-        "at": "2026-10-27T13:19:27.903Z",
-        "phase": "persisting",
-        "trend_id": "3ddbfd7e26b4",
-        "title": "#FreeParacetamol",
-        "message": "#FreeParacetamol marcado problematic tras búsquedas distintas sin detonante verificable; retiradas de cola las tres revisiones explicadas."
-      },
-      {
-        "at": "2026-10-27T13:20:34.942Z",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releído main · 0 revisiones preparing/update, 1 problematic y 0 reexplicaciones pendientes; texto y revisión coinciden en requests y Explicadas."
-      },
-      {
-        "at": "2026-10-27T13:20:34.942Z",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10."
-      }
-    ],
-    "processed_ids": [
-      "8c9462005850",
-      "fecc8ec91811",
-      "fd827439f147",
-      "3ddbfd7e26b4"
-    ],
-    "queue_complete": true,
-    "remaining_active_ids": [],
+    "started_at": "2026-10-27T14:30:00+01:00",
+    "updated_at": "2026-10-27T13:38:00Z",
+    "finished_at": "2026-10-27T13:38:00Z",
+    "current": 1,
+    "total": 1,
     "summary": {
-      "attempted": 4,
-      "ready": 3,
-      "explained": 3,
-      "final_resolved": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
+      "attempted": 1,
+      "ready": 1,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 1,
-      "problematic_marked": 1,
+      "problematic_reviewed": 0,
+      "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 4,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
-      "final_compact_queue": 1,
+      "final_compact_queue": 0,
       "remaining_active": 0,
-      "remaining_problematic": 1,
+      "remaining_problematic": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
-      "remates_omitted": 1,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
+      "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 5,
+      "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "radar_refresh": {
-      "status": "not_needed_fresh",
-      "captured_at": "2026-10-27T14:11:20+01:00"
-    },
-    "radar": {
-      "captured_at": "2026-10-27T14:11:20+01:00",
-      "queue_count": 4
-    },
+    "message": "TTendencias completada 1/1 · Benzema rev. 0 explicada y verificada; 0 preparing/update y 0 reexplicaciones pendientes.",
+    "incident_count": 0,
+    "incidents": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -141,67 +77,7 @@
     },
     "remate_selections": [
       {
-        "trend_id": "8c9462005850",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 6.8,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.4,
-            "punch": 1.4,
-            "originality": 1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c2",
-            "total": 7.2,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.5,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c3",
-            "total": 8,
-            "ratings_affinity": 2,
-            "trend_specificity": 1.7,
-            "punch": 1.7,
-            "originality": 1.3,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.4,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.4,
-            "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.7
-          }
-        ],
-        "selected_candidate": "c3",
-        "selected_score": 8,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "fecc8ec91811",
+        "trend_id": "7d7438a41902",
         "revision": 0,
         "candidate_count": 5,
         "candidates": [
@@ -210,177 +86,157 @@
             "total": 7.3,
             "ratings_affinity": 1.8,
             "trend_specificity": 1.6,
-            "punch": 1.5,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c2",
-            "total": 8.5,
-            "ratings_affinity": 2.2,
-            "trend_specificity": 1.9,
-            "punch": 1.8,
-            "originality": 1.4,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c3",
-            "total": 7.5,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c4",
-            "total": 7.1,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.5,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c5",
-            "total": 6.9,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
             "punch": 1.4,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          }
-        ],
-        "selected_candidate": "c2",
-        "selected_score": 8.5,
-        "no_remate_reason": null
-      },
-      {
-        "trend_id": "fd827439f147",
-        "revision": 0,
-        "candidate_count": 5,
-        "candidates": [
-          {
-            "id": "c1",
-            "total": 7,
-            "ratings_affinity": 1.7,
-            "trend_specificity": 1.5,
-            "punch": 1.5,
-            "originality": 1.1,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c2",
-            "total": 7.4,
-            "ratings_affinity": 1.8,
-            "trend_specificity": 1.6,
-            "punch": 1.6,
-            "originality": 1.2,
-            "length_fit": 1,
-            "repetition_penalty": -0.8
-          },
-          {
-            "id": "c3",
-            "total": 7.6,
-            "ratings_affinity": 1.9,
-            "trend_specificity": 1.6,
-            "punch": 1.6,
             "originality": 1.3,
             "length_fit": 1,
             "repetition_penalty": -0.8
           },
           {
-            "id": "c4",
-            "total": 8.2,
+            "id": "c2",
+            "total": 8.4,
             "ratings_affinity": 2,
             "trend_specificity": 1.8,
             "punch": 1.7,
-            "originality": 1.4,
+            "originality": 1.6,
             "length_fit": 1,
             "repetition_penalty": -0.7
           },
           {
-            "id": "c5",
-            "total": 7.2,
+            "id": "c3",
+            "total": 7.6,
             "ratings_affinity": 1.8,
-            "trend_specificity": 1.5,
-            "punch": 1.5,
-            "originality": 1.2,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
+          },
+          {
+            "id": "c4",
+            "total": 7.8,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.4,
             "length_fit": 1,
             "repetition_penalty": -0.8
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.9
           }
         ],
-        "selected_candidate": "c4",
-        "selected_score": 8.2,
+        "selected_candidate": "c2",
+        "selected_score": 8.4,
         "no_remate_reason": null
-      },
-      {
-        "trend_id": "3ddbfd7e26b4",
-        "revision": 0,
-        "candidate_count": 0,
-        "candidates": [],
-        "selected_candidate": null,
-        "selected_score": null,
-        "no_remate_reason": "unverified_trigger"
       }
     ],
-    "final_outcomes": [
+    "activity": [
       {
-        "id": "8c9462005850",
-        "revision": 0,
-        "status": "explained"
+        "at": "2026-10-27T14:30:00+01:00",
+        "phase": "preparing",
+        "trend_id": null,
+        "title": null,
+        "message": "Iniciando pasada directa · 1 revisión preparing/update; comprobando reexplicaciones y saneamiento inicial."
       },
       {
-        "id": "fecc8ec91811",
-        "revision": 0,
-        "status": "explained"
+        "at": "2026-10-27T14:31:00+01:00",
+        "phase": "verifying",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Releyendo estado autoritativo de Benzema · rev. 0 sigue preparing y no hay reexplicaciones pendientes."
       },
       {
-        "id": "3ddbfd7e26b4",
-        "revision": 0,
-        "status": "problematic"
+        "at": "2026-10-27T14:32:00+01:00",
+        "phase": "investigating",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Buscando detonante actual y contrastando gala, fecha y situación deportiva de Benzema."
       },
       {
-        "id": "fd827439f147",
-        "revision": 0,
-        "status": "explained"
+        "at": "2026-10-27T14:33:00+01:00",
+        "phase": "investigating",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Hecho esencial verificado · conversación posterior al Balón de Oro del 26-O; Kane ganó, Mbappé fue segundo y Benzema sigue sin club."
+      },
+      {
+        "at": "2026-10-27T14:34:00+01:00",
+        "phase": "drafting",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Redactando explicación factual desde cero y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-27T14:35:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Evaluando cinco candidatos de remate con originalidad y repetición frente a los últimos remates."
+      },
+      {
+        "at": "2026-10-27T13:36:00Z",
+        "phase": "remate_selection",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Remate seleccionado · «La gala de 2026 abrió otra vez la vitrina de 2022.»"
+      },
+      {
+        "at": "2026-10-27T13:36:00Z",
+        "phase": "persisting",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión exacta de la cola."
+      },
+      {
+        "at": "2026-10-27T13:37:30Z",
+        "phase": "verifying",
+        "trend_id": "7d7438a41902",
+        "title": "Benzema",
+        "message": "Releyendo main · id+revision y texto persistido coinciden exactamente; cola activa y reexplicaciones pendientes en cero."
+      },
+      {
+        "at": "2026-10-27T13:38:00Z",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada 1/1 · Benzema rev. 0 explicada y verificada; 0 preparing/update y 0 reexplicaciones pendientes."
       }
-    ],
-    "pending_delivery_count": 5
+    ]
   },
-  "run_id": "tr-chat-20261027T141500+0100",
+  "run_id": "tr-1793107792858-manual",
   "summary": {
-    "attempted": 4,
-    "ready": 3,
-    "explained": 3,
-    "final_resolved": 3,
-    "explanation_groups": 3,
-    "new_cards": 3,
+    "attempted": 1,
+    "ready": 1,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 1,
-    "problematic_marked": 1,
+    "problematic_reviewed": 0,
+    "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 4,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
-    "final_compact_queue": 1,
+    "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 1,
+    "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 3,
-    "remates_selected": 3,
-    "remates_omitted": 1,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
+    "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 5,
+    "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -388,39 +244,74 @@
   },
   "activity": [
     {
-      "at": "2026-10-27T14:15:00+01:00",
+      "at": "2026-10-27T14:30:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada directa · 4 revisiones activas; preparando saneamiento visual y snapshot editorial."
+      "message": "Iniciando pasada directa · 1 revisión preparing/update; comprobando reexplicaciones y saneamiento inicial."
     },
     {
-      "at": "2026-10-27T13:19:04.591Z",
-      "phase": "persisting",
-      "trend_id": "8c9462005850",
-      "title": "#Mañaneros27O",
-      "message": "Persistidas las explicaciones verificadas de #Mañaneros27O, LaLiga y Copa del Rey; requests actualizado."
-    },
-    {
-      "at": "2026-10-27T13:19:27.903Z",
-      "phase": "persisting",
-      "trend_id": "3ddbfd7e26b4",
-      "title": "#FreeParacetamol",
-      "message": "#FreeParacetamol marcado problematic tras búsquedas distintas sin detonante verificable; retiradas de cola las tres revisiones explicadas."
-    },
-    {
-      "at": "2026-10-27T13:20:34.942Z",
+      "at": "2026-10-27T14:31:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releído main · 0 revisiones preparing/update, 1 problematic y 0 reexplicaciones pendientes; texto y revisión coinciden en requests y Explicadas."
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Releyendo estado autoritativo de Benzema · rev. 0 sigue preparing y no hay reexplicaciones pendientes."
     },
     {
-      "at": "2026-10-27T13:20:34.942Z",
+      "at": "2026-10-27T14:32:00+01:00",
+      "phase": "investigating",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Buscando detonante actual y contrastando gala, fecha y situación deportiva de Benzema."
+    },
+    {
+      "at": "2026-10-27T14:33:00+01:00",
+      "phase": "investigating",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Hecho esencial verificado · conversación posterior al Balón de Oro del 26-O; Kane ganó, Mbappé fue segundo y Benzema sigue sin club."
+    },
+    {
+      "at": "2026-10-27T14:34:00+01:00",
+      "phase": "drafting",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Redactando explicación factual desde cero y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-27T14:35:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Evaluando cinco candidatos de remate con originalidad y repetición frente a los últimos remates."
+    },
+    {
+      "at": "2026-10-27T13:36:00Z",
+      "phase": "remate_selection",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Remate seleccionado · «La gala de 2026 abrió otra vez la vitrina de 2022.»"
+    },
+    {
+      "at": "2026-10-27T13:36:00Z",
+      "phase": "persisting",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Guardando ficha Explicada, actualizando requests y retirando la revisión exacta de la cola."
+    },
+    {
+      "at": "2026-10-27T13:37:30Z",
+      "phase": "verifying",
+      "trend_id": "7d7438a41902",
+      "title": "Benzema",
+      "message": "Releyendo main · id+revision y texto persistido coinciden exactamente; cola activa y reexplicaciones pendientes en cero."
+    },
+    {
+      "at": "2026-10-27T13:38:00Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10."
+      "message": "TTendencias completada 1/1 · Benzema rev. 0 explicada y verificada; 0 preparing/update y 0 reexplicaciones pendientes."
     }
   ],
   "partial": false,
@@ -442,67 +333,7 @@
   },
   "remate_selections": [
     {
-      "trend_id": "8c9462005850",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "total": 6.8,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.4,
-          "punch": 1.4,
-          "originality": 1,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        },
-        {
-          "id": "c2",
-          "total": 7.2,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.5,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        },
-        {
-          "id": "c3",
-          "total": 8,
-          "ratings_affinity": 2,
-          "trend_specificity": 1.7,
-          "punch": 1.7,
-          "originality": 1.3,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        },
-        {
-          "id": "c4",
-          "total": 7.1,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.4,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        },
-        {
-          "id": "c5",
-          "total": 6.9,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.4,
-          "punch": 1.4,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.7
-        }
-      ],
-      "selected_candidate": "c3",
-      "selected_score": 8,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "fecc8ec91811",
+      "trend_id": "7d7438a41902",
       "revision": 0,
       "candidate_count": 5,
       "candidates": [
@@ -511,144 +342,60 @@
           "total": 7.3,
           "ratings_affinity": 1.8,
           "trend_specificity": 1.6,
-          "punch": 1.5,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c2",
-          "total": 8.5,
-          "ratings_affinity": 2.2,
-          "trend_specificity": 1.9,
-          "punch": 1.8,
-          "originality": 1.4,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c3",
-          "total": 7.5,
-          "ratings_affinity": 1.9,
-          "trend_specificity": 1.6,
-          "punch": 1.6,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c4",
-          "total": 7.1,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.5,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c5",
-          "total": 6.9,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.5,
           "punch": 1.4,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        }
-      ],
-      "selected_candidate": "c2",
-      "selected_score": 8.5,
-      "no_remate_reason": null
-    },
-    {
-      "trend_id": "fd827439f147",
-      "revision": 0,
-      "candidate_count": 5,
-      "candidates": [
-        {
-          "id": "c1",
-          "total": 7,
-          "ratings_affinity": 1.7,
-          "trend_specificity": 1.5,
-          "punch": 1.5,
-          "originality": 1.1,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c2",
-          "total": 7.4,
-          "ratings_affinity": 1.8,
-          "trend_specificity": 1.6,
-          "punch": 1.6,
-          "originality": 1.2,
-          "length_fit": 1,
-          "repetition_penalty": -0.8
-        },
-        {
-          "id": "c3",
-          "total": 7.6,
-          "ratings_affinity": 1.9,
-          "trend_specificity": 1.6,
-          "punch": 1.6,
           "originality": 1.3,
           "length_fit": 1,
           "repetition_penalty": -0.8
         },
         {
-          "id": "c4",
-          "total": 8.2,
+          "id": "c2",
+          "total": 8.4,
           "ratings_affinity": 2,
           "trend_specificity": 1.8,
           "punch": 1.7,
-          "originality": 1.4,
+          "originality": 1.6,
           "length_fit": 1,
           "repetition_penalty": -0.7
         },
         {
-          "id": "c5",
-          "total": 7.2,
+          "id": "c3",
+          "total": 7.6,
           "ratings_affinity": 1.8,
-          "trend_specificity": 1.5,
-          "punch": 1.5,
-          "originality": 1.2,
+          "trend_specificity": 1.7,
+          "punch": 1.6,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": -0.9
+        },
+        {
+          "id": "c4",
+          "total": 7.8,
+          "ratings_affinity": 1.9,
+          "trend_specificity": 1.7,
+          "punch": 1.6,
+          "originality": 1.4,
           "length_fit": 1,
           "repetition_penalty": -0.8
+        },
+        {
+          "id": "c5",
+          "total": 7.2,
+          "ratings_affinity": 1.7,
+          "trend_specificity": 1.6,
+          "punch": 1.5,
+          "originality": 1.3,
+          "length_fit": 1,
+          "repetition_penalty": -0.9
         }
       ],
-      "selected_candidate": "c4",
-      "selected_score": 8.2,
+      "selected_candidate": "c2",
+      "selected_score": 8.4,
       "no_remate_reason": null
-    },
-    {
-      "trend_id": "3ddbfd7e26b4",
-      "revision": 0,
-      "candidate_count": 0,
-      "candidates": [],
-      "selected_candidate": null,
-      "selected_score": null,
-      "no_remate_reason": "unverified_trigger"
     }
   ],
   "final_outcomes": [
     {
-      "id": "8c9462005850",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "fecc8ec91811",
-      "revision": 0,
-      "status": "explained"
-    },
-    {
-      "id": "3ddbfd7e26b4",
-      "revision": 0,
-      "status": "problematic"
-    },
-    {
-      "id": "fd827439f147",
+      "id": "7d7438a41902",
       "revision": 0,
       "status": "explained"
     }
