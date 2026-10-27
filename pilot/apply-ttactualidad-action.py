@@ -14,6 +14,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trends_rework import rework_explained, rework_top30
+from trends_hints import submit_trend_hints
 from rework_ttittulares import rework_ready_news
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -253,7 +254,7 @@ def delete_tremending(event_id: str, revision: int):
     return {path: state, decisions_path: decisions}, "applied"
 
 
-def apply_live(project: str, event_id: str, decision: str, revision: int, trend_name: str = '', trend_rank: int = 0):
+def apply_live(project: str, event_id: str, decision: str, revision: int, trend_name: str = '', trend_rank: int = 0, trend_hints: str = ''):
     """Live editorial decisions. Never call legacy Telegram callbacks."""
     if project == "ttittulares" and event_id.startswith("tremending-"):
         if decision != "deleted":
@@ -376,6 +377,30 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
             queue["updated_at"] = now
             processing["updated_at"] = now
             return {queue_path: queue, processing_path: processing}, "applied"
+    if project == "ttendencias" and decision == "hints":
+        req_path = "trends/requests.json"
+        queue_path = "trends/editorial-queue.json"
+        manual_path = "trends/telegram-manual-explained.json"
+        mobile_path = "trends/mobile-decisions.json"
+        deliveries_path = "trends/telegram-image-deliveries.json"
+        prepared_path = "trends/prepared.json"
+        requests = load(req_path, {"requests": []})
+        queue = load(queue_path, {"items": []})
+        manual = load(manual_path, {"items": []})
+        mobile = load(mobile_path, {"items": []})
+        deliveries = load(deliveries_path, {"items": []})
+        prepared = load(prepared_path, {"items": []})
+        recent = load("trends/recent.json", {"items": []})
+        try:
+            submit_trend_hints(event_id, revision, trend_hints, now, requests,
+                               manual, queue, mobile, deliveries, prepared, recent)
+        except ValueError as exc:
+            fail(str(exc))
+        return {
+            req_path: requests, queue_path: queue, manual_path: manual,
+            mobile_path: mobile, deliveries_path: deliveries,
+            prepared_path: prepared,
+        }, "applied"
     if project == "ttendencias" and decision == "rework":
         req_path = "trends/requests.json"
         manual_path = "trends/telegram-manual-explained.json"
@@ -495,10 +520,13 @@ def main():
     revision = cmd.get("revision")
     trend_name = str(cmd.get("trend_name") or "").strip()
     trend_rank = cmd.get("trend_rank")
+    trend_hints = cmd.get("hints", "")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision not in {"deleted", "published", "discard", "prepare", "rework"}:
+    if decision not in {"deleted", "published", "discard", "prepare", "rework", "hints"}:
         fail("Decision no admitida")
+    if decision == "hints" and (project != "ttendencias" or not isinstance(trend_hints, str) or not 8 <= len(trend_hints.strip()) <= 6000):
+        fail("Pistas invalidas o proyecto no admitido")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
     if type(revision) is not int or revision < 0:
@@ -509,7 +537,8 @@ def main():
         print("IDEMPOTENT: recibida anteriormente", previous.get("status"))
         return
     changes, status = apply_live(project, event_id, decision, revision,
-                                 trend_name, trend_rank if type(trend_rank) is int else 0)
+                                 trend_name, trend_rank if type(trend_rank) is int else 0,
+                                 trend_hints)
     stamp = datetime.now(timezone.utc).isoformat()
     history["items"].append({"request_id": request_id, "project": project,
                              "event_id": event_id, "revision": revision,
