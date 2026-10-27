@@ -24,6 +24,7 @@ class ActionTests(unittest.TestCase):
             "telegram/editorial-processing.json": {"items": []},
             "ttittulares/editorial-queue.json": {"items": [], "count": 0},
             "ttittulares/decisions.json": {"items": []},
+            "ttittulares/status.json": {"processing_items": [], "problematic_items": [], "three_source_items": []},
             "trends/telegram-image-deliveries.json": {"items": []},
             "trends/telegram-manual-explained.json": {"items": []},
             "trends/prepared.json": {"items": []},
