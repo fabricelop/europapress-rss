@@ -534,9 +534,10 @@ final class EditorialStore: ObservableObject {
                 let stillOriginal = originalNews.contains {
                     $0.id == action.id && $0.revision == action.revision
                 }
-                if action.decision == "prepare" {
+                if action.decision == "prepare" || action.decision == "rework" {
                     if canonicalSnapshot.newsElaboracion.contains(where: {
-                        $0.id == action.id && $0.revision >= action.revision
+                        $0.id == action.id &&
+                        $0.revision >= action.revision + (action.decision == "rework" ? 1 : 0)
                     }) {
                         activeEditorialActions.removeValue(forKey: key)
                     }
@@ -603,13 +604,25 @@ final class EditorialStore: ObservableObject {
                     updated.newsRevision.removeAll(where: sameNews)
                     updated.newsCreciendo.removeAll(where: sameNews)
                     updated.newsTremending.removeAll(where: sameNews)
-                } else if action.decision == "prepare" {
-                    let original = (updated.newsRevision + updated.newsCreciendo).first(where: sameNews)
+                } else if action.decision == "prepare" || action.decision == "rework" {
+                    let source = (updated.news + updated.newsRevision +
+                                  updated.newsCreciendo).first(where: sameNews)
+                    updated.news.removeAll(where: sameNews)
                     updated.newsRevision.removeAll(where: sameNews)
                     updated.newsCreciendo.removeAll(where: sameNews)
-                    if let original, !updated.newsElaboracion.contains(where: sameNews) {
+                    if let source, !updated.newsElaboracion.contains(where: {
+                        $0.id == action.id && $0.revision >= action.revision
+                    }) {
+                        // A fresh investigation MUST NOT display the previous
+                        // factual text, previous gag or archive photo.
                         updated.newsElaboracion.insert(
-                            overlayNews(original, status: "EN ELABORACIÓN"), at: 0)
+                            NewsItem(id: source.id, title: source.title,
+                                     text: "Nueva investigación solicitada a GitHub",
+                                     publishedAt: Date(),
+                                     revision: source.revision + (action.decision == "rework" ? 1 : 0),
+                                     sourceURL: source.sourceURL, imageURL: nil,
+                                     factual: "", closer: "", sources: source.sources,
+                                     status: "EN ELABORACIÓN"), at: 0)
                     }
                 }
             } else {
@@ -788,7 +801,8 @@ final class EditorialStore: ObservableObject {
         }
         return rows(prepared, "items").compactMap { item in
             let id = str(item, "event_id")
-            guard !id.isEmpty, !closed.contains(statuses[id] ?? "") else { return nil }
+            guard !id.isEmpty, !closed.contains(statuses[id] ?? ""),
+                  item["rewrite_pending"] as? Bool != true else { return nil }
             let tweet = item["tweet"] as? [String: Any] ?? [:]
             let text = str(tweet, "text")
             let factual = str(item, "explanation").isEmpty ? str(item, "factual_summary") : str(item, "explanation")
