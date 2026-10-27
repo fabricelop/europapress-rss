@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-10-27T16:18:51.755750+00:00",
+  "updated_at": "2026-10-27T17:27:45.868282+00:00",
   "count": 104,
   "requests": [
     {
@@ -15581,28 +15581,43 @@
       "id": "3ddbfd7e26b4",
       "name": "#FreeParacetamol",
       "rank": 8,
-      "status": "inactive",
-      "requested_at": "2026-10-27T14:11:35+01:00",
-      "revision": 0,
+      "created_at": "2026-10-27T17:27:45.868282+00:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-10-27T17:27:45.868282+00:00",
+      "updated_at": "2026-10-27T17:27:45.868282+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "a4f02bd0d10e",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "#FreeParacetamol"
       ],
-      "captured_with": [
-        "#Mañaneros27O",
-        "LaLiga",
-        "#FreeParacetamol",
-        "Copa del Rey"
+      "user_pistas": [
+        {
+          "at": "2026-10-27T17:27:45.868282+00:00",
+          "source_revision": 0,
+          "text": "Se supone que hay un youtuber o influencer llamado paracetamol acosado de algo",
+          "verification": "unverified_editor_context"
+        }
       ],
-      "auto_queued": true,
-      "auto_queue_scope": "top10",
-      "last_attempt_at": "2026-10-27T13:19:04.591Z",
-      "problem_reason": "No se pudo determinar con fiabilidad el detonante actual de #FreeParacetamol tras búsquedas distintas del hashtag y su contexto en España; no hay fuentes actuales suficientes para publicar una explicación factual.",
-      "inactive_at": "2026-10-27T14:31:26+01:00",
-      "inactive_reason": "left-top10-radar"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "inactive",
+          "problem_reason": "No se pudo determinar con fiabilidad el detonante actual de #FreeParacetamol tras búsquedas distintas del hashtag y su contexto en España; no hay fuentes actuales suficientes para publicar una explicación factual.",
+          "last_attempt_at": "2026-10-27T13:19:04.591Z"
+        }
+      ],
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nSe supone que hay un youtuber o influencer llamado paracetamol acosado de algo\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "fd827439f147",
