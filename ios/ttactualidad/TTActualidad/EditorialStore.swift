@@ -104,6 +104,16 @@ struct OptimisticEditorialAction {
     var key: String { project + ":" + id + ":r" + String(revision) }
 }
 
+// Terminal decisions are durable. A stale or partially cached GitHub JSON
+// cannot resurrect a deleted card on a later app launch.
+private struct EditorialTombstone: Codable {
+    let project: String
+    let id: String
+    let revision: Int
+    let decision: String
+    let confirmedAt: Date
+}
+
 struct EditorialOperation: Codable, Identifiable {
     let id: String
     let title: String
@@ -170,10 +180,17 @@ final class EditorialStore: ObservableObject {
         Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
     }
     private var canonicalSnapshot = EditorialSnapshot()
+    private var terminalMarks: [String: EditorialTombstone] = [:]
+    private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     private var refreshRequested = false
     private var currentVisitSnapshot: [String: String]?
 
     init() {
+        if let saved = UserDefaults.standard.data(forKey: tombstoneStorageKey),
+           let tombstones = try? JSONDecoder().decode(
+                [String: EditorialTombstone].self, from: saved) {
+            terminalMarks = tombstones
+        }
         unreviewedNews = Set(UserDefaults.standard.stringArray(
             forKey: "TTActualidad.unread.news.v1") ?? [])
         unreviewedTrends = Set(UserDefaults.standard.stringArray(
@@ -219,6 +236,107 @@ final class EditorialStore: ObservableObject {
         if let data = try? JSONEncoder().encode(operationHistory) {
             UserDefaults.standard.set(data, forKey: "TTActualidad.operations.v1")
         }
+    }
+
+    private func markTerminal(project: String, id: String, revision: Int,
+                              decision: String, at: Date) {
+        guard !id.isEmpty, ["ttittulares", "ttendencias"].contains(project),
+              ["deleted", "dismissed", "published"].contains(decision) else { return }
+        let key = project + ":" + id
+        if let earlier = terminalMarks[key] {
+            guard revision > earlier.revision ||
+                  (revision == earlier.revision && at >= earlier.confirmedAt) else { return }
+        }
+        terminalMarks[key] = EditorialTombstone(
+            project: project, id: id, revision: revision,
+            decision: decision, confirmedAt: at)
+    }
+
+    // Prefer confirmation in the decision ledgers or successful receipts.
+    // Never infer a terminal state merely because a row was absent in a
+    // single GET response or because an optimistic animation completed.
+    private func accumulateConfirmedTerminals(_ docs: [String: [String: Any]],
+                                               _ downloaded: [String: Data]) {
+        func read(_ path: String, project: String, idKey: String) {
+            guard downloaded[path] != nil, let doc = docs[path] else { return }
+            for row in Self.rows(doc, "items") {
+                let id = Self.str(row, idKey)
+                let status = Self.str(row, "status").lowercased()
+                guard Self.closed.contains(status) else { continue }
+                let date = Self.when(row, [
+                    "deleted_at", "dismissed_at", "published_at", "updated_at"
+                ]) ?? .distantPast
+                markTerminal(project: project, id: id, revision: Self.int(row, "revision"),
+                             decision: status, at: date)
+            }
+        }
+        read("ttittulares/decisions.json", project: "ttittulares", idKey: "event_id")
+        read("trends/mobile-decisions.json", project: "ttendencias", idKey: "id")
+        if downloaded["trends/telegram-manual-explained.json"] != nil,
+           let manual = docs["trends/telegram-manual-explained.json"] {
+            for row in Self.rows(manual, "items") where
+                Self.closed.contains(Self.str(row, "status").lowercased()) {
+                markTerminal(project: "ttendencias", id: Self.str(row, "id"),
+                             revision: Self.int(row, "revision"),
+                             decision: Self.str(row, "status").lowercased(),
+                             at: Self.when(row, [
+                                "deleted_at", "dismissed_at", "published_at", "updated_at"
+                             ]) ?? .distantPast)
+            }
+        }
+        if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
+           let receipts = docs["pilot/ttactualidad-action-receipts.json"] {
+            for row in Self.rows(receipts, "items") {
+                let status = Self.str(row, "status").lowercased()
+                guard ["applied", "already_applied"].contains(status) else { continue }
+                let decision = Self.str(row, "decision").lowercased()
+                guard ["deleted", "discard", "published"].contains(decision) else { continue }
+                markTerminal(project: Self.str(row, "project"),
+                             id: Self.str(row, "event_id"),
+                             revision: Self.int(row, "revision"),
+                             decision: decision == "discard" ? "dismissed" : decision,
+                             at: Self.when(row, ["at"]) ?? .distantPast)
+            }
+        }
+        if let saved = try? JSONEncoder().encode(terminalMarks) {
+            UserDefaults.standard.set(saved, forKey: tombstoneStorageKey)
+        }
+    }
+
+    private func isTerminal(project: String, id: String, revision: Int) -> Bool {
+        guard let tombstone = terminalMarks[project + ":" + id] else { return false }
+        return revision <= tombstone.revision
+    }
+
+    private func applyConfirmedTerminals(_ original: EditorialSnapshot) -> EditorialSnapshot {
+        var clean = original
+        clean.news.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsElaboracion.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsRevision.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsCreciendo.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsTremending.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.trendListas.removeAll {
+            isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision)
+        }
+        clean.trendsElaboracion.removeAll {
+            isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision)
+        }
+        clean.top30 = clean.top30.map { item in
+            guard isTerminal(project: "ttendencias", id: item.editorialID,
+                             revision: item.revision) else { return item }
+            return overlayTrend(item, status: "PENDIENTE", inListas: false)
+        }
+        return clean
     }
 
     private func storeUnread() {
@@ -433,7 +551,9 @@ final class EditorialStore: ObservableObject {
             updateNovedades(news: news, trends: ready, top30: top,
                             newsWorking: queueNews, trendsWorking: trendsQueued)
         }
-        canonicalSnapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
+        accumulateConfirmedTerminals(docs, downloaded)
+        canonicalSnapshot = applyConfirmedTerminals(EditorialSnapshot(
+                                     news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
                                      top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
@@ -446,7 +566,7 @@ final class EditorialStore: ObservableObject {
                                      trendsRadarAt: Self.when(docs["trends/recent.json"] ?? [:],
                                                               ["captured_at"]),
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
-                                                                      "reliability"))
+                                                                      "reliability")))
         // A fresh terminal decision may be applied even if an unrelated
         // source timed out. Do not keep yesterday's optimistic elaboration
         // while GitHub already confirms today's deletion.
@@ -923,7 +1043,7 @@ final class EditorialStore: ObservableObject {
                 }
             }
         }
-        snapshot = updated
+        snapshot = applyConfirmedTerminals(updated)
     }
 
     private func refreshOptimisticActivity() {
