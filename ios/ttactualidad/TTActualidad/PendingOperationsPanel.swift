@@ -145,7 +145,7 @@ struct PendingOperationsPanel: View {
 
     private func symbol(for status: String) -> String {
         switch status {
-        case "Confirmada", "En Listas", "Verificada": return "checkmark.circle.fill"
+        case "Confirmada", "En Listas", "Verificada", "Retirada": return "checkmark.circle.fill"
         case "Rechazada": return "xmark.octagon.fill"
         case "En elaboración": return "square.and.pencil"
         case "Sin confirmar": return "exclamationmark.triangle.fill"
@@ -155,7 +155,7 @@ struct PendingOperationsPanel: View {
 
     private func tint(for status: String) -> Color {
         switch status {
-        case "Confirmada", "En Listas", "Verificada": return TTTheme.teal
+        case "Confirmada", "En Listas", "Verificada", "Retirada": return TTTheme.teal
         case "Rechazada": return Color.red
         case "En elaboración": return TTTheme.blue
         default: return Color.orange
