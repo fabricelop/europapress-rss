@@ -282,8 +282,8 @@ struct TTDashboard: View {
         Group {
             if !showCombinedListas {
                 if store.section == .trends {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 4),
-                                             count: 5), spacing: 5) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 5),
+                                             count: 4), spacing: 5) {
                         filterChip("Top 30", store.snapshot.top30.count,
                                    store.trendFilter == .top) { store.trendFilter = .top }
                         filterChip("Listas", store.snapshot.trendListas.count,
@@ -298,8 +298,6 @@ struct TTDashboard: View {
                                    store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
                         filterChip("Antiguas", filteredTrends(.antiguas).count,
                                    store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
-                        filterChip("↑↓ Cambios", filteredTrends(.movimientos).count,
-                                   store.trendFilter == .movimientos) { store.trendFilter = .movimientos }
                         filterChip("Sin revisar", filteredTrends(.sinRevisar).count,
                                    store.trendFilter == .sinRevisar) { store.trendFilter = .sinRevisar }
                     }
@@ -452,8 +450,6 @@ struct TTDashboard: View {
             } ?? false }
         case .pendientes: return items.filter { $0.explanation.isEmpty }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
-        case .movimientos: return items.filter { $0.rankDelta != 0 ||
-            ["up", "down"].contains($0.movement) }
         case .sinRevisar: return items.filter { store.unreviewedTrends.contains($0.name) }
         }
     }
@@ -602,6 +598,17 @@ private struct TrendTile: View {
         item.ageBand() == 2 ? TTTheme.base : .white
     }
 
+    // The vivid left rank keeps its saturation; the card itself is a dark,
+    // desaturated tint of the same hue (as in the original compact design).
+    private var softCardColor: Color {
+        switch item.ageBand() {
+        case 1: return Color(red: 0.105, green: 0.235, blue: 0.285) // subtle green
+        case 2: return Color(red: 0.240, green: 0.222, blue: 0.235) // subtle yellow
+        case 3: return Color(red: 0.235, green: 0.158, blue: 0.247) // subtle red
+        default: return Color(red: 0.150, green: 0.200, blue: 0.310) // subtle blue
+        }
+    }
+
     private var shortStatus: String {
         switch item.status {
         case "EN ELABORACIÓN": return "ELAB."
@@ -715,7 +722,11 @@ private struct TrendTile: View {
         .tint(TTTheme.muted)
         .padding(.horizontal, 5)
         .padding(.vertical, 3)
-        .background(TTTheme.cardInterior, in: RoundedRectangle(cornerRadius: 10))
+        .background(
+            LinearGradient(colors: [softCardColor, TTTheme.cardInterior],
+                           startPoint: .leading, endPoint: .trailing),
+            in: RoundedRectangle(cornerRadius: 10)
+        )
         .overlay(RoundedRectangle(cornerRadius: 10)
                     .stroke(TTTheme.cardBorder, lineWidth: 1.8))
         .onChange(of: expanded) { _, value in
