@@ -4,6 +4,7 @@ import UIKit
 // Designed natively for the iPhone. No web container.
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var github = GitHubEditor()
     @State private var search = ""
     @State private var showNewStory = false
@@ -42,6 +43,10 @@ struct TTDashboard: View {
             }
         }
         .preferredColorScheme(.dark)
+        .task { await github.renewOnForeground() }
+        .onChange(of: scenePhase) { _, next in
+            if next == .active { Task { await github.renewOnForeground() } }
+        }
         .sheet(isPresented: $showNewStory) {
             NewsSubmissionSheet(github: github, onQueued: {
                 showCombinedListas = false
@@ -253,68 +258,92 @@ struct TTDashboard: View {
         .lineLimit(1).minimumScaleFactor(0.8)
     }
 
+    // Every filter remains visible: two rows, no horizontal swipe navigation.
+    // Long labels can wrap; compact counts remain legible on small phones.
     private var subTabs: some View {
         Group {
-        if !showCombinedListas {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 7) {
+            if !showCombinedListas {
                 if store.section == .trends {
-                    chip("Top 30", number: store.snapshot.top30.count,
-                         active: store.trendFilter == .top) { store.trendFilter = .top }
-                    chip("Listas", number: store.snapshot.trendListas.count,
-                         active: store.trendFilter == .listas) { store.trendFilter = .listas }
-                    chip("En elaboración", number: store.snapshot.trendsElaboracion.count,
-                         active: store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
-                    chip("Nuevas", number: filteredTrends(.nuevas).count,
-                         active: store.trendFilter == .nuevas) { store.trendFilter = .nuevas }
-                    chip("Recientes", number: filteredTrends(.recientes).count,
-                         active: store.trendFilter == .recientes) { store.trendFilter = .recientes }
-                    chip("Pendientes", number: filteredTrends(.pendientes).count,
-                         active: store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
-                    chip("Antiguas", number: filteredTrends(.antiguas).count,
-                         active: store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
-                    chip("↑↓ Cambios", number: filteredTrends(.movimientos).count,
-                         active: store.trendFilter == .movimientos) { store.trendFilter = .movimientos }
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 4),
+                                             count: 5), spacing: 5) {
+                        filterChip("Top 30", store.snapshot.top30.count,
+                                   store.trendFilter == .top) { store.trendFilter = .top }
+                        filterChip("Listas", store.snapshot.trendListas.count,
+                                   store.trendFilter == .listas) { store.trendFilter = .listas }
+                        filterChip("En elaboración", store.snapshot.trendsElaboracion.count,
+                                   store.trendFilter == .elaboracion) { store.trendFilter = .elaboracion }
+                        filterChip("Nuevas", filteredTrends(.nuevas).count,
+                                   store.trendFilter == .nuevas) { store.trendFilter = .nuevas }
+                        filterChip("Recientes", filteredTrends(.recientes).count,
+                                   store.trendFilter == .recientes) { store.trendFilter = .recientes }
+                        filterChip("Pendientes", filteredTrends(.pendientes).count,
+                                   store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
+                        filterChip("Antiguas", filteredTrends(.antiguas).count,
+                                   store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
+                        filterChip("↑↓ Cambios", filteredTrends(.movimientos).count,
+                                   store.trendFilter == .movimientos) { store.trendFilter = .movimientos }
+                        filterChip("Sin revisar", filteredTrends(.sinRevisar).count,
+                                   store.trendFilter == .sinRevisar) { store.trendFilter = .sinRevisar }
+                    }
                 } else {
-                    chip("Listas", number: store.snapshot.news.count,
-                         active: store.newsFilter == .listas) { store.newsFilter = .listas }
-                    chip("En elaboración", number: store.snapshot.newsElaboracion.count,
-                         active: store.newsFilter == .elaboracion) { store.newsFilter = .elaboracion }
-                    chip("Revisión", number: store.snapshot.newsRevision.count,
-                         active: store.newsFilter == .revision) { store.newsFilter = .revision }
-                    chip("Creciendo", number: store.snapshot.newsCreciendo.count,
-                         active: store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
-                    chip("Tremending", number: store.snapshot.newsTremending.count,
-                         active: store.newsFilter == .tremending) { store.newsFilter = .tremending }
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 5),
+                                             count: 3), spacing: 5) {
+                        filterChip("Listas", store.snapshot.news.count,
+                                   store.newsFilter == .listas) { store.newsFilter = .listas }
+                        filterChip("En elaboración", store.snapshot.newsElaboracion.count,
+                                   store.newsFilter == .elaboracion) { store.newsFilter = .elaboracion }
+                        filterChip("Revisión", store.snapshot.newsRevision.count,
+                                   store.newsFilter == .revision) { store.newsFilter = .revision }
+                        filterChip("Creciendo", store.snapshot.newsCreciendo.count,
+                                   store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
+                        filterChip("Tremending", store.snapshot.newsTremending.count,
+                                   store.newsFilter == .tremending) { store.newsFilter = .tremending }
+                        filterChip("Sin revisar", store.unreviewedNews.count,
+                                   store.newsFilter == .sinRevisar) { store.newsFilter = .sinRevisar }
+                    }
                 }
             }
-            .padding(.vertical, 2)
-        }
-        }
         }
     }
-    private func chip(_ title: String, number: Int, active: Bool, onTap: @escaping () -> Void) -> some View {
+
+    private func filterChip(_ name: String, _ count: Int, _ active: Bool,
+                            onTap: @escaping () -> Void) -> some View {
         Button {
             onTap()
             UISelectionFeedbackGenerator().selectionChanged()
         } label: {
-            HStack(spacing: 5) {
-                Text(title)
-                Text(String(number)).foregroundStyle(active ? TTTheme.teal : TTTheme.muted)
+            VStack(spacing: 2) {
+                Text(name)
+                    .font(.system(size: 9, weight: .semibold))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.75)
+                    .multilineTextAlignment(.center)
+                    .frame(height: 24, alignment: .center)
+                    .frame(maxWidth: .infinity)
+                Text(String(count))
+                    .font(.system(size: 13, weight: .heavy, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(active ? TTTheme.teal : TTTheme.muted)
             }
-            .font(.caption.weight(.bold))
-            .padding(.horizontal, 13).padding(.vertical, 10)
-            .background(active ? TTTheme.teal.opacity(0.19) : TTTheme.panel, in: Capsule())
-            .overlay(Capsule().stroke(active ? TTTheme.teal.opacity(0.65) : Color.white.opacity(0.14)))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 2).padding(.vertical, 5)
+            .frame(maxWidth: .infinity)
+            .background(active ? TTTheme.teal.opacity(0.17) : TTTheme.panel,
+                        in: RoundedRectangle(cornerRadius: 9))
+            .overlay(RoundedRectangle(cornerRadius: 9)
+                        .stroke(active ? TTTheme.teal.opacity(0.7) :
+                                TTTheme.cardBorder, lineWidth: 1))
         }
         .buttonStyle(.plain)
-        .foregroundStyle(.white)
+        .accessibilityLabel("\(name): \(count)")
     }
 
     private var searchField: some View {
         HStack(spacing: 9) {
             Image(systemName: "magnifyingglass").foregroundStyle(TTTheme.muted)
-            TextField(store.section == .news ? "Buscar noticia..." : "Buscar tendencia...", text: $search)
+            TextField(showCombinedListas ? "Buscar en Listas..." :
+                      store.section == .news ? "Buscar noticia..." : "Buscar tendencia...",
+                      text: $search)
                 .font(.system(size: 15))
                 .textInputAutocapitalization(.never).autocorrectionDisabled()
             if !search.isEmpty {
@@ -358,7 +387,7 @@ struct TTDashboard: View {
                 ForEach(store.snapshot.trendListas.filter {
                     search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
                 }) { item in
-                    TrendTile(item: item, showRank: false,
+                    TrendTile(item: item, showRank: item.rank > 0,
                               github: github, settings: $showSettings)
                 }
             }
@@ -376,6 +405,7 @@ struct TTDashboard: View {
             case .revision: return store.snapshot.newsRevision
             case .creciendo: return store.snapshot.newsCreciendo
             case .tremending: return store.snapshot.newsTremending
+            case .sinRevisar: return store.allNews.filter { store.unreviewedNews.contains($0.id) }
             }
         }()
         let visible = category.filter {
@@ -406,6 +436,7 @@ struct TTDashboard: View {
         case .antiguas: return items.filter { $0.ageBand() == 3 }
         case .movimientos: return items.filter { $0.rankDelta != 0 ||
             ["up", "down"].contains($0.movement) }
+        case .sinRevisar: return items.filter { store.unreviewedTrends.contains($0.name) }
         }
     }
 
@@ -418,7 +449,7 @@ struct TTDashboard: View {
         if visible.isEmpty { emptyNotice("No hay tendencias para mostrar") }
         LazyVStack(spacing: 5) {
             ForEach(visible) { item in
-                TrendTile(item: item, showRank: store.trendFilter == .top,
+                TrendTile(item: item, showRank: item.rank > 0,
                           github: github, settings: $showSettings)
             }
         }
@@ -437,6 +468,7 @@ struct TTDashboard: View {
 // Compact by default. Expand only the chosen story: no long headlines
 // force all other stories off screen, and no editorial buttons are removed.
 private struct NewsTile: View {
+    @EnvironmentObject private var store: EditorialStore
     let item: NewsItem
     @ObservedObject var github: GitHubEditor
     @Binding var settings: Bool
@@ -523,10 +555,14 @@ private struct NewsTile: View {
         .overlay(RoundedRectangle(cornerRadius: 14)
                     .stroke(TTTheme.cardBorder, lineWidth: 1.8))
         .shadow(color: .black.opacity(0.18), radius: 8, y: 3)
+        .onChange(of: expanded) { _, value in
+            if value { store.markNewsReviewed(item.id) }
+        }
     }
 }
 
 private struct TrendTile: View {
+    @EnvironmentObject private var store: EditorialStore
     let item: TrendItem
     let showRank: Bool
     @ObservedObject var github: GitHubEditor
@@ -665,4 +701,7 @@ private struct TrendTile: View {
         .overlay(RoundedRectangle(cornerRadius: 10)
                     .stroke(TTTheme.cardBorder, lineWidth: 1.8))
     }
+        .onChange(of: expanded) { _, value in
+            if value { store.markTrendReviewed(item.name) }
+        }
 }
