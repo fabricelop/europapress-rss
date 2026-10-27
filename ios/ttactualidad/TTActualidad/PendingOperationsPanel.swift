@@ -46,7 +46,7 @@ struct PendingOperationsPanel: View {
 
                 HStack(spacing: 8) {
                     Button {
-                        Task { await store.refresh() }
+                        Task { await store.refresh(manual: true) }
                     } label: {
                         Label("Comprobar GitHub ahora", systemImage: "arrow.clockwise")
                             .font(.system(size: 12, weight: .semibold))
