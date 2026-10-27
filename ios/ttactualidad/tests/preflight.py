@@ -67,3 +67,11 @@ assert "operationHistory" in store and "pendingOperationsCount" in store
 assert "newsWorking" in shared and "trendsWorking" in shared and "pendingActions" in shared
 assert "RefreshLiveCountsIntent()" in activity
 assert "partialData: partial" in store
+
+# Compact Top 30: exactly eight visible filters in two rows of four.
+assert "case movimientos" not in store
+assert 'filterChip("↑↓ Cambios"' not in dashboard
+assert "count: 4), spacing: 5)" in dashboard
+assert dashboard.count('filterChip("') == 14  # 8 trends and 6 news
+assert "softCardColor" in dashboard and "colors: [softCardColor, TTTheme.cardInterior]" in dashboard
+assert "rankColor, in: RoundedRectangle" in dashboard
