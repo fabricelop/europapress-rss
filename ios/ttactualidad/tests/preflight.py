@@ -212,6 +212,19 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.12"' in project
-assert 'CURRENT_PROJECT_VERSION: "18"' in project
+assert 'MARKETING_VERSION: "0.4.13"' in project
+assert 'CURRENT_PROJECT_VERSION: "19"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
+
+# 0.4.13: an editorial trend may trigger independent news investigation.
+assert 'quickButton("Enviar a TTiTTulares"' in actions
+assert 'sendTrendToNews(_ trend: TrendItem)' in actions
+assert 'originTrend: trend' in actions
+assert 'beginManualNews(requestID: requestID, title: headline,' in actions
+assert 'fromTrend: true' in actions
+assert 'originTrend: TrendItem? = nil' in auth
+assert 'payload["origin_trend"]' in auth
+assert 'case "De tendencia a noticia": return "Tendencia → TTiTTulares"' in store
+assert 'operation.kind == "De tendencia a noticia"' not in store or 'De tendencia a noticia' in store
+assert '["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)' in store
+print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
