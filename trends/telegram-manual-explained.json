@@ -9143,15 +9143,16 @@
         }
       ],
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "not_requested",
       "fallback_image_status": "none",
       "image_status": "none",
       "image_choice": "none",
-      "image_pending": false
+      "image_pending": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-10-27T13:35:17.210493+00:00",
+  "updated_at": "2026-10-27T13:35:50.886158Z",
   "count": 168
 }
