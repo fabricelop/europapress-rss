@@ -519,7 +519,8 @@ final class GitHubEditor: ObservableObject {
     }
 
     func addNews(title: String, url: String, instructions: String,
-                 requestID: String? = nil) async -> WriteResult {
+                 requestID: String? = nil,
+                 originTrend: TrendItem? = nil) async -> WriteResult {
         guard !title.isEmpty || !url.isEmpty else { notice = "Añade un enlace o una descripción."; return .failed }
         if !title.isEmpty && title.count < 5 { notice = "La descripción debe tener al menos 5 caracteres."; return .failed }
         if !url.isEmpty {
@@ -527,10 +528,19 @@ final class GitHubEditor: ObservableObject {
                 notice = "El enlace debe empezar por https://"; return .failed
             }
         }
-        return await dispatch("ttactualidad_manual_news_v1", payload: [
+        var payload: [String: Any] = [
             "project": "ttittulares", "request_id": requestID ?? UUID().uuidString.lowercased(),
             "title": String(title.prefix(240)), "url": String(url.prefix(2000)),
             "instructions": String(instructions.prefix(1000))
-        ], label: "Añadir noticia")
+        ]
+        if let origin = originTrend {
+            payload["origin_trend"] = [
+                "id": origin.editorialID, "revision": origin.revision,
+                "name": origin.name
+            ]
+        }
+        return await dispatch("ttactualidad_manual_news_v1", payload: payload,
+                              label: originTrend == nil ? "Añadir noticia" :
+                                     "Enviar tendencia a TTiTTulares")
     }
 }
