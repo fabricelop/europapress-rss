@@ -475,7 +475,9 @@ final class GitHubEditor: ObservableObject {
             "decision": decision, "request_id": requestID,
             "received_at": ISO8601DateFormatter().string(from: Date()),
             "trend_name": title, "trend_rank": rank
-        ], label: decision == "deleted" ? "Quitar de Listas" : "Reelaborar / preparar")
+        ], label: decision == "published" ? "Publicado · quitar de Listas" :
+                  decision == "deleted" ? "No publicado · quitar de Listas" :
+                  "Reelaborar / preparar")
     }
 
     // Batch operations carry the original ID and expected revision of every item.
