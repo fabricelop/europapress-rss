@@ -494,17 +494,43 @@ final class EditorialStore: ObservableObject {
         // must show an unavailable counter, NOT an invented zero.
         if let published = docs["pilot/ttactualidad-publication-events.json"],
            downloaded["pilot/ttactualidad-publication-events.json"] != nil {
-            publicationEvents = Self.rows(published, "items").compactMap { item in
-                guard let timestamp = Self.when(item, ["at"]) else { return nil }
-                let project = Self.str(item, "project")
-                let eventID = Self.str(item, "event_id")
-                guard ["ttittulares", "ttendencias"].contains(project),
-                      !eventID.isEmpty else { return nil }
-                return PublicationEvent(
-                    project: project, eventID: eventID,
-                    revision: Self.int(item, "revision"), confirmedAt: timestamp)
+            // The explicit ledger is authoritative and the receipt stream
+            // can fill CDN propagation gaps after a freshly confirmed publish.
+            // Both are deduplicated by project+editorial ID+revision.
+            var unique: [String: PublicationEvent] = [:]
+            func collect(_ entries: [[String: Any]], receipts: Bool) {
+                for item in entries {
+                    if receipts {
+                        guard Self.str(item, "decision") == "published",
+                              ["applied", "already_applied"].contains(
+                                  Self.str(item, "status").lowercased()) else { continue }
+                    }
+                    guard let timestamp = Self.when(item, ["at"]) else { continue }
+                    let project = Self.str(item, "project")
+                    let eventID = Self.str(item, "event_id")
+                    let revision = Self.int(item, "revision")
+                    guard ["ttittulares", "ttendencias"].contains(project),
+                          !eventID.isEmpty else { continue }
+                    let key = project + ":" + eventID + ":r" + String(revision)
+                    let event = PublicationEvent(
+                        project: project, eventID: eventID,
+                        revision: revision, confirmedAt: timestamp)
+                    if let previous = unique[key] {
+                        if timestamp < previous.confirmedAt { unique[key] = event }
+                    } else {
+                        unique[key] = event
+                    }
+                }
             }
+            collect(Self.rows(published, "items"), receipts: false)
+            if downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
+                collect(Self.rows(docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                                  "items"), receipts: true)
+            }
+            publicationEvents = Array(unique.values)
             publicationLedgerAvailable = true
+        } else {
+            publicationLedgerAvailable = false
         }
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
