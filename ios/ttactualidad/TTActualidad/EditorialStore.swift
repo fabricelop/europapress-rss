@@ -119,6 +119,18 @@ private struct PublicationEvent {
     let confirmedAt: Date
 }
 
+struct ConfirmedPublication: Identifiable {
+    let project: String
+    let eventID: String
+    let revision: Int
+    let confirmedAt: Date
+    let title: String?
+
+    var id: String {
+        project + ":" + eventID + ":r" + String(revision)
+    }
+}
+
 struct EditorialOperation: Codable, Identifiable {
     let id: String
     let title: String
@@ -163,11 +175,40 @@ final class EditorialStore: ObservableObject {
     // inferred from intent-to-tweet, discard or historical status records.
     func publicationsLast24h(project: String, now: Date = Date()) -> Int? {
         guard publicationLedgerAvailable else { return nil }
+        return publicationsHistoryLast24h(project: project, now: now)?.count
+    }
+
+    // Oldest record first, with stable tie-breaking by project/event/revision.
+    // The UI numbers rows backwards, so the first (oldest) gets N.
+    func publicationsHistoryLast24h(
+        project: String, now: Date = Date()
+    ) -> [ConfirmedPublication]? {
+        guard publicationLedgerAvailable else { return nil }
         let lowerBound = now.addingTimeInterval(-86_400)
         return publicationEvents.filter {
             $0.project == project &&
             $0.confirmedAt > lowerBound && $0.confirmedAt <= now
-        }.count
+        }
+        .sorted {
+            if $0.confirmedAt != $1.confirmedAt {
+                return $0.confirmedAt < $1.confirmedAt
+            }
+            return ($0.project + ":" + $0.eventID + ":r" + String($0.revision)) <
+                   ($1.project + ":" + $1.eventID + ":r" + String($1.revision))
+        }
+        .map { event in
+            let title = operationHistory.first {
+                $0.kind == "published" &&
+                $0.project == event.project &&
+                $0.eventID == event.eventID &&
+                $0.revision == event.revision
+            }?.title
+            return ConfirmedPublication(
+                project: event.project, eventID: event.eventID,
+                revision: event.revision, confirmedAt: event.confirmedAt,
+                title: title
+            )
+        }
     }
     @Published private(set) var isLoading = false
     @Published private(set) var message = "Sin sincronizar"
