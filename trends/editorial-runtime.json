@@ -4,21 +4,23 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "b2ebb1a09f12"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T06:45:00+01:00",
-  "last_completed_at": "2026-10-27T06:46:10+01:00",
-  "updated_at": "2026-10-27T06:46:10+01:00",
+  "last_started_at": "2026-10-27T07:15:00+01:00",
+  "last_completed_at": "2026-10-27T07:17:30+01:00",
+  "updated_at": "2026-10-27T07:17:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T064500+0100",
+    "trigger_run_id": "tr-chat-20261027T071500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,82 +28,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261027T064500+0100",
+    "run_id": "tr-chat-20261027T071500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T06:45:00+01:00",
-    "updated_at": "2026-10-27T06:46:10+01:00",
-    "finished_at": "2026-10-27T06:46:10+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-27T07:15:00+01:00",
+    "updated_at": "2026-10-27T07:17:30+01:00",
+    "finished_at": "2026-10-27T07:17:30+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 0/0 · sin trabajo editorial nuevo; 1 Pendiente reciente revisada y saneamiento visual solicitado.",
-    "incident_count": 0,
-    "incidents": [],
-    "activity": [
-      {
-        "at": "2026-10-27T06:45:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada directa · cola editorial 0; revisando Pendientes recientes, reexplicaciones y estado Top 10."
-      },
-      {
-        "at": "2026-10-27T06:45:10+01:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual solicitada mediante pending-repair-trigger."
-      },
-      {
-        "at": "2026-10-27T06:45:25+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Revisando Pendientes · 1 tarjeta vigente de menos de 24 h requiere saneamiento visual; conserva remate."
-      },
-      {
-        "at": "2026-10-27T06:45:35+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo main: cola 0, requests activas 0, problematic 0 y rewrite_pending 0."
-      },
-      {
-        "at": "2026-10-27T06:45:45+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Top 10 reconciliado · 10/10 cubiertas por explicación reciente o acción terminal del usuario."
-      },
-      {
-        "at": "2026-10-27T06:46:10+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": null,
-        "message": "TTendencias completada 0/0 · sin trabajo editorial nuevo; 1 Pendiente reciente revisada y saneamiento visual solicitado."
-      }
-    ],
-    "processed_ids": [],
-    "partial": false,
-    "queue_complete": true,
-    "remaining_active_ids": [],
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 1,
+      "ready": 1,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -109,11 +60,11 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 1,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 3,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
@@ -121,29 +72,204 @@
       "top10_total": 10,
       "incidents": 0
     },
+    "message": "TTendencias completada 1/1 · #FelizMartes explicada y verificada; cola editorial 0.",
+    "incident_count": 0,
+    "incidents": [],
+    "activity": [
+      {
+        "at": "2026-10-27T07:15:00+01:00",
+        "phase": "preparing",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Iniciando pasada directa · 1 tendencia activa; releyendo estado autoritativo antes de investigar."
+      },
+      {
+        "at": "2026-10-27T07:15:10+01:00",
+        "phase": "verifying",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Releyendo estado autoritativo de #FelizMartes."
+      },
+      {
+        "at": "2026-10-27T07:15:20+01:00",
+        "phase": "investigating",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Buscando detonante actual y comprobando si es un hashtag recurrente de saludo semanal."
+      },
+      {
+        "at": "2026-10-27T07:15:35+01:00",
+        "phase": "investigating",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Hecho esencial verificado: hashtag recurrente de saludo de los martes; hoy acaba de entrar al Top 10 español en el puesto 6."
+      },
+      {
+        "at": "2026-10-27T07:15:45+01:00",
+        "phase": "drafting",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Redactando explicación factual y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-27T07:15:55+01:00",
+        "phase": "remate_selection",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Generando candidatos de remate y contrastándolos con ratings recientes."
+      },
+      {
+        "at": "2026-10-27T07:16:05+01:00",
+        "phase": "remate_selection",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Remate seleccionado: metáfora de calendario/community manager; evita repetir el recurso del café penalizado en un saludo similar."
+      },
+      {
+        "at": "2026-10-27T07:16:15+01:00",
+        "phase": "persisting",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Guardando ficha Explicada."
+      },
+      {
+        "at": "2026-10-27T07:16:35+01:00",
+        "phase": "persisting",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Actualizando requests con la misma revisión y texto."
+      },
+      {
+        "at": "2026-10-27T07:16:50+01:00",
+        "phase": "persisting",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Retirando revisión cerrada de la cola."
+      },
+      {
+        "at": "2026-10-27T07:17:00+01:00",
+        "phase": "verifying",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Releyendo main y verificando id+revision y texto persistido."
+      },
+      {
+        "at": "2026-10-27T07:17:10+01:00",
+        "phase": "verifying",
+        "trend_id": "b2ebb1a09f12",
+        "title": "#FelizMartes",
+        "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden; cola 0."
+      },
+      {
+        "at": "2026-10-27T07:17:20+01:00",
+        "phase": "verifying",
+        "trend_id": null,
+        "title": null,
+        "message": "Auditoría final: Top 10 cubierto 10/10; 3 Pendientes recientes conservan remate y el saneamiento visual está solicitado."
+      },
+      {
+        "at": "2026-10-27T07:17:30+01:00",
+        "phase": "closing",
+        "trend_id": null,
+        "title": null,
+        "message": "TTendencias completada 1/1 · #FelizMartes explicada y verificada; cola editorial 0."
+      }
+    ],
+    "processed_ids": [
+      "b2ebb1a09f12"
+    ],
+    "partial": false,
+    "queue_complete": true,
+    "remaining_active_ids": [],
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "trend_id": "b2ebb1a09f12",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "text": "🌶️ El martes volvió a entrar con hashtag y sin invitación.",
+            "total": 7.7,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c2",
+            "text": "🌶️ El calendario ha vuelto a fichar de community manager.",
+            "total": 8.3,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.8,
+            "punch": 1.8,
+            "originality": 1.5,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c3",
+            "text": "🌶️ El algoritmo ya sabe qué día es sin mirar el calendario.",
+            "total": 7.3,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.7,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.1
+          },
+          {
+            "id": "c4",
+            "text": "🌶️ El martes volvió a pasar lista en el Top 10.",
+            "total": 7.5,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.6,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          },
+          {
+            "id": "c5",
+            "text": "🌶️ X ha vuelto a ponerle saludo oficial al martes.",
+            "total": 7.2,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.7,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": 0
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.3,
+        "no_remate_reason": null
+      }
+    ]
   },
-  "run_id": "tr-chat-20261027T064500+0100",
+  "run_id": "tr-chat-20261027T071500+0100",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "attempted": 1,
+    "ready": 1,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -151,11 +277,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 1,
+    "remates_selected": 1,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
+    "pending_cards_reviewed": 3,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -165,66 +291,196 @@
   },
   "activity": [
     {
-      "at": "2026-10-27T06:45:00+01:00",
+      "at": "2026-10-27T07:15:00+01:00",
       "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada directa · cola editorial 0; revisando Pendientes recientes, reexplicaciones y estado Top 10."
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Iniciando pasada directa · 1 tendencia activa; releyendo estado autoritativo antes de investigar."
     },
     {
-      "at": "2026-10-27T06:45:10+01:00",
+      "at": "2026-10-27T07:15:10+01:00",
+      "phase": "verifying",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Releyendo estado autoritativo de #FelizMartes."
+    },
+    {
+      "at": "2026-10-27T07:15:20+01:00",
+      "phase": "investigating",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Buscando detonante actual y comprobando si es un hashtag recurrente de saludo semanal."
+    },
+    {
+      "at": "2026-10-27T07:15:35+01:00",
+      "phase": "investigating",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Hecho esencial verificado: hashtag recurrente de saludo de los martes; hoy acaba de entrar al Top 10 español en el puesto 6."
+    },
+    {
+      "at": "2026-10-27T07:15:45+01:00",
+      "phase": "drafting",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Redactando explicación factual y comprobando límite de X."
+    },
+    {
+      "at": "2026-10-27T07:15:55+01:00",
+      "phase": "remate_selection",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Generando candidatos de remate y contrastándolos con ratings recientes."
+    },
+    {
+      "at": "2026-10-27T07:16:05+01:00",
+      "phase": "remate_selection",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Remate seleccionado: metáfora de calendario/community manager; evita repetir el recurso del café penalizado en un saludo similar."
+    },
+    {
+      "at": "2026-10-27T07:16:15+01:00",
       "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Reparación visual solicitada mediante pending-repair-trigger."
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Guardando ficha Explicada."
     },
     {
-      "at": "2026-10-27T06:45:25+01:00",
+      "at": "2026-10-27T07:16:35+01:00",
+      "phase": "persisting",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Actualizando requests con la misma revisión y texto."
+    },
+    {
+      "at": "2026-10-27T07:16:50+01:00",
+      "phase": "persisting",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Retirando revisión cerrada de la cola."
+    },
+    {
+      "at": "2026-10-27T07:17:00+01:00",
+      "phase": "verifying",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Releyendo main y verificando id+revision y texto persistido."
+    },
+    {
+      "at": "2026-10-27T07:17:10+01:00",
+      "phase": "verifying",
+      "trend_id": "b2ebb1a09f12",
+      "title": "#FelizMartes",
+      "message": "Tendencia cerrada y verificada · Explicadas y requests coinciden; cola 0."
+    },
+    {
+      "at": "2026-10-27T07:17:20+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 1 tarjeta vigente de menos de 24 h requiere saneamiento visual; conserva remate."
+      "message": "Auditoría final: Top 10 cubierto 10/10; 3 Pendientes recientes conservan remate y el saneamiento visual está solicitado."
     },
     {
-      "at": "2026-10-27T06:45:35+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main: cola 0, requests activas 0, problematic 0 y rewrite_pending 0."
-    },
-    {
-      "at": "2026-10-27T06:45:45+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Top 10 reconciliado · 10/10 cubiertas por explicación reciente o acción terminal del usuario."
-    },
-    {
-      "at": "2026-10-27T06:46:10+01:00",
+      "at": "2026-10-27T07:17:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · sin trabajo editorial nuevo; 1 Pendiente reciente revisada y saneamiento visual solicitado."
+      "message": "TTendencias completada 1/1 · #FelizMartes explicada y verificada; cola editorial 0."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "observed",
-    "reason": "Radar fresco; no requiere recaptura.",
-    "captured_at": "2026-10-27T06:40:52+01:00"
+    "reason": "Radar fresco; #FelizMartes entró a las 07:10 y fue revalidada antes del tratamiento.",
+    "captured_at": "2026-10-27T07:10:49+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-27T06:40:52+01:00",
+    "captured_at": "2026-10-27T07:10:49+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261027T061500+0100",
+  "previous_run_id": "tr-chat-20261027T064500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": [],
-  "pending_delivery_count": 1
+  "remate_selections": [
+    {
+      "trend_id": "b2ebb1a09f12",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "text": "🌶️ El martes volvió a entrar con hashtag y sin invitación.",
+          "total": 7.7,
+          "ratings_affinity": 2,
+          "trend_specificity": 1.8,
+          "punch": 1.7,
+          "originality": 1.2,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        },
+        {
+          "id": "c2",
+          "text": "🌶️ El calendario ha vuelto a fichar de community manager.",
+          "total": 8.3,
+          "ratings_affinity": 2.2,
+          "trend_specificity": 1.8,
+          "punch": 1.8,
+          "originality": 1.5,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        },
+        {
+          "id": "c3",
+          "text": "🌶️ El algoritmo ya sabe qué día es sin mirar el calendario.",
+          "total": 7.3,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.7,
+          "punch": 1.6,
+          "originality": 1.3,
+          "length_fit": 1,
+          "repetition_penalty": -0.1
+        },
+        {
+          "id": "c4",
+          "text": "🌶️ El martes volvió a pasar lista en el Top 10.",
+          "total": 7.5,
+          "ratings_affinity": 2,
+          "trend_specificity": 1.8,
+          "punch": 1.6,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        },
+        {
+          "id": "c5",
+          "text": "🌶️ X ha vuelto a ponerle saludo oficial al martes.",
+          "total": 7.2,
+          "ratings_affinity": 1.9,
+          "trend_specificity": 1.7,
+          "punch": 1.5,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": 0
+        }
+      ],
+      "selected_candidate": "c2",
+      "selected_score": 8.3,
+      "no_remate_reason": null
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "b2ebb1a09f12",
+      "revision": 0,
+      "name": "#FelizMartes",
+      "outcome": "explained",
+      "verified": true
+    }
+  ],
+  "pending_delivery_count": 3
 }
