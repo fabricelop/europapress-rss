@@ -4,7 +4,6 @@ import UIKit
 // Designed natively for the iPhone. No web container.
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
-    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var github = GitHubEditor()
     @State private var search = ""
     @State private var showNewStory = false
@@ -42,7 +41,6 @@ struct TTDashboard: View {
                     .padding(.horizontal, 15)
                     .padding(.top, 18)
                 }
-                .refreshable { await store.refresh() }
             }
         }
         .preferredColorScheme(.dark)
@@ -50,14 +48,6 @@ struct TTDashboard: View {
         .onOpenURL { url in
             if url.scheme == "ttactualidad" {
                 showCombinedListas = url.host == "listas"
-            }
-        }
-        .onChange(of: scenePhase) { _, next in
-            if next == .active {
-                Task {
-                    await github.renewOnForeground()
-                    await store.refresh()
-                }
             }
         }
         .sheet(isPresented: $showNewStory) {
@@ -121,10 +111,14 @@ struct TTDashboard: View {
                     .background(TTTheme.panel, in: Circle())
             }
             .accessibilityLabel("Conexión GitHub")
-            Button { Task { await store.refresh() } } label: {
+            Button { Task { await store.refresh(manual: true) } } label: {
                 Group {
-                    if store.isLoading { ProgressView().tint(TTTheme.teal) }
-                    else { Image(systemName: "arrow.clockwise").font(.system(size: 19, weight: .bold)) }
+                    if store.isManuallyRefreshing {
+                        ProgressView().tint(TTTheme.teal)
+                    } else {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 19, weight: .bold))
+                    }
                 }
                 .frame(width: 42, height: 42)
                 .background(TTTheme.panel, in: Circle())
@@ -434,7 +428,7 @@ struct TTDashboard: View {
                     .foregroundStyle(TTTheme.muted)
             }
             Divider().frame(height: 18)
-            Button { Task { await store.refresh() } } label: {
+            Button { Task { await store.refresh(manual: true) } } label: {
                 Image(systemName: "arrow.clockwise")
             }
             .foregroundStyle(TTTheme.teal)
