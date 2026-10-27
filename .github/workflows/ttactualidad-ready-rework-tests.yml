@@ -1,0 +1,21 @@
+name: TTActualidad - validar reelaboracion desde cero (sin escritura)
+on:
+  pull_request:
+    paths:
+      - "pilot/rework_ttittulares.py"
+      - "pilot/apply-ttactualidad-action.py"
+      - "pilot/test_rework_ttittulares.py"
+      - ".github/workflows/ttactualidad-ready-rework-tests.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python isolated rework tests (synthetic fixture, no writes)
+        run: python3 pilot/test_rework_ttittulares.py -v
+      - name: Check Python syntax
+        run: python3 -m py_compile pilot/rework_ttittulares.py pilot/apply-ttactualidad-action.py
