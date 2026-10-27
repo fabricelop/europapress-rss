@@ -102,3 +102,13 @@ assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
 assert "Comprobar GitHub ahora" in pending_panel
 assert "Pendiente de GitHub" in pending_panel or "Esperando GitHub" in pending_panel
 assert "requestID: requestID" in actions and "requestID: requestID" in auth
+
+# A terminal GitHub deletion must remove BOTH canonical and optimistic work.
+assert 'closedTrends(manual: manual, requests: requests' in store
+assert 'retireClosedTrendOverlays(' in store
+assert 'if closedAfterRequest {' in store
+assert 'stage = "Retirada"' in store
+assert '"deleted_at", "dismissed_at", "updated_at"' in store
+assert 'finishedByName[norm(name)]' in store
+assert 'operation.id.hasPrefix("ttendencias:")' in store
+assert 'case "Confirmada", "En Listas", "Verificada", "Retirada"' in pending_panel
