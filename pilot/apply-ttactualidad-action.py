@@ -100,6 +100,20 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         outputs = {state_path: decisions}
         if decision == "discard":
             outputs[queue_path] = queue
+            # The actual editorial outbox processor still reads this original
+            # ledger, not only the compact queue. Cancel BOTH atomically.
+            processing_path = "telegram/editorial-processing.json"
+            processing = load(processing_path, {"items": []})
+            for row in processing.get("items", []):
+                if (str(row.get("event_id") or "") == event_id
+                        and int(row.get("revision") or 1) == revision
+                        and str(row.get("status") or "").upper()
+                        in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}):
+                    row["status"] = "DISMISSED"
+                    row["dismissed_at"] = now
+                    row["decision_source"] = "ttactualidad_direct"
+            processing["updated_at"] = now
+            outputs[processing_path] = processing
         else:
             outputs[ready_path] = ready
         return outputs, "applied"
