@@ -112,6 +112,13 @@ private struct EditorialTombstone: Codable {
     let confirmedAt: Date
 }
 
+private struct PublicationEvent {
+    let project: String
+    let eventID: String
+    let revision: Int
+    let confirmedAt: Date
+}
+
 struct EditorialOperation: Codable, Identifiable {
     let id: String
     let title: String
@@ -130,7 +137,8 @@ struct EditorialOperation: Codable, Identifiable {
     }
     var displayKind: String {
         switch kind {
-        case "deleted": return "Quitar de Listas"
+        case "deleted": return "No publicado · retirar de Listas"
+        case "published": return "Publicado · retirar de Listas"
         case "discard": return "Desestimar"
         case "prepare", "rework": return "Elaborar desde cero"
         case "Nueva noticia": return "Añadir noticia"
@@ -148,6 +156,19 @@ final class EditorialStore: ObservableObject {
     @Published var trendFilter: TrendFilter = .top
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
+    @Published private(set) var publicationLedgerAvailable = false
+    private var publicationEvents: [PublicationEvent] = []
+
+    // Exactly (now - 86,400 seconds, now], not midnight-based and never
+    // inferred from intent-to-tweet, discard or historical status records.
+    func publicationsLast24h(project: String, now: Date = Date()) -> Int? {
+        guard publicationLedgerAvailable else { return nil }
+        let lowerBound = now.addingTimeInterval(-86_400)
+        return publicationEvents.filter {
+            $0.project == project &&
+            $0.confirmedAt > lowerBound && $0.confirmedAt <= now
+        }.count
+    }
     @Published private(set) var isLoading = false
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
@@ -392,6 +413,7 @@ final class EditorialStore: ObservableObject {
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
+        "pilot/ttactualidad-publication-events.json",
         "pilot/ttactualidad-action-receipts.json",
         "ttittulares/prepared.json",
         "ttittulares/decisions.json",
@@ -468,6 +490,22 @@ final class EditorialStore: ObservableObject {
             }
         }
 
+        // Read only confirmed explicit publication events. A missing ledger
+        // must show an unavailable counter, NOT an invented zero.
+        if let published = docs["pilot/ttactualidad-publication-events.json"],
+           downloaded["pilot/ttactualidad-publication-events.json"] != nil {
+            publicationEvents = Self.rows(published, "items").compactMap { item in
+                guard let timestamp = Self.when(item, ["at"]) else { return nil }
+                let project = Self.str(item, "project")
+                let eventID = Self.str(item, "event_id")
+                guard ["ttittulares", "ttendencias"].contains(project),
+                      !eventID.isEmpty else { return nil }
+                return PublicationEvent(
+                    project: project, eventID: eventID,
+                    revision: Self.int(item, "revision"), confirmedAt: timestamp)
+            }
+            publicationLedgerAvailable = true
+        }
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
               docs["ttittulares/decisions.json"] != nil,
@@ -841,7 +879,9 @@ final class EditorialStore: ObservableObject {
         recordOperation(id: action.key, title: title, kind: decision, status: "Enviando",
                         requestID: requestID, project: project, eventID: id,
                         revision: revision,
-                        detail: decision == "deleted" ? "Destino: Fuera de Listas" :
+                        detail: decision == "published" ?
+                                    "Publicado: retirar de Listas y contabilizar tras confirmar" :
+                                decision == "deleted" ? "No publicado: retirar de Listas" :
                                 decision == "discard" ? "Destino: Desestimadas" :
                                 "Destino: En elaboración → Listas")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
@@ -1026,14 +1066,15 @@ final class EditorialStore: ObservableObject {
             } else {
                 if ["deleted", "discard", "published", "rework", "prepare"].contains(action.decision) {
                     updated.trendListas.removeAll(where: sameTrend)
-                    if action.decision == "discard" || action.decision == "deleted" {
+                    if ["discard", "deleted", "published"].contains(action.decision) {
                         updated.trendsElaboracion.removeAll(where: sameTrend)
                     }
                 }
                 updated.top30 = updated.top30.map { original in
                     guard original.name == action.title ||
                           original.editorialID == action.id else { return original }
-                    if action.decision == "deleted" {
+                    if action.decision == "deleted" ||
+                       action.decision == "published" {
                         return overlayTrend(original, inListas: false)
                     }
                     if action.decision == "rework" || action.decision == "prepare" {
