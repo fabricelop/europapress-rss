@@ -47,6 +47,61 @@ struct EditorialHub: View {
                         .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 14))
                     }
 
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Label("Operaciones editoriales", systemImage: "checklist.checked")
+                                .font(.headline).foregroundStyle(TTTheme.teal)
+                            Spacer()
+                            if store.pendingOperationsCount > 0 {
+                                Text("\(store.pendingOperationsCount) pendientes")
+                                    .font(.caption.weight(.bold))
+                                    .foregroundStyle(.orange)
+                            }
+                        }
+                        Text("Cada orden conserva su estado. Una orden enviada no se considera verificada hasta obtener confirmación de GitHub.")
+                            .font(.caption2).foregroundStyle(TTTheme.muted)
+                        if store.operationHistory.isEmpty {
+                            Text("Aún no hay operaciones registradas en este iPhone.")
+                                .font(.caption).foregroundStyle(TTTheme.muted)
+                                .padding(11)
+                        } else {
+                            ForEach(store.operationHistory.prefix(12)) { operation in
+                                HStack(spacing: 9) {
+                                    Image(systemName: operation.status == "Verificada" ?
+                                          "checkmark.circle.fill" :
+                                          operation.status == "Rechazada" ?
+                                          "xmark.octagon.fill" : "clock.fill")
+                                        .foregroundStyle(operation.status == "Verificada" ?
+                                                         TTTheme.teal : Color.orange)
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(operation.title)
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .lineLimit(1)
+                                        Text(operation.kind + " · " + operation.status)
+                                            .font(.system(size: 10))
+                                            .foregroundStyle(TTTheme.muted)
+                                    }
+                                    Spacer(minLength: 0)
+                                    Text(operation.createdAt, format: .dateTime.hour().minute())
+                                        .font(.system(size: 10).monospacedDigit())
+                                        .foregroundStyle(TTTheme.muted)
+                                }
+                                .padding(.vertical, 6)
+                                if operation.id != store.operationHistory.prefix(12).last?.id {
+                                    Divider().overlay(Color.white.opacity(0.10))
+                                }
+                            }
+                        }
+                        Link(destination: URL(string:
+                                "https://github.com/fabricelop/europapress-rss/actions")!) {
+                            Label("Ver ejecuciones de GitHub", systemImage: "arrow.up.right.square")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(TTTheme.teal)
+                        }
+                    }
+                    .padding(13)
+                    .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 14))
+
                     HStack {
                         Label("Novedades", systemImage: "sparkle.magnifyingglass")
                             .font(.headline).foregroundStyle(TTTheme.teal)
