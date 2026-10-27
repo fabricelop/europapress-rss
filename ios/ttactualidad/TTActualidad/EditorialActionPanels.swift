@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import CryptoKit
 
 enum TTTheme {
     static let base = Color(red: 0.035, green: 0.065, blue: 0.13)
@@ -25,6 +26,7 @@ struct EditorialActions: View {
     @State private var intent = "deleted"
     @State private var outcome = ""
     @State private var showHints = false
+    @State private var confirmTrendToNews = false
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -128,6 +130,15 @@ struct EditorialActions: View {
                 }
             }
             }
+            if trend != nil {
+                quickButton("Enviar a TTiTTulares", "newspaper") {
+                    if github.authenticated {
+                        confirmTrendToNews = true
+                    } else {
+                        showSettings = true
+                    }
+                }
+            }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -138,6 +149,15 @@ struct EditorialActions: View {
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
             }
+        }
+        .confirmationDialog("¿Investigar esta tendencia como noticia?",
+                            isPresented: $confirmTrendToNews, titleVisibility: .visible) {
+            Button("Enviar a En elaboración") {
+                if let trend { sendTrendToNews(trend) }
+            }
+            Button("Cancelar", role: .cancel) {}
+        } message: {
+            Text("TTiTTulares investigará el posible hecho noticioso con fuentes independientes. La tendencia seguirá en TTendencias. No se publicará automáticamente.")
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
@@ -161,6 +181,51 @@ struct EditorialActions: View {
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
+        }
+    }
+
+    private func sendTrendToNews(_ trend: TrendItem) {
+        // Stable UUID makes repeated taps/retries idempotent for the exact
+        // original editorial ID + revision. A later trend revision can be sent.
+        let bytes = SHA256.hash(data: Data(
+            ("ttactualidad-trend-news:" + trend.editorialID +
+             ":r" + String(trend.revision)).utf8))
+        var digits = Array(bytes.map { String(format: "%02x", $0) }.joined().prefix(32))
+        digits[12] = "4"
+        digits[16] = "8"
+        let requestID = [
+            String(digits[0..<8]), String(digits[8..<12]),
+            String(digits[12..<16]), String(digits[16..<20]),
+            String(digits[20..<32])
+        ].joined(separator: "-")
+        let manualID = "manual-" + requestID
+        if store.operationHistory.contains(where: {
+            $0.id == manualID && $0.status != "Rechazada"
+        }) {
+            outcome = "Esta tendencia ya se ha enviado a TTiTTulares. Consulta Órdenes pendientes."
+            return
+        }
+        let headline = String(("Investigar noticia: " + trend.name).prefix(240))
+        let context = String(trend.explanation.prefix(280))
+        let instructions = [
+            "Origen TTendencias: ID " + trend.editorialID +
+            ", revision " + String(trend.revision) +
+            ", nombre " + trend.name + ", puesto " + String(trend.rank) + ".",
+            "Investiga si hay un hecho noticioso reciente detras de esta tendencia. " +
+            "Contrasta fuentes y fechas independientes; el hashtag NO prueba el hecho. " +
+            "Sin pruebas no inventes una noticia ni la des por verificada.",
+            context.isEmpty ? "" :
+                "Contexto preliminar, que debes contrastar: " + context
+        ].filter { !$0.isEmpty }.joined(separator: " ")
+        store.beginManualNews(requestID: requestID, title: headline,
+                              url: "", fromTrend: true)
+        outcome = "Solicitud provisional enviada a TTiTTulares. Consultar Órdenes pendientes."
+        Task {
+            let result = await github.addNews(
+                title: headline, url: "", instructions: instructions,
+                requestID: requestID, originTrend: trend)
+            store.completeManualNews(requestID: requestID, result: result,
+                                     detail: github.notice)
         }
     }
 
