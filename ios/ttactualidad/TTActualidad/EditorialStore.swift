@@ -17,7 +17,6 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case recientes = "Recientes"
     case pendientes = "Pendientes"
     case antiguas = "Antiguas"
-    case sinRevisar = "Sin revisar"
     var id: String { rawValue }
 }
 enum NewsFilter: String, CaseIterable, Identifiable {
@@ -26,7 +25,6 @@ enum NewsFilter: String, CaseIterable, Identifiable {
     case revision = "Revisión"
     case creciendo = "Creciendo"
     case tremending = "Tremending"
-    case sinRevisar = "Sin revisar"
     var id: String { rawValue }
 }
 
