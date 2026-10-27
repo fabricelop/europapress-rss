@@ -57,3 +57,13 @@ assert 'lineLimit(expanded ? nil : 2)' in dashboard
 assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
 assert 'ChatGPT Images' in actions
+
+# Editorial UX and durable GitHub session contract.
+assert "SecureSession" in auth and 'save("session", value: saved)' in auth
+assert "refreshTask" in auth and "renewOnForeground()" in dashboard
+assert "LazyVGrid" in dashboard and "ScrollView(.horizontal" not in dashboard
+assert "case sinRevisar" in store and "unreviewedNews" in store
+assert "operationHistory" in store and "pendingOperationsCount" in store
+assert "newsWorking" in shared and "trendsWorking" in shared and "pendingActions" in shared
+assert "RefreshLiveCountsIntent()" in activity
+assert "partialData: partial" in store
