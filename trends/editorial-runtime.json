@@ -4,21 +4,25 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "7a43b9748ce3",
+    "79df23a13759",
+    "0fbb3f6a1c94"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T00:06:00+01:00",
-  "last_completed_at": "2026-10-28T00:07:30+01:00",
-  "updated_at": "2026-10-28T00:07:30+01:00",
+  "last_started_at": "2026-10-28T00:16:00+01:00",
+  "last_completed_at": "2026-10-28T00:32:30+01:00",
+  "updated_at": "2026-10-28T00:32:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T224500Z",
+    "trigger_run_id": "tr-chat-20261028T0015+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,31 +30,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-autoguard-1793142340",
+    "run_id": "tr-chat-20261028T0015+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T00:06:00+01:00",
-    "updated_at": "2026-10-28T00:07:30+01:00",
-    "finished_at": "2026-10-28T00:07:30+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T00:16:00+01:00",
+    "updated_at": "2026-10-28T00:32:30+01:00",
+    "finished_at": "2026-10-28T00:32:30+01:00",
+    "current": 3,
+    "total": 3,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 3,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 3,
+      "final_resolved": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
+      "revisions_updated": 3,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 3,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -58,8 +62,8 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 0,
@@ -68,54 +72,156 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0.",
+    "message": "TTendencias completada 3/3 · cola editorial y reexplicaciones verificadas en 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T00:06:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Iniciando pasada editorial directa · cola activa inicial 0; comprobando reexplicaciones y estado autoritativo."
+        "at": "2026-10-28T00:22:40+01:00",
+        "phase": "investigating",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Contrastando fuente 2/2"
       },
       {
-        "at": "2026-10-28T00:06:20+01:00",
+        "at": "2026-10-28T00:23:00+01:00",
+        "phase": "investigating",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T00:23:20+01:00",
+        "phase": "drafting",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T00:23:40+01:00",
+        "phase": "drafting",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-28T00:24:00+01:00",
+        "phase": "remate_selection",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-28T00:24:20+01:00",
+        "phase": "remate_selection",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Evaluando candidatos con ratings"
+      },
+      {
+        "at": "2026-10-28T00:24:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-28T00:25:00+01:00",
+        "phase": "persisting",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-28T00:25:30+01:00",
+        "phase": "persisting",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-28T00:26:00+01:00",
+        "phase": "persisting",
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-28T00:26:20+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Requests verificado · no hay revisiones preparing/update activas."
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-28T00:06:35+01:00",
+        "at": "2026-10-28T00:26:40+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Explicadas verificadas · no hay rewrite_pending ni remates recientes pendientes de saneamiento."
+        "trend_id": "79df23a13759",
+        "title": "Copa",
+        "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-28T00:06:50+01:00",
+        "at": "2026-10-28T00:27:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Releyendo editorial-queue.json desde main antes del cierre."
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Releyendo estado autoritativo de #codigo10"
       },
       {
-        "at": "2026-10-28T00:07:05+01:00",
+        "at": "2026-10-28T00:28:00+01:00",
+        "phase": "investigating",
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T00:28:20+01:00",
+        "phase": "drafting",
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T00:29:40+01:00",
+        "phase": "remate_selection",
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-28T00:31:20+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Cola autoritativa confirmada vacía · 0 preparing/update y 0 reexplicaciones pendientes."
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-28T00:07:30+01:00",
+        "at": "2026-10-28T00:31:40+01:00",
+        "phase": "verifying",
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-28T00:32:00+01:00",
+        "phase": "verifying",
+        "trend_id": "0fbb3f6a1c94",
+        "title": "#codigo10",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-28T00:32:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0."
+        "message": "TTendencias completada 3/3 · cola editorial y reexplicaciones verificadas en 0."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "7a43b9748ce3",
+      "79df23a13759",
+      "0fbb3f6a1c94"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
@@ -123,25 +229,44 @@
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
       "updated_at": "2026-10-06T21:21:47.927Z",
-      "recent_considered": 0
+      "recent_considered": 30
     },
-    "remate_selections": []
+    "remate_selections": [
+      {
+        "id": "7a43b9748ce3",
+        "revision": 0,
+        "name": "#TierraDeNadie7",
+        "selected": "🌶️ En Honduras, hasta la almohada se gana por supervivencia."
+      },
+      {
+        "id": "79df23a13759",
+        "revision": 0,
+        "name": "Copa",
+        "selected": "🌶️ La primera ronda ya empezó a pedir horas extra."
+      },
+      {
+        "id": "0fbb3f6a1c94",
+        "revision": 0,
+        "name": "#codigo10",
+        "selected": "🌶️ La actualidad cerró el martes con turno de investigación."
+      }
+    ]
   },
-  "run_id": "tr-autoguard-1793142340",
+  "run_id": "tr-chat-20261028T0015+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "explained": 3,
+    "final_resolved": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
+    "revisions_updated": 3,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 3,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -149,8 +274,8 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 3,
     "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 0,
@@ -161,46 +286,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T00:06:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Iniciando pasada editorial directa · cola activa inicial 0; comprobando reexplicaciones y estado autoritativo."
+      "at": "2026-10-28T00:22:40+01:00",
+      "phase": "investigating",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Contrastando fuente 2/2"
     },
     {
-      "at": "2026-10-28T00:06:20+01:00",
+      "at": "2026-10-28T00:23:00+01:00",
+      "phase": "investigating",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T00:23:20+01:00",
+      "phase": "drafting",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T00:23:40+01:00",
+      "phase": "drafting",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-28T00:24:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-28T00:24:20+01:00",
+      "phase": "remate_selection",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Evaluando candidatos con ratings"
+    },
+    {
+      "at": "2026-10-28T00:24:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-28T00:25:00+01:00",
+      "phase": "persisting",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-28T00:25:30+01:00",
+      "phase": "persisting",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-28T00:26:00+01:00",
+      "phase": "persisting",
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-28T00:26:20+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Requests verificado · no hay revisiones preparing/update activas."
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-28T00:06:35+01:00",
+      "at": "2026-10-28T00:26:40+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Explicadas verificadas · no hay rewrite_pending ni remates recientes pendientes de saneamiento."
+      "trend_id": "79df23a13759",
+      "title": "Copa",
+      "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-28T00:06:50+01:00",
+      "at": "2026-10-28T00:27:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo editorial-queue.json desde main antes del cierre."
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Releyendo estado autoritativo de #codigo10"
     },
     {
-      "at": "2026-10-28T00:07:05+01:00",
+      "at": "2026-10-28T00:28:00+01:00",
+      "phase": "investigating",
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T00:28:20+01:00",
+      "phase": "drafting",
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T00:29:40+01:00",
+      "phase": "remate_selection",
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-28T00:31:20+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Cola autoritativa confirmada vacía · 0 preparing/update y 0 reexplicaciones pendientes."
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Releyendo main"
     },
     {
-      "at": "2026-10-28T00:07:30+01:00",
+      "at": "2026-10-28T00:31:40+01:00",
+      "phase": "verifying",
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-28T00:32:00+01:00",
+      "phase": "verifying",
+      "trend_id": "0fbb3f6a1c94",
+      "title": "#codigo10",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-28T00:32:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · cola editorial y reexplicaciones verificadas en 0."
+      "message": "TTendencias completada 3/3 · cola editorial y reexplicaciones verificadas en 0."
     }
   ],
   "partial": false,
@@ -212,19 +435,52 @@
     "captured_at": "2026-10-27T23:40:53+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261027T224500Z",
+  "previous_run_id": "tr-autoguard-1793142340",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
     "updated_at": "2026-10-06T21:21:47.927Z",
-    "recent_considered": 0
+    "recent_considered": 30
   },
-  "remate_selections": [],
+  "remate_selections": [
+    {
+      "id": "7a43b9748ce3",
+      "revision": 0,
+      "name": "#TierraDeNadie7",
+      "selected": "🌶️ En Honduras, hasta la almohada se gana por supervivencia."
+    },
+    {
+      "id": "79df23a13759",
+      "revision": 0,
+      "name": "Copa",
+      "selected": "🌶️ La primera ronda ya empezó a pedir horas extra."
+    },
+    {
+      "id": "0fbb3f6a1c94",
+      "revision": 0,
+      "name": "#codigo10",
+      "selected": "🌶️ La actualidad cerró el martes con turno de investigación."
+    }
+  ],
   "final_outcomes": [
     {
-      "id": "845eab6b4803",
+      "id": "7a43b9748ce3",
       "revision": 0,
-      "name": "#RufiánMonteroEnLaRevuelta",
+      "name": "#TierraDeNadie7",
+      "outcome": "explained",
+      "source": "this_run"
+    },
+    {
+      "id": "79df23a13759",
+      "revision": 0,
+      "name": "Copa",
+      "outcome": "explained",
+      "source": "this_run"
+    },
+    {
+      "id": "0fbb3f6a1c94",
+      "revision": 0,
+      "name": "#codigo10",
       "outcome": "explained",
       "source": "this_run"
     }
