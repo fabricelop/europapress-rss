@@ -17,7 +17,6 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case recientes = "Recientes"
     case pendientes = "Pendientes"
     case antiguas = "Antiguas"
-    case movimientos = "Cambios de posición"
     case sinRevisar = "Sin revisar"
     var id: String { rawValue }
 }
