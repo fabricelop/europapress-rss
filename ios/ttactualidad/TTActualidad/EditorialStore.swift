@@ -696,6 +696,18 @@ final class EditorialStore: ObservableObject {
                     decisions: docs["trends/mobile-decisions.json"] ?? [:])
             }
         }
+        // Stale local deletion/rework cannot monopolize a READY card forever.
+        // Require fresh copies of all four relevant GitHub documents.
+        if downloaded["ttittulares/prepared.json"] != nil &&
+           downloaded["ttittulares/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil &&
+           downloaded["ttittulares/decisions.json"] != nil {
+            retireAbandonedNewsOperations(
+                ready: docs["ttittulares/prepared.json"] ?? [:],
+                queue: docs["ttittulares/editorial-queue.json"] ?? [:],
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                decisions: docs["ttittulares/decisions.json"] ?? [:])
+        }
         // Only these THREE authoritative files need to be fresh to release an
         // inactive trend; unrelated radar/archive timeouts must not block it.
         if downloaded["trends/requests.json"] != nil &&
@@ -919,6 +931,59 @@ final class EditorialStore: ObservableObject {
                 action.phase = .confirmed
                 activeEditorialActions[operation.id] = action
             }
+        }
+    }
+
+    // An unconfirmed iPhone order is not an indefinite lock. Only retire it
+    // when the fresh authoritative files STILL show the exact same READY card,
+    // no editorial work is active, and GitHub has no matching receipt.
+    private func retireAbandonedNewsOperations(ready: [String: Any],
+                                               queue: [String: Any],
+                                               receipts: [String: Any],
+                                               decisions: [String: Any]) {
+        let readyRows = Self.rows(ready, "items")
+        let activeRows = Self.rows(queue, "items")
+        let receiptRows = Self.rows(receipts, "items")
+        let terminals = Self.rows(decisions, "items")
+        for operation in operationHistory where
+            operation.project == "ttittulares" && operation.isOutstanding ||
+            (operation.project == "ttittulares" && operation.status == "En elaboración") {
+            guard let identity = operationIdentity(operation) else { continue }
+            let id = identity.eventID
+            if terminals.contains(where: {
+                Self.str($0, "event_id") == id &&
+                Self.int($0, "revision") >= identity.revision &&
+                ["published", "deleted", "dismissed"].contains(
+                    Self.str($0, "status").lowercased())
+            }) {
+                recordOperation(id: operation.id, title: operation.title,
+                                kind: operation.kind, status: "Retirada",
+                                detail: "GitHub confirma la decisión final sobre esta noticia.")
+                activeEditorialActions.removeValue(forKey: operation.id)
+                continue
+            }
+            guard Date().timeIntervalSince(operation.createdAt) > 12 * 60,
+                  readyRows.contains(where: {
+                      Self.str($0, "event_id") == id &&
+                      Self.int($0, "revision") == identity.revision
+                  }),
+                  !activeRows.contains(where: {
+                      Self.str($0, "event_id") == id &&
+                      ["PROCESSING", "UPDATE_PROCESSING"].contains(Self.str($0, "status"))
+                  }),
+                  !receiptRows.contains(where: {
+                      if let requestID = operation.requestID, !requestID.isEmpty {
+                          return Self.str($0, "request_id") == requestID
+                      }
+                      return Self.str($0, "project") == "ttittulares" &&
+                          Self.str($0, "event_id") == id &&
+                          Self.int($0, "revision") == identity.revision &&
+                          Self.str($0, "decision") == operation.kind
+                  }) else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: "Caducada",
+                            detail: "Sin comprobante de GitHub; la noticia sigue en Listas. Ya puedes intentarlo de nuevo.")
+            activeEditorialActions.removeValue(forKey: operation.id)
         }
     }
 
