@@ -48,6 +48,12 @@ gallery = (root / "TTActualidad/ArchivePhotoGallery.swift").read_text(encoding="
 assert 'trends/archive-images/' in catalog and 'ttittulares/archive-images/' in catalog
 assert 'generated-images' in catalog and '!image.path.lowercased().contains("generated-images")' in catalog
 assert 'ArchivePhotoCatalog.resolved(' in store
-assert 'ArchivePhotoGallery' in dashboard
+# A dedicated photo-gallery filter was intentionally removed from the UI.
+# Archive-photo support inside each expanded editorial card remains available.
+assert 'chip("Fotos archivo"' not in dashboard
+assert 'ArchivePhotoGallery' not in dashboard
+assert 'Foto archivo' in actions
+assert 'lineLimit(expanded ? nil : 2)' in dashboard
+assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
 assert 'ChatGPT Images' in actions
