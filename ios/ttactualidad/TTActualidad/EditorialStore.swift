@@ -683,11 +683,15 @@ final class EditorialStore: ObservableObject {
                     decisions: docs["trends/mobile-decisions.json"] ?? [:])
             }
         }
-        if !partial && downloaded.count == paths.count {
-            // A cached, unacknowledged local request must not block new editor
-            // clues for hours when GitHub confirms the trend is INACTIVE.
+        // Only these THREE authoritative files need to be fresh to release an
+        // inactive trend; unrelated radar/archive timeouts must not block it.
+        if downloaded["trends/requests.json"] != nil &&
+           downloaded["trends/editorial-queue.json"] != nil &&
+           downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
             retireAbandonedTrendOperations(requests: docs["trends/requests.json"] ?? [:],
                                            queue: docs["trends/editorial-queue.json"] ?? [:])
+        }
+        if !partial && downloaded.count == paths.count {
             retireSyncedActions()
             retireSyncedDrafts()
         }
@@ -908,9 +912,12 @@ final class EditorialStore: ObservableObject {
         for operation in operationHistory where
             operation.project == "ttendencias" &&
             ["prepare", "rework", "hints"].contains(operation.kind) &&
-            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains(operation.status) &&
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub",
+             "Sin confirmar", "En elaboración"].contains(operation.status) &&
             Date().timeIntervalSince(operation.createdAt) > 20 * 60 {
-            guard let id = operation.eventID, let revision = operation.revision,
+            guard let identity = operationIdentity(operation),
+                  let id = Optional(identity.eventID),
+                  let revision = Optional(identity.revision),
                   let server = authoritative.first(where: {
                       Self.str($0, "id") == id && Self.int($0, "revision") == revision
                   }),
