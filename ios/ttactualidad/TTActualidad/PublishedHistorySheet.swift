@@ -82,7 +82,7 @@ struct PublishedHistorySheet: View {
                 .foregroundStyle(project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
                 .frame(width: 36, alignment: .leading)
             VStack(alignment: .leading, spacing: 6) {
-                Text(item.confirmedAt, format: .dateTime.day().month(.abbreviated())
+                Text(item.confirmedAt, format: .dateTime.day().month(.abbreviated)
                       .year().hour().minute().second())
                     .font(.system(size: 14, weight: .bold, design: .rounded))
                     .foregroundStyle(.white)
