@@ -283,6 +283,19 @@ final class EditorialStore: ObservableObject {
                                  requestID: String? = nil, project: String? = nil,
                                  eventID: String? = nil, revision: Int? = nil,
                                  detail: String? = nil) {
+        if let index = operationHistory.firstIndex(where: { $0.id == id }),
+           operationHistory[index].kind != kind && status == "Enviando" {
+            // A new action supersedes a stale local order for the same card.
+            // Preserve the former request in audit history without allowing it
+            // to replace the user's new decision on a late callback.
+            let old = operationHistory.remove(at: index)
+            operationHistory.insert(EditorialOperation(
+                id: old.id + ":superseded:" + (old.requestID ?? UUID().uuidString),
+                title: old.title, kind: old.kind, status: "Sustituida",
+                createdAt: old.createdAt, requestID: old.requestID,
+                project: old.project, eventID: old.eventID, revision: old.revision,
+                detail: "Solicitud anterior reemplazada; verificación en GitHub no concluyente."), at: 0)
+        }
         if let index = operationHistory.firstIndex(where: { $0.id == id }) {
             operationHistory[index].status = status
             if let requestID { operationHistory[index].requestID = requestID }
@@ -817,7 +830,7 @@ final class EditorialStore: ObservableObject {
         let workingTrends = canonicalSnapshot.trendsElaboracion
 
         for operation in operationHistory where
-            !["Rechazada", "Retirada"].contains(operation.status) {
+            !["Rechazada", "Retirada", "Caducada", "Sustituida"].contains(operation.status) {
             guard let identity = operationIdentity(operation) else { continue }
             let id = identity.eventID
             let isTrend = identity.project == "ttendencias"
@@ -850,11 +863,17 @@ final class EditorialStore: ObservableObject {
                     Self.str(row, "status").lowercased() == "deleted" : false)
             }
             let confirmed = accepted || closure != nil
+            let newsTerminal = !isTrend && newsClosures.contains { row in
+                Self.str(row, "event_id") == id &&
+                ["deleted", "dismissed", "published"].contains(
+                    Self.str(row, "status").lowercased()) &&
+                Self.int(row, "revision") >= identity.revision
+            }
             let closedAfterRequest = isTrend &&
                 closedTrends.isClosed(id: id, name: operation.title,
                                      since: operation.createdAt)
             let stage: String
-            if closedAfterRequest {
+            if closedAfterRequest || newsTerminal {
                 stage = "Retirada"
             } else if ["Nueva noticia", "De tendencia a noticia"].contains(operation.kind) {
                 if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
@@ -1069,7 +1088,7 @@ final class EditorialStore: ObservableObject {
     }
 
     func completeEditorialAction(project: String, id: String, revision: Int,
-                                 result: GitHubEditor.WriteResult, detail: String) {
+                                 requestID: String, result: GitHubEditor.WriteResult, detail: String) {
         let key = project + ":" + id + ":r" + String(revision)
         // The user may have removed a completed item while an older rework
         // is still being confirmed. The late callback cannot resurrect it.
@@ -1079,7 +1098,10 @@ final class EditorialStore: ObservableObject {
             refreshOptimisticActivity()
             return
         }
-        guard var action = activeEditorialActions[key] else { return }
+        // A superseded HTTP dispatch must never overwrite a newer action
+        // for the same news revision on delayed network completion.
+        guard var action = activeEditorialActions[key],
+              action.requestID == requestID else { return }
         switch result {
         case .verified:
             // A successful direct receipt verification is sufficient proof to
