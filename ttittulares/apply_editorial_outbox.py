@@ -601,7 +601,7 @@ def main():
                 and row_status in {"DISMISSED","SKIPPED_DUPLICATE"}
                 and has_open_telegram_provisional(eid,rev)
             )
-            if row_status not in {"PROCESSING","PROBLEMATIC"} and not image_retry and not provisional_repair:
+            if row_status not in {"PROCESSING","UPDATE_PROCESSING","PROBLEMATIC"} and not image_retry and not provisional_repair:
                 path.unlink(); continue
             if image_retry:
                 processed.append(eid+":legacy-editorial-image-retry-rejected")
