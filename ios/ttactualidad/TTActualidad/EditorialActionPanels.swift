@@ -48,6 +48,11 @@ struct EditorialActions: View {
                         if let link = parts?.url { openURL(link) }
                     }
                 }
+                if news.status == "EN ELABORACIÓN" {
+                    quickButton("Suprimir · No pasar a Listas", "trash", danger: true) {
+                        request("discard")
+                    }
+                }
                 if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
                     HStack(spacing: 7) {
                         quickButton("Elaborar desde cero", "sparkles") { request("prepare") }
@@ -160,6 +165,8 @@ struct EditorialActions: View {
             Text("TTiTTulares investigará el posible hecho noticioso con fuentes independientes. La tendencia seguirá en TTendencias. No se publicará automáticamente.")
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+                            intent == "discard" && news?.status == "EN ELABORACIÓN" ?
+                            "¿Suprimir esta noticia en elaboración?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
                             "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
@@ -180,6 +187,8 @@ struct EditorialActions: View {
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : intent == "discard" && news?.status == "EN ELABORACIÓN"
+                 ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
         }
     }
