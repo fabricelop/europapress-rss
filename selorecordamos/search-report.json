@@ -1,11 +1,41 @@
 {
-  "generated_at": "2026-10-27T06:05:24.099Z",
-  "fetched_at": "2026-10-27T06:05:08.932Z",
+  "generated_at": "2026-10-27T07:05:26.326Z",
+  "fetched_at": "2026-10-27T07:05:11.636Z",
   "mode": "incremental",
   "query": "\"recordadme\" OR \"que alguien me recuerde\" OR \"alguien que me recuerde\" OR \"alguien me recuerde\" OR \"que me recuerden\" OR \"@SeLoRecordamos\"",
-  "status": "no_new_candidates",
-  "note": "Sin candidatos nuevos. Extraídos: 26; ya vistos: 26; descartados: 0.",
-  "extracted": 26,
-  "already_seen": 26,
-  "new_found": []
+  "status": "ok",
+  "note": "2 candidatos nuevos de 27 tuits extraídos.",
+  "extracted": 27,
+  "already_seen": 24,
+  "new_found": [
+    {
+      "id": "2114963721546031588",
+      "user": "@D0Mmyy_",
+      "text": "Que alguien me recuerde que no debo empezar un dibujo sin acabar el anterior ",
+      "datetime": "2026-10-27T06:13:39.000Z",
+      "url": "https://x.com/D0Mmyy_/status/2114963721546031588",
+      "first_seen_at": "2026-10-27T07:05:11.636Z",
+      "status": "pending",
+      "filter_status": "candidate"
+    },
+    {
+      "id": "2114963151485558902",
+      "user": "@ari_mir__",
+      "text": "Ya dejen de asociarme con esa persona, me repugna que me recuerden como algo suyo y no como yo",
+      "datetime": "2026-10-27T06:11:24.000Z",
+      "url": "https://x.com/ari_mir__/status/2114963151485558902",
+      "first_seen_at": "2026-10-27T07:05:11.636Z",
+      "status": "pending",
+      "filter_status": "candidate"
+    },
+    {
+      "id": "2114967176318775368",
+      "user": "@threeamen",
+      "text": "komi, tú no nos conociste a nosotros, pero nosotros sí te conocimos a ti. \n\ngracias por hacernos reír y olvidar un poco los pesares de la vida con tus ocurrencias; ojalá hubiéramos podido hacer lo mismo.\n\nte llevo en mi memoria y en todos los momentos que me recuerden a ti ",
+      "datetime": "2026-10-27T06:27:23.000Z",
+      "url": "https://x.com/threeamen/status/2114967176318775368",
+      "reason": "excluded_phrase_me_recuerden_a",
+      "filter_status": "rejected"
+    }
+  ]
 }
