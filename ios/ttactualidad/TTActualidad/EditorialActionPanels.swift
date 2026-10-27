@@ -126,35 +126,48 @@ struct EditorialActions: View {
                             intent == "discard" ? "¿Desestimar esta entrada?" :
                             "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
-            Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
-                let requestID = UUID().uuidString.lowercased()
-                guard store.beginEditorialAction(project: project, id: editorialID,
-                                                 revision: revision, decision: intent,
-                                                 title: title, rank: rank,
-                                                 requestID: requestID) else { return }
-                let requestedDecision = intent
-                let requestedID = editorialID
-                let requestedRevision = revision
-                let requestedProject = project
-                let requestedTitle = title
-                let requestedRank = rank
-                Task {
-                    let result = await github.decide(project: requestedProject,
-                                                     eventID: requestedID,
-                                                     revision: requestedRevision,
-                                                     decision: requestedDecision,
-                                                     title: requestedTitle, rank: requestedRank,
-                                                     requestID: requestID)
-                    store.completeEditorialAction(project: requestedProject, id: requestedID,
-                                                  revision: requestedRevision,
-                                                  result: result, detail: github.notice)
+            if intent == "deleted" && (news?.status == "LISTA" ||
+                                        trend?.inListas == true) {
+                Button("Publicado · Quitar de Listas") { submit("published") }
+                Button("No publicado · Quitar de Listas", role: .destructive) {
+                    submit("deleted")
                 }
+            } else {
+                Button("Confirmar", role: intent == "deleted" ||
+                    intent == "discard" ? .destructive : nil) { submit(intent) }
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text(intent == "rework" || intent == "prepare"
+            Text(intent == "deleted" && (news?.status == "LISTA" ||
+                                         trend?.inListas == true)
+                 ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
+                 : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
-                 : "La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
+                 : "La orden se comprobará contra la revisión vigente de GitHub.")
+        }
+    }
+
+    private func submit(_ decision: String) {
+        let requestID = UUID().uuidString.lowercased()
+        guard store.beginEditorialAction(project: project, id: editorialID,
+                                         revision: revision, decision: decision,
+                                         title: title, rank: rank,
+                                         requestID: requestID) else { return }
+        let requestedID = editorialID
+        let requestedRevision = revision
+        let requestedProject = project
+        let requestedTitle = title
+        let requestedRank = rank
+        Task {
+            let result = await github.decide(project: requestedProject,
+                                             eventID: requestedID,
+                                             revision: requestedRevision,
+                                             decision: decision,
+                                             title: requestedTitle, rank: requestedRank,
+                                             requestID: requestID)
+            store.completeEditorialAction(project: requestedProject, id: requestedID,
+                                          revision: requestedRevision,
+                                          result: result, detail: github.notice)
         }
     }
 
