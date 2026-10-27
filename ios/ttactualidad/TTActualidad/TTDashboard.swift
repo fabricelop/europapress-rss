@@ -44,6 +44,11 @@ struct TTDashboard: View {
         }
         .preferredColorScheme(.dark)
         .task { await github.renewOnForeground() }
+        .onOpenURL { url in
+            if url.scheme == "ttactualidad" {
+                showCombinedListas = url.host == "listas"
+            }
+        }
         .onChange(of: scenePhase) { _, next in
             if next == .active { Task { await github.renewOnForeground() } }
         }
@@ -159,7 +164,7 @@ struct TTDashboard: View {
                     .font(.system(size: 25, weight: .bold, design: .rounded))
                     .tracking(-0.6)
                 Text(showCombinedListas ? "Publica o gestiona todo desde aquí" :
-                     store.section == .trends ? "Radar · Clasificación editorial" : "Noticias preparadas para publicar")
+                     store.section == .trends ? trendRadarSubtitle : "Noticias preparadas para publicar")
                     .font(.caption).foregroundStyle(TTTheme.muted)
             }
             Spacer()
@@ -174,6 +179,19 @@ struct TTDashboard: View {
                 .accessibilityLabel("Añadir noticia")
             }
         }
+    }
+
+    private var trendRadarSubtitle: String {
+        guard let last = store.snapshot.trendsRadarAt else {
+            return "Radar · Aún sin fecha verificable"
+        }
+        let age = max(0, Date().timeIntervalSince(last))
+        let duration = age < 3600 ? "\(Int(age / 60)) min" :
+                       "\(Int(age / 3600)) h"
+        let reliability = store.snapshot.trendsRadarReliability.lowercased()
+        let flag = age > 1800 || ["fallback", "stale", "low"].contains(reliability) ?
+                   " · Revisar fiabilidad" : ""
+        return "Radar hace \(duration)" + flag
     }
 
     private var counters: some View {
