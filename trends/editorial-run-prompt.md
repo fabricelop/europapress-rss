@@ -257,6 +257,8 @@ Si la relación no es inequívoca, no agrupes; verifica primero el detonante con
 ## Contexto aportado por el usuario
 
 Si un item trae `rewrite_instruction`, trátalo como CONTEXTO APORTADO POR EL USUARIO para explicar por qué la tendencia está activa. Debes leerlo antes de investigar y usarlo como pista prioritaria para orientar las búsquedas y la reelaboración. No lo ignores ni lo sustituyas por la explicación anterior problemática. Verifica con fuentes actuales todo dato factual verificable antes de publicarlo; si el texto del usuario contiene una interpretación u opinión, úsala como contexto editorial sin presentarla como hecho no comprobado.
+**TTActualidad / Aportar pistas (obligatorio):** si la solicitud incluye `user_pistas` y `hints_verification_status:"unverified"`, la entrada es una NUEVA investigación de la revisión exacta `id+revision`, aunque haya abandonado el Top 30. Conserva las pistas en `trends/requests.json`, úsalas solamente como hipótesis y posibles enlaces para localizar fuentes independientes y comprobar fechas y hechos. No conviertas una pista en afirmación verificable por el simple hecho de que la aporte el editor. Si la comprobación falla, conserva `user_pistas` e `investigation_history`, registra `problem_reason` claramente y no publiques explicación ni remate falsamente concluyentes. Si funciona, escribe el texto factual completo y un remate nuevo según las reglas editoriales vigentes. El reencolado usa únicamente la cola habitual `trends/editorial-queue.json`, sin canal ni transporte alternativo.
+
 
 ## Recuperación de Reexplicar desde la app
 

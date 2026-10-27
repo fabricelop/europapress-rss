@@ -1,9 +1,16 @@
 name: TTActualidad direct-actions regression tests
 on:
+  pull_request:
+    paths:
+      - 'pilot/**'
+      - '.github/workflows/ttactualidad-direct-actions.yml'
+      - '.github/workflows/ttactualidad-direct-ci.yml'
   push:
     branches: [main]
     paths:
       - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/trends_hints.py'
+      - 'pilot/test_trends_hints.py'
       - 'pilot/test_ttactualidad_direct_actions.py'
       - '.github/workflows/ttactualidad-direct-actions.yml'
       - '.github/workflows/ttactualidad-direct-ci.yml'
@@ -18,5 +25,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate direct Listas remove and isolation
         run: |
-          python3 -m py_compile pilot/apply-ttactualidad-action.py
+          python3 -m py_compile pilot/apply-ttactualidad-action.py pilot/trends_hints.py
           python3 -m unittest discover -s pilot -p 'test_ttactualidad_direct_actions.py' -v
+          python3 -m unittest discover -s pilot -p 'test_trends_hints.py' -v

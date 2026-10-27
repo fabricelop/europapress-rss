@@ -43,7 +43,8 @@ jobs:
               # editorial nuevo. El transporte de imágenes es independiente.
               if [ "${{ github.event.client_payload.project }}" = "ttendencias" ] &&
                  { [ "${{ github.event.client_payload.decision }}" = "rework" ] ||
-                   [ "${{ github.event.client_payload.decision }}" = "prepare" ]; }; then
+                   [ "${{ github.event.client_payload.decision }}" = "prepare" ] ||
+                   [ "${{ github.event.client_payload.decision }}" = "hints" ]; }; then
                 python3 trends/request_pc_editorial.py --selftest
                 python3 trends/request_pc_editorial.py --trigger ||
                   echo "TT_EDITORIAL_TRIGGER_ERROR: solicitud persistida; revisar lanzador PC"
