@@ -62,7 +62,8 @@ assert 'ChatGPT Images' in actions
 assert "SecureSession" in auth and 'save("session", value: saved)' in auth
 assert "refreshTask" in auth and "renewOnForeground()" in dashboard
 assert "LazyVGrid" in dashboard and "ScrollView(.horizontal" not in dashboard
-assert "case sinRevisar" in store and "unreviewedNews" in store
+assert "case sinRevisar" not in store
+assert 'filterChip("Sin revisar"' not in dashboard
 assert "operationHistory" in store and "pendingOperationsCount" in store
 assert "newsWorking" in shared and "trendsWorking" in shared and "pendingActions" in shared
 assert "RefreshLiveCountsIntent()" in activity
@@ -72,7 +73,7 @@ assert "partialData: partial" in store
 assert "case movimientos" not in store
 assert 'filterChip("↑↓ Cambios"' not in dashboard
 assert "count: 4), spacing: 5)" in dashboard
-assert dashboard.count('filterChip("') == 14  # 8 trends and 6 news
+assert dashboard.count('filterChip("') == 12  # 7 trends and 5 news
 assert "softCardColor" in dashboard and "colors: [softCardColor, TTTheme.cardInterior]" in dashboard
 assert "rankColor, in: RoundedRectangle" in dashboard
 
@@ -139,3 +140,11 @@ assert "revision <= tombstone.revision" in store
 assert "persistTerminals()" in store
 assert "case .verified:" in store and "markTerminal(project: project" in store
 assert "news: canonicalSnapshot.news," in store
+
+# Every Tremending story retains its real Público URL and exposes an external link.
+assert 'sourceURL: URL(string: Self.str(item, "url"))' in store
+assert 'news.status == "TREMENDING"' in actions
+assert 'quickButton("Ver en Público", "arrow.up.right.square")' in actions
+assert 'openURL(original)' in actions
+assert 'url.path.hasPrefix("/tremending/")' in actions
+assert 'url.scheme?.lowercased() == "https"' in actions
