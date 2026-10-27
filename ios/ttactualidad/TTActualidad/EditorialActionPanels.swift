@@ -51,7 +51,21 @@ struct EditorialActions: View {
                         quickButton("Desestimar", "xmark.circle", danger: true) { request("discard") }
                     }
                 } else if news.status == "TREMENDING" {
-                    quickButton("Quitar", "trash", danger: true) { request("deleted") }
+                    HStack(spacing: 7) {
+                        if let original = tremendingOriginal(news.sourceURL) {
+                            quickButton("Ver en Público", "arrow.up.right.square") {
+                                openURL(original)
+                            }
+                        } else {
+                            Text("Enlace original no disponible")
+                                .font(.system(size: 11))
+                                .foregroundStyle(TTTheme.muted)
+                                .frame(maxWidth: .infinity)
+                        }
+                        quickButton("Quitar", "trash", danger: true) {
+                            request("deleted")
+                        }
+                    }
                 }
             } else if trend?.status == "EN ELABORACIÓN" {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
@@ -142,6 +156,16 @@ struct EditorialActions: View {
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
                  : "La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
         }
+    }
+
+    // Only open the original article from the trusted Tremending feed.
+    // Never manufacture a search URL if an article has no valid source link.
+    private func tremendingOriginal(_ url: URL?) -> URL? {
+        guard let url,
+              url.scheme?.lowercased() == "https",
+              ["publico.es", "www.publico.es"].contains(url.host?.lowercased() ?? ""),
+              url.path.hasPrefix("/tremending/") else { return nil }
+        return url
     }
 
     private func request(_ action: String) {
