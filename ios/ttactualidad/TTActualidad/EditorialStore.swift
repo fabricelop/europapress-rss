@@ -1,5 +1,4 @@
 import ActivityKit
-import WidgetKit
 import Combine
 import CryptoKit
 import Foundation
@@ -249,7 +248,6 @@ final class EditorialStore: ObservableObject {
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     @Published private(set) var isManuallyRefreshing = false
     private var lastCompletedRefresh: Date? = nil
-    private var lastWidgetTimelineReload: Date? = nil
     private var currentVisitSnapshot: [String: String]?
 
     init() {
@@ -727,13 +725,6 @@ final class EditorialStore: ObservableObject {
         if fresh {
             await publishLiveCounts(checkedAt: now,
                                     partial: partial || pendingOperationsCount > 0)
-            // Widgets use Apple's own refresh budget. Don't request a
-            // reload for every incremental radar poll or UI interaction.
-            if lastWidgetTimelineReload == nil ||
-               now.timeIntervalSince(lastWidgetTimelineReload!) >= 5 * 60 {
-                lastWidgetTimelineReload = now
-                WidgetCenter.shared.reloadTimelines(ofKind: "TTActualidadEditorialHome")
-            }
         }
     }
 
@@ -955,8 +946,9 @@ final class EditorialStore: ObservableObject {
         let receiptRows = Self.rows(receipts, "items")
         let terminals = Self.rows(decisions, "items")
         for operation in operationHistory where
-            operation.project == "ttittulares" && operation.isOutstanding ||
-            (operation.project == "ttittulares" && operation.status == "En elaboración") {
+            operation.project == "ttittulares" &&
+            (operation.isOutstanding || operation.status == "En elaboración") &&
+            !operation.id.contains(":superseded:") {
             guard let identity = operationIdentity(operation) else { continue }
             let id = identity.eventID
             if terminals.contains(where: {
@@ -1828,8 +1820,14 @@ final class EditorialStore: ObservableObject {
             pendingActions: pendingOperationsCount,
             checkedAt: checkedAt, partialData: partial,
             recentHeadline: snapshot.news.max(by: {
-                $0.publishedAt < $1.publishedAt
-            })?.title ?? ""
+                ($0.publishedAt ?? .distantPast) <
+                ($1.publishedAt ?? .distantPast)
+            })?.title ?? "",
+            newsPublished24h: publicationsLast24h(project: "ttittulares",
+                                                    now: checkedAt) ?? 0,
+            trendsPublished24h: publicationsLast24h(project: "ttendencias",
+                                                      now: checkedAt) ?? 0,
+            publishedCountsAvailable: publicationLedgerAvailable
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))
         do {
