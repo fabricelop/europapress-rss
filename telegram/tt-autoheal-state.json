@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-27T02:21:55.887126+00:00",
+      "checked_at": "2026-10-27T08:03:56.980424+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 923263,
+          "seconds": 943784,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,49 +22,28 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-27T02:21:55.887126+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-10-27T08:03:56.980424+00:00",
+      "issue_count": 3,
       "issues": [
-        {
-          "kind": "editorial_overdue",
-          "id": "d7bbc6d46128",
-          "title": "Barça",
-          "seconds": 83423,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "07f62b021771",
-          "title": "Brazil",
-          "seconds": 72849,
-          "workflow": null
-        },
         {
           "kind": "missing_delivery",
           "id": "aa0c8d12686d",
           "title": "Messi",
-          "seconds": 9656,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "035e9bfe23a3",
-          "title": "Mara",
-          "seconds": 6055,
+          "seconds": 30177,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "66baf38b979a",
           "title": "Juanpi",
-          "seconds": 6055,
+          "seconds": 26576,
           "workflow": null
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 923263,
+          "seconds": 943784,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -73,16 +52,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "ce8e7fffdfd8dbe94c66dd6fc997422cec4a94fb4f4e9f06c7778bd0299e2256",
+      "open_signature": "5f8c8d35796627d107d826c914ec77d412da7b2e4ec4ba3bcd4cba846b5458d2",
       "repair_via_workflow_run": false,
-      "escalation_required": 5
+      "escalation_required": 2
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-25T23:37:02.183373+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-27T02:21:55.887126+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-27T02:21:55.887126+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-27T02:21:55.887126+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-27T08:03:56.980424+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-27T08:03:56.980424+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-27T08:03:56.980424+00:00"
   },
-  "checked_at": "2026-10-27T02:21:55.887126+00:00"
+  "checked_at": "2026-10-27T08:03:56.980424+00:00"
 }
