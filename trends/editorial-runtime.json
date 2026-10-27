@@ -4,50 +4,59 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "71da82a42b94",
+    "c5a63e21f604",
+    "8860faae230c",
+    "7280355b9bdb",
+    "59265957576d",
+    "c53cafe67125",
+    "11d228488dea",
+    "e7ffb5d35d73"
+  ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T22:15:00+01:00",
-  "last_completed_at": "2026-10-27T22:17:00+01:00",
-  "updated_at": "2026-10-27T22:17:00+01:00",
+  "last_started_at": "2026-10-27T22:45:00+01:00",
+  "last_completed_at": "2026-10-27T22:52:00+01:00",
+  "updated_at": "2026-10-27T22:52:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T221500+0100",
+    "trigger_run_id": "tr-chat-20261027T224500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261027T221500+0100",
+    "run_id": "tr-chat-20261027T224500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T22:15:00+01:00",
-    "updated_at": "2026-10-27T22:17:00+01:00",
-    "finished_at": "2026-10-27T22:17:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-27T22:45:00+01:00",
+    "updated_at": "2026-10-27T22:52:00+01:00",
+    "finished_at": "2026-10-27T22:52:00+01:00",
+    "current": 8,
+    "total": 8,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 8,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
-      "grouped_into_existing_card": 0,
+      "explained": 8,
+      "final_resolved": 8,
+      "explanation_groups": 4,
+      "new_cards": 4,
+      "revisions_updated": 8,
+      "grouped_into_existing_card": 4,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 8,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -55,17 +64,17 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
+      "explanations_verified_under_280": 4,
+      "remates_selected": 4,
       "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 4,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0; sin preparing/update ni reexplicaciones pendientes; saneamiento visual solicitado para 1 Pendiente reciente.",
+    "message": "TTendencias completada: 8/8 revisiones cerradas en 4 grupos; cola activa vacía.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -75,35 +84,109 @@
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "group_id": "grp-71da82a42b94-r0",
+        "selected": "🌶️ Las Llanas convirtió el 121' en puerta de salida."
+      },
+      {
+        "group_id": "grp-c53cafe67125-r0",
+        "selected": "🌶️ Bilbao puso el showcase; el fandom puso el hashtag."
+      },
+      {
+        "group_id": "grp-11d228488dea-r0",
+        "selected": "🌶️ El reconocimiento sigue pasando lista."
+      },
+      {
+        "group_id": "grp-e7ffb5d35d73-r0",
+        "selected": "🌶️ El documento era interno; la polémica sigue muy pública."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-27T22:15:00+01:00",
+        "at": "2026-10-27T22:45:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa; cola editorial inicial vacía; comprobando requests, reexplicaciones y Pendientes."
+        "message": "Iniciando pasada directa; 8 revisiones activas. Revalidando estado antes de investigar."
       },
       {
-        "at": "2026-10-27T22:16:00+01:00",
+        "at": "2026-10-27T22:46:00+01:00",
+        "phase": "investigating",
+        "trend_id": "71da82a42b94",
+        "title": "Espanyol",
+        "message": "Contrastando el Sestao–Espanyol y su relación con #rcde, Manolo, Las Llanas y #LaCopaMola."
+      },
+      {
+        "at": "2026-10-27T22:47:00+01:00",
+        "phase": "investigating",
+        "trend_id": "c53cafe67125",
+        "title": "#MartinBIME",
+        "message": "Verificando programación BIME Live y actuación de Martin Urrutia."
+      },
+      {
+        "at": "2026-10-27T22:48:00+01:00",
+        "phase": "investigating",
+        "trend_id": "11d228488dea",
+        "title": "#ProfesionDeRiesgoYa",
+        "message": "Contrastando la reunión y reivindicaciones de JUCIL/JUPOL ante Interior."
+      },
+      {
+        "at": "2026-10-27T22:49:00+01:00",
+        "phase": "investigating",
+        "trend_id": "e7ffb5d35d73",
+        "title": "Fichas",
+        "message": "Contrastando el dosier de Interior sobre periodistas y su contexto."
+      },
+      {
+        "at": "2026-10-27T22:50:00+01:00",
+        "phase": "drafting",
+        "trend_id": "71da82a42b94",
+        "title": "Espanyol",
+        "message": "Redactando 4 explicaciones factuales y comprobando límite de X."
+      },
+      {
+        "at": "2026-10-27T22:50:20+01:00",
+        "phase": "remate_selection",
+        "trend_id": "71da82a42b94",
+        "title": "Espanyol",
+        "message": "Seleccionando 4 remates específicos y evitando repeticiones."
+      },
+      {
+        "at": "2026-10-27T22:50:40+01:00",
+        "phase": "persisting",
+        "trend_id": "71da82a42b94",
+        "title": "Espanyol",
+        "message": "Guardando cuatro fichas Explicadas y sincronizando las 8 revisiones cubiertas."
+      },
+      {
+        "at": "2026-10-27T22:51:20+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main; verificando cola, requests, rewrite_pending y 1 Pendiente reciente."
+        "message": "Releyendo main y verificando id+revision, texto persistido y retirada de cola."
       },
       {
-        "at": "2026-10-27T22:17:00+01:00",
+        "at": "2026-10-27T22:52:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0; sin preparing/update ni reexplicaciones pendientes; saneamiento visual solicitado para 1 Pendiente reciente."
+        "message": "TTendencias completada: 8/8 revisiones cerradas en 4 grupos; cola activa vacía."
       }
     ],
     "partial": false,
-    "processed_ids": [],
+    "processed_ids": [
+      "71da82a42b94",
+      "c5a63e21f604",
+      "8860faae230c",
+      "7280355b9bdb",
+      "59265957576d",
+      "c53cafe67125",
+      "11d228488dea",
+      "e7ffb5d35d73"
+    ],
     "queue_complete": true,
-    "remaining_active_ids": [],
-    "final_outcomes": []
+    "remaining_active_ids": []
   },
   "run_id": "tr-chat-20261027T221500+0100",
   "summary": {
@@ -179,6 +262,5 @@
   },
   "remate_selections": [],
   "final_outcomes": [],
-  "pending_delivery_count": 1,
-  "error": null
+  "pending_delivery_count": 1
 }
