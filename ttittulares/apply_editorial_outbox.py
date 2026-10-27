@@ -577,6 +577,16 @@ def main():
             if not isinstance(payload,dict): raise ValueError("payload inválido")
             eid=str(payload.get("event_id") or "")
             rev=int(payload.get("revision") or 1)
+            # A user's confirmed cancellation is terminal. Never let a late
+            # completed outbox (including provisional repair) recreate READY.
+            terminal=next((x for x in load(DECISIONS,{"items":[]}).get("items",[])
+                           if str(x.get("event_id") or "")==eid and
+                           str(x.get("status") or "").lower()
+                           in {"dismissed","deleted","published"}),None)
+            if terminal is not None:
+                processed.append(eid+":blocked-user-terminal")
+                path.unlink()
+                continue
             row=next((x for x in q.get("items",[]) if str(x.get("event_id") or "")==eid and int(x.get("revision") or 1)==rev),None)
             if row is None:
                 path.unlink(); continue

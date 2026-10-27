@@ -26,8 +26,9 @@ class LiveEditorialTests(unittest.TestCase):
   self.write('ttittulares/editorial-queue.json',{'items':[{'event_id':'abc123','revision':1,'status':'PROCESSING'}]})
   changed,result=app.apply_live('ttittulares','abc123','discard',1)
   self.assertEqual(result,'applied')
-  self.assertEqual(changed['ttittulares/decisions.json']['items'][0]['status'],'published')
-  self.assertEqual(changed['ttittulares/editorial-queue.json']['items'][0]['status'],'PUBLISHED')
+  self.assertEqual(changed['ttittulares/decisions.json']['items'][0]['status'],'dismissed')
+  self.assertEqual(changed['ttittulares/editorial-queue.json']['items'][0]['status'],'DISMISSED')
+  self.assertIn('telegram/editorial-processing.json', changed)
  def test_tti_problematic_manual_prepare(self):
   self.write('ttittulares/status.json',{'problematic_items':[{'event_id':'abc123','title':'Prueba','revision':1,'source_count':4}]})
   changed,result=app.apply_live('ttittulares','abc123','prepare',1)
