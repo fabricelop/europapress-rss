@@ -1,4 +1,4 @@
-"""Preflight: native app, real GitHub Listas, no Cloudflare or home widgets."""
+"""Preflight: native iPhone editor, Live Activity and real WidgetKit widgets."""
 from pathlib import Path
 import re
 
@@ -6,6 +6,8 @@ root = Path(__file__).resolve().parents[1]
 project = (root / "project.yml").read_text(encoding="utf8")
 store = (root / "TTActualidad/EditorialStore.swift").read_text(encoding="utf8")
 activity = (root / "TTActualidadLive/TTActualidadLive.swift").read_text(encoding="utf8")
+widgets = (root / "TTActualidadLive/TTActualidadHomeWidgets.swift").read_text(encoding="utf8")
+widget_source = (root / "Shared/RefreshLiveCountsIntent.swift").read_text(encoding="utf8")
 shared = (root / "Shared/LiveCountsAttributes.swift").read_text(encoding="utf8")
 app = (root / "TTActualidad/TTActualidadApp.swift").read_text(encoding="utf8")
 dashboard = (root / "TTActualidad/TTDashboard.swift").read_text(encoding="utf8")
@@ -39,7 +41,7 @@ for source in (project, store, activity, shared, app):
 assert "BGTaskScheduler" not in store
 assert "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" in store
 assert "partialData: partial" in store
-assert "no Home Screen or Lock Screen widgets" in shared
+assert "recentHeadline" in shared and "latestHeadline" in widget_source
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
 # Gallery is explicitly archive-only: no AI retrieval or generated-image fallback.
@@ -212,11 +214,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.15"' in project
-assert 'CURRENT_PROJECT_VERSION: "21"' in project
+assert 'MARKETING_VERSION: "0.4.16"' in project
+assert 'CURRENT_PROJECT_VERSION: "22"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.15: an editorial trend may trigger independent news investigation.
+# 0.4.16: an editorial trend may trigger independent news investigation.
 assert 'quickButton("Enviar a TTiTTulares"' in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' in actions
 assert 'originTrend: trend' in actions
@@ -229,7 +231,7 @@ assert 'operation.kind == "De tendencia a noticia"' not in store or 'De tendenci
 assert '["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)' in store
 print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
 
-# 0.4.15: stale GitHub-inactive orders recover and the verified publish counter
+# 0.4.16: stale GitHub-inactive orders recover and the verified publish counter
 # increments without blocking the rest of the interface.
 assert "retireAbandonedTrendOperations(" in store
 assert "await store.refreshIfStale(minInterval: 0)" in hints_sheet
@@ -240,10 +242,10 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "21"' in project
+assert 'CURRENT_PROJECT_VERSION: "22"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
-# 0.4.15: cancel PROCESSING without adding to Listas, and separate
+# 0.4.16: cancel PROCESSING without adding to Listas, and separate
 # unacknowledged GitHub commands from already registered editorial work.
 assert 'quickButton("Suprimir · No pasar a Listas"' in actions
 assert '"¿Suprimir esta noticia en elaboración?"' in actions
@@ -252,5 +254,18 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "21"' in project
+assert 'CURRENT_PROJECT_VERSION: "22"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
+
+# 0.4.16: real, installed WidgetKit widgets and richer Live Activity.
+assert "TTActualidadHomeWidget()" in activity
+assert "StaticConfiguration(kind: kind, provider: TTEditorialProvider())" in widgets
+assert ".systemSmall, .systemMedium, .accessoryRectangular" in widgets
+assert "LiveCountsSource.load()" in widgets
+assert "policy: .after(Date().addingTimeInterval(20 * 60))" in widgets
+assert "recentHeadline" in shared and "recentHeadline: source.latestHeadline" in widget_source
+assert "ÚLTIMA NOTICIA LISTA" in activity
+assert "WidgetCenter.shared.reloadTimelines(ofKind:" in store
+assert 'MARKETING_VERSION: "0.4.16"' in project
+assert 'CURRENT_PROJECT_VERSION: "22"' in project
+print("TT_ACTUALIDAD_IOS_0416_WIDGET_AND_LIVE_PREFLIGHT_OK")
