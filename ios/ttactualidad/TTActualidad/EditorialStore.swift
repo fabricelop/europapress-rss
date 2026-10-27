@@ -346,9 +346,8 @@ final class EditorialStore: ObservableObject {
         applyOptimisticOverlay()
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
         if fresh {
-            await publishLiveCounts(news: snapshot.news.count,
-                                    trends: snapshot.trendListas.count, checkedAt: now,
-                                    partial: partial || !activeEditorialActions.isEmpty)
+            await publishLiveCounts(checkedAt: now,
+                                    partial: partial || pendingOperationsCount > 0)
         }
     }
 
@@ -599,10 +598,8 @@ final class EditorialStore: ObservableObject {
 
     private func refreshOptimisticActivity() {
         Task {
-            await publishLiveCounts(news: snapshot.news.count,
-                                    trends: snapshot.trendListas.count,
-                                    checkedAt: Date(),
-                                    partial: snapshot.partial || !activeEditorialActions.isEmpty)
+            await publishLiveCounts(checkedAt: Date(),
+                                    partial: snapshot.partial || pendingOperationsCount > 0)
         }
     }
 
@@ -935,14 +932,17 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private func publishLiveCounts(news: Int, trends: Int, checkedAt: Date,
-                                   partial: Bool) async {
+    private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             liveStatus = "Activa las Live Activities en Ajustes del iPhone"
             return
         }
         let state = LiveCountsAttributes.ContentState(
-            newsReady: news, trendsReady: trends,
+            newsReady: snapshot.news.count,
+            trendsReady: snapshot.trendListas.count,
+            newsWorking: snapshot.newsElaboracion.count,
+            trendsWorking: snapshot.trendsElaboracion.count,
+            pendingActions: pendingOperationsCount,
             checkedAt: checkedAt, partialData: partial
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))
