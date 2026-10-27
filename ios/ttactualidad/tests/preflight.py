@@ -110,7 +110,8 @@ assert 'if closedAfterRequest {' in store
 assert 'stage = "Retirada"' in store
 assert '"deleted_at", "dismissed_at", "updated_at"' in store
 assert 'finishedByName[norm(name)]' in store
-assert 'operation.id.hasPrefix("ttendencias:")' in store
+assert 'private func operationIdentity(_ operation: EditorialOperation)' in store
+assert '["ttittulares", "ttendencias"].contains(project)' in store
 assert 'case "Confirmada", "En Listas", "Verificada", "Retirada"' in pending_panel
 
 # Legacy unconfirmed operations from pre-0.4.4 lack request IDs.
