@@ -146,8 +146,10 @@ struct EditorialOperation: Codable, Identifiable {
     var detail: String? = nil
 
     var isOutstanding: Bool {
+        // A confirmed editorial job belongs in the En elaboración tab;
+        // it is NOT a still-unacknowledged GitHub command.
         ["Enviando", "Esperando GitHub", "Pendiente de GitHub",
-         "En elaboración", "Sin confirmar"].contains(status)
+         "Sin confirmar"].contains(status)
     }
     var displayKind: String {
         switch kind {
@@ -233,9 +235,7 @@ final class EditorialStore: ObservableObject {
                 snapshot.newsCreciendo + snapshot.newsTremending).filter { seen.insert($0.id).inserted }
     }
     var pendingOperationsCount: Int {
-        operationHistory.filter {
-            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains($0.status)
-        }.count
+        operationHistory.filter(\.isOutstanding).count
     }
     var outstandingOperations: [EditorialOperation] {
         operationHistory.filter(\.isOutstanding)
@@ -992,8 +992,10 @@ final class EditorialStore: ObservableObject {
                             detail: String) {
         switch result {
         case .verified:
-            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
-                            kind: "Nueva noticia", status: "En elaboración")
+            let manualID = "manual-" + requestID
+            let kind = operationHistory.first(where: { $0.id == manualID })?.kind ?? "Nueva noticia"
+            recordOperation(id: manualID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: kind, status: "En elaboración")
             actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
             actionIsError = false
             Task { await self.refreshIfStale(minInterval: 0) }
@@ -1016,7 +1018,9 @@ final class EditorialStore: ObservableObject {
     private func retireSyncedDrafts() {
         let authoritativeIDs = Set(canonicalSnapshot.newsElaboracion.map(\.id) +
                                    canonicalSnapshot.news.map(\.id))
-        for (id, draft) in draftNews where authoritativeIDs.contains(draft.id) {
+        for (id, draft) in draftNews where
+            authoritativeIDs.contains(draft.id) ||
+            terminalMarks["ttittulares:" + draft.id] != nil {
             draftNews.removeValue(forKey: id)
         }
     }
@@ -1048,7 +1052,7 @@ final class EditorialStore: ObservableObject {
                                 decision == "discard" ? "Destino: Desestimadas" :
                                 "Destino: En elaboración → Listas")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
-                        decision == "discard" ? "Desestimado · guardando en GitHub…" :
+                        decision == "discard" ? "Supresión solicitada · guardando en GitHub…" :
                         "Trasladado a elaboración · guardando en GitHub…"
         actionIsError = false
         applyOptimisticOverlay()
