@@ -1,10 +1,21 @@
 {
-  "checked_at": "2026-10-27T16:55:54.162453+00:00",
+  "checked_at": "2026-10-27T17:16:56.355517+00:00",
   "before": [],
   "repair_actions": [],
   "remaining": [],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4031344,
+  "healthy_source_count": 17,
+  "source_failures": [
+    {
+      "source": "Telecinco Noticias",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "Noticias Cuatro",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    }
+  ],
+  "events_bytes": 4052700,
   "ok": true
 }
