@@ -24,6 +24,7 @@ struct EditorialActions: View {
     @State private var confirm = false
     @State private var intent = "deleted"
     @State private var outcome = ""
+    @State private var showHints = false
     @Environment(\.openURL) private var openURL
 
     private var title: String { news?.title ?? trend?.name ?? "" }
@@ -109,6 +110,15 @@ struct EditorialActions: View {
                     }
                 }
             }
+            if let trend, trend.status != "EN ELABORACIÓN" {
+                quickButton("Aportar pistas", "lightbulb") {
+                    if github.authenticated {
+                        showHints = true
+                    } else {
+                        showSettings = true
+                    }
+                }
+            }
             if news != nil {
                 quickButton("Buscar en X", "magnifyingglass") {
                     var parts = URLComponents(string: "https://x.com/search")
@@ -120,6 +130,13 @@ struct EditorialActions: View {
             }
             if !outcome.isEmpty {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .sheet(isPresented: $showHints) {
+            if let trend {
+                TrendHintsSheet(trend: trend, github: github)
+                    .environmentObject(store)
+                    .presentationDetents([.medium, .large])
             }
         }
         .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
