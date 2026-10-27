@@ -105,7 +105,11 @@ def is_material_update(row):
     return bool(row.get('material_update') is True or ctx.get('material_update') is True or ctx.get('material_change') is True)
 
 def is_current(row, hours=24):
-    raw=row.get('last_seen') or row.get('eligible_at') or row.get('first_seen')
+    # A collector seeing an old article again does NOT reset its age.
+    # Only a separately validated material UPDATE may rely on last_seen.
+    update=str(row.get('status') or '')=='ELIGIBLE_UPDATE' and is_material_update(row)
+    raw=(row.get('last_seen') or row.get('eligible_at') if update else
+         row.get('first_seen') or row.get('eligible_at') or row.get('last_seen'))
     if not raw: return True
     try:
         seen=datetime.fromisoformat(str(raw).replace('Z','+00:00'))
@@ -129,6 +133,14 @@ def queue_eligible(radar, queue, decisions, prepared=None, verbose=False, minimu
     qitems=queue.get('items') or []
     terminal=terminal_map(decisions)
     treated_refs=list(treated_refs if treated_refs is not None else treated_references(decisions=decisions))
+    # The compact treated-stories archive can lag behind direct iPhone actions.
+    # Recover titles for confirmed terminal IDs from the current retained radar,
+    # so a second feed cannot re-enqueue the same factual development.
+    for historic in radar.get('events') or []:
+        hid=str(historic.get('id') or historic.get('event_id') or '')
+        if hid and hid in terminal and row_title(historic):
+            treated_refs.append(dict(historic,event_id=hid,title=row_title(historic),
+                                     status=terminal[hid]))
     active=[x for x in qitems if str(x.get('status') or '') in {'PROCESSING','READY'}]
     history=list(prepared.get('items') or [])
     prepared_ids={str(x.get('event_id') or '') for x in history if x.get('event_id')}
@@ -241,6 +253,18 @@ def selftest():
     assert queue_eligible({"events":[distinct]},{"items":[]},d,{"items":[]},
                           treated_refs=references)==["new-appeal"], "una novedad realmente distinta sigue entrando"
     stale={'events':[dict(a,id='stale',status='ELIGIBLE',last_seen='2026-01-01T00:00:00Z',appearances=radar['events'][0]['appearances'])]}
+    refreshed_old={'events':[dict(a,id='old-rediscovered',status='ELIGIBLE',
+        first_seen='2026-10-01T11:00:00Z',last_seen=datetime.now(timezone.utc).isoformat(),
+        appearances=radar['events'][0]['appearances'])]}
+    assert queue_eligible(refreshed_old,{'items':[]},{'items':[]},{'items':[]},
+                          treated_refs=[])==[], 'No reciclar noticia antigua al volver a verla'
+    previously_done={'events':[dict(a,id='already-done',status='ELIGIBLE'),
+        dict(a,id='same-news-new-source',status='ELIGIBLE',
+             title=a['title'],appearances=radar['events'][0]['appearances'])]}
+    assert queue_eligible(previously_done,{'items':[]},
+                          {'items':[{'event_id':'already-done','status':'deleted'}]},
+                          {'items':[]},treated_refs=[])==[], 'Cierre editorial cruza fuentes'
+
     assert queue_eligible(stale,{'items':[]},d,{'items':[]})==[], 'un ELIGIBLE caducado no puede reencolarse'
     print('AUTO_QUEUE_SELFTEST_OK')
 
