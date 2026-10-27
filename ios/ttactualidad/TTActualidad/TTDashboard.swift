@@ -16,6 +16,8 @@ struct TTDashboard: View {
     @State private var showSettings = false
     @State private var showCombinedListas = false
     @State private var publicationSheet: PublicationSheetRoute?
+    @State private var requestingEditorialRun = false
+    @State private var editorialRunMessage = ""
 
     var body: some View {
         ZStack {
@@ -38,6 +40,11 @@ struct TTDashboard: View {
                             editorialActionBanner
                         }
                         subTabs
+                        if !showCombinedListas &&
+                           ((store.section == .trends && store.trendFilter == .elaboracion) ||
+                            (store.section == .news && store.newsFilter == .elaboracion)) {
+                            editorialRunControl
+                        }
                         searchField
                         if showCombinedListas { combinedListasContent }
                         else if store.section == .trends { trendsContent }
@@ -396,6 +403,59 @@ struct TTDashboard: View {
                     }
                 }
             }
+        }
+    }
+
+    // An explicit manual run of the existing dedicated PC/Work editorial
+    // queue. Creating the trigger does NOT imply that any item is finished.
+    private var editorialRunControl: some View {
+        let project = store.section == .trends ? "ttendencias" : "ttittulares"
+        let count = store.section == .trends ?
+            store.snapshot.trendsElaboracion.count : store.snapshot.newsElaboracion.count
+        return VStack(alignment: .leading, spacing: 5) {
+            Button {
+                guard github.authenticated else {
+                    showSettings = true
+                    return
+                }
+                guard !requestingEditorialRun else { return }
+                requestingEditorialRun = true
+                editorialRunMessage = "Registrando petición en GitHub…"
+                Task {
+                    let result = await github.requestEditorialRun(project: project)
+                    switch result {
+                    case .verified: editorialRunMessage = github.notice
+                    case .pending: editorialRunMessage =
+                        "Solicitud todavía sin confirmar. " + github.notice
+                    case .failed: editorialRunMessage =
+                        "No se ha podido verificar la solicitud. " + github.notice
+                    }
+                    requestingEditorialRun = false
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: "play.circle.fill")
+                    Text("Solicitar procesamiento de \(count) en elaboración")
+                    Spacer(minLength: 3)
+                    if requestingEditorialRun { ProgressView().tint(TTTheme.teal) }
+                }
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(TTTheme.teal)
+                .padding(.horizontal, 13)
+                .frame(minHeight: 44)
+                .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
+            }
+            .buttonStyle(.plain)
+            .disabled(requestingEditorialRun || count == 0)
+            if !editorialRunMessage.isEmpty {
+                Text(editorialRunMessage)
+                    .font(.system(size: 10))
+                    .foregroundStyle(TTTheme.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Text("GitHub confirma la petición. El procesamiento real lo realiza el editor del PC; no es inmediato.")
+                .font(.system(size: 10))
+                .foregroundStyle(TTTheme.muted)
         }
     }
 
