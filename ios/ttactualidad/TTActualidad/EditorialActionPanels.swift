@@ -207,16 +207,13 @@ struct EditorialActions: View {
         }
         let headline = String(("Investigar noticia: " + trend.name).prefix(240))
         let context = String(trend.explanation.prefix(280))
-        let instructions = [
-            "Origen TTendencias: ID " + trend.editorialID +
-            ", revision " + String(trend.revision) +
-            ", nombre " + trend.name + ", puesto " + String(trend.rank) + ".",
-            "Investiga si hay un hecho noticioso reciente detras de esta tendencia. " +
-            "Contrasta fuentes y fechas independientes; el hashtag NO prueba el hecho. " +
-            "Sin pruebas no inventes una noticia ni la des por verificada.",
-            context.isEmpty ? "" :
-                "Contexto preliminar, que debes contrastar: " + context
-        ].filter { !$0.isEmpty }.joined(separator: " ")
+        var instructions = "Origen TTendencias: ID \(trend.editorialID), revisión \(trend.revision), nombre \(trend.name), puesto \(trend.rank). "
+        instructions += "Investiga si hay un hecho noticioso reciente detrás de esta tendencia. "
+        instructions += "Comprueba fechas y fuentes independientes; el hashtag no demuestra que haya ocurrido. "
+        instructions += "Sin pruebas suficientes, no inventes una noticia ni la presentes como verificada."
+        if !context.isEmpty {
+            instructions += " Contexto preliminar, pendiente de contrastar: " + context
+        }
         store.beginManualNews(requestID: requestID, title: headline,
                               url: "", fromTrend: true)
         outcome = "Solicitud provisional enviada a TTiTTulares. Consultar Órdenes pendientes."
