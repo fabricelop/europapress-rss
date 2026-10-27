@@ -17,6 +17,8 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+      - name: Validate trend-to-news handoff (synthetic fixtures)
+        run: python3 -m unittest discover -s pilot -p test_ttactualidad_trend_to_news.py -v
       - name: Persistir noticia manual sin tocar otros procesos
         shell: bash
         env:

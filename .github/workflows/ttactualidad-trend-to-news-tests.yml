@@ -1,0 +1,27 @@
+name: TTActualidad trend to news isolated regression
+on:
+  pull_request:
+    paths:
+      - 'pilot/submit_ttactualidad_manual.py'
+      - 'pilot/test_ttactualidad_trend_to_news.py'
+      - '.github/workflows/ttactualidad-trend-to-news-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'pilot/submit_ttactualidad_manual.py'
+      - 'pilot/test_ttactualidad_trend_to_news.py'
+      - '.github/workflows/ttactualidad-trend-to-news-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify forwarding to existing news queue with synthetic fixtures
+        run: |
+          python3 -m py_compile pilot/submit_ttactualidad_manual.py
+          python3 -m unittest discover -s pilot -p 'test_ttactualidad_trend_to_news.py' -v
+          python3 -m unittest discover -s pilot -p 'test_ttactualidad_manual.py' -v
