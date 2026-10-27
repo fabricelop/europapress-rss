@@ -101,7 +101,7 @@ assert "reconcileOperationHistory(" in store
 assert 'pilot/ttactualidad-action-receipts.json' in store
 assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
 assert "Comprobar GitHub ahora" in pending_panel
-assert "Pendiente de GitHub" in pending_panel or "Esperando GitHub" in pending_panel
+assert "Órdenes por confirmar" in pending_panel
 assert "requestID: requestID" in actions and "requestID: requestID" in auth
 
 # A terminal GitHub deletion must remove BOTH canonical and optimistic work.
