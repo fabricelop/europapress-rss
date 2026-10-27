@@ -85,3 +85,9 @@ assert 'TTActualidad.unread.news.v1' in store and 'TTActualidad.unread.trends.v1
 assert 'quickButton("Preparar novedad"' not in actions
 assert 'quickButton("Reelaborar"' not in actions
 assert 'quickButton("Elaborar desde cero"' in actions
+
+# Fresh news rewrite keeps 0.4.3 semantics consistent across iOS and backend.
+assert 'quickButton("Elaborar desde cero"' in actions
+assert 'action.decision == "rework"' in store
+assert 'item["rewrite_pending"] as? Bool != true' in store
+assert (root.parents[1] / "pilot/rework_ttittulares.py").exists()
