@@ -114,11 +114,11 @@ class ReworkReadyNewsTest(unittest.TestCase):
     def test_nonunique_or_missing_ready_is_rejected(self):
         f = self.fixture()
         f[0]["items"].append(dict(f[0]["items"][0]))
-        with self.assertRaisesRegex(ValueError, "una unica"):
+        with self.assertRaisesRegex(ValueError, "entrada vigente"):
             self.request(*f)
         f = self.fixture()
         f[0]["items"] = [f[0]["items"][1]]
-        with self.assertRaisesRegex(ValueError, "una unica"):
+        with self.assertRaisesRegex(ValueError, "entrada vigente"):
             self.request(*f)
 
 
