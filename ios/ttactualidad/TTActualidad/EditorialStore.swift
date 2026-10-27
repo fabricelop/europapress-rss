@@ -126,6 +126,7 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var activeEditorialActions: [String: OptimisticEditorialAction] = [:]
     @Published private(set) var unreviewedNews = Set<String>()
     @Published private(set) var unreviewedTrends = Set<String>()
+    @Published private(set) var radarNewNames = Set<String>()
     @Published private(set) var operationHistory: [EditorialOperation] = []
     private var reviewedNews = Set<String>()
     private var reviewedTrends = Set<String>()
@@ -142,6 +143,12 @@ final class EditorialStore: ObservableObject {
     private var currentVisitSnapshot: [String: String]?
 
     init() {
+        unreviewedNews = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.unread.news.v1") ?? [])
+        unreviewedTrends = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.unread.trends.v1") ?? [])
+        radarNewNames = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.radar.newNames.v1") ?? [])
         if let stored = UserDefaults.standard.data(forKey: "TTActualidad.operations.v1"),
            let decoded = try? JSONDecoder().decode([EditorialOperation].self, from: stored) {
             operationHistory = Array(decoded.prefix(60))
@@ -161,13 +168,52 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    private func storeUnread() {
+        UserDefaults.standard.set(Array(unreviewedNews),
+                                  forKey: "TTActualidad.unread.news.v1")
+        UserDefaults.standard.set(Array(unreviewedTrends),
+                                  forKey: "TTActualidad.unread.trends.v1")
+    }
+
     func markNewsReviewed(_ id: String) {
         reviewedNews.insert(id)
         unreviewedNews.remove(id)
+        storeUnread()
     }
     func markTrendReviewed(_ name: String) {
         reviewedTrends.insert(name)
         unreviewedTrends.remove(name)
+        storeUnread()
+    }
+
+    // The radar's 'movement: new' describes an aggregate comparison and may
+    // mark a long-existing topic as new. Track actual entrances between
+    // complete, distinct radar snapshots this iPhone has seen instead.
+    private func updateRadarEntrants(_ recent: [String: Any]) {
+        let currentVersion = Self.str(recent, "updated_at")
+        guard !currentVersion.isEmpty else { return }
+        let current = Set(Self.rows(recent, "items").prefix(30).compactMap {
+            let name = Self.str($0, "name").trimmingCharacters(in: .whitespacesAndNewlines)
+            return name.isEmpty ? nil : name
+        })
+        guard !current.isEmpty else { return }
+        let defaults = UserDefaults.standard
+        let versionKey = "TTActualidad.radar.lastVersion.v1"
+        let namesKey = "TTActualidad.radar.lastNames.v1"
+        let newKey = "TTActualidad.radar.newNames.v1"
+        if defaults.string(forKey: versionKey) == currentVersion {
+            radarNewNames = Set(defaults.stringArray(forKey: newKey) ?? [])
+                .intersection(current)
+            return
+        }
+        if let previousNames = defaults.stringArray(forKey: namesKey) {
+            radarNewNames = current.subtracting(Set(previousNames))
+        } else {
+            radarNewNames = [] // First complete sync only establishes baseline.
+        }
+        defaults.set(currentVersion, forKey: versionKey)
+        defaults.set(Array(current), forKey: namesKey)
+        defaults.set(Array(radarNewNames), forKey: newKey)
     }
     private var draftNews = [String: NewsItem]()
 
@@ -327,6 +373,7 @@ final class EditorialStore: ObservableObject {
             ready: ready
         )
         if !partial && downloaded.count == paths.count {
+            updateRadarEntrants(docs["trends/recent.json"] ?? [:])
             updateNovedades(news: news, trends: ready, top30: top,
                             newsWorking: queueNews, trendsWorking: trendsQueued)
         }
@@ -615,8 +662,8 @@ final class EditorialStore: ObservableObject {
         UserDefaults.standard.set(snapshot, forKey: "TTActualidad.editorial.baseline.v1")
         reviewedNews.removeAll()
         reviewedTrends.removeAll()
-        unreviewedNews.removeAll()
-        unreviewedTrends.removeAll()
+        // Unread entries survive restarting the app. Only opening the
+        // corresponding card, or removing it from the feed, clears them.
     }
 
     private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem],
@@ -631,18 +678,27 @@ final class EditorialStore: ObservableObject {
         for item in trendsWorking { current["W:T:" + item.editorialID] = String(item.revision) }
         currentVisitSnapshot = current
         if let before = defaults.dictionary(forKey: key) as? [String: String] {
-            unreviewedNews = Set(news.filter {
+            unreviewedNews.formUnion(news.filter {
                 before["N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
             }.map(\.id) + newsWorking.filter {
                 before["W:N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
             }.map(\.id))
-            unreviewedTrends = Set((trends + trendsWorking).filter {
+            unreviewedTrends.formUnion((trends + trendsWorking).filter {
                 before["T:" + $0.editorialID] != String($0.revision) &&
                 !reviewedTrends.contains($0.name)
             }.map(\.name) + top30.filter {
-                before["R:" + $0.name] != String($0.rank) &&
+                before["R:" + $0.name] == nil &&
                 !reviewedTrends.contains($0.name)
             }.map(\.name))
+            // A moved rank is not an unread editorial draft. Keep only
+            // currently visible unread IDs and entries not explicitly opened.
+            let presentNews = Set((news + newsWorking).map(\.id))
+            let presentTrends = Set((trends + trendsWorking + top30).map(\.name))
+            unreviewedNews.formIntersection(presentNews)
+            unreviewedTrends.formIntersection(presentTrends)
+            unreviewedNews.subtract(reviewedNews)
+            unreviewedTrends.subtract(reviewedTrends)
+            storeUnread()
             var changes: [String] = []
             for item in news {
                 let old = before["N:" + item.id]
