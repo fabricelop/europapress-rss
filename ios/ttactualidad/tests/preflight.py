@@ -212,11 +212,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.14"' in project
-assert 'CURRENT_PROJECT_VERSION: "20"' in project
+assert 'MARKETING_VERSION: "0.4.15"' in project
+assert 'CURRENT_PROJECT_VERSION: "21"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.14: an editorial trend may trigger independent news investigation.
+# 0.4.15: an editorial trend may trigger independent news investigation.
 assert 'quickButton("Enviar a TTiTTulares"' in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' in actions
 assert 'originTrend: trend' in actions
@@ -229,7 +229,7 @@ assert 'operation.kind == "De tendencia a noticia"' not in store or 'De tendenci
 assert '["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)' in store
 print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
 
-# 0.4.14: stale GitHub-inactive orders recover and the verified publish counter
+# 0.4.15: stale GitHub-inactive orders recover and the verified publish counter
 # increments without blocking the rest of the interface.
 assert "retireAbandonedTrendOperations(" in store
 assert "await store.refreshIfStale(minInterval: 0)" in hints_sheet
@@ -240,5 +240,17 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "20"' in project
+assert 'CURRENT_PROJECT_VERSION: "21"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
+
+# 0.4.15: cancel PROCESSING without adding to Listas, and separate
+# unacknowledged GitHub commands from already registered editorial work.
+assert 'quickButton("Suprimir · No pasar a Listas"' in actions
+assert '"¿Suprimir esta noticia en elaboración?"' in actions
+assert 'intent == "discard" && news?.status == "EN ELABORACIÓN"' in actions
+assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin confirmar"].contains(status)' in store
+assert 'operationHistory.filter(\\.isOutstanding).count' in store
+assert 'Text("Órdenes por confirmar")' in pending_panel
+assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
+assert 'CURRENT_PROJECT_VERSION: "21"' in project
+print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
