@@ -450,16 +450,30 @@ final class EditorialStore: ObservableObject {
         // A fresh terminal decision may be applied even if an unrelated
         // source timed out. Do not keep yesterday's optimistic elaboration
         // while GitHub already confirms today's deletion.
-        if downloaded["trends/telegram-manual-explained.json"] != nil &&
-           downloaded["trends/mobile-decisions.json"] != nil {
+        // News receipts must be reconciled even when the unrelated trends
+        // radar is temporarily unavailable. Legacy iOS builds had no request ID.
+        let freshReceipts = downloaded["pilot/ttactualidad-action-receipts.json"] != nil
+        let freshNewsDecisions = downloaded["ttittulares/decisions.json"] != nil
+        let freshTrendClosures = downloaded["trends/telegram-manual-explained.json"] != nil &&
+                                 downloaded["trends/mobile-decisions.json"] != nil
+        if freshReceipts || freshNewsDecisions || freshTrendClosures {
             reconcileOperationHistory(
-                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
-                manual: docs["trends/telegram-manual-explained.json"]!,
-                requests: docs["trends/requests.json"]!,
-                decisions: docs["trends/mobile-decisions.json"]!)
-            retireClosedTrendOverlays(manual: docs["trends/telegram-manual-explained.json"]!,
-                                      requests: docs["trends/requests.json"]!,
-                                      decisions: docs["trends/mobile-decisions.json"]!)
+                receipts: freshReceipts ?
+                    docs["pilot/ttactualidad-action-receipts.json"] ?? [:] : [:],
+                newsDecisions: freshNewsDecisions ?
+                    docs["ttittulares/decisions.json"] ?? [:] : [:],
+                manual: freshTrendClosures ?
+                    docs["trends/telegram-manual-explained.json"] ?? [:] : [:],
+                requests: freshTrendClosures ?
+                    docs["trends/requests.json"] ?? [:] : [:],
+                decisions: freshTrendClosures ?
+                    docs["trends/mobile-decisions.json"] ?? [:] : [:])
+            if freshTrendClosures {
+                retireClosedTrendOverlays(
+                    manual: docs["trends/telegram-manual-explained.json"] ?? [:],
+                    requests: docs["trends/requests.json"] ?? [:],
+                    decisions: docs["trends/mobile-decisions.json"] ?? [:])
+            }
         }
         if !partial && downloaded.count == paths.count {
             retireSyncedActions()
@@ -475,65 +489,94 @@ final class EditorialStore: ObservableObject {
 
     // GitHub's receipt is authoritative. Rendering a provisional change
     // must NEVER become a success merely because it disappeared locally.
+    // Legacy 0.4.x operations stored only "project:id:rN" and had no
+    // request UUID. Recover identity for BOTH projects before reconciling.
+    private func operationIdentity(_ operation: EditorialOperation)
+        -> (project: String, eventID: String, revision: Int)? {
+        if let project = operation.project, let id = operation.eventID,
+           let revision = operation.revision, !id.isEmpty {
+            return (project, id, revision)
+        }
+        let raw = operation.id
+        guard let prefix = raw.firstIndex(of: ":"),
+              let revisionMark = raw.range(of: ":r", options: .backwards),
+              revisionMark.lowerBound > prefix,
+              let revision = Int(raw[revisionMark.upperBound...]) else { return nil }
+        let project = String(raw[..<prefix])
+        guard ["ttittulares", "ttendencias"].contains(project) else { return nil }
+        let id = String(raw[raw.index(after: prefix)..<revisionMark.lowerBound])
+        guard !id.isEmpty else { return nil }
+        return (project, id, revision)
+    }
+
     private func reconcileOperationHistory(receipts: [String: Any],
+                                           newsDecisions: [String: Any],
                                            manual: [String: Any],
                                            requests: [String: Any],
                                            decisions: [String: Any]) {
         let closedTrends = Self.closedTrends(manual: manual, requests: requests,
-                                           decisions: decisions)
+                                             decisions: decisions)
         let remote = Self.rows(receipts, "items")
-        let byRequest = Dictionary(
-            remote.compactMap { row -> (String, String)? in
-                let id = Self.str(row, "request_id")
-                guard !id.isEmpty else { return nil }
-                return (id, Self.str(row, "status").lowercased())
-            },
-            uniquingKeysWith: { _, newest in newest }
-        )
+        let newsClosures = Self.rows(newsDecisions, "items")
         let readyNews = canonicalSnapshot.news
         let workingNews = canonicalSnapshot.newsElaboracion
         let readyTrends = canonicalSnapshot.trendListas
         let workingTrends = canonicalSnapshot.trendsElaboracion
-        for operation in operationHistory where operation.status != "Rechazada" {
-            // Migrate operations saved by older IPA builds, which stored the
-            // action ID but not its request_id/project. They must not stay
-            // 'En elaboración' forever after the content is deleted.
-            let id = operation.eventID ?? {
-                guard operation.id.hasPrefix("ttendencias:") else { return "" }
-                return String(operation.id.dropFirst("ttendencias:".count))
-                    .components(separatedBy: ":r").first ?? ""
-            }()
-            let requestID = operation.requestID ?? ""
-            let received = byRequest[requestID]
-            let stage: String
-            let confirmed = received == "applied" || received == "already_applied"
-            // A later, authoritative deletion ALWAYS supersedes an earlier
-            // optimistic preparation/rework, even if it received its own receipt.
-            let isTrend = operation.project == "ttendencias" ||
-                          operation.id.hasPrefix("ttendencias:")
+
+        for operation in operationHistory where
+            !["Rechazada", "Retirada"].contains(operation.status) {
+            guard let identity = operationIdentity(operation) else { continue }
+            let id = identity.eventID
+            let isTrend = identity.project == "ttendencias"
+            let operationTime = operation.createdAt.addingTimeInterval(-180)
+            // An exact request_id always takes precedence. When absent (IPA
+            // 0.4.3 and older), use the full project/event/revision/decision
+            // combination and require a receipt not older than the action.
+            let receipt = remote
+                .filter { row in
+                    if let requestID = operation.requestID, !requestID.isEmpty {
+                        return Self.str(row, "request_id") == requestID
+                    }
+                    return Self.str(row, "project") == identity.project &&
+                           Self.str(row, "event_id") == id &&
+                           Self.int(row, "revision") == identity.revision &&
+                           Self.str(row, "decision") == operation.kind &&
+                           (Self.when(row, ["at"]) ?? .distantPast) >= operationTime
+                }
+                .max {
+                    (Self.when($0, ["at"]) ?? .distantPast) <
+                    (Self.when($1, ["at"]) ?? .distantPast)
+                }
+            let receiptStatus = receipt.map { Self.str($0, "status").lowercased() } ?? ""
+            let accepted = ["applied", "already_applied"].contains(receiptStatus)
+
+            let closure = newsClosures.first { row in
+                Self.str(row, "event_id") == id &&
+                (Self.when(row, ["updated_at", "deleted_at"]) ?? .distantPast) >= operationTime &&
+                (operation.kind == "deleted" ?
+                    Self.str(row, "status").lowercased() == "deleted" : false)
+            }
+            let confirmed = accepted || closure != nil
             let closedAfterRequest = isTrend &&
                 closedTrends.isClosed(id: id, name: operation.title,
                                      since: operation.createdAt)
+            let stage: String
             if closedAfterRequest {
                 stage = "Retirada"
             } else if operation.kind == "Nueva noticia" {
-                if readyNews.contains(where: { $0.id == id }) {
-                    stage = "En Listas"
-                } else if workingNews.contains(where: { $0.id == id }) {
+                if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
+                else if workingNews.contains(where: { $0.id == id }) {
                     stage = "En elaboración"
-                } else if confirmed {
-                    stage = "En elaboración"
-                } else {
-                    stage = outstandingStage(for: operation)
-                }
+                } else if confirmed { stage = "En elaboración" }
+                else { stage = outstandingStage(for: operation) }
             } else if operation.kind == "rework" || operation.kind == "prepare" {
-                let old = operation.revision ?? 0
-                let finished = operation.project == "ttendencias"
+                let old = identity.revision
+                let finished = isTrend
                     ? readyTrends.contains(where: {
                         $0.editorialID == id && $0.revision > old
                     })
                     : readyNews.contains(where: { $0.id == id && $0.revision > old })
-                let working = operation.project == "ttendencias"
+                let working = isTrend
                     ? workingTrends.contains(where: {
                         $0.editorialID == id && $0.revision >= old
                     })
@@ -543,29 +586,26 @@ final class EditorialStore: ObservableObject {
                 else { stage = outstandingStage(for: operation) }
             } else if confirmed {
                 stage = "Confirmada"
+            } else if ["failed", "rejected"].contains(receiptStatus) {
+                stage = "Rechazada"
             } else {
                 stage = outstandingStage(for: operation)
             }
             if stage != operation.status {
                 recordOperation(id: operation.id, title: operation.title,
-                                kind: operation.kind, status: stage)
+                                kind: operation.kind, status: stage,
+                                project: identity.project, eventID: id,
+                                revision: identity.revision,
+                                requestID: operation.requestID ??
+                                    (receipt.map { Self.str($0, "request_id") }),
+                                detail: confirmed ? "Confirmado en GitHub" : nil)
             }
-            if closedAfterRequest {
-                for key in activeEditorialActions.keys.filter({
-                    let row = activeEditorialActions[$0]!
-                    return (row.requestID == requestID && !requestID.isEmpty) ||
-                           (row.project == "ttendencias" &&
-                           (row.id == id ||
-                            Self.norm(row.title) == Self.norm(operation.title)))
-                }) {
-                    activeEditorialActions.removeValue(forKey: key)
-                }
-            }
-            if confirmed && !closedAfterRequest, let index = activeEditorialActions.first(where: {
-                $0.value.requestID == requestID
-            })?.key, var action = activeEditorialActions[index] {
+            if stage == "Retirada" || stage == "Confirmada" ||
+               stage == "En Listas" || stage == "Rechazada" {
+                activeEditorialActions.removeValue(forKey: operation.id)
+            } else if confirmed, var action = activeEditorialActions[operation.id] {
                 action.phase = .confirmed
-                activeEditorialActions[index] = action
+                activeEditorialActions[operation.id] = action
             }
         }
     }
