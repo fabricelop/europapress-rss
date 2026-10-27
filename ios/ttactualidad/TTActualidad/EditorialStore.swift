@@ -1129,6 +1129,7 @@ final class EditorialStore: ObservableObject {
     /// A terminal deletion is authoritative even when a previous rework
     /// started under another ID. Compare the timestamp: a *later* new request
     /// with the same name must remain eligible to run.
+    @MainActor
     private struct ClosedTrends {
         var byID: [String: Date]
         var byName: [String: Date]
