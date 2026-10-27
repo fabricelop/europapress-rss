@@ -480,6 +480,25 @@ final class GitHubEditor: ObservableObject {
                   "Reelaborar / preparar")
     }
 
+    // Uses the existing direct action + exact GitHub receipt; never a second queue.
+    // The editor's information is unverified until investigated independently.
+    func submitTrendHints(eventID: String, revision: Int, title: String,
+                          rank: Int, hints: String, requestID: String) async -> WriteResult {
+        let text = hints.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard text.count >= 8 && text.count <= 6000,
+              !eventID.isEmpty && revision >= 0 else {
+            notice = "Escribe entre 8 y 6000 caracteres de pistas y comprueba la tendencia."
+            return .failed
+        }
+        return await dispatch("ttactualidad_action_v1", payload: [
+            "project": "ttendencias", "event_id": eventID, "revision": revision,
+            "decision": "hints", "request_id": requestID,
+            "received_at": ISO8601DateFormatter().string(from: Date()),
+            "trend_name": title, "trend_rank": rank,
+            "hints": text
+        ], label: "Aportar pistas · nueva investigación")
+    }
+
     // Batch operations carry the original ID and expected revision of every item.
     // GitHub applies them atomically and records one verifiable group receipt.
     func batch(project: String, decision: String,
