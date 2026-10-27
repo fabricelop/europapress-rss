@@ -5,22 +5,22 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "ffc030235f83"
+    "2608c651d66f"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T09:45:00+01:00",
-  "last_completed_at": "2026-10-27T09:48:00+01:00",
-  "updated_at": "2026-10-27T09:48:00+01:00",
+  "last_started_at": "2026-10-27T10:12:00+01:00",
+  "last_completed_at": "2026-10-27T10:17:15+01:00",
+  "updated_at": "2026-10-27T10:17:15+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T094500+0100",
+    "trigger_run_id": "tr-1793092315815-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,179 +28,164 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261027T094500+0100",
+    "run_id": "tr-1793092315815-manual",
     "source": "chat",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T09:45:00+01:00",
-    "updated_at": "2026-10-27T09:48:00+01:00",
-    "finished_at": "2026-10-27T09:48:00+01:00",
+    "started_at": "2026-10-27T10:12:00+01:00",
+    "updated_at": "2026-10-27T10:17:15+01:00",
+    "finished_at": "2026-10-27T10:17:15+01:00",
     "current": 1,
     "total": 1,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 1/1 · #LaHora27O explicada y verificada; cola 0 y Top 10 10/10 cubierto.",
-    "incident_count": 2,
-    "incidents": [
-      {
-        "at": "2026-10-27T09:47:06+01:00",
-        "phase": "persisting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "reason": "Primera reconciliación apuntó a items[] en requests.json; se corrigió contra requests[] sin duplicar la ficha."
-      },
-      {
-        "at": "2026-10-27T09:47:12+01:00",
-        "phase": "persisting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "reason": "Conflicto SHA transitorio al reconciliar requests.json; resuelto tras releer main y reintentar con el blob vigente."
-      }
-    ],
+    "message": "TTendencias completada 1/1 · Pérgamo explicada y verificada; cola activa 0 y reexplicaciones pendientes 0.",
+    "incident_count": 0,
+    "incidents": [],
     "activity": [
       {
-        "at": "2026-10-27T09:45:00+01:00",
+        "at": "2026-10-27T10:12:00+01:00",
         "phase": "preparing",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Iniciando pasada directa · 1 pendiente editorial."
       },
       {
-        "at": "2026-10-27T09:45:10+01:00",
-        "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Reparación visual solicitada mediante pending-repair-trigger."
-      },
-      {
-        "at": "2026-10-27T09:45:20+01:00",
+        "at": "2026-10-27T10:12:20+01:00",
         "phase": "verifying",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "message": "Releyendo estado autoritativo de #LaHora27O."
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
+        "message": "Releyendo estado autoritativo de Pérgamo."
       },
       {
-        "at": "2026-10-27T09:45:30+01:00",
+        "at": "2026-10-27T10:12:40+01:00",
         "phase": "investigating",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Buscando detonante actual."
       },
       {
-        "at": "2026-10-27T09:45:45+01:00",
+        "at": "2026-10-27T10:13:20+01:00",
         "phase": "investigating",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "message": "Contrastando fuente 1/2 · emisión en directo de RTVE."
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
+        "message": "Contrastando fuente 1/2 · investigación de El País publicada hoy."
       },
       {
-        "at": "2026-10-27T09:46:00+01:00",
+        "at": "2026-10-27T10:14:00+01:00",
         "phase": "investigating",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "message": "Contrastando fuente 2/2 · parrilla de La 1."
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
+        "message": "Contrastando fuente 2/2 · cobertura de HuffPost publicada esta mañana."
       },
       {
-        "at": "2026-10-27T09:46:10+01:00",
+        "at": "2026-10-27T10:14:15+01:00",
         "phase": "investigating",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Hecho esencial verificado."
       },
       {
-        "at": "2026-10-27T09:46:20+01:00",
+        "at": "2026-10-27T10:14:25+01:00",
         "phase": "drafting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Redactando explicación factual."
       },
       {
-        "at": "2026-10-27T09:46:30+01:00",
+        "at": "2026-10-27T10:14:35+01:00",
         "phase": "drafting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
-        "message": "Comprobando límite de X · 241 caracteres."
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
+        "message": "Comprobando límite de X · 276 caracteres."
       },
       {
-        "at": "2026-10-27T09:46:35+01:00",
+        "at": "2026-10-27T10:14:40+01:00",
         "phase": "remate_selection",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Generando candidatos de remate."
       },
       {
-        "at": "2026-10-27T09:46:40+01:00",
+        "at": "2026-10-27T10:14:45+01:00",
         "phase": "remate_selection",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Evaluando candidatos con ratings y filtro de originalidad."
       },
       {
-        "at": "2026-10-27T09:46:45+01:00",
+        "at": "2026-10-27T10:14:50+01:00",
         "phase": "remate_selection",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Remate seleccionado."
       },
       {
-        "at": "2026-10-27T09:46:50+01:00",
+        "at": "2026-10-27T10:15:00+01:00",
         "phase": "persisting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Guardando ficha Explicada."
       },
       {
-        "at": "2026-10-27T09:47:05+01:00",
+        "at": "2026-10-27T10:15:45+01:00",
         "phase": "persisting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Actualizando requests."
       },
       {
-        "at": "2026-10-27T09:47:20+01:00",
+        "at": "2026-10-27T10:16:00+01:00",
+        "phase": "verifying",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
+        "message": "Verificando ficha y request por id+revision."
+      },
+      {
+        "at": "2026-10-27T10:16:10+01:00",
         "phase": "persisting",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Retirando revisión de la cola."
       },
       {
-        "at": "2026-10-27T09:47:30+01:00",
+        "at": "2026-10-27T10:16:35+01:00",
         "phase": "verifying",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Releyendo main."
       },
       {
-        "at": "2026-10-27T09:47:35+01:00",
+        "at": "2026-10-27T10:16:45+01:00",
         "phase": "verifying",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Verificando id+revision y texto persistido."
       },
       {
-        "at": "2026-10-27T09:47:40+01:00",
+        "at": "2026-10-27T10:16:55+01:00",
         "phase": "verifying",
-        "trend_id": "ffc030235f83",
-        "title": "#LaHora27O",
+        "trend_id": "2608c651d66f",
+        "title": "Pérgamo",
         "message": "Tendencia cerrada y verificada."
       },
       {
-        "at": "2026-10-27T09:47:50+01:00",
+        "at": "2026-10-27T10:17:05+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Revisando Pendientes · 3 tarjetas recientes; las tres conservan remate y el saneamiento visual está solicitado."
+        "message": "Revisando Pendientes · 3 tarjetas recientes; ninguna carece de remate."
       },
       {
-        "at": "2026-10-27T09:48:00+01:00",
+        "at": "2026-10-27T10:17:15+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · #LaHora27O explicada y verificada; cola 0 y Top 10 10/10 cubierto."
+        "message": "TTendencias completada 1/1 · Pérgamo explicada y verificada; cola activa 0 y reexplicaciones pendientes 0."
       }
     ],
     "processed_ids": [
-      "ffc030235f83"
+      "2608c651d66f"
     ],
     "partial": false,
     "queue_complete": true,
@@ -234,9 +219,7 @@
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
-      "top10_covered": 10,
-      "top10_total": 10,
-      "incidents": 2
+      "incidents": 0
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
@@ -246,14 +229,14 @@
     },
     "remate_selections": [
       {
-        "id": "ffc030235f83",
+        "id": "2608c651d66f",
         "revision": 0,
-        "selected": "🌶️ El martes ha llegado con tertulia incorporada.",
-        "reason": "Específico de la tertulia matinal, breve y sin repetir muletillas recientes."
+        "selected": "🌶️ El alquiler no cambió; el relato sí necesitó segunda edición.",
+        "reason": "Específico del contraste entre el alquiler sin subidas y el nuevo reportaje; metáfora editorial propia de una librería y sin repetir muletillas recientes."
       }
     ]
   },
-  "run_id": "tr-chat-20261027T094500+0100",
+  "run_id": "tr-1793092315815-manual",
   "summary": {
     "attempted": 1,
     "ready": 1,
@@ -283,150 +266,148 @@
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
-    "top10_covered": 10,
-    "top10_total": 10,
-    "incidents": 2
+    "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-27T09:45:00+01:00",
+      "at": "2026-10-27T10:12:00+01:00",
       "phase": "preparing",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Iniciando pasada directa · 1 pendiente editorial."
     },
     {
-      "at": "2026-10-27T09:45:10+01:00",
-      "phase": "persisting",
-      "trend_id": null,
-      "title": null,
-      "message": "Reparación visual solicitada mediante pending-repair-trigger."
-    },
-    {
-      "at": "2026-10-27T09:45:20+01:00",
+      "at": "2026-10-27T10:12:20+01:00",
       "phase": "verifying",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
-      "message": "Releyendo estado autoritativo de #LaHora27O."
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
+      "message": "Releyendo estado autoritativo de Pérgamo."
     },
     {
-      "at": "2026-10-27T09:45:30+01:00",
+      "at": "2026-10-27T10:12:40+01:00",
       "phase": "investigating",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Buscando detonante actual."
     },
     {
-      "at": "2026-10-27T09:45:45+01:00",
+      "at": "2026-10-27T10:13:20+01:00",
       "phase": "investigating",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
-      "message": "Contrastando fuente 1/2 · emisión en directo de RTVE."
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
+      "message": "Contrastando fuente 1/2 · investigación de El País publicada hoy."
     },
     {
-      "at": "2026-10-27T09:46:00+01:00",
+      "at": "2026-10-27T10:14:00+01:00",
       "phase": "investigating",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
-      "message": "Contrastando fuente 2/2 · parrilla de La 1."
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
+      "message": "Contrastando fuente 2/2 · cobertura de HuffPost publicada esta mañana."
     },
     {
-      "at": "2026-10-27T09:46:10+01:00",
+      "at": "2026-10-27T10:14:15+01:00",
       "phase": "investigating",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Hecho esencial verificado."
     },
     {
-      "at": "2026-10-27T09:46:20+01:00",
+      "at": "2026-10-27T10:14:25+01:00",
       "phase": "drafting",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Redactando explicación factual."
     },
     {
-      "at": "2026-10-27T09:46:30+01:00",
+      "at": "2026-10-27T10:14:35+01:00",
       "phase": "drafting",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
-      "message": "Comprobando límite de X · 241 caracteres."
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
+      "message": "Comprobando límite de X · 276 caracteres."
     },
     {
-      "at": "2026-10-27T09:46:35+01:00",
+      "at": "2026-10-27T10:14:40+01:00",
       "phase": "remate_selection",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Generando candidatos de remate."
     },
     {
-      "at": "2026-10-27T09:46:40+01:00",
+      "at": "2026-10-27T10:14:45+01:00",
       "phase": "remate_selection",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Evaluando candidatos con ratings y filtro de originalidad."
     },
     {
-      "at": "2026-10-27T09:46:45+01:00",
+      "at": "2026-10-27T10:14:50+01:00",
       "phase": "remate_selection",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Remate seleccionado."
     },
     {
-      "at": "2026-10-27T09:46:50+01:00",
+      "at": "2026-10-27T10:15:00+01:00",
       "phase": "persisting",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Guardando ficha Explicada."
     },
     {
-      "at": "2026-10-27T09:47:05+01:00",
+      "at": "2026-10-27T10:15:45+01:00",
       "phase": "persisting",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Actualizando requests."
     },
     {
-      "at": "2026-10-27T09:47:20+01:00",
+      "at": "2026-10-27T10:16:00+01:00",
+      "phase": "verifying",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
+      "message": "Verificando ficha y request por id+revision."
+    },
+    {
+      "at": "2026-10-27T10:16:10+01:00",
       "phase": "persisting",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Retirando revisión de la cola."
     },
     {
-      "at": "2026-10-27T09:47:30+01:00",
+      "at": "2026-10-27T10:16:35+01:00",
       "phase": "verifying",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Releyendo main."
     },
     {
-      "at": "2026-10-27T09:47:35+01:00",
+      "at": "2026-10-27T10:16:45+01:00",
       "phase": "verifying",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Verificando id+revision y texto persistido."
     },
     {
-      "at": "2026-10-27T09:47:40+01:00",
+      "at": "2026-10-27T10:16:55+01:00",
       "phase": "verifying",
-      "trend_id": "ffc030235f83",
-      "title": "#LaHora27O",
+      "trend_id": "2608c651d66f",
+      "title": "Pérgamo",
       "message": "Tendencia cerrada y verificada."
     },
     {
-      "at": "2026-10-27T09:47:50+01:00",
+      "at": "2026-10-27T10:17:05+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Revisando Pendientes · 3 tarjetas recientes; las tres conservan remate y el saneamiento visual está solicitado."
+      "message": "Revisando Pendientes · 3 tarjetas recientes; ninguna carece de remate."
     },
     {
-      "at": "2026-10-27T09:48:00+01:00",
+      "at": "2026-10-27T10:17:15+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · #LaHora27O explicada y verificada; cola 0 y Top 10 10/10 cubierto."
+      "message": "TTendencias completada 1/1 · Pérgamo explicada y verificada; cola activa 0 y reexplicaciones pendientes 0."
     }
   ],
   "partial": false,
@@ -439,7 +420,7 @@
     "captured_at": "2026-10-27T09:40:56+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261027T091500+0100",
+  "previous_run_id": "tr-chat-20261027T094500+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
@@ -448,16 +429,16 @@
   },
   "remate_selections": [
     {
-      "id": "ffc030235f83",
+      "id": "2608c651d66f",
       "revision": 0,
-      "selected": "🌶️ El martes ha llegado con tertulia incorporada.",
-      "reason": "Específico de la tertulia matinal, breve y sin repetir muletillas recientes."
+      "selected": "🌶️ El alquiler no cambió; el relato sí necesitó segunda edición.",
+      "reason": "Específico del contraste entre el alquiler sin subidas y el nuevo reportaje; metáfora editorial propia de una librería y sin repetir muletillas recientes."
     }
   ],
   "final_outcomes": [
     {
-      "id": "ffc030235f83",
-      "name": "#LaHora27O",
+      "id": "2608c651d66f",
+      "name": "Pérgamo",
       "revision": 0,
       "status": "explained",
       "verified": true
