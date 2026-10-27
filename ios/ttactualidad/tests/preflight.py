@@ -163,3 +163,20 @@ assert 'TimelineView(.periodic(from: .now, by: 1))' in dashboard
 assert 'published24hChip("TTiT", project: "ttittulares"' in dashboard
 assert 'published24hChip("TTen", project: "ttendencias"' in dashboard
 assert '"published" : "deleted"' not in store or 'action.decision == "published"' in store
+
+# Publication badge must observe every verified receipt and never stall full UI.
+assert '@Published private var publicationEvents: [PublicationEvent]' in store
+assert 'func refreshPublicationCounters(' in store
+assert 'expectedProject: project, expectedID: id' in store
+assert 'async let ledger = fetchPublicationJSON(' in store
+assert 'async let receipts = fetchPublicationJSON(' in store
+assert 'publicationEvents = Array(unique.values)' in store
+assert 'guard !isLoading else { return }' in store
+assert 'lastCompletedRefresh' in store
+assert 'refreshIfStale(minInterval: TimeInterval = 120)' in store
+assert 'refreshRequested' not in store
+assert 'isManuallyRefreshing' in dashboard
+assert '.refreshable {' not in dashboard
+assert '.onChange(of: scenePhase)' not in dashboard
+assert 'refreshIfStale(minInterval: 120)' in app
+assert 'refresh(manual: true)' in dashboard
