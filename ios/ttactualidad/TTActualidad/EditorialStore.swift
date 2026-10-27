@@ -98,6 +98,7 @@ struct OptimisticEditorialAction {
     let decision: String
     let title: String
     let rank: Int
+    let requestID: String
     var phase: Phase = .sending
 
     var key: String { project + ":" + id + ":r" + String(revision) }
@@ -109,6 +110,28 @@ struct EditorialOperation: Codable, Identifiable {
     let kind: String
     var status: String
     let createdAt: Date
+    var requestID: String? = nil
+    var project: String? = nil
+    var eventID: String? = nil
+    var revision: Int? = nil
+    var detail: String? = nil
+
+    var isOutstanding: Bool {
+        ["Enviando", "Esperando GitHub", "Pendiente de GitHub",
+         "En elaboración", "Sin confirmar"].contains(status)
+    }
+    var displayKind: String {
+        switch kind {
+        case "deleted": return "Quitar de Listas"
+        case "discard": return "Desestimar"
+        case "prepare", "rework": return "Elaborar desde cero"
+        case "Nueva noticia": return "Añadir noticia"
+        default: return kind
+        }
+    }
+    var displayProject: String {
+        project == "ttendencias" ? "TTendencias" : "TTiTTulares"
+    }
 }
 
 @MainActor
@@ -136,7 +159,15 @@ final class EditorialStore: ObservableObject {
                 snapshot.newsCreciendo + snapshot.newsTremending).filter { seen.insert($0.id).inserted }
     }
     var pendingOperationsCount: Int {
-        activeEditorialActions.values.filter { $0.phase != .confirmed }.count + draftNews.count
+        operationHistory.filter {
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains($0.status)
+        }.count
+    }
+    var outstandingOperations: [EditorialOperation] {
+        operationHistory.filter(\.isOutstanding)
+    }
+    var recentOperations: [EditorialOperation] {
+        Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
     }
     private var canonicalSnapshot = EditorialSnapshot()
     private var refreshRequested = false
@@ -153,14 +184,36 @@ final class EditorialStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([EditorialOperation].self, from: stored) {
             operationHistory = Array(decoded.prefix(60))
         }
+        for row in operationHistory where
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub"].contains(row.status) &&
+            Date().timeIntervalSince(row.createdAt) < 20 * 60 {
+            guard let project = row.project, let id = row.eventID,
+                  let revision = row.revision, let requestID = row.requestID,
+                  row.kind != "Nueva noticia" else { continue }
+            let action = OptimisticEditorialAction(
+                project: project, id: id, revision: revision, decision: row.kind,
+                title: row.title, rank: 0, requestID: requestID, phase: .uncertain)
+            activeEditorialActions[action.key] = action
+        }
     }
 
-    private func recordOperation(id: String, title: String, kind: String, status: String) {
+    private func recordOperation(id: String, title: String, kind: String, status: String,
+                                 requestID: String? = nil, project: String? = nil,
+                                 eventID: String? = nil, revision: Int? = nil,
+                                 detail: String? = nil) {
         if let index = operationHistory.firstIndex(where: { $0.id == id }) {
             operationHistory[index].status = status
+            if let requestID { operationHistory[index].requestID = requestID }
+            if let project { operationHistory[index].project = project }
+            if let eventID { operationHistory[index].eventID = eventID }
+            if let revision { operationHistory[index].revision = revision }
+            if let detail { operationHistory[index].detail = detail }
         } else {
-            operationHistory.insert(EditorialOperation(id: id, title: title, kind: kind,
-                                                       status: status, createdAt: Date()), at: 0)
+            operationHistory.insert(EditorialOperation(
+                id: id, title: title, kind: kind, status: status,
+                createdAt: Date(), requestID: requestID,
+                project: project, eventID: eventID, revision: revision,
+                detail: detail), at: 0)
         }
         operationHistory = Array(operationHistory.prefix(60))
         if let data = try? JSONEncoder().encode(operationHistory) {
@@ -219,6 +272,7 @@ final class EditorialStore: ObservableObject {
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
+        "pilot/ttactualidad-action-receipts.json",
         "ttittulares/prepared.json",
         "ttittulares/decisions.json",
         "ttittulares/status.json",
@@ -392,6 +446,7 @@ final class EditorialStore: ObservableObject {
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
                                                                       "reliability"))
         if !partial && downloaded.count == paths.count {
+            reconcileOperationHistory(receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:])
             retireSyncedActions()
             retireSyncedDrafts()
         }
@@ -415,7 +470,9 @@ final class EditorialStore: ObservableObject {
                                    status: "EN ELABORACIÓN")
         draftNews[requestID] = placeholder
         recordOperation(id: eventID, title: placeholder.title, kind: "Nueva noticia",
-                        status: "Enviando")
+                        status: "Enviando", requestID: requestID,
+                        project: "ttittulares", eventID: eventID, revision: 1,
+                        detail: "Destino: En elaboración → Listas")
         actionMessage = "Noticia añadida provisionalmente a En elaboración · guardando en GitHub…"
         actionIsError = false
         applyOptimisticOverlay()
@@ -426,13 +483,13 @@ final class EditorialStore: ObservableObject {
         switch result {
         case .verified:
             recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
-                            kind: "Nueva noticia", status: "Verificada")
+                            kind: "Nueva noticia", status: "En elaboración")
             actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
             actionIsError = false
             Task { await self.refresh() }
         case .pending:
             recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
-                            kind: "Nueva noticia", status: "Pendiente de GitHub")
+                            kind: "Nueva noticia", status: "Esperando GitHub")
             actionMessage = "GitHub aún está procesando la noticia. Se mantiene en En elaboración."
             actionIsError = false
             Task { await self.refresh() }
@@ -457,7 +514,7 @@ final class EditorialStore: ObservableObject {
     // A local action instantly changes ALL views using the shared store.
     // The operation is not marked verified until GitHub supplies its receipt.
     func beginEditorialAction(project: String, id: String, revision: Int, decision: String,
-                              title: String, rank: Int) -> Bool {
+                              title: String, rank: Int, requestID: String) -> Bool {
         guard !id.isEmpty, revision >= 0 else {
             actionMessage = "No hay identificador editorial válido: actualiza la información."
             actionIsError = true
@@ -465,14 +522,19 @@ final class EditorialStore: ObservableObject {
         }
         let action = OptimisticEditorialAction(project: project, id: id,
                                                revision: revision, decision: decision,
-                                               title: title, rank: rank)
-        guard activeEditorialActions[action.key] == nil else {
+                                               title: title, rank: rank, requestID: requestID)
+        guard !isActionInProgress(project: project, id: id, revision: revision) else {
             actionMessage = "Esta orden ya está en curso; no es necesario repetirla."
             actionIsError = false
             return false
         }
         activeEditorialActions[action.key] = action
-        recordOperation(id: action.key, title: title, kind: decision, status: "Enviando")
+        recordOperation(id: action.key, title: title, kind: decision, status: "Enviando",
+                        requestID: requestID, project: project, eventID: id,
+                        revision: revision,
+                        detail: decision == "deleted" ? "Destino: Fuera de Listas" :
+                                decision == "discard" ? "Destino: Desestimadas" :
+                                "Destino: En elaboración → Listas")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
                         decision == "discard" ? "Desestimado · guardando en GitHub…" :
                         "Trasladado a elaboración · guardando en GitHub…"
@@ -483,7 +545,11 @@ final class EditorialStore: ObservableObject {
     }
 
     func isActionInProgress(project: String, id: String, revision: Int) -> Bool {
-        activeEditorialActions[project + ":" + id + ":r" + String(revision)] != nil
+        activeEditorialActions[project + ":" + id + ":r" + String(revision)] != nil ||
+        operationHistory.contains {
+            $0.project == project && $0.eventID == id && $0.revision == revision &&
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains($0.status)
+        }
     }
 
     func completeEditorialAction(project: String, id: String, revision: Int,
@@ -493,7 +559,8 @@ final class EditorialStore: ObservableObject {
         switch result {
         case .verified:
             recordOperation(id: key, title: action.title, kind: action.decision,
-                            status: "Verificada")
+                            status: ["prepare", "rework"].contains(action.decision) ?
+                                    "En elaboración" : "Confirmada")
             action.phase = .confirmed
             activeEditorialActions[key] = action
             actionMessage = "Verificado en GitHub: " + action.title
@@ -503,7 +570,7 @@ final class EditorialStore: ObservableObject {
             Task { await self.refresh() }
         case .pending:
             recordOperation(id: key, title: action.title, kind: action.decision,
-                            status: "Pendiente de GitHub")
+                            status: "Esperando GitHub")
             action.phase = .uncertain
             activeEditorialActions[key] = action
             actionMessage = "Pendiente de confirmar en GitHub: " + action.title +
