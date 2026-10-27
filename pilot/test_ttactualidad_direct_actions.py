@@ -21,6 +21,7 @@ class ActionTests(unittest.TestCase):
         self.addCleanup(lambda: setattr(mod, "ROOT", self.original))
         for file, default in {
             "ttittulares/prepared.json": {"items": [], "count": 0},
+            "telegram/editorial-processing.json": {"items": []},
             "ttittulares/editorial-queue.json": {"items": [], "count": 0},
             "ttittulares/decisions.json": {"items": []},
             "trends/telegram-image-deliveries.json": {"items": []},
@@ -59,6 +60,45 @@ class ActionTests(unittest.TestCase):
         self.assertEqual(result, "applied")
         self.assertEqual(changes["ttittulares/editorial-queue.json"]["items"][0]["status"], "DISMISSED")
         self.assertEqual(changes["ttittulares/editorial-queue.json"]["count"], 0)
+
+    def test_live_discard_prevents_late_ready_without_publication(self):
+        self.write("ttittulares/editorial-queue.json", {
+            "items": [{"event_id": "abc123", "revision": 1, "status": "PROCESSING"}],
+            "count": 1})
+        self.write("telegram/editorial-processing.json", {
+            "items": [{"event_id": "abc123", "revision": 1, "status": "PROCESSING"}]})
+        changes, result = mod.apply_live("ttittulares", "abc123", "discard", 1)
+        self.assertEqual(result, "applied")
+        self.assertEqual(changes["ttittulares/editorial-queue.json"]["items"][0]["status"], "DISMISSED")
+        self.assertEqual(changes["telegram/editorial-processing.json"]["items"][0]["status"], "DISMISSED")
+        self.assertEqual(changes["ttittulares/decisions.json"]["items"][0]["status"], "dismissed")
+        self.assertNotIn("ttittulares/prepared.json", changes)
+        self.assertEqual(mod.load("ttittulares/prepared.json", {})["items"], [])
+
+    def test_live_discard_keeps_other_processing_news(self):
+        self.write("ttittulares/editorial-queue.json", {"items": [
+            {"event_id": "abc123", "revision": 1, "status": "PROCESSING"},
+            {"event_id": "xyz987", "revision": 1, "status": "PROCESSING"}], "count": 2})
+        self.write("telegram/editorial-processing.json", {"items": [
+            {"event_id": "abc123", "revision": 1, "status": "PROCESSING"},
+            {"event_id": "xyz987", "revision": 1, "status": "PROCESSING"}]})
+        changes, _ = mod.apply_live("ttittulares", "abc123", "discard", 1)
+        self.assertEqual(changes["ttittulares/editorial-queue.json"]["count"], 1)
+        self.assertEqual(changes["telegram/editorial-processing.json"]["items"][1]["status"], "PROCESSING")
+
+    def test_live_discard_fails_closed_on_stale_revision(self):
+        self.write("ttittulares/editorial-queue.json", {
+            "items": [{"event_id": "abc123", "revision": 2, "status": "PROCESSING"}], "count": 1})
+        with self.assertRaises(mod.InvalidAction):
+            mod.apply_live("ttittulares", "abc123", "discard", 1)
+
+    def test_late_outbox_provisional_repair_is_guarded_by_decision(self):
+        code = (Path(__file__).resolve().parents[1] /
+                "ttittulares/apply_editorial_outbox.py").read_text()
+        self.assertIn('processed.append(eid+":blocked-user-terminal")', code)
+        self.assertIn('if terminal is not None:', code)
+        self.assertLess(code.index('if terminal is not None:'),
+                        code.index('provisional_repair=('))
 
     def test_tt_discard_rejects_finished(self):
         self.write("ttittulares/editorial-queue.json", {
