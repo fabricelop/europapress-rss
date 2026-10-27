@@ -272,7 +272,13 @@ struct GitHubConnectionSheet: View {
                     Text("Lectura siempre disponible. Para acciones editoriales, GitHub autoriza la aplicación directamente, sin Cloudflare ni introducir un token personal.")
                         .font(.subheadline).foregroundStyle(TTTheme.muted)
                     if github.authenticated {
-                        Button("Desvincular") { github.logout() }
+                        Label("Sesión segura y renovable", systemImage: "checkmark.shield.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(TTTheme.teal)
+                        Text(github.sessionSummary)
+                            .font(.caption)
+                            .foregroundStyle(TTTheme.muted)
+                        Button("Desvincular", role: .destructive) { github.logout() }
                             .buttonStyle(.bordered)
                     } else {
                         Text("Configuración única: crea e instala una GitHub App limitada a fabricelop/europapress-rss, con permiso Contents lectura/escritura y Device Flow activado. Copia solamente su Client ID público.")
