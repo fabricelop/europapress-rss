@@ -157,6 +157,7 @@ struct EditorialOperation: Codable, Identifiable {
         case "prepare", "rework": return "Elaborar desde cero"
         case "hints": return "Aportar pistas e investigar"
         case "Nueva noticia": return "Añadir noticia"
+        case "De tendencia a noticia": return "Tendencia → TTiTTulares"
         default: return kind
         }
     }
@@ -270,7 +271,7 @@ final class EditorialStore: ObservableObject {
             Date().timeIntervalSince(row.createdAt) < 20 * 60 {
             guard let project = row.project, let id = row.eventID,
                   let revision = row.revision, let requestID = row.requestID,
-                  row.kind != "Nueva noticia" else { continue }
+                  !["Nueva noticia", "De tendencia a noticia"].contains(row.kind) else { continue }
             let action = OptimisticEditorialAction(
                 project: project, id: id, revision: revision, decision: row.kind,
                 title: row.title, rank: 0, requestID: requestID, phase: .uncertain)
@@ -847,7 +848,7 @@ final class EditorialStore: ObservableObject {
             let stage: String
             if closedAfterRequest {
                 stage = "Retirada"
-            } else if operation.kind == "Nueva noticia" {
+            } else if ["Nueva noticia", "De tendencia a noticia"].contains(operation.kind) {
                 if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
                 else if workingNews.contains(where: { $0.id == id }) {
                     stage = "En elaboración"
@@ -928,7 +929,8 @@ final class EditorialStore: ObservableObject {
 
     // +Noticia appears immediately in En elaboración. The real queue is still
     // committed asynchronously by GitHub Actions, and verified independently.
-    func beginManualNews(requestID: String, title: String, url: String) {
+    func beginManualNews(requestID: String, title: String, url: String,
+                         fromTrend: Bool = false) {
         let eventID = "manual-" + requestID
         let placeholder = NewsItem(id: eventID, title: title.isEmpty ? url : title,
                                    text: "Solicitud editorial pendiente de confirmación",
@@ -937,7 +939,8 @@ final class EditorialStore: ObservableObject {
                                    factual: "", closer: "", sources: 0,
                                    status: "EN ELABORACIÓN")
         draftNews[requestID] = placeholder
-        recordOperation(id: eventID, title: placeholder.title, kind: "Nueva noticia",
+        recordOperation(id: eventID, title: placeholder.title,
+                        kind: fromTrend ? "De tendencia a noticia" : "Nueva noticia",
                         status: "Enviando", requestID: requestID,
                         project: "ttittulares", eventID: eventID, revision: 1,
                         detail: "Destino: En elaboración → Listas")
