@@ -75,3 +75,13 @@ assert "count: 4), spacing: 5)" in dashboard
 assert dashboard.count('filterChip("') == 14  # 8 trends and 6 news
 assert "softCardColor" in dashboard and "colors: [softCardColor, TTTheme.cardInterior]" in dashboard
 assert "rankColor, in: RoundedRectangle" in dashboard
+
+# Direct navigation, real radar entrants and durable unread state.
+assert 'Abrir noticias en Listas' in dashboard
+assert 'Abrir tendencias en Listas' in dashboard
+assert 'store.radarNewNames.contains($0.name)' in dashboard
+assert 'updateRadarEntrants(' in store and 'TTActualidad.radar.lastVersion.v1' in store
+assert 'TTActualidad.unread.news.v1' in store and 'TTActualidad.unread.trends.v1' in store
+assert 'quickButton("Preparar novedad"' not in actions
+assert 'quickButton("Reelaborar"' not in actions
+assert 'quickButton("Elaborar desde cero"' in actions
