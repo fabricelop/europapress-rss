@@ -196,3 +196,22 @@ assert 'GitHub directo · Sin Cloudflare' not in dashboard
 assert 'Última actualización' in dashboard
 assert 'Desliza para actualizar' not in dashboard
 assert 'Pulsa el botón de actualizar arriba' in dashboard
+
+# 0.4.12 editor hints: request provenance + old investigations remain visible.
+hints_sheet = (root / "TTActualidad" / "TrendHintsSheet.swift").read_text()
+assert 'TextEditor(text: $hints)' in hints_sheet
+assert 'submitTrendHints(' in hints_sheet and 'requestID: requestID' in hints_sheet
+assert 'decision: "hints"' in hints_sheet
+assert 'quickButton("Aportar pistas"' in actions
+assert 'case "hints": return "Aportar pistas e investigar"' in store
+assert 'var unexplainedTrends: [TrendItem]' in store
+assert 'buildUnexplainedTrends(' in store
+assert 'SIN EXPLICACIÓN' in store and 'SIN EXPLICACIÓN' in dashboard
+assert 'store.snapshot.unexplainedTrends' in dashboard
+assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
+assert 'decision == "hints"' in store
+assert '"hints": text' in auth
+assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
+assert 'MARKETING_VERSION: "0.4.12"' in project
+assert 'CURRENT_PROJECT_VERSION: "18"' in project
+print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
