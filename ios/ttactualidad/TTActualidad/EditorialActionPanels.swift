@@ -113,9 +113,11 @@ struct EditorialActions: View {
                             "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
             Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
+                let requestID = UUID().uuidString.lowercased()
                 guard store.beginEditorialAction(project: project, id: editorialID,
                                                  revision: revision, decision: intent,
-                                                 title: title, rank: rank) else { return }
+                                                 title: title, rank: rank,
+                                                 requestID: requestID) else { return }
                 let requestedDecision = intent
                 let requestedID = editorialID
                 let requestedRevision = revision
@@ -127,7 +129,8 @@ struct EditorialActions: View {
                                                      eventID: requestedID,
                                                      revision: requestedRevision,
                                                      decision: requestedDecision,
-                                                     title: requestedTitle, rank: requestedRank)
+                                                     title: requestedTitle, rank: requestedRank,
+                                                     requestID: requestID)
                     store.completeEditorialAction(project: requestedProject, id: requestedID,
                                                   revision: requestedRevision,
                                                   result: result, detail: github.notice)
