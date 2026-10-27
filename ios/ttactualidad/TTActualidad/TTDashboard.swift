@@ -649,10 +649,10 @@ private struct TrendTile: View {
             HStack(spacing: 7) {
                 if showRank {
                     Text("#\(item.rank)")
-                        .font(.system(size: 14, weight: .heavy, design: .rounded))
+                        .font(.system(size: 12, weight: .heavy, design: .rounded))
                         .foregroundStyle(rankTextColor)
                         .monospacedDigit()
-                        .frame(width: 46, height: 43)
+                        .frame(width: 38, height: 31)
                         .background(rankColor, in: RoundedRectangle(cornerRadius: 8))
                         .padding(.leading, 5)
                         .accessibilityLabel("Posición \(item.rank)")
@@ -682,7 +682,7 @@ private struct TrendTile: View {
                     .font(.system(size: 9, weight: .bold))
                     .foregroundStyle(TTTheme.teal)
                     .lineLimit(1)
-                    .frame(width: 43, alignment: .trailing)
+                    .frame(width: 39, alignment: .trailing)
 
                 if let date = item.lastExplained {
                     Text(date, format: .dateTime.hour().minute())
@@ -692,16 +692,16 @@ private struct TrendTile: View {
                         .frame(width: 32, alignment: .trailing)
                 }
             }
-            .frame(minHeight: 43)
+            .frame(minHeight: 32)
         }
         .tint(TTTheme.muted)
-        .padding(.horizontal, 7)
-        .padding(.vertical, 4)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 3)
         .background(TTTheme.cardInterior, in: RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10)
                     .stroke(TTTheme.cardBorder, lineWidth: 1.8))
-    }
         .onChange(of: expanded) { _, value in
             if value { store.markTrendReviewed(item.name) }
         }
+    }
 }
