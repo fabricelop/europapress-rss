@@ -86,6 +86,8 @@ struct EditorialSnapshot {
     var oneSourceDelta: Int? = nil
     var twoSourceDelta: Int? = nil
     var radarAt: Date? = nil
+    var trendsRadarAt: Date? = nil
+    var trendsRadarReliability: String = ""
 }
 
 // UI changes immediately; GitHub remains the authority for persisted decisions.
@@ -338,7 +340,11 @@ final class EditorialStore: ObservableObject {
                                      twoSourceCount: status["two_source_count"] as? Int,
                                      oneSourceDelta: status["one_source_delta"] as? Int,
                                      twoSourceDelta: status["two_source_delta"] as? Int,
-                                     radarAt: Self.when(status, ["radar_at"]))
+                                     radarAt: Self.when(status, ["radar_at"]),
+                                     trendsRadarAt: Self.when(docs["trends/recent.json"] ?? [:],
+                                                              ["captured_at"]),
+                                     trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
+                                                                      "reliability"))
         if !partial && downloaded.count == paths.count {
             retireSyncedActions()
             retireSyncedDrafts()
