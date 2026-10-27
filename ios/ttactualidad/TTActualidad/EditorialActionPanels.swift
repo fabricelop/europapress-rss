@@ -47,7 +47,7 @@ struct EditorialActions: View {
                 }
                 if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
                     HStack(spacing: 7) {
-                        quickButton("Preparar", "sparkles") { request("prepare") }
+                        quickButton("Elaborar desde cero", "sparkles") { request("prepare") }
                         quickButton("Desestimar", "xmark.circle", danger: true) { request("discard") }
                     }
                 } else if news.status == "TREMENDING" {
@@ -80,14 +80,18 @@ struct EditorialActions: View {
             HStack(spacing: 7) {
                 if news != nil || trend?.inListas == true {
                     quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                } else {
-                    quickButton("Preparar novedad", "arrow.triangle.2.circlepath") { request("rework") }
                 }
-                quickButton(trend == nil ? "Buscar en X" : "Reelaborar", trend == nil ? "magnifyingglass" : "arrow.triangle.2.circlepath") {
-                    if trend != nil { request("rework") }
-                    else {
+                if trend != nil {
+                    // A single backend-supported fresh investigation for both
+                    // unexplained Top 30 entries and already-explained trends.
+                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
+                        request("rework")
+                    }
+                } else {
+                    quickButton("Buscar en X", "magnifyingglass") {
                         var parts = URLComponents(string: "https://x.com/search")
-                        parts?.queryItems = [URLQueryItem(name: "q", value: title), URLQueryItem(name: "f", value: "live")]
+                        parts?.queryItems = [URLQueryItem(name: "q", value: title),
+                                             URLQueryItem(name: "f", value: "live")]
                         if let url = parts?.url { openURL(url) }
                     }
                 }
@@ -97,7 +101,9 @@ struct EditorialActions: View {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" : "¿Preparar otra explicación?",
+        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+                            intent == "discard" ? "¿Desestimar esta entrada?" :
+                            "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
             Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
                 guard store.beginEditorialAction(project: project, id: editorialID,
@@ -122,7 +128,9 @@ struct EditorialActions: View {
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
+            Text(intent == "rework" || intent == "prepare"
+                 ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : "La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
         }
     }
 
