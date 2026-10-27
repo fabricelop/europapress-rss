@@ -157,7 +157,7 @@ final class EditorialStore: ObservableObject {
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
     @Published private(set) var publicationLedgerAvailable = false
-    private var publicationEvents: [PublicationEvent] = []
+    @Published private var publicationEvents: [PublicationEvent] = []
 
     // Exactly (now - 86,400 seconds, now], not midnight-based and never
     // inferred from intent-to-tweet, discard or historical status records.
@@ -201,7 +201,9 @@ final class EditorialStore: ObservableObject {
     private var canonicalSnapshot = EditorialSnapshot()
     private var terminalMarks: [String: EditorialTombstone] = [:]
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
-    private var refreshRequested = false
+    @Published private(set) var isManuallyRefreshing = false
+    private var lastCompletedRefresh: Date? = nil
+    private var publicationFetchInProgress = false
     private var currentVisitSnapshot: [String: String]?
 
     init() {
@@ -429,18 +431,23 @@ final class EditorialStore: ObservableObject {
         "trends/editorial-queue.json"
     ]
 
-    func refresh() async {
-        if isLoading {
-            refreshRequested = true
-            return
-        }
+    /// Only one GitHub refresh at a time. Do not queue another entire
+    /// 15-file download each time the app changes foreground state.
+    func refreshIfStale(minInterval: TimeInterval = 120) async {
+        guard !isLoading,
+              lastCompletedRefresh.map({ Date().timeIntervalSince($0) >= minInterval }) ?? true
+        else { return }
+        await refresh()
+    }
+
+    func refresh(manual: Bool = false) async {
+        guard !isLoading else { return }
         isLoading = true
+        if manual { isManuallyRefreshing = true }
         defer {
             isLoading = false
-            if refreshRequested {
-                refreshRequested = false
-                Task { await self.refresh() }
-            }
+            isManuallyRefreshing = false
+            lastCompletedRefresh = Date()
         }
         var downloaded: [String: Data] = [:]
         let freshNonce = String(Int(Date().timeIntervalSince1970 * 1000))
@@ -490,48 +497,11 @@ final class EditorialStore: ObservableObject {
             }
         }
 
-        // Read only confirmed explicit publication events. A missing ledger
-        // must show an unavailable counter, NOT an invented zero.
-        if let published = docs["pilot/ttactualidad-publication-events.json"],
-           downloaded["pilot/ttactualidad-publication-events.json"] != nil {
-            // The explicit ledger is authoritative and the receipt stream
-            // can fill CDN propagation gaps after a freshly confirmed publish.
-            // Both are deduplicated by project+editorial ID+revision.
-            var unique: [String: PublicationEvent] = [:]
-            func collect(_ entries: [[String: Any]], receipts: Bool) {
-                for item in entries {
-                    if receipts {
-                        guard Self.str(item, "decision") == "published",
-                              ["applied", "already_applied"].contains(
-                                  Self.str(item, "status").lowercased()) else { continue }
-                    }
-                    guard let timestamp = Self.when(item, ["at"]) else { continue }
-                    let project = Self.str(item, "project")
-                    let eventID = Self.str(item, "event_id")
-                    let revision = Self.int(item, "revision")
-                    guard ["ttittulares", "ttendencias"].contains(project),
-                          !eventID.isEmpty else { continue }
-                    let key = project + ":" + eventID + ":r" + String(revision)
-                    let event = PublicationEvent(
-                        project: project, eventID: eventID,
-                        revision: revision, confirmedAt: timestamp)
-                    if let previous = unique[key] {
-                        if timestamp < previous.confirmedAt { unique[key] = event }
-                    } else {
-                        unique[key] = event
-                    }
-                }
-            }
-            collect(Self.rows(published, "items"), receipts: false)
-            if downloaded["pilot/ttactualidad-action-receipts.json"] != nil {
-                collect(Self.rows(docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
-                                  "items"), receipts: true)
-            }
-            publicationEvents = Array(unique.values)
-            publicationLedgerAvailable = true
-        } else {
-            publicationLedgerAvailable = false
-        }
+        updatePublicationEvents(
+            ledger: downloaded["pilot/ttactualidad-publication-events.json"] != nil ?
+                docs["pilot/ttactualidad-publication-events.json"] : nil,
+            receipts: downloaded["pilot/ttactualidad-action-receipts.json"] != nil ?
+                docs["pilot/ttactualidad-action-receipts.json"] : nil)
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
               docs["ttittulares/decisions.json"] != nil,
@@ -673,6 +643,86 @@ final class EditorialStore: ObservableObject {
         if fresh {
             await publishLiveCounts(checkedAt: now,
                                     partial: partial || pendingOperationsCount > 0)
+        }
+    }
+
+    // This function is intentionally independent of the complete radar read.
+    // GitHub may confirm several publishes while some unrelated source times
+    // out; never let a stale response replace newly confirmed publication IDs.
+    private func updatePublicationEvents(ledger: [String: Any]?,
+                                         receipts: [String: Any]?) {
+        guard ledger != nil || receipts != nil else { return }
+        var unique: [String: PublicationEvent] = [:]
+        let oldest = Date().addingTimeInterval(-8 * 86_400)
+        for event in publicationEvents where event.confirmedAt >= oldest {
+            unique[event.project + ":" + event.eventID + ":r" +
+                   String(event.revision)] = event
+        }
+        func collect(_ items: [[String: Any]], isReceipt: Bool) {
+            for row in items {
+                if isReceipt {
+                    guard Self.str(row, "decision") == "published" &&
+                          ["applied", "already_applied"].contains(
+                              Self.str(row, "status").lowercased()) else { continue }
+                }
+                guard let at = Self.when(row, ["at"]), at >= oldest else { continue }
+                let project = Self.str(row, "project")
+                let id = Self.str(row, "event_id")
+                let revision = Self.int(row, "revision")
+                guard ["ttittulares", "ttendencias"].contains(project),
+                      !id.isEmpty else { continue }
+                let key = project + ":" + id + ":r" + String(revision)
+                // Retain the actual first GitHub-confirmed timestamp.
+                if let old = unique[key], old.confirmedAt <= at { continue }
+                unique[key] = PublicationEvent(
+                    project: project, eventID: id,
+                    revision: revision, confirmedAt: at)
+            }
+        }
+        if let ledger { collect(Self.rows(ledger, "items"), isReceipt: false) }
+        if let receipts { collect(Self.rows(receipts, "items"), isReceipt: true) }
+        publicationEvents = Array(unique.values)
+        publicationLedgerAvailable = true
+    }
+
+    private func fetchPublicationJSON(_ path: String) async -> [String: Any]? {
+        let nonce = String(Int(Date().timeIntervalSince1970 * 1000))
+        guard let url = URL(string:
+            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" +
+            path + "?pub=" + nonce) else { return nil }
+        var request = URLRequest(url: url,
+                                 cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 12)
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
+            return (try JSONSerialization.jsonObject(with: data)) as? [String: Any]
+        } catch {
+            return nil
+        }
+    }
+
+    /// Light, invisible refresh after GitHub verifies a published item.
+    /// Does not touch the loading spinner, scroll position or radar cards.
+    func refreshPublicationCounters(expectedProject: String? = nil,
+                                    expectedID: String? = nil,
+                                    expectedRevision: Int? = nil) async {
+        guard !publicationFetchInProgress else { return }
+        publicationFetchInProgress = true
+        defer { publicationFetchInProgress = false }
+        for attempt in 0..<5 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(2)) }
+            async let ledger = fetchPublicationJSON(
+                "pilot/ttactualidad-publication-events.json")
+            async let receipts = fetchPublicationJSON(
+                "pilot/ttactualidad-action-receipts.json")
+            updatePublicationEvents(ledger: await ledger, receipts: await receipts)
+            guard let project = expectedProject, let id = expectedID,
+                  let revision = expectedRevision else { break }
+            if publicationEvents.contains(where: {
+                $0.project == project && $0.eventID == id && $0.revision == revision
+            }) { break }
         }
     }
 
@@ -859,13 +909,20 @@ final class EditorialStore: ObservableObject {
                             kind: "Nueva noticia", status: "En elaboración")
             actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
             actionIsError = false
-            Task { await self.refresh() }
+            Task {
+                if action.decision == "published" {
+                    await self.refreshPublicationCounters(
+                        expectedProject: project, expectedID: id,
+                        expectedRevision: revision)
+                }
+                await self.refreshIfStale(minInterval: 0)
+            }
         case .pending:
             recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
                             kind: "Nueva noticia", status: "Esperando GitHub")
             actionMessage = "GitHub aún está procesando la noticia. Se mantiene en En elaboración."
             actionIsError = false
-            Task { await self.refresh() }
+            Task { await self.refreshIfStale(minInterval: 30) }
         case .failed:
             recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
                             kind: "Nueva noticia", status: "Rechazada")
