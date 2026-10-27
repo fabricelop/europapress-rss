@@ -3,13 +3,12 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-// The same WidgetKit extension hosts Live Activities AND real Home widgets.
-// Live data is updated on app refresh or explicit user-initiated refresh.
+// Only a Live Activity: no unsupported Home Screen widgets in signed IPA.
+// Contents refresh when the native app syncs or the user taps Update.
 @main
 struct TTActualidadLiveBundle: WidgetBundle {
     var body: some Widget {
         TTActualidadLiveWidget()
-        TTActualidadHomeWidget()
     }
 }
 
@@ -43,6 +42,20 @@ struct TTActualidadLiveWidget: Widget {
                                working: context.state.trendsWorking, color: .cyan)
                     }
                 }
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.seal")
+                        .foregroundStyle(.white.opacity(0.75))
+                    Text("PUBLICADAS · ÚLTIMAS 24 H")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.7))
+                    Spacer(minLength: 0)
+                    Text(context.state.publishedCountsAvailable ?
+                         "N \(context.state.newsPublished24h)  ·  T \(context.state.trendsPublished24h)" :
+                         "Sin verificar")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(context.state.publishedCountsAvailable ? Color.white : Color.orange)
+                        .monospacedDigit()
+                }
                 if !context.state.recentHeadline.isEmpty {
                     Link(destination: URL(string: "ttactualidad://noticias")!) {
                         HStack(alignment: .top, spacing: 7) {
@@ -66,7 +79,7 @@ struct TTActualidadLiveWidget: Widget {
                         .foregroundStyle(context.state.pendingActions > 0 ? Color.orange : Color.mint)
                     Text(context.state.pendingActions > 0 ?
                          "\(context.state.pendingActions) orden(es) por confirmar" :
-                         "Consulta desde GitHub")
+                         "Toca Actualizar · GitHub")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundStyle(.white.opacity(0.78))
                     Spacer(minLength: 0)
@@ -122,6 +135,15 @@ struct TTActualidadLiveWidget: Widget {
                             }
                         }
                         HStack {
+                            Label(context.state.publishedCountsAvailable ?
+                                  "24 h publicadas: N \(context.state.newsPublished24h) · T \(context.state.trendsPublished24h)" :
+                                  "24 h publicadas: sin verificar",
+                                  systemImage: "checkmark.seal")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(context.state.publishedCountsAvailable ? Color.mint : Color.orange)
+                            Spacer(minLength: 0)
+                        }
+                        HStack {
                             Label("\(context.state.newsWorking) noticias · \(context.state.trendsWorking) tendencias en elaboración",
                                   systemImage: "pencil.line")
                                 .font(.system(size: 10))
@@ -175,7 +197,7 @@ struct TTActualidadLiveWidget: Widget {
         Group {
             if context.isStale { Text("Desactualizado") }
             else if context.state.partialData { Text("Datos parciales") }
-            else { Text("Sincronizado") }
+            else { Text("Verificado") }
         }
     }
 
