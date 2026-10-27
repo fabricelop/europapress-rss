@@ -19,7 +19,8 @@ struct RefreshLiveCountsIntent: AppIntent {
             let state = LiveCountsAttributes.ContentState(
                 newsReady: source.news, trendsReady: source.trends,
                 newsWorking: source.newsWorking, trendsWorking: source.trendsWorking,
-                pendingActions: awaiting, checkedAt: now, partialData: awaiting > 0)
+                pendingActions: awaiting, checkedAt: now, partialData: awaiting > 0,
+                recentHeadline: source.latestHeadline)
             let content = ActivityContent(state: state,
                                           staleDate: now.addingTimeInterval(1800))
             await activity.update(content)
@@ -28,7 +29,7 @@ struct RefreshLiveCountsIntent: AppIntent {
     }
 }
 
-private enum LiveCountsSource {
+enum LiveCountsSource {
     private static let base = "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/"
     private static let required = [
         "ttittulares/prepared.json", "ttittulares/decisions.json",
@@ -40,8 +41,13 @@ private enum LiveCountsSource {
     private static let terminal: Set<String> =
         ["deleted", "dismissed", "published", "removed", "delete_pending"]
 
-    struct Counts { let news: Int; let trends: Int
-                    let newsWorking: Int; let trendsWorking: Int }
+    struct Counts {
+        let news: Int
+        let trends: Int
+        let newsWorking: Int
+        let trendsWorking: Int
+        let latestHeadline: String
+    }
 
     static func load() async throws -> Counts {
         var docs: [String: [String: Any]] = [:]
@@ -73,10 +79,18 @@ private enum LiveCountsSource {
         let closedNews = Set(decisions.filter {
             terminal.contains(str($0, "status").lowercased())
         }.map { str($0, "event_id") })
-        let news = prepared.filter {
+        let openNews = prepared.filter {
             let id = str($0, "event_id")
             return !id.isEmpty && !closedNews.contains(id)
-        }.count
+        }
+        let news = openNews.count
+        // The headline comes only from authoritative, non-terminal Listas.
+        // Avoid presenting a recycled radar item as newly verified.
+        let latest = openNews.max {
+            (date(str($0, "prepared_at")) ?? .distantPast) <
+            (date(str($1, "prepared_at")) ?? .distantPast)
+        }
+        let latestHeadline = String(str(latest ?? [:], "title").prefix(140))
 
         var latestManual: [String: [String: Any]] = [:]
         var latestRequests: [String: [String: Any]] = [:]
@@ -153,7 +167,8 @@ private enum LiveCountsSource {
         })
         let trendsWorking = activeTrendIDs.subtracting(readyTrendIDs).count
         return Counts(news: news, trends: trends,
-                      newsWorking: newsWorking, trendsWorking: trendsWorking)
+                      newsWorking: newsWorking, trendsWorking: trendsWorking,
+                      latestHeadline: latestHeadline)
     }
 
     private static func rows(_ doc: [String: Any]?, _ field: String) -> [[String: Any]] {
