@@ -125,3 +125,17 @@ assert 'operation.createdAt.addingTimeInterval(-180)' in store
 assert '"ttittulares/decisions.json"' in store
 assert 'freshReceipts || freshNewsDecisions || freshTrendClosures' in store
 assert 'stage = "Confirmada"' in store
+
+# A successful Github deletion must be durable across stale/cached snapshots.
+assert "struct EditorialTombstone: Codable" in store
+assert '"TTActualidad.confirmed-terminals.v1"' in store
+assert "accumulateConfirmedTerminals(docs, downloaded)" in store
+assert "applyConfirmedTerminals(EditorialSnapshot(" in store
+assert "snapshot = applyConfirmedTerminals(updated)" in store
+assert '"pilot/ttactualidad-action-receipts.json"' in store
+assert '"ttittulares/decisions.json"' in store
+assert '"trends/mobile-decisions.json"' in store
+assert "revision <= tombstone.revision" in store
+assert "persistTerminals()" in store
+assert "case .verified:" in store and "markTerminal(project: project" in store
+assert "news: canonicalSnapshot.news," in store
