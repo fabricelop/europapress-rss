@@ -2,63 +2,104 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-10-27T19:30:31.521314+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-10-27T23:05:43.565903+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "dc8eaaeb9bbb",
-          "title": "Muere un trabajador aplastado por una retroexcavadora en una planta de gestión de residuos en Vallec",
-          "seconds": 471,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "24d9a70612b4",
-          "title": "El juez rechaza la comisión rogatoria a Arabia Saudí que solicitó Zapatero sobre las joyas",
-          "seconds": 471,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 984979,
+          "seconds": 997891,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "91123085b242aa87c5e1f4f7ece162804fda79d78156c6f22f7a415620019a2f",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-10-27T19:30:31.521314+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-10-27T23:05:43.565903+00:00",
+      "issue_count": 11,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "aa0c8d12686d",
           "title": "Messi",
-          "seconds": 71372,
+          "seconds": 84284,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "editorial_overdue",
           "id": "66baf38b979a",
           "title": "Juanpi",
-          "seconds": 67771,
+          "seconds": 80683,
           "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "4e5b3b162b0f",
+          "title": "Paracetamol",
+          "seconds": 11666,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "c5a63e21f604",
+          "title": "#rcde",
+          "seconds": 5666,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "8860faae230c",
+          "title": "Manolo",
+          "seconds": 5666,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "7280355b9bdb",
+          "title": "Las Llanas",
+          "seconds": 5666,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "59265957576d",
+          "title": "#LaCopaMola",
+          "seconds": 5666,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "845eab6b4803",
+          "title": "#RufiánMonteroEnLaRevuelta",
+          "seconds": 4477,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "31e2c7a49c67",
+          "title": "Ministerio del Interior",
+          "seconds": 2315,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9ee254509e4a",
+          "title": "Flávio Bolsonaro",
+          "seconds": 2271,
+          "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 984978,
+          "seconds": 997890,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -67,16 +108,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "5f8c8d35796627d107d826c914ec77d412da7b2e4ec4ba3bcd4cba846b5458d2",
+      "open_signature": "6eec080bc310aec7914fcd41c418d4027698206f6d1a7830aa355dc04c33057f",
       "repair_via_workflow_run": false,
-      "escalation_required": 2
+      "escalation_required": 10
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-10-27T19:30:31.521314+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-10-27T19:30:31.521314+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-10-27T19:30:31.521314+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-27T19:30:31.521314+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-10-27T23:05:43.565903+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-10-27T23:05:43.565903+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-10-27T23:05:43.565903+00:00"
   },
-  "checked_at": "2026-10-27T19:30:31.521314+00:00"
+  "checked_at": "2026-10-27T23:05:43.565903+00:00"
 }
