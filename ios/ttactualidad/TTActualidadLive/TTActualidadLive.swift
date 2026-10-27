@@ -3,12 +3,13 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
-// Live Activity only. ActivityKit controls lifetime and foreground refreshes;
-// the widget never claims a push-based background feed that does not exist.
+// The same WidgetKit extension hosts Live Activities AND real Home widgets.
+// Live data is updated on app refresh or explicit user-initiated refresh.
 @main
 struct TTActualidadLiveBundle: WidgetBundle {
     var body: some Widget {
         TTActualidadLiveWidget()
+        TTActualidadHomeWidget()
     }
 }
 
@@ -40,6 +41,23 @@ struct TTActualidadLiveWidget: Widget {
                     Link(destination: URL(string: "ttactualidad://tendencias")!) {
                         metric(context.state.trendsReady, name: "Tendencias",
                                working: context.state.trendsWorking, color: .cyan)
+                    }
+                }
+                if !context.state.recentHeadline.isEmpty {
+                    Link(destination: URL(string: "ttactualidad://noticias")!) {
+                        HStack(alignment: .top, spacing: 7) {
+                            Image(systemName: "newspaper")
+                                .foregroundStyle(.mint)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("ÚLTIMA NOTICIA LISTA")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.mint)
+                                Text(context.state.recentHeadline)
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundStyle(.white)
+                                    .lineLimit(2)
+                            }
+                        }
                     }
                 }
                 HStack(spacing: 8) {
@@ -89,7 +107,20 @@ struct TTActualidadLiveWidget: Widget {
                     }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(spacing: 7) {
+                    VStack(alignment: .leading, spacing: 7) {
+                        if !context.state.recentHeadline.isEmpty {
+                            Link(destination: URL(string: "ttactualidad://noticias")!) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("ÚLTIMA NOTICIA LISTA")
+                                        .font(.system(size: 9, weight: .semibold))
+                                        .foregroundStyle(.mint)
+                                    Text(context.state.recentHeadline)
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .lineLimit(2)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
                         HStack {
                             Label("\(context.state.newsWorking) noticias · \(context.state.trendsWorking) tendencias en elaboración",
                                   systemImage: "pencil.line")
