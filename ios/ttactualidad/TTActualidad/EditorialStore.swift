@@ -1,4 +1,5 @@
 import ActivityKit
+import WidgetKit
 import Combine
 import CryptoKit
 import Foundation
@@ -248,6 +249,7 @@ final class EditorialStore: ObservableObject {
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     @Published private(set) var isManuallyRefreshing = false
     private var lastCompletedRefresh: Date? = nil
+    private var lastWidgetTimelineReload: Date? = nil
     private var currentVisitSnapshot: [String: String]?
 
     init() {
@@ -725,6 +727,13 @@ final class EditorialStore: ObservableObject {
         if fresh {
             await publishLiveCounts(checkedAt: now,
                                     partial: partial || pendingOperationsCount > 0)
+            // Widgets use Apple's own refresh budget. Don't request a
+            // reload for every incremental radar poll or UI interaction.
+            if lastWidgetTimelineReload == nil ||
+               now.timeIntervalSince(lastWidgetTimelineReload!) >= 5 * 60 {
+                lastWidgetTimelineReload = now
+                WidgetCenter.shared.reloadTimelines(ofKind: "TTActualidadEditorialHome")
+            }
         }
     }
 
@@ -1817,7 +1826,10 @@ final class EditorialStore: ObservableObject {
             newsWorking: snapshot.newsElaboracion.count,
             trendsWorking: snapshot.trendsElaboracion.count,
             pendingActions: pendingOperationsCount,
-            checkedAt: checkedAt, partialData: partial
+            checkedAt: checkedAt, partialData: partial,
+            recentHeadline: snapshot.news.max(by: {
+                $0.publishedAt < $1.publishedAt
+            })?.title ?? ""
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))
         do {
