@@ -148,3 +148,18 @@ assert 'quickButton("Ver en Público", "arrow.up.right.square")' in actions
 assert 'openURL(original)' in actions
 assert 'url.path.hasPrefix("/tremending/")' in actions
 assert 'url.scheme?.lowercased() == "https"' in actions
+
+# Publish/non-publish is a deliberate two-button confirmation on ready Lists.
+assert 'Button("Publicado · Quitar de Listas")' in actions
+assert 'Button("No publicado · Quitar de Listas"' in actions
+assert 'submit("published")' in actions and 'submit("deleted")' in actions
+assert '"pilot/ttactualidad-publication-events.json"' in store
+assert "func publicationsLast24h(project: String, now: Date = Date()) -> Int?" in store
+assert "now.addingTimeInterval(-86_400)" in store
+assert "$0.confirmedAt > lowerBound && $0.confirmedAt <= now" in store
+assert 'publicationLedgerAvailable = false' in store
+assert 'Self.str(item, "decision") == "published"' in store
+assert 'TimelineView(.periodic(from: .now, by: 1))' in dashboard
+assert 'published24hChip("TTiT", project: "ttittulares"' in dashboard
+assert 'published24hChip("TTen", project: "ttendencias"' in dashboard
+assert '"published" : "deleted"' not in store or 'action.decision == "published"' in store
