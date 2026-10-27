@@ -51,6 +51,17 @@ struct TTDashboard: View {
         }
         .preferredColorScheme(.dark)
         .task { await github.renewOnForeground() }
+        // Keep pending receipts reconciled without blocking scrolling or
+        // making the user tap refresh after the GitHub workflow finishes.
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(75))
+                if Task.isCancelled { break }
+                if store.pendingOperationsCount > 0 {
+                    await store.refreshIfStale(minInterval: 60)
+                }
+            }
+        }
         .onOpenURL { url in
             if url.scheme == "ttactualidad" {
                 showCombinedListas = url.host == "listas"
@@ -513,7 +524,14 @@ struct TTDashboard: View {
             return items.filter { $0.lastExplained.map {
                 Date().timeIntervalSince($0) >= 0 && Date().timeIntervalSince($0) < 12 * 3600
             } ?? false }
-        case .pendientes: return items.filter { $0.explanation.isEmpty }
+        case .pendientes:
+            // Failed investigations remain findable even after leaving Top 30.
+            var names = Set<String>()
+            return (items.filter { $0.explanation.isEmpty } +
+                    store.snapshot.unexplainedTrends).filter {
+                names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                             locale: .current)).inserted
+            }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
         }
     }
@@ -680,6 +698,7 @@ private struct TrendTile: View {
         case "PREPARACIÓN MANUAL": return "MANUAL"
         case "EXPLICADA": return "EXPL."
         case "PENDIENTE": return "PEND."
+        case "SIN EXPLICACIÓN": return "PISTAS"
         default: return item.status
         }
     }
@@ -714,8 +733,10 @@ private struct TrendTile: View {
                     }
                 }
                 if item.explanation.isEmpty {
-                    Text("Aún no hay explicación editorial.")
+                    Text(item.problemReason.isEmpty ? "Aún no hay explicación editorial." :
+                         "Sin explicación verificada: " + item.problemReason)
                         .font(.subheadline).foregroundStyle(TTTheme.muted)
+                        .textSelection(.enabled)
                 } else {
                     Text(item.explanation)
                         .font(.system(size: 14)).lineSpacing(3)
