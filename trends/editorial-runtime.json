@@ -5,62 +5,63 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "845eab6b4803"
+    "9ee254509e4a"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T23:15:00+01:00",
-  "last_completed_at": "2026-10-27T22:17:49.478Z",
-  "updated_at": "2026-10-27T22:17:49.478Z",
+  "last_started_at": "2026-10-27T22:28:22.099Z",
+  "last_completed_at": "2026-10-27T22:38:30Z",
+  "updated_at": "2026-10-27T22:38:30Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T231500+0100",
+    "trigger_run_id": "tr-ios-1793140102099-a1cad003",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261027T231500+0100",
+    "run_id": "tr-ios-1793140102099-a1cad003",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T23:15:00+01:00",
-    "updated_at": "2026-10-27T22:17:49.478Z",
-    "finished_at": "2026-10-27T22:17:49.478Z",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-10-27T22:28:22.099Z",
+    "updated_at": "2026-10-27T22:38:30Z",
+    "finished_at": "2026-10-27T22:38:30Z",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 3,
-      "explained": 3,
-      "final_resolved": 3,
-      "explanation_groups": 3,
-      "new_cards": 3,
-      "revisions_updated": 3,
+      "attempted": 1,
+      "explained": 1,
+      "final_resolved": 2,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 3,
+      "initial_compact_queue": 2,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 3,
-      "remates_selected": 3,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 1,
       "remates_omitted": 0,
       "rewrite_pending_remaining": 0,
+      "skipped_concurrent": 1,
       "incidents": 0
     },
-    "message": "TTendencias completada: Landaluce, #firstdates27o y Recre explicadas y verificadas; cola activa vacía.",
+    "message": "TTendencias completada: Ministerio del Interior verificada tras cierre concurrente y Flávio Bolsonaro explicado; cola activa vacía.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": {
@@ -72,123 +73,277 @@
     },
     "remate_selections": [
       {
-        "group_id": "grp-eb6d1ef46c47-r0",
-        "selected": "🌶️ Tuvo la hazaña en la raqueta; Zverev sobrevivió al desempate."
-      },
-      {
-        "group_id": "grp-3ac83d604302-r0",
-        "selected": "🌶️ La cena acabó en televisión; el hashtag pidió sobremesa."
-      },
-      {
-        "group_id": "grp-80215eb90d80-r0",
-        "selected": "🌶️ El Decano llevó a un Primera hasta las horas extra."
+        "group_id": "grp-9ee254509e4a-r0",
+        "selected": "🌶️ El plazo venció en Brasil y el destino apareció en Estados Unidos."
       }
     ],
     "activity": [
       {
-        "at": "2026-10-27T23:15:00+01:00",
+        "at": "2026-10-27T22:31:00Z",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Preparando pasada editorial · 3 tendencias activas"
+        "message": "Preparando pasada editorial · 2 tendencias activas"
       },
       {
-        "at": "2026-10-27T22:17:12.866Z",
+        "at": "2026-10-27T22:31:00Z",
         "phase": "verifying",
-        "trend_id": "eb6d1ef46c47",
-        "title": "Landaluce",
-        "message": "Hecho esencial verificado · Martín Landaluce ante Zverev"
+        "trend_id": "31e2c7a49c67",
+        "title": "Ministerio del Interior",
+        "message": "Releyendo estado autoritativo de Ministerio del Interior"
       },
       {
-        "at": "2026-10-27T22:17:12.866Z",
+        "at": "2026-10-27T22:32:00Z",
+        "phase": "investigating",
+        "trend_id": "31e2c7a49c67",
+        "title": "Ministerio del Interior",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-27T22:35:10Z",
         "phase": "verifying",
-        "trend_id": "3ac83d604302",
-        "title": "#firstdates27o",
-        "message": "Hecho esencial verificado · emisión de First Dates del 27O"
+        "trend_id": "31e2c7a49c67",
+        "title": "Ministerio del Interior",
+        "message": "JIT: revisión ya explicada por ejecución concurrente; se omite sin duplicar"
       },
       {
-        "at": "2026-10-27T22:17:12.866Z",
+        "at": "2026-10-27T22:35:20Z",
         "phase": "verifying",
-        "trend_id": "80215eb90d80",
-        "title": "Recre",
-        "message": "Hecho esencial verificado · Recre-Rayo en prórroga"
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Releyendo estado autoritativo de Flávio Bolsonaro"
       },
       {
-        "at": "2026-10-27T22:17:12.866Z",
+        "at": "2026-10-27T22:35:40Z",
+        "phase": "investigating",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-27T22:36:10Z",
+        "phase": "investigating",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Contrastando Reuters y prensa española"
+      },
+      {
+        "at": "2026-10-27T22:36:30Z",
+        "phase": "investigating",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Hecho esencial verificado · viaje a EE. UU. tras incumplir la entrega de pasaportes"
+      },
+      {
+        "at": "2026-10-27T22:36:40Z",
+        "phase": "drafting",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-27T22:36:50Z",
+        "phase": "drafting",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Comprobando límite de X · 266 caracteres"
+      },
+      {
+        "at": "2026-10-27T22:37:00Z",
+        "phase": "remate_selection",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Remate seleccionado · contraste plazo/destino, factual y neutral"
+      },
+      {
+        "at": "2026-10-27T22:37:05Z",
         "phase": "persisting",
-        "trend_id": null,
-        "title": null,
-        "message": "Tres explicaciones guardadas en Explicadas y requests"
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-27T22:17:49.478Z",
+        "at": "2026-10-27T22:37:15Z",
+        "phase": "persisting",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Actualizando requests y retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-27T22:38:00Z",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Relectura de main · id+revision y textos coinciden; cola activa vacía"
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Releyendo main"
       },
       {
-        "at": "2026-10-27T22:17:49.478Z",
+        "at": "2026-10-27T22:38:10Z",
+        "phase": "verifying",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-27T22:38:20Z",
+        "phase": "verifying",
+        "trend_id": "9ee254509e4a",
+        "title": "Flávio Bolsonaro",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-27T22:38:30Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "Pasada editorial cerrada · 3/3 explicadas"
+        "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
       }
     ]
   },
-  "run_id": "tr-chat-20261027T221500+0100",
+  "run_id": "tr-ios-1793140102099-a1cad003",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
-    "grouped_into_existing_card": 0,
+    "attempted": 1,
+    "explained": 1,
+    "final_resolved": 2,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 2,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
-    "remaining_problematic": 0,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 1,
     "remates_omitted": 0,
-    "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
     "rewrite_pending_remaining": 0,
-    "skipped_concurrent": 0,
-    "trends_dismissed": 0,
+    "skipped_concurrent": 1,
     "incidents": 0
   },
   "activity": [
     {
-      "at": "2026-10-27T22:15:00+01:00",
+      "at": "2026-10-27T22:31:00Z",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada directa; cola editorial inicial vacía; comprobando requests, reexplicaciones y Pendientes."
+      "message": "Preparando pasada editorial · 2 tendencias activas"
     },
     {
-      "at": "2026-10-27T22:16:00+01:00",
+      "at": "2026-10-27T22:31:00Z",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Releyendo main; verificando cola, requests, rewrite_pending y 1 Pendiente reciente."
+      "trend_id": "31e2c7a49c67",
+      "title": "Ministerio del Interior",
+      "message": "Releyendo estado autoritativo de Ministerio del Interior"
     },
     {
-      "at": "2026-10-27T22:17:00+01:00",
+      "at": "2026-10-27T22:32:00Z",
+      "phase": "investigating",
+      "trend_id": "31e2c7a49c67",
+      "title": "Ministerio del Interior",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-27T22:35:10Z",
+      "phase": "verifying",
+      "trend_id": "31e2c7a49c67",
+      "title": "Ministerio del Interior",
+      "message": "JIT: revisión ya explicada por ejecución concurrente; se omite sin duplicar"
+    },
+    {
+      "at": "2026-10-27T22:35:20Z",
+      "phase": "verifying",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Releyendo estado autoritativo de Flávio Bolsonaro"
+    },
+    {
+      "at": "2026-10-27T22:35:40Z",
+      "phase": "investigating",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-27T22:36:10Z",
+      "phase": "investigating",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Contrastando Reuters y prensa española"
+    },
+    {
+      "at": "2026-10-27T22:36:30Z",
+      "phase": "investigating",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Hecho esencial verificado · viaje a EE. UU. tras incumplir la entrega de pasaportes"
+    },
+    {
+      "at": "2026-10-27T22:36:40Z",
+      "phase": "drafting",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-27T22:36:50Z",
+      "phase": "drafting",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Comprobando límite de X · 266 caracteres"
+    },
+    {
+      "at": "2026-10-27T22:37:00Z",
+      "phase": "remate_selection",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Remate seleccionado · contraste plazo/destino, factual y neutral"
+    },
+    {
+      "at": "2026-10-27T22:37:05Z",
+      "phase": "persisting",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-27T22:37:15Z",
+      "phase": "persisting",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Actualizando requests y retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-27T22:38:00Z",
+      "phase": "verifying",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-27T22:38:10Z",
+      "phase": "verifying",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-27T22:38:20Z",
+      "phase": "verifying",
+      "trend_id": "9ee254509e4a",
+      "title": "Flávio Bolsonaro",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-27T22:38:30Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0; sin preparing/update ni reexplicaciones pendientes; saneamiento visual solicitado para 1 Pendiente reciente."
+      "message": "Relectura final de main · sin preparing/update ni rewrite_pending"
     }
   ],
   "partial": false,
