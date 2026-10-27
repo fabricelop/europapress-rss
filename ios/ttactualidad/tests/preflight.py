@@ -212,11 +212,11 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 60)' in dashboard
-assert 'MARKETING_VERSION: "0.4.13"' in project
-assert 'CURRENT_PROJECT_VERSION: "19"' in project
+assert 'MARKETING_VERSION: "0.4.14"' in project
+assert 'CURRENT_PROJECT_VERSION: "20"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
-# 0.4.13: an editorial trend may trigger independent news investigation.
+# 0.4.14: an editorial trend may trigger independent news investigation.
 assert 'quickButton("Enviar a TTiTTulares"' in actions
 assert 'sendTrendToNews(_ trend: TrendItem)' in actions
 assert 'originTrend: trend' in actions
@@ -228,3 +228,16 @@ assert 'case "De tendencia a noticia": return "Tendencia → TTiTTulares"' in st
 assert 'operation.kind == "De tendencia a noticia"' not in store or 'De tendencia a noticia' in store
 assert '["Nueva noticia", "De tendencia a noticia"].contains(operation.kind)' in store
 print("TT_ACTUALIDAD_IOS_TREND_TO_NEWS_PREFLIGHT_OK")
+
+# 0.4.14: stale GitHub-inactive orders recover and the verified publish counter
+# increments without blocking the rest of the interface.
+assert "retireAbandonedTrendOperations(" in store
+assert '["inactive", "problem", "failed"].contains(' in store
+assert 'publicationEvents.append(PublicationEvent(' in store
+assert 'func requestEditorialRun(project: String)' in auth
+assert '"control/ttendencias-run-trigger"' in auth
+assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
+assert 'requestEditorialRun(project: project)' in dashboard
+assert 'Solicitar procesamiento de' in dashboard
+assert 'CURRENT_PROJECT_VERSION: "20"' in project
+print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
