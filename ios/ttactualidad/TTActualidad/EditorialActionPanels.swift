@@ -150,8 +150,8 @@ struct EditorialActions: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .confirmationDialog("¿Investigar esta tendencia como noticia?",
-                            isPresented: $confirmTrendToNews, titleVisibility: .visible) {
+        .alert("¿Investigar esta tendencia como noticia?",
+               isPresented: $confirmTrendToNews) {
             Button("Enviar a En elaboración") {
                 if let trend { sendTrendToNews(trend) }
             }
