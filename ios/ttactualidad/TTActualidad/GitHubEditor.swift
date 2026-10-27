@@ -464,14 +464,15 @@ final class GitHubEditor: ObservableObject {
     }
 
     func decide(project: String, eventID: String, revision: Int, decision: String,
-                title: String, rank: Int = 0) async -> WriteResult {
+                title: String, rank: Int = 0,
+                requestID: String = UUID().uuidString.lowercased()) async -> WriteResult {
         guard !eventID.isEmpty, revision >= 0 else {
             notice = "La entrada no tiene identificador editorial confirmado. Actualiza primero."
             return .failed
         }
         return await dispatch("ttactualidad_action_v1", payload: [
             "project": project, "event_id": eventID, "revision": revision,
-            "decision": decision, "request_id": UUID().uuidString.lowercased(),
+            "decision": decision, "request_id": requestID,
             "received_at": ISO8601DateFormatter().string(from: Date()),
             "trend_name": title, "trend_rank": rank
         ], label: decision == "deleted" ? "Quitar de Listas" : "Reelaborar / preparar")
