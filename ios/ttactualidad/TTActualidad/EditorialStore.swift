@@ -298,6 +298,10 @@ final class EditorialStore: ObservableObject {
                              at: Self.when(row, ["at"]) ?? .distantPast)
             }
         }
+        persistTerminals()
+    }
+
+    private func persistTerminals() {
         if let saved = try? JSONEncoder().encode(terminalMarks) {
             UserDefaults.standard.set(saved, forKey: tombstoneStorageKey)
         }
@@ -546,11 +550,6 @@ final class EditorialStore: ObservableObject {
             decisions: docs["trends/mobile-decisions.json"]!,
             ready: ready
         )
-        if !partial && downloaded.count == paths.count {
-            updateRadarEntrants(docs["trends/recent.json"] ?? [:])
-            updateNovedades(news: news, trends: ready, top30: top,
-                            newsWorking: queueNews, trendsWorking: trendsQueued)
-        }
         accumulateConfirmedTerminals(docs, downloaded)
         canonicalSnapshot = applyConfirmedTerminals(EditorialSnapshot(
                                      news: news, newsElaboracion: queueNews,
@@ -567,6 +566,14 @@ final class EditorialStore: ObservableObject {
                                                               ["captured_at"]),
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
                                                                       "reliability")))
+        if !partial && downloaded.count == paths.count {
+            updateRadarEntrants(docs["trends/recent.json"] ?? [:])
+            updateNovedades(news: canonicalSnapshot.news,
+                            trends: canonicalSnapshot.trendListas,
+                            top30: canonicalSnapshot.top30,
+                            newsWorking: canonicalSnapshot.newsElaboracion,
+                            trendsWorking: canonicalSnapshot.trendsElaboracion)
+        }
         // A fresh terminal decision may be applied even if an unrelated
         // source timed out. Do not keep yesterday's optimistic elaboration
         // while GitHub already confirms today's deletion.
@@ -870,6 +877,14 @@ final class EditorialStore: ObservableObject {
         guard var action = activeEditorialActions[key] else { return }
         switch result {
         case .verified:
+            // A successful direct receipt verification is sufficient proof to
+            // persist the tombstone immediately, before any GitHub CDN reads.
+            if ["deleted", "discard", "published"].contains(action.decision) {
+                markTerminal(project: project, id: id, revision: revision,
+                             decision: action.decision == "discard" ? "dismissed" :
+                                       action.decision, at: Date())
+                persistTerminals()
+            }
             recordOperation(id: key, title: action.title, kind: action.decision,
                             status: ["prepare", "rework"].contains(action.decision) ?
                                     "En elaboración" : "Confirmada")
