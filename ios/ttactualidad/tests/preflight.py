@@ -108,7 +108,7 @@ assert "requestID: requestID" in actions and "requestID: requestID" in auth
 # A terminal GitHub deletion must remove BOTH canonical and optimistic work.
 assert 'closedTrends(manual: manual, requests: requests' in store
 assert 'retireClosedTrendOverlays(' in store
-assert 'if closedAfterRequest {' in store
+assert 'if closedAfterRequest || newsTerminal {' in store
 assert 'stage = "Retirada"' in store
 assert '"deleted_at", "dismissed_at", "updated_at"' in store
 assert 'finishedByName[norm(name)]' in store
