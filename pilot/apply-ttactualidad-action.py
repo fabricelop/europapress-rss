@@ -14,6 +14,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trends_rework import rework_explained, rework_top30
+from rework_ttittulares import rework_ready_news
 
 ROOT = Path(__file__).resolve().parent.parent
 REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
@@ -256,6 +257,15 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
         return delete_tremending(event_id, revision)
     if decision == "deleted":
         return apply(project, event_id, decision, revision)
+    if project == "ttittulares" and decision == "rework":
+        outputs = rework_ready_news(
+            event_id, revision,
+            load("ttittulares/prepared.json", {"items": []}),
+            load("ttittulares/editorial-queue.json", {"items": []}),
+            load("telegram/editorial-processing.json", {"items": []}),
+            load("ttittulares/decisions.json", {"items": []}),
+        )
+        return ({}, "already_applied") if outputs is None else (outputs, "applied")
     now = datetime.now(timezone.utc).isoformat()
     if project == "ttittulares":
         queue_path = "ttittulares/editorial-queue.json"
