@@ -21,6 +21,7 @@ REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
 ID = re.compile(r"^[A-Za-z0-9:_-]{3,128}$")
 TERMINAL = {"published", "deleted", "dismissed"}
 LEDGER = "pilot/ttactualidad-action-receipts.json"
+PUBLICATIONS = "pilot/ttactualidad-publication-events.json"
 
 
 class InvalidAction(Exception):
@@ -103,6 +104,9 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         return outputs, "applied"
 
     if project == "ttendencias":
+        if decision not in {"deleted", "published"}:
+            fail("Decision terminal no admitida en Listas")
+        terminal_status = decision
         # The editorial explanation is authoritative; Telegram delivery is optional.
         manual_path = "trends/telegram-manual-explained.json"
         requests_path = "trends/requests.json"
@@ -153,10 +157,10 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
                 and str(row.get("explanation") or "").strip()
                 and str(row.get("telegram_package_status") or "").lower() not in TERMINAL
                 for row in same_manual + same_requests)
-            or any(str(row.get("status") or "").lower() == "deleted"
+            or any(str(row.get("status") or "").lower() == terminal_status
                    for row in same_manual + same_requests)
             or legacy_delivery is not None
-            or (existing is not None and existing.get("status") == "deleted"
+            or (existing is not None and existing.get("status") == terminal_status
                 and int(existing.get("revision") or 0) == revision)
         )
         if not proof:
@@ -168,8 +172,8 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
         # text, image and history, but no stale 'explained' row may resurrect
         # the card after a successful delete.
         for target in same_manual:
-            target.update(status="deleted", telegram_package_status="deleted",
-                          deleted_at=target.get("deleted_at") or now,
+            target.update(status=terminal_status, telegram_package_status=terminal_status,
+                          **{("published_at" if decision == "published" else "deleted_at"): now},
                           decision_source="ttactualidad_direct")
         if same_manual:
             manual["updated_at"] = now
@@ -181,23 +185,23 @@ def apply(project: str, event_id: str, decision: str, revision: int | None):
             # A newer revision is not deleted by an obsolete card.
             if int(req.get("revision") or 0) > revision:
                 fail("Existe una revision editorial mas reciente; actualiza la app")
-            req["status"] = "deleted"
-            req["telegram_package_status"] = "deleted"
-            req["deleted_at"] = now
+            req["status"] = terminal_status
+            req["telegram_package_status"] = terminal_status
+            req["published_at" if decision == "published" else "deleted_at"] = now
             req["decision_source"] = "ttactualidad_direct"
             requests["updated_at"] = now
             changed[requests_path] = requests
 
         if legacy_delivery and str(legacy_delivery.get("status") or "").lower() == "sent":
             check_revision(legacy_delivery, revision)
-            legacy_delivery["status"] = "deleted"
+            legacy_delivery["status"] = terminal_status
             legacy_delivery["updated_at"] = now
             changed[ledger_path] = deliveries
 
         if not existing:
             existing = {"id": event_id}
             mobile.setdefault("items", []).append(existing)
-        existing.update({"status": "deleted", "revision": revision, "updated_at": now,
+        existing.update({"status": terminal_status, "revision": revision, "updated_at": now,
                          "source": "ttactualidad_direct"})
         mobile["updated_at"] = now
         changed[mobile_path] = mobile
@@ -255,7 +259,7 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
         if decision != "deleted":
             fail("Tremending solo admite Quitar de Listas")
         return delete_tremending(event_id, revision)
-    if decision == "deleted":
+    if decision in {"deleted", "published"}:
         return apply(project, event_id, decision, revision)
     if project == "ttittulares" and decision == "rework":
         outputs = rework_ready_news(
@@ -493,7 +497,7 @@ def main():
     trend_rank = cmd.get("trend_rank")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision not in {"deleted", "discard", "prepare", "rework"}:
+    if decision not in {"deleted", "published", "discard", "prepare", "rework"}:
         fail("Decision no admitida")
     if event_id.startswith("pilot-"):
         fail("Los casos sinteticos no pueden modificar datos editoriales")
@@ -511,6 +515,30 @@ def main():
                              "event_id": event_id, "revision": revision,
                              "decision": decision, "status": status, "at": stamp})
     history["items"] = history["items"][-2000:]
+    if decision == "published" and status == "applied":
+        # Count ONLY explicit confirmed publication confirmations from this
+        # new app flow, not old "published" records from discard / Telegram.
+        # GitHub server UTC timestamp is authoritative. 7-day retention
+        # exceeds the 24-hour moving window by a wide safety margin.
+        published = load(PUBLICATIONS, {"version": 1, "items": []})
+        from datetime import timedelta
+        cutoff = datetime.now(timezone.utc) - timedelta(days=7)
+        rows = []
+        for row in published.get("items", []):
+            try:
+                at = datetime.fromisoformat(str(row["at"]).replace("Z", "+00:00"))
+                if at >= cutoff:
+                    rows.append(row)
+            except (TypeError, ValueError, KeyError):
+                continue
+        if not any(row.get("project") == project and
+                   row.get("event_id") == event_id and
+                   row.get("revision") == revision for row in rows):
+            rows.append({"project": project, "event_id": event_id,
+                         "revision": revision, "request_id": request_id,
+                         "at": stamp})
+        published["items"] = rows
+        changes[PUBLICATIONS] = published
     for location, document in changes.items():
         save(location, document)
     save(LEDGER, history)
