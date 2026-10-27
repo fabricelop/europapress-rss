@@ -196,10 +196,30 @@ struct TTDashboard: View {
 
     private var counters: some View {
         HStack(spacing: 9) {
-            metric(label: "NOTICIAS EN LISTAS", number: store.snapshot.news.count,
-                   icon: "newspaper.fill", tint: TTTheme.teal)
-            metric(label: "TENDENCIAS EN LISTAS", number: store.snapshot.trendListas.count,
-                   icon: "chart.bar.fill", tint: TTTheme.blue)
+            Button {
+                showCombinedListas = false
+                store.section = .news
+                store.newsFilter = .listas
+                search = ""
+                UISelectionFeedbackGenerator().selectionChanged()
+            } label: {
+                metric(label: "NOTICIAS EN LISTAS", number: store.snapshot.news.count,
+                       icon: "newspaper.fill", tint: TTTheme.teal)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Abrir noticias en Listas")
+            Button {
+                showCombinedListas = false
+                store.section = .trends
+                store.trendFilter = .listas
+                search = ""
+                UISelectionFeedbackGenerator().selectionChanged()
+            } label: {
+                metric(label: "TENDENCIAS EN LISTAS", number: store.snapshot.trendListas.count,
+                       icon: "chart.bar.fill", tint: TTTheme.blue)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Abrir tendencias en Listas")
         }
     }
     private func metric(label: String, number: Int, icon: String, tint: Color) -> some View {
@@ -441,9 +461,9 @@ struct TTDashboard: View {
         case .listas: return store.snapshot.trendListas
         case .elaboracion: return store.snapshot.trendsElaboracion
         case .nuevas:
-            return items.filter { $0.movement == "new" ||
-                ($0.enteredAt.map { Date().timeIntervalSince($0) < 3 * 3600 &&
-                    Date().timeIntervalSince($0) >= 0 } ?? false) }
+            // Compare observed radar snapshots on this device, not "new"
+            // from a rank aggregator (which can classify 25 old labels as new).
+            return items.filter { store.radarNewNames.contains($0.name) }
         case .recientes:
             return items.filter { $0.lastExplained.map {
                 Date().timeIntervalSince($0) >= 0 && Date().timeIntervalSince($0) < 12 * 3600
