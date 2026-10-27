@@ -203,7 +203,6 @@ final class EditorialStore: ObservableObject {
     private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
     @Published private(set) var isManuallyRefreshing = false
     private var lastCompletedRefresh: Date? = nil
-    private var publicationFetchInProgress = false
     private var currentVisitSnapshot: [String: String]?
 
     init() {
@@ -708,9 +707,6 @@ final class EditorialStore: ObservableObject {
     func refreshPublicationCounters(expectedProject: String? = nil,
                                     expectedID: String? = nil,
                                     expectedRevision: Int? = nil) async {
-        guard !publicationFetchInProgress else { return }
-        publicationFetchInProgress = true
-        defer { publicationFetchInProgress = false }
         for attempt in 0..<5 {
             if attempt > 0 { try? await Task.sleep(for: .seconds(2)) }
             async let ledger = fetchPublicationJSON(
