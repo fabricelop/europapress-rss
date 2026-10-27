@@ -500,8 +500,8 @@ final class EditorialStore: ObservableObject {
             // 'En elaboración' forever after the content is deleted.
             let id = operation.eventID ?? {
                 guard operation.id.hasPrefix("ttendencias:") else { return "" }
-                return String(operation.id.dropFirst("ttendencias:".count)
-                    .split(separator: ":r").first ?? "")
+                return String(operation.id.dropFirst("ttendencias:".count))
+                    .components(separatedBy: ":r").first ?? ""
             }()
             let requestID = operation.requestID ?? ""
             let received = byRequest[requestID]
@@ -553,10 +553,10 @@ final class EditorialStore: ObservableObject {
             if closedAfterRequest {
                 for key in activeEditorialActions.keys.filter({
                     let row = activeEditorialActions[$0]!
-                    return row.requestID == requestID && !requestID.isEmpty ||
-                           row.project == "ttendencias" &&
+                    return (row.requestID == requestID && !requestID.isEmpty) ||
+                           (row.project == "ttendencias" &&
                            (row.id == id ||
-                            Self.norm(row.title) == Self.norm(operation.title))
+                            Self.norm(row.title) == Self.norm(operation.title)))
                 }) {
                     activeEditorialActions.removeValue(forKey: key)
                 }
