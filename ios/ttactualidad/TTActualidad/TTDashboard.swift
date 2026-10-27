@@ -164,13 +164,30 @@ struct TTDashboard: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(showCombinedListas ? "Listas editoriales" :
                      store.section == .trends ? "Top 30 España" : "Noticias listas")
-                    .font(.system(size: 25, weight: .bold, design: .rounded))
+                    .font(.system(size: showCombinedListas ? 23 : 25,
+                                  weight: .bold, design: .rounded))
+                    .lineLimit(1).minimumScaleFactor(0.75)
                     .tracking(-0.6)
                 Text(showCombinedListas ? "Publica o gestiona todo desde aquí" :
                      store.section == .trends ? trendRadarSubtitle : "Noticias preparadas para publicar")
                     .font(.caption).foregroundStyle(TTTheme.muted)
             }
-            Spacer()
+            Spacer(minLength: 4)
+            TimelineView(.periodic(from: .now, by: 1)) { context in
+                HStack(spacing: 4) {
+                    if showCombinedListas {
+                        published24hChip("TTiT", project: "ttittulares",
+                                         at: context.date, compact: true)
+                        published24hChip("TTen", project: "ttendencias",
+                                         at: context.date, compact: true)
+                    } else {
+                        published24hChip("24 h publicados",
+                                         project: store.section == .news ?
+                                                  "ttittulares" : "ttendencias",
+                                         at: context.date, compact: false)
+                    }
+                }
+            }
             if store.section == .news && !showCombinedListas {
                 Button { showNewStory = true } label: {
                     Label("Noticia", systemImage: "plus")
@@ -182,6 +199,32 @@ struct TTDashboard: View {
                 .accessibilityLabel("Añadir noticia")
             }
         }
+    }
+
+    private func published24hChip(_ label: String, project: String, at now: Date,
+                                   compact: Bool) -> some View {
+        VStack(spacing: 1) {
+            Text(label)
+                .font(.system(size: compact ? 9 : 8, weight: .bold))
+                .foregroundStyle(TTTheme.muted)
+                .lineLimit(1)
+                .minimumScaleFactor(0.65)
+            Text(store.publicationsLast24h(project: project, now: now)
+                 .map { String($0) } ?? "—")
+                .font(.system(size: compact ? 17 : 19,
+                              weight: .heavy, design: .rounded))
+                .foregroundStyle(project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
+                .monospacedDigit()
+        }
+        .frame(width: compact ? 51 : 72, height: 44)
+        .background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 10))
+        .overlay(RoundedRectangle(cornerRadius: 10)
+                    .stroke((project == "ttittulares" ? TTTheme.teal : TTTheme.blue)
+                        .opacity(0.35)))
+        .accessibilityLabel("\(label): " +
+            (store.publicationsLast24h(project: project, now: now)
+                .map { String($0) } ?? "sin datos") +
+            " publicaciones marcadas y confirmadas en las últimas 24 horas")
     }
 
     private var trendRadarSubtitle: String {
