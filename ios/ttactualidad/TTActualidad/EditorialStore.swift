@@ -424,6 +424,8 @@ final class EditorialStore: ObservableObject {
         let trendsQueued = Self.buildTrendsElaboracion(
             requests: docs["trends/requests.json"]!,
             queue: docs["trends/editorial-queue.json"]!,
+            manual: docs["trends/telegram-manual-explained.json"]!,
+            decisions: docs["trends/mobile-decisions.json"]!,
             ready: ready
         )
         if !partial && downloaded.count == paths.count {
@@ -446,7 +448,11 @@ final class EditorialStore: ObservableObject {
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
                                                                       "reliability"))
         if !partial && downloaded.count == paths.count {
-            reconcileOperationHistory(receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:])
+            reconcileOperationHistory(
+                receipts: docs["pilot/ttactualidad-action-receipts.json"] ?? [:],
+                manual: docs["trends/telegram-manual-explained.json"]!,
+                requests: docs["trends/requests.json"]!,
+                decisions: docs["trends/mobile-decisions.json"]!)
             retireSyncedActions()
             retireSyncedDrafts()
         }
@@ -460,7 +466,12 @@ final class EditorialStore: ObservableObject {
 
     // GitHub's receipt is authoritative. Rendering a provisional change
     // must NEVER become a success merely because it disappeared locally.
-    private func reconcileOperationHistory(receipts: [String: Any]) {
+    private func reconcileOperationHistory(receipts: [String: Any],
+                                           manual: [String: Any],
+                                           requests: [String: Any],
+                                           decisions: [String: Any]) {
+        let closedTrends = Self.closedTrends(manual: manual, requests: requests,
+                                           decisions: decisions)
         let remote = Self.rows(receipts, "items")
         let byRequest = Dictionary(
             remote.compactMap { row -> (String, String)? in
@@ -480,7 +491,14 @@ final class EditorialStore: ObservableObject {
             let received = byRequest[requestID]
             let stage: String
             let confirmed = received == "applied" || received == "already_applied"
-            if operation.kind == "Nueva noticia" {
+            // A later, authoritative deletion ALWAYS supersedes an earlier
+            // optimistic preparation/rework, even if it received its own receipt.
+            let closedAfterRequest = operation.project == "ttendencias" &&
+                closedTrends.isClosed(id: id, name: operation.title,
+                                     since: operation.createdAt)
+            if closedAfterRequest {
+                stage = "Retirada"
+            } else if operation.kind == "Nueva noticia" {
                 if readyNews.contains(where: { $0.id == id }) {
                     stage = "En Listas"
                 } else if workingNews.contains(where: { $0.id == id }) {
@@ -514,7 +532,12 @@ final class EditorialStore: ObservableObject {
                 recordOperation(id: operation.id, title: operation.title,
                                 kind: operation.kind, status: stage)
             }
-            if confirmed, let index = activeEditorialActions.first(where: {
+            if closedAfterRequest, let index = activeEditorialActions.first(where: {
+                $0.value.requestID == requestID
+            })?.key {
+                activeEditorialActions.removeValue(forKey: index)
+            }
+            if confirmed && !closedAfterRequest, let index = activeEditorialActions.first(where: {
                 $0.value.requestID == requestID
             })?.key, var action = activeEditorialActions[index] {
                 action.phase = .confirmed
@@ -524,7 +547,7 @@ final class EditorialStore: ObservableObject {
     }
 
     private func outstandingStage(for operation: EditorialOperation) -> String {
-        if ["Confirmada", "En Listas", "Rechazada"].contains(operation.status) {
+        if ["Confirmada", "En Listas", "Rechazada", "Retirada"].contains(operation.status) {
             return operation.status
         }
         if operation.status == "En elaboración" { return operation.status }
@@ -631,6 +654,14 @@ final class EditorialStore: ObservableObject {
     func completeEditorialAction(project: String, id: String, revision: Int,
                                  result: GitHubEditor.WriteResult, detail: String) {
         let key = project + ":" + id + ":r" + String(revision)
+        // The user may have removed a completed item while an older rework
+        // is still being confirmed. The late callback cannot resurrect it.
+        if operationHistory.contains(where: { $0.id == key && $0.status == "Retirada" }) {
+            activeEditorialActions.removeValue(forKey: key)
+            applyOptimisticOverlay()
+            refreshOptimisticActivity()
+            return
+        }
         guard var action = activeEditorialActions[key] else { return }
         switch result {
         case .verified:
@@ -669,6 +700,12 @@ final class EditorialStore: ObservableObject {
     // reads never undo an action that was visibly removed moments earlier.
     private func retireSyncedActions() {
         for (key, action) in activeEditorialActions {
+            if operationHistory.contains(where: {
+                $0.id == key && ["Retirada", "Rechazada"].contains($0.status)
+            }) {
+                activeEditorialActions.removeValue(forKey: key)
+                continue
+            }
             guard action.phase != .sending else { continue }
             let originalNews: [NewsItem] = canonicalSnapshot.news +
                 canonicalSnapshot.newsElaboracion + canonicalSnapshot.newsRevision +
@@ -1044,16 +1081,67 @@ final class EditorialStore: ObservableObject {
         .map { $0 }
     }
 
+    /// A terminal deletion is authoritative even when a previous rework
+    /// started under another ID. Compare the timestamp: a *later* new request
+    /// with the same name must remain eligible to run.
+    private struct ClosedTrends {
+        var byID: [String: Date]
+        var byName: [String: Date]
+
+        func isClosed(id: String, name: String, since: Date) -> Bool {
+            if let closed = byID[id], closed >= since.addingTimeInterval(-5) {
+                return true
+            }
+            let normalized = EditorialStore.norm(name)
+            return (byName[normalized] ?? .distantPast) >= since.addingTimeInterval(-5)
+        }
+    }
+
+    private static func closedTrends(manual: [String: Any], requests: [String: Any],
+                                     decisions: [String: Any]) -> ClosedTrends {
+        var result = ClosedTrends(byID: [:], byName: [:])
+        func remember(_ row: [String: Any]) {
+            guard closed.contains(str(row, "status").lowercased()) else { return }
+            let id = str(row, "id")
+            let name = norm(str(row, "name"))
+            let time = when(row, ["deleted_at", "dismissed_at", "updated_at"]) ?? .distantPast
+            if !id.isEmpty { result.byID[id] = max(result.byID[id] ?? .distantPast, time) }
+            if !name.isEmpty { result.byName[name] = max(result.byName[name] ?? .distantPast, time) }
+        }
+        for item in rows(manual, "items") { remember(item) }
+        for item in rows(requests, "requests") { remember(item) }
+        for item in rows(decisions, "items") { remember(item) }
+        return result
+    }
+
     private static func buildTrendsElaboracion(
-        requests: [String: Any], queue: [String: Any], ready: [TrendItem]
+        requests: [String: Any], queue: [String: Any],
+        manual: [String: Any], decisions: [String: Any], ready: [TrendItem]
     ) -> [TrendItem] {
         let readyByID = Dictionary(uniqueKeysWithValues: ready.map { ($0.editorialID, $0.revision) })
+        let closures = closedTrends(manual: manual, requests: requests, decisions: decisions)
+        var finishedByName: [String: Date] = [:]
+        for row in rows(manual, "items") {
+            guard ["explained", "deleted", "dismissed", "published"].contains(
+                str(row, "status").lowercased()) else { continue }
+            let name = norm(str(row, "name"))
+            let timestamp = when(row, ["deleted_at", "explained_at", "updated_at"]) ?? .distantPast
+            if !name.isEmpty {
+                finishedByName[name] = max(finishedByName[name] ?? .distantPast, timestamp)
+            }
+        }
         var result: [String: [String: Any]] = [:]
         for item in rows(requests, "requests") + rows(queue, "items") {
             let id = str(item, "id")
             let status = str(item, "status").lowercased()
+            let name = str(item, "name")
+            let requestedAt = when(item, ["requested_at", "created_at", "updated_at"]) ?? .distantPast
             guard !id.isEmpty, ["preparing", "update"].contains(status),
-                  int(item, "revision") > (readyByID[id] ?? -1) else { continue }
+                  int(item, "revision") > (readyByID[id] ?? -1),
+                  !closures.isClosed(id: id, name: name, since: requestedAt),
+                  (finishedByName[norm(name)] ?? .distantPast) < requestedAt else {
+                continue
+            }
             if isNewer(item, than: result[id]) { result[id] = item }
         }
         return result.values.map { row in
