@@ -4,21 +4,28 @@
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "8c9462005850",
+    "fecc8ec91811",
+    "fd827439f147",
+    "3ddbfd7e26b4"
+  ],
   "remaining_ids": [],
-  "remaining_problematic_ids": [],
+  "remaining_problematic_ids": [
+    "3ddbfd7e26b4"
+  ],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-27T13:45:00+01:00",
-  "last_completed_at": "2026-10-27T13:45:40+01:00",
-  "updated_at": "2026-10-27T13:45:40+01:00",
+  "last_started_at": "2026-10-27T14:15:00+01:00",
+  "last_completed_at": "2026-10-27T13:20:34.942Z",
+  "updated_at": "2026-10-27T13:20:34.942Z",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261027T134500+0100",
+    "trigger_run_id": "tr-chat-20261027T141500+0100",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -26,80 +33,92 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261027T134500+0100",
+    "run_id": "tr-chat-20261027T141500+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-27T13:45:00+01:00",
-    "updated_at": "2026-10-27T13:45:40+01:00",
-    "finished_at": "2026-10-27T13:45:40+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-27T14:15:00+01:00",
+    "updated_at": "2026-10-27T13:20:34.942Z",
+    "finished_at": "2026-10-27T13:20:34.942Z",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
-    "message": "TTendencias completada 0/0 · cola editorial 0 y saneamiento visual solicitado para 2 Pendientes recientes.",
+    "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10.",
     "incident_count": 0,
     "incidents": [],
     "partial": false,
     "activity": [
       {
-        "at": "2026-10-27T13:45:00+01:00",
+        "at": "2026-10-27T14:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Iniciando pasada directa · cola editorial 0; revalidando estado y saneamiento de 2 Pendientes recientes."
+        "message": "Iniciando pasada directa · 4 revisiones activas; preparando saneamiento visual y snapshot editorial."
       },
       {
-        "at": "2026-10-27T13:45:20+01:00",
+        "at": "2026-10-27T13:19:04.591Z",
+        "phase": "persisting",
+        "trend_id": "8c9462005850",
+        "title": "#Mañaneros27O",
+        "message": "Persistidas las explicaciones verificadas de #Mañaneros27O, LaLiga y Copa del Rey; requests actualizado."
+      },
+      {
+        "at": "2026-10-27T13:19:27.903Z",
+        "phase": "persisting",
+        "trend_id": "3ddbfd7e26b4",
+        "title": "#FreeParacetamol",
+        "message": "#FreeParacetamol marcado problematic tras búsquedas distintas sin detonante verificable; retiradas de cola las tres revisiones explicadas."
+      },
+      {
+        "at": "2026-10-27T13:20:34.942Z",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Releyendo main · verificando cola, requests, reexplicaciones y Pendientes recientes."
+        "message": "Releído main · 0 revisiones preparing/update, 1 problematic y 0 reexplicaciones pendientes; texto y revisión coinciden en requests y Explicadas."
       },
       {
-        "at": "2026-10-27T13:45:35+01:00",
-        "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Verificación final · no quedan preparing/update ni rewrite_pending; 2 Pendientes recientes conservan remate y tienen reparación visual solicitada."
-      },
-      {
-        "at": "2026-10-27T13:45:40+01:00",
+        "at": "2026-10-27T13:20:34.942Z",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0 · cola editorial 0 y saneamiento visual solicitado para 2 Pendientes recientes."
+        "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "8c9462005850",
+      "fecc8ec91811",
+      "fd827439f147",
+      "3ddbfd7e26b4"
+    ],
     "queue_complete": true,
     "remaining_active_ids": [],
     "summary": {
-      "attempted": 0,
-      "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
+      "attempted": 4,
+      "ready": 3,
+      "explained": 3,
+      "final_resolved": 3,
+      "explanation_groups": 3,
+      "new_cards": 3,
       "revisions_updated": 0,
       "grouped_into_existing_card": 0,
-      "problematic_reviewed": 0,
-      "problematic_marked": 0,
+      "problematic_reviewed": 1,
+      "problematic_marked": 1,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 4,
       "discovered_during_run": 0,
-      "final_compact_queue": 0,
+      "final_compact_queue": 1,
       "remaining_active": 0,
-      "remaining_problematic": 0,
+      "remaining_problematic": 1,
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
-      "remates_selected": 0,
-      "remates_omitted": 0,
+      "explanations_verified_under_280": 3,
+      "remates_selected": 3,
+      "remates_omitted": 1,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 2,
+      "pending_cards_reviewed": 5,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
@@ -107,49 +126,261 @@
     },
     "radar_refresh": {
       "status": "not_needed_fresh",
-      "captured_at": "2026-10-27T13:40:53+01:00"
+      "captured_at": "2026-10-27T14:11:20+01:00"
     },
     "radar": {
-      "captured_at": "2026-10-27T13:40:53+01:00",
-      "queue_count": 0
+      "captured_at": "2026-10-27T14:11:20+01:00",
+      "queue_count": 4
     },
     "ratings_snapshot": {
       "path": "trends/remate-ratings.json",
       "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+      "updated_at": "2026-10-06T21:21:47.927Z",
       "total_ratings": 154,
       "recent_considered": 30
     },
-    "remate_selections": [],
-    "final_outcomes": [],
-    "pending_delivery_count": 2
+    "remate_selections": [
+      {
+        "trend_id": "8c9462005850",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 6.8,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c2",
+            "total": 7.2,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c3",
+            "total": 8,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.7,
+            "punch": 1.7,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c4",
+            "total": 7.1,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.4,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c5",
+            "total": 6.9,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.4,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          }
+        ],
+        "selected_candidate": "c3",
+        "selected_score": 8,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "fecc8ec91811",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7.3,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c2",
+            "total": 8.5,
+            "ratings_affinity": 2.2,
+            "trend_specificity": 1.9,
+            "punch": 1.8,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c3",
+            "total": 7.5,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c4",
+            "total": 7.1,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c5",
+            "total": 6.9,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.4,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          }
+        ],
+        "selected_candidate": "c2",
+        "selected_score": 8.5,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "fd827439f147",
+        "revision": 0,
+        "candidate_count": 5,
+        "candidates": [
+          {
+            "id": "c1",
+            "total": 7,
+            "ratings_affinity": 1.7,
+            "trend_specificity": 1.5,
+            "punch": 1.5,
+            "originality": 1.1,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c2",
+            "total": 7.4,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.6,
+            "punch": 1.6,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c3",
+            "total": 7.6,
+            "ratings_affinity": 1.9,
+            "trend_specificity": 1.6,
+            "punch": 1.6,
+            "originality": 1.3,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          },
+          {
+            "id": "c4",
+            "total": 8.2,
+            "ratings_affinity": 2,
+            "trend_specificity": 1.8,
+            "punch": 1.7,
+            "originality": 1.4,
+            "length_fit": 1,
+            "repetition_penalty": -0.7
+          },
+          {
+            "id": "c5",
+            "total": 7.2,
+            "ratings_affinity": 1.8,
+            "trend_specificity": 1.5,
+            "punch": 1.5,
+            "originality": 1.2,
+            "length_fit": 1,
+            "repetition_penalty": -0.8
+          }
+        ],
+        "selected_candidate": "c4",
+        "selected_score": 8.2,
+        "no_remate_reason": null
+      },
+      {
+        "trend_id": "3ddbfd7e26b4",
+        "revision": 0,
+        "candidate_count": 0,
+        "candidates": [],
+        "selected_candidate": null,
+        "selected_score": null,
+        "no_remate_reason": "unverified_trigger"
+      }
+    ],
+    "final_outcomes": [
+      {
+        "id": "8c9462005850",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "fecc8ec91811",
+        "revision": 0,
+        "status": "explained"
+      },
+      {
+        "id": "3ddbfd7e26b4",
+        "revision": 0,
+        "status": "problematic"
+      },
+      {
+        "id": "fd827439f147",
+        "revision": 0,
+        "status": "explained"
+      }
+    ],
+    "pending_delivery_count": 5
   },
-  "run_id": "tr-chat-20261027T134500+0100",
+  "run_id": "tr-chat-20261027T141500+0100",
   "summary": {
-    "attempted": 0,
-    "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
+    "attempted": 4,
+    "ready": 3,
+    "explained": 3,
+    "final_resolved": 3,
+    "explanation_groups": 3,
+    "new_cards": 3,
     "revisions_updated": 0,
     "grouped_into_existing_card": 0,
-    "problematic_reviewed": 0,
-    "problematic_marked": 0,
+    "problematic_reviewed": 1,
+    "problematic_marked": 1,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 4,
     "discovered_during_run": 0,
-    "final_compact_queue": 0,
+    "final_compact_queue": 1,
     "remaining_active": 0,
-    "remaining_problematic": 0,
+    "remaining_problematic": 1,
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
-    "remates_selected": 0,
-    "remates_omitted": 0,
+    "explanations_verified_under_280": 3,
+    "remates_selected": 3,
+    "remates_omitted": 1,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 2,
+    "pending_cards_reviewed": 5,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -157,51 +388,270 @@
   },
   "activity": [
     {
-      "at": "2026-10-27T13:45:00+01:00",
+      "at": "2026-10-27T14:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Iniciando pasada directa · cola editorial 0; revalidando estado y saneamiento de 2 Pendientes recientes."
+      "message": "Iniciando pasada directa · 4 revisiones activas; preparando saneamiento visual y snapshot editorial."
     },
     {
-      "at": "2026-10-27T13:45:20+01:00",
+      "at": "2026-10-27T13:19:04.591Z",
+      "phase": "persisting",
+      "trend_id": "8c9462005850",
+      "title": "#Mañaneros27O",
+      "message": "Persistidas las explicaciones verificadas de #Mañaneros27O, LaLiga y Copa del Rey; requests actualizado."
+    },
+    {
+      "at": "2026-10-27T13:19:27.903Z",
+      "phase": "persisting",
+      "trend_id": "3ddbfd7e26b4",
+      "title": "#FreeParacetamol",
+      "message": "#FreeParacetamol marcado problematic tras búsquedas distintas sin detonante verificable; retiradas de cola las tres revisiones explicadas."
+    },
+    {
+      "at": "2026-10-27T13:20:34.942Z",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Releyendo main · verificando cola, requests, reexplicaciones y Pendientes recientes."
+      "message": "Releído main · 0 revisiones preparing/update, 1 problematic y 0 reexplicaciones pendientes; texto y revisión coinciden en requests y Explicadas."
     },
     {
-      "at": "2026-10-27T13:45:35+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Verificación final · no quedan preparing/update ni rewrite_pending; 2 Pendientes recientes conservan remate y tienen reparación visual solicitada."
-    },
-    {
-      "at": "2026-10-27T13:45:40+01:00",
+      "at": "2026-10-27T13:20:34.942Z",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · cola editorial 0 y saneamiento visual solicitado para 2 Pendientes recientes."
+      "message": "TTendencias completada 3/4 · tres tendencias explicadas y #FreeParacetamol queda problematic para un nuevo intento si sigue en Top 10."
     }
   ],
   "partial": false,
   "radar_refresh": {
     "status": "not_needed_fresh",
-    "captured_at": "2026-10-27T13:40:53+01:00"
+    "captured_at": "2026-10-27T14:11:20+01:00"
   },
   "radar": {
-    "captured_at": "2026-10-27T13:40:53+01:00",
-    "queue_count": 0
+    "captured_at": "2026-10-27T14:11:20+01:00",
+    "queue_count": 4
   },
   "previous_run_id": "tr-chat-20261027T1315+0100",
   "ratings_snapshot": {
     "path": "trends/remate-ratings.json",
     "blob_sha": "034e1742db815332f05b07e0ec6eef3fc1eb8d64",
+    "updated_at": "2026-10-06T21:21:47.927Z",
     "total_ratings": 154,
     "recent_considered": 30
   },
-  "remate_selections": [],
-  "final_outcomes": [],
-  "pending_delivery_count": 2
+  "remate_selections": [
+    {
+      "trend_id": "8c9462005850",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 6.8,
+          "ratings_affinity": 1.7,
+          "trend_specificity": 1.4,
+          "punch": 1.4,
+          "originality": 1,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        },
+        {
+          "id": "c2",
+          "total": 7.2,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.5,
+          "punch": 1.5,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        },
+        {
+          "id": "c3",
+          "total": 8,
+          "ratings_affinity": 2,
+          "trend_specificity": 1.7,
+          "punch": 1.7,
+          "originality": 1.3,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        },
+        {
+          "id": "c4",
+          "total": 7.1,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.4,
+          "punch": 1.5,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        },
+        {
+          "id": "c5",
+          "total": 6.9,
+          "ratings_affinity": 1.7,
+          "trend_specificity": 1.4,
+          "punch": 1.4,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        }
+      ],
+      "selected_candidate": "c3",
+      "selected_score": 8,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "fecc8ec91811",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 7.3,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.6,
+          "punch": 1.5,
+          "originality": 1.2,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c2",
+          "total": 8.5,
+          "ratings_affinity": 2.2,
+          "trend_specificity": 1.9,
+          "punch": 1.8,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c3",
+          "total": 7.5,
+          "ratings_affinity": 1.9,
+          "trend_specificity": 1.6,
+          "punch": 1.6,
+          "originality": 1.2,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c4",
+          "total": 7.1,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.5,
+          "punch": 1.5,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c5",
+          "total": 6.9,
+          "ratings_affinity": 1.7,
+          "trend_specificity": 1.5,
+          "punch": 1.4,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        }
+      ],
+      "selected_candidate": "c2",
+      "selected_score": 8.5,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "fd827439f147",
+      "revision": 0,
+      "candidate_count": 5,
+      "candidates": [
+        {
+          "id": "c1",
+          "total": 7,
+          "ratings_affinity": 1.7,
+          "trend_specificity": 1.5,
+          "punch": 1.5,
+          "originality": 1.1,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c2",
+          "total": 7.4,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.6,
+          "punch": 1.6,
+          "originality": 1.2,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c3",
+          "total": 7.6,
+          "ratings_affinity": 1.9,
+          "trend_specificity": 1.6,
+          "punch": 1.6,
+          "originality": 1.3,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        },
+        {
+          "id": "c4",
+          "total": 8.2,
+          "ratings_affinity": 2,
+          "trend_specificity": 1.8,
+          "punch": 1.7,
+          "originality": 1.4,
+          "length_fit": 1,
+          "repetition_penalty": -0.7
+        },
+        {
+          "id": "c5",
+          "total": 7.2,
+          "ratings_affinity": 1.8,
+          "trend_specificity": 1.5,
+          "punch": 1.5,
+          "originality": 1.2,
+          "length_fit": 1,
+          "repetition_penalty": -0.8
+        }
+      ],
+      "selected_candidate": "c4",
+      "selected_score": 8.2,
+      "no_remate_reason": null
+    },
+    {
+      "trend_id": "3ddbfd7e26b4",
+      "revision": 0,
+      "candidate_count": 0,
+      "candidates": [],
+      "selected_candidate": null,
+      "selected_score": null,
+      "no_remate_reason": "unverified_trigger"
+    }
+  ],
+  "final_outcomes": [
+    {
+      "id": "8c9462005850",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "fecc8ec91811",
+      "revision": 0,
+      "status": "explained"
+    },
+    {
+      "id": "3ddbfd7e26b4",
+      "revision": 0,
+      "status": "problematic"
+    },
+    {
+      "id": "fd827439f147",
+      "revision": 0,
+      "status": "explained"
+    }
+  ],
+  "pending_delivery_count": 5
 }
