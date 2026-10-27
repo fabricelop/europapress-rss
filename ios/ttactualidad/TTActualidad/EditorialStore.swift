@@ -1,5 +1,6 @@
 import ActivityKit
 import Combine
+import CryptoKit
 import Foundation
 
 enum EditorialSection: String, CaseIterable, Identifiable {
@@ -12,6 +13,10 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case top = "Top 30"
     case listas = "Listas"
     case elaboracion = "En elaboración"
+    case nuevas = "Nuevas"
+    case recientes = "Recientes"
+    case pendientes = "Pendientes"
+    case antiguas = "Antiguas"
     var id: String { rawValue }
 }
 enum NewsFilter: String, CaseIterable, Identifiable {
@@ -51,6 +56,9 @@ struct TrendItem: Identifiable {
     let revision: Int
     let imageURL: URL?
     let sourceURL: URL?
+    var rankDelta: Int = 0
+    var movement: String = ""
+    var enteredAt: Date? = nil
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -70,6 +78,88 @@ struct EditorialSnapshot {
     var trendsElaboracion: [TrendItem] = []
     var updatedAt: Date?
     var partial: Bool = true
+    var oneSourceCount: Int? = nil
+    var twoSourceCount: Int? = nil
+    var oneSourceDelta: Int? = nil
+    var twoSourceDelta: Int? = nil
+    var radarAt: Date? = nil
+    var trendsRadarAt: Date? = nil
+    var trendsRadarReliability: String = ""
+}
+
+// UI changes immediately; GitHub remains the authority for persisted decisions.
+struct OptimisticEditorialAction {
+    enum Phase { case sending, confirmed, uncertain }
+    let project: String
+    let id: String
+    let revision: Int
+    let decision: String
+    let title: String
+    let rank: Int
+    let requestID: String
+    var phase: Phase = .sending
+
+    var key: String { project + ":" + id + ":r" + String(revision) }
+}
+
+// Terminal decisions are durable. A stale or partially cached GitHub JSON
+// cannot resurrect a deleted card on a later app launch.
+private struct EditorialTombstone: Codable {
+    let project: String
+    let id: String
+    let revision: Int
+    let decision: String
+    let confirmedAt: Date
+}
+
+private struct PublicationEvent {
+    let project: String
+    let eventID: String
+    let revision: Int
+    let confirmedAt: Date
+}
+
+struct ConfirmedPublication: Identifiable {
+    let project: String
+    let eventID: String
+    let revision: Int
+    let confirmedAt: Date
+    let title: String?
+
+    var id: String {
+        project + ":" + eventID + ":r" + String(revision)
+    }
+}
+
+struct EditorialOperation: Codable, Identifiable {
+    let id: String
+    let title: String
+    let kind: String
+    var status: String
+    let createdAt: Date
+    var requestID: String? = nil
+    var project: String? = nil
+    var eventID: String? = nil
+    var revision: Int? = nil
+    var detail: String? = nil
+
+    var isOutstanding: Bool {
+        ["Enviando", "Esperando GitHub", "Pendiente de GitHub",
+         "En elaboración", "Sin confirmar"].contains(status)
+    }
+    var displayKind: String {
+        switch kind {
+        case "deleted": return "No publicado · retirar de Listas"
+        case "published": return "Publicado · retirar de Listas"
+        case "discard": return "Desestimar"
+        case "prepare", "rework": return "Elaborar desde cero"
+        case "Nueva noticia": return "Añadir noticia"
+        default: return kind
+        }
+    }
+    var displayProject: String {
+        project == "ttendencias" ? "TTendencias" : "TTiTTulares"
+    }
 }
 
 @MainActor
@@ -78,12 +168,295 @@ final class EditorialStore: ObservableObject {
     @Published var trendFilter: TrendFilter = .top
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
+    @Published private(set) var publicationLedgerAvailable = false
+    @Published private var publicationEvents: [PublicationEvent] = []
+
+    // Exactly (now - 86,400 seconds, now], not midnight-based and never
+    // inferred from intent-to-tweet, discard or historical status records.
+    func publicationsLast24h(project: String, now: Date = Date()) -> Int? {
+        guard publicationLedgerAvailable else { return nil }
+        return publicationsHistoryLast24h(project: project, now: now)?.count
+    }
+
+    // Oldest record first, with stable tie-breaking by project/event/revision.
+    // The UI numbers rows backwards, so the first (oldest) gets N.
+    func publicationsHistoryLast24h(
+        project: String, now: Date = Date()
+    ) -> [ConfirmedPublication]? {
+        guard publicationLedgerAvailable else { return nil }
+        let lowerBound = now.addingTimeInterval(-86_400)
+        return publicationEvents.filter {
+            $0.project == project &&
+            $0.confirmedAt > lowerBound && $0.confirmedAt <= now
+        }
+        .sorted {
+            if $0.confirmedAt != $1.confirmedAt {
+                return $0.confirmedAt < $1.confirmedAt
+            }
+            return ($0.project + ":" + $0.eventID + ":r" + String($0.revision)) <
+                   ($1.project + ":" + $1.eventID + ":r" + String($1.revision))
+        }
+        .map { event in
+            let title = operationHistory.first {
+                $0.kind == "published" &&
+                $0.project == event.project &&
+                $0.eventID == event.eventID &&
+                $0.revision == event.revision
+            }?.title
+            return ConfirmedPublication(
+                project: event.project, eventID: event.eventID,
+                revision: event.revision, confirmedAt: event.confirmedAt,
+                title: title
+            )
+        }
+    }
     @Published private(set) var isLoading = false
     @Published private(set) var message = "Sin sincronizar"
     @Published private(set) var liveStatus = "Sin iniciar"
+    @Published private(set) var novedades: [String] = []
+    @Published private(set) var actionMessage = ""
+    @Published private(set) var actionIsError = false
+    @Published private(set) var activeEditorialActions: [String: OptimisticEditorialAction] = [:]
+    @Published private(set) var unreviewedNews = Set<String>()
+    @Published private(set) var unreviewedTrends = Set<String>()
+    @Published private(set) var radarNewNames = Set<String>()
+    @Published private(set) var operationHistory: [EditorialOperation] = []
+    private var reviewedNews = Set<String>()
+    private var reviewedTrends = Set<String>()
+    var allNews: [NewsItem] {
+        var seen = Set<String>()
+        return (snapshot.news + snapshot.newsElaboracion + snapshot.newsRevision +
+                snapshot.newsCreciendo + snapshot.newsTremending).filter { seen.insert($0.id).inserted }
+    }
+    var pendingOperationsCount: Int {
+        operationHistory.filter {
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains($0.status)
+        }.count
+    }
+    var outstandingOperations: [EditorialOperation] {
+        operationHistory.filter(\.isOutstanding)
+    }
+    var recentOperations: [EditorialOperation] {
+        Array(operationHistory.filter { !$0.isOutstanding }.prefix(5))
+    }
+    private var canonicalSnapshot = EditorialSnapshot()
+    private var terminalMarks: [String: EditorialTombstone] = [:]
+    private let tombstoneStorageKey = "TTActualidad.confirmed-terminals.v1"
+    @Published private(set) var isManuallyRefreshing = false
+    private var lastCompletedRefresh: Date? = nil
+    private var currentVisitSnapshot: [String: String]?
+
+    init() {
+        if let saved = UserDefaults.standard.data(forKey: tombstoneStorageKey),
+           let tombstones = try? JSONDecoder().decode(
+                [String: EditorialTombstone].self, from: saved) {
+            terminalMarks = tombstones
+        }
+        unreviewedNews = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.unread.news.v1") ?? [])
+        unreviewedTrends = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.unread.trends.v1") ?? [])
+        radarNewNames = Set(UserDefaults.standard.stringArray(
+            forKey: "TTActualidad.radar.newNames.v1") ?? [])
+        if let stored = UserDefaults.standard.data(forKey: "TTActualidad.operations.v1"),
+           let decoded = try? JSONDecoder().decode([EditorialOperation].self, from: stored) {
+            operationHistory = Array(decoded.prefix(60))
+        }
+        for row in operationHistory where
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub"].contains(row.status) &&
+            Date().timeIntervalSince(row.createdAt) < 20 * 60 {
+            guard let project = row.project, let id = row.eventID,
+                  let revision = row.revision, let requestID = row.requestID,
+                  row.kind != "Nueva noticia" else { continue }
+            let action = OptimisticEditorialAction(
+                project: project, id: id, revision: revision, decision: row.kind,
+                title: row.title, rank: 0, requestID: requestID, phase: .uncertain)
+            activeEditorialActions[action.key] = action
+        }
+    }
+
+    private func recordOperation(id: String, title: String, kind: String, status: String,
+                                 requestID: String? = nil, project: String? = nil,
+                                 eventID: String? = nil, revision: Int? = nil,
+                                 detail: String? = nil) {
+        if let index = operationHistory.firstIndex(where: { $0.id == id }) {
+            operationHistory[index].status = status
+            if let requestID { operationHistory[index].requestID = requestID }
+            if let project { operationHistory[index].project = project }
+            if let eventID { operationHistory[index].eventID = eventID }
+            if let revision { operationHistory[index].revision = revision }
+            if let detail { operationHistory[index].detail = detail }
+        } else {
+            operationHistory.insert(EditorialOperation(
+                id: id, title: title, kind: kind, status: status,
+                createdAt: Date(), requestID: requestID,
+                project: project, eventID: eventID, revision: revision,
+                detail: detail), at: 0)
+        }
+        operationHistory = Array(operationHistory.prefix(60))
+        if let data = try? JSONEncoder().encode(operationHistory) {
+            UserDefaults.standard.set(data, forKey: "TTActualidad.operations.v1")
+        }
+    }
+
+    private func markTerminal(project: String, id: String, revision: Int,
+                              decision: String, at: Date) {
+        guard !id.isEmpty, ["ttittulares", "ttendencias"].contains(project),
+              ["deleted", "dismissed", "published"].contains(decision) else { return }
+        let key = project + ":" + id
+        if let earlier = terminalMarks[key] {
+            guard revision > earlier.revision ||
+                  (revision == earlier.revision && at >= earlier.confirmedAt) else { return }
+        }
+        terminalMarks[key] = EditorialTombstone(
+            project: project, id: id, revision: revision,
+            decision: decision, confirmedAt: at)
+    }
+
+    // Prefer confirmation in the decision ledgers or successful receipts.
+    // Never infer a terminal state merely because a row was absent in a
+    // single GET response or because an optimistic animation completed.
+    private func accumulateConfirmedTerminals(_ docs: [String: [String: Any]],
+                                               _ downloaded: [String: Data]) {
+        func read(_ path: String, project: String, idKey: String) {
+            guard downloaded[path] != nil, let doc = docs[path] else { return }
+            for row in Self.rows(doc, "items") {
+                let id = Self.str(row, idKey)
+                let status = Self.str(row, "status").lowercased()
+                guard Self.closed.contains(status) else { continue }
+                let date = Self.when(row, [
+                    "deleted_at", "dismissed_at", "published_at", "updated_at"
+                ]) ?? .distantPast
+                markTerminal(project: project, id: id, revision: Self.int(row, "revision"),
+                             decision: status, at: date)
+            }
+        }
+        read("ttittulares/decisions.json", project: "ttittulares", idKey: "event_id")
+        read("trends/mobile-decisions.json", project: "ttendencias", idKey: "id")
+        if downloaded["trends/telegram-manual-explained.json"] != nil,
+           let manual = docs["trends/telegram-manual-explained.json"] {
+            for row in Self.rows(manual, "items") where
+                Self.closed.contains(Self.str(row, "status").lowercased()) {
+                markTerminal(project: "ttendencias", id: Self.str(row, "id"),
+                             revision: Self.int(row, "revision"),
+                             decision: Self.str(row, "status").lowercased(),
+                             at: Self.when(row, [
+                                "deleted_at", "dismissed_at", "published_at", "updated_at"
+                             ]) ?? .distantPast)
+            }
+        }
+        if downloaded["pilot/ttactualidad-action-receipts.json"] != nil,
+           let receipts = docs["pilot/ttactualidad-action-receipts.json"] {
+            for row in Self.rows(receipts, "items") {
+                let status = Self.str(row, "status").lowercased()
+                guard ["applied", "already_applied"].contains(status) else { continue }
+                let decision = Self.str(row, "decision").lowercased()
+                guard ["deleted", "discard", "published"].contains(decision) else { continue }
+                markTerminal(project: Self.str(row, "project"),
+                             id: Self.str(row, "event_id"),
+                             revision: Self.int(row, "revision"),
+                             decision: decision == "discard" ? "dismissed" : decision,
+                             at: Self.when(row, ["at"]) ?? .distantPast)
+            }
+        }
+        persistTerminals()
+    }
+
+    private func persistTerminals() {
+        if let saved = try? JSONEncoder().encode(terminalMarks) {
+            UserDefaults.standard.set(saved, forKey: tombstoneStorageKey)
+        }
+    }
+
+    private func isTerminal(project: String, id: String, revision: Int) -> Bool {
+        guard let tombstone = terminalMarks[project + ":" + id] else { return false }
+        return revision <= tombstone.revision
+    }
+
+    private func applyConfirmedTerminals(_ original: EditorialSnapshot) -> EditorialSnapshot {
+        var clean = original
+        clean.news.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsElaboracion.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsRevision.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsCreciendo.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.newsTremending.removeAll {
+            isTerminal(project: "ttittulares", id: $0.id, revision: $0.revision)
+        }
+        clean.trendListas.removeAll {
+            isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision)
+        }
+        clean.trendsElaboracion.removeAll {
+            isTerminal(project: "ttendencias", id: $0.editorialID, revision: $0.revision)
+        }
+        clean.top30 = clean.top30.map { item in
+            guard isTerminal(project: "ttendencias", id: item.editorialID,
+                             revision: item.revision) else { return item }
+            return overlayTrend(item, status: "PENDIENTE", inListas: false)
+        }
+        return clean
+    }
+
+    private func storeUnread() {
+        UserDefaults.standard.set(Array(unreviewedNews),
+                                  forKey: "TTActualidad.unread.news.v1")
+        UserDefaults.standard.set(Array(unreviewedTrends),
+                                  forKey: "TTActualidad.unread.trends.v1")
+    }
+
+    func markNewsReviewed(_ id: String) {
+        reviewedNews.insert(id)
+        unreviewedNews.remove(id)
+        storeUnread()
+    }
+    func markTrendReviewed(_ name: String) {
+        reviewedTrends.insert(name)
+        unreviewedTrends.remove(name)
+        storeUnread()
+    }
+
+    // The radar's 'movement: new' describes an aggregate comparison and may
+    // mark a long-existing topic as new. Track actual entrances between
+    // complete, distinct radar snapshots this iPhone has seen instead.
+    private func updateRadarEntrants(_ recent: [String: Any]) {
+        let currentVersion = Self.str(recent, "updated_at")
+        guard !currentVersion.isEmpty else { return }
+        let current = Set(Self.rows(recent, "items").prefix(30).compactMap {
+            let name = Self.str($0, "name").trimmingCharacters(in: .whitespacesAndNewlines)
+            return name.isEmpty ? nil : name
+        })
+        guard !current.isEmpty else { return }
+        let defaults = UserDefaults.standard
+        let versionKey = "TTActualidad.radar.lastVersion.v1"
+        let namesKey = "TTActualidad.radar.lastNames.v1"
+        let newKey = "TTActualidad.radar.newNames.v1"
+        if defaults.string(forKey: versionKey) == currentVersion {
+            radarNewNames = Set(defaults.stringArray(forKey: newKey) ?? [])
+                .intersection(current)
+            return
+        }
+        if let previousNames = defaults.stringArray(forKey: namesKey) {
+            radarNewNames = current.subtracting(Set(previousNames))
+        } else {
+            radarNewNames = [] // First complete sync only establishes baseline.
+        }
+        defaults.set(currentVersion, forKey: versionKey)
+        defaults.set(Array(current), forKey: namesKey)
+        defaults.set(Array(radarNewNames), forKey: newKey)
+    }
+    private var draftNews = [String: NewsItem]()
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
     private let paths = [
+        "pilot/ttactualidad-publication-events.json",
+        "pilot/ttactualidad-action-receipts.json",
         "ttittulares/prepared.json",
         "ttittulares/decisions.json",
         "ttittulares/status.json",
@@ -98,19 +471,35 @@ final class EditorialStore: ObservableObject {
         "trends/editorial-queue.json"
     ]
 
-    func refresh() async {
+    /// Only one GitHub refresh at a time. Do not queue another entire
+    /// 15-file download each time the app changes foreground state.
+    func refreshIfStale(minInterval: TimeInterval = 120) async {
+        guard !isLoading,
+              lastCompletedRefresh.map({ Date().timeIntervalSince($0) >= minInterval }) ?? true
+        else { return }
+        await refresh()
+    }
+
+    func refresh(manual: Bool = false) async {
         guard !isLoading else { return }
         isLoading = true
-        defer { isLoading = false }
+        if manual { isManuallyRefreshing = true }
+        defer {
+            isLoading = false
+            isManuallyRefreshing = false
+            lastCompletedRefresh = Date()
+        }
         var downloaded: [String: Data] = [:]
+        let freshNonce = String(Int(Date().timeIntervalSince1970 * 1000))
         await withTaskGroup(of: (String, Data?).self) { group in
             for path in paths {
                 group.addTask {
-                    guard let url = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path) else {
+                    guard let url = URL(string: "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path + "?check=" + freshNonce) else {
                         return (path, nil)
                     }
                     var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 16)
                     request.setValue("application/json", forHTTPHeaderField: "Accept")
+                    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
                     do {
                         let (data, response) = try await URLSession.shared.data(for: request)
                         guard (response as? HTTPURLResponse)?.statusCode == 200,
@@ -148,6 +537,11 @@ final class EditorialStore: ObservableObject {
             }
         }
 
+        updatePublicationEvents(
+            ledger: downloaded["pilot/ttactualidad-publication-events.json"] != nil ?
+                docs["pilot/ttactualidad-publication-events.json"] : nil,
+            receipts: downloaded["pilot/ttactualidad-action-receipts.json"] != nil ?
+                docs["pilot/ttactualidad-action-receipts.json"] : nil)
         // Never turn a temporary network error into false zeros in the Live Activity.
         guard docs["ttittulares/prepared.json"] != nil,
               docs["ttittulares/decisions.json"] != nil,
@@ -224,17 +618,691 @@ final class EditorialStore: ObservableObject {
         let trendsQueued = Self.buildTrendsElaboracion(
             requests: docs["trends/requests.json"]!,
             queue: docs["trends/editorial-queue.json"]!,
+            manual: docs["trends/telegram-manual-explained.json"]!,
+            decisions: docs["trends/mobile-decisions.json"]!,
             ready: ready
         )
-        snapshot = EditorialSnapshot(news: news, newsElaboracion: queueNews,
+        accumulateConfirmedTerminals(docs, downloaded)
+        canonicalSnapshot = applyConfirmedTerminals(EditorialSnapshot(
+                                     news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
                                      top30: top, trendListas: ready, trendsElaboracion: trendsQueued,
-                                     updatedAt: now, partial: partial)
+                                     updatedAt: now, partial: partial,
+                                     oneSourceCount: status["one_source_count"] as? Int,
+                                     twoSourceCount: status["two_source_count"] as? Int,
+                                     oneSourceDelta: status["one_source_delta"] as? Int,
+                                     twoSourceDelta: status["two_source_delta"] as? Int,
+                                     radarAt: Self.when(status, ["radar_at"]),
+                                     trendsRadarAt: Self.when(docs["trends/recent.json"] ?? [:],
+                                                              ["captured_at"]),
+                                     trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
+                                                                      "reliability")))
+        if !partial && downloaded.count == paths.count {
+            updateRadarEntrants(docs["trends/recent.json"] ?? [:])
+            updateNovedades(news: canonicalSnapshot.news,
+                            trends: canonicalSnapshot.trendListas,
+                            top30: canonicalSnapshot.top30,
+                            newsWorking: canonicalSnapshot.newsElaboracion,
+                            trendsWorking: canonicalSnapshot.trendsElaboracion)
+        }
+        // A fresh terminal decision may be applied even if an unrelated
+        // source timed out. Do not keep yesterday's optimistic elaboration
+        // while GitHub already confirms today's deletion.
+        // News receipts must be reconciled even when the unrelated trends
+        // radar is temporarily unavailable. Legacy iOS builds had no request ID.
+        let freshReceipts = downloaded["pilot/ttactualidad-action-receipts.json"] != nil
+        let freshNewsDecisions = downloaded["ttittulares/decisions.json"] != nil
+        let freshTrendClosures = downloaded["trends/telegram-manual-explained.json"] != nil &&
+                                 downloaded["trends/mobile-decisions.json"] != nil
+        if freshReceipts || freshNewsDecisions || freshTrendClosures {
+            reconcileOperationHistory(
+                receipts: freshReceipts ?
+                    docs["pilot/ttactualidad-action-receipts.json"] ?? [:] : [:],
+                newsDecisions: freshNewsDecisions ?
+                    docs["ttittulares/decisions.json"] ?? [:] : [:],
+                manual: freshTrendClosures ?
+                    docs["trends/telegram-manual-explained.json"] ?? [:] : [:],
+                requests: freshTrendClosures ?
+                    docs["trends/requests.json"] ?? [:] : [:],
+                decisions: freshTrendClosures ?
+                    docs["trends/mobile-decisions.json"] ?? [:] : [:])
+            if freshTrendClosures {
+                retireClosedTrendOverlays(
+                    manual: docs["trends/telegram-manual-explained.json"] ?? [:],
+                    requests: docs["trends/requests.json"] ?? [:],
+                    decisions: docs["trends/mobile-decisions.json"] ?? [:])
+            }
+        }
+        if !partial && downloaded.count == paths.count {
+            retireSyncedActions()
+            retireSyncedDrafts()
+        }
+        applyOptimisticOverlay()
         message = partial ? "Datos parciales o en caché" : "Datos consultados directamente en GitHub"
         if fresh {
-            await publishLiveCounts(news: news.count, trends: ready.count, checkedAt: now,
-                                    partial: partial)
+            await publishLiveCounts(checkedAt: now,
+                                    partial: partial || pendingOperationsCount > 0)
+        }
+    }
+
+    // This function is intentionally independent of the complete radar read.
+    // GitHub may confirm several publishes while some unrelated source times
+    // out; never let a stale response replace newly confirmed publication IDs.
+    private func updatePublicationEvents(ledger: [String: Any]?,
+                                         receipts: [String: Any]?) {
+        guard ledger != nil || receipts != nil else { return }
+        var unique: [String: PublicationEvent] = [:]
+        let oldest = Date().addingTimeInterval(-8 * 86_400)
+        for event in publicationEvents where event.confirmedAt >= oldest {
+            unique[event.project + ":" + event.eventID + ":r" +
+                   String(event.revision)] = event
+        }
+        func collect(_ items: [[String: Any]], isReceipt: Bool) {
+            for row in items {
+                if isReceipt {
+                    guard Self.str(row, "decision") == "published" &&
+                          ["applied", "already_applied"].contains(
+                              Self.str(row, "status").lowercased()) else { continue }
+                }
+                guard let at = Self.when(row, ["at"]), at >= oldest else { continue }
+                let project = Self.str(row, "project")
+                let id = Self.str(row, "event_id")
+                let revision = Self.int(row, "revision")
+                guard ["ttittulares", "ttendencias"].contains(project),
+                      !id.isEmpty else { continue }
+                let key = project + ":" + id + ":r" + String(revision)
+                // Retain the actual first GitHub-confirmed timestamp.
+                if let old = unique[key], old.confirmedAt <= at { continue }
+                unique[key] = PublicationEvent(
+                    project: project, eventID: id,
+                    revision: revision, confirmedAt: at)
+            }
+        }
+        if let ledger { collect(Self.rows(ledger, "items"), isReceipt: false) }
+        if let receipts { collect(Self.rows(receipts, "items"), isReceipt: true) }
+        publicationEvents = Array(unique.values)
+        publicationLedgerAvailable = true
+    }
+
+    private func fetchPublicationJSON(_ path: String) async -> [String: Any]? {
+        let nonce = String(Int(Date().timeIntervalSince1970 * 1000))
+        guard let url = URL(string:
+            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" +
+            path + "?pub=" + nonce) else { return nil }
+        var request = URLRequest(url: url,
+                                 cachePolicy: .reloadIgnoringLocalCacheData,
+                                 timeoutInterval: 12)
+        request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return nil }
+            return (try JSONSerialization.jsonObject(with: data)) as? [String: Any]
+        } catch {
+            return nil
+        }
+    }
+
+    /// Light, invisible refresh after GitHub verifies a published item.
+    /// Does not touch the loading spinner, scroll position or radar cards.
+    func refreshPublicationCounters(expectedProject: String? = nil,
+                                    expectedID: String? = nil,
+                                    expectedRevision: Int? = nil) async {
+        for attempt in 0..<5 {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(2)) }
+            async let ledger = fetchPublicationJSON(
+                "pilot/ttactualidad-publication-events.json")
+            async let receipts = fetchPublicationJSON(
+                "pilot/ttactualidad-action-receipts.json")
+            updatePublicationEvents(ledger: await ledger, receipts: await receipts)
+            guard let project = expectedProject, let id = expectedID,
+                  let revision = expectedRevision else { break }
+            if publicationEvents.contains(where: {
+                $0.project == project && $0.eventID == id && $0.revision == revision
+            }) { break }
+        }
+    }
+
+    // GitHub's receipt is authoritative. Rendering a provisional change
+    // must NEVER become a success merely because it disappeared locally.
+    // Legacy 0.4.x operations stored only "project:id:rN" and had no
+    // request UUID. Recover identity for BOTH projects before reconciling.
+    private func operationIdentity(_ operation: EditorialOperation)
+        -> (project: String, eventID: String, revision: Int)? {
+        if let project = operation.project, let id = operation.eventID,
+           let revision = operation.revision, !id.isEmpty {
+            return (project, id, revision)
+        }
+        let raw = operation.id
+        guard let prefix = raw.firstIndex(of: ":"),
+              let revisionMark = raw.range(of: ":r", options: .backwards),
+              revisionMark.lowerBound > prefix,
+              let revision = Int(raw[revisionMark.upperBound...]) else { return nil }
+        let project = String(raw[..<prefix])
+        guard ["ttittulares", "ttendencias"].contains(project) else { return nil }
+        let id = String(raw[raw.index(after: prefix)..<revisionMark.lowerBound])
+        guard !id.isEmpty else { return nil }
+        return (project, id, revision)
+    }
+
+    private func reconcileOperationHistory(receipts: [String: Any],
+                                           newsDecisions: [String: Any],
+                                           manual: [String: Any],
+                                           requests: [String: Any],
+                                           decisions: [String: Any]) {
+        let closedTrends = Self.closedTrends(manual: manual, requests: requests,
+                                             decisions: decisions)
+        let remote = Self.rows(receipts, "items")
+        let newsClosures = Self.rows(newsDecisions, "items")
+        let readyNews = canonicalSnapshot.news
+        let workingNews = canonicalSnapshot.newsElaboracion
+        let readyTrends = canonicalSnapshot.trendListas
+        let workingTrends = canonicalSnapshot.trendsElaboracion
+
+        for operation in operationHistory where
+            !["Rechazada", "Retirada"].contains(operation.status) {
+            guard let identity = operationIdentity(operation) else { continue }
+            let id = identity.eventID
+            let isTrend = identity.project == "ttendencias"
+            let operationTime = operation.createdAt.addingTimeInterval(-180)
+            // An exact request_id always takes precedence. When absent (IPA
+            // 0.4.3 and older), use the full project/event/revision/decision
+            // combination and require a receipt not older than the action.
+            let receipt = remote
+                .filter { row in
+                    if let requestID = operation.requestID, !requestID.isEmpty {
+                        return Self.str(row, "request_id") == requestID
+                    }
+                    return Self.str(row, "project") == identity.project &&
+                           Self.str(row, "event_id") == id &&
+                           Self.int(row, "revision") == identity.revision &&
+                           Self.str(row, "decision") == operation.kind &&
+                           (Self.when(row, ["at"]) ?? .distantPast) >= operationTime
+                }
+                .max {
+                    (Self.when($0, ["at"]) ?? .distantPast) <
+                    (Self.when($1, ["at"]) ?? .distantPast)
+                }
+            let receiptStatus = receipt.map { Self.str($0, "status").lowercased() } ?? ""
+            let accepted = ["applied", "already_applied"].contains(receiptStatus)
+
+            let closure = newsClosures.first { row in
+                Self.str(row, "event_id") == id &&
+                (Self.when(row, ["updated_at", "deleted_at"]) ?? .distantPast) >= operationTime &&
+                (operation.kind == "deleted" ?
+                    Self.str(row, "status").lowercased() == "deleted" : false)
+            }
+            let confirmed = accepted || closure != nil
+            let closedAfterRequest = isTrend &&
+                closedTrends.isClosed(id: id, name: operation.title,
+                                     since: operation.createdAt)
+            let stage: String
+            if closedAfterRequest {
+                stage = "Retirada"
+            } else if operation.kind == "Nueva noticia" {
+                if readyNews.contains(where: { $0.id == id }) { stage = "En Listas" }
+                else if workingNews.contains(where: { $0.id == id }) {
+                    stage = "En elaboración"
+                } else if confirmed { stage = "En elaboración" }
+                else { stage = outstandingStage(for: operation) }
+            } else if operation.kind == "rework" || operation.kind == "prepare" {
+                let old = identity.revision
+                let finished = isTrend
+                    ? readyTrends.contains(where: {
+                        $0.editorialID == id && $0.revision > old
+                    })
+                    : readyNews.contains(where: { $0.id == id && $0.revision > old })
+                let working = isTrend
+                    ? workingTrends.contains(where: {
+                        $0.editorialID == id && $0.revision >= old
+                    })
+                    : workingNews.contains(where: { $0.id == id && $0.revision >= old })
+                if finished { stage = "En Listas" }
+                else if confirmed || working { stage = "En elaboración" }
+                else { stage = outstandingStage(for: operation) }
+            } else if confirmed {
+                stage = "Confirmada"
+            } else if ["failed", "rejected"].contains(receiptStatus) {
+                stage = "Rechazada"
+            } else {
+                stage = outstandingStage(for: operation)
+            }
+            if stage != operation.status {
+                recordOperation(id: operation.id, title: operation.title,
+                                kind: operation.kind, status: stage,
+                                requestID: operation.requestID ??
+                                    (receipt.map { Self.str($0, "request_id") }),
+                                project: identity.project, eventID: id,
+                                revision: identity.revision,
+                                detail: confirmed ? "Confirmado en GitHub" : nil)
+            }
+            if stage == "Retirada" || stage == "Confirmada" ||
+               stage == "En Listas" || stage == "Rechazada" {
+                activeEditorialActions.removeValue(forKey: operation.id)
+            } else if confirmed, var action = activeEditorialActions[operation.id] {
+                action.phase = .confirmed
+                activeEditorialActions[operation.id] = action
+            }
+        }
+    }
+
+    // Clears orphaned in-memory optimistic reworks even when their local
+    // operation was recorded in an older build without a request_id.
+    private func retireClosedTrendOverlays(manual: [String: Any],
+                                           requests: [String: Any],
+                                           decisions: [String: Any]) {
+        let closures = Self.closedTrends(manual: manual, requests: requests,
+                                         decisions: decisions)
+        for (key, action) in activeEditorialActions where
+            action.project == "ttendencias" &&
+            closures.isClosed(id: action.id, name: action.title,
+                              since: operationHistory.first(where: {
+                                  $0.id == key
+                              })?.createdAt ?? .distantPast) {
+            activeEditorialActions.removeValue(forKey: key)
+            if let old = operationHistory.first(where: { $0.id == key }) {
+                recordOperation(id: old.id, title: old.title, kind: old.kind,
+                                status: "Retirada")
+            }
+        }
+    }
+
+    private func outstandingStage(for operation: EditorialOperation) -> String {
+        if ["Confirmada", "En Listas", "Rechazada", "Retirada"].contains(operation.status) {
+            return operation.status
+        }
+        if operation.status == "En elaboración" { return operation.status }
+        if Date().timeIntervalSince(operation.createdAt) > 10 * 60 {
+            return "Sin confirmar"
+        }
+        return "Esperando GitHub"
+    }
+
+    // +Noticia appears immediately in En elaboración. The real queue is still
+    // committed asynchronously by GitHub Actions, and verified independently.
+    func beginManualNews(requestID: String, title: String, url: String) {
+        let eventID = "manual-" + requestID
+        let placeholder = NewsItem(id: eventID, title: title.isEmpty ? url : title,
+                                   text: "Solicitud editorial pendiente de confirmación",
+                                   publishedAt: Date(), revision: 1,
+                                   sourceURL: URL(string: url), imageURL: nil,
+                                   factual: "", closer: "", sources: 0,
+                                   status: "EN ELABORACIÓN")
+        draftNews[requestID] = placeholder
+        recordOperation(id: eventID, title: placeholder.title, kind: "Nueva noticia",
+                        status: "Enviando", requestID: requestID,
+                        project: "ttittulares", eventID: eventID, revision: 1,
+                        detail: "Destino: En elaboración → Listas")
+        actionMessage = "Noticia añadida provisionalmente a En elaboración · guardando en GitHub…"
+        actionIsError = false
+        applyOptimisticOverlay()
+    }
+
+    func completeManualNews(requestID: String, result: GitHubEditor.WriteResult,
+                            detail: String) {
+        switch result {
+        case .verified:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "En elaboración")
+            actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
+            actionIsError = false
+            Task { await self.refreshIfStale(minInterval: 0) }
+        case .pending:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "Esperando GitHub")
+            actionMessage = "GitHub aún está procesando la noticia. Se mantiene en En elaboración."
+            actionIsError = false
+            Task { await self.refreshIfStale(minInterval: 30) }
+        case .failed:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "Rechazada")
+            draftNews.removeValue(forKey: requestID)
+            actionMessage = "No se pudo añadir la noticia: " + detail
+            actionIsError = true
+        }
+        applyOptimisticOverlay()
+    }
+
+    private func retireSyncedDrafts() {
+        let authoritativeIDs = Set(canonicalSnapshot.newsElaboracion.map(\.id) +
+                                   canonicalSnapshot.news.map(\.id))
+        for (id, draft) in draftNews where authoritativeIDs.contains(draft.id) {
+            draftNews.removeValue(forKey: id)
+        }
+    }
+
+    // A local action instantly changes ALL views using the shared store.
+    // The operation is not marked verified until GitHub supplies its receipt.
+    func beginEditorialAction(project: String, id: String, revision: Int, decision: String,
+                              title: String, rank: Int, requestID: String) -> Bool {
+        guard !id.isEmpty, revision >= 0 else {
+            actionMessage = "No hay identificador editorial válido: actualiza la información."
+            actionIsError = true
+            return false
+        }
+        let action = OptimisticEditorialAction(project: project, id: id,
+                                               revision: revision, decision: decision,
+                                               title: title, rank: rank, requestID: requestID)
+        guard !isActionInProgress(project: project, id: id, revision: revision) else {
+            actionMessage = "Esta orden ya está en curso; no es necesario repetirla."
+            actionIsError = false
+            return false
+        }
+        activeEditorialActions[action.key] = action
+        recordOperation(id: action.key, title: title, kind: decision, status: "Enviando",
+                        requestID: requestID, project: project, eventID: id,
+                        revision: revision,
+                        detail: decision == "published" ?
+                                    "Publicado: retirar de Listas y contabilizar tras confirmar" :
+                                decision == "deleted" ? "No publicado: retirar de Listas" :
+                                decision == "discard" ? "Destino: Desestimadas" :
+                                "Destino: En elaboración → Listas")
+        actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
+                        decision == "discard" ? "Desestimado · guardando en GitHub…" :
+                        "Trasladado a elaboración · guardando en GitHub…"
+        actionIsError = false
+        applyOptimisticOverlay()
+        refreshOptimisticActivity()
+        return true
+    }
+
+    func isActionInProgress(project: String, id: String, revision: Int) -> Bool {
+        activeEditorialActions[project + ":" + id + ":r" + String(revision)] != nil ||
+        operationHistory.contains {
+            $0.project == project && $0.eventID == id && $0.revision == revision &&
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains($0.status)
+        }
+    }
+
+    func completeEditorialAction(project: String, id: String, revision: Int,
+                                 result: GitHubEditor.WriteResult, detail: String) {
+        let key = project + ":" + id + ":r" + String(revision)
+        // The user may have removed a completed item while an older rework
+        // is still being confirmed. The late callback cannot resurrect it.
+        if operationHistory.contains(where: { $0.id == key && $0.status == "Retirada" }) {
+            activeEditorialActions.removeValue(forKey: key)
+            applyOptimisticOverlay()
+            refreshOptimisticActivity()
+            return
+        }
+        guard var action = activeEditorialActions[key] else { return }
+        switch result {
+        case .verified:
+            // A successful direct receipt verification is sufficient proof to
+            // persist the tombstone immediately, before any GitHub CDN reads.
+            if ["deleted", "discard", "published"].contains(action.decision) {
+                markTerminal(project: project, id: id, revision: revision,
+                             decision: action.decision == "discard" ? "dismissed" :
+                                       action.decision, at: Date())
+                persistTerminals()
+            }
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: ["prepare", "rework"].contains(action.decision) ?
+                                    "En elaboración" : "Confirmada")
+            action.phase = .confirmed
+            activeEditorialActions[key] = action
+            actionMessage = "Verificado en GitHub: " + action.title
+            actionIsError = false
+            // Refresh the published counter independently, without showing
+            // a full-page spinner or interrupting interaction.
+            Task {
+                if action.decision == "published" {
+                    await self.refreshPublicationCounters(
+                        expectedProject: project, expectedID: id,
+                        expectedRevision: revision)
+                }
+                await self.refreshIfStale(minInterval: 0)
+            }
+        case .pending:
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Esperando GitHub")
+            action.phase = .uncertain
+            activeEditorialActions[key] = action
+            actionMessage = "Pendiente de confirmar en GitHub: " + action.title +
+                            ". La vista conserva el cambio provisional."
+            actionIsError = false
+            Task { await self.refreshIfStale(minInterval: 30) }
+        case .failed:
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Rechazada")
+            activeEditorialActions.removeValue(forKey: key)
+            actionMessage = "No se pudo aplicar «" + action.title + "»: " + detail
+            actionIsError = true
+            // Reconstruct all lists from the original canonical state.
+        }
+        applyOptimisticOverlay()
+        refreshOptimisticActivity()
+    }
+
+    // Reconciliation uses a complete current GitHub snapshot; partial cached
+    // reads never undo an action that was visibly removed moments earlier.
+    private func retireSyncedActions() {
+        for (key, action) in activeEditorialActions {
+            if operationHistory.contains(where: {
+                $0.id == key && ["Retirada", "Rechazada"].contains($0.status)
+            }) {
+                activeEditorialActions.removeValue(forKey: key)
+                continue
+            }
+            guard action.phase != .sending else { continue }
+            let originalNews: [NewsItem] = canonicalSnapshot.news +
+                canonicalSnapshot.newsElaboracion + canonicalSnapshot.newsRevision +
+                canonicalSnapshot.newsCreciendo + canonicalSnapshot.newsTremending
+            if action.project == "ttittulares" {
+                let stillOriginal = originalNews.contains {
+                    $0.id == action.id && $0.revision == action.revision
+                }
+                if action.decision == "prepare" || action.decision == "rework" {
+                    if canonicalSnapshot.newsElaboracion.contains(where: {
+                        $0.id == action.id &&
+                        $0.revision >= action.revision + (action.decision == "rework" ? 1 : 0)
+                    }) {
+                        activeEditorialActions.removeValue(forKey: key)
+                    }
+                } else if !stillOriginal {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "deleted" {
+                if !canonicalSnapshot.trendListas.contains(where: {
+                    $0.editorialID == action.id && $0.revision == action.revision
+                }) {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "rework" || action.decision == "prepare" {
+                let newWorking = canonicalSnapshot.trendsElaboracion.contains {
+                    ($0.editorialID == action.id && $0.revision > action.revision) ||
+                    ($0.name == action.title && $0.status == "EN ELABORACIÓN")
+                }
+                if newWorking { activeEditorialActions.removeValue(forKey: key) }
+            } else if action.decision == "discard" {
+                if !canonicalSnapshot.trendsElaboracion.contains(where: {
+                    $0.editorialID == action.id && $0.revision == action.revision
+                }) { activeEditorialActions.removeValue(forKey: key) }
+            }
+        }
+    }
+
+    private func overlayTrend(_ trend: TrendItem, status: String? = nil,
+                              inListas: Bool? = nil) -> TrendItem {
+        TrendItem(id: trend.id, rank: trend.rank, name: trend.name,
+                  explanation: trend.explanation, lastExplained: trend.lastExplained,
+                  status: status ?? trend.status, inListas: inListas ?? trend.inListas,
+                  editorialID: trend.editorialID, revision: trend.revision,
+                  imageURL: trend.imageURL, sourceURL: trend.sourceURL,
+                  rankDelta: trend.rankDelta, movement: trend.movement,
+                  enteredAt: trend.enteredAt)
+    }
+
+    private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
+        NewsItem(id: item.id, title: item.title, text: item.text,
+                 publishedAt: item.publishedAt, revision: item.revision,
+                 sourceURL: item.sourceURL, imageURL: item.imageURL,
+                 factual: item.factual, closer: item.closer, sources: item.sources,
+                 status: status)
+    }
+
+    private func applyOptimisticOverlay() {
+        var updated = canonicalSnapshot
+        for draft in draftNews.values where !updated.newsElaboracion.contains(where: {
+            $0.id == draft.id
+        }) {
+            updated.newsElaboracion.insert(draft, at: 0)
+        }
+        for action in activeEditorialActions.values {
+            let sameNews: (NewsItem) -> Bool = {
+                $0.id == action.id && $0.revision == action.revision
+            }
+            let sameTrend: (TrendItem) -> Bool = {
+                $0.editorialID == action.id && $0.revision == action.revision
+            }
+            if action.project == "ttittulares" {
+                if ["deleted", "discard", "published"].contains(action.decision) {
+                    updated.news.removeAll(where: sameNews)
+                    updated.newsElaboracion.removeAll(where: sameNews)
+                    updated.newsRevision.removeAll(where: sameNews)
+                    updated.newsCreciendo.removeAll(where: sameNews)
+                    updated.newsTremending.removeAll(where: sameNews)
+                } else if action.decision == "prepare" || action.decision == "rework" {
+                    let source = (updated.news + updated.newsRevision +
+                                  updated.newsCreciendo).first(where: sameNews)
+                    updated.news.removeAll(where: sameNews)
+                    updated.newsRevision.removeAll(where: sameNews)
+                    updated.newsCreciendo.removeAll(where: sameNews)
+                    if let source, !updated.newsElaboracion.contains(where: {
+                        $0.id == action.id && $0.revision >= action.revision
+                    }) {
+                        // A fresh investigation MUST NOT display the previous
+                        // factual text, previous gag or archive photo.
+                        updated.newsElaboracion.insert(
+                            NewsItem(id: source.id, title: source.title,
+                                     text: "Nueva investigación solicitada a GitHub",
+                                     publishedAt: Date(),
+                                     revision: source.revision + (action.decision == "rework" ? 1 : 0),
+                                     sourceURL: source.sourceURL, imageURL: nil,
+                                     factual: "", closer: "", sources: source.sources,
+                                     status: "EN ELABORACIÓN"), at: 0)
+                    }
+                }
+            } else {
+                if ["deleted", "discard", "published", "rework", "prepare"].contains(action.decision) {
+                    updated.trendListas.removeAll(where: sameTrend)
+                    if ["discard", "deleted", "published"].contains(action.decision) {
+                        updated.trendsElaboracion.removeAll(where: sameTrend)
+                    }
+                }
+                updated.top30 = updated.top30.map { original in
+                    guard original.name == action.title ||
+                          original.editorialID == action.id else { return original }
+                    if action.decision == "deleted" ||
+                       action.decision == "published" {
+                        return overlayTrend(original, inListas: false)
+                    }
+                    if action.decision == "rework" || action.decision == "prepare" {
+                        return overlayTrend(original, status: "EN ELABORACIÓN", inListas: false)
+                    }
+                    return original
+                }
+                if action.decision == "rework" || action.decision == "prepare" {
+                    if !updated.trendsElaboracion.contains(where: {
+                        $0.editorialID == action.id && $0.revision >= action.revision
+                    }) {
+                        updated.trendsElaboracion.insert(
+                            TrendItem(id: "optimistic-" + action.key, rank: action.rank,
+                                      name: action.title, explanation: "",
+                                      lastExplained: nil, status: "EN ELABORACIÓN",
+                                      inListas: false, editorialID: action.id,
+                                      revision: action.revision, imageURL: nil,
+                                      sourceURL: nil), at: 0)
+                    }
+                }
+            }
+        }
+        snapshot = applyConfirmedTerminals(updated)
+    }
+
+    private func refreshOptimisticActivity() {
+        Task {
+            await publishLiveCounts(checkedAt: Date(),
+                                    partial: snapshot.partial || pendingOperationsCount > 0)
+        }
+    }
+
+    // Snapshot baseline advances when leaving the app, not on every refresh.
+    // This preserves the entire set of changes during a visit.
+    func markVisitComplete() {
+        guard let snapshot = currentVisitSnapshot else { return }
+        UserDefaults.standard.set(snapshot, forKey: "TTActualidad.editorial.baseline.v1")
+        reviewedNews.removeAll()
+        reviewedTrends.removeAll()
+        // Unread entries survive restarting the app. Only opening the
+        // corresponding card, or removing it from the feed, clears them.
+    }
+
+    private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem],
+                                 newsWorking: [NewsItem], trendsWorking: [TrendItem]) {
+        let key = "TTActualidad.editorial.baseline.v1"
+        let defaults = UserDefaults.standard
+        var current: [String: String] = [:]
+        for item in news { current["N:" + item.id] = String(item.revision) }
+        for item in trends { current["T:" + item.editorialID] = String(item.revision) }
+        for item in top30 { current["R:" + item.name] = String(item.rank) }
+        for item in newsWorking { current["W:N:" + item.id] = String(item.revision) }
+        for item in trendsWorking { current["W:T:" + item.editorialID] = String(item.revision) }
+        currentVisitSnapshot = current
+        if let before = defaults.dictionary(forKey: key) as? [String: String] {
+            unreviewedNews.formUnion(news.filter {
+                before["N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
+            }.map(\.id) + newsWorking.filter {
+                before["W:N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
+            }.map(\.id))
+            unreviewedTrends.formUnion((trends + trendsWorking).filter {
+                before["T:" + $0.editorialID] != String($0.revision) &&
+                !reviewedTrends.contains($0.name)
+            }.map(\.name) + top30.filter {
+                before["R:" + $0.name] == nil &&
+                !reviewedTrends.contains($0.name)
+            }.map(\.name))
+            // A moved rank is not an unread editorial draft. Keep only
+            // currently visible unread IDs and entries not explicitly opened.
+            let presentNews = Set((news + newsWorking).map(\.id))
+            let presentTrends = Set((trends + trendsWorking + top30).map(\.name))
+            unreviewedNews.formIntersection(presentNews)
+            unreviewedTrends.formIntersection(presentTrends)
+            unreviewedNews.subtract(reviewedNews)
+            unreviewedTrends.subtract(reviewedTrends)
+            storeUnread()
+            var changes: [String] = []
+            for item in news {
+                let old = before["N:" + item.id]
+                if old == nil { changes.append("Noticia lista: " + item.title) }
+                else if old != String(item.revision) {
+                    changes.append("Noticia actualizada: " + item.title)
+                }
+            }
+            for item in trends {
+                let old = before["T:" + item.editorialID]
+                if old == nil { changes.append("Tendencia lista: " + item.name) }
+                else if old != String(item.revision) {
+                    changes.append("Tendencia reelaborada: " + item.name)
+                }
+            }
+            for item in newsWorking where before["W:N:" + item.id] == nil {
+                changes.append("Nueva elaboración de noticia: " + item.title)
+            }
+            for item in trendsWorking where before["W:T:" + item.editorialID] == nil {
+                changes.append("Nueva elaboración de tendencia: " + item.name)
+            }
+            for item in top30 {
+                let original = before["R:" + item.name]
+                if original == nil {
+                    changes.append("Nueva tendencia #" + String(item.rank) + ": " + item.name)
+                } else if let rank = Int(original!), rank != item.rank {
+                    changes.append(item.name + ": #" + String(rank) + " → #" + String(item.rank))
+                }
+            }
+            novedades = Array(changes.prefix(60))
+        } else {
+            novedades = ["Primera sincronización completa: seguimiento de novedades activado."]
         }
     }
 
@@ -292,7 +1360,8 @@ final class EditorialStore: ObservableObject {
         }
         return rows(prepared, "items").compactMap { item in
             let id = str(item, "event_id")
-            guard !id.isEmpty, !closed.contains(statuses[id] ?? "") else { return nil }
+            guard !id.isEmpty, !closed.contains(statuses[id] ?? ""),
+                  item["rewrite_pending"] as? Bool != true else { return nil }
             let tweet = item["tweet"] as? [String: Any] ?? [:]
             let text = str(tweet, "text")
             let factual = str(item, "explanation").isEmpty ? str(item, "factual_summary") : str(item, "explanation")
@@ -391,16 +1460,68 @@ final class EditorialStore: ObservableObject {
         .map { $0 }
     }
 
+    /// A terminal deletion is authoritative even when a previous rework
+    /// started under another ID. Compare the timestamp: a *later* new request
+    /// with the same name must remain eligible to run.
+    @MainActor
+    private struct ClosedTrends {
+        var byID: [String: Date]
+        var byName: [String: Date]
+
+        func isClosed(id: String, name: String, since: Date) -> Bool {
+            if let closed = byID[id], closed >= since.addingTimeInterval(-5) {
+                return true
+            }
+            let normalized = EditorialStore.norm(name)
+            return (byName[normalized] ?? .distantPast) >= since.addingTimeInterval(-5)
+        }
+    }
+
+    private static func closedTrends(manual: [String: Any], requests: [String: Any],
+                                     decisions: [String: Any]) -> ClosedTrends {
+        var result = ClosedTrends(byID: [:], byName: [:])
+        func remember(_ row: [String: Any]) {
+            guard closed.contains(str(row, "status").lowercased()) else { return }
+            let id = str(row, "id")
+            let name = norm(str(row, "name"))
+            let time = when(row, ["deleted_at", "dismissed_at", "updated_at"]) ?? .distantPast
+            if !id.isEmpty { result.byID[id] = max(result.byID[id] ?? .distantPast, time) }
+            if !name.isEmpty { result.byName[name] = max(result.byName[name] ?? .distantPast, time) }
+        }
+        for item in rows(manual, "items") { remember(item) }
+        for item in rows(requests, "requests") { remember(item) }
+        for item in rows(decisions, "items") { remember(item) }
+        return result
+    }
+
     private static func buildTrendsElaboracion(
-        requests: [String: Any], queue: [String: Any], ready: [TrendItem]
+        requests: [String: Any], queue: [String: Any],
+        manual: [String: Any], decisions: [String: Any], ready: [TrendItem]
     ) -> [TrendItem] {
         let readyByID = Dictionary(uniqueKeysWithValues: ready.map { ($0.editorialID, $0.revision) })
+        let closures = closedTrends(manual: manual, requests: requests, decisions: decisions)
+        var finishedByName: [String: Date] = [:]
+        for row in rows(manual, "items") {
+            guard ["explained", "deleted", "dismissed", "published"].contains(
+                str(row, "status").lowercased()) else { continue }
+            let name = norm(str(row, "name"))
+            let timestamp = when(row, ["deleted_at", "explained_at", "updated_at"]) ?? .distantPast
+            if !name.isEmpty {
+                finishedByName[name] = max(finishedByName[name] ?? .distantPast, timestamp)
+            }
+        }
         var result: [String: [String: Any]] = [:]
         for item in rows(requests, "requests") + rows(queue, "items") {
             let id = str(item, "id")
             let status = str(item, "status").lowercased()
+            let name = str(item, "name")
+            let requestedAt = when(item, ["requested_at", "created_at", "updated_at"]) ?? .distantPast
             guard !id.isEmpty, ["preparing", "update"].contains(status),
-                  int(item, "revision") > (readyByID[id] ?? -1) else { continue }
+                  int(item, "revision") > (readyByID[id] ?? -1),
+                  !closures.isClosed(id: id, name: name, since: requestedAt),
+                  (finishedByName[norm(name)] ?? .distantPast) < requestedAt else {
+                continue
+            }
             if isNewer(item, than: result[id]) { result[id] = item }
         }
         return result.values.map { row in
@@ -421,10 +1542,12 @@ final class EditorialStore: ObservableObject {
         let names = recent["top30"] as? [String] ?? []
         let radar = rows(recent, "items")
         var byRank: [Int: String] = [:]
+        var movementByRank: [Int: [String: Any]] = [:]
         for (index, row) in radar.enumerated() {
             let rank = int(row, "rank") == 0 ? index + 1 : int(row, "rank")
             if (1...30).contains(rank) && !str(row, "name").isEmpty {
                 byRank[rank] = str(row, "name")
+                movementByRank[rank] = row
             }
         }
         for (i, name) in names.prefix(30).enumerated() {
@@ -469,11 +1592,17 @@ final class EditorialStore: ObservableObject {
             let status: String = statuses[key] ??
                 (text.isEmpty ? (rank > 10 ? "PREPARACIÓN MANUAL" : "PENDIENTE") : "EXPLICADA")
             let request = requestByName[key] ?? [:]
-            let editorialID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
+            let knownID = str(request, "id").isEmpty ? str(explanation, "id") : str(request, "id")
+            // Backend accepts a stable manual ID for a Top 30 entry without any
+            // previous request. A blank ID would make "Preparar" impossible.
+            let digest = SHA256.hash(data: Data(name.utf8))
+            let manualID = "manual-" + String(digest.map { String(format: "%02x", $0) }.joined().prefix(32))
+            let editorialID = knownID.isEmpty ? String(manualID) : knownID
             let revision = request.isEmpty ? int(explanation, "revision") : int(request, "revision")
             let archive = explanation["archive_image"] as? [String: Any] ??
                           explanation["fallback_image"] as? [String: Any] ?? [:]
             let source = str(request, "source_url")
+            let trendMovement = movementByRank[rank] ?? [:]
             return TrendItem(id: "rank-\(rank)", rank: rank, name: name,
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
                              status: status, inListas: readyNames.contains(key),
@@ -482,18 +1611,24 @@ final class EditorialStore: ObservableObject {
                                  project: "ttendencias", id: editorialID,
                                  revision: revision, image: URL(string: str(archive, "url")),
                                  catalog: archivePhotos),
-                             sourceURL: URL(string: source))
+                             sourceURL: URL(string: source),
+                             rankDelta: int(trendMovement, "rank_delta"),
+                             movement: str(trendMovement, "movement"),
+                             enteredAt: when(trendMovement, ["entered_top10_at", "entered_at"]))
         }
     }
 
-    private func publishLiveCounts(news: Int, trends: Int, checkedAt: Date,
-                                   partial: Bool) async {
+    private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             liveStatus = "Activa las Live Activities en Ajustes del iPhone"
             return
         }
         let state = LiveCountsAttributes.ContentState(
-            newsReady: news, trendsReady: trends,
+            newsReady: snapshot.news.count,
+            trendsReady: snapshot.trendListas.count,
+            newsWorking: snapshot.newsElaboracion.count,
+            trendsWorking: snapshot.trendsElaboracion.count,
+            pendingActions: pendingOperationsCount,
             checkedAt: checkedAt, partialData: partial
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))

@@ -48,6 +48,151 @@ gallery = (root / "TTActualidad/ArchivePhotoGallery.swift").read_text(encoding="
 assert 'trends/archive-images/' in catalog and 'ttittulares/archive-images/' in catalog
 assert 'generated-images' in catalog and '!image.path.lowercased().contains("generated-images")' in catalog
 assert 'ArchivePhotoCatalog.resolved(' in store
-assert 'ArchivePhotoGallery' in dashboard
+# A dedicated photo-gallery filter was intentionally removed from the UI.
+# Archive-photo support inside each expanded editorial card remains available.
+assert 'chip("Fotos archivo"' not in dashboard
+assert 'ArchivePhotoGallery' not in dashboard
+assert 'Foto archivo' in actions
+assert 'lineLimit(expanded ? nil : 2)' in dashboard
+assert 'movementLabel' in dashboard and 'rankColor' in dashboard
 assert 'Copiar foto de archivo' in gallery
 assert 'ChatGPT Images' in actions
+
+# Editorial UX and durable GitHub session contract.
+assert "SecureSession" in auth and 'save("session", value: saved)' in auth
+assert "refreshTask" in auth and "renewOnForeground()" in dashboard
+assert "LazyVGrid" in dashboard and "ScrollView(.horizontal" not in dashboard
+assert "case sinRevisar" not in store
+assert 'filterChip("Sin revisar"' not in dashboard
+assert "operationHistory" in store and "pendingOperationsCount" in store
+assert "newsWorking" in shared and "trendsWorking" in shared and "pendingActions" in shared
+assert "RefreshLiveCountsIntent()" in activity
+assert "partialData: partial" in store
+
+# Compact Top 30: exactly eight visible filters in two rows of four.
+assert "case movimientos" not in store
+assert 'filterChip("↑↓ Cambios"' not in dashboard
+assert "count: 4), spacing: 5)" in dashboard
+assert dashboard.count('filterChip("') == 12  # 7 trends and 5 news
+assert "softCardColor" in dashboard and "colors: [softCardColor, TTTheme.cardInterior]" in dashboard
+assert "rankColor, in: RoundedRectangle" in dashboard
+
+# Direct navigation, real radar entrants and durable unread state.
+assert 'Abrir noticias en Listas' in dashboard
+assert 'Abrir tendencias en Listas' in dashboard
+assert 'store.radarNewNames.contains($0.name)' in dashboard
+assert 'updateRadarEntrants(' in store and 'TTActualidad.radar.lastVersion.v1' in store
+assert 'TTActualidad.unread.news.v1' in store and 'TTActualidad.unread.trends.v1' in store
+assert 'quickButton("Preparar novedad"' not in actions
+assert 'quickButton("Reelaborar"' not in actions
+assert 'quickButton("Elaborar desde cero"' in actions
+
+# Fresh news rewrite keeps 0.4.3 semantics consistent across iOS and backend.
+assert 'quickButton("Elaborar desde cero"' in actions
+assert 'action.decision == "rework"' in store
+assert 'item["rewrite_pending"] as? Bool != true' in store
+assert (root.parents[1] / "pilot/rework_ttittulares.py").exists()
+
+# Pending operations stay visible after restarting; no optimistic success.
+pending_panel = (root / "TTActualidad" / "PendingOperationsPanel.swift").read_text()
+assert "PendingOperationsPanel().environmentObject(store)" in dashboard
+assert "TTActualidad.operations.v1" in store and "requestID: String? = nil" in store
+assert "reconcileOperationHistory(" in store
+assert 'pilot/ttactualidad-action-receipts.json' in store
+assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
+assert "Comprobar GitHub ahora" in pending_panel
+assert "Pendiente de GitHub" in pending_panel or "Esperando GitHub" in pending_panel
+assert "requestID: requestID" in actions and "requestID: requestID" in auth
+
+# A terminal GitHub deletion must remove BOTH canonical and optimistic work.
+assert 'closedTrends(manual: manual, requests: requests' in store
+assert 'retireClosedTrendOverlays(' in store
+assert 'if closedAfterRequest {' in store
+assert 'stage = "Retirada"' in store
+assert '"deleted_at", "dismissed_at", "updated_at"' in store
+assert 'finishedByName[norm(name)]' in store
+assert 'private func operationIdentity(_ operation: EditorialOperation)' in store
+assert '["ttittulares", "ttendencias"].contains(project)' in store
+assert 'case "Confirmada", "En Listas", "Verificada", "Retirada"' in pending_panel
+
+# Legacy unconfirmed operations from pre-0.4.4 lack request IDs.
+# They must reconcile using stable project, event ID, revision, action and time.
+assert 'private func operationIdentity(_ operation: EditorialOperation)' in store
+assert 'let receipt = remote' in store
+assert 'Self.str(row, "event_id") == id' in store
+assert 'Self.str(row, "decision") == operation.kind' in store
+assert 'Self.int(row, "revision") == identity.revision' in store
+assert 'operation.createdAt.addingTimeInterval(-180)' in store
+assert '"ttittulares/decisions.json"' in store
+assert 'freshReceipts || freshNewsDecisions || freshTrendClosures' in store
+assert 'stage = "Confirmada"' in store
+
+# A successful Github deletion must be durable across stale/cached snapshots.
+assert "struct EditorialTombstone: Codable" in store
+assert '"TTActualidad.confirmed-terminals.v1"' in store
+assert "accumulateConfirmedTerminals(docs, downloaded)" in store
+assert "applyConfirmedTerminals(EditorialSnapshot(" in store
+assert "snapshot = applyConfirmedTerminals(updated)" in store
+assert '"pilot/ttactualidad-action-receipts.json"' in store
+assert '"ttittulares/decisions.json"' in store
+assert '"trends/mobile-decisions.json"' in store
+assert "revision <= tombstone.revision" in store
+assert "persistTerminals()" in store
+assert "case .verified:" in store and "markTerminal(project: project" in store
+assert "news: canonicalSnapshot.news," in store
+
+# Every Tremending story retains its real Público URL and exposes an external link.
+assert 'sourceURL: URL(string: Self.str(item, "url"))' in store
+assert 'news.status == "TREMENDING"' in actions
+assert 'quickButton("Ver en Público", "arrow.up.right.square")' in actions
+assert 'openURL(original)' in actions
+assert 'url.path.hasPrefix("/tremending/")' in actions
+assert 'url.scheme?.lowercased() == "https"' in actions
+
+# Publish/non-publish is a deliberate two-button confirmation on ready Lists.
+assert 'Button("Publicado · Quitar de Listas")' in actions
+assert 'Button("No publicado · Quitar de Listas"' in actions
+assert 'submit("published")' in actions and 'submit("deleted")' in actions
+assert '"pilot/ttactualidad-publication-events.json"' in store
+assert "func publicationsLast24h(project: String, now: Date = Date()) -> Int?" in store
+assert "now.addingTimeInterval(-86_400)" in store
+assert "$0.confirmedAt > lowerBound && $0.confirmedAt <= now" in store
+assert 'publicationLedgerAvailable = false' in store
+assert 'Self.str(row, "decision") == "published"' in store
+assert 'TimelineView(.periodic(from: .now, by: 1))' in dashboard
+assert 'published24hChip("TTiT", project: "ttittulares"' in dashboard
+assert 'published24hChip("TTen", project: "ttendencias"' in dashboard
+assert '"published" : "deleted"' not in store or 'action.decision == "published"' in store
+
+# Publication badge must observe every verified receipt and never stall full UI.
+assert '@Published private var publicationEvents: [PublicationEvent]' in store
+assert 'func refreshPublicationCounters(' in store
+assert 'expectedProject: project, expectedID: id' in store
+assert 'async let ledger = fetchPublicationJSON(' in store
+assert 'async let receipts = fetchPublicationJSON(' in store
+assert 'publicationEvents = Array(unique.values)' in store
+assert 'guard !isLoading else { return }' in store
+assert 'lastCompletedRefresh' in store
+assert 'refreshIfStale(minInterval: TimeInterval = 120)' in store
+assert 'refreshRequested' not in store
+assert 'isManuallyRefreshing' in dashboard
+assert '.refreshable {' not in dashboard
+assert '.onChange(of: scenePhase)' not in dashboard
+assert 'refreshIfStale(minInterval: 120)' in app
+assert 'refresh(manual: true)' in dashboard
+
+# 0.4.11: Chronological 24h audit, no redundant editorial hub or swipe-refresh copy.
+history = (root / "TTActualidad/PublishedHistorySheet.swift").read_text()
+assert "struct ConfirmedPublication: Identifiable" in store
+assert "func publicationsHistoryLast24h(" in store
+assert "if $0.confirmedAt != $1.confirmedAt" in store
+assert 'publicationSheet = PublicationSheetRoute(project: project)' in dashboard
+assert '.sheet(item: $publicationSheet)' in dashboard
+assert 'PublishedHistorySheet(project: selection.project)' in dashboard
+assert 'history.count - index' in history and 'history.enumerated()' in history
+assert 'item.confirmedAt, format: .dateTime.day()' in history
+assert 'showEditorialHub' not in dashboard
+assert 'GitHub directo · Sin Cloudflare' not in dashboard
+assert 'Última actualización' in dashboard
+assert 'Desliza para actualizar' not in dashboard
+assert 'Pulsa el botón de actualizar arriba' in dashboard

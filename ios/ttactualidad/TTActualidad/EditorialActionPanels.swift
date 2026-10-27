@@ -10,12 +10,16 @@ enum TTTheme {
     static let red = Color(red: 0.39, green: 0.16, blue: 0.21)
     static let yellow = Color(red: 0.38, green: 0.32, blue: 0.12)
     static let green = Color(red: 0.09, green: 0.35, blue: 0.26)
+    static let cardInterior = Color(red: 0.11, green: 0.17, blue: 0.27)
+    static let cardBorder = Color(red: 0.018, green: 0.032, blue: 0.078)
+    static let cardHighlight = Color(red: 0.19, green: 0.29, blue: 0.40)
 }
 
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
     @ObservedObject var github: GitHubEditor
+    @EnvironmentObject private var store: EditorialStore
     @Binding var showSettings: Bool
     @State private var confirm = false
     @State private var intent = "deleted"
@@ -43,11 +47,25 @@ struct EditorialActions: View {
                 }
                 if ["CRECIENDO", "REVISIÓN"].contains(news.status) {
                     HStack(spacing: 7) {
-                        quickButton("Preparar", "sparkles") { request("prepare") }
+                        quickButton("Elaborar desde cero", "sparkles") { request("prepare") }
                         quickButton("Desestimar", "xmark.circle", danger: true) { request("discard") }
                     }
                 } else if news.status == "TREMENDING" {
-                    quickButton("Quitar", "trash", danger: true) { request("deleted") }
+                    HStack(spacing: 7) {
+                        if let original = tremendingOriginal(news.sourceURL) {
+                            quickButton("Ver en Público", "arrow.up.right.square") {
+                                openURL(original)
+                            }
+                        } else {
+                            Text("Enlace original no disponible")
+                                .font(.system(size: 11))
+                                .foregroundStyle(TTTheme.muted)
+                                .frame(maxWidth: .infinity)
+                        }
+                        quickButton("Quitar", "trash", danger: true) {
+                            request("deleted")
+                        }
+                    }
                 }
             } else if trend?.status == "EN ELABORACIÓN" {
                 Text("Elaboración solicitada en GitHub; pendiente de cierre editorial.")
@@ -76,16 +94,27 @@ struct EditorialActions: View {
             HStack(spacing: 7) {
                 if news != nil || trend?.inListas == true {
                     quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                } else {
-                    quickButton("Preparar novedad", "arrow.triangle.2.circlepath") { request("rework") }
                 }
-                quickButton(trend == nil ? "Buscar en X" : "Reelaborar", trend == nil ? "magnifyingglass" : "arrow.triangle.2.circlepath") {
-                    if trend != nil { request("rework") }
-                    else {
-                        var parts = URLComponents(string: "https://x.com/search")
-                        parts?.queryItems = [URLQueryItem(name: "q", value: title), URLQueryItem(name: "f", value: "live")]
-                        if let url = parts?.url { openURL(url) }
+                if trend != nil {
+                    // A single backend-supported fresh investigation for both
+                    // unexplained Top 30 entries and already-explained trends.
+                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
+                        request("rework")
                     }
+                } else {
+                    // This action is served by the same authenticated direct
+                    // GitHub dispatch as trend rework, once deployed to main.
+                    quickButton("Elaborar desde cero", "arrow.triangle.2.circlepath") {
+                        request("rework")
+                    }
+                }
+            }
+            if news != nil {
+                quickButton("Buscar en X", "magnifyingglass") {
+                    var parts = URLComponents(string: "https://x.com/search")
+                    parts?.queryItems = [URLQueryItem(name: "q", value: title),
+                                         URLQueryItem(name: "f", value: "live")]
+                    if let url = parts?.url { openURL(url) }
                 }
             }
             }
@@ -93,25 +122,72 @@ struct EditorialActions: View {
                 Text(outcome).font(.caption2).foregroundStyle(TTTheme.muted).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" : "¿Preparar otra explicación?",
+        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+                            intent == "discard" ? "¿Desestimar esta entrada?" :
+                            "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
-            Button("Confirmar", role: intent == "deleted" ? .destructive : nil) {
-                Task {
-                    let dispatched = await github.decide(project: project, eventID: editorialID,
-                                       revision: revision, decision: intent, title: title, rank: rank)
-                    outcome = github.notice
-                    if dispatched { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+            if intent == "deleted" && (news?.status == "LISTA" ||
+                                        trend?.inListas == true) {
+                Button("Publicado · Quitar de Listas") { submit("published") }
+                Button("No publicado · Quitar de Listas", role: .destructive) {
+                    submit("deleted")
                 }
+            } else {
+                Button("Confirmar", role: intent == "deleted" ||
+                    intent == "discard" ? .destructive : nil) { submit(intent) }
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
-            Text("La orden se comprobará contra la revisión vigente de GitHub. Enviar no significa que el cambio ya esté aplicado.")
+            Text(intent == "deleted" && (news?.status == "LISTA" ||
+                                         trend?.inListas == true)
+                 ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
+                 : intent == "rework" || intent == "prepare"
+                 ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : "La orden se comprobará contra la revisión vigente de GitHub.")
         }
+    }
+
+    private func submit(_ decision: String) {
+        let requestID = UUID().uuidString.lowercased()
+        guard store.beginEditorialAction(project: project, id: editorialID,
+                                         revision: revision, decision: decision,
+                                         title: title, rank: rank,
+                                         requestID: requestID) else { return }
+        let requestedID = editorialID
+        let requestedRevision = revision
+        let requestedProject = project
+        let requestedTitle = title
+        let requestedRank = rank
+        Task {
+            let result = await github.decide(project: requestedProject,
+                                             eventID: requestedID,
+                                             revision: requestedRevision,
+                                             decision: decision,
+                                             title: requestedTitle, rank: requestedRank,
+                                             requestID: requestID)
+            store.completeEditorialAction(project: requestedProject, id: requestedID,
+                                          revision: requestedRevision,
+                                          result: result, detail: github.notice)
+        }
+    }
+
+    // Only open the original article from the trusted Tremending feed.
+    // Never manufacture a search URL if an article has no valid source link.
+    private func tremendingOriginal(_ url: URL?) -> URL? {
+        guard let url,
+              url.scheme?.lowercased() == "https",
+              ["publico.es", "www.publico.es"].contains(url.host?.lowercased() ?? ""),
+              url.path.hasPrefix("/tremending/") else { return nil }
+        return url
     }
 
     private func request(_ action: String) {
         guard github.authenticated else { showSettings = true; return }
         guard !editorialID.isEmpty else { outcome = "Identificador editorial no disponible. Actualiza antes."; return }
+        guard !store.isActionInProgress(project: project, id: editorialID, revision: revision) else {
+            outcome = "La orden ya está registrada y pendiente de confirmación."
+            return
+        }
         intent = action
         confirm = true
     }
@@ -173,6 +249,8 @@ struct EditorialActions: View {
 
 struct NewsSubmissionSheet: View {
     @ObservedObject var github: GitHubEditor
+    let onQueued: () -> Void
+    @EnvironmentObject private var store: EditorialStore
     @Environment(\.dismiss) private var dismiss
     @State private var headline = ""
     @State private var url = ""
@@ -191,15 +269,33 @@ struct NewsSubmissionSheet: View {
                 }
                 Section {
                     Button {
+                        let cleanTitle = headline.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let cleanURL = url.trimmingCharacters(in: .whitespacesAndNewlines)
+                        guard !cleanTitle.isEmpty || !cleanURL.isEmpty else { return }
+                        if !cleanTitle.isEmpty && cleanTitle.count < 5 { return }
+                        if !cleanURL.isEmpty &&
+                            !(URL(string: cleanURL).map { $0.scheme == "https" && $0.host != nil } ?? false) {
+                            return
+                        }
+                        let requestID = UUID().uuidString.lowercased()
+                        sent = true
+                        store.beginManualNews(requestID: requestID, title: cleanTitle, url: cleanURL)
+                        onQueued()
+                        dismiss()
+                        let description = instructions
                         Task {
-                            sent = await github.addNews(title: headline, url: url, instructions: instructions)
+                            let result = await github.addNews(title: cleanTitle, url: cleanURL,
+                                                              instructions: description,
+                                                              requestID: requestID)
+                            store.completeManualNews(requestID: requestID,
+                                                     result: result, detail: github.notice)
                         }
                     } label: {
                         Label("Enviar a En elaboración", systemImage: "paperplane.fill")
                     }
-                    .disabled(!github.authenticated || github.activeAction != nil || sent)
+                    .disabled(!github.authenticated || sent)
                     if sent {
-                        Label("Orden recibida por GitHub; falta verificar la persistencia editorial.", systemImage: "checkmark.circle")
+                        Label("En elaboración (provisional). Confirmando con GitHub…", systemImage: "clock.arrow.circlepath")
                             .font(.caption).foregroundStyle(.orange)
                     }
                     if !github.authenticated {
@@ -231,14 +327,20 @@ struct GitHubConnectionSheet: View {
                     Text("Lectura siempre disponible. Para acciones editoriales, GitHub autoriza la aplicación directamente, sin Cloudflare ni introducir un token personal.")
                         .font(.subheadline).foregroundStyle(TTTheme.muted)
                     if github.authenticated {
-                        Button("Desvincular") { github.logout() }
+                        Label("Sesión segura y renovable", systemImage: "checkmark.shield.fill")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(TTTheme.teal)
+                        Text(github.sessionSummary)
+                            .font(.caption)
+                            .foregroundStyle(TTTheme.muted)
+                        Button("Desvincular", role: .destructive) { github.logout() }
                             .buttonStyle(.bordered)
                     } else {
                         Text("Configuración única: crea e instala una GitHub App limitada a fabricelop/europapress-rss, con permiso Contents lectura/escritura y Device Flow activado. Copia solamente su Client ID público.")
                             .font(.caption).foregroundStyle(TTTheme.muted)
                         Link("Configuración de GitHub Apps",
                              destination: URL(string: "https://github.com/settings/apps")!)
-                        TextField("Client ID (Iv1...)", text: $github.clientID)
+                        TextField("Client ID (Iv23li...)", text: $github.clientID)
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
                             .padding(12).background(TTTheme.panel, in: RoundedRectangle(cornerRadius: 11))
                         Button("Conectar GitHub") { github.beginLogin() }
