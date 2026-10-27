@@ -90,8 +90,8 @@ struct TrendHintsSheet: View {
                 eventID: id, revision: revision,
                 title: name, rank: rank, hints: text, requestID: requestID)
             store.completeEditorialAction(project: "ttendencias", id: id,
-                                          revision: revision, result: result,
-                                          detail: github.notice)
+                                          revision: revision, requestID: requestID,
+                                          result: result, detail: github.notice)
             submitting = false
         }
     }
