@@ -28,7 +28,10 @@ struct TTDashboard: View {
                         counters
                         if store.section == .news && !showCombinedListas { sourceCounters }
                         connectedLabel
-                        if !store.actionMessage.isEmpty { editorialActionBanner }
+                        PendingOperationsPanel().environmentObject(store)
+                        if store.actionIsError && !store.actionMessage.isEmpty {
+                            editorialActionBanner
+                        }
                         subTabs
                         searchField
                         if showCombinedListas { combinedListasContent }
