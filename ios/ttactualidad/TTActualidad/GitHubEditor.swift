@@ -28,7 +28,16 @@ final class GitHubEditor: ObservableObject {
     private var token: String = ""
     private var refreshToken: String = ""
     private var tokenExpires: Date = .distantPast
+    private var refreshTokenExpires: Date = .distantFuture
+    private var refreshTask: Task<String, Error>?
     private var deviceTask: Task<Void, Never>?
+
+    private struct SecureSession: Codable {
+        let accessToken: String
+        let refreshToken: String
+        let accessExpiresAt: Double
+        let refreshExpiresAt: Double
+    }
 
     init() { restoreSession() }
 
@@ -43,31 +52,86 @@ final class GitHubEditor: ObservableObject {
         return string
     }
 
-    private func save(_ key: String, value: String) {
+    // Update existing Keychain records instead of delete-then-add; a failed
+    // write must not destroy the previous rotating refresh token.
+    @discardableResult
+    private func save(_ key: String, value: String) -> Bool {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service, kSecAttrAccount as String: key]
-        SecItemDelete(query as CFDictionary)
-        guard !value.isEmpty else { return }
-        var insert = query
-        insert[kSecValueData as String] = Data(value.utf8)
-        insert[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        SecItemAdd(insert as CFDictionary, nil)
+        if value.isEmpty { return SecItemDelete(query as CFDictionary) == errSecSuccess ||
+                                  credential(key).isEmpty }
+        let attributes: [String: Any] = [
+            kSecValueData as String: Data(value.utf8),
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        ]
+        let updated = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+        if updated == errSecSuccess { return true }
+        guard updated == errSecItemNotFound else { return false }
+        var insertion = query
+        insertion.merge(attributes, uniquingKeysWith: { _, new in new })
+        return SecItemAdd(insertion as CFDictionary, nil) == errSecSuccess
     }
 
     private func restoreSession() {
-        token = credential("access")
-        refreshToken = credential("refresh")
-        tokenExpires = Date(timeIntervalSince1970: TimeInterval(credential("expires")) ?? 0)
+        let saved = credential("session")
+        if let data = saved.data(using: .utf8),
+           let decoded = try? JSONDecoder().decode(SecureSession.self, from: data) {
+            token = decoded.accessToken
+            refreshToken = decoded.refreshToken
+            tokenExpires = Date(timeIntervalSince1970: decoded.accessExpiresAt)
+            refreshTokenExpires = Date(timeIntervalSince1970: decoded.refreshExpiresAt)
+        } else {
+            // Migrate v0.3.x installations without requiring another login.
+            token = credential("access")
+            refreshToken = credential("refresh")
+            if let expiry = TimeInterval(credential("expires")), expiry > 0 {
+                tokenExpires = Date(timeIntervalSince1970: expiry)
+            } else {
+                // A non-expiring GitHub App token has no expires_in field.
+                tokenExpires = !token.isEmpty && refreshToken.isEmpty ?
+                    .distantFuture : .distantPast
+            }
+            if !token.isEmpty || !refreshToken.isEmpty { try? persistSession() }
+        }
         authenticated = !token.isEmpty || !refreshToken.isEmpty
-        if authenticated { notice = "Cuenta GitHub vinculada al iPhone." }
+        if authenticated { notice = "GitHub vinculado · renovación automática activada." }
+    }
+
+    private func persistSession() throws {
+        let envelope = SecureSession(accessToken: token, refreshToken: refreshToken,
+                                     accessExpiresAt: tokenExpires.timeIntervalSince1970,
+                                     refreshExpiresAt: refreshTokenExpires.timeIntervalSince1970)
+        let json = try JSONEncoder().encode(envelope)
+        guard let string = String(data: json, encoding: .utf8),
+              save("session", value: string) else {
+            throw GitHubError.message("El iPhone no pudo guardar la sesión en el llavero seguro.")
+        }
     }
 
     func logout() {
         deviceTask?.cancel()
-        for key in ["access", "refresh", "expires"] { save(key, value: "") }
+        refreshTask?.cancel()
+        for key in ["session", "access", "refresh", "expires"] { save(key, value: "") }
         token = ""; refreshToken = ""; tokenExpires = .distantPast
+        refreshTokenExpires = .distantFuture
         authenticated = false; deviceCode = ""
         notice = "Sesión GitHub desconectada."
+    }
+
+    // Do not mark the account disconnected because of an offline start,
+    // temporary GitHub error or failed background refresh.
+    func renewOnForeground() async {
+        guard authenticated else { return }
+        if !token.isEmpty && tokenExpires > Date().addingTimeInterval(60 * 60) { return }
+        do {
+            _ = try await authorizedToken()
+            notice = "GitHub conectado · sesión renovada automáticamente."
+        } catch {
+            if authenticated {
+                notice = "GitHub vinculado; renovación pendiente de conexión. " +
+                    error.localizedDescription
+            }
+        }
     }
 
     func beginLogin() {
@@ -103,7 +167,7 @@ final class GitHubEditor: ObservableObject {
                             parameters: ["client_id": id, "device_code": secret,
                                          "grant_type": "urn:ietf:params:oauth:grant-type:device_code"])
                         if let access = response["access_token"] as? String {
-                            acceptTokens(response, access: access)
+                            try acceptTokens(response, access: access)
                             deviceCode = ""
                             notice = "GitHub conectado. Ya puedes enviar órdenes editoriales."
                             return
@@ -157,15 +221,31 @@ final class GitHubEditor: ObservableObject {
         }
     }
 
-    private func acceptTokens(_ response: [String: Any], access: String) {
+    private func acceptTokens(_ response: [String: Any], access: String) throws {
+        // The new refresh token invalidates the old one. Persist both as one
+        // Keychain record BEFORE reporting that authentication has succeeded.
+        let newRefresh = response["refresh_token"] as? String ?? refreshToken
+        let expires: Date = (response["expires_in"] as? Int).map {
+            Date().addingTimeInterval(TimeInterval($0))
+        } ?? .distantFuture
+        let refreshExpires: Date = (response["refresh_token_expires_in"] as? Int).map {
+            Date().addingTimeInterval(TimeInterval($0))
+        } ?? refreshTokenExpires
+        let envelope = SecureSession(accessToken: access, refreshToken: newRefresh,
+                                     accessExpiresAt: expires.timeIntervalSince1970,
+                                     refreshExpiresAt: refreshExpires.timeIntervalSince1970)
+        let json = try JSONEncoder().encode(envelope)
+        guard let saved = String(data: json, encoding: .utf8),
+              save("session", value: saved) else {
+            throw GitHubError.message("Autorizado, pero el llavero del iPhone no pudo guardar la sesión.")
+        }
         token = access
-        if let refreshed = response["refresh_token"] as? String { refreshToken = refreshed }
-        let expires = response["expires_in"] as? Int ?? (7 * 3600)
-        tokenExpires = Date().addingTimeInterval(TimeInterval(expires))
-        save("access", value: token)
-        save("refresh", value: refreshToken)
-        save("expires", value: String(tokenExpires.timeIntervalSince1970))
+        refreshToken = newRefresh
+        tokenExpires = expires
+        refreshTokenExpires = refreshExpires
         authenticated = true
+        // New installations use the atomic record; remove fragile legacy keys.
+        for key in ["access", "refresh", "expires"] { save(key, value: "") }
     }
 
     private func githubForm(_ endpoint: String, parameters: [String: String]) async throws -> [String: Any] {
@@ -187,21 +267,43 @@ final class GitHubEditor: ObservableObject {
     }
 
     private func authorizedToken() async throws -> String {
-        if tokenExpires > Date().addingTimeInterval(90) && !token.isEmpty { return token }
+        if !token.isEmpty && tokenExpires > Date().addingTimeInterval(90) {
+            return token
+        }
+        if let refreshTask { return try await refreshTask.value }
         guard !refreshToken.isEmpty, !clientID.isEmpty else {
+            // Non-expiring access tokens have no refresh token.
+            if !token.isEmpty && tokenExpires == .distantFuture { return token }
             authenticated = false
-            throw GitHubError.message("Vuelve a conectar GitHub para editar.")
+            throw GitHubError.message("Esta autorización de GitHub ya no tiene credenciales renovables.")
         }
-        let response = try await githubForm(
-            "https://github.com/login/oauth/access_token",
-            parameters: ["client_id": clientID, "refresh_token": refreshToken,
-                         "grant_type": "refresh_token"])
-        guard let access = response["access_token"] as? String else {
+        guard Date() < refreshTokenExpires else {
             authenticated = false
-            throw GitHubError.message("La sesión caducó. Reconecta GitHub.")
+            throw GitHubError.message("El token de renovación ha caducado; vincula GitHub otra vez.")
         }
-        acceptTokens(response, access: access)
-        return access
+
+        // All simultaneous editorial writes share this exact rotation.
+        let task = Task<String, Error> {
+            let response = try await githubForm(
+                "https://github.com/login/oauth/access_token",
+                parameters: ["client_id": clientID, "refresh_token": refreshToken,
+                             "grant_type": "refresh_token"])
+            if let access = response["access_token"] as? String {
+                try acceptTokens(response, access: access)
+                return access
+            }
+            let code = response["error"] as? String ?? ""
+            if code == "bad_refresh_token" {
+                authenticated = false
+                throw GitHubError.message("GitHub ha invalidado la renovación. Es necesario volver a vincular.")
+            }
+            // Other GitHub errors do not revoke a valid stored session.
+            throw GitHubError.message(response["error_description"] as? String ??
+                                      "Renovación temporalmente no disponible.")
+        }
+        refreshTask = task
+        defer { refreshTask = nil }
+        return try await task.value
     }
 
     enum GitHubError: LocalizedError {
