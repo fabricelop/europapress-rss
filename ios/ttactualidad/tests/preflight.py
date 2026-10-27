@@ -91,3 +91,14 @@ assert 'quickButton("Elaborar desde cero"' in actions
 assert 'action.decision == "rework"' in store
 assert 'item["rewrite_pending"] as? Bool != true' in store
 assert (root.parents[1] / "pilot/rework_ttittulares.py").exists()
+
+# Pending operations stay visible after restarting; no optimistic success.
+pending_panel = (root / "TTActualidad" / "PendingOperationsPanel.swift").read_text()
+assert "PendingOperationsPanel().environmentObject(store)" in dashboard
+assert "TTActualidad.operations.v1" in store and "requestID: String? = nil" in store
+assert "reconcileOperationHistory(" in store
+assert 'pilot/ttactualidad-action-receipts.json' in store
+assert '"Sin confirmar"' in store and '"Esperando GitHub"' in store
+assert "Comprobar GitHub ahora" in pending_panel
+assert "Pendiente de GitHub" in pending_panel or "Esperando GitHub" in pending_panel
+assert "requestID: requestID" in actions and "requestID: requestID" in auth
