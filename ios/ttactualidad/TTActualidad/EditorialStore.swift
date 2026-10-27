@@ -905,14 +905,7 @@ final class EditorialStore: ObservableObject {
                             kind: "Nueva noticia", status: "En elaboración")
             actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
             actionIsError = false
-            Task {
-                if action.decision == "published" {
-                    await self.refreshPublicationCounters(
-                        expectedProject: project, expectedID: id,
-                        expectedRevision: revision)
-                }
-                await self.refreshIfStale(minInterval: 0)
-            }
+            Task { await self.refreshIfStale(minInterval: 0) }
         case .pending:
             recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
                             kind: "Nueva noticia", status: "Esperando GitHub")
@@ -1009,9 +1002,16 @@ final class EditorialStore: ObservableObject {
             activeEditorialActions[key] = action
             actionMessage = "Verificado en GitHub: " + action.title
             actionIsError = false
-            // Read state automatically. The overlay prevents an old CDN snapshot
-            // from resurrecting a card that is already closed on GitHub.
-            Task { await self.refresh() }
+            // Refresh the published counter independently, without showing
+            // a full-page spinner or interrupting interaction.
+            Task {
+                if action.decision == "published" {
+                    await self.refreshPublicationCounters(
+                        expectedProject: project, expectedID: id,
+                        expectedRevision: revision)
+                }
+                await self.refreshIfStale(minInterval: 0)
+            }
         case .pending:
             recordOperation(id: key, title: action.title, kind: action.decision,
                             status: "Esperando GitHub")
@@ -1020,7 +1020,7 @@ final class EditorialStore: ObservableObject {
             actionMessage = "Pendiente de confirmar en GitHub: " + action.title +
                             ". La vista conserva el cambio provisional."
             actionIsError = false
-            Task { await self.refresh() }
+            Task { await self.refreshIfStale(minInterval: 30) }
         case .failed:
             recordOperation(id: key, title: action.title, kind: action.decision,
                             status: "Rechazada")
