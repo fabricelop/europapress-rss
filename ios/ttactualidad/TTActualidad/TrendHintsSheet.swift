@@ -8,6 +8,7 @@ struct TrendHintsSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var hints = ""
     @State private var error = ""
+    @State private var submitting = false
 
     private var clean: String { hints.trimmingCharacters(in: .whitespacesAndNewlines) }
 
@@ -37,7 +38,7 @@ struct TrendHintsSheet: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(TTTheme.teal)
-                .disabled(clean.count < 8 || clean.count > 6000)
+                .disabled(clean.count < 8 || clean.count > 6000 || submitting)
                 Text("Al enviarlo se mostrará una orden provisional. Solo el comprobante de GitHub confirmará su recepción y la nueva elaboración.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
@@ -58,28 +59,40 @@ struct TrendHintsSheet: View {
             error = "Vincula GitHub desde el panel de conexión."
             return
         }
-        let requestID = UUID().uuidString.lowercased()
-        guard store.beginEditorialAction(project: "ttendencias",
-                                         id: trend.editorialID,
-                                         revision: trend.revision,
-                                         decision: "hints", title: trend.name,
-                                         rank: trend.rank, requestID: requestID) else {
-            error = "La tendencia tiene otra orden pendiente de confirmación."
-            return
-        }
+        guard !submitting else { return }
+        submitting = true
         let id = trend.editorialID
         let revision = trend.revision
         let name = trend.name
         let rank = trend.rank
         let text = clean
-        dismiss()
+        let requestID = UUID().uuidString.lowercased()
         Task {
+            var accepted = store.beginEditorialAction(
+                project: "ttendencias", id: id, revision: revision,
+                decision: "hints", title: name, rank: rank, requestID: requestID)
+            if !accepted {
+                // A stale local 14:29 request must be reconciled with fresh
+                // authoritative GitHub state before refusing editor clues.
+                await store.refreshIfStale(minInterval: 0)
+                accepted = store.beginEditorialAction(
+                    project: "ttendencias", id: id, revision: revision,
+                    decision: "hints", title: name, rank: rank,
+                    requestID: requestID)
+            }
+            guard accepted else {
+                error = "GitHub sigue teniendo una elaboración activa o no se pudo comprobar su estado. Revisa Órdenes pendientes."
+                submitting = false
+                return
+            }
+            dismiss()
             let result = await github.submitTrendHints(
                 eventID: id, revision: revision,
                 title: name, rank: rank, hints: text, requestID: requestID)
             store.completeEditorialAction(project: "ttendencias", id: id,
                                           revision: revision, result: result,
                                           detail: github.notice)
+            submitting = false
         }
     }
 }
