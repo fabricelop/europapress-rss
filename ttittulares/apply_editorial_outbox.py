@@ -630,7 +630,7 @@ def main():
                 if provisional_repair:
                     row["telegram_provisional_repaired_from_status"]=row_status
                     row["telegram_provisional_repaired_at"]=now
-                row["status"]="READY";row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
+                row["status"]="READY";row.pop("rewrite_pending",None);row["rewrite_completed_at"]=now;row["delivered_at"]=item.get("prepared_at") or now;row["delivery_confirmation"]="prepared_web"
                 row.pop("problem_reason",None);row.pop("problematic_at",None);row.pop("problematic_attempts",None);row.pop("verification_hint",None);row.pop("verification_hint_at",None);row.pop("user_validated",None);row.pop("user_validated_at",None);row.pop("user_validation_source",None);row.pop("user_validation_version",None)
             elif st=="duplicate":
                 target,original_id,reason=resolve_duplicate(
