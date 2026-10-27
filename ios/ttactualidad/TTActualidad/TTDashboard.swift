@@ -321,8 +321,6 @@ struct TTDashboard: View {
                                    store.trendFilter == .pendientes) { store.trendFilter = .pendientes }
                         filterChip("Antiguas", filteredTrends(.antiguas).count,
                                    store.trendFilter == .antiguas) { store.trendFilter = .antiguas }
-                        filterChip("Sin revisar", filteredTrends(.sinRevisar).count,
-                                   store.trendFilter == .sinRevisar) { store.trendFilter = .sinRevisar }
                     }
                 } else {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 5),
@@ -337,8 +335,6 @@ struct TTDashboard: View {
                                    store.newsFilter == .creciendo) { store.newsFilter = .creciendo }
                         filterChip("Tremending", store.snapshot.newsTremending.count,
                                    store.newsFilter == .tremending) { store.newsFilter = .tremending }
-                        filterChip("Sin revisar", store.unreviewedNews.count,
-                                   store.newsFilter == .sinRevisar) { store.newsFilter = .sinRevisar }
                     }
                 }
             }
@@ -444,7 +440,6 @@ struct TTDashboard: View {
             case .revision: return store.snapshot.newsRevision
             case .creciendo: return store.snapshot.newsCreciendo
             case .tremending: return store.snapshot.newsTremending
-            case .sinRevisar: return store.allNews.filter { store.unreviewedNews.contains($0.id) }
             }
         }()
         let visible = category.filter {
@@ -473,7 +468,6 @@ struct TTDashboard: View {
             } ?? false }
         case .pendientes: return items.filter { $0.explanation.isEmpty }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
-        case .sinRevisar: return items.filter { store.unreviewedTrends.contains($0.name) }
         }
     }
 
