@@ -18,6 +18,7 @@ enum TrendFilter: String, CaseIterable, Identifiable {
     case pendientes = "Pendientes"
     case antiguas = "Antiguas"
     case movimientos = "Cambios de posición"
+    case sinRevisar = "Sin revisar"
     var id: String { rawValue }
 }
 enum NewsFilter: String, CaseIterable, Identifiable {
@@ -26,6 +27,7 @@ enum NewsFilter: String, CaseIterable, Identifiable {
     case revision = "Revisión"
     case creciendo = "Creciendo"
     case tremending = "Tremending"
+    case sinRevisar = "Sin revisar"
     var id: String { rawValue }
 }
 
@@ -100,6 +102,14 @@ struct OptimisticEditorialAction {
     var key: String { project + ":" + id + ":r" + String(revision) }
 }
 
+struct EditorialOperation: Codable, Identifiable {
+    let id: String
+    let title: String
+    let kind: String
+    var status: String
+    let createdAt: Date
+}
+
 @MainActor
 final class EditorialStore: ObservableObject {
     @Published var section: EditorialSection = .trends
@@ -113,9 +123,51 @@ final class EditorialStore: ObservableObject {
     @Published private(set) var actionMessage = ""
     @Published private(set) var actionIsError = false
     @Published private(set) var activeEditorialActions: [String: OptimisticEditorialAction] = [:]
+    @Published private(set) var unreviewedNews = Set<String>()
+    @Published private(set) var unreviewedTrends = Set<String>()
+    @Published private(set) var operationHistory: [EditorialOperation] = []
+    private var reviewedNews = Set<String>()
+    private var reviewedTrends = Set<String>()
+    var allNews: [NewsItem] {
+        var seen = Set<String>()
+        return (snapshot.news + snapshot.newsElaboracion + snapshot.newsRevision +
+                snapshot.newsCreciendo + snapshot.newsTremending).filter { seen.insert($0.id).inserted }
+    }
+    var pendingOperationsCount: Int {
+        activeEditorialActions.values.filter { $0.phase != .confirmed }.count + draftNews.count
+    }
     private var canonicalSnapshot = EditorialSnapshot()
     private var refreshRequested = false
     private var currentVisitSnapshot: [String: String]?
+
+    init() {
+        if let stored = UserDefaults.standard.data(forKey: "TTActualidad.operations.v1"),
+           let decoded = try? JSONDecoder().decode([EditorialOperation].self, from: stored) {
+            operationHistory = Array(decoded.prefix(60))
+        }
+    }
+
+    private func recordOperation(id: String, title: String, kind: String, status: String) {
+        if let index = operationHistory.firstIndex(where: { $0.id == id }) {
+            operationHistory[index].status = status
+        } else {
+            operationHistory.insert(EditorialOperation(id: id, title: title, kind: kind,
+                                                       status: status, createdAt: Date()), at: 0)
+        }
+        operationHistory = Array(operationHistory.prefix(60))
+        if let data = try? JSONEncoder().encode(operationHistory) {
+            UserDefaults.standard.set(data, forKey: "TTActualidad.operations.v1")
+        }
+    }
+
+    func markNewsReviewed(_ id: String) {
+        reviewedNews.insert(id)
+        unreviewedNews.remove(id)
+    }
+    func markTrendReviewed(_ name: String) {
+        reviewedTrends.insert(name)
+        unreviewedTrends.remove(name)
+    }
     private var draftNews = [String: NewsItem]()
 
     // Canonical GitHub editorial sources. Not a Cloudflare or Vercel endpoint.
@@ -311,6 +363,8 @@ final class EditorialStore: ObservableObject {
                                    factual: "", closer: "", sources: 0,
                                    status: "EN ELABORACIÓN")
         draftNews[requestID] = placeholder
+        recordOperation(id: eventID, title: placeholder.title, kind: "Nueva noticia",
+                        status: "Enviando")
         actionMessage = "Noticia añadida provisionalmente a En elaboración · guardando en GitHub…"
         actionIsError = false
         applyOptimisticOverlay()
@@ -320,14 +374,20 @@ final class EditorialStore: ObservableObject {
                             detail: String) {
         switch result {
         case .verified:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "Verificada")
             actionMessage = "Noticia confirmada en GitHub · sincronizando automáticamente"
             actionIsError = false
             Task { await self.refresh() }
         case .pending:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "Pendiente de GitHub")
             actionMessage = "GitHub aún está procesando la noticia. Se mantiene en En elaboración."
             actionIsError = false
             Task { await self.refresh() }
         case .failed:
+            recordOperation(id: "manual-" + requestID, title: draftNews[requestID]?.title ?? "Noticia",
+                            kind: "Nueva noticia", status: "Rechazada")
             draftNews.removeValue(forKey: requestID)
             actionMessage = "No se pudo añadir la noticia: " + detail
             actionIsError = true
@@ -361,6 +421,7 @@ final class EditorialStore: ObservableObject {
             return false
         }
         activeEditorialActions[action.key] = action
+        recordOperation(id: action.key, title: title, kind: decision, status: "Enviando")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
                         decision == "discard" ? "Desestimado · guardando en GitHub…" :
                         "Trasladado a elaboración · guardando en GitHub…"
@@ -380,6 +441,8 @@ final class EditorialStore: ObservableObject {
         guard var action = activeEditorialActions[key] else { return }
         switch result {
         case .verified:
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Verificada")
             action.phase = .confirmed
             activeEditorialActions[key] = action
             actionMessage = "Verificado en GitHub: " + action.title
@@ -388,6 +451,8 @@ final class EditorialStore: ObservableObject {
             // from resurrecting a card that is already closed on GitHub.
             Task { await self.refresh() }
         case .pending:
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Pendiente de GitHub")
             action.phase = .uncertain
             activeEditorialActions[key] = action
             actionMessage = "Pendiente de confirmar en GitHub: " + action.title +
@@ -395,6 +460,8 @@ final class EditorialStore: ObservableObject {
             actionIsError = false
             Task { await self.refresh() }
         case .failed:
+            recordOperation(id: key, title: action.title, kind: action.decision,
+                            status: "Rechazada")
             activeEditorialActions.removeValue(forKey: key)
             actionMessage = "No se pudo aplicar «" + action.title + "»: " + detail
             actionIsError = true
@@ -544,6 +611,10 @@ final class EditorialStore: ObservableObject {
     func markVisitComplete() {
         guard let snapshot = currentVisitSnapshot else { return }
         UserDefaults.standard.set(snapshot, forKey: "TTActualidad.editorial.baseline.v1")
+        reviewedNews.removeAll()
+        reviewedTrends.removeAll()
+        unreviewedNews.removeAll()
+        unreviewedTrends.removeAll()
     }
 
     private func updateNovedades(news: [NewsItem], trends: [TrendItem], top30: [TrendItem],
@@ -558,6 +629,18 @@ final class EditorialStore: ObservableObject {
         for item in trendsWorking { current["W:T:" + item.editorialID] = String(item.revision) }
         currentVisitSnapshot = current
         if let before = defaults.dictionary(forKey: key) as? [String: String] {
+            unreviewedNews = Set(news.filter {
+                before["N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
+            }.map(\.id) + newsWorking.filter {
+                before["W:N:" + $0.id] != String($0.revision) && !reviewedNews.contains($0.id)
+            }.map(\.id))
+            unreviewedTrends = Set((trends + trendsWorking).filter {
+                before["T:" + $0.editorialID] != String($0.revision) &&
+                !reviewedTrends.contains($0.name)
+            }.map(\.name) + top30.filter {
+                before["R:" + $0.name] != String($0.rank) &&
+                !reviewedTrends.contains($0.name)
+            }.map(\.name))
             var changes: [String] = []
             for item in news {
                 let old = before["N:" + item.id]
