@@ -684,6 +684,10 @@ final class EditorialStore: ObservableObject {
             }
         }
         if !partial && downloaded.count == paths.count {
+            // A cached, unacknowledged local request must not block new editor
+            // clues for hours when GitHub confirms the trend is INACTIVE.
+            retireAbandonedTrendOperations(requests: docs["trends/requests.json"] ?? [:],
+                                           queue: docs["trends/editorial-queue.json"] ?? [:])
             retireSyncedActions()
             retireSyncedDrafts()
         }
@@ -895,6 +899,34 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // Expire only obsolete local trend operations after a COMPLETE fresh read.
+    // Never expire an active GitHub queue entry or assume an API timeout failed.
+    private func retireAbandonedTrendOperations(requests: [String: Any],
+                                                queue: [String: Any]) {
+        let authoritative = Self.rows(requests, "requests")
+        let activeQueue = Self.rows(queue, "items")
+        for operation in operationHistory where
+            operation.project == "ttendencias" &&
+            ["prepare", "rework", "hints"].contains(operation.kind) &&
+            ["Enviando", "Esperando GitHub", "Pendiente de GitHub", "Sin confirmar"].contains(operation.status) &&
+            Date().timeIntervalSince(operation.createdAt) > 20 * 60 {
+            guard let id = operation.eventID, let revision = operation.revision,
+                  let server = authoritative.first(where: {
+                      Self.str($0, "id") == id && Self.int($0, "revision") == revision
+                  }),
+                  ["inactive", "problem", "failed"].contains(
+                      Self.str(server, "status").lowercased()),
+                  !activeQueue.contains(where: {
+                      Self.str($0, "id") == id &&
+                      ["preparing", "update"].contains(Self.str($0, "status").lowercased())
+                  }) else { continue }
+            recordOperation(id: operation.id, title: operation.title,
+                            kind: operation.kind, status: "Caducada",
+                            detail: "GitHub confirma que ya no hay elaboración activa. Puedes enviar otra orden.")
+            activeEditorialActions.removeValue(forKey: operation.id)
+        }
+    }
+
     // Clears orphaned in-memory optimistic reworks even when their local
     // operation was recorded in an older build without a request_id.
     private func retireClosedTrendOverlays(manual: [String: Any],
@@ -1054,6 +1086,18 @@ final class EditorialStore: ObservableObject {
             activeEditorialActions[key] = action
             actionMessage = "Verificado en GitHub: " + action.title
             actionIsError = false
+            // The exact GitHub action receipt is already verified here.
+            // Count it NOW, without waiting for raw GitHub CDN propagation.
+            // The precise backend timestamp replaces this fallback on sync.
+            if action.decision == "published",
+               !publicationEvents.contains(where: {
+                   $0.project == project && $0.eventID == id && $0.revision == revision
+               }) {
+                publicationEvents.append(PublicationEvent(
+                    project: project, eventID: id, revision: revision,
+                    confirmedAt: Date()))
+                publicationLedgerAvailable = true
+            }
             // Refresh the published counter independently, without showing
             // a full-page spinner or interrupting interaction.
             Task {
