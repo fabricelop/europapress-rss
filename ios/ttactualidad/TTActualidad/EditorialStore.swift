@@ -594,10 +594,10 @@ final class EditorialStore: ObservableObject {
             if stage != operation.status {
                 recordOperation(id: operation.id, title: operation.title,
                                 kind: operation.kind, status: stage,
-                                project: identity.project, eventID: id,
-                                revision: identity.revision,
                                 requestID: operation.requestID ??
                                     (receipt.map { Self.str($0, "request_id") }),
+                                project: identity.project, eventID: id,
+                                revision: identity.revision,
                                 detail: confirmed ? "Confirmado en GitHub" : nil)
             }
             if stage == "Retirada" || stage == "Confirmada" ||
