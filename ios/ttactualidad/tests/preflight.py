@@ -180,3 +180,19 @@ assert '.refreshable {' not in dashboard
 assert '.onChange(of: scenePhase)' not in dashboard
 assert 'refreshIfStale(minInterval: 120)' in app
 assert 'refresh(manual: true)' in dashboard
+
+# 0.4.11: Chronological 24h audit, no redundant editorial hub or swipe-refresh copy.
+history = (root / "TTActualidad/PublishedHistorySheet.swift").read_text()
+assert "struct ConfirmedPublication: Identifiable" in store
+assert "func publicationsHistoryLast24h(" in store
+assert "if $0.confirmedAt != $1.confirmedAt" in store
+assert 'publicationSheet = PublicationSheetRoute(project: project)' in dashboard
+assert '.sheet(item: $publicationSheet)' in dashboard
+assert 'PublishedHistorySheet(project: selection.project)' in dashboard
+assert 'history.count - index' in history and 'history.enumerated()' in history
+assert 'item.confirmedAt, format: .dateTime.day()' in history
+assert 'showEditorialHub' not in dashboard
+assert 'GitHub directo · Sin Cloudflare' not in dashboard
+assert 'Última actualización' in dashboard
+assert 'Desliza para actualizar' not in dashboard
+assert 'Pulsa el botón de actualizar arriba' in dashboard
