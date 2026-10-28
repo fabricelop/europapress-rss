@@ -309,22 +309,40 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
                 if str(existing["status"]).lower() == "dismissed":
                     return {}, "already_applied"
                 fail("La noticia ya tiene una decision final diferente")
+            # The user may have pressed Desestimar while PROCESSING and the
+            # editorial worker materialized precisely that revision as READY
+            # before this GitHub Actions job checked out main. Honor the
+            # original discard without requiring a second tap on Listas.
+            if not (source or active or ready):
+                fail("La noticia ya no figura en el radar, elaboracion ni Listas")
             if ready:
-                fail("La noticia ya esta en Listas; refresca y usa Quitar de Listas")
-            if not (source or active):
-                fail("La noticia ya no figura en el radar ni en elaboracion")
-            observed = active or source
-            if "revision" in observed:
-                check_revision(observed, revision)
-            if active and str(active.get("status") or "").upper() not in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
+                check_revision(ready, revision)
+            if active and "revision" in active:
+                check_revision(active, revision)
+            elif source and "revision" in source:
+                check_revision(source, revision)
+            if processing_active and "revision" in processing_active:
+                check_revision(processing_active, revision)
+            if active and str(active.get("status") or "").upper() not in {
+                "PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC", "READY"
+            }:
                 fail("La noticia ya no esta en elaboracion")
+            if ready:
+                prepared["items"] = [
+                    row for row in prepared.get("items", [])
+                    if str(row.get("event_id") or "") != event_id
+                ]
+                prepared["count"] = len(prepared["items"])
+                prepared["updated_at"] = now
             if active:
                 active["status"] = "DISMISSED"
                 active["dismissed_at"] = now
                 active["decision_source"] = "ttactualidad_direct"
-            # Prevent a later outbox on the ORIGINAL editorial processing ledger.
-            if processing_active and str(processing_active.get("status") or "").upper() in {"PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC"}:
-                check_revision(processing_active, revision)
+            # Prevent a later outbox on the ORIGINAL editorial processing ledger,
+            # including a READY mirror created just before the discard.
+            if processing_active and str(processing_active.get("status") or "").upper() in {
+                "PROCESSING", "UPDATE_PROCESSING", "PROBLEMATIC", "READY"
+            }:
                 processing_active["status"] = "DISMISSED"
                 processing_active["dismissed_at"] = now
                 processing_active["decision_source"] = "ttactualidad_direct"
@@ -337,7 +355,10 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
                             decision_source="ttactualidad_direct")
             decisions["updated_at"] = now
             queue["updated_at"] = now
-            return {queue_path: queue, processing_path: processing, state_path: decisions}, "applied"
+            changes = {queue_path: queue, processing_path: processing, state_path: decisions}
+            if ready:
+                changes[prepared_path] = prepared
+            return changes, "applied"
         if decision == "prepare":
             in_review = any(str(row.get("event_id") or "") == event_id
                             for row in status_doc.get("problematic_items", []))
