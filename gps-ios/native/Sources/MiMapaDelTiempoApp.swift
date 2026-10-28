@@ -186,6 +186,8 @@ struct SavedState: Codable {
     @Published var minimized = false
     @Published var routePeriod: RouteDisplayPeriod = .today
     @Published var selectedTab = 0
+    // A specific stay requested from an interactive notification.
+    @Published var requestedSiteStayID: String?
     private var mapNavigation = MapNavigationOnce()
     @Published var mapNavigationRevision = UUID()
     @Published private(set) var renameUndoAvailable = false
@@ -686,8 +688,12 @@ struct SavedState: Codable {
             return explicit.sorted { $0.from < $1.from }
         }
         let legacy = data.siteStayAssignments.first { $0.id == stay.id && $0.confirmed }
-        return [SiteStayHistory.defaultPart(for:stay,
-                suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))]
+        var proposed = SiteStayHistory.defaultPart(for:stay,
+                suggested: legacy?.siteID ?? preferredSiteID(for:stay.cell.id))
+        // A notification's Confirmado action is a real confirmation, and
+        // must remain confirmed while the ongoing GPS stay keeps growing.
+        proposed.confirmed = legacy != nil
+        return [proposed]
     }
     func writeSiteParts(_ parts: [SiteStayPart], stay: SiteGridStay) {
         guard SiteStayHistory.valid(parts,for:stay), storageIsHealthy else { return }
@@ -785,6 +791,34 @@ struct SavedState: Codable {
 
     func siteNamed(_ id: UUID) -> IdentifiedSite? {
         data.identifiedSites.first { $0.id == id }
+    }
+
+    /// Confirm the exact proposed historical visit, not every stay in the
+    /// same square. A later manual correction always wins.
+    @discardableResult
+    func confirmNotifiedStay(stayID: String, expectedSiteID: UUID) -> Bool {
+        guard storageIsHealthy, siteNamed(expectedSiteID) != nil,
+              !data.siteStayParts.contains(where: { $0.stayID == stayID }),
+              let stay = SiteStayHistory.extract(data.intervals).first(
+                where: { $0.id == stayID }) else { return false }
+        let lookup = SiteDayPartsIndex(assignments: data.siteStayAssignments,
+                    parts: data.siteStayParts, sites: data.identifiedSites)
+        let proposed = lookup.parts(for: stay)
+        guard proposed.count == 1, let only = proposed.first,
+              only.kind == .place, only.siteID == expectedSiteID,
+              !only.confirmed else { return false }
+        data.siteStayAssignments = SiteStayPolicy.select(
+            siteID: expectedSiteID, cellID: stay.cell.id,
+            entered: stay.start, assignments: data.siteStayAssignments)
+        save(force: true)
+        activityPublisher.refresh(from: self, force: true)
+        objectWillChange.send()
+        return true
+    }
+
+    func openNotifiedStay(stayID: String) {
+        requestedSiteStayID = stayID
+        selectedTab = 3
     }
     func siteOptions(for cell: Cell) -> [(site: IdentifiedSite, confirmations: Int, fromOtherSquares: Int)] {
         let votes = SiteStayPolicy.confirmedCounts(data.siteStayAssignments,
@@ -1428,6 +1462,7 @@ struct SavedState: Codable {
         activityPublisher.refresh(from:self)
         evaluateCurrentSite(now: sample.date)
         GPSPersonalAlerts.shared.evaluate(model:self)
+        SiteStayNotifications.shared.evaluate(model:self)
         objectWillChange.send()
     }
     // Interpolate between real fixes. Long gaps / impossible jumps are NOT invented.
@@ -2026,6 +2061,7 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
                     if model.isResting { gps.restoreRest(model) }
                     else if model.data.trackingEnabled && !model.recording { gps.begin(model) }
                     model.restoreLiveActivityIfNeeded()
+                    SiteStayNotifications.shared.activate(model: model)
                 }
                 .onChange(of: model.storageIsHealthy) { _, healthy in
                     if !healthy { gps.haltForStorageFailure(model) }
