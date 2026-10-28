@@ -12362,17 +12362,17 @@
         }
       ],
       "sources": [
-        "Telecinco Noticias",
-        "La Vanguardia",
         "El HuffPost",
+        "La Vanguardia",
+        "Onda Cero",
         "Público",
-        "Onda Cero"
+        "Telecinco Noticias"
       ],
       "source_count": 5,
       "percentage": 31.2,
       "first_seen": "2026-10-28T21:12:25.019838Z",
       "last_seen": "2026-10-28T21:23:56.848295Z",
-      "status": "PROBLEMATIC",
+      "status": "PROCESSING",
       "notified": false,
       "revision": 1,
       "sport_sources": [],
@@ -12392,7 +12392,7 @@
       "eligible_at": "2026-10-28T21:23:56.848295Z",
       "event_id": "7ca2e207fd62",
       "title": "Fátima Báñez, exministra de Empleo con Rajoy, iba en el tren que ha chocado y está en paradero desconocido",
-      "selection_mode": "AUTO_WEB",
+      "selection_mode": "MANUAL_REOPEN_OUTCOME",
       "selected_at": "2026-10-28T21:27:04.701093Z",
       "source_evidence": [
         {
@@ -12445,7 +12445,11 @@
       "verified_source_count": 5,
       "problematic_at": "2026-10-28T21:34:44.634199Z",
       "problem_reason": "transport_write_blocked",
-      "problematic_attempts": 1
+      "problematic_attempts": 1,
+      "user_validated": true,
+      "user_validated_at": "2026-10-28T22:02:35.105271+00:00",
+      "force_user_elaborate": true,
+      "requested_at": "2026-10-28T22:02:35.105271+00:00"
     },
     {
       "id": "344178888799",
@@ -12575,5 +12579,5 @@
       "verified_source_count": 5
     }
   ],
-  "updated_at": "2026-10-28T21:59:01.508635Z"
+  "updated_at": "2026-10-28T22:02:35.105271+00:00"
 }
