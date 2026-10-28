@@ -80,7 +80,7 @@ import Combine
         let nextDay = cal.date(byAdding:.day,value:1,to:selectedDay)!
         let end = nextDay.addingTimeInterval(-1)
         let zone = TimeZone.current
-        DispatchQueue.global(qos:.userInitiated).async {
+        DispatchQueue.global(qos:.utility).async {
             let historical = BioGridEngine.simulate(intervals,now:end,timezone:zone)
             DispatchQueue.main.async {
                 guard self.historyRequest == request else { return }
