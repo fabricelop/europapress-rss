@@ -2049,6 +2049,10 @@ final class GPSService: NSObject, CLLocationManagerDelegate, ObservableObject {
     }
 }
 @main struct MiMapaDelTiempoApp: App {
+    // Register the notification action delegate at launch, including launches
+    // triggered by the background Confirmado action.
+    init() { _ = SiteStayNotifications.shared }
+
     @StateObject private var model = TimeModel()
     @StateObject private var gps = GPSService()
     @Environment(\.scenePhase) private var phase
