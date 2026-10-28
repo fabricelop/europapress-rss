@@ -5,26 +5,25 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "5c4ed0171dad",
-    "98f756791609",
-    "aae166854230",
-    "6e5758e5d6fa",
-    "53a7e450d1fa"
+    "845f4ba23ee4",
+    "a1d3878f5ab1",
+    "9f3022fc9d7f",
+    "c6acd19419d2"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": 0,
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T11:10:10+01:00",
-  "last_completed_at": "2026-10-28T11:16:45+01:00",
-  "updated_at": "2026-10-28T11:16:45+01:00",
+  "last_started_at": "2026-10-28T11:17:37.685+01:00",
+  "last_completed_at": "2026-10-28T11:24:20+01:00",
+  "updated_at": "2026-10-28T11:24:20+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-mobile-backlog-20261028T101010-tt",
+    "trigger_run_id": "tr-1793182657685-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -32,22 +31,22 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-mobile-backlog-20261028T101010-tt",
+    "run_id": "tr-1793182657685-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T11:10:10+01:00",
-    "updated_at": "2026-10-28T11:16:45+01:00",
-    "finished_at": "2026-10-28T11:16:45+01:00",
-    "current": 5,
-    "total": 5,
+    "started_at": "2026-10-28T11:17:37.685+01:00",
+    "updated_at": "2026-10-28T11:24:20+01:00",
+    "finished_at": "2026-10-28T11:24:20+01:00",
+    "current": 4,
+    "total": 4,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 5,
-      "ready": 5,
-      "explained": 5,
-      "final_resolved": 5,
+      "attempted": 4,
+      "ready": 4,
+      "explained": 4,
+      "final_resolved": 4,
       "explanation_groups": 1,
       "new_cards": 1,
       "revisions_updated": 0,
@@ -56,7 +55,7 @@
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 5,
+      "initial_compact_queue": 4,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -64,153 +63,138 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 5,
+      "explanations_verified_under_280": 4,
       "remates_selected": 0,
       "remates_omitted": 1,
-      "recent_missing_closer_reviewed": 1,
-      "pending_cards_reviewed": 1,
+      "recent_missing_closer_reviewed": 0,
+      "pending_cards_reviewed": 0,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0.",
+    "message": "TTendencias completada 4/4 · cola editorial y reexplicaciones verificadas en 0.",
     "incident_count": 0,
     "incidents": [],
     "activity": [
       {
-        "at": "2026-10-28T11:10:10+01:00",
+        "at": "2026-10-28T11:18:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada móvil · 5 entradas activas; validando estado y activando saneamiento visual."
+        "message": "Inicio de pasada manual · 4 entradas activas; revalidando cola y activando saneamiento visual."
       },
       {
-        "at": "2026-10-28T11:11:50+01:00",
+        "at": "2026-10-28T11:18:20+01:00",
         "phase": "verifying",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Releyendo estado autoritativo de Renfe · revisión 0 sigue activa."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Releyendo estado autoritativo de #AccidenteFerroviario · revisión 0 sigue activa."
       },
       {
-        "at": "2026-10-28T11:11:55+01:00",
+        "at": "2026-10-28T11:18:30+01:00",
         "phase": "verifying",
-        "trend_id": "98f756791609",
-        "title": "Asesinos",
-        "message": "Releyendo estado autoritativo de Asesinos · revisión 0 sigue activa."
+        "trend_id": "a1d3878f5ab1",
+        "title": "Ministro de Transportes",
+        "message": "Releyendo estado autoritativo de Ministro de Transportes · revisión 0 sigue activa."
       },
       {
-        "at": "2026-10-28T11:12:00+01:00",
+        "at": "2026-10-28T11:18:40+01:00",
         "phase": "verifying",
-        "trend_id": "aae166854230",
-        "title": "Dimite",
-        "message": "Releyendo estado autoritativo de Dimite · revisión 0 sigue activa."
+        "trend_id": "9f3022fc9d7f",
+        "title": "Asesino",
+        "message": "Releyendo estado autoritativo de Asesino · revisión 0 sigue activa."
       },
       {
-        "at": "2026-10-28T11:12:05+01:00",
+        "at": "2026-10-28T11:18:50+01:00",
         "phase": "verifying",
-        "trend_id": "6e5758e5d6fa",
-        "title": "Adif",
-        "message": "Releyendo estado autoritativo de Adif · revisión 0 sigue activa."
+        "trend_id": "c6acd19419d2",
+        "title": "Alta Velocidad",
+        "message": "Releyendo estado autoritativo de Alta Velocidad · revisión 0 sigue activa."
       },
       {
-        "at": "2026-10-28T11:12:10+01:00",
-        "phase": "verifying",
-        "trend_id": "53a7e450d1fa",
-        "title": "Consternado",
-        "message": "Releyendo estado autoritativo de Consternado · revisión 0 sigue activa."
-      },
-      {
-        "at": "2026-10-28T11:12:20+01:00",
+        "at": "2026-10-28T11:21:25+01:00",
         "phase": "investigating",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Contrastando fuente 1/2 · choque Renfe–Iryo, intervención de Adif y corte Madrid-Andalucía."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Contrastando detonante actual · choque AVE–Iryo, corte Madrid-Andalucía y reacción social vinculada a Transportes."
       },
       {
-        "at": "2026-10-28T11:12:30+01:00",
+        "at": "2026-10-28T11:21:35+01:00",
         "phase": "investigating",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Contrastando fuente 2/2 · reacción de Sánchez y petición pública de dimisión tras el accidente."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Hecho esencial verificado · las cuatro entradas corresponden a la misma oleada del accidente de Urda; «Asesino» se atribuye solo a ataques en redes."
       },
       {
-        "at": "2026-10-28T11:12:40+01:00",
-        "phase": "investigating",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Hecho esencial verificado · los cinco términos pertenecen a la misma oleada de conversación del accidente de Urda."
-      },
-      {
-        "at": "2026-10-28T11:12:50+01:00",
+        "at": "2026-10-28T11:21:45+01:00",
         "phase": "drafting",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Redactando explicación factual conjunta para Renfe, Asesinos, Dimite, Adif y Consternado."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Redactando explicación factual conjunta nueva, sin reutilizar fichas previas."
       },
       {
-        "at": "2026-10-28T11:13:00+01:00",
+        "at": "2026-10-28T11:21:55+01:00",
         "phase": "drafting",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Comprobando límite de X · explicación completa: 268 caracteres."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Comprobando límite de X · explicación completa: 266 caracteres."
       },
       {
-        "at": "2026-10-28T11:13:10+01:00",
+        "at": "2026-10-28T11:22:05+01:00",
         "phase": "remate_selection",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
         "message": "Sin remate · accidente con víctimas; se evita humor sobre el suceso."
       },
       {
-        "at": "2026-10-28T11:13:20+01:00",
+        "at": "2026-10-28T11:22:15+01:00",
         "phase": "persisting",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Guardando ficha Explicada del nuevo grupo con Renfe como líder."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Guardando ficha Explicada nueva para las cuatro revisiones."
       },
       {
-        "at": "2026-10-28T11:13:40+01:00",
+        "at": "2026-10-28T11:23:10+01:00",
         "phase": "persisting",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Actualizando requests · sincronizando las cuatro revisiones con la ficha Explicada."
       },
       {
-        "at": "2026-10-28T11:14:10+01:00",
-        "phase": "persisting",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Retirando las cinco revisiones verificadas de la cola editorial."
-      },
-      {
-        "at": "2026-10-28T11:15:00+01:00",
+        "at": "2026-10-28T11:23:40+01:00",
         "phase": "verifying",
-        "trend_id": "5c4ed0171dad",
-        "title": "Renfe",
-        "message": "Releyendo main · ficha, cinco requests y ausencia de cola coherentes."
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Verificando ficha y requests · texto, remate vacío, grupo y fecha de explicación coinciden."
       },
       {
-        "at": "2026-10-28T11:16:30+01:00",
+        "at": "2026-10-28T11:23:50+01:00",
+        "phase": "persisting",
+        "trend_id": "845f4ba23ee4",
+        "title": "#AccidenteFerroviario",
+        "message": "Retirando las cuatro revisiones verificadas de la cola editorial."
+      },
+      {
+        "at": "2026-10-28T11:24:10+01:00",
         "phase": "verifying",
         "trend_id": null,
         "title": null,
-        "message": "Verificación final · 0 preparing/update y 0 rewrite_pending en main."
+        "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y cuatro requests sincronizadas."
       },
       {
-        "at": "2026-10-28T11:16:45+01:00",
+        "at": "2026-10-28T11:24:20+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0."
+        "message": "TTendencias completada 4/4 · cola editorial y reexplicaciones verificadas en 0."
       }
     ],
     "processed_ids": [
-      "5c4ed0171dad",
-      "98f756791609",
-      "aae166854230",
-      "6e5758e5d6fa",
-      "53a7e450d1fa"
+      "845f4ba23ee4",
+      "a1d3878f5ab1",
+      "9f3022fc9d7f",
+      "c6acd19419d2"
     ],
     "partial": false,
     "queue_complete": true,
@@ -219,21 +203,21 @@
     "remate_selections": [],
     "final_outcomes": [
       {
-        "group_id": "grp-5c4ed0171dad-r0",
-        "leader_id": "5c4ed0171dad",
-        "title": "Accidente AVE–Iryo en Toledo · nuevas reacciones",
-        "resolved_revisions": 5,
+        "group_id": "grp-845f4ba23ee4-r0",
+        "leader_id": "845f4ba23ee4",
+        "title": "Accidente AVE–Iryo en Toledo · nueva oleada",
+        "resolved_revisions": 4,
         "status": "explained",
         "closer_omitted": "sensitive_event"
       }
     ]
   },
-  "run_id": "tr-mobile-backlog-20261028T101010-tt",
+  "run_id": "tr-1793182657685-manual",
   "summary": {
-    "attempted": 5,
-    "ready": 5,
-    "explained": 5,
-    "final_resolved": 5,
+    "attempted": 4,
+    "ready": 4,
+    "explained": 4,
+    "final_resolved": 4,
     "explanation_groups": 1,
     "new_cards": 1,
     "revisions_updated": 0,
@@ -242,7 +226,7 @@
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 5,
+    "initial_compact_queue": 4,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -250,11 +234,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 5,
+    "explanations_verified_under_280": 4,
     "remates_selected": 0,
     "remates_omitted": 1,
-    "recent_missing_closer_reviewed": 1,
-    "pending_cards_reviewed": 1,
+    "recent_missing_closer_reviewed": 0,
+    "pending_cards_reviewed": 0,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -262,130 +246,116 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T11:10:10+01:00",
+      "at": "2026-10-28T11:18:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada móvil · 5 entradas activas; validando estado y activando saneamiento visual."
+      "message": "Inicio de pasada manual · 4 entradas activas; revalidando cola y activando saneamiento visual."
     },
     {
-      "at": "2026-10-28T11:11:50+01:00",
+      "at": "2026-10-28T11:18:20+01:00",
       "phase": "verifying",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Releyendo estado autoritativo de Renfe · revisión 0 sigue activa."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Releyendo estado autoritativo de #AccidenteFerroviario · revisión 0 sigue activa."
     },
     {
-      "at": "2026-10-28T11:11:55+01:00",
+      "at": "2026-10-28T11:18:30+01:00",
       "phase": "verifying",
-      "trend_id": "98f756791609",
-      "title": "Asesinos",
-      "message": "Releyendo estado autoritativo de Asesinos · revisión 0 sigue activa."
+      "trend_id": "a1d3878f5ab1",
+      "title": "Ministro de Transportes",
+      "message": "Releyendo estado autoritativo de Ministro de Transportes · revisión 0 sigue activa."
     },
     {
-      "at": "2026-10-28T11:12:00+01:00",
+      "at": "2026-10-28T11:18:40+01:00",
       "phase": "verifying",
-      "trend_id": "aae166854230",
-      "title": "Dimite",
-      "message": "Releyendo estado autoritativo de Dimite · revisión 0 sigue activa."
+      "trend_id": "9f3022fc9d7f",
+      "title": "Asesino",
+      "message": "Releyendo estado autoritativo de Asesino · revisión 0 sigue activa."
     },
     {
-      "at": "2026-10-28T11:12:05+01:00",
+      "at": "2026-10-28T11:18:50+01:00",
       "phase": "verifying",
-      "trend_id": "6e5758e5d6fa",
-      "title": "Adif",
-      "message": "Releyendo estado autoritativo de Adif · revisión 0 sigue activa."
+      "trend_id": "c6acd19419d2",
+      "title": "Alta Velocidad",
+      "message": "Releyendo estado autoritativo de Alta Velocidad · revisión 0 sigue activa."
     },
     {
-      "at": "2026-10-28T11:12:10+01:00",
-      "phase": "verifying",
-      "trend_id": "53a7e450d1fa",
-      "title": "Consternado",
-      "message": "Releyendo estado autoritativo de Consternado · revisión 0 sigue activa."
-    },
-    {
-      "at": "2026-10-28T11:12:20+01:00",
+      "at": "2026-10-28T11:21:25+01:00",
       "phase": "investigating",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Contrastando fuente 1/2 · choque Renfe–Iryo, intervención de Adif y corte Madrid-Andalucía."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Contrastando detonante actual · choque AVE–Iryo, corte Madrid-Andalucía y reacción social vinculada a Transportes."
     },
     {
-      "at": "2026-10-28T11:12:30+01:00",
+      "at": "2026-10-28T11:21:35+01:00",
       "phase": "investigating",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Contrastando fuente 2/2 · reacción de Sánchez y petición pública de dimisión tras el accidente."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Hecho esencial verificado · las cuatro entradas corresponden a la misma oleada del accidente de Urda; «Asesino» se atribuye solo a ataques en redes."
     },
     {
-      "at": "2026-10-28T11:12:40+01:00",
-      "phase": "investigating",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Hecho esencial verificado · los cinco términos pertenecen a la misma oleada de conversación del accidente de Urda."
-    },
-    {
-      "at": "2026-10-28T11:12:50+01:00",
+      "at": "2026-10-28T11:21:45+01:00",
       "phase": "drafting",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Redactando explicación factual conjunta para Renfe, Asesinos, Dimite, Adif y Consternado."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Redactando explicación factual conjunta nueva, sin reutilizar fichas previas."
     },
     {
-      "at": "2026-10-28T11:13:00+01:00",
+      "at": "2026-10-28T11:21:55+01:00",
       "phase": "drafting",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Comprobando límite de X · explicación completa: 268 caracteres."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Comprobando límite de X · explicación completa: 266 caracteres."
     },
     {
-      "at": "2026-10-28T11:13:10+01:00",
+      "at": "2026-10-28T11:22:05+01:00",
       "phase": "remate_selection",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
       "message": "Sin remate · accidente con víctimas; se evita humor sobre el suceso."
     },
     {
-      "at": "2026-10-28T11:13:20+01:00",
+      "at": "2026-10-28T11:22:15+01:00",
       "phase": "persisting",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Guardando ficha Explicada del nuevo grupo con Renfe como líder."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Guardando ficha Explicada nueva para las cuatro revisiones."
     },
     {
-      "at": "2026-10-28T11:13:40+01:00",
+      "at": "2026-10-28T11:23:10+01:00",
       "phase": "persisting",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Actualizando requests · sincronizando las cinco revisiones con la ficha Explicada."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Actualizando requests · sincronizando las cuatro revisiones con la ficha Explicada."
     },
     {
-      "at": "2026-10-28T11:14:10+01:00",
-      "phase": "persisting",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Retirando las cinco revisiones verificadas de la cola editorial."
-    },
-    {
-      "at": "2026-10-28T11:15:00+01:00",
+      "at": "2026-10-28T11:23:40+01:00",
       "phase": "verifying",
-      "trend_id": "5c4ed0171dad",
-      "title": "Renfe",
-      "message": "Releyendo main · ficha, cinco requests y ausencia de cola coherentes."
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Verificando ficha y requests · texto, remate vacío, grupo y fecha de explicación coinciden."
     },
     {
-      "at": "2026-10-28T11:16:30+01:00",
+      "at": "2026-10-28T11:23:50+01:00",
+      "phase": "persisting",
+      "trend_id": "845f4ba23ee4",
+      "title": "#AccidenteFerroviario",
+      "message": "Retirando las cuatro revisiones verificadas de la cola editorial."
+    },
+    {
+      "at": "2026-10-28T11:24:10+01:00",
       "phase": "verifying",
       "trend_id": null,
       "title": null,
-      "message": "Verificación final · 0 preparing/update y 0 rewrite_pending en main."
+      "message": "Releyendo main · 0 preparing/update, 0 rewrite_pending y cuatro requests sincronizadas."
     },
     {
-      "at": "2026-10-28T11:16:45+01:00",
+      "at": "2026-10-28T11:24:20+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 5/5 · cola editorial y reexplicaciones verificadas en 0."
+      "message": "TTendencias completada 4/4 · cola editorial y reexplicaciones verificadas en 0."
     }
   ],
   "partial": false,
@@ -402,10 +372,10 @@
   "remate_selections": [],
   "final_outcomes": [
     {
-      "group_id": "grp-5c4ed0171dad-r0",
-      "leader_id": "5c4ed0171dad",
-      "title": "Accidente AVE–Iryo en Toledo · nuevas reacciones",
-      "resolved_revisions": 5,
+      "group_id": "grp-845f4ba23ee4-r0",
+      "leader_id": "845f4ba23ee4",
+      "title": "Accidente AVE–Iryo en Toledo · nueva oleada",
+      "resolved_revisions": 4,
       "status": "explained",
       "closer_omitted": "sensitive_event"
     }
