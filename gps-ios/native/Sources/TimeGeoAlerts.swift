@@ -41,7 +41,10 @@ enum GeoAlertRules {
     private let center=UNUserNotificationCenter.current()
     private init() { configure() }
     func configure() {
-        center.delegate=GPSNotificationPresentationDelegate.shared
+        // Only one UNUserNotificationCenter delegate can be active. Reuse the
+        // unified handler so geographical/watchdog alerts coexist with the
+        // Confirmado/Corregir actions on site-history notifications.
+        center.delegate = SiteStayNotifications.shared
     }
 
     func evaluate(model:TimeModel,now:Date = .now) {
