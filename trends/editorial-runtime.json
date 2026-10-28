@@ -1,55 +1,56 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chat-direct",
   "version": 1,
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "b1123ab4926a"
+    "b1123ab4926a",
+    "be8d15b587e1"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T13:04:27+01:00",
-  "last_completed_at": "2026-10-28T13:04:27+01:00",
-  "updated_at": "2026-10-28T13:04:27+01:00",
+  "last_started_at": "2026-10-28T13:15:00+01:00",
+  "last_completed_at": "2026-10-28T13:20:30+01:00",
+  "updated_at": "2026-10-28T13:20:30+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1215+0100",
+    "trigger_run_id": "tr-chat-20261028T1315+0100",
     "status": "requested",
     "editorial_blocking": false
   },
   "last_run": {
-    "run_id": "tr-chat-20261028T1215+0100",
+    "run_id": "tr-chat-20261028T1315+0100",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T12:15:00+01:00",
-    "updated_at": "2026-10-28T12:17:00+01:00",
-    "finished_at": "2026-10-28T12:17:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-10-28T13:15:00+01:00",
+    "updated_at": "2026-10-28T13:20:30+01:00",
+    "finished_at": "2026-10-28T13:20:30+01:00",
+    "current": 1,
+    "total": 1,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 0,
+      "attempted": 1,
       "ready": 0,
-      "explained": 0,
-      "final_resolved": 0,
-      "explanation_groups": 0,
-      "new_cards": 0,
-      "revisions_updated": 0,
+      "explained": 1,
+      "final_resolved": 1,
+      "explanation_groups": 1,
+      "new_cards": 1,
+      "revisions_updated": 1,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 0,
+      "initial_compact_queue": 1,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -57,65 +58,159 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 0,
+      "explanations_verified_under_280": 1,
       "remates_selected": 0,
-      "remates_omitted": 0,
+      "remates_omitted": 1,
       "recent_missing_closer_reviewed": 0,
-      "pending_cards_reviewed": 1,
+      "pending_cards_reviewed": 2,
       "rewrite_pending_remaining": 0,
       "skipped_concurrent": 0,
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 0/0 · cola, requests activas y reexplicaciones verificadas en 0; saneamiento visual solicitado para 1 Explicada reciente.",
+    "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual activo para 2 Explicadas recientes.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
     "remate_selections": [],
     "activity": [
       {
-        "at": "2026-10-28T12:15:00+01:00",
+        "at": "2026-10-28T13:15:00+01:00",
         "phase": "preparing",
         "trend_id": null,
         "title": null,
-        "message": "Inicio de pasada manual · cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+        "message": "Inicio de pasada manual · 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
       },
       {
-        "at": "2026-10-28T12:16:00+01:00",
+        "at": "2026-10-28T13:16:00+01:00",
         "phase": "verifying",
-        "trend_id": null,
-        "title": null,
-        "message": "Comprobación completa · 0 requests preparing/update, 0 rewrite_pending y 1 Explicada reciente pendiente solo de tramo visual; saneamiento solicitado."
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Releyendo estado autoritativo de Fátima Báñez"
       },
       {
-        "at": "2026-10-28T12:17:00+01:00",
+        "at": "2026-10-28T13:16:15+01:00",
+        "phase": "investigating",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-28T13:17:00+01:00",
+        "phase": "investigating",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Contrastando fuentes actuales"
+      },
+      {
+        "at": "2026-10-28T13:17:30+01:00",
+        "phase": "investigating",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T13:17:45+01:00",
+        "phase": "drafting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T13:18:00+01:00",
+        "phase": "drafting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-28T13:18:10+01:00",
+        "phase": "drafting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Sin remate · tema sensible con posible víctima"
+      },
+      {
+        "at": "2026-10-28T13:18:20+01:00",
+        "phase": "persisting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-28T13:18:45+01:00",
+        "phase": "persisting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Actualizando requests"
+      },
+      {
+        "at": "2026-10-28T13:19:05+01:00",
+        "phase": "persisting",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Retirando revisión de la cola"
+      },
+      {
+        "at": "2026-10-28T13:19:20+01:00",
+        "phase": "verifying",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Releyendo main"
+      },
+      {
+        "at": "2026-10-28T13:19:45+01:00",
+        "phase": "verifying",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Verificando id+revision y texto persistido"
+      },
+      {
+        "at": "2026-10-28T13:20:00+01:00",
+        "phase": "verifying",
+        "trend_id": "be8d15b587e1",
+        "title": "Fátima Báñez",
+        "message": "Tendencia cerrada y verificada"
+      },
+      {
+        "at": "2026-10-28T13:20:30+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 0/0 · cola, requests activas y reexplicaciones verificadas en 0; saneamiento visual solicitado para 1 Explicada reciente."
+        "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual activo para 2 Explicadas recientes."
       }
     ],
-    "processed_ids": [],
+    "processed_ids": [
+      "be8d15b587e1"
+    ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
-    "final_outcomes": []
+    "final_outcomes": [
+      {
+        "id": "be8d15b587e1",
+        "name": "Fátima Báñez",
+        "revision": 0,
+        "status": "explained",
+        "closer_text": ""
+      }
+    ]
   },
-  "run_id": "tr-chat-20261028T1215+0100",
+  "run_id": "tr-chat-20261028T1315+0100",
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "ready": 0,
-    "explained": 0,
-    "final_resolved": 0,
-    "explanation_groups": 0,
-    "new_cards": 0,
-    "revisions_updated": 0,
+    "explained": 1,
+    "final_resolved": 1,
+    "explanation_groups": 1,
+    "new_cards": 1,
+    "revisions_updated": 1,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 0,
+    "initial_compact_queue": 1,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -123,11 +218,11 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 0,
+    "explanations_verified_under_280": 1,
     "remates_selected": 0,
-    "remates_omitted": 0,
+    "remates_omitted": 1,
     "recent_missing_closer_reviewed": 0,
-    "pending_cards_reviewed": 1,
+    "pending_cards_reviewed": 2,
     "rewrite_pending_remaining": 0,
     "skipped_concurrent": 0,
     "trends_dismissed": 0,
@@ -135,25 +230,109 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T12:15:00+01:00",
+      "at": "2026-10-28T13:15:00+01:00",
       "phase": "preparing",
       "trend_id": null,
       "title": null,
-      "message": "Inicio de pasada manual · cola editorial 0; comprobando reexplicaciones y saneamiento de Pendientes."
+      "message": "Inicio de pasada manual · 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
     },
     {
-      "at": "2026-10-28T12:16:00+01:00",
+      "at": "2026-10-28T13:16:00+01:00",
       "phase": "verifying",
-      "trend_id": null,
-      "title": null,
-      "message": "Comprobación completa · 0 requests preparing/update, 0 rewrite_pending y 1 Explicada reciente pendiente solo de tramo visual; saneamiento solicitado."
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Releyendo estado autoritativo de Fátima Báñez"
     },
     {
-      "at": "2026-10-28T12:17:00+01:00",
+      "at": "2026-10-28T13:16:15+01:00",
+      "phase": "investigating",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-28T13:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Contrastando fuentes actuales"
+    },
+    {
+      "at": "2026-10-28T13:17:30+01:00",
+      "phase": "investigating",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T13:17:45+01:00",
+      "phase": "drafting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T13:18:00+01:00",
+      "phase": "drafting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-28T13:18:10+01:00",
+      "phase": "drafting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Sin remate · tema sensible con posible víctima"
+    },
+    {
+      "at": "2026-10-28T13:18:20+01:00",
+      "phase": "persisting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-28T13:18:45+01:00",
+      "phase": "persisting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Actualizando requests"
+    },
+    {
+      "at": "2026-10-28T13:19:05+01:00",
+      "phase": "persisting",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Retirando revisión de la cola"
+    },
+    {
+      "at": "2026-10-28T13:19:20+01:00",
+      "phase": "verifying",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Releyendo main"
+    },
+    {
+      "at": "2026-10-28T13:19:45+01:00",
+      "phase": "verifying",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Verificando id+revision y texto persistido"
+    },
+    {
+      "at": "2026-10-28T13:20:00+01:00",
+      "phase": "verifying",
+      "trend_id": "be8d15b587e1",
+      "title": "Fátima Báñez",
+      "message": "Tendencia cerrada y verificada"
+    },
+    {
+      "at": "2026-10-28T13:20:30+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 0/0 · cola, requests activas y reexplicaciones verificadas en 0; saneamiento visual solicitado para 1 Explicada reciente."
+      "message": "TTendencias completada 1/1 · cola editorial y reexplicaciones verificadas en 0; saneamiento visual activo para 2 Explicadas recientes."
     }
   ],
   "partial": false,
@@ -165,10 +344,18 @@
     "captured_at": "2026-10-28T12:11:16+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-ios-1793184612654-3554408d",
+  "previous_run_id": "tr-chat-20261028T1215+0100",
   "ratings_snapshot": null,
   "remate_selections": [],
-  "final_outcomes": [],
-  "pending_delivery_count": 1,
+  "final_outcomes": [
+    {
+      "id": "be8d15b587e1",
+      "name": "Fátima Báñez",
+      "revision": 0,
+      "status": "explained",
+      "closer_text": ""
+    }
+  ],
+  "pending_delivery_count": 2,
   "error": null
 }
