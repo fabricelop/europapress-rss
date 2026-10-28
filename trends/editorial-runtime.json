@@ -5,22 +5,23 @@
   "canonical": true,
   "api_failover_enabled": false,
   "processed_ids": [
-    "09fb9ff32c5a"
+    "7873f51ff683",
+    "dbe9e502f10b"
   ],
   "remaining_ids": [],
   "remaining_problematic_ids": [],
   "unresolved_orphan_ids": [],
   "telegram_orphans": [],
   "telegram_orphan_ids": [],
-  "last_started_at": "2026-10-28T13:45:00+01:00",
-  "last_completed_at": "2026-10-28T13:48:52+01:00",
-  "updated_at": "2026-10-28T13:48:52+01:00",
+  "last_started_at": "2026-10-28T13:53:00+01:00",
+  "last_completed_at": "2026-10-28T14:01:00+01:00",
+  "updated_at": "2026-10-28T14:01:00+01:00",
   "status": "success",
   "remaining_active_ids": [],
   "queue_complete": true,
   "visual_repair": {
     "workflow": "pending-repair-trigger",
-    "trigger_run_id": "tr-chat-20261028T1315+0100",
+    "trigger_run_id": "tr-1793192013819-manual",
     "status": "requested",
     "editorial_blocking": false
   },
@@ -28,31 +29,31 @@
     "version": 1,
     "canonical": true,
     "project": "TTendencias",
-    "run_id": "tr-chat-20261028T1345+0100",
+    "run_id": "tr-1793192013819-manual",
     "source": "chat",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-10-28T13:45:00+01:00",
-    "updated_at": "2026-10-28T13:48:52+01:00",
-    "finished_at": "2026-10-28T13:48:52+01:00",
-    "current": 1,
-    "total": 1,
+    "started_at": "2026-10-28T13:53:00+01:00",
+    "updated_at": "2026-10-28T14:01:00+01:00",
+    "finished_at": "2026-10-28T14:01:00+01:00",
+    "current": 2,
+    "total": 2,
     "trend_id": null,
     "title": null,
     "summary": {
-      "attempted": 1,
+      "attempted": 2,
       "ready": 0,
-      "explained": 1,
-      "final_resolved": 1,
-      "explanation_groups": 1,
-      "new_cards": 1,
-      "revisions_updated": 1,
+      "explained": 2,
+      "final_resolved": 2,
+      "explanation_groups": 2,
+      "new_cards": 2,
+      "revisions_updated": 2,
       "grouped_into_existing_card": 0,
       "problematic_reviewed": 0,
       "problematic_marked": 0,
       "imagegen_calls": 0,
       "telegram_sends": 0,
-      "initial_compact_queue": 1,
+      "initial_compact_queue": 2,
       "discovered_during_run": 0,
       "final_compact_queue": 0,
       "remaining_active": 0,
@@ -60,9 +61,9 @@
       "visual_backlog": 0,
       "pending_repair_triggered": 1,
       "manual_visual_dispatches": 0,
-      "explanations_verified_under_280": 1,
-      "remates_selected": 0,
-      "remates_omitted": 1,
+      "explanations_verified_under_280": 2,
+      "remates_selected": 2,
+      "remates_omitted": 0,
       "recent_missing_closer_reviewed": 0,
       "pending_cards_reviewed": 3,
       "rewrite_pending_remaining": 0,
@@ -70,149 +71,205 @@
       "trends_dismissed": 0,
       "incidents": 0
     },
-    "message": "TTendencias completada 1/1 · Dana explicada y verificada; cola editorial y reexplicaciones en 0.",
+    "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0.",
     "incident_count": 0,
     "incidents": [],
     "ratings_snapshot": null,
-    "remate_selections": [],
+    "remate_selections": [
+      {
+        "id": "7873f51ff683",
+        "revision": 0,
+        "selected": "🌶️ La bronca salió del césped y aterrizó en Instagram.",
+        "reason": "Crítica al cruce político en redes; evita humor sobre víctimas y no repite los últimos remates."
+      },
+      {
+        "id": "dbe9e502f10b",
+        "revision": 0,
+        "selected": "🌶️ Dos años después, el escaño sigue en primera fila.",
+        "reason": "Sátira centrada en la continuidad política del escaño; no banaliza a las víctimas ni la DANA."
+      }
+    ],
     "activity": [
       {
-        "at": "2026-10-28T13:45:00+01:00",
-        "phase": "preparing",
-        "trend_id": null,
-        "title": null,
-        "message": "Inicio de pasada manual · 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
+        "at": "2026-10-28T13:56:48+01:00",
+        "phase": "remate_selection",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
+        "message": "Evaluando candidatos con ratings y últimos remates"
       },
       {
-        "at": "2026-10-28T13:45:40+01:00",
-        "phase": "verifying",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Releyendo estado autoritativo de Dana"
+        "at": "2026-10-28T13:56:55+01:00",
+        "phase": "remate_selection",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
+        "message": "Remate seleccionado"
       },
       {
-        "at": "2026-10-28T13:46:00+01:00",
-        "phase": "investigating",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Buscando detonante actual"
-      },
-      {
-        "at": "2026-10-28T13:46:25+01:00",
-        "phase": "investigating",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Contrastando fuentes actuales"
-      },
-      {
-        "at": "2026-10-28T13:46:45+01:00",
-        "phase": "investigating",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Hecho esencial verificado"
-      },
-      {
-        "at": "2026-10-28T13:46:55+01:00",
-        "phase": "drafting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Redactando explicación factual"
-      },
-      {
-        "at": "2026-10-28T13:47:25+01:00",
-        "phase": "drafting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Comprobando límite de X"
-      },
-      {
-        "at": "2026-10-28T13:47:35+01:00",
-        "phase": "drafting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
-        "message": "Sin remate · tema sensible con víctimas"
-      },
-      {
-        "at": "2026-10-28T13:47:41+01:00",
+        "at": "2026-10-28T13:57:00+01:00",
         "phase": "persisting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Guardando ficha Explicada"
       },
       {
-        "at": "2026-10-28T13:47:55+01:00",
+        "at": "2026-10-28T13:57:15+01:00",
         "phase": "persisting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Actualizando requests"
       },
       {
-        "at": "2026-10-28T13:48:05+01:00",
+        "at": "2026-10-28T13:57:30+01:00",
         "phase": "persisting",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Retirando revisión de la cola"
       },
       {
-        "at": "2026-10-28T13:48:15+01:00",
+        "at": "2026-10-28T13:57:45+01:00",
         "phase": "verifying",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Releyendo main"
       },
       {
-        "at": "2026-10-28T13:48:28+01:00",
+        "at": "2026-10-28T13:57:55+01:00",
         "phase": "verifying",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Verificando id+revision y texto persistido"
       },
       {
-        "at": "2026-10-28T13:48:38+01:00",
+        "at": "2026-10-28T13:58:00+01:00",
         "phase": "verifying",
-        "trend_id": "09fb9ff32c5a",
-        "title": "Dana",
+        "trend_id": "7873f51ff683",
+        "title": "Marcos Llorente",
         "message": "Tendencia cerrada y verificada"
       },
       {
-        "at": "2026-10-28T13:48:52+01:00",
+        "at": "2026-10-28T13:58:05+01:00",
+        "phase": "verifying",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Releyendo estado autoritativo de Mazón"
+      },
+      {
+        "at": "2026-10-28T13:58:15+01:00",
+        "phase": "investigating",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Buscando detonante actual"
+      },
+      {
+        "at": "2026-10-28T13:58:25+01:00",
+        "phase": "investigating",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Contrastando fuente 1/2"
+      },
+      {
+        "at": "2026-10-28T13:58:35+01:00",
+        "phase": "investigating",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Contrastando fuente 2/2"
+      },
+      {
+        "at": "2026-10-28T13:58:40+01:00",
+        "phase": "investigating",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Hecho esencial verificado"
+      },
+      {
+        "at": "2026-10-28T13:58:45+01:00",
+        "phase": "drafting",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Redactando explicación factual"
+      },
+      {
+        "at": "2026-10-28T13:58:50+01:00",
+        "phase": "drafting",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Comprobando límite de X"
+      },
+      {
+        "at": "2026-10-28T13:58:52+01:00",
+        "phase": "remate_selection",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Generando candidatos de remate"
+      },
+      {
+        "at": "2026-10-28T13:58:56+01:00",
+        "phase": "remate_selection",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Evaluando candidatos con ratings y últimos remates"
+      },
+      {
+        "at": "2026-10-28T13:58:58+01:00",
+        "phase": "remate_selection",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Remate seleccionado"
+      },
+      {
+        "at": "2026-10-28T13:59:00+01:00",
+        "phase": "persisting",
+        "trend_id": "dbe9e502f10b",
+        "title": "Mazón",
+        "message": "Guardando ficha Explicada"
+      },
+      {
+        "at": "2026-10-28T14:01:00+01:00",
         "phase": "closing",
         "trend_id": null,
         "title": null,
-        "message": "TTendencias completada 1/1 · Dana explicada y verificada; cola editorial y reexplicaciones en 0."
+        "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0."
       }
     ],
     "processed_ids": [
-      "09fb9ff32c5a"
+      "7873f51ff683",
+      "dbe9e502f10b"
     ],
     "partial": false,
     "queue_complete": true,
     "remaining_active_ids": [],
     "final_outcomes": [
       {
-        "id": "09fb9ff32c5a",
-        "name": "Dana",
+        "id": "7873f51ff683",
+        "name": "Marcos Llorente",
         "revision": 0,
         "status": "explained",
-        "closer_text": ""
+        "closer_text": "🌶️ La bronca salió del césped y aterrizó en Instagram."
+      },
+      {
+        "id": "dbe9e502f10b",
+        "name": "Mazón",
+        "revision": 0,
+        "status": "explained",
+        "closer_text": "🌶️ Dos años después, el escaño sigue en primera fila."
       }
     ]
   },
-  "run_id": "tr-chat-20261028T1345+0100",
+  "run_id": "tr-1793192013819-manual",
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "ready": 0,
-    "explained": 1,
-    "final_resolved": 1,
-    "explanation_groups": 1,
-    "new_cards": 1,
-    "revisions_updated": 1,
+    "explained": 2,
+    "final_resolved": 2,
+    "explanation_groups": 2,
+    "new_cards": 2,
+    "revisions_updated": 2,
     "grouped_into_existing_card": 0,
     "problematic_reviewed": 0,
     "problematic_marked": 0,
     "imagegen_calls": 0,
     "telegram_sends": 0,
-    "initial_compact_queue": 1,
+    "initial_compact_queue": 2,
     "discovered_during_run": 0,
     "final_compact_queue": 0,
     "remaining_active": 0,
@@ -220,9 +277,9 @@
     "visual_backlog": 0,
     "pending_repair_triggered": 1,
     "manual_visual_dispatches": 0,
-    "explanations_verified_under_280": 1,
-    "remates_selected": 0,
-    "remates_omitted": 1,
+    "explanations_verified_under_280": 2,
+    "remates_selected": 2,
+    "remates_omitted": 0,
     "recent_missing_closer_reviewed": 0,
     "pending_cards_reviewed": 3,
     "rewrite_pending_remaining": 0,
@@ -232,109 +289,144 @@
   },
   "activity": [
     {
-      "at": "2026-10-28T13:45:00+01:00",
-      "phase": "preparing",
-      "trend_id": null,
-      "title": null,
-      "message": "Inicio de pasada manual · 1 tendencia activa; preparando validación JIT y saneamiento de Pendientes."
+      "at": "2026-10-28T13:56:48+01:00",
+      "phase": "remate_selection",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
+      "message": "Evaluando candidatos con ratings y últimos remates"
     },
     {
-      "at": "2026-10-28T13:45:40+01:00",
-      "phase": "verifying",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Releyendo estado autoritativo de Dana"
+      "at": "2026-10-28T13:56:55+01:00",
+      "phase": "remate_selection",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
+      "message": "Remate seleccionado"
     },
     {
-      "at": "2026-10-28T13:46:00+01:00",
-      "phase": "investigating",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Buscando detonante actual"
-    },
-    {
-      "at": "2026-10-28T13:46:25+01:00",
-      "phase": "investigating",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Contrastando fuentes actuales"
-    },
-    {
-      "at": "2026-10-28T13:46:45+01:00",
-      "phase": "investigating",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Hecho esencial verificado"
-    },
-    {
-      "at": "2026-10-28T13:46:55+01:00",
-      "phase": "drafting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Redactando explicación factual"
-    },
-    {
-      "at": "2026-10-28T13:47:25+01:00",
-      "phase": "drafting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Comprobando límite de X"
-    },
-    {
-      "at": "2026-10-28T13:47:35+01:00",
-      "phase": "drafting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
-      "message": "Sin remate · tema sensible con víctimas"
-    },
-    {
-      "at": "2026-10-28T13:47:41+01:00",
+      "at": "2026-10-28T13:57:00+01:00",
       "phase": "persisting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Guardando ficha Explicada"
     },
     {
-      "at": "2026-10-28T13:47:55+01:00",
+      "at": "2026-10-28T13:57:15+01:00",
       "phase": "persisting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Actualizando requests"
     },
     {
-      "at": "2026-10-28T13:48:05+01:00",
+      "at": "2026-10-28T13:57:30+01:00",
       "phase": "persisting",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Retirando revisión de la cola"
     },
     {
-      "at": "2026-10-28T13:48:15+01:00",
+      "at": "2026-10-28T13:57:45+01:00",
       "phase": "verifying",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Releyendo main"
     },
     {
-      "at": "2026-10-28T13:48:28+01:00",
+      "at": "2026-10-28T13:57:55+01:00",
       "phase": "verifying",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Verificando id+revision y texto persistido"
     },
     {
-      "at": "2026-10-28T13:48:38+01:00",
+      "at": "2026-10-28T13:58:00+01:00",
       "phase": "verifying",
-      "trend_id": "09fb9ff32c5a",
-      "title": "Dana",
+      "trend_id": "7873f51ff683",
+      "title": "Marcos Llorente",
       "message": "Tendencia cerrada y verificada"
     },
     {
-      "at": "2026-10-28T13:48:52+01:00",
+      "at": "2026-10-28T13:58:05+01:00",
+      "phase": "verifying",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Releyendo estado autoritativo de Mazón"
+    },
+    {
+      "at": "2026-10-28T13:58:15+01:00",
+      "phase": "investigating",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Buscando detonante actual"
+    },
+    {
+      "at": "2026-10-28T13:58:25+01:00",
+      "phase": "investigating",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Contrastando fuente 1/2"
+    },
+    {
+      "at": "2026-10-28T13:58:35+01:00",
+      "phase": "investigating",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Contrastando fuente 2/2"
+    },
+    {
+      "at": "2026-10-28T13:58:40+01:00",
+      "phase": "investigating",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Hecho esencial verificado"
+    },
+    {
+      "at": "2026-10-28T13:58:45+01:00",
+      "phase": "drafting",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Redactando explicación factual"
+    },
+    {
+      "at": "2026-10-28T13:58:50+01:00",
+      "phase": "drafting",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Comprobando límite de X"
+    },
+    {
+      "at": "2026-10-28T13:58:52+01:00",
+      "phase": "remate_selection",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Generando candidatos de remate"
+    },
+    {
+      "at": "2026-10-28T13:58:56+01:00",
+      "phase": "remate_selection",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Evaluando candidatos con ratings y últimos remates"
+    },
+    {
+      "at": "2026-10-28T13:58:58+01:00",
+      "phase": "remate_selection",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Remate seleccionado"
+    },
+    {
+      "at": "2026-10-28T13:59:00+01:00",
+      "phase": "persisting",
+      "trend_id": "dbe9e502f10b",
+      "title": "Mazón",
+      "message": "Guardando ficha Explicada"
+    },
+    {
+      "at": "2026-10-28T14:01:00+01:00",
       "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "TTendencias completada 1/1 · Dana explicada y verificada; cola editorial y reexplicaciones en 0."
+      "message": "TTendencias completada 2/2 · Marcos Llorente y Mazón explicados y verificados; cola editorial y reexplicaciones en 0."
     }
   ],
   "partial": false,
@@ -346,16 +438,36 @@
     "captured_at": "2026-10-28T12:11:16+01:00",
     "queue_count": 0
   },
-  "previous_run_id": "tr-chat-20261028T1315+0100",
+  "previous_run_id": "tr-chat-20261028T1345+0100",
   "ratings_snapshot": null,
-  "remate_selections": [],
+  "remate_selections": [
+    {
+      "id": "7873f51ff683",
+      "revision": 0,
+      "selected": "🌶️ La bronca salió del césped y aterrizó en Instagram.",
+      "reason": "Crítica al cruce político en redes; evita humor sobre víctimas y no repite los últimos remates."
+    },
+    {
+      "id": "dbe9e502f10b",
+      "revision": 0,
+      "selected": "🌶️ Dos años después, el escaño sigue en primera fila.",
+      "reason": "Sátira centrada en la continuidad política del escaño; no banaliza a las víctimas ni la DANA."
+    }
+  ],
   "final_outcomes": [
     {
-      "id": "09fb9ff32c5a",
-      "name": "Dana",
+      "id": "7873f51ff683",
+      "name": "Marcos Llorente",
       "revision": 0,
       "status": "explained",
-      "closer_text": ""
+      "closer_text": "🌶️ La bronca salió del césped y aterrizó en Instagram."
+    },
+    {
+      "id": "dbe9e502f10b",
+      "name": "Mazón",
+      "revision": 0,
+      "status": "explained",
+      "closer_text": "🌶️ Dos años después, el escaño sigue en primera fila."
     }
   ],
   "pending_delivery_count": 3,
